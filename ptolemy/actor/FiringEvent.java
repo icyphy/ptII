@@ -60,14 +60,40 @@ reducing the load on the garbage collector.
 */
 public class FiringEvent implements DebugEvent {
 
-    /**
-     * Create a new firing event with the given source, actor, and type.
+    /** Create a new firing event with the given source, actor, and type.
+     *  @param source The director invoking the firing.
+     *  @param actor The actor being fired.
+     *  @param type An identifier for the method being invoked, which is
+     *   one of AFTER_PREFIRE, AFTER_FIRE, AFTER_POSTFIRE, AFTER_ITERATE,
+     *   BEFORE_PREFIRE, BEFORE_FIRE, BEFORE_POSTFIRE, or BEFORE_ITERATE.
      */
     public FiringEvent(Director source, Actor actor, FiringEventType type) {
 	_director = source;
 	_actor = actor;
 	_type = type;
     }
+
+    /** Create a new firing event with the given source, actor, type,
+     *  and multiplicity.
+     *  @param source The director invoking the firing.
+     *  @param actor The actor being fired.
+     *  @param type An identifier for the method being invoked, which is
+     *   one of AFTER_PREFIRE, AFTER_FIRE, AFTER_POSTFIRE, AFTER_ITERATE,
+     *   BEFORE_PREFIRE, BEFORE_FIRE, BEFORE_POSTFIRE, or BEFORE_ITERATE.
+     *  @param multiplicity The multiplicity of the firing.
+     *
+     */
+    public FiringEvent(
+            Director source,
+            Actor actor,
+            FiringEventType type,
+            int multiplicity) {
+	_director = source;
+	_actor = actor;
+	_type = type;
+        _multiplicity = multiplicity;
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -110,6 +136,11 @@ public class FiringEvent implements DebugEvent {
         buffer.append(((NamedObj)_actor).getFullName());
         buffer.append(" ");
         buffer.append(_type.getName());
+        if (_multiplicity > 1) {
+            buffer.append(" ");
+            buffer.append(_multiplicity);
+            buffer.append(" times");
+        }
         buffer.append(".");
         return buffer.toString();
     }
@@ -149,6 +180,8 @@ public class FiringEvent implements DebugEvent {
     private Actor _actor;
     // The director that activated the actor.
     private Director _director;
+    // The multiplicity.
+    private int _multiplicity = 1;
     // The type of activation.
     private FiringEventType _type;
 
