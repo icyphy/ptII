@@ -90,7 +90,9 @@ public class FlowThrough extends TypedAtomicActor {
 	for( int i = 0; i < _inRcvrs.length; i++ ) {
 	    for( int j = 0; j < _inRcvrs[i].length; j++ ) {
 		DDEReceiver inRcvr = (DDEReceiver)_inRcvrs[i][j];
+        	System.out.println("FlowThrough.java starting fire() cycle");
 		if( inRcvr.hasToken() ) {
+        	    System.out.println("FlowThrough.java past hasToken()");
 		    token = inRcvr.get();
 		    Receiver[][] outRcvrs = output.getRemoteReceivers();
 		    for( int k = 0; k < outRcvrs.length; k++ ) {

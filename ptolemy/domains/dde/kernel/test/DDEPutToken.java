@@ -72,6 +72,7 @@ public class DDEPutToken extends DDEPut {
     /**
      */
     public void fire() throws IllegalActionException {
+        System.out.println("DDEPutToken beginning fire()");
 	int cnt = 0;
 	Token token = new Token();
 	while(cnt < _numTokens) {
@@ -87,6 +88,7 @@ public class DDEPutToken extends DDEPut {
 		}
 	    }
 	    cnt++;
+            System.out.println("DDEPutToken continuing fire()");
 	}
     }
 
