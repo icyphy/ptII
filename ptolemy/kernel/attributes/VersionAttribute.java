@@ -86,9 +86,9 @@ public class VersionAttribute
      *  @see #setExpression(String)
      */
     public VersionAttribute(String expression) throws IllegalActionException {
-	super();
-	setExpression(expression);
-	setVisibility(Settable.NONE);
+        super();
+        setExpression(expression);
+        setVisibility(Settable.NONE);
     }
 
     /** Construct an attribute with the given name contained by the
@@ -108,7 +108,7 @@ public class VersionAttribute
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _tupleList = new LinkedList();
-	setVisibility(Settable.NONE);
+        setVisibility(Settable.NONE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -134,14 +134,14 @@ public class VersionAttribute
      *   object, respectively.
      */
     public int compareTo(Object object) {
-	VersionAttribute version = (VersionAttribute) object;
+        VersionAttribute version = (VersionAttribute) object;
         Iterator versionTuples = version.iterator();
         Iterator tuples;
-	if (_tupleList == null) {
-	    tuples = null;
-	} else {
-	    tuples = _tupleList.iterator();
-	}
+        if (_tupleList == null) {
+            tuples = null;
+        } else {
+            tuples = _tupleList.iterator();
+        }
         while (versionTuples.hasNext()
                 || (tuples != null && tuples.hasNext())){
             String versionTuple, tuple;
@@ -160,30 +160,30 @@ public class VersionAttribute
                 tuple = "0";
             }
 
-	    // If both elements can be parsed as Java ints, then
-	    // compare them as ints.  If not, then compare them
-	    // as Strings.
+            // If both elements can be parsed as Java ints, then
+            // compare them as ints.  If not, then compare them
+            // as Strings.
 
-	    try {
-		// Try parsing as ints.
-		int tupleInt = Integer.parseInt(tuple);
-		int versionInt = Integer.parseInt(versionTuple);
-		if (tupleInt < versionInt) {
-		    return -1;
-		} else if (tupleInt > versionInt) {
-		    return 1;
-		}
-	    } catch (NumberFormatException ex) {
-		// Compare as Strings.
-		int compare = tuple.compareTo(versionTuple);
-		if (compare < 0) {
-		    return -1;
-		} else if (compare > 0) {
-		    return 1;
-		}
-	    }
+            try {
+                // Try parsing as ints.
+                int tupleInt = Integer.parseInt(tuple);
+                int versionInt = Integer.parseInt(versionTuple);
+                if (tupleInt < versionInt) {
+                    return -1;
+                } else if (tupleInt > versionInt) {
+                    return 1;
+                }
+            } catch (NumberFormatException ex) {
+                // Compare as Strings.
+                int compare = tuple.compareTo(versionTuple);
+                if (compare < 0) {
+                    return -1;
+                } else if (compare > 0) {
+                    return 1;
+                }
+            }
         }
-	return 0;
+        return 0;
     }
 
     /** Return true if the specified object is an instance of
@@ -217,7 +217,7 @@ public class VersionAttribute
      *  @return An iterator over the elements of the version.
      */
     public Iterator iterator() {
-	return _tupleList.iterator();
+        return _tupleList.iterator();
     }
 
     /** Set the value of the string attribute and notify the container
@@ -231,13 +231,13 @@ public class VersionAttribute
      */
     public void setExpression(String expression)
             throws IllegalActionException {
-	super.setExpression(expression);
+        super.setExpression(expression);
         if (expression.indexOf(' ') != -1 ) {
             throw new IllegalActionException(this,
                     "Versions cannot contain spaces: '"
                     + expression + "'");
         }
-	_tupleList = new LinkedList();
+        _tupleList = new LinkedList();
         StringTokenizer tokenizer = new StringTokenizer(expression, ".-_");
         while (tokenizer.hasMoreTokens()) {
             _tupleList.add(tokenizer.nextToken());
@@ -275,13 +275,13 @@ public class VersionAttribute
     public static final VersionAttribute CURRENT_VERSION;
 
     static {
-	try {
-	    CURRENT_VERSION = new VersionAttribute("2.1-devel-2");
-	} catch (Exception ex) {
-	    throw new ExceptionInInitializerError(
+        try {
+            CURRENT_VERSION = new VersionAttribute("2.1-devel-2");
+        } catch (Exception ex) {
+            throw new ExceptionInInitializerError(
                     "Failed to create CURRENT_VERSION: "
                     + KernelException.stackTraceToString(ex));
-	}
+        }
     }
 
 

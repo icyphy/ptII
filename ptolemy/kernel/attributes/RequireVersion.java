@@ -80,8 +80,8 @@ public class RequireVersion extends VersionAttribute {
      *   and if the specified version is newer than the executing version.
      */
     public void setExpression(String expression)
-	    throws IllegalActionException {
-	super.setExpression(expression);
+            throws IllegalActionException {
+        super.setExpression(expression);
         if (CURRENT_VERSION.isLessThan(this)) {
             throw new IllegalActionException(this,
                     "Current version of Ptolemy II is "
@@ -89,6 +89,6 @@ public class RequireVersion extends VersionAttribute {
                     + ", but required version is "
                     + expression
                     + ".");
-	}
+        }
     }
 }
