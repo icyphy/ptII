@@ -52,24 +52,23 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test Relation-1.1 {Get information about an instance of Relation} {
     # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.test.RelationTest]
+    set n [java::new pt.kernel.Relation]
     list [getJavaInfo $n]
 } {{
-  class:         pt.kernel.test.RelationTest
+  class:         pt.kernel.Relation
   fields:        
   methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getName {setName java.lang.String} getParams enumPorts {enumPortsExcept pt.kernel.Port} enumEntities {isPortConnected java.lang.String} numberOfConnections
-  constructors:  pt.kernel.test.RelationTest {pt.kernel.test.RelationTest java.lang.String}
+  constructors:  pt.kernel.Relation {pt.kernel.Relation java.lang.String}
   properties:    class params name
-  superclass:    pt.kernel.Relation
+  superclass:    pt.kernel.NamedObj
 }}
-
 
 ######################################################################
 ####
 # 
 test Relation-2.1 {Construct Relations, call some methods on empty Relations} {
-    set r1 [java::new pt.kernel.test.RelationTest]
-    set r2 [java::new pt.kernel.test.RelationTest "My Relation"]
+    set r1 [java::new pt.kernel.Relation]
+    set r2 [java::new pt.kernel.Relation "My Relation"]
     list [$r1 numberOfConnections] \
 	    [$r2 numberOfConnections] \
 	    [$r1 isPortConnected "not a port"] \
@@ -80,7 +79,7 @@ test Relation-2.1 {Construct Relations, call some methods on empty Relations} {
 ####
 # 
 test Relation-3.1 {Test enumPorts on a Relation that has no ports} {
-    set r1 [java::new pt.kernel.test.RelationTest]
+    set r1 [java::new pt.kernel.Relation]
     set enum  [$r1 enumPorts]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
@@ -90,7 +89,7 @@ test Relation-3.1 {Test enumPorts on a Relation that has no ports} {
 ####
 # 
 test Relation-3.2 {Test enumPorts on a Relation that has no ports} {
-    set r1 [java::new pt.kernel.test.RelationTest "my relation"]
+    set r1 [java::new pt.kernel.Relation "my relation"]
     set enum  [$r1 enumPorts]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
@@ -100,7 +99,7 @@ test Relation-3.2 {Test enumPorts on a Relation that has no ports} {
 ####
 # 
 test Relation-4.1 {Test enumPortsExcept on a Relation that has no ports} {
-    set r1 [java::new pt.kernel.test.RelationTest]
+    set r1 [java::new pt.kernel.Relation]
     set p1 [java::new pt.kernel.Port "My Port"]
     set enum  [$r1 enumPortsExcept $p1]
     catch {$enum nextElement} errmsg
@@ -111,7 +110,7 @@ test Relation-4.1 {Test enumPortsExcept on a Relation that has no ports} {
 ####
 # 
 test Relation-4.2 {Test enumPortsExcept on a Relation that has no ports} {
-    set r1 [java::new pt.kernel.test.RelationTest "my relation"]
+    set r1 [java::new pt.kernel.Relation "my relation"]
     set p1 [java::new pt.kernel.Port "My Port"]
     set enum  [$r1 enumPortsExcept $p1]
     catch {$enum nextElement} errmsg
@@ -122,7 +121,7 @@ test Relation-4.2 {Test enumPortsExcept on a Relation that has no ports} {
 ####
 # 
 test Relation-5.1 {Test enumEntities on a Relation that has no ports} {
-    set r1 [java::new pt.kernel.test.RelationTest]
+    set r1 [java::new pt.kernel.Relation]
     set enum  [$r1 enumEntities]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
@@ -132,7 +131,7 @@ test Relation-5.1 {Test enumEntities on a Relation that has no ports} {
 ####
 # 
 test Relation-5.2 {Test enumEntities on a Relation that has no ports} {
-    set r1 [java::new pt.kernel.test.RelationTest "my relation"]
+    set r1 [java::new pt.kernel.Relation "my relation"]
     set enum  [$r1 enumEntities]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
