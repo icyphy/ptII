@@ -1163,13 +1163,14 @@ public class Variable extends Attribute implements Typeable {
             }
             return;
         }
-        if (!(node instanceof ASTPtLeafNode)) {
-            throw new InternalErrorException("If a node has no children,"
-                    + " it must be a leaf node.");
-        }
-        ASTPtLeafNode leaf = (ASTPtLeafNode)node;
-        if (leaf._var != null) {
-            leaf._var._removeValueDependent(this);
+        // NOTE: Even though there are no children, this could
+        // conceivably not be a leaf node because it could be a
+        // nullary function call, like "foo()".
+        if (node instanceof ASTPtLeafNode) {
+            ASTPtLeafNode leaf = (ASTPtLeafNode)node;
+            if (leaf._var != null) {
+                leaf._var._removeValueDependent(this);
+            }
         }
     }
 

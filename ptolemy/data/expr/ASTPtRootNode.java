@@ -89,20 +89,17 @@ public class ASTPtRootNode implements Node {
             return _ptToken;
         }
         int numChildren = jjtGetNumChildren();
-        if (numChildren == 0) {
-            // leaf node, should not be here
-            throw new InternalErrorException(
-                    "Encountered a node with no children that is " +
-                    "not a leaf node, check PtParser.");
-        } else {
+        if (numChildren > 0) {
+            // NOTE: Could have a non-leaf node with no children,
+            // notably a nullary function call, like "foo()".
             _childTokens = new ptolemy.data.Token[numChildren];
             for (int i = 0; i < numChildren; i++) {
                 ASTPtRootNode child = (ASTPtRootNode)jjtGetChild(i);
                 _childTokens[i] = child.evaluateParseTree();
             }
-            _ptToken = _resolveNode();
-            return _ptToken;
         }
+        _ptToken = _resolveNode();
+        return _ptToken;
     }
 
     ///////////////////////////////////////////////////////////////////
