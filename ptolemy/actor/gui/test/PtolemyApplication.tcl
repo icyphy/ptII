@@ -125,6 +125,10 @@ test PtolemyApplication-2.3 {test valid class name} {
     set app [java::new ptolemy.actor.gui.PtolemyApplication $cmdArgs]
     set models [listToObjects [$app models]]
     set result {}
+    foreach model $models {
+        set modelc [java::cast ptolemy.actor.gui.test.TestModel $model]
+        $app startRun $modelc
+    }
     $app waitForFinish
     foreach model $models {
         set modelc [java::cast ptolemy.actor.gui.test.TestModel $model]
