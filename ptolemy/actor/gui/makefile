@@ -86,6 +86,7 @@ JSRCS = \
 	ExpressionShellTableau.java \
 	ExternalTextEffigy.java \
 	ExternalTextTableau.java \
+	GenerateCopyrights.java \
 	HTMLEffigy.java \
 	HTMLEffigyFactory.java \
 	HTMLViewer.java \
