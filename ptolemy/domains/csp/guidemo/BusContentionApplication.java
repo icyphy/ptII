@@ -319,9 +319,6 @@ public class BusContentionApplication implements ActionListener {
     public void endSimulation() {
         Director director = _topLevel.getDirector(); 
 	try {
-	    // Eventually we will not need to call Director.wrapup()
-	    // as Manager.finish() will subsume this responsibility.
-	    director.wrapup();
 	    _manager.finish();
 	} catch( IllegalActionException e ) {
 	    System.err.println("IllegalActionException thrown while " + 
