@@ -132,7 +132,7 @@ public class BasicStoragePolicy extends AbstractStoragePolicy {
     /** Save the document to a user-specified location. Open a file
      * chooser and forward the request to the document. Don't change
      * the document's file object.  Do nothing if the document is
-     * null. Return true if successul, otherwise false.
+     * null. Return true if successful, otherwise false.
      */
     public boolean saveAs (Document d) {
         if (d != null) {
