@@ -310,6 +310,7 @@ public class CTSingleSolverDirector extends CTDirector {
             _solverclass =
             ((StringToken)param.getToken()).stringValue();
             _defaultSolver = _instantiateODESolver(_solverclass);
+            setCurrentODESolver(_defaultSolver);
         } else {
             super.updateParameter(param);
         }
@@ -450,7 +451,7 @@ public class CTSingleSolverDirector extends CTDirector {
             }
             produceOutput();
             if (!_isOutputAcceptable()) {
-                System.out.println("Output not satisfied.");
+                //System.out.println("Output not satisfied.");
                 setCurrentTime(getFireBeginTime());
                 setCurrentStepSize(_refinedStepWRTOutput());
                 if(STAT) {
@@ -483,8 +484,8 @@ public class CTSingleSolverDirector extends CTDirector {
             _defaultSolver = _instantiateODESolver(_solverclass);
         }
         // set time
-        System.out.println(this.getFullName() + 
-                "_init get State Time " + getStartTime());
+        //System.out.println(this.getFullName() + 
+        //        "_init get State Time " + getStartTime());
 
         setCurrentTime(getStartTime());
         setSuggestedNextStepSize(getInitialStepSize());
