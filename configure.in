@@ -1391,17 +1391,6 @@ else
     If Matlab is not present, then the Ptolemy II/Matlab interface in
     \$PTII/ptolemy/matlab will not be usable.]);
 	else 
-	    AC_MSG_CHECKING(to see if we need to adjust Matlab path with cygpath)	
-    	    AC_PATH_PROG(CYGPATH, cygpath)		    	
-  	    if test "${CYGPATH:-none}" = "none"; then
-		AC_MSG_RESULT([cygpath not found, no need to adjust])
-	    else
-		# If we are under Windows, run cygpath -m to fix up
-		# path
-		MATLAB=`"$CYGPATH" -m "$MATLAB"`
-		AC_MSG_RESULT(yes, found cygpath, new value is '$MATLAB_DIR')
-	    fi	
-
 	    startdir=`pwd`
 	    cd "$srcdir/config"
 	    if "$JAVAC" MatlabRootDirectory.java ; then
@@ -1409,19 +1398,13 @@ else
 		AC_MSG_CHECKING([the value of the Matlab root directory ])
 		if env CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
 		    MATLAB_DIR=`CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"`
-	    	    AC_PATH_PROG(CYGPATH, cygpath)		    	
-	  	    if test "${CYGPATH:-none}" != "none"; then
-			# If we are under Windows, run cygpath -w to fix up
-			# path
-			MATLAB=`"$CYGPATH" -w "$MATLAB"`
-		    fi	
 		    AC_MSG_RESULT('$MATLAB_DIR')
 		else	
 		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MatlabRootDirectory "$MATLAB"' failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab]);
 		fi
 	    else
-		AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC SystemJar.java' failed.
+		AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC MatlabRootDirectory.java' failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab]);
 	    fi
 	    cd "$startdir"
