@@ -69,10 +69,10 @@ all: jclass
 
 jclass: $(ROOT)/bin/ptmatlab.dll
 
-install: jclass jars
+install: jclass jars $(PTPACKAGE)Windows.jar
 	@echo "'$(PTPACKAGE).jar' requires gcc, so we install it in $PTII/lib"
 	@echo "for hosts that might not have gcc installed"
-	cp $(PTPACKAGE).jar $(ROOT)/lib
+	cp $(PTPACKAGE).jar $(PTPACKAGE)Windows.jar $(ROOT)/lib
 
 depend:
 	@echo "no dependencies in this directory"
@@ -95,6 +95,16 @@ $(ROOT)/bin/ptmatlab.dll: ptmatlab.h ptmatlab.cc Engine.class libeng.a libmx.a
 	$(PTDLLTOOL) --add-stdcall-alias --dllname ptmatlab.dll \
 		--output-exp ptmatlab_exp.obj ptmatlab.obj
 	$(PTCC) -shared -o $@ ptmatlab.obj ptmatlab_exp.obj -L. -leng -lmx
+
+# Jar file for Web Start that contains the dll
+$(PTPACKAGE)Windows.jar: $(ROOT)/bin/ptmatlab.dll
+	rm -rf $(PTJAR_TMPDIR) $@
+	mkdir $(PTJAR_TMPDIR)
+	-cp $< $(PTJAR_TMPDIR)
+	@echo "Creating $@"
+	(cd $(PTJAR_TMPDIR); "$(JAR)" -cvf tmp.jar .)
+	mv $(PTJAR_TMPDIR)/tmp.jar $@
+	rm -rf $(PTJAR_TMPDIR)
 
 # Create library files used to link against matlab dlls. Rebuild if
 # ptinvoke changes
