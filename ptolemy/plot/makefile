@@ -124,7 +124,7 @@ OPTIONAL_FILES = \
 	manifest.tmp \
 	ptplot \
 	pxgraph \
-	$(PTCLASSJAR) \
+	$(PTCLASSALLJAR) \
 	'EditablePlot$$EditMouseListener.class' \
 	'EditablePlot$$ModifyListener.class' \
 	'EditablePlot$$UndoListener.class' \
@@ -164,9 +164,9 @@ all: sources ptplot jclass
 	ln -s ptplot pxgraph
 	rm -f histogram
 	ln -s ptplot histogram
-install: all $(PTCLASSZIP) $(PTCLASSJAR) $(PTAUXJAR) \
+install: all $(PTCLASSZIP) jars \
 		$(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR) \
-		jars bin_install_dir
+		bin_install_dir
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
