@@ -56,4 +56,4 @@ public interface TypeListener {
      *  @param event The type change event.
      */
     public void typeChanged(TypeEvent event);
-}
+} class js$TypeListener {static int js$n() {return 0;}} 

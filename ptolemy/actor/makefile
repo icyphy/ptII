@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor
 
-DIRS = 		util sched process gui lib hoc corba test
+DIRS = 		util sched process gui lib corba test
 
 # Root of the Ptolemy II directory
 ROOT =		../..
