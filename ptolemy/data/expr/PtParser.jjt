@@ -114,18 +114,18 @@ public class PtParser {
      */
     private NamedList _scope;
 
-    /** The Parameter (or other Observer) originating the call to the parser. 
+    /** The Parameter (or other ParameterListner) creating the parser. 
      *  Each time another parameter is referenced in the input expression, 
-     *  this Parameter is registered as an observer of that parameter. 
+     *  this Parameter is registered as a listner of that parameter. 
      *  If null, then no dependency is registered.
      */
-    private java.util.Observer _observer;
+    private ParameterListner _listner;
 
     boolean debug = false;
     
-    public PtParser(java.util.Observer obs) {
+    public PtParser(ParameterListner parameter) {
         this(new ByteArrayInputStream("a hack!!".getBytes()));
-        _observer = obs;
+        _listner = parameter;
     }
 
     public PtParser() {
@@ -537,20 +537,19 @@ String tidied, x;
    (
      <ID>
      { 
-        if (_scope != null) {
-            ptolemy.data.expr.Parameter xx =
-		 (ptolemy.data.expr.Parameter)_scope.get(token.image);
-            if (xx != null) {
-                // the param is stored in the node so that the tree does not 
-                // have to be reparsed
-                jjtThis._param   = xx; 
-                //register the calling parameter as an Observer of this ID
-                if (_observer != null) {
-                    xx.getToken().getPublisher().addObserver(_observer);
-                }
-            } else { 
-                String str = " Parameter " + token.image + " not visible in ";
-                throw new ParseException(str + "current scope");
+        Parameter referedParam = null;
+	if (_scope != null) {
+           referedParam = (Parameter)_scope.get(token.image);
+	}
+        if (referedParam != null) {
+           // The Parameter is stored in the node so that the tree 
+	   // does not have to be reparsed whenever the Token in 
+	   // the Parameter changes.
+           jjtThis._param   = referedParam; 
+           // Register the calling parameter as a ParameterListner 
+	   // of this Parameter this ID references.
+           if (_listner != null) {
+        	referedParam.registerListner(_listner);
             }
         } else if (token.image.equalsIgnoreCase("PI")) {
             jjtThis._ptToken = new ptolemy.data.DoubleToken(Math.PI);
