@@ -208,31 +208,6 @@ public class CSPDirector extends CompositeProcessDirector
         }
     }
 
-    /** Set a new value to the current model time, when no delayed
-     *  processes exist. It is intended for use when composing
-     *  CSP with other timed domains.
-     *  <P>
-     *  This method should only be called when no processes are delayed,
-     *  as the director stores the model time at which to resume them. If
-     *  the current model time changed while one or more processes are
-     *  delayed, then the state of the director would be undefined as
-     *  the resumption time of the delayed processes would not be
-     *  comparable with the new model time.
-     *  <P>
-     *  @exception IllegalActionException If one or more processes
-     *   are delayed.
-     *  @param newTime The new current model time.
-     */
-    public synchronized void setModelTime(Time newTime)
-            throws IllegalActionException {
-        if (_actorsDelayed != 0) {
-            throw new IllegalActionException("CSPDirector.setCurrentTime()"
-                    + " can only be called when no processes are delayed.");
-        }
-
-        super.setModelTime(newTime);
-    }
-
     /** (non-Javadoc)
      *  @return An array of suggested directors to be used with ModalModel.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
@@ -331,8 +306,7 @@ public class CSPDirector extends CompositeProcessDirector
         return false;
     }
 
-    /** Determines how the director responds when a deadlock is
-     *  detected. It is where nearly all the control for the
+    /** Respond to a deadlock. This is where nearly all the control for the
      *  model at this level in the hierarchy is located.
      *  <p>
      *  Deadlock occurs if the number of blocked and delayed processes
@@ -350,9 +324,7 @@ public class CSPDirector extends CompositeProcessDirector
      *  <i>time deadlock</i> has occurred. If one or more processes
      *  are delayed waiting for deadlock to occur, then those processes
      *  are resumed and time is not advanced. Otherwise time is advanced
-     *  and the earliest delayed process is resumed. Current time is
-     *  defined as the double value returned by getCurrentTime()
-     *  plus/minus 10e-10.
+     *  and the earliest delayed process is resumed.
      *  <p>
      *  If all the processes are blocked, then <i>real deadlock</i> has
      *  occurred, and this method returns false. If there are no levels
