@@ -85,14 +85,16 @@ port, or relation, creating or destroying a link, and changing the value
 or type of a parameter.  Collectively, such changes are called
 <i>mutations</i>. Usually, mutations
 cannot safely occur at arbitrary points in the execution of
-a model.  Models can queue mutations with the director or
-the manager using the requestChange() method.  The director simply delegates
-the request to the manager, which performs the change at the earliest
+a model.  Models can queue mutations with a composite actor or with
+the manager using the requestChange() method.  The composite actor
+simply delegates the request to its container, so the request propogates
+up the hierarchy until it gets to
+the manager, which performs the change at the earliest
 opportunity.  In this implementation of Manager, the changes are
 executed between iterations.
 <p>
 A service is also provided whereby an object can be registered with the
-director as a change listener.  A change listener is informed when
+composite actor as a change listener.  A change listener is informed when
 mutations that are requested via requestChange() are executed.
 <p>
 Manager can optimize the performance of an execution by making

@@ -57,10 +57,10 @@ CompositeActor of the topology) will normally exist with a local Director,
 and no container.  A composite actor at a lower level
 of the hierarchy may also have a local director.  A composite actor
 with a local director is <i>opaque</i>, and serves the role of the
-<i>wormhole</i> from Ptolemy 0.x. Its ports are opaque, but it can
+<i>wormhole</i> from Ptolemy Classic. Its ports are opaque, but it can
 contain actors and relations.  The toplevel composite actor is also
-with a Manager object that is responsible for managing any execution within
-the topology at a high level.
+associated with a Manager object that is responsible for managing
+any execution within the topology at a high level.
 <p>
 The <i>executive director</i> of a composite actor is the local director of
 the actor's container.   The toplevel composite actor has no executive
@@ -75,9 +75,9 @@ Otherwise, it returns the <i>executive director</i> of the CompositeActor,
 Director is responsible for the execution of all the actors contained
 within the composite actor.
 <p>
-A composite actor must have an executive director in order communicate with
+A composite actor must have an executive director in order to communicate with
 the hierarchy around it.   In fact, it cannot even receive data in its
- input ports without an executive director, since the executive director
+input ports without an executive director, since the executive director
 is responsible for supplying the receivers to the ports.
 The toplevel composite actor has no executive director and cannot have
 ports that transmit data, but it can still be executed as long as it has a
