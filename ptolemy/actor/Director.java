@@ -631,16 +631,20 @@ public class Director extends NamedObj implements Executable {
             while (events.hasMoreElements()) {
                 TopologyEvent e = (TopologyEvent) events.nextElement();
                 if (e.getID() == TopologyEvent.ENTITY_ADDED) {
-                    if (e.getComponentEntity() instanceof Actor &&
+		    Entity ent = e.getComponentEntity();
+                    if (ent instanceof Actor &&
                             !_newActors.includes(e.getEntity())) {
-                        _newActors.insertLast(e.getComponentEntity());
+			if (ent instanceof AtomicActor || 
+				(ent instanceof CompositeActor &&
+					((CompositeActor)ent).isOpaque())) 
+			    _newActors.insertLast(e.getComponentEntity());
                     }
                 } else if (e.getID() == TopologyEvent.ENTITY_REMOVED) {
                     // Why on earth would you want do do this???
                     _newActors.removeOneOf(e.getComponentEntity());
                 }
             }
-
+	    
             // Inform all listeners. Of course, this won't happen
             // if the change request failed
             if (_topologyListeners != null) {
