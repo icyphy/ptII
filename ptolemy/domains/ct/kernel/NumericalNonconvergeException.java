@@ -39,6 +39,7 @@ import ptolemy.kernel.util.Nameable;
    @author  Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
+   @deprecated As Ptolemy II 4.1, this class is not used any more.
    @Pt.ProposedRating Yellow (liuj)
    @Pt.AcceptedRating Yellow (chf)
 */

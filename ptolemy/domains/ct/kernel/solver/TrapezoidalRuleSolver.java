@@ -123,7 +123,8 @@ public class TrapezoidalRuleSolver extends ODESolver {
         if (_getRoundCount() == 0) {
             _recalculatingWithTwoSteps = false;
             _firstStep = true;
-            director.setModelTime(director.getModelTime().add(director.getCurrentStepSize()));
+            director.setModelTime(
+                    director.getModelTime().add(director.getCurrentStepSize()));
         }
         if (_isConverged()) {
             // Resolved states have converged.

@@ -137,7 +137,7 @@ import ptolemy.kernel.util.Workspace;
    @author Jie Liu, Haiyang Zheng, Rachel Zhou
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (hyzheng)
+   @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
    @see ptolemy.actor.sched.Scheduler
 */

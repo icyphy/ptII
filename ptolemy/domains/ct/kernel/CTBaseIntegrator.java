@@ -294,7 +294,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         setTentativeState(_storedState);
     }
 
-    /** Initialize the integrator. Check for existence of director and ODE
+    /** Initialize the integrator. Check for the existence of director and ODE
      *  solver. Update initial state parameter. Set the initial state to
      *  the tentative state and the state. Set tentative derivative to 0.0.
      *  Clear the history.
@@ -341,7 +341,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
             // If it is NaN, or Infinity, an exception is thrown.
             double f_dot = ((DoubleToken)input.get(0)).doubleValue();
             if (Double.isNaN(f_dot) || Double.isInfinite(f_dot)) {
-                throw new NumericalNonconvergeException("The input of " +
+                throw new InternalErrorException("The input of " +
                         getName() + " is not valid because" +
                         " it is a result of divide-by-zero.");
             }

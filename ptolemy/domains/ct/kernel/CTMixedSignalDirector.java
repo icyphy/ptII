@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
    simulation with event-based domains. This director can both serve as
    a top-level director and an inside director that is contained by
    a composite actor in an event-based domain. If it is a top-level
-   director, it acts exactly like a CTMultiSolverDirector. If it is
+   director, it behaves exactly like a CTMultiSolverDirector. If it is
    embedded in an event-based domain, it will run ahead of the global
    time and prepare to roll back if necessary.
    <P>
@@ -65,24 +65,25 @@ import ptolemy.kernel.util.Workspace;
    <UL>
    <LI> At the initialize stage of an execution, the director requests
    a firing at the global current time.
-   <LI> At each prefire stage of the execution, the fire end time is computed
-   based on the current time of the executive director, t1, the next iteration
-   time of the executive director, t2, and the value of the parameter
+   <LI> At each prefire stage of the execution, the end time the the firing is 
+   computed based on the current time of the executive director, t1, the next 
+   iteration time of the executive director, t2, and the value of the parameter
    <code>runAheadLength</code>, t3. The fire end time is t1 + min(t2, t3)
-   <LI> At the prefire stage, the local current time is compared with the
+   <LI> At the fire stage, the director will stop at the first of the
+   following two times, the fire end time and the time of the first detected 
+   event.
+   </ul>
+   At the prefire stage, the local current time is compared with the
    current time of the executive director. If the local time is later than
    the executive director time, then the directed system will rollback to a
-   "known good" state.
-   <LI> The "known good" state is the state of the system at the time when
-   local time is equal to the current time of the executive director.
-   <LI> At the fire stage, the director will stop at the first of the
-   following two times, the fire end time and the first detected event time.
-   </UL>
+   "known good" state. The "known good" state is the state of the system at 
+   the time when local time is equal to the current time of the executive 
+   director.
 
    @author  Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
-   @Pt.ProposedRating Red (hyzheng)
+   @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
 public class CTMixedSignalDirector extends CTMultiSolverDirector {
@@ -163,16 +164,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         return true;
     }
 
-    /** Execute the directed (sub)system to the iteration end time.
-     *  If the current phase is an event phase, (in the sense that
-     *  discrete events will be produced or consumed),
-     *  this director will consume all the input
-     *  tokens, produce all output tokens, and then request a zero
-     *  delay refire from it executive director.
-     *  If this is a top-level director, the iteration end time is the
-     *  current time at the beginning of the fire() method plus the
-     *  the step size of one accurate step.
-     *  Otherwise, it executes until one of the following conditions
+    /** Execute the directed model for one iteration.
+     *  <p>
+     *  If this director serves as a top-level director, this method behaves 
+     *  just like that is defined in the super class, CTMultiSolverDirector. 
+     *  <p>
+     *  Otherwise, this method keeps advancing time and 
+     *  executing the model until the iteration time one of the following conditions
      *  is satisfied. 1) The iteration end time computed in the prefire()
      *  method is reached. 2) An event is generated.
      *  It saves the state of the system at the current time of the executive
@@ -188,7 +186,9 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
 
         _discretePhaseExecution();
-        // Mark the FINAL states and prepare for roll back.
+        
+        // Mark the FINAL states of the current model time for 
+        // possible roll back in the future.
         _markStates();
 
         // If the current step size is 0.0, there is no need to perform
@@ -250,11 +250,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  If t > t0, then rollback to the "known good" time (which should be
      *  less than the outside time) and catch up with the outside time. <BR>
      *  If t < t0, then throw an exception because the CT subsystem
-     *  should always run ahead of time. <BR>
+     *  should always run ahead of the outside event-based system. <BR>
      *  <P>
      *  If this director is not a top-level director, the iteration end time is
-     *  resolved from the current time of the outside domains, say t1,
-     *  the next iteration time of the outside domain, say t2, and
+     *  resolved from the current time of the outside system, say t1,
+     *  the next iteration time of the outside system, say t2, and
      *  the runAheadLength parameter of this director, say t3.
      *  The iteration end time is set to be <code>t5 = t1 + min(t2, t3)</code>.
      *  The iteration end time may be further refined in the fire() method
