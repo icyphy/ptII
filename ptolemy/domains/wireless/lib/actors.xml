@@ -44,6 +44,8 @@
     <entity name="MAC" class="ptolemy.moml.EntityLibrary">
         <entity name="IEEE80211MAC" class="ptolemy.domains.wireless.lib.network.mac.IEEE80211MAC">
         </entity>
+        <entity name="ChannelState" class="ptolemy.domains.wireless.lib.network.mac.ChannelState">
+        </entity>
     </entity>
 </entity>    
       </group>
