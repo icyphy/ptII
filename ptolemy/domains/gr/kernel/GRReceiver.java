@@ -94,10 +94,4 @@ public class GRReceiver extends Mailbox {
         super.put(token);
     }
 
-
-    /** FIXME: this is an experimental method for putting
-     *  Java3D BranchGroups in a receiver
-     */
-    public void createGroupNode() {
-    }
 }

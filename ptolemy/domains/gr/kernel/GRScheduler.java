@@ -78,13 +78,16 @@ public class GRScheduler extends Scheduler {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    ///////////////////////////////////////////////////////////////////
+    ////                      protected methods                    ////
+
     /** Return the scheduling sequence.  An exception will be thrown if the
      *  graph is not schedulable.  This occurs in the following circumstances:
      *  <ul>
-     *  <li>The graph is not a connected graph. // FIXME. not checked
+     *  <li>The graph is not a connected graph. 
      *  <li>The graph is not acyclic
      *  <li>Multiple output ports are connected to the same broadcast
-     *  relation. (equivalent to a non-deterministic merge) // FIXME: check
+     *  relation. (equivalent to a non-deterministic merge) 
      *  </ul>
      *
      * @return An Enumeration of the deeply contained opaque entities
@@ -93,7 +96,10 @@ public class GRScheduler extends Scheduler {
      *  schedulable.
      */
     protected Enumeration _schedule() throws NotSchedulableException {
-
+       // FIXME: should check whether graph is connected
+       // FIXME: should check whether multiple output ports are 
+       //        connected to the same broadcast relation.
+       
        // Clear the graph
         DirectedAcyclicGraph dag = new DirectedAcyclicGraph();
 

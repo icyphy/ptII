@@ -109,16 +109,28 @@ public class GRDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
+    /** A parameter representing the number of times that postfire may be
+     *  called before it returns false.  If the value is less than or
+     *  equal to zero, the execution will never return false in postfire,
+     *  and thus the execution continues indefinitely. 
+     *  The default value is an IntToken with the value zero.
+     */
     public Parameter iterations;
+    
+    /** A parameter that indicates the time upper bound of each iteration.
+     *  This parameter is useful for guaranteeing that each frame of an
+     *  animation takes at least a certain amount of time before proceeding
+     *  to the next frame. This parameter is measured in milliseconds.
+     *  The default value is an IntToken with value 33.
+     */
     public Parameter iterationTimeUpperBound;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Clone the director into the specified workspace. This calls the
-     *  base class and then copies the parameter of this director.  The new
+     *  base class and then copies the parameter of this director. The new
      *  actor will have the same parameter values as the old.
-     *  The period parameter is explicitly cloned in this method.
      *  @param workspace The workspace for the new object.
      *  @return A new object.
      *  @exception CloneNotSupportedException If one of the attributes
@@ -128,49 +140,19 @@ public class GRDirector extends StaticSchedulingDirector {
             throws CloneNotSupportedException {
         _reset();
         GRDirector newObject = (GRDirector)(super.clone(workspace));
-        newObject.iterations = (Parameter) newObject.getAttribute("iterations");
+        newObject.iterations = (Parameter) 
+                                newObject.getAttribute("iterations");
         newObject.iterationTimeUpperBound = (Parameter)
             newObject.getAttribute("iteration time upper bound");
         return newObject;
     }
 
 
-    /** Advance time to the next requested firing time.  The GR domain is not
-     *  a timed domain, so this function is quite meaningless.  However, it is
-     *  implemented in order to get timed domains to work inside the GR domain.
-     *  @param actor, The actor to be fired.
-     *  @param time, The next time when the actor should be fired.
-     */
-    public void fireAt(Actor actor, double time)
-            throws IllegalActionException {
-        setCurrentTime(time);
-    }
 
-    /** Return the current time.  The GR domain is not a timed domain, so this
-     * function is quite meaningless.  However, it is implemented in order to
-     * get timed domains to work inside the GR domain.
-     *  @param actor, The actor to be fired.
-     */
-    public double getCurrentTime() {
-        if (_pseudoTimeEnabled == true) {
-            return _insideDirector.getCurrentTime();
-        } else return super.getCurrentTime();
-    }
-
-
-    /** Return maximum value for type double. Since the 3D domain is not a timed
-     *  domain, this function does not return any meaningful value.  However, this
-     *  function is needed by timed domains that are inside the 3D domain.
-     *  @return The maximum value for type double.
-     */
-    public double getNextIterationTime() {
-        return Double.MAX_VALUE;
-    }
-
-
-
-    /** Go through the schedule and iterate every actor with calls to
-     *  prefire() , fire() , and postfire().
+    /** Make sure that <i>iterationTimeUpperBound</i> milliseconds have
+     *  elapsed since the last iteration.  Go through the schedule and 
+     *  iterate every actor If an actor returns false in its prefire(),
+     *  fire() and postfire() will not be called on it.
      *
      *  @exception IllegalActionException If an actor executed by this
      *  director return false in its prefire().
@@ -206,39 +188,75 @@ public class GRDirector extends StaticSchedulingDirector {
         while (allactors.hasMoreElements()) {
 
             Actor actor = (Actor)allactors.nextElement();
-            if(!actor.prefire()) {
-                debug.println("Actor --> "+actor);
-                throw new IllegalActionException(this,
-                        (ComponentEntity) actor, "Actor " +
-                        "is not ready to fire.");
-            }
-
-            if (actor instanceof CompositeActor) {
-                CompositeActor compositeActor = (CompositeActor) actor;
-                Director  insideDirector = compositeActor.getDirector();
-
-                _insideDirector = insideDirector;
-                _pseudoTimeEnabled = true;
-                actor.fire();
-                _pseudoTimeEnabled = false;
-
-            } else {
-                if ((actor instanceof GRActor) && !_isSceneGraphInitialized) {
-                    ((GRActor)actor).makeSceneGraphConnection();
+            
+            // If an actor returns true to prefire(), fire() and postfire()
+            // will be called.
+            if(actor.prefire() == true) {
+                if (actor instanceof CompositeActor) {
+                    CompositeActor compositeActor = (CompositeActor) actor;
+                    Director  insideDirector = compositeActor.getDirector();
+    
+                    _insideDirector = insideDirector;
+                    _pseudoTimeEnabled = true;
+                    actor.fire();
+                    _pseudoTimeEnabled = false;
+                } else {
+                    actor.fire();
                 }
-                actor.fire();
             }
 
-
-            _postfirereturns = actor.postfire();
+            actor.postfire();
+            // FIXME: should remove actor from schedule
+            // if it returns false on postfire()
         }
-        _isSceneGraphInitialized = true;
+    }
+
+
+    /** Advance "time" to the next requested firing time.  The GR domain is 
+     *  not a timed domain, so this method is semantically meaningless.  
+     *  However, this method is implemented in order to get other timed 
+     *  domains to work inside the GR domain. In particular, this method 
+     *  will give actors a fake impression of the advancement of time.
+     *
+     *  @param actor The actor to be fired.
+     *  @param time The next time when the actor should be fired.
+     */
+    public void fireAt(Actor actor, double time)
+            throws IllegalActionException {
+        _currentTime = time;
+    }
+    
+    /** Return the current "time". The GR domain is not a timed domain, 
+     *  so this method is semantically meaningless.  However, this method 
+     *  is implemented in order to get timed domains to work inside the 
+     *  GR domain. In particular, this method will give actors a "fake" 
+     *  impression of advancement of time.
+     *  
+     *  @return The current "time"
+     */
+    public double getCurrentTime() {
+        if (_pseudoTimeEnabled == true) {
+            return _insideDirector.getCurrentTime();
+        } else {
+            return super.getCurrentTime();
+        }
+    }
+
+    /** Return maximum value for type double. Since the GR domain is not a 
+     *  timed domain, so this method does not return any meaningful value.
+     *  However, this method is implemented in order to get timed domains
+     *  to work inside the GR domain.
+     *
+     *  @return The maximum value for type double.
+     */
+    public double getNextIterationTime() {
+        return Double.MAX_VALUE;
     }
 
 
 
-    /** Initialize all the actors associated with this director by calling
-     *  super.initialize(). Build the Java3D scene graph.
+    /** Initialize all the actors associated with this director
+     * 
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
      */
@@ -246,24 +264,7 @@ public class GRDirector extends StaticSchedulingDirector {
         //  -initialize-
         super.initialize();
         _buildActorTable();
-        // CASE#2 for TypedCompositeActor to AtomicActor connection
-        TypedCompositeActor container = (TypedCompositeActor) getContainer();
-        if (container.isOpaque()) {
-            List list = container.outputPortList();
-            Iterator listIterator = list.iterator();
-
-            while(listIterator.hasNext()) {
-
-                IOPort port = (IOPort) listIterator.next();
-                Receiver[][] portReceivers = port.getInsideReceivers();
-
-                if (portReceivers[0][0] != null) {
-                    GRReceiver receiver;
-                    receiver = (GRReceiver) portReceivers[0][0];
-                    receiver.createGroupNode();
-                }
-            }
-        }
+        _buildReceiverTable();
     }
 
 
@@ -274,10 +275,9 @@ public class GRDirector extends StaticSchedulingDirector {
      *  is instantiated under this director. This method is also
      *  called when a link is made between ports and/or relations.
      *  see also other mutation methods:
-     *    <p><UL>
-     *    <LI> void attributeChanged(Attribute)
-     *    <LI> void attributeTypeChanged(Attribute)
-     *    </UL></p>
+     *
+     *  @see ptolemy.kernel.util.NamedObj.#attributeChanged
+     *  @see ptolemy.kernel.util.NamedObj.#attributeTypeChanged
      */
     public void invalidateSchedule() {
         //  -invalidateSchedule-
@@ -286,65 +286,34 @@ public class GRDirector extends StaticSchedulingDirector {
     }
 
     /** Return a new receiver consistent with the GR domain.
-     *  This function is called when a connection between an output port
-     *  of an actor and an input port of another actor is made in Vergil.
-     *  This function is also called during the preinitialize() stage of
-     *  a toplevel director.  This function may also be called prior to
-     *  the preinitialize() stage of a non-toplevel director.
      *
      *  @return A new GRReceiver.
      */
     public Receiver newReceiver() {
-
         GRReceiver currentReceiver = new GRReceiver();
-        _receiverTable.add(currentReceiver);
         return currentReceiver;
     }
 
-    /** Check the input ports of the container composite actor (if there
-     *  are any) to see whether they have enough tokens, and return true
-     *  if they do.  If there are no input ports, then also return true.
-     *  Otherwise, return false.  Note that this does not call prefire()
-     *  on the contained actors.
-     *  @exception IllegalActionException If port methods throw it.
+    /** Always return true. A GR composite actor will always be iterated.
+     *  Note that this does not call prefire() on the contained actors.
+     *
      *  @return True.
+     *  @exception IllegalActionException will not be thrown..
      */
     public boolean prefire() throws IllegalActionException {
         // -prefire-
-        _postfirereturns = true;
-
-        TypedCompositeActor container = ((TypedCompositeActor)getContainer());
-        Iterator inputPorts = container.inputPortList().iterator();
-        int inputCount = 0;
-        while(inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-            int threshold = 1;
-            Receiver receivers[][] = inputPort.getReceivers();
-
-            int channel;
-            for(channel = 0; channel < inputPort.getWidth(); channel++) {
-                /*if(!receivers[channel][0].hasToken(threshold)) {
-                  System.out.println("Channel " + channel +
-                  " does not have enough tokens." +
-                  " Prefire returns false on " +
-                  container.getFullName());
-                  return false;
-                  }*/
-            }
-        }
+        // Note: Actors return false on prefire if they don't want to be
+        // fired and postfired in the current iteration.
         return true;
     }
 
 
-    /** Set current time to zero. Invoke the preinitialize() methods of
-     *  all actors deeply contained by the container by calling
-     *  super.preinitialize(). This method is invoked once per execution,
-     *  before any iteration; i.e. every time the GO button is pressed.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
+    /** Preinitialize the actors associated with this director and
+     *  initialize the number of iterations to zero.  The order in which
+     *  the actors are preinitialized is arbitrary.
      *
-     *  @exception IllegalActionException If the preinitialize() method
-     *   of the container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If the preinitialize() method of
+     *  one of the associated actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
         //  -preinitialize-
@@ -353,39 +322,41 @@ public class GRDirector extends StaticSchedulingDirector {
     }
 
 
-    /** Request the outside director to fire this director's container
-     *  again for the next period.
+    /** Return false if the system has finished executing, either by
+     *  reaching the iteration limit. Increment the number of iterations.
+     *  If the "iterations" parameter is greater than zero, then
+     *  check if the limit has been reached.  If so, return false.
      *
-     *  @return true if the Director wants to be fired again in the
+     *  @return True if the Director wants to be fired again in the
      *  future.
-     *  @exception IllegalActionException If the parent class throws
-     *  it.
+     *  @exception IllegalActionException If unable to get the parameter
+     *  <i>iterations</i>
      */
     public boolean postfire() throws IllegalActionException {
         //  -postfire-
-
-        boolean returnValue = super.postfire();
+        // Note: actors return false on postfire(), if they wish never to be 
+        // fired again during the execution. In SDF, this will effectively
+        // stop the SDF composite actor container too.
+        super.postfire();
         int totalIterations = ((IntToken) (iterations.getToken())).intValue();
         _iteration++;
         if((totalIterations > 0) && (_iteration >= totalIterations)) {
             _iteration = 0;
             return false;
         }
-        return _postfirereturns;
+        return true;
     }
 
 
     /** Override the base class method to transfer enough tokens to
      *  complete an internal iteration.
-     *  This behavior is required to handle the case of non-homogeneous
-     *  opaque composite actors. The port argument must be an opaque
-     *  input port. If any channel of the input port has no data, then
-     *  that channel is ignored.
+     *  The port argument must be an opaque input port. If any channel
+     *  of the input port has no data, then that channel is ignored.
      *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   input port.
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *  input port.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
@@ -463,7 +434,9 @@ public class GRDirector extends StaticSchedulingDirector {
 
 
 
-    /** Reset this director to an uninitialized state.
+    /** Reset this director to an uninitialized state to prepare
+     *  for the end of an execution.
+     *
      *  @exception IllegalActionException If the parent class
      *  throws it
      */
@@ -507,20 +480,24 @@ public class GRDirector extends StaticSchedulingDirector {
         while (allActorsScheduled.hasMoreElements()) {
             Actor actor = (Actor) allActorsScheduled.nextElement();
             String name = ((Nameable)actor).getFullName();
-            _GRActor grActor = (_GRActor) _allActorsTable.get(actor);
+            ContainedGRActor grActor =
+                         (ContainedGRActor) _allActorsTable.get(actor);
             if (grActor==null) {
-                _allActorsTable.put(actor, new _GRActor(actor));
-                grActor = (_GRActor) _allActorsTable.get(actor);
+                _allActorsTable.put(actor, new ContainedGRActor(actor));
+                grActor = (ContainedGRActor) _allActorsTable.get(actor);
                 _actorTable.add(grActor);
             }
             actorsInSchedule++;
         }
 
-        // include the container as an actor.  This is needed for TypedCompositeActors
+        // include the container as an actor. 
+        // This is needed for TypedCompositeActors
         String name = getContainer().getFullName();
         Actor actor = (Actor) getContainer();
-        _allActorsTable.put(actor, new _GRActor((Actor)getContainer()));
-        _GRActor grActor = (_GRActor) _allActorsTable.get(actor);
+        _allActorsTable.put(actor, 
+                            new ContainedGRActor((Actor)getContainer()));
+        ContainedGRActor grActor =
+                            (ContainedGRActor) _allActorsTable.get(actor);
         _actorTable.add(grActor);
 
         _debugViewActorTable();
@@ -548,7 +525,58 @@ public class GRDirector extends StaticSchedulingDirector {
         while(outports.hasNext()) {
             IOPort port = (IOPort)outports.next();
 
-            _outputPortTable.add(new _GRIOPort(port));
+            _outputPortTable.add(new GRIOPort(port));
+        }
+    }
+    
+    /** Build the internal cache of all the receivers directed by this
+     *  director.
+     *
+     *  @exception IllegalActionException If methods called throw it.
+     */
+    private void _buildReceiverTable() throws IllegalActionException {
+        CompositeActor container = (CompositeActor) getContainer();
+        if (container != null) {
+            Iterator allActors = container.deepEntityList().iterator();
+            while(allActors.hasNext()) {
+                Actor actor = (Actor) allActors.next();
+                // Get all input ports
+                Iterator allInputs = actor.inputPortList().iterator();
+                while(allInputs.hasNext()){
+                    IOPort inputPort = (IOPort)allInputs.next();
+                    Receiver[][] receivers = inputPort.getReceivers();
+                    if(receivers != null) {
+                        for(int i = 0; i < receivers.length; i++) {
+                            if (receivers[i] != null) {
+                                for(int j = 0; j < receivers[i].length; j++) {
+                                    if (receivers[i][j] != null) {
+                                        _receiverTable.add(receivers[i][j]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Also add the inside receivers in the ports of the
+            // composite actor that contains this director.
+            Iterator compositePorts = container.outputPortList().iterator();
+            while(compositePorts.hasNext()) {
+                IOPort outputPort = (IOPort)compositePorts.next();
+                Receiver[][] receivers = outputPort.getInsideReceivers();
+                if(receivers != null) {
+                    for(int i = 0; i < receivers.length; i++) {
+                        if (receivers[i] != null) {
+                            for(int j = 0; j < receivers[i].length; j++) {
+                                if (receivers[i][j] != null) {
+                                    _receiverTable.add(receivers[i][j]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -563,7 +591,7 @@ public class GRDirector extends StaticSchedulingDirector {
         debug.println("---------------------------------------");
         ListIterator actorIterator = _actorTable.listIterator();
         while(actorIterator.hasNext()) {
-            _GRActor currentActor = (_GRActor) actorIterator.next();
+            ContainedGRActor currentActor = (ContainedGRActor) actorIterator.next();
             String actorName = ((Nameable) currentActor._actor).getName();
 
             if ( !((ComponentEntity) currentActor._actor).isAtomic() ) {
@@ -572,6 +600,7 @@ public class GRDirector extends StaticSchedulingDirector {
             debug.println(" ");
         }
     }
+    
 
     /** For debugging purposes.  Display the list of contained receivers
      *  and other pertinent information about them.
@@ -746,7 +775,6 @@ public class GRDirector extends StaticSchedulingDirector {
         _formerTimeFired = 0.0;
         _formerValidTimeFired = 0.0;
         _lastIterationTime = (long)0;
-        _isSceneGraphInitialized = false;
     }
 
 
@@ -779,40 +807,32 @@ public class GRDirector extends StaticSchedulingDirector {
     private long _lastIterationTime;
     private boolean _pseudoTimeEnabled = false;
     private Director _insideDirector;
-    private boolean _isSceneGraphInitialized;
-
-
-
-
-    private static final double TOLERANCE = 0.0000000001;
-
     private int _iteration = 0;
-    protected boolean _postfirereturns = true;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     // Inner class to cache important variables for contained actors
-    private class _GRActor {
+    private class ContainedGRActor {
     	private Actor    _actor;
 
     	/* Construct the information on the contained Actor
     	 * @param a The actor
     	 */
-    	public _GRActor(Actor actor) {
+    	public ContainedGRActor(Actor actor) {
             _actor = actor;
     	}
     }
 
     // Inner class to cache important variables for container output ports
-    private class _GRIOPort {
+    private class GRIOPort {
         private IOPort _port;
         private boolean _shouldTransferOutputs;
 
         /*  Construct the information on the output port
          *  @param p The port
          */
-        public _GRIOPort(IOPort port) {
+        public GRIOPort(IOPort port) {
             _port = port;
             _shouldTransferOutputs = false;
         }
