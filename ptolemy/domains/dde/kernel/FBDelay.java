@@ -35,32 +35,40 @@ package ptolemy.domains.dde.kernel;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// FBDelay
 /**
 FBDelay actors are used to prevent Zeno conditions caused by
 cycles of null tokens in feedback topologies in DDE models. If a
-FBDelay actor consumes a real token, it will pass the token
-through without altering the time stamp associated with the token.
-If a FBDelay actor encounters a Null token it will pass through
-the null token with an incremented time stamp value.
+FBDelay actor consumes a token (real or Null), it has the option
+of producing an equivalent token on the output with an incremented 
+time stamp value. Alternatively, the FBDelay actor will simply 
+produce the token without altering the time stamp.
 <P>
-FBDelay actors are effective for preventing Zeno conditions
-involving cycles of null tokens. If a DDE model has a feedback topology,
-a FBDelay actor should be added into the feedback loop. The
-addition of such an actor will not alter any real tokens but will alter
-null tokens so that livelock cycles of null tokens with identical time
-stamps can be avoided.
+Two parameters - <I>nullDelay</I> and <I>realDelay</I> - are available
+for determining whether an FBDelay actor increments the time stamp of 
+produced output tokens. The default value of nullDelay (realDelay) is
+true (false). If the nullDelay (realDelay) parameter is set to true, 
+then the time stamps of NullTokens (real tokens) will be incremented as 
+they pass through this actor. 
 <P>
-The delay value of a FBDelay actor must be wisely chosen. The
-delay value should be smaller than any other successive time stamp
-increment found in the DDE model. This means that if a particular model
-might have any two time stamps with time difference delta, then the
-delay value should be smaller than delta.
+The delay value that is applied (given that one of the above parameters 
+is true) is determined by the setDelay() and getDelay() methods. 
+Conditional delay values can be made available by overriding the 
+getDelay() method in derived classes.
 <P>
-FBDelay actors do not prevent Zeno conditions involving real
-tokens.
+FBDelay actors are effective for preventing Zeno conditions involving 
+cycles of null tokens. If a DDE model has a feedback topology, a FBDelay 
+actor should be added into the feedback loop. 
+<P>
+The delay value of a FBDelay actor must be wisely chosen. The delay 
+value should be smaller than any other successive time stamp increment 
+found in the DDE model. This means that if a particular model might 
+have any two time stamps with time difference delta, then the delay 
+value should be smaller than delta.
+<P>
 
 @author John S. Davis II
 @version $Id$
@@ -74,10 +82,7 @@ public class FBDelay extends DDEActor {
     public FBDelay()
             throws IllegalActionException, NameDuplicationException {
         super();
-	input = new TypedIOPort(this, "input", true, false);
-	output = new DDEIOPort(this, "output", false, true);
-	input.setTypeEquals(Token.class);
-	output.setTypeEquals(Token.class);
+        _setVariables();
     }
 
     /** Construct a FBDelay with the specified workspace and
@@ -87,10 +92,7 @@ public class FBDelay extends DDEActor {
     public FBDelay(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
 	super(workspace);
-	input = new TypedIOPort(this, "input", true, false);
-	output = new DDEIOPort(this, "output", false, true);
-	input.setTypeEquals(Token.class);
-	output.setTypeEquals(Token.class);
+        _setVariables();
     }
 
     /** Construct a FBDelay with the specified container and
@@ -105,10 +107,7 @@ public class FBDelay extends DDEActor {
     public FBDelay(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	input = new TypedIOPort(this, "input", true, false);
-	output = new DDEIOPort(this, "output", false, true);
-	input.setTypeEquals(Token.class);
-	output.setTypeEquals(Token.class);
+        _setVariables();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -116,50 +115,75 @@ public class FBDelay extends DDEActor {
 
     public TypedIOPort input = null;
     public DDEIOPort output = null;
+    
+    /** The boolean parameter that indicates whether a delay value 
+     *  will be added to the time stamp of null tokens that are 
+     *  produced by this actor. This parameter defaults to true.
+     */
+    public Parameter nullDelay; 
+    
+    /** The boolean parameter that indicates whether a delay value 
+     *  will be added to the time stamp of real tokens that are 
+     *  produced by this actor. This parameter defaults to false.
+     */
+    public Parameter realDelay; 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
+    /** Return the delay value of this actor. 
+     * @returns The delay value of this actor.
      */
     public double getDelay() {
 	return _delay;
     }
 
-    /**
-     */
-    public void setDelay(double delay) {
-	_delay = delay;
-    }
-
     /** Consume a single input token and produce an identical output
-     *  token. If the input token is a NullToken, then advance the
-     *  current time of this actor by DELAY amount. Otherwise, do
-     *  not advance the current time of this actor.
+     *  token. If the input token is a NullToken and the nullDelay
+     *  parameter is set to true, then produce an output NullToken to
+     *  have a time stamp with a delay specified by getDelay(). Otherwise
+     *  produce a NullToken that does not have a delayed time stamp value.
+     *  If the *  input token is a real token and the realDelay parameter 
+     *  is set to true, then produce an output real token to have a time 
+     *  stamp with a delay specified by getDelay(). Otherwise produce a
+     *  real token that does not have a delayed time stamp value.
      * @throws IllegalActionException If there is an error when
      *  sending the output token or setting the current time.
      */
     public void fire() throws IllegalActionException {
-	// System.out.println("fire() of FBDelay");
 	Token token = _getNextInput();
-	/*
-	System.out.println("fire() of FBDelay - _getNextInput()."
-		+ "  current time = " + getCurrentTime());
-	*/
+        boolean delayNullVal = 
+                ((BooleanToken)nullDelay.getToken()).booleanValue();
+        boolean delayRealVal = 
+                ((BooleanToken)realDelay.getToken()).booleanValue();
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
-	    output.send( 0, token, getCurrentTime() + getDelay() );
+            if( token instanceof NullToken ) {
+                if( delayNullVal ) {
+	            output.send( 0, token, getCurrentTime() + getDelay() );
+                } else {
+	            output.send( 0, token, getCurrentTime() );
+                }
+            } else {
+                if( delayRealVal ) {
+	            output.send( 0, token, getCurrentTime() + getDelay() );
+                } else {
+	            output.send( 0, token, getCurrentTime() );
+                }
+            }
 	}
-	// System.out.println("end of fire() of FBDelay");
     }
 
-    /**
+    /** Initialize this actor by setting all receivers so that
+     *  they do not hide NullTokens.
+     * @throws IllegalActionException If there is an error when
+     *  when attempting to access the receivers of this actor.
+     * @see ptolemy.domains.dde.kernel.NullToken
+     * @see ptolemy.domains.dde.kernel.DDEReceiver
      */
     public void initialize() throws IllegalActionException {
 	super.initialize();
-	System.out.println("Beginning initialize()");
 	output.send( 0, new Token(), TimedQueueReceiver.IGNORE );
-	System.out.println("Finished initialize()");
 
 	Receiver[][] rcvrs = input.getReceivers();
 	for( int i = 0; i < rcvrs.length; i++ ) {
@@ -173,18 +197,39 @@ public class FBDelay extends DDEActor {
     /** Continue execution of this actor by informing the DDEThread
      *  which controls it to continue iterations.
      * @return True to indicate that future execution can occur.
-     * @exception IllegalActionException Not thrown in this class.
-     *  May be thrown in derived classes.
+     * @exception IllegalActionException Is not thrown in this class
+     *  but may be thrown in derived classes.
      */
     public boolean postfire() throws IllegalActionException {
         return true;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    /** Set the delay value of this actor.
+     * @params delay The delay value of this actor.
+     */
+    public void setDelay(double delay) {
+	_delay = delay;
+    }
 
-    // FIXME: I need to use parameters here.
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected variables                 ////
+
     protected double _delay = 4.0;
-    protected int _cntr = 0;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private void _setVariables() throws IllegalActionException, 
+    	    NameDuplicationException {
+	input = new TypedIOPort(this, "input", true, false);
+	output = new DDEIOPort(this, "output", false, true);
+	input.setTypeEquals(Token.class);
+	output.setTypeEquals(Token.class);
+        
+        nullDelay = 
+                new Parameter(this, "nullDelay", new BooleanToken(true));
+        realDelay = 
+                new Parameter(this, "realDelay", new BooleanToken(false));
+    }
 
 }
