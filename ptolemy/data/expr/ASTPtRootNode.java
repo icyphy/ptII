@@ -78,7 +78,7 @@ public class ASTPtRootNode implements Node {
      *  When all the children of a node have returned (type & value resolved),
      *  the type & value of the current node may be resolved by a call to
      *  _resolveNode() method.
-     *  @exception IllegalActionException Thrown when an error occurs
+     *  @exception IllegalActionException If an error occurs
      *  trying to evaluate the PtToken type and/or value to be stored in
      *  node in the tree.
      *  @return The token contained by the root node for the parse tree.
