@@ -718,3 +718,75 @@ test Graph-9.2 {testing validateWeight(Node) method's effect on the counter} {
     set counter4 [$gr changeCount]
     list $result1 $counter3 $result2 $counter4
 } {0 4 1 5}
+
+######################################################################
+####
+#
+test Graph-10.1 {tesing hideEdge(Edge) method by counters on edges, null edges are tested} {
+    set oneg [java::new ptolemy.graph.Graph]
+    set n1  [java::new ptolemy.graph.Node]
+    set n2  [java::new ptolemy.graph.Node]
+    $oneg addNode $n1
+    $oneg addNode $n2
+    set edge [$oneg addEdge $n2 $n1]
+    $oneg hideEdge $edge
+    set result0 [$oneg hideEdge $edge]
+    set result1 [$oneg hiddenEdgeCount]
+    set result2 [$oneg edgeCount]
+    $oneg restoreEdge $edge
+    set result3 [$oneg restoreEdge $edge]
+    set result4 [$oneg hiddenEdgeCount]
+    set result5 [$oneg edgeCount]
+    #tests for null edges
+    set edge1 [java::new ptolemy.graph.Edge $n2 $n3]
+    set result6 [$oneg hideEdge $edge1]
+    set result7 [$oneg restoreEdge $edge1]
+    set result8 [$oneg changeCount]
+    list $result0 $result1 $result2 $result3 $result4 $result5 $result6 $result7 $result8
+} {0 1 0 0 0 1 0 0 5}
+
+######################################################################
+####
+#
+test Graph-10.2 {testing hideEdge(Edge) method and hidden(edge)} {
+    set oneg [java::new ptolemy.graph.Graph]
+    set n1  [java::new ptolemy.graph.Node]
+    set n2  [java::new ptolemy.graph.Node]
+    $oneg addNode $n1
+    $oneg addNode $n2
+    set edge [$oneg addEdge $n2 $n1]
+    $oneg hideEdge $edge
+    set result1 [$oneg containsEdge $edge]
+    set result2 [$oneg hidden $edge]
+    set result3 [[java::new java.util.Vector [$oneg incidentEdges $n2]] toString]
+    set result4 [[java::new java.util.Vector [$oneg edges]] toString]
+    set result5 [$oneg removeEdge $edge]
+    set result6 [$oneg restoreEdge $edge]
+    list $result1 $result2 $result3 $result4 $result5 $result6
+} {0 1 {[]} {[]} 1 0}
+
+######################################################################
+####
+#
+test Graph-10.3 {checking restoration of an edge whose one node is deleted} {
+    set oneg [java::new ptolemy.graph.Graph]
+    set n1  [java::new {java.lang.String String} node1]
+    set n2  [java::new {java.lang.String String} node2]
+    set node1 [$oneg addNodeWeight $n1]
+    set node2 [$oneg addNodeWeight $n2]
+    set edge [$oneg addEdge $node1 $node2]
+    #set edge [[$newEdges iterator] next]
+    $oneg hideEdge $edge
+    $oneg removeNode $node1
+    catch {$oneg {restoreEdge ptolemy.graph.Edge} $edge} msg
+    list $msg
+} {{java.lang.IllegalArgumentException: Source node is not in the graph.
+
+Dumps of the offending edge and graph follow.
+The offending edge:
+(node1, node2)
+The offending graph:
+{ptolemy.graph.Graph
+  {node2}
+}
+}}
