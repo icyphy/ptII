@@ -1,20 +1,15 @@
-<HTML>
-<HEAD>
-   <TITLE>Protocol Modeling with Hierarchical FSM's and Discrete Event Model</TITLE>
-<!---$Id$------>
-</HEAD>
-<BODY BGCOLOR="#FAF0E6" LINK="#0000FF" VLINK="#800080">
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Protocol Modeling with Hierarchical FSM's and Discrete Events</tile>
+</title>
+<link href="../../../../../doc/default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>Protocol Modeling with Hierarchical FSM's and Discrete Events</h1>
 
-<CENTER>
-<H1>
-PtolemyII *charts Domain Demo</H1></CENTER>
-
-<CENTER>
-<H1>
-Protocol Modeling with Hierarchical FSM's and Discrete Event Model</H1></CENTER>
-
-<HR>
-<P><Center><APPLET name="ABPApplet"
+<center><applet name="ABPApplet"
    bgcolor=#FAF0E6
    archive="ptolemy/domains/sc/demo/ABP/ABP.jar"
    code=ptolemy.domains.sc.demo.ABP.ABPApplet.class
@@ -23,10 +18,10 @@ Protocol Modeling with Hierarchical FSM's and Discrete Event Model</H1></CENTER>
 <param name="background" value="#faf0e6">
 <BR><I>If you were able to run applets, you would have a waveform demo
 here.</I>
-<BR></APPLET></CENTER>
+</applet></center>
 
-<H1>
-Introduction</H1>
+
+
 The discrete event (DE) model of computation is very popular in modeling
 distributed or parallel hardware and software and their communication infrastructure
 [1]. An important special case is the modeling of communication protocols.
@@ -36,11 +31,10 @@ can be very well captured using hierarchical FSM's. The example presented
 here demonstrates the use of discrete event model and hierarchical FSM's
 to model the alternating bit protocol (ABP). See [2] for a detailed discussion
 of the protocol.
-<H1>
-The Model</H1>
 
-<H3>
-Top level</H3>
+<H2>The Model</H2>
+
+<H3>Top level</H3>
 The alternating bit protocol is used for reliable transmission of data
 between a sender and a receiver over an unreliable channel. The top level
 configuration of the model is shown below. This top level block diagram
@@ -49,8 +43,7 @@ executes under the DE semantics.
 <P><IMG SRC="img/ABPModel.gif" ></CENTER>
 
 <BR>&nbsp;
-<H3>
-The components</H3>
+<H3>The components</H3>
 <B>Message source. </B>This is a DE atomic actor with a parameter <I>MaxDelay</I>.
 After the simulation starts, it will wait for a random delay uniformly
 distributed between <I>0</I> and <I>MaxDelay</I>, and then send a <I>request</I>
@@ -130,9 +123,6 @@ J. Walrand, and P. Varaiya, ``High-Performance Communication Networks,''
 pages 69-72, Morgan Kaufmann Publishers, Inc., 1996.</LI>
 </OL>
 
-<HR>Copyright &copy; 1998-1999 The Regents of the University of California.
-All rights reserved.
-<BR>Last updated: $Date$.
-<BR>Send comments and suggestions to: <A HREF="mailto:ptII@eecs.berkeley.edu">ptII@eecs.berkeley.edu</A>
-</BODY>
-</HTML>
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+</body>
+</html>
