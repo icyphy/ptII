@@ -49,7 +49,6 @@ JSRCS = \
 	IntParam.java \
 	MultiPort.java \
 	NamedObj.java \
-	Net.java \
 	Node.java \
 	ObservableParameter.java \
 	Param.java \
