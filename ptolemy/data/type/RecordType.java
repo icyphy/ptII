@@ -653,8 +653,8 @@ public class RecordType extends StructuredType {
 
         /** Set the element type to the specified type.
          *  @param e a Type.
-         *  @exception IllegalActionException If the specified type is not
-         *   a substitution instance of the field type.
+         *  @exception IllegalActionException If the specified type violates
+         *   the declared field type.
          */
         public void setValue(Object e) throws IllegalActionException {
             if ( !isSettable()) {

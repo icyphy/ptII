@@ -484,8 +484,8 @@ public class ArrayType extends StructuredType {
 
         /** Set the element type to the specified type.
          *  @param e a Type.
-         *  @exception IllegalActionException If the specified type is not a
-	 *   substitution instance of the declared element type.
+         *  @exception IllegalActionException If the specified type violates
+	 *   the declared type of the element.
          */
         public void setValue(Object e) throws IllegalActionException {
             if ( !isSettable()) {
