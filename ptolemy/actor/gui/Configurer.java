@@ -90,8 +90,9 @@ public class Configurer extends JPanel implements CloseListener {
         _object = object;
        
         NamedObj parent = MoMLChangeRequest.getDeferredToParent(object);
+        // If there is no deferred to parent, just use the object itself.
         if (parent == null) {
-            parent = (NamedObj)object.getContainer();
+            parent = object;
         }
         _parent = parent;
         // Create moml with the original values, so restore can happen later.
@@ -111,7 +112,6 @@ public class Configurer extends JPanel implements CloseListener {
         }
         buffer.append("</group>\n");
         _restoreMoML = buffer.toString();
-
         boolean foundOne = false;
         Iterator editors
             = object.attributeList(EditorPaneFactory.class).iterator();
