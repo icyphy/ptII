@@ -284,7 +284,7 @@ public class JCanvas extends JComponent implements Printable {
 
     /** Accept notification that a repaint has occurred on
      * in this canvas. Call the given damage region to generate
-     * the appopriate calls to the Swing repaint manager.
+     * the appropriate calls to the Swing repaint manager.
      */
     public void repaint (DamageRegion d) {
         d.apply(this);
