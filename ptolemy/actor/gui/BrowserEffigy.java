@@ -33,6 +33,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 import java.net.URL;
+import java.net.URLConnection;
 
 //////////////////////////////////////////////////////////////////////////
 //// BrowserEffigy
@@ -104,6 +105,15 @@ public class BrowserEffigy extends Effigy {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** A reference to the most recently created factor for this effigy.
+     *  This is provided for use by HTMLViewer when following hyperlinks
+     *  that specify that they should be opened by a browser.
+     */
+    public static BrowserEffigy.Factory staticFactory = null;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** A factory for creating new effigies.
@@ -121,6 +131,8 @@ public class BrowserEffigy extends Effigy {
 	public Factory(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
+            // Record the latest factory for use by HTMLViewer.
+            staticFactory = this;
 	}
 
         ///////////////////////////////////////////////////////////////
@@ -159,10 +171,22 @@ public class BrowserEffigy extends Effigy {
 	    }
 	    String extension = getExtension(in);
 	    // This could be a list, or a user preference
-	    if (extension.equals("pdf")) {
+	    if (extension.equals("pdf")
+                   || extension.startsWith("htm")
+                   || extension.startsWith("shtm")) {
 		Effigy effigy = newBrowserEffigy(container, base, in);
 		return effigy;
 	    }
+            // The extension doesn't match.  Try the content type.
+            URLConnection connection = in.openConnection();
+            if (connection == null) return null;
+            String contentType = connection.getContentType();
+            if (contentType == null) return null;
+            if (contentType.startsWith("text/html")
+                    || contentType.startsWith("text/rtf")) {
+		Effigy effigy = newBrowserEffigy(container, base, in);
+		return effigy;
+            }
 	    return null;
 	}
     }
