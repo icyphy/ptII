@@ -79,7 +79,9 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 
-all: jclass
+# Urk! we need to build GenerateVisitor.class so that we can 
+# generate the node files
+all: GenerateVisitor.class jclass
 install: jclass $(PTCLASSJAR)
 
 
