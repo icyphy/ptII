@@ -40,18 +40,19 @@ A token holder with capacity one.
 @author Jie Liu, Edward A. Lee, Lukito Muliadi
 @version $Id$
 */
-public class Mailbox implements Receiver {
+public class Mailbox extends AbstractReceiver {
 
     /** Construct an empty Mailbox with no container.
      */
     public Mailbox() {
+	super();
     }
 
     /** Construct an empty Mailbox with the specified container.
      *  @param container The container.
      */
     public Mailbox(IOPort container) {
-        _container = container;
+	super(container);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -71,13 +72,6 @@ public class Mailbox implements Receiver {
         return t;
     }
 
-    /** Return the container.
-     *  @return The container.
-     */
-    public IOPort getContainer() {
-        return _container;
-    }
-
     /** Return true if the Mailbox is empty.
      *  @return True if the Mailbox is empty.
      */
@@ -91,7 +85,7 @@ public class Mailbox implements Receiver {
     public boolean hasToken() {
         return (_token != null);
     }
-
+    
     /** Put a token into the mailbox.  If the argument is null, then the
      *  mailbox will not contain a token after this returns.
      *  @param token The token to be put into the mailbox.
@@ -106,16 +100,8 @@ public class Mailbox implements Receiver {
         _token = token;
     }
 
-    /** Set the container. */
-    public void setContainer(IOPort port) {
-        _container = port;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The container of this object.
-    private IOPort _container = null;
 
     // The token held.
     private Token _token = null;

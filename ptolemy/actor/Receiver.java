@@ -72,7 +72,9 @@ public interface Receiver {
      */
     public Token get();
 
-    /** Return the container. */
+    /** Return the container of this receiver, or null if there is none.
+     *  @return The IOPort containing this receiver.
+     */
     public IOPort getContainer();
 
     /** Return true if the receiver has room for putting a token into
@@ -85,6 +87,17 @@ public interface Receiver {
      */
     public boolean hasRoom() throws IllegalActionException;
 
+    /** Return true if the receiver has room for putting the given number of 
+     *  tokens into it (via the put() method).
+     *  Returning true in this method should also guarantee that calling
+     *  the put() method will not result in an exception.
+     *
+     *  @exception IllegalActionException If the Receiver implementation
+     *  does not support this query, or the number of tokens is less
+     *  than one.
+     */
+    public boolean hasRoom(int tokens) throws IllegalActionException;
+
     /** Return true if the receiver contains a token that can be obtained
      *  by calling the get() method.
      *  Returning true in this method should also guarantee that calling
@@ -95,6 +108,17 @@ public interface Receiver {
      */
     public boolean hasToken() throws IllegalActionException;
 
+    /** Return true if the receiver contains the given number of tokens
+     *  that can be obtained by calling the get() method.
+     *  Returning true in this method should also guarantee that calling
+     *  the get() method will not result in an exception.
+     *
+     *  @exception IllegalActionException If the Receiver implementation
+     *  does not support this query, or the number of tokens is less
+     *  than one.
+     */
+    public boolean hasToken(int tokens) throws IllegalActionException;
+
     /** Put a token into this receiver. Note that the thrown exception
      *  is a runtime exception, therefore the caller is not required to
      *  catch it.
@@ -104,7 +128,7 @@ public interface Receiver {
 
     /** Set the container.
      *  @exception IllegalActionException If the container is not of
-     *   an appropriate subclass of IOPort.
+     *  an appropriate subclass of IOPort.
      */
     public void setContainer(IOPort port) throws IllegalActionException;
 }

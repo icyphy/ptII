@@ -69,6 +69,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	AbstractReceiver.java \
 	Actor.java \
 	AtomicActor.java \
 	CompositeActor.java \

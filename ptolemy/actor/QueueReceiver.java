@@ -59,7 +59,7 @@ than simply removed. By default, the history capacity is zero.
 @version $Id$
 @see ptolemy.actor.util.FIFOQueue
 */
-public class QueueReceiver implements Receiver {
+public class QueueReceiver extends AbstractReceiver {
 
     /** Construct an empty receiver with no container.
      */
@@ -71,8 +71,7 @@ public class QueueReceiver implements Receiver {
      *  @param container The container of the receiver.
      */
     public QueueReceiver(IOPort container) {
-        super();
-	_container = container;
+        super(container);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -148,13 +147,6 @@ public class QueueReceiver implements Receiver {
         return _queue.getCapacity();
     }
 
-    /** Return the container of this receiver, or null if there is none.
-     *  @return The IOPort containing this receiver.
-     */
-    public IOPort getContainer() {
-        return _container;
-    }
-
     /** Return the capacity of the history queue.
      *  This will be zero if the history mechanism is disabled
      *  and INFINITE_CAPACITY if the history capacity is unbounded.
@@ -169,7 +161,21 @@ public class QueueReceiver implements Receiver {
      *   receiver.
      */
     public boolean hasRoom() {
-        return !_queue.isFull();
+	return !_queue.isFull();
+    }
+    
+    /** Return true if the receiver has room for putting the given number of 
+     *  tokens into it (via the put() method).
+     *  Returning true in this method should also guarantee that calling
+     *  the put() method will not result in an exception.
+     *  @exception IllegalActionException If the number of tokens is less
+     *  than one.
+     */
+    public boolean hasRoom(int tokens) throws IllegalActionException {
+	if(tokens < 1) 
+	    throw new IllegalActionException("The number of " + 
+					     "tokens must be greater than 0");
+	return (_queue.size() + tokens) < _queue.getCapacity();
     }
 
     /** Return true if get() will succeed in returning a token.
@@ -178,6 +184,20 @@ public class QueueReceiver implements Receiver {
      */
     public boolean hasToken() {
         return _queue.size() > 0;
+    }
+
+    /** Return true if get() will succeed in returning a token the given
+     *  number of times.
+     *  @return A boolean indicating whether there are the given number of
+     *  tokens in this receiver.
+     *  @exception IllegalActionException If the number of tokens is less
+     *  than one.
+     */
+    public boolean hasToken(int tokens) throws IllegalActionException {
+	if(tokens < 1) 
+	    throw new IllegalActionException("The number of " + 
+					     "tokens must be greater than 0");
+        return _queue.size() >= tokens;
     }
 
     /** Enumerate the tokens stored in the history queue, which are
@@ -259,13 +279,6 @@ public class QueueReceiver implements Receiver {
         }
     }
 
-    /** Set the container.
-     *  @param port The IOPort containing this receiver.
-     */
-    public void setContainer(IOPort port) {
-        _container = port;
-    }
-
     /** Set the capacity of the history queue. Use 0 to disable the
      *  history mechanism and INFINITE_CAPACITY to make the history
      *  capacity unbounded. If the size of the history queue exceeds
@@ -302,5 +315,4 @@ public class QueueReceiver implements Receiver {
     ////                         private variables                 ////
 
     private FIFOQueue _queue = new FIFOQueue();
-    private IOPort _container;
 }
