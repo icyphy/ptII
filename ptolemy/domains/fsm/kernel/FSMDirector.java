@@ -38,7 +38,7 @@ import ptolemy.kernel.event.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
 
-import collections.LinkedList;
+import java.util.Collections;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -227,7 +227,8 @@ public class FSMDirector extends Director {
     public void initialize() throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
         if (container != null) {
-            Enumeration allActors = container.deepGetEntities();
+	    //Enumeration allActors = container.deepGetEntities();
+            Enumeration allActors = Collections.enumeration( container.deepEntityList());
             while (allActors.hasMoreElements()) {
                 Actor actor = (Actor)allActors.nextElement();
                 if (actor == _controller) {
