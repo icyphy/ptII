@@ -240,16 +240,6 @@ public class AudioReader extends Source {
         }
     }
 
-    /** Return false if there is no more data available in the file.
-     *  Otherwise, return whatever the superclass returns.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public boolean prefire() throws IllegalActionException {
-        _firedSinceWrapup = true;
-        if (_reachedEOF || _soundReader == null) return false;
-        else return super.prefire();
-    }
-
     /** This method causes one audio sample per channel to be
      *  read from the specified file. Each sample is converted to
      *  a double token, with a maximum range of -1.0 to 1.0.
@@ -272,6 +262,16 @@ public class AudioReader extends Source {
             return false;
         }
         return false;
+    }
+
+    /** Return false if there is no more data available in the file.
+     *  Otherwise, return whatever the superclass returns.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        _firedSinceWrapup = true;
+        if (_reachedEOF || _soundReader == null) return false;
+        else return super.prefire();
     }
 
     /** Free up any system resources involved in the audio
