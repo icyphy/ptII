@@ -192,21 +192,21 @@ public class ActorController extends AttributeController {
 	    Iterator nodes = model.nodes(node);
 	    LinkedList inputs = new LinkedList();
 	    LinkedList outputs = new LinkedList();
-	    LinkedList inouts = new LinkedList();
+	    LinkedList inputOutputs = new LinkedList();
 	    int inCount = 0;
 	    int outCount = 0;
-	    int inOutCount = 0;
+	    int inputOutputCount = 0;
 
 	    while (nodes.hasNext()) {
 		Port port = (Port) nodes.next();
 		if (!(port instanceof IOPort)) {
-		    inOutCount++;
-		    inouts.addLast(port);
+		    inputOutputCount++;
+		    inputOutputs.addLast(port);
 		} else {
 		    IOPort ioport = (IOPort) port;
 		    if (ioport.isInput() && ioport.isOutput()) {
-			inOutCount++;
-			inouts.addLast(port);
+			inputOutputCount++;
+			inputOutputs.addLast(port);
 		    } else if (ioport.isInput()) {
 			inCount++;
 			inputs.addLast(port);
@@ -214,8 +214,8 @@ public class ActorController extends AttributeController {
 			outCount++;
 			outputs.addLast(port);
 		    } else {
-                        inOutCount++;
-			inouts.addLast(port);
+                        inputOutputCount++;
+			inputOutputs.addLast(port);
 		    } 
 		}
 	    }
@@ -226,7 +226,7 @@ public class ActorController extends AttributeController {
                     SwingConstants.WEST);
 	    _placePortFigures(figure, outputs, outCount,
                     SwingConstants.EAST);
-	    _placePortFigures(figure, inouts, inOutCount,
+	    _placePortFigures(figure, inputOutputs, inputOutputCount,
                     SwingConstants.SOUTH);
 	}
 
