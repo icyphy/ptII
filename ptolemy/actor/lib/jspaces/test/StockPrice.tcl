@@ -77,3 +77,20 @@ test StockPrice-1.1 {test clone} {
 #     enumToTokenValues [$rec getRecord 0]
 # } {71 71 71 71 71}
 
+######################################################################
+#### Use bogus ticker
+#
+test StockPrice-3.1 {Use a bogus ticker} {
+    set e0 [sdfModel 5]
+    set stock [java::new ptolemy.actor.lib.jspaces.StockPrice $e0 stock]
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $stock] output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    set symbol [getParameter $stock ticker]
+    $symbol setExpression {"foobar"}
+    catch {[$e0 getManager] execute} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: .top.stock:
+StockPrice.fire: bad ticker: foobar}}
+

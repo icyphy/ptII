@@ -111,7 +111,7 @@ public class StockPrice extends Source {
     }
 
     /** Get the stock price from the web and send it to the output.
-     *  @exception IllegalActionException If the URL or stock is invalid;
+     *  @exception IllegalActionException If the URL or ticker is invalid;
      *   or if an I/O exception occurs when accessing the URL.
      */
     public void fire() throws IllegalActionException {
@@ -144,6 +144,11 @@ public class StockPrice extends Source {
 	    st.wordChars(32, 127);
 
 	    while (st.nextToken() != StreamTokenizer.TT_EOF) {
+		if (st.sval.indexOf("No such ticker symbol") != -1) {
+		    // bad ticker
+		    throw new IllegalActionException(this, "StockPrice.fire:"
+			+ " bad ticker: " + tickerString);
+		}
 		if (st.sval.indexOf(_matchString + tickerString) != -1) {
 		    // found the line
 		    st.nextToken();
