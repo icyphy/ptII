@@ -217,7 +217,7 @@ public class SoundCapture {
      *  return the sampling rate, regardless of
      *  which constructor was used. However, this method is
      *  really only useful when the constructor that causes
-     *  audio to be catpured from a file is used, since
+     *  audio to be captured from a file is used, since
      *  the sampling rate is unknown until the file
      *  is opened.
      *  <p>
@@ -489,7 +489,7 @@ public class SoundCapture {
      *  return the number of bits per audio sample, regardless of
      *  which constructor was used. However, this method is
      *  really only useful when the constructor that causes
-     *  audio to be catpured from a file is used, since
+     *  audio to be captured from a file is used, since
      *  the number of bits per audio sample is unknown until the file
      *  is opened.
      *  <p>
