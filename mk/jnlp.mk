@@ -377,7 +377,7 @@ DIST_URL = http://ptolemy.eecs.berkeley.edu:/ptolemyII/ptII2.0/jnlp
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif
 jnlp_dist:
 	rm -f $(JNLPS)
-	$(MAKE) PTII_LOCALURL=$(DIST_URL) $(JNLPS)
+	#$(MAKE) PTII_LOCALURL=$(DIST_URL) $(JNLPS)
 	tar -cf - $(ALL_JNLP_JARS) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
 		(cd $(DIST_DIR); tar -xpf -)
