@@ -343,6 +343,13 @@ public class DECQDirector extends DEDirector {
         this.enqueueEvent(actor, delay, maxdepth+1);
     }
 
+    /** Return the next future time of the next iterations. This means
+     *  simultaneous iterations will be skipped, and only look at the next
+     *  future time stamp (i.e. not equal to the current time).
+     */
+    public double getNextIterationTime() {
+        return _nextIterationTime;
+    }
         
     /** Set current time to zero, calculate priorities for simultaneous
      *  events, and invoke the initialize() methods of all actors deeply
@@ -422,17 +429,17 @@ public class DECQDirector extends DEDirector {
     // Invoke the base class prefire() method, and if it returns true,
     // dequeue the next event from the event queue, advance time to its
     // time stamp, and mark its destination actor for firing.
-    //   If there are multiple events on the queue with the same time
-    //   stamp that are destined for the same actor, dequeue all of them,
-    //   making them available in the input ports of the destination actor.
-    //   The firing actor may be fired repeatedly until all its
-    //   receivers are empty.
-    //   If the time stamp is greater than the stop time, or there are no
-    //   events on the event queue, then return false,
-    //   which will have the effect of stopping the simulation.
+    // If there are multiple events on the queue with the same time
+    // stamp that are destined for the same actor, dequeue all of them,
+    // making them available in the input ports of the destination actor.
+    // The firing actor may be fired repeatedly until all its
+    // receivers are empty.
+    // If the time stamp is greater than the stop time, or there are no
+    // events on the event queue, then return false,
+    // which will have the effect of stopping the simulation.
      
-    //  @return True if there is an actor to fire.
-    //  @exception IllegalActionException If the base class throws it.
+    // @return True if there is an actor to fire.
+    // @exception IllegalActionException If the base class throws it.
     private boolean _prepareActorToFire() {
         // During prefire, new actor will be chosen to fire
 	// therefore, initialize _actorToFire field to null.
@@ -454,6 +461,8 @@ public class DECQDirector extends DEDirector {
                     currentEvent = (DEEvent)_cQueue.take();
                 } catch (IllegalAccessException ex) {
                     // Queue is empty.
+                    // The next iteration time will be equal to stop time.
+                    _nextIterationTime = _stopTime;
                     break;
                 }
                 if (_actorToFire == null) {
@@ -471,7 +480,8 @@ public class DECQDirector extends DEDirector {
 		    if (_currentTime < _startTime) {
 			if (_startTimeInitialized) {
 			    throw new InternalErrorException("DECQDirector "+
-				    "prefire bug.. trying to initialize " +
+				    "_prepareActorToFire() bug.. trying " + 
+                                    "to initialize " +
 				    "start time twice.");
 			}
 
@@ -521,6 +531,9 @@ public class DECQDirector extends DEDirector {
                     if (currentEvent.key.timeStamp() > _currentTime) {
                         // The event has a later time stamp, so we put it back
                         fifo.put(currentEvent);
+                        // Save the next iteration time, because some inner
+                        // domains might require this information.
+                        _nextIterationTime = currentEvent.key.timeStamp();
 			// Break the loop, since all events after this will
 			// all have time stamp later or equal to this one.
                         break;
@@ -900,6 +913,9 @@ public class DECQDirector extends DEDirector {
 
     // FIXME: debug variables
     private boolean _startTimeInitialized = false;
+
+    // 
+    private double _nextIterationTime;
 }
 
 

@@ -60,7 +60,8 @@ JSRCS = \
 	DEDirector.java \
 	DEIOPort.java \
 	DEReceiver.java \
-	DESortKey.java
+	DESortKey.java \
+	DEThreadActor.java
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -43,7 +43,7 @@ A base class for threaded DE domain actor.
 @version $Id$
 @see DEActor
 */
-public class DEThreadActor extends DEActor implements Runnable {
+public abstract class DEThreadActor extends DEActor implements Runnable {
 
     /** Constructor.
      *  @param container The container.
@@ -69,23 +69,90 @@ public class DEThreadActor extends DEActor implements Runnable {
      */
     public void initialize() {
         // start a thread.
-        PtolemyThread pthread = new PtolemyThread(this);
+        pThread = new PtolemyThread(this);
+        _isWaiting = true;
+        pThread.start();
     }
 
-    /**
+    /** Awake the thread running this actor.
      */
     public void fire() {
-        notifyAll();
+        // Set the flag to false, to make sure only this actor wakes up.
+        _isWaiting = false;
+        synchronized(_monitor) {
+            _monitor.notifyAll();
+        }
+        // then wait until this actor go to wait.
+        while (!_isWaiting) {
+            synchronized(_monitor) {
+                try {
+                    _monitor.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         
     }
-    
 
+    /** Implement this method to define the job of the threaded actor.
+     */
+    public abstract void run();
+
+    /** Clear input ports then wait until 
+     *  input events arrive.
+     */
+    public void waitForNewInputs() {
+
+        _emptyPorts();
+        
+        // Set the flag to true, so the director can wake up.
+        _isWaiting = true;      
+        synchronized(_monitor) {
+            _monitor.notifyAll();
+        }
+
+        while (_isWaiting) {
+            synchronized(_monitor) {
+                try {
+                    _monitor.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    // Empty all receivers of all input ports.
+    private void _emptyPorts() {
+        Enumeration ports = inputPorts();
+        while (ports.hasMoreElements()) {
+            IOPort port = (IOPort)ports.nextElement();
+            for (int ch = 0; ch < port.getWidth(); ch++) {
+                try {
+                    while (port.hasToken(ch)) {
+                        port.get(ch);
+                    }
+                } catch (IllegalActionException e) {
+                    e.printStackTrace();
+                    throw new InternalErrorException(e.getMessage());
+                }
+            }
+        }
+    }
+    
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
-  
+
+    PtolemyThread pThread;
+    protected boolean _isWaiting = true;
+
+    protected static Object _monitor = new Object();
+
 }
 
