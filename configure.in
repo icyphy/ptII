@@ -2187,9 +2187,9 @@ else
        fi
        if test -z "$PTQUICKTIME_DIR" ; then
            AC_MSG_WARN(['"$JAVAC" quickTime3dTest.java' failed.
-    You may need to install QuickTime with the "QuickTime For
-    Java" option from http://developer.apple.com/quicktime/qtjava/
-    During installation, choose "custom" and then "select all".
+    You may need to install QuickTime with the 'QuickTime For
+    Java' option from http://developer.apple.com/quicktime/qtjava/
+    During installation, choose 'custom' and then 'select all'.
     This drops QTJava.zip into the lib/ext of all your installed JREs.
     Then you have to copy this zip file to the jre/lib/ext directory
     of your SDK and rerun configure.
