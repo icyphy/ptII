@@ -1,0 +1,2 @@
+java -Dptolemy.ptII.dir=${PTII} -classpath "${PTII};${PTII}/ptolemy;${PTII}/lib/ptCal.jar;${PTII}/lib/java_cup.jar;${PTII}/lib/xml-apis.jar;${PTII}/lib/xercesImpl.jar" util.testsuite.CheckSize $@
+
