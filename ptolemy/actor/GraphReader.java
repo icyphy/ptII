@@ -96,6 +96,7 @@ public class GraphReader {
                 Actor actor = (Actor)entity;
                 Node newNode = graph.addNodeWeight(_computeNodeWeight(actor));
                 _actorMap.put(actor, newNode);
+                _processNewNode(graph, newNode, actor);
             } else {
                 throw new RuntimeException("Unsupported deep entity type: "
                         + entity.getClass().getName()
@@ -113,7 +114,7 @@ public class GraphReader {
             while (outPorts.hasNext()) {
                 IOPort outPort = (IOPort)(outPorts.next());
                 Iterator inPorts =
-                    outPort.deepConnectedInPortList().iterator();
+                        outPort.deepConnectedInPortList().iterator();
                 while (inPorts.hasNext()) {
                     IOPort inPort = (IOPort)(inPorts.next());
                     Actor sink = (Actor)(inPort.getContainer());
@@ -121,9 +122,11 @@ public class GraphReader {
                         if (_debug) System.out.println("Adding edge from "
                                 + source + " to " + sink);
 
-                        graph.addEdge((Node)(_actorMap.get(source)),
+                        Edge newEdge = 
+                                graph.addEdge((Node)(_actorMap.get(source)),
                                 (Node)(_actorMap.get(sink)),
                                 _computeEdgeWeight(outPort, inPort));
+                        _processNewEdge(graph, newEdge, outPort, inPort);
                     }
                 }
             }
@@ -138,7 +141,7 @@ public class GraphReader {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Determine the weight to be assigned to the weighted graph edge that
      *  represents a given connection in a Ptolemy II model.
      *  This method returns the input port as the edge weight.
@@ -177,6 +180,30 @@ public class GraphReader {
      */
     protected Graph _initializeGraph(CompositeActor compositeActor) {
         return new DirectedGraph();
+    }
+
+    /** Process a new edge corresponding to a given connection in a given graph.
+     *  This method should be overridden to implement specialized conversion
+     *  aspects that operate at the level of individual edges.
+     *  @param graph The graph that contains the new edge.
+     *  @param edge The new edge.
+     *  @param sourcePort The source port of the connection in the model.
+     *  @param sinkPort The sink port of the connection.
+     */ 
+    protected void _processNewEdge(Graph graph, Edge edge, IOPort sourcePort,
+            IOPort sinkPort) {
+        return;
+    }
+
+    /** Process a new node corresponding to a given actor in a given graph.
+     *  This method should be overridden to implement specialized conversion
+     *  aspects that operate at the level of individual nodes.
+     *  @param graph The graph that contains the new node.
+     *  @param node The new node.
+     *  @param actor The actor that corresponds to the new node. 
+     */ 
+    protected void _processNewNode(Graph graph, Node node, Actor actor) {
+        return;
     }
 
     /** Perform post-processing on the entire graph to complete the
