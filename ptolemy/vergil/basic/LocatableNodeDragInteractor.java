@@ -141,9 +141,14 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             snapTranslation[1] = snapLocation[1] - originalUpperLeft[1];
         }
 
-        // NOTE: The following is no longer necessary, since the translation
-        // occurs as a consequence of setting the location attribute.
-        // super.translate(e, snapTranslation[0], snapTranslation[1]);
+        // NOTE: The following seems no longer necessary, since the
+        // translation occurs as a consequence of setting the location
+        // attribute. However, for reasons that I don't understand,
+        // without this, drag doesn't work.  The new location ends
+        // up identical to the old because of the snap, so no translation
+        // occurs.  Oddly, the superclass call performs a translation
+        // even if the snapTranslation is zero.  Beats me.  EAL 7/31/02.
+        super.translate(e, snapTranslation[0], snapTranslation[1]);
 
         // Set the location attribute of each item that is translated.
         // NOTE: this works only because all the nodes that allow
