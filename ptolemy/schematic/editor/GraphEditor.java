@@ -262,16 +262,14 @@ public class GraphEditor extends AbstractApplication {
 
         try {
             parseLibraries();
-            SchematicEntity template = 
-                _entityLibrary.findEntity("generic.ramp");
-	    //                _entityLibrary.findEntity("SDF.SaveImage");
-            SchematicEntity node = new SchematicEntity("test1", template);
-            p3.addNode(node, 60, 50);
-            
-	    template = _entityLibrary.findEntity("generic.recorder");
-	    //            template = _entityLibrary.findEntity("SDF.LoadImage");
-            node = new SchematicEntity("test2", template);
-            p3.addNode(node, 60, 140);
+            EntityLibrary genericlib = 
+                _entityLibrary.getSubLibrary("generic");
+            Enumeration entities = genericlib.entities();
+            while(entities.hasMoreElements()) {
+                SchematicEntity node = new SchematicEntity();
+                node.setTemplate((SchematicEntity) entities.nextElement());
+                p3.addNode(node, 60, 50);            
+            }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             ex.printStackTrace();
@@ -287,7 +285,9 @@ public class GraphEditor extends AbstractApplication {
 	s.setVisible(true);
 	p3.setVisible(true);
 	p3.repaint();
-	
+
+        // FIXME this layout code doesn't work because the palette hasn't 
+        // appeared yet.	
 	GraphController controller = p3.getGraphPane().getGraphController();
         LayoutTarget target = new BasicLayoutTarget(controller);
         Graph graph = controller.getGraph();
