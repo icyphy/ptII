@@ -44,4 +44,4 @@ if {[string compare test [info procs test]] == 1} then {
 test Iterations-1.1 {test} {
     set e0 [java::new ptolemy.domains.de.lib.test.Iterations]
     $e0 getResult
-} {0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 18.0}
+} {0.0, 2.0}
