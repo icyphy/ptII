@@ -52,7 +52,8 @@ JSRCS = \
 	AudioSink.java \
 	AudioSource.java \
 	AudioReader.java \
-	AudioWriter.java
+	AudioWriter.java \
+	AudioCapture.java
 
 OTHER_FILES_TO_BE_JARED = \
 	javasound.xml
