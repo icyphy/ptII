@@ -27,11 +27,9 @@
 
 package pt.kernel;
 
-import collections.LinkedList;
 import java.util.Enumeration;
 import pt.kernel.CrossRefList;
 import pt.kernel.NullReferenceException;
-import pt.kernel.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Port
@@ -59,49 +57,6 @@ public class Port extends NamedObj {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-
-
-    /** Connect this Port to another port. Currently doesn't check if the 
-     *  ports are already connected. Should be implemented in inherited classes
-     * @param port The Port to which this Port will be connected.
-     * @exception pt.kernel.NullReferenceException Signals an attempt
-     *  to pass null object references as arguments.
-     *
-     * JFIXME: I think we should get rid of this method. We want to
-     *         to have explicit control of the kind of Relation we
-     * 	       use for a given connection and this method precludes
-     *         such control (children of Relation can not be used).
-     *	       At higher levels we can provide this kind of functionality
-     * 	       but we don't want to constrain ourselves at this level.
-    public void connectToPort(Port port) 
-            throws NullReferenceException {
-
-        if (port == null) 
-            throw new NullReferenceException(
-                    "Null port passed as parameter to Port.connectToPort()" );
-
-        else {
-	    Relation _newRelation;
-
-	    if (_relationsList == null) 
-	            _relationsList = new CrossRefList(this);
-	    
-	    _newRelation = new Relation();
-
-	    // _newRelation.portList = new CrossRefList(_newRelation);
-	    // FIXME: Relation SHOULD create portList on creation of the 
-	    // Relation itself. Else add 
-	    // if (_newRelation._portList == null) 
-	    //     _newRelation._portList = new CrossRefList(_newRelation);
-	    _relationsList.associate(_newRelation._portList );
-
-	    port.connectToRelation(_newRelation);
-
-        } 
-
-    }
-     */	
-
 
     /** Connect this Port to a Relation.
      * @param relation The Relation to which this Port will be connected.
@@ -174,7 +129,14 @@ public class Port extends NamedObj {
     }
 
 
-    /** Returns the size of the corresponding CrossRefList, i.e. the number
+    /** Return the Entity which owns this Port.
+     */
+    public Entity getEntity() {
+	return _entity;
+    }
+
+
+    /** Return the size of the corresponding CrossRefList, i.e. the number
      *  of relations associated with this port.
      * @return null if the crossRefList does not exist, i.e. there is no 
      *  relation associated with the port. Else return the size of the list, 
@@ -183,6 +145,13 @@ public class Port extends NamedObj {
     public int numRelations() {
         if (_relationsList == null) return 0;
 	else return _relationsList.size();
+    }
+
+
+    /** Set the Entity which owns this Port.
+     */
+    public void setEntity(Entity entity) {
+	_entity = entity;
     }
 
 
@@ -197,6 +166,10 @@ public class Port extends NamedObj {
     
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
+
+    /* The Entity which owns this port.
+     */
+    private Entity _entity;
 
     /* The list of relations for this port.
      */
