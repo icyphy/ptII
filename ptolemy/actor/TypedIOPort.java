@@ -69,14 +69,14 @@ will be set by type resolution using the type constraints. The type
 constraints on this port can be specified using the methods defined in
 the Typeable interface.
 
-This class keeps a list of TypeListeners. Whenever the type
+<p>This class keeps a list of TypeListeners. Whenever the type
 changes, this class will generate an instance of TypeEvent and pass it
 to the listeners by calling their typeChanged() method. A TypeListener
 register its interest in the type change event of this port by calling
 addTypeListener(), and can be removed from the listener list by calling
 the removeTypeListener().
 
-A TypedIOPort can only link to instances of TypedIORelation. Derived
+<p>A TypedIOPort can only link to instances of TypedIORelation. Derived
 classes may further constrain links to a subclass of TypedIORelation.
 To do this, they should override the protected methods _link() and
 _linkInside() to throw an exception if their arguments are not of the
@@ -84,6 +84,26 @@ appropriate type.  Similarly, an TypeIOPort can only be contained by a
 class derived from ComponentEntity and implementing the TypedActor
 interface.  Subclasses may further constrain the containers by overriding
 _checkContainer().
+
+<p>Note that actors that call some of the setType<i>XXX</i> methods
+may also need to have a clone() method.  Although the base classes
+neatly handle most aspects of the clone operation, there are
+subtleties involved with cloning type constraints. Absolute type
+constraints on ports and parameters are carried automatically into the
+clone, so clone() methods should never call setTypeEquals(). However,
+relative type constraints of the other setType<i>XXX</I>() methods are
+not cloned automatically because of the difficulty of ensuring that
+the other object being referred to in a relative constraint is the
+intended one.
+<p> For example the Ramp actor constructor calls:
+<pre>
+output.setTypeAtLeast(init);
+</pre>
+so the clone() method of the Ramp actor calls:
+<pre>
+newObject.output.setTypeAtLeast(newObject.init);
+</pre>
+
 
 @author Yuhong Xiong, Lukito Muliadi
 @version $Id$
@@ -748,6 +768,9 @@ public class TypedIOPort extends IOPort implements Typeable {
 
     /** Constrain the type of this port to be equal to or greater
      *  than the type of the specified Typeable object.
+     *  <p>Actors that call this method should have a clone() method that
+     *  repeats the relative type constraints that were specified in
+     *  the constructor.
      *  @param lesser A Typeable object.
      */
     public void setTypeAtLeast(Typeable lesser) {
@@ -758,6 +781,9 @@ public class TypedIOPort extends IOPort implements Typeable {
 
     /** Constrain the type of this port to be equal to or greater
      *  than the type represented by the specified InequalityTerm.
+     *  <p>Actors that call this method should have a clone() method that
+     *  repeats the relative type constraints that were specified in
+     *  the constructor.
      *  @param typeTerm An InequalityTerm.
      */
     public void setTypeAtLeast(InequalityTerm typeTerm) {
@@ -767,6 +793,9 @@ public class TypedIOPort extends IOPort implements Typeable {
 
     /** Constrain the type of this port to be equal to or less
      *  than the argument.
+     *  <p>Actors that call this method should have a clone() method that
+     *  repeats the relative type constraints that were specified in
+     *  the constructor.
      */
     public void setTypeAtMost(Type type) {
         Inequality inequality = new Inequality(this.getTypeTerm(),
@@ -777,7 +806,15 @@ public class TypedIOPort extends IOPort implements Typeable {
     /** Set the type of this port. The type is represented by an instance
      *  of Type. If the type is BaseType.UNKNOWN, the determination of the type
      *  is left to type resolution.
-     *  This method is write-synchronized on the workspace.
+     *
+     *  <p>Actors that call setTypeEquals() are not required to have a
+     *  clone() method.  Absolute type constraints on ports and
+     *  parameters are carried automatically into the clone, so
+     *  clone() methods of actors should never call setTypeEquals().
+     *  Actors that call the other setType<i>XXX</i>() methods should
+     *  have a clone() method.
+     *
+     *  <p> This method is write-synchronized on the workspace.
      *  @param type A Type.
      */
     public void setTypeEquals(Type type) {
@@ -805,6 +842,9 @@ public class TypedIOPort extends IOPort implements Typeable {
 
     /** Constrain the type of this port to be the same as the type
      *  of the specified Typeable object.
+     *  <p>Actors that call this method should have a clone() method that
+     *  repeats the relative type constraints that were specified in
+     *  the constructor.
      *  @param equal A Typeable object.
      */
     public void setTypeSameAs(Typeable equal) {
