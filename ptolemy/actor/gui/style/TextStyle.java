@@ -58,7 +58,7 @@ public class TextStyle extends ParameterEditorStyle {
      *  Increment the version number of the workspace.
      */
     public TextStyle() {
-	super();
+        super();
     }
 
     /** Construct an attribute with the specified container and name.
@@ -83,7 +83,7 @@ public class TextStyle extends ParameterEditorStyle {
      *  @return True.
      */
     public boolean acceptable(Settable param) {
-	return true;
+        return true;
     }
 
     /** Create a new type-in line
