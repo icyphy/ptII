@@ -46,6 +46,7 @@ JSRCS = \
 
 TCL_SRCS = \
 	auto.tcl \
+	codegen.tcl \
 	description.tcl \
 	enums.tcl \
 	init.tcl \
