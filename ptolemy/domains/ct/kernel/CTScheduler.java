@@ -822,7 +822,7 @@ public class CTScheduler extends Scheduler {
      *  @param list The list of actors to be scheduled.
      *  @return A graph representation of the actors.
      */
-    protected DirectedAcyclicGraph _toArithmeticGraph(List list) {
+    private DirectedAcyclicGraph _toArithmeticGraph(List list) {
         DirectedAcyclicGraph graph = new DirectedAcyclicGraph();
         // Create the nodes.
         Iterator actors = list.iterator();
