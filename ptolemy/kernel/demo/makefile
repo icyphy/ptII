@@ -48,7 +48,9 @@ TCL_SRCS = \
 
 JSRCS = \
 	HelloTcl.java \
-	ExampleSystem.java
+	ExampleSystem.java \
+	ExampleApplet.java \
+	ExampleFrame.java \
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
 
