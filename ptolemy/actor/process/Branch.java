@@ -175,7 +175,7 @@ public class Branch {
      */
     public void registerRcvrBlocked(ProcessReceiver rcvr) {
     	if( !_rcvrBlocked ) {
-            _controller._branchBlocked();
+            _controller._branchBlocked(rcvr);
         }
     }
 
@@ -184,7 +184,7 @@ public class Branch {
      */
     public void registerRcvrUnBlocked(ProcessReceiver rcvr) {
     	if( _rcvrBlocked ) {
-            _controller._branchUnBlocked();
+            _controller._branchUnBlocked(rcvr);
         }
     }
 

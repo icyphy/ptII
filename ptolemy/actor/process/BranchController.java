@@ -465,9 +465,10 @@ public class BranchController implements Runnable {
      *  or CDO currently being executed) are blocked, register this 
      *  actor as being blocked.
      */
-    protected void _branchBlocked() {
+    protected void _branchBlocked(ProcessReceiver rcvr) {
         synchronized(this) {
             _branchesBlocked++;
+	    _blockedReceivers.addFirst(rcvr);
 	    notifyAll();
         }
     }
@@ -477,9 +478,10 @@ public class BranchController implements Runnable {
      *  register this actor with the director as no longer being 
      *  blocked.
      */
-    protected void _branchUnBlocked() {
+    protected void _branchUnBlocked(ProcessReceiver rcvr) {
         synchronized(this) {
             _branchesBlocked--;
+	    _blockedReceivers.remove(rcvr);
 	    notifyAll();
         }
     }
@@ -529,5 +531,7 @@ public class BranchController implements Runnable {
     private boolean _active = false;
 
     private boolean _engagementsAllowed = false;
+
+    private LinkedList _blockedReceivers = new LinkedList();
 
 }

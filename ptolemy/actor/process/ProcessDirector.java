@@ -363,7 +363,7 @@ public class ProcessDirector extends Director {
                     "contained by a MultiBranchActor.");
         }
         MultiBranchActor mCont = (MultiBranchActor)cont;
-        BranchController cntlr = new BranchController(mCont);
+        // BranchController cntlr = new BranchController(mCont);
         
         
         // Create Branches in the BranchController
@@ -375,9 +375,19 @@ public class ProcessDirector extends Director {
                     "port argument is not an opaque" +
                     "input port.");
             }
-            cntlr.createBranches(port);
+	    if( port.isInput() ) {
+		if( _inputBranchController == null ) {
+		    _inputBranchController = new BranchController(mCont);
+		}
+		_inputBranchController.createBranches(port);
+	    }
+	    if( port.isOutput() ) {
+		if( _outputBranchController == null ) {
+		    _outputBranchController = new BranchController(mCont);
+		}
+		_outputBranchController.createBranches(port);
+	    }
         }
-        _branchControllers.add(cntlr);
     }
 
     /**
@@ -395,13 +405,14 @@ public class ProcessDirector extends Director {
 
     /**
      */
-    public void  stopBranchController() {
-        Iterator controllers = _branchControllers.iterator();
-        BranchController controller = null;
-        while( controllers.hasNext() ) {
-            controller = (BranchController)controllers.next();
-            controller.endIteration();
-        }
+    public void  stopInputBranchController() {
+        _inputBranchController.endIteration();
+    }
+    
+    /**
+     */
+    public void  stopOutputBranchController() {
+        _inputBranchController.endIteration();
     }
     
     /** Terminates all threads under control of this director immediately.
@@ -518,6 +529,64 @@ public class ProcessDirector extends Director {
 
     /**
      */
+    protected synchronized boolean _areInputBranchControllersStopped() {
+        Iterator controllers = _branchControllers.iterator();
+        BranchController controller = null;
+        while( controllers.hasNext() ) {
+            controller = (BranchController)controllers.next();
+	    if( controller.hasInputPorts() ) {
+		if( !controller.isIterationOver() ) {
+		    return false;
+		}
+	    }
+        }
+        return true;
+    }
+
+    /**
+     */
+    protected synchronized boolean _areOutputBranchControllersStopped() {
+        Iterator controllers = _branchControllers.iterator();
+        BranchController controller = null;
+        while( controllers.hasNext() ) {
+            controller = (BranchController)controllers.next();
+	    if( controller.hasOutputPorts() ) {
+		if( !controller.isIterationOver() ) {
+		    return false;
+		}
+	    }
+        }
+        return true;
+    }
+
+    /**
+     */
+    protected synchronized void _stopInputBranchControllers() {
+        Iterator controllers = _branchControllers.iterator();
+        BranchController controller = null;
+        while( controllers.hasNext() ) {
+            controller = (BranchController)controllers.next();
+	    if( controller.hasInputPorts() ) {
+		controller.endIteration();
+	    }
+        }
+    }
+
+    /**
+     */
+    protected synchronized void _stopOutputBranchControllers() {
+        Iterator controllers = _branchControllers.iterator();
+        BranchController controller = null;
+        while( controllers.hasNext() ) {
+            controller = (BranchController)controllers.next();
+	    if( controller.hasOutputPorts() ) {
+		controller.endIteration();
+	    }
+        }
+    }
+
+    /**
+     */
     protected synchronized boolean _areBranchControllersStopped() {
         if( _branchControllersBlocked == 0 ) {
             // We haven't started yet.
@@ -544,7 +613,10 @@ public class ProcessDirector extends Director {
      */
     protected synchronized boolean _areAllThreadsStopped() {
 	// All threads are stopped due to stopFire()
-	if( _threadsStopped > 0 && _threadsStopped >= _actorsActive ) {
+	if( _isDeadlocked() ) {
+	    return true;
+	} else if( _threadsStopped > 0 && _threadsStopped 
+		>= _actorsActive ) {
 	    return true;
 	}
 	return false;
@@ -725,6 +797,9 @@ public class ProcessDirector extends Director {
     
     // The Branch Controllers of this director
     private LinkedList _branchControllers = new LinkedList();
+    private BranchController _inputBranchController;
+    private BranchController _outputBranchController;
+
     private int _branchControllersBlocked = 0;
     private int _branchControllersActive = 0;
 
