@@ -49,12 +49,14 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	XMLIcon.java \
-	ValueIcon.java \
+	AttributeValueIcon.java \
+	BoxedValueIcon.java \
 	EditorIcon.java \
 	IconEditor.java \
 	IconEditorPane.java \
-	SimpleSelection.java
+	SimpleSelection.java \
+	XMLIcon.java \
+	ValueIcon.java
 
 EXTRA_SRCS =	$(JSRCS)
 
