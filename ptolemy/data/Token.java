@@ -49,7 +49,7 @@ indicate that an event is present. To support this use, the stringValue()
 method returns the String "present".
 <p>
 
-@author Neil Smyth, Yuhong Xiong
+@author Neil Smyth, Yuhong Xiong, Edward A. Lee
 @version $Id$
 
 */
@@ -69,9 +69,9 @@ public class Token {
      *  @return A new Token containing the result.
      */
     public Token add(Token rightArg) throws IllegalActionException {
-        String str = "add method not supported on ";
-        str = str + this.getClass().getName() + " objects.";
-        throw new IllegalActionException(str);
+        throw new IllegalActionException("Addition not supported between "
+        + this.getClass().getName() + " and "
+        + rightArg.getClass().getName() + ".");        
     }
 
     /** Return a new token whose value is the value of this
@@ -85,9 +85,9 @@ public class Token {
      *  @return A new Token containing the result.
      */
     public Token addReverse(Token leftArg) throws IllegalActionException {
-        String str = "addReverse method not supported on ";
-        str = str + this.getClass().getName() + " objects.";
-        throw new IllegalActionException(str);
+        throw new IllegalActionException("Addition not supported between "
+        + leftArg.getClass().getName() + " and "        
+        + this.getClass().getName() + ".");
     }
 
     /** Convert the specified token to an instance of this class, if it
@@ -121,9 +121,9 @@ public class Token {
      *  @return A new Token containing the result.
      */
     public Token divide(Token divisor) throws  IllegalActionException {
-        String str = "divide method not supported on ";
-        str = str + this.getClass().getName() + " objects.";
-        throw new IllegalActionException(str);
+        throw new IllegalActionException("Division not supported for "
+        + this.getClass().getName() + " divided by "
+        + divisor.getClass().getName() + ".");
     }
 
     /** Return a new Token whose value is the value of the argument token
@@ -138,9 +138,9 @@ public class Token {
      */
     public Token divideReverse(Token dividend)
 	    throws  IllegalActionException {
-        String str = "divideReverse method not supported on ";
-        str = str + this.getClass().getName() + " objects.";
-        throw new IllegalActionException(str);
+        throw new IllegalActionException("Division not supported for "
+        + dividend.getClass().getName() + " divided by "
+        + this.getClass().getName() + ".");
     }
 
     /** Test for equality of the values of this Token and the argument Token.
@@ -152,9 +152,9 @@ public class Token {
      *  @return A  new BooleanToken which contains the result of the test.
      */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
-        String str = "isEqualTo method not supported on ";
-        str = str + this.getClass().getName() + " objects.";
-        throw new IllegalActionException(str);
+        throw new IllegalActionException("Equality test not supported between "
+        + this.getClass().getName() + " and "
+        + token.getClass().getName() + ".");
     }
 
     /** Return a new Token whose value is the value of this token
@@ -167,14 +167,14 @@ public class Token {
      *  @return A new Token containing the result.
      */
     public Token modulo(Token rightArg) throws  IllegalActionException {
-        String str = "modulo method not supported on " +
-            this.getClass().getName() + " objects.";
-        throw new IllegalActionException(str);
+        throw new IllegalActionException("Modulo operation not supported: "
+        + this.getClass().getName() + " modulo "
+        + rightArg.getClass().getName() + ".");
     }
 
     /** Return a new Token whose value is the value of the argument token
      *  modulo the value of this token.
-     *  It should be overridden in derived classes to provide type specific
+     *  This should be overridden in derived classes to provide type specific
      *  actions for modulo.
      *  @param leftArg The token whose value we modulo on.
      *  @exception IllegalActionException If this method is not
@@ -183,14 +183,14 @@ public class Token {
      */
     public Token moduloReverse(Token leftArg)
             throws IllegalActionException {
-        String str = "moduloReverse method not supported on ";
-        str = str + this.getClass().getName() + " objects.";
-        throw new IllegalActionException(str);
+        throw new IllegalActionException("Modulo operation not supported on "
+        + leftArg.getClass().getName() + " objects modulo "
+        + this.getClass().getName() + " objects.");
     }
 
     /** Return a new Token whose value is the value of this Token
-     *  multiplied with the value of the argument Token.
-     *  It should be overridden in derived classes to provide type specific
+     *  multiplied by the value of the argument Token.
+     *  This should be overridden in derived classes to provide type specific
      *  actions for multiply.
      *  @param rightFactor The token whose value we multiply the value of this
      *   Token with.
@@ -199,9 +199,9 @@ public class Token {
      *  @return A new Token containing the result.
      */
     public Token multiply(Token rightFactor) throws  IllegalActionException {
-        String str = "multiply method not supported on ";
-        str = str + this.getClass().getName() + " objects.";
-        throw new IllegalActionException(str);
+        throw new IllegalActionException("Multiplication not supported on "
+        + this.getClass().getName() + " by "
+        + rightFactor.getClass().getName() + ".");
     }
 
     /** Return a new Token whose value is the value of the argument Token
@@ -216,9 +216,9 @@ public class Token {
      */
     public Token multiplyReverse(Token leftFactor)
 	    throws  IllegalActionException {
-        String str = "multiplyReverse method not supported on ";
-        str = str + this.getClass().getName() + " objects.";
-        throw new IllegalActionException(str);
+        throw new IllegalActionException("Multiplication not supported on "
+        + leftFactor.getClass().getName() + " by "
+        + this.getClass().getName() + ".");
     }
 
     /** Returns a new Token representing the multiplicative identity.
@@ -228,9 +228,9 @@ public class Token {
      *  @return A new Token containing the multiplicative identity.
      */
     public Token one() throws IllegalActionException {
-        String str = "Multiplicative identity not supported on ";
-        str = str + this.getClass().getName() + " objects.";
-        throw new IllegalActionException(str);
+        throw new IllegalActionException(
+            "Multiplicative identity not supported on "
+            + this.getClass().getName() + ".");
     }
 
     /** Return the String "present" to indicate that an event is present.
@@ -252,9 +252,9 @@ public class Token {
      *  @return A new Token containing the result.
      */
     public Token subtract(Token rightArg) throws  IllegalActionException {
-        String str = "subtract method not supported on ";
-        str = str + this.getClass().getName() + " objects.";
-        throw new IllegalActionException(str);
+        throw new IllegalActionException("Subtraction not supported on "
+        + this.getClass().getName() + " minus "
+        + rightArg.getClass().getName() + ".");
     }
 
     /** Return a new Token whose value is the value of this Token
@@ -268,9 +268,9 @@ public class Token {
      */
     public Token subtractReverse(Token leftArg)
 	    throws  IllegalActionException {
-        String str = "subtractReverse method not supported on ";
-        str = str + this.getClass().getName() + " objects.";
-        throw new IllegalActionException(str);
+        throw new IllegalActionException("Subtraction not supported on "
+        + leftArg.getClass().getName() + " minus "
+        + this.getClass().getName() + ".");
     }
 
     /** Return a description of the token as a string.
@@ -288,8 +288,8 @@ public class Token {
      *  @return A new Token containing the additive identity.
      */
     public Token zero() throws IllegalActionException {
-        String str = "Additive identity not supported on ";
-        str = str + this.getClass().getName() + " objects.";
-        throw new IllegalActionException(str);
+        throw new IllegalActionException(
+            "Additive identity not supported on "
+            + this.getClass().getName() + ".");
     }
 }
