@@ -33,6 +33,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.LinkedList;
@@ -86,7 +87,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
             //System.out.println("getScope() for " + _name + ": building scope");
             try {
                 _buildScope();
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new RuntimeException("Failed to build a scope: e");
             }
         }
@@ -147,8 +148,9 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
     }
 
     /** Ensure that the source code for this ClassDecl is loaded.
-     *  @exception IOException Thrown if we can't get the canonical
+     *  @exception IOException If we can't get the canonical
      *  name of the test library.
+     *  @exception FileNotFoundException If we can't find the source file.
      */
     public void loadSource() throws IOException {
         if (_source == null) {
@@ -195,8 +197,10 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
         _superClass = superClass;
     }
 
-    /** @exception IOException Thrown if we can't get the canonical
+    /** @exception IOException If we can't get the canonical
      *  name of a source file.
+     *  @exception FileNotFoundException If we fail to find the source
+     *  file.
      */
     protected void _buildScope() throws IOException {
 	//System.out.println("ClassDecl._buildScope(): Building scope " +
@@ -205,7 +209,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
         // builds scopes for all recently loaded classes, including
 	// this one
-        StaticResolution.buildScopements();
+        StaticResolution.buildScopes();
 
         // If class didn't load, give it a dummy scope, etc
         if (_scope == null) {

@@ -246,7 +246,11 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		//		   "about to call classDecl.loadSource() " +
 		//		   d.category + " " + classDecl.getName() );
 
-                classDecl.loadSource();
+                try {
+                    classDecl.loadSource();
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to load source: " + e);
+                }
                 int modifiers = classDecl.getModifiers();
                 boolean isPublic = ((modifiers & PUBLIC_MOD) != 0);
                 boolean isStatic = ((modifiers & STATIC_MOD) != 0);
@@ -870,7 +874,11 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 	    classDecl = (ClassDecl) decl;
 	}
 	//System.out.println("StaticResolution._requireClass() loadSource()");
-        classDecl.loadSource();
+        try {
+            classDecl.loadSource();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load source: " + e);
+        }
 	//System.out.println("\nStaticResolution._requireClass() -- leaving");
         return classDecl;
     }
