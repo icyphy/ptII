@@ -1,8 +1,8 @@
-# Makefile for Ptolemy II Continuous Time domain demos
+# Makefile for Ptolemy II Discrete Event domain demos
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: @(#)makefile	1.15	09/10/98
+# @Version: $Id$
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
