@@ -169,14 +169,15 @@ public class NonStrictTest extends Transformer {
         _numberOfInputTokensSeen = 0;
         _iteration = 0;
         _trainingTokens = null;
-        if(((BooleanToken)trainingMode.getToken()).booleanValue() &&
-                isRunningNightlyBuild()) {
-            throw new IllegalActionException(this,
+        if(((BooleanToken)trainingMode.getToken()).booleanValue()) { 
+            if (isRunningNightlyBuild()) {
+                throw new IllegalActionException(this,
                     TRAINING_MODE_ERROR_MESSAGE);
-        } else {
-            System.err.println("Warning: '" + this.getFullName()
-                    + "' is in training mode, set the trainingMode "
-                    + "parameter to false before checking in");
+            } else {
+                System.err.println("Warning: '" + this.getFullName()
+                        + "' is in training mode, set the trainingMode "
+                        + "parameter to false before checking in");
+            }
         }
     }
 
