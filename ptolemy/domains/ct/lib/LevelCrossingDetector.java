@@ -27,8 +27,8 @@ COPYRIGHTENDKEY
 */
 package ptolemy.domains.ct.lib;
 
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.Transformer;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
@@ -67,8 +67,9 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
-public class LevelCrossingDetector extends Transformer
-    implements CTStepSizeControlActor, CTEventGenerator {
+public class LevelCrossingDetector extends TypedAtomicActor
+        implements CTStepSizeControlActor, CTEventGenerator {
+    
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -84,9 +85,8 @@ public class LevelCrossingDetector extends Transformer
     public LevelCrossingDetector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
 
-        output.setTypeAtLeast(input);
+        output = new TypedIOPort(this, "output", false, true);
         new Parameter(output, "signalType", new StringToken("DISCRETE"));
 
         trigger = new TypedIOPort(this, "trigger", true, false);
@@ -99,6 +99,9 @@ public class LevelCrossingDetector extends Transformer
 
         defaultEventValue = new Parameter(this, "defaultEventValue",
                 new DoubleToken(0.0));
+        
+        // FIXME: If usingDefaultEventValue is false, the output
+        // type should be constrained to match the trigger input type.
         output.setTypeAtLeast(defaultEventValue);
 
         usingDefaultEventValue = new Parameter(this, "usingDefaultEventValue");
@@ -130,6 +133,11 @@ public class LevelCrossingDetector extends Transformer
      *  iteration.
      */
     public Parameter level;
+
+    /** The output port. The type is at least the type of the
+     *  <i>defaultEventValue</i> parameter.
+     */
+    public TypedIOPort output;
 
     /** The trigger port. Single port with type double.
      */
@@ -179,7 +187,6 @@ public class LevelCrossingDetector extends Transformer
         LevelCrossingDetector newObject = (LevelCrossingDetector) super.clone(workspace);
 
         // Set the type constraints.
-        newObject.output.setTypeAtLeast(newObject.input);
         newObject.output.setTypeAtLeast(newObject.defaultEventValue);
         return newObject;
     }
