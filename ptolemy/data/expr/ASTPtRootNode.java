@@ -38,7 +38,8 @@ package ptolemy.data.expr;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
@@ -144,18 +145,18 @@ public class ASTPtRootNode implements Node {
 
     public void jjtAddChild(Node n, int i) {
         if (_children == null) {
-            _children = new Vector();
+            _children = new ArrayList();
         }
         if (i >= _children.size()) {
             while (_children.size() <= i) {
                 _children.add(null);
             }
         }
-        _children.setElementAt(n, i);
+        _children.set(i, n);
     }
 
     public Node jjtGetChild(int i) {
-        return (Node)_children.elementAt(i);
+        return (Node)_children.get(i);
     }
 
     public int jjtGetNumChildren() {
@@ -184,7 +185,7 @@ public class ASTPtRootNode implements Node {
         }
         if (_children != null) {
             for (int i = 0; i < _children.size(); ++i) {
-                ASTPtRootNode n = (ASTPtRootNode)_children.elementAt(i);
+                ASTPtRootNode n = (ASTPtRootNode)_children.get(i);
                 if (n != null) {
                     n.displayParseTree(prefix + " ");
                 }
@@ -226,7 +227,7 @@ public class ASTPtRootNode implements Node {
     ////                         protected variables               ////
 
     protected Node _parent;
-    protected Vector _children;
+    protected ArrayList _children;
     protected int _id;
     protected PtParser _parser;
 
@@ -241,7 +242,7 @@ public class ASTPtRootNode implements Node {
      *  LinkedList. Note that here token refers to tokens returned by the
      *  lexical analyzer.
      */
-    protected LinkedList _lexicalTokens = new LinkedList();
+    protected List _lexicalTokens = new ArrayList(0);
 
     /** Stores the ptolemy.data.Tokens of each of the children nodes */
     protected ptolemy.data.Token[] _childTokens;

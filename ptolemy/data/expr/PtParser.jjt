@@ -499,7 +499,7 @@ void logicalOr() #void :
    (
            logicalAnd() ( 
                    x = <COND_OR> logicalAnd()
-                   {  jjtThis._lexicalTokens.add((Object)x); }
+                   {  jjtThis._lexicalTokens.add(x); }
            )*
    ) #PtLogicalNode(>1)
 }
@@ -510,7 +510,7 @@ void logicalAnd() #void :
    (
            bitwiseOr() ( 
                    x = <COND_AND> bitwiseOr()
-                   {  jjtThis._lexicalTokens.addLast(x); }
+                   {  jjtThis._lexicalTokens.add(x); }
            )*
    ) #PtLogicalNode(>1)
 }
@@ -521,7 +521,7 @@ void bitwiseOr() #void :
    (
            bitwiseXor() ( 
                    x = <OR> bitwiseXor()
-                   {  jjtThis._lexicalTokens.addLast(x); }
+                   {  jjtThis._lexicalTokens.add(x); }
            )*
    ) #PtBitwiseNode(>1)
 }
@@ -532,7 +532,7 @@ void bitwiseXor() #void :
    (
            bitwiseAnd() ( 
                    x = <XOR> bitwiseAnd()
-                   {  jjtThis._lexicalTokens.addLast(x); }
+                   {  jjtThis._lexicalTokens.add(x); }
            )*
    ) #PtBitwiseNode(>1)
 }
@@ -543,7 +543,7 @@ void bitwiseAnd() #void :
    (
            logicalEquals() ( 
                    x = <AND> logicalEquals()
-                   {  jjtThis._lexicalTokens.addLast(x); }
+                   {  jjtThis._lexicalTokens.add(x); }
            )*
    ) #PtBitwiseNode(>1)
 }
@@ -555,7 +555,7 @@ void logicalEquals() #void :
            relational() ( 
                    ( x = <EQUALS> | x = <NOTEQUALS> ) relational()
                    {
-                       jjtThis._lexicalTokens.addLast(x);
+                       jjtThis._lexicalTokens.add(x);
                    }
            )?
    ) #PtRelationalNode(>1)
@@ -569,7 +569,7 @@ void relational() #void :
            sum() ( 
                    ( x = <GT> | x = <GTE> | x = <LT> | x = <LTE> ) sum()
                    {
-                       jjtThis._lexicalTokens.addLast(x);
+                       jjtThis._lexicalTokens.add(x);
                    }
            )?
    ) #PtRelationalNode(>1)
@@ -582,7 +582,7 @@ void sum() #void :
            term() ( 
                    ( x = <PLUS> | x = <MINUS> ) term()
                    {
-                       jjtThis._lexicalTokens.addLast(x);
+                       jjtThis._lexicalTokens.add(x);
                    }
            )*
    ) #PtSumNode(>1)
@@ -595,7 +595,7 @@ void term() #void :
            unary() ( 
                    ( x = <MULTIPLY> | x = <DIVIDE> | x = <MODULO> | x = <POWER> ) unary()
                    {
-                       jjtThis._lexicalTokens.addLast(x);
+                       jjtThis._lexicalTokens.add(x);
                    }
            )*
    ) #PtProductNode(>1)

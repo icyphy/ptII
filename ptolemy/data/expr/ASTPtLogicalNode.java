@@ -73,7 +73,7 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
 		    + "number of children or operators.");
 	}
 
-	Token operator = (Token)_lexicalTokens.getFirst();
+	Token operator = (Token)_lexicalTokens.get(0);
 	boolean isAnd = false;
 	if (operator.image.equalsIgnoreCase("&&")) {
 	    isAnd = true;

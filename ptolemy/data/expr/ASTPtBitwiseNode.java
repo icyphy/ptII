@@ -58,7 +58,7 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
         if (num == 1) {
             return _childTokens[0];
         }
-        if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
+        if (jjtGetNumChildren() != (_lexicalTokens.size() + 1) ) {
             throw new IllegalActionException(
                     "Not enough/too many operators for number of children");
         }
@@ -68,12 +68,10 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
             isBoolean = true;
         }
         String op = "";
-        int i = 1;
-        for ( i = 1; i < num; i++ ) {
+        for (int i = 1; i < num; i++ ) {
             // need to take the top object, AND put it back at the
             // end so that the tree can be reparsed
-            Object x = _lexicalTokens.removeFirst();
-            _lexicalTokens.add(x);
+            Object x = _lexicalTokens.get(i - 1);
             op = ((Token)x).image;
             if (isBoolean) {
                 if ( !(_childTokens[i] instanceof BooleanToken) ) {

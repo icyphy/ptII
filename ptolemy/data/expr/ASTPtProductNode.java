@@ -71,7 +71,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
         _numbers = new LinkedList(Arrays.asList(_childTokens));
 
         // Create a local copy of the _lexicalTokens. This
-        // allows use to manipulate _tokens, while the list
+        // allows us to manipulate _tokens, while the list
         // _lexicalTokens remains the same, allowing for
         // reevaluation of the expression when needed.
         _tokens = new LinkedList( _lexicalTokens );
@@ -87,13 +87,12 @@ public class ASTPtProductNode extends ASTPtRootNode {
                 itr.remove();
                 int times = 1;
                 try {
-                    times =
-                        ((ptolemy.data.ScalarToken)
-                                _numbers.get(index+1)).intValue();
+                    times = ((ptolemy.data.ScalarToken)
+                            _numbers.get(index+1)).intValue();
                 } catch (Exception e) {
                     throw new IllegalActionException(
                             "Only integral power numbers (e.g. 10^3) " +
-                            "are allowed. PLese check expression and use " +
+                            "are allowed. Please check expression and use " +
                             "pow(10,3.5) instead to express non-integer " +
                             "powers.");
                 }

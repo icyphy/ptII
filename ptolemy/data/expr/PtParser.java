@@ -428,7 +428,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(COND_OR);
         logicalAnd();
-                      jjtn001._lexicalTokens.add((Object)x);
+        jjtn001._lexicalTokens.add(x);
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -470,7 +470,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(COND_AND);
         bitwiseOr();
-                      jjtn001._lexicalTokens.addLast(x);
+                      jjtn001._lexicalTokens.add(x);
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -512,7 +512,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(OR);
         bitwiseXor();
-                      jjtn001._lexicalTokens.addLast(x);
+                      jjtn001._lexicalTokens.add(x);
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -554,7 +554,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(XOR);
         bitwiseAnd();
-                      jjtn001._lexicalTokens.addLast(x);
+                      jjtn001._lexicalTokens.add(x);
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -596,7 +596,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(AND);
         logicalEquals();
-                      jjtn001._lexicalTokens.addLast(x);
+                      jjtn001._lexicalTokens.add(x);
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -642,7 +642,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
           throw new ParseException();
         }
         relational();
-                       jjtn001._lexicalTokens.addLast(x);
+                       jjtn001._lexicalTokens.add(x);
         break;
       default:
         jj_la1[7] = jj_gen;
@@ -700,7 +700,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
           throw new ParseException();
         }
         sum();
-                       jjtn001._lexicalTokens.addLast(x);
+                       jjtn001._lexicalTokens.add(x);
         break;
       default:
         jj_la1[9] = jj_gen;
@@ -758,7 +758,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
           throw new ParseException();
         }
         term();
-                       jjtn001._lexicalTokens.addLast(x);
+                       jjtn001._lexicalTokens.add(x);
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -820,7 +820,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
           throw new ParseException();
         }
         unary();
-                       jjtn001._lexicalTokens.addLast(x);
+                       jjtn001._lexicalTokens.add(x);
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
