@@ -42,7 +42,7 @@ package diva.util.xml;
  * @rating Red
  */
 public interface XmlBuilder {
-    /** Given an XmlElement, create and return an internal representtion
+    /** Given an XmlElement, create and return an internal representation
      * of it. Implementors should also provide a more
      * type-specific version of this method:
      * <pre>
