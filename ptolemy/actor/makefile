@@ -64,8 +64,10 @@ JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
 	Actor.java \
-	CQLink.java \
-	CQComparator.java \
+	CalendarQueue.java \
+	Priority.java \
+	DEPriority.java \
+	LongPriority.java \
 	CompositeActor.java \
 	DataComputingInit.java \
 	Director.java \
