@@ -88,8 +88,9 @@ import java.util.Enumeration;
 /**
 A Petri net Actor
 
-THis is the basic unit of the hierarchical PetriNet component. It contains
+This is the basic unit of the hierarchical PetriNet component. It contains
 ports, places, transitions, and hierarchical petrinet components.
+
 The current version restricts the ports to be uniformly connected to
 Places or transitions in one direction. It is not allowed to have the
 ports to connect to places and transitions in the same input or output
@@ -126,12 +127,17 @@ public class PetriNetActor extends TypedCompositeActor  {
             "ptolemy.domains.petrinet.kernel.PetriNetActor";
     }
 
+    /** @param workspace  the workspace for the new actor.
+     */
     public PetriNetActor(Workspace workspace) {
 	super(workspace);
         getMoMLInfo().className =
             "ptolemy.domains.petrinet.kernel.PetriNetActor";
     }
 
+   /** @param workspace  the workspace for the new actor.
+    *  @param name  the name of the actor.
+    */
     public PetriNetActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -145,7 +151,12 @@ public class PetriNetActor extends TypedCompositeActor  {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** @param workspace The workspace for the new actor.
+     *  @return A new PetriNetActor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
 
+     */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         PetriNetActor newObject = (PetriNetActor)super.clone(workspace);
@@ -155,6 +166,9 @@ public class PetriNetActor extends TypedCompositeActor  {
 
     /** It is assumed that the top level of the hierarchy is a
      *  PetiNetDirector.
+     *  @exception IllegalActionException If
+     *  fireHierarchicalPetriNet throws exception.
+     *
      */
     public void fire() throws IllegalActionException {
         Nameable container = getContainer();
@@ -173,13 +187,15 @@ public class PetriNetActor extends TypedCompositeActor  {
      *  see which one is ready to fire.
      *  If there is one transition ready to fire, then the container
      *  PetriNetActor is ready to fire.
+     *  @exception IllegalActionException If
+     *   testReadyTransition throws exception.
+     *  @return true or false, a PetriNetActor is ready to fire or not.
      */
     public boolean prefire() throws IllegalActionException {
         System.out.println("inside the PetriNetActor.prefire, the actors is"
                 +  getFullName() );
         TypedCompositeActor pn = (TypedCompositeActor) this;
         PetriNetDirector director = (PetriNetDirector) getDirector();
-
         Iterator components = deepEntityList().iterator();
         while (components.hasNext()) {
             Nameable component = (Nameable) components.next();
@@ -191,6 +207,5 @@ public class PetriNetActor extends TypedCompositeActor  {
             }
         }
         return false;
-
     }
 }

@@ -45,7 +45,10 @@ import java.util.Random;
 //////////////////////////////////////////////////////////////////////////
 //// Place
 /**
-A Petri net place.
+A Petri net place. It contains an integer as the marking of the
+place. The methods here are used to manipulate the integer marking.
+The TemporaryMarking is used for checking whehter a transition
+is ready or not.
 
 @author  Yuke Wang and Edward A. Lee
 @version $Id$
@@ -90,53 +93,66 @@ public class Place extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** getMarking() is to get the _currentMarking of the place */
-
+    /** getMarking() is to get the _currentMarking of the place
+     *  @return the currentMarking of the place.
+     */
     public int getMarking() {
         return _currentMarking;
     }
-    /** getTemporaryMarking() is to get the temporaryMarking of the place.
-        temporaryMarking is used for checking whether the _currentMarking
-        of the place is bigger than the sum of all links between the place
-        and a transition. TemporaryMarking is used in Transition.prefire.
-    */
 
+    /** getTemporaryMarking() is to get the temporaryMarking of the place.
+     *  temporaryMarking is used for checking whether the _currentMarking
+     *  of the place is bigger than the sum of all links between the place
+     *  and a transition. TemporaryMarking is used in Transition.prefire.
+     *  @return the _temporaryMarking of the place.
+    */
     public int getTemporaryMarking() {
         return _temporaryMarking;
     }
 
-    /** increaseMarking() is to increase the _currentMarking by i */
+    /** increaseMarking() is to increase the _currentMarking by i
+     *  @param i the number to be increased for the marking in the place.
+     */
     public void increaseMarking(int i) {
         _currentMarking = _currentMarking + i;
     }
 
-    /** decreaseMarking() is to decrease the _currentMarking by i */
+    /** decreaseMarking() is to decrease the _currentMarking by i
+     *  @param i the number to be decreased for the marking in the place.
+     */
     public void decreaseMarking(int i) {
         _currentMarking = _currentMarking - i;
     }
 
-    /** decreaseTemporaryMarking() is to decrease the _temporaryMarking by i */
+    /** decreaseTemporaryMarking() is to decrease the
+     *  _temporaryMarking by i.
+     *  @param i the number to be decreased for the Temporarymarking
+     *   in the place.
+     */
     public void decreaseTemporaryMarking(int i) {
         _temporaryMarking = _temporaryMarking - i;
     }
 
+    /**  @param i the number to be increased for the Temporarymarking
+     *   in the place.
+     */
     public void increaseTemporaryMarking(int i) {
         _temporaryMarking = _temporaryMarking + i;
     }
 
-    /** setTemporaryMarking() is to set the _temporaryMarking to i */
+    /** setTemporaryMarking() is to set the _temporaryMarking to i
+     *  @param i set the Temporarymarking of the place to i.
+     */
     public void setTemporaryMarking(int i) {
         _temporaryMarking = i;
     }
 
 
-    /** setTemporaryMarking() is to set the _currentMarking to i */
+    /** setMarking() is to set the _currentMarking to i
+     *  @param i set the marking of the place to i
+     */
     public void setMarking(int i) {
         _currentMarking = i;
-    }
-
-    public void printMarking() {
-        System.out.println("the current marking is " + _currentMarking);
     }
 
     /** Set the current marking equal to the initial marking.
@@ -148,17 +164,6 @@ public class Place extends Transformer {
         _temporaryMarking = _currentMarking;
     }
 
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
