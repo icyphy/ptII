@@ -64,7 +64,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
-# PTCLASSALLJARS =  \
+PTCLASSALLJARS =  \
+	CorbaIOUtil/CorbaIOUtil.jar \
 	util/util.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
