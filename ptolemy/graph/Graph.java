@@ -1450,11 +1450,47 @@ public class Graph implements Cloneable {
      * <p>A similar example can be used to demostrate the use of
      * {@link #validateWeight(Edge)} and {@link #validateWeight(Edge, Object)}.
      *
+     *  @param node The node whose weight is to be validated.
+     *  @param oldWeight The previous weight of the node.
+     *  @return True if the node weight has changed, as determined by the equals
+     *  method.
      * @see #validateWeight(Node).
      */
-     public void validateWeight(Node node, Object oldWeight) {
-         List nodeList = (List) _nodeWeightMap.get(oldWeight);
-         // FIXME: need to implement this
+     public boolean validateWeight(Node node, Object oldWeight) {
+        if (!containsNode(node)) {
+            throw new IllegalArgumentException("The specified node is not "
+                    + "in the graph." + _nodeDump(node));
+        }
+        Object newWeight = node.hasWeight() ? node.getWeight() : null;
+        if (!validNodeWeight(newWeight)) {
+            throw new IllegalStateException("Invalid weight associated with a "
+                    + "node in the graph." +  _nodeDump(node));
+        }
+        boolean changed = false;
+        if (oldWeight == null) {
+            if (!_unweightedNodeSet.contains(node)) {
+                // This 'dump' of a null weight will also dump the graph.
+                throw new IllegalArgumentException("Incorrect previous weight "
+                        + "specified." + _weightDump(oldWeight));
+            }
+            if (newWeight == null) {
+                return false;
+            }
+            _unweightedNodeSet.remove(node);
+            changed = true;
+        } else {
+            // The weight may have changed in value even if comparison under
+            // the equals method has not changed. Thus we proceed
+            // with the removal unconditionally.
+            List nodeList = (List)_nodeWeightMap.get(oldWeight);
+            if ((nodeList == null) || !nodeList.remove(node)) {
+                throw new IllegalArgumentException("Incorrect previous weight "
+                        + "specified." + _weightDump(oldWeight));
+            }
+            changed = oldWeight.equals(newWeight);
+        }
+        _registerWeight(node);
+        return changed;
      }
 
 
@@ -1874,9 +1910,12 @@ public class Graph implements Cloneable {
 
     // Given a node (edge), the mapping of weights into nodes (edges), and
     // a new weight for the node (edge),
-    // remove the current mapping of a weight to the node (edge), if such
-    // a mapping exists, and determine whether the new weight differs from
+    // remove the current mapping of a weight to the node (edge) or
+    // remove the node (edge) from the set of unweighted nodes (edges).
+    // Then determine whether the new weight differs from
     // the previous weight. The node (edge) is assumed to be in the graph.
+    // If the weight is null, it is interpreted to mean that the node (edge)
+    // is unweighted.
     // @param element The graph element (node or edge).
     // @param weight The new weight.
     // @param weightMap The mapping of weights into nodes or edges.
