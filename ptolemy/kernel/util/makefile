@@ -66,6 +66,8 @@ JSRCS = \
 	IllegalActionException.java \
 	InternalErrorException.java \
 	InvalidStateException.java \
+	Locatable.java \
+	Location.java \
 	ModelErrorHandler.java \
 	Nameable.java \
 	NamedList.java \
