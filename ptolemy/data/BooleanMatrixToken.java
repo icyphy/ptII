@@ -360,18 +360,6 @@ public class BooleanMatrixToken extends MatrixToken {
         return a;
     }
 
-    /** Return a true-valued token if the first argument is close to this
-     *  token, where in this class, "close" means "identical to."
-     *  It is assumed that the type of the argument is
-     *  BooleanMatrixToken.
-     *  @param token The token to compare to this token.
-     *  @return A token containing the result.
-     */
-    protected BooleanToken _isCloseTo(
-            MatrixToken token, double epsilon) {
-        return BooleanToken.getInstance(equals(token));
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 

@@ -420,41 +420,6 @@ public class FixMatrixToken extends MatrixToken {
         return new FixMatrixToken(result);
     }
 
-	/** Test whether the value of this token is close to the first argument,
-	 *  where "close" means that the distance between their elements is less than
-	 *  or equal to the second argument. It is assumed that the type of
-	 *  the first argument is FixMatrixToken.
-	 *  @param token The token to compare to this token.
-	 *  @return A token containing true if every element of the first
-	 *   argument matrix is close to the corresponding element of this
-	 * 	 matrix.
-	 */
-    protected BooleanToken _isCloseTo(
-            MatrixToken token, double epsilon) {
-        FixMatrixToken convertedArgument = (FixMatrixToken)token;
-        FixPoint[][] matrix = convertedArgument.fixMatrix();
-        for (int i = 0; i < _rowCount; i++) {
-        	for (int j = 0; j < _columnCount; j++) {
-        		if (((_value[i][j].subtract(matrix[i][j])).abs()).doubleValue()
-        		        > epsilon) {
-        			return BooleanToken.FALSE;      
-                }
-        	}
-        }
-        return BooleanToken.TRUE;
-    }
-
-    /** Test for equality of the values of this token and the argument.
-     *  It is assumed that the type of the argument is FixMatrixToken.
-     *  @param token The token to compare to this token.
-	 *  @return A token containing true if every element of the first
-	 *   argument matrix is equal to the corresponding element of this
-	 * 	 matrix.
-	 */
-    protected BooleanToken _isEqualTo(MatrixToken token) {
-        return BooleanToken.getInstance(equals(token));
-    }
-
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument token.  It is assumed
      *  that the type of the argument is FixMatrixToken.

@@ -412,8 +412,10 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      */
     protected BooleanToken _isCloseTo(Token token, double epsilon)
             throws IllegalActionException {
-        _checkArgumentLength(token);
         ArrayToken rightArray = (ArrayToken)token;
+		if (length() != rightArray.length()) {
+			return BooleanToken.FALSE;
+		}
 
         for (int i = 0; i < _value.length; i++) {
             // Here is where isCloseTo() differs from isEqualTo().

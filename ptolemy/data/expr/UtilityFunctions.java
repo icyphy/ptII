@@ -80,23 +80,6 @@ public class UtilityFunctions {
         return token1.getType().convert(token2);
     }
     
-    /** Return true if the first argument is close in value to the second,
-     *  where "close" means that it is within the distance given by the
-     *  third argument. Exactly what this means depends on the data type.
-     *  This method uses the isCloseTo() method of the first token.
-     *  @param token1 The first token.
-     *  @param token2 The second token.
-     * 	@param distance The distance criterion.
-     *  @return a true-valued token if the first two arguments are close
-     *   enough.
-     *  @exception IllegalActionException If the first two arguments cannot
-     *   be compared.
-     */
-    public static BooleanToken close(Token token1, Token token2, double distance)
-            throws IllegalActionException {
-    	return token1.isCloseTo(token2, distance);
-    }
-
     /** Return a StringToken that contains the names of all the
      *  constants and their values.
      *  @return A token containing the names of all the constants
@@ -427,6 +410,24 @@ public class UtilityFunctions {
             throws IllegalActionException {
         return new ObjectToken(classname);
     }
+
+	/** Return true if the first argument is close in value to the second,
+	 *  where "close" means that it is within the distance given by the
+	 *  third argument. Exactly what this means depends on the data type.
+	 *  This method uses the isCloseTo() method of the first token.
+	 *  @param token1 The first token.
+	 *  @param token2 The second token.
+	 * 	@param distance The distance criterion.
+	 *  @return a true-valued token if the first two arguments are close
+	 *   enough.
+	 *  @exception IllegalActionException If the first two arguments cannot
+	 *   be compared.
+	 */
+	public static BooleanToken neighborhood(
+			Token token1, Token token2, double distance)
+			throws IllegalActionException {
+		return token1.isCloseTo(token2, distance);
+	}
 
     /** Get the specified property from the environment. An empty string
      *  is returned if the argument environment variable does not exist.

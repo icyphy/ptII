@@ -451,24 +451,6 @@ public class LongMatrixToken extends MatrixToken {
         return _value;
     }
 
-	/** Test whether the value of this token is close to the first argument,
-	 *  where "close" means that the distance between their elements is less than
-	 *  or equal to the second argument. It is assumed that the type of
-	 *  the first argument is LongMatrixToken.
-	 *  @param token The token to compare to this token.
-	 *  @return A token containing true if every element of the first
-	 *   argument matrix is close to the corresponding element of this
-	 * 	 matrix.
-	 */
-    protected BooleanToken _isCloseTo(
-            MatrixToken token, double epsilon) {
-       LongMatrixToken convertedArgument = (LongMatrixToken)token;
-       return BooleanToken.getInstance(LongMatrixMath.within(
-               _value,
-               convertedArgument._getInternalLongMatrix(),
-               (long)Math.floor(epsilon)));
-    }
-
     /** Return a new token whose elements are the remainders of
      *  the elements of this token when divided by the argument.
      *  It is guaranteed by the caller that the type of the argument

@@ -440,24 +440,6 @@ public class ComplexMatrixToken extends MatrixToken {
         return _value;
     }
 
-	/** Test that the value of this token is close to the first argument,
-	 *  where "close" means that the distance between their elements is less than
-	 *  or equal to the second argument. It is assumed that the type of
-	 *  the first argument is ComplexMatrixToken.
-     *  @param token The token to compare to this token.
-     *  @return A token containing true if every element of the first
-     *   argument matrix is close to the corresponding element of this
-     * 	 matrix.
-     */
-    protected BooleanToken _isCloseTo(
-            MatrixToken token, double epsilon) {
-        ComplexMatrixToken convertedArgument = (ComplexMatrixToken)token;
-        return BooleanToken.getInstance(ComplexMatrixMath.within(
-                _value,
-                convertedArgument._getInternalComplexMatrix(),
-                epsilon));
-    }
-
     /** Return a new token whose value is the value of the argument
      *  Token multiplied to the value of this Token.  It is assumed that
      *  the type of the argument is ComplexMatrixToken.
