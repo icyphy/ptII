@@ -29,6 +29,7 @@ import java.util.NoSuchElementException;
 **/
 
 public class IllegalElementException extends IllegalArgumentException {
+ /** @serial Object passed in to this exception */
  public Object argument;
  public IllegalElementException() { super(); }
  public IllegalElementException(Object v, String msg) {

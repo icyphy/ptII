@@ -28,7 +28,7 @@ package collections;
 public class ImplementationError extends Error {
 
 /**
- * The object failing the ImplementationCheck
+ * @serial The object failing the ImplementationCheck
 **/
 
   public Object failedObject;

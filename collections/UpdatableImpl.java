@@ -38,18 +38,18 @@ public abstract class UpdatableImpl implements UpdatableCollection, Serializable
 // instance variables
 
 /**
- * version_ represents the current version number
+ * @serial version_ represents the current version number
 **/
   protected int version_;
 
 /**
- * screener_ hold the supplied element screener
+ * @serial screener_ hold the supplied element screener
 **/
 
   protected Predicate screener_;
 
 /**
- * count_ holds the number of elements.
+ * @serial count_ holds the number of elements.
 **/
   protected int count_;
 

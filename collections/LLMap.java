@@ -34,7 +34,7 @@ public class LLMap extends UpdatableMapImpl implements UpdatableMap {
 // instance variables
 
 /**
- * The head of the list. Null if empty
+ * @serial The head of the list. Null if empty
 **/
 
   protected LLPair list_;

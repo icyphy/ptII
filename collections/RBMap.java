@@ -35,13 +35,13 @@ public class RBMap extends    UpdatableMapImpl
 // instance variables
 
 /**
- * The root of the tree. Null iff empty.
+ * @serial The root of the tree. Null iff empty.
 **/
 
   protected RBPair tree_;
 
 /**
- * The comparator to use for ordering
+ * @serial The comparator to use for ordering
 **/
 
   protected Comparator cmp_;

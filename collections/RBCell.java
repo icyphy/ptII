@@ -44,25 +44,25 @@ public class RBCell extends Cell implements ImplementationCheckable  {
   static final boolean BLACK = true;
 
 /**
- * The node color (RED, BLACK)
+ * @serial The node color (RED, BLACK)
 **/
 
   protected boolean color_;
 
 /**
- * Pointer to left child
+ * @serial Pointer to left child
 **/
 
   protected RBCell  left_;
 
 /**
- * Pointer to right child
+ * @serial Pointer to right child
 **/
 
   protected RBCell  right_;
 
 /**
- * Pointer to parent (null if root)
+ * @serial Pointer to parent (null if root)
 **/
 
   private RBCell  parent_;

@@ -32,6 +32,7 @@ public class Cell implements Cloneable, Serializable{
 
 // instance variables
 
+  /** @serial instance variable */
   private Object   element_;
 
 /**

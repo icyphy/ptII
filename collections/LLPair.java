@@ -31,6 +31,9 @@ public class LLPair extends LLCell implements Pair {
 
 // instance variables
 
+/**
+ * @serial key to lookup by
+ */
   private Object   key_;
 
 /**

@@ -32,7 +32,9 @@ public class CLCell extends Cell {
 
 // instance variables
 
+  /** @serial instance variable */
   private CLCell next_;
+  /** @serial instance variable */
   private CLCell prev_;
 
 // constructors

@@ -33,13 +33,13 @@ public class RBTree extends    UpdatableBagImpl
 // instance variables
 
 /**
- * The root of the tree. Null if empty.
+ * @serial The root of the tree. Null if empty.
 **/
 
   protected RBCell tree_;
 
 /**
- * The comparator to use for ordering.
+ * @serial The comparator to use for ordering.
 **/
   protected Comparator cmp_;
 

@@ -53,7 +53,7 @@ public class Dynarray extends    UpdatableSeqImpl
 // instance variables
 
 /**
- * The elements, or null if no buffer yet allocated.
+ * @serial The elements, or null if no buffer yet allocated.
 **/
 
   protected Object array_[];

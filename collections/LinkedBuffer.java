@@ -46,7 +46,7 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
 
 
 /**
- * The default chunk size to use for buffers
+ * @serial The default chunk size to use for buffers
 **/
 
   public static final int defaultChunkSize = 32;
@@ -54,19 +54,19 @@ public class LinkedBuffer extends UpdatableBagImpl implements UpdatableBag {
 // instance variables
 
 /**
- * The last node of the circular list of chunks. Null if empty.
+ * @serial The last node of the circular list of chunks. Null if empty.
 **/
 
   protected CLCell tail_;
 
 /**
- * The number of elements of the tail node actually used. (all others
+ * @serial The number of elements of the tail node actually used. (all others
  * are kept full).
 **/
   protected int lastCount_;
 
 /**
- * The chunk size to use for making next buffer
+ * @serial The chunk size to use for making next buffer
 **/
 
   protected int chunkSize_;

@@ -32,18 +32,18 @@ import java.util.NoSuchElementException;
 public class CorruptedEnumerationException extends NoSuchElementException {
 
 /**
- * The collection that this is an enumeration of
+ * @serial The collection that this is an enumeration of
 **/
 
  public Collection collection;
 
 /**
- * The version expected of the collection
+ * @serial The version expected of the collection
 **/
  public int oldVersion;
 
 /**
- * The current version of the collection
+ * @serial The current version of the collection
 **/
 
  public int newVersion;

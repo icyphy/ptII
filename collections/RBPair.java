@@ -30,7 +30,9 @@ import java.util.NoSuchElementException;
 public class RBPair extends RBCell implements Pair {
 
 // instance variable
-
+/**
+ * @serial key to look up by
+ */
   private Object   key_;
 
 /**

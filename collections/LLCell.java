@@ -35,6 +35,9 @@ import java.util.NoSuchElementException;
 **/
 
 public class LLCell extends Cell {
+/**
+ * @serial Next cell in the list
+ */
   private LLCell next_;
 
 /**

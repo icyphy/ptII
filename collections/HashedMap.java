@@ -34,12 +34,12 @@ public class HashedMap extends    UpdatableMapImpl
 // instance variables
 
 /**
- * The table. Each entry is a list. Null if no table allocated
+ * @serial The table. Each entry is a list. Null if no table allocated
 **/
   protected LLPair table_[];
 
 /**
- * The threshold load factor
+ * @serial The threshold load factor
 **/
 
   protected float loadFactor_;

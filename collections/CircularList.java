@@ -33,7 +33,7 @@ public class CircularList extends UpdatableSeqImpl implements UpdatableSeq {
 // instance variables
 
 /**
- * The head of the list. Null if empty
+ * @serial The head of the list. Null if empty
 **/
   protected CLCell list_;
 

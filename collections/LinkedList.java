@@ -32,7 +32,7 @@ public class LinkedList extends    UpdatableSeqImpl
 // instance variables
 
 /**
- * The head of the list. Null iff count_ == 0
+ * @serial The head of the list. Null iff count_ == 0
 **/
 
   protected LLCell list_;
