@@ -209,18 +209,25 @@ public class DatagramWriter extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the parameter changed is <i>localSocketNumber</i>, then if
-     *  the model is running (as evidenced by socket != null) then
-     *  close socket and reopen with new socket number (even if it is the same
-     *  as the old socket number).  Do not close the socket until a new
-     *  one has been successfully opened.  If <i>defaultRemoteAddress</i>
-     *  or <i>defaultRemoteSocketNumber</i> is changed, simply update
+    /** Override the base class to reinitialize the state if the
+     *  <i>localSocketNumber</i>, <i>defaultRemoteAddress</i> or
+     *  <i>defaultRemoteSocketNumber</i> parameter has changed.
+     *
+     *  <p>If the parameter changed is <i>localSocketNumber</i>, then
+     *  if the model is running (as evidenced by socket != null) then
+     *  close socket and reopen with new socket number (even if it is
+     *  the same as the old socket number).  Do not close the socket
+     *  until a new one has been successfully opened.  If
+     *  <i>defaultRemoteAddress</i> or
+     *  <i>defaultRemoteSocketNumber</i> is changed, simply update
      *  these parameters, checking, in the case of the address, that
      *  it passes lookup anc conversion to an IP address.  If the
      *  <i>encoding</i> parameter is changed, set the private encoding
      *  settings to the new values.
+     *
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If cannot create socket.  */
+     *  @exception IllegalActionException If the socket cannot be created.
+     */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
