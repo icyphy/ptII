@@ -110,7 +110,8 @@ public class BrowserLauncher {
      *  <pre>
      */
     public static void main(String args[]) throws Exception {
-        if (args.length > 1) {
+        if (args.length >= 1) {
+	    // Ignore any arguments after the first one.
             BrowserLauncher.openURL(args[0]);
         } else {
             BrowserLauncher.openURL("http://ptolemy.eecs.berkeley.edu");
