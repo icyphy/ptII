@@ -1,61 +1,177 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="higher order" class="ptolemy.moml.EntityLibrary">
-  <configure>
-    <?moml
-      <group>
-      <doc>Higher-Order Computation Infrastructure.</doc>
+/* Soot - a J*va Optimization Framework
+ * Copyright (C) 1999 Patrick Lam, Raja Vallee-Rai
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Library General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
 
-      <entity name="MultiInstanceComposite" class="ptolemy.actor.hoc.MultiInstanceComposite">
-        <doc>Creates multiple instances of itself</doc>
-        <property name="annotation" class="ptolemy.kernel.util.Attribute">
-           <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-           </property>
-           <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-              <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Make sure there is a director here!</text></svg></configure>
-           </property>
-           <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-              <configure>
-                <svg> 
-                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
-                </svg>
-              </configure>
-           </property>
-           <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-            </property>
-           <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-           </property>
-           <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 5.0">
-           </property>
-         </property>
-      </entity>
+/*
+ * Modified by the Sable Research Group and others 1997-2003.
+ * See the 'credits' file distributed with Soot for the complete list of
+ * contributors.  (Soot is distributed at http://www.sable.mcgill.ca/soot)
+ */
 
-      </group>
-    ?>
-  </configure>
-</entity>
+/* Reference Version: $SootVersion: 1.2.3.dev.4 $ */
+package ptolemy.copernicus.kernel;
+
+import soot.*;
+import soot.jimple.*;
+import soot.jimple.toolkits.scalar.*;
+import soot.jimple.toolkits.invoke.*;
+import soot.toolkits.scalar.*;
+import soot.toolkits.graph.*;
+import java.util.*;
+import soot.util.*;
+
+/** Uses the Scene's currently-active InvokeGraph to statically bind monomorphic call sites. */
+public class InvocationBinder extends SceneTransformer
+{
+    private static InvocationBinder instance = new InvocationBinder();
+    private InvocationBinder() {}
+
+    public static InvocationBinder v() { return instance; }
+
+    public String getDefaultOptions()
+    {
+        return "insert-null-checks insert-redundant-casts allowed-modifier-changes:unsafe VTA-passes:0";
+    }
+
+    public String getDeclaredOptions()
+    {
+        return super.getDeclaredOptions() + " insert-null-checks insert-redundant-casts allowed-modifier-changes VTA-passes";
+    }
+
+    protected void internalTransform(String phaseName, Map options)
+    {
+        System.out.println("InvocationBinder.internalTransform(" +
+                phaseName + ", " + options + ")");
+
+        Date start = new Date();
+        InvokeGraphBuilder.v().transform(phaseName + ".igb");
+
+        Date finish = new Date();
+        if (Main.isVerbose) {
+            System.out.println("[stb] Done building invoke graph.");
+            long runtime = finish.getTime() - start.getTime();
+            System.out.println("[stb] Invoke graph building took "+ (runtime/60000)+" min. "+ ((runtime%60000)/1000)+" sec.");
+        }
+
+        boolean enableNullPointerCheckInsertion = Options.getBoolean(options, "insert-null-checks");
+        boolean enableRedundantCastInsertion = Options.getBoolean(options, "insert-redundant-casts");
+        String modifierOptions = Options.getString(options, "allowed-modifier-changes");
+        int VTApasses = Options.getInt(options, "VTA-passes");
+
+        HashMap instanceToStaticMap = new HashMap();
+
+        InvokeGraph graph = Scene.v().getActiveInvokeGraph();
+
+        Hierarchy hierarchy = Scene.v().getActiveHierarchy();
+
+        VariableTypeAnalysis vta = null;
+
+        for (int i = 0; i < VTApasses; i++)
+        {
+            if (Main.isVerbose)
+                System.out.println(graph.computeStats());
+            vta = new VariableTypeAnalysis(graph);
+            vta.trimActiveInvokeGraph();
+            graph.refreshReachableMethods();
+        }
+
+        if (Main.isVerbose)
+            System.out.println(graph.computeStats());
+
+        Iterator classesIt = Scene.v().getApplicationClasses().iterator();
+        while (classesIt.hasNext())
+        {
+            SootClass c = (SootClass)classesIt.next();
+
+            LinkedList methodsList = new LinkedList();
+            methodsList.addAll(c.getMethods());
+
+            while (!methodsList.isEmpty())
+            {
+                SootMethod container = (SootMethod)methodsList.removeFirst();
+
+                if (!container.isConcrete()) {
+                    System.out.println("skipping " + container + ": not concrete");
+                    continue;
+                }
+                if (graph.getSitesOf(container).size() == 0) {
+                    System.out.println("skipping " + container + ": not called");
+
+                    continue;
+                }
+
+                JimpleBody b = (JimpleBody)container.getActiveBody();
+
+                List unitList = new ArrayList(); unitList.addAll(b.getUnits());
+                Iterator unitIt = unitList.iterator();
+
+                while (unitIt.hasNext())
+                {
+                    Stmt s = (Stmt)unitIt.next();
+                    if (!s.containsInvokeExpr())
+                        continue;
 
 
+                    InvokeExpr ie = (InvokeExpr)s.getInvokeExpr();
 
+                    if (ie instanceof StaticInvokeExpr ||
+                            ie instanceof SpecialInvokeExpr) {
+                        System.out.println("skipping " + container + ":" +
+                                s + ": not virtual");
 
+                        continue;
+                    }
 
+                    System.out.println("considering " + ie);
+                    List targets = graph.getTargetsOf(s);
+                    System.out.println("targets = " + targets);
 
+                    if (targets.size() != 1)
+                        continue;
 
+                    // Ok, we have an Interface or VirtualInvoke going to 1.
 
+                    SootMethod target = (SootMethod)targets.get(0);
 
+                    if (!AccessManager.ensureAccess(container, target, modifierOptions)) {
+                        System.out.println("skipping: no access");
 
+                        continue;
+                    }
+                    if (!target.isConcrete()) {
+                        System.out.println("skipping: not concrete");
 
+                        continue;
+                    }
+                    // Change the InterfaceInvoke or VirtualInvoke to
+                    // a new VirtualInvoke.
+                    ValueBox box = s.getInvokeExprBox();
+                    box.setValue(
+                            Jimple.v().newVirtualInvokeExpr(
+                                    (Local)((InstanceInvokeExpr)ie).getBase(),
+                                    target,
+                                    ie.getArgs()));
+                }
+            }
+        }
 
-
-
-
-
-
-
-
-
-
-
+        Scene.v().releaseActiveInvokeGraph();
+    }
+}
 
 
