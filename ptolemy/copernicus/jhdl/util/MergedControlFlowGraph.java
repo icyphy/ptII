@@ -33,6 +33,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
@@ -67,6 +69,8 @@ public class MergedControlFlowGraph extends DirectedGraph {
 
 	_bbgraph = new BriefBlockGraph(body);
 	_createGraph();
+	_controlFlowAnalysis();
+	_extractDataFlow(this);
     }
 
     public DirectedGraph createDataFlowGraph() {
@@ -153,6 +157,28 @@ public class MergedControlFlowGraph extends DirectedGraph {
 	
     }
 
+    protected void _extractDataFlow(DirectedGraph graph){
+	Map requiredNodeMap = new HashMap();
+	for (Iterator i=graph.nodes().iterator(); i.hasNext();){
+	    GraphNode gn = (GraphNode)((Node)i.next()).weight();
+	    if (gn instanceof SuperBlock){
+		SuperBlock sb = (SuperBlock)gn;
+		BlockDataFlowGraph bdfg = (BlockDataFlowGraph)sb.getGraph();
+		for (Iterator j=bdfg.getRequiredNodeSet().iterator(); j.hasNext();){
+		    requiredNodeMap.put(j.next(), sb);
+		}
+	    }
+	}
+	
+	Set keys=requiredNodeMap.keySet();
+	for (Iterator i=keys.iterator(); i.hasNext(); ){
+	    Object requiredValue=i.next();
+	    GraphNode gn=(GraphNode)requiredNodeMap.get(requiredValue);
+	    DirectedGraph dg=new DirectedGraph();
+	    gn.createDataFlow(dg, requiredValue);
+	}
+	
+    }
 
     public static void main(String args[]) {
 	String classname = ptolemy.copernicus.jhdl.test.Test.TEST1;

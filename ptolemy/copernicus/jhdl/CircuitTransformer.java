@@ -223,7 +223,7 @@ public class CircuitTransformer extends SceneTransformer {
 	//////////////////////////////////////////////
 	// Step 4. Spit out the graph
 	//////////////////////////////////////////////
-	PtDirectedGraphToDotty.writeDotFile(_model.getName(),combinedGraph);
+	//PtDirectedGraphToDotty.writeDotFile(_model.getName(),combinedGraph);
 
 	//          // Write as a circuit.
 	//          try {

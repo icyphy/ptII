@@ -8,6 +8,6 @@ public interface GraphNode{
     /**
      *
      */
-    GraphNode createDataFlow(DirectedGraph graph, Object value);
+    Object createDataFlow(DirectedGraph graph, Object value);
 
 }

@@ -434,6 +434,11 @@ public class BlockDataFlowGraph extends DirectedGraph {
     }
 
     protected Node _createInstanceInvokeExprNode(InstanceInvokeExpr iie) {
+
+	if (iie.getMethod().getName().equals("put")){
+	    _requiredNodeSet.add(iie);
+	}
+	    
 	// Add node 
 	Node n = _addNodeValueWeight(iie);
 	Node b = _getNodeFromValue(iie.getBase());

@@ -136,7 +136,7 @@ public class SuperBlock implements GraphNode {
 	} //if else (last instanceof IfStmt)
     }
 
-    public GraphNode createDataFlow(DirectedGraph graph, Object value){
+    public Object createDataFlow(DirectedGraph graph, Object value){
 	Collection c=_graph.nodes(value);
 
 	Collection pred=_labels.keySet();
@@ -180,14 +180,14 @@ public class SuperBlock implements GraphNode {
 	    //if lastDefinition is a source, then it really isn't defined here
 	    if (predecessor == null) {
 		graph.addNode(lastDefinition);
-		return this;
+		return lastDefinition;
 	    }
 	    
-	    GraphNode gn=predecessor.createDataFlow(graph, value);
+	    Object gn=predecessor.createDataFlow(graph, value);
 	    if (gn == null){
 		//Nobody else wrote to it.. must be some kind of invariant or constant
 		graph.addNode(lastDefinition);
-		return this;
+		return lastDefinition;
 	    } else {
 		return gn;
 	    }
@@ -222,10 +222,12 @@ public class SuperBlock implements GraphNode {
 
 	for (Iterator i=predecessorDefs.iterator(); i.hasNext();){
 	    Node n = (Node)i.next();
-	    predecessor.createDataFlow(graph, n.weight());
+	    Object result = predecessor.createDataFlow(graph, n.weight());
+	    if (result != null)
+		graph.addEdge(result, n);
 	}
 	
-	return this;
+	return lastDefinition;
     }
     
     public String toString(){

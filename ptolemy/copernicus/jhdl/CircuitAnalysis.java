@@ -282,17 +282,6 @@ public class CircuitAnalysis {
 	return mcfg;
     }
 
-    protected void _extractDataFlow(DirectedGraph graph){
-	Set keys=_requiredNodeMap.keySet();
-	for (Iterator i=keys.iterator(); i.hasNext(); ){
-	    Port port=(Port)i.next();
-	    GraphNode gn=(GraphNode)_requiredNodeMap.get(port);
-	    DirectedGraph dg=new DirectedGraph();
-	    gn.createDataFlow(dg, port);
-	}
-	
-    }
-
     /**
      * This method will add a graph (disconnected?) to the origional
      * graph. This is done by adding all nodes and edges from the
