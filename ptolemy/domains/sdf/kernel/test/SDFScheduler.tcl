@@ -119,39 +119,6 @@ test SDFScheduler-4.2 {Test setValid and isValid} {
     list $result0 $result1
 } {1 0}
 
-test SDFScheduler-4.3 {Test TokenConsumptionRate methods} {
-    # NOTE: Uses the setup above
-    $p1 setInput 1
-    set result1 [$s2 getTokenConsumptionRate $p1]
-    $s2 setTokenConsumptionRate $p1 2
-    set result2 [$s2 getTokenConsumptionRate $p1]
-    $p1 setInput 0
-    set result3 [$s2 getTokenConsumptionRate $p1]
-    list $result1 $result2 $result3
-} {1 2 0}
-
-test SDFScheduler-4.4 {Test TokenProductionRate methods} {
-    # NOTE: Uses the setup above
-    $p1 setOutput 1
-    set result1 [$s2 getTokenProductionRate $p1]
-    $s2 setTokenProductionRate $p1 2
-    set result2 [$s2 getTokenProductionRate $p1]
-    $p1 setOutput 0
-    set result3 [$s2 getTokenProductionRate $p1]
-    list $result1 $result2 $result3
-} {1 2 0}
-
-test SDFScheduler-4.5 {Test TokenInitProduction methods} {
-    # NOTE: Uses the setup above
-    $p1 setOutput 1
-    set result1 [$s2 getTokenInitProduction $p1]
-    $s2 setTokenInitProduction $p1 2
-    set result2 [$s2 getTokenInitProduction $p1]
-    $p1 setOutput 0
-    set result3 [$s2 getTokenInitProduction $p1]
-    list $result1 $result2 $result3
-} {0 2 0}
-
 
 ######################################################################
 ####

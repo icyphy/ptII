@@ -244,6 +244,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                                     + relation.getName() +
                                     " with expression " + bufferSizeExpression);
                         }
+                    } else if (bufferSizeObject == null) {
                     } else {
                         throw new InternalErrorException("Invalid value found "
                                 + "in buffer size map.\nValue is of type "

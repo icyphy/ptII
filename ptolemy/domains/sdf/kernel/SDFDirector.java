@@ -375,25 +375,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         // Declare the dependencies of rate parameters of external
         // ports.  Note that this must occurs after scheduling, since
         // rate parameters are assumed to exist.
-        ConstVariableModelAnalysis analysis =
-            ConstVariableModelAnalysis.getAnalysis(this);
-        for(Iterator ports = 
-                ((CompositeActor)getContainer()).portList().iterator();
-            ports.hasNext();) {
-            IOPort port = (IOPort) ports.next();
-            if(!(port instanceof ParameterPort)) {
-                if(port.isInput()) {
-                    _declareDependency(analysis, port, "tokenConsumptionRate",
-                            scheduler._rateVariables);
-                } 
-                if(port.isOutput()) {
-                    _declareDependency(analysis, port, "tokenProductionRate",
-                            scheduler._rateVariables);
-                    _declareDependency(analysis, port, "tokenInitProduction",
-                            scheduler._rateVariables);
-                }
-            }
-        }
+        scheduler.declareRateDependency();
     }
 
     /** Return false if the system has finished executing, either by

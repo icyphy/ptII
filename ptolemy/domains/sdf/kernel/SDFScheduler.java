@@ -174,7 +174,33 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
+    /** Declare the rate dependency on any external ports of the model.
+     *  SDF directors should invoke this method once during preinitialize.
+     */
+    public void declareRateDependency() throws IllegalActionException {
+        ConstVariableModelAnalysis analysis =
+            ConstVariableModelAnalysis.getAnalysis(this);
+        SDFDirector director = (SDFDirector)getContainer();
+        CompositeActor model = (CompositeActor)director.getContainer();
+        for(Iterator ports = model.portList().iterator();
+            ports.hasNext();) {
+            IOPort port = (IOPort) ports.next();
+            if(!(port instanceof ParameterPort)) {
+                if(port.isInput()) {
+                    _declareDependency(analysis, port, "tokenConsumptionRate",
+                            _rateVariables);
+                } 
+                if(port.isOutput()) {
+                    _declareDependency(analysis, port, "tokenProductionRate",
+                            _rateVariables);
+                    _declareDependency(analysis, port, "tokenInitProduction",
+                            _rateVariables);
+                }
+            }
+        }
+    }
+    
     /** Get the external port rates.
      */
     public Map getExternalRates() {
@@ -1775,5 +1801,5 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     private Map _externalRates = 
     new TreeMap(new SDFUtilities.NamedObjComparator());
 
-    List _rateVariables = new LinkedList();
+    private List _rateVariables = new LinkedList();
 }
