@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.domains.pn.kernel.test;
 import ptolemy.domains.pn.kernel.*;
+import ptolemy.domains.pn.kernel.event.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// StringPNListener
