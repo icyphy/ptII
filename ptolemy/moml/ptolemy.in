@@ -56,7 +56,7 @@ fi
 
 
 if [ "`basename $0`" = "ptolemy" ]; then
-    javastartupclass=ptolemy.moml.MoMLApplication
+    javastartupclass=ptolemy.actor.gui.MoMLApplication
 fi
 
 windows=no
