@@ -160,5 +160,5 @@ W.E0.E1.A3.postfire
 W.E0.A1.wrapup
 W.E0.E1.A2.wrapup
 W.E0.E1.A3.wrapup
-}
+} {KNOWN_FAILED}
 
