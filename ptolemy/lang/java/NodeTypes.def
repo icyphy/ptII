@@ -237,7 +237,7 @@ LTNode C RelationNode c 2 ExprNode expr1 ExprNode expr2 c
 GTNode C RelationNode c 2 ExprNode expr1 ExprNode expr2 c
 LENode C RelationNode c 2 ExprNode expr1 ExprNode expr2 c
 GENode C RelationNode c 2 ExprNode expr1 ExprNode expr2 c
-InstanceOfNode C ExprNode k 0 ExprNode expr TypeNameNode dtype k
+InstanceOfNode C ExprNode k 0 ExprNode expr TypeNode dtype k
 EQNode C EqualityNode c 2 ExprNode expr1 ExprNode expr2 c
 NENode C EqualityNode c 2 ExprNode expr1 ExprNode expr2 c
 BitAndNode C BitwiseNode c 2 ExprNode expr1 ExprNode expr2 c

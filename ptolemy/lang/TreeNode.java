@@ -47,7 +47,8 @@ import java.util.LinkedList;
  *
  *  @author Jeff Tsay
  */
-public abstract class TreeNode extends TrackedPropertyMap {
+public abstract class TreeNode extends TrackedPropertyMap
+     implements ITreeNode {
 
     /** Accept a visitor, giving the visitor a list of zero arguments. */
     public Object accept(IVisitor v) {
