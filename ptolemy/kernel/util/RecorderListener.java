@@ -55,12 +55,9 @@ public class RecorderListener implements DebugListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a debug message.
+    /** Append a message String to the current set of messages.
      */
     public void message(String message) {
-        if (_buffer.length() != 0) {
-            _buffer.append("\n");
-        }
         _buffer.append(message);
     }
 
