@@ -63,6 +63,7 @@ public class Director extends NamedObj implements Executable {
      *  static schedule schedule should be recomputed
      */
     public void invalidateSchedule() {
+        _schedulevalid = false;
     }
     
     /** This does the initialization for the entire simulation. This should
@@ -154,9 +155,16 @@ public class Director extends NamedObj implements Executable {
      * @return true indicates schedule is valid and need not be recomputed
      */
     public boolean scheduleValid() {
-        return false;
+        return _schedulevalid;
     }
 
+    /** Mark the current schedule to be valid.
+     *  @see invalidateSchedule()
+     */
+    public void validateSchedule() {
+        _schedulevalid = true;
+    }
+    
     /** Indicates whether the execution is complete or not
      * @return true indicates that execution is complete
      */
