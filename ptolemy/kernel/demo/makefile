@@ -41,7 +41,7 @@ ME =		java/pt/kernel/demo
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-CLASSPATH = ../../..
+CLASSPATH = ../../..:../../../../../tcltk/tcl8.0/lib/jacl.zip
 
 TCL_SRCS = \
 	HelloTcl.tcl
