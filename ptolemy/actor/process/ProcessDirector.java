@@ -202,7 +202,8 @@ public class ProcessDirector extends Director {
 	    if( topOfContainer == null ) {
 		setCurrentTime(0.0);
 	    } else {
-		double time = topOfContainer.getDirector().getCurrentTime();
+		double time = 
+                        topOfContainer.getDirector().getCurrentTime();
                 setCurrentTime(time);
 	    }
         }
