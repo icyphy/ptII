@@ -72,7 +72,6 @@ JSRCS = \
 	FlowPort.java \
 	IOPort.java \
 	IORelation.java \
-	MailboxPort.java \
 
 EXTRA_SRCS =	$(JSRCS)
 
