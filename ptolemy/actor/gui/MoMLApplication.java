@@ -58,6 +58,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.FilterAddIcons;
+import ptolemy.moml.FilterBackwardCompatibility;
 import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
@@ -129,6 +131,12 @@ public class MoMLApplication {
 
         // Create a parser to use.
         _parser = new MoMLParser();
+
+	// Handle Backward Compatibility.
+	_parser.addMoMLFilter(new FilterBackwardCompatibility());
+
+	// Add any _icons.
+	_parser.addMoMLFilter(new FilterAddIcons());
 
         _parseArgs(args);
 
