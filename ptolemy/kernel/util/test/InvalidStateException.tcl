@@ -151,7 +151,6 @@ test InvalidStateException-7.4 {Create a InvalidStateException with a \
     list [$pe getMessage]
 } {{.NamedObj 1 and .NamedObj 2: Detail Message}}
 
-
 ######################################################################
 ####
 #
@@ -169,7 +168,7 @@ test InvalidStateException-8.1 {Create a InvalidStateException with a \
 	    [$dir elements] \
 	    "Detail Message"]
     list [$pe getMessage]
-} {{.n3: .n2: .n1: Detail Message}}
+} {{.n3, .n2, .n1, : Detail Message}}
 
 
 ######################################################################
@@ -197,3 +196,51 @@ test InvalidStateException-9.2 {Test _getName: \
 	    ptolemy.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage] [$pe getName $n1]
 } {{.My NamedObj: Detail String} {My NamedObj}}
+
+######################################################################
+####   Test enumeration constructor
+#
+test InvalidStateException-10.1 {Create a InvalidStateException with a \
+	Enumeration of NamedObjs and no detail message} {
+    set n1 [java::new ptolemy.kernel.util.NamedObj "NamedObj 1"]
+    set n2 [java::new ptolemy.kernel.util.NamedObj "NamedObj 2"]
+    set n3 [java::new ptolemy.kernel.util.NamedObj "NamedObj 3"]
+    set ll [java::new collections.LinkedList]
+    $ll insertFirst $n3
+    $ll insertFirst $n2
+    $ll insertFirst $n1
+    set pe [java::new {ptolemy.kernel.util.InvalidStateException \
+	    java.util.Enumeration java.lang.String} \
+	    [$ll elements] [java::null]]
+    list [$pe getMessage]
+} {{.NamedObj 1, .NamedObj 2, .NamedObj 3, : }}
+
+test InvalidStateException-10.2 {Create a InvalidStateException with a \
+	Enumeration of NamedObjs and a detail message} {
+    set n1 [java::new ptolemy.kernel.util.NamedObj "NamedObj 1"]
+    set n2 [java::new ptolemy.kernel.util.NamedObj "NamedObj 2"]
+    set n3 [java::new ptolemy.kernel.util.NamedObj "NamedObj 3"]
+    set ll [java::new collections.LinkedList]
+    $ll insertFirst $n3
+    $ll insertFirst $n2
+    $ll insertFirst $n1
+    set pe [java::new {ptolemy.kernel.util.InvalidStateException \
+	    java.util.Enumeration java.lang.String} \
+	    [$ll elements] "Detail Message"]
+    list [$pe getMessage]
+} {{.NamedObj 1, .NamedObj 2, .NamedObj 3, : Detail Message}}
+
+test InvalidStateException-10.3 {Create a InvalidStateException with a \
+	Enumeration of NamedObjs and Obj,  and a detail message} {
+    set n1 [java::new ptolemy.kernel.util.NamedObj "NamedObj 1"]
+    set o2 [java::new java.lang.Object]
+    set n3 [java::new ptolemy.kernel.util.NamedObj "NamedObj 3"]
+    set ll [java::new collections.LinkedList]
+    $ll insertFirst $n3
+    $ll insertFirst $o2
+    $ll insertFirst $n1
+    set pe [java::new {ptolemy.kernel.util.InvalidStateException \
+	    java.util.Enumeration java.lang.String} \
+	    [$ll elements] "Detail Message"]
+    list [$pe getMessage]
+} {{.NamedObj 1, <Object of class java.lang.Object>, .NamedObj 3, : Detail Message}}
