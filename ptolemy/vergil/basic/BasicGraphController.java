@@ -389,10 +389,21 @@ public abstract class BasicGraphController extends AbstractGraphController
                     (AbstractBasicGraphModel)getGraphModel();
             final double[] point = SnapConstraint.constrainPoint(x, y);
 	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
+            NamedObj container = 
+                MoMLChangeRequest.getDeferredToParent(toplevel);
+            if(container == null) {
+                container = toplevel;
+            }
+                
+            final NamedObj context = container;
 	    final String portName = toplevel.uniqueName("port");
 	    final String locationName = "_location";
 	    // Create the port.
 	    StringBuffer moml = new StringBuffer();
+            if(container != toplevel) {
+                moml.append("<entity name=\"" + 
+                        toplevel.getName(container) + "\">\n");
+            }
 	    moml.append("<port name=\"" + portName + "\">\n");
 	    moml.append("<property name=\"" + locationName +
                     "\" class=\"ptolemy.moml.Location\"/>\n");
@@ -408,9 +419,12 @@ public abstract class BasicGraphController extends AbstractGraphController
                 }
             }
 	    moml.append("</port>");
+            if(container != toplevel) {
+                moml.append("</entity>");
+            }
 
 	    ChangeRequest request =
-		new MoMLChangeRequest(this, toplevel, moml.toString()) {
+		new MoMLChangeRequest(this, container, moml.toString()) {
                 protected void _execute() throws Exception {
                     super._execute();
 
@@ -426,7 +440,7 @@ public abstract class BasicGraphController extends AbstractGraphController
                     location.setLocation(point);
                 }
             };
-	    toplevel.requestChange(request);
+	    container.requestChange(request);
 	    try {
 		request.waitForCompletion();
 	    } catch (Exception ex) {

@@ -572,19 +572,32 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	if(transferable == null) return;
 	try {
 	    CompositeEntity toplevel = (CompositeEntity)model.getRoot();
+            NamedObj container = 
+                MoMLChangeRequest.getDeferredToParent(toplevel);
+            if(container == null) {
+                container = toplevel;
+            }
             StringBuffer moml = new StringBuffer();
             // The pasted version will have the name prepended with
             // a unique number.  This isn't really what we want, but
             // it will have to do for now.  FIXME.
-	    moml.append("<group name=\"" + _copyNumber + "\">\n");
+            if(container != toplevel) {
+                moml.append("<entity name=\"" + 
+                        toplevel.getName(container) + "\">\n");
+            } 
+            moml.append("<group name=\"" + _copyNumber + "\">\n");
             _copyNumber++;
 	    moml.append((String)
                     transferable.getTransferData(DataFlavor.stringFlavor));
 	    moml.append("</group>\n");
-	    toplevel.requestChange(
-                    new MoMLChangeRequest(this, toplevel, moml.toString()));
+            if(container != toplevel) {
+                moml.append("</entity>");
+            }
+
+	    container.requestChange(
+                    new MoMLChangeRequest(this, container, moml.toString()));
 	} catch (Exception ex) {
-	    MessageHandler.error("Copy failed", ex);
+	    MessageHandler.error("Paste failed", ex);
 	}
     }
 

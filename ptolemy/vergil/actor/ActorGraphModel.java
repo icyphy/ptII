@@ -300,7 +300,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     // will trigger the changerequest listener to
                     // redraw the graph again.
                     ChangeRequest request = new MoMLChangeRequest(
-                            container, getPtolemyModel(),
+                            container, container,
                             "<deleteRelation name=\""
                             + relation.getName(container)
                             + "\"/>\n");
@@ -553,6 +553,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	    ComponentPort port = (ComponentPort)location.getContainer();
 
             NamedObj container = _getChangeRequestParent(port);
+            System.out.println("Queueing Change request with: " + container);
 
 	    // Delete the port.
 	    StringBuffer moml = new StringBuffer();
@@ -647,13 +648,15 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 		    "Attempt to remove a node that is not an Entity. " +
 		    "node = " + node);
             }
-
-            String moml = "<" + elementName + " name=\""
-                    + deleteObj.getName() + "\"/>\n";
-
+ 
             // Make the request in the context of the container.
             NamedObj container = _getChangeRequestParent(deleteObj);
+            System.out.println("Queueing Change request with: " + container);
 
+            String moml = "<" + elementName + " name=\""
+                    + deleteObj.getName(container) + "\"/>\n";
+
+ 
             // Note: The source is NOT the graph model.
             ChangeRequest request =
                     new MoMLChangeRequest(

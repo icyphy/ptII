@@ -420,17 +420,29 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 	    ActorGraphModel graphModel = (ActorGraphModel)getGraphModel();
             final double[] point = SnapConstraint.constrainPoint(x, y);
 	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
+            NamedObj container = 
+                MoMLChangeRequest.getDeferredToParent(toplevel);
+            if(container == null) {
+                container = toplevel;
+            }
 
 	    final String relationName = toplevel.uniqueName("relation");
 	    final String vertexName = "vertex1";
 	    // Create the relation.
 	    StringBuffer moml = new StringBuffer();
+            if(container != toplevel) {
+                moml.append("<entity name=\"" + 
+                        toplevel.getName(container) + "\">\n");
+            }
 	    moml.append("<relation name=\"" + relationName + "\">\n");
 	    moml.append("<vertex name=\"" + vertexName + "\"/>\n");
 	    moml.append("</relation>");
+            if(container != toplevel) {
+                moml.append("</entity>");
+            }
 
 	    ChangeRequest request =
-		new MoMLChangeRequest(this, toplevel, moml.toString()) {
+		new MoMLChangeRequest(this, container, moml.toString()) {
                 protected void _execute() throws Exception {
                     super._execute();
                     // Set the location of the icon.
@@ -444,7 +456,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                     vertex.setLocation(point);
                 }
             };
-	    toplevel.requestChange(request);
+	    container.requestChange(request);
 	    try {
 		request.waitForCompletion();
 	    } catch (Exception ex) {

@@ -181,12 +181,18 @@ public class EditorDropTarget extends DropTarget {
 
 	    final GraphController controller = pane.getGraphController();
 	    GraphModel model = controller.getGraphModel();
-	    final CompositeEntity container = (CompositeEntity)model.getRoot();
-	    while(iterator.hasNext()) {
+	    final CompositeEntity toplevel = (CompositeEntity)model.getRoot();
+            NamedObj container = 
+                MoMLChangeRequest.getDeferredToParent(toplevel);
+            if(container == null) {
+                container = toplevel;
+            }
+                 
+            while(iterator.hasNext()) {
                 NamedObj dropObj = (NamedObj) iterator.next();
                 // FIXME: Might consider giving a simpler name and then
                 // displaying the classname in the icon.
-                final String name = container.uniqueName(dropObj.getName());
+                final String name = toplevel.uniqueName(dropObj.getName());
 
                 // Create the MoML command.
                 StringBuffer moml = new StringBuffer();
@@ -197,6 +203,10 @@ public class EditorDropTarget extends DropTarget {
                 // imported by the parent will be imported now by
                 // the object into which this is dropped.
                 moml.append("<group>");
+                if(container != toplevel) {
+                    moml.append("<entity name=\"" + 
+                            toplevel.getName(container) + "\">\n");
+                }
                 if (dropObj.getMoMLInfo().deferTo != null) {
                     CompositeEntity sourceContainer =
                         (CompositeEntity)dropObj.getContainer();
@@ -210,6 +220,9 @@ public class EditorDropTarget extends DropTarget {
                     }
                 }
                 moml.append(dropObj.exportMoML(name));
+                if(container != toplevel) {
+                    moml.append("</entity>");
+                }
                 moml.append("</group>");
 
                 // NOTE: Have to know whether this is an entity,
@@ -224,7 +237,7 @@ public class EditorDropTarget extends DropTarget {
                             this, container, moml.toString()) {
                         protected void _execute() throws Exception {
                             super._execute();
-                            NamedObj newObject = container.getEntity(name);
+                            NamedObj newObject = toplevel.getEntity(name);
                             _setLocation(newObject, point);
                         }
                     };
@@ -236,7 +249,7 @@ public class EditorDropTarget extends DropTarget {
                             this, container, moml.toString()) {
                         protected void _execute() throws Exception {
                             super._execute();
-                            NamedObj newObject = container.getPort(name);
+                            NamedObj newObject = toplevel.getPort(name);
                             _setLocation(newObject, point);
                         }
                     };
@@ -248,7 +261,7 @@ public class EditorDropTarget extends DropTarget {
                             this, container, moml.toString()) {
                         protected void _execute() throws Exception {
                             super._execute();
-                            NamedObj newObject = container.getRelation(name);
+                            NamedObj newObject = toplevel.getRelation(name);
                             _setLocation(newObject, point);
                         }
                     };
@@ -260,7 +273,7 @@ public class EditorDropTarget extends DropTarget {
                             this, container, moml.toString()) {
                         protected void _execute() throws Exception {
                             super._execute();
-                            NamedObj newObject = container.getAttribute(name);
+                            NamedObj newObject = toplevel.getAttribute(name);
                             _setLocation(newObject, point);
                         }
                     };
