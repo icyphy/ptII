@@ -567,57 +567,43 @@ test CompositeEntity-11.5 {Test QUIET description} {
 test CompositeEntity-11.6 {Test PRETTYPRINT description} {
     $e0 description [java::field pt.kernel.Nameable PRETTYPRINT]
 } {pt.kernel.CompositeEntity {.E0}
+pt.kernel.ComponentRelation {.E0.R7}
+pt.kernel.ComponentRelation {.E0.R10}
 pt.kernel.CompositeEntity {.E0.E3}
 pt.kernel.ComponentPort {.E0.E3.P7}
 pt.kernel.ComponentRelation {.E0.E3.R4}
-pt.kernel.ComponentRelation {.E0.R7}
+pt.kernel.ComponentRelation {.E0.E3.R5}
+pt.kernel.ComponentRelation {.E0.E3.R6}
 pt.kernel.CompositeEntity {.E0.E3.E4}
 pt.kernel.ComponentPort {.E0.E3.E4.P0}
-pt.kernel.ComponentRelation {.E0.E3.E4.R1}
 pt.kernel.ComponentPort {.E0.E3.E4.P4}
+pt.kernel.ComponentRelation {.E0.E3.E4.R1}
 pt.kernel.ComponentRelation {.E0.E3.E4.R2}
-pt.kernel.ComponentRelation {.E0.E3.R4}
-pt.kernel.ComponentRelation {.E0.E3.R5}
+pt.kernel.ComponentRelation {.E0.E3.E4.R3}
 pt.kernel.ComponentEntity {.E0.E3.E4.E1}
 pt.kernel.ComponentPort {.E0.E3.E4.E1.P1}
-pt.kernel.ComponentRelation {.E0.E3.E4.R1}
-pt.kernel.ComponentRelation {.E0.E3.E4.R2}
-pt.kernel.ComponentRelation {.E0.E3.E4.R3}
 pt.kernel.ComponentEntity {.E0.E3.E4.E2}
 pt.kernel.ComponentPort {.E0.E3.E4.E2.P2}
-pt.kernel.ComponentRelation {.E0.E3.E4.R3}
 pt.kernel.ComponentPort {.E0.E3.E4.E2.P3}
-pt.kernel.ComponentRelation {.E0.E3.E4.R2}
-pt.kernel.ComponentRelation {.E0.E3.R6}
 pt.kernel.ComponentEntity {.E0.E3.E5}
 pt.kernel.ComponentPort {.E0.E3.E5.P5}
-pt.kernel.ComponentRelation {.E0.E3.R5}
 pt.kernel.ComponentEntity {.E0.E3.E6}
 pt.kernel.ComponentPort {.E0.E3.E6.P6}
-pt.kernel.ComponentRelation {.E0.E3.R6}
 pt.kernel.CompositeEntity {.E0.E7}
 pt.kernel.ComponentPort {.E0.E7.P8}
-pt.kernel.ComponentRelation {.E0.E7.R8}
-pt.kernel.ComponentRelation {.E0.R10}
 pt.kernel.ComponentPort {.E0.E7.P11}
+pt.kernel.ComponentRelation {.E0.E7.R8}
 pt.kernel.ComponentRelation {.E0.E7.R9}
-pt.kernel.ComponentRelation {.E0.R7}
 pt.kernel.ComponentEntity {.E0.E7.E8}
 pt.kernel.ComponentPort {.E0.E7.E8.P9}
-pt.kernel.ComponentRelation {.E0.E7.R8}
 pt.kernel.ComponentPort {.E0.E7.E8.P10}
-pt.kernel.ComponentRelation {.E0.E7.R9}
 pt.kernel.CompositeEntity {.E0.E10}
 pt.kernel.ComponentPort {.E0.E10.P12}
-pt.kernel.ComponentRelation {.E0.E10.R11}
-pt.kernel.ComponentRelation {.E0.R10}
 pt.kernel.ComponentPort {.E0.E10.P13}
 pt.kernel.ComponentRelation {.E0.E10.R11}
 pt.kernel.ComponentRelation {.E0.E10.R12}
-pt.kernel.ComponentRelation {.E0.R7}
 pt.kernel.ComponentEntity {.E0.E10.E9}
 pt.kernel.ComponentPort {.E0.E10.E9.P14}
-pt.kernel.ComponentRelation {.E0.E10.R12}
 pt.kernel.ComponentPort {.E0.E3.P7} link pt.kernel.ComponentRelation {.E0.E3.R4}
 pt.kernel.ComponentPort {.E0.E3.P7} link pt.kernel.ComponentRelation {.E0.R7}
 pt.kernel.ComponentPort {.E0.E3.E4.P0} link pt.kernel.ComponentRelation {.E0.E3.E4.R1}
@@ -645,10 +631,11 @@ pt.kernel.ComponentPort {.E0.E10.P13} link pt.kernel.ComponentRelation {.E0.E10.
 pt.kernel.ComponentPort {.E0.E10.P13} link pt.kernel.ComponentRelation {.E0.R7}
 pt.kernel.ComponentPort {.E0.E10.E9.P14} link pt.kernel.ComponentRelation {.E0.E10.R12}
 }
+
 ######################################################################
 ####
 # NOTE:  Uses the setup constructed in 11.1.
-test CompositeEntity-11.6 {Generate a description, then regenerate it} {
+test CompositeEntity-11.7 {Generate a description, then regenerate it} {
     set desc0 [_description2TclBlend [$e0 description \
 	    [java::field pt.kernel.Nameable PRETTYPRINT]]]
     eval $desc0
@@ -659,6 +646,88 @@ test CompositeEntity-11.6 {Generate a description, then regenerate it} {
 	    [java::field pt.kernel.Nameable PRETTYPRINT]]]
     list [expr {"$desc0" != ""}] [expr {"$desc0" == "$desc1"}]
 } {1 1}
+
+
+######################################################################
+####
+# NOTE:  Uses the setup constructed in 11.1.
+test CompositeEntity-11.8 {Test LIST_PRETTYPRINT description} {
+    $e0 description [java::field pt.kernel.Nameable LIST_PRETTYPRINT]
+} { { pt.kernel.CompositeEntity {.E0} }
+    { pt.kernel.ComponentRelation {.E0.R7} }
+    { pt.kernel.ComponentRelation {.E0.R10} }
+ {  { pt.kernel.CompositeEntity {.E0.E3} }
+   { pt.kernel.ComponentPort {.E0.E3.P7} }
+    { pt.kernel.ComponentRelation {.E0.E3.R4} }
+    { pt.kernel.ComponentRelation {.E0.E3.R5} }
+    { pt.kernel.ComponentRelation {.E0.E3.R6} }
+ {  { pt.kernel.CompositeEntity {.E0.E3.E4} }
+   { pt.kernel.ComponentPort {.E0.E3.E4.P0} }
+   { pt.kernel.ComponentPort {.E0.E3.E4.P4} }
+    { pt.kernel.ComponentRelation {.E0.E3.E4.R1} }
+    { pt.kernel.ComponentRelation {.E0.E3.E4.R2} }
+    { pt.kernel.ComponentRelation {.E0.E3.E4.R3} }
+ {  { pt.kernel.ComponentEntity {.E0.E3.E4.E1} }
+   { pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} }
+ }
+ {  { pt.kernel.ComponentEntity {.E0.E3.E4.E2} }
+   { pt.kernel.ComponentPort {.E0.E3.E4.E2.P2} }
+   { pt.kernel.ComponentPort {.E0.E3.E4.E2.P3} }
+ }
+ }
+ {  { pt.kernel.ComponentEntity {.E0.E3.E5} }
+   { pt.kernel.ComponentPort {.E0.E3.E5.P5} }
+ }
+ {  { pt.kernel.ComponentEntity {.E0.E3.E6} }
+   { pt.kernel.ComponentPort {.E0.E3.E6.P6} }
+ }
+ }
+ {  { pt.kernel.CompositeEntity {.E0.E7} }
+   { pt.kernel.ComponentPort {.E0.E7.P8} }
+   { pt.kernel.ComponentPort {.E0.E7.P11} }
+    { pt.kernel.ComponentRelation {.E0.E7.R8} }
+    { pt.kernel.ComponentRelation {.E0.E7.R9} }
+ {  { pt.kernel.ComponentEntity {.E0.E7.E8} }
+   { pt.kernel.ComponentPort {.E0.E7.E8.P9} }
+   { pt.kernel.ComponentPort {.E0.E7.E8.P10} }
+ }
+ }
+ {  { pt.kernel.CompositeEntity {.E0.E10} }
+   { pt.kernel.ComponentPort {.E0.E10.P12} }
+   { pt.kernel.ComponentPort {.E0.E10.P13} }
+    { pt.kernel.ComponentRelation {.E0.E10.R11} }
+    { pt.kernel.ComponentRelation {.E0.E10.R12} }
+ {  { pt.kernel.ComponentEntity {.E0.E10.E9} }
+   { pt.kernel.ComponentPort {.E0.E10.E9.P14} }
+ }
+ }
+pt.kernel.ComponentPort {.E0.E3.P7} link pt.kernel.ComponentRelation {.E0.E3.R4}
+pt.kernel.ComponentPort {.E0.E3.P7} link pt.kernel.ComponentRelation {.E0.R7}
+pt.kernel.ComponentPort {.E0.E3.E4.P0} link pt.kernel.ComponentRelation {.E0.E3.E4.R1}
+pt.kernel.ComponentPort {.E0.E3.E4.P4} link pt.kernel.ComponentRelation {.E0.E3.E4.R2}
+pt.kernel.ComponentPort {.E0.E3.E4.P4} link pt.kernel.ComponentRelation {.E0.E3.R4}
+pt.kernel.ComponentPort {.E0.E3.E4.P4} link pt.kernel.ComponentRelation {.E0.E3.R5}
+pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} link pt.kernel.ComponentRelation {.E0.E3.E4.R1}
+pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} link pt.kernel.ComponentRelation {.E0.E3.E4.R2}
+pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} link pt.kernel.ComponentRelation {.E0.E3.E4.R3}
+pt.kernel.ComponentPort {.E0.E3.E4.E2.P2} link pt.kernel.ComponentRelation {.E0.E3.E4.R3}
+pt.kernel.ComponentPort {.E0.E3.E4.E2.P3} link pt.kernel.ComponentRelation {.E0.E3.E4.R2}
+pt.kernel.ComponentPort {.E0.E3.E4.E2.P3} link pt.kernel.ComponentRelation {.E0.E3.R6}
+pt.kernel.ComponentPort {.E0.E3.E5.P5} link pt.kernel.ComponentRelation {.E0.E3.R5}
+pt.kernel.ComponentPort {.E0.E3.E6.P6} link pt.kernel.ComponentRelation {.E0.E3.R6}
+pt.kernel.ComponentPort {.E0.E7.P8} link pt.kernel.ComponentRelation {.E0.E7.R8}
+pt.kernel.ComponentPort {.E0.E7.P8} link pt.kernel.ComponentRelation {.E0.R10}
+pt.kernel.ComponentPort {.E0.E7.P11} link pt.kernel.ComponentRelation {.E0.E7.R9}
+pt.kernel.ComponentPort {.E0.E7.P11} link pt.kernel.ComponentRelation {.E0.R7}
+pt.kernel.ComponentPort {.E0.E7.E8.P9} link pt.kernel.ComponentRelation {.E0.E7.R8}
+pt.kernel.ComponentPort {.E0.E7.E8.P10} link pt.kernel.ComponentRelation {.E0.E7.R9}
+pt.kernel.ComponentPort {.E0.E10.P12} link pt.kernel.ComponentRelation {.E0.E10.R11}
+pt.kernel.ComponentPort {.E0.E10.P12} link pt.kernel.ComponentRelation {.E0.R10}
+pt.kernel.ComponentPort {.E0.E10.P13} link pt.kernel.ComponentRelation {.E0.E10.R11}
+pt.kernel.ComponentPort {.E0.E10.P13} link pt.kernel.ComponentRelation {.E0.E10.R12}
+pt.kernel.ComponentPort {.E0.E10.P13} link pt.kernel.ComponentRelation {.E0.R7}
+pt.kernel.ComponentPort {.E0.E10.E9.P14} link pt.kernel.ComponentRelation {.E0.E10.R12}
+}
 
 ######################################################################
 ####
