@@ -202,18 +202,6 @@ MKJNLP =		$(PTII)/bin/mkjnlp
 # JNLP files that do the actual installation
 JNLPS =	vergilDSP.jnlp vergilPtiny.jnlp  vergilPtinySandbox.jnlp vergil.jnlp 
 
-jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) jnlp_sign $(JNLPS) 
-jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
-jnlp_clean: 
-	rm -rf $(JNLPS) $(SIGNED_DIR)
-jnlp_distclean: jnlp_clean
-	rm -f  $(ALL_JNLP_JARS) 
-
-$(SIGNED_DIR):
-	if [ ! -d $(SIGNED_DIR) ]; then \
-		mkdir -p $(SIGNED_DIR); \
-	fi
-
 # Makefile variables used to set up keys for jar signing.
 # To use Web Start, we have to sign the jars.
 KEYDNAME = "CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, S=Your State, C=US "
@@ -227,6 +215,19 @@ KEYALIAS = claudius
 STOREPASSWORD = -storepass this.is.not.secure,it.is.for.testing.only
 KEYPASSWORD = -keypass this.is.not.secure,it.is.for.testing.only
 KEYTOOL = $(PTJAVA_DIR)/bin/keytool
+
+jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) jnlp_sign $(JNLPS) 
+jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
+jnlp_clean: 
+	rm -rf $(JNLPS) $(SIGNED_DIR)
+jnlp_distclean: jnlp_clean
+	rm -f  $(ALL_JNLP_JARS) 
+
+$(SIGNED_DIR):
+	if [ ! -d $(SIGNED_DIR) ]; then \
+		mkdir -p $(SIGNED_DIR); \
+	fi
+
 $(KEYSTORE): 
 	"$(KEYTOOL)" -genkey \
 		-dname $(KEYDNAME) \
@@ -397,7 +398,7 @@ KEYALIAS2=ptolemy
 
 jnlp_dist: jnlp_dist_1 jnlp_dist_update
 jnlp_dist_1:
-	rm -f $(JNLPS)
+	rm -rf $(JNLPS) $(SIGNED_DIR)
 	$(MAKE) KEYSTORE=$(KEYSTORE2) \
 		KEYALIAS=$(KEYALIAS2) KEYPASSWORD= \
 		PTII_LOCALURL=$(DIST_URL) jnlp_sign
