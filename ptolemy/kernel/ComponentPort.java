@@ -477,6 +477,27 @@ public class ComponentPort extends Port {
         super.setContainer(container);
     }
 
+    /** Unlink the specified Relation. If the Relation
+     *  is not linked to this port, do nothing. If the relation is linked
+     *  more than once, then unlink all occurrences.
+     *  If there is a container, notify it by calling connectionsChanged().
+     *  This overrides the base class to check to see whether the link
+     *  is an inside link, based on the container of the relation, and
+     *  to call unlinkInside() if it is.
+     *  This method is write-synchronized on the
+     *  workspace and increments its version number.
+     *  @param relation The relation to unlink.
+     */
+    public void unlink(Relation relation) {
+        if (relation != null
+               && _isInsideLinkable(relation.getContainer())) {
+           // An inside link
+           unlinkInside(relation);
+       } else {
+           super.unlink(relation);
+       }
+    }
+
     /** Unlink all outside links.
      *  If there is a container, notify it by calling connectionsChanged().
      *  This method is write-synchronized on the workspace
@@ -497,6 +518,10 @@ public class ComponentPort extends Port {
         try {
             _workspace.getWriteAccess();
             _insideLinks.unlinkAll();
+            Entity container = (Entity)getContainer();
+            if (container != null) {
+                container.connectionsChanged(this);
+            }
         } finally {
             _workspace.doneWriting();
         }
@@ -883,7 +908,7 @@ public class ComponentPort extends Port {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Create the link.  This method does not validity checks.
+    /** Create the link.  This method does not do validity checks.
      *  @param relation The relation to link to.
      */
     private void _doLink(Relation relation) throws IllegalActionException {

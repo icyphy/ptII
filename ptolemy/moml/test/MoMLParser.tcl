@@ -1081,6 +1081,37 @@ test MoMLParser-1.18.9 {test unlink persistence in instatiation of a class} {
 #----------------------------------------------------------------------
 set body {
 <model name="top" class="ptolemy.actor.CompositeActor">
+    <entity name="master" class="ptolemy.actor.CompositeActor">
+        <port name="p" class="ptolemy.actor.IOPort"/>
+        <relation name="r" class="ptolemy.actor.IORelation"/>
+        <link port="p" relation="r"/>        
+        <unlink port="p" relation="r"/>
+    </entity>
+</model>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.9.1 {test unlink inside by relation} {
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.CompositeActor">
+    <entity name="master" class="ptolemy.actor.CompositeActor">
+        <port name="p" class="ptolemy.actor.IOPort">
+        </port>
+        <relation name="r" class="ptolemy.actor.IORelation">
+        </relation>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+set body {
+<model name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort"/>
         <relation name="r" class="ptolemy.actor.IORelation"/>
