@@ -165,7 +165,21 @@ skeleton:
 depend:
 	@echo "no dependencies in this directory"
 
+# This rule will update the .bin files by reading in .tbl files
+# Note that this requires the modified version of byacc that 
+# we don't actually ship with ptII
+update_tables: yylhs.bin
+yylhs.bin: yylhs.tbl
+	$(ROOT)/bin/ptinvoke ptolemy.lang.java.Skeleton $(ROOT)/$(ME)/Main.java
+	-rm -f Main.jskel
+
+# We don't actually ship our modified version of byacc
+PTBYACC = $(ROOT)/vendors/misc/byacc/ptbyacc
+yylhs.tbl: jparser.y
+	$(PTBYACC) -j -p ptolemy.lang.java -f JavaParserTmp jparser.y	
+
 demo: PrintTree RegenerateCode
+
 PrintTree:
 	@echo "Print out the AST"
 	CLASSPATH=$(CLASSPATH) $(JAVA) \
@@ -185,15 +199,21 @@ analysis:
 	CLASSPATH=$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS) \
 	$(JAVA) ptolemy.lang.java.Main ./nodetypes/IntLitNode.java
 
-codegen:
+codegen: generate_codegen compile_codegen run_codegen 
+generate_codegen:
 	@if [ ! -d $(JAVASRC_STUBS) ]; then \
 		echo "Warning $(JAVASRC_STUBS) does not exist"; \
 	fi
 	CLASSPATH=$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS) \
 	$(JAVA) -verbose:class  ptolemy.domains.sdf.codegen.SDFCodeGenerator \
-	-class  ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem -iterations 5 \
-      -outdir $(ROOT) -outpkg cg.orthocom
-      
+	-class  ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem \
+	-iterations 500 \
+	-outdir $(ROOT) -outpkg cg.orthocom
+compile_codegen:
+	(cd $(ROOT)/cg/orthocom; $(JAVAC) -classpath ../.. CG_Main.java)
+run_codegen: 	
+	(cd $(ROOT)/cg/orthocom; \
+		$(JAVA) -classpath ../.. cg.orthocom.CG_Main)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
