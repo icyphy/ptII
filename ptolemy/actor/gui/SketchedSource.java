@@ -40,9 +40,35 @@ import ptolemy.actor.lib.Source;
 import ptolemy.plot.*;
 import java.awt.Panel;
 
-/** This actor produces at its output a signal that is sketched by the
- *  user on the screen.
- *  FIXME- more details.  Have to add a plot.
+/** This actor produces as its output a signal that is sketched by the
+ *  user on the screen.  The <i>length</i> parameter specifies the
+ *  number of samples in the sketched signal.  The <i>period</i>
+ *  parameter, if greater than zero, specifies the period with which
+ *  the signal should be repeated (in samples).  If the period is longer
+ *  than the length, then zeros will be inserted.
+ *  If this parameter is zero or
+ *  negative, then the sketched signal is produced exactly once,
+ *  at the beginning of the execution of the model.  If the period
+ *  is greater than zero, and the sketch is modified during execution
+ *  of the model, then the modification appears in the next cycle of
+ *  the period after the modification has been completed.  In other
+ *  words, the change does not appear mid-cycle.
+ *  <p>
+ *  This actor can be used with its own plot widget, which is the
+ *  default behavior, or more interestingly, it can share a plot
+ *  widget with another plot object.  This way, the sketch can be
+ *  be made right on a plot that also displays the results of
+ *  processing the sketched signal.
+ *  <p>
+ *  When this actor has its own plot widget, you can specify where that
+ *  widget appears by calling setPanel().  If you do not, then the
+ *  plot widget will be created in its own window.  You can also
+ *  call setPanel() with an argument that is an instance of EditablePlot.
+ *  This is how you create a shared plot.  That same instance of
+ *  EditablePlot can be used by another actor, such as SequencePlotter,
+ *  to display data.  Be sure to set the <i>dataset</i> parameter
+ *  of this actor or the <i>startingDataset</i> parameter of the
+ *  other actor so that they do not use the same datasets.
  *
  *  @author  Edward A. Lee
  *  @version $Id$
@@ -70,6 +96,9 @@ public class SketchedSource extends Source implements SequenceActor {
 
         period = new Parameter(this, "period", new IntToken(0));
         period.setTypeEquals(IntToken.class);
+
+        dataset = new Parameter(this, "dataset",
+                new IntToken(0));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,8 +118,29 @@ public class SketchedSource extends Source implements SequenceActor {
      */
     public Parameter period;
 
+    /** @serial The starting dataset number to which data is plotted.
+     *  This parameter has type IntToken, with default value 0.
+     *  Its value must be non-negative.
+     */
+    public Parameter dataset;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Throw an exception if the specified new value for
+     *  <i>dataset</i> is negative.
+     *  @exception IllegalActionException If the specified attribute
+     *   is <i>dataset</i> and its value is negative.
+     */
+    public void attributeChanged(Attribute attribute)
+           throws IllegalActionException {
+        if (attribute == dataset) {
+            if(((IntToken)dataset.getToken()).intValue() < 0) {
+                throw new IllegalActionException(this,
+                "dataset: negative value is not allowed.");
+            }
+        }
+    }
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
@@ -101,6 +151,7 @@ public class SketchedSource extends Source implements SequenceActor {
         SketchedSource newobj = (SketchedSource)super.clone(ws);
         newobj.length = (Parameter)newobj.getAttribute("length");
         newobj.period = (Parameter)newobj.getAttribute("period");
+        newobj.dataset = (Parameter)newobj.getAttribute("dataset");
         return newobj;
     }
 
@@ -112,13 +163,22 @@ public class SketchedSource extends Source implements SequenceActor {
     public void fire() throws IllegalActionException {
         // Read the trigger input, if there is one.
         super.fire();
-        // FIXME: Deal with periodicity.
+        int prd = ((IntToken)period.getToken()).intValue();
         if (_count < _data[1].length) {
             // NOTE: X value ignored.
             output.broadcast(new DoubleToken(_data[1][_count]));
             _count++;
         } else {
             output.broadcast(_zero);
+            if (_count < prd) {
+                _count++;
+            }
+        }
+        if (prd > 0 && _count >= prd) {
+            // Reread the data in case it has changed.
+            _count = 0;
+            int set = ((IntToken)dataset.getToken()).intValue();
+            _data = ((EditablePlot)plot).getData(set);
         }
     }
 
@@ -135,8 +195,8 @@ public class SketchedSource extends Source implements SequenceActor {
         // user-entered data!
 
         _count = 0;
-        // FIXME: Dataset fixed at 0
-        _data = ((EditablePlot)plot).getData(0);
+        int set = ((IntToken)dataset.getToken()).intValue();
+        _data = ((EditablePlot)plot).getData(set);
     }
 
     /** Specify the panel into which this editable plot should be placed.
@@ -171,13 +231,13 @@ public class SketchedSource extends Source implements SequenceActor {
             }
         }
         // Set the default signal value in the plot.
-        // FIXME: using dataset 0.
         try {
-            plot.clear(0);
+            int set = ((IntToken)dataset.getToken()).intValue();
+            plot.clear(set);
             int len = ((IntToken)length.getToken()).intValue();
             boolean connected = false;
             for(int i = 0; i < len; i++) {
-                plot.addPoint(0, (double)i, 0.0, connected);
+                plot.addPoint(set, (double)i, 0.0, connected);
                 connected = true;
             }
             plot.repaint();
