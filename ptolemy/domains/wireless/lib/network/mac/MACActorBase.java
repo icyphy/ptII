@@ -105,33 +105,33 @@ public class MACActorBase extends NetworkActorBase {
         aSlotTime.setTypeEquals(BaseType.INT);
         aSlotTime.setExpression("9");
 
-	aRxRfDelay = new Parameter(this, "aRxRfDelay");
-	aRxRfDelay.setTypeEquals(BaseType.INT);
-	aRxRfDelay.setExpression("1");
+	    aRxRfDelay = new Parameter(this, "aRxRfDelay");
+	    aRxRfDelay.setTypeEquals(BaseType.INT);
+	    aRxRfDelay.setExpression("1");
 
-	aRxPlcpDelay = new Parameter(this, "aRxPlcpDelay");
-	aRxPlcpDelay.setTypeEquals(BaseType.INT);
-	aRxPlcpDelay.setExpression("1");
+	    aRxPlcpDelay = new Parameter(this, "aRxPlcpDelay");
+	    aRxPlcpDelay.setTypeEquals(BaseType.INT);
+	    aRxPlcpDelay.setExpression("1");
 
-	aCWmin = new Parameter(this, " aCWmin");
-	aCWmin.setTypeEquals(BaseType.INT);
-	aCWmin.setExpression("15");
+	    aCWmin = new Parameter(this, " aCWmin");
+	    aCWmin.setTypeEquals(BaseType.INT);
+	    aCWmin.setExpression("15");
 
-	aCWmax= new Parameter(this, "aCWmax");
-	aCWmax.setTypeEquals(BaseType.INT);
-	aCWmax.setExpression("1023");
+	    aCWmax= new Parameter(this, "aCWmax");
+	    aCWmax.setTypeEquals(BaseType.INT);
+	    aCWmax.setExpression("1023");
 
-	dot11ShortRetryLimit= new Parameter(this, "dot11ShortRetryLimit");
-	dot11ShortRetryLimit.setTypeEquals(BaseType.INT);
-	dot11ShortRetryLimit.setExpression("6");
+	    dot11ShortRetryLimit= new Parameter(this, "dot11ShortRetryLimit");
+	    dot11ShortRetryLimit.setTypeEquals(BaseType.INT);
+	    dot11ShortRetryLimit.setExpression("6");
 
-	dot11LongRetryLimit= new Parameter(this, "dot11LongRetryLimit");
-	dot11LongRetryLimit.setTypeEquals(BaseType.INT);
-	dot11LongRetryLimit.setExpression("6");
+	    dot11LongRetryLimit= new Parameter(this, "dot11LongRetryLimit");
+	    dot11LongRetryLimit.setTypeEquals(BaseType.INT);
+	    dot11LongRetryLimit.setExpression("6");
 
-	dotllRTSThreshold= new Parameter(this, "dotllRTSThreshold");
-	dotllRTSThreshold.setTypeEquals(BaseType.INT);
-	dotllRTSThreshold.setExpression("1");
+	    dotllRTSThreshold= new Parameter(this, "dotllRTSThreshold");
+	    dotllRTSThreshold.setTypeEquals(BaseType.INT);
+	    dotllRTSThreshold.setExpression("1");
 
 
     }
