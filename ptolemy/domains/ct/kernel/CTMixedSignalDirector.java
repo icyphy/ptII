@@ -31,7 +31,6 @@ import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
@@ -189,11 +188,17 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         }
         
         _discretePhaseExecution();
-        // Mark states and prepare for roll back.
+        // Mark the FINAL states and prepare for roll back.
         _markStates();
-        // Guarantee to stop at the iteration end time.
+
+        // If the current step size is 0.0, there is no need to perform
+        // a continuous phase of execution.
+        if (getIterationEndTime().equals(getIterationBeginTime())) {
+            return;
+        }
+        
         _setIterationBeginTime(getModelTime());
-        // FIXME: the following statement may not be necessary.
+        // Guarantee to stop at the iteration end time.
         fireAt((CompositeActor)getContainer(), getIterationEndTime());
 
         _continuousPhaseExecution();
@@ -224,10 +229,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *  in the super class.
      */
     public boolean postfire() throws IllegalActionException {
-        // FIXME: how to inform the upper level when the next scheduled 
-        // firing will be? 
-        if (!_isTopLevel()) {
-            _secondPrefire = false;
+        if (!_isTopLevel()){
+            // Because this director runs ahead of time, this director has to
+            // register the current time as a breakpoint such that the executive
+            // director will fire the container again at the current time.
+            CompositeActor container = (CompositeActor) getContainer();
+            Director executiveDirector = container.getExecutiveDirector();
+            executiveDirector.fireAt(container, getModelTime());
         }
         return super.postfire();
     }
@@ -281,7 +289,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
             // Now, check the next iteration time.
             if (outsideNextIterationTime.compareTo(_outsideTime) < 0) {
-                // FIXME: This seems redundant. The outside director should 
+                // NOTE: This check is redundant. The outside director should 
                 // guarantee that this never happen.
                 throw new IllegalActionException(this, "Outside domain"
                         + " time is going backward."
@@ -290,57 +298,19 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                         + outsideNextIterationTime);
             }
 
-            // If outside next iteration time is equal to the outside
-            // time, then request for a zero delay refire.
-            // FIXME: we need to support integration with zero step size.
-            // FIXME: the following "if" block does not make sense to me...
-            if (outsideNextIterationTime.equals(_outsideTime) 
-                && (_secondPrefire == false)) {
-                executiveDirector.fireAt(container, outsideNextIterationTime);
-                _secondPrefire = true;
-                return false;
-            }
+//            // If outside next iteration time is equal to the outside
+//            // time, then this iteration step size is 0.0. Request for 
+//            // a refiring of the container at the current time to 
+//            // response to new events from outside.
+//            if (outsideNextIterationTime.equals(_outsideTime)) {
+//                executiveDirector.fireAt(container, outsideNextIterationTime);
+//            }
 
             // Ideally, the outside time should equal the local time. 
             // If the outside time is less than the local time, then rollback 
             // is needed. If the outside time is greater than the local time, 
             // an exception will be thrown.
-            if (_outsideTime.equals(localTime)) {
-                // We are woke up as we requested.
-                if (_debugging) {
-                    _debug("The outside time is equal to the local time. " +
-                            "Check whether there are outputs.");
-                }
-                // FIXME: The following code is not necessary. A correct
-                // implementation of CT director should have already transfered
-                // events to outside when the container of the director fires. 
-                
-                // Process local discrete events and emit outputs
-                // if there are any. If there are any outputs emitted,
-                // request for a zero delay refire and return false.
-                if (_hasDiscreteEvents) {
-                    _discretePhaseExecution();
-                    boolean hasOutput = false;
-                    Iterator outports = container.outputPortList().iterator();
-                    while (outports.hasNext()) {
-                        IOPort p = (IOPort)outports.next();
-                        if (executiveDirector.transferOutputs(p)) {
-                            hasOutput = true;
-                        }
-                    }
-                    _hasDiscreteEvents = false;
-                    if (hasOutput) {
-                        if (_debugging) {
-                            _debug(getName(),
-                                " produces output to the outside domain.",
-                                " Requesting zero delay refiring",
-                                " Prefire() returns false.");
-                        }
-                        executiveDirector.fireAt(container, _outsideTime);
-                        return false;
-                    }
-                }
-            } else if (_outsideTime.compareTo(localTime) > 0) {
+            if (_outsideTime.compareTo(localTime) > 0) {
                 throw new IllegalActionException(this, executiveDirector,
                         "Outside time is later than the local time. " +
                         "This should never happen.");
@@ -353,9 +323,16 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                 }
                 // The local time is set backwards to a known good time.
                 _rollback();  
-                // Set a catch-up destination time by registering the 
-                // outside time as a breakpoint.
-                fireAt(container, _outsideTime);
+                
+                // FIXME: the following is unnecessary.
+//                // Set a catch-up destination time by registering the 
+//                // outside time as a breakpoint.
+//                fireAt(container, _outsideTime);
+                
+                // NOTE: At this time, new inputs are not transferred yet. 
+                // The catchup will use the old inputs. This is one of the 
+                // reasons that catch up must be performed in the prefire()
+                // method.
                 // The local time is set to the outside time.
                 _catchUp(); 
                 
@@ -363,8 +340,43 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     _debug("After catch up, the current time is " + localTime);
                 }
             }
-
-            // Now, we have outside time equals the curren time.
+            
+            // Now, the outside time must be equal to the local time.
+            if (_debugging) {
+                _debug("The outside time is equal to the local time. " +
+                "Check whether there are outputs.");
+            }
+//            // FIXME: The following code is not necessary. A correct
+//            // implementation of CT director should have already transfered
+//            // events to outside when the container of the director fires.
+//            // FIXME: this should be handled in the postfire method.
+//            
+//            // Process local discrete events and emit outputs
+//            // if there are any. If there are any outputs emitted,
+//            // request for a zero delay refire and return false.
+//            if (_hasDiscreteEvents) {
+//                _discretePhaseExecution();
+//                boolean hasOutput = false;
+//                Iterator outports = container.outputPortList().iterator();
+//                while (outports.hasNext()) {
+//                    IOPort p = (IOPort)outports.next();
+//                    if (executiveDirector.transferOutputs(p)) {
+//                        hasOutput = true;
+//                    }
+//                }
+//                _hasDiscreteEvents = false;
+//                if (hasOutput) {
+//                    if (_debugging) {
+//                        _debug(getName(),
+//                                " produces output to the outside domain.",
+//                                " Requesting zero delay refiring",
+//                        " Prefire() returns false.");
+//                    }
+//                    executiveDirector.fireAt(container, _outsideTime);
+//                    return false;
+//                }
+//            }
+            
             double aheadLength 
                 = outsideNextIterationTime.subtract(_outsideTime).
                     getDoubleValue();
@@ -378,6 +390,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
             if (aheadLength < timeResolution ) {
                 // This is a zero step size iteration.
+                // TESTIT: simultaneous events from the outside model drives
+                // a CT subsystem.
                 _setIterationEndTime(_outsideTime);
                 if (_debugging) {
                     _debug( "This is an iteration with the step size as 0.");
@@ -418,7 +432,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         _setIterationBeginTime(localTime);
         while (!localTime.equals(outsideTime)) {
             setCurrentStepSize(getSuggestedNextStepSize());
-            _processBreakpoints();
             if (_debugging) { 
                 _debug("Catch up: ending..." +
                     (localTime.add(getCurrentStepSize())));
@@ -443,38 +456,39 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         if (_isTopLevel()) {
             return;
         }
-        // FIXME: why do we need the followings?
+        // TESTIT: A CT subsystem containing a level crossing detector that
+        // drives a (Discrete) timed plotter in the upper DE level.  
         // Check whether the iteration is interrupted by event.
-        // If so, ask the upper level to schedule a firing to react to the
-        // events generated at this level.
-        Time localTime = getModelTime();
-        CompositeActor container = (CompositeActor) getContainer();
-        Director executiveDirector = container.getExecutiveDirector();
-        if (_isStoppedByEvent()) {
-            if (_debugging) {
-                _debug("Fire stopped by event."
-                        + " at " + localTime
-                        + "; request refiring at "
-                        + localTime
-                        + "; set Event phase to TRUE");
-            }
-            _hasDiscreteEvents = true;
-            //hold Outputs;
-        } else if (localTime.equals(getIterationEndTime())) {
-            if (_debugging) {
-                _debug("Fire stopped normally."
-                        + " at " + localTime
-                        + "; request refiring at "
-                        + getIterationEndTime()
-                        + "; set Event phase to FALSE");
-            }
-            _hasDiscreteEvents = false;
-        }
-        // FIXME: why do we need to refire the container? 
-        // should this go to the postfire method? 
-        // This is related to the FIXME in the psotfire method.
-        executiveDirector.fireAt(container, localTime);
-        return;
+//        // If so, ask the upper level to schedule a firing to react to the
+//        // events generated at this level.
+//        Time localTime = getModelTime();
+//        CompositeActor container = (CompositeActor) getContainer();
+//        Director executiveDirector = container.getExecutiveDirector();
+//        if (_isStoppedByEvent()) {
+//            if (_debugging) {
+//                _debug("Fire stopped by event."
+//                        + " at " + localTime
+//                        + "; request refiring at "
+//                        + localTime
+//                        + "; set Event phase to TRUE");
+//            }
+//            _hasDiscreteEvents = true;
+//            //hold Outputs;
+//        } else if (localTime.equals(getIterationEndTime())) {
+//            if (_debugging) {
+//                _debug("Fire stopped normally."
+//                        + " at " + localTime
+//                        + "; request refiring at "
+//                        + getIterationEndTime()
+//                        + "; set Event phase to FALSE");
+//            }
+//            _hasDiscreteEvents = false;
+//        }
+//        // FIXME: why do we need to refire the container? 
+//        // should this go to the postfire method? 
+//        // This is related to the FIXME in the postfire method.
+//        executiveDirector.fireAt(container, localTime);
+//        return;
     }
     
     /** Initialize parameters in addition to the parameters inherited
@@ -502,6 +516,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     // handle events. The bottom line is that whenever an event is 
     // generated, requrest a refiring and let the upper level react
     // to the event.
+    // FIXME: it will be removed.
+    
     /** Return true if the current iteration is stopped due to
      *  the occurrence of events (predictable or unpredictable).
      *  @return True if the current fire phase is stopped by an event.
@@ -664,8 +680,4 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
 
     // The local variable of the run ahead length parameter.
     private double _runAheadLength;
-
-    // Indicate whether this is the second time that prefire has been
-    // called in a row.
-    private boolean _secondPrefire = false;
 }
