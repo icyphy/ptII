@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Nameable;
    The transmiter can call the channel's transmit() method to
    deliver data to its corresponding receivers. It can specify
    the transmission properties by a record token including the
-   transimission range, transmission power. The transmit
+   transmission range, transmission power. The transmit
    properties may be modified by the channel model or by some
    property transformers(@see PropertyTransformer) during the
    transmission to take into account channel losses, antenna
