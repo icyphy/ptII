@@ -235,6 +235,9 @@ public class Variable extends Attribute implements Typeable {
      */
     public void addToScope(VariableList varList) {
         // FIXME: Remove this method when fsm no longer depends on it.
+        if (varList == null) {
+            return;
+        }
         addToScope(varList.getVariables());
 	varList._addDependent(this);
     }
