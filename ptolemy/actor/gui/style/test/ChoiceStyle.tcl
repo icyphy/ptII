@@ -57,10 +57,37 @@ test ChoiceStyle-1.0 {test constructor and initial value} {
 test ChoiceStyle-2.0 {settable} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set n [java::new ptolemy.kernel.util.NamedObj N]
+    set n2 [java::new ptolemy.kernel.util.NamedObj N2]
     set a [java::new ptolemy.actor.gui.style.ChoiceStyle]
-    #set b [java::new ptolemy.actor.gui.style.ChoiceStyle $w]
-    set c [java::new ptolemy.actor.gui.style.ChoiceStyle $n C]
     set stringAttribute [java::new ptolemy.kernel.util.StringAttribute \
 	    $n "MyStringAttribute"]
-    list [$c acceptable $stringAttribute]
-} {0}
+    # c has no attributes
+    set c [java::new ptolemy.actor.gui.style.ChoiceStyle $n C]
+    # d does have attributes
+
+    set d [java::new ptolemy.actor.gui.style.ChoiceStyle $n D]
+
+
+    set stringAttribute1 [java::new ptolemy.kernel.util.StringAttribute \
+	    $d "MyStringAttribute1"]
+    set stringAttribute2 [java::new ptolemy.kernel.util.StringAttribute \
+	    $d "MyStringAttribute2"]
+    list [$c acceptable $stringAttribute] \
+	    [$d acceptable $stringAttribute]
+} {0 1}
+
+test ChoiceStyle-2.0 {addEntry} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set n [java::new ptolemy.kernel.util.NamedObj N]
+    set d [java::new ptolemy.actor.gui.style.ChoiceStyle $n D]
+    set stringAttribute1 [java::new ptolemy.kernel.util.StringAttribute \
+	    $d "MyStringAttribute1"]
+    set stringAttribute2 [java::new ptolemy.kernel.util.StringAttribute \
+	    $d "MyStringAttribute2"]
+    set frame [java::new javax.swing.JFrame]
+    set pane [$frame getContentPane]
+    set ptolemyQuery [java::new ptolemy.actor.gui.PtolemyQuery $n]
+    $pane add $ptolemyQuery
+    $frame pack
+    $frame setVisible true
+} {}
