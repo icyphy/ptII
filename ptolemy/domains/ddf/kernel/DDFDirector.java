@@ -654,7 +654,7 @@ public class DDFDirector extends Director {
      *  later on.
      *  @param actor The actor to be checked.
      *  @return true if the actor is deferrable, false if not.
-     *  @throws IllegalActionException If any called method throws
+     *  @exception IllegalActionException If any called method throws
      *  IllegalActionException.
      */
     protected boolean _isDeferrable(Actor actor)
@@ -747,7 +747,7 @@ public class DDFDirector extends Director {
      *  is satisfied by all receivers contained by this port.
      *  @param actor The actor to be checked.
      *  @return true if the actor is enabled, false if not.
-     *  @throws IllegalActionException If any called method throws
+     *  @exception IllegalActionException If any called method throws
      *   IllegalActionException.
      */
     protected boolean _isEnabled(Actor actor)
@@ -801,7 +801,7 @@ public class DDFDirector extends Director {
     /** Get token consumption rate for the given port.
      *  @param port The port to get token consumption rate.
      *  @return An int array of token consumption rate.
-     *  @throws IllegalActionException If parameter throws it or the
+     *  @exception IllegalActionException If parameter throws it or the
      *   length of tokenConsumptionRate array is less than port width.
      */
     private int[] _getTokenConsumptionRate(IOPort port)
@@ -834,7 +834,7 @@ public class DDFDirector extends Director {
     /** Get token production rate for the given port.
      *  @param port The port to get token production rate.
      *  @return An int array of token production rate.
-     *  @throws IllegalActionException If parameter throws it
+     *  @exception IllegalActionException If parameter throws it
      *   or the length of tokenProductionRate array is less
      *   than port inside width.
      */
