@@ -225,49 +225,69 @@ public abstract class MatrixToken extends Token {
         }
     }
 
-	/** Create a new instance of a MatrixToken subclass with the given number
-	 *  of rows and columns.  The token will contain all of the elements of the
-	 *  given array.  The element type of the matrix token will be
-	 *  the least upper bound of the types of all of the tokens in the given
-	 *  array.  The size of the array must be (rows*columns).
-	 *  @return An instance of a subclass of MatrixToken.
-	 *  @exception IllegalActionException If no type exists for the
-	 *   matrix token, or the array of tokens is not the right size, or
-	 *   the array is null.
-	 */
-	public static MatrixToken arrayToMatrix(
-			Token[] tokens, int rows, int columns)
-			throws IllegalActionException {
-		Object[] typeTerms = new Object[tokens.length];
-		for (int i = 0; i < tokens.length; i++) {
-			typeTerms[i] = tokens[i].getType();
-		}
+    /** Create a new instance of a MatrixToken subclass with the
+     *  given number of rows and columns.  The token will contain
+     *  all of the elements of the given array.  The element type
+     *  of the matrix token will be the least upper bound of the
+     *  types of all of the tokens in the given array.  The size
+     *  of the array must be (rows*columns).
+     *  @return An instance of a subclass of MatrixToken.
+     *  @exception IllegalActionException If no type exists for the
+     *   matrix token, or the array of tokens is not the right size, or
+     *   the array is null.
+     */
+    public static MatrixToken arrayToMatrix(
+            Token[] tokens, int rows, int columns)
+            throws IllegalActionException {
+        Object[] typeTerms = new Object[tokens.length];
+        for (int i = 0; i < tokens.length; i++) {
+            typeTerms[i] = tokens[i].getType();
+        }
+        
+        Type type = (Type)TypeLattice.lattice().leastUpperBound(
+                typeTerms);
+        
+        MatrixToken token;
+        if (type == BaseType.UNKNOWN) {
+            throw new IllegalActionException("Cannot resolve type for "
+                    + "matrix construction.");
+        } else if (type == BaseType.BOOLEAN) {
+            token = new BooleanMatrixToken(tokens, rows, columns);
+        } else if (type == BaseType.INT) {
+            token = new IntMatrixToken(tokens, rows, columns);
+        } else if (type == BaseType.LONG) {
+            token = new LongMatrixToken(tokens, rows, columns);
+        } else if (type == BaseType.DOUBLE) {
+            token = new DoubleMatrixToken(tokens, rows, columns);
+        } else if (type == BaseType.COMPLEX) {
+            token = new ComplexMatrixToken(tokens, rows, columns);
+        } else if (type == BaseType.FIX) {
+            token = new FixMatrixToken(tokens, rows, columns);
+        } else {
+            throw new IllegalActionException("Unrecognized type " + type +
+                    " for matrix creation.");
+        }
+        return token;
+    }
 
-		Type type = (Type)TypeLattice.lattice().leastUpperBound(typeTerms);
-
-		MatrixToken token;
-		if (type == BaseType.UNKNOWN) {
-			throw new IllegalActionException("Cannot resolve type for "
-					+ "matrix construction.");
-		} else if (type == BaseType.BOOLEAN) {
-			token = new BooleanMatrixToken(tokens, rows, columns);
-		} else if (type == BaseType.INT) {
-			token = new IntMatrixToken(tokens, rows, columns);
-		} else if (type == BaseType.LONG) {
-			token = new LongMatrixToken(tokens, rows, columns);
-		} else if (type == BaseType.DOUBLE) {
-			token = new DoubleMatrixToken(tokens, rows, columns);
-		} else if (type == BaseType.COMPLEX) {
-			token = new ComplexMatrixToken(tokens, rows, columns);
-		} else if (type == BaseType.FIX) {
-			token = new FixMatrixToken(tokens, rows, columns);
-		} else {
-			throw new IllegalActionException("Unrecognized type " + type +
-					" for matrix creation.");
-		}
-		return token;
-	}
-	
+    /** Return the (exact) return type of the arrayToMatrix function
+     *  above.  If the first argument type is an array type, then
+     *  return a matrix type of the same element type, otherwise return
+     *  BaseType.UNKNOWN.
+     *  @param type The type of the argument to the corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+     public static Type arrayToMatrixReturnType(
+             Type type1, Type type2, Type type3)
+             throws IllegalActionException {
+        if(type1 instanceof ArrayType) {
+            Type elementType = ((ArrayType)type1).getElementType();
+            return UnsizedMatrixType.getMatrixTypeForElementType(elementType);
+        } else {
+            return BaseType.UNKNOWN;
+        }
+    }
+    
     /** Return a copy of the content of this token as a 2-D Complex matrix.
      *  In this base class, just throw an exception.
      *  @return A 2-D Complex matrix.
@@ -321,6 +341,18 @@ public abstract class MatrixToken extends Token {
         return result;
     }
 
+    /** Return the (exact) return type of the createSequence function
+     *  above.  The return type is an array type whose element type is
+     *  the least upper bound of the first two types.
+     *  @param type The type of the argument to the corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+    public static Type createSequenceReturnType(
+            Type type1, Type type2, Type type3)
+            throws IllegalActionException {
+        return new ArrayType(TypeLattice.leastUpperBound(type1, type2));
+    }
+ 
     /** Create an array of tokens of the given length.  The first
      *  token in the sequence will have value start and each succeeding
      *  token will have the value created by adding the given increment
@@ -613,14 +645,24 @@ public abstract class MatrixToken extends Token {
                 notSupportedConversionMessage(this, "long matrix"));
     }
 
-	/** Create a new instance of ArrayToken that contains the values
-	 *  in the specified matrix.
-	 *  @return An array.
-	 */
-	public static ArrayToken matrixToArray(MatrixToken matrix) {
-		return matrix.toArray();
-	}
-
+    /** Create a new instance of ArrayToken that contains the values
+     *  in the specified matrix.
+     *  @return An array.
+     */
+    public static ArrayToken matrixToArray(MatrixToken matrix) {
+        return matrix.toArray();
+    }
+    
+    /** Return the (exact) return type of the toArray function above.  If the
+     *  argument is a matrix type, then return an array type of its
+     *  element type, otherwise return BaseType.UNKNOWN.
+     *  @param type The type of the argument to the corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+    public static Type matrixToArrayReturnType(Type type) {
+        return toArrayReturnType(type);
+    }
+    
     /** Return a new token whose value is this token
      *  modulo the value of the argument token.
      *  @param rightArgument The token that performs modulo on this token.
