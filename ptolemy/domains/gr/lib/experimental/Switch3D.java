@@ -107,9 +107,11 @@ public class Switch3D extends GRTransform {
                 if (index != _previousIndex) {
                     int width = sceneGraphOut.getWidth();
                     if (index < width) {
+                        _stopRenderer();
                         detachableGroup.detach();
                         attachmentGroup[index].addChild(detachableGroup);
                         _previousIndex = index;
+                        _startRenderer();
                     }
                 }
             }
