@@ -24,6 +24,41 @@ found online at
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/doc/design.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/doc/design.html</CODE></a>
 
 
+<h2>Major Features that are new in Ptolemy 0.4 </h2>
+<menu>
+<li> Ptolemy II 0.4 supports an XML language called
+<a href="../ptolemy/moml/demo/">MoML</a> for specifying
+component-based models. 
+(Edward A. Lee, Steve Neuendorffer and the Ptolemy Team)
+
+<li> The source code for the
+<a href="../ptolemy/domains/fsm/demo">Finite State Machine (FSM)</a>
+domain is included.
+(Xiaojun Liu and the Ptolemy Team)
+
+<li> Major rewrite of the type system.
+(Yuhong Xiong)
+
+<li> The Discrete Event domain has been tuned for performance.
+(Edward A. Lee and the Ptolemy Team)
+
+<li> We are moving away from the JDK1.1 collections package and using
+the JDK1.2 collections classes from java.util.
+Methods that shipped with Ptolemy II 0.3 that used the JDK 1.1
+collections package have been marked as deprecated in Ptolemy II 0.4.
+It is our intention to remove these deprecated methods in Ptolemy II 1.0
+and to no longer ship the $PTII/collections directory.
+(The Ptolemy Team)
+
+<li> Support for fix point data types.,
+(Bart Kienhuis, Yuhong Xiong)
+
+<li> Various demonstrations have been added, removed and/or rewritten.
+(The Ptolemy Team)
+<li> Commmand line invocation of models via $PTOLEMY/bin/ptolemy.
+(Edward A. Lee, Christopher Hylands and the Ptolemy Team)
+</menu>
+
 <h2>Platforms</h2>
 
 The core of Ptolemy II 0.4 is 100% Java, so it should work on any
@@ -50,6 +85,26 @@ href="ftp://ptolemy.eecs.berkeley.edu/pub/gnu"><CODE>ftp://ptolemy.eecs.berkeley
 
 <li> Ptolemy II version 0.4 does not include a GUI.
 
+<li> This is the first release of the Finite State Machine domain (FSM)
+which has the following limitations
+	<menu>
+	<li> The FSM design document chapter is not part of the 0.4 beta
+	<li> There are not very many tests for FSM
+	<li> MoML support for FSM models is incomplete.
+	</menu>
+
+
+<li> The readFile() parameter function does not work with applets.
+
+<li> The import statement in MoML requires the base attribute.
+The following will not work:
+<pre>
+&lt;import source="testClass2.xml"/&gt;
+</pre>
+Use the following instead
+<pre>
+&lt;import base="../../.." source="ptolemy/moml/test/testClass2.xml"/&gt;
+</pre>
 <li> The JDK1.2.1 Plug-in has a bug that causes the Netscape or Iexplorer
 process to linger after exiting.  The workaround is to turn of the JIT
 using the Java Plug-in Control Panel, see the <a href="troubleshooting.htm#jit">Troubleshooting guide</a> for details.
