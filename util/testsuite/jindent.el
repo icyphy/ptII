@@ -6,6 +6,7 @@
        (concat (getenv "PTII") "/util/testsuite/ptjavastyle.el")))
 
 (defun jindent ()
-	(indent-region (point-min) (point-max) 'nil)
-	(save-buffer)
+  (java-mode)
+  (indent-region (point-min) (point-max) 'nil)
+  (save-buffer)
 )
