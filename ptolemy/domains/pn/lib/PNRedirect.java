@@ -61,7 +61,7 @@ public class PNRedirect extends PNStar{
     public void initialize(PNExecutive myExecutive, int initValue)
             throws NameDuplicationException, GraphException {
         _myExecutive = myExecutive;
-        _myExecutive.register(this);
+        _myExecutive.registerStar(this);
         initialize(initValue);
     }
 
