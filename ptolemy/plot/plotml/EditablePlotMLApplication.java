@@ -34,7 +34,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.plot.plotml;
 
 import ptolemy.plot.EditablePlot;
-import ptolemy.plot.PlotBox; // For PTPLOT_RELEASE
+import ptolemy.plot.PlotBox;
 import ptolemy.gui.*;
 
 import java.awt.event.ActionListener;
@@ -42,6 +42,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditablePlotMLApplication
@@ -95,7 +96,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         ((EditablePlot)plot).setEditable(-1);
 
         // Edit menu
-        JMenuItem select = new JMenuItem("Edit Dataset", KeyEvent.VK_D);
+        JMenuItem select = new JMenuItem("Edit Dataset", KeyEvent.VK_E);
         SelectListener selectListener = new SelectListener();
         select.addActionListener(selectListener);
         _editMenu.add(select);
