@@ -105,10 +105,10 @@ public class BranchController {
     }
 
     /**
-     */
     public void setBranches(Branch[] branches) {
     	_branches = branches;
     }
+     */
     
     /**
      */
@@ -121,17 +121,54 @@ public class BranchController {
     
     /**
      */
+    public void createBranches(IOPort port) throws 
+            IllegalActionException {
+	if( _branches == null ) {
+	    _branches = new LinkedList();
+	}
+
+	Branch branch = null;
+	BoundaryReceiver prodRcvr = null;
+	BoundaryReceiver consRcvr = null;
+	Receiver[][] prodRcvrs = null;
+	Receiver[][] consRcvrs = null;
+
+	for( int i=0; i < port.getWidth(); i++ ) {
+	    if( port.isInput() ) {
+		prodRcvrs = port.getReceivers();
+		consRcvrs = port.deepGetReceivers();
+	    } else if( port.isOutput() ) {
+		prodRcvrs = port.getReceivers();
+		consRcvrs = port.getRemoteReceivers();
+	    } else {
+		throw new IllegalActionException("Bad news");
+	    }
+	    prodRcvr = (BoundaryReceiver)prodRcvrs[i][0];
+	    consRcvr = (BoundaryReceiver)consRcvrs[i][0];
+
+	    branch = new Branch( 3, true, prodRcvr, consRcvr, this );
+	    _branches.add(branch);
+	}
+    }
+
+    /**
+     */
     public void startBranches() {
         synchronized(_internalLock) {
+	    if( _branches == null ) {
+		return;
+	    }
             if( _threadList == null ) {
                 _threadList = new LinkedList();
                 BranchThread bThread = null;
-                for( int i=0; i < _branches.length; i++ ) {
-                    if( _branches[i].getGuard() ) {
-                        bThread = new BranchThread(_branches[i]);
+		Branch branch = null;
+                for( int i=0; i < _branches.size(); i++ ) {
+		    branch = (Branch)_branches.get(i);
+                    if( branch.getGuard() ) {
+                        bThread = new BranchThread( branch );
                         _threadList.add(bThread);
                     }
-                    // FIXME: should we optimize for single branch?
+                    // FIXME: should we optimize for a single branch?
 		}
             }
                 
@@ -225,8 +262,7 @@ public class BranchController {
      *  It is called by a conditional branch just before it dies.
      *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
-     */
-    protected void _branchFailed(int branchNumber) {
+    protected void _branchFailed(Branch branch) {
         if (_successfulBranch == branchNumber) {
             // the execution of the model must have finished.
             _successfulBranch = -1;
@@ -240,6 +276,7 @@ public class BranchController {
             }
         }
     }
+     */
 
     /** Registers the calling branch as the successful branch. It
      *  reduces the count of active branches, and notifies chooseBranch()
@@ -264,7 +301,6 @@ public class BranchController {
                 // throw exception here.
             }
             
-            // wakes up chooseBranch() which wakes up parent thread
             _internalLock.notifyAll();
         }
     }
@@ -295,6 +331,7 @@ public class BranchController {
             _branchesBlocked--;
         }
     }
+
      /** Called by ConditionalSend and ConditionalReceive to check if
      *  the calling branch is the first branch to be ready to rendezvous.
      *  If it is, it sets a private variable to its branch ID so that
@@ -456,7 +493,7 @@ public class BranchController {
     // terminated abruptly.
     private List _threadList = null;
     
-    private Branch[] _branches;
+    private LinkedList _branches;
     
     private LinkedList _engagements;
     

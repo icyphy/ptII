@@ -43,15 +43,16 @@ import ptolemy.kernel.util.*;
 @version $Id$
 */
 
-public abstract class Branch {
+public class Branch {
 
     /** Create a guarded communication statement. 
-    public Branch(boolean guard, int branchID, BranchController cntlr)
-            throws IllegalActionException {
-     */
     public Branch(boolean guard, int prodChannel, int consChannel, 
     	    int branchID, IOPort prodPort, IOPort consPort, 
             BranchController cntlr) throws IllegalActionException {
+     */
+    public Branch(int branchID, boolean guard, BoundaryReceiver prodRcvr,
+	    BoundaryReceiver consRcvr, BranchController cntlr) 
+	    throws IllegalActionException {
         _guard = guard;
         _branchID = branchID;
         _controller = cntlr;
@@ -59,21 +60,27 @@ public abstract class Branch {
         Receiver[][] receivers;
         BoundaryReceiver receiver;
         
+	/*
         receivers = prodPort.getReceivers();
         receiver = (BoundaryReceiver)receivers[prodChannel][0];
-        if( !receiver.isProducerReceiver() ) {
-            throw new IllegalActionException(prodPort, "Not producer "
+	*/
+        if( !prodRcvr.isProducerReceiver() ) {
+            throw new IllegalActionException("Not producer "
             	    + "receiver");
         }
-        _prodRcvr = (BoundaryReceiver)receivers[prodChannel][0];
+        // _prodRcvr = (BoundaryReceiver)receivers[prodChannel][0];
+	_prodRcvr = prodRcvr;
         
+	/*
         receivers = consPort.getRemoteReceivers();
         receiver = (BoundaryReceiver)receivers[consChannel][0];
-        if( !receiver.isConsumerReceiver() ) {
-            throw new IllegalActionException(consPort, "Not consumer "
+	*/
+        if( !_consRcvr.isConsumerReceiver() ) {
+            throw new IllegalActionException("Not consumer "
             	    + "receiver");
         }
-        _consRcvr = (BoundaryReceiver)receivers[consChannel][0];
+        // _consRcvr = (BoundaryReceiver)receivers[consChannel][0];
+	_consRcvr = consRcvr;
     }
 
     ///////////////////////////////////////////////////////////////////
