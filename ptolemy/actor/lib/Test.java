@@ -200,7 +200,7 @@ public class Test extends NonStrictTest {
                         "Test fails in iteration " + _numberOfInputTokensSeen
                         + ".\n"
                         + "Width of input is " + width
-                        + ", but correctValues parameter"
+                        + ", but correctValues parameter "
                         + "is not an array "
                         + "of arrays.");
             }
