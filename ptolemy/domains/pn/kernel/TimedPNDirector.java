@@ -326,7 +326,7 @@ public class TimedPNDirector extends BasePNDirector {
      *  and to inform the topology listeners of the same.
      *  @see ptolemy.kernel.event.TopologyChangeRequest
      *  @see ptolemy.kernel.event.TopologyListener
-     *  @see fire()
+     *  @see #fire
      */
     public void queueTopologyChangeRequest(TopologyChangeRequest request) {
 	super.queueTopologyChangeRequest(request);
