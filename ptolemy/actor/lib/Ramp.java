@@ -30,6 +30,7 @@
 
 package ptolemy.actor.lib;
 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -41,13 +42,19 @@ import ptolemy.kernel.util.*;
 /**
 Produce an output token on each firing with a value that is
 incremented by the specified step each iteration. The
-first output and the step value are given by parameters.
+first output is given by the <i>init</i> parameter, and the
+increment may be given either by the <i>step</i> parameter or by
+the associated <i>step</i> port. Note that the increment will show
+up in the output only on the next iteration. If you need it to show
+up on the current iteration, use the Acculator actor.
 The type of the output is determined by the constraint that it must
-be greater than or equal to the types of the parameters.
+be greater than or equal to the types of the parameter (and/or the
+<i>step</i> port, if it is connected).
 Thus, this actor is
 polymorphic in the sense that its output data type can be that
 of any token type that supports addition.
 
+@see Accumulator
 @author Yuhong Xiong, Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.2
@@ -57,7 +64,8 @@ public class Ramp extends SequenceSource {
 
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
-     *  the <i>init</i> and <i>step</i> parameters. Initialize <i>init</i>
+     *  the <i>init</i> and <i>step</i> parameter and the <i>step</i>
+     *  port. Initialize <i>init</i>
      *  to IntToken with value 0, and <i>step</i> to IntToken with value 1.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -70,7 +78,7 @@ public class Ramp extends SequenceSource {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         init = new Parameter(this, "init", new IntToken(0));
-        step = new Parameter(this, "step", new IntToken(1));
+        step = new PortParameter(this, "step", new IntToken(1));
 
 	// set the type constraints.
 	output.setTypeAtLeast(init);
@@ -84,7 +92,6 @@ public class Ramp extends SequenceSource {
                 + "style=\"fill:grey\"/>\n"
                 + "</svg>\n");
         _resultArray = new Token[1];
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -103,17 +110,14 @@ public class Ramp extends SequenceSource {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class to reinitialize the state if either
-     *  the <i>step</i> or the <i>init</i> parameter is changed.
+    /** Override the base class to reinitialize the state if
+     *  the <i>init</i> parameter is changed.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == step) {
-            _step = step.getToken();
-            _stateToken = init.getToken();
-        } else if (attribute == init) {
+        if (attribute == init) {
             _stateToken = init.getToken();
         } else super.attributeChanged(attribute);
     }
@@ -156,7 +160,6 @@ public class Ramp extends SequenceSource {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _stateToken = init.getToken();
-	_step = step.getToken();
     }
 
     /** Invoke a specified number of iterations of this actor. Each
@@ -186,7 +189,7 @@ public class Ramp extends SequenceSource {
 	for (int i = 0; i < count; i++) {
 	    _resultArray[i] = _stateToken;
 	    try {
-		_stateToken = _stateToken.add(_step);
+		_stateToken = _stateToken.add(step.getToken());
 	    } catch (IllegalActionException ex) {
 		// Should not be thrown because
 		// we have already verified that the tokens can be added.
@@ -214,7 +217,7 @@ public class Ramp extends SequenceSource {
      */
     public boolean postfire() throws IllegalActionException {
         try {
-            _stateToken = _stateToken.add(_step);
+            _stateToken = _stateToken.add(step.getToken());
         } catch (IllegalActionException ex) {
             // Should not be thrown because
             // we have already verified that the tokens can be added.
@@ -227,7 +230,5 @@ public class Ramp extends SequenceSource {
     ////                         private variables                 ////
 
     private Token _stateToken = null;
-    private Token _step = null;
     private Token[] _resultArray;
 }
-
