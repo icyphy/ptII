@@ -228,7 +228,7 @@ public class SROptimizedScheduler extends Scheduler {
         Iterator scheduleIterator = scheduleList.iterator();
 
         while (scheduleIterator.hasNext()) {
-            Object element = ((Node) scheduleIterator.next()).weight();
+            Object element = ((Node) scheduleIterator.next()).getWeight();
             Actor actor;
             if (element instanceof Actor) {
                 actor = (Actor) element;
