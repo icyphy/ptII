@@ -590,7 +590,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 				"\" relation=\"" + 
 				tail.getName(getToplevel()) +
 				"\"/>\n");
-		    return linkTail.getName(getToplevel());
+		    return tail.getName(getToplevel());
 		} else if(tail instanceof ComponentPort &&
 			  linkHead instanceof Vertex) {
 		    // Linking a port to an existing relation.
@@ -599,7 +599,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 				"\" relation=\"" + 
 				head.getName(getToplevel()) +
 				"\"/>\n");
-		    return linkHead.getName(getToplevel());
+		    return head.getName(getToplevel());
 		} else {
 		    throw new RuntimeException(
 		        "Link failed: " +
@@ -657,7 +657,9 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 			super._execute();
 			link.setHead(newLinkHead);
 			if(relationNameToAdd != null) {
-			    link.setRelation(getToplevel().getRelation(relationNameToAdd));
+			    ComponentRelation relation = 
+			    (ComponentRelation)getToplevel().getRelation(relationNameToAdd);
+			    link.setRelation(relation);
 			} else {
 			    link.setRelation(null);
 			}
@@ -1172,18 +1174,14 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    // remove any ports that this link is linked to.  We don't need
 	    // to manufacture those links.
 	    Object tail = link.getTail();
-	    if(tail instanceof Location) {
-		tail = ((Location)tail).getContainer();
-	    }
-	    if(tail != null && linkedPortList.contains(tail) ) {
-		linkedPortList.remove(tail);
+	    Object tailObj = getSemanticObject(tail);
+	    if(tailObj != null && linkedPortList.contains(tailObj) ) {
+		linkedPortList.remove(tailObj);
 	    }
 	    Object head = link.getHead();
-	    if(head instanceof Location) {
-		head = ((Location)head).getContainer();
-	    }
-	    if(head != null && linkedPortList.contains(head)) {
-		linkedPortList.remove(head);
+	    Object headObj = getSemanticObject(head);
+	    if(headObj != null && linkedPortList.contains(headObj)) {
+		linkedPortList.remove(headObj);
 	    }
 	}
 	
