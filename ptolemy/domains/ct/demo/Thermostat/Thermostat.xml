@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Thermostat" class="ptolemy.domains.ct.demo.Thermostat.Thermostat">
+<entity name="Thermostat" class="ptolemy.actor.TypedCompositeActor">
     <property name="CTTopLevelDirector" class="ptolemy.domains.ct.kernel.CTMultiSolverDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -25,9 +25,17 @@
         </property>
         <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="84.0, 37.0">
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="126.0, 157.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -44,33 +52,54 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="426.0, 156.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Thermostat</title>
+
 <xRange min="0.0" max="5.0"/>
+
 <yRange min="-1.6653345369377348E-16" max="0.2"/>
+
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="HS" class="ptolemy.domains.ct.kernel.CTCompositeActor">
         <property name="HSDirector" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
             </property>
+            <property name="_location" class="ptolemy.moml.Location" value="72.0, 32.0">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="279.0, 157.0">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="46.999999999999986, 201.0">
+            </property>
         </port>
         <port name="state" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_location" class="ptolemy.moml.Location" value="512.0, 251.0">
+            </property>
         </port>
         <entity name="Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Increasing">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="473.0, 181.0">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+            </property>
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 116]">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -81,6 +110,8 @@
             <entity name="Increasing" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Increasing">
                 </property>
+                <property name="_location" class="ptolemy.moml.Location" value="180.0, 225.0">
+                </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
                 <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
@@ -88,6 +119,8 @@
             </entity>
             <entity name="Decreasing" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Decreasing">
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="420.0, 225.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
                 </port>
@@ -155,20 +188,38 @@
                 </property>
                 <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
                 </property>
+                <property name="_location" class="ptolemy.moml.Location" value="77.0, 39.0">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="264.0, 245.0">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+            </property>
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="_location" class="ptolemy.moml.Location" value="57.999999999999986, 184.0">
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="502.0, 242.0">
+                </property>
             </port>
             <port name="state" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="278.0, 151.0">
+                </property>
             </port>
             <port name="trig" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="504.0, 307.0">
+                </property>
             </port>
             <entity name="Hold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="_location" class="ptolemy.moml.Location" value="129.0, 129.0">
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -179,6 +230,8 @@
             <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="-1.665334537E-16">
                 </property>
+                <property name="_location" class="ptolemy.moml.Location" value="152.0, 228.0">
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -188,6 +241,8 @@
             </entity>
             <entity name="ZD" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="412.0, 237.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -202,6 +257,8 @@
             <entity name="EXPRESSION" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.data.expr.Parameter" value="in - 0.2">
                 </property>
+                <property name="_location" class="ptolemy.moml.Location" value="291.0, 302.0">
+                </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                 </port>
@@ -214,10 +271,14 @@
             <relation name="_R1" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="R2" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="362.0, 307.0">
+                </vertex>
             </relation>
             <relation name="_R2" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="CTIncR1" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="229.0, 234.0">
+                </vertex>
             </relation>
             <link port="input" relation="_R0"/>
             <link port="output" relation="_R2"/>
@@ -257,20 +318,38 @@
                 </property>
                 <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
                 </property>
+                <property name="_location" class="ptolemy.moml.Location" value="81.33332824707031, 50.0">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="260.0, 135.0">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+            </property>
+            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="_location" class="ptolemy.moml.Location" value="86.66666666666666, 225.0">
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="512.3333333333333, 246.0">
+                </property>
             </port>
             <port name="state" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="329.33333333333326, 190.0">
+                </property>
             </port>
             <port name="trig" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="_location" class="ptolemy.moml.Location" value="512.3333333333333, 316.0">
+                </property>
             </port>
             <entity name="Hold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <property name="_location" class="ptolemy.moml.Location" value="134.0, 140.0">
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -280,6 +359,8 @@
             </entity>
             <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.2">
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="189.66666412353516, 232.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -291,6 +372,8 @@
             <entity name="Gain" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0">
                 </property>
+                <property name="_location" class="ptolemy.moml.Location" value="235.3333282470703, 140.0">
+                </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                 </port>
@@ -300,6 +383,8 @@
             </entity>
             <entity name="ZD" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="418.0, 241.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -313,6 +398,8 @@
             </entity>
             <entity name="EXPRESSION" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.data.expr.Parameter" value="in + 0.0">
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="320.3333435058594, 311.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -328,10 +415,14 @@
             <relation name="_R2" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="R2" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="376.66666666666663, 316.0">
+                </vertex>
             </relation>
             <relation name="_R3" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="CTDecR1" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex0" class="ptolemy.moml.Vertex" value="265.0, 238.0">
+                </vertex>
             </relation>
             <link port="input" relation="_R0"/>
             <link port="output" relation="_R3"/>
@@ -350,10 +441,16 @@
             <link port="EXPRESSION.in" relation="CTDecR1"/>
         </entity>
         <relation name="HSr1" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex0" class="ptolemy.moml.Vertex" value="145.0, 200.0">
+            </vertex>
         </relation>
         <relation name="HSr2" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex0" class="ptolemy.moml.Vertex" value="370.0, 130.0">
+            </vertex>
         </relation>
         <relation name="HSr3" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex0" class="ptolemy.moml.Vertex" value="341.0, 251.0">
+            </vertex>
         </relation>
         <relation name="HSr4" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -379,4 +476,3 @@
     <link port="HS.input" relation="_R0"/>
     <link port="HS.state" relation="_R1"/>
 </entity>
-
