@@ -186,7 +186,7 @@ public class DDEDirector extends ProcessDirector {
      *  method on behalf of an actor. If this method is called by
      *  other than a DDEThread, then return the current time as
      *  specified by the superclass of this method.
-     * @returns The current time of the DDEThread that calls this
+     * @return The current time of the DDEThread that calls this
      *  method.
      */
     public double getCurrentTime() {

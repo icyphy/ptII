@@ -137,7 +137,7 @@ public class FBDelay extends DDEActor {
     ////                         public methods                    ////
 
     /** Return the delay value of this actor.
-     * @returns The delay value of this actor.
+     * @return The delay value of this actor.
      */
     public double getDelay() {
 	return _delay;
