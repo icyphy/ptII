@@ -90,11 +90,21 @@ public class ASTRewrite {
         cu.jjtInsertChild(importNode, 0);
     }
     
+    /** Minimize an AST by deleting all the expression nodes that
+     *  represents no real operation. The resulting AST may not be
+     *  correct. This function is for debug only.
+     *  
+     *  @param node The top-level AST node, usually an {@link
+     *   ASTCompilationUnit} object.
+     *  @return The resulting AST. It shares all or part of the
+     *   given AST. 
+     */
     public static SimpleNode minimizeAST(SimpleNode node) {
         if (node.jjtGetNumChildren() == 1) {
-            if ((node.getClass().getName().contains("Expression") ||
-                    node.getClass().getName().endsWith("Prefix") ||
-                    node.getClass().getName().endsWith("Suffix")) &&
+            String nodeClassName = node.getClass().getName();
+            if ((nodeClassName.indexOf("Expression") != -1 ||
+                    nodeClassName.endsWith("Prefix") ||
+                    nodeClassName.endsWith("Suffix")) &&
                     node.specials == null &&
                     node.getName().length() == 0 &&
                     node.getImage().length() == 0) {
