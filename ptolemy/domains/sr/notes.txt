@@ -1,8 +1,6 @@
 
 To Do:
 
-make
-make tests in pal and sr
 check manual tests
 look over the vergil library
 
