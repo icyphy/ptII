@@ -75,7 +75,9 @@ test NamedList-2.1 {Construct a list, call get} {
 #
 test NamedList-2.2 {Construct a list with a container} {
     set c1 [java::new ptolemy.kernel.util.NamedObj "c1"]
-    set dir [java::new ptolemy.kernel.util.NamedList $c1]
+    set dir [java::new {ptolemy.kernel.util.NamedList \
+	    ptolemy.kernel.util.Nameable} \
+	    $c1]
     set n1 [java::new ptolemy.kernel.util.NamedObj "n1"]
     set n2 [java::new ptolemy.kernel.util.NamedObj "n2"]
     # Note that n3 has the same name as n1
@@ -84,7 +86,7 @@ test NamedList-2.2 {Construct a list with a container} {
     $dir prepend $n2
     catch {$dir prepend $n3} errMsg
     list [_testEnums elements $dir] $errMsg
-} {}
+} {{{n2 n1}} {ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "n1" into container named ".c1", which already contains an object with that name.}}
 
 ######################################################################
 ####
