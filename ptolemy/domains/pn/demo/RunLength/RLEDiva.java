@@ -197,7 +197,11 @@ public class RLEDiva extends PNApplet implements Runnable {
 	System.out.println("Connections made");
         Parameter p = (Parameter)_director.getAttribute(
 		"Initial_queue_capacity");
-        p.setToken(new IntToken(10));
+        try {
+            p.setToken(new IntToken(10));
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex.toString());
+        }
 	return;
     }
 	
@@ -455,7 +459,7 @@ public class RLEDiva extends PNApplet implements Runnable {
 
     /** Execute the system.
      */
-    protected void _go() {
+    protected void _go() throws IllegalActionException {
         if (_isSimulationRunning) {
             System.out.println("Simulation still running.. hold on..");
             return;

@@ -48,6 +48,7 @@ DIRS = 		# demo test doc
 #JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip
 PTCLASSJAR = 	$(JPACKAGE).jar
 
+DIVA_JAR = $(ROOT)/lib/diva.jar
 
 CLASSPATH = $(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
 

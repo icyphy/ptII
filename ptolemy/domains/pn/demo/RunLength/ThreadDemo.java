@@ -104,14 +104,19 @@ public class ThreadDemo {
                  (GraphPane) jgraph.getCanvasPane()));
 
         // Run the model
-  System.out.println("Connections made");
+        System.out.println("Connections made");
         Parameter p = (Parameter)pnDir.getAttribute("Initial_queue_capacity");
-        p.setToken(new IntToken(10));
-   compositeActor.getManager().run();
+        try {
+            p.setToken(new IntToken(10));
+        } catch(Exception ex) {
+            ex.printStackTrace();
+            System.exit(0);
+        }
+        compositeActor.getManager().run();
         System.out.println("Bye World\n");
-  return;
+        return;
     }
-
+    
     /**  Construct the graph representing the PN topology.
      * This is sort of bogus because it's totally hird-wired,
      * but it will do for now...
