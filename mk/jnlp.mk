@@ -164,6 +164,7 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/javasound/demo/demo.jar \
         ptolemy/actor/lib/python/python.jar \
         ptolemy/actor/lib/python/demo/demo.jar \
+        ptolemy/actor/lib/security/demo/demo.jar \
 	ptolemy/data/type/demo/demo.jar \
 	ptolemy/data/unit/demo/demo.jar \
 	ptolemy/domains/ct/demo/demo.jar \
