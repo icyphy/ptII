@@ -400,7 +400,7 @@ public class ConstVariableModelAnalysis {
                             if(scopeVariableChanges) {
                                 isNotConstant = true;
                                 changeContext = (NamedObj)
-                                   _variableToChangeContext.get(scopeVariable);
+                                    _variableToChangeContext.get(scopeVariable);
                             } else if(scopeVariable == null) {
                                 // Free variables (and methods) are
                                 // usually assumed to be static since
