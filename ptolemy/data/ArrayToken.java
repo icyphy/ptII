@@ -32,8 +32,12 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
+
+import java.util.List;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayToken
@@ -306,6 +310,59 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         }
 
         return true;
+    }
+
+    /** Extract a non-contiguous subarray either by giving a boolean array
+     *  of the same length of this array describing which elements to 
+     *  include and which to include, or by giving an an array of an 
+     *  arbitrary length giving the indicies of elements from this array
+     *  to include in the subarray.  An example of the first form is
+     *  {"red","green","blue"}.extract({true,false,true}), which evaluates
+     *  to {"red", "blue"}.  An example of the second form is
+     *  {"red","green","blue"}.extract({2,0,1,1}), which evalues to 
+     *  {"blue", "red", "green", "green"}.
+     *  @param selection An ArrayToken describing the selection of elements
+     *      with which to form the subarray: either an array of integer 
+     *      indicies, or an array of boolean inclusion/exclusion choices.
+     *  @return An ArrayToken containing the extracted subarray.
+     *  @exception IllegalActionException If the argument type is invalid
+     *      or the result cannot be constructed.
+     *  @exception ArrayOutOfBoundsException  If the argument is an array
+     *      of integers, and one or more of those integers is not a valid
+     *      index into this array.
+     *  @since Ptolemy II 4.1
+     */
+    //FIXME: This code has not been reviewed.
+    public ArrayToken extract(ArrayToken selection)
+          throws IllegalActionException {
+      List result = new LinkedList();
+      if (selection.getElementType() == BaseType.BOOLEAN) {
+          if (selection.length() != length()) {
+              throw new IllegalActionException(
+	          "When the argument is an array of booleans, it must be "+
+                  "the same length as this array.");
+          }
+          for (int i=0; i<selection.length(); i++) {
+              if (selection.getElement(i).equals(BooleanToken.TRUE)) {
+                  result.add(getElement(i));
+              }
+          }
+      } else if (selection.getElementType() == BaseType.INT) {
+          for (int i=0; i<selection.length(); i++) {
+              // We could check for out-of-bounds indicies and ignore them,
+              // if we wanted to. 
+              int index = ((IntToken)(selection.getElement(i))).intValue();
+              result.add(getElement(index));
+          } 
+      } else {
+          throw new IllegalActionException(
+              "The argument must be {boolean} or {int}."); 
+      }
+      // FIXME: I'm not sure how to do the array cast, Object[] --> Token[].
+      // return new ArrayToken((Token[])(result.toArray()));
+      Token[] resultArray = new Token[result.size()];
+      System.arraycopy(result.toArray(), 0, resultArray, 0, result.size());
+      return new ArrayToken(resultArray);
     }
 
     /** Return the element at the specified index.
