@@ -89,6 +89,8 @@ JSRCS = \
 	TypeConflictException.java \
 	TypedIOPort.java \
 	TypedIORelation.java \
+	TypeEvent.java \
+	TypeListener.java \
 	TypeTerm.java
 
 EXTRA_SRCS =	$(JSRCS)
