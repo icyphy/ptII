@@ -912,9 +912,21 @@ public class Copernicus {
                     new InputStreamReader(_inputStream);
                 BufferedReader bufferedReader =
                     new BufferedReader(inputStreamReader);
+
+
+                // If we are writing to stderr, prefix the string.
+                // The reason is that writing to stderr causes Tcl
+                // exec to return an error unless it is called with
+                // -stderrok.  However, we would like to know if the
+                // execution of a command prints to stderr, so rather
+                // than use -stderrork, we mark the lines.
+
+                String prefix = ((_stream == System.err) ? "Copernicus._StreamReaderThread() Writing to STDERR: " : "");
                 String line = null;
-                while ( (line = bufferedReader.readLine()) != null)
-                    _stream.println(line);
+                while ( (line = bufferedReader.readLine()) != null) {
+                    
+                    _stream.println(prefix + line);
+                }
             } catch (IOException ioe) {
                 System.out.flush();
                 System.err.println("IOException: " + ioe);
