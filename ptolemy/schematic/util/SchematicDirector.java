@@ -132,7 +132,7 @@ public class SchematicDirector extends PTMLTemplateObject {
             result += _getIndentPrefix(indent + 1) + "null\n";
         else
             result += _getIndentPrefix(indent + 1) + 
-                getImplementation() + "\n";
+                _implementation + "\n";
 
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";

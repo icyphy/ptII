@@ -30,11 +30,14 @@
 
 package ptolemy.schematic.editor;
 
+import ptolemy.schematic.util.Schematic;
 import ptolemy.schematic.util.SchematicEntity;
 import ptolemy.schematic.util.IconLibrary;
 import ptolemy.schematic.util.EntityLibrary;
 import ptolemy.schematic.util.PTMLObjectFactory;
+import ptolemy.schematic.util.PtolemyModelFactory;
 import ptolemy.schematic.util.SchematicGraphImpl;
+import ptolemy.actor.*;
 import diva.graph.*;
 import diva.graph.editor.*;
 import diva.graph.layout.*;
@@ -107,13 +110,11 @@ public class GraphEditor extends AbstractApplication {
         _applicationFrame = new DesktopFrame(this);
         _documentFactory = new GraphDocument.Factory();
         // _incrementalLayout = new LevelLayout();
-	_applicationFrame.setVisible(true);
 
         // Initialize the menubar, toolbar, and palettes
         initializeMenuBar(_applicationFrame.getJMenuBar());
         initializeToolBar(_applicationFrame.getJToolBar());
-        initializePalette();
-
+        initializePalette();     
 	
         Icon icon = getApplicationResources().getImageIcon("GraphIcon");
         Image iconImage = getApplicationResources().getImage("GraphIcon");
@@ -127,8 +128,8 @@ public class GraphEditor extends AbstractApplication {
 	JFileChooser fc = _storagePolicy.getFileChooser();
 	FileFilter ff = new FileFilter() {
 	    public boolean accept (File file) {
-		return GUIUtilities.getFileExtension(file).toLowerCase().equals(
-										"ptml");
+		return GUIUtilities.getFileExtension(file).
+                    toLowerCase().equals("ptml");
 	    }
 	    public String getDescription () {
 		return "PTML files";
@@ -245,7 +246,6 @@ public class GraphEditor extends AbstractApplication {
      */
     public void initializePalette () {
         JShadePane s =_applicationFrame.getShadePane();
-        s.setVisible(true);
 
         ApplicationResources resources = getApplicationResources();
         Icon newIcon = resources.getImageIcon("New");
@@ -266,10 +266,10 @@ public class GraphEditor extends AbstractApplication {
             EntityLibrary genericlib = 
                 _entityLibrary.getSubLibrary("generic");
             Enumeration entities = genericlib.entities();
+            int i = 0;
             while(entities.hasMoreElements()) {
-                SchematicEntity node = new SchematicEntity();
-                node.setTemplate((SchematicEntity) entities.nextElement());
-                p3.addNode(node, 60, 50);            
+                p3.addNode((SchematicEntity) entities.nextElement(), 
+                    60, 50 + (i++) * 50);            
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -279,14 +279,12 @@ public class GraphEditor extends AbstractApplication {
         s.addShade("Test3", saveIcon, p3, "save group -- boring...");
  
         s.addShade("Test2", openIcon, p2, "open group -- disabled!");
-
-	s.addShade("Test1", newIcon, p1, "new group -- cool icons!");
-        s.setEnabledAt(1, false);
-    
-	s.setVisible(true);
-	p3.setVisible(true);
-        p3.repaint();
  
+	s.addShade("Test1", newIcon, p1, "new group -- cool icons!");
+
+        s.setEnabledAt(1, false);
+
+        p3.triggerLayout();
     }
     
     /** Initialize the given menubar. Currently, all strings are
@@ -348,6 +346,34 @@ public class GraphEditor extends AbstractApplication {
         };
         addAction(action);
         addMenuItem(menuDevel, action, 'P', "Print current document info");
+
+        action = new AbstractAction ("Execute System") {
+            public void actionPerformed(ActionEvent e) {
+                Document d = getCurrentDocument();
+                if (d == null) {
+                    return;
+                } 
+                try {
+                    Schematic schematic = 
+                        (Schematic) d.getCurrentSheet().getModel();
+                    PtolemyModelFactory factory = new PtolemyModelFactory();
+                    TypedCompositeActor system = 
+                        factory.createPtolemyModel(schematic);
+                    Manager manager = system.getManager();
+                    // Hack director.
+                    Director director = 
+                        new ptolemy.domains.sdf.kernel.SDFDirector(system, "director");
+                    // end hack
+                    manager.startRun();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    throw new GraphException(ex.getMessage());
+                }
+                 
+            }
+        };
+        addAction(action);
+        addMenuItem(menuDevel, action, 'E', "Execute System");
     }
 
     /** Initialize the given toolbar. Image icons will be obtained

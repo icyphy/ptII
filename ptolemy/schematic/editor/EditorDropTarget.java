@@ -88,7 +88,6 @@ public class EditorDropTarget extends DropTarget {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 		    data = (SchematicEntity)dtde.getTransferable().
 			getTransferData(SchematicPalette.nodeFlavor);
-                    data = (SchematicEntity)data.clone();
                     System.out.println("Data is [" + data + "]");//DEBUG
                 }
                 catch(Exception e) {
@@ -108,7 +107,8 @@ public class EditorDropTarget extends DropTarget {
                 System.out.println("Dropping at " + p); //DEBUG
                 GraphController gc = 
 		    ((JGraph)getComponent()).getGraphPane().getGraphController();
-                ((EditorGraphController) gc).addEntity(data, p.x, p.y);
+                SchematicEntity entity = new SchematicEntity(data);
+                ((EditorGraphController) gc).addEntity(entity, p.x, p.y);
                 dtde.dropComplete(true); //success!
             }
         }

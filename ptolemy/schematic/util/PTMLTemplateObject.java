@@ -102,6 +102,15 @@ public class PTMLTemplateObject extends PTMLObject {
         _template = obj;
     }
 
+    /** Return a unique name for a new object. 
+     */
+    protected String _createUniqueName() {
+        if(getTemplate() == null) 
+            return super._createUniqueName();
+        else 
+            return getTemplate().getName() + _createUniqueID();
+    }
+
     /** Return a description of the object.  Lines are indented according to
      *  to the level argument using the protected method _getIndentPrefix().
      *  Zero, one or two brackets can be specified to surround the returned
@@ -120,11 +129,9 @@ public class PTMLTemplateObject extends PTMLObject {
             result += super._description(indent, 0);
         else 
             result += super._description(indent, 1);
+
         result += " template {\n";
-        if(_template == null) 
-            result += _getIndentPrefix(indent + 1) + "null\n";
-        else
-            result += _template._description(indent + 1, 0) + "\n";
+        result += _getDescription(_template, indent);
 
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";

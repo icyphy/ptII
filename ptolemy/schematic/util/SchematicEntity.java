@@ -72,6 +72,21 @@ public class SchematicEntity extends PTMLTemplateObject
         this(name, null);
     }
 
+    /** 
+     * Create a new entity with the given template, and a unique name
+     * based on the name of the template
+     */
+    public SchematicEntity (SchematicEntity et) {
+        this("entity", et);
+        setTemplate(et);
+        try {
+            setName(_createUniqueName());
+        } 
+        catch (NameDuplicationException e) {
+	    throw new InternalErrorException("Unique name was not unique!");
+	}
+    }
+
     /**
      * Create a new SchematicEntity object with the given name and entity
      * template.
@@ -124,9 +139,9 @@ public class SchematicEntity extends PTMLTemplateObject
     public Object clone() throws CloneNotSupportedException {
        try {
            SchematicEntity newobj = 
-               new SchematicEntity(_createUniqueName(), 
-                       (SchematicEntity)getTemplate());
-           //  (SchematicEntity) super.clone();
+           //    new SchematicEntity(_createUniqueName(), 
+           //            (SchematicEntity)getTemplate());
+               (SchematicEntity) super.clone();
            newobj._ports = new NamedList();
            Enumeration objects = ports();
            while(objects.hasMoreElements()) {
@@ -492,44 +507,30 @@ public class SchematicEntity extends PTMLTemplateObject
             result += super._description(indent, 1);
 
         result += " icon {\n";
-        if(_icon == null) 
-            result += _getIndentPrefix(indent + 1) + "null\n";
-        else
-            result += _icon._description(indent + 1, 0) + "\n";
+        result += _getDescription(_icon, indent);
 
 	result += _getIndentPrefix(indent) + "} implementation {\n";
-	if(_implementation == null) 
+        if(_implementation == null) 
             result += _getIndentPrefix(indent + 1) + "null\n";
         else
             result += _getIndentPrefix(indent + 1) + 
-                getImplementation() + "\n";
-
+                _implementation + "\n";
+        
 	result += _getIndentPrefix(indent) + "} terminalstyle {\n";
-        if(_terminalstyle == null) 
-            result += _getIndentPrefix(indent + 1) + "null\n";
-        else
-            result += _terminalstyle._description(indent + 1, 0) + "\n";
-
+        result += _getDescription(_terminalstyle, indent);
+        
 	result += _getIndentPrefix(indent) + "} terminalmap {\n";
-	if(_terminalmap == null) 
+        if(_terminalmap == null) 
             result += _getIndentPrefix(indent + 1) + "null\n";
         else
             result += _getIndentPrefix(indent + 1) + 
                 _terminalmap.toString() + "\n";
-
+        
 	result += _getIndentPrefix(indent) + "} ports {\n";
-        Enumeration els = ports();
-        while(els.hasMoreElements()) {
-            SchematicPort port = (SchematicPort) els.nextElement();
-	    result += port._description(indent + 1, 2) + "\n";
-        }
+        result += _enumerationDescription(ports(), indent);
 
         result += _getIndentPrefix(indent) + "} terminals {\n";
-        els = terminals();
-        while(els.hasMoreElements()) {
-            SchematicTerminal term = (SchematicTerminal) els.nextElement();
-	    result += term._description(indent + 1, 2) + "\n";
-	}    
+        result += _enumerationDescription(terminals(), indent);
 
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";

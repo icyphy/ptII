@@ -285,25 +285,13 @@ public class EntityLibrary extends PTMLObject {
             result += super._description(indent, 1);
 
 	result += " sublibraries {\n";
-	Enumeration sublibraries = subLibraries();
-        while (sublibraries.hasMoreElements()) {
-            EntityLibrary p = (EntityLibrary) sublibraries.nextElement();
-            result += p._description(indent + 1, 2);
-        }
+        result += _enumerationDescription(subLibraries(), indent);
 
 	result += _getIndentPrefix(indent) + "} directors {\n";
-	Enumeration directors = directors();
-        while (directors.hasMoreElements()) {
-            SchematicDirector p = (SchematicDirector) directors.nextElement();
-            result += p._description(indent + 1, 2) + "\n";
-        }
+        result += _enumerationDescription(directors(), indent);
 
 	result += _getIndentPrefix(indent) + "} entites {\n";
-	Enumeration entities = entities();
-        while (entities.hasMoreElements()) {
-            SchematicEntity p = (SchematicEntity) entities.nextElement();
-            result += p._description(indent + 1, 2) + "\n";
-        }
+        result += _enumerationDescription(entities(), indent);
 
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";

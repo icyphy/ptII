@@ -34,11 +34,13 @@ import ptolemy.schematic.util.*;
 import java.io.*;
 import java.awt.*;
 import java.awt.dnd.*;
+import java.awt.event.*;
 import java.awt.datatransfer.*;
 import java.util.*;
 import javax.swing.*;
 import diva.graph.*;
 import diva.graph.model.*;
+import diva.graph.layout.*;
 import diva.canvas.*;
 import diva.canvas.interactor.*;
 import diva.canvas.event.*;
@@ -98,8 +100,24 @@ public class SchematicPalette extends JGraph {
 	_draggedNode = node;
     }
 
+    public void triggerLayout() {
+        int delay = 1000;
+        Timer timer = new Timer(delay, new LayoutListener());
+        timer.setRepeats(false);
+        timer.start();
+    }
     /////////////////////////////////////////////////////////////
     //                    Inner Classes                        //
+    
+    public class LayoutListener implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            LayoutTarget target = new BasicLayoutTarget(_controller);
+            Graph graph = _controller.getGraph();
+            GlobalLayout layout = new GridAnnealingLayout();
+            layout.layout(target, graph);
+            repaint();
+        }
+    }
 
     public class PaletteController extends GraphController {
 	public PaletteController (SchematicPalette palette) {
@@ -266,6 +284,8 @@ public class SchematicPalette extends JGraph {
 		// check to see if action is OK ...
 		NodeTransferable transferable = 
 		    new NodeTransferable(_palette.getDraggedNode()); 
+
+                System.out.println(((SchematicEntity) _palette.getDraggedNode()).description());
 
 		//initial cursor, transferable, dsource listener 
 		e.startDrag(DragSource.DefaultCopyNoDrop, 

@@ -77,7 +77,9 @@ public class EditorNodeRenderer implements NodeRenderer {
 	    Icon icon = entity.getIcon();	    
             Figure background = icon.createFigure();
 	    figure = new CompositeFigure(background);
-	    
+            LabelFigure label = new LabelFigure(entity.getName());
+            label.setSize(10);
+            ((CompositeFigure)figure).add(label);
 	    //Enumeration terminals = entity.terminals();
 	    //while(terminals.hasMoreElements()) {
 	    //	SchematicTerminal terminal = 

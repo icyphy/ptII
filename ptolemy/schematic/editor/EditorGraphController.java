@@ -108,7 +108,7 @@ public class EditorGraphController extends GraphController {
         // Create and set up the target for connectors
         ConnectorTarget ct = new PerimeterTarget() {
 	    public boolean accept (Figure f) {
-		System.out.println(f.getUserObject().toString());
+    //		System.out.println(f.getUserObject().toString());
                 return (f.getUserObject() instanceof SchematicTerminal);
 		// FIXME Used needs something like: ||
 		// (f instanceof FigureWrapper &&
@@ -175,9 +175,9 @@ public class EditorGraphController extends GraphController {
 
 	ef.route();
         // Add to the graph
-        
-        //        getGraphImpl().addEdge(edge, getGraph());    
-}
+        SchematicGraphImpl impl = (SchematicGraphImpl) getGraphImpl();
+        impl.addEdge(edge, getGraph());
+    }
 
     /** Add a node to this graph editor and render it
      * at the given location.
@@ -367,14 +367,13 @@ ef.route();
         public void mousePressed(LayerEvent e) {
             Figure source = e.getFigureSource();
 	    Node sourcenode = (Node) source.getUserObject();
-	    System.out.println(((PTMLObject)sourcenode).description());
+	    // System.out.println(((PTMLObject)sourcenode).description());
 	    if(!(sourcenode instanceof SchematicTerminal)) return;
 
             FigureLayer layer = (FigureLayer) e.getLayerSource();
 
             // Create a new edge
             Edge edge = getGraphImpl().createEdge(null);
-            // SchematicRelation r = new SchematicRelation
 
             // Add it to the editor
             addEdge(edge,

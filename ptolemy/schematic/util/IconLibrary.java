@@ -293,23 +293,13 @@ public class IconLibrary extends PTMLObject {
             result += super._description(indent, 1);
 
 	result += _getIndentPrefix(indent) + " sublibraries {\n";
-	Enumeration sublibraries = subLibraries();
-        while (sublibraries.hasMoreElements()) {
-            IconLibrary p = (IconLibrary) sublibraries.nextElement();
-            result += p._description(indent + 1, 2);
-        }
+        result += _enumerationDescription(subLibraries(), indent);
+
 	result += _getIndentPrefix(indent) + "} icons {\n";
-	Enumeration icons = icons();
-        while (icons.hasMoreElements()) {
-            Icon p = (Icon) icons.nextElement();
-            result += p._description(indent + 1, 2) + "\n";
-        }
+        result += _enumerationDescription(icons(), indent);
+
 	result += _getIndentPrefix(indent) + "} terminalstyles{\n";
-	Enumeration terminalstyles = terminalStyles();
-        while (terminalstyles.hasMoreElements()) {
-            TerminalStyle p = (TerminalStyle) terminalstyles.nextElement();
-            result += p._description(indent + 1, 2) + "\n";
-        }
+        result += _enumerationDescription(terminalStyles(), indent);
 	
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";

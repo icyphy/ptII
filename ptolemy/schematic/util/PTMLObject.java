@@ -295,13 +295,20 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
         return getClass().getName() + " {" + getFullName()+ "}";
     }
 
-    /** Return a unique name for this object.
+    /** Return a unique name for a new object. 
      */
     protected String _createUniqueName() {
         // FIXME This is such a ridiculously lame way to do this.
 	// This doesn't actually create a unique name across all 
 	// executions.
-        return getClass().getName() + PTMLObject._uniqueID++;
+        return getClass().getName() + _createUniqueID();
+    }
+
+    /** Return a unique ID for a new object.
+     */
+    protected long _createUniqueID() {
+        // FIXME as above
+        return PTMLObject._uniqueID++;
     }
 
     /** Return a description of the object.  Lines are indented according to
@@ -320,18 +327,38 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
         String result = _getIndentPrefix(indent);
         if (bracket == 1 || bracket == 2) result += "{";
         result += getClass().getName() + " {";
-        result += getFullName() + "} ";
-        result += "parameters {\n";
-
-        Enumeration params = parameters();
-        while (params.hasMoreElements()) {
-            SchematicParameter p = (SchematicParameter) params.nextElement();
-            result += p._description(indent + 1, 2) + "\n";
-        }
+        result += getFullName() + "}";
+        
+        result += " parameters {\n";
+        result += _enumerationDescription(parameters(), indent);
         
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";
 
+        return result;
+    }
+
+    /** Return a description of the enumeration by appropriately calling 
+     *  _description on each element of the enumeration.  
+     *  @param enum An enumeration of PTMLObjects.
+     */
+    protected String _enumerationDescription(Enumeration enum, int indent) {
+        String result = "";
+        while(enum.hasMoreElements()) {
+            PTMLObject obj = (PTMLObject) enum.nextElement();
+            result += obj._description(indent + 1, 2) + "\n";
+        }
+        return result;
+    }
+
+    /** Return a description of the given object, or null if the object is null
+     */
+    protected String _getDescription(PTMLObject object, int indent) {
+        String result;
+        if(object == null) 
+            result = _getIndentPrefix(indent + 1) + "null\n";
+        else
+            result = object._description(indent + 1, 0) + "\n";
         return result;
     }
 

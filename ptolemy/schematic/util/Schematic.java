@@ -412,38 +412,21 @@ public class Schematic extends PTMLObject
         else 
             result += super._description(indent, 1);
 
- 	result += _getIndentPrefix(indent) + " director {\n";
-	result += _director._description(indent + 1, 0) + "\n";
+ 	result += " director {\n";
+        result += _getDescription(_director, indent);
 
- 
-        result += "} entities {\n";
-        Enumeration els = entities();
-        while(els.hasMoreElements()) {
-            SchematicEntity entity = (SchematicEntity) els.nextElement();
-	    result += entity._description(indent + 1, 2) + "\n";
-        }
+        result += _getIndentPrefix(indent) + "} entities {\n";
+        result += _enumerationDescription(entities(), indent);
 
 	result += _getIndentPrefix(indent) + "} ports {\n";
-        els = ports();
-        while(els.hasMoreElements()) {
-            SchematicPort port = (SchematicPort) els.nextElement();
-	    result += port._description(indent + 1, 2) + "\n";
-        }
+        result += _enumerationDescription(ports(), indent);
 
         result += _getIndentPrefix(indent) + "} terminals {\n";
-        els = terminals();
-        while(els.hasMoreElements()) {
-            SchematicTerminal term = (SchematicTerminal) els.nextElement();
-	    result += term._description(indent + 1, 2) + "\n";
-	}    
+        result += _enumerationDescription(terminals(), indent);
 
         result += _getIndentPrefix(indent) + "} relations {\n";
-        els = relations();
-        while(els.hasMoreElements()) {
-            SchematicRelation relation = 
-		(SchematicRelation) els.nextElement();
-	    result += relation._description(indent + 1, 2) + "\n";
-	}    
+        result += _enumerationDescription(relations(), indent);
+   
 
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";

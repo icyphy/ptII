@@ -49,6 +49,23 @@ public class SchematicGraphImpl implements GraphImpl {
 
     public int _entityNumber = 0;
     
+    /** 
+     * Add an edge to the given graph.
+     */
+    public final void addEdge(Edge edge, Graph parent) {
+        try {
+            Schematic schematic = (Schematic) parent;
+            SchematicRelation relation = new SchematicRelation();
+            relation.addLink((SchematicLink) edge);
+            schematic.addRelation(relation);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new GraphException(e.getMessage());
+            
+        }
+    }
+
     /**
      * Add a node to the given graph.
      */

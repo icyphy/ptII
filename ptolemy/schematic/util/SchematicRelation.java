@@ -204,19 +204,16 @@ public class SchematicRelation extends PTMLObject
             result += super._description(indent, 0);
         else 
             result += super._description(indent, 1);
+
         result += " terminals {\n";
-        Enumeration els = terminals();
-        while(els.hasMoreElements()) {
-            SchematicTerminal term = (SchematicTerminal) els.nextElement();
-	    result += term._description(indent + 1, 2) + "\n";
-	}    
+        result += _enumerationDescription(terminals(), indent);
 
         result += _getIndentPrefix(indent) + "} links {\n";
-        els = links();
+        Enumeration els = links();
         while(els.hasMoreElements()) {
             SchematicLink link = (SchematicLink) els.nextElement();
 	    result += link._description(indent + 1, 2) + "\n";
-	}    
+        }
 
         result += _getIndentPrefix(indent) + "}";
         if (bracket == 2) result += "}";
