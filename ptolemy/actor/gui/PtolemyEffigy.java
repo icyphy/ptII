@@ -322,11 +322,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                     try {
                         // If the following fails, we should remove the effigy.
                         try {
-			    System.out.println("PtolemyEffigy.createEffigy() 1");
                             toplevel = parser.parse(base, input);
-			    System.out.println("PtolemyEffigy.createEffigy() 2");
                         } catch (IOException io) {
-			    System.out.println("PtolemyEffigy.createEffigy() 3" + io);
                             // If we are running under Web Start, we
                             // might have a URL that refers to another
                             // jar file.
@@ -340,9 +337,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                                 throw io;
                             }
                         }
-			System.out.println("PtolemyEffigy.createEffigy() 4" + toplevel);
                         if (toplevel != null) {
-			    System.out.println("PtolemyEffigy.createEffigy() 5");
                             effigy.setModel(toplevel);
 
                             // A MoMLFilter may have modified the model
@@ -359,7 +354,6 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                             URIAttribute uriAttribute =
                                 new URIAttribute(toplevel, "_uri");
                             URI inputURI = null;
-			    System.out.println("PtolemyEffigy.createEffigy() 6");
                             try {
                                 inputURI = new URI(input.toExternalForm());
                             } catch (java.net.URISyntaxException ex) {
@@ -393,11 +387,9 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 
                             return effigy;
                         } else {
-			    System.out.println("PtolemyEffigy.createEffigy() 7");
                             effigy.setContainer(null);
                         }
                     } catch (Throwable throwable) {
-			System.out.println("PtolemyEffigy.createEffigy() 8" + throwable);
 			if (throwable instanceof StackOverflowError) {
 			    Throwable newThrowable =
 				new StackOverflowError("StackOverflowError: "
