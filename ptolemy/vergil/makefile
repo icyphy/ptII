@@ -31,7 +31,7 @@
 
 ME =		ptolemy/vergil
 
-DIRS = 		graph toolbox 
+DIRS = 		graph toolbox ptolemy/fsm
 
 # Root of the Java directory
 ROOT =		../../

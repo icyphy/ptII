@@ -260,8 +260,15 @@ public class PtolemyDocument extends AbstractDocument
          */
         public Document createDocument(Application app) {
             PtolemyDocument d = new PtolemyDocument(app);
-	    CompositeEntity toplevel =
-                new ptolemy.domains.fsm.kernel.FSMActor();
+            CompositeEntity toplevel;
+            try {
+                toplevel =
+                    new ptolemy.domains.fsm.kernel.FSMActor();
+                new ptolemy.vergil.ptolemy.fsm.PtolemyFSMNotation(toplevel, "notation");
+            } catch (Exception e) {
+                app.showError("Failed to create new model", e);
+                return null;
+            }
             d.setModel(toplevel);
             return d;
         }
@@ -278,7 +285,6 @@ public class PtolemyDocument extends AbstractDocument
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The document's model.
-     */
+    // The document's model.
     private CompositeEntity _model;
 }
