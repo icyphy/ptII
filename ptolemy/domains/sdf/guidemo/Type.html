@@ -47,6 +47,13 @@ java_CODE = ptolemy.domains.sdf.guidemo.TypeApplet.class java_CODEBASE = ../../.
 
 </CENTER>
 
+The lower left portion of the applet shows part of the type lattice,
+the lower right portion shows colored traces during type resolution,
+which indicates how the types are updated. Each trace corresponds
+to one port, every time a type is updated, all the traces are extended
+by a certain amount. The color of the trace corresponds to the color
+of the elements of the type lattice on the left.<p>
+
 The type constraints are:
 <ul>
   <li> For each Ramp, the types of the initial value and the step size 
