@@ -813,8 +813,15 @@ public class PlotBox extends JPanel implements Printable {
         if (index >= 1) {
             return Printable.NO_SUCH_PAGE;
         }
-        graphics.translate((int)format.getImageableX(),
-                (int)format.getImageableY());
+         Graphics2D graphics2D = (Graphics2D) graphics;
+         // Scale the printout to fit the pages.
+         // Contributed by Laurent ETUR, Schlumberger Riboud Product Center
+         double scalex = format.getImageableWidth() / (double) getWidth();
+         double scaley = format.getImageableHeight() / (double) getHeight();
+         double scale = Math.min(scalex, scaley);
+         graphics2D.translate((int)format.getImageableX(),
+                 (int)format.getImageableY());
+         graphics2D.scale(scale, scale);
         _drawPlot(graphics, true);
         return Printable.PAGE_EXISTS;
     }
