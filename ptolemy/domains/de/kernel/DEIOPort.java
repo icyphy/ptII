@@ -108,6 +108,8 @@ public class DEIOPort extends TypedIOPort {
     /** Broadcast a token to all receivers connected to this output
      *  port with the specified time delay.  The time stamp of
      *  of the token is equal to current time plus the specified delay.
+     *  If the specified delay is zero, then the event is queued to be
+     *  processed in the next microstep.
      *
      *  @param token The token to send.
      *  @param delay The time stamp of the token being broadcast.
@@ -116,11 +118,8 @@ public class DEIOPort extends TypedIOPort {
     public void broadcast(Token token, double delay)
             throws IllegalActionException {
         _delay = delay;
-        try {
-            broadcast(token);
-        } finally {
-            _delay = 0.0;
-        }
+        _useDelay = true;
+        broadcast(token);
     }
 
     /** Add the specified port to the set of output ports that
@@ -161,32 +160,39 @@ public class DEIOPort extends TypedIOPort {
      */
     public void send(int channelindex, Token token)
             throws IllegalActionException, NoRoomException {
-        try {
-            workspace().getReadAccess();
-            Receiver[][] fr = getRemoteReceivers();
-            if (fr == null) return;
-            if (channelindex >= fr.length || channelindex < 0) {
-                throw new IllegalActionException(this,
-                        "send: channel index is out of range.");
-            }
-            if (fr[channelindex] == null) return;
-            for (int j = 0; j < fr[channelindex].length; j++) {
-                try {
-                    ((DEReceiver)fr[channelindex][j]).setDelay(_delay);
-                } catch (ClassCastException e) {
-                    throw new InvalidStateException("DEIOPort.send() " +
-                            "expects to connect to receivers of type DEReceiver.");
+        if (_useDelay) {
+            _useDelay = false;
+            try {
+                workspace().getReadAccess();
+                Receiver[][] fr = getRemoteReceivers();
+                if (fr == null) return;
+                if (channelindex >= fr.length || channelindex < 0) {
+                    throw new IllegalActionException(this,
+                    "send: channel index is out of range.");
                 }
+                if (fr[channelindex] == null) return;
+                for (int j = 0; j < fr[channelindex].length; j++) {
+                    try {
+                        ((DEReceiver)fr[channelindex][j]).setDelay(_delay);
+                    } catch (ClassCastException e) {
+                        throw new InvalidStateException("DEIOPort.send() " +
+                        "expects to connect to receivers of type DEReceiver.");
+                    }
+                }
+                super.send(channelindex, token);
+            } finally {
+                workspace().doneReading();
             }
+        } else {
             super.send(channelindex, token);
-        } finally {
-            workspace().doneReading();
         }
     }
 
     /** Send a token with the specified time delay to the receivers connected
      *  on the specified channel.  The time stamp of
      *  of the token is equal to current time plus the specified delay.
+     *  If the specified delay is zero, then the event is queued to be
+     *  processed in the next microstep.
      *
      *  @param channelindex The index of the channel, from 0 to width-1.
      *  @param token The token to send.
@@ -197,11 +203,8 @@ public class DEIOPort extends TypedIOPort {
     public void send(int channelindex, Token token, double delay)
             throws IllegalActionException {
         _delay = delay;
-        try {
-            send(channelindex, token);
-        } finally {
-            _delay = 0.0;
-        }
+        _useDelay = true;
+        send(channelindex, token);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -213,4 +216,7 @@ public class DEIOPort extends TypedIOPort {
     // The delay to use in transfering tokens.
     // Be careful to set this back to zero after using it.
     private double _delay = 0.0;
+
+    // A flag indicating that there is delay in the next output.
+    private boolean _useDelay = false;
 }

@@ -59,7 +59,9 @@ delay to zero.  This causes the input tokens to be produced on
 the output immediately.  However, since the actor declares that
 there is a delay between the input and the output, the DE director
 will assume there is a delay when determining the precedences of the
-actors.  Thus, it is sometimes useful to think of this zero-valued
+actors.  Moreover, the event is queued to be processed in the next
+microstep, after all events at the current time with the current
+microstep. Thus, it is sometimes useful to think of this zero-valued
 delay as an infinitessimal delay.
 
 @author Edward A. Lee, Lukito Muliadi

@@ -166,9 +166,18 @@ public class DEReceiver implements Receiver {
     public void put(Token token) {
         try {
             DEDirector dir = getDirector();
-            dir._enqueueEvent(this, token,
-                    dir.getCurrentTime() + _delay, _depth);
-            _delay = 0.0;
+            if (_useDelay) {
+                _useDelay = false;
+                if (_delay == 0.0) {
+                    // Use special enqueue method to increment microstep.
+                    dir._enqueueEvent(this, token, _depth);
+                } else {
+                    dir._enqueueEvent(this, token,
+                            dir.getCurrentTime() + _delay, _depth);
+                }
+            } else {
+                dir._enqueueEvent(this, token, dir.getCurrentTime(), _depth);
+            }
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.toString());
         }
@@ -185,6 +194,8 @@ public class DEReceiver implements Receiver {
      *  to make the token available for the get() method at some future time,
      *  current time plus the specified delay.  This value of delay is
      *  only used in the next call to put().
+     *  If the specified delay is zero, then the next event is queued to be
+     *  processed in the next microstep.
      *  @param delay The delay.
      *  @exception IllegalActionException If the delay is negative.
      */
@@ -194,6 +205,7 @@ public class DEReceiver implements Receiver {
                     "Cannot specify a negative delay.");
         }
         _delay = delay;
+        _useDelay = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -231,6 +243,9 @@ public class DEReceiver implements Receiver {
 
     // The delay for the next call to put().
     private double _delay = 0.0;
+
+    // A flag indicating that setDelay() has been called.
+    private boolean _useDelay = false;
 
     // IOPort containing this receiver.
     private IOPort _container = null;

@@ -60,7 +60,11 @@ assigning priorities to firings.
 Like the Delay actor, the output is produced with a future time
 stamp (larger than current time by <i>serviceTime</i>).  That output
 token cannot be retracted once produced, even if the server actor
-is deleted from the topology.
+is deleted from the topology.  If the service time is zero, then
+the output event is queued to be processed in the next microstep,
+after all events with the current time in the current microstep.
+Thus, a service time of zero can be usefully viewed as an infinitessimal
+service time.
 
 @author Lukito Muliadi, Edward A. Lee
 @version $Id$

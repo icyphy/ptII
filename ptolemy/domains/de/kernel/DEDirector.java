@@ -631,6 +631,34 @@ public class DEDirector extends Director {
         _eventQueue.put(new DEEvent(receiver, token, time, microstep, depth));
     }
 
+    /** Put an event into the event queue with the specified destination
+     *  receiver, token, and depth.  The time stamp of the event is the
+     *  current time, but the microstep is one larger than the current
+     *  microstep.  This method is used by actors that declare that they
+     *  introduce delay, but where the value of the delay is zero.
+     *  This method must not be used before any firings have occurred
+     *  (i.e. in the initialize() method) because current time has no
+     *  meaning there.
+     *  
+     *  @param receiver The destination receiver.
+     *  @param token The token destined for that receiver.
+     *  @param depth The depth.
+     *  @exception IllegalActionException If the delay is negative, or if
+     *   current time has not been set.
+     */
+    protected void _enqueueEvent(DEReceiver receiver, Token token,
+            int depth) throws IllegalActionException {
+
+        int microstep = 0;
+        if (_startTime == Double.MAX_VALUE) {
+            Nameable destination = receiver.getContainer();
+            throw new IllegalActionException(destination, "Attempt to queue an"
+            + " event at the current time before current time is set.");
+        }
+        _eventQueue.put(new DEEvent(receiver, token,
+                getCurrentTime(), _microstep + 1, depth));
+    }
+
     /** Override the default Director implementation, because in DE
      *  domain, we don't need write access inside an iteration.
      *  @return false.
