@@ -265,3 +265,12 @@ test ComplexMatrixMath-5.1.1 {zero} {
     regsub -all {,} $s {} stmp
     epsilonDiff $stmp {{{0.0 + 0.0i 0.0 + 0.0i 0.0 + 0.0i} {0.0 + 0.0i 0.0 + 0.0i 0.0 + 0.0i}}}
 } {}
+
+####################################################################
+test ComplexMatrixMath-5.1.2 {realParts} {
+    set mr [java::call ptolemy.math.ComplexMatrixMath \
+	    realParts $m23]
+    set s [java::call ptolemy.math.DoubleMatrixMath toString $mr]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{{-4.9 1.0 3.0} {-0.25 -7.0 3.0}}}
+} {}
