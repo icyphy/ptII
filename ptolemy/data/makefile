@@ -68,6 +68,7 @@ JSRCS = \
 	FixMatrixToken.java \
 	FixToken.java \
         FunctionToken.java \
+	ImageToken.java \
 	IntMatrixToken.java \
 	IntToken.java \
 	LongMatrixToken.java \
