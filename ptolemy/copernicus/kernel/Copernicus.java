@@ -257,9 +257,14 @@ public class Copernicus {
 	    return 0;
 	}
         System.out.println("About to execute:\n ");
-	for (int i = 0; i < commands.length; i++) {
-	    System.out.println("	" + commands[i]);
+	for (int i = 0; i < (commands.length - 1); i++) {
+            System.out.println("	\"" + commands[i] + "\" \\");
 	}
+
+        if (commands.length > 0) {
+            System.out.println("	\"" + commands[commands.length - 1]
+                    + "\"");
+        }
         System.out.flush();
         
 	// 0 indicates normal execution
