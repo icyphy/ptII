@@ -87,13 +87,21 @@ JSRCS = \
 	VariableRecursiveLattice.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ArrayToSequenceIcon.xml \
+	DelayLineIcon.xml \
+	DotProductIcon.xml \
+	DownSampleIcon.xml \
 	FIRIcon.xml \
 	MaximumEntropySpectrum.xml \
 	Periodogram.xml \
+	RepeatIcon.xml \
+	SequenceToArrayIcon.xml \
 	SmoothedPeriodogram.xml \
 	SmoothedSpectrum.xml \
-	Spectrum.xml \
 	SpectrumPlot.xml \
+	Spectrum.xml \
+	UpSampleIcon.xml \
+	VariableFIRIcon.xml \
 	sdfentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -124,10 +132,5 @@ install: jclass jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
-
-
 
 
