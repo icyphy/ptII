@@ -121,8 +121,9 @@ public class SRReceiver extends Mailbox {
         }
     }
 
-    /** Return true if the token in this receiver is known or if this 
-     *  receiver is known not to contain a token.
+    /** Return true if this receiver has known state, that is, the token in 
+     *  this receiver is known or if this receiver is known not to contain a 
+     *  token.
      *  @return True if this receiver has known state.
      */
     public boolean isKnown() {

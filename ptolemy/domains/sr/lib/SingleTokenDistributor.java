@@ -36,13 +36,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-//import ptolemy.kernel.*;
-//import ptolemy.kernel.util.*;
-//import ptolemy.data.*;
-//import ptolemy.data.expr.*;
-//import ptolemy.actor.*;
-//import java.util.Enumeration;
-
 //////////////////////////////////////////////////////////////////////////
 //// SingleTokenDistributor
 /**
