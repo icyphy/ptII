@@ -183,16 +183,16 @@ test TestProcessDirector-6.1 {Test action methods} {
     set valb 1
     set valc 1
     
-    if { [$cRcvr1 hasToken] != 1 } {
+    if { [$pRcvr1 hasToken] != 1 } {
         set vala 0
     }
-    if { [$cRcvr2 hasToken] != 1 } {
+    if { [$pRcvr2 hasToken] != 1 } {
         set valb 0
     }
-    if { [$cRcvr3 hasToken] != 1 } {
+    if { [$pRcvr3 hasToken] != 1 } {
     	set valc 0
     }
     
     list $vala $valb $valc 
 
-} {1 1 1}
+} {0 0 0}
