@@ -49,6 +49,7 @@ import java.io.*;
 import java.util.*;
 import java.net.*;
 import javax.swing.SwingUtilities;
+import javax.swing.RepaintManager;
 
 //////////////////////////////////////////////////////////////////////////
 //// Plot
@@ -705,6 +706,9 @@ public class Plot extends PlotBox {
     public void setPointsPersistence(int persistence) {
         //   FIXME: No file format yet.
         _pointsPersistence = persistence;
+RepaintManager repaintManager = RepaintManager.currentManager(this);
+repaintManager.setDoubleBufferingEnabled(false);
+
     }
 
     /** If the argument is true, then datasets with the same name
@@ -865,7 +869,6 @@ public class Plot extends PlotBox {
     protected void _drawLine(Graphics graphics,
             int dataset, long startx, long starty, long endx, long endy,
             boolean clip) {
-if(dataset == 0) System.out.println("Line: " + startx + ", " + starty + ", " + endx + ", " + endy);
 
         if (clip) {
             // Rule out impossible cases.
@@ -934,7 +937,7 @@ if(dataset == 0) System.out.println("Line: " + startx + ", " + starty + ", " + e
                     startx >= _ulx && startx <= _lrx &&
                     starty >= _uly && starty <= _lry) {
                 graphics.drawLine((int)startx, (int)starty,
-                        (int)endx, (int)endy);
+                    (int)endx, (int)endy);
             }
         } else {
             // draw unconditionally.
@@ -958,6 +961,11 @@ if(dataset == 0) System.out.println("Line: " + startx + ", " + starty + ", " + e
      */
     protected void _drawPlot(Graphics graphics,
             boolean clearfirst) {
+
+        // NOTE: Swing double buffering has a bug... the graphics
+        // object returned later by getGraphics() is not the same as
+        // this one, and is one pixel off. This means that XOR drawing
+        // doesn't work...
 
         // We must call PlotBox._drawPlot() before calling _drawPlotPoint
         // so that _xscale and _yscale are set.
