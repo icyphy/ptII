@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
@@ -90,7 +90,7 @@ public class VariableRecursiveLattice extends RecursiveLattice {
      */
     public Parameter blockSize;
 
-    /** The input for new coefficient values.  This is an array
+    /** The input for new coefficient values.  The type is an array
      *  of doubles.
      */
     public TypedIOPort newCoefficients;
@@ -161,6 +161,7 @@ public class VariableRecursiveLattice extends RecursiveLattice {
 
         newObject.newCoefficients.setTypeSameAs(
                 newObject.reflectionCoefficients);
+        // FIXME: Is this needed?  If so, shouldn't it be in the base class?
         newObject.output.setTypeSameAs(newObject.input);
         return newObject;
     }
