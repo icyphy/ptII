@@ -61,8 +61,8 @@ affineMatrix must be a two by three matrix.  If the matrix is
 the input (x', y') and output (x, y) is determined by the following two 
 equations.
 <pre>
- x' = a*x + b*y + c;
- y' = d*x + e*y + f;
+ x = a*x' + b*y' + c;
+ y = d*x' + e*y' + f;
 </pre>
 Note that the c and f terms do not show up when the output is directly
 displayed.  The c and f terms are translation terms, and only show up
