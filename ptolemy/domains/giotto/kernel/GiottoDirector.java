@@ -55,8 +55,8 @@ import java.util.List;
 
 FIXME: document this.
 
-@see ptolemy.domains.giotto.kernel.GiottoReceiver
-@see ptolemy.domains.giotto.kernel.GiottoScheduler
+@see ptolemy.domains.kernel.GiottoReceiver
+@see ptolemy.domains.kernel.GiottoScheduler
 
 @author  Christoph Meyer, Ben Horowitz, and Edward A. Lee
 @version $Id$
@@ -317,38 +317,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 		    // Recursive call.
 		    postfire = _fire(higherFrequency) && postfire;
-		}
-
-		sameFrequency = Collections.enumeration(sameFrequencyList);
-
-		while (sameFrequency.hasMoreElements()) {
-		    Actor actor = (Actor) sameFrequency.nextElement();
-
-		    if (_debugging)
-			_debug("Updating " + ((NamedObj)actor).getFullName());
-
-		    List outputPortList = actor.outputPortList();
-
-		    Enumeration outputPorts = Collections.enumeration(outputPortList);
-
-		    while (outputPorts.hasMoreElements()) {
-			IOPort port = (IOPort) outputPorts.nextElement();
-
-			Receiver[][] channelArray = port.getRemoteReceivers();
-
-			for (int i = 0; i < channelArray.length; i++) {
-			    Receiver[] receiverArray = channelArray[i];
-
-			    for (int j = 0; j < receiverArray.length; j++) {
-				GiottoReceiver receiver = (GiottoReceiver) receiverArray[j];
-
-				receiver.update();
-			    }
-			}
-		    }
-		}
-
-		if (higherFrequencyList == null) {
+		} else {
 		    // Update time for every invocation of the most frequent tasks
 		    // which are stored at the bottom of the tree.
 		    double currentTime;
@@ -387,6 +356,35 @@ public class GiottoDirector extends StaticSchedulingDirector {
 					// Continue executing.
 				    }
 				}
+			    }
+			}
+		    }
+		}
+
+		sameFrequency = Collections.enumeration(sameFrequencyList);
+
+		while (sameFrequency.hasMoreElements()) {
+		    Actor actor = (Actor) sameFrequency.nextElement();
+
+		    if (_debugging)
+			_debug("Updating " + ((NamedObj)actor).getFullName());
+
+		    List outputPortList = actor.outputPortList();
+
+		    Enumeration outputPorts = Collections.enumeration(outputPortList);
+
+		    while (outputPorts.hasMoreElements()) {
+			IOPort port = (IOPort) outputPorts.nextElement();
+
+			Receiver[][] channelArray = port.getRemoteReceivers();
+
+			for (int i = 0; i < channelArray.length; i++) {
+			    Receiver[] receiverArray = channelArray[i];
+
+			    for (int j = 0; j < receiverArray.length; j++) {
+				GiottoReceiver receiver = (GiottoReceiver) receiverArray[j];
+
+				receiver.update();
 			    }
 			}
 		    }
