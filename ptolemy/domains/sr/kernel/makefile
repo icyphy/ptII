@@ -49,7 +49,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	SRDirector.java \
-	SRReceiver.java
+	SRReceiver.java \
+	SRScheduler.java
 
 EXTRA_SRCS =	$(JSRCS)
 

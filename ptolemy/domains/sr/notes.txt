@@ -7,10 +7,6 @@ FIXMEs
 
 are tests running?
 
-Delay should be NonStrictDelay
-
-create an SRScheduler
-
 -------------------------------------------------------------------------------
 
 Issues:

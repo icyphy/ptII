@@ -33,6 +33,10 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.sched.Firing;
+import ptolemy.actor.sched.Schedule;
+import ptolemy.actor.sched.Scheduler;
+import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -72,7 +76,7 @@ the number of actors that are allowed to fire have converged.
 @author Paul Whitaker
 @version $Id$
 */
-public class SRDirector extends Director {
+public class SRDirector extends StaticSchedulingDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -157,12 +161,8 @@ public class SRDirector extends Director {
      */
     public void fire() throws IllegalActionException {
 
-        // FIXMENOW: change this to use a scheduler.
-
-        List actorList = _getActorList();
-        // FIXMENOW: distinguish between iteration of an actor and iteration
-        // through the actors
-        Iterator actorIterator;
+        Schedule schedule = _getSchedule();
+        Iterator firingIterator;
 
         _initFiring();
 
@@ -178,10 +178,11 @@ public class SRDirector extends Director {
         // ready to fire (sufficient known inputs are available).
 
         do {
-            actorIterator = actorList.iterator();
+            firingIterator = schedule.firingIterator();
 
-            while (actorIterator.hasNext()) {
-                Actor actor = (Actor) actorIterator.next();
+            while (firingIterator.hasNext()) {
+                Firing firing = (Firing) firingIterator.next();
+                Actor actor = firing.getActor();
                 if (_isIterationAllowed(actor)) {
                     _fireActor(actor);
                 } else {
@@ -195,9 +196,10 @@ public class SRDirector extends Director {
             }
         } while (!_hasIterationConverged());
 
-        actorIterator = actorList.iterator();
-        while (actorIterator.hasNext()) {
-            Actor actor = (Actor)actorIterator.next();
+        firingIterator = schedule.firingIterator();
+        while (firingIterator.hasNext()) {
+            Firing firing = (Firing) firingIterator.next();
+            Actor actor = firing.getActor();
             if (_isIterationAllowed(actor)) {
                 if (_postfireActor(actor)) {
                     _postfireReturns = true;
@@ -233,9 +235,11 @@ public class SRDirector extends Director {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void initialize() throws IllegalActionException {
-        _iteration = 0;        
-        _actorsNotAllowedToIterate = null;
         super.initialize();
+        _iteration = 0;
+        _actorsNotAllowedToIterate = null;
+        // Force the schedule to be computed.
+        _getSchedule();
     }
 
     /** Return a new receiver consistent with the SR domain.
@@ -394,34 +398,22 @@ public class SRDirector extends Director {
         }
     }
 
-    /** Return a list of the actors to be fired by this director.
-     */
-    private List _getActorList() {
-
-        CompositeEntity container = (CompositeEntity) getContainer();
-        if (container == null) 
-            throw new InvalidStateException(this,
-                    "fired, but it has no container!");
-
-        // FIXMELATER: improve efficiency by caching the list.
-        
-        // FIXMELATER: improve efficiency with partial ordering.
-        // Explain in comments that order doesn't affect results.
-        // Do something similar to this?  
-	// Collections.sort(actorList, new GiottoActorComparator());
-
-        List actorList = container.deepEntityList();
-
-        // FIXMELATER: this shouldn't happen, just for testing
-        java.util.Collections.shuffle(actorList);
-
-        return actorList;
-    }
-
     /** Return the name of the specified actor.
      */
     private String _getNameOf(Actor actor) {
         return ((Nameable)actor).getName();
+    }
+
+    /** Return the schedule associated with this director.
+     *  @exception IllegalActionException If this director has no
+     *   associated scheduler.
+     */
+    private Schedule _getSchedule() throws IllegalActionException {
+        Scheduler scheduler = getScheduler();
+        if (scheduler == null)
+            throw new IllegalActionException(this,
+                    "SRDirector has no associated scheduler.");
+        return scheduler.getSchedule();
     }
 
     /** Return true if the specified actor has completed firing.  An actor 
@@ -506,9 +498,24 @@ public class SRDirector extends Director {
         return true;
     }
 
-    /** Initialize the director by creating parameters.
+    /** Initialize the director by creating the scheduler and the parameters.
      */
     private void _init() {
+        try {
+            SRScheduler scheduler = 
+                new SRScheduler(this, uniqueName("Scheduler"));
+            // FIXME: Is this next line necessary since a Scheduler is an
+            // attribute of a Director?
+            setScheduler(scheduler);
+        }
+        catch (Exception ex) {
+            // if setScheduler fails, then we should just set it to null.
+            // This should never happen because we don't override
+            // setScheduler() to do sanity checks.
+            throw new InternalErrorException(
+                    "Cannot create SRScheduler:\n" + ex.getMessage());
+        }
+
 	try {
 	    period = new Parameter(this, "period",
                     new IntToken(_DEFAULT_SR_PERIOD));
