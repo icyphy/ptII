@@ -31,9 +31,10 @@
 	  <doc>Create a Key and output it.</doc>
 	</entity>  	  
 
-	<entity name="PublicKeyReader
-"	        class="ptolemy.actor.lib.security.PublicKeyReader">
-	  <doc>Read a key from a key store and output it.</doc>
+	<entity name="KeyReader"
+"	        class="ptolemy.actor.lib.security.KeyReader">
+	  <doc>Read a key public or private key from a key store
+	   and output it.</doc>
 	</entity>  	  
 
 	<entity name="ServiceInformation"
