@@ -40,6 +40,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.Toolkit;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +51,7 @@ import java.util.List;
 import java.util.TreeMap;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
 import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -61,6 +63,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
@@ -1269,67 +1272,168 @@ public class PortConfigurerDialog extends PtolemyDialog
         JTextField valueText = null;
     }
 
-   
-//     /** Editor for a table cell that takes a type.
-//      */
-//     class TypeCellEditor2 extends StringCellEditor implements TableCellEditor,
-//                                                                  ActionListener {
-//         /** Construct a Type Cell Editor. */
-//         public TypeCellEditor2() {
-//             super();
-//             typeCombo = _createPortTypeComboBox();
-//         }
+    /**
+       A validating CombBox table cell editor for use with JTable.
+       To determine if a selection is valid, this class uses the 
+       CellValidator class.
+ 
+       <p>Based on IntegerEditor from
+       http://java.sun.com/docs/books/tutorial/uiswing/components/example-1dot4/IntegerEditor.java
 
-//         /** Return the message from the widget.
-//          *  In this base class, the message is the text value of
-//          *  the JTextField.
-//          *  @return the message
-//          */ 
-//         protected String _getMessage() {
-//             return (String)(typeCombo.getSelectedItem());
-//         }
+       @author Christopher Brooks, Sun Microsystems
+       @version $Id$
+       @since Ptolemy II 5.1
+       @Pt.ProposedRating Red (eal)
+       @Pt.AcceptedRating Red (eal)
+    */
+    public class ValidatingComboBoxCellEditor extends 
+                                                           DefaultCellEditor {
 
-//         /** Set the message.
-//          *  @return an Object suitable as an element in the
-//          *  Object array that is passed JOptionPane.setMessage(Object[])
-//          */ 
-//         protected Object _setMessage() {
-//             return typeCombo;
-//         }
+        /** Construct a validating combo box JTable Cell editor.
+         *  @param comboBox The combo box that provides choices.
+         */   
+        public ValidatingComboBoxCellEditor(final JComboBox comboBox) {
+            super(comboBox);
+            _comboBox = (JComboBox)getComponent();
 
-//         /** The JComboBox. */
-//         private JComboBox typeCombo;
-//     }
-
-    /** Editor for a table cell that takes a unit.
-     */
-    class UnitCellEditor extends StringCellEditor implements TableCellEditor,
-                                                                 ActionListener {
-        /** Construct a Unit Cell Editor. */
-        public UnitCellEditor() {
-            super();
-            unitCombo = _createPortUnitComboBox();
+            // React when the user presses Enter while the editor is
+            // active.  (Tab is handled as specified by
+            // JFormattedTextField's focusLostBehavior property.)
+            comboBox.getInputMap().put(KeyStroke.getKeyStroke(
+                                               KeyEvent.VK_ENTER, 0),
+                    "check");
+            comboBox.getActionMap().put("check", new AbstractAction() {
+                    public void actionPerformed(ActionEvent e) {
+                        boolean valid = true;
+                        if (_validator != null) {
+                            valid = _validator.isValid(
+                                    (String)(comboBox.getSelectedItem()));
+                        }
+                        if (valid) {
+                            userSaysRevert(
+                                    (String)(comboBox.getSelectedItem()));
+                        }
+                    }
+                });
         }
 
-        /** Return the message from the widget.
-         *  In this base class, the message is the text value of
-         *  the JTextField.
-         *  @return the message
-         */ 
-        protected String _getMessage() {
-            return (String)(unitCombo.getSelectedItem());
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+        /**
+         */
+        public Component getTableCellEditorComponent(JTable table,
+                Object value, boolean isSelected,
+                int row, int column) {
+            JComboBox comboBox =
+                (JComboBox)super.getTableCellEditorComponent(
+                        table, value, isSelected, row, column);
+            _oldValue = comboBox.getSelectedItem();
+            comboBox.setSelectedItem(value);
+            return comboBox;
         }
 
-        /** Set the message.
-         *  @return an Object suitable as an element in the
-         *  Object array that is passed JOptionPane.setMessage(Object[])
-         */ 
-        protected Object _setMessage() {
-            return unitCombo;
+        /** Get the cell editor value.
+         *  @returns The string value of the selected item in the combobox.
+         */
+        public Object getCellEditorValue() {
+            // FIXME: do we need to get comboBox like this each time?
+            JComboBox comboBox = (JComboBox)getComponent();
+            Object o = comboBox.getSelectedItem();
+            return o.toString();
         }
 
-        /** The JComboBox. */
-        private JComboBox unitCombo;
+        /** Set the validator.
+         *  @param validator The validator.
+         */
+        public void setValidator(CellValidator validator) {
+            _validator = validator;
+        }
+
+        /** Check the selection and determine whether we should stop editing.
+         *  If the selection is invalid, ask the user if they want to revert.
+         *  If the selection is valid, then call stopCellEditing in the super
+         *  class
+         *  @return False if the selection is invalid.  Otherwise,
+         *  return whatever super.stopCellEditing() returns.
+         */
+        public boolean stopCellEditing() {
+            // FIXME: do we need to get comboBox like this each time?
+            JComboBox comboBox = (JComboBox)getComponent();
+            if (comboBox.getSelectedItem() == null) {
+                // FIXME: why does the selected item get set to null sometimes?
+                comboBox.setSelectedItem("");
+            }
+            boolean valid = true;
+            if (_validator != null) {
+                valid = _validator.isValid(
+                        (String)(comboBox.getSelectedItem()));
+            }
+            if (!valid) {
+                if (_userWantsToEdit) {
+                    // User already selected edit, don't ask twice.
+                    _userWantsToEdit = false;
+                    return false;
+                } else {
+                    if (!userSaysRevert((String)(comboBox.getSelectedItem()))) {
+                        _userWantsToEdit = true;
+                        return false; //don't let the editor go away
+                    } 
+                }
+            }
+            return super.stopCellEditing();
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         protected methods                 ////
+
+        /** Return true if the user wants to revert to the original value.
+         *  A dialog box pops up that tells the user that their selection
+         *  is invalid.
+         *  @param selectedItem The selected item.
+         *  @return True if the user elects to revert to the last good
+         *  value.  Otherwise, returns false, indicating that the user
+         *  wants to continue editing.
+         */
+        protected boolean userSaysRevert(String selectedItem) {
+            Toolkit.getDefaultToolkit().beep();
+            //_comboBox.selectAll();
+            Object[] options = {"Edit",
+                                "Revert"};
+            int answer = JOptionPane.showOptionDialog(
+                    SwingUtilities.getWindowAncestor(_comboBox),
+                    "The value \"" + selectedItem + "\" is not valid:\n"
+                    + _validator.getMessage()
+                    + "\nYou can either continue editing "
+                    + "or revert to the last valid value \"" + _oldValue + "\".",
+                    "Invalid Text Entered",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.ERROR_MESSAGE,
+                    null,
+                    options,
+                    options[1]);
+	    
+            if (answer == 1) { //Revert!
+                _comboBox.setSelectedItem(_oldValue);
+                return true;
+            }
+            return false;
+        }
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         private variables                 ////
+
+        /** The combo box. */
+        private JComboBox _comboBox;
+
+        /** Old value of the combo box. */
+        private Object _oldValue;
+
+        /** True if the user wants to edit after having an invalid selection.*/
+        private boolean _userWantsToEdit;
+
+        /** Class that validates the cell. */
+        private CellValidator _validator;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1781,49 +1885,54 @@ public class PortConfigurerDialog extends PtolemyDialog
 
         if (_columnNames.contains(ColumnNames.COL_DIRECTION)) {
             int col = _columnNames.indexOf(ColumnNames.COL_DIRECTION);
-            TableColumn _portLocationColumn = ((TableColumn) (_portTable.getColumnModel()
-                                                       .getColumn(col)));
+            TableColumn _portLocationColumn =
+                ((TableColumn) (_portTable.getColumnModel()
+                        .getColumn(col)));
             _portLocationColumn.setCellEditor(new DefaultCellEditor(
                                                       _portLocationComboBox));
         }
 
         if (_columnNames.contains(ColumnNames.COL_TYPE)) {
             int col = _columnNames.indexOf(ColumnNames.COL_TYPE);
-            TableColumn _portTypeColumn = ((TableColumn) (_portTable.getColumnModel()
-                                                   .getColumn(col)));
+            TableColumn _portTypeColumn =
+                ((TableColumn) (_portTable.getColumnModel()
+                        .getColumn(col)));
 
-            _portTypeColumn.setCellEditor(new TypeCellEditor(
-                                                  _createPortTypeComboBox()));
+            final ValidatingComboBoxCellEditor portTypeEditor =
+                new ValidatingComboBoxCellEditor(
+                        _createPortTypeComboBox());
 
-//            final TypeCellEditor portTypeEditor = new TypeCellEditor();
-//             _portTypeColumn.setCellEditor(portTypeEditor);
-//             portTypeEditor.setValidator(new CellValidator() {
-//                     /////////////////////////////////////////
-//                     //////////// inner class/////////////////
-//                     public boolean isValid(String cellValue) {
-//                         try {
-//                             if (cellValue.equals("")) {
-//                                 return true;
-//                             }
+            _portTypeColumn.setCellEditor(portTypeEditor);
+            portTypeEditor.setValidator(new CellValidator() {
+                    /////////////////////////////////////////
+                    //////////// inner class/////////////////
+                    public boolean isValid(String cellValue) {
+                        try {
+                            if (cellValue.equals("")) {
+                                return true;
+                            }
 
-//                             ASTPtRootNode tree = _typeParser.generateParseTree(cellValue);
-//                             Token result = _parseTreeEvaluator
-//                                 .evaluateParseTree(tree, null);
-//                         } catch (IllegalActionException e) {
-//                             setMessage(e.getMessage());
-//                             return false;
-//                         }
+                            ASTPtRootNode tree = _typeParser
+                                .generateParseTree(cellValue);
+                            Token result = _parseTreeEvaluator
+                                .evaluateParseTree(tree, null);
+                        } catch (IllegalActionException e) {
+                            setMessage(e.getMessage());
+                            return false;
+                        }
 
-//                         return true;
-//                     }
-//                 });
+                        return true;
+                    }
+                });
         }
 
         if (_columnNames.contains(ColumnNames.COL_UNITS)) {
             int col = _columnNames.indexOf(ColumnNames.COL_UNITS);
-            TableColumn _portUnitColumn = ((TableColumn) (_portTable.getColumnModel()
-                                                   .getColumn(col)));
-            final UnitCellEditor portUnitEditor = new UnitCellEditor();
+            TableColumn _portUnitColumn =
+                ((TableColumn) (_portTable.getColumnModel()
+                        .getColumn(col)));
+            final ValidatingComboBoxCellEditor portUnitEditor =
+                new ValidatingComboBoxCellEditor(_createPortUnitComboBox());
             _portUnitColumn.setCellEditor(portUnitEditor);
 
             portUnitEditor.setValidator(new CellValidator() {
@@ -1833,7 +1942,8 @@ public class PortConfigurerDialog extends PtolemyDialog
                         UnitExpr uExpr;
 
                         try {
-                            uExpr = UnitLibrary.getParser().parseUnitExpr(cellValue);
+                            uExpr = UnitLibrary.getParser()
+                                .parseUnitExpr(cellValue);
                         } catch (ParseException e) {
                             setMessage(e.getMessage());
                             return false;
