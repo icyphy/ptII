@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
@@ -50,130 +51,63 @@ import ptolemy.lang.java.nodetypes.*;
  *  @author Jeff Tsay
  */
 public class SpecializeTokenVisitor extends ResolveVisitorBase {
-
-    // inner classes 
-    
-    class ConstantTerm implements InequalityTerm {
-        public ConstantTerm(ClassDecl classDecl, TypedDecl decl) {
-            _classDecl = classDecl;
-            _decl = decl;            
-        }        
-        
-        public void fixValue() {}
-        
-        public Object getValue() { return _classDecl; }
-
-        public Object getAssociatedObject() { return _decl; }
-                
-        // Constant terms do not contain any variables
-        public InequalityTerm[] getVariables() { return new InequalityTerm[0]; }
-        
-        public void initialize(Object e) throws IllegalActionException {
-            setValue(e);
-        }
-        
-        // Constant terms are not settable
-        public boolean isSettable() { return false; }
-        
-        public boolean isValueAcceptable() { return true; }
-        
-        public void setValue(Object e) throws IllegalActionException {
-            throw new IllegalActionException(
-             "ConstantTerm.setValue(): This term is a constant");
-        }
-
-        public String toString() {
-            return "ConstantTerm: value = " + _classDecl.getName() + ", _decl = " + _decl;          
-        }
-        
-        public void unfixValue() {}
-        
-        private ClassDecl _classDecl;
-        private TypedDecl _decl;    
-    }
-    
-    class VariableTerm implements InequalityTerm {
-        public VariableTerm(ClassDecl classDecl, TypedDecl decl) {
-            _classDecl = classDecl;
-            _decl = decl;            
-        }        
-        
-        public void fixValue() { _fixed = true; }
-                
-        public Object getValue() { return _classDecl; }
-        
-        public Object getAssociatedObject() { return _decl; }
-        
-        public InequalityTerm[] getVariables() { 
-            return new InequalityTerm[] { this }; 
-        }
-
-        public void initialize(Object e) {
-            setValue(e);
-        }
-        
-        // Variable terms are settable
-        public boolean isSettable() { return true; }
-
-        public boolean isValueAcceptable() { return true; }        
-        
-        public void setValue(Object e) {
-            if (!_fixed) {
-               _classDecl = (ClassDecl) e;
-            }
-        }
-        
-        public String toString() {
-            return "VariableTerm: decl = " + _decl + ", value = " + _classDecl.getName();          
-        }
-        
-        public void unfixValue() { _fixed = false; }
-        
-        private ClassDecl _classDecl;
-        private TypedDecl _decl;    
-        private boolean _fixed = false;
-    }
-    
-    public SpecializeTokenVisitor(PerActorCodeGeneratorInfo actorInfo) {    
-        super(TM_CUSTOM);
-        _solver = new InequalitySolver(_cpo);                        
+   
+   
+    public SpecializeTokenVisitor(PerActorCodeGeneratorInfo actorInfo,
+                                  InequalitySolver solver,
+                                  Map declToTermMap) {    
+        super(TM_CUSTOM);        
+        _solver = solver;
+        _declToTermMap = declToTermMap;
         _actorInfo = actorInfo;
         _typeVisitor = new PtolemyTypeVisitor(actorInfo);                                
     }
 
-    public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
-        return null;
+    public SpecializeTokenVisitor(PerActorCodeGeneratorInfo actorInfo) {    
+        this(actorInfo, new InequalitySolver(_cpo), new HashMap());
     }
 
-    public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitArrayInitTypeNode(ArrayInitTypeNode node, LinkedList args) {
-        return null;
-    }
-
-    public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {    
-        TNLManip.traverseList(this, node, null, node.getDefTypes());
+    /** Use the CompileUnitNodes (which presumably contain classes in a hierarchy),
+     *  to return a Map from all Token declarations that appear in the compile units
+     *  to TypeNameNodes representing the most specific type possible that the
+     *  declaration could have.
+     */
+    public static Map specializeTokens(List nodeList, PerActorCodeGeneratorInfo actorInfo) {
+        Iterator nodeItr = nodeList.iterator();
+               
+        InequalitySolver solver = new InequalitySolver(_cpo);
+        HashMap declToTermMap = new HashMap();
         
-        boolean ok = _solver.solveLeast();
+        // use the same visitor, so that the same inequality solver and decl to 
+        // inequality term map is used in each invocation
+        
+        SpecializeTokenVisitor specializeVisitor = 
+         new SpecializeTokenVisitor(actorInfo, solver, declToTermMap);
+        
+        while (nodeItr.hasNext()) {
+           CompileUnitNode unitNode = (CompileUnitNode) nodeItr.next();
+           
+           unitNode.accept(specializeVisitor, null);
+        }
+        
+        boolean ok = solver.solveLeast();
         
         if (!ok) {
            ApplicationUtility.warn("unable to solve for Token types");
            
-           Iterator unsatisfiedItr = _solver.unsatisfiedInequalities();
+           Iterator unsatisfiedItr = solver.unsatisfiedInequalities();
            
-           System.out.println("unsatisfied inequalities:");
+           ApplicationUtility.warn("unsatisfied inequalities:");
            
            while (unsatisfiedItr.hasNext()) {
-               System.out.println(unsatisfiedItr.next());
+               ApplicationUtility.warn(unsatisfiedItr.next().toString());
            } 
-           System.out.println("end of unsatisfied inequalities:");
+           ApplicationUtility.warn("end of unsatisfied inequalities:");
         }
         
         HashMap declToTokenTypeMap= new HashMap();
         
-        Iterator termItr = _declToTermMap.values().iterator();
+        Iterator termItr = declToTermMap.values().iterator();
         
         while (termItr.hasNext()) {
            InequalityTerm term = (InequalityTerm) termItr.next();
@@ -190,7 +124,25 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
            }
         }
         
-        return declToTokenTypeMap;
+        return declToTokenTypeMap;        
+    }        
+
+    public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
+        return null;
+    }
+
+    public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
+        return null;
+    }
+
+    public Object visitArrayInitTypeNode(ArrayInitTypeNode node, LinkedList args) {
+        return null;
+    }
+
+    public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {    
+        TNLManip.traverseList(this, node, null, node.getDefTypes());
+        
+        return new Object[] { _solver, _declToTermMap };
     }
 
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {   
@@ -344,49 +296,43 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                                  
         } else if (_typeVisitor.isSupportedPortKind(accessedObjKind)) {                      
           // use the resolved type of ports to do type inference
-          switch (accessedObj.classID()) {
-              case THISFIELDACCESSNODE_ID:
-              case SUPERFIELDACCESSNODE_ID: // CHECKME : is this right?
-              {
-                TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
-                String varName = typedDecl.getName();
+          
+          if (accessedObj.classID() == THISFIELDACCESSNODE_ID) {
+             TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
+             String varName = typedDecl.getName();
                 
-                TypedIOPort port = (TypedIOPort) _actorInfo.portNameToPortMap.get(varName);                 
-                TypeNameNode portTypeNode = 
-                 _typeVisitor.typeNodeForTokenType(port.getType()); 
+             TypedIOPort port = (TypedIOPort) _actorInfo.portNameToPortMap.get(varName);                 
+             TypeNameNode portTypeNode = 
+              _typeVisitor.typeNodeForTokenType(port.getType()); 
                 
-                if (methodName.equals("get")) {                                                   
-                   return _makeConstantTerm(portTypeNode, null);
-                } else if (methodName.equals("send")) {
-                   // second argument is a token, constrain it
-                   Object termObj = argTerms.get(1);
-                   if (termObj instanceof InequalityTerm) {
-                      _solver.addInequality(new Inequality((InequalityTerm) termObj,
-                       _makeConstantTerm(portTypeNode, null)));
-                      return null; // return type is null
-                   }                
-                }
-                // support getArray ...                                                                
-              }                        
+             if (methodName.equals("get")) {                                                   
+                return _makeConstantTerm(portTypeNode, null);
+             } else if (methodName.equals("send")) {
+                // second argument is a token, constrain it
+                Object termObj = argTerms.get(1);
+                if (termObj instanceof InequalityTerm) {
+                   _solver.addInequality(new Inequality((InequalityTerm) termObj,
+                   _makeConstantTerm(portTypeNode, null)));
+                   return null; // return type is null
+                }                
+               // support getArray ...                                                                
+             }                        
           }                                                   
         } else if (accessedObjKind == PtolemyTypeVisitor.TYPE_KIND_PARAMETER) {
           // use the tokens returned by parameters to do type inference
-          switch (accessedObj.classID()) {
-              case THISFIELDACCESSNODE_ID:
-              case SUPERFIELDACCESSNODE_ID: // CHECKME : is this right?
-              {
-                if (methodName.equals("getToken")){
-                   TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
-                   String varName = typedDecl.getName();
+          
+          if (accessedObj.classID() == THISFIELDACCESSNODE_ID) {
+             if (methodName.equals("getToken")){
+                TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
+                String varName = typedDecl.getName();
                 
-                   Token token = (Token) _actorInfo.parameterNameToTokenMap.get(varName);
+                Token token = (Token) _actorInfo.parameterNameToTokenMap.get(varName);
                   
-                   TypeNameNode tokenTypeNode = 
-                    _typeVisitor.typeNodeForTokenType(token.getType());
+                TypeNameNode tokenTypeNode = 
+                 _typeVisitor.typeNodeForTokenType(token.getType());
                                  
-                   return _makeConstantTerm(tokenTypeNode, null); 
-                }
-              }                  
+                return _makeConstantTerm(tokenTypeNode, null); 
+             }
           }
         }
         
@@ -594,11 +540,94 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     protected PtolemyTypeVisitor _typeVisitor;
         
     /** A Map from TypeDecls to InequalityTerms. */
-    private HashMap _declToTermMap = new HashMap();
+    protected Map _declToTermMap;
+        
+    protected static final DirectedAcyclicGraph _cpo; 
+    protected InequalitySolver _solver;
+
+    // inner classes 
     
+    class ConstantTerm implements InequalityTerm {
+        public ConstantTerm(ClassDecl classDecl, TypedDecl decl) {
+            _classDecl = classDecl;
+            _decl = decl;            
+        }        
+        
+        public void fixValue() {}
+        
+        public Object getValue() { return _classDecl; }
+
+        public Object getAssociatedObject() { return _decl; }
+                
+        // Constant terms do not contain any variables
+        public InequalityTerm[] getVariables() { return new InequalityTerm[0]; }
+        
+        public void initialize(Object e) throws IllegalActionException {
+            setValue(e);
+        }
+        
+        // Constant terms are not settable
+        public boolean isSettable() { return false; }
+        
+        public boolean isValueAcceptable() { return true; }
+        
+        public void setValue(Object e) throws IllegalActionException {
+            throw new IllegalActionException(
+             "ConstantTerm.setValue(): This term is a constant");
+        }
+
+        public String toString() {
+            return "ConstantTerm: value = " + _classDecl.getName() + ", _decl = " + _decl;          
+        }
+        
+        public void unfixValue() {}
+        
+        private ClassDecl _classDecl;
+        private TypedDecl _decl;    
+    }
     
-    private static final DirectedAcyclicGraph _cpo; 
-    private final InequalitySolver _solver;
+    class VariableTerm implements InequalityTerm {
+        public VariableTerm(ClassDecl classDecl, TypedDecl decl) {
+            _classDecl = classDecl;
+            _decl = decl;            
+        }        
+        
+        public void fixValue() { _fixed = true; }
+                
+        public Object getValue() { return _classDecl; }
+        
+        public Object getAssociatedObject() { return _decl; }
+        
+        public InequalityTerm[] getVariables() { 
+            return new InequalityTerm[] { this }; 
+        }
+
+        public void initialize(Object e) {
+            setValue(e);
+        }
+        
+        // Variable terms are settable
+        public boolean isSettable() { return true; }
+
+        public boolean isValueAcceptable() { return true; }        
+        
+        public void setValue(Object e) {
+            if (!_fixed) {
+               _classDecl = (ClassDecl) e;
+            }
+        }
+        
+        public String toString() {
+            return "VariableTerm: decl = " + _decl + ", value = " + _classDecl.getName();          
+        }
+        
+        public void unfixValue() { _fixed = false; }
+        
+        private ClassDecl _classDecl;
+        private TypedDecl _decl;    
+        private boolean _fixed = false;
+    }
+
     
     static {
         // construct the type lattice

@@ -119,7 +119,7 @@ public class CodeGenerator extends CompositeActorApplication {
                           
              _makeInputInfo(entity, actorInfo);
              
-             ActorCodeGenerator actorCodeGen = new ActorCodeGenerator(entity);
+             ActorCodeGenerator actorCodeGen = new ActorCodeGenerator();
              actorCodeGen.generateCode(actorInfo);
         }                                                           
     }

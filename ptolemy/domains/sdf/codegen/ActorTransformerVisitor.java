@@ -126,7 +126,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                       
            List memberList = node.getMembers();
                     
-           memberList.addAll(_flattenedMembers(node));
+           // memberList.addAll(_flattenedMembers(node));
            
            memberList = TNLManip.traverseList(this, node, null, memberList);                  
            
@@ -1049,8 +1049,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     protected static final ClassDecl _ENTITY_DECL;
     protected static final ClassDecl _COMPONENT_ENTITY_DECL;
     protected static final ClassDecl _ATOMIC_ACTOR_DECL;    
-    protected static final ClassDecl _TYPED_ATOMIC_ACTOR_DECL;
-    protected static final ClassDecl _SDF_ATOMIC_ACTOR_DECL;
+    public static final ClassDecl _TYPED_ATOMIC_ACTOR_DECL;
+    public static final ClassDecl _SDF_ATOMIC_ACTOR_DECL;
         
     static {
 

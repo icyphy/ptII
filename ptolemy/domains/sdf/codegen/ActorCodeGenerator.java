@@ -30,9 +30,13 @@
 
 package ptolemy.domains.sdf.codegen;
 
+
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,28 +47,31 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.lang.*;
 import ptolemy.lang.java.*;
-import ptolemy.lang.java.nodetypes.CompileUnitNode;
+import ptolemy.lang.java.nodetypes.*;
 
 /** A code generator for each actor in an SDF system.
  *
  *  @author Jeff Tsay
  */
 public class ActorCodeGenerator implements JavaStaticSemanticConstants {
-    public ActorCodeGenerator(Entity entity) {
-        _entity = entity;
+    public ActorCodeGenerator() {
     }
     
     public void generateCode(PerActorCodeGeneratorInfo actorInfo) {
      
+        _entity = actorInfo.actor;
+        
         // finish filling in fields of actorInfo
         
         _makePortNameToPortMap(actorInfo);
         _makeParameterNameToTokenMap(actorInfo);
         
         // get the location of the source code for this actor                       
-                        
+        
+        Class actorClass = _entity.getClass();
+                                
         File sourceFile = SearchPath.NAMED_PATH.openSource(
-         _entity.getClass().getName());                
+         actorClass.getName());                
          
         if (sourceFile == null) {
            ApplicationUtility.error("source code not found for " +
@@ -77,69 +84,76 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         
         // parse each occurence of a file, because the AST will be modified below
         
-        JavaParser p = new JavaParser();
-
-        try {
-          p.init(filename);
-        } catch (Exception e) {
-          ApplicationUtility.error("error opening " + filename + " : " + e);
-        }
-
-        System.out.println("parsing  " + filename);        
-
-        p.parse();
+        String actorName = _entity.getName();
         
-        unitNode = p.getAST();
-        
-        // rename the class
-        String actorName = actorInfo.actor.getName();
-        String actorClassName = 
-         StringManip.unqualifiedPart(actorInfo.actor.getClass().getName());
-        String newActorName = "CG_" +  actorClassName + "_" + actorName;
+        // make a list of the compile unit node and compile unit nodes that 
+        // contain superclasses
+        List[] listArray = _makeUnitList(filename, 
+         StringManip.unqualifiedPart(actorClass.getName()));
          
-        HashMap renameMap = new HashMap();
-                
-        renameMap.put(actorClassName, newActorName);
-                
-        // get the part of the filename before the last '.'
-        filename = StringManip.partBeforeLast(filename, '.');
-        
-        unitNode.setProperty(IDENT_KEY, newActorName); 
-        
-        System.out.println("changing classname to  " + newActorName);        
-                
-        unitNode.accept(new RenameJavaVisitor(), TNLManip.cons(renameMap));
-        
-        System.out.println("acg : loading " + filename);        
-                
-        unitNode = StaticResolution.resolvePass2(unitNode);
-                                
+        List unitList = listArray[0];
+        List classNameList = listArray[1]; 
+
         System.out.println("acg : specializing tokens " + filename);        
                 
-        Map declToTypeMap = (Map) unitNode.accept(
-         new SpecializeTokenVisitor(actorInfo), null);
+        Map declToTypeMap = SpecializeTokenVisitor.specializeTokens(unitList, actorInfo);
 
         System.out.println("acg : changing types " + filename);        
-
-        unitNode = (CompileUnitNode) unitNode.accept(new ChangeTypesVisitor(), 
-         TNLManip.cons(declToTypeMap));
+        TNLManip.traverseList(new ChangeTypesVisitor(), null, 
+         TNLManip.cons(declToTypeMap), unitList);
         
-        // should redo resolution here
+        List renamedClassNameList = _renameUnitList(unitList, classNameList, actorName);
         
-        // maybe it's ok not to redo field resolution
-        unitNode.accept(new RemovePropertyVisitor(), TNLManip.cons(TYPE_KEY));
-                                        
-        System.out.println("acg : transforming code " + filename);        
+        _movePackage(unitList);
         
-        unitNode = (CompileUnitNode) unitNode.accept(
-         new ActorTransformerVisitor(actorInfo), null);
-                  
-        // regenerate the code          
-                  
-        String modifiedSourceCode = (String) unitNode.accept(
-         new JavaCodeGenerator(), null);
+        _rewriteSources(unitList, renamedClassNameList);
+        
+        sourceFile = SearchPath.NAMED_PATH.openSource(
+         "codegen." + (String) renamedClassNameList.get(0));
          
-        System.out.println(modifiedSourceCode);  
+        if (sourceFile == null) {
+           ApplicationUtility.error("regenerated source code not found for " +
+            "entity " + _entity + " in source file " + sourceFile);
+        }
+
+        filename = sourceFile.toString();
+        
+        listArray = _makeUnitList(filename, (String) renamedClassNameList.get(0));
+       
+        unitList = listArray[0];
+                                                                                        
+        Iterator unitItr = unitList.iterator();
+                                                                                                                                
+        while (unitItr.hasNext()) {                        
+           
+           unitNode = (CompileUnitNode) unitItr.next();
+           
+           unitNode = StaticResolution.load(unitNode, 2);
+        }
+                                                        
+        unitItr = unitList.iterator();
+                                                                                                                        
+        while (unitItr.hasNext()) {        
+                                                   
+           unitNode = (CompileUnitNode) unitItr.next();
+                                                   
+           // should redo resolution here
+        
+           // maybe it's ok not to redo field resolution, just invalidate types
+           unitNode.accept(new RemovePropertyVisitor(), TNLManip.cons(TYPE_KEY));
+                                        
+           System.out.println("acg : transforming code " + filename);        
+        
+           unitNode = (CompileUnitNode) unitNode.accept(
+            new ActorTransformerVisitor(actorInfo), null);
+                  
+           // regenerate the code          
+                  
+           String modifiedSourceCode = (String) unitNode.accept(
+            new JavaCodeGenerator(), null);
+         
+           System.out.println(modifiedSourceCode);  
+        }
     }
     
     protected void _makePortNameToPortMap(PerActorCodeGeneratorInfo actorInfo) {
@@ -171,7 +185,189 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
            }        
         }
     }
+            
+    protected CompileUnitNode parse(String filename) {
+        JavaParser p = new JavaParser();
+
+        try {
+          p.init(filename);
+        } catch (Exception e) {
+          ApplicationUtility.error("error opening " + filename + " : " + e);
+        }
+
+        System.out.println("parsing  " + filename);        
+
+        p.parse();
+    
+        return p.getAST();    
+    }
+    
+    /** Make a list of CompileUnitNodes that contain the superclasses of
+     *  the given className, while is found in the given fileName.
+     *  The list should start from the argument class and go to 
+     *  superclasses, until the super class is TypedAtomicActor or
+     *  SDFAtomicActor. The CompileUnitNodes are cloned from those
+     *  returned by StaticResolution so that they may be modified.
+     */     
+    protected List[] _makeUnitList(String fileName, String className) {
+        LinkedList retval = new LinkedList();
+                    
+        CompileUnitNode unitNode = 
+         (CompileUnitNode) StaticResolution.load(fileName, 2).clone();
         
-    protected final Entity _entity;
+        retval.addLast(unitNode);
+        
+        LinkedList classNameList = new LinkedList();
+        classNameList.addLast(className);       
+        
+        boolean moreSuperClasses = true;
+        do {
+        
+           ClassDecl superDecl = (ClassDecl)
+            unitNode.accept(new FindSuperClassDecl(className), null);        
+            
+           if ((superDecl == ActorTransformerVisitor._SDF_ATOMIC_ACTOR_DECL) || 
+               (superDecl == ActorTransformerVisitor._TYPED_ATOMIC_ACTOR_DECL) ||
+               (superDecl == StaticResolution.OBJECT_DECL) || // just to be sure
+               (superDecl == null)) {                         // just to be sure
+              moreSuperClasses = false;                 
+           } else {
+              fileName = superDecl.fullName(File.separatorChar);
+              
+              // assume we are using the named package
+              File file = SearchPath.NAMED_PATH.openSource(fileName);
+              
+              unitNode = (CompileUnitNode) StaticResolution.load(file, 2).clone();
+              
+              retval.addLast(unitNode);
+              
+              classNameList.addLast(superDecl.getName());      
+           }                                     
+        } while (moreSuperClasses);
+        
+        return new List[] { retval, classNameList };
+    }
+    
+    protected void _movePackage(List unitList) {
+        Iterator unitItr = unitList.iterator();
+        
+        while (unitItr.hasNext()) {
+           CompileUnitNode unitNode = (CompileUnitNode) unitItr.next();
+           
+           NameNode oldPackageName = (NameNode) unitNode.getPkg();
+
+           // change the package           
+           NameNode newPackageName = (NameNode) StaticResolution.makeNameNode("codegen");
+           
+           unitNode.setPkg(newPackageName);
+           
+           // add the old package to the list of import on demands
+           List importList = unitNode.getImports();
+           
+           importList.add(new ImportOnDemandNode(oldPackageName));
+           
+           unitNode.setImports(importList);
+        }    
+    }
+    
+    protected List _renameUnitList(List unitList, List classNameList, String actorName) {
+        
+        HashMap renameMap = new HashMap();
+        Iterator classNameItr = classNameList.iterator();
+        LinkedList renamedClassNameList = new LinkedList();
+        
+        //Iterator unitItr = unitList.iterator();
+        
+        while (classNameItr.hasNext()) {           
+            String className = (String) classNameItr.next();                                                    
+            String newClassName = "CG_" +  className + "_" + actorName;
+                      
+            System.out.println("changing classname from " + className + " to " + 
+             newClassName);                                
+             
+            // add the mapping from the old class name to the new class name
+            renameMap.put(className, newClassName);  
+            
+            renamedClassNameList.addLast(newClassName);
+            
+            // change the IDENT property of the CompileUnitNode
+            //CompileUnitNode unitNode = (CompileUnitNode) unitItr.next();
+            //unitNode.setProperty(IDENT_KEY, newClassName);                 
+        }
+        
+        TNLManip.traverseList(new RenameJavaVisitor(), null, 
+         TNLManip.cons(renameMap), unitList);            
+         
+        // invalidate DECL and ENVIRON properties, and load the nodes so
+        // that the compiler does not attempt to          
+        
+        return renamedClassNameList;
+    }
+    
+    protected void _rewriteSources(List unitList, List classNameList) {
+        System.out.println("classNameList = " + classNameList);
+    
+        Iterator unitItr = unitList.iterator();
+        Iterator classNameItr = classNameList.iterator();
+        JavaCodeGenerator jcg = new JavaCodeGenerator();
+        
+        while (unitItr.hasNext()) {
+           CompileUnitNode unitNode = (CompileUnitNode) unitItr.next();
+
+           String outCode = (String) unitNode.accept(jcg, null);
+           
+           String outFileName = "c:\\users\\ctsay\\ptII\\codegen\\" +  
+            (String) classNameItr.next() + ".java";
+            
+           try {
+             FileOutputStream outFile = new FileOutputStream(outFileName);
+             outFile.write(outCode.getBytes());
+             outFile.close();
+           } catch (IOException e) {
+             System.err.println("error opening/writing/closing output file "
+              + outFileName);
+             System.err.println(e.toString());
+           }
+        }                                                        
+    }
+    
+    /** A JavaVisitor that finds the declaration of the superclass of a
+     *  given type. The AST must have already gone through pass 1
+     *  static resolution.
+     */
+    protected class FindSuperClassDecl extends JavaVisitor {
+        public FindSuperClassDecl(String className) {
+            super(TM_CUSTOM);
+            _className = className;           
+        } 
+        
+        public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
+            Iterator typeItr = node.getDefTypes().iterator(); 
+            
+            while (typeItr.hasNext()) {
+               Object retval = ((TreeNode) typeItr.next()).accept(this, null);
+            
+               if ((retval != null) && (retval instanceof ClassDecl)) {
+                  return retval;
+               }
+            }
+            
+            return null;
+        }
+        
+        public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
+            ClassDecl classDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
+            
+            if (classDecl.getName().equals(_className)) {
+               return classDecl.getSuperClass();            
+            }
+            
+            return null;
+        }
+        
+        protected String _className;
+    }
+                         
+    protected Entity _entity;       
     protected CompileUnitNode unitNode;
 }
