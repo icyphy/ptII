@@ -58,7 +58,7 @@ it is transparently doubled in size.
 */
 public final class ArrayFIFOQueue implements Cloneable {
 
-    /** Construct an empty queue with no container.
+    /** Construct an empty queue with no container, and an infinite capacity.
      */
     public ArrayFIFOQueue() {
         _queuearray = new Object[STARTING_ARRAYSIZE];
@@ -66,7 +66,7 @@ public final class ArrayFIFOQueue implements Cloneable {
         _historylist = new LinkedList();
     }
 
-    /** Construct an empty queue with no container and the given size.
+    /** Construct an empty queue with no container and the given capacity.
      */
     public ArrayFIFOQueue(int size) {
         _queuearray = new Object[size];
