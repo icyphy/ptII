@@ -84,7 +84,11 @@ public class CSPReceiver implements ProcessReceiver {
      *  put is reached.
      *  It is assumed that at most one process is trying to receive
      *  from and send to the channel associated with this receiver.
+     *  
      *  @return The token transferred by the rendezvous.
+     *  @exception TerminateProcessException If execution termination
+     *   has been requested, or if the execution is abruptly terminated
+     *   from the outside (via an InterruptedException).
      */
     public synchronized Token get() {
         Token tmp = null;
@@ -124,8 +128,8 @@ public class CSPReceiver implements ProcessReceiver {
                 notifyAll();
             }
         } catch (InterruptedException ex) {
-            throw new InvalidStateException("CSPReceiver.get() interrupted: " +
-                    ex.getMessage());
+            throw new TerminateProcessException(
+                    "CSPReceiver.get() interrupted.");
         } finally {
             if (blocked) {
                 // process was blocked, woken up and terminated.
@@ -181,32 +185,32 @@ public class CSPReceiver implements ProcessReceiver {
              ComponentEntity outerEntity = null; 
              List portList = innerPort.connectedPortList(); 
              Iterator ports = portList.iterator();
-             
-             while( ports.hasNext() ) {
-                 outerPort = (Port)ports.next();
-                 outerEntity = (ComponentEntity)outerPort.getContainer();
-                 if( outerEntity == innerEntity.getContainer() ) {
-		     // The port container of this receiver is 
-                     // connected to a boundary port. Now determine 
-                     // if this receiver's channel is connected to 
-                     // a boundary port.
-                     try {
-		 	 Receiver[][] rcvrs = 
+
+             try {
+                 while( ports.hasNext() ) {
+                     outerPort = (Port)ports.next();
+                     outerEntity = (ComponentEntity)outerPort.getContainer();
+                     if( outerEntity == innerEntity.getContainer() ) {
+                         // The port container of this receiver is 
+                         // connected to a boundary port. Now determine 
+                         // if this receiver's channel is connected to 
+                         // a boundary port.
+                         Receiver[][] rcvrs = 
                         	 ((IOPort)outerPort).deepGetReceivers();
 		     	 for( int i = 0; i < rcvrs.length; i++ ) {
                              for( int j = 0; j < rcvrs[i].length; j++ ) {
-		                 if( this == rcvrs[i][j] ) {
-                 		     _connectedBoundaryCacheIsOn = true;
-                 	             _isConnectedBoundaryValue = true;
-			             return true;
+                                 if( this == rcvrs[i][j] ) {
+                                     _connectedBoundaryCacheIsOn = true;
+                                     _isConnectedBoundaryValue = true;
+                                     return true;
                                  }
                              }
-			 }
-                     } catch( IllegalActionException e) {
-                         // FIXME: Do Something!
+                         }
                      }
                  }
-             } 
+             }  catch (IllegalActionException ex) {
+                 throw new InternalErrorException("No director? " + ex);
+             }
              _connectedBoundaryCacheIsOn = true; 
              _isConnectedBoundaryValue = false;
              return _isConnectedBoundaryValue;
@@ -317,7 +321,11 @@ public class CSPReceiver implements ProcessReceiver {
      *  It is assumed that at most one process is trying to receive
      *  from and send to the channel associated with this receiver.
      *  to receive from it and at most one channel send to it.
+     *
      *  @param t The token being transferred in the rendezvous.
+     *  @exception TerminateProcessException If execution termination
+     *   has been requested, or if the execution is abruptly terminated
+     *   from the outside (via an InterruptedException).
      */
     public synchronized void put(Token t) {
         boolean blocked = false;
@@ -357,8 +365,8 @@ public class CSPReceiver implements ProcessReceiver {
                 return;
             }
         } catch (InterruptedException ex) {
-            throw new InvalidStateException("CSPReceiver.put() interrupted: " +
-                    ex.getMessage());
+            throw new TerminateProcessException(
+                    "CSPReceiver.put() interrupted.");
         } finally {
             if (blocked) {
                 // process was blocked, awakened and terminated.

@@ -32,14 +32,18 @@
 
 package ptolemy.domains.csp.kernel;
 
-import collections.LinkedList;
-import java.util.Enumeration;
+// Ptolemy imports.
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 import ptolemy.data.Token;
 import ptolemy.kernel.*;
 import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
+
+// Java imports
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalBranchController
@@ -126,7 +130,7 @@ public class ConditionalBranchController {
 			    (Nameable)branches[i].getController().getParent();
                         String name = act.getName() + branches[i].getID();
                         Thread t = new Thread((Runnable)branches[i], name);
-                        _threadList.insertFirst(t);
+                        _threadList.add(0, t);
                         onlyBranch = branches[i];
                     }
                 }
@@ -157,9 +161,9 @@ public class ConditionalBranchController {
                 } else {
                     // Have a proper conditional communication.
                     // Start the threads for each branch.
-                    Enumeration threads = _threadList.elements();
-                    while (threads.hasMoreElements()) {
-                        Thread thread = (Thread)threads.nextElement();
+                    Iterator threads = _threadList.iterator();
+                    while (threads.hasNext()) {
+                        Thread thread = (Thread)threads.next();
                         thread.start();
                         _branchesActive++;
                     }
@@ -182,7 +186,7 @@ public class ConditionalBranchController {
                     // to terminate a branch, need to set a flag
                     // on the receiver it is rendezvousing with & wake it up
                     Receiver rec = branches[i].getReceiver();
-                    tmp.insertFirst(rec);
+                    tmp.add(0, rec);
                     branches[i].setAlive(false);
                 }
             }
@@ -239,9 +243,9 @@ public class ConditionalBranchController {
         synchronized(_internalLock) {
             // Now stop any threads created by this director.
             if (_threadList != null) {
-                Enumeration threads = _threadList.elements();
-                while (threads.hasMoreElements()) {
-                    Thread next = (Thread)threads.nextElement();
+                Iterator threads = _threadList.iterator();
+                while (threads.hasNext()) {
+                    Thread next = (Thread)threads.next();
                     if (next.isAlive()) {
                         next.stop();
                     }
@@ -452,5 +456,5 @@ public class ConditionalBranchController {
     // Threads created by this actor to perform a conditional rendezvous.
     // Need to keep a list of them in case the execution of the model is
     // terminated abruptly.
-    private LinkedList _threadList = null;
+    private List _threadList = null;
 }

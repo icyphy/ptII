@@ -43,9 +43,9 @@ import java.util.Random;
 import ptolemy.domains.csp.demo.DiningPhilosophers.Philosopher;
 
 class TablePanel extends Panel {
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
 
     /**
      * Paint the panel. The state of all the chopsticks and philosophers
@@ -55,6 +55,7 @@ class TablePanel extends Panel {
         Coordinate newOrigin;
 
         synchronized (this) {
+
             Dimension d = this.size();
             newOrigin = new Coordinate (d.width / 2, d.height / 2);
 

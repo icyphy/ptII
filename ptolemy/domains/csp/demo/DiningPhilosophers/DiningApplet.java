@@ -263,9 +263,11 @@ public class DiningApplet extends Applet
         if (simulationThread.isAlive()) {
             // repaint the table for the current state
             _table.repaint();
-            /*try {
-              Thread.currentThread().sleep(100);
-              } catch (InterruptedException e) {}*/
+            /* To slow down the model, uncomment this...
+            try {
+                Thread.currentThread().sleep(100);
+            } catch (InterruptedException e) {}
+            */
         }
     }
 
@@ -369,9 +371,9 @@ public class DiningApplet extends Applet
         public void actionPerformed(ActionEvent evt) {
             try {
                 _manager.finish();
+                // Force creation of a new thread on next execution.
+                // Is this really necessary?
                 simulationThread = null;
-                init();
-                repaint();
             } catch (Exception ex) {
                 System.err.println("Run failed: " + ex.getMessage());
                 ex.printStackTrace();

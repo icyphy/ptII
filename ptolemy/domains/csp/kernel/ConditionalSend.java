@@ -208,13 +208,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
             }
         } catch (InterruptedException ex) {
             getController()._branchFailed(getID());
-            throw new InternalErrorException( 
-		    ((Nameable)getController().getParent()).getName() +
-                    ": ConditionalSend interrupted: " + ex.getMessage());
         } catch (TerminateProcessException ex) {
-            System.out.println(
-		    ((Nameable)getController().getParent()).getName() +
-                    ": ConditionalSend terminated: " + ex.getMessage());
             getController()._branchFailed(getID());
         } finally {
             // Make sure that the current token doesn't get used

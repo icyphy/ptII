@@ -38,8 +38,6 @@ import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
 import ptolemy.data.Token;
-import collections.LinkedList;
-import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPActor
@@ -194,22 +192,29 @@ public class CSPActor extends TypedAtomicActor
      *  delay for a negative time, an exception is thrown. A delay
      *  of zero time has no effect and this method returns immediately.
      *  @param delta The time to delay this actor for from the current
-     *  time.
+     *   time.
+     *  @exception IllegalActionException If the argument is negative.
+     *  @exception ProcessTerminationException If the director requests
+     *   termination by calling the protected method _cancelDelay().
      */
-    public void delay(double delta) {
+    public void delay(double delta) throws IllegalActionException {
         try {
             synchronized(_internalLock) {
 	        if (delta == 0.0) {
 		    return;
 		} else if (delta < 0.0) {
-		    throw new InvalidStateException(getName() +
-                            ": delayed for negative time: " + delta);
+		    throw new IllegalActionException(this,
+                            "delay() called with a negative argument: "
+                            + delta);
 		} else {
 		    _delayed = true;
 		    ((CSPDirector)getDirector())._actorDelayed(delta, this);
 		    while(_delayed) {
 		        _internalLock.wait();
 		    }
+                    if (_cancelDelay) {
+                        throw new TerminateProcessException("delay cancelled");
+                    }
 		}
 	    }
         } catch (InterruptedException ex) {
@@ -222,6 +227,16 @@ public class CSPActor extends TypedAtomicActor
      */
     public ConditionalBranchController getConditionalBranchController() {
 	return _conditionalBranchController;
+    }
+
+    /** Initialize the state of the actor.
+     *  @throws IllegalActionException Not thrown in this class, but might
+     *   be in a derived class.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _delayed = false;
+        _cancelDelay = false;
     }
 
     /** Return false. If an actor wishes to continue for more than
@@ -244,6 +259,21 @@ public class CSPActor extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** If the actor is delayed, then cancel the delay.
+     *  Some time after this method is called, the thread that called
+     *  delay() will be restarted and the delay() method will throw
+     *  a TerminateProcessException.
+     */
+    protected void _cancelDelay() {
+        synchronized(_internalLock) {
+            if (_delayed) {
+                _cancelDelay = true;
+                _delayed = false;
+                _internalLock.notifyAll();
+            }
+        }
+    }
+
     /** Resume a delayed actor. This method is only called by CSPDirector
      *  after time has sufficiently advanced.
      */
@@ -252,8 +282,9 @@ public class CSPActor extends TypedAtomicActor
             throw new InvalidStateException("CSPActor._continue() " +
                     "called on an actor that was not delayed: " + getName());
         }
-        // perhaps this notifyAll() should be done in a new
-        // thread as it is called from CSPDirector?
+        // NOTE: perhaps this notifyAll() should be called in another
+        // thread?  However, the internal lock is private, so it seems
+        // that if this class is correctly written, that is not necessary.
         synchronized(_internalLock) {
             _delayed = false;
             _internalLock.notifyAll();
@@ -282,6 +313,9 @@ public class CSPActor extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // Flag that causes the delay() method to abort with an exception.
+    private boolean _cancelDelay = false;
 
     // This object is in charge of all conditional rendezvous issues.
     private ConditionalBranchController _conditionalBranchController = null;

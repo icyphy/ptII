@@ -146,6 +146,15 @@ public class Philosopher extends CSPActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Register a PhilosopherListener with this Philosopher.
+     */
+    public void addPhilosopherListener(PhilosopherListener newListener) {
+        if (_listeners == null) {
+            _listeners = new LinkedList();
+        }
+        _listeners.insertLast(newListener);
+    }
+
     /** Executes the code in this actor. This actor randomly chooses
      *  whether to grab the chopstick to the left or right of it first.
      *  When it has one chopstick, it then tries to grab the other
@@ -154,26 +163,24 @@ public class Philosopher extends CSPActor {
      *  times, and then finishes normally.
      *  @exception IllegalActionException If an error occurs during
      *   executing the process.
+     *  @exception ProcessTerminationException If the director requests
+     *   termination.
      */
     public void fire() throws IllegalActionException {
-        Random rand = new Random();
         Token t = new IntToken(0);
         double interval = 0.0;
         double rate = 1;
-        int count = 0;
         try {
-            while (count < 20 ) {
+            while (true) {
                 rate = ((DoubleToken)thinking.getToken()).doubleValue();
-                interval = (int)(rand.nextDouble()*rate*1000);
+                interval = (int)(_random.nextDouble()*rate*1000);
                 interval = interval/1000;
-                System.out.println(getName() + count + ": thinking for "
-                        + interval);
                 Thread th = Thread.currentThread();
                 th.sleep((long)interval*1000);
                 delay(interval);
 
                 // Obtain the forks
-                if (rand.nextDouble() > 0.5) {
+                if (_random.nextDouble() > 0.5) {
                     leftIn.get(0);
                     gotLeft = true;
                     _notifyListeners();
@@ -193,9 +200,8 @@ public class Philosopher extends CSPActor {
                     _notifyListeners();
                 }
                 rate = ((DoubleToken)eating.getToken()).doubleValue();
-                interval = (int)(rand.nextDouble()*rate*2000);
+                interval = (int)(_random.nextDouble()*rate*2000);
                 interval = interval/1000;
-                System.out.println(getName() + ": eating for " + interval);
                 th.sleep((long)interval*1000);
                 delay(interval);
 
@@ -206,37 +212,37 @@ public class Philosopher extends CSPActor {
                 gotRight = false;
 
                 _notifyListeners();
-
-                count++;
             }
-            return;
         } catch (NoTokenException ex) {
             throw new IllegalActionException(getName() + ": cannot " +
                     "get token.");
         } catch (InterruptedException ex) {
-            throw new IllegalActionException(getName() + ": interrupted " +
-                    "while sleeping.");
+            // Terminating the fire().
         }
     }
 
     /** Return true if this actor is enabled to proceed with additional
      *  iterations; return false otherwise.
-     * @return True if continued execution is enabled; false otherwise.
+     *  @return True if continued execution is enabled; false otherwise.
      */
     public boolean postfire() {
         return false;
     }
 
-    /** Register a PhilosopherListener with this Philosopher.
-     */
-    public void addPhilosopherListener(PhilosopherListener newListener) {
-        if (_listeners == null) {
-            _listeners = new LinkedList();
-        }
-        _listeners.insertLast(newListener);
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-    /*  Notify any PhilosopherListeners that have registered an
+    // Variables that are used by the applet to get the state of
+    // the philosopher.
+    public boolean gotLeft = false;
+    public boolean gotRight = false;
+    public boolean waitingLeft = false;
+    public boolean waitingRight = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Notify any PhilosopherListeners that have registered an
      *  interest/dependency in this Philosopher.
      */
     protected void _notifyListeners() {
@@ -250,16 +256,10 @@ public class Philosopher extends CSPActor {
         }
     }
 
-    // Variables that are used by the applet to get the state of
-    // the philosopher.
-    public boolean gotLeft = false;
-    public boolean gotRight = false;
-    public boolean waitingLeft = false;
-    public boolean waitingRight = false;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private LinkedList _listeners;
 
+    private static Random _random = new Random();
 }

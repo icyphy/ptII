@@ -153,6 +153,8 @@ public class Chopstick extends CSPActor {
      *  is thrown.
      *  @exception IllegalActionException If an error occurs during
      *   executing the process.
+     *  @exception TerminateProcessException If the process termination
+     *   is requested by the director.
      */
     public void fire() throws IllegalActionException {
         try {
@@ -189,5 +191,4 @@ public class Chopstick extends CSPActor {
                     "get token.");
         }
     }
-
 }
