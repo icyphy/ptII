@@ -56,7 +56,7 @@ JSRCS = \
 	DFMAnnotateFeedbackActor.java \
 	DFMSelectInputActor.java \
 	DFMSelectOutputActor.java \
-	DFMThreasholdActor.java \
+	DFMThresholdActor.java \
 	DFMPoleZeroActor.java \
 	DFMIIRParamActor.java \
 	DFMFreqActor.java \

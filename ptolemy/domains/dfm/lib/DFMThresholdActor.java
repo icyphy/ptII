@@ -1,4 +1,4 @@
-/* A Threashold level actor in DFM.
+/* A Threshold level actor in DFM.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -34,20 +34,20 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// DFMThreasholdActor
+//// DFMThresholdActor
 /** 
- A threashold actor that allow token to pass through when the token value
- is greater than the threashold.  If the token value is less than threashold
+ A threshold actor that allow token to pass through when the token value
+ is greater than the threshold.  If the token value is less than threshold
  then no-op token is produced.   Expression package should be used here also.
   
 @author  William Wu  wbwu@eecs.berkeley.edu
 @version $id$ 
 */
 
-public class DFMThreasholdActor extends DFMActor {
+public class DFMThresholdActor extends DFMActor {
     /** Constructor
      */	
-    public DFMThreasholdActor(CompositeActor container, String name)
+    public DFMThresholdActor(CompositeActor container, String name)
                 throws NameDuplicationException, IllegalActionException {
                  super(container, name);
          _input = new IOPort(this, "input", true, false);
@@ -60,15 +60,15 @@ public class DFMThreasholdActor extends DFMActor {
     ////                         public methods                    ////
  
     /** Change the value that this actor used to comare input with.
-     * @param name name of the paramter, there is only here "ThreasholdValue"
+     * @param name name of the paramter, there is only here "ThresholdValue"
      * @param arg the value to be fired with.
      */
     public boolean changeParameter(String name, Object arg) {
         DFMDirector dir = (DFMDirector) getDirector();
         if (!dir.isWaitForNextIteration()) return false; 
 
-        if (name.equals("ThreasholdValue")){
-            _threashold = (new Double((String) arg)).doubleValue();
+        if (name.equals("ThresholdValue")){
+            _threshold = (new Double((String) arg)).doubleValue();
             _setParamChanged(true);
             dir.dfmResume();
             return true;
@@ -80,22 +80,22 @@ public class DFMThreasholdActor extends DFMActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Send output data depend on input data and threashold level.
+    /** Send output data depend on input data and threshold level.
      * Expression package should be used.
      */
     protected void _performProcess() {
         double indata = ((Double) _getData("input")).doubleValue();
-        if (indata < _threashold){
+        if (indata < _threshold){
 
             DFMDoubleToken outtoken = new DFMDoubleToken("New", indata);
             _outputTokens.put("output", outtoken);
             _savedoutputTokens.put("output", outtoken);
-System.out.println("under threashold, pass the value: "+indata);
+System.out.println("under threshold, pass the value: "+indata);
         } else{
             DFMToken outtoken = new DFMToken("No-Op");
             _outputTokens.put("output", outtoken);
             _savedoutputTokens.put("output", outtoken);
-System.out.println("over threashold, not pass, no-op passed ");
+System.out.println("over threshold, not pass, no-op passed ");
         }
     }
 
@@ -123,7 +123,7 @@ System.out.println("over threashold, not pass, no-op passed ");
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private double _threashold = 0.0;
+    private double _threshold = 0.0;
     private IOPort _input;
     private IOPort _output;
 }

@@ -39,7 +39,7 @@ import ptolemy.kernel.util.*;
 /** 
  A type of control actor in DFM that perform a select on its output channel
  for sending the input data.  The select is currently base on numerical
- threashold.  In the future this should take advantage of the expression
+ threshold.  In the future this should take advantage of the expression
  package. 
 @author  William Wu 
 @version $id$ 
@@ -67,15 +67,15 @@ public class DFMSelectOutputActor extends DFMActor {
     ////                         public methods                    ////
 
     /** Change the value that this actor used to comare input with. 
-     * @param name name of the paramter, there is only here "ThreasholdValue" 
+     * @param name name of the paramter, there is only here "ThresholdValue" 
      * @param arg the value to be fired with. 
      */ 
     public boolean changeParameter(String name, Object arg) {
         DFMDirector dir = (DFMDirector) getDirector();
         if (!dir.isWaitForNextIteration()) return false; 
 
-        if (name.equals("ThreasholdValue")){
-            _threashold = (new Double((String) arg)).doubleValue();
+        if (name.equals("ThresholdValue")){
+            _threshold = (new Double((String) arg)).doubleValue();
             _setParamChanged(true);
             dir.dfmResume();
             return true;
@@ -87,12 +87,12 @@ public class DFMSelectOutputActor extends DFMActor {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Select the output channel depends on input data and threashold level.
+    /** Select the output channel depends on input data and threshold level.
      * Expression package should be used. 
      */	
     protected void _performProcess() {
         double indata = ((Double) _getData("input")).doubleValue();
-        if (indata < _threashold){
+        if (indata < _threshold){
             DFMDoubleToken outtoken1 = new DFMDoubleToken("New", indata);
             DFMToken outtoken2 = new DFMToken("No-Op");
             _outputTokens.put("output1", outtoken1);
@@ -142,7 +142,7 @@ public class DFMSelectOutputActor extends DFMActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private double _threashold = 0.0;
+    private double _threshold = 0.0;
     private IOPort _input;
     private IOPort _output1;
     private IOPort _output2;
