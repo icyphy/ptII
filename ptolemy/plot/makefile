@@ -57,6 +57,11 @@ JBEANCLASSES =	ptolemy/plot/Plot.class ptolemy/plot/PlotLive.class
 SRCDIRS = 	demo
 DIRS = 		$(SRCDIRS) doc test
 
+#############################################################################
+########### Pxgraph.java will be removed eventually, after the pxgraph
+########### script is fixed.
+#############################################################################
+
 # Java Sources
 JSRCS = \
 	CmdLineArgException.java \
@@ -69,6 +74,7 @@ JSRCS = \
 	PlotLive.java \
 	PlotLiveApplet.java \
 	PlotPoint.java \
+	Pxgraph.java \
 	Message.java
 
 # Files that are not compiled, such as .tcl and .itcl files.
