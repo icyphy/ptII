@@ -58,10 +58,10 @@ test FSMActor-1.2 {container must be TypedCompositeActor or null} {
     $fsm setContainer [java::null]
     set re0 [$fsm getFullName]
     set e1 [java::new ptolemy.actor.CompositeActor]
-    catch {$fsm setContainer $e1} msg
-    list $re0 $msg
-} {.fsm {ptolemy.kernel.util.IllegalActionException: . and .fsm:
-FSMActor can only be contained by instances of TypedCompositeActor.}}
+    $e1 setName testContainer
+    $fsm setContainer $e1
+    list $re0 [[$fsm getContainer] getFullName]
+} {.fsm .testContainer}
 
 ######################################################################
 ####
