@@ -55,6 +55,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
 import ptolemy.actor.util.*;
+import ptolemy.domains.sdf.gui.SDFApplet;
 import ptolemy.plot.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -69,7 +70,7 @@ It displays a Diva animation of the type resolution process.
 @version $Id$
 */
 
-public class Type extends ptolemy.domains.sdf.demo.SDFApplet {
+public class Type extends SDFApplet {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

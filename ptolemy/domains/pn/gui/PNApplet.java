@@ -28,15 +28,16 @@
 @AcceptedRating Red (mudit@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.pn.kernel;
+package ptolemy.domains.pn.gui;
 
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
 
+import ptolemy.domains.pn.kernel.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.actor.*;
-import ptolemy.actor.util.PtolemyApplet;
+import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.*;
 

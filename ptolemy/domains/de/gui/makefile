@@ -40,6 +40,10 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	gui
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 JSRCS = \
 	DEApplet.java
 

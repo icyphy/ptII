@@ -56,6 +56,7 @@ JSRCS = \
 	HistogramPlotter.java \
 	Placeable.java \
 	Plotter.java \
+	PtolemyApplet.java \
 	SequencePlotter.java \
 	Show.java \
 	TimePlotter.java\

@@ -36,6 +36,7 @@ import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.de.lib.*;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.ct.kernel.util.*;
+import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.lib.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.*;

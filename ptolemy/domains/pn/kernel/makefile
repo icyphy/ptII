@@ -48,7 +48,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = BasePNDirector.java \
-	PNApplet.java \
 	PNDirector.java \
 	PNQueueReceiver.java \
 	TimedPNDirector.java

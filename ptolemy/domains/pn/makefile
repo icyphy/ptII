@@ -31,9 +31,7 @@
 
 ME =		ptolemy/domains/pn
 
-DIRS =		kernel lib demo test
-
-# 		guidemo is not in tree because it require JDK1.2
+DIRS =		kernel lib gui demo test
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -50,14 +48,13 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		kernel/kernel.jar \
-		lib/lib.jar
+		lib/lib.jar \
+		gui/gui.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
-
 all: jclass
 install: jclass jars
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
