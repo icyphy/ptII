@@ -71,7 +71,7 @@ send the change request remotely to the comsumer.</text></svg></configure>
         </port>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="LQRController.xml">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="LQRController.xml">
         </property>
         <doc>Read a text file and output the string of it.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 160.0">

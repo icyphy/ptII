@@ -26,6 +26,11 @@
       <entity name="ExpressionWriter" class="ptolemy.actor.lib.io.ExpressionWriter">
         <doc>Write one token per line to a text file as an expression</doc>
       </entity>
+      
+      <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
+        <doc>Read an entire file and output as a string</doc>
+      </entity>
+      
 
       <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
         <doc>Read one line at a time from a text file and output as a string</doc>

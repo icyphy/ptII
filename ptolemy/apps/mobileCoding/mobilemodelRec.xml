@@ -191,7 +191,7 @@ Please run mobilemodelSnd.xml also to send the change.</text></svg></configure>
         </port>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="scaletoHalf.xml">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="scaletoHalf.xml">
         </property>
         <doc>Read a text file and output the string of it.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 200.0">

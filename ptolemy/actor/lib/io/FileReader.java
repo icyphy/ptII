@@ -23,59 +23,38 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.io;
 
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.data.StringToken;
-import ptolemy.data.type.BaseType;
-
 import java.io.BufferedReader;
+
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.Source;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.FileParameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// FileReader
 /**
-This actor reads a file or URL and outputs the whole file
-as a string.  The file or URL is specified using any form
-acceptable to FileAttribute.
+This actor reads a file or URL and outputs the entire file
+as a single string.  The file or URL is specified using any form
+acceptable to FileParameter.
 
-//Note: this actor was originally designed to read a model
-//file and output a moml string for the MobileModel actor
-// to load the model dynamically. So it is supposed to
-// triggered to fire at a proper time for one time.
+@see FileParameter
 @see LineReader
 
-@author Yang Zhao
+@author Yang Zhao (contributor: Edward A. Lee)
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class FileReader extends TypedAtomicActor{
-
-    /** Construct an actor in the specified workspace with
-     *  no container and an empty string as a name. You can then change
-     *  the name with setName(). If the workspace argument is null, then
-     *  use the default workspace.
-     *  @param workspace The workspace that will list the actor.
-     */
-    public FileReader(Workspace workspace)
-            throws IllegalActionException, NameDuplicationException {
-        super(workspace);
-        trigger = new TypedIOPort(this, "trigger", true, false);
-        output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(BaseType.STRING);
-        //modelURL = new Parameter(this, "modelURL", new StringToken(""));
-        //modelURL.setTypeEquals(BaseType.STRING);
-        fileOrURL = new FileAttribute(this, "fileOrURL");
-    }
+public class FileReader extends Source {
 
     /** Construct an actor with a name and a container.
      *  The container argument must not be null, or a
@@ -90,82 +69,73 @@ public class FileReader extends TypedAtomicActor{
     public FileReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        trigger = new TypedIOPort(this, "trigger", true, false);
-        output = new TypedIOPort(this, "output", false, true);
+
         output.setTypeEquals(BaseType.STRING);
-        //modelURL = new Parameter(this, "modelURL", new StringToken(""));
-        //modelURL.setTypeEquals(BaseType.STRING);
-        fileOrURL = new FileAttribute(this, "fileOrURL");
+        
+        fileOrURL = new FileParameter(this, "fileOrURL");
+        
+        fileOrURLPort = new TypedIOPort(this, "fileOrURL", true, false);
+        fileOrURLPort.setTypeEquals(BaseType.STRING);
+        
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-25\" y=\"-20\" "
+                + "width=\"50\" height=\"40\" "
+                + "style=\"fill:white\"/>\n"
+                + "<polygon points=\"-15,-10 -12,-10 -8,-14 -1,-14 3,-10"
+                + " 15,-10 15,10, -15,10\" "
+                + "style=\"fill:red\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    /** The input and output ports.
-     *
-     */
-    public TypedIOPort trigger, output;
-
+    
     /** The file name or URL from which to read.  This is a string with
-     *  any form accepted by FileAttribute.
-     *  @see FileAttribute
+     *  any form accepted by FileParameter.
+     *  @see FileParameter
      */
-    public FileAttribute fileOrURL;
+    public FileParameter fileOrURL;
 
-    //used to use an URL to specify the file to read.
-    //public Parameter modelURL;
+    /** An input port for optionally providing a file name. This has
+     *  type string.
+     */
+    public TypedIOPort fileOrURLPort;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
     /** Output the data read from the file or URL as a string.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If there is no director or
+     *   if reading the file triggers an exception.
      */
     public void fire() throws IllegalActionException  {
-        if (_debugging) {
-            _debug("Invoking fire");
-        }
-        //just consumme the token.
-        for (int i = 0; i < trigger.getWidth(); i++) {
-            if (trigger.hasToken(i)) {
-                trigger.get(i);
+        super.fire();
+        
+        // If the fileOrURL input port is connected and has data, then
+        // get the file name from there.
+        if (fileOrURLPort.getWidth() > 0) {
+            if (fileOrURLPort.hasToken(0)) {
+                String name = ((StringToken)fileOrURLPort.get(0)).stringValue();
+                // Using setExpression() rather than setToken() allows the string
+                // to refer to variables defined in the scope of this actor.
+                fileOrURL.setExpression(name);
             }
         }
-	//trigger.get(0);
+
         try {
-            BufferedReader reader;
-            // Ignore if the fileOrUL is blank.
-            if (fileOrURL.getExpression().trim().equals("")) {
-                reader = null;
-            } else {
-                reader = fileOrURL.openForReading();
-            }
-            StringBuffer momlBuffer = new StringBuffer();
+            BufferedReader reader = fileOrURL.openForReading();
+            StringBuffer lineBuffer = new StringBuffer();
             String newline = System.getProperty("line.separator");
             while (true) {
                 String line = reader.readLine();
                 if (line == null) break;
-                momlBuffer = momlBuffer.append(line);
-                momlBuffer = momlBuffer.append(newline);
+                lineBuffer = lineBuffer.append(line);
+                lineBuffer = lineBuffer.append(newline);
             }
             fileOrURL.close();
-            String momlString = momlBuffer.toString();
-            output.broadcast(new StringToken(momlString));
+            output.broadcast(new StringToken(lineBuffer.toString()));
         } catch(Exception ex) {
             throw new IllegalActionException(this, ex.getMessage());
         }
     }
-
-    /** Return true if there is token at the <i>trigger<i> input.
-     *  Otherwise, return false.
-     *  @exception IllegalActionException If the superclass throws it.
-     */
-    public boolean prefire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("Invoking prefire");
-        }
-        if (trigger.hasToken(0)) {
-            return true;
-        }
-        return false;
-    }
-
 }

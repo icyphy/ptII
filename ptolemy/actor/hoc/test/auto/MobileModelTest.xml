@@ -137,7 +137,7 @@ to this actor over the network. </text></svg></configure>
         </port>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="modelsForMobileModel/scaletoHalf.xml">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="modelsForMobileModel/scaletoHalf.xml">
         </property>
         <doc>Read a text file and output the string of it.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 200.0">
@@ -161,7 +161,7 @@ to this actor over the network. </text></svg></configure>
         </port>
     </entity>
     <entity name="FileReader2" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="modelsForMobileModel/scaler.xml">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="modelsForMobileModel/scaler.xml">
         </property>
         <doc>Read a text file and output the string of it.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 280.0">

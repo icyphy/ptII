@@ -3144,7 +3144,7 @@ any number of changes may be issured. </text></svg></configure>
         <link port="LongToByteArray6.output" relation="relation25"/>
     </entity>
     <entity name="FileReader" class="ptolemy.actor.lib.io.FileReader">
-        <property name="fileOrURL" class="ptolemy.kernel.attributes.FileAttribute" value="LQRController.xml">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="LQRController.xml">
         </property>
         <doc>Read a text file and output the string of it.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 370.0">
