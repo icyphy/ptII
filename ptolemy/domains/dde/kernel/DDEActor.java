@@ -38,56 +38,56 @@ import java.util.Enumeration;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// ODFActor
+//// DDEActor
 /**
-The base class for ODF actors. ODFActors are intended to execute as
+The base class for DDE actors. DDEActors are intended to execute as
 autonomous processes that maintain a distributed notion of time. In
-an ODF model, each actor is controlled by a unique ODFThread. Each
-ODFThread maintains its actor's local notion of time. Local time
+an DDE model, each actor is controlled by a unique DDEThread. Each
+DDEThread maintains its actor's local notion of time. Local time
 information is dependent on the time stamps associated with tokens
 that are consumed by an actor. More precisely, an actor's local
 notion of time is equivalent to the maximum time stamp of all tokens
 that the actor has consumed. Constraints on the consumption of tokens
-are described in the documentation for ODFThread. Note that consumed
+are described in the documentation for DDEThread. Note that consumed
 tokens may include NullTokens. A NullToken is a subclass of Token
 that is communicated solely for the purpose of advancing the local
 notion of time of the actor that receives the NullToken.
 <P>
-The ODF model of computation supports typed, polymorphic actors and
+The DDE model of computation supports typed, polymorphic actors and
 does not require this base class for implementation; this class is
 purely optional. Nevertheless, this class provides useful syntactic 
-conveniences for developing ODF models.
+conveniences for developing DDE models.
 
 @author John S. Davis II
 @version $Id$
-@see ptolemy.domains.dde.kernel.ODFThread
+@see ptolemy.domains.dde.kernel.DDEThread
 @see ptolemy.domains.dde.kernel.NullToken
 */
-public class ODFActor extends TypedAtomicActor {
+public class DDEActor extends TypedAtomicActor {
 
-    /** Construct an ODFActor with no container and a name that
+    /** Construct an DDEActor with no container and a name that
      *  is an empty.
      */
-    public ODFActor() {
+    public DDEActor() {
         super();
     }
 
-    /** Construct an ODFActor with the specified workspace and no name.
-     * @param workspace The workspace for this ODFActor.
+    /** Construct an DDEActor with the specified workspace and no name.
+     * @param workspace The workspace for this DDEActor.
      */
-    public ODFActor(Workspace workspace) {
+    public DDEActor(Workspace workspace) {
 	super(workspace);
     }
 
-    /** Construct an ODFActor with the specified container and name.
-     * @param container The container of this ODFActor.
-     * @param name The name of this ODFActor.
+    /** Construct an DDEActor with the specified container and name.
+     * @param container The container of this DDEActor.
+     * @param name The name of this DDEActor.
      * @exception IllegalActionException If the constructor of the
      *  superclass throws an IllegalActionException.
      * @exception NameDuplicationException If the constructor of the
      *  superclass throws a NameDuplicationException .
      */
-    public ODFActor(TypedCompositeActor container, String name)
+    public DDEActor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -98,15 +98,15 @@ public class ODFActor extends TypedAtomicActor {
 
     /** Return the current time of this actor. The current time is
      *  equal to the time stamp associated with the token most recently
-     *  consumed by one of the receivers contained by this ODFActor.
+     *  consumed by one of the receivers contained by this DDEActor.
      *  If the current thread accessing this method is not an instance
-     *  of ODFThread, then return the cached current time valu.
-     * @return The current time of this ODFActor.
+     *  of DDEThread, then return the cached current time valu.
+     * @return The current time of this DDEActor.
      */
     public double getCurrentTime() {
 	Thread thread = Thread.currentThread();
-	if( thread instanceof ODFThread ) {
-	    TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
+	if( thread instanceof DDEThread ) {
+	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
 	    _currentTime = timeKeeper.getCurrentTime();
 	}
 
@@ -170,14 +170,14 @@ public class ODFActor extends TypedAtomicActor {
      *  receiver that has the minimum receiver time. If all receivers 
      *  have expired then throw a TerminateProcessException.
      * @see ptolemy.domains.dde.kernel.TimedQueueReceiver
-     * @see ptolemy.domains.dde.kernel.ODFReceiver
-     * @see ptolemy.domains.dde.kernel.ODFThread
+     * @see ptolemy.domains.dde.kernel.DDEReceiver
+     * @see ptolemy.domains.dde.kernel.DDEThread
      */
     private Token _getNextInput() throws IllegalActionException {
 	Thread thread = Thread.currentThread();
-	if( thread instanceof ODFThread ) {
-	    TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
-        ODFReceiver lowestRcvr = timeKeeper.getFirstRcvr();
+	if( thread instanceof DDEThread ) {
+	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
+        DDEReceiver lowestRcvr = timeKeeper.getFirstRcvr();
 	if( lowestRcvr.hasToken() ) {
 	    _lastPort = (TypedIOPort)lowestRcvr.getContainer();
 	    return lowestRcvr.get();
