@@ -48,6 +48,7 @@ import ptolemy.kernel.util.StringAttribute;
    A server is either busy (serving a customer) or not busy at any given time.
    If an input arrives when it is not busy, then the input token is produced
    on the output with a delay given by the <i>newServiceTime</i> parameter.
+   If the delay is 0.0, the current input was sent out immediately. 
    If an input arrives while the server is busy, then that input is
    queued until the server becomes free, at which point it is produced
    on the output with a delay given by the <i>newServiceTime</i> parameter.
@@ -67,17 +68,16 @@ import ptolemy.kernel.util.StringAttribute;
    <p>
    Like the TimedDelay actor, the output is produced with a future time
    stamp (larger than current time by <i>newServiceTime</i>). 
-   If the service time is zero, then
-   the output event is queued to be processed in the next microstep,
-   after all events with the current time in the current microstep.
-   Thus, a service time of zero can be usefully viewed as an infinitesimal
-   service time.
+   If the service time is always zero and several event arrrive at the same,
+   the server will output the first available input and queue the other inputs
+   to process in the future microsteps. Thus, a service time of zero can be 
+   usefully viewed as an infinitesimal service time.
 
    @see ptolemy.domains.de.lib.TimedDelay
    @see ptolemy.domains.de.lib.VariableDelay
    @see ptolemy.domains.sdf.lib.SampleDelay
 
-   @author Lukito Muliadi, Edward A. Lee
+   @author Lukito Muliadi, Edward A. Lee, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.3
    @Pt.ProposedRating Yellow (eal)
@@ -101,10 +101,14 @@ public class Server extends VariableDelay {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If there is an input token, read it to begin servicing it.
-     *  Note that service actually begins in the postfire() method,
-     *  which will produce the token that is read on the output.
-     *  @exception IllegalActionException If there is no director.
+    /** Read the available input token. If the server is not busy, 
+     *  begin servicing it. If the delay is 0, output is immediately availabe.
+     *  Otherwise, the output available time is delayed by the amount of the 
+     *  <i>newServiceTime></i> parameter. If the server is busy, check
+     *  whether the current service finishes. If so, generate output. Otherwise,
+     *  do nothing. 
+     *  @exception IllegalActionException If can not update the serviceTime
+     *  parameter, read inputs, or send outputs.
      */
     public void fire() throws IllegalActionException {
         // update delay value
@@ -112,41 +116,49 @@ public class Server extends VariableDelay {
         _delay = ((DoubleToken)delay.getToken()).doubleValue();
         
         Time currentTime = getDirector().getModelTime();
-        // consume input and put it into the task queue: _delayedTokensList
-        // NOTE: it is different from the _delayedTokens defined in the 
+        // consume input and put it into the _delayedInputTokensList
+        // NOTE: this list is different from the _delayedTokens defined in the 
         // TimedDelay class. 
         if (input.hasToken(0)) {
             _currentInput = input.get(0);
-            _delayedTokensList.addLast(_currentInput);
+            _delayedInputTokensList.addLast(_currentInput);
         } else {
             _currentInput = null;
         }
         // produce output
-        if (currentTime.compareTo(_nextTimeFree) == 0) {
-            _currentOutput = (Token)_delayedTokens.get(
-                new Double(currentTime.getDoubleValue()));
-            if (_currentOutput == null) {
-                throw new InternalErrorException("Service time is " +
-                    "reached, but output is not available.");
+        if (_delayedTokens.size() > 0) {
+            if (currentTime.compareTo(_nextTimeFree) == 0) {
+                _currentOutput = (Token)_delayedTokens.get(currentTime);
+                if (_currentOutput == null) {
+                    throw new InternalErrorException("Service time is " +
+                        "reached, but output is not available.");
+                }
+                output.send(0, _currentOutput);
+            } else {
+                // no tokens to be produced at the current time.
             }
-            output.send(0, _currentOutput);
+        } else {
+            // The server is not busy.
+            if (_delay == 0 && _delayedInputTokensList.size() > 0) {
+                output.send(0, (Token)_delayedInputTokensList.removeFirst());
+            }
         }
     }
 
-    /** Indicate that the server is not busy.
+    /** Reset the states of the server to indicate that the server is ready
+     *  to serve.
      *  @exception IllegalActionException If the base class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         _nextTimeFree = Time.NEGATIVE_INFINITY;
-        _delayedTokensList = new LinkedList();
+        _delayedInputTokensList = new LinkedList();
     }
 
-    /** If a token was read in the fire() method, then produce it on
-     *  the output and schedule a firing to occur when the service time elapses.
-     *  The output is produced with a time offset equal to the value
-     *  of the <i>newServiceTime</i> parameter.
-     *  @exception IllegalActionException If there is no director.
+    /** If there are delayed input events that are not processed and the
+     *  server is not busy, schedule future firings to process them.
+     *  @exception IllegalActionException If there is no director or can not
+     *  schedule future firings to handle delayed input events.
      */
     public boolean postfire() throws IllegalActionException {
         Time currentTime = getDirector().getModelTime();
@@ -156,16 +168,16 @@ public class Server extends VariableDelay {
         // at most one token inside (like a processer can execute
         // at most one process at any time.) 
         if (_currentOutput != null) {
-            _delayedTokens.remove(new Double(currentTime.getDoubleValue()));
+            _delayedTokens.remove(currentTime);
         }
         // If the delayedTokensList is not empty, and the delayedTokens
         // is empty (ready for a new service), get the first token
         // and put it into service. Schedule a refiring to wave up 
         // after the service finishes.
-        if (_delayedTokensList.size() != 0 && _delayedTokens.isEmpty()) {
+        if (_delayedInputTokensList.size() != 0 && _delayedTokens.isEmpty()) {
             _nextTimeFree = currentTime.add(_delay);
-            _delayedTokens.put(new Double(_nextTimeFree.getDoubleValue()), 
-                _delayedTokensList.removeFirst());
+            _delayedTokens.put(_nextTimeFree, 
+                    _delayedInputTokensList.removeFirst());
             getDirector().fireAt(this, _nextTimeFree);
         }
         return !_stopRequested;
@@ -199,6 +211,6 @@ public class Server extends VariableDelay {
     // Next time the server becomes free.
     private Time _nextTimeFree;
     
-    // List of delayed tokens, whose finishing times can not be decided.
-    private LinkedList _delayedTokensList;
+    // List of delayed input tokens, whose finishing times can not be decided.
+    private LinkedList _delayedInputTokensList;
 }
