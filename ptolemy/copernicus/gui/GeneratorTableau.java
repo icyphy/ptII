@@ -626,12 +626,14 @@ public class GeneratorTableau extends Tableau {
     private String getStringToken(Attribute attribute, String tokenName)
 	throws IllegalActionException {
 	try {
+	    // getToken() could throw ptolemy.data.expr.TokenMgrError,
+	    // which is an Error, not an Exception.
 	    return ((StringToken)
 		    ((Variable)attribute
 		     .getAttribute(tokenName))
 		    .getToken()).stringValue();
-	} catch (Exception ex) {
-	    throw new IllegalActionException(attribute, ex,
+	} catch (Throwable ex) {
+	    throw new IllegalActionException(attribute, throwable,
 					     "Could not find an attribute "
 					     + "named '"
 					     + tokenName + "' in "
