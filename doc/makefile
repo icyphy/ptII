@@ -506,15 +506,22 @@ codeDocHyVisual/doc/codeDoc/tree.html:
 # Location of the doccheck jar file, available from
 # http://java.sun.com/developer/earlyAccess/doccheck/
 DOCCHECKJAR =	$(PTII)/vendors/sun/doccheck1.2b2/doccheck.jar
-JDOCCHECKFLAG = -doclet com.sun.tools.doclets.doccheck.DocCheck  \
+JDOCCHECKDOCLET = -doclet com.sun.tools.doclets.doccheck.DocCheck  \
 	-docletpath $(DOCCHECKJAR)
+
+# Note that CALTROP_JARS should be before SOOT_JARS because
+# CALTROP_JARS contains java_cup.jar and jasminclasses.jar contains
+# a version of java cup
+
+CALTROP_JARS=$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/ptCal.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/saxon7.jar$(CLASSPATHSEPARATOR)$(CALTROP_DIR)/java_cup.jar
 
 doccheck: doccheck/index.html
 doccheck/index.html:
 	if [ ! -d doccheck ]; then mkdir -p doccheck; fi
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)" \
-		"$(JAVADOC)" $(JDOCMEMORY) \
-			$(JDOCCHECKFLAG) \
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CALTROP_JARS)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(PSDF_DIR)/synthesis.jar" \
+		"$(JAVADOC)" \
+			$(JDOCCHECKFLAGS) \
+			$(JDOCCHECKDOCLET) \
 			-d doc/doccheck $(ALLPACKAGES) )
 
 
