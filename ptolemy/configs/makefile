@@ -83,9 +83,13 @@ OTHER_FILES_TO_BE_JARED = \
 	utilityCompositeActor.xml \
 	utilityIntRangeParameter.xml \
 	utilityModalModel.xml \
+	utilityModelReference.xml \
 	utilityParameter.xml \
+	utilityParameters.xml \
 	utilityPortParameter.xml \
-	utilityRequireVersion.xml
+	utilityRequireVersion.xml \
+	utilityRunCompositeActor.xml \
+	utilityScopeExtender.xml
 
 # Include these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
