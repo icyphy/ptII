@@ -82,6 +82,12 @@ create a <code>.dll</code>
 gcc -shared -o meaningOfLife.dll meaningOfLife.c
 </pre>
 
+<li> Set the CLASSPATH to include the current directory
+<pre>
+CLASSPATH=.
+export CLASSPATH
+</pre>
+
 <li> Start up Vergil with the JNI interface enabled.
 <pre>
 $PTII/bin/vergil -jni
@@ -118,6 +124,11 @@ the parameters
 Edit parameters window
 <li> Select JNI from the menu and
 then select Generate C Interface
+<li> Copy the dlls into a directory that is in the path
+<pre>
+cp meaningOfLife.dll $PTII/bin
+cp jni/jnimeaningOfLife/JnijnimeaningOfLife.dll $PTII/bin
+</pre>
 <li> Save the model.
 <br>Because of an apparent bug, it is necessary
 to save the model for the port we just created to appear
@@ -132,6 +143,43 @@ output type
 <li> Drag in a SDF director and set the number of iterations to 1.
 <li> Select Run
 </ol>
+If you get an error like:
+<pre>
+/cygdrive/c/Program Files/j2sdk1.4.1_01/include/win32/jni_md.h:16: syntax error before `;'
+</pre>
+Then see
+<a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt" target="_top"><code>http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt</code></a>
+<br>You might need to edit jni_md.h, the above URL says
+<blockquote>
+GCC doesn't have a __int64 built-in, and this patch basically uses
+"long long" instead. 
+
+<ol>
+<li> Edit the file <jdk_root>/include/win32/jni_md.h, Where <jdk_root> 
+   is the installation root (eg., c:/jdk1.1.7A).
+
+<li> Replace the segment:
+</ol>
+
+<pre>
+    typedef long jint;
+    typedef __int64 jlong;
+</pre>
+with:
+<pre>
+    typedef long jint;
+    #ifdef __GNUC__
+    typedef long long jlong;
+    #else
+    typedef __int64 jlong;
+    #endif
+    typedef signed char jbyte;
+</pre>
+<blockquote>
+
+
+
+
 @author Vincent Arnould (vincent.arnould@thalesgroup.com), contributor Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.2
@@ -1023,7 +1071,7 @@ public class JNIUtilities {
         libName = libName.substring(1, libName.length() - 1);
         String interlibName = "jni" + libName;
 	String libraryPath = dllDir;
-	if (libraryPath.equals("")) {
+	if (libraryPath.equals("\"\"")) {
 	    libraryPath = ".";
 	}
         results
@@ -1034,13 +1082,13 @@ public class JNIUtilities {
 		    + "CONFIG =\t$(ROOT)/mk/ptII.mk\n" 
 		    + "include $(CONFIG)\n\n"
 		    + interlibName + ":\n"
-		    + "\t$(PTCC) \\\n"
-		    + "\t\t-I$(PTJAVA_DIR)/include \\\n"
-		    + "\t\t-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE) \\\n"
+		    + "\t\"$(PTCC)\" \\\n"
+		    + "\t\t\"-I$(PTJAVA_DIR)/include\" \\\n"
+		    + "\t\t\"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)\" \\\n"
 		    + "\t\t-fno-exceptions \\\n"
-		    + "\t\t-Wl,--add-stdcall-alias -shared \\n"
+		    + "\t\t-Wl,--add-stdcall-alias -shared \\\n"
 		    + "\t\t-L" + libraryPath + " -l" + libName + " \\\n"
-		    + "\t\t -o " + libName
+		    + "\t\t -o Jnijni" + libName
 		    + ".$(PTJNI_SHAREDLIBRARY_SUFFIX) \\\n"
 		    + "\t\tjni" + actor.getName() + ".cpp\n\n"
                     + "# Get the rest of the rules\n"
