@@ -39,8 +39,9 @@ import ptolemy.data.type.BaseType;
 //////////////////////////////////////////////////////////////////////////
 //// Average
 /**
-Output the average of the inputs from the last time a reset is received.
-One output is produced each time the actor fires.
+Output the average of the inputs after the last time a true token is
+received at the reset port.
+One output is produced each time the actor is fired.
 The inputs and outputs can be any token type that
 supports addition and division by an integer.  The output type is
 constrained to be the same as the input type.
@@ -75,7 +76,7 @@ public class Average extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The reset input port of type BooleanToken. If this port
+    /** The reset port of type BooleanToken. If this input port
      *  receives a True token, then the averaging process will be
      *  reset.
      */
