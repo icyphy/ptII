@@ -154,6 +154,7 @@ src: $(PTII_SRC) $(PTII_SRC_ZIP)
 ptii_src: $(PTII_SRC) $(PTII_SRC_ZIP)
 $(PTII_SRC): $(PTIIDIST)
 	@echo "Creating $@"
+	(cd $(PTIIDIST); chmod -R a+rX .)
 	(cd $(PTIIDIST)/..; \
 	$(TAR) -c -X $(GENDIR)/src.ex \
 	 -f $(basename $@) \
@@ -980,9 +981,9 @@ $(INSTALLSHIELD_PTINY):
 		$@/ptolemy/actor/lib/logic
 	 -mkdir -p $@/ptolemy/actor/lib/conversions
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/conversions/conversions.xml \
-		$@/ptolemy/actor/lib/conversions
+		$@/ptolemy/actor/lib/conversions/
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/Sinewave.xml \
-		$@/ptolemy/actor/lib/conversions
+		$@/ptolemy/actor/lib/
 	 -mkdir $@/ptolemy/plot
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/plot/plotapplication.jar \
 		$@/ptolemy/plot
