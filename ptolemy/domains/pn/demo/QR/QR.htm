@@ -45,14 +45,14 @@ applet is displayed on a XGA screen-->
 
 <P>
 The above applet shows the result of a Process Network (PN) executing
-a QR-algorithm on a stream of data coming from an array of
-antennas. Each execution of the QR algorithm on data from the antennas
-is called an update. The applet shows in the matrix R in a
-<I>MatrixViewer</I>.<I> </I>The matrix is of<I> </I>size NxN, where N
+the QR-algorithm on a continuous stream of data that is coming from an
+array of antennas. Each execution of the algorithm on a new set of
+data from the antennas, is called an update. The applet shows the
+matrix R in a <I>MatrixViewer</I>. This matrix is of size NxN, where N
 is the number of antenna's involved. The individual entries in the
-matrix are shown in the <I>Plotter</I>. The resulting matrix R is
-obtained after doing a certain number of QR-algorithm updates on a
-stream of data coming from the antenna array of a certain size.
+matrix are also shown in the <I>Plotter</I>. The matrix R is obtained
+after doing a certain number of QR-algorithm updates on a stream of
+data coming from the antenna array of a certain size.
 </p>
 
 <P>
@@ -75,12 +75,13 @@ the following R matrix must be found: </P>
 <P>
 
 The QR algorithm describes a linear algebra problem in which a matrix
-A can be written as a product of two matrices Q and R (A=QR), in which
-R is an upper triangular matrix and Q an orthogonal matrix. A program
-that does this QR transformation is given below in the Matlab
-programming language. The algorithm uses the Cordic functions
-<I>Vectorize </I>and <I>Rotate </I>to find the QR transform. If we
-execute this program in Matlab, we would find the same matrix R.</P>
+A can be written as a product of two matrices Q and R (A=QR). The
+matrix R is an upper triangular matrix and matrix Q is an orthogonal
+matrix. A program that does this QR transformation is given below in
+the Matlab programming language. The algorithm uses the Cordic
+functions <I>Vectorize </I>and <I>Rotate </I>to find the QR
+transform. If we execute this program in Matlab, we would find the
+same matrix R.</P>
 
 <PRE>
 %% Initialize Matrix r
@@ -121,10 +122,10 @@ Network</I>. In this process network description, the nodes ND_1,
 ND_2, ND_3, ND_4, and ND_5 describe processes and the edges between
 these nodes describe FIFO buffers that have a certain capacity. The
 processes read from these buffers using a blocking-read semantics. In
-the applet, we simulate this process network to get the value for R
-matrix. The big difference between the Matlab program and the process
-network is that the process network executes in parallel whereas the
-Matlab description executes sequentially. </P>
+the applet, we simulate this process network to get the value for the
+R matrix. The big difference between the Matlab program and the
+process network is that the process network executes in parallel
+whereas the Matlab description executes sequentially. </P>
 
 <P>
 <center>
@@ -139,16 +140,15 @@ matrix, the process reads a number of samples (the number of
 antenna's) and sends these samples to either node <A
 HREF="ND_3.java">ND_3</A> or <A HREF="ND_4.java">ND_4</A>. This
 process is repeated a number of times, as many times as there will be
-a QR-update. In parallel with process ND_2, process ND_3, and process
-ND_4 execute by reading data from incoming edges and producing data on
-outgoing edges. After the numbers of QR-updates are done, the final
-matrix R is sent to process <A HREF="ND_5.java">ND_5</A>, which sends
-the matrix <I>R</I> to the Plotter and the StreamToMatrix actor. The
-latter one reconstructs from the incoming stream a matrix, which is
-sent to the MatrixViewer to be visualized. Process <A
-HREF="ND_1.java">ND_1</A> is used to properly initialize the process
-network by sending a specific number of zeros to either process ND_3
-or process ND_4.
+a QR-update. Process ND_3 and process ND_4 read data from incoming
+edges and producing data on outgoing edges. After the numbers of
+QR-updates are done, the final matrix R is sent to process <A
+HREF="ND_5.java">ND_5</A>, which sends the matrix <I>R</I> to the
+Plotter and the StreamToMatrix actor. The latter one reconstructs from
+the incoming stream a matrix, which is sent to the MatrixViewer to be
+visualized. Process <A HREF="ND_1.java">ND_1</A> is used to properly
+initialize the process network by sending a specific number of zeros
+to either process ND_3 or process ND_4.
 </P>
 
 <P>
