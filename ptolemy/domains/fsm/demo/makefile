@@ -50,6 +50,7 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	ABP/ABP.jar \
 	Blending/Blending.jar \
+	ModalBSC/ModalBSC.jar \
 	MultipleRuns/MultipleRuns.jar \
 	StateTracker/StateTracker.jar
 
