@@ -117,7 +117,7 @@ codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/math/*.java \
 			../ptolemy/media/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
-	-(cd ..; CLASSPATH=$(CLASSPATH)$(CLASSPATHSEPARATOR).$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/lib/classes.zip$(CLASSPATHSEPARATOR).. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
+	-(cd ..; CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR).$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/lib/classes.zip$(CLASSPATHSEPARATOR).." $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
 	@for x in codeDoc/*.html; do \
 		echo "Fixing paths in $$x"; \
 		sed -e 's|<a href="java|<a href="$(JAVAHTMLDIR)/java|g' \
