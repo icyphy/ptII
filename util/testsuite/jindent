@@ -1,5 +1,5 @@
 #! /bin/sh
-# -[Fri Feb 22 13:05:28 2002 by cxh]-
+# -[Sat May  4 13:58:13 2002 by cxh]-
 # Indent Java code using emacs
 # Usage: jindent [-n] [-d]
 #    -n Print what would happen, but don't checkout or modify files
@@ -37,7 +37,7 @@ if [ "$PTII" = "" ]; then
     exit 4
 fi
 
-jindent_el=$PTII/util/testsuite/jindent.el
+jindent_el=$PTII/util/lisp/jindent.el
 
 if [ ! -f "$jindent_el" ]; then
     echo "$0: '$jindent_el' not found, exiting"

@@ -52,6 +52,7 @@
 # 19) Warn if there is no trailing newline
 # 20) Warn if the class comment has * on each line.
 # 21) Warn if printStackTrace() or fillInStackTrace() are used
+# 22) Warn if setTypeAtLeast is present, but clone is not defined
 
 # Determine if we are on windows
 windows=no
@@ -354,5 +355,15 @@ do
 		echo "$file: calls printStackTrace() or fillInStackTrace(), use KernelException.stackTraceToString(ex) instead."
 		echo "$results"
 	fi
+
+	# 22) Warn if setTypeAtLeast is present, but clone is not defined
+	results=`egrep '\.setTypeAtLeast\(' $file`
+	if [ "x$results" != "x" ]; then
+	    results2=`egrep 'Object clone\(W' $file`
+	    if [ "x$results2" = "x" ]; then
+		echo "$file: calls setTypeAtLeast, but does not define clone()"
+		echo "$results"
+            fi		
+	fi    
 done
 

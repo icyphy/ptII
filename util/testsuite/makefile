@@ -79,9 +79,7 @@ SCRIPTS = \
 	treeshake
 
 EXTRA_SRCS =	$(JAVA_SRCS) $(TCL_SRCS) $(SCRIPTS) \
-	jindent.el \
 	memory.xml \
-	ptjavastyle.el \
 	ptlocaldict \
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -107,8 +105,10 @@ JINDENT_TMP=/tmp/$(JINDENT_VERSION)
 jindent_dist:
 	rm -rf $(JINDENT_TMP)
 	mkdir -p $(JINDENT_TMP)/util/testsuite
+	mkdir -p $(JINDENT_TMP)/util/lisp
 	cp README.jindent $(JINDENT_TMP)
-	cp jindent jindent.el ptjavastyle.el $(JINDENT_TMP)/util/testsuite
+	cp jindent $(JINDENT_TMP)/util/testsuite
+	cp jindent.el ptjavastyle.el $(JINDENT_TMP)/util/lisp
 	chmod a+x $(JINDENT_TMP)/util/testsuite/jindent
 	(cd /tmp; gtar -zcf $(JINDENT_DIST) $(JINDENT_VERSION))
 
