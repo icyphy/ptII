@@ -30,6 +30,7 @@ package ptolemy.domains.de.lib;
 
 import java.util.HashMap;
 
+import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -39,7 +40,6 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimedDelay
@@ -51,25 +51,25 @@ import ptolemy.math.Utilities;
    <p>
    The behavior on each firing is to read a token from the input,
    if there is one, and to produce the token on the corresponding output
-   channel with the appropriate time delay.  The output is produced
-   in the postfire() method, consistent with the notion that persistent
-   state is only updated in postfire().  Notice that it produces
-   the output immediately, in the same iteration that it reads the
-   input, so that even if the actor no longer exists
-   after the time delay elapses, the destination actor will still see
-   the token. If there is no input token, then no output token is
-   produced.
+   channel with the appropriate time delay. Note that if the value of delay
+   is 0.0, the output is procduced immediately. If there is no input token, 
+   then no output token is produced. The output is produced in the fire() 
+   method. 
    <p>
-   Occasionally, it is useful to set the time
-   delay to zero.  This causes the input tokens to be produced on
-   the output immediately.  However, since the actor declares that
-   there is a delay between the input and the output, the DE director
-   will assume there is a delay when determining the precedences of the
-   actors.  Moreover, the event is queued to be processed in the next
-   microstep, after all events at the current time with the current
-   microstep. Thus, it is sometimes useful to think of this zero-valued
-   delay as an infinitesimal delay.
-
+   Occasionally, this actor is used inside a feedback loop just for scheduling
+   perpose, where the delay parameter is set to zero. This implies that no 
+   output token is produced earlier than the time its trigger input arrives.
+   Therefore the actor declares that there is a delay between the input 
+   and the output, and the DE director will leverage this when 
+   determining the precedences of the actors. It is sometimes useful to think 
+   of this zero-valued delay as an infinitesimal delay.
+    
+   <p> The output may have the same microstep with the input, if there is
+   no queued event scheduled to produce at the same time the input arrives. 
+   Otherwise, the output is produced one microstep later. This guarantees that
+   a DE signal is functional in the sense that there for any tag, there is 
+   at most one value. 
+   
    @see ptolemy.actor.util.FunctionDependencyOfAtomicActor
    @see ptolemy.domains.de.lib.VariableDelay
    @see ptolemy.domains.de.lib.Server
@@ -154,26 +154,32 @@ public class TimedDelay extends DETransformer {
         return newObject;
     }
 
-    /** Read one token from the input and save it so that the
-     *  postfire method can produce it to the output.
+    /** Read one token from the input and send one or more outputs
+     *  which are scheduled to produce at the current time. 
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
+        // consume input
         if (input.hasToken(0)) {
             _currentInput = input.get(0);
         } else {
             _currentInput = null;
         }
-        double currentTime = getDirector().getCurrentTime();
+        // produce output
+        Time currentTime = getDirector().getCurrentTime();
         _currentOutput = null;
         if (_delayedTokens.size() > 0) {
-            Double timeDouble = new Double(currentTime);
-            _currentOutput = (Token)_delayedTokens.get(timeDouble);
+            _currentOutput = (Token)_delayedTokens.get(
+                new Double(currentTime.getTimeValue()));
             if (_currentOutput != null) {
                 output.send(0, _currentOutput);
+                // FIXME: is it too early to return? what if the delay is 0
+                // and the _currentInput != null?? 
+                // This may be an issue in TimedDelay where Delay changes on
+                // the fly. It also appears in VariableDelay.. 
                 return;
             } else {
-                // no tokens to be produced in the current time.
+                // no tokens to be produced at the current time.
             }
         }
         if (_delay == 0 && _currentInput != null) {
@@ -193,33 +199,29 @@ public class TimedDelay extends DETransformer {
         _delayedTokens = new HashMap();
     }
 
-    /** Produce token that was read in the fire() method, if there
-     *  was one.
-     *  The output is produced with a time offset equal to the value
-     *  of the delay parameter.
-     *  @exception IllegalActionException If there is no director.
+    /** If the current input is scheduled to produce in a future time,
+     *  schedule a refiring of this actor at that time.
+     *  @exception IllegalActionException If scheduling to refire cannot
+     *  be performed or the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        double currentTime = getDirector().getCurrentTime();
-        double delayToTime = currentTime + _delay;
-        delayToTime = Utilities.round(delayToTime, 
-            getDirector().getTimeResolution());
-        // Remove the token that is scheduled to be sent 
-        // at the current time.
-        if (_delayedTokens.size() > 0 && 
-            _currentOutput != null) {
-            _delayedTokens.remove(new Double(currentTime));
-        }
-        // Store the not handled token that is scheduled to 
-        // be sent in future.
-        if (_currentInput != null) {
-            Double timeDouble = new Double(delayToTime);
-            _delayedTokens.put(timeDouble, _currentInput);
-            getDirector().fireAt(this, delayToTime);
-        }
+       Time currentTime = getDirector().getCurrentTime();
+       Time delayToTime = currentTime.add(_delay);
+       // Remove the token that is scheduled to be sent 
+       // at the current time.
+       if (_delayedTokens.size() > 0 && 
+           _currentOutput != null) {
+           _delayedTokens.remove(new Double(currentTime.getTimeValue()));
+       }
+       // Store the not handled token that is scheduled to 
+       // be sent in future.
+       if (_currentInput != null) {
+           _delayedTokens.put(new Double(delayToTime.getTimeValue()), 
+               _currentInput);
+           getDirector().fireAt(this, delayToTime);
+       }
         return super.postfire();
     }
-
 
     /** Override the base class to declare that the <i>output</i>
      *  does not depend on the <i>input</i> in a firing.
@@ -243,20 +245,17 @@ public class TimedDelay extends DETransformer {
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 
+    // FIXME: comments.
     // The amount of delay.
     protected double _delay;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    // A hash map to store the delayed tokens.
+    protected HashMap _delayedTokens;
 
     // Current input.
     // FIXME: this private variable is not necessary.
-    private Token _currentInput;
+    protected Token _currentInput;
     
     // Current output.
-    private Token _currentOutput;
-    
-    // A hash map to store the delayed tokens.
-    private HashMap _delayedTokens;
-    
+    protected Token _currentOutput;    
 }
