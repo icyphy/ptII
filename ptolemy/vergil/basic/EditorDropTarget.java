@@ -209,6 +209,9 @@ public class EditorDropTarget extends DropTarget {
                         Iterator imports = sourceContainer.attributeList(
                                 ImportAttribute.class).iterator();
                         while (imports.hasNext()) {
+                            // FIXME: does this code ever get called?
+                            // There is no code in the tree that instantiates
+                            // an ImportAttribute (8/02)
                             moml.append(((ImportAttribute)imports.next())
                                     .exportMoML());
                         }
