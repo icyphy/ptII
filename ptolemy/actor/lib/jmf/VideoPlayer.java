@@ -43,6 +43,7 @@ import javax.swing.JFrame;
 
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.ObjectToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -96,7 +97,19 @@ public class VideoPlayer extends Sink implements ControllerListener {
      *  @return super.postfire()
      */
     public boolean postfire() throws IllegalActionException {
-        ObjectToken objectToken = (ObjectToken) input.get(0);
+        ObjectToken objectToken;
+        Token token = input.get(0);
+        try {
+            objectToken = (ObjectToken) token;
+        } catch (ClassCastException ex) {
+            throw new IllegalActionException(this, ex, 
+                    "Failed to cast " + token.getClass()
+                    + " to an ObjectToken.\n"
+                    + "The VideoPlayer actor expects to be connected to "
+                    + "actors like the StreamLoader.\n"
+                    + "Try connecting other actors to "
+                    + "actor.lib.image.ImageDisplay.");
+        }
         DataSource input = (DataSource) objectToken.getValue();
         if (_player != null) {
             _player.removeControllerListener(this);
@@ -106,11 +119,11 @@ public class VideoPlayer extends Sink implements ControllerListener {
             _player.addControllerListener(this);
             _player.prefetch();
         } catch (IOException ex) {
-            throw new IllegalActionException(this,
-                    "Cannot open file: " + ex.toString());
+            throw new IllegalActionException(this, ex,
+                    "Cannot open file: " + input);
         } catch (MediaException ex) {
-            throw new IllegalActionException(this,
-                    "Exception thrown by media framework: " + ex.toString());
+            throw new IllegalActionException(this, ex,
+                    "Exception thrown by media framework on " + input);
         }
 
         _player.setMediaTime(_startTime);
