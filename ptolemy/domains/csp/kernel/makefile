@@ -55,9 +55,9 @@ JSRCS = \
 	ConditionalReceive.java \
 	ConditionalSend.java \
 	CSPActor.java \
-	CSPCompositeActor.java \
 	CSPDirector.java \
 	CSPReceiver.java \
+	PNThread.java \
 	TerminateProcessException.java
 
 
