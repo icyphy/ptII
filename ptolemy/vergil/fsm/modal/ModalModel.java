@@ -30,6 +30,7 @@
 package ptolemy.vergil.fsm.modal;
 
 import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
@@ -57,8 +58,11 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
@@ -205,7 +209,7 @@ public class ModalModel extends TypedCompositeActor
         newModel._controller = (FSMActor)newModel.getEntity("_Controller");
         return newModel;
     }
-
+    
     /** Delegate to the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise,
      *  return true, indicating that this composite actor does not

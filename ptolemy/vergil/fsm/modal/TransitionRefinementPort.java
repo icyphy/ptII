@@ -88,6 +88,20 @@ public class TransitionRefinementPort extends RefinementPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to avoid linking a sibling input port to
+     *  the same relation as the sibling output port multiple times.
+     *  @param relation The relation to link to.
+     *  @exception IllegalActionException If the link crosses levels of
+     *   the hierarchy, or the port has no container, or the relation
+     *   is not an instance of IORelation.
+     */
+    public void link(Relation relation) throws IllegalActionException {
+        if (isInput() && _hasSibling && isLinked(relation)) {
+            return;
+        }
+        super.link(relation);
+    }
+
     /** Override the base class so that if the port is being removed
      *  from the current container, then it is also removed from the
      *  controller and from each of the refinements.
@@ -407,4 +421,5 @@ public class TransitionRefinementPort extends RefinementPort {
      *  associated input port siblings
      */
     protected boolean _hasSibling = false;
+    
 }

@@ -37,7 +37,9 @@ import diva.graph.modular.MutableEdgeModel;
 import diva.graph.modular.NodeModel;
 import diva.util.NullIterator;
 
+import ptolemy.actor.TypedActor;
 import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
@@ -47,8 +49,10 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
@@ -251,7 +255,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 link.setRelation(null);
                 links.remove();
                 NamedObj container =
-                    (NamedObj)_getChangeRequestParent(relation);
+                    (NamedObj)_getChangeRequestParent(getPtolemyModel());
                 // remove the relation  This should trigger removing the
                 // other link. This will only happen when we've deleted
                 // the state at one end of the model.
@@ -402,6 +406,78 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 (CompositeEntity)_getChangeRequestParent(getPtolemyModel());
 
             moml.append(_deleteRelation(container, linkRelation));
+
+            // See whether refinement(s) need to be removed.
+            CompositeEntity master
+                = (CompositeEntity)linkRelation.getContainer();
+            // Nothing to do if there is no container.
+            if (master != null) {
+                // Remove any referenced refinements that are not also
+                // referenced by other states.
+                TypedActor[] refinements = null;
+                try {
+                    refinements = ((Transition)linkRelation).getRefinement();
+                } catch (IllegalActionException e) {
+                    // Ignore, no refinement to remove.
+                }
+                if (refinements != null) {
+                    for (int i = 0; i < refinements.length; i++) {
+                        TypedActor refinement = refinements[i];
+                        // By default, if no other state or transition refers
+                        // to this refinement, then we will remove it.
+                        boolean removeIt = true;
+                        Iterator states
+                            = master.entityList(State.class).iterator();
+                        while (removeIt && states.hasNext()) {
+                            State state = (State)states.next();
+                            TypedActor[] stateRefinements = null;
+                            try {
+                                stateRefinements = state.getRefinement();
+                            } catch (IllegalActionException e1) {
+                                // Ignore, no refinement to check.
+                            }
+                            if (stateRefinements == null) continue;
+                            for (int j = 0; j < stateRefinements.length; j++) {
+                                if (stateRefinements[j] == refinement) {
+                                    removeIt = false;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        // Next check transitions.
+                        Iterator transitions = master.relationList().iterator();
+                        while (removeIt && transitions.hasNext()) {
+                            Relation transition = (Relation)transitions.next();
+                            if (transition == linkRelation
+                                    || !(transition instanceof Transition)) {
+                                continue;
+                            }
+                            TypedActor[] transitionRefinements = null;
+                            try {
+                                transitionRefinements
+                                        = ((Transition)transition).getRefinement();
+                            } catch (IllegalActionException e1) {
+                                // Ignore, no refinement to check.
+                            }
+                            if (transitionRefinements == null) continue;
+                            for (int j = 0; j < transitionRefinements.length;
+                                    j++) {
+                                if (transitionRefinements[j] == refinement) {
+                                    removeIt = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (removeIt) {
+                            moml.append("<deleteEntity name=\""
+                                    + ((NamedObj)refinement).getName(container)
+                                    + "\"/>\n");
+                        }
+                    }
+                }
+            }
+             
             return moml.toString();
         }
 
@@ -1039,10 +1115,78 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 
             NamedObj container = _getChangeRequestParent(getPtolemyModel());
 
-            StringBuffer moml = new StringBuffer("<group>/n");
+            StringBuffer moml = new StringBuffer("<group>\n");
 
             moml.append("<deleteEntity name=\""
                     + deleteObj.getName(container) + "\"/>\n");
+
+            CompositeEntity master = (CompositeEntity)deleteObj.getContainer();
+            // Nothing to do if there is no container.
+            if (master != null) {
+                // Remove any referenced refinements that are not also
+                // referenced by other states.
+                TypedActor[] refinements = null;
+                try {
+                    refinements = ((State)deleteObj).getRefinement();
+                } catch (IllegalActionException ex) {
+                    // Ignore, no refinement to remove.
+                }
+                if (refinements != null) {
+                    for (int i = 0; i < refinements.length; i++) {
+                        TypedActor refinement = refinements[i];
+                        // By default, if no other state or transition refers
+                        // to this refinement, then we will remove it.
+                        boolean removeIt = true;
+                        Iterator states
+                            = master.entityList(State.class).iterator();
+                        while (removeIt && states.hasNext()) {
+                            State state = (State)states.next();
+                            if (state == deleteObj) continue;
+                            TypedActor[] stateRefinements = null;
+                            try {
+                                stateRefinements = state.getRefinement();
+                            } catch (IllegalActionException ex) {
+                                // Ignore, no refinement to check
+                            }
+                            if (stateRefinements == null) continue;
+                            for (int j = 0; j < stateRefinements.length; j++) {
+                                if (stateRefinements[j] == refinement) {
+                                    removeIt = false;
+                                    break;
+                                }
+                            }
+                        }
+                        // Next check transitions.
+                        Iterator transitions = master.relationList().iterator();
+                        while (removeIt && transitions.hasNext()) {
+                            Relation transition = (Relation)transitions.next();
+                            if (!(transition instanceof Transition)) continue;
+                            TypedActor[] transitionRefinements = null;
+                            try {
+                                transitionRefinements
+                                        = ((Transition)transition).getRefinement();
+                            } catch (IllegalActionException e) {
+                                // Ignore, no refinement to check.
+                            }
+                            if (transitionRefinements == null) continue;
+                            for (int j = 0;
+                                 j < transitionRefinements.length;
+                                 j++) {
+                                if (transitionRefinements[j] == refinement) {
+                                    removeIt = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (removeIt) {
+                            moml.append("<deleteEntity name=\""
+                                    + ((NamedObj)refinement).getName(container)
+                                    + "\"/>\n");
+                        }
+                    }
+                }
+            }
+
             moml.append("</group>\n");
             return moml.toString();
         }
