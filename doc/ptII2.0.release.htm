@@ -611,7 +611,6 @@ in:
 
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm#in_browser">Ptolemy Web Site</a>
 
-
 </menu>
 
 
@@ -622,12 +621,26 @@ in:
 	"Cannot look inside with a configuration"
 	</menu>
 
-<li> Webstart issues:
+<li> Web Start issues:
 	<menu>
 	<li> Applet generation still does not work in the Web Edition
 	<li> Integrator Icon in web start is missing
-	</menu>
+	<li> Invoking a pdf file or the code generator brings up a blank
+	 window.
 
+	<li> Web Start is limited to about 65Mb of memory
+	 <br>If you try to run all the demos, then eventually you may
+	see the following in the Web Start console
+<pre>
+761 ms. Memory: 65280K Free: 3614K (6%)
+7471 ms. Memory: 65280K Free: 931K (1%)
+Exception occurred during event dispatching:
+java.lang.OutOfMemoryError
+
+	&lt;&lt;no stack trace available&gt;&gt;
+</pre>
+	</menu>
+</menu>
 
 <h3>Limitations in the Actor Libraries</h3>
 <menu>
@@ -649,7 +662,8 @@ Matlab be installed on the local machine.  The Matlab interface has
 been tested with Matlab 6.1, which corresponds with R12.1.
 
 <li> The actor.lib.comm.SerialComm actor requires that Javacomm is installed
-<a href="http://java.sun.com/products/javacomm/index.html"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.  The SerialComm actor
+
+<a href="http://java.sun.com/products/javacomm/index.html#in_browser"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.  The SerialComm actor
 will only work under Windows.
 
 </menu>
