@@ -216,7 +216,7 @@ public class LabeledList implements List {
             } else {
                 return label.intValue();
             }
-       }
+        }
     }
 
     /** Returns true if this list contains no elements.
@@ -480,59 +480,59 @@ public class LabeledList implements List {
         public ListIterator listIterator(final int index) {
             if (index < 0 || index > size)
                 throw new IndexOutOfBoundsException(
-                    "Index: "+index+", Size: "+size);
+                        "Index: "+index+", Size: "+size);
 
             return new ListIterator() {
-                private ListIterator elements = list.listIterator(index+offset);
+                    private ListIterator elements = list.listIterator(index+offset);
 
-                public boolean hasNext() {
-                    return nextIndex() < size;
-                }
-
-                public Object next() {
-                    if (hasNext()) {
-                        return elements.next();
+                    public boolean hasNext() {
+                        return nextIndex() < size;
                     }
-                    else {
-                        throw new NoSuchElementException();
+
+                    public Object next() {
+                        if (hasNext()) {
+                            return elements.next();
+                        }
+                        else {
+                            throw new NoSuchElementException();
+                        }
                     }
-                }
 
-                public boolean hasPrevious() {
-                    return previousIndex() >= 0;
-                }
+                    public boolean hasPrevious() {
+                        return previousIndex() >= 0;
+                    }
 
-                public Object previous() {
+                    public Object previous() {
                         if (hasPrevious()) {
                             return elements.previous();
                         }
                         else {
                             throw new NoSuchElementException();
                         }
-                }
+                    }
 
-                public int nextIndex() {
-                    return elements.nextIndex() - offset;
-                }
+                    public int nextIndex() {
+                        return elements.nextIndex() - offset;
+                    }
 
-                public int previousIndex() {
-                    return elements.previousIndex() - offset;
-                }
+                    public int previousIndex() {
+                        return elements.previousIndex() - offset;
+                    }
 
-                public void remove() {
-                    elements.remove();
-                    size--;
-                }
+                    public void remove() {
+                        elements.remove();
+                        size--;
+                    }
 
-                public void set(Object object) {
-                    elements.set(object);
-                }
+                    public void set(Object object) {
+                        elements.set(object);
+                    }
 
-                public void add(Object object) {
-                    elements.add(object);
-                    size++;
-                }
-            };
+                    public void add(Object object) {
+                        elements.add(object);
+                        size++;
+                    }
+                };
         }
 
         public List subList(int fromIndex, int toIndex) {
@@ -542,7 +542,7 @@ public class LabeledList implements List {
         private void _rangeCheck(int index) {
             if (index < 0 || index >= size)
                 throw new IndexOutOfBoundsException("Index: "+index+
-                                                ",Size: "+size);
+                        ",Size: "+size);
         }
     }
 
@@ -561,7 +561,7 @@ public class LabeledList implements List {
     // in an error message.
     private String _elementDump(Object element) {
         return "The offending element follows:\n" +
-                ((element == null) ? "null" : element) + "\n";
+            ((element == null) ? "null" : element) + "\n";
     }
 
     // Fill in the labels map with the appropriate indices of

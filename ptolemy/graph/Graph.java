@@ -825,7 +825,7 @@ public class Graph {
         try {
             _nodes.remove(node);
         } catch (IllegalArgumentException exception) {
-                throw new IllegalArgumentException("Attempt to remove a node "
+            throw new IllegalArgumentException("Attempt to remove a node "
                     + "that is not in the graph."  + _nodeDump(node));
         }
         // Avoid concurrent modification of the incident edges list.
@@ -1059,9 +1059,9 @@ public class Graph {
         } else {
             Edge edge = null;
             if (weighted) {
-               edge = new Edge(node1, node2, weight);
+                edge = new Edge(node1, node2, weight);
             } else {
-               edge = new Edge(node1, node2);
+                edge = new Edge(node1, node2);
             }
             _registerEdge(edge);
             return edge;
@@ -1221,14 +1221,14 @@ public class Graph {
     private String _edgeDump(Edge edge) {
         String edgeString = (edge == null) ? "<null>" : edge.toString();
         return "\nDumps of the offending edge and graph follow.\n"
-                + "The offending edge:\n" + edgeString
-                + "\nThe offending graph:\n" + this.description() + "\n";
+            + "The offending edge:\n" + edgeString
+            + "\nThe offending graph:\n" + this.description() + "\n";
     }
 
     // Return a dump of this graph suitable to be appended to an error message.
     private String _graphDump() {
         return "\nA Dump of the offending graph follows.\n" + this.description()
-                + "\n";
+            + "\n";
     }
 
     // Return the list of incident edges for a specified node.
@@ -1241,8 +1241,8 @@ public class Graph {
     private String _nodeDump(Node node) {
         String nodeString = (node == null) ? "<null>" : node.toString();
         return "\nDumps of the offending node and graph follow.\n"
-                + "The offending node:\n" + nodeString
-                + "\nThe offending graph:\n" + this.description() + "\n";
+            + "The offending node:\n" + nodeString
+            + "\nThe offending graph:\n" + this.description() + "\n";
     }
 
     // Remove an object from an ArrayList if it exists in the list.
@@ -1298,8 +1298,8 @@ public class Graph {
     private String _weightDump(Object weight) {
         String weightString = (weight == null) ? "<null>" : weight.toString();
         return "\nDumps of the offending weight and graph follow.\n"
-                + "The offending weight:\n" + weightString
-                + "\nThe offending graph:\n" + this.description() + "\n";
+            + "The offending weight:\n" + weightString
+            + "\nThe offending graph:\n" + this.description() + "\n";
     }
 
     ///////////////////////////////////////////////////////////////////
