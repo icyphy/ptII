@@ -33,6 +33,7 @@ package ptolemy.actor;
 
 import ptolemy.kernel.util.*;
 import ptolemy.data.type.*;
+import ptolemy.data.type.Typeable; // For javadoc
 import collections.LinkedList;
 import java.util.Enumeration;
 
@@ -45,7 +46,7 @@ occurred.
 
 @author Yuhong Xiong
 @version $Id$
-@see ptolemy.data.Typeable
+@see ptolemy.data.type.Typeable
 */
 public class TypeConflictException extends KernelException {
 
