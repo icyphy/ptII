@@ -53,7 +53,9 @@ PTCLASSJAR = 	$(JPACKAGE).jar
 
 CLASSPATH = $(ROOT)/diva/diva.jar$(CLASSPATHSEPARATOR)$(ROOT)
 
-JSRCS = BusContentionDemo_diva.java 
+JSRCS = \
+	BusContentionApplet.java \
+	BusContentionApplication.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -61,27 +63,27 @@ EXTRA_SRCS =	$(JSRCS)
 # should not complain about
 MISC_FILES =	$(DIRS) # doc #test
 
-PTAUXJAR =	BusContentionDemoApplet.jar
+PTAUXJAR =	BusContentionDemo.jar
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
-	BusContentionDemoApplet.jar
+	BusContentionDemo.jar
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass BusContentionDemoApplet.jar
+all: jclass BusContentionDemo.jar
 
 install: jclass javadocs
 docs: javadocs
 
 # 'make clean' removes everything in KRUFT
-KRUFT = BusContentionDemoApplet.jar
+KRUFT = BusContentionDemo.jar
 
 # Jar file consisting of classes used by an applet.  Basically,
 # everything but Message and Pxgraph.
-BusContentionDemoApplet.jar: $(JSRCS) $(JCLASS)
+BusContentionDemo.jar: $(JSRCS) $(JCLASS)
 		(cd $(ROOT); \
                 $(JAR) cf \
                 $(ME)/$@ \
@@ -92,7 +94,7 @@ depend:
 	@echo "no dependencies in this directory"
 
 run::
-	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.domains.csp.guidemo.BusContentionDemo_diva
+	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.domains.csp.guidemo.BusContentionApplication
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
