@@ -286,8 +286,10 @@ public class NonStrictTest extends Sink {
                     }
                     newTokens[i] = new ArrayToken(newEntry);
                 }
+
             }
             correctValues.setToken(new ArrayToken(newTokens));
+            correctValues.setPersistent(true);
         }
     }
 
