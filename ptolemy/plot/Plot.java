@@ -1034,7 +1034,7 @@ public class Plot extends PlotBox {
                 }
                 break;
             default:
-                break;
+                // none
             }
         }
     }
