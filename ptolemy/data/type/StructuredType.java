@@ -66,7 +66,7 @@ public abstract class StructuredType implements Type, Cloneable {
 	    return super.clone();
 	} catch (CloneNotSupportedException ex) {
 	    throw new InternalErrorException("StructuredType.clone: " +
-		ex.getMessage());
+                    ex.getMessage());
 	}
     }
 
@@ -100,9 +100,9 @@ public abstract class StructuredType implements Type, Cloneable {
     /** Reset this type to the value it was first constructed.
      *  This method is called at the beginning of type resolution.
      */
-     //  @exception IllegalActionException If this type is a constant.
+    //  @exception IllegalActionException If this type is a constant.
     public abstract void reset();
-	    // throws IllegalActionException;
+    // throws IllegalActionException;
 
     /** If this type is a variable, allow it to be changed by the type
      *  resolution procedure. This method reverses the effect of fixValue().
@@ -121,7 +121,7 @@ public abstract class StructuredType implements Type, Cloneable {
      *   is a constant, or the specified type has a different structure.
      */
     public abstract void updateType(StructuredType st)
-	throws IllegalActionException;
+            throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////

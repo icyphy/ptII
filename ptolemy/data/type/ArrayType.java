@@ -57,7 +57,7 @@ public class ArrayType extends StructuredType {
     public ArrayType(Type elementType) {
 	if (elementType == null) {
 	    throw new IllegalArgumentException("ArrayType: elementType is"
-			+ " null");
+                    + " null");
 	}
 
 	_setElementType(elementType);
@@ -104,7 +104,7 @@ public class ArrayType extends StructuredType {
 	    throws IllegalActionException {
 	if ( !isCompatible(t)) {
 	    throw new IllegalArgumentException("ArrayType.convert: " +
-		"Cannot convert the argument token to this type.");
+                    "Cannot convert the argument token to this type.");
 	}
 
 	ArrayToken argArrTok;
@@ -133,7 +133,7 @@ public class ArrayType extends StructuredType {
 	    return argArrTok;
 	} else {
 	    throw new InternalErrorException("ArrayType.convert: Argument " +
-		"is not a substitution instance but is compatible.");
+                    "is not a substitution instance but is compatible.");
 	}
     }
 
@@ -209,11 +209,11 @@ public class ArrayType extends StructuredType {
 	    if (argCast.getRowCount() == 1) {
 		// argument is 1-D
 		argType = new ArrayType(
-				argCast.getElementAsToken(0, 0).getType());
+                        argCast.getElementAsToken(0, 0).getType());
 	    } else {
 		// argument is 2-D
 		argType = new ArrayType(new ArrayType(
-				argCast.getElementAsToken(0, 0).getType()));
+                        argCast.getElementAsToken(0, 0).getType()));
 	    }
 	}
 
@@ -299,12 +299,12 @@ public class ArrayType extends StructuredType {
 	    throws IllegalActionException {
 	if (_user != null) {
 	    throw new IllegalActionException("ArrayType._setUser: " +
-		"The user is already set.");
+                    "The user is already set.");
 	}
 
 	if (user == null) {
 	    throw new IllegalActionException("ArrayType._setUser" +
-		"The specified user is null.");
+                    "The specified user is null.");
 	}
 
 	_user = user;
@@ -321,9 +321,9 @@ public class ArrayType extends StructuredType {
     /** Reset the element type to the value it was first constructed.
      *  This method is called at the beginning of type resolution.
      */
-     //  @exception IllegalActionException If this type is a constant.
+    //  @exception IllegalActionException If this type is a constant.
     public void reset() {
-	    // throws IllegalActionException {
+        // throws IllegalActionException {
 	if (isConstant()) {
 	    // throw new IllegalActionException("ArrayType.reset: " +
 	    //	"Cannot reset a constant type.");
@@ -358,7 +358,7 @@ public class ArrayType extends StructuredType {
 	    throws IllegalActionException {
 	if ( !this.isSubstitutionInstance(newType)) {
 	    throw new IllegalActionException("ArrayType.updateType: " +
-		"The argument is not a substitution instance of this type.");
+                    "The argument is not a substitution instance of this type.");
 	}
 
 	Type newElemType = ((ArrayType)newType).getElementType();
@@ -368,7 +368,7 @@ public class ArrayType extends StructuredType {
 	    // _declaredElementType is a StructuredType. _elementType
 	    // must also be.
 	    ((StructuredType)_elementType).updateType(
-						(StructuredType)newElemType);
+                    (StructuredType)newElemType);
 	}
     }
 
@@ -390,11 +390,11 @@ public class ArrayType extends StructuredType {
     protected int _compare(StructuredType t) {
 	if ( !(t instanceof ArrayType)) {
 	    throw new IllegalArgumentException("ArrayType.compare: " +
-		"The argument is not an ArrayType.");
+                    "The argument is not an ArrayType.");
 	}
 
 	return TypeLattice.compare(_elementType,
-				   ((ArrayType)t).getElementType());
+                ((ArrayType)t).getElementType());
     }
 
     /** Determine if the specified StructuredType is this object, or
@@ -431,11 +431,11 @@ public class ArrayType extends StructuredType {
     protected StructuredType _greatestLowerBound(StructuredType t) {
 	if ( !(t instanceof ArrayType)) {
 	    throw new IllegalArgumentException("ArrayType.greatestLowerBound: "
-		+ "The argument is not an ArrayType.");
+                    + "The argument is not an ArrayType.");
 	}
 
 	Type elementGLB = (Type)TypeLattice.lattice().greatestLowerBound(
-			    _elementType, ((ArrayType)t).getElementType());
+                _elementType, ((ArrayType)t).getElementType());
 	return new ArrayType(elementGLB);
     }
 
@@ -450,11 +450,11 @@ public class ArrayType extends StructuredType {
     protected StructuredType _leastUpperBound(StructuredType t) {
 	if ( !(t instanceof ArrayType)) {
 	    throw new IllegalArgumentException("ArrayType.leastUpperBound: "
-		+ "The argument is not an ArrayType.");
+                    + "The argument is not an ArrayType.");
 	}
 
 	Type elementLUB = (Type)TypeLattice.lattice().leastUpperBound(
-			    _elementType, ((ArrayType)t).getElementType());
+                _elementType, ((ArrayType)t).getElementType());
 	return new ArrayType(elementLUB);
     }
 
@@ -491,16 +491,16 @@ public class ArrayType extends StructuredType {
 		    } else {
 		        // user already set, clone elementType
 		        StructuredType newElemType =
-				(StructuredType)elemTypeStruct.clone();
+                            (StructuredType)elemTypeStruct.clone();
 		        newElemType.setUser(this);
 		        _elementType = newElemType;
 		    }
 		} catch (IllegalActionException ex) {
 		    // since the user was null, this should never happen.
 		    throw new InternalErrorException(
-			"ArrayToken._setElementType: " +
-			" Cannot set user on the elementType. " +
-			ex.getMessage());
+                            "ArrayToken._setElementType: " +
+                            " Cannot set user on the elementType. " +
+                            ex.getMessage());
 		}
 	    }
 	}
@@ -562,8 +562,8 @@ public class ArrayType extends StructuredType {
 		    _userVariable.getType();
 		} catch (IllegalActionException ex) {
 		    throw new InternalErrorException(
-			"ArrayType$ElementTypeTerm.getValue: Cannot " +
-			"evaluate the containing Variable.");
+                            "ArrayType$ElementTypeTerm.getValue: Cannot " +
+                            "evaluate the containing Variable.");
 		}
 		_userVariable = null;
 	    }
@@ -591,15 +591,15 @@ public class ArrayType extends StructuredType {
 	 *   or the argument is not a Type.
          */
         public void initialize(Object e)
-	    throws IllegalActionException {
+                throws IllegalActionException {
 	    if ( !isSettable()) {
 		throw new IllegalActionException("ArrayType$ElementTypeTerm." +
-		    "initialize: The type is not settable.");
+                        "initialize: The type is not settable.");
 	    }
 
 	    if ( !(e instanceof Type)) {
 		throw new IllegalActionException("ElementTypeTerm.initialize: "
-		    + "The argument is not a Type.");
+                        + "The argument is not a Type.");
 	    }
 
 	    reset();
@@ -632,19 +632,19 @@ public class ArrayType extends StructuredType {
 	 *   element type.
      	 */
     	public void setValue(Object e)
-             throws IllegalActionException {
+                throws IllegalActionException {
 	    if ( !isSettable()) {
 		throw new IllegalActionException(
-		    "ArrayType$ElementTypeTerm.setValue: The type is not " +
-		    "settable.");
+                        "ArrayType$ElementTypeTerm.setValue: The type is not " +
+                        "settable.");
 	    }
 
 	    // check for circular type containment
 	    if (e instanceof StructuredType) {
 		if (_arrayType._deepIsUser(e)) {
 		    throw new IllegalActionException(
-			"ElementTypeTerm.setValue: Attempt to construct " +
-			"circular type structure.");
+                            "ElementTypeTerm.setValue: Attempt to construct " +
+                            "circular type structure.");
 		}
 	    }
 
@@ -661,10 +661,10 @@ public class ArrayType extends StructuredType {
 		//    + "; New type: " + e.toString());
 
 	    	throw new IllegalActionException("ElementTypeTerm.setValue:" +
-		    " The new type is not a substitution instance of the " +
-		    "element type. element type: " +
-		    _declaredElementType.toString() + "new type: " +
-		    e.toString());
+                        " The new type is not a substitution instance of the " +
+                        "element type. element type: " +
+                        _declaredElementType.toString() + "new type: " +
+                        e.toString());
 	    }
 
 	    if (_declaredElementType == BaseType.NAT) {

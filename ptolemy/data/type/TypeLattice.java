@@ -144,8 +144,8 @@ public class TypeLattice {
 	 */
 	public Object[] downSet(Object e) {
 	    throw new UnsupportedOperationException(
-		"TheTypeLattice.downSet(): operation not supported for " +
-		"the type lattice.");
+                    "TheTypeLattice.downSet(): operation not supported for " +
+                    "the type lattice.");
 	}
 
         /** Return the greatest lower bound of two types.
@@ -345,8 +345,8 @@ public class TypeLattice {
 	 */
 	public Object[] upSet(Object e) {
 	    throw new UnsupportedOperationException(
-		"TheTypeLattice.upSet(): operation not supported for " +
-		"the type lattice.");
+                    "TheTypeLattice.upSet(): operation not supported for " +
+                    "the type lattice.");
 	}
 
         ///////////////////////////////////////////////////////////////
@@ -406,7 +406,7 @@ public class TypeLattice {
 
 	    _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.DOUBLE_MATRIX);
 	    _basicLattice.addEdge(BaseType.DOUBLE_MATRIX,
-				  BaseType.COMPLEX_MATRIX);
+                    BaseType.COMPLEX_MATRIX);
 	    _basicLattice.addEdge(BaseType.DOUBLE, BaseType.DOUBLE_MATRIX);
 
 	    _basicLattice.addEdge(BaseType.COMPLEX, BaseType.SCALAR);

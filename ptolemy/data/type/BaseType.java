@@ -72,7 +72,7 @@ public class BaseType implements Type {
      *  @param t A Token.
      *  @return True if the argument token is compatible with this type.
      */
-     public boolean isCompatible(Token t) {
+    public boolean isCompatible(Token t) {
 	if (this == NAT) {
 	    return true;
 	}
@@ -142,179 +142,179 @@ public class BaseType implements Type {
 
     /** The boolean data type */
     public static final BaseType BOOLEAN = new BaseType(BooleanToken.class,
-	"boolean",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return BooleanToken.convert(t);
-	    }
-	});
+            "boolean",
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return BooleanToken.convert(t);
+        }
+    });
 
     /** The boolean matrix data type */
     public static final BaseType BOOLEAN_MATRIX = new BaseType(
-	BooleanMatrixToken.class,
-	"booleanMatrix",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return BooleanMatrixToken.convert(t);
-	    }
-	});
+            BooleanMatrixToken.class,
+            "booleanMatrix",
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return BooleanMatrixToken.convert(t);
+        }
+    });
 
     /** The complex data type */
     public static final BaseType COMPLEX = new BaseType(ComplexToken.class,
-	"complex",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return ComplexToken.convert(t);
-	    }
-	});
+            "complex",
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return ComplexToken.convert(t);
+        }
+    });
 
     /** The complex matrix data type */
     public static final BaseType COMPLEX_MATRIX = new BaseType(
-	ComplexMatrixToken.class,
-	"complexMatrix",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return ComplexMatrixToken.convert(t);
-	    }
-	});
+            ComplexMatrixToken.class,
+            "complexMatrix",
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return ComplexMatrixToken.convert(t);
+        }
+    });
 
     /** The double data type */
     public static final BaseType DOUBLE = new BaseType(DoubleToken.class,
-	"double",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return DoubleToken.convert(t);
-	    }
-	});
+            "double",
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return DoubleToken.convert(t);
+        }
+    });
 
     /** The double matrix data type */
     public static final BaseType DOUBLE_MATRIX = new BaseType(
-	DoubleMatrixToken.class,
-	"doubleMatrix",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return DoubleMatrixToken.convert(t);
-	    }
-	});
+            DoubleMatrixToken.class,
+            "doubleMatrix",
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return DoubleMatrixToken.convert(t);
+        }
+    });
 
     /** The fix data type */
     public static final BaseType FIX = new BaseType(FixToken.class, "fix",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return FixToken.convert(t);
-	    }
-	});
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return FixToken.convert(t);
+        }
+    });
 
     /** The fix matrix data type */
     public static final BaseType FIX_MATRIX = new BaseType(
-	FixMatrixToken.class,
-	"fixMatrix",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return FixMatrixToken.convert(t);
-	    }
-	});
+            FixMatrixToken.class,
+            "fixMatrix",
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return FixMatrixToken.convert(t);
+        }
+    });
 
     /** The integer data type */
     public static final BaseType INT = new BaseType(IntToken.class, "int",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return IntToken.convert(t);
-	    }
-	});
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return IntToken.convert(t);
+        }
+    });
 
     /** The integer matrix data type */
     public static final BaseType INT_MATRIX = new BaseType(
-	IntMatrixToken.class,
-	"intMatrix",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return IntMatrixToken.convert(t);
-	    }
-	});
+            IntMatrixToken.class,
+            "intMatrix",
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return IntMatrixToken.convert(t);
+        }
+    });
 
     /** The long integer data type */
     public static final BaseType LONG = new BaseType(LongToken.class, "long",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return LongToken.convert(t);
-	    }
-	});
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return LongToken.convert(t);
+        }
+    });
 
     /** The long matrix data type */
     public static final BaseType LONG_MATRIX = new BaseType(
-	LongMatrixToken.class,
-	"longMatrix",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return LongMatrixToken.convert(t);
-	    }
-	});
+            LongMatrixToken.class,
+            "longMatrix",
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return LongMatrixToken.convert(t);
+        }
+    });
 
     /** The matrix data type */
     public static final BaseType MATRIX = new BaseType(
-	MatrixToken.class,
-	"matrix",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return MatrixToken.convert(t);
-	    }
-	});
+            MatrixToken.class,
+            "matrix",
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return MatrixToken.convert(t);
+        }
+    });
 
     /** The bottom element of the data type lattice */
     public static final BaseType NAT = new BaseType(Void.TYPE, "NaT",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		// Since any type is a substitution instance of NAT, just
-		// return the argument.
-		return t;
-	    }
-	});
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            // Since any type is a substitution instance of NAT, just
+            // return the argument.
+            return t;
+        }
+    });
 
     /** The numerical data type */
     public static final BaseType NUMERICAL = new BaseType(Numerical.class,
-	"numerical",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		throw new IllegalActionException("Cannot convert to " +
-		"numerical.");
-	    }
-	});
+            "numerical",
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            throw new IllegalActionException("Cannot convert to " +
+                    "numerical.");
+        }
+    });
 
     /** The object data type */
     public static final BaseType OBJECT = new BaseType(ObjectToken.class,
-	"object",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return ObjectToken.convert(t);
-	    }
-	});
+            "object",
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return ObjectToken.convert(t);
+        }
+    });
 
     /** The scalar data type */
     public static final BaseType SCALAR = new BaseType(ScalarToken.class,
-	"scalar",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return ScalarToken.convert(t);
-	    }
-	});
+            "scalar",
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return ScalarToken.convert(t);
+        }
+    });
 
     /** The string data type */
     public static final BaseType STRING = new BaseType(StringToken.class,
-	"string",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return StringToken.convert(t);
-	    }
-	});
+            "string",
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return StringToken.convert(t);
+        }
+    });
 
     /** The general data type */
     public static final BaseType GENERAL = new BaseType(Token.class, "general",
-	new ConvertOperator() {
-	    public Token convert(Token t) throws IllegalActionException {
-		return Token.convert(t);
-	    }
-	});
+            new ConvertOperator() {
+        public Token convert(Token t) throws IllegalActionException {
+            return Token.convert(t);
+        }
+    });
 
     ///////////////////////////////////////////////////////////////////
     ////                      private constructor                  ////
