@@ -59,6 +59,7 @@ JSRCS = \
 	NonStrictDisplay.java \
 	NonStrictLogicFunction.java \
 	NonStrictThreeBitAdder.java \
+	SingleTokenDistributor.java \
 	Undefined.java
 
 OTHER_FILES_TO_BE_JARED = \

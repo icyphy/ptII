@@ -60,7 +60,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="SingleTokenDistributor" class="ptolemy.actor.lib.SingleTokenDistributor">
+    <entity name="SingleTokenDistributor" class="ptolemy.domains.sr.lib.SingleTokenDistributor">
         <property name="_location" class="ptolemy.moml.Location" value="215.0, 222.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
