@@ -1,5 +1,5 @@
-/* A clock source that only generates an output when triggered.The number of
-times the specified cycle repeats is controlled  by numberOfCycles parameter
+/** A clock source that only generates an output when triggered.The number of
+times the specified cycle repeats is controlled  by numberOfCycles parameter.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -73,6 +73,9 @@ contains an array of IntTokens with values 1 and 0.  The default
 <i>offsets</i> array is {0.0, 1.0}.  Thus, the default output will be
 alternating 1 and 0 with 50% duty cycle.  The default period
 is 2.0.
+
+The <i>numberOfCycles</i> parameter controlls the number of
+times the specified cycle repeats.
 <p>
 The actor uses the fireAt() method of the director to request
 firing at the beginning of each period plus each of the offsets.
@@ -100,9 +103,7 @@ element type of the <i>values</i> parameter.
 <p>
 This actor is a timed source, the untimed version is Pulse.
 This actor is based on the Clock actor. It differs from that actor in
-two respects: 1)TriggeredClock is not automaically triggered at the start
-of simulation 2)As described above the action of the trigger input is
-completely different.
+two respects: 1)TriggeredClock is not automatically triggered at the start of simulation 2)As described above the action of the trigger input is completely different.
 
 @author J.R. Armstrong
 @version $Id$
@@ -119,7 +120,7 @@ public class TriggeredClock extends TimedSource {
      *   actor with this name.
      */
     public TriggeredClock(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+	throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         // set up  parameter values
@@ -148,7 +149,7 @@ public class TriggeredClock extends TimedSource {
 	output.setTypeAtLeast(elementTerm);
         
         //set the trigger port to be a multiport
-         trigger.setMultiport(false);
+	trigger.setMultiport(false);
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
@@ -173,7 +174,9 @@ public class TriggeredClock extends TimedSource {
      *  {1, 0}
      */
     public Parameter values;
-    
+
+    /** The number of cycles that the actor will produce
+     */
     public Parameter numberOfCycles;
     
 
@@ -190,19 +193,19 @@ public class TriggeredClock extends TimedSource {
      *   nondecreasing and nonnegative.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+	throws IllegalActionException {
         if (attribute == offsets) {
             ArrayToken offsetsValue = (ArrayToken)offsets.getToken();
             _offsets = new double[offsetsValue.length()];
             double previous = 0.0;
             for (int i = 0; i < offsetsValue.length(); i++) {
                 _offsets[i] = ((DoubleToken)offsetsValue.getElement(i))
-                        .doubleValue();
+		    .doubleValue();
                 // Check nondecreasing property.
                 if (_offsets[i] < previous) {
                     throw new IllegalActionException(this,
-                            "Value of offsets is not nondecreasing " +
-                            "and nonnegative.");
+						     "Value of offsets is not nondecreasing " +
+						     "and nonnegative.");
                 }
                 previous = _offsets[i];
             }
@@ -211,8 +214,8 @@ public class TriggeredClock extends TimedSource {
                 ((DoubleToken)period.getToken()).doubleValue();
             if (periodValue <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Period is required to be positive.  " +
-                        "Period given: " + periodValue);
+						 "Period is required to be positive.  " +
+						 "Period given: " + periodValue);
             }
         } else {
             super.attributeChanged(attribute);
@@ -228,7 +231,7 @@ public class TriggeredClock extends TimedSource {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+	throws CloneNotSupportedException {
         TriggeredClock newObject = (TriggeredClock)super.clone(workspace);
         ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
@@ -247,38 +250,37 @@ public class TriggeredClock extends TimedSource {
    
         // Get the current time and period.
         
-          double periodValue = ((DoubleToken)period.getToken()).doubleValue();
-          double currentTime = getDirector().getCurrentTime();
-	  System.out.println("current time"+currentTime);
-                 
-	   if(!_trigger){
-             if(trigger.hasToken(0)){
-                   _trigger  = ((BooleanToken)trigger.get(0)).booleanValue();
-                   if (_trigger){
-	                  _tentativeCycleStartTime = currentTime;
-                          _tentativePhase = 0;
-                          _tentativeCurrentValue =_getValue(_phase); 
-	                  _trigger = true;
-                   }   
-              }
-           } else {
-                     // In case time has gone backwards since the last call to fire()
-                     // (something that can occur within an iteration), reinitialize
-                     // these from the last known good state.
-                     System.out.println("current time"+ currentTime);
-                      _tentativeCycleStartTime = _cycleStartTime;
-                      _tentativePhase = _phase;
-                      _tentativeCurrentValue =_currentValue;     
-	    }     
+	double periodValue = ((DoubleToken)period.getToken()).doubleValue();
+	double currentTime = getDirector().getCurrentTime();
+	                 
+	if(!_trigger){
+	    if(trigger.hasToken(0)){
+		_trigger  = ((BooleanToken)trigger.get(0)).booleanValue();
+		if (_trigger){
+		    _tentativeCycleStartTime = currentTime;
+		    _tentativePhase = 0;
+		    _tentativeCurrentValue = _getValue(_phase); 
+		    _trigger = true;
+		}   
+	    }
+	} else {
+	    // In case time has gone backwards since the last call to fire()
+	    // (something that can occur within an iteration), reinitialize
+	    // these from the last known good state.
+	    System.out.println("current time"+ currentTime);
+	    _tentativeCycleStartTime = _cycleStartTime;
+	    _tentativePhase = _phase;
+	    _tentativeCurrentValue = _currentValue;     
+	}     
                        
         // In case current time has reached or crossed a boundary between
         // periods, update it.  Note that normally it will not
         // have advanced by more than one period
         // (unless, perhaps, the entire domain has been dormant
         // for some time, as might happen for example in a hybrid system).
-	       while (_tentativeCycleStartTime + periodValue <= currentTime) {
-	       _tentativeCycleStartTime += periodValue;
-	              }
+	while (_tentativeCycleStartTime + periodValue <= currentTime) {
+	    _tentativeCycleStartTime += periodValue;
+	}
         // Use Double.NEGATIVE_INFINITY to indicate that no refire
         // event should be scheduled because we aren't at a phase boundary.
         _tentativeNextFiringTime = Double.NEGATIVE_INFINITY;
@@ -286,35 +288,35 @@ public class TriggeredClock extends TimedSource {
         ArrayToken valuesVariable = (ArrayToken)(values.getToken());
         if (_offsets.length != valuesVariable.length()) {
             throw new IllegalActionException(this,
-                    "Values and offsets vectors do not have the same length.");
+					     "Values and offsets vectors do not have the same length.");
         }
         // Phase boundary.  Change the current value.
-            _tentativeCurrentValue = _getValue(_tentativePhase);
+	_tentativeCurrentValue = _getValue(_tentativePhase);
         // Increment to the next phase.
-           _tentativePhase++;
-         if (_tentativePhase >= _offsets.length) {
-                _tentativePhase = 0;
-                // Schedule the first firing in the next period.
-                _tentativeCycleStartTime += periodValue;
-            }
-         if(_offsets[_tentativePhase] >= periodValue) {
-                throw new IllegalActionException(this,
-                        "Offset number " + _tentativePhase + " with value "
-                        + _offsets[_tentativePhase] + " must be less than the "
-                        + "period, which is " + periodValue);
-            }
-            // Schedule the next firing in this period.
-             _tentativeNextFiringTime
-               = _tentativeCycleStartTime + _offsets[_tentativePhase];
-             output.send(0, _tentativeCurrentValue);
-	    }
+	_tentativePhase++;
+	if (_tentativePhase >= _offsets.length) {
+	    _tentativePhase = 0;
+	    // Schedule the first firing in the next period.
+	    _tentativeCycleStartTime += periodValue;
+	}
+	if(_offsets[_tentativePhase] >= periodValue) {
+	    throw new IllegalActionException(this,
+					     "Offset number " + _tentativePhase + " with value "
+					     + _offsets[_tentativePhase] + " must be less than the "
+					     + "period, which is " + periodValue);
+	}
+	// Schedule the next firing in this period.
+	_tentativeNextFiringTime
+	    = _tentativeCycleStartTime + _offsets[_tentativePhase];
+	output.send(0, _tentativeCurrentValue);
+    }
 
     /** Initialize
      */
     public void initialize() throws IllegalActionException {
-          _trigger = false;
-          _cycleCount = 0;
-          super.initialize(); 
+	_trigger = false;
+	_cycleCount = 0;
+	super.initialize(); 
     }
    
  
@@ -332,13 +334,13 @@ public class TriggeredClock extends TimedSource {
         // that no future firing should be scheduled.
         // Now, we leave it up to the director, unless the value
         // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
-            _cycleCount++;
-            int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue(); 
-	    if (_cycleCount <= cycleLimit){
-               if (_tentativeNextFiringTime != Double.NEGATIVE_INFINITY) {
-            getDirector().fireAt(this, _tentativeNextFiringTime);
-                 }
-	      }
+	_cycleCount++;
+	int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue(); 
+	if (_cycleCount <= cycleLimit){
+	    if (_tentativeNextFiringTime != Double.NEGATIVE_INFINITY) {
+		getDirector().fireAt(this, _tentativeNextFiringTime);
+	    }
+	}
         return super.postfire();
     }
 
@@ -351,7 +353,7 @@ public class TriggeredClock extends TimedSource {
         ArrayToken value = (ArrayToken)(values.getToken());
         if (value == null || value.length() <= index) {
             throw new IllegalActionException(this,
-                    "Index out of range of the values parameter.");
+					     "Index out of range of the values parameter.");
         }
         return value.getElement(index);
     }
