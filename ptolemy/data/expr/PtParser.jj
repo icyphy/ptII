@@ -174,7 +174,6 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
      *  returned. To evaluate the parse tree, the method evaluateParseTree()
      *  should be called on the rootNode
      *  @param stringIn The expression to be parsed.
-     *  @param scope Variables to which the expression can refer.
      *  @exception IllegalActionException If the parse fails.
      *  @return The root node of the parse tree.
      */

@@ -200,7 +200,7 @@ public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants, 
 
   static private boolean jj_initialized_once = false;
   static public MatrixParserTokenManager token_source;
-  static ASCII_CharStream jj_input_stream;
+  static SimpleCharStream jj_input_stream;
   static public Token token, jj_nt;
   static private int jj_ntk;
   static private int jj_gen;
@@ -215,7 +215,7 @@ public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants, 
       throw new Error();
     }
     jj_initialized_once = true;
-    jj_input_stream = new ASCII_CharStream(stream, 1, 1);
+    jj_input_stream = new SimpleCharStream(stream, 1, 1);
     token_source = new MatrixParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
@@ -241,7 +241,7 @@ public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants, 
       throw new Error();
     }
     jj_initialized_once = true;
-    jj_input_stream = new ASCII_CharStream(stream, 1, 1);
+    jj_input_stream = new SimpleCharStream(stream, 1, 1);
     token_source = new MatrixParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
