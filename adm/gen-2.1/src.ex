@@ -39,7 +39,6 @@ junk
 mail
 make.out
 mems
-mk/ptII.mk
 nsmail
 ptjar_tmpdir
 ptolemy/PtolemyII.ptml
