@@ -198,8 +198,13 @@ public class DECQEventQueue implements DEEventQueue {
          *   an instance of DEEvent.
          */
         public final long getVirtualBinNumber(Object event) {
-            return (long)((((DEEvent) event).timeStamp()
+            long value = (long)((((DEEvent) event).timeStamp()
                     - _zeroReference.timeStamp())/_binWidth.timeStamp());
+            if(value != Long.MAX_VALUE) {
+                return value;
+            } else {
+                return Long.MAX_VALUE-1;
+            }
         }
 
         /** Given an array of DEEvent objects, set an appropriate bin
