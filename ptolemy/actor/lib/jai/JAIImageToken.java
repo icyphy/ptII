@@ -76,7 +76,7 @@ public class JAIImageToken extends ImageToken {
      *
      * @param rightArgument The token to add to this token.
      * @return A new token containing the result.
-     * @exception IllegalActionException if the data type is not supported.
+     * @exception IllegalActionException If the data type is not supported.
      */
     public Token add(Token rightArgument)
             throws IllegalActionException {
