@@ -101,7 +101,7 @@ $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).java:
 		echo "Copy the zip file from /users/ptII/vendors/sun/src/"; \
 		echo "See $PTII/ptolemy/java/lang/makefile for details"; \
 	fi
-	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)$(JAVASRC_SKELETON_DIR)$(CLASSPATHSEPARATOR)$(KVM_CLASSES)" \
+	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)$(JAVASRC_SKELETON_DIR)$(CLASSPATHSEPARATOR))" \
 	$(JAVA) $(JAVA_VERBOSE) ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 		-class $(SOURCE_SYSTEM_CLASS) \
 		-iterations $(ITERATIONS) \
