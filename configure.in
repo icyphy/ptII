@@ -663,6 +663,52 @@ else
 fi
 
 #--------------------------------------------------------------------
+#       Jython is an implementation of Python in Java
+#	For more information, 
+#       see http://www.jython.org
+#       See if there was a command-line option for where JMF is.
+#--------------------------------------------------------------------
+
+# PTJYTHON_DIR is set to jython and used in
+# $PTII/ptolemy/actor/lib/makefile if jmf was found
+PTJYTHON_DIR=
+
+# Directory that contains the jython jar files
+JYTHON_DIR='${PTII}/vendors/jython'
+
+# We only need to look for jython if $PTII/ptolemy/actor/lib/python exists
+# FIXME: Note that the package is called jython, but the directory is python
+JYTHON_USER_DIR="$PTII/ptolemy/actor/lib/python"
+if test ! -d "$JYTHON_USER_DIR"; then
+    AC_MSG_RESULT([$JYTHON_USER_DIR is not present,
+	so we need not find the Jython, the java implementation of Python.])
+else
+    AC_MSG_CHECKING([for Jython, the Java implementation of Jython])
+    AC_ARG_WITH(jython_dir, [  --with-jython=DIR       use jython.jar from DIR,
+                          defaults to \$PTII/vendors/jython],
+	JYTHON_DIR=$withval,
+	JYTHON_DIR=$PTII/vendors/jython)
+
+    if test -f "$JYTHON_DIR/jython.jar"; then
+	AC_MSG_RESULT([$JYTHON_DIR])
+	# FIXME: This is ugly, but we set to python instead of jythong
+	# $PTII/ptolemy/actor/lib/makefile if jython was found
+	PTJYTHON_DIR=python
+    fi	
+
+    if test "$PTJYTHON_DIR" = ""; then
+        AC_MSG_WARN([Failed to find PTII/vendors/jython/jython.jar
+    perhaps Jython is not installed?
+    Jython is a java implementation of Python.
+    You need not download Jython unless you plan on using the Jython
+    actors in ptolemy/actor/lib/python
+    The Jython can be downloaded http://www.jython.org/download.html])
+	# Note that we don't substitute in the ${PTII} here
+	JYTHON_DIR='${PTII}/vendors/jython'
+    fi
+fi
+
+#--------------------------------------------------------------------
 #	"JXTA technology is a set of open protocols that allow any
 #	connected device on the network ranging from cell phones and wireless
 #	PDAs to PCs and servers to communicate and collaborate in a P2P
@@ -1597,6 +1643,9 @@ AC_SUBST(JVERSION)
 # jode.jar used in bin/ptinvoke to start up Jode, the .class disassembler
 AC_SUBST(JODE_CLASSES)
 
+# Jython home directory that contains jython.jar, see http://www.jython.org
+AC_SUBST(JYTHON_DIR)
+
 # JXTA home directory that contains jxta.jar, see http://www.jxta.org
 AC_SUBST(JXTA_DIR)
 
@@ -1679,6 +1728,9 @@ AC_SUBST(PTJOYSTICK_DIR)
 # Set to jspaces and used in
 # $PTII/ptolemy/actor/lib/makefile if jini was found
 AC_SUBST(PTJSPACES_DIR)
+
+# Set to python if jython.jar was found
+AC_SUBST(PTJYTHON_DIR)
 
 # Set to jxta ans used in
 # $PTII/actor/lib/makefile if jxta.jar was found
