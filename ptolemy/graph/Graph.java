@@ -679,36 +679,30 @@ public class Graph implements Cloneable {
      *  @return True if the graph is equal to this one.
      */
     public boolean equals(Object graph) {
-        boolean result = true;
         if (graph == null) {
-            result = false;
-        }
-        else if (graph.getClass() != getClass()) {
             return false;
-        } else {
-            Graph argumentGraph = (Graph)graph;
-            Iterator argumentNodes = argumentGraph.nodes().iterator();
-            while (argumentNodes.hasNext()) {
-                if (!containsNode((Node)argumentNodes.next()))
-                    return false;
-            }
-            Iterator nodes = nodes().iterator();
-            while (nodes.hasNext()) {
-                if (!argumentGraph.containsNode((Node)nodes.next()) )
-                    return false;
-            }
-            Iterator argumentEdges = argumentGraph.edges().iterator();
-            while (argumentEdges.hasNext()) {
-                if (!containsEdge((Edge)argumentEdges.next()))
-                    return false;
-            }
-            Iterator edges = edges().iterator();
-            while (edges.hasNext()) {
-                if (!argumentGraph.containsEdge((Edge)edges.next()) )
-                    return false;
+        }
+        if (graph.getClass() != getClass()) {
+            return false;
+        } 
+        Graph argumentGraph = (Graph)graph;
+        if ((argumentGraph.nodeCount() != nodeCount()) || 
+                   (argumentGraph.edgeCount() != edgeCount())) {
+            return false;
+        }
+        Iterator argumentNodes = argumentGraph.nodes().iterator();
+        while (argumentNodes.hasNext()) {
+            if (!containsNode((Node)argumentNodes.next())) {
+                return false;
             }
         }
-        return result;
+        Iterator argumentEdges = argumentGraph.edges().iterator();
+        while (argumentEdges.hasNext()) {
+            if (!containsEdge((Edge)argumentEdges.next())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /** Returns the hash code for this graph.
@@ -1826,6 +1820,8 @@ public class Graph implements Cloneable {
     private LabeledList _edges;
 
     // The set of hidden edges. Each element is an Edge.
+    // Hidden edges remain contained in the _edges list, but are removed from
+    // the incidence and weight maps.
     private HashSet _hiddenEdgeSet;
 
     // A mapping from nodes into their lists of incident edges.
