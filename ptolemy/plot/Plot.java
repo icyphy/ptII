@@ -126,7 +126,7 @@ import java.util.*;
  * <i>x</i>,<i>y</i>
  * draw: <i>x</i>,<i>y</i>
  * move: <i>x</i>,<i>y</i>
- * <i>x</i>,<i>y</i>,<i>ylow</i>,<i>yhigh</i>
+ * <i>x</i>,<i>y</i>,<i>yLowErrorBar</i>,<i>yHighErrorBar</i>
  * </pre>
  * The "draw" command is optional, so the first two forms are equivalent.
  * The "move" command causes a break in connected points, if lines are
@@ -186,26 +186,45 @@ public class Plot extends PlotBox {
             }
             y = Math.log(y)*_LOG10SCALE;
         }
-        _addPoint(_graphics, dataset, x, y, connected);
+        // This point is not an error bar so we set yLowEB
+        // and yHighEB to 0
+        _addPoint(_graphics, dataset, x, y, 0, 0, connected, false);
     }
     
     /**
      * In the specified data set, add the specified x,y point to the
      * plot with error bars.  Data set indices begin with zero.  If
      * the dataset argument is out of range, ignore.  The number of
-     * data sets is given by calling *setNumSets()*.  yLow and yHigh
-     * are the lower and upper error bars.  The sixth argument
+     * data sets is given by calling *setNumSets()*.  yLowEB and
+     * yHighEB are the lower and upper error bars.  The sixth argument
      * indicates whether the point should be connected by a line to
      * the previous point.
      * This method is based on a suggestion by
      * Michael Altmann <michael@email.labmed.umn.edu>.
      */
     public synchronized void addPointWithErrorBars(int dataset,
-            double x, double y, double yLow, double yHigh, boolean connected) {
-        addPoint(dataset, x, y, connected);
-        addPoint(dataset, x, yLow, false);
-        addPoint(dataset, x, yHigh,true);
-        addPoint(dataset, x, y, false);
+            double x, double y, double yLowEB, double yHighEB,
+            boolean connected) {
+        if (_xlog) {
+            if (x <= 0.0) {
+                System.err.println("Can't plot non-positive X values "+
+                        "when the logarithmic X axis value is specified: " +
+                        x);
+                return;
+            }
+            x = Math.log(x)*_LOG10SCALE;
+        }
+        if (_ylog) {
+            if (y <= 0.0) {
+                System.err.println("Can't plot non-positive Y values "+
+                        "when the logarithmic Y axis value is specified: " +
+                        y);
+                return;
+            }
+            y = Math.log(y)*_LOG10SCALE;
+        }
+        _addPoint(_graphics, dataset, x, y,
+                yLowEB, yHighEB, connected, true);
     }
     
     /**
@@ -829,6 +848,26 @@ public class Plot extends PlotBox {
     }
 
     /**
+     * Draw an error bar for the specified yLowEB and yHighEB values. 
+     * If the specified point is below the y axis or outside the
+     * x range, do nothing.  If the <i>clip</i> argument is true,
+     * then do not draw above the y range.
+     */
+    protected void _drawErrorBar (Graphics graphics, int dataset,
+            long xpos, long yLowEBPos, long yHighEBPos,
+            boolean clip) {
+        if (_debug > 20) {
+            System.out.println("Plot: _drawErrorBar("+xpos+" "+
+                    yLowEBPos+" "+yHighEBPos+" "+clip+")");
+        }
+        _drawLine(graphics, dataset, xpos - _ERRORBAR_LEG_LENGTH, yHighEBPos,
+                xpos + _ERRORBAR_LEG_LENGTH, yHighEBPos, clip);
+        _drawLine(graphics, dataset, xpos, yLowEBPos, xpos, yHighEBPos, clip);
+        _drawLine(graphics, dataset, xpos - _ERRORBAR_LEG_LENGTH, yLowEBPos,
+                xpos + _ERRORBAR_LEG_LENGTH, yLowEBPos, clip);
+    }
+
+    /**
      * Draw an impulse from the specified point to the y axis.
      * If the specified point is below the y axis or outside the
      * x range, do nothing.  If the <i>clip</i> argument is true,
@@ -1314,15 +1353,16 @@ public class Plot extends PlotBox {
                             // If there are two more numbers, assume that
                             // they are y values for the error bars.
                             if (stoken.ttype == StreamTokenizer.TT_NUMBER) {
-                                double yLow = stoken.nval;
+                                double yLowEB = stoken.nval;
                                 c = stoken.nextToken();
                                 if (stoken.ttype ==
                                     StreamTokenizer.TT_NUMBER) {
-                                    double yHigh = stoken.nval;
+                                    double yHighEB = stoken.nval;
                                     connected =
                                         _addLegendIfNecessary(connected);
                                     addPointWithErrorBars(_currentdataset,
-                                            xpt, ypt, yLow, yHigh, connected);
+                                            xpt, ypt, yLowEB, yHighEB,
+                                            connected);
                                     return true;
                                 }
                             }
@@ -1391,11 +1431,11 @@ public class Plot extends PlotBox {
      * point.
      */
     private synchronized void _addPoint(Graphics graphics,
-            int dataset, double x, double y,
-            boolean connected) {
+            int dataset, double x, double y, double yLowEB, double yHighEB,
+            boolean connected, boolean errorBar) {
         if (_debug > 100) {
             System.out.println("Plot: addPoint " + dataset + " "+
-                    x+" "+y+" "+connected);
+                    x+" "+y+" "+connected+" "+yLowEB+" "+yHighEB+" "+errorBar);
         }
         if (dataset >= _numsets || dataset < 0) return;
         
@@ -1410,6 +1450,17 @@ public class Plot extends PlotBox {
         pt.x = x;
         pt.y = y;
         pt.connected = connected;
+        
+        if (errorBar) {
+            if (yLowEB < _yBottom) _yBottom = yLowEB;
+            if (yLowEB > _yTop) _yTop = yLowEB;
+            if (yHighEB < _yBottom) _yBottom = yHighEB;
+            if (yHighEB > _yTop) _yTop = yHighEB;
+            pt.yLowEB = yLowEB;
+            pt.yHighEB = yHighEB;
+            pt.errorBar = true;
+        }
+
         Vector pts = _points[dataset];
         pts.addElement(pt);
         if (_pointsPersistence > 0) {
@@ -1446,8 +1497,8 @@ public class Plot extends PlotBox {
         PlotPoint pt = (PlotPoint)pts.elementAt(index);
         // Use long here because these numbers can be quite large
         // (when we are zoomed out a lot).
-        long ypos = _lry - (long) ((pt.y - _yMin) * _yscale);
-        long xpos = _ulx + (long) ((pt.x - _xMin) * _xscale);
+        long ypos = _lry - (long)((pt.y - _yMin) * _yscale);
+        long xpos = _ulx + (long)((pt.x - _xMin) * _xscale);
 
         // Draw the line to the previous point.
         if (pt.connected) _drawLine(graphics, dataset, xpos, ypos,
@@ -1462,6 +1513,10 @@ public class Plot extends PlotBox {
         if (_marks != 0) _drawPoint(graphics, dataset, xpos, ypos, true);
         if (_impulses) _drawImpulse(graphics, xpos, ypos, true);
         if (_bars) _drawBar(graphics, dataset, xpos, ypos, true);
+        if (pt.errorBar) 
+            _drawErrorBar(graphics, dataset, xpos,
+                _lry - (long)((pt.yLowEB - _yMin) * _yscale),
+                _lry - (long)((pt.yHighEB - _yMin) * _yscale), true);
 
         // Restore the color, in case the box gets redrawn.
         graphics.setColor(_foreground);
@@ -1510,6 +1565,10 @@ public class Plot extends PlotBox {
         if (_marks != 0) _drawPoint(graphics, dataset, xpos, ypos, true);
         if (_impulses) _drawImpulse(graphics, xpos, ypos, true);
         if (_bars) _drawBar(graphics, dataset, xpos, ypos, true);
+        if (pt.errorBar) 
+            _drawErrorBar(graphics, dataset, xpos,
+                _lry - (long)((pt.yLowEB - _yMin) * _yscale),
+                _lry - (long)((pt.yHighEB - _yMin) * _yscale), true);
 
         // Restore the color, in case the box gets redrawn.
         graphics.setColor(_foreground);
@@ -1544,6 +1603,9 @@ public class Plot extends PlotBox {
 
     // Information about the previously plotted point.
     private long _prevx[], _prevy[];
+
+    // Half of the length of the error bar horizontal leg length;
+    private static final int _ERRORBAR_LEG_LENGTH = 5;
 
     // Maximum number of _datasets.
     private static final int _MAX_DATASETS = 63;

@@ -43,5 +43,8 @@ public class PlotPoint {
     ////                         public variables                         ////
    
     public double x,y;
+    // Used for error bars.
+    public double yLowEB, yHighEB;
     public boolean connected = false;
+    public boolean errorBar = false;
 }
