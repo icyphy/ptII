@@ -86,4 +86,4 @@ test FixFunctions-2.0 {Check quantize method, returning an array of FixPoints} {
     set value [$res toString]
     list $value
 
-} {{[-0.039, 0.0, 0.18, 0.375, 0.375, 0.18, 0.0, -0.039]}}
+} {{[-0.0390625, 0.0, 0.1796875, 0.375, 0.375, 0.1796875, 0.0, -0.0390625]}}

@@ -453,7 +453,7 @@ test PtParser-10.0 {Test that constants can be registered and recognized by the 
     set res1 [ $root1 evaluateParseTree ]
     set value4 [$res1 toString]
     list $value1 $value2 $value3 $value4
-} {5.86 {"1.5neil"} true 1000}
+} {5.8598745 {"1.5neil"} true 1000}
 ######################################################################
 ####
 # Need to test that functions can access methods registered in the 
