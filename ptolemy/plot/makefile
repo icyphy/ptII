@@ -99,9 +99,9 @@ JCLASS1_1 = $(JSRCS1_1:%.java=%.class)
 
 JCLASS = $(JCLASS1_0) $(JCLASS1_1)
 
-all: sources jclass suball $(JZIP) $(JARFILE) ptplotapplet.jar
+all: sources jclass suball $(TYZIP) $(JARFILE) ptplotapplet.jar
 	chmod a+x pxgraph testpxgraph
-install: sources jclass javadocs subinstall $(JARFILE) $(JZIP) ptplotapplet.jar
+install: sources jclass javadocs subinstall $(JARFILE) $(TYZIP) ptplotapplet.jar
 	chmod a+x pxgraph testpxgraph
 
 # Jar file consisting of classes used by an applet.  Basically,
