@@ -43,6 +43,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
+import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.CompositeEntity;
@@ -211,7 +212,8 @@ public class DEEDirector extends DEDirector {
 
             // An embedded director should not process events in the future.
             if (!_isTopLevel() &&
-                    _eventQueue.get().timeStamp() > getCurrentTime()) {
+                    _eventQueue.get().timeStamp().compareTo(getCurrentTime()) 
+                    > 0) {
                 break;
             }
 
@@ -221,7 +223,7 @@ public class DEEDirector extends DEDirector {
 
                 // If necessary, let elapsed real time catch up with
                 // the event time.
-                double currentTime;
+                Time currentTime;
                 if (!_synchronizeToRealTime) {
                     currentEvent = (DEEvent)_eventQueue.get();
                     currentTime = currentEvent.timeStamp();
@@ -242,11 +244,11 @@ public class DEEDirector extends DEDirector {
                             // (and maybe even longer than Sun Microsystems).
                             double elapsedTimeInSeconds =
                                 ((double)elapsedTime)/1000.0;
-                            if (currentTime <= elapsedTimeInSeconds) {
+                            if (currentTime.getTimeValue() <= elapsedTimeInSeconds) {
                                 break;
                             }
-                            long timeToWait = (long)((currentTime -
-                                                             elapsedTimeInSeconds)*1000.0);
+                            long timeToWait = (long)(currentTime.subtract(
+                                elapsedTimeInSeconds).getTimeValue()*1000.0);
                             if (timeToWait > 0) {
                                 if (_debugging) {
                                     _debug("Waiting for real time to pass: "
@@ -273,7 +275,7 @@ public class DEEDirector extends DEDirector {
                     actorToFire = currentEvent.actor();
 
                     // Deal with a fireAtCurrentTime event.
-                    if (currentTime == Double.NEGATIVE_INFINITY) {
+                    if (currentTime.equalTo(timeConstants.NEGATIVE_INFINITY)) {
                         currentTime = getCurrentTime();
                     }
 
@@ -297,7 +299,7 @@ public class DEEDirector extends DEDirector {
 
                 _microstep = currentEvent.microstep();
 
-                if (currentTime > getStopTime()) {
+                if (currentTime.compareTo(getStopTime()) > 0) {
                     if (_debugging) {
                         _debug("Current time has passed the stop time.");
                     }
@@ -327,7 +329,8 @@ public class DEEDirector extends DEDirector {
                 // FIXME: the same ioPort requirement is not correct.
                 // Consider the multi-input atomic actors, e.g. the
                 // BooleanSelect and Inhibit.
-                if ((nextEvent.timeStamp() == Double.NEGATIVE_INFINITY ||
+                if ((nextEvent.timeStamp().equalTo(
+                    timeConstants.NEGATIVE_INFINITY) ||
                             nextEvent.hasTheSameTagAndDepthAs(currentEvent))
                         && nextEvent.actor() == currentEvent.actor()) {
                     // Consume the event from the queue.
@@ -369,14 +372,14 @@ public class DEEDirector extends DEDirector {
      *  @param time The time stamp of the "pure event".
      *  @exception IllegalActionException If the time argument is in the past.
      */
-    protected void _enqueueEvent(Actor actor, double time)
+    protected void _enqueueEvent(Actor actor, Time time)
             throws IllegalActionException {
         if (_eventQueue == null) return;
         int microstep = 0;
-        if (time == getCurrentTime()) {
+        if (time.compareTo(getCurrentTime()) == 0) {
             microstep = _microstep + 1;
-        } else if (time != Double.NEGATIVE_INFINITY &&
-                time < getCurrentTime()) {
+        } else if (!time.equalTo(timeConstants.NEGATIVE_INFINITY) &&
+                time.compareTo(getCurrentTime()) < 0) {
             throw new IllegalActionException((Nameable)actor,
                     "Attempt to queue an event in the past:"
                     + " Current time is " + getCurrentTime()
@@ -436,15 +439,15 @@ public class DEEDirector extends DEDirector {
      *  @exception IllegalActionException If the delay is negative.
      */
     protected void _enqueueEvent(DEReceiver receiver, Token token,
-            double time) throws IllegalActionException {
+            Time time) throws IllegalActionException {
 
         if (_eventQueue == null) return;
         int microstep = 0;
 
-        if (time == getCurrentTime()) {
+        if (time.compareTo(getCurrentTime()) == 0) {
             microstep = _microstep;
-        } else if (time != Double.NEGATIVE_INFINITY &&
-                time < getCurrentTime()) {
+        } else if (!time.equalTo(timeConstants.NEGATIVE_INFINITY) &&
+                time.compareTo(getCurrentTime()) < 0) {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination,
                     "Attempt to queue an event in the past: "
@@ -566,6 +569,15 @@ public class DEEDirector extends DEDirector {
         if (_debugging) {
             _debug("## ports graph is:" + portsGraph.toString());
         }
+        
+        // FIXME: this topologicalSort should be smarter.
+        // In particular, the dependency between the ports belonging
+        // to the same actor...
+        // Reorganize the portsGraph: give the graphs that begin with the
+        // ports of source actors the highest priority, the graphs that
+        // begin with the ports of sink actors the lowest priority, 
+        // and others (do they matter?)...
+        
         Object[] sort = (Object[]) portsGraph.topologicalSort();
         if (_debugging) {
             _debug("## Result of topological sort (highest depth to lowest):");
