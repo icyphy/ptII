@@ -69,6 +69,8 @@ import ptolemy.kernel.util.Workspace;
    @since Ptolemy II 0.2
    @Pt.ProposedRating Yellow (liuj)
    @Pt.AcceptedRating Yellow (liuxj)
+   @deprecated As Ptolemy II 4.1. A pulse can be directly represented by 
+   discrete events.
 */
 public class ImpulseBESolver extends BackwardEulerSolver
     implements BreakpointODESolver {
