@@ -54,41 +54,48 @@ and with JDK1.2.2 and JDK1.3.0.
 the installation page for information about the Ptolemy II test suite
 
 <h2>Limitations</h2>
+Version 1.0 has a number of limitations.
+<h3>Release Limitations</h3>
 <menu>
-
 <li> The gzipped tar file that contains the Ptolemy II distribution
  <B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
 untar this file with a checksum error because the pathnames are longer
 than 100 characters.  If you do not have GNU tar, you can obtain
 source and selected binaries from <a
 href="ftp://ptolemy.eecs.berkeley.edu/pub/gnu"><CODE>ftp://ptolemy.eecs.berkeley.edu/pub/gnu</CODE></a>.
+</menu>
 
-<li> Ptolemy II 1.0 does not include a GUI.
 
-<li> This is the first release of the Finite State Machine domain (FSM)
-which has the following limitations
-	<menu>
-	<li> The FSM design document chapter is not part of the 1.0 beta
-	<li> There are not very many tests for FSM
-	<li> MoML support for FSM models is incomplete.
-	</menu>
-
+<h3>Limitations in the Actor Libraries</h3>
+<menu>
+<li>The actor library is far from complete.
+<li>The Expression actor does not properly propagate type constraints in
+an expression-dependent fashion. It works correctly for double-valued
+expressions of double-valued inputs.
 
 <li> The readFile() parameter function does not work with applets.
 
-<li> The import statement in MoML requires the base attribute.
-The following will not work:
-<pre>
-&lt;import source="testClass2.xml"/&gt;
-</pre>
-Use the following instead
-<pre>
-&lt;import base="../../.." source="ptolemy/moml/test/testClass2.xml"/&gt;
-</pre>
-<li> The JDK1.2.1 Plug-in has a bug that causes the Netscape or Iexplorer
-process to linger after exiting.  The workaround is to turn of the JIT
-using the Java Plug-in Control Panel, see the <a href="troubleshooting.htm#jit">Troubleshooting guide</a> for details.
-This bug may be fixed in JDK1.2.2.
+</menu>
+
+<h3>Limitations in the User Interface</h3>
+Version 1.0 of Ptolemy II includes the first graphical user
+interface for Ptolemy II.  This UI still has a number of limitations.
+<menu>
+<li>No undo mechanism.
+<li>No way to set the name of ports, relations, or entities.
+<li>Weak support for multiports in the graph editor.
+<li>No mechanism to set the width of a relation.
+<li>No mechanism to create a port in an atomic actor.
+<li>The integrated web browser is not a full-featured browser.
+<li>No snap-to-grid.
+<li>No icon editor.
+</menu>
+
+<h3>Missing Domains</h3>
+<menu>
+<li>Synchronous/reactive.
+<li>Boolean and integer dataflow.
+<li>Dynamic dataflow
 </menu>
 
 <p><font size="2" color="#cc0000">Last Updated: $Date$</font>
