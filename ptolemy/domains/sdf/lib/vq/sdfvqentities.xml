@@ -4,7 +4,6 @@
 
 <entity name="image processing" class="ptolemy.moml.EntityLibrary">
   <configure>
-    <?moml
       <group>
   <doc>Image processing actors</doc>
 
@@ -33,6 +32,5 @@
 </entity>
 
       </group>
-    ?>
   </configure>
 </entity>
