@@ -189,6 +189,7 @@ public class Ramp extends SequenceSource {
 	for (int i = 0; i < count; i++) {
 	    _resultArray[i] = _stateToken;
 	    try {
+                step.update();
 		_stateToken = _stateToken.add(step.getToken());
 	    } catch (IllegalActionException ex) {
 		// Should not be thrown because
@@ -216,13 +217,8 @@ public class Ramp extends SequenceSource {
      *   has an invalid expression.
      */
     public boolean postfire() throws IllegalActionException {
-        try {
-            _stateToken = _stateToken.add(step.getToken());
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because
-            // we have already verified that the tokens can be added.
-            throw new InternalErrorException(ex.getMessage());
-        }
+        step.update();
+        _stateToken = _stateToken.add(step.getToken());
         return super.postfire();
     }
 
