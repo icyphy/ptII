@@ -295,7 +295,7 @@ public class ActorTransformer extends SceneTransformer {
                             body, portClassName,
                             thisLocal, port.getName());
                     // and then cast to portLocal
-                    body.getUnits().add(Jimple.v().newAssignStmt(ioportLocal,
+                    body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
                             Jimple.v().newCastExpr(local,
                                     PtolemyUtilities.portType)));
 
@@ -313,21 +313,21 @@ public class ActorTransformer extends SceneTransformer {
                         if(ioport.isInput()) {
                             body.getUnits().add(Jimple.v().newInvokeStmt(
                                     Jimple.v().newVirtualInvokeExpr(
-                                            ioportLocal,
+                                            local,
                                             PtolemyUtilities.setInputMethod,
                                             IntConstant.v(1))));
                         }
                         if(ioport.isOutput()) {
                             body.getUnits().add(Jimple.v().newInvokeStmt(
                                     Jimple.v().newVirtualInvokeExpr(
-                                            ioportLocal,
+                                            local,
                                             PtolemyUtilities.setOutputMethod,
                                             IntConstant.v(1))));
                         }
                         if(ioport.isMultiport()) {
                             body.getUnits().add(Jimple.v().newInvokeStmt(
                                     Jimple.v().newVirtualInvokeExpr(
-                                            ioportLocal,
+                                            local,
                                             PtolemyUtilities.setMultiportMethod,
                                             IntConstant.v(1))));
                         }
