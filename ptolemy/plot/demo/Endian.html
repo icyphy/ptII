@@ -7,8 +7,19 @@
 <h1>Endian Examples</h1>
 <hr>
 The three plots below illustrate the use of the different endian 
-command line arguments on the same data set.
-See the <a href="../doc/internals/ptplotfaq.html#endian">Ptplot FAQ</a> for details.
+command line arguments on the same data sets from the
+<a href="Binary.html">Plot of Binary Data</a>.
+ <p>At least one of the plots will displayed incorrectly.  
+
+ <p>If you are running on a little-endian machine such as a machine
+with an Intel x86 processor, then the <CODE>-binary</CODE> and
+<CODE>-littleendian</CODE> plots will be incorrect.
+
+ <p>If you are running on a big-endian machine, such as a Sun SPARC,
+then the <CODE>-littleendian</CODE> plot will be incorrect.
+
+ <p> See the
+<a href="../doc/internals/ptplotfaq.html#endian">Ptplot FAQ</a> for details.
 
 <h2>-binary</h2>
 The plot below uses the <CODE>-binary</CODE> argument.
