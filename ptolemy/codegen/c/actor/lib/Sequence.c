@@ -9,7 +9,7 @@ int outputProduced = 0;
 if (currentIndex < $size(values)) {
     $ref(output) = $ref(values, currentIndex);
     outputProduced = 1;
-});
+};
 /**/
 
 
