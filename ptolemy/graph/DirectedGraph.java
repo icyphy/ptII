@@ -128,6 +128,8 @@ public class DirectedGraph extends Graph {
     }
 
     /** Finds all the nodes that can be reached from the specified node.
+     *  The reachable nodes do not include the specific one unless 
+     *  there is a loop from the specified node back to itself.
      *  The implementation computes the transitive closure of the
      *  graph, if it is not already computed after the last graph
      *  mutation.  So the first call to this method after graph
