@@ -7,6 +7,10 @@
       <group>
 <doc>Sources of sequences of values. </doc>
 
+<entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
+<doc>Produce strings from an interactive shell on the screen</doc>
+</entity>
+
 <entity name="Interpolator" class="ptolemy.actor.lib.Interpolator">
 </entity>
 
@@ -15,10 +19,6 @@
 
 <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
 <doc>Create a sequence of tokens with increasing value</doc>
-</entity>
-
-<entity name="SequentialClock" class="ptolemy.actor.lib.SequentialClock">
-<doc>A clock producing exactly one output per clock tick</doc>
 </entity>
 
 <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
