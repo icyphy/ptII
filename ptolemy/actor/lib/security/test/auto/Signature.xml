@@ -30,7 +30,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 60.0">
         </property>
     </property>
     <property name="scale" class="ptolemy.data.expr.Parameter" value="1ub">
@@ -99,12 +99,18 @@ to something else</text></svg></configure>
         </property>
     </entity>
     <entity name="PrivateKeyReader" class="ptolemy.actor.lib.security.PrivateKeyReader">
+        <property name="keyPassword" class="ptolemy.actor.parameters.PortParameter" value="this.is.not.secure,it.is.for.testing.only">
+        </property>
+        <property name="storePassword" class="ptolemy.actor.parameters.PortParameter" value="this.is.not.secure,it.is.for.testing.only">
+        </property>
         <doc>Read a key public or private key from a key store
 	   and output it.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 225.0">
         </property>
     </entity>
     <entity name="PublicKeyReader" class="ptolemy.actor.lib.security.PublicKeyReader">
+        <property name="storePassword" class="ptolemy.actor.parameters.PortParameter" value="this.is.not.secure,it.is.for.testing.only">
+        </property>
         <doc>Read a key public or private key from a key store
 	   and output it.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 250.0">

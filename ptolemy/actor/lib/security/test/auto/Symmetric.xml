@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 50.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={81, 30, 815, 509}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -31,25 +31,6 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 75.0">
-        </property>
-    </property>
-    <property name="keySize" class="ptolemy.data.expr.Parameter" value="1024">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 50.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -132,7 +113,7 @@ running the KeyWriter.xml model.</text></svg></configure>
         </property>
     </entity>
     <entity name="SymmetricEncryption" class="ptolemy.actor.lib.security.SymmetricEncryption">
-        <property name="keySize" class="ptolemy.data.expr.Parameter" value="keySize">
+        <property name="keySize" class="ptolemy.data.expr.Parameter" value="56">
         </property>
         <doc>Creates and sends a key to a SymmetricDecryption and
 	  encrypts incoming data based on a given symmetric
@@ -141,7 +122,7 @@ running the KeyWriter.xml model.</text></svg></configure>
         </property>
     </entity>
     <entity name="SymmetricDecryption" class="ptolemy.actor.lib.security.SymmetricDecryption">
-        <property name="keySize" class="ptolemy.data.expr.Parameter" value="keySize">
+        <property name="keySize" class="ptolemy.data.expr.Parameter" value="56">
         </property>
         <doc>Receives a key from a SymmetricEncryption actor and
           uses it to decrypt a data input based on a given symmetric
