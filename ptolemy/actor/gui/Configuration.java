@@ -163,8 +163,11 @@ public class Configuration extends CompositeEntity {
                     try {
                         Tableau tableau = factory.createTableau(effigy);
                         if (tableau != null) {
-                            // The first tableau is a master.
-                            tableau.setMaster(true);
+                            // The first tableau is a master if the container
+                            // of the containing effigy is the model directory.
+                            if (effigy.getContainer() instanceof ModelDirectory) {
+                                tableau.setMaster(true);
+                            }
                             tableau.setEditable(effigy.isModifiable());
                             tableau.show();
                             return tableau;
@@ -189,8 +192,11 @@ public class Configuration extends CompositeEntity {
                 if (tableau == null) {
                     throw new Exception("Tableau factory returns null.");
                 }
-                // The first tableau is a master.
-                tableau.setMaster(true);
+                // The first tableau is a master if the container
+                // of the containing effigy is the model directory.
+                if (effigy.getContainer() instanceof ModelDirectory) {
+                    tableau.setMaster(true);
+                }
                 tableau.setEditable(effigy.isModifiable());
                 tableau.show();
                 return tableau;
