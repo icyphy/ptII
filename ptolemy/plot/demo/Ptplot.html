@@ -20,6 +20,7 @@ perhaps your browser does not have JavaScript turned on.
 This is a sample
 <A HREF="http://developer.netscape.com/library/documentation/javascript.html">JavaScript</A>
 interface to Ptplot that allows the user to adjust various Ptplot parameters.  
+
  <P>To bring up a sample plot, change the various settings and then click
 on the <CODE>Plot</CODE> button.  
  <P>To get a description of the various fields, click on the name
@@ -29,25 +30,35 @@ See also the <A HREF="#JavaScript Ptplot Limitations">Limitations</A>
 section below.
  <HR>
 <FORM NAME="plotter" METHOD=post >
-<BR>
-<A HREF="PtplotHelp.html#Width">Width</A>
-<INPUT TYPE="text" NAME="width" SIZE="3" VALUE=450>
-<A HREF="PtplotHelp.html#Height">Height</A>
+<TABLE BORDER=1>
+ <TD><A HREF="PtplotHelp.html#Width">Width</A>
+<TD>
+ <INPUT TYPE="text" NAME="width" SIZE="3" VALUE=450>
+ <TD><A HREF="PtplotHelp.html#Height">Height</A>
+<TD>
 <INPUT TYPE="text" NAME="height" SIZE="3" VALUE=450>
-<BR>
+ <TR>
+<TD>
 <A HREF="PtplotHelp.html#Background Color">Background Color</A>
-(Hex number #000000 - #111111)
+ <br>(Hex number #000000 - #111111)
+<TD>
 <INPUT TYPE="text" NAME="background" SIZE="7" VALUE="faf0e6">
-<BR>
+<TD>
 <A HREF="PtplotHelp.html#Foreground Color">Foreground Color</A>
-(Hex number #000000 - #111111)
+ <br>(Hex number #000000 - #111111)
+<TD>
 <INPUT TYPE="text" NAME="foreground" SIZE="7" VALUE="000000">
-<BR>
+<TR>
+<TD>
 <A HREF="PtplotHelp.html#URL Base">URL Base</A>
+
+<TD COLSPAN=3>
+
 <INPUT TYPE="text" NAME="urlbase" SIZE="80" VALUE="http://ptolemy.eecs.berkeley.edu/java/ptplot/demo/">
-<BR>
+<TR>
+<TD>
 <A HREF="PtplotHelp.html#File to plot">File to plot</A>
-<BR>
+<TD>
  <SELECT NAME="fileSelection" SIZE=6>
  <OPTION SELECTED>bargraph.plt
  <OPTION>data.plt
@@ -56,13 +67,18 @@ section below.
  <OPTION>data/butterfly.plt
  <OPTION> (NONE)
  </SELECT>
-<BR>
+<TR>
+<TD>
 <A HREF="PtplotHelp.html#Pxgraph Args">Pxgraph Args</A>
+<TD COLSPAN=3>
 <INPUT TYPE="text" NAME="pxgraphargs" SIZE="80">
-<BR>
+<TR>
+<TD>
 <A HREF="PtplotHelp.html#Title Text">Title Text</A>
+<TD COLSPAN=3>
 <INPUT TYPE="text" NAME="title" VALUE="Plot">
-<BR>
+<TR>
+<TD COLSPAN=2>
 <A HREF="PtplotHelp.html#Title Font">Title Font</A>
  <SELECT NAME="titleFontFamily" SIZE=5>
  <OPTION> Courier
@@ -85,7 +101,7 @@ section below.
  <OPTION SELECTED> 14
  <OPTION> 16
 </SELECT>
-
+<TD COLSPAN=2>
 <A HREF="PtplotHelp.html#Label Font">Label Font</A>
  <SELECT NAME="labelFontFamily" SIZE=5>
  <OPTION> Courier
@@ -109,47 +125,58 @@ section below.
  <OPTION> 16
 </SELECT>
 
-<BR>
+<TR>
+<TD>
 <A HREF="PtplotHelp.html#X Axis Label">X Axis Label</A>
+<TD>
 <INPUT TYPE="text" NAME="xaxis" VALUE="X">
+<TD>
 <A HREF="PtplotHelp.html#Y Axis Label">Y Axis Label</A>
+<TD>
 <INPUT TYPE="text" NAME="yaxis" VALUE="Y">
-<BR>
+
+<TR>
+<TD>
 <INPUT TYPE="checkbox" NAME="bar">
 <A HREF="PtplotHelp.html#Bars">Bars</A>
-<BR>
+<TD>
 <INPUT TYPE="checkbox" NAME="binary">
 <A HREF="PtplotHelp.html#Binary">Binary</A>
-<BR>
+<TD>
 <INPUT TYPE="checkbox" NAME="nolines">
 <A HREF="PtplotHelp.html#No Lines">No Lines</A>
-<BR>
+<TD>
 <INPUT TYPE="checkbox" NAME="ticks">
 <A HREF="PtplotHelp.html#Ticks">Ticks</A>
-<BR>
+<TR>
+<TD>
 <INPUT TYPE="checkbox" NAME="smallpoints">
 <A HREF="PtplotHelp.html#Small Points">Small Points</A>
-<BR>
+<TD>
 <INPUT TYPE="checkbox" NAME="largepoints">
 <A HREF="PtplotHelp.html#Large Points">Large Points</A>
-<BR>
+<TD>
 <INPUT TYPE="checkbox" NAME="reversevideo">
 <A HREF="PtplotHelp.html#ReverseVideo">ReverseVideo</A>
-<BR>
+<TD>
 <INPUT TYPE="checkbox" NAME="displayargs">
 <A HREF="PtplotHelp.html#Display args">Display args</A>
-<BR>
-<INPUT TYPE="button" VALUE="Plot"
+ </TABLE>
+ <br>
+<INPUT TYPE="button" VALUE="Plot using the above settings"
 	ONCLICK="ptplot(this.form)">
+
  </FORM>
  <HR>
 <H2>How it works</H2>
 
 <OL>
 
-<LI> The HTML file includes <A HREF="Ptplot.js"><CODE>Ptplot.js</CODE></A>,
-which contains JavaScript code.
+<LI> The HTML file includes
 
+<A HREF="javascript:window.location='view-source:'+window.location.href.replace(/Ptplot.html/, 'Ptplot.js')"><CODE>Ptplot.js</CODE></A>
+
+which contains JavaScript code.
 <LI> When the <CODE>Plot</CODE> button is clicked, 
 the JavaScript <CODE>ptplot()</CODE> function is passed the form.
 
@@ -187,6 +214,9 @@ This allows us to plot graphs that consist of more than one dataset.
 <LI> The <CODE>Title Font</CODE> and <CODE>Label Font</CODE> selectors
 should allow more than one style.  <CODE>Helvetica-BOLD-ITALIC-12</CODE>
 should be allowed.
+
+<LI> The layout of the controls is rather ugly.
+
 </MENU>
 
 <H2>Resources</H2>
