@@ -27,6 +27,8 @@
 
 package ptolemy.graph;
 
+import ptolemy.graph.Element;
+import ptolemy.graph.Graph;
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphWeightException

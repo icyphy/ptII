@@ -31,9 +31,11 @@
 
 package ptolemy.graph;
 
-import ptolemy.graph.analysis.AcyclicAnalysis;
+import ptolemy.graph.analysis.CycleExistenceAnalysis;
 import ptolemy.graph.analysis.SinkNodeAnalysis;
 import ptolemy.graph.analysis.SourceNodeAnalysis;
+import ptolemy.graph.analysis.TransitiveClosureAnalysis;
+import ptolemy.graph.analysis.strategy.CachedStrategy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -299,7 +301,7 @@ public class DirectedGraph extends Graph {
      *  empty; false otherwise.
      */
     public boolean isAcyclic() {
-        return ((Boolean)_acyclicAnalysis.result()).booleanValue();
+        return !_acyclicAnalysis.hasCycle();
     }
 
     /** Return the number of output edges of a specified node.
@@ -573,7 +575,7 @@ public class DirectedGraph extends Graph {
      *  @see #sinkNodeCount()
      */
     public Collection sinkNodes() {
-        return (Collection)_sinkNodeAnalysis.result();
+        return (Collection)_sinkNodeAnalysis.nodes();
     }
 
     /** Return the number of source nodes in this graph.
@@ -590,7 +592,7 @@ public class DirectedGraph extends Graph {
      *  @see #sourceNodeCount()
      */
     public Collection sourceNodes() {
-        return (Collection)_sourceNodeAnalysis.result();
+        return (Collection)_sourceNodeAnalysis.nodes();
     }
 
     /** Return the collection of edges that make a node n2 a successor of a
@@ -711,14 +713,12 @@ public class DirectedGraph extends Graph {
                 nodes(Arrays.asList(weights))));
     }
 
-    /** Return transitive closure for the graph. Transitive closure
-     *  computation is embedded in <code>AcyclicAnalysis</code>. Please
-     *  see {@link ptolemy.graph.analysis.AcyclicAnalysis}
+    /** Return transitive closure for the graph.
      *
      *  @return Transitive closure for the graph.
      */
     public boolean[][] transitiveClosure() {
-        return _acyclicAnalysis.transitiveClosure();
+        return _transitiveClosureAnalysis.transitiveClosureMatrix();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -760,9 +760,11 @@ public class DirectedGraph extends Graph {
      */
     protected void _initializeAnalyses() {
         super._initializeAnalyses();
-        _acyclicAnalysis = new AcyclicAnalysis(this);
+        _transitiveClosureAnalysis = new TransitiveClosureAnalysis(this);
+        _acyclicAnalysis = new CycleExistenceAnalysis(this);
         _sinkNodeAnalysis = new SinkNodeAnalysis(this);
         _sourceNodeAnalysis = new SourceNodeAnalysis(this);
+
     }
 
     /** Register a new node in the graph.
@@ -812,7 +814,10 @@ public class DirectedGraph extends Graph {
     private HashMap _outputEdgeMap;
 
     // The graph analysis for computation of acyclic property
-    private AcyclicAnalysis _acyclicAnalysis;
+    private CycleExistenceAnalysis _acyclicAnalysis;
+
+    // The graph analysis for computation of transitive closure
+    private TransitiveClosureAnalysis _transitiveClosureAnalysis;
 
     // The graph analysis for computation of sink nodes.
     private SinkNodeAnalysis _sinkNodeAnalysis;

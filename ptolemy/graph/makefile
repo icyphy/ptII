@@ -1,7 +1,7 @@
 # Makefile for the Ptolemy Java graph classes.
 #
-# @Authors: Shuvra S. Bhattacharyya, Christopher Hylands, 
-# based on a file by Thomas M. Parks
+# @Authors: Shahrooz Shahparnia, Shuvra S. Bhattacharyya,
+# Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
@@ -32,7 +32,7 @@
 
 ME =        ptolemy/graph
 
-DIRS =      analysis test demo
+DIRS =      analysis sched mapping test
 
 # Root of the Java directory
 ROOT =      ../..
@@ -49,7 +49,6 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-    analysis/analysis.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
@@ -68,7 +67,6 @@ JSRCS = \
     GraphStateException.java \
     GraphTopologyException.java \
     GraphWeightException.java \
-    Graphs.java \
     LabeledList.java \
     Inequality.java \
     InequalitySolver.java \
@@ -80,7 +78,7 @@ EXTRA_SRCS =    $(JSRCS)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't list 'demo' here, or running 'make sources' will also run the demos
-MISC_FILES =    analysis test 
+MISC_FILES =    analysis mapping sched test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

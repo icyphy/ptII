@@ -27,6 +27,10 @@
 
 package ptolemy.graph;
 
+import ptolemy.graph.Edge;
+import ptolemy.graph.Element;
+import ptolemy.graph.Graph;
+import ptolemy.graph.Node;
 
 //////////////////////////////////////////////////////////////////////////
 //// GraphException

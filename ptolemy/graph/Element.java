@@ -34,8 +34,8 @@ package ptolemy.graph;
    A graph element consists of an optional <i>weight</i> (an arbitrary
    object that is associated with the element).  We say that an element is
    <i>unweighted</i> if it does not have an assigned weight. It is an error to
-   attempt to access the weight of an unweighted element. Element weights must be
-   non-null objects.
+   attempt to access the weight of an unweighted element. Element weights must
+   be non-null objects.
 
    @author Shuvra S. Bhattacharyya
    @version $Id$

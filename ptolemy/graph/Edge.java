@@ -33,17 +33,15 @@ package ptolemy.graph;
 /**
    A weighted or unweighted edge for a directed or undirected graph.  The
    connectivity of edges is specified by <i>source</i> nodes and <i>sink</i>
-   nodes.  A
-   directed edge is directed <i>from</i> its source node <i>to</i> its sink node.
-   For an
-   undirected edge, the source node is simply the first node that was specified
-   when the edge was created, and the sink node is the second node.  This
-   convention allows undirected edges to later be converted in a consistent manner
-   to directed edges, if desired.
+   nodes. A directed edge is directed <i>from</i> its source node <i>to</i> its
+   sink node. For an undirected edge, the source node is simply the first node
+   that was specified when the edge was created, and the sink node is the
+   second node.  This convention allows undirected edges to later be converted
+   in a consistent manner to directed edges, if desired.
 
-   <p>On creation of an edge, an arbitrary object can be associated with the edge
-   as the weight of the edge.  We say that an edge is <i>unweighted</i> if it
-   does not have an assigned weight. It is an error to attempt to access the
+   <p>On creation of an edge, an arbitrary object can be associated with the
+   edge as the weight of the edge.  We say that an edge is <i>unweighted</i> if
+   it does not have an assigned weight. It is an error to attempt to access the
    weight of an unweighted edge.
 
    <p>Self-loop edges (edges whose source and sink nodes are identical)

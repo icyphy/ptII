@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// LabeledList
@@ -56,16 +57,16 @@ import java.util.ListIterator;
     <em>m</em>-dimensional matrices that are indexed by the list elements
     (via the associated element labels).
 
-    <p> Element labels maintain their consistency (remain constant) during periods
-    when no elements are removed from the list. When elements are removed, the
-    labels assigned to the remaining elements may change (see {@link
-    #remove(Object)} for details).
+    <p> Element labels maintain their consistency (remain constant) during
+    periods when no elements are removed from the list. When elements are
+    removed, the labels assigned to the remaining elements may
+    change (see {@link#remove(Object)} for details).
 
     <p> Elements themselves must be non-null and distinct, as determined by the
     <code>equals</code> method.
 
-    <p> This class supports all required operations of the {@link java.util.List}
-    interface, except
+    <p> This class supports all required operations of
+    the {@link java.util.List} interface, except
     for the {@link java.util.List#subList(int, int)} operation,
     which results in an UnsupportedOperationException.
 

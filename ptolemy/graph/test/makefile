@@ -1,6 +1,7 @@
 # Makefile for the Java classes used to test the Ptolemy graph classes
 #
-# @Authors: Christopher Hylands
+# @Authors: Shahrooz Shahparnia, Shuvra S. Bhattacharyya,
+# Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
@@ -57,7 +58,6 @@ JSIMPLE_TESTS = \
 	Edge.tcl \
 	Graph.tcl \
 	GraphException.tcl \
-	Graphs.tcl \
 	InequalitySolver.tcl \
 	InequalityTerm.tcl \
 	LabeledList.tcl \

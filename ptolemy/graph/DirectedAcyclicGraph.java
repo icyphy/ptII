@@ -32,6 +32,7 @@
 package ptolemy.graph;
 
 import ptolemy.graph.analysis.TransitiveClosureAnalysis;
+import ptolemy.graph.analysis.strategy.CachedStrategy;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -663,7 +664,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     private void _validate() {
         boolean[][] transitiveClosure = transitiveClosure();
 
-        if (!_transitiveClosureAnalysis.obsolete() && isAcyclic()) {
+        if (!((CachedStrategy)_transitiveClosureAnalysis.analyzer()).obsolete()
+                && isAcyclic()) {
             _closure = transitiveClosure;
             return;
         }

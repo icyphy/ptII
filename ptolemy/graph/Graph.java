@@ -33,18 +33,26 @@ package ptolemy.graph;
 
 import ptolemy.graph.analysis.Analysis;
 import ptolemy.graph.analysis.SelfLoopAnalysis;
+import ptolemy.graph.analysis.strategy.CachedStrategy;
+
+import java.lang.reflect.Method;
+import java.text.CharacterIterator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// Graph
 /**
-   A graph with optionally-weighted nodes and edges.
+    A graph with optionally-weighted nodes and edges.
 
    <p>Each node or edge may have a weight associated with it
    (see {@link Edge} and {@link Node}).
@@ -64,11 +72,12 @@ import java.util.Iterator;
    Node} and {@link Edge} classes. For more thorough support for directed
    graphs, see {@link DirectedGraph}.
 
-   <p>The same node can exist in multiple graphs, but any given graph can contain
-   only one instance of the node. Node labels, however, are local to individual
-   graphs. Thus, the same node may have different labels in different graphs.
-   Furthermore, the label assigned in a given graph to a node may change over time
-   (if the set of nodes in the graph changes). If a node is contained in
+   <p>The same node can exist in multiple graphs, but any given graph can
+   contain only one instance of the node. Node labels, however, are local to
+   individual graphs. Thus, the same node may have different labels in different
+   graphs.
+   Furthermore, the label assigned in a given graph to a node may change over
+   time (if the set of nodes in the graph changes). If a node is contained in
    multiple graphs, it has the same weight in all of the graphs.
    All of this holds for edges
    as well. The same weight may be shared among multiple nodes and edges.
@@ -80,14 +89,15 @@ import java.util.Iterator;
    affect comparison under the <code>equals</code> method.
    Otherwise, unpredictable behavior may result.
 
-   <p>In discussions of complexity, <em>n</em> and <em>e</em> refers to the number
-   of graph nodes and edges, respectively.
+   <p>In discussions of complexity, <em>n</em> and <em>e</em> refers to the
+   number of graph nodes and edges, respectively.
 
    <p>In derived classes, the following methods need special
    attention regarding whether or not they should be overridden:
    <br>{@link #validEdgeWeight(Object)} {@link #validNodeWeight(Object)}
 
-   @author Shuvra S. Bhattacharyya, Ming-Yung Ko, Fuat Keceli, Shahrooz Shahparnia, Yuhong Xiong, Jie Liu.
+   @author Shuvra S. Bhattacharyya, Ming-Yung Ko, Fuat Keceli,
+   Shahrooz Shahparnia, Yuhong Xiong, Jie Liu.
    @version $Id$
    @since Ptolemy II 0.2
    @see ptolemy.graph.Edge
@@ -1074,7 +1084,7 @@ public class Graph implements Cloneable {
      *  @return The self-loop edges in this graph.
      */
     public Collection selfLoopEdges() {
-        return (Collection)_selfLoopAnalysis.result();
+        return (Collection)_selfLoopAnalysis.edges();
     }
 
     /** Return the collection of all self-loop edges that are incident to
@@ -1596,7 +1606,10 @@ public class Graph implements Cloneable {
             // Invalidate all of the associated analyses.
             Iterator analyses = _analysisList.iterator();
             while (analyses.hasNext()) {
-                ((Analysis)(analyses.next())).reset();
+                Analysis analysis = (Analysis)(analyses.next());
+                if (analysis.analyzer() instanceof CachedStrategy) {
+                    ((CachedStrategy)analysis.analyzer()).reset();
+                }
             }
             _changeCount = 0;
         } else {
