@@ -128,6 +128,7 @@ public class SymmetricDecryption extends CipherActor {
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "fire() failed");
         }
+        super.fire();
     }
 
 
