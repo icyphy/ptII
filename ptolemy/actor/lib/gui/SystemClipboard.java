@@ -63,7 +63,7 @@ configured for 16-bit Unicode characters.
 
 @author Winthrop Williams
 @version $Id$
-@since Ptolemy II 2.0 
+@since Ptolemy II 2.0
 */
 
 public class SystemClipboard extends TypedAtomicActor
@@ -89,7 +89,7 @@ public class SystemClipboard extends TypedAtomicActor
         trigger = new TypedIOPort(this, "trigger");
         trigger.setTypeEquals(BaseType.GENERAL);
         trigger.setInput(true);
- 
+
         // Output
         output = new TypedIOPort(this, "output");
         output.setTypeEquals(BaseType.STRING);
