@@ -1,0 +1,313 @@
+/* An applet that uses Ptolemy II DE domain.
+
+ Copyright (c) 1998 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+ 
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+*/
+
+package ptolemy.domains.de.demo;
+
+import java.applet.Applet;
+import java.awt.*;
+import java.awt.event.*;
+import ptolemy.domains.de.kernel.*;
+import ptolemy.domains.de.lib.*;
+import ptolemy.actor.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.plot.*;
+import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
+import collections.LinkedList;
+
+//////////////////////////////////////////////////////////////////////////
+//// QueueApplet
+/** 
+An applet that uses Ptolemy II DE domain.
+
+@author Lukito
+@version $Id$
+*/
+public class QueueApplet extends Applet implements Runnable {
+
+    public static final boolean DEBUG = true;
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public methods                         ////
+
+    /** Initialize the applet.
+     */	
+    public void init() {
+
+        // Initialization
+
+        _stopTimeBox = new TextField("30.0", 10);
+        _currentTimeLabel = new Label("Current time = 0.0      ");
+        _goButton = new Button("Go");
+
+        // The applet has two panels, stacked vertically
+        setLayout(new BorderLayout());
+        Panel appletPanel = new Panel();
+        appletPanel.setLayout(new GridLayout(2,2));
+        add(appletPanel, "Center");
+
+        // _la is the drawing panel for DELogicAnalyzer actor.
+        Plot panel1 = new Plot();
+        Plot panel2 = new Plot();
+        Plot panel3 = new Plot();
+        Plot panel4 = new Plot();
+        appletPanel.add(panel1);
+        appletPanel.add(panel2);
+        appletPanel.add(panel3);
+        appletPanel.add(panel4);
+        
+        // Adding a control panel in the main panel.
+        Panel controlPanel = new Panel();
+        add(controlPanel, "South");
+        // Done adding a control panel.
+
+
+        /*
+        // Adding A and B in the control panel.
+        Panel checkboxPanel = new Panel();
+        checkboxPanel.setLayout(new GridLayout(2,1));
+        checkboxPanel.add(_ATextField);
+        checkboxPanel.add(_BTextField);
+        controlPanel.add(checkboxPanel);
+        // Done adding A and B
+        */
+
+        // Adding simulation parameter panel in the control panel.
+        Panel simulationParam = new Panel();
+        simulationParam.setLayout(new GridLayout(2,1));
+        controlPanel.add(simulationParam);
+        // Done adding simulation parameter panel.
+
+        // Adding Stop time in the simulation panel.
+        Panel subSimul = new Panel();
+        simulationParam.add(subSimul);
+        subSimul.add(new Label("Stop time:"));
+        subSimul.add(_stopTimeBox);
+        // Done adding stop time.
+
+        // Adding current time in the sub panel.
+        simulationParam.add(_currentTimeLabel);
+        // Done adding average wait time.
+        
+        // Adding go button in the control panel.
+        controlPanel.add(_goButton);
+        _goButton.addActionListener(new GoButtonListener());        
+        // Done adding go button
+        
+
+        // Creating the topology.
+        try {
+            CompositeActor sys = new CompositeActor();
+            sys.setName("DE Demo");
+        
+            // Set up the top level composite actor, director and manager
+            _localDirector = new DECQDirector("DE Director");
+            sys.setDirector(_localDirector);
+            _executiveDirector = new Manager("Manager");
+            sys.setManager(_executiveDirector);            
+
+            // ---------------------------------
+            // Create the actors.
+            // ---------------------------------
+            DEClock clock = new DEClock(sys, "Clock", 1.0, 1.0);
+            DERamp ramp = new DERamp(sys, "Ramp", 0, 1.0);
+            
+            FIFOQueue fifo1 = new FIFOQueue(sys, "FIFO1", 1, true, 10);
+            DEPlot plot1 = new DEPlot(sys, "Queue 1 Size", panel1);
+            
+            DEServer server1 = new DEServer(sys, "Server1", 1.0);
+            DEPassGate passgate = new DEPassGate(sys, "PassGate");
+            DEDelay delta = new DEDelay(sys, "DEDelay", 0.0);
+            
+            FIFOQueue fifo2 = new FIFOQueue(sys, "FIFO2", 1, true, 1000);
+            DEPlot plot2 = new DEPlot(sys, "Queue 2 Size", panel2);
+            
+            TestLevel testlevel = new TestLevel(sys, "TestLevel", true, 4);
+            Not not = new Not(sys, "Not");
+
+            DEServer server2 = new DEServer(sys, "Server2", 3.0);
+            
+            DEPlot plot3 = new DEPlot(sys, "Blocking signal", panel3);
+            DEPlot plot4 = new DEPlot(sys, "Dispositions of inputs", panel4);
+
+            // -----------------------
+            // Creating connections
+            // -----------------------
+
+            Relation r1 = sys.connect(clock.output, ramp.input);
+            Relation r2 = sys.connect(ramp.output, fifo1.inData);
+            Relation r3 = sys.connect(fifo1.queueSize, plot1.input);
+            
+            Relation r4 = sys.connect(passgate.output, fifo1.demand);
+            fifo2.inData.link(r4);
+            
+            Relation r5 = sys.connect(fifo1.outData, server1.input);
+            Relation r6 = sys.connect(fifo1.overflow, plot4.input);
+            
+            Relation r7 = sys.connect(server1.output, passgate.input);
+            Relation r8 = sys.connect(delta.output, passgate.gate);
+            
+            Relation r9 = sys.connect(not.output, delta.input);
+
+            Relation r14 = sys.connect(testlevel.output, not.input);
+            plot3.input.link(r14);
+
+            Relation r10 = sys.connect(server2.output, plot4.input);
+            fifo2.demand.link(r10);
+
+            Relation r12 = sys.connect(fifo2.queueSize, testlevel.input);
+            plot2.input.link(r12);
+
+            Relation r13 = sys.connect(fifo2.outData, server2.input);
+                        
+        } catch (Exception ex) {
+            System.err.println("Setup failed: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+
+    /** Run the simulation.
+     */
+    public void run() {
+
+        // Set the stop time.
+        String timespec = _stopTimeBox.getText();
+        try {
+            Double spec = Double.valueOf(timespec);
+                _stopTime = spec.doubleValue();
+        } catch (NumberFormatException ex) {
+            System.err.println("Invalid stop time: " + ex.getMessage());
+            return;
+        }
+
+        try {
+                
+                _localDirector.setStopTime(_stopTime);
+
+                // Start the CurrentTimeThread.
+                Thread ctt = new CurrentTimeThread();
+                ctt.start();
+
+
+                // Start the simulation.
+                /*
+                // This won't start a thread.
+                // FIXME: A BIG & UGLY HACK
+                int beforeCount = Thread.activeCount(); // HACK
+                Thread[] before = new Thread[beforeCount]; // HACK
+                Thread.enumerate(before);  // HACK
+                _executiveDirector.go(); //NON-HACK
+                int afterCount = Thread.activeCount();  // HACK
+                Thread[] after = new Thread[afterCount]; // HACK
+                Thread.enumerate(after); // HACK
+                for (int i = 0; i < afterCount; i++) { // HACK
+                    Thread suspect = after[i]; //HACK
+                    // find suspect in the before list.
+                    boolean found = false; //HACK
+                    for (int j = 0; j < beforeCount; j++) { //HACK
+                        if (suspect == before[i]) { //HACK
+                            found = true; //HACK
+                            break; //HACK
+                        } //HACK
+                    } //HACK
+                    if (!found) { //HACK
+                        suspect.join(); //HACK
+                        break; //HACK
+                    } //HACK
+                } //HACK
+                */
+                _executiveDirector.blockingGo();
+                
+        } catch (Exception ex) {
+            System.err.println("Run failed: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+    }
+    
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                      ////
+    
+    // The thread that runs the simulation.
+    private Thread simulationThread;
+
+    // FIXME: Under jdk 1.2, the following can (and should) be private
+    private DECQDirector _localDirector;
+    private Manager _executiveDirector;
+
+    private TextField _stopTimeBox;
+    private double _stopTime = 100.0;
+    private Button _goButton;
+    private Label _currentTimeLabel;
+
+    
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private methods                        ////
+    
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                       inner classes                              ////
+
+    // Show simulation progress.
+    private class CurrentTimeThread extends Thread {
+        public void run() {
+            while (simulationThread.isAlive()) {
+                // get the current time from director.
+                double currenttime = _localDirector.getCurrentTime();
+                _currentTimeLabel.setText("Current time = "+currenttime);
+                try {
+                    sleep(500);
+                } catch (InterruptedException e) {}
+            } 
+        }
+    }
+
+    
+    private class GoButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent evt) {
+            try {
+                if (simulationThread == null) {
+                    simulationThread = new Thread(QueueApplet.this);
+                }
+                if (!(simulationThread.isAlive())) {
+                    simulationThread = new Thread(QueueApplet.this);
+                    // start() will eventually call the run() method.
+                    simulationThread.start();
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+                e.printStackTrace();
+            }
+                
+        }
+    }
+
+}
+
+
+

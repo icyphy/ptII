@@ -1,0 +1,74 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<TITLE>Discrete Event Simulation Demo</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FAF0E6">
+
+<CENTER>
+<H1>
+Demo of DE simulation applet</H1></CENTER>
+
+<H3>
+DE Simulation:</H3>
+The following applet uses the Ptolemy II Discrete Event (DE) domain
+to simulate a simple arbitrary-bit adder circuit. 
+<P>
+The waveforms taken from various points in the circuits is shown.
+<P>
+You can interact with the applet by choosing the stop time of the simulation
+and choosing the two binary numbers to be added. If the two numbers are not
+of the same length, then the shorter one will be padded on the right
+with zeros. FIXME: Might not be a good thing to do.
+<P>
+<BR>&nbsp;
+<BR>&nbsp;
+<CENTER>
+<P><APPLET name="AdderApplet"
+   bgcolor=#FAF0E6
+   archive="ptolemy/domains/de/demo/clockapplet.jar"
+   code=ptolemy.domains.de.demo.AdderApplet.class
+   codebase=../../../..
+   width=700 height=500>
+<BR><I>If you were able to run applets, you would have a waveform demo
+here.</I>
+<BR></APPLET></CENTER>
+
+<P>This applet is implemented by
+<TT><A HREF="HistogramApplet.java">AdderApplet.java</A></TT>.
+<P>The simulation consists of a <A HREF="../lib/DEClock.java">Clock</A>
+Actor, a
+<A HREF="../lib/DEXORGate.java">XORGate</A> Actor, 
+<A HREF="../lib/DEANDGate.java">ANDGate</A> Actor, 
+<A HREF="../lib/DEORGate.java">ORGate</A> Actor, 
+<A HREF="../lib/DEFullAdder.java">FullAdder</A> Composite Actor, 
+<A HREF="../lib/DEWaveForm.java">WaveForm</A> Actor and a
+<A HREF="../lib/DERegister.java">Register</A>
+Actor connected to a <A HREF="../lib/DELogicAnalyzer.java">LogicAnalyzer</A> Actor.
+<BR>
+<MAP Name="ActorsMap">
+<AREA Shape="rect" Coords="19,17,80,32"
+	Href="../lib/DEClock.java">
+<AREA Shape="rect" Coords="20,43,81,59"
+	Href="../lib/DEPoisson.java">
+<AREA Shape="rect" Coords="9,184,94,239"
+	Href="../lib/DEPoisson.java">
+<AREA Shape="rect" Coords="159,94,244,149"
+	Href="../lib/DEWaitingTime.java">
+<AREA Shape="rect" Coords="299,44,384,99"
+	Href="../lib/DEStatistics.java">
+<AREA Shape="rect" Coords="299,144,384,199"
+	Href="../lib/DEHistogram.java">
+<AREA Shape="rect" Coords="469,9,554,64"
+	Href="../lib/DEPlot.java">
+</MAP>
+<CENTER>
+<IMG SRC="AdderCircuit.gif"
+Alt="Imagemap" Usemap="#ActorsMap" Ismap>
+</CENTER>
+<BR>
+<HR>Copyright &copy; 1998 The Regents of the University of California.
+All rights reserved.
+<BR>Last updated: $Date$, comments to:&nbsp;<author>ptII@eecs.berkeley.edu</author>
+</BODY>
+</HTML>
