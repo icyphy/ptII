@@ -63,6 +63,7 @@ JSRCS = \
 	ECSLGoto.java \
 	ECSLGround.java \
 	ECSLIntegrator.java \
+	ECSLInterpolator.java \
 	ECSLLogic.java \
 	ECSLMerge.java \
 	ECSLMinMax.java \
@@ -83,6 +84,8 @@ JSRCS = \
 	ECSLZeroOrderHold.java
 
 OTHER_FILES_TO_BE_JARED = \
+	ECSLSequenceScope.moml \
+	ECSLTimedPlotter.moml 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
