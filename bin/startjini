@@ -32,8 +32,9 @@
 # Usage: startjini <JINI_DIR> <TMP_DIR>
 # where the JINI_DIR argument is optional, and defaults to
 # $PTII/vendors/sun/jini/jini1_0_1
-# TMP_DIR argument is also optional, and should be c:\\tmp under
-# windows
+# TMP_DIR argument is also optional, and should be c:\\tmp\\ under
+# windows.  TMP_DIR should have the appropriate trailing directory
+# separator, either / or \\
 
 # Sometimes we seem to need to have d: in the PTII variable?
 #PTII=d:/users/cxh/ptII
@@ -59,7 +60,7 @@ else
 	cygwin32*)
 	    # On the PC, we need to have a drive path to make this directory
 	    # absolute
-	    dirs="c:\\tmp c:\\temp d:\\tmp d:\\temp"
+	    dirs="c:\\tmp\\ c:\\temp\\ d:\\tmp\\ d:\\temp\\"
 	    for TMP_DIR in $dirs
 	    do
 		if [ -d $TMP_DIR ]; then
@@ -69,7 +70,7 @@ else
     	    done	
 	    ;;
 	*)
-	    TMP_DIR="/tmp"  
+	    TMP_DIR="/tmp/"  
 	    ;;
 	esac
 fi
@@ -89,20 +90,20 @@ java -jar $JINI_DIR/lib/tools.jar -port $PORT -dir $JINI_DIR/lib -trees &
 sleep 2
 
 echo "Starting rmid"
-rm -rf $TMP_DIR/rmid_log
-rmid -log $TMP_DIR\\rmid_log -J-Djava.security.policy=$POLICY &
+rm -rf ${TMP_DIR}rmid_log
+rmid -log ${TMP_DIR}rmid_log -J-Djava.security.policy=$POLICY &
 
 sleep 2
 
 echo "Starting reggie"
-rm -rf $TMP_DIR/reggie_log
-java -jar $JINI_DIR/lib/reggie.jar http://`hostname`:$PORT/reggie-dl.jar  $POLICY $TMP_DIR\\reggie_log public &
+rm -rf ${TMP_DIR}reggie_log
+java -jar $JINI_DIR/lib/reggie.jar http://`hostname`:$PORT/reggie-dl.jar  $POLICY ${TMP_DIR}/reggie_log public &
 
 sleep 2
 
 echo "Starting txn"
-rm -rf $TMP_DIR/txn_log
-java -jar -Djava.security.policy=$POLICY  -Dcom.sun.jini.mahalo.managerName=TransactionManager  $JINI_DIR/lib/mahalo.jar http://`hostname`:$PORT/mahalo-dl.jar   $POLICY $TMP_DIR\\txn_log public &
+rm -rf ${TMP_DIR}txn_log
+java -jar -Djava.security.policy=$POLICY  -Dcom.sun.jini.mahalo.managerName=TransactionManager  $JINI_DIR/lib/mahalo.jar http://`hostname`:$PORT/mahalo-dl.jar   $POLICY ${TMP_DIR}txn_log public &
 
 sleep 2
 
