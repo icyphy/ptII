@@ -64,7 +64,7 @@ The result is produced as a sequence of length <i>N</i>, where <i>N</i>
 is the length of the <i>polynomialArray</i>. The n-th bit in the sequence
 corresponds to the parity computed from the n-th polynomial
 <p>
-Note in this actor types of input and output port are set to be boolean. 
+Note in this actor types of input and output port are set to be boolean.
 True and false are converted to 1 and 0 before computing the parity.
 The results are converted back to boolean and then sent to the output port.
 <p>
@@ -83,7 +83,7 @@ For more information on convolutional codes, see Proakis, Digital
 Communications, Fourth Edition, McGraw-Hill, 2001, pp. 471-477.
 <p>
 @author Edward A. Lee and Rachel Zhou
-@version $Id: ConvolutionalCoder.java
+@version $Id$
 */
 
 public class ConvolutionalCoder extends SDFTransformer {
