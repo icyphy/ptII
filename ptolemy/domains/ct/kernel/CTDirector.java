@@ -52,8 +52,8 @@ It maintains a break point table to record all the break points.
 public abstract class CTDirector extends StaticSchedulingDirector
         implements ParameterListener{
 
-    public static final boolean VERBOSE = true;
-    public static final boolean DEBUG = true;
+    public static final boolean VERBOSE = false;
+    public static final boolean DEBUG = false;
     public static final boolean STAT = true;
     public static int NSTEP = 0;
     public static int NFUNC = 0;

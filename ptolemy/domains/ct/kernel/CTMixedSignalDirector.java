@@ -266,25 +266,32 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
     public void fire() throws IllegalActionException {
         // FIXME: what should these do?
         // prepare some variables.
+        CompositeActor ca = (CompositeActor) getContainer();
         double timeAcc = getTimeAccuracy();
         boolean knownGood = false;
         boolean endOfFire = false;
-        while(!endOfFire) {
-            if (_first) {
-                _first = false;
-                produceOutput();
-                //return;
+        if (_first) {
+            _first = false;
+            produceOutput();
+            //return;
+        }
+        updateStates();
+        if(!_isTopLevel()) {
+            if(_emitEvent) {
+                Director exe = ca.getExecutiveDirector();
+                exe.fireAt(ca, exe.getCurrentTime());
+                _emitEvent = false;
+                return;
             }
-            updateStates(); // call postfire on all actors
+            _emitEvent = true;
+        }
+        while(!endOfFire) {
             if(!_isTopLevel()) {
                 if(knownGood) {
                     saveStates();
                     knownGood = false;
                 }
             }
-
-
-
             //Refine step size and set ODE Solvers.
             setCurrentODESolver(_getDefaultSolver());
             setCurrentStepSize(getSuggestedNextStepSize());
@@ -334,7 +341,6 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
 
             // prefire all the actors.
             boolean ready = true;
-            CompositeActor ca = (CompositeActor) getContainer();
             Enumeration actors = ca.deepGetEntities();
             while(actors.hasMoreElements()) {
                 Actor a = (Actor) actors.nextElement();
@@ -360,17 +366,19 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             } else {
                 Director exe = ca.getExecutiveDirector();
                 if(DEBUG) {
-                    System.out.println("Checking FireEndTime"+getFireEndTime());
+                    System.out.println("Checking FireEndTime"+
+                            getFireEndTime());
                 }
                 // If this is the stop time, request a refire.
                 if(Math.abs(getCurrentTime()-getFireEndTime()) < timeAcc) {
-                    exe = ca.getExecutiveDirector();
                     exe.fireAt(ca, getCurrentTime());
                     if(DEBUG) {
                         System.out.println("Ask for refire at " +
                             getCurrentTime());
                     }
                     endOfFire = true;
+                } else {
+                    updateStates();
                 }
             }
         }
@@ -569,4 +577,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
 
     // the end time of a fire.
     private double _fireEndTime;
+
+    // whether in the emit event phase;
+    private boolean _emitEvent = false;
 }
