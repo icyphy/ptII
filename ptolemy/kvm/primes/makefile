@@ -88,10 +88,11 @@ Primes.prc: $(JCLASS)
 	CLASSPATH=$(CLASSPATH) java palm.database.MakePalmApp -classpath $(ROOT) ptolemy.kvm.primes.Primes
 
 demo: jclass
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.kvm.primes.PrimeText
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.kvm.primes.PrimesText
+
 # Run the kvm
 demokvm: jclass
-	CLASSPATH=$(CLASSPATH) $(JAVA) -Xbootclasspath:$(KVM_DIR)/api/classes.zip -verbose:class ptolemy.kvm.primes.PrimeText
+	CLASSPATH=$(CLASSPATH) $(JAVA) -Xbootclasspath:$(KVM_DIR)/api/classes.zip -verbose:class ptolemy.kvm.primes.PrimesText
 
 depend:
 	@echo "no dependencies in this directory"
