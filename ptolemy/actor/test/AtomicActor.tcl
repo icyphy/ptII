@@ -169,4 +169,15 @@ test AtomicActor-9.1 {Test setContainer error catching} {
     set entity [java::new pt.kernel.CompositeEntity]
     catch {$e1 setContainer $entity} msg
     list $msg
-} {{pt.kernel.util.IllegalActionException: . and .: AtomicActor can only be contained by instances of CompositeActor.}}
+} {{pt.kernel.util.IllegalActionException: . and .:\
+AtomicActor can only be contained by instances of CompositeActor.}}
+
+######################################################################
+####
+#
+test AtomicActor-9.2 {Test remove a AtomicActor} {
+    # NOTE: Uses the setup above
+    set entity [java::new pt.actor.AtomicActor $e0 ENTITY]
+    $entity setContainer [java::null]
+    list [$e0 deepContains $entity]
+} {0}
