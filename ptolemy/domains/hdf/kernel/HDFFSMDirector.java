@@ -96,6 +96,12 @@ import java.lang.String;
    externally have HDF or SDF semantics. There is no constraint on
    the number of levels in the hierarchy.
    <p>
+   Note: unlike the general FSM and HS directors, the HDFFSM director
+   does not support multiple state refinements or transition refinements.
+   This is because multiple refinements may result in type signature
+   conflicts. Such restriction should not be a limitation to expressiveness
+   since users can put all the models in one refinement. 
+   <p>
    To use this director, create a ModalModel and specify this director
    as its director.  Then look inside to populate the controller
    with states. Create one TypedComposite actor as a refinement
@@ -178,10 +184,14 @@ public class HDFFSMDirector extends FSMDirector {
             _chooseTransition(st.nonpreemptiveTransitionList());
 
         if (tr != null) {
+            
             TypedActor[] trRefinements = (tr.getRefinement());
 
             Actor[] actors = tr.getRefinement();
             if (actors != null) {
+                throw new IllegalActionException(this,
+                    "HDF does not support transition refinements.");
+                /*
                 for (int i = 0; i < actors.length; ++i) {
                     if (_stopRequested) break;
                     if (actors[i].prefire()) {
@@ -194,16 +204,16 @@ public class HDFFSMDirector extends FSMDirector {
                         actors[i].fire();
                         actors[i].postfire();
                     }
-                }
-                _readOutputsFromRefinement();
-                //execute the output actions
-                Iterator actions = tr.choiceActionList().iterator();
-                while (actions.hasNext()) {
-                    Action action = (Action)actions.next();
-                    action.execute();
-                }
-                _readOutputsFromRefinement();
+                }*/
             }
+            _readOutputsFromRefinement();
+            //execute the output actions
+            Iterator actions = tr.choiceActionList().iterator();
+            while (actions.hasNext()) {
+                Action action = (Action)actions.next();
+                action.execute();
+            }
+            _readOutputsFromRefinement();
         }
     }
 
@@ -277,8 +287,11 @@ public class HDFFSMDirector extends FSMDirector {
             State initialState = controller.getInitialState();
             TypedActor[] curRefinements = initialState.getRefinement();
             if (curRefinements != null) {
+                // FIXME
+                if (curRefinements.length != 1)
+                    throw new IllegalActionException(this,
+                        "HDF does not support multiple state refinements.");
                 TypedCompositeActor curRefinement =
-                    // FIXME
                     (TypedCompositeActor)(curRefinements[0]);
                 Director refinementDir = curRefinement.getDirector();
                 if (refinementDir instanceof HDFFSMDirector) {
@@ -373,8 +386,11 @@ public class HDFFSMDirector extends FSMDirector {
             TypedActor[] actors = curState.getRefinement();
             if (actors != null) {
                 // FIXME
+                if (actors.length != 1)
+                    throw new IllegalActionException(this,
+                        "HDF does not support multiple state refinements.");
                 actor = (TypedCompositeActor)(actors[0]);
-                refinementDir = actor.getDirector();
+                //refinementDir = actor.getDirector();
                 superPostfire = super.postfire();
             } else {
                 throw new IllegalActionException(this,
@@ -390,7 +406,10 @@ public class HDFFSMDirector extends FSMDirector {
             // Get the new current refinment actor.
             TypedActor[] actors = curState.getRefinement();
             if (actors != null) {
-                // FIXME
+                //FIXME
+                if (actors.length != 1)
+                    throw new IllegalActionException(this,
+                        "HDF does not support multiple state refinements.");
                 actor = (TypedCompositeActor)(actors[0]);
             } else {
                 throw new IllegalActionException(this,
@@ -452,8 +471,6 @@ public class HDFFSMDirector extends FSMDirector {
         FSMActor ctrl = getController();
         State curState = ctrl.currentState();
         CompositeActor container = (CompositeActor)getContainer();
-        // FIXME
-        //TypedActor currentRefinement =
         TypedActor[] currentRefinement = curState.getRefinement();
         if (currentRefinement == null) {
             throw new IllegalActionException(this,
@@ -512,6 +529,10 @@ public class HDFFSMDirector extends FSMDirector {
         TypedActor[] curRefinements = initialState.getRefinement();
         if (curRefinements != null) {
             // FIXME
+            if (curRefinements.length != 1) {
+                throw new IllegalActionException(this,
+                    "HDF does not support multiple state refinements");
+            }
             TypedCompositeActor curRefinement
                 = (TypedCompositeActor)(curRefinements[0]);
             Director refinementDir = curRefinement.getDirector();
@@ -665,6 +686,7 @@ public class HDFFSMDirector extends FSMDirector {
             for(Iterator states = controller.entityList().iterator();
                 states.hasNext();) {
                 State state = (State)states.next();
+                // FIXME
                 CompositeActor refinement = 
                     (CompositeActor)state.getRefinement()[0];
                 IOPort refinementPort = (IOPort)refinement.getPort(name);
@@ -825,10 +847,19 @@ public class HDFFSMDirector extends FSMDirector {
                                             SDFUtilities
                                             .getTokenConsumptionRate
                                             (refineInPort);
-                                        SDFUtilities.
-                                            setTokenConsumptionRate
-                                            (inputPortOutside,
-                                            portRateToSet);   
+                                        int transitionPortRate = 
+                                            SDFUtilities.
+                                            getTokenConsumptionRate
+                                            (inputPortOutside);
+                                        if (portRateToSet
+                                                != transitionPortRate) {
+                                            throw new IllegalActionException(
+                                            this, "Consumption rate of" +
+                                                "transition refinement is" +
+                                                "not consistent with the" +
+                                                "consumption rate of the" +
+                                                "state refinement.");
+                                        }
                                     }
                                 }
                             }
