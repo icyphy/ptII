@@ -585,6 +585,60 @@ public class IOPort extends ComponentPort {
         return _insideReceivers;
     }
 
+    /** Return a list of ports connected to this port on the
+     *  outside that can send data to this port. If a connected
+     *  port belongs to a opaque Composite Actor, this method will
+     *  look for its further connection instead of just returning
+     *  the in/out port of the opaque Composite Actor as
+     *  sourcePortList() does.
+     *  @return A list of IOPort objects.
+     */
+    public List deepSourcePortList() {
+        try {
+            _workspace.getReadAccess();
+            Nameable container = getContainer();
+            Director excDirector = ((Actor) container).getExecutiveDirector();
+	    int depthOfDirector = excDirector.depthInHierarchy();
+            LinkedList result = new LinkedList();
+            Iterator sourcePorts = sourcePortList().iterator();
+            while (sourcePorts.hasNext()) {
+                IOPort sourcePort = (IOPort) sourcePorts.next();
+                boolean flag = true;
+                //int iteration = 0;
+                while (flag) {
+                    //iteration++;
+                    int depth = sourcePort.depthInHierarchy();
+                    Nameable container2 = sourcePort.getContainer();
+                    if (sourcePort.isInput() && depth <=1) {
+                        result.addLast(sourcePort);
+                        flag = false;
+                    } else if (sourcePort.isOutput() &&
+                            (container2 instanceof AtomicActor)) {
+                        result.addLast(sourcePort);
+                        flag = false;
+                    } else {
+                        if (sourcePort.isInput()){
+                            Iterator deepSourcePorts = sourcePort.
+                                    sourcePortList().iterator();
+                            if (deepSourcePorts.hasNext()) {
+                            sourcePort = (IOPort) deepSourcePorts.next();
+                            }
+                        } else if (sourcePort.isOutput()){
+                            Iterator deepSourcePorts = sourcePort.
+                                    deepInsidePortList().iterator();
+                            if (deepSourcePorts.hasNext()) {
+                            sourcePort = (IOPort) deepSourcePorts.next();
+                            }
+                        }
+                    }
+                }
+            }
+	    return result;
+	} finally {
+	    _workspace.doneReading();
+	}
+    }
+
     /** Get a token from the specified channel.
      *  If the channel has a group with more than one receiver (something
      *  that is possible if this is a transparent port), then this method
@@ -1780,10 +1834,10 @@ public class IOPort extends ComponentPort {
             Iterator ports = deepConnectedPortList().iterator();
             while(ports.hasNext()) {
                 IOPort port = (IOPort)ports.next();
-                int myDepth = port.depthInHierarchy();
-                if (port.isInput() && myDepth >= depthOfDirector) {
+                int depth = port.depthInHierarchy();
+                if (port.isInput() && depth >= depthOfDirector) {
                     result.addLast(port);
-                } else if (port.isOutput() && myDepth < depthOfDirector) {
+                } else if (port.isOutput() && depth < depthOfDirector) {
                     result.addLast(port);
                 }
             }
@@ -1809,11 +1863,11 @@ public class IOPort extends ComponentPort {
 	    Iterator ports = deepConnectedPortList().iterator();
             while(ports.hasNext()) {
 		IOPort port = (IOPort)ports.next();
-                int myDepth = port.depthInHierarchy();
-                if (port.isInput() && myDepth <= depthOfDirector) {
+                int depth = port.depthInHierarchy();
+                if (port.isInput() && depth <= depthOfDirector) {
                     result.addLast(port);
-                } else if (port.isOutput() && myDepth > depthOfDirector) {
-                        result.addLast(port);
+                } else if (port.isOutput() && depth > depthOfDirector) {
+                    result.addLast(port);
                 }
 	    }
 	    return result;
