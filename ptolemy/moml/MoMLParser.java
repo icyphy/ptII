@@ -720,31 +720,9 @@ public class MoMLParser extends HandlerBase {
     // The returned value is never null.
     private ComponentPort _getPort(String portspec, CompositeEntity context)
             throws XmlException {
-        int position = portspec.lastIndexOf(".");
-        // NOTE: Disallow null strings for names.
-        if ((position == 0) || (position == portspec.length() - 1)) {
-            throw new XmlException("Invalid port name: \"" + portspec + "\"",
-                   _currentExternalEntity(),
-                   _parser.getLineNumber(),
-                   _parser.getColumnNumber());
-        }
-        Port port;
-        if (position < 0) {
-            // No period in the name.
-            port = context.getPort(portspec);
-            _checkForNull(port, "No port named \"" + portspec
-                    + "\" in " + context.getFullName());
-        } else {
-            // Period in name... port belongs to a contained actor.
-            String portname = portspec.substring(position+1);
-            String actorname = portspec.substring(0, position);
-            ComponentEntity actor = context.getEntity(actorname);
-            _checkForNull(actor, "No actor named \"" + actorname
-                    + "\" in " + context.getFullName());
-            port = actor.getPort(portname);
-            _checkForNull(port, "No port named \"" + portname
-                    + "\" in " + actor.getFullName());
-        }
+        ComponentPort port = (ComponentPort)context.getPort(portspec);
+        _checkForNull(port, "No port named \"" + portspec
+                + "\" in " + context.getFullName());
         return (ComponentPort)port;
     }
 
