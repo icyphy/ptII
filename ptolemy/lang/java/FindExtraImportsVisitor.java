@@ -47,7 +47,7 @@ import ptolemy.lang.java.nodetypes.*;
  *  @author Jeff Tsay
  */
 public class FindExtraImportsVisitor extends ReplacementJavaVisitor
-     implements JavaStaticSemanticConstants {
+    implements JavaStaticSemanticConstants {
 
     /** Creates a FindExtraImportsVisitor. If remove is true, extra imports
      *  will be discarded from the AST. Extra imports will be reported to by
@@ -74,24 +74,24 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
 
         // report extra imports
         List importList =
-         TNLManip.traverseList(this, node, null, node.getImports());
+            TNLManip.traverseList(this, node, null, node.getImports());
 
         // remove extra imports if desired
         if (_remove) {
-           LinkedList neededImports = new LinkedList();
+            LinkedList neededImports = new LinkedList();
 
-           Iterator importItr = importList.iterator();
+            Iterator importItr = importList.iterator();
 
-           while (importItr.hasNext()) {
-              Object obj = importItr.next();
+            while (importItr.hasNext()) {
+                Object obj = importItr.next();
 
-              if (obj != NullValue.instance) {
-                 // import was needed, and returned
-                 neededImports.addLast(obj);
-              }
+                if (obj != NullValue.instance) {
+                    // import was needed, and returned
+                    neededImports.addLast(obj);
+                }
 
-              node.setImports(neededImports);
-           }
+                node.setImports(neededImports);
+            }
         }
 
         return node;
@@ -103,13 +103,13 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
 
         // check if we used the type
         if (!_usedUserTypesSet.contains(classDecl)) {
-           if (_out != null) {
-              _out.println("In file " + _filename +
-               ", found unnecessary class/interface import : " +
-               StaticResolution.nameString(name));
-           }
+            if (_out != null) {
+                _out.println("In file " + _filename +
+                        ", found unnecessary class/interface import : " +
+                        StaticResolution.nameString(name));
+            }
 
-           return NullValue.instance;
+            return NullValue.instance;
         }
 
         return node;
@@ -120,19 +120,19 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
         PackageDecl pkgDecl = (PackageDecl) JavaDecl.getDecl(name);
 
         if (pkgDecl == StaticResolution.JAVA_LANG_PACKAGE) {
-           // do not remove the java.lang package
-           return node;
+            // do not remove the java.lang package
+            return node;
         }
 
         // check if we used the package
         if (!_usedPackagesSet.contains(pkgDecl)) {
-           if (_out != null) {
-              _out.println("In file " + _filename +
-               ", found unnecessary package import : " +
-               StaticResolution.nameString(name));
-           }
+            if (_out != null) {
+                _out.println("In file " + _filename +
+                        ", found unnecessary package import : " +
+                        StaticResolution.nameString(name));
+            }
 
-           return NullValue.instance;
+            return NullValue.instance;
         }
 
         return node;
@@ -164,22 +164,22 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
         JavaDecl container = classDecl.getContainer();
 
         if (container == null) {
-           ApplicationUtility.error("user type " + classDecl.getName() +
-            " is has no container.");
+            ApplicationUtility.error("user type " + classDecl.getName() +
+                    " is has no container.");
         }
 
         switch (container.category) {
-          case CG_PACKAGE:
-          return (PackageDecl) container;
+        case CG_PACKAGE:
+            return (PackageDecl) container;
 
-          case CG_CLASS:
-          case CG_INTERFACE:
-          // the class is an inner class, return the package of the outer class
-          return  _packageOfType((ClassDecl) container);
+        case CG_CLASS:
+        case CG_INTERFACE:
+            // the class is an inner class, return the package of the outer class
+            return  _packageOfType((ClassDecl) container);
         }
 
         ApplicationUtility.error("container of class " + classDecl.getName() +
-         " is not a package nor a user type");
+                " is not a package nor a user type");
 
         return null;
     }

@@ -67,20 +67,20 @@ public class ExprUtility implements JavaStaticSemanticConstants {
         TreeNode retval;
 
         switch (node.classID()) {
-          case OBJECTFIELDACCESSNODE_ID:
-          return ((ObjectFieldAccessNode) node).getObject();
+        case OBJECTFIELDACCESSNODE_ID:
+            return ((ObjectFieldAccessNode) node).getObject();
 
-          case THISFIELDACCESSNODE_ID:
-          case SUPERFIELDACCESSNODE_ID:
-          retval = new ThisNode();
-          TypeNameNode typeNameNode = (TypeNameNode) node.getProperty(THIS_CLASS_KEY);
-          if (typeNameNode != null) {
-             retval.setProperty(THIS_CLASS_KEY, typeNameNode);
-          }
-          return retval;
+        case THISFIELDACCESSNODE_ID:
+        case SUPERFIELDACCESSNODE_ID:
+            retval = new ThisNode();
+            TypeNameNode typeNameNode = (TypeNameNode) node.getProperty(THIS_CLASS_KEY);
+            if (typeNameNode != null) {
+                retval.setProperty(THIS_CLASS_KEY, typeNameNode);
+            }
+            return retval;
 
-          case TYPEFIELDACCESSNODE_ID:
-          return null;
+        case TYPEFIELDACCESSNODE_ID:
+            return null;
         }
 
         ApplicationUtility.error("accessedObject() : node not supported " + node);
@@ -96,9 +96,9 @@ public class ExprUtility implements JavaStaticSemanticConstants {
 
     public static boolean isIntConstant(ExprNode expr, int from, int to) {
         if (expr instanceof IntLitNode) {
-           int value = intValue((IntLitNode) expr);
+            int value = intValue((IntLitNode) expr);
 
-           return ((value >= from) && (value <= to));
+            return ((value >= from) && (value <= to));
         }
 
         return false;
@@ -109,29 +109,29 @@ public class ExprUtility implements JavaStaticSemanticConstants {
      */
     public static boolean isStatementExpression(ExprNode expr) {
         switch (expr.classID()) {
-          case ASSIGNNODE_ID:
-          case MULTASSIGNNODE_ID:
-          case DIVASSIGNNODE_ID:
-          case REMASSIGNNODE_ID:
-          case PLUSASSIGNNODE_ID:
-          case MINUSASSIGNNODE_ID:
-          case LEFTSHIFTLOGASSIGNNODE_ID:
-          case RIGHTSHIFTLOGASSIGNNODE_ID:
-          case RIGHTSHIFTARITHASSIGNNODE_ID:
-          case BITANDASSIGNNODE_ID:
-          case BITXORASSIGNNODE_ID:
-          case BITORASSIGNNODE_ID:
-          case PREINCRNODE_ID:
-          case PREDECRNODE_ID:
-          case POSTINCRNODE_ID:
-          case POSTDECRNODE_ID:
-          case METHODCALLNODE_ID:
-          case ALLOCATENODE_ID:
-          case ALLOCATEANONYMOUSCLASSNODE_ID:
-          return true;
+        case ASSIGNNODE_ID:
+        case MULTASSIGNNODE_ID:
+        case DIVASSIGNNODE_ID:
+        case REMASSIGNNODE_ID:
+        case PLUSASSIGNNODE_ID:
+        case MINUSASSIGNNODE_ID:
+        case LEFTSHIFTLOGASSIGNNODE_ID:
+        case RIGHTSHIFTLOGASSIGNNODE_ID:
+        case RIGHTSHIFTARITHASSIGNNODE_ID:
+        case BITANDASSIGNNODE_ID:
+        case BITXORASSIGNNODE_ID:
+        case BITORASSIGNNODE_ID:
+        case PREINCRNODE_ID:
+        case PREDECRNODE_ID:
+        case POSTINCRNODE_ID:
+        case POSTDECRNODE_ID:
+        case METHODCALLNODE_ID:
+        case ALLOCATENODE_ID:
+        case ALLOCATEANONYMOUSCLASSNODE_ID:
+            return true;
 
-          default:
-          return false;
+        default:
+            return false;
         }
     }
 

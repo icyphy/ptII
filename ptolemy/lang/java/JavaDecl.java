@@ -236,11 +236,11 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
         StringBuffer prefix = new StringBuffer();
 
         if (hasContainer() && (getContainer() != null)) {
-           prefix.append(getContainer().fullName(delimiter));
+            prefix.append(getContainer().fullName(delimiter));
         }
 
         if (prefix.length() > 0) {
-           prefix.append(delimiter);
+            prefix.append(delimiter);
         }
 
         prefix.append(getName());
@@ -255,22 +255,22 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
         JavaDecl decl = this;
 
         while (decl.hasContainer()) {
-          decl = decl.getContainer();
+            decl = decl.getContainer();
 
-          if (decl == container) {
-             return true;
-          }
+            if (decl == container) {
+                return true;
+            }
 
-          if (decl == null) {
-             return false;
-          }
+            if (decl == null) {
+                return false;
+            }
         }
         return false;
     }
 
     protected static final SearchPath _pickLibrary(JavaDecl container) {
         if (container == StaticResolution.UNNAMED_PACKAGE) {
-           return SearchPath.UNNAMED_PATH;
+            return SearchPath.UNNAMED_PATH;
         }
         return SearchPath.NAMED_PATH;
     }
@@ -281,7 +281,7 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
      */
     public static final JavaDecl getDecl(TreeNode node) {
         if (node instanceof NamedNode) {
-           return getDecl((NamedNode) node);
+            return getDecl((NamedNode) node);
         }
         return (JavaDecl) node.getProperty(DECL_KEY);
     }
@@ -299,8 +299,8 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
      */
     public static final void setDecl(TreeNode node, JavaDecl decl) {
         if (node instanceof NamedNode) {
-           setDecl((NamedNode) node, decl);
-           return;
+            setDecl((NamedNode) node, decl);
+            return;
         }
         node.setProperty(DECL_KEY, decl);
     }

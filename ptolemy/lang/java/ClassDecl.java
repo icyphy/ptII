@@ -59,7 +59,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
     }
 
     public ClassDecl(String name, int category0, TypeNameNode defType,
-                     int modifiers, TreeNode source, JavaDecl container) {
+            int modifiers, TreeNode source, JavaDecl container) {
         super(name, category0, defType);
         _modifiers = modifiers;
         _source = source;
@@ -82,8 +82,8 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
     public final Environ getEnviron() {
         if (!wasVisitedBy(ResolveClassVisitor.visitorClass())) {
-           // ApplicationUtility.trace("getEnviron() for " + _name + ": building environment");
-           _buildEnviron();
+            // ApplicationUtility.trace("getEnviron() for " + _name + ": building environment");
+            _buildEnviron();
         }
         // ApplicationUtility.trace("getEnviron() for " + _name + ": environment already in place");
         return _environ;
@@ -144,22 +144,22 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
     /** Ensure that the source code for this ClassDecl is loaded. */
     public void loadSource() {
         if (_source == null) {
-           _source = AbsentTreeNode.instance;
+            _source = AbsentTreeNode.instance;
 
-           String fileName = fullName(File.separatorChar);
-           File file = _pickLibrary(_container).openSource(fileName);
+            String fileName = fullName(File.separatorChar);
+            File file = _pickLibrary(_container).openSource(fileName);
 
-           ApplicationUtility.trace(">Reading in user type : " + fullName() +
-            " from " + fileName);
+            ApplicationUtility.trace(">Reading in user type : " + fullName() +
+                    " from " + fileName);
 
-           StaticResolution.load(file, 0); // should set the source
+            StaticResolution.load(file, 0); // should set the source
 
-           if (_source == AbsentTreeNode.instance) {
-	          ApplicationUtility.error("file " + fileName +
-               " doesn't contain class or interface " + fullName());
-           }
+            if (_source == AbsentTreeNode.instance) {
+                ApplicationUtility.error("file " + fileName +
+                        " doesn't contain class or interface " + fullName());
+            }
 
-           ApplicationUtility.trace(">Done reading class " + fullName());
+            ApplicationUtility.trace(">Done reading class " + fullName());
         }
     }
 
@@ -181,14 +181,14 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
 
         // If class didn't load, give it a dummy environment, etc
         if (_environ == null) {
-           ApplicationUtility.error("class " + _name + " did not load, " +
-            "using dummy environment.");
+            ApplicationUtility.error("class " + _name + " did not load, " +
+                    "using dummy environment.");
 
-           _environ = new Environ(StaticResolution.SYSTEM_PACKAGE.getEnviron());
+            _environ = new Environ(StaticResolution.SYSTEM_PACKAGE.getEnviron());
 
-           setSuperClass(StaticResolution.OBJECT_DECL);
+            setSuperClass(StaticResolution.OBJECT_DECL);
 
-           addVisitor(ResolveClassVisitor.visitorClass());
+            addVisitor(ResolveClassVisitor.visitorClass());
         }
     }
 

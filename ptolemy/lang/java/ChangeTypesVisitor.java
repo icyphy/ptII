@@ -61,9 +61,9 @@ public class ChangeTypesVisitor extends ReplacementJavaVisitor {
         TypeNameNode typeNode = (TypeNameNode) _declToTypeMap.get(typedDecl);
 
         if (typeNode != null) {
-           node.setDefType(typeNode);
-           // typedDecl.setType(typeNode);
-           _declsLeft--;
+            node.setDefType(typeNode);
+            // typedDecl.setType(typeNode);
+            _declsLeft--;
         }
 
         return node;
@@ -84,13 +84,13 @@ public class ChangeTypesVisitor extends ReplacementJavaVisitor {
         TypeNameNode typeNode = (TypeNameNode) _declToTypeMap.get(typedDecl);
 
         if (typeNode != null) {
-           node.setDefType(typeNode);
-           // typedDecl.setType(typeNode);
-           _declsLeft--;
+            node.setDefType(typeNode);
+            // typedDecl.setType(typeNode);
+            _declsLeft--;
         }
 
         if (_declsLeft > 0) {
-           node.setInitExpr((TreeNode) node.getInitExpr().accept(this, null));
+            node.setInitExpr((TreeNode) node.getInitExpr().accept(this, null));
         }
 
         return node;
@@ -102,7 +102,7 @@ public class ChangeTypesVisitor extends ReplacementJavaVisitor {
      */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         if (_declsLeft > 0) {
-           node.setChildren(TNLManip.traverseList(this, node, null, node.children()));
+            node.setChildren(TNLManip.traverseList(this, node, null, node.children()));
         }
         return node;
     }

@@ -57,21 +57,21 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         JavaCodeGenerator jcg = new JavaCodeGenerator();
 
         while (unitItr.hasNext()) {
-           CompileUnitNode unitNode = (CompileUnitNode) unitItr.next();
+            CompileUnitNode unitNode = (CompileUnitNode) unitItr.next();
 
-           String outCode = (String) unitNode.accept(jcg, null);
+            String outCode = (String) unitNode.accept(jcg, null);
 
-           String outFileName = (String) filenameItr.next();
+            String outFileName = (String) filenameItr.next();
 
-           try {
-             FileOutputStream outFile = new FileOutputStream(outFileName);
-             outFile.write(outCode.getBytes());
-             outFile.close();
-           } catch (IOException e) {
-             System.err.println("error opening/writing/closing output file "
-              + outFileName);
-             System.err.println(e.toString());
-           }
+            try {
+                FileOutputStream outFile = new FileOutputStream(outFileName);
+                outFile.write(outCode.getBytes());
+                outFile.close();
+            } catch (IOException e) {
+                System.err.println("error opening/writing/closing output file "
+                        + outFileName);
+                System.err.println(e.toString());
+            }
         }
     }
 
@@ -79,11 +79,11 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         String ident = node.getIdent();
         TreeNode qualifier = node.getQualifier();
         if (qualifier == AbsentTreeNode.instance) {
-           return TNLManip.cons(ident);
+            return TNLManip.cons(ident);
         }
 
         List qualPartList =
-         (List) node.childReturnValueAt(node.CHILD_INDEX_QUALIFIER);
+            (List) node.childReturnValueAt(node.CHILD_INDEX_QUALIFIER);
 
         return TNLManip.arrayToList(new Object[] {qualPartList, "." + ident});
     }
@@ -158,7 +158,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     public Object visitArrayTypeNode(ArrayTypeNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {
-         node.childReturnValueAt(node.CHILD_INDEX_BASETYPE), "[]"});
+            node.childReturnValueAt(node.CHILD_INDEX_BASETYPE), "[]"});
     }
 
     public Object visitVoidTypeNode(VoidTypeNode node, LinkedList args) {
@@ -167,21 +167,21 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     public Object visitOuterThisAccessNode(OuterThisAccessNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {
-         node.childReturnValueAt(node.CHILD_INDEX_TYPE), ".this"});
+            node.childReturnValueAt(node.CHILD_INDEX_TYPE), ".this"});
     }
 
     public Object visitOuterSuperAccess(OuterSuperAccessNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {
-         node.childReturnValueAt(node.CHILD_INDEX_TYPE), ".super"});
+            node.childReturnValueAt(node.CHILD_INDEX_TYPE), ".super"});
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         LinkedList retList = new LinkedList();
 
         if (node.getPkg() != AbsentTreeNode.instance) {
-           retList.addLast("package ");
-           retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_PKG));
-           retList.addLast(";\n");
+            retList.addLast("package ");
+            retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_PKG));
+            retList.addLast(";\n");
         }
 
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_IMPORTS));
@@ -193,8 +193,8 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         Iterator typeItr = typeList.iterator();
 
         while (typeItr.hasNext()) {
-          retList.addLast(typeItr.next());
-          retList.addLast("\n");
+            retList.addLast(typeItr.next());
+            retList.addLast("\n");
         }
 
         return _stringListToString(retList);
@@ -202,13 +202,13 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     public Object visitImportNode(ImportNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {"import ",
-         node.childReturnValueAt(node.CHILD_INDEX_NAME), ";\n"});
+                                                      node.childReturnValueAt(node.CHILD_INDEX_NAME), ";\n"});
     }
 
     public Object visitImportOnDemandNode(ImportOnDemandNode node, LinkedList args) {
 
         return TNLManip.arrayToList(new Object[] {"import ",
-         node.childReturnValueAt(node.CHILD_INDEX_NAME), ".*;\n"});
+                                                      node.childReturnValueAt(node.CHILD_INDEX_NAME), ".*;\n"});
     }
 
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
@@ -222,17 +222,17 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         TreeNode superClass = node.getSuperClass();
 
         if (superClass != AbsentTreeNode.instance) {
-           retList.addLast("extends ");
-           retList.addLast(node.childReturnValueFor(superClass));
-           retList.addLast(" ");
+            retList.addLast("extends ");
+            retList.addLast(node.childReturnValueFor(superClass));
+            retList.addLast(" ");
         }
 
         List implList = (List) node.childReturnValueAt(node.CHILD_INDEX_INTERFACES);
 
         if (!implList.isEmpty()) {
-           retList.addLast("implements ");
-           retList.addLast(_commaList(implList));
-           retList.addLast(" ");
+            retList.addLast("implements ");
+            retList.addLast(_commaList(implList));
+            retList.addLast(" ");
         }
 
         retList.addLast("{\n");
@@ -259,21 +259,21 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_NAME));
         retList.addLast("(");
         retList.addLast(
-         _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_PARAMS)));
+                _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_PARAMS)));
         retList.addLast(")");
 
         List throwsList = (List) node.childReturnValueAt(node.CHILD_INDEX_THROWSLIST);
 
         if (!throwsList.isEmpty()) {
-           retList.addLast(" throws ");
-           retList.addLast(_commaList(throwsList));
+            retList.addLast(" throws ");
+            retList.addLast(_commaList(throwsList));
         }
 
         if (node.getBody() == AbsentTreeNode.instance) {
-           retList.addLast(";");
+            retList.addLast(";");
         } else {
-           retList.addLast(" ");
-           retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_BODY));
+            retList.addLast(" ");
+            retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_BODY));
         }
 
         retList.addLast("\n");
@@ -288,15 +288,15 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         retList.addLast(node.getName().getIdent());
         retList.addLast("(");
         retList.addLast(
-         _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_PARAMS)));
+                _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_PARAMS)));
         retList.addLast(") ");
 
         List throwsList = (List) node.childReturnValueAt(node.CHILD_INDEX_THROWSLIST);
 
         if (!throwsList.isEmpty()) {
-           retList.addLast("throws ");
-           retList.addLast(_commaList(throwsList));
-           retList.addLast(" ");
+            retList.addLast("throws ");
+            retList.addLast(_commaList(throwsList));
+            retList.addLast(" ");
         }
 
         retList.addLast("{\n");
@@ -304,12 +304,12 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_CONSTRUCTORCALL));
 
         LinkedList bodyStrList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_BODY);
+            (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_BODY);
 
         if (bodyStrList.size() > 1) {
-           // get rid of the first '{' and '\n' of the block node string
-           bodyStrList.removeFirst();
-           retList.addLast(bodyStrList);
+            // get rid of the first '{' and '\n' of the block node string
+            bodyStrList.removeFirst();
+            retList.addLast(bodyStrList);
         }
 
         retList.addLast("\n");
@@ -321,12 +321,12 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         List argsList = (List) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
 
         return TNLManip.arrayToList(new Object[] {"this(",
-         _commaList(argsList), ");\n"});
+                                                      _commaList(argsList), ");\n"});
     }
 
     public Object visitStaticInitNode(StaticInitNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {"static ",
-         node.childReturnValueAt(node.CHILD_INDEX_BLOCK), "\n"});
+                                                      node.childReturnValueAt(node.CHILD_INDEX_BLOCK), "\n"});
     }
 
     public Object visitInstanceInitNode(InstanceInitNode node, LinkedList args) {
@@ -344,9 +344,9 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         List implList = (List) node.childReturnValueAt(node.CHILD_INDEX_INTERFACES);
 
         if (!implList.isEmpty()) {
-           retList.addLast("extends ");
-           retList.addLast(_commaList(implList));
-           retList.addLast(" ");
+            retList.addLast("extends ");
+            retList.addLast(_commaList(implList));
+            retList.addLast(" ");
         }
 
         retList.addLast("{\n");
@@ -358,26 +358,26 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     public Object visitArrayInitNode(ArrayInitNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {"{", _commaList(
-          (List) node.childReturnValueAt(node.CHILD_INDEX_INITIALIZERS)),
-         "}"});
+                (List) node.childReturnValueAt(node.CHILD_INDEX_INITIALIZERS)),
+                                                      "}"});
     }
 
     public Object visitParameterNode(ParameterNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {
-         Modifier.toString(node.getModifiers()),
-         node.childReturnValueAt(node.CHILD_INDEX_DEFTYPE),
-         " " + node.getName().getIdent()});
+            Modifier.toString(node.getModifiers()),
+                node.childReturnValueAt(node.CHILD_INDEX_DEFTYPE),
+                " " + node.getName().getIdent()});
     }
 
     public Object visitSuperConstructorCallNode(SuperConstructorCallNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {"super(",
-         _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_ARGS)),
-         ");\n"});
+                                                      _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_ARGS)),
+                                                      ");\n"});
     }
 
     public Object visitBlockNode(BlockNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {"{\n",
-         node.childReturnValueAt(node.CHILD_INDEX_STMTS), "}\n"});
+                                                      node.childReturnValueAt(node.CHILD_INDEX_STMTS), "}\n"});
     }
 
     public Object visitEmptyStmtNode(EmptyStmtNode node, LinkedList args) {
@@ -386,9 +386,9 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     public Object visitLabeledStmtNode(LabeledStmtNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {
-         node.childReturnValueAt(node.CHILD_INDEX_NAME),
-         ": ",
-         node.childReturnValueAt(node.CHILD_INDEX_STMT)});
+            node.childReturnValueAt(node.CHILD_INDEX_NAME),
+                ": ",
+                node.childReturnValueAt(node.CHILD_INDEX_STMT)});
     }
 
     public Object visitIfStmtNode(IfStmtNode node, LinkedList args) {
@@ -401,8 +401,8 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
         TreeNode elsePart = node.getElsePart();
         if (elsePart != AbsentTreeNode.instance) {
-           retList.addLast(" else ");
-           retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_ELSEPART));
+            retList.addLast(" else ");
+            retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_ELSEPART));
         }
 
         retList.addLast("\n");
@@ -412,53 +412,53 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     public Object visitSwitchNode(SwitchNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {"switch (",
-         node.childReturnValueAt(node.CHILD_INDEX_EXPR), ") {\n",
-         _separateList((List) node.childReturnValueAt(node.CHILD_INDEX_SWITCHBLOCKS), "\n"),
-         "}\n"});
+                                                      node.childReturnValueAt(node.CHILD_INDEX_EXPR), ") {\n",
+                                                      _separateList((List) node.childReturnValueAt(node.CHILD_INDEX_SWITCHBLOCKS), "\n"),
+                                                      "}\n"});
     }
 
     public Object visitCaseNode(CaseNode node, LinkedList args) {
         if (node.getExpr() == AbsentTreeNode.instance) {
-           return TNLManip.cons("default:\n");
+            return TNLManip.cons("default:\n");
         }
 
         return TNLManip.arrayToList(new Object[] {"case ",
-         node.childReturnValueAt(node.CHILD_INDEX_EXPR), ":\n"});
+                                                      node.childReturnValueAt(node.CHILD_INDEX_EXPR), ":\n"});
     }
 
     public Object visitSwitchBranchNode(SwitchBranchNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {
-         node.childReturnValueAt(node.CHILD_INDEX_CASES),
-         node.childReturnValueAt(node.CHILD_INDEX_STMTS)});
+            node.childReturnValueAt(node.CHILD_INDEX_CASES),
+                node.childReturnValueAt(node.CHILD_INDEX_STMTS)});
     }
 
     public Object visitLoopNode(LoopNode node, LinkedList args) {
         if (node.getForeStmt().classID() == EMPTYSTMTNODE_ID) {
-           // while loop
-           return TNLManip.arrayToList(new Object[] {"while (",
-                   node.childReturnValueAt(node.CHILD_INDEX_TEST), ") \n",
-                   node.childReturnValueAt(node.CHILD_INDEX_AFTSTMT)});
+            // while loop
+            return TNLManip.arrayToList(new Object[] {"while (",
+                                                          node.childReturnValueAt(node.CHILD_INDEX_TEST), ") \n",
+                                                          node.childReturnValueAt(node.CHILD_INDEX_AFTSTMT)});
         } else {
-           // do loop
-           return TNLManip.arrayToList(new Object[] {"do ",
-                   node.childReturnValueAt(node.CHILD_INDEX_FORESTMT),
-                   " while (",
-                   node.childReturnValueAt(node.CHILD_INDEX_TEST),
-                   ");\n"});
+            // do loop
+            return TNLManip.arrayToList(new Object[] {"do ",
+                                                          node.childReturnValueAt(node.CHILD_INDEX_FORESTMT),
+                                                          " while (",
+                                                          node.childReturnValueAt(node.CHILD_INDEX_TEST),
+                                                          ");\n"});
         }
     }
 
     public Object visitExprStmtNode(ExprStmtNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {
-         node.childReturnValueAt(node.CHILD_INDEX_EXPR), ";\n"});
+            node.childReturnValueAt(node.CHILD_INDEX_EXPR), ";\n"});
     }
 
     public Object visitForNode(ForNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {"for (",
-         _forInitStringList(node.getInit()), "; ",
-         node.childReturnValueAt(node.CHILD_INDEX_TEST), "; ",
-         _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_UPDATE)),
-         ") ", node.childReturnValueAt(node.CHILD_INDEX_STMT), "\n"});
+                                                      _forInitStringList(node.getInit()), "; ",
+                                                      node.childReturnValueAt(node.CHILD_INDEX_TEST), "; ",
+                                                      _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_UPDATE)),
+                                                      ") ", node.childReturnValueAt(node.CHILD_INDEX_STMT), "\n"});
     }
 
     public Object visitBreakNode(BreakNode node, LinkedList args) {
@@ -467,8 +467,8 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         retList.addLast("break");
 
         if (node.getLabel() != AbsentTreeNode.instance) {
-           retList.addLast(" ");
-           retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_LABEL));
+            retList.addLast(" ");
+            retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_LABEL));
         }
         retList.addLast(";\n");
 
@@ -481,8 +481,8 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         retList.addLast("continue");
 
         if (node.getLabel() != AbsentTreeNode.instance) {
-           retList.addLast(" ");
-           retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_LABEL));
+            retList.addLast(" ");
+            retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_LABEL));
         }
         retList.addLast(";\n");
 
@@ -491,24 +491,24 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     public Object visitReturnNode(ReturnNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {"return ",
-         node.childReturnValueAt(node.CHILD_INDEX_EXPR), ";\n"});
+                                                      node.childReturnValueAt(node.CHILD_INDEX_EXPR), ";\n"});
     }
 
     public Object visitThrowNode(ThrowNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {"throw ",
-         node.childReturnValueAt(node.CHILD_INDEX_EXPR), ";\n"});
+                                                      node.childReturnValueAt(node.CHILD_INDEX_EXPR), ";\n"});
     }
 
     public Object visitSynchronizedNode(SynchronizedNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {"synchronized (",
-                node.childReturnValueAt(node.CHILD_INDEX_EXPR), ") ",
-                node.childReturnValueAt(node.CHILD_INDEX_STMT), "\n"});
+                                                      node.childReturnValueAt(node.CHILD_INDEX_EXPR), ") ",
+                                                      node.childReturnValueAt(node.CHILD_INDEX_STMT), "\n"});
     }
 
     public Object visitCatchNode(CatchNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {"catch (",
-                node.childReturnValueAt(node.CHILD_INDEX_PARAM), ") ",
-                node.childReturnValueAt(node.CHILD_INDEX_BLOCK)});
+                                                      node.childReturnValueAt(node.CHILD_INDEX_PARAM), ") ",
+                                                      node.childReturnValueAt(node.CHILD_INDEX_BLOCK)});
     }
 
     public Object visitTryNode(TryNode node, LinkedList args) {
@@ -520,8 +520,8 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_CATCHES));
 
         if (node.getFinly() != AbsentTreeNode.instance) {
-           retList.addLast(" finally ");
-           retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_FINLY));
+            retList.addLast(" finally ");
+            retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_FINLY));
         }
 
         return retList;
@@ -537,11 +537,11 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     public Object visitArrayAccessNode(ArrayAccessNode node, LinkedList args) {
         LinkedList arrayStringList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_ARRAY);
+            (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_ARRAY);
 
         return TNLManip.arrayToList(new Object[] {
-         _parenExpr(node.getArray(), arrayStringList), "[",
-         node.childReturnValueAt(node.CHILD_INDEX_INDEX), "]"});
+            _parenExpr(node.getArray(), arrayStringList), "[",
+                node.childReturnValueAt(node.CHILD_INDEX_INDEX), "]"});
     }
 
     public Object visitObjectNode(ObjectNode node, LinkedList args) {
@@ -550,40 +550,40 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {
         LinkedList objectStringList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_OBJECT);
+            (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_OBJECT);
 
         return TNLManip.arrayToList(new Object[] {
-         _parenExpr(node.getObject(), objectStringList), ".",
-         node.childReturnValueAt(node.CHILD_INDEX_NAME)});
+            _parenExpr(node.getObject(), objectStringList), ".",
+                node.childReturnValueAt(node.CHILD_INDEX_NAME)});
     }
 
     public Object visitSuperFieldAccessNode(SuperFieldAccessNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {"super.",
-         node.childReturnValueAt(node.CHILD_INDEX_NAME)});
+                                                      node.childReturnValueAt(node.CHILD_INDEX_NAME)});
     }
 
     public Object visitTypeFieldAccessNode(TypeFieldAccessNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {
-         node.childReturnValueAt(node.CHILD_INDEX_FTYPE), ".",
-         node.childReturnValueAt(node.CHILD_INDEX_NAME)});
+            node.childReturnValueAt(node.CHILD_INDEX_FTYPE), ".",
+                node.childReturnValueAt(node.CHILD_INDEX_NAME)});
     }
 
     public Object visitThisFieldAccessNode(ThisFieldAccessNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {"this.",
-         node.childReturnValueAt(node.CHILD_INDEX_NAME)});
+                                                      node.childReturnValueAt(node.CHILD_INDEX_NAME)});
     }
 
     public Object visitTypeClassAccessNode(TypeClassAccessNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {
-         node.childReturnValueAt(node.CHILD_INDEX_FTYPE), ".class"});
+            node.childReturnValueAt(node.CHILD_INDEX_FTYPE), ".class"});
     }
 
     public Object visitMethodCallNode(MethodCallNode node, LinkedList args) {
         List argsList = (List) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
 
         return TNLManip.arrayToList(new Object[] {
-         node.childReturnValueAt(node.CHILD_INDEX_METHOD), "(",
-         _commaList(argsList), ")"});
+            node.childReturnValueAt(node.CHILD_INDEX_METHOD), "(",
+                _commaList(argsList), ")"});
     }
 
     public Object visitAllocateNode(AllocateNode node, LinkedList args) {
@@ -595,11 +595,11 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
         if ((enclosingID != ABSENTTREENODE_ID) && (enclosingID != THISNODE_ID)) {
 
-           LinkedList enclosingStringList = (LinkedList)
-            node.childReturnValueAt(node.CHILD_INDEX_ENCLOSINGINSTANCE);
+            LinkedList enclosingStringList = (LinkedList)
+                node.childReturnValueAt(node.CHILD_INDEX_ENCLOSINGINSTANCE);
 
-           retList.addLast(_parenExpr(enclosingInstance, enclosingStringList));
-           retList.addLast(".");
+            retList.addLast(_parenExpr(enclosingInstance, enclosingStringList));
+            retList.addLast(".");
         }
 
         List argsList = (List) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
@@ -635,8 +635,8 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         }
 
         if (node.getInitExpr() != AbsentTreeNode.instance) {
-           retList.addLast(" ");
-           retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_INITEXPR));
+            retList.addLast(" ");
+            retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_INITEXPR));
         }
 
         return retList;
@@ -651,18 +651,18 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
         if ((enclosingID != ABSENTTREENODE_ID) && (enclosingID != THISNODE_ID)) {
 
-           LinkedList enclosingStringList = (LinkedList)
-            node.childReturnValueAt(node.CHILD_INDEX_ENCLOSINGINSTANCE);
+            LinkedList enclosingStringList = (LinkedList)
+                node.childReturnValueAt(node.CHILD_INDEX_ENCLOSINGINSTANCE);
 
-           retList.addLast(_parenExpr(enclosingInstance, enclosingStringList));
-           retList.addLast(".");
+            retList.addLast(_parenExpr(enclosingInstance, enclosingStringList));
+            retList.addLast(".");
         }
 
         retList.addLast("new ");
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_SUPERTYPE));
         retList.addLast("(");
         retList.addLast(
-         _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_SUPERARGS)));
+                _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_SUPERARGS)));
         retList.addLast(") {\n");
         retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_MEMBERS));
         retList.addLast("}\n");
@@ -704,11 +704,11 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     public Object visitCastNode(CastNode node, LinkedList args) {
         LinkedList exprStringList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR);
+            (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR);
 
         return TNLManip.arrayToList(new Object[] {"(",
-         node.childReturnValueAt(node.CHILD_INDEX_DTYPE), ") ",
-         _parenExpr(node.getExpr(), exprStringList)});
+                                                      node.childReturnValueAt(node.CHILD_INDEX_DTYPE), ") ",
+                                                      _parenExpr(node.getExpr(), exprStringList)});
     }
 
     public Object visitMultNode(MultNode node, LinkedList args) {
@@ -761,11 +761,11 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     public Object visitInstanceOfNode(InstanceOfNode node, LinkedList args) {
         LinkedList exprStringList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR);
+            (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR);
 
         return TNLManip.arrayToList(new Object[] {
-         _parenExpr(node.getExpr(), exprStringList), " instanceof ",
-         node.childReturnValueAt(node.CHILD_INDEX_DTYPE)});
+            _parenExpr(node.getExpr(), exprStringList), " instanceof ",
+                node.childReturnValueAt(node.CHILD_INDEX_DTYPE)});
     }
 
     public Object visitEQNode(EQNode node, LinkedList args) {
@@ -798,24 +798,24 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     public Object visitIfExprNode(IfExprNode node, LinkedList args) {
         LinkedList e1StringList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR1);
+            (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR1);
         LinkedList e2StringList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR2);
+            (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR2);
         LinkedList e3StringList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR3);
+            (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR3);
 
         e1StringList = _parenExpr(node.getExpr1(), e1StringList);
         e2StringList = _parenExpr(node.getExpr2(), e2StringList);
         e3StringList = _parenExpr(node.getExpr3(), e2StringList);
 
         return TNLManip.arrayToList(new Object[] {e1StringList, " ? ",
-         e2StringList, " : ", e3StringList});
+                                                      e2StringList, " : ", e3StringList});
     }
 
     public Object visitAssignNode(AssignNode node, LinkedList args) {
         return TNLManip.arrayToList(new Object[] {
-         node.childReturnValueAt(node.CHILD_INDEX_EXPR1), " = ",
-         node.childReturnValueAt(node.CHILD_INDEX_EXPR2)});
+            node.childReturnValueAt(node.CHILD_INDEX_EXPR1), " = ",
+                node.childReturnValueAt(node.CHILD_INDEX_EXPR2)});
     }
 
     public Object visitMultAssignNode(MultAssignNode node, LinkedList args) {
@@ -870,8 +870,8 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         retList.addLast(" " + node.getName().getIdent());
 
         if (node.getInitExpr() != AbsentTreeNode.instance) {
-           retList.addLast(" = ");
-           retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_INITEXPR));
+            retList.addLast(" = ");
+            retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_INITEXPR));
         }
 
         retList.addLast(";\n");
@@ -880,14 +880,14 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
     }
 
     protected LinkedList _visitSingleExprNode(SingleExprNode node, String opString,
-     boolean post) {
+            boolean post) {
         LinkedList exprStringList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR);
+            (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR);
 
         exprStringList = _parenExpr(node.getExpr(), exprStringList);
 
         if (post) {
-           return TNLManip.arrayToList(new Object[] {exprStringList, opString});
+            return TNLManip.arrayToList(new Object[] {exprStringList, opString});
         }
 
         return TNLManip.arrayToList(new Object[] {opString, exprStringList});
@@ -895,15 +895,15 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     protected LinkedList _visitBinaryOpNode(BinaryOpNode node, String opString) {
         LinkedList e1StringList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR1);
+            (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR1);
         LinkedList e2StringList =
-         (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR2);
+            (LinkedList) node.childReturnValueAt(node.CHILD_INDEX_EXPR2);
 
         e1StringList = _parenExpr(node.getExpr1(), e1StringList);
         e2StringList = _parenExpr(node.getExpr2(), e2StringList);
 
         return TNLManip.arrayToList(new Object[] {e1StringList, " ",
-         opString, " ", e2StringList});
+                                                      opString, " ", e2StringList});
     }
 
     protected LinkedList _visitBinaryOpAssignNode(BinaryOpAssignNode node, String opString) {
@@ -911,7 +911,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         List e2StringList = (List) node.childReturnValueAt(node.CHILD_INDEX_EXPR2);
 
         return TNLManip.arrayToList(new Object[] {e1StringList , " ",
-         opString, " ", e2StringList});
+                                                      opString, " ", e2StringList});
     }
 
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
@@ -924,15 +924,15 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
     }
 
     protected static LinkedList _separateList(List stringList,
-     String separator) {
+            String separator) {
         Iterator stringListItr = stringList.iterator();
         LinkedList retList = new LinkedList();
 
         while (stringListItr.hasNext()) {
-           retList.addLast(stringListItr.next());
-           if (stringListItr.hasNext()) {
-              retList.addLast(separator);
-           }
+            retList.addLast(stringListItr.next());
+            if (stringListItr.hasNext()) {
+                retList.addLast(separator);
+            }
         }
 
         return retList;
@@ -946,37 +946,37 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         TreeNode firstNode = (TreeNode) list.get(0);
 
         if (firstNode.classID() == LOCALVARDECLNODE_ID) {
-           // a list of local variables, with the same type and modifier
-           LocalVarDeclNode varDeclNode = (LocalVarDeclNode) firstNode;
-           LinkedList retList = new LinkedList();
+            // a list of local variables, with the same type and modifier
+            LocalVarDeclNode varDeclNode = (LocalVarDeclNode) firstNode;
+            LinkedList retList = new LinkedList();
 
-           retList.addLast(Modifier.toString(varDeclNode.getModifiers()));
+            retList.addLast(Modifier.toString(varDeclNode.getModifiers()));
 
-           retList.addLast(varDeclNode.getDefType().accept(this, null));
-           retList.addLast(" ");
+            retList.addLast(varDeclNode.getDefType().accept(this, null));
+            retList.addLast(" ");
 
-           Iterator declNodeItr = list.iterator();
+            Iterator declNodeItr = list.iterator();
 
-           while (declNodeItr.hasNext()) {
-              LocalVarDeclNode declNode = (LocalVarDeclNode) declNodeItr.next();
-              retList.addLast(declNode.getName().getIdent());
+            while (declNodeItr.hasNext()) {
+                LocalVarDeclNode declNode = (LocalVarDeclNode) declNodeItr.next();
+                retList.addLast(declNode.getName().getIdent());
 
-              TreeNode initExpr = declNode.getInitExpr();
-              if (initExpr != AbsentTreeNode.instance) {
-                 retList.addLast(" = ");
-                 retList.addLast(initExpr.accept(this, null));
-              }
+                TreeNode initExpr = declNode.getInitExpr();
+                if (initExpr != AbsentTreeNode.instance) {
+                    retList.addLast(" = ");
+                    retList.addLast(initExpr.accept(this, null));
+                }
 
-              if (declNodeItr.hasNext()) {
-                 retList.addLast(", ");
-              }
-           }
+                if (declNodeItr.hasNext()) {
+                    retList.addLast(", ");
+                }
+            }
 
-           return retList;
+            return retList;
 
         } else {
-           return _separateList(
-            TNLManip.traverseList(this, null, null, list), "; ");
+            return _separateList(
+                    TNLManip.traverseList(this, null, null, list), "; ");
         }
     }
 
@@ -984,42 +984,42 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         int classID = expr.classID();
 
         switch (classID) {
-          case INTLITNODE_ID:
-          case LONGLITNODE_ID:
-          case FLOATLITNODE_ID:
-          case DOUBLELITNODE_ID:
-          case BOOLLITNODE_ID:
-          case CHARLITNODE_ID:
-          case STRINGLITNODE_ID:
-          case BOOLTYPENODE_ID:
-          case ARRAYINITNODE_ID:
-          case NULLPNTRNODE_ID:
-          case THISNODE_ID:
-          case ARRAYACCESSNODE_ID:
-          case OBJECTNODE_ID:
-          case OBJECTFIELDACCESSNODE_ID:
-          case SUPERFIELDACCESSNODE_ID:
-          case TYPEFIELDACCESSNODE_ID:
-          case THISFIELDACCESSNODE_ID:
-          case TYPECLASSACCESSNODE_ID:
-          case OUTERTHISACCESSNODE_ID:
-          case OUTERSUPERACCESSNODE_ID:
-          case METHODCALLNODE_ID:
-          case ALLOCATENODE_ID:
-          case ALLOCATEANONYMOUSCLASSNODE_ID:
-          case ALLOCATEARRAYNODE_ID:
-          case POSTINCRNODE_ID:
-          case POSTDECRNODE_ID:
-          case UNARYPLUSNODE_ID:
-          case UNARYMINUSNODE_ID:
-          case PREINCRNODE_ID:
-          case PREDECRNODE_ID:
-          case COMPLEMENTNODE_ID:
-          case NOTNODE_ID:
-          return exprStrList;
+        case INTLITNODE_ID:
+        case LONGLITNODE_ID:
+        case FLOATLITNODE_ID:
+        case DOUBLELITNODE_ID:
+        case BOOLLITNODE_ID:
+        case CHARLITNODE_ID:
+        case STRINGLITNODE_ID:
+        case BOOLTYPENODE_ID:
+        case ARRAYINITNODE_ID:
+        case NULLPNTRNODE_ID:
+        case THISNODE_ID:
+        case ARRAYACCESSNODE_ID:
+        case OBJECTNODE_ID:
+        case OBJECTFIELDACCESSNODE_ID:
+        case SUPERFIELDACCESSNODE_ID:
+        case TYPEFIELDACCESSNODE_ID:
+        case THISFIELDACCESSNODE_ID:
+        case TYPECLASSACCESSNODE_ID:
+        case OUTERTHISACCESSNODE_ID:
+        case OUTERSUPERACCESSNODE_ID:
+        case METHODCALLNODE_ID:
+        case ALLOCATENODE_ID:
+        case ALLOCATEANONYMOUSCLASSNODE_ID:
+        case ALLOCATEARRAYNODE_ID:
+        case POSTINCRNODE_ID:
+        case POSTDECRNODE_ID:
+        case UNARYPLUSNODE_ID:
+        case UNARYMINUSNODE_ID:
+        case PREINCRNODE_ID:
+        case PREDECRNODE_ID:
+        case COMPLEMENTNODE_ID:
+        case NOTNODE_ID:
+            return exprStrList;
 
-          default:
-          return TNLManip.arrayToList(new Object[] {"(", exprStrList, ")"});
+        default:
+            return TNLManip.arrayToList(new Object[] {"(", exprStrList, ")"});
         }
     }
 
@@ -1028,17 +1028,17 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         StringBuffer sb = new StringBuffer();
 
         while (stringItr.hasNext()) {
-             Object stringObj = stringItr.next();
+            Object stringObj = stringItr.next();
 
-             if (stringObj instanceof List) {
+            if (stringObj instanceof List) {
                 // only use separators for top level
                 sb.append(_stringListToString((List) stringObj));
-             } else if (stringObj instanceof String) {
+            } else if (stringObj instanceof String) {
                 sb.append((String) stringObj);
-             } else {
+            } else {
                 throw new IllegalArgumentException(
-                 "unknown object in string list : " + stringObj);
-             }
+                        "unknown object in string list : " + stringObj);
+            }
         }
 
         return sb.toString();
