@@ -180,6 +180,7 @@ public class FSMGraphFrame extends GraphFrame {
                     getModel().addDebugListener(_controller);
                 } else if (actionCommand.equals("Stop Animating")) {
                     getModel().removeDebugListener(_controller);
+                    _controller.clearAnimation();
                 }
             } catch (KernelException ex) {
                 try {

@@ -49,9 +49,11 @@ import diva.canvas.event.LayerEvent;
 import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.AbstractInteractor;
 import diva.canvas.interactor.ActionInteractor;
+import diva.canvas.interactor.BasicSelectionRenderer;
 import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.interactor.GrabHandle;
 import diva.canvas.interactor.Interactor;
+import diva.canvas.interactor.SelectionRenderer;
 import diva.graph.GraphException;
 import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
@@ -137,15 +139,42 @@ public class FSMGraphController extends FSMViewerController
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newStateAction);
     }
 
+    /** Clear any animation highlight that might currently be active.
+     */
+    public void clearAnimation() {
+        // Deselect previous one.
+        if (_animatedState != null) {
+            _animationRenderer.renderDeselected(_animatedState);
+        }
+    }
+
     /** React to an event.  If the event is an instance of StateEvent,
      *  then print out the name of the new state.
      *  @param state The debug event.
      */
     public void event(DebugEvent event) {
-        // FIXME: animate.
         if (event instanceof StateEvent) {
-            System.out.println("*** "
-                    + ((StateEvent)event).getState().getFullName());
+            State state = ((StateEvent)event).getState();
+            if (state != null) {
+                Object location = state.getAttribute("_location");
+                if (location != null) {
+                    Figure figure = getFigure(location);
+                    if (figure != null) {
+                        if (_animationRenderer == null) {
+                            _animationRenderer = new BasicSelectionRenderer();
+                        }
+                        if (_animatedState != figure) {
+                            // Deselect previous one.
+                            if (_animatedState != null) {
+                                _animationRenderer.renderDeselected(
+                                        _animatedState);
+                            }
+                            _animationRenderer.renderSelected(figure);
+                            _animatedState = figure;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -232,6 +261,12 @@ public class FSMGraphController extends FSMViewerController
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** Currently animated state, if any. */
+    private Figure _animatedState;
+
+    /** Renderer for animation. */
+    private SelectionRenderer _animationRenderer;
 
     /** The interactor that interactively creates edges. */
     private LinkCreator _linkCreator;
@@ -371,7 +406,7 @@ public class FSMGraphController extends FSMViewerController
     /** An action to create a new state. */
     public class NewStateAction extends FigureAction {
 
-        /** Construct a new action. */
+        /** Construct a new state. */
 	public NewStateAction() {
 	    super("New State");
 	    putValue("tooltip", "New State");
