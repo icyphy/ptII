@@ -113,7 +113,7 @@ public class PropertyClassChanges implements MoMLFilter {
         }
 
         if (attributeName.equals("name")) {
-            // Save the name of the for later use if we see a "class"
+            // Save the name of the attribute for later use if we see a "class"
             _lastNameSeen = attributeValue;
             if (_currentlyProcessingActorWithPropertyClassChanges) {
                 if (_propertyMap.containsKey(attributeValue)) {
@@ -121,6 +121,13 @@ public class PropertyClassChanges implements MoMLFilter {
                     // class that had property class changes.
                     _newClass = (String)_propertyMap.get(attributeValue);
                     _foundChange = true;
+                    // Check if the found attribute will be removed by checking
+                    // the name of the _newClass
+                    if ((_newClass != null) && _newClass.endsWith("REMOVED!")) {
+                        _newClass = null;
+                        _foundChange = false;
+                        return null;
+                    }
                 } else {
                     // Saw a name that did not match.
                     // However, we might have other names that
@@ -327,15 +334,15 @@ public class PropertyClassChanges implements MoMLFilter {
             .put("ptolemy.domains.sr.kernel.Director",
                     srDirectorClassChanges);
 
-        // ModalModel
-        HashMap modalModelClassChanges = new HashMap();
-        // Key = property name, Value = new class name
-        modalModelClassChanges.put("directorClass",
-                "ptolemy.data.expr.StringParameter");
-
-        _actorsWithPropertyClassChanges
-            .put("ptolemy.domains.fsm.kernel.ModalModel",
-                    modalModelClassChanges);
+//        // ModalModel
+//        HashMap modalModelClassChanges = new HashMap();
+//        // Key = property name, Value = new class name
+//        modalModelClassChanges.put("directorClass",
+//                "ptolemy.data.expr.StringParameter");
+//
+//        _actorsWithPropertyClassChanges
+//            .put("ptolemy.domains.fsm.kernel.ModalModel",
+//                    modalModelClassChanges);
 
         // ImageUnpartition
         _actorsWithPropertyClassChanges
@@ -421,5 +428,19 @@ public class PropertyClassChanges implements MoMLFilter {
                 "ptolemy.domains.sdf.lib.VariableFIR",
                 rateParameterChanges);
 
+        ///////////////////////////////////////////////////////////
+        // Actors that have properties that will be removed.
+        // NOTE: Remove a property by setting the new class to "REMOVED!".
+
+        // ModalModel
+        // Remove the _Director attribute, whose default value is HSDirector.
+        // Remove the directorClass attribute, which does not reflect the 
+        // correct director that is needed by the model.
+        HashMap modalModelPropertyChanges = new HashMap();
+        modalModelPropertyChanges.put("_Director", "REMOVED!");
+
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.domains.fsm.modal.ModalModel",
+                modalModelPropertyChanges);
     }
 }
