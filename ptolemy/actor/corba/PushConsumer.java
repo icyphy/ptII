@@ -90,10 +90,10 @@ public class PushConsumer extends Source {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-    	ORBInitProperties  = new Parameter(this, "ORBInit");
+    	ORBInitProperties  = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
-        ConsumerName = new Parameter(this, "ConsumerName");
-        ConsumerName.setToken(new StringToken(""));
+        consumerName = new Parameter(this, "consumerName");
+        consumerName.setToken(new StringToken(""));
         blocking = new Parameter(this, "blocking",
                 new BooleanToken(false));
         blocking.setTypeEquals(BaseType.BOOLEAN);
@@ -113,7 +113,7 @@ public class PushConsumer extends Source {
     /** The name of the consumer. The type of the Parameter
      *  is StringToken.
      */
-    public Parameter ConsumerName;
+    public Parameter consumerName;
 
     /** Indicate whether the actor blocks when it haven't receive
      *  data. The default value is false of
@@ -257,10 +257,10 @@ public class PushConsumer extends Source {
             _orb.connect(_consumer);
             //registe the consumer with the given name
             NameComponent namecomp = new NameComponent(
-                    ((StringToken)ConsumerName.getToken()).
+                    ((StringToken)consumerName.getToken()).
                     stringValue(), "");
             _debug(getName(), " register the consumer with name: ",
-                    (ConsumerName.getToken()).toString());
+                    (consumerName.getToken()).toString());
             NameComponent path[] = {namecomp};
             ncRef.rebind(path, _consumer);
         } catch (UserException ex) {

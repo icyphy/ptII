@@ -81,10 +81,10 @@ public class PullSupplier extends Sink {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-    	ORBInitProperties  = new Parameter(this, "ORBInit");
+    	ORBInitProperties  = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
-        SupplierName = new Parameter(this, "SupplierName");
-        SupplierName.setToken(new StringToken(""));
+        supplierName = new Parameter(this, "supplierName");
+        supplierName.setToken(new StringToken(""));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -95,7 +95,7 @@ public class PullSupplier extends Sink {
     /** The name of the supplier. The type of the Parameter
      *  is StringToken.
      */
-    public Parameter SupplierName;
+    public Parameter supplierName;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -219,10 +219,10 @@ public class PullSupplier extends Sink {
             _orb.connect(_supplier);
             //registe the consumer with the given name
             NameComponent namecomp = new NameComponent(
-                    ((StringToken)SupplierName.getToken()).
+                    ((StringToken)supplierName.getToken()).
                     stringValue(), "");
             _debug(getName(), " register the consumer with name: ",
-                    (SupplierName.getToken()).toString());
+                    (supplierName.getToken()).toString());
             NameComponent path[] = {namecomp};
             ncRef.rebind(path, _supplier);
         } catch (UserException ex) {

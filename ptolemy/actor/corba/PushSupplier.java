@@ -81,9 +81,9 @@ public class PushSupplier extends Sink {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-    	ORBInitProperties  = new Parameter(this, "ORBInit");
+    	ORBInitProperties  = new Parameter(this, "ORBInitProperties");
         ORBInitProperties.setToken(new StringToken(""));
-        remoteConsumerName = new Parameter(this, "RemoteConsumerName");
+        remoteConsumerName = new Parameter(this, "remoteConsumerName");
         remoteConsumerName.setToken(new StringToken(""));
     }
 
@@ -188,14 +188,36 @@ public class PushSupplier extends Sink {
                     (remoteConsumerName.getToken()).toString());
             NameComponent path[] = {namecomp};
             // locate the remote actor
-            _remoteConsumer =
-                ptolemy.actor.corba.CorbaIOUtil.pushConsumerHelper.narrow(
-                        ncRef.resolve(path));
-            if(_remoteConsumer == null) {
-                throw new IllegalActionException(this,
-                        " can not find the remote consumer.");
+            while (!_stopRequested) {
+				try {
+					_debug("before try to get remote consumer.");
+					_remoteConsumer =
+						   ptolemy.actor.corba.CorbaIOUtil.pushConsumerHelper
+						   .narrow(ncRef.resolve(path));
+					_debug("after try to get remote consumer.");
+				   if (_remoteConsumer instanceof pushConsumer) {
+						_debug("get remote consumer.");
+				    	break;	
+				   }
+				   try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// ignor here and retry.
+					}
+	            }catch (Exception exp) {
+				// ignor here and retry.
+				exp.printStackTrace();
+				try {
+						
+						Thread.sleep(1000);
+					} catch (InterruptedException ex1) {
+						// ignor here and retry.
+					}
+				} 
             }
+           
         } catch (UserException ex) {
+            ex.printStackTrace();
             throw new IllegalActionException(this,
                     " initialize ORB failed." + ex.getMessage());
         }
