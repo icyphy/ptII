@@ -1,6 +1,6 @@
-/* An up-down counter.
+/* This actor puts a token to corresponding receivers. 
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,13 +44,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ChannelOutput
 /**
-This actor put a token to corresponding receivers. 
+This actor puts a token to corresponding receivers. 
 
 @author Yang
-@version $ $
-@since Ptolemy II 3.0
+@version $Id$
+@since Ptolemy II 3.1
 */
-
 public class ChannelOutput extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
@@ -110,7 +109,7 @@ public class ChannelOutput extends TypedAtomicActor {
      *  type of the port containing the specified receiver. 
      *  @param token The token to transmit, or null to clear
      *   the specified receiver.
-     *  @param sender The sending port.
+     *  @param token The token to send.
      *  @param receiver The receiver to which to transmit.
      *  @param properties The transmit properties (ignored in this base class).
      *  @throws IllegalActionException If the token cannot be converted
