@@ -29,13 +29,15 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.util.StringUtilities;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.StatusBar;
 import ptolemy.gui.Top;
 import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -402,13 +404,20 @@ public class TableauFrame extends Top {
         // windowClosed events rather than overriding the
         // windowClosing behavior given here.
         Effigy topEffigy = getEffigy().topEffigy();
-        if (topEffigy.numberOfOpenTableaux() > 1) {
-            // There are other tableau, so just close.
-            dispose();
-            return true;
-        } else {
-            return super._close();
+        // If the top-level effigy has any open tableau that
+        // is not this one, then simply close.  No need to prompt
+        // for save, as that will be done when that tableau is closed.
+        List tableaux = topEffigy.entityList(Tableau.class);
+        Iterator tableauxIterator = tableaux.iterator();
+        while (tableauxIterator.hasNext()) {
+            Tableau tableau = (Tableau)tableauxIterator.next();
+            if (tableau != _tableau) {
+                dispose();
+                return true;
+            }
         }
+        // If we get here, there was no other tableau.
+        return super._close();
     }
 
     /** Close all open tableaux, querying the user as necessary to save data,
@@ -587,7 +596,7 @@ public class TableauFrame extends Top {
             // The default on Windows is to open at user.home, which is
             // typically an absurd directory inside the O/S installation.
             // So we use the current directory instead.
-            // FIXME: This will probably fail with a security exception in
+            // NOTE: This will probably fail with a security exception in
             // applets.
             String currentWorkingDirectory =
                 StringUtilities.getProperty("user.dir");
