@@ -73,17 +73,14 @@ public class MouseInput3D extends GRActor {
 
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
     public TypedIOPort x;
     public TypedIOPort y;
 
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        _containedNode = new BranchGroup();
-        _react = new React();
-        _react.setSchedulingBounds(new BoundingSphere());
-        _containedNode.addChild(_react);
-        _hasData = false;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     public void fire() throws IllegalActionException  {
         super.fire();
@@ -96,10 +93,19 @@ public class MouseInput3D extends GRActor {
         }
     }
 
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _containedNode = new BranchGroup();
+        _react = new React();
+        _react.setSchedulingBounds(new BoundingSphere());
+        _containedNode.addChild(_react);
+        _hasData = false;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    public Node _getNodeObject() {
+    protected Node _getNodeObject() {
         return (Node) _containedNode;
     }
 

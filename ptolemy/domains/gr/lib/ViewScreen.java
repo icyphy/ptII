@@ -204,20 +204,19 @@ public class ViewScreen extends GRActor implements Placeable {
         }
     }
 
-    public Canvas3D getCanvas() {
-        return _canvas;
-    }
-
     public BranchGroup getBranchGroup() {
         return _branchRoot;
     }
 
+    public Canvas3D getCanvas() {
+        return _canvas;
+    }
 
-        /** This method creates the ViewScreen frame if it hasn't been
-         *  created (_canvas != null).  It sets up the canvas and draws any 3D
-         *  shapes.
-         */
 
+    /** This method creates the ViewScreen frame if it hasn't been
+     *  created (_canvas != null).  It sets up the canvas and draws any 3D
+     *  shapes.
+     */
     public void initialize() throws IllegalActionException {
 
             boolean addLights = false;
