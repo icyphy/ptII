@@ -90,7 +90,7 @@ public class DEFIFOQueue extends AtomicActor {
      */
     public void fire()
             throws CloneNotSupportedException, IllegalActionException{
- 
+
 	boolean bugFree = false;
 
         // Check if there's an event in the inData input
