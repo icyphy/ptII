@@ -52,7 +52,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.VersionAttribute;
 import ptolemy.moml.Documentation;
-import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 
 
@@ -109,7 +108,7 @@ that the model is represented on the screen, you can extend this
 class an override the _createView() method.  The rendition in this class
 is an instance of ModelPane.
 
-@author  Edward A. Lee
+@author  Edward A. Lee, Christopher Hylands
 @version $Id$
 */
 public class MoMLApplet extends PtolemyApplet {
@@ -234,33 +233,5 @@ public class MoMLApplet extends PtolemyApplet {
             _manager.addExecutionListener(this);
         }
         return toplevel;
-    }
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** A MoMLFilter that removes certain graphical classes.
-     */
-    public static class FilterOutGraphicalClasses implements MoMLFilter {
-        
-	/** If the attributeValue is "ptolemy.vergil.icon.AttributeValueIcon",
-	 *  then return "ptolemy.kernel.util.Attribute", otherwise
-	 *  return the original value of the attributeValue.
-	 *  @param container  The container for this attribute, ignored
-	 *  in this method.
-	 *  @param attributeName The name of the attribute, ignored
-	 *  in this method.
-	 *  @param attributeValue The value of the attribute.
-	 *  @return the filtered attributeValue;
-	 */
-        public String filterAttributeValue(NamedObj container,
-                String attributeName, String attributeValue) {
-	    if (attributeValue != null
-		&& attributeValue
-		.equals("ptolemy.vergil.icon.AttributeValueIcon")) {
-		return "ptolemy.kernel.util.Attribute";
-	    } 
-		
-            return attributeValue;
-        }
     }
 }
