@@ -101,8 +101,6 @@ ISJAVA_SRC = ptplot.isj
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) \
 	$(ISJAVA_SRC) \
-	PtolemyGraphics1_1.java.in \
-	PtolemyGraphics1_2.java.in \
 	copyright.txt \
 	histogram.bat \
 	index.htm \
@@ -135,7 +133,6 @@ OPTIONAL_FILES = \
 	$(PXGRAPHAPPLETJAR) \
 	$(PLOTMLAPPLETJAR) \
 	$(PLOTAPPLICATIONJAR) \
-	PtolemyGraphics.java \
 	'PlotBox$$CommandListener.class' \
 	'PlotBox$$DragListener.class' \
 	'PlotBox$$FillButtonListener.class' \
@@ -171,64 +168,6 @@ install: all jars \
 	$(INSTALL_PROGRAM) pxgraph.bat $(BIN_INSTALL_DIR)
 	$(INSTALL_PROGRAM) histogram.bat $(BIN_INSTALL_DIR)
 
-# FIXME: this is ugly, dangerous, and unportable.
-#
-# This is a workaround so that EPSGraphics can extend Graphics in
-# both JDK1.1 and JDK1.2
-# See the class comment in PtolemyGraphics1_2 for the complete story
-
-# There are two files:
-# PtolemyGraphics1_1.java.in and PtolemyGraphics1_2.java.in
-#
-# These files have java.in suffixes so that the rule that runs javadoc
-# for all of the Ptolemy II packages does not attempt to create documentation
-# for these files.
-#
-# PtolemyGraphics1_2.java.in extends Graphics, and has a method body
-# for the new bogus method Sun introduced into the Graphics class in JDK 1.2
-#
-# PtolemyGraphics1_1.java.in extends Graphics, and has no methods
-#
-# $PTII/conf/confTest.java is a small Java application that simply
-# prints the value of the java.version property.
-#
-# When configure is run, $PTII/conf/confTest is compiled and run, and
-# the value of the JVERSION variable in $PTII/mk/ptII.mk is set.
-#
-# The ptolemy/plot makefile checks the JVERSION variable and copies the
-# appropriate file to PtolemyGraphics.java.
-#
-# I modified EPSGraphics.java so that it extends PtolemyGraphics instead
-# of directly extending Graphics.
-#
-# We will have problems if other JDK 1.2 implementation return different
-# values for JDK 1.2.  Also, this will break when JDK1.2 is upgraded to
-# JDK1.2.1 etc.  I'll work on a fix to this.
-#
-#
-# Don't use GNU make only directives here, since that will make the
-# portability problem even worse, instead, use a sh case statement
-# so that we can look for the "1.2" substring.  If we don't do this,
-# then the version number from JDK1.2.1 etc. will not match properly.
-#
-PtolemyGraphics.java: PtolemyGraphics1_1.java.in PtolemyGraphics1_2.java.in \
-				$(ROOT)/mk/ptII.mk
-	@case "$(JVERSION)" in \
-	1.2*|1.3*) \
-	    echo "configure determined that java.version='$(JVERSION)'"; \
-	    echo " so we are running JDK1.2 or later."; \
-	    echo "Copying PtolemyGraphics1_2.java.in to PtolemyGraphics.java"; \
-	    cp PtolemyGraphics1_2.java.in PtolemyGraphics.java; \
-	    ;; \
-	*) \
-	    echo "configure determined that java.version='$(JVERSION)'"; \
-	    echo " so we are not running JDK1.2 or later."; \
-	    echo "Copying PtolemyGraphics1_1.java.in to PtolemyGraphics.java"; \
-	    cp PtolemyGraphics1_1.java.in PtolemyGraphics.java; \
-	    ;; \
-	esac
-
-
 ptplot: ptplot.in ../../config.status
 	(cd ../..; ./config.status)
 # zip might not get the permissions of configure right, so we run /bin/sh
@@ -245,7 +184,6 @@ BASECLASSFILES = \
 		$(ME)/PlotBox.class \
 		$(ME)/PlotDataException.class \
 		$(ME)/PlotPoint.class \
-		$(ME)/PtolemyGraphics.class \
 		'$(ME)/Plot$$Format.class' \
 		'$(ME)/PlotBox$$CommandListener.class' \
 		'$(ME)/PlotBox$$DragListener.class' \

@@ -61,7 +61,7 @@ its standard output to a file.
 @version $Id$
 */
 
-public class EPSGraphics extends PtolemyGraphics {
+public class EPSGraphics extends Graphics {
 
     /** Constructor for a graphics object that writes encapsulated
      *  PostScript to the specified output stream.  If the out argument is
