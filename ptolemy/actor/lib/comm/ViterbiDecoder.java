@@ -262,14 +262,14 @@ public class ViterbiDecoder extends Transformer {
             ArrayToken ampToken = ((ArrayToken)amplitude.getToken());
             if (ampToken.length() != 2) {
                 throw new IllegalActionException(this,
-                    "Invalid amplitudes for soft decoding!");
+                        "Invalid amplitudes for soft decoding!");
             }
             _trueAmp = ((DoubleToken)ampToken.getElement(0)).doubleValue();
             _falseAmp = ((DoubleToken)ampToken.getElement(1)).doubleValue();
             if (_trueAmp == _falseAmp) {
                 throw new IllegalActionException(this,
                         "Amplitudes for true input and false input cannot "
-                        "be the same!");
+                        + "be the same!");
             }
         }
 
@@ -347,10 +347,10 @@ public class ViterbiDecoder extends Transformer {
             _path = new int[_rowNum][_depth + 1];
             _tempPath = new int[_rowNum][_depth + 1];
             for (int i = 0; i < _rowNum; i ++) {
-                 for (int j = 0; j < _depth; j ++) {
-                     _path[i][j] = 0;
-                     _tempPath[i][j] = 0;
-                 }
+                for (int j = 0; j < _depth; j ++) {
+                    _path[i][j] = 0;
+                    _tempPath[i][j] = 0;
+                }
             }
             _depthInvalid = false;
         }
@@ -372,15 +372,15 @@ public class ViterbiDecoder extends Transformer {
                         y[i] = ((DoubleToken)inputToken[i]).doubleValue();
                     }
                     d = _computeSoftDistance(y, _trueAmp, _falseAmp,
-                        _truthTable[state][colIndex][0], _maskNumber);
+                            _truthTable[state][colIndex][0], _maskNumber);
                 } else {
                     boolean[] y = new boolean[_maskNumber];
                     for (int i = 0; i < _maskNumber; i++) {
                         y[i] = ((BooleanToken)inputToken[i]).booleanValue();
                     }
                     d = (double)(_computeHardDistance(y,
-                                         _truthTable[state][colIndex][0],
-                                         _maskNumber));
+                            _truthTable[state][colIndex][0],
+                            _maskNumber));
                 }
                 // The previous state for that possibility.
                 int oldState = _truthTable[state][colIndex][1];
@@ -525,7 +525,7 @@ public class ViterbiDecoder extends Transformer {
      *  @return The distance.
      */
     private double _computeSoftDistance(double[] y, double trueAmp,
-        double falseAmp, int truthValue, int maskNum) {
+            double falseAmp, int truthValue, int maskNum) {
         double distance = 0.0;
 
         for (int i = 0; i < maskNum; i ++) {

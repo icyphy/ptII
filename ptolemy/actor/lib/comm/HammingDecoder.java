@@ -257,7 +257,7 @@ public class HammingDecoder extends Transformer {
     private int _order;
 
     // Matrix "P".
-     private int[][] _parityMatrix;
+    private int[][] _parityMatrix;
 
     // Look-up table for correcting one-bit error.
     private int[] _index;
