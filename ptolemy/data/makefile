@@ -1,6 +1,6 @@
-# Makefile for Java Ptolemy Token and Parameters classes
+# Makefile for Java Ptolemy Token classes
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands, Neil Smyth based on a file by Thomas M. Parks
 #
 # $Id$
 #
@@ -71,7 +71,6 @@ JSRCS = \
 	MatrixToken.java \
 	NullToken.java \
 	ObjectToken.java \
-	Parameter.java \
 	ScalarToken.java \
 	StringToken.java \
 	Token.java \
