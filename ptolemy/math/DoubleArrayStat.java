@@ -396,7 +396,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     /** Given two array's of probabilities, calculate the relative entropy 
      *  aka Kullback Leibler distance, D(p || q), (in bits) between the 
      *  two probability mass functions. The result will be POSITIVE_INFINITY if
-     *  q has a zero probabability for a symbol for which p has a non-zero
+     *  q has a zero probability for a symbol for which p has a non-zero
      *  probability.
      *  The function computed is :
      *  <p>
@@ -482,7 +482,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     }
 
     /** Return a new array of Bernoulli random variables with a given
-     *  probabability of success p. On success, the random variable has
+     *  probability of success p. On success, the random variable has
      *  value 1.0; on failure the random variable has value 0.0.
      *  The number of elements to allocate is given by N.
      */
