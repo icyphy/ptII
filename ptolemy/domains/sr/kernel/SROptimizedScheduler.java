@@ -57,12 +57,12 @@ A scheduler the Synchronous Reactive (SR) domain.  This scheduler returns
 a static schedule for the graph.  The schedule guarantees that the values will
 converge to a fixed-point.
 <p>
-The recursive scheduling algorithm is due to Stephen Edwards, and is 
-described in his Ph.D. thesis.  First, a dependency graph is constructed, and 
-the strongly connected components (SCC) are determined.  A schedule for each 
+The recursive scheduling algorithm is due to Stephen Edwards, and is
+described in his Ph.D. thesis.  First, a dependency graph is constructed, and
+the strongly connected components (SCC) are determined.  A schedule for each
 SCC is obtained by separating the sub-graph into a head and a tail, and then
-recursively applying this algorithm to both the head and the tail.  The 
-schedule for the SCC is (<i>TH</i>)<super><i>n</i></super><i>T</i> where 
+recursively applying this algorithm to both the head and the tail.  The
+schedule for the SCC is (<i>TH</i>)<super><i>n</i></super><i>T</i> where
 <i>H</i> and <i>T</i> are the schedules of the head and tail, respectively, and
 <i>n</i> is the number of nodes in the head and represents the number of
 repetitions of the parenthesized expression.  Finally, the schedules of the
@@ -117,7 +117,7 @@ public class SROptimizedScheduler extends Scheduler {
      *  Overrides _getSchedule() method in the base class.
      *
      *  This method should not be called directly, rather the getSchedule()
-     *  method (which is defined in the superclass) will call it when the 
+     *  method (which is defined in the superclass) will call it when the
      *  schedule is invalid.  This method is not synchronized on the workspace.
      *
      *  @return A schedule representing the scheduling sequence.
@@ -145,7 +145,7 @@ public class SROptimizedScheduler extends Scheduler {
         List actorList = compositeActor.deepEntityList();
 
         DirectedGraph dependencyGraph = new DirectedGraph();
-        
+
         HashMap inputPortToActor = new HashMap();
         HashMap outputPortToActor = new HashMap();
 
@@ -203,7 +203,7 @@ public class SROptimizedScheduler extends Scheduler {
                                     dependentActor);
                         }
                     } else {
-                        Iterator dependentOutputIterator = 
+                        Iterator dependentOutputIterator =
                             dependentOutputList.iterator();
                         while (dependentOutputIterator.hasNext()) {
                             Object dependentOutput =
@@ -253,7 +253,7 @@ public class SROptimizedScheduler extends Scheduler {
         Object[] nodes = dependencyGraph.getNodes();
         Object bestNode = nodes[0];
         int smallestSuccessorSet = 0;
-        
+
         for (int i = 0; i < nodes.length; i++) {
             Object node = nodes[i];
             int numberOfSuccessors = dependencyGraph.successorSet(node).length;

@@ -41,15 +41,15 @@ import ptolemy.kernel.util.InvalidStateException;
 //////////////////////////////////////////////////////////////////////////
 //// SRReceiver
 /**
-The receiver for the Synchronous Reactive (SR) domain.  This receiver is a 
-mailbox with capacity one.  The status of this receiver can be known (either 
-known to contain a token or known not to contain a token) or unknown.  The 
-isKnown() method returns true if the receiver has known status.  If the 
-receiver has known status, the hasToken() method returns whether the receiver 
-has a token.  If the receiver has unknown status, the hasToken() method 
+The receiver for the Synchronous Reactive (SR) domain.  This receiver is a
+mailbox with capacity one.  The status of this receiver can be known (either
+known to contain a token or known not to contain a token) or unknown.  The
+isKnown() method returns true if the receiver has known status.  If the
+receiver has known status, the hasToken() method returns whether the receiver
+has a token.  If the receiver has unknown status, the hasToken() method
 will throw an UnknownTokenException.
 <p>
-In the course of an iteration in SR, receivers can change from unknown status 
+In the course of an iteration in SR, receivers can change from unknown status
 to known status, but never the other way around, as shown by the transitions
 in the diagram below.
 <p>
@@ -63,21 +63,21 @@ known values:     absent     value (present)
                        unknown
 </pre>
 <p>
-The status is automatically set to known when the put() method or setAbsent() 
-method is called.  Once a receiver becomes known, its value (or lack of a 
-value if it is absent) cannot change until the next iteration of the 
-director.  The hasRoom() method always returns true, but attempting to change 
+The status is automatically set to known when the put() method or setAbsent()
+method is called.  Once a receiver becomes known, its value (or lack of a
+value if it is absent) cannot change until the next iteration of the
+director.  The hasRoom() method always returns true, but attempting to change
 the status of a receiver from present to absent or from absent to present will
-result in an exception.  An exception will also be thrown if a receiver has 
-present status and it receives a token that is not the same as the one it 
+result in an exception.  An exception will also be thrown if a receiver has
+present status and it receives a token that is not the same as the one it
 already contains (as determined by the isEqualTo() method of the token).
-Thus, for an actor to be valid in SR, a firing must produce the same outputs 
+Thus, for an actor to be valid in SR, a firing must produce the same outputs
 given the same inputs (in a given iteration).
 <p>
-Since the value of a receiver cannot change (once it is known) in the course 
-of an iteration, tokens need not be consumed.  A receiver retains its token 
-until the director calls the reset() method at the beginning of the next 
-iteration, which resets the receiver to have unknown status.  There is no way 
+Since the value of a receiver cannot change (once it is known) in the course
+of an iteration, tokens need not be consumed.  A receiver retains its token
+until the director calls the reset() method at the beginning of the next
+iteration, which resets the receiver to have unknown status.  There is no way
 for an actor to reset a receiver to have unknown status.
 
 @author Paul Whitaker
@@ -97,7 +97,7 @@ public class SRReceiver extends Mailbox {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the contained Token without modifying or removing it.  If there 
+    /** Get the contained Token without modifying or removing it.  If there
      *  is none, throw an exception.
      *  @return The token contained in the receiver.
      */
@@ -131,8 +131,8 @@ public class SRReceiver extends Mailbox {
         }
     }
 
-    /** Return true if this receiver has known state, that is, the token in 
-     *  this receiver is known or if this receiver is known not to contain a 
+    /** Return true if this receiver has known state, that is, the token in
+     *  this receiver is known or if this receiver is known not to contain a
      *  token.
      *  @return True if this receiver has known state.
      */
@@ -141,7 +141,7 @@ public class SRReceiver extends Mailbox {
     }
 
     /** Set the state of this receiver to be known and to contain the
-     *  specified token.  If the receiver already contains an equal token, 
+     *  specified token.  If the receiver already contains an equal token,
      *  do nothing.
      *  @param token The token to be put into this receiver.
      */
@@ -154,7 +154,7 @@ public class SRReceiver extends Mailbox {
             _putToken(token);
         } else {
             if (!hasToken()) {
-                throw new IllegalOutputException(getContainer(), 
+                throw new IllegalOutputException(getContainer(),
                         "SRReceiver cannot transition from an absent state " +
                         "to a present state.");
             } else {
@@ -163,7 +163,7 @@ public class SRReceiver extends Mailbox {
                             (token.isEqualTo(_token).booleanValue()) ) {
                         // Do nothing, because this token was already present.
                     } else {
-                        throw new IllegalOutputException(getContainer(), 
+                        throw new IllegalOutputException(getContainer(),
                                 "SRReceiver cannot receive two tokens " +
                                 "that differ.");
                     }

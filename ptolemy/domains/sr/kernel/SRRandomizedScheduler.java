@@ -50,10 +50,10 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// SRRandomizedScheduler
 /**
-A scheduler the Synchronous Reactive (SR) domain.  This schedule is simply 
-a random ordering of all the actors.  The director should cycle through this 
-schedule repeatedly, deciding which actors to fire, until it determines 
-that the given iteration has converged.  The ordering of the schedule has 
+A scheduler the Synchronous Reactive (SR) domain.  This schedule is simply
+a random ordering of all the actors.  The director should cycle through this
+schedule repeatedly, deciding which actors to fire, until it determines
+that the given iteration has converged.  The ordering of the schedule has
 no effect on the results of an iteration.
 
 @author Paul Whitaker
@@ -104,7 +104,7 @@ public class SRRandomizedScheduler extends Scheduler {
      *  Overrides _getSchedule() method in the base class.
      *
      *  This method should not be called directly, rather the getSchedule()
-     *  method (which is defined in the superclass) will call it when the 
+     *  method (which is defined in the superclass) will call it when the
      *  schedule is invalid.  This method is not synchronized on the workspace.
      *
      *  @return A schedule representing the scheduling sequence.

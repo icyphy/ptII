@@ -36,7 +36,7 @@ import ptolemy.kernel.util.Nameable;
 //////////////////////////////////////////////////////////////////////////
 //// IllegalOutputException
 /**
-Thrown on an attempt to send a value to a port that violates the output 
+Thrown on an attempt to send a value to a port that violates the output
 monotonicity constraint of the SR domain.
 
 @author Paul Whitaker
