@@ -120,6 +120,7 @@ public class ProcessDirector extends Director {
         newobj._notdone = true;
         newobj._pausedReceivers = new LinkedList();
         newobj._threadList = new LinkedList();
+	newobj._threadsStopped = 0;
         return newobj;
     }
 
@@ -142,10 +143,12 @@ public class ProcessDirector extends Director {
      */
     public synchronized void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
-        while (!_isDeadlocked()) {
+        while (!_isDeadlocked() && !_areAllThreadsStopped()) {
             workspace.wait(this);
         }
-        _notdone = !_handleDeadlock();
+	if( !_areAllThreadsStopped() ) {
+            _notdone = !_handleDeadlock();
+	}
     }
 
     /** Increases the count of paused threads and checks whether the
@@ -234,12 +237,27 @@ public class ProcessDirector extends Director {
      */
     public boolean prefire() throws IllegalActionException  {
         Enumeration threads = _newthreads.elements();
-        // Starting threads.
-        while (threads.hasMoreElements()) {
-            ProcessThread thread = (ProcessThread)threads.nextElement();
-            thread.start();
+        ProcessThread thread = null;
+	if( _areAllThreadsStopped() ) {
+	    threads = _threadList.elements();
+	    while( threads.hasMoreElements() ) {
+		thread = (ProcessThread)threads.nextElement();
+		thread.restartThread();
+		synchronized(thread) {
+		    notifyAll();
+		}
+		if( _threadsStopped > 0 ) {
+		    _threadsStopped--;
+		} 
+	    }
+	} else {
+            threads = _newthreads.elements();
+            while (threads.hasMoreElements()) {
+                thread = (ProcessThread)threads.nextElement(); 
+		thread.start();
+	    }
+	    _newthreads.clear();
         }
-	_newthreads.clear();
         return true;
     }
 
@@ -310,6 +328,14 @@ public class ProcessDirector extends Director {
         return;
     }
 
+    /** Indicate to the director that a new thread under it's control
+     *  has been stopped. 
+     */
+    public synchronized void registerStoppedThread() {
+ 	_threadsStopped++;
+ 	notifyAll();
+    }
+
     /** Resumes execution of the model.
      *  All the actors that were paused using setResumePaused are resumed.
      *  The pause flag of the receivers is set to false and all the threads
@@ -331,6 +357,19 @@ public class ProcessDirector extends Director {
         (new NotifyThread(copy)).start();
     }
 
+    /** Request that execution of the current iteration stop. Call 
+     *  stopThread on each of the process threads that contain 
+     *  actors controlled by this director. This method is non-blocking.
+     *  After calling this method, the fire() method of this director
+     *  is guaranteed to return in finite time.
+     */
+    public void stopFire() {
+ 	Enumeration threads = _threadList.elements();
+ 	while( threads.hasMoreElements() ) {
+ 	    ProcessThread thread = (ProcessThread)threads.nextElement();
+ 	    thread.stopThread();
+ 	}
+    }
 
     /** Terminates all threads under control of this director immediately.
      *  This abrupt termination will not allow normal cleanup actions
@@ -357,14 +396,33 @@ public class ProcessDirector extends Director {
      *  director. A flag is set in all the receivers which causes 
      *  each process to terminate at the earliest communication point.
      *  <P>
+     *  Prior to setting receiver flags, this method wakes up the 
+     *  threads if they all are stopped.
+     *  <P>
      *  This method is not synchronized on the workspace, so the caller
      *  should be.
      * @exception IllegalActionException if an error occurs while
      *  accessing the receivers of all actors under the contol of
      *  this director.
-     *  FIXME
      */
     public void wrapup() throws IllegalActionException {
+	// First wake up threads if they are stopped.
+        Enumeration threads = _newthreads.elements();
+        ProcessThread thread = null;
+	if( _areAllThreadsStopped() ) {
+	    threads = _threadList.elements();
+	    while( threads.hasMoreElements() ) {
+		thread = (ProcessThread)threads.nextElement();
+		thread.restartThread();
+		synchronized(thread) {
+		    notifyAll();
+		}
+		if( _threadsStopped > 0 ) {
+		    _threadsStopped--;
+		} 
+	    }
+	} 
+
 	CompositeActor cont = (CompositeActor)getContainer();
         Enumeration allMyActors = cont.deepGetEntities();
         Enumeration actorPorts;
@@ -420,11 +478,23 @@ public class ProcessDirector extends Director {
 	_threadList.insertFirst(thr);
     }
 
+    /** Determine if all of the threads containing actors controlled
+     *  by this director have stopped due to a call of stopFire().
+     * @returns True if all active threads containing actors controlled
+     *  by this thread have stopped; otherwise return false.
+     */ 
+    protected synchronized boolean _areAllThreadsStopped() {
+ 	if( _threadsStopped == _actorsActive ) {
+ 	    return true;
+ 	}
+ 	return false;
+    }
+ 
     /** Return true if the count of active processes in the container is 0.
      *  Otherwise return true. Derived classes must override this method to 
      *  return true to any other forms of deadlocks that they might introduce.
-     *  @return true if there are no active processes in the container.
-     *  @deprecated use isDeadlocked() instead.
+     * @return true if there are no active processes in the container.
+     * @deprecated use isDeadlocked() instead.
      */
     protected synchronized boolean _checkForDeadlock() {
         if (_actorsActive == 0) {
@@ -438,7 +508,7 @@ public class ProcessDirector extends Director {
      *  Return false otherwise. 
      *  Should be overridden in derived classes to return true if all the 
      *  active processes are either blocked or paused. 
-     *  @deprecated Use isPaused() instead.
+     * @deprecated Use isPaused() instead.
      */
     protected synchronized boolean _checkForPause() {
         if (_actorsPaused >= _actorsActive) {
@@ -466,7 +536,7 @@ public class ProcessDirector extends Director {
 
     /** Return the number of active processes under the control of this
      *  director.
-     *  @return The number of active actors.
+     * @return The number of active actors.
      */
     protected synchronized long _getActiveActorsCount() {
 	return _actorsActive;
@@ -475,7 +545,7 @@ public class ProcessDirector extends Director {
 
     /** Return the number of paused processes under the control of this
      *  director.
-     *  @return The number of active actors.
+     * @return The number of active actors.
      */
     protected synchronized long _getPausedActorsCount() {
 	return _actorsPaused;
@@ -503,9 +573,8 @@ public class ProcessDirector extends Director {
      *  real deadlock has occurred and the simulation can be ended.
      *  It should return false if the simulation has data to proceed and
      *  need not be terminated.
-     *
-     *  @return True.
-     *  @exception IllegalActionException Not thrown in this base class.
+     * @return True.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     protected boolean _handleDeadlock() throws IllegalActionException {
 	return true;
@@ -526,7 +595,7 @@ public class ProcessDirector extends Director {
     /** Return true if the count of active processes in the container is 0.
      *  Otherwise return true. Derived classes must override this method to 
      *  return true to any other forms of deadlocks that they might introduce.
-     *  @return true if there are no active processes in the container.
+     * @return true if there are no active processes in the container.
      */
     protected synchronized boolean _isDeadlocked() {
         if (_actorsActive == 0) {
@@ -540,7 +609,7 @@ public class ProcessDirector extends Director {
      *  Return false otherwise. 
      *  Should be overridden in derived classes to return true if all the 
      *  active processes are either blocked or paused. 
-     *  @return true only if all active processes are paused.
+     * @return true only if all active processes are paused.
      */
     protected synchronized boolean _isPaused() {
         if (_actorsPaused >= _actorsActive) {
@@ -549,7 +618,6 @@ public class ProcessDirector extends Director {
 	    return false;
 	}
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
@@ -576,6 +644,10 @@ public class ProcessDirector extends Director {
 
     //A copy of threads started since the last invocation of prefire().
     private LinkedList _newthreads;
+
+    // A count of the active threads controlled by this director that 
+    // have been stopped
+    private int _threadsStopped = 0;
 }
 
 
