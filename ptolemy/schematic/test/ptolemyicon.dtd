@@ -1,18 +1,40 @@
-<!ELEMENT entity ANY >
 <!ELEMENT parameter ANY >
 <!ELEMENT schematic ANY >
 <!ENTITY string "string" >
 <!ENTITY doubleArray "doubleArray" >
-<!ELEMENT port ANY >
-<!ELEMENT icon ANY >
-<!ELEMENT library ANY >
-<!ELEMENT header ANY >
-<!ELEMENT graphic ANY >
-<!ELEMENT line ANY >
-<!ELEMENT rect ANY >
-<!ELEMENT ellipse ANY >
-<!ELEMENT polygon ANY >
-<!ELEMENT textline ANY >
-<!ELEMENT textbox ANY >
-<!ELEMENT image ANY >
+<!ELEMENT port ANY>
+<!ELEMENT icon (description, graphic*, port*)>
+<!ELEMENT iconlibrary (header, icon*)>
+<!ATTLIST iconlibrary
+name ID #REQUIRED
+version CDATA #REQUIRED
+path CDATA #REQUIRED>
+<!ELEMENT header (description, sublibrary*)>
+<!ELEMENT graphic ((line|rect|ellipse|polygon|textline|textbox|image)*) >
+<!ELEMENT line EMPTY>
+<!ELEMENT rect EMPTY>
+<!ELEMENT ellipse EMPTY>
+<!ELEMENT polygon EMPTY>
+<!ELEMENT textline (#PCDATA)>
+<!ELEMENT textbox (#PCDATA)>
+<!ELEMENT image EMPTY>
+<!ELEMENT entitytype EMPTY>
+<!ELEMENT description (#PCDATA)>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
