@@ -45,8 +45,6 @@ import diva.graph.layout.IncrementalLayoutListener;
 import diva.graph.layout.LayoutTarget;
 import diva.util.Filter;
 
-import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DebugListenerTableau;
@@ -63,7 +61,7 @@ import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogFactory;
-import ptolemy.vergil.ptdb.DebugController;
+import ptolemy.vergil.ptdb.BreakpointDialogFactory;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
@@ -117,19 +115,32 @@ public class ActorController extends AttributeController {
     public ActorController(GraphController controller, Access access) {
 	super(controller, access);
 
+        // "Configure Ports"
         if (access == FULL) {
             // Add to the context menu.
             _portDialogFactory = new PortDialogFactory();
             _menuFactory.addMenuItemFactory(_portDialogFactory);
         }
 
-        // NOTE: This requires that the configuration be non null, or it
-        // will report an error.
+        // NOTE: The following requires that the configuration be
+        // non-null, or it will report an error.
+
+        // "Look Inside"
         _menuFactory.addMenuItemFactory(
                 new MenuActionFactory(new LookInsideAction()));
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new DebugListenerAction()));
 
+        // "Listen to Actor"
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(new ListenToActorAction()));
+
+        // "Set Breakpoints"
+        if (access == FULL) {
+            // Add to the context menu.
+            _breakpointDialogFactory = new BreakpointDialogFactory(
+                    (BasicGraphController)getController());
+            _menuFactory.addMenuItemFactory(_breakpointDialogFactory);
+        }
+        
 	// The filter for the layout algorithm of the ports within this
 	// entity. This returns true only if the argument is a Port
         // and the parent is an instance of Location.
@@ -171,6 +182,8 @@ public class ActorController extends AttributeController {
     private PortDialogFactory _portDialogFactory;
 
     private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 10);
+
+    private BreakpointDialogFactory _breakpointDialogFactory;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -359,11 +372,12 @@ public class ActorController extends AttributeController {
             }
 	}
     }
-   // An action to look inside a composite.
+    
+    // An action to listen to debug messages in the actor.
     // NOTE: This requires that the configuration be non null, or it
     // will report an error with a fairly cryptic message.
-    private class DebugListenerAction extends FigureAction {
-	public DebugListenerAction() {
+    private class ListenToActorAction extends FigureAction {
+	public ListenToActorAction() {
 	    super("Listen to Actor");
 	}
 	public void actionPerformed(ActionEvent e) {
@@ -385,19 +399,14 @@ public class ActorController extends AttributeController {
                 Tableau tableau = frame.getTableau();
                 Effigy effigy = (Effigy)tableau.getContainer();
                 // Create a new text effigy inside this one.
+                // FIXME: see ActorGraphFrame#DebugMenuListener@actionPerformed
+                //   Is it ok for these to have the same names?
                 Effigy textEffigy = new TextEffigy(effigy,
                         effigy.uniqueName("debug listener"));
                 DebugListenerTableau debugTableau =
                     new DebugListenerTableau(textEffigy,
                             textEffigy.uniqueName("debugListener"));
                 debugTableau.setDebuggable(object);
-
-                // ptdb stuff
-                DebugController debugController = new DebugController(object, controller);
-                Director director = ((Actor)frame.getModel()).getDirector();
-                if (director != null) {
-                    director.addDebugListener(debugController);
-                }
             }
             catch (KernelException ex) {
                 try {
