@@ -113,7 +113,7 @@ public abstract class ScalarToken extends Token {
      */
     public long longValue()
 	    throws IllegalActionException {
-	throw new IllegalActionException("ScalarToken.intValue: This base "
+	throw new IllegalActionException("ScalarToken.longValue: This base "
 		+ "class does not contain a value.");
     }
 }
