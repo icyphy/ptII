@@ -80,7 +80,7 @@ public class ExpressionFunction implements Function {
         for (int i = 0; i < arguments.length; ++i) {
             String name = (String)_argumentNames.get(i);
             ptolemy.data.Token argument = arguments[i];
-            map.put(name, argument);
+            map.put(name, _argumentTypes[i].convert(argument));
         }
         NamedConstantsScope argumentsScope = new NamedConstantsScope(map);
         return parseTreeEvaluator.evaluateParseTree(

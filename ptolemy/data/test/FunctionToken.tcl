@@ -94,6 +94,21 @@ test FunctionToken-2.1 {Test add} {
     [$r1 add $r2] toString
 } {{(function(x, y) (function(x,y) 4+x+y)(x,y) + (function(a,b) 8+2)(x,y)}} {add not implemented}
 
+
+test FunctionToken-2.2 {test apply} {
+    set arg [java::new {ptolemy.data.IntToken} 1]
+    set args [java::new {ptolemy.data.Token[]} 1]
+    $args set 0 $arg
+
+    set r1 [java::new {ptolemy.data.FunctionToken} "(function(x:int) x+1)"] 
+    
+    set r2 [java::new {ptolemy.data.FunctionToken} "(function(x:double) x+1)"] 
+    set r3 [java::new {ptolemy.data.FunctionToken} "(function(x:int) x+1.0)"] 
+    
+    list [[$r1 apply $args] toString] [[$r2 apply $args] toString] [[$r3 apply $args] toString]
+} {2 2.0 2.0}
+
+
 ######################################################################
 ####
 # 
@@ -228,3 +243,4 @@ test FunctionToken-11.14 {test isEqualTo} {
     
     list [[$r1 isEqualTo $r1] toString] [[$r1 isEqualTo $r2] toString] [[$r1 isEqualTo $r3] toString]
 } {true false false}
+
