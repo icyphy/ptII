@@ -160,6 +160,7 @@ OPTIONAL_FILES = \
 	'PlotFrame$$FileMenuListener.class' \
 	'PlotFrame$$FormatListener.class' \
 	'PlotFrame$$SpecialMenuListener.class' \
+	'PlotFrame$$PLTOrXMLFileFilter.class' \
 	'Render$$1.class' \
 	'RenderApplication$$1.class' \
 	Render.java \
