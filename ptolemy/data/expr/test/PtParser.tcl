@@ -403,7 +403,7 @@ test PtParser-9.0 {Check that evaluation of the parse tree does not change the p
 ######################################################################
 ####
 # Need to test that constants can be registered and recognized by the parser.
-test PtParser-9.0 {Test that constants can be registered and recognized by the parser} {
+test PtParser-10.0 {Test that constants can be registered and recognized by the parser} {
     set p1 [java::new ptolemy.data.expr.PtParser]
     set root1 [ $p1 {generateParseTree String} "PI + E"]
     set res1 [ $root1 evaluateParseTree ]
@@ -428,3 +428,24 @@ test PtParser-9.0 {Test that constants can be registered and recognized by the p
     set value4 [$res1 toString]
     list $value1 $value2 $value3 $value4
 } {ptolemy.data.DoubleToken(5.86) ptolemy.data.StringToken(1.5neil) ptolemy.data.BooleanToken(true) ptolemy.data.LongToken(1000)}
+######################################################################
+####
+# Need to test that functions can access methods registered in the 
+# search path of the parser. can be registered and recognized by the parser.
+# FIXME: this test is not finished.
+test PtParser-10.1 {Test that functions can access registered classes.
+} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p1 {generateParseTree String} "min(1,3)"]
+    set res1 [ $root1 evaluateParseTree ]
+    set value1 [$res1 toString]
+
+    #$p1 registerClass "ptolemy.data.expr.UtilityFunctions"
+    
+    set root1 [ $p1 {generateParseTree String} "sin(30*PI/180)"]
+    set res1 [ $root1 evaluateParseTree ]
+    set value2 [$res1 toString]
+
+    
+    list $value1 $value2
+} {ptolemy.data.IntToken(1) ptolemy.data.DoubleToken(0.5)}
