@@ -208,5 +208,9 @@ BuildCmds= \
 !ENDIF 
 
 # End Source File
+# Begin Source File
+
+SOURCE=.\matlab.xsd
+# End Source File
 # End Target
 # End Project
