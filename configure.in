@@ -730,7 +730,7 @@ if test ! -d "$PTII/ptolemy/apps/soot"; then
     AC_MSG_RESULT([$PTII/ptolemy/apps/soot is not present, so we need not
 find the Soot - a Java Optimization Framework])
     SOOT_DIR='${PTII}/vendors/soot/1.2.2'
-    SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar'
+    SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/jre/lib/rt.jar'
 else
     AC_MSG_CHECKING([for soot directory])
     AC_ARG_WITH(soot, [  --with-soot=DIR       use SOOT from DIR,
@@ -747,6 +747,16 @@ else
   	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
                 AC_MSG_RESULT([$SOOT_DIR/jasminclasses.jar])
 	        SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar'
+	        AC_MSG_CHECKING([for \$PTJAVA_DIR/jre/lib/rt.jar])
+  	        if test -f "$PTJAVA_DIR/jre/lib/rt.jar"; then
+                    AC_MSG_RESULT([$PTJAVA_DIR/jre/lib/rt.jar])
+		    SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/jre/lib/rt.jar'
+	        else	
+		    # We could resurrect config/SystemJar.java and run it?
+		    SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar'
+		   AC_MSG_WARN(['Failed to find $PTJAVA_DIR/jre/lib/rt.jar
+    Classes that use Soot will compile, but will fail to run'])
+	        fi
 	    else
 	        SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar'
             fi
