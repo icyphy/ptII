@@ -26,7 +26,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (vogel@eecs.berkeley.edu)
-@AcceptedRating
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.media.javasound;
@@ -141,7 +141,7 @@ public class SoundPlayback {
      *  close and save the sound file, call method <i>stopPlayback</i>.
      *  @param fileName The file name to create. If the file already
      *  exists, overwrite it. Valid sound file formats are WAVE (.wav),
-     *  AIFF (.aif,.aiff), AU (.au). The file format to write is
+     *  AIFF (.aif, .
      *  determined automatically from the file extension.
      *  @param sampleRate Sample rate in Hz. Must be in the range: 8000
      *  to 48000.
@@ -154,9 +154,10 @@ public class SoundPlayback {
      *   be chosen smaller than <i>bufferSize</i>. Typical values
      *   are 1/2 to 1/16th of <i>bufferSize</i>.
      */
-    public SoundPlayback(String fileName, float sampleRate, int sampleSizeInBits,
-			int channels, int bufferSize,
-			int putSamplesSize) {
+    public SoundPlayback(String fileName,
+            float sampleRate, int sampleSizeInBits,
+            int channels, int bufferSize,
+            int putSamplesSize) {
 	System.out.println("SoundPlayback: constructor 2: invoked");
 
 	this._playbackMode = "file";
@@ -188,7 +189,7 @@ public class SoundPlayback {
      *  <i>stopPlayback()</i>.
      */
     public void startPlayback() {
-	System.out.println("SoundPLayback: startPlayback(): invoked");
+	System.out.println("SoundPlayback: startPlayback(): invoked");
 	if (_playbackMode == "speaker") {
 	    // Real time playback to speaker.
 	    _startPlaybackRealTime();
@@ -322,9 +323,10 @@ public class SoundPlayback {
 
         _frameSizeInBytes = format.getFrameSize();
 
-	System.out.println("SoundPLayback: _startPlaybackRealTime(): sampling rate = " + _sampleRate);
-	System.out.println("SoundPLayback: _startPlaybackRealTime(): sample size in bits = " +
-			   _sampleSizeInBits);
+	System.out.println("SoundPLayback: _startPlaybackRealTime(): " +
+                "sampling rate = " + _sampleRate);
+	System.out.println("SoundPLayback: _startPlaybackRealTime(): " +
+                "sample size in bits = " + _sampleSizeInBits);
 
         DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
 					 format,
@@ -440,7 +442,7 @@ public class SoundPlayback {
     }
 
     /* Convert a double array of audio samples in linear signed pcm big endian
-     * format into a byte array of audio samples (-1,1) range.
+     * format into a byte array of audio samples (-1, 1) range.
      * @param doubleArray Two dimensional array holding audio samples.
      * For each channel, m, doubleArray[m] is a single dimensional
      * array containing samples for channel m.
