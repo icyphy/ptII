@@ -74,7 +74,7 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII3.0
 #USER =		ptII
 #PTIIHOME =	/users/ptII
 USER =		cxh
-PTIIHOME =	/vol/maury/maury2/cxh/ptII3.0-beta
+PTIIHOME =	/vol/maury/maury2/cxh/ptII3.0.1
 
 PTIIADM =	$(PTIIHOME)/adm
 
@@ -88,6 +88,8 @@ PTIIDIST = 	$(PTIIADM)/dists/ptII$(VERSION)
 # Directories and files in the top level ptII directory that we should
 # include in the tar file.
 PTII_TOPDIR=	.cshrc \
+		.classpath \
+		.eclipse.epf \
 		README.txt \
 		bin \
 		com/JLex \
