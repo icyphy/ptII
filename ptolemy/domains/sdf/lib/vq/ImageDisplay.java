@@ -35,6 +35,7 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
+import ptolemy.actor.lib.Sink;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.media.Picture;
@@ -66,7 +67,7 @@ input image contains greyscale pixel intensities between 0 and 255 (inclusive).
 @version $Id$
 */
 
-public final class ImageDisplay extends SDFAtomicActor implements Placeable {
+public final class ImageDisplay extends Sink implements Placeable {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -80,41 +81,12 @@ public final class ImageDisplay extends SDFAtomicActor implements Placeable {
 
         super(container, name);
         
-	input = (SDFIOPort) newPort("input");
-        input.setInput(true);
         input.setTypeEquals(BaseType.INT_MATRIX);
 
         _oldxsize = 0;
         _oldysize = 0;
         _frame = null;
         _container = null;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The input port. */
-    public SDFIOPort input;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     */
-    public Object clone(Workspace ws) {
-        try {
-            ImageDisplay newobj = (ImageDisplay)(super.clone(ws));
-            newobj.input = (SDFIOPort)newobj.getPort("input");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
     }
 
     /**
@@ -181,16 +153,6 @@ public final class ImageDisplay extends SDFAtomicActor implements Placeable {
 	    if(_frame != null) {
 		_frame.pack();
 	    }
-	    Runnable painter = new Runnable() {
-		public void run() {
-		    _container.repaint();
-		}
-	    };
-	    try {
-		// Make sure the image gets updated.
-		SwingUtilities.invokeAndWait(painter);
-	    } catch(Exception e) {
-	    }
         }
 
         // convert the B/W image to a packed RGB image.  This includes
@@ -208,6 +170,18 @@ public final class ImageDisplay extends SDFAtomicActor implements Placeable {
         // display it.
         _picture.displayImage();
         _picture.repaint();
+        
+        Runnable painter = new Runnable() {
+            public void run() {
+                _container.paint(_container.getGraphics());
+            }
+        };
+        try {
+            // Make sure the image gets updated.
+            SwingUtilities.invokeAndWait(painter);
+        } catch(Exception e) {
+            System.out.println("interrupted");
+        }
     }
 
     /** Set the container that this actor should display data in.  If place
