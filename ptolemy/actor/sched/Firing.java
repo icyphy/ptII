@@ -73,6 +73,10 @@ public class Firing extends ScheduleElement {
      *  lowest-level nodes should be an instance of Firing. If the
      *  schedule is not valid, then the returned iterator will contain 
      *  null elements.
+     *  <p>
+     *  Note that the behavior of an iterator is unspecified if the
+     *  underlying schedule structure is modified while the iterator
+     *  is active.
      *  
      * @return An iterator over a sequence of actors.
      */
@@ -86,6 +90,10 @@ public class Firing extends ScheduleElement {
      *  of a sequence of firings. 
      *  Since this ScheduleElement is a Firing, the
      *  iterator returned will contain exactly one Firing (this Firing).
+     *  <p>
+     *  Note that the behavior of an iterator is unspecified if the
+     *  underlying schedule structure is modified while the iterator
+     *  is active.
      *  
      *  @return An iterator over a sequence of firings.
      */
