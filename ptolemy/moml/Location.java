@@ -39,7 +39,17 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj; // for javadoc
 import ptolemy.kernel.util.NameDuplicationException;
-import java.io.*;
+import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.StringUtilities;
+import ptolemy.kernel.util.ValueListener;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.util.Iterator;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// Location
@@ -53,7 +63,7 @@ an external port).
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
-public class Location extends Attribute implements Locatable {
+public class Location extends Attribute implements Locatable, Settable {
 
     /** Construct an attribute with the given name and position.
      *  @param container The container.
@@ -72,6 +82,118 @@ public class Location extends Attribute implements Locatable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a listener to be notified when the value of this settable
+     *  object changes.
+     *  @param listener The listener to add.
+     */
+    public void addValueListener(ValueListener listener) {
+        if (_valueListeners == null) {
+            _valueListeners = new LinkedList();
+        }
+        _valueListeners.add(listener);
+    }
+
+    /** Write a MoML description of this object.
+     *  MoML is an XML modeling markup language.
+     *  In this class, the object is identified by the "property"
+     *  element, with "name", "class", and "value" (XML) attributes.
+     *  The body of the element, between the "&lt;property&gt;"
+     *  and "&lt;/property&gt;", is written using
+     *  the _exportMoMLContents() protected method, so that derived classes
+     *  can override that method alone to alter only how the contents
+     *  of this object are described.
+     *  The text that is written is indented according to the specified
+     *  depth, with each line (including the last one)
+     *  terminated with a newline.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @param name The name to use instead of the current name.
+     *  @exception IOException If an I/O error occurs.
+     */
+    public void exportMoML(Writer output, int depth, String name)
+            throws IOException {
+        String value = getExpression();
+        String valueTerm = "";
+        if(value != null && !value.equals("")) {
+            valueTerm = " value=\"" + 
+                StringUtilities.escapeForXML(value) + "\"";
+        }
+
+        output.write(_getIndentPrefix(depth)
+               + "<"
+               + getMoMLElementName()
+               + " name=\""
+               + name
+               + "\" class=\""
+               + getClass().getName()
+               + "\""
+               + valueTerm
+               + ">\n");
+        _exportMoMLContents(output, depth + 1);
+        output.write(_getIndentPrefix(depth) + "</"
+                + getMoMLElementName() + ">\n");
+    }
+
+    /** Get the value of the attribute that has been set by setExpression(),
+     *  or null if there is none.
+     *  @return The expression.
+     */
+    public String getExpression() {
+        if(_location == null || _location.length == 0) {
+            return "";
+        }
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        for(int i = 0; i < _location.length - 1; i++) {
+            pw.print(_location[i]);
+            pw.print(", ");
+        }
+        pw.print(_location[_location.length - 1]);
+        return sw.toString();
+    }
+
+    /** Remove a listener from the list of listeners that is
+     *  notified when the value of this variable changes.  If no such listener
+     *  exists, do nothing.
+     *  @param listener The listener to remove.
+     */
+    public void removeValueListener(ValueListener listener) {
+        if (_valueListeners != null) {
+            _valueListeners.remove(listener);
+        }
+    }
+
+    /** Set the value of the attribute by giving some expression.
+     *  @param expression The value of the attribute.
+     *  @exception IllegalActionException If the expression is invalid.
+     */
+    public void setExpression(String expression)
+            throws IllegalActionException {
+        
+        // Parse the specification: a comma specified list of doubles.
+        StringTokenizer tokenizer = new StringTokenizer(expression, ",");
+        double[] location = new double[tokenizer.countTokens()];
+        int count = tokenizer.countTokens();
+        for(int i = 0; i < count; i++) {
+            String next = tokenizer.nextToken().trim();
+            location[i] = Double.parseDouble(next);
+        }
+
+        _location = location;
+
+        NamedObj container = (NamedObj)getContainer();
+        if (container != null) {
+            container.attributeChanged(this);
+        }
+        if (_valueListeners != null) {
+            Iterator listeners = _valueListeners.iterator();
+            while (listeners.hasNext()) {
+                ValueListener listener = (ValueListener)listeners.next();
+                listener.valueChanged(this);
+            }
+        }
+    }
+
     /** Get the location in some cartesian coordinate system.
      *  @return The location.
      */
@@ -82,8 +204,21 @@ public class Location extends Attribute implements Locatable {
     /** Set the location in some cartesian coordinate system.
      *  @param location The location.
      */
-    public void setLocation(double[] location) {
+    public void setLocation(double[] location) 
+            throws IllegalActionException {
         _location = location;
+
+        NamedObj container = (NamedObj)getContainer();
+        if (container != null) {
+            container.attributeChanged(this);
+        }
+        if (_valueListeners != null) {
+            Iterator listeners = _valueListeners.iterator();
+            while (listeners.hasNext()) {
+                ValueListener listener = (ValueListener)listeners.next();
+                listener.valueChanged(this);
+            }
+        }
     }
 
     /** Get a description of the class, which is the class name and
@@ -95,46 +230,18 @@ public class Location extends Attribute implements Locatable {
         if (_location == null) {
             return "(" + className + ", Location = null)";
         }
-        StringBuffer location = new StringBuffer();
-        for (int i = 0; i < _location.length; i++) {
-            if (i > 0) location.append(", ");
-            location.append("" +_location[i]);
-        }
-        return "(" + className + ", Location = (" + location.toString() + "))";
+        return "(" + className + ", Location = (" + getExpression() + "))";
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Write a MoML description of the contents of this object, which
-     *  in this base class is the attributes.  This method is called
-     *  by _exportMoML().  If there are attributes, then
-     *  each attribute description is indented according to the specified
-     *  depth and terminated with a newline character.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @exception IOException If an I/O error occurs.
-     *  @see NamedObj#_exportMoMLContents
-     */
-    protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
-	super._exportMoMLContents(output, depth);
-	if(_location != null && _location.length > 0) {
-            output.write(_getIndentPrefix(depth));
-            output.write("<location value=\"" + _location[0]);
-            if (_location.length > 1) {
-                output.write(", " + _location[1]);
-                if (_location.length > 2) {
-                    output.write(", " + _location[1]);
-                }
-            }
-            output.write("\"/>\n");
-	}
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The location.
     private double[] _location;
+
+    // Listeners for changes in value.
+    private List _valueListeners;
 }

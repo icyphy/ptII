@@ -62,6 +62,18 @@ test Location-1.1 {} {
 }
 
 test Location-1.2 {} {
+    $l1 setExpression {83.0, 92.0}
+    $n0 exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="N0" class="ptolemy.kernel.util.NamedObj">
+    <property name="L1" class="ptolemy.moml.Location" value="83.0, 92.0">
+    </property>
+</model>
+}
+
+test Location-1.3 {} {
     set moml_1 "$header
 <model name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
 </model>
@@ -70,9 +82,8 @@ test Location-1.2 {} {
     set toplevel [$parser parse $moml_1]
     $parser parse {
 <model name=".top">
-    <entity name="location" class="ptolemy.moml.Location">
-        <location value="83.0, 69.0"/>
-    </entity>
+    <property name="location" class="ptolemy.moml.Location" value="83.0, 69.0">
+    </property>
 </model>
 }
     $toplevel exportMoML
@@ -80,8 +91,7 @@ test Location-1.2 {} {
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.kernel.CompositeEntity">
-    <property name="location" class="ptolemy.moml.Location">
-        <location value="83.0, 69.0"/>
+    <property name="location" class="ptolemy.moml.Location" value="83.0, 69.0">
     </property>
 </model>
 }

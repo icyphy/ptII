@@ -41,6 +41,7 @@ element.
 
 @author  Edward A. Lee, Steve Neuendorffer
 @version $Id$
+@deprecated The only interesting subclass (Location) is settable instead.
 */
 public interface Locatable {
 
@@ -55,5 +56,5 @@ public interface Locatable {
     /** Set the location in some cartesian coordinate system.
      *  @param location The location.
      */
-    public void setLocation(double[] location);
+    public void setLocation(double[] location) throws IllegalActionException;
 }
