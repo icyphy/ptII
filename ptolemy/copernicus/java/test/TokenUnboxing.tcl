@@ -99,7 +99,7 @@ proc _doExecuteTest {className} {
 }
 
 
-# First, do an SDF test just to be sure things are working
+First, do an SDF test just to be sure things are working
 test TokenUnboxing-1.1 {} {
     _doSpecializedTypesTest Unboxing1
 } {}
@@ -271,3 +271,16 @@ test TokenUnboxing-11.2 {} {
 test TokenUnboxing-11.3 {} {
     _doExecuteTest Unboxing11
 } {token = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0}}
+
+
+test TokenUnboxing-12.1 {} {
+    _doSpecializedTypesTest Unboxing12
+} {{{VariableTerm: value = double, depth = 1, associated object = r7}} {{VariableTerm: value = int, depth = 1, associated object = $r1}} {{VariableTerm: value = int, depth = 1, associated object = $r3}} {{VariableTerm: value = int, depth = 1, associated object = $r3}} {{VariableTerm: value = int, depth = 1, associated object = $r3}} {{VariableTerm: value = int, depth = 1, associated object = <Unboxing12: ptolemy.data.Token _stateToken>}} {{VariableTerm: value = int, depth = 1, associated object = r15}} {{VariableTerm: value = int, depth = 1, associated object = r3}} {{VariableTerm: value = unknown, depth = -2147483648, associated object = $r9}} {{VariableTerm: value = unknown, depth = -2147483648, associated object = <Unboxing12: ptolemy.data.Token[] _resultArray>}} {{VariableTerm: value = unknown, depth = -2147483648, associated object = newarray (ptolemy.data.Token)[1]}}}
+
+test TokenUnboxing-12.2 {} {
+    _doUnboxingTest Unboxing12
+} {}
+
+test TokenUnboxing-12.3 {} {
+    _doExecuteTest Unboxing12
+} {}

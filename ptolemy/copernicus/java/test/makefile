@@ -56,10 +56,15 @@ JSRCS = TestUnboxingMain.java \
 	Unboxing5.java \
 	Unboxing6.java \
 	Unboxing7.java \
-	Unboxing8.java
+	Unboxing8.java \
+	Unboxing9.java \
+	Unboxing10.java \
+	Unboxing11.java \
+	Unboxing12.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	JavaTypeLattice.tcl \
 	QuickSmoke.tcl \
 	TokenUnboxing.tcl
 
