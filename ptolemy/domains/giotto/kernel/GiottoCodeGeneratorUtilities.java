@@ -136,9 +136,19 @@ public class GiottoCodeGeneratorUtilities {
      *  The Giotto code is printed on standard out.
      *  @param args The command-line arguments naming the .xml or
      *  .moml file to run
+     *  @exception Throwable If there is a problem reading the model
+     *  or generating code.
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws Throwable {
         try {
+            if (args.length != 1 ) {
+                throw new IllegalArgumentException(
+                        "Usage: java -classpath $PTII "
+                        + "ptolemy.domains.giotto.kernel"
+                        + ".GiottoCodeGeneratorUtilities ptolemyModel.xml\n"
+                        + "The model is read in and Giotto code is "
+                        + "generated on stdout.");
+            }
             MoMLParser parser = new MoMLParser();
             // We set the list of MoMLFilters to handle Backward Compatibility.
             parser.setMoMLFilters(BackwardCompatibility.allFilters());
@@ -162,11 +172,9 @@ public class GiottoCodeGeneratorUtilities {
 
             System.out.println(generateGiottoCode(toplevel));
         } catch (Throwable ex) {
-            System.err.println("Command failed: " + ex
-                    + "\n Usage: java -classpath $PTII "
-                    + "ptolemy.domains.giotto.kernel.GiottoCodeGeneratorUtilities"
-                    + " ptolemyModel.xml");
+            System.err.println("Command failed: " + ex);
             ex.printStackTrace();
+            throw ex;
         }
     }
 
