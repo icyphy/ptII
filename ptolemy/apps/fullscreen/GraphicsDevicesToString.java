@@ -1,4 +1,6 @@
-/* An actor that read in a java.awt.Image and writes information to its output
+/* An actor that read an ArrayToken of ObjectTokens where each
+ObjectToken is a java.awt.GraphicsDevice and outputs information
+about each GraphicsDevice.
 
 @Copyright (c) 2001 The Regents of the University of California.
 All rights reserved.
@@ -33,24 +35,27 @@ package ptolemy.apps.fullscreen;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
-import java.awt.Image;
+import java.awt.GraphicsDevice;
 
 //////////////////////////////////////////////////////////////////////////
-//// ImageToString
+//// GraphicsDevicesToString
 /**
-This actor reads an ObjectToken that is a java.awt.Image from the input
-and writes information about the image to the output as a StringToken.
+This actor that read an ArrayToken of ObjectTokens where each
+ObjectToken is a java.awt.GraphicsDevice and outputs information
+about each GraphicsDevice.
 
 @author  Christopher Hylands
 @version $Id$
  */
-public class ImageToString extends Transformer {
+public class GraphicsDevicesToString extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -60,34 +65,54 @@ public class ImageToString extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ImageToString(CompositeEntity container, String name)
+    public GraphicsDevicesToString(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	input.setTypeEquals(BaseType.OBJECT);
+        input.setTypeEquals(new ArrayType(BaseType.OBJECT));
 	output.setTypeEquals(BaseType.STRING);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read one java.awt.Image from each channel and write
-     *  information about each image to the output port as a
-     *  StringToken.
+    /** Read an ArrayToken containing ObjectTokens where each
+     *  ObjectToken is a java.awt.GraphicsDevice from each channel and
+     *  write information about each GraphicsDevice to the output port
+     *  as a StringToken.
      *
-     *  @exception IllegalActionException If there is no director.
-     */
+     *  @exception IllegalActionException If there is no director.  */
     public void fire() throws IllegalActionException {
         int width = input.getWidth();
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
-		ObjectToken objectToken = (ObjectToken) input.get(i);
-		Image image = (Image) objectToken.getValue();
-		String description = new String("Image: "
-						+ image.getWidth(null)
-						+ " x "
-						+ image.getHeight(null));
-		Token out = new StringToken(description);
-		output.broadcast(out);
+		Token[] inputArray = ((ArrayToken)input.get(0)).arrayValue();
+
+		for( int graphicsDeviceCount = 0;
+		     graphicsDeviceCount < inputArray.length;
+		     graphicsDeviceCount ++) {
+
+		    GraphicsDevice graphicsDevice =
+			(GraphicsDevice)
+			(((ObjectToken)inputArray[graphicsDeviceCount])
+			 .getValue());
+
+		    String graphicsDeviceType = "UNKNOWN";
+		    switch (graphicsDevice.getType()) {
+		    case GraphicsDevice.TYPE_RASTER_SCREEN:
+			graphicsDeviceType = "TYPE_RASTER_SCREEN";
+			break;
+		    case GraphicsDevice.TYPE_PRINTER:
+			graphicsDeviceType = "TYPE_PRINTER";
+			break;
+		    case GraphicsDevice.TYPE_IMAGE_BUFFER:
+			graphicsDeviceType = "TYPE_IMAGE_BUFFER";
+			break;
+		    }
+		    String description = new String("GraphicsDevice: "
+						    + graphicsDeviceType);
+		    Token out = new StringToken(description);
+		    output.broadcast(out);
+		}
             }
         }
     }

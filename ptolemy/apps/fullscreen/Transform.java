@@ -39,9 +39,9 @@ import java.awt.image.BufferedImage;
 /**
 
 <p>Some of the code in this file is based on code from
-http://java.sun.com/docs/books/tutorial/extra/fullscreen/example.html    
+<a href="http://java.sun.com/docs/books/tutorial/extra/fullscreen/example.html">http://java.sun.com/docs/books/tutorial/extra/fullscreen/example.html</a>
 
-@see ptolemy.domains.sdf.lib.image.FullScreeImageDisplay
+@see ptolemy.apps.fullscreen.FullScreeImageDisplay
 @author  Christopher Hylands
 @version $Id$
  */
@@ -105,7 +105,7 @@ public class Transform {
 		/ (double)originalImage.getWidth(null);
 	}
 
-	// Determine size of new image. 
+	// Determine size of new image.
 	// One of them should equal maximumDimension.
 	int scaledWidth = (int)(scale * originalImage.getWidth(null));
 	int scaledHeight = (int)(scale * originalImage.getHeight(null));

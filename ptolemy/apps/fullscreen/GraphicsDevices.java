@@ -1,4 +1,5 @@
-/* An actor that read in a java.awt.Image and writes information to its output
+/* An actor that generates an ArrayToken containing ObjectTokens where
+each ObjectToken is a GraphicsDevice.
 
 @Copyright (c) 2001 The Regents of the University of California.
 All rights reserved.
@@ -25,33 +26,34 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
-*/
+@AcceptedRating Red (cxh@eecs.berkeley.edu) */
 
 package ptolemy.apps.fullscreen;
 
-import ptolemy.actor.lib.Transformer;
+import ptolemy.actor.lib.Source;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
-import java.awt.Image;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 
 //////////////////////////////////////////////////////////////////////////
-//// ImageToString
+//// GraphicsDevices
 /**
-This actor reads an ObjectToken that is a java.awt.Image from the input
-and writes information about the image to the output as a StringToken.
+An actor that generates an ArrayToken containing ObjectTokens where
+each ObjectToken is a java.awt.GraphicsDevice that represents a screen
+or other device that we can write to.
 
 @author  Christopher Hylands
-@version $Id$
- */
-public class ImageToString extends Transformer {
-
+@version $Id$ */
+public class GraphicsDevices extends Source {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -60,35 +62,40 @@ public class ImageToString extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ImageToString(CompositeEntity container, String name)
+    public GraphicsDevices(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	input.setTypeEquals(BaseType.OBJECT);
-	output.setTypeEquals(BaseType.STRING);
+
+        // Set the type of the output port.
+        output.setTypeEquals(new ArrayType(BaseType.OBJECT));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read one java.awt.Image from each channel and write
-     *  information about each image to the output port as a
-     *  StringToken.
-     *
-     *  @exception IllegalActionException If there is no director.
+    /** Output the data read in the prefire.
+     *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
-        int width = input.getWidth();
-        for (int i = 0; i < width; i++) {
-            if (input.hasToken(i)) {
-		ObjectToken objectToken = (ObjectToken) input.get(i);
-		Image image = (Image) objectToken.getValue();
-		String description = new String("Image: "
-						+ image.getWidth(null)
-						+ " x "
-						+ image.getHeight(null));
-		Token out = new StringToken(description);
-		output.broadcast(out);
-            }
-        }
+        super.fire();
+        Token array[] = new Token[graphicsDevices.length];
+	for(int i = 0; i < graphicsDevices.length; i++) {
+	    array[i] = new ObjectToken(graphicsDevices[i]);
+	}
+	output.send(0, new ArrayToken(array));
     }
+
+    /** Get the graphics devices.
+     */
+    public void initialize() throws IllegalActionException {
+	GraphicsEnvironment graphicsEnvironment =
+	    GraphicsEnvironment.getLocalGraphicsEnvironment();
+	graphicsDevices = graphicsEnvironment.getScreenDevices();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    // Graphics devices that we can write to.
+    private GraphicsDevice graphicsDevices[];
 }

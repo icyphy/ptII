@@ -1,4 +1,5 @@
-/* An actor that read in a java.awt.Image and writes information to its output
+/* An actor that reads in a java.awt.Image and rotates it a certain number of
+degrees
 
 @Copyright (c) 2001 The Regents of the University of California.
 All rights reserved.
@@ -33,24 +34,31 @@ package ptolemy.apps.fullscreen;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
+import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
-//// ImageToString
+//// ImageRotate
 /**
-This actor reads an ObjectToken that is a java.awt.Image from the input
-and writes information about the image to the output as a StringToken.
+This actor reads an ObjectToken that is a java.awt.Image from the input,
+rotates it a certain number of degrees and writes the resulting
+image to the output port as an ObjectToken that is a java.awt.Image.
 
 @author  Christopher Hylands
 @version $Id$
  */
-public class ImageToString extends Transformer {
+public class ImageRotate extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -60,34 +68,42 @@ public class ImageToString extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ImageToString(CompositeEntity container, String name)
+    public ImageRotate(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	input.setTypeEquals(BaseType.OBJECT);
-	output.setTypeEquals(BaseType.STRING);
+	output.setTypeEquals(BaseType.OBJECT);
+        rotationInDegrees = new Parameter(this, "rotationInDegrees",
+                new IntToken(90));
+	rotationInDegrees.setTypeEquals(BaseType.INT);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The amount of of rotation in degrees.
+     *  This parameter contains an IntegerToken, initially with value 90.
+     */
+    public Parameter rotationInDegrees;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read one java.awt.Image from each channel and write
-     *  information about each image to the output port as a
-     *  StringToken.
+    /** Read one java.awt.Image from each channel and rotate each Image
+     *  the number of degrees indicated by the rotationInDegrees parameter.
      *
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         int width = input.getWidth();
+	int rotation =
+	    ((IntToken)(rotationInDegrees.getToken())).intValue();
         for (int i = 0; i < width; i++) {
             if (input.hasToken(i)) {
 		ObjectToken objectToken = (ObjectToken) input.get(i);
 		Image image = (Image) objectToken.getValue();
-		String description = new String("Image: "
-						+ image.getWidth(null)
-						+ " x "
-						+ image.getHeight(null));
-		Token out = new StringToken(description);
-		output.broadcast(out);
+		Image rotatedImage = Transform.rotate(image, rotation);
+		output.broadcast(new ObjectToken(rotatedImage));
             }
         }
     }

@@ -8,7 +8,13 @@
   <doc>Full Screen Image processing actors</doc>
 <entity name="FullScreenImageDisplay" class="ptolemy.apps.fullscreen.FullScreenImageDisplay">
 </entity>
+<entity name="GraphicsDevices" class="ptolemy.apps.fullscreen.GraphicsDevices">
+</entity>
+<entity name="GraphicsDevicesToString" class="ptolemy.apps.fullscreen.GraphicsDevicesToString">
+</entity>
 <entity name="ImageReader" class="ptolemy.apps.fullscreen.ImageReader">
+</entity>
+<entity name="ImageRotate" class="ptolemy.apps.fullscreen.ImageRotate">
 </entity>
 <entity name="ImageToString" class="ptolemy.apps.fullscreen.ImageToString">
 </entity>

@@ -1,4 +1,4 @@
-# Makefile for full screen application
+# Makefile for Full Screen demos
 #
 # @Authors: Christopher Hylands
 #
@@ -29,56 +29,62 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/apps/fullscreen
-
-DIRS =		test sun
+ME =		ptolemy/apps/fullscreen/sun
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = 	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	fullscreen
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+DIRS =
 
+# Keep this list alphabetized.
 JSRCS = \
-	FullScreenImageDisplay.java \
-	GraphicsDevices.java \
-	GraphicsDevicesToString.java \
-	ImageReader.java \
-	ImageRotate.java \
-	ImageToString.java \
-	MultiBuffer.java \
-	Transform.java
+	CapabilitiesTest.java \
+	DisplayModeTest.java \
+	GraphicsConfigurationTest.java \
+	MultiBufferTest.java
 
-OTHER_FILES_TO_BE_JARED = \
-	fullscreen.xml
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	$(DIRS) cg
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+JAVAC =		c:/jdk1.4/bin/javac
+JAVA =		c:/jdk1.4/bin/java
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+	@echo "To run the demo, run 'make demo'"
+	@echo "http://java.sun.com/docs/books/tutorial/extra/fullscreen/index.html"
+
+install: all
 
 depend:
 	@echo "no dependencies in this directory"
+
+demo: demo1 demo2 demo3 demo4
+demo1: CapabilitiesTest.class
+	$(JAVA) -classpath . CapabilitiesTest
+
+demo2: DisplayModeTest.class
+	$(JAVA) -classpath . DisplayModeTest
+
+demo3: MultiBufferTest.class
+	$(JAVA) -classpath . MultiBufferTest
+
+demo4: GraphicsConfigurationTest.class
+	$(JAVA) -classpath . GraphicsConfigurationTest
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

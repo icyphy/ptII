@@ -33,13 +33,11 @@ package ptolemy.apps.fullscreen;
 import ptolemy.actor.lib.Source;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.Token;
 import ptolemy.data.StringToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-//import ptolemy.actor.*;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -49,8 +47,8 @@ import javax.swing.ImageIcon;
 //////////////////////////////////////////////////////////////////////////
 //// ImageReader
 /**
-This actor reads an Image from an URL, and outputs it as
-an Object Token
+This actor reads an Image from an URL, and outputs it as an Object
+Token
 
 <p>It is possible to load a file
 from the local file system by using the prefix "file://" instead of
@@ -67,13 +65,11 @@ should be set to "file:///tmp/test.jpg" The default value is
 <p>FIXME: It would be nice if we could read images from stdin.
 
 @author  Christopher Hylands
-@version $Id$
- */
+@version $Id$ */
 public class ImageReader extends Source {
-    // We don't extend ptolemy.actor.lib.Reader because we 
-    // are not reading in data by columns.  Probably this
-    // class and ptolemy.actor.lib.Reader should extend
-    // a common base class?
+    // We don't extend ptolemy.actor.lib.Reader because we are not
+    // reading in data by columns.  Probably this class and
+    // ptolemy.actor.lib.Reader should extend a common base class?
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -140,7 +136,7 @@ public class ImageReader extends Source {
         return newObject;
     }
 
-    /** Read one row from the input and prepare for output them.
+    /** Read in an image.
      *  @exception IllegalActionException If an IO error occurs.
      */
     public boolean prefire() throws IllegalActionException {
