@@ -144,14 +144,6 @@ public class Manager extends NamedObj implements Runnable {
          _runningthread = new Thread(this);
          _runningthread.start();
 
-         ExecutionEvent event = new ExecutionEvent(this);
-         Enumeration listeners = _ExecutionListeners.elements();
-         while(listeners.hasMoreElements()) {
-             ExecutionListener l = 
-                 (ExecutionListener) listeners.nextElement();
-             l.executionStarted(event);
-         }
-
      }
          
     /** Invoke one iteration.  In this base class, one iteration consists of
@@ -298,6 +290,15 @@ public class Manager extends NamedObj implements Runnable {
         CompositeActor container = ((CompositeActor)getContainer());
         int count = 0;
         int iterations = 0;
+
+        ExecutionEvent event = new ExecutionEvent(this);
+        Enumeration listeners = _ExecutionListeners.elements();
+        while(listeners.hasMoreElements()) {
+            ExecutionListener l = 
+                (ExecutionListener) listeners.nextElement();
+            l.executionStarted(event);
+        }
+
         try {
             try {
                 iterations = _iterations;
@@ -309,9 +310,9 @@ public class Manager extends NamedObj implements Runnable {
 
                     try {
                         if(_isPaused) {
-                            ExecutionEvent event = 
+                            event = 
                                 new ExecutionEvent(this,iterations);
-                            Enumeration listeners = 
+                            listeners = 
                                 _ExecutionListeners.elements();
                             while(listeners.hasMoreElements()) {
                                 ExecutionListener l = 
@@ -344,9 +345,9 @@ public class Manager extends NamedObj implements Runnable {
                 _isPaused = false;
 
                 container.wrapup();
-                ExecutionEvent event = 
+                event = 
                     new ExecutionEvent(this,iterations);
-                Enumeration listeners = 
+                listeners = 
                     _ExecutionListeners.elements();
                 while(listeners.hasMoreElements()) {
                     ExecutionListener l = 
@@ -357,8 +358,8 @@ public class Manager extends NamedObj implements Runnable {
             }
         }
         catch (IllegalActionException e) {
-            ExecutionEvent event = new ExecutionEvent(this,iterations,e);
-            Enumeration listeners = _ExecutionListeners.elements();
+            event = new ExecutionEvent(this,iterations,e);
+            listeners = _ExecutionListeners.elements();
             while(listeners.hasMoreElements()) {
                 ExecutionListener l = 
                     (ExecutionListener) listeners.nextElement();
