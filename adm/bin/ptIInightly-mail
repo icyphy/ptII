@@ -14,6 +14,9 @@
 mailto=$1
 
 ADMDIR=/home/bldmastr/ptII/adm
+# If you change the version number, then edit 
+# ptolemy/web/nightly/toc.htm
+# and ptII/adm/gen-xxx/makefile
 GENDIR=$ADMDIR/gen-1.1
 cd $GENDIR
 
