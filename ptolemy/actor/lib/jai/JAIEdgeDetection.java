@@ -82,13 +82,15 @@ public class JAIEdgeDetection extends Transformer {
         _secondMask = _SOBEL_VERTICAL;
         
         specifiedFirstMask =
-            new Parameter(this, "userSpecifiedFirstMask", new ArrayToken(_doubleArrayToken));
+            new Parameter(this, "userSpecifiedFirstMask", 
+                    new ArrayToken(_doubleArrayToken));
         specifiedFirstXDim = 
             new Parameter(this, "userSpecifiedFirstXDim", new IntToken(3));
         specifiedFirstYDim = 
             new Parameter(this, "userSpecifiedFirstYDim", new IntToken(3));                         
         specifiedSecondMask =
-            new Parameter(this, "userSpecifiedSecondMask", new ArrayToken(_doubleArrayToken));
+            new Parameter(this, "userSpecifiedSecondMask", 
+                    new ArrayToken(_doubleArrayToken));
         specifiedSecondXDim = 
             new Parameter(this, "userSpecifiedSecondXDim", new IntToken(3));
         specifiedSecondYDim = 
@@ -102,28 +104,26 @@ public class JAIEdgeDetection extends Transformer {
      *  for edge detection.  Traditionally one mask is used for 
      *  horizontal edge detection, and one mask is used for vertical
      *  edge detection.
-     *  A value of 0 corresponds to a user specified mask.  If the user
-     *  decides to input his own mask, then he must also specify the 
-     *  width and height of the mask.
-     *  A value of 1 corresponds to the Sobel horizontal mask.
-     *  A value of 2 corresponds to the Sobel vertical mask.
-     *  A value of 3 corresponds to the Roberts horizontal mask.
-     *  A value of 4 corresponds to the Roberts vertical mask.
-     *  A value of 5 corresponds to the Prewitt horizontal mask.
-     *  A value of 6 corresponds to the Prewitt vertical mask.
-     *  A value of 7 corresponds to the Frei and Chen horizontal mask.
-     *  A value of 8 corresponds to the Frei and Chen vertical mask.
-     *  A value of 9 corresponds to a diagonal mask.  This mask finds
-     *  edges in the direction of a slash.
-     *  A value of 10 corresponds to the back diagonal mask.  This mask
-     *  finds edges in the direction of a backslash.
-     *  A value of 11 corresponds to a Transparent mask.  Using this 
-     *  mask allows you to find edges in one direction and add them
-     *  back to the original image.
-     *  A value of 12 corresponds to a mask of zeros.
+     *  The following predefined masks are available:
+     *  Sobel horizontal mask.
+     *  Sobel vertical mask.
+     *  Roberts horizontal mask.
+     *  Roberts vertical mask.
+     *  Prewitt horizontal mask.
+     *  Prewitt vertical mask.
+     *  Frei and Chen horizontal mask.
+     *  Frei and Chen vertical mask.
+     *  A diagonal mask, which finds edges in the direction of a slash.
+     *  A back diagonal mask, which finds edges in the direction of a 
+     *  backslash.
+     *  A Transparent mask.  Using this mask allows you to find edges in 
+     *  one direction and add them back to the original image.
+     *  A mask of zeros.
      *  The default mask for the first choice is a Sobel horizontal
      *  mask.  The default mask for the second choice is a Sobel
      *  vertical mask.
+     *  The user can also specify mask(s).  The dimensions of the mask(s)
+     *  must be specified if the user chooses to do so.
      */    
     public StringAttribute firstMask;    
     public StringAttribute secondMask;
@@ -147,7 +147,8 @@ public class JAIEdgeDetection extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class and set the scaling factors.
+    /** Override the base class and set change private variables if the
+     *  attribute corresponding to it has changed.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the function is not recognized,
      *  or if a contained method throws it.
@@ -210,6 +211,7 @@ public class JAIEdgeDetection extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** A convenience method to help in assingning masks.  */
     private int _maskNumberer(String maskName) 
             throws IllegalActionException {
         if (maskName.equals("Backdiagonal")) {
@@ -323,16 +325,10 @@ public class JAIEdgeDetection extends Transformer {
     private KernelJAI _firstKernelJAI;
     private KernelJAI _secondKernelJAI;
 
-    /** The choice of mask.  If it is 0, then it is a user specified
-     *  mask.  Otherwise, choices 1-12 are masks that are specified
-     *  below.
-     */
+    /** The choice of mask. */
     private int _firstMask;
     private int _secondMask;
 
-    /** The bound on the number of prespecified masks */
-    private final int _highestChoice = 12;
-    
     /** DoubleToken's representing zero and the square root of two */
     private final DoubleToken _zero = new DoubleToken("0.0F");
     private final DoubleToken _halfRootTwo = new DoubleToken("0.707F");
