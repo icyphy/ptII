@@ -261,7 +261,7 @@ runTreeShakeCodegen:
 	@rm -f $(STATSFILE)
 
 compareTreeShakeJars:
-	@echo "See {TREESHAKE_PREFIX}_jardiff.txt
+	@echo "See ${TREESHAKE_PREFIX}_jardiff.txt"
 	@echo "  for the .class files are present in the regular jar,"
 	@echo "  but not in the codegen jar"
 	@jar -tvf ${TREESHAKE_PREFIX}.jar | \
