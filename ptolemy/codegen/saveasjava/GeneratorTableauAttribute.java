@@ -34,16 +34,16 @@ import ptolemy.actor.gui.style.CheckBoxStyle;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.*;
+import ptolemy.moml.Documentation;
 
 import java.io.File;
 
 //////////////////////////////////////////////////////////////////////////
 //// GeneratorTableauAttribute
 /**
-Attribute is a base class for attributes to be attached to instances
-of NamedObj.  This base class is itself a NamedObj, with the only
-extension being that it can have a container.  The setContainer()
-method puts this object on the list of attributes of the container.
+This is an attribute that stores the configuration of a generator tableau.
+It contains a number of parameters that are presented to the user in
+the generator tableau to configure the generator.
 
 @author Edward A. Lee
 @version $Id$
@@ -72,18 +72,26 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
         deep = new Parameter(this, "deep",
                 new BooleanToken(false));
         new CheckBoxStyle(deep, "style");
+        Documentation doc = new Documentation(deep, "tooltip");
+        doc.setValue("Experimental generation of actor code.");
 
         show = new Parameter(this, "show",
                 new BooleanToken(true));
         new CheckBoxStyle(show, "style");
+        doc = new Documentation(show, "tooltip");
+        doc.setValue("Show generated code.");
 
         compile = new Parameter(this, "compile",
                 new BooleanToken(true));
         new CheckBoxStyle(compile, "style");
+        doc = new Documentation(compile, "tooltip");
+        doc.setValue("Compile generated code.");
 
         run = new Parameter(this, "run",
                 new BooleanToken(true));
         new CheckBoxStyle(run, "style");
+        doc = new Documentation(run, "tooltip");
+        doc.setValue("Execute generated code.");
 
         // Initialize the default directory.
         String defaultDirectory = "";
@@ -111,15 +119,23 @@ public class GeneratorTableauAttribute extends SingletonAttribute {
         }
         directory = new StringAttribute(this, "directory");
         directory.setExpression(defaultDirectory);
+        doc = new Documentation(directory, "tooltip");
+        doc.setValue("Directory into which to put generated code.");
 
         compileOptions = new StringAttribute(this, "compileOptions");
         compileOptions.setExpression("-classpath \"" + defaultClasspath + "\"");
+        doc = new Documentation(compileOptions, "tooltip");
+        doc.setValue("Options to pass to the compiler.");
 
         runOptions = new StringAttribute(this, "runOptions");
         runOptions.setExpression("-classpath \"" + defaultClasspath + "\"");
+        doc = new Documentation(runOptions, "tooltip");
+        doc.setValue("Options to use when executing the code.");
 
         packageName = new StringAttribute(this, "packageName");
         packageName.setExpression("");
+        doc = new Documentation(packageName, "tooltip");
+        doc.setValue("Package name for the generated classes.");
     }
 
     ///////////////////////////////////////////////////////////////////
