@@ -267,12 +267,16 @@ public class Display extends Sink implements Placeable, SequenceActor {
             }
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected members                   ////
+
+    protected JScrollPane _scrollPane;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
     private Container _container;
-    private JScrollPane _scrollPane;
 
     // The frame into which to put the text widget, if any.
     private JFrame _frame;
