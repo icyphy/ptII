@@ -125,7 +125,7 @@ test DDEReceiver-2.2 {Send a real token, an ignore token and a real token.} {
 ######################################################################
 ####
 #
-test DDEReceiver-2.3 {Send NullTokens through FlowThru.} {
+test DDEReceiver-2.3 {Send NullTokens through FlowThrough.} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
@@ -135,7 +135,7 @@ test DDEReceiver-2.3 {Send NullTokens through FlowThru.} {
     
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
     set actorSend [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 6]
-    set actorThru [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "actorThru"]
+    set actorThru [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "actorThru"]
 
     set tok1 [java::new ptolemy.data.Token]
 
@@ -178,7 +178,7 @@ test DDEReceiver-2.4 {Send Ignore and Real through multiport.} {
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 5]
     set actorSend1 [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend1" 3]
     set actorSend2 [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend2" 3]
-    set actorThru [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "actorThru"]
+    set actorThru [java::new ptolemy.domains.dde.kernel.test.FlowThrough $toplevel "actorThru"]
 
     set tok1 [java::new ptolemy.data.Token]
     

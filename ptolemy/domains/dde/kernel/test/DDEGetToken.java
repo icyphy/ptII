@@ -53,12 +53,12 @@ public class DDEGetToken extends DDEGet {
      */
     public DDEGetToken(TypedCompositeActor cont, String name, int numTokens)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-	 _numTokens = numTokens;
-	 _tokens = new Token[_numTokens];
-	 _threadTimes = new double[_numTokens];
-	 _rcvrTimes = new double[_numTokens];
+        _numTokens = numTokens;
+        _tokens = new Token[_numTokens];
+        _threadTimes = new double[_numTokens];
+        _rcvrTimes = new double[_numTokens];
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -106,9 +106,9 @@ public class DDEGetToken extends DDEGet {
 			Thread thread = Thread.currentThread();
 			if( thread instanceof DDEThread ) {
 			    TimeKeeper timeKeeper =
-				    ((DDEThread)thread).getTimeKeeper();
+                                ((DDEThread)thread).getTimeKeeper();
 			    _threadTimes[cnt] =
-				    timeKeeper.getCurrentTime();
+                                timeKeeper.getCurrentTime();
 			}
 		    } else {
 			System.out.println("No token for cnt "+cnt);

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (davisj@eecs.berkeley.edu)
-
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.dde.lib;
@@ -40,10 +40,10 @@ import ptolemy.data.Token;
 //////////////////////////////////////////////////////////////////////////
 //// DoubleFork
 /**
-DoubleFork is a simple DDE actor with one input and two outputs. It 
-has two multiport outputs - "output1" and "output2." The fire method of 
-DoubleFork passes real tokens throught the first output (output1). 
-Real tokens are never produced on output2. 
+DoubleFork is a simple DDE actor with one input and two outputs. It
+has two multiport outputs - "output1" and "output2." The fire method of
+DoubleFork passes real tokens through the first output (output1).
+Real tokens are never produced on output2.
 
 @author John S. Davis II
 @version $Id$
@@ -64,24 +64,24 @@ public class DoubleFork extends TypedAtomicActor {
      */
     public DoubleFork(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-         output1 = new TypedIOPort(this, "output1", false, true);
-	 output1.setMultiport(true);
-	 output1.setTypeEquals(Token.class);
-         output2 = new TypedIOPort(this, "output2", false, true);
-	 output2.setMultiport(true);
-	 output2.setTypeEquals(Token.class);
-         input = new TypedIOPort(this, "input", true, false);
-	 input.setMultiport(true);
-	 input.setTypeEquals(Token.class);
+        output1 = new TypedIOPort(this, "output1", false, true);
+        output1.setMultiport(true);
+        output1.setTypeEquals(Token.class);
+        output2 = new TypedIOPort(this, "output2", false, true);
+        output2.setMultiport(true);
+        output2.setTypeEquals(Token.class);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+        input.setTypeEquals(Token.class);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Execute this actor by consuming a real input token and producing
-     *  an equivalent real token on output1. 
+     *  an equivalent real token on output1.
      * @exception IllegalActionException If there are errors in obtaining
      *  the receivers of this actor.
      */
@@ -111,8 +111,8 @@ public class DoubleFork extends TypedAtomicActor {
 	return _continueIterations;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     public TypedIOPort output1;
     public TypedIOPort output2;

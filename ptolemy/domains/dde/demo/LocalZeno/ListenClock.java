@@ -115,7 +115,7 @@ public class ListenClock extends Clock {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      */
     public void addListeners(ExecEventListener listener) {
         if( _listeners == null ) {
@@ -133,7 +133,7 @@ public class ListenClock extends Clock {
         Enumeration enum = _listeners.elements();
         while( enum.hasMoreElements() ) {
             ExecEventListener newListener =
-                    (ExecEventListener)enum.nextElement();
+                (ExecEventListener)enum.nextElement();
             newListener.stateChanged(event);
         }
     }
@@ -178,8 +178,8 @@ public class ListenClock extends Clock {
         _listeners.removeOneOf(listener);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private LinkedList _listeners;
 

@@ -51,10 +51,10 @@ import collections.Comparator;
 /**
 A DDEDirector governs the execution of actors operating according
 to the DDE model of computation (MoC). The DDE MoC incorporates
-a distributed notion of time into a dataflow style communication 
-semantic. Much of the functionality of the DDEDirector is consistent 
-with the Process Networks director PNDirector. In particular, the 
-mechanism for dealing with blocking due to empty or full queues is 
+a distributed notion of time into a dataflow style communication
+semantic. Much of the functionality of the DDEDirector is consistent
+with the Process Networks director PNDirector. In particular, the
+mechanism for dealing with blocking due to empty or full queues is
 functionally identical for the DDEDirector and PNDirector.
 <P>
 The DDE domain's use of time serves as the point of divergence in
@@ -63,37 +63,37 @@ actors governed by a DDEDirector each actor has a local notion of
 time. Several features of the DDEDirector are intended to facilitate
 these local notions of time.
 <P>
-All DDE models have a completion time. The completion time is a preset 
-time after which all execution ceases. The completion time for a 
+All DDE models have a completion time. The completion time is a preset
+time after which all execution ceases. The completion time for a
 DDEDirector is specified via the <I>stopTime</I> parameter. The value
 of the stopTime parameter is passed to the receivers of all actors
-that the DDEDirector governs via newReceiver() during initialize(). 
-After initialize() has been called, the value of stopTime can not be 
+that the DDEDirector governs via newReceiver() during initialize().
+After initialize() has been called, the value of stopTime can not be
 changed.
 <P>
-The default value of the stopTime parameter is 
+The default value of the stopTime parameter is
 TimedQueueReceiver.ETERNITY. Given this value, a DDE model will
 continue executing without regard for a completion time.
 <P>
 Deadlock due to feedback loops is dealt with via NullTokens. When an
 actor in a DDE model receives a NullToken, it may advance its local
-time value even though no computation results directly from 
+time value even though no computation results directly from
 consumption of the NullToken. For models with feedback topologies,
 the actor FBDelay should be used.
 <P>
 The DDE model of computation assumes that valid time stamps have
 non-negative values. Three special purpose negative time values
-are reserved with the following meanings. The value of 
-TimedQueueReceiver.INACTIVE is reserved to indicate the termination 
-of a receiver. The value of TimedQueueReceiver.ETERNITY is reserved 
-to indicate that a receiver has not begun to participate in a model's 
+are reserved with the following meanings. The value of
+TimedQueueReceiver.INACTIVE is reserved to indicate the termination
+of a receiver. The value of TimedQueueReceiver.ETERNITY is reserved
+to indicate that a receiver has not begun to participate in a model's
 execution. The value of TimedQueueReceiver.IGNORE is reserved to
 indicate that the current token at the head of a DDEReceiver should
 be ignored in favor of the tokens contained in the other receivers
-of the actor in question. More details of IGNORE can be found in 
+of the actor in question. More details of IGNORE can be found in
 FBDelay.
 <P>
-NOTE: The current implementation of this director does not 
+NOTE: The current implementation of this director does not
 include an infrastructure for mutations. Hence, ChangeRequest
 and other facilities for changing the topology of a model are
 not included in this director.
@@ -107,9 +107,9 @@ not included in this director.
 */
 public class DDEDirector extends ProcessDirector {
 
-    /** Construct a DDEDirector in the default workspace with 
-     *  an empty string as its name. The director is added to 
-     *  the list of objects in the workspace. Increment the 
+    /** Construct a DDEDirector in the default workspace with
+     *  an empty string as its name. The director is added to
+     *  the list of objects in the workspace. Increment the
      *  version number of the workspace.
      */
     public DDEDirector() {
@@ -117,8 +117,8 @@ public class DDEDirector extends ProcessDirector {
 
 	try {
             double val = TimedQueueReceiver.ETERNITY;
-	    stopTime = new 
-		    Parameter(this, "stopTime", new DoubleToken(val) );
+	    stopTime = new
+                Parameter(this, "stopTime", new DoubleToken(val) );
 	} catch( IllegalActionException e ) {
 	    throw new InternalErrorException( e.toString() );
         } catch (NameDuplicationException e) {
@@ -126,9 +126,9 @@ public class DDEDirector extends ProcessDirector {
 	}
     }
 
-    /** Construct a director in the  workspace with an empty 
-     *  string as a name. The director is added to the list of 
-     *  objects in the workspace. Increment the version number 
+    /** Construct a director in the  workspace with an empty
+     *  string as a name. The director is added to the list of
+     *  objects in the workspace. Increment the version number
      *  of the workspace.
      * @param workspace The workspace of this object.
      */
@@ -137,8 +137,8 @@ public class DDEDirector extends ProcessDirector {
 
 	try {
             double val = TimedQueueReceiver.ETERNITY;
-	    stopTime = new 
-		    Parameter(this, "stopTime", new DoubleToken(val) );
+	    stopTime = new
+                Parameter(this, "stopTime", new DoubleToken(val) );
 	} catch( IllegalActionException e ) {
 	    throw new InternalErrorException( e.toString() );
         } catch (NameDuplicationException e) {
@@ -146,17 +146,17 @@ public class DDEDirector extends ProcessDirector {
 	}
     }
 
-    /** Construct a director in the given container with the 
-     *  given name. If the container argument must not be null, 
-     *  or a NullPointerException will be thrown. The given 
-     *  name must be unique with respect to the container. If 
+    /** Construct a director in the given container with the
+     *  given name. If the container argument must not be null,
+     *  or a NullPointerException will be thrown. The given
+     *  name must be unique with respect to the container. If
      *  the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     * @param workspace Object for synchronization and version 
+     * @param workspace Object for synchronization and version
      *  tracking
      * @param name Name of this director.
-     * @exception IllegalActionException It may be thrown in derived 
-     *  classes if the director is not compatible with the specified 
+     * @exception IllegalActionException It may be thrown in derived
+     *  classes if the director is not compatible with the specified
      *  container.
      */
     public DDEDirector(CompositeActor container, String name)
@@ -165,8 +165,8 @@ public class DDEDirector extends ProcessDirector {
 
 	try {
             double val = TimedQueueReceiver.ETERNITY;
-	    stopTime = new 
-		    Parameter(this, "stopTime", new DoubleToken(val) );
+	    stopTime = new
+                Parameter(this, "stopTime", new DoubleToken(val) );
 	} catch( IllegalActionException e ) {
 	    throw new InternalErrorException( e.toString() );
         } catch (NameDuplicationException e) {
@@ -175,7 +175,7 @@ public class DDEDirector extends ProcessDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                        public variables                   ////
+    ////                         public variables                  ////
 
     public Parameter stopTime;
 
@@ -186,7 +186,7 @@ public class DDEDirector extends ProcessDirector {
      *  method on behalf of an actor. If this method is called by
      *  other than a DDEThread, then return the current time as
      *  specified by the superclass of this method.
-     * @returns The current time of the DDEThread that calls this
+     * @return The current time of the DDEThread that calls this
      *  method.
      */
     public double getCurrentTime() {
@@ -199,11 +199,11 @@ public class DDEDirector extends ProcessDirector {
 	}
     }
 
-    /** Execute all deeply contained actors that are governed by 
-     *  this DDEDirector. Check for deadlocks when they occur, and 
+    /** Execute all deeply contained actors that are governed by
+     *  this DDEDirector. Check for deadlocks when they occur, and
      *  where possible, resolve them.
-     * @exception IllegalActionException If any called method of 
-     *  the container or one of the deeply contained actors throws 
+     * @exception IllegalActionException If any called method of
+     *  the container or one of the deeply contained actors throws
      *  it.
      */
     public void fire() throws IllegalActionException {
@@ -218,14 +218,14 @@ public class DDEDirector extends ProcessDirector {
 
     /** Schedule an actor to be fired at the specified time.
      *  If the thread that calls this method is an instance
-     *  of DDEThread, then the specified actor must be 
-     *  contained by this thread. If the thread that calls 
-     *  this method is not an instance of DDEThread, then 
-     *  store the actor and refire time in the initial time 
+     *  of DDEThread, then the specified actor must be
+     *  contained by this thread. If the thread that calls
+     *  this method is not an instance of DDEThread, then
+     *  store the actor and refire time in the initial time
      *  table of this director.
      *  <P>
      *  NOTE: The current implementation of this method is such
-     *  that a more appropriate name might be <I>continueAt()</I> 
+     *  that a more appropriate name might be <I>continueAt()</I>
      *  rather than <I>fireAt()</I>.
      * @param actor The actor scheduled to fire.
      * @param time The scheduled time to fire.
@@ -271,22 +271,22 @@ public class DDEDirector extends ProcessDirector {
         }
     }
 
-    /** Return true if one of the actors governed by this 
-     *  director has a pending mutation; return false 
+    /** Return true if one of the actors governed by this
+     *  director has a pending mutation; return false
      *  otherwise.
-     * @return True if a pending mutation exists; return 
+     * @return True if a pending mutation exists; return
      *  false otherwise.
      */
     public boolean hasMutation() {
         return false;
     }
 
-    /** Initialize this director and the actors it contains 
-     *  and set variables to their initial values. Create a 
-     *  DDEThread for each actor that this director controls 
+    /** Initialize this director and the actors it contains
+     *  and set variables to their initial values. Create a
+     *  DDEThread for each actor that this director controls
      *  but do not start the thread.
-     * @exception IllegalActionException If there is an 
-     *  error during the creation of the threads or 
+     * @exception IllegalActionException If there is an
+     *  error during the creation of the threads or
      *  initialization of the actors.
      */
     public void initialize() throws IllegalActionException {
@@ -298,12 +298,12 @@ public class DDEDirector extends ProcessDirector {
         _writeBlockedQs = new LinkedList();
     }
 
-    /** Return a new receiver of a type compatible with this 
-     *  director. If the completion time of this director has 
-     *  been explicitly set to a particular value then set the 
-     *  completion time of the receiver to this same value; 
-     *  otherwise set the completion time to 
-     *  TimedQueueReceiver.ETERNITY which indicates that the 
+    /** Return a new receiver of a type compatible with this
+     *  director. If the completion time of this director has
+     *  been explicitly set to a particular value then set the
+     *  completion time of the receiver to this same value;
+     *  otherwise set the completion time to
+     *  TimedQueueReceiver.ETERNITY which indicates that the
      *  receivers should ignore the completion time.
      *  @return A new DDEReceiver.
      */
@@ -319,13 +319,13 @@ public class DDEDirector extends ProcessDirector {
         return rcvr;
     }
 
-    /** Return true if the actors governed by this director can 
-     *  continue execution; return false otherwise. Continuation 
-     *  of execution is dependent upon whether the system is 
-     *  deadlocked in a manner that can not be resolved even if 
-     *  external communication occurs. 
+    /** Return true if the actors governed by this director can
+     *  continue execution; return false otherwise. Continuation
+     *  of execution is dependent upon whether the system is
+     *  deadlocked in a manner that can not be resolved even if
+     *  external communication occurs.
      * @return True if execution can continue; false otherwise.
-     * @exception IllegalActionException Not thrown in this class. 
+     * @exception IllegalActionException Not thrown in this class.
      *  May be thrown in derived classes.
      */
     public boolean postfire() throws IllegalActionException {
@@ -394,9 +394,9 @@ public class DDEDirector extends ProcessDirector {
 
     /** Return a new ProcessThread of a type compatible with this
      *  director.
-     * @param actor The actor that the new ProcessThread will 
+     * @param actor The actor that the new ProcessThread will
      *  control.
-     * @param director The director that manages the new 
+     * @param director The director that manages the new
      *  ProcessThread.
      * @exception IllegalActionException If an error occurs while
      *  instantiating the new ProcessThread.
@@ -406,22 +406,22 @@ public class DDEDirector extends ProcessDirector {
 	return new DDEThread(actor, director);
     }
 
-    /** Resolve any deadlocks of the actors governed by this 
-     *  director. Return true if the deadlock has successfully 
+    /** Resolve any deadlocks of the actors governed by this
+     *  director. Return true if the deadlock has successfully
      *  been resolved; return false otherwise.
-     * @return True if deadlocks no longer exist; return 
+     * @return True if deadlocks no longer exist; return
      *  false otherwise.
      */
-    protected boolean _handleDeadlock() throws 
+    protected boolean _handleDeadlock() throws
     	    IllegalActionException {
         if( _writeBlocks != 0 ) {
             // Artificial Non-timed Deadlock
-            System.out.println("Artificial deadlock!! Write blocks = " 
+            System.out.println("Artificial deadlock!! Write blocks = "
                     + _writeBlocks);
             _incrementLowestCapacityPort();
         } else {
             // Real Non-timed Deadlock
-            System.out.println("Real deadlock!! Read blocks = " 
+            System.out.println("Real deadlock!! Read blocks = "
             	    + _readBlocks);
             return true;
         }
@@ -511,39 +511,31 @@ public class DDEDirector extends ProcessDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class			   ////
-    
+
     private class RcvrCapacityComparator implements Comparator {
-            
-       /**
-        * @exception ClassCastException If fst and scd are
-        *  not instances of DDEReceiver.
-        */
-       public int compare( Object fst, Object scd ) {
-           DDEReceiver first = null;
-           DDEReceiver second = null;
-           
-           if( fst instanceof DDEReceiver ) {
-               first = (DDEReceiver)fst;
-           }
-           if( scd instanceof DDEReceiver ) {
-               second = (DDEReceiver)scd;
-           }
-           
-           if( first.getCapacity() < second.getCapacity() ) {
-               return 1;
-           } else if( first.getCapacity() > second.getCapacity() ) {
-               return -1;
-           } else {
-               return 0;
-           }
-       }
+
+        /**
+         * @exception ClassCastException If fst and scd are
+         *  not instances of DDEReceiver.
+         */
+        public int compare(Object fst, Object scd) {
+            DDEReceiver first = null;
+            DDEReceiver second = null;
+
+            if( fst instanceof DDEReceiver ) {
+                first = (DDEReceiver)fst;
+            }
+            if( scd instanceof DDEReceiver ) {
+                second = (DDEReceiver)scd;
+            }
+
+            if( first.getCapacity() < second.getCapacity() ) {
+                return 1;
+            } else if( first.getCapacity() > second.getCapacity() ) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
     }
 }
-
-
-
-
-
-
-
-

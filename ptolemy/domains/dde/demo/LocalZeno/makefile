@@ -69,6 +69,12 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'LocalZenoApplet$$1.class' \
+	'LocalZenoApplet$$2.class' \
+	'LocalZenoApplet$$3.class' \
+	'LocalZenoApplet$$LocalEdgeRenderer.class' \
+	'LocalZenoApplet$$StateListener.class' \
+	'LocalZenoApplet$$ThreadRenderer.class' \
 	'LocalZenoApplication$$1.class' \
 	'LocalZenoApplication$$2.class' \
 	'LocalZenoApplication$$LocalEdgeRenderer.class' \

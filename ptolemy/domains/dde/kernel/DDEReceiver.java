@@ -44,28 +44,28 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// DDEReceiver
 /**
-A receiver that stores time stamped tokens according to DDE 
-semantics. A <I>time stamped token</I> is a token that has a 
-time stamp associated with it. A DDEReceiver stores time 
-stamped tokens by enforcing a blocking read and blocking 
-write style. Time stamped tokens are appended to the queue 
-with either of the put() methods, both of which block on a 
-write if the queue is full. Time stamped tokens are removed 
-from the queue via the get() method that blocks on a read if 
-the queue is empty. If a process blocks on a read or a write, 
-the director is informed. Blocks are removed (and the director 
-is informed) if the conditions of the queue contents that led 
+A receiver that stores time stamped tokens according to DDE
+semantics. A <I>time stamped token</I> is a token that has a
+time stamp associated with it. A DDEReceiver stores time
+stamped tokens by enforcing a blocking read and blocking
+write style. Time stamped tokens are appended to the queue
+with either of the put() methods, both of which block on a
+write if the queue is full. Time stamped tokens are removed
+from the queue via the get() method that blocks on a read if
+the queue is empty. If a process blocks on a read or a write,
+the director is informed. Blocks are removed (and the director
+is informed) if the conditions of the queue contents that led
 to blocking no longer exist.
 <P>
-The key difference between DDEReceiver and TimedQueueReceiver 
-is that get() and put() block as described above. In fact, 
-the blocking mechanism of DDEReceiver is such that hasToken() 
-blocks as well. If hasToken() is called while the receiver is 
+The key difference between DDEReceiver and TimedQueueReceiver
+is that get() and put() block as described above. In fact,
+the blocking mechanism of DDEReceiver is such that hasToken()
+blocks as well. If hasToken() is called while the receiver is
 empty, then hasToken() will block until a token is available.
 <P>
-This class assumes that valid time stamps have non-negative 
-values. Several reserved negative values exist for special 
-purposes: INACTIVE, IGNORE and RECEIVER. These values are 
+This class assumes that valid time stamps have non-negative
+values. Several reserved negative values exist for special
+purposes: INACTIVE, IGNORE and RECEIVER. These values are
 public attributes of TimedQueueReceiver.
 
 
@@ -75,7 +75,7 @@ public attributes of TimedQueueReceiver.
 @see ptolemy.domains.dde.kernel.DDEThread
 */
 public class DDEReceiver extends TimedQueueReceiver
-        implements ProcessReceiver {
+    implements ProcessReceiver {
 
     /** Construct an empty receiver with no container.
      */
@@ -114,7 +114,7 @@ public class DDEReceiver extends TimedQueueReceiver
         if( getRcvrTime() != TimedQueueReceiver.IGNORE ) {
             return;
         }
-        
+
 	// Remove Ignored Token
 	super.get();
 
@@ -135,19 +135,19 @@ public class DDEReceiver extends TimedQueueReceiver
      *  then inform the director that this receiver is blocking on
      *  a read and wait until a token becomes available. When a
      *  token becomes available, determine if this queue has the
-     *  unique oldest receiver time with respect to all of the 
-     *  receivers contained by the actor that contains this receiver; 
-     *  if so, return the token. If the receiver time is a non-unique 
-     *  minimum then determine if this receiver has the highest 
-     *  priority of all receivers that share the non-unique minimum 
-     *  receiver time and if so, return the token. Otherwise throw a 
-     *  NoTokenException. If at any point during this method this 
-     *  receiver is scheduled for termination, then throw a 
-     *  TerminateProcessException to cease execution of the actor 
-     *  that contains this receiver. 
+     *  unique oldest receiver time with respect to all of the
+     *  receivers contained by the actor that contains this receiver;
+     *  if so, return the token. If the receiver time is a non-unique
+     *  minimum then determine if this receiver has the highest
+     *  priority of all receivers that share the non-unique minimum
+     *  receiver time and if so, return the token. Otherwise throw a
+     *  NoTokenException. If at any point during this method this
+     *  receiver is scheduled for termination, then throw a
+     *  TerminateProcessException to cease execution of the actor
+     *  that contains this receiver.
      *  <P>
-     *  IMPORTANT: This method is designed to be called after 
-     *  hasToken() has been called. Verify that this method is 
+     *  IMPORTANT: This method is designed to be called after
+     *  hasToken() has been called. Verify that this method is
      *  safe to call by calling hasToken() first.
      * @return Token The oldest token on this queue if this queue has
      *  the minimum receiver time of all receivers contained by the
@@ -157,12 +157,12 @@ public class DDEReceiver extends TimedQueueReceiver
      */
     public Token get() throws NoTokenException {
         DDEDirector director = (DDEDirector)
-	        ((Actor)getContainer().getContainer()).getDirector();
+            ((Actor)getContainer().getContainer()).getDirector();
 	synchronized( this ) {
 	    if( _terminate ) {
 		throw new TerminateProcessException("");
 	    }
-	    Token token = super.get(); 
+	    Token token = super.get();
 	    if( _writePending ) {
 		director.removeWriteBlock( this );
 		_writePending = false;
@@ -171,7 +171,7 @@ public class DDEReceiver extends TimedQueueReceiver
 	    Thread thread = Thread.currentThread();
 	    if( thread instanceof DDEThread ) {
 		TimeKeeper timeKeeper =
-                        ((DDEThread)thread).getTimeKeeper();
+                    ((DDEThread)thread).getTimeKeeper();
 		timeKeeper.sendOutNullTokens();
 	    }
 	    return token;
@@ -198,28 +198,28 @@ public class DDEReceiver extends TimedQueueReceiver
     public boolean hasToken() {
 	Workspace workspace = getContainer().workspace();
         DDEDirector director = (DDEDirector)
-	        ((Actor)getContainer().getContainer()).getDirector();
+            ((Actor)getContainer().getContainer()).getDirector();
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
-	    TimeKeeper timeKeeper = 
-            	    ((DDEThread)thread).getTimeKeeper();
-	    return _hasToken( workspace, director, 
+	    TimeKeeper timeKeeper =
+                ((DDEThread)thread).getTimeKeeper();
+	    return _hasToken( workspace, director,
             	    timeKeeper, _hideNullTokens );
 	}
 	return false;
     }
 
-    /** Do a blocking write on the queue. Set the time stamp to be 
-     *  the current time of the sending actor. If the time stamp of 
-     *  the token is greater than the completionTime of this receiver, 
-     *  then set the time stamp to INACTIVE and the token to null. If 
-     *  the queue is full, then inform the director that this receiver 
-     *  is blocking on a write and wait until room becomes available. 
-     *  When room becomes available, put the token and time stamp in 
-     *  the queue and inform the director that the block no longer 
-     *  exists. If at any point during this method this receiver is 
-     *  scheduled for termination, then throw a TerminateProcessException 
-     *  which will cease activity for the actor that contains this 
+    /** Do a blocking write on the queue. Set the time stamp to be
+     *  the current time of the sending actor. If the time stamp of
+     *  the token is greater than the completionTime of this receiver,
+     *  then set the time stamp to INACTIVE and the token to null. If
+     *  the queue is full, then inform the director that this receiver
+     *  is blocking on a write and wait until room becomes available.
+     *  When room becomes available, put the token and time stamp in
+     *  the queue and inform the director that the block no longer
+     *  exists. If at any point during this method this receiver is
+     *  scheduled for termination, then throw a TerminateProcessException
+     *  which will cease activity for the actor that contains this
      *  receiver.
      * @param token The token to put on the queue.
      */
@@ -233,16 +233,16 @@ public class DDEReceiver extends TimedQueueReceiver
 	put( token, time );
     }
 
-    /** Do a blocking write on the queue. If at any point during 
-     *  this method this receiver is scheduled for termination, 
-     *  then throw a TerminateProcessException which will cease 
-     *  activity for the actor that contains this receiver. If 
-     *  the specified time stamp of the token is greater than the 
-     *  completionTime of this receiver, then set the time stamp 
-     *  to INACTIVE. If the queue is full, then inform the director 
-     *  that this receiver is blocking on a write and wait until 
-     *  room becomes available. When room becomes available, put 
-     *  the token and time stamp in the queue and inform the director 
+    /** Do a blocking write on the queue. If at any point during
+     *  this method this receiver is scheduled for termination,
+     *  then throw a TerminateProcessException which will cease
+     *  activity for the actor that contains this receiver. If
+     *  the specified time stamp of the token is greater than the
+     *  completionTime of this receiver, then set the time stamp
+     *  to INACTIVE. If the queue is full, then inform the director
+     *  that this receiver is blocking on a write and wait until
+     *  room becomes available. When room becomes available, put
+     *  the token and time stamp in the queue and inform the director
      *  that the block no longer exists.
      * @param token The token to put on the queue.
      * @param time The time stamp associated with the token.
@@ -250,7 +250,7 @@ public class DDEReceiver extends TimedQueueReceiver
     public void put(Token token, double time) {
         Workspace workspace = getContainer().workspace();
         DDEDirector director = (DDEDirector)
-                ((Actor)getContainer().getContainer()).getDirector();
+            ((Actor)getContainer().getContainer()).getDirector();
 	_put(token, time, workspace, director);
     }
 
@@ -286,10 +286,10 @@ public class DDEReceiver extends TimedQueueReceiver
     	_readPending = false;
     	_writePending = false;
     	_ignoreNotSeen = true;
-        Director director = 
-                ((Actor)getContainer().getContainer()).getDirector();
-        String name =  
-                ((Nameable)getContainer().getContainer()).getName();
+        Director director =
+            ((Actor)getContainer().getContainer()).getDirector();
+        String name =
+            ((Nameable)getContainer().getContainer()).getName();
         setRcvrTime( 0.0 );
     }
 
@@ -297,8 +297,8 @@ public class DDEReceiver extends TimedQueueReceiver
     ////                     package friendly methods   	   ////
 
     /** Indicate whether hasToken() should return true if the only
-     *  available tokens it finds are NullTokens. Specify that 
-     *  NullTokens should not be taken into consideration by 
+     *  available tokens it finds are NullTokens. Specify that
+     *  NullTokens should not be taken into consideration by
      *  hasToken() if the parameter is true; otherwise do consider
      *  NullTokens.
      * @parameter hide The parameter indicating whether NullTokens
@@ -329,14 +329,14 @@ public class DDEReceiver extends TimedQueueReceiver
 	    } else {
 		_ignoreNotSeen = true;
 		clearIgnoredTokens();
-		// Call the next line since 
+		// Call the next line since
                 // TimeKeeper.updateIgnoredReceivers()
 		// has not been called.
 		timeKeeper.setIgnoredTokens(false);
 		return false;
 	    }
         }
-	if( getRcvrTime() > timeKeeper.getNextTime() && 
+	if( getRcvrTime() > timeKeeper.getNextTime() &&
         	!_terminate ) {
 	    return false;
 	}
@@ -345,7 +345,7 @@ public class DDEReceiver extends TimedQueueReceiver
 		if( hasNullToken() ) {
 		    if( timeKeeper.getHighestPriorityReal() != null ) {
 			return false;
-		    } else if( this != 
+		    } else if( this !=
                     	    timeKeeper.getHighestPriorityNull() ) {
 			return false;
 		    } else if( !_hideNullTokens ) {
@@ -353,7 +353,7 @@ public class DDEReceiver extends TimedQueueReceiver
 		    } else {
 			super.get();
 			timeKeeper.sendOutNullTokens();
-			return _hasToken(workspace, director, 
+			return _hasToken(workspace, director,
 				timeKeeper, _hideNullTokens);
 		    }
 		} else {
@@ -366,8 +366,8 @@ public class DDEReceiver extends TimedQueueReceiver
 		    }
 		    super.get();
 		    timeKeeper.sendOutNullTokens();
-		    return _hasToken(workspace, director, 
-				timeKeeper, _hideNullTokens);
+		    return _hasToken(workspace, director,
+                            timeKeeper, _hideNullTokens);
 		}
 		return true;
 	    }
@@ -386,15 +386,15 @@ public class DDEReceiver extends TimedQueueReceiver
 	    }
             throw new TerminateProcessException("");
 	} else {
-            return _hasToken(workspace, director, 
+            return _hasToken(workspace, director,
             	    timeKeeper, _hideNullTokens);
 	}
     }
 
-    /** This method provides the recursive functionality 
+    /** This method provides the recursive functionality
      *  of put(Token, double).
      */
-    private void _put(Token token, double time, Workspace workspace, 
+    private void _put(Token token, double time, Workspace workspace,
 	    DDEDirector director) {
         synchronized(this) {
             if( time > getCompletionTime() &&

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (davisj@eecs.berkeley.edu)
-
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.dde.lib;
@@ -61,28 +61,28 @@ public class DDESink extends TypedAtomicActor {
      */
     public DDESink(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-         input = new TypedIOPort(this, "input", true, false);
-	 input.setMultiport(true);
-	 input.setTypeEquals(Token.class);
-         
-         numTokens = 
-                 new Parameter(this, "numTokens", new IntToken(-1));
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+        input.setTypeEquals(Token.class);
+
+        numTokens =
+            new Parameter(this, "numTokens", new IntToken(-1));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     public TypedIOPort input;
-    
-    /** Indicate the integer valued number of real tokens that this 
-     *  actor should consume. If this value is negative, then there 
-     *  is no limit on the number of tokens that this actor will 
+
+    /** Indicate the integer valued number of real tokens that this
+     *  actor should consume. If this value is negative, then there
+     *  is no limit on the number of tokens that this actor will
      *  consume. The default value of this parameter is -1.
      */
     public Parameter numTokens;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -96,7 +96,7 @@ public class DDESink extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         int val = ((IntToken)numTokens.getToken()).intValue();
-                
+
         if( val >= 0 ) {
             _cnt++;
             if( _cnt > val ) {
@@ -116,7 +116,7 @@ public class DDESink extends TypedAtomicActor {
             }
         }
     }
-    
+
     /** Return true if this actor is enabled to proceed with additional
      *  iterations. Return false otherwise.
      * @throws IllegalActionException Is not thrown but may be thrown
@@ -126,22 +126,11 @@ public class DDESink extends TypedAtomicActor {
     public boolean postfire() throws IllegalActionException {
     	return _continue;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private int _cnt = 0;
     private boolean _continue = true;
 
 }
-
-
-
-
-
-
-
-
-
-
-

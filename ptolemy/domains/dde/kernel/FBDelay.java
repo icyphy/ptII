@@ -40,31 +40,31 @@ import ptolemy.data.expr.Parameter;
 //// FBDelay
 /**
 FBDelay actors are used to add delay to feedback topologies.
-If a FBDelay actor consumes a token (real or Null), it has the 
-option of producing an equivalent token on the output with an 
-incremented time stamp value. Alternatively, the FBDelay actor 
+If a FBDelay actor consumes a token (real or Null), it has the
+option of producing an equivalent token on the output with an
+incremented time stamp value. Alternatively, the FBDelay actor
 will simply produce the token without altering the time stamp.
 <P>
 Two parameters - <I>nullDelay</I> and <I>realDelay</I> - are available
-for determining whether an FBDelay actor increments the time stamp of 
+for determining whether an FBDelay actor increments the time stamp of
 produced output tokens. The default value of nullDelay (realDelay) is
-true (false). If the nullDelay (realDelay) parameter is set to true, 
-then the time stamps of NullTokens (real tokens) will be incremented as 
-they pass through this actor. 
+true (false). If the nullDelay (realDelay) parameter is set to true,
+then the time stamps of NullTokens (real tokens) will be incremented as
+they pass through this actor.
 <P>
-The delay value that is applied (given that one of the above 
-parameters is true) is determined by the setDelay() and getDelay() 
-methods. More elaborate delay values can be made available by 
+The delay value that is applied (given that one of the above
+parameters is true) is determined by the setDelay() and getDelay()
+methods. More elaborate delay values can be made available by
 overriding the getDelay() method in derived classes.
 <P>
-FBDelay actors are effective for preventing Zeno conditions involving 
-cycles of null tokens. If a DDE model has a feedback topology, a 
-FBDelay actor should be added into the feedback loop. 
+FBDelay actors are effective for preventing Zeno conditions involving
+cycles of null tokens. If a DDE model has a feedback topology, a
+FBDelay actor should be added into the feedback loop.
 <P>
-The delay value of a FBDelay actor must be wisely chosen. The delay 
-value should be smaller than any other successive time stamp increment 
-found in a given DDE model. This means that if a particular model might 
-have any two time stamps with time difference delta, then the delay 
+The delay value of a FBDelay actor must be wisely chosen. The delay
+value should be smaller than any other successive time stamp increment
+found in a given DDE model. This means that if a particular model might
+have any two time stamps with time difference delta, then the delay
 value should be smaller than delta.
 
 @author John S. Davis II
@@ -120,24 +120,24 @@ public class FBDelay extends DDEActor {
 
     public TypedIOPort input = null;
     public TypedIOPort output = null;
-    
-    /** The boolean parameter that indicates whether a delay value 
-     *  will be added to the time stamp of null tokens that are 
+
+    /** The boolean parameter that indicates whether a delay value
+     *  will be added to the time stamp of null tokens that are
      *  produced by this actor. This parameter defaults to true.
      */
-    public Parameter nullDelay; 
-    
-    /** The boolean parameter that indicates whether a delay value 
-     *  will be added to the time stamp of real tokens that are 
+    public Parameter nullDelay;
+
+    /** The boolean parameter that indicates whether a delay value
+     *  will be added to the time stamp of real tokens that are
      *  produced by this actor. This parameter defaults to false.
      */
-    public Parameter realDelay; 
+    public Parameter realDelay;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the delay value of this actor. 
-     * @returns The delay value of this actor.
+    /** Return the delay value of this actor.
+     * @return The delay value of this actor.
      */
     public double getDelay() {
 	return _delay;
@@ -148,8 +148,8 @@ public class FBDelay extends DDEActor {
      *  parameter is set to true, then produce an output NullToken to
      *  have a time stamp with a delay specified by getDelay(). Otherwise
      *  produce a NullToken that does not have a delayed time stamp value.
-     *  If the input token is a real token and the realDelay parameter 
-     *  is set to true, then produce an output real token to have a time 
+     *  If the input token is a real token and the realDelay parameter
+     *  is set to true, then produce an output real token to have a time
      *  stamp with a delay specified by getDelay(). Otherwise produce a
      *  real token that does not have a delayed time stamp value.
      * @exception IllegalActionException If there is an error when
@@ -157,10 +157,10 @@ public class FBDelay extends DDEActor {
      */
     public void fire() throws IllegalActionException {
 	Token token = _getNextInput();
-        boolean delayNullVal = 
-                ((BooleanToken)nullDelay.getToken()).booleanValue();
-        boolean delayRealVal = 
-                ((BooleanToken)realDelay.getToken()).booleanValue();
+        boolean delayNullVal =
+            ((BooleanToken)nullDelay.getToken()).booleanValue();
+        boolean delayRealVal =
+            ((BooleanToken)realDelay.getToken()).booleanValue();
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
             DDEThread ddeThread = (DDEThread)thread;
@@ -189,7 +189,7 @@ public class FBDelay extends DDEActor {
      */
     public void initialize() throws IllegalActionException {
 	super.initialize();
-        
+
         Receiver[][] rcvrs = output.getRemoteReceivers();
 	for( int i = 0; i < rcvrs.length; i++ ) {
 	    for( int j = 0; j < rcvrs[i].length; j++ ) {
@@ -197,7 +197,7 @@ public class FBDelay extends DDEActor {
                 rcvr.put( new Token(), TimedQueueReceiver.IGNORE );
             }
         }
-        
+
 
 	rcvrs = input.getReceivers();
 	for( int i = 0; i < rcvrs.length; i++ ) {
@@ -216,7 +216,7 @@ public class FBDelay extends DDEActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     protected double _delay = 4.0;
 
@@ -227,8 +227,8 @@ public class FBDelay extends DDEActor {
      *  depending on IOPort.send().
      */
     private void _sendOutToken(Token token, double time) {
-        Receiver[][] rcvrs = 
-        	(Receiver[][])output.getRemoteReceivers();
+        Receiver[][] rcvrs =
+            (Receiver[][])output.getRemoteReceivers();
 	for( int i = 0; i < rcvrs.length; i++ ) {
 	    for( int j = 0; j < rcvrs[i].length; j++ ) {
             	DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
@@ -236,20 +236,20 @@ public class FBDelay extends DDEActor {
             }
         }
     }
-    
+
     /** Syntactic sugarg for initializing parameters.
      */
-    private void _setVariables() throws IllegalActionException, 
+    private void _setVariables() throws IllegalActionException,
     	    NameDuplicationException {
 	input = new TypedIOPort(this, "input", true, false);
 	output = new TypedIOPort(this, "output", false, true);
 	input.setTypeEquals(Token.class);
 	output.setTypeEquals(Token.class);
-        
-        nullDelay = new 
-        	Parameter(this, "nullDelay", new BooleanToken(true));
-        realDelay = new 
-        	Parameter(this, "realDelay", new BooleanToken(false));
+
+        nullDelay = new
+            Parameter(this, "nullDelay", new BooleanToken(true));
+        realDelay = new
+            Parameter(this, "realDelay", new BooleanToken(false));
     }
 
 }

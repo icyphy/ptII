@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (davisj@eecs.berkeley.edu)
-
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.dde.lib;
@@ -40,8 +40,8 @@ import ptolemy.data.Token;
 //////////////////////////////////////////////////////////////////////////
 //// Wire
 /**
-Wire is a simple DDE actor with an input and output multiport. When 
-executed, a Wire will simple consume a token from its input port 
+Wire is a simple DDE actor with an input and output multiport. When
+executed, a Wire will simple consume a token from its input port
 and then produce the token on its output port.
 
 @author John S. Davis II
@@ -63,21 +63,21 @@ public class Wire extends TypedAtomicActor {
      */
     public Wire(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-         output = new TypedIOPort(this, "output", false, true);
-	 output.setMultiport(true);
-	 output.setTypeEquals(Token.class);
-         input = new TypedIOPort(this, "input", true, false);
-	 input.setMultiport(true);
-	 input.setTypeEquals(Token.class);
+        output = new TypedIOPort(this, "output", false, true);
+        output.setMultiport(true);
+        output.setTypeEquals(Token.class);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+        input.setTypeEquals(Token.class);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Execute this actor by consuming a token on the input and producing
-     *  an equivalent token the output. 
+     *  an equivalent token the output.
      * @exception IllegalActionException If there are errors in obtaining
      *  the receivers of this actor.
      */
@@ -98,7 +98,8 @@ public class Wire extends TypedAtomicActor {
 			    DDEReceiver outRcvr = (DDEReceiver)outRcvrs[k][l];
 			    Thread thr = Thread.currentThread();
 			    if( thr instanceof DDEThread ) {
-				TimeKeeper kpr = ((DDEThread)thr).getTimeKeeper();
+				TimeKeeper kpr =
+                                    ((DDEThread)thr).getTimeKeeper();
 			        outRcvr.put(token, kpr.getCurrentTime());
 			    }
 			}
@@ -117,11 +118,10 @@ public class Wire extends TypedAtomicActor {
 	return _continueIterations;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     public TypedIOPort output;
     public TypedIOPort input;
     private boolean _continueIterations = true;
-
 }

@@ -59,17 +59,17 @@ public class TwoPut extends TypedAtomicActor {
      */
     public TwoPut(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-         output1 = new TypedIOPort(this, "output1", false, true);
-	 output1.setMultiport(true);
-	 output1.setTypeEquals(Token.class);
-         output2 = new TypedIOPort(this, "output2", false, true);
-	 output2.setMultiport(true);
-	 output2.setTypeEquals(Token.class);
-         input = new TypedIOPort(this, "input", true, false);
-	 input.setMultiport(true);
-	 input.setTypeEquals(Token.class);
+        output1 = new TypedIOPort(this, "output1", false, true);
+        output1.setMultiport(true);
+        output1.setTypeEquals(Token.class);
+        output2 = new TypedIOPort(this, "output2", false, true);
+        output2.setMultiport(true);
+        output2.setTypeEquals(Token.class);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+        input.setTypeEquals(Token.class);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -87,10 +87,10 @@ public class TwoPut extends TypedAtomicActor {
 	    for( int j = 0; j < inRcvrs[i].length; j++ ) {
 		DDEReceiver inRcvr = (DDEReceiver)inRcvrs[i][j];
 		/*
-		System.out.println("\n");
-		System.out.println("\n");
-		System.out.println("#####");
-		System.out.println("TwoPut receiver["+i+"]["+j+"];");
+                  System.out.println("\n");
+                  System.out.println("\n");
+                  System.out.println("#####");
+                  System.out.println("TwoPut receiver["+i+"]["+j+"];");
 		*/
 		if( inRcvr.hasToken() ) {
 		    token = inRcvr.get();

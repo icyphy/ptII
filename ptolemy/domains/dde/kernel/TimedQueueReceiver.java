@@ -58,12 +58,12 @@ each receiver. As information flows through a TimedQueueReceiver, the
 TimeKeeper must be kept up to date with respect to the receiver times.
 <P>
 If the oldest token in the queue has a time stamp of IGNORE, then the
-next oldest token from the other receivers contained by the actor in 
+next oldest token from the other receivers contained by the actor in
 question will be consumed and the token time stamped IGNORE will be
 dropped. The IGNORE time stamp is useful in feedback topologies in which
 an actor should ignore inputs from a feedback cycle when the model's
-execution is just beginning. FBDelay actors output a single IGNORE token 
-during their initialize() methods for just this reason. In general, 
+execution is just beginning. FBDelay actors output a single IGNORE token
+during their initialize() methods for just this reason. In general,
 IGNORE tokens should not be handled unless fundamental changes to the
 DDE kernel are intended.
 
@@ -127,38 +127,38 @@ public class TimedQueueReceiver {
 	Thread thread = Thread.currentThread();
 	Token token = null;
 	// synchronized( this ) {
-            Event event = (Event)_queue.take();
-	    if (event == null) {
-                throw new NoTokenException(getContainer(),
-	                "Attempt to get token from an empty "
-                        + "TimedQueueReceiver.");
+        Event event = (Event)_queue.take();
+        if (event == null) {
+            throw new NoTokenException(getContainer(),
+                    "Attempt to get token from an empty "
+                    + "TimedQueueReceiver.");
+        }
+        token = event.getToken();
+        if( thread instanceof DDEThread ) {
+            TimeKeeper timeKeeper =
+                ((DDEThread)thread).getTimeKeeper();
+            timeKeeper.setCurrentTime( event.getTime() );
+        }
+
+        if( _queue.size() > 0 ) {
+            Event nextEvent = (Event)_queue.get(0);
+            _rcvrTime = nextEvent.getTime();
+        }
+
+        // Call updateRcvrList() even if _queue.size() == 0,
+        // so that the triple is no longer in front.
+        if( thread instanceof DDEThread ) {
+            TimeKeeper timeKeeper =
+                ((DDEThread)thread).getTimeKeeper();
+
+            if( !timeKeeper.searchingForIgnoredTokens() ) {
+                timeKeeper.setSearchForIgnoredTokens( true );
+                timeKeeper.updateIgnoredReceivers();
             }
-	    token = event.getToken();
-	    if( thread instanceof DDEThread ) {
-	        TimeKeeper timeKeeper =
-		        ((DDEThread)thread).getTimeKeeper();
-	        timeKeeper.setCurrentTime( event.getTime() );
-	    }
-
-	    if( _queue.size() > 0 ) {
-	        Event nextEvent = (Event)_queue.get(0);
-	        _rcvrTime = nextEvent.getTime();
+            if( !timeKeeper.searchingForIgnoredTokens() ) {
+                timeKeeper.updateRcvrList(this);
             }
-
-	    // Call updateRcvrList() even if _queue.size() == 0,
-	    // so that the triple is no longer in front.
-	    if( thread instanceof DDEThread ) {
-		TimeKeeper timeKeeper =
-		        ((DDEThread)thread).getTimeKeeper();
-
-		if( !timeKeeper.searchingForIgnoredTokens() ) {
-		    timeKeeper.setSearchForIgnoredTokens( true );
-		    timeKeeper.updateIgnoredReceivers();
-		}
-		if( !timeKeeper.searchingForIgnoredTokens() ) {
-	            timeKeeper.updateRcvrList(this);
-		}
-	    }
+        }
 	// }
         return token;
     }
@@ -236,8 +236,8 @@ public class TimedQueueReceiver {
 	    if( token instanceof NullToken ) {
 		return;
 	    }
-	    IOPort port = (IOPort)getContainer(); 
-	    NamedObj actor = (NamedObj)port.getContainer(); 
+	    IOPort port = (IOPort)getContainer();
+	    NamedObj actor = (NamedObj)port.getContainer();
 	    // Note: Maintain the following IllegalArgumentException
 	    // message as it is used by DDEIOPort.send().
 	    throw new IllegalArgumentException(actor.getName() +
@@ -245,17 +245,17 @@ public class TimedQueueReceiver {
 	}
         Event event;
         // synchronized(this) {
-            _lastTime = time;
-            event = new Event(token, _lastTime);
+        _lastTime = time;
+        event = new Event(token, _lastTime);
 
-            if( _queue.size() == 0 ) {
-                _rcvrTime = _lastTime;
-            }
+        if( _queue.size() == 0 ) {
+            _rcvrTime = _lastTime;
+        }
 
-            if (!_queue.put(event)) {
-                throw new NoRoomException (getContainer(),
-                        "Queue is at capacity. Cannot insert token.");
-            }
+        if (!_queue.put(event)) {
+            throw new NoRoomException (getContainer(),
+                    "Queue is at capacity. Cannot insert token.");
+        }
 	// }
     }
 
@@ -301,13 +301,13 @@ public class TimedQueueReceiver {
 	    if( event.getToken() instanceof NullToken ) {
 		return true;
 	    }
-	} 
+	}
         return false;
     }
 
-    /** Set the completion time of this receiver. If the 
-     *  completion time argument is negative but is not 
-     *  equal to TimedQueueReceiver.ETERNITY, then throw 
+    /** Set the completion time of this receiver. If the
+     *  completion time argument is negative but is not
+     *  equal to TimedQueueReceiver.ETERNITY, then throw
      *  an IllegalArgumentException.
      * @param time The completion time of this receiver.
      */

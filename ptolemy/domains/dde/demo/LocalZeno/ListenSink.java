@@ -45,7 +45,7 @@ import collections.LinkedList;
 //// ListenSink
 /**
 ListenSink is an extension of DDESink with listeners. The addition
-of listener facilities allows this actor to interact with Diva via 
+of listener facilities allows this actor to interact with Diva via
 simple animations.
 
 @author John S. Davis II
@@ -61,14 +61,14 @@ public class ListenSink extends DDESink {
      */
     public ListenSink(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add an ExecEventListener to this actor's list of listeners. 
-     * @params listener The ExecEventListener being add to this 
+    /** Add an ExecEventListener to this actor's list of listeners.
+     * @params listener The ExecEventListener being add to this
      *  actor's list.
      */
     public void addListeners(ExecEventListener listener) {
@@ -88,12 +88,12 @@ public class ListenSink extends DDESink {
         Enumeration enum = _listeners.elements();
         while( enum.hasMoreElements() ) {
             ExecEventListener newListener =
-                    (ExecEventListener)enum.nextElement();
+                (ExecEventListener)enum.nextElement();
             newListener.stateChanged(event);
         }
     }
 
-    /** Generate an ExecEvent with a state value of 2. Return the 
+    /** Generate an ExecEvent with a state value of 2. Return the
      *  value of the postfire method of this actor's superclass.
      * @returns True if this actor is enabled to call fire(). Return
      *  false otherwise.
@@ -129,9 +129,9 @@ public class ListenSink extends DDESink {
 	return super.prefire();
     }
 
-    /** Remove an ExecEventListener from this actor's list of 
-     *  listeners. 
-     * @params listener The ExecEventListener being add to this 
+    /** Remove an ExecEventListener from this actor's list of
+     *  listeners.
+     * @params listener The ExecEventListener being add to this
      *  actor's list.
      */
     public void removeListeners(ExecEventListener listener) {
@@ -151,20 +151,9 @@ public class ListenSink extends DDESink {
 	super.wrapup();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private LinkedList _listeners;
 
 }
-
-
-
-
-
-
-
-
-
-
-

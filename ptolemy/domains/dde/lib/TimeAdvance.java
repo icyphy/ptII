@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (davisj@eecs.berkeley.edu)
-
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.dde.lib;
@@ -42,8 +42,8 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// TimeAdvance
 /**
-TimeAdvance is a simple DDE actor with an input and output multiport. 
-When executed, a TimeAdvance will consume a token from its input port 
+TimeAdvance is a simple DDE actor with an input and output multiport.
+When executed, a TimeAdvance will consume a token from its input port
 and then produce a DoubleToken on its output port with a value as
 specified by the 'outputValue' parameter. TimeAdvance is useful in
 conjunction with plotter classes (e.g., actor/gui/TimedPlotter) where
@@ -68,31 +68,31 @@ public class TimeAdvance extends DDEActor {
      */
     public TimeAdvance(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-         output = new TypedIOPort(this, "output", false, true);
-	 output.setMultiport(true);
-	 output.setTypeEquals(DoubleToken.class);
-         input = new TypedIOPort(this, "input", true, false);
-	 input.setMultiport(true);
-	 input.setTypeEquals(Token.class);
+        output = new TypedIOPort(this, "output", false, true);
+        output.setMultiport(true);
+        output.setTypeEquals(DoubleToken.class);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+        input.setTypeEquals(Token.class);
 
-	 outputValue = new 
-	         Parameter(this, "outputValue", new DoubleToken(0.0));
+        outputValue = new
+            Parameter(this, "outputValue", new DoubleToken(0.0));
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        public variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
-    // A parameter used to specify the value of the DoubleTokens 
+    // A parameter used to specify the value of the DoubleTokens
     // that are produced as outputs of this actor.
     Parameter outputValue;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-    /** Execute this actor by consuming a token on the input and 
-     *  producing a DoubleToken on the output with a value specified 
+    /** Execute this actor by consuming a token on the input and
+     *  producing a DoubleToken on the output with a value specified
      *  by the outputValue parameter.
      * @exception IllegalActionException If there are errors in obtaining
      *  the receivers of this actor.
@@ -117,8 +117,8 @@ public class TimeAdvance extends DDEActor {
 	return _continueIterations;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     public TypedIOPort output;
     public TypedIOPort input;
