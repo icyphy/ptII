@@ -69,14 +69,6 @@ public class CWriter extends SceneTransformer {
     }
 
 
-    /** Return a new CWriter.
-     *  @return The new CWriter.
-     */
-    public static CWriter v() {
-        return instance;
-    }
-
-
     /** Write out the C (.i, .h, interface Header) files.
      *  Sample option arguments:
      *  <code>-p wjtp.writeJimple1 outDir:jimple1</code>
@@ -87,12 +79,16 @@ public class CWriter extends SceneTransformer {
      *  <code>outdir</code> option to specify where the .jimple
      *  file should be written
      */
-    protected void internalTransform(String phaseName, Map options) {
+    public void internalTransform(String phaseName, Map options) {
         System.out.println("CWriter.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        String outDir = Options.getString(options, "outDir");
-        String mainFile = Options.getString(options, "targetPackage") + ".Main";
+        // We use soot.Options to avoid confusion with
+        // copernicus.c.options.
+        String outDir = soot.Options.getString(options, "outDir");
+        String mainFile = soot.Options
+                .getString(options, "targetPackage")
+                + ".Main";
 
         // Initialize generation of overridden methods.
         OverriddenMethodGenerator.init();
@@ -162,12 +158,10 @@ public class CWriter extends SceneTransformer {
             sourcesList.append(" " + fileName + ".c");
 
             // Generate other required files.
-            boolean verbose = true;
-            String compileMode = "full";
             // FIXME: Improve exception handling here.
             try {
                 RFG.generateTransitiveClosureOf(classPath,
-                            sootClass.getName(), compileMode, verbose);
+                        sootClass.getName());
             } catch (IOException exception) {
                 throw new RuntimeException("Could not generate transitive "
                         + "closure during required file generation");
@@ -188,6 +182,15 @@ public class CWriter extends SceneTransformer {
 
         _completedTransform = true;
     }
+
+
+    /** Return a new CWriter.
+     *  @return The new CWriter.
+     */
+    public static CWriter v() {
+        return instance;
+    }
+
 
     // Flag that indicates whether transform has been completed.
     private boolean _completedTransform = false;

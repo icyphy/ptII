@@ -81,7 +81,7 @@ public class MakeFileGenerator {
         code.append("OVER_BODIES = "
                 + OverriddenMethodGenerator.overriddenBodyLib
                 + "\n");
-        code.append("LIB = " + System.getProperty("j2c_lib","/j2c_lib")
+        code.append("LIB = " + Options.v().get("lib")
                 + "\n");
         code.append("LIB_FILE = $(LIB)/j2c_lib.a\n");
 

@@ -21,7 +21,7 @@
  MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
-@ProposedRating Red (<your email address>)
+@ProposedRating Red (ankush@eng.umd.edu)
 @AcceptedRating Red (ssb@eng.umd.edu)
 */
 

@@ -84,6 +84,11 @@ public class CodeFileGenerator extends CodeGenerator {
         _context.addIncludeFile("<setjmp.h>");
         _context.addIncludeFile("<stdlib.h>");
         _context.addIncludeFile("<stdio.h>");
+        // This file cannot be auto-detected because its called from a
+        // runtime method.
+        if (source.getName().equals("java.lang.System")) {
+            _context.addIncludeFile("\"java/io/PrintStream.h\"");
+        }
 
         if (!_context.getSingleClassMode()) {
             _context.addIncludeFile("\"strings.h\"");
@@ -99,7 +104,8 @@ public class CodeFileGenerator extends CodeGenerator {
         Iterator methods = source.getMethods().iterator();
         while (methods.hasNext()) {
             SootMethod method = (SootMethod)(methods.next());
-            if (method.isPrivate()) {
+            if (method.isPrivate()
+                && RequiredFileGenerator.isRequiredMethod(method)) {
                 if (count++ == 0) {
                     bodyCode.append(_comment("Prototypes for functions that "
                             + "implement private methods"));
@@ -256,9 +262,19 @@ public class CodeFileGenerator extends CodeGenerator {
         code.append(_indent(1) + argumentReference +
                 CNames.superclassPointerName() + " = ");
         if (!_context.getSingleClassMode() && source.hasSuperclass()) {
-            code.append("&" + CNames.classStructureNameOf(
-                    source.getSuperclass()));
-            _updateRequiredTypes(source.getSuperclass().getType());
+            // If the superclass is not required, comment it out and
+            // replace it with a null.
+            if (!RequiredFileGenerator.isRequiredClass(source
+                    .getSuperclass())) {
+                code.append("/* "
+                +   "&" + CNames.classStructureNameOf(source.getSuperclass())
+                + " */ NULL");
+            }
+            else {
+                code.append("&" + CNames.classStructureNameOf(
+                        source.getSuperclass()));
+                _updateRequiredTypes(source.getSuperclass().getType());
+            }
 
         } else {
             code.append("NULL");
@@ -289,7 +305,7 @@ public class CodeFileGenerator extends CodeGenerator {
 
             // Method Pointer Initialization is not done for methods that
             // are not required, and for static methods.
-            if (!method.isStatic()
+            if ((!method.isStatic())
                     && RequiredFileGenerator.isRequiredMethod(method)
                     ) {
 

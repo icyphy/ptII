@@ -72,10 +72,12 @@ public class JavaToC {
      *  "single class mode" should be used during the conversion
      *  (see {@link Context#getSingleClassMode()} for details).
      */
-    public static void convert(String classPath, String className,
-            String compileMode, boolean verbose) throws IOException {
+    public static void convert(String classPath, String className)
+            throws IOException {
 
-        boolean generateSingleClass = compileMode.equals("singleClass");
+        boolean generateSingleClass = Options.v().get("compileMode")
+                .equals("singleClass");
+        boolean verbose = Options.v().getBoolean("verbose");
 
         if (verbose) {
             System.out.println("JavaToC.convert(): classpath is: "
@@ -97,12 +99,6 @@ public class JavaToC {
         HeaderFileGenerator hGenerator = new HeaderFileGenerator();
         CodeFileGenerator cGenerator = new CodeFileGenerator();
         InterfaceFileGenerator iGenerator = new InterfaceFileGenerator();
-
-        /** Generate a main function unconditionally. Even if the
-         *  class does not have a main method, such a file is useful
-         *  for debugging and testing purposes.
-         */
-        MainFileGenerator mGenerator = new MainFileGenerator();
 
         if (generateSingleClass) {
             cGenerator.setSingleClassMode();
@@ -127,17 +123,16 @@ public class JavaToC {
 
         if (!generateSingleClass) {
             // Generate other required files.
-            RFG.generateTransitiveClosureOf(classPath,
-                            className, compileMode, verbose);
+            RFG.generateTransitiveClosureOf(classPath, className);
 
             // Generate the makefile.
             MakeFileGenerator.generateMakeFile(classPath, className);
 
             // Generate the file containing the wrapper for the main
             // method.
+            MainFileGenerator mGenerator = new MainFileGenerator();
             code = mGenerator.generate(sootClass);
             FileHandler.write(CNames.sanitize(className) + "_main.c", code);
-
         }
     }
 
@@ -161,26 +156,23 @@ public class JavaToC {
         for(int i = 1;i<args.length; i++) {
             if (args[i].startsWith("-")) {
                 // Its a flag.
-                if     (args[i].equals("-v")) verbose = true;
-                else if(args[i].equals("-q")) verbose = false;
-                else if(args[i].equals("-singleClass"))
-                    compileMode = new String("singleClass");
-                else if(args[i].equals("-headersOnly"))
-                    compileMode = new String("headersOnly");
-                else if(args[i].equals("-full"))
-                    compileMode = new String ("full");
-                else if(args[i].equals("-h")) {
+
+                // Call for help.
+                if(args[i].equals("-h")) {
                     showHelp();
                     System.exit(0);
                 }
-                else if(args[i].equals("-lib")) {
+                // Check for possible options.
+                else if(args[i].equals("-lib")
+                        ||args[i].equals("-verbose")
+                        ||args[i].equals("-compileMode")) {
                     if (i<args.length-1) {
                         i++;
-                        System.setProperty("j2c_lib", args[i]);
+                        Options.v().put(args[i-1].substring(1), args[i]);
                     }
                     else {
                         System.err.println(
-                            "Must specify library directory for -lib option");
+                            "Invalid command-line format.");
                     }
                 }
 
@@ -188,7 +180,7 @@ public class JavaToC {
             else {
                 // Its the name of a class to convert.
                 className=args[i];
-                convert(classPath, className, compileMode, verbose);
+                convert(classPath, className);
             }
         }
 
@@ -202,12 +194,13 @@ public class JavaToC {
      */
     public static void showHelp() {
         System.out.println( "USAGE: java "
-                + " javatoc classPath [flags] [-lib <library>] className1"
-                + " [flags][className2]...\n");
-        System.out.println( "Compile mode flags: "
-                + "[-singleClass], [-headersOnly], [-full]");
-        System.out.println( "Verbose mode flags: "
-                + "[-v] for verbose, [-q] for quiet.");
+                + " javatoc classPath [flags] [value] [flag] [value] "
+                + "... className"
+                + " [flag][value] ... [flag] [value] [className2]...\n");
+        System.out.println( "Command-line flags and their possible values\n"
+                + "verbose (true/false)\n"
+                + "compileMode (singleClass/headersOnly/full) \n"
+                + "lib (path to library directory).");
 
         System.out.println( "help flags        : [-h] to see this message");
         System.out.println( "\nLater flags override earlier ones.");

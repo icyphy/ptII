@@ -92,14 +92,6 @@ public class Context {
         _disableImports = false;
     }
 
-    /** Turn off (disable) single class mode translation
-     *  (see {@link #getSingleClassMode()}).
-     */
-    public static void clearSingleClassMode() {
-        _singleClassMode = false;
-    }
-
-
     /** Return an Iterator over the set of array Instance names in the context.
      *  Each element in the Iterator is a String representing the name of the
      *  array instance.
@@ -118,7 +110,7 @@ public class Context {
         return _disableImports;
     }
 
-    /** Return the C identifer that corresponds to a string constant in this
+    /** Return the C identifier that corresponds to a string constant in this
      *  context.
      *  @param constant The string constant.
      *  @return The C identifier.
@@ -147,7 +139,7 @@ public class Context {
      *  @return True if and only if single class mode translation is enabled.
      */
     public static boolean getSingleClassMode() {
-        return _singleClassMode;
+        return ((String)Options.v().get("compileMode")).equals("singleClass");
     }
 
     /** Return an Iterator over the set of string constants in the context.
@@ -182,7 +174,7 @@ public class Context {
      *  (see {@link #getSingleClassMode()}).
      */
     public static void setSingleClassMode() {
-        _singleClassMode = true;
+        Options.v().put("compileMode", "singleClass");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -197,10 +189,6 @@ public class Context {
     // be delimited with double quotes or angle brackets, and must contain
     // the .h suffix.
     private HashSet _includeFileSet;
-
-    // This variable indicates whether or not single class mode translation
-    // is enabled.
-    private static boolean _singleClassMode = false;
 
     // Count of the number of string constants that are currently in the
     // pool of string constants.

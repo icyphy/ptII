@@ -460,7 +460,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
     /* Generate the code for a lookup switch statement. There is also a
      * table switch statement that is slightly different.
-     * @param stmt The statment.
+     * @param stmt The statement.
      */
     public void caseLookupSwitchStmt(LookupSwitchStmt stmt) {
         StringBuffer code = new StringBuffer();
@@ -778,18 +778,17 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         // Generate cast for first argument of method.
         String cast = new String();
 
-        SootMethod actualMethod = MethodListGenerator.getActualMethod(method);
-        SootClass actualClass = actualMethod.getDeclaringClass();
+        SootClass declaringClass = method.getDeclaringClass();
 
-        if (!actualClass.isInterface()) {
+        if (!declaringClass.isInterface()) {
             cast = "("
-                    + CNames.instanceNameOf(actualClass)
+                    + CNames.instanceNameOf(declaringClass)
                     + "/* actual cast */)";
         }
 
 
         Iterator inheritedMethods = MethodListGenerator
-                .getInheritedMethods(method.getDeclaringClass())
+                .getInheritedMethods(declaringClass)
                 .iterator();
 
         while (inheritedMethods.hasNext()) {
@@ -807,13 +806,12 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             }
         }
 
-        SootClass methodClass = method.getDeclaringClass();
         if (!(v.getBase().getType() instanceof RefType)) {
             _unexpectedCase(v, "RefType base type expected.");
         } else {
             SootClass baseClass = ((RefType)(v.getBase().getType())).
                     getSootClass();
-            if (baseClass == methodClass) {
+            if (baseClass == declaringClass) {
                 if (method.isStatic()) {
                     _unexpectedCase(v, "Non-static method expected.");
                 }
@@ -822,7 +820,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                 }
             }
             else if ((!baseClass.hasSuperclass()) ||
-                    (baseClass.getSuperclass() != methodClass)) {
+                    (baseClass.getSuperclass() != declaringClass)) {
                 _unexpectedCase(v,
                         "Expected method class to be superclass of base");
             // If we are generating code in single class mode, then
@@ -833,7 +831,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             } else {
                 v.getBase().apply(this);
                 StringBuffer baseCode = _pop();
-                _push(CNames.classStructureNameOf(methodClass)
+                _push(CNames.classStructureNameOf(declaringClass)
                         + ".methods."
                         + CNames.methodNameOf(method)
                         + "("
@@ -1321,8 +1319,8 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
     protected void _generateInstanceInvokeExpression(
             InstanceInvokeExpr expression) {
 
-        SootMethod method = MethodListGenerator
-                .getActualMethod(expression.getMethod());
+        SootMethod method = expression.getMethod();
+        SootClass declaringClass = method.getDeclaringClass();
 
         StringBuffer code = new StringBuffer();
 
@@ -1339,16 +1337,13 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
 
         String cast = new String();
 
-        // This call had to be repeated. Rewason unknown.
-        SootMethod actualMethod = MethodListGenerator.getActualMethod(method);
-        SootClass actualClass = actualMethod.getDeclaringClass();
 
         cast = "("
-                + CNames.instanceNameOf(actualClass)
+                + CNames.instanceNameOf(declaringClass)
                 + "/* actual cast */)";
 
         Iterator inheritedMethods = MethodListGenerator
-                .getInheritedMethods(method.getDeclaringClass())
+                .getInheritedMethods(declaringClass)
                 .iterator();
 
         while (inheritedMethods.hasNext()) {

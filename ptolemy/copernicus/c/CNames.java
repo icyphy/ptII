@@ -91,7 +91,7 @@ public class CNames {
      */
     public static String classNameToFileName(String className) {
         if (isSystemClass(className)) {
-            return(System.getProperty("j2c_lib")
+            return(Options.v().get("lib")
                 + "/" + _sanitize(className).replace('.', '/'));
         }
         else {

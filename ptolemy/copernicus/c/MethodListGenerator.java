@@ -103,17 +103,6 @@ public class MethodListGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Some SootMethods belong to a class that does not implement them.
-     *  This method uses reflection to figure out the actual method
-     *  referred to.
-     *  @param method The original SootMethod.
-     *  @return  The SootMethod coresponding to its actual implementation.
-     */
-     public static SootMethod getActualMethod(SootMethod method) {
-         return method;
-     }
-
-
     /** Given a class, return the class initializer method if it exists,
      *  or return null if the class does not have a class initializer method.
      *  @param source The class.
@@ -188,8 +177,6 @@ public class MethodListGenerator {
         while (methods.hasNext()) {
             SootMethod method = (SootMethod)(methods.next());
 
-            method = getActualMethod(method);
-
             String name;
             if ((name = method.getName()).indexOf('<') != -1) {
                 if (name.indexOf("clinit") != -1) {
@@ -237,8 +224,7 @@ public class MethodListGenerator {
                         } else {
                             inheritedMethodIndex++;
                         }
-                        method = getActualMethod(method);
-                    }
+                     }
                     if (found) {
                         // The method overrides a previously defined method
                         inheritedList.set(inheritedMethodIndex, method);

@@ -103,7 +103,7 @@ public class Main extends ptolemy.copernicus.java.Main {
     /** Add transforms to the Scene.
      */
     public void addTransforms() {
-	    super.addTransforms();
+        super.addTransforms();
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.finalSnapshot", CWriter.v()));
 
@@ -137,7 +137,7 @@ public class Main extends ptolemy.copernicus.java.Main {
             Main main = new Main(args);
 
             // Parse the model.
-	        CompositeActor toplevel = main.readInModel(modelName);
+            CompositeActor toplevel = main.readInModel(modelName);
 
             // Create instance classes for the actors.
             main.initialize(toplevel);
@@ -155,11 +155,11 @@ public class Main extends ptolemy.copernicus.java.Main {
             // plotter fall in this category.
             System.exit(0);
         } catch (Exception ex) {
-	    System.err.println("Code generation of '" + modelName
+        System.err.println("Code generation of '" + modelName
                     + "' failed:");
             ex.printStackTrace(System.err);
             System.err.flush();
-	    System.exit(2);
+            System.exit(2);
         }
 
     }

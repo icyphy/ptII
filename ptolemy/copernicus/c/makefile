@@ -57,6 +57,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+        AnalysisUtilities.java \
 	CNames.java \
 	CWriter.java \
 	CodeFileGenerator.java \
@@ -67,6 +68,7 @@ JSRCS = \
 	FileHandler.java \
 	HeaderFileGenerator.java \
 	InterfaceFileGenerator.java \
+        InvokeGraphPruner.java \
 	JavaToC.java \
 	Main.java \
         MainFileGenerator.java \
@@ -74,6 +76,7 @@ JSRCS = \
 	MethodCodeGenerator.java \
 	MethodListGenerator.java \
 	NativeMethodGenerator.java \
+        Options.java \
 	OverriddenMethodGenerator.java \
 	RequiredFileGenerator.java \
 	Utilities.java

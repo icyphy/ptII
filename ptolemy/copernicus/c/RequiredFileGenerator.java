@@ -47,6 +47,8 @@ import soot.SootMethod;
 import soot.SootField;
 import soot.Value;
 import soot.Trap;
+import soot.Type;
+import soot.RefType;
 
 import soot.jimple.InvokeStmt;
 import soot.jimple.AssignStmt;
@@ -71,9 +73,6 @@ public class RequiredFileGenerator {
     /** Initialize the Object.
      */
     public void RequiredFileGenerator() {
-        _requiredMethods = new HashSet();
-        _requiredClasses = new HashSet();
-        _strictlyRequiredClasses = new HashSet();
     }
 
     /** Generate the .h files for all classes in the transitive closure of
@@ -87,14 +86,19 @@ public class RequiredFileGenerator {
      *  @exception IOException If  file I/O errors occur.
      */
     public static void generateTransitiveClosureOf(String classPath,
-            String className, String compileMode, boolean verbose)
+            String className)
             throws IOException {
+
+        String compileMode = Options.v().get("compileMode");
+        boolean verbose = Options.v().getBoolean("verbose");
+
         if (!compileMode.equals("singleClass")) {
             Scene.v().setSootClassPath(classPath);
             Scene.v().loadClassAndSupport(className);
 
-            // Generate headers for everything in the transitive closure.
+            // Generate headers for only required classes.
             Iterator j = getRequiredClasses().iterator();
+            //Iterator j = Scene.v().getClasses().iterator();
             while(j.hasNext()) {
                 String nextClassName=((SootClass)j.next()).getName();
                 _generateHeaders(classPath, nextClassName, compileMode,
@@ -119,64 +123,14 @@ public class RequiredFileGenerator {
          }
     }
 
-    /** Returns the set of all required classes.
-     *  @return The set of all required Classes.
+
+    /** Appends the list of C files corresponding to user classes to a
+     * given StringBuffer and returns the list of C files corresponding to
+     * library files. This is used by the MakeFileGenerator.
+     * @param code The Stringbuffer to which the C filenames of user
+     * classes are to be added.
+     * @return The list of C filesnames of required library files.
      */
-    public static Collection getRequiredClasses() {
-        if (_requiredClasses == null) {
-            return new HashSet();
-        } else {
-            return (Collection) _requiredClasses;
-        }
-    }
-
-    /** Returns the set of classes that must be initialized by clinit
-     *  methods, initialization functions etc.
-     *
-     *  @return The set of classes that must be initialized.
-     */
-    public static Collection getStrictlyRequiredClasses() {
-        if (_strictlyRequiredClasses == null) {
-            return new HashSet();
-        } else {
-            return (Collection) _strictlyRequiredClasses;
-        }
-    }
-
-    /** Initialize and compute the required classes and methods.
-     *  @param classPath The classpath.
-     *  @param className The name of the class which we will take as the root
-     *  from which others are called.
-     */
-    public void init(String classPath, String className) {
-        _compute(classPath, className);
-
-    }
-
-
-    /** Returns whether a given method is required or not. Since we are
-     *  generating a static library of all methods, they are
-     *  all considered required. Thus this will always return true.
-     *
-     *  @param methodName Any method.
-     *  @return True if it is a required method.
-     */
-    public static boolean isRequiredMethod(SootMethod method) {
-
-        // Always returns true because we want a static library.
-        return true;
-        /*
-        if (_requiredMethods != null) {
-            return _requiredMethods.contains(method);
-        }
-        else {
-            // It goes here if it initialization(_compute()) was not
-            // done.
-            return true;
-        }
-        */
-    }
-
     public static HashSet generateUserClasses(StringBuffer code) {
         HashSet libSources = new HashSet();
 
@@ -200,16 +154,120 @@ public class RequiredFileGenerator {
         return libSources;
     }
 
+    /** Returns the set of all required classes.
+     *  @return The set of all required Classes.
+     */
+    public static Collection getRequiredClasses() {
+        if (_requiredClasses == null) {
+            return new HashSet();
+        } else {
+            return (Collection) _requiredClasses;
+        }
+    }
+
+    /** Returns the set of classes that must be initialized by clinit
+     *  methods, initialization functions etc.
+     *
+     *  @return The set of classes that must be initialized.
+     */
+    public static Collection getStrictlyRequiredClasses() {
+        return (Collection) _requiredClasses;
+    }
+
+    /** Initialize and compute the required classes and methods.
+     *  @param classPath The classpath.
+     *  @param className The name of the class which we will take as the root
+     *  from which others are called.
+     */
+    public void init(String classPath, String className) {
+        _compute(classPath, className);
+
+    }
+
+    /** Returns whether a given class is required or not.
+     *  @param source Any class.
+     *  @return True if it is a required class.
+     */
+    public static boolean isRequiredClass(SootClass source) {
+        if (_requiredClasses != null) {
+            return _requiredClasses.contains(source);
+        }
+        else {
+            // It goes here if it initialization(_compute()) was not
+            // done.
+            return true;
+        }
+    }
+
+    /** Returns whether a given field is required or not.
+     *  @param source Any field.
+     *  @return True if it is a required field.
+     */
+    public static boolean isRequiredField(SootField field) {
+        if (Options.v().get("compileMode").equals("singleClass")) {
+            return true;
+        }
+        else {
+            return _requiredFields.contains(field);
+        }
+    }
+
+    /** Returns whether a given method is required or not.
+     *
+     *  @param method Any method.
+     *  @return True if it is a required method.
+     */
+    public static boolean isRequiredMethod(SootMethod method) {
+
+        if (!Options.v().get("compileMode").equals("singleClass")) {
+            return _requiredMethods.contains(method);
+        }
+        else {
+             // All methods are required in singleClass mode.
+             return true;
+        }
+    }
+
+    /** Returns whether a given Type is required or not. A type is required
+     * if it is not a RefType, or its corresponding class is not required.
+     * @param type The type to be checked.
+     * @return True if the type is required.
+     */
+    public static boolean isRequiredType(Type type) {
+        if (type instanceof RefType) {
+            SootClass sootClass = ((RefType)type).getSootClass();
+            if (isRequiredClass(sootClass)) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
+
     /** Calculate which classes and methods are really needed.
         @param classPath The classpath.
         @param className The name of the class.
      */
     private static void _compute(String classPath, String className) {
+        Scene.v().loadClassAndSupport(className);
+        SootClass source = Scene.v().getSootClass(className);
 
+        InvokeGraphPruner pruner = new InvokeGraphPruner(source);
+        _requiredMethods = pruner.getReachableMethods();
+        _requiredClasses = pruner.getReachableClasses();
+        _requiredFields = pruner.getReachableFields();
+
+
+        /*
         // Initialize the scene and other variables.
         _requiredMethods = new HashSet();
         _requiredClasses = new HashSet();
-        _strictlyRequiredClasses = new HashSet();
+        _strictlyRequiredClasses = _requiredClasses;
 
         Scene.v().setSootClassPath(classPath);
         Scene.v().loadClassAndSupport(className);
@@ -239,38 +297,9 @@ public class RequiredFileGenerator {
          }
 
          _growRequiredTree();
+         */
 
     }
-
-    /** Gets all fields called directly by a given method.
-     * @param method The method for which we want the target methods.
-     * @return The collection of all methods called by this method.
-     */
-    private static Collection _fieldsUsedBy(SootMethod method) {
-        // Set of all the called methods.
-        HashSet fields = new HashSet();
-
-        // FIXME: What about native methods?
-        if(method.isConcrete()) {
-            method.getDeclaringClass().setApplicationClass();
-            // Iterate over all the units and see which ones use fields.
-            Iterator units = ((JimpleBody)method.retrieveActiveBody()).
-                    getUnits().iterator();
-
-            while (units.hasNext()) {
-                Unit unit = (Unit)units.next();
-                if (unit instanceof Stmt) {
-                    if (((Stmt)unit).containsFieldRef()) {
-                        fields.add(((FieldRef)((Stmt)unit).
-                                getFieldRef()).getField());
-                    }
-                }
-            }
-        }
-
-        return ((Collection) fields);
-    }
-
 
     /** Generate the C code for the given class.
         @param classPath
@@ -286,8 +315,6 @@ public class RequiredFileGenerator {
         CodeFileGenerator cGenerator = new CodeFileGenerator();
 
         String code;
-
-        cGenerator.clearSingleClassMode();
 
         Scene.v().loadClassAndSupport(className);
         SootClass sootClass = Scene.v().getSootClass(className);
@@ -329,9 +356,6 @@ public class RequiredFileGenerator {
         InterfaceFileGenerator iGenerator   = new InterfaceFileGenerator();
 
         String code;
-
-        hGenerator.clearSingleClassMode();
-        iGenerator.clearSingleClassMode();
 
         Scene.v().loadClassAndSupport(className);
         SootClass sootClass = Scene.v().getSootClass(className);
@@ -496,6 +520,8 @@ public class RequiredFileGenerator {
             }
 
             // Iterate over all fields used by this method.
+            // FIXME: Enable this.
+            /*
             Iterator fields = _fieldsUsedBy(thisMethod).iterator();
             while (fields.hasNext()) {
                 SootClass declaringClass =
@@ -506,6 +532,7 @@ public class RequiredFileGenerator {
                     _strictlyRequiredClasses.add(declaringClass);
                 }
             }
+            */
 
         }
 
@@ -551,8 +578,8 @@ public class RequiredFileGenerator {
         /*
         Scene.v().loadClassAndSupport(method.getDeclaringClass().getName());
         Scene.v().setMainClass(method.getDeclaringClass());
-        ClassHierarchyAnalysis analyser = new ClassHierarchyAnalysis();
-        Scene.v().setActiveInvokeGraph(analyser.newInvokeGraph());
+        ClassHierarchyAnalysis analyzer = new ClassHierarchyAnalysis();
+        Scene.v().setActiveInvokeGraph(analyzer.newInvokeGraph());
 
         Iterator methodTargets = Scene.v().getActiveInvokeGraph()
                 .getTransitiveTargetsOf(method).iterator();
@@ -600,7 +627,7 @@ public class RequiredFileGenerator {
                 }
             }
         }
-        // In case some method cannot be analysed (for example some
+        // In case some method cannot be analyzed (for example some
         // non-concrete methods).
         catch (Exception e) {
         }
@@ -609,9 +636,10 @@ public class RequiredFileGenerator {
 
     }
 
-    private static HashSet _requiredMethods;
-    private static HashSet _requiredClasses;
-    private static HashSet _strictlyRequiredClasses;
+    private static HashSet _requiredMethods = new HashSet();
+    private static HashSet _requiredClasses = new HashSet();
+    private static HashSet _strictlyRequiredClasses = new HashSet();
+    private static HashSet _requiredFields = new HashSet();
 
 }
 

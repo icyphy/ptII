@@ -243,12 +243,12 @@ public class OverriddenMethodGenerator {
 
        _forceOverriddenMethods.add("<sun.net.www.URLConnection: "
             + "void setFileNameMap(java.net.FileNameMap)>");
-       // Overridden because it calls a nonexistant method.
+       // Overridden because it calls a nonexistent method.
 
        _forceOverriddenMethods.add("<java.security.Signature: "
             + "java.security.Signature getInstance"
             + "(java.lang.String,java.security.Provider)>");
-       // Overridden because it asks for a nonexistant field.
+       // Overridden because it asks for a nonexistent field.
 
         ///////// Methods replaced with actual code ////////
 
@@ -305,6 +305,7 @@ public class OverriddenMethodGenerator {
                 ||(className.indexOf("java.util.prefs.") == 0)
                 ||(className.indexOf("java.util.logging.") == 0)
                 ||(className.indexOf("java.security.") == 0)
+                ||(className.indexOf("java.lang.Object") == 0)
             ) {
             return true;
         }
