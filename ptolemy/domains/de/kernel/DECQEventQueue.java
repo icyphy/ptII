@@ -73,9 +73,9 @@ public class DECQEventQueue implements DEEventQueue {
      *  event queue. Note that the event is not dequeued.
      *  @return The DEEventTag associated with the earliest event in this
      *  event queue.
-     *  @exception IllegalAccessException.java If the queue is empty.
+     *  @exception IllegalActionException If the queue is empty.
      */
-    public DEEventTag getNextTag() throws IllegalAccessException {
+    public DEEventTag getNextTag() throws IllegalActionException {
         return (DEEventTag)_cQueue.getNextKey();
     }
 
@@ -94,9 +94,9 @@ public class DECQEventQueue implements DEEventQueue {
     /** Dequeue the earliest event in this event queue.
      *  @return The DEEvent object associated with the earliest event in
      *    the queue.
-     *  @exception IllegalAccessException.java If the queue is empty.
+     *  @exception IllegalActionException If the queue is empty.
      */
-    public synchronized DEEvent take() throws IllegalAccessException {
+    public synchronized DEEvent take() throws IllegalActionException {
         return (DEEvent)_cQueue.take();
     }
 

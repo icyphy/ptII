@@ -275,7 +275,7 @@ public class DEDirector extends Director {
             DEEventTag nextKey = null;
             try {
                 nextKey = _eventQueue.getNextTag();
-            } catch (IllegalAccessException e) {
+            } catch (IllegalActionException e) {
                 // The queue is empty. Proceed to postfire().
                 break;
             }
@@ -344,7 +344,7 @@ public class DEDirector extends Director {
         try {
             DEEventTag sortkey = _eventQueue.getNextTag();
             return sortkey.timeStamp();
-        } catch (IllegalAccessException e) {
+        } catch (IllegalActionException e) {
             return getStopTime();
         }
     }
@@ -602,7 +602,7 @@ public class DEDirector extends Director {
             if (_stopWhenQueueIsEmpty) {
                 try {
                     currentEvent = (DEEvent)_eventQueue.take();
-                } catch (IllegalAccessException ex) {
+                } catch (IllegalActionException ex) {
                     // Nothing more to read from queue.
                     break;
                 }
@@ -613,7 +613,7 @@ public class DEDirector extends Director {
                 while (true) {
                     try {
                         currentEvent = (DEEvent)_eventQueue.take();
-                    } catch (IllegalAccessException ex) {
+                    } catch (IllegalActionException ex) {
                         // Queue is empty.
                         _debug("Queue is empty. Waiting for input events.");
                         synchronized(_eventQueue) {
@@ -835,7 +835,7 @@ public class DEDirector extends Director {
         DEEventTag sortkey = null;
         try {
             sortkey = _eventQueue.getNextTag();
-        } catch (IllegalAccessException e) {
+        } catch (IllegalActionException e) {
             throw new IllegalActionException(
                     "Request to refire composite actor, "
                     + "but the event queue is empty.");
