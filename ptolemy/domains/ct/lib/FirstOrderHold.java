@@ -1,4 +1,4 @@
-/* An actor that takes a value and a derivative and does first order 
+/* An actor that takes a value and a derivative and does first order
    projection.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
@@ -71,11 +71,11 @@ public class FirstOrderHold extends Transformer
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         derivative = new TypedIOPort(this, "derivative", true, false);
-        defaultValue = new Parameter(this, "defaultValue", 
+        defaultValue = new Parameter(this, "defaultValue",
                 new DoubleToken(0.0));
-        defaultDerivative = new Parameter(this, "defaultDerivative", 
+        defaultDerivative = new Parameter(this, "defaultDerivative",
                 new DoubleToken(0.0));
-        
+
         input.setTypeEquals(BaseType.DOUBLE);
         derivative.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -142,10 +142,10 @@ public class FirstOrderHold extends Transformer
     public void initialize() throws IllegalActionException{
         super.initialize();
         _value = ((DoubleToken)defaultValue.getToken()).doubleValue();
-        _derivative = 
+        _derivative =
             ((DoubleToken)defaultDerivative.getToken()).doubleValue();
         _time = getDirector().getCurrentTime();
-        
+
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -153,7 +153,7 @@ public class FirstOrderHold extends Transformer
 
     // Saved token.
     private double _value;
-    
+
     private double _derivative;
 
     private double _time;

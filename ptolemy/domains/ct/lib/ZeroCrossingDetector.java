@@ -169,7 +169,7 @@ public class ZeroCrossingDetector extends Transformer
             //consume the input.
             _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
             if(_debugging)
-                _debug(getFullName() + " consuming trigger Token" +  
+                _debug(getFullName() + " consuming trigger Token" +
                         _thisTrigger);
             if((input.getWidth() != 0) && input.hasToken(0)) {
                 _inputToken = input.get(0);
@@ -254,7 +254,7 @@ public class ZeroCrossingDetector extends Transformer
      */
     public boolean postfire() {
         _lastTrigger = _thisTrigger;
-        
+
         return true;
     }
 

@@ -160,8 +160,8 @@ public class DifferentialSystem extends TypedCompositeActor {
                         "The initialStates must be a row vector.");
             }
             // Changes of the initialStates parameter are ignored after
-            // the execution.  
-            if (getManager()!= null && 
+            // the execution.
+            if (getManager()!= null &&
                     getManager().getState() == Manager.IDLE) {
                 _requestInitialization();
             }
@@ -280,10 +280,10 @@ public class DifferentialSystem extends TypedCompositeActor {
             }
             // Connect output expressions.
             // The policy now is that the output should never directly
-            // depend on the input. The output Expression actors will no 
+            // depend on the input. The output Expression actors will no
             // longer have input ports that represent the input of this
             // composite actor.
-            
+
             for(int l = 0; l < r; l++) {
                 // One port for each state variable.
                 for(int k = 0; k < n; k++) {
@@ -294,7 +294,7 @@ public class DifferentialSystem extends TypedCompositeActor {
                 }
                 /*
                   // One port for each input variable.
-                  
+
                   for(int k = 0; k < m; k++) {
                   TypedIOPort port = new TypedIOPort(maps[l], inputs[k],
                   true, false);

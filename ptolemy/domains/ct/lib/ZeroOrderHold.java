@@ -69,7 +69,7 @@ public class ZeroOrderHold extends Transformer
     public ZeroOrderHold(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        defaultValue = new Parameter(this, "defaultValue", 
+        defaultValue = new Parameter(this, "defaultValue",
                 new IntToken(0));
         output.setTypeAtLeast(input);
 	output.setTypeAtLeast(defaultValue);

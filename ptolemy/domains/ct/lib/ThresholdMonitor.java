@@ -47,10 +47,10 @@ and has width <i>thresholdWidth</i>.  This actor controls
 the integration step size so that the input does
 not cross the threshold without producing at least one
 <i>true</i> output. The output can be used as a pure event
-to trigger other events or state transitions. 
-When the input crosses the interval in 
+to trigger other events or state transitions.
+When the input crosses the interval in
 one step, this actor will report that the integration step is
-not accurate and refines the new step size by bisecting the 
+not accurate and refines the new step size by bisecting the
 old step size.
 
 @author  Jie Liu

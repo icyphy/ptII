@@ -44,12 +44,12 @@ import ptolemy.actor.lib.Clock;
 //// EventSource
 /**
 This actor outputs a set of events at a discrete set of time points.
-This is an event generator for the CT domain. 
+This is an event generator for the CT domain.
 @author Jie Liu
 @version $Id$
 */
 
-// FIXME: This is nearly a reimplementation of the SequentialClock. 
+// FIXME: This is nearly a reimplementation of the SequentialClock.
 // We may need a common facility for the shared code.
 
 public class EventSource extends TypedAtomicActor
@@ -196,7 +196,7 @@ public class EventSource extends TypedAtomicActor
         //_firstFiring = true;
         _cycleStartTime = getDirector().getCurrentTime();
         _phase = 0;
-        
+
         _nextOutputTime = _offsets[0] + _cycleStartTime;
         // Schedule the first firing.
         getDirector().fireAt(this, _nextOutputTime);
@@ -211,9 +211,9 @@ public class EventSource extends TypedAtomicActor
     public boolean postfire() throws IllegalActionException {
         CTDirector director = (CTDirector)getDirector();
         if (director.isDiscretePhase() && hasCurrentEvent()) {
-            double periodValue = 
+            double periodValue =
                 ((DoubleToken)period.getToken()).doubleValue();
-            
+
             // Increment to the next phase.
             _phase++;
             if (_phase >= _offsets.length) {
