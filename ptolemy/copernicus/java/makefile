@@ -88,14 +88,16 @@ OPTIONAL_FILES = \
 	cg \
 	'CommandLineTemplate$$1.class' \
 	'TypeSpecializer$$ConstantTerm.class' \
-	'TypeSpecializer$$VariableTerm.class'
+	'TypeSpecializer$$VariableTerm.class' \
+	'TypeSpecializerAnalysis$$ConstantTerm.class' \
+	'TypeSpecializerAnalysis$$VariableTerm.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 	@echo "To run the demo, run 'make demo'"
 
-install: all
+install: jclass $(PTCLASSJAR)
 
 demo: compileDemo runDemo
 timeDemo: compileDemo timeOrthoCommDemo
