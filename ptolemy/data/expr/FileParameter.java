@@ -230,13 +230,13 @@ public class FileParameter extends StringParameter {
         if (file.isAbsolute()) {
             if (!file.canRead()) {
                 throw new IllegalActionException(this,
-                        "Cannot read file: " + name);
+                        "Cannot read file '" + name + "'");
             }
             try {
                 return file.toURL();
             } catch (MalformedURLException ex) {
-                throw new IllegalActionException(this,
-                        "Cannot open file: " + ex.toString());
+                throw new IllegalActionException(this, ex,
+                        "Problem with URL format in '" + name + "'");
             }
         } else {
             // Try relative to the base directory.
@@ -249,6 +249,14 @@ public class FileParameter extends StringParameter {
                 } catch (MalformedURLException e) {
                     throw new IllegalActionException(this,
                             "Unable to open as a file or URL: " + name);
+                } catch (IllegalArgumentException ex2) {
+                    throw new IllegalActionException(this, ex2,
+                            "Problem with URI format in '" + name + "'. "
+                            + "This can happen if the '" + name
+                            + "' is not absolute"
+                            + " and is not present relative to the directory"
+                            + " in which the specified model was read"
+                            + " (which was '" + modelURI + "')");
                 }
             }
 
