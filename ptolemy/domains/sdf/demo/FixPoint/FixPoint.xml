@@ -2,10 +2,30 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="topLevel" class="ptolemy.actor.TypedCompositeActor">
+    <property name="annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="422.0, 91.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">The follow plot shows the numbers generated
+by a Ramp actor (i.e., the blue line),
+which generates a stream of double tokens
+with a 0.1 increment starting from -1.0.
+The double tokens are converted into
+fixpoint tokens with the given precision
+(i.e., the red line).
+ </text>
+           </svg>
+           </configure>
+        </property>
+    </property>
     <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="78.0, 38.0">
         </property>
     </property>
     <entity name="ramp" class="ptolemy.actor.lib.Ramp">
@@ -14,6 +34,8 @@
         <property name="init" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="109.0, 220.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -28,6 +50,8 @@
         </property>
         <property name="quantizer" class="ptolemy.data.expr.Parameter" value="0">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="264.0, 135.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -39,6 +63,8 @@
         <property name="precision" class="ptolemy.data.expr.Parameter" value="&quot;(2.16)&quot;">
         </property>
         <property name="overflow" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="363.0, 134.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -58,12 +84,13 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
+        <property name="_location" class="ptolemy.moml.Location" value="492.99998474121094, 219.0">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Ramp Diagram</title>
@@ -75,9 +102,10 @@
 <wrap/>
 <default marks="dots"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="204.0, 225.0">
+        </vertex>
     </relation>
     <relation name="_R1" class="ptolemy.actor.TypedIORelation">
     </relation>
