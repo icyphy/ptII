@@ -53,10 +53,12 @@ JSRCS = \
 	ActorRecursion.java \
 	DDFBooleanSelect.java \
 	DDFOrderedMerge.java \
+	DDFSelect.java \
 	DDFSingleTokenCommutator.java
 
 OTHER_FILES_TO_BE_JARED = \
-	DDFBooleanSelectIcon.xml
+	DDFBooleanSelectIcon.xml \
+	DDFSelectIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

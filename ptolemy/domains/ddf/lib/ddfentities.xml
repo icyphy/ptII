@@ -10,6 +10,7 @@
 <entity name="ActorRecursion" class="ptolemy.domains.ddf.lib.ActorRecursion"/>
 <entity name="DDFBooleanSelect" class="ptolemy.domains.ddf.lib.DDFBooleanSelect"/>
 <entity name="DDFOrderedMerge" class="ptolemy.domains.ddf.lib.DDFOrderedMerge"/>
+<entity name="DDFSelect" class="ptolemy.domains.ddf.lib.DDFSelect"/>
 <entity name="DDFSingleTokenCommutator" class="ptolemy.domains.ddf.lib.DDFSingleTokenCommutator"/>
       </group>
     ?>
