@@ -11,8 +11,9 @@
 </head>
 <body>
 <!--vergilDocs-->
-<h2>Limitations</h2>
-Version 3.0 has a number of limitations.
+<h2><a name="limitations">Limitations</a>
+</h2>
+Version 3.0 has the following limitations:
 
 <h3>Release Limitations</h3>
 <ul>
@@ -216,10 +217,11 @@ User Interface.
 
 <ul>
 
-<li> Under JDK1.3.1_03, the tool tips do not work.  They work under
-JDK1.3.1_02, see 
-<a href="http://developer.java.sun.com/developer/bugParade/bugs/4671567.html"><CODE>http://developer.java.sun.com/developer/bugParade/bugs/4671567.html</CODE></a>.
-
+<li> If there are multiple windows open for a model, say, the top
+level vergil window and the tree view, or the top level window
+and the inside look of a composite component, when the top
+level window is closed, all other windows are closed, but the
+user is not prompted to save any change to the model.
 
 <li> When setting the type of a port, we should provide a combo
 box that lists the common ports
@@ -232,11 +234,10 @@ be to have an information message in the status bar about this.
 mechanism should disallow port name changes on ports that are
 named in Java.  The UI could recognize this.  The UI should
 not allow the user to remove built in Java defined ports.
-<li> Query needs to be put into a scroll pane
+
 <li> Manually setting of the types of actors like ArrayToSequence that
 have constraints on their element types can cause problems.
 <li> HTVQ demo is badly laid out when run under vergil.
-<li>No undo mechanism.
 <li>Weak support for multiports in the graph editor.
 <li>It is difficult to control wire routing.
 <li>Cannot have more than one vertex in a connection.
@@ -257,5 +258,8 @@ Code Generation limitations are covered on the
 <li>Boolean and integer dataflow.
 <li>Dynamic dataflow
 </ul>
+ <p>For limitations discovered after the release, see the
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/#in_browser">Ptolemy II 3.0 website</a>
+
 </body>
 </html>
