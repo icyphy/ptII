@@ -37,7 +37,9 @@ proc speedComparison  {xmlFile \
 	{modelName "" } \
 	{targetPackage ptolemy.copernicus.shallow.cg} \
 	{repeat 3} \
-        {modelClass ""} } { 
+        {modelClass ""} \
+	{codeGenType Shallow} \
+    } { 
 
     global relativePathToPTII
     if { $modelName == "" } {
@@ -53,20 +55,32 @@ proc speedComparison  {xmlFile \
     # The fully qualified classname of the code we generated.
     set targetClass $targetPackage.$modelName.$modelClass
 
-    set args [java::new {String[]} 2 \
-	    [list \
-	    "-class" "$targetClass"]]
 
-    puts "Running builtin shallow $repeat times"
-    set shallowElapsed [time {java::call \
-    	    ptolemy.actor.gui.CompositeActorApplication \
-    	    main $args} $repeat]
+    if {$codeGenType = "Deep"} {
+	set args [java::new {String[]} 0]
+	puts "Running builtin $codeGenType codegen $repeat times"
+	set codegenElapsed [time {java::call \
+		$targetClass
+		main $args} $repeat]
 
-    puts "Running exec shallow $repeat times"
-    set shallowExecElapsed \
-	    [time {exec java -classpath $relativePathToPTII \
-	    ptolemy.actor.gui.CompositeActorApplication \
-	    -class $targetClass} $repeat]
+	puts "Running exec $codeGenType codegen $repeat times"
+	set codegenExecElapsed \
+		[time {exec java -classpath $relativePathToPTII $targetClass} $repeat]
+    } else {
+	set args [java::new {String[]} 2 \
+		[list \
+		"-class" "$targetClass"]]
+	puts "Running builtin $codeGenType codegen $repeat times"
+	set codegenElapsed [time {java::call \
+		ptolemy.actor.gui.CompositeActorApplication \
+		main $args} $repeat]
+
+	puts "Running exec $codeGenType codegen $repeat times"
+	set codegenExecElapsed \
+		[time {exec java -classpath $relativePathToPTII \
+		ptolemy.actor.gui.CompositeActorApplication \
+		-class $targetClass} $repeat]
+    }
 
     set args [java::new {String[]} 1 \
 	    [list $xmlFile]]
@@ -83,7 +97,7 @@ proc speedComparison  {xmlFile \
 	    $xmlFile} $repeat]
 
     # Convert from Tcl time's microseconds to milliseconds
-    set shallowElapsedTime [expr {int([lindex $shallowElapsed 0] /1000.0)}]
+    set codegenElapsedTime [expr {int([lindex $codegenElapsed 0] /1000.0)}]
     set interpretedElapsedTime [expr {int([lindex $interpretedElapsed 0] /1000.0)}]
 
     if {[lindex $interpretedElapsed 0] == 0} {
@@ -91,13 +105,13 @@ proc speedComparison  {xmlFile \
     } else {
 	set elapsedRatio [expr { \
 		int(
-	(([lindex $shallowElapsed 0] + 0.0) \
+	(([lindex $codegenElapsed 0] + 0.0) \
 		/ \
 		([lindex $interpretedElapsed 0] + 0.0)) * 100)}]
     }
 
-    set shallowExecElapsedTime \
-	    [expr {int([lindex $shallowExecElapsed 0] /1000.0)}]
+    set codegenExecElapsedTime \
+	    [expr {int([lindex $codegenExecElapsed 0] /1000.0)}]
     set interpretedExecElapsedTime \
 	    [expr {int([lindex $interpretedExecElapsed 0] /1000.0)}]
 
@@ -106,24 +120,24 @@ proc speedComparison  {xmlFile \
     } else {
 	set execElapsedRatio [expr { \
 		int(
-	(([lindex $shallowExecElapsed 0] + 0.0) \
+	(([lindex $codegenExecElapsed 0] + 0.0) \
 		/ \
 		([lindex $interpretedExecElapsed 0] + 0.0)) * 100)}]
     }
 
-    puts "$modelName $repeat builtin runs: Interp/Shallow: \
-	    $interpretedElapsedTime/$shallowElapsedTime \
+    puts "$modelName $repeat builtin runs: Interp/$codeGenType: \
+	    $interpretedElapsedTime/$codegenElapsedTime \
 	    ($elapsedRatio%)"
 
-    puts "$modelName $repeat exec runs: Interp/Shallow: \
-	    $interpretedExecElapsedTime/$shallowExecElapsedTime \
+    puts "$modelName $repeat exec runs: Interp/$codeGenType: \
+	    $interpretedExecElapsedTime/$codegenExecElapsedTime \
 	    ($execElapsedRatio%)"
 
     # The percentage is separated by spaces to make this more machine readable
-    return "Times Interp/Shallow ms $modelName $repeat \
-	    builtin: $interpretedElapsedTime/$shallowElapsedTime \
+    return "Times Interp/$codeGenType ms $modelName $repeat \
+	    builtin: $interpretedElapsedTime/$codegenElapsedTime \
 	    $elapsedRatio % \
-	    exec: $interpretedExecElapsedTime/$shallowExecElapsedTime \
+	    exec: $interpretedExecElapsedTime/$codegenExecElapsedTime \
 	    $execElapsedRatio %"
 }
 
@@ -233,7 +247,7 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
     puts $results
 
     return [speedComparison $realModelPath $modelName $targetPackage \
-	    3 $modelClass]
+	    3 $modelClass $codeGenType]
 } 
 
 
