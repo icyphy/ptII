@@ -695,9 +695,9 @@ test IOPort-10.7 {Construct a simple system, then call description} {
     set dest [java::new ptolemy.actor.TypedAtomicActor $container dest]
     $source newPort output
     $dest newPort input
-    set output [$source getPort output]
+    set output [java::cast ptolemy.actor.IOPort [$source getPort output]]
     $output setOutput true
-    set input [$dest getPort input]
+    set input [java::cast ptolemy.actor.IOPort [$dest getPort input]]
     $input setInput true
     $container connect $output $input edge0
     $container description
