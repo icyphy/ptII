@@ -1229,7 +1229,7 @@ public class PortConfigurerDialog
         _portTypeColumn.setCellEditor(portTypeEditor);
         portTypeEditor.setValidator(new CellValidator() {
              /////////////////////////////////////////
-            //////////// innder class/////////////////
+             //////////// inner class/////////////////
             public boolean isValid(String cellValue) {
                 try {
                     if (cellValue.equals(""))
