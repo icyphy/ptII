@@ -62,8 +62,7 @@ as structure changed graph events to all graphListeners registered with this
 model.  This mechanism allows a graph visualization of a ptolemy model to
 remain synchronized with the state of a mutating model.
 
-@author Steve Neuendorffer
-@contributor Edward A. Lee
+@author Steve Neuendorffer, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */

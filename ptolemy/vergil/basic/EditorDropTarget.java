@@ -70,8 +70,7 @@ This class provides drag-and-drop support. When this drop target
 receives a Transferable object containing a ptolemy entity, it creates
 a new instance of the entity, and adds it to the given graph.
 
-@author Steve Neuendorffer
-@contributor Michael Shilman and Edward A. Lee
+@author Steve Neuendorffer, Contributor: Michael Shilman and Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */

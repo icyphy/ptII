@@ -90,8 +90,7 @@ values with 10 bits of precision, two of which are integer bits.
 In all cases, rounding is used when quantization errors occur,
 and saturation is used when overflow occurs.
 
-@author Bart Kienhuis
-@contributor Edward A. Lee
+@author Bart Kienhuis, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.4
 @see PtParser

@@ -69,8 +69,7 @@ the icon in a different way entirely (for example, starting with a
 Swing icon and creating the figure using a SwingWrapper) by overriding
 both createBackgroundFigure() and createIcon().
 
-@author Steve Neuendorffer, John Reekie
-@contributor Edward A. Lee
+@author Steve Neuendorffer, John Reekie, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */

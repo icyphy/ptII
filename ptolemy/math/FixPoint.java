@@ -103,8 +103,7 @@ FixPoint also makes use of the BigDecimal class. Note that the
 FixPoint does not put any restrictions on the maximum number of bits
 used to represent a value.
 
-@author Bart Kienhuis
-@contributor Edward A. Lee
+@author Bart Kienhuis, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.4
 @see Precision

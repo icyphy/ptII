@@ -95,8 +95,7 @@ clicking and dragging on the ports that are inside an entity.
 Anything can be deleted by selecting it and pressing
 the delete key on the keyboard.
 
-@author Steve Neuendorffer
-@contributor Edward A. Lee
+@author Steve Neuendorffer, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
  */

@@ -81,8 +81,7 @@ This class provides interaction techniques for edges that are to be connected
 between ports and relations.  Standard interaction techniques for an
 undirected edge are allowed.
 
-@author Steve Neuendorffer
-@contributor Edward A. Lee
+@author Steve Neuendorffer, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */

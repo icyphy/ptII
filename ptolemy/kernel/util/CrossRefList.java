@@ -63,8 +63,7 @@ the <i>index number</i>).  This may result in gaps in the list at
 lower index numbers.  Gaps are representing by null in an enumeration
 of the list.
 
-@author Geroncio Galicia
-@contributor Edward A. Lee
+@author Geroncio Galicia, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 0.2
 */

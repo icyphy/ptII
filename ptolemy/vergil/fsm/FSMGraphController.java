@@ -86,8 +86,7 @@ A Graph Controller for FSM models.  This controller allows states to be
 dragged and dropped onto its graph. Arcs can be created by
 control-clicking and dragging from one state to another.
 
-@author Steve Neuendorffer
-@contributor Edward A. Lee
+@author Steve Neuendorffer, Contributor: Edward A. Lee
 
 @version $Id$
 @since Ptolemy II 2.0

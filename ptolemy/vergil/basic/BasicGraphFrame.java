@@ -129,8 +129,7 @@ A simple graph view for ptolemy models.  This represents a level of the
 hierarchy of a ptolemy model as a diva graph.  Cut, copy and paste operations
 are supported using MoML.
 
-@author  Steve Neuendorffer
-@contributor Edward A. Lee
+@author  Steve Neuendorffer, Contributor: Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
 */
