@@ -309,7 +309,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA PTCC CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB CAL_DIR CHIC_DIR CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PTBOOST_INCLUDE PTCAL_DIR PTCOPERNICUS_DIR PTCM_DIR PTCOMM_DIR PTCHIC_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMESCAL_DIR PTQUICKTIME_DIR PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTX10_DIR PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB CAL_DIR CHIC_DIR CLASSPATHSEPARATOR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PTBOOST_INCLUDE PTCAL_DIR PTCOPERNICUS_DIR PTCM_DIR PTCOMM_DIR PTCHIC_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAVA_DIR PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJNI_ARCHITECTURE PTJNI_DIR PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMESCAL_DIR PTQUICKTIME_DIR PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTX10_DIR PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -2143,410 +2143,8 @@ echo "$as_me: WARNING: Failed to find boost/static_assert.hpp, which is only
         mkdir $PTII/mescal/include
         cp -r boost $PTII/mescal/include" >&2;}
     fi
-fi
 
-#--------------------------------------------------------------------
-#       The CaffeineMark Kit is a Java benchmark kit
-#	that is used by C code generation
-#       See http://www-sor.inria.fr/~java/tools/cmkit
-#--------------------------------------------------------------------
-
-# Directory that contains the CaffeineMark Java Benchmark kit
-# used by C code generation in copernicus/c
-CMKIT_DIR='${PTII}/vendors/cm'
-
-# PTCM_DIR is set to cm and used in $PTII/ptolemy/copernicus/c/test/makefile
-# if the CaffeineMark Java Benchmark kit is found
-PTCM_DIR=
-
-# We only need to look for cm if $PTII/ptolemy/copernicus/c exists
-if test ! -d "$PTII/ptolemy/copernicus/c"; then
-    echo "$as_me:$LINENO: result: $PTII/ptolemy/copernicus/c is not present,
-	so we need not find the CaffeineMark Kit." >&5
-echo "${ECHO_T}$PTII/ptolemy/copernicus/c is not present,
-	so we need not find the CaffeineMark Kit." >&6
-else
-    echo "$as_me:$LINENO: checking for CaffeineMarkEmbeddedApp.class" >&5
-echo $ECHO_N "checking for CaffeineMarkEmbeddedApp.class... $ECHO_C" >&6
-
-# Check whether --with-cmkit or --without-cmkit was given.
-if test "${with_cmkit+set}" = set; then
-  withval="$with_cmkit"
-  CMKIT_DIR=$withval
-else
-  CMKIT_DIR=$PTII/vendors/cm
-fi;
-
-    if test -f "$CMKIT_DIR/CaffeineMarkEmbeddedApp.class"; then
-	echo "$as_me:$LINENO: result: $CMKIT_DIR" >&5
-echo "${ECHO_T}$CMKIT_DIR" >&6
-	PTCM_DIR=cm
-    else
-        { echo "$as_me:$LINENO: WARNING: Failed to find $CMKIT_DIR/CaffeineMarkEmbeddedApp.class
-    perhaps CaffeineMark is not installed?
-    You need not download CaffeineMark unless you plan on using C code
-    generation.  The CaffeineMark kit can be downloaded from
-    http://www-sor.inria.fr/~java/tools/cmkit/embed.zip" >&5
-echo "$as_me: WARNING: Failed to find $CMKIT_DIR/CaffeineMarkEmbeddedApp.class
-    perhaps CaffeineMark is not installed?
-    You need not download CaffeineMark unless you plan on using C code
-    generation.  The CaffeineMark kit can be downloaded from
-    http://www-sor.inria.fr/~java/tools/cmkit/embed.zip" >&2;}
-	# Note that we don't substitute in the ${PTII} here
-	CMKIT_DIR='${PTII}/vendors/cm'
-    fi
-fi
-
-#--------------------------------------------------------------------
-#       Cal is an language used to define actors
-#	For more information,
-#       see http://www.gigascale.org/cal
-#       See if there was a command-line option for where Cal is.
-#--------------------------------------------------------------------
-
-# PTCAL_DIR is set to cal and used in
-# $PTII/ptolemy/makefile if Cal was found.
-PTCAL_DIR=
-
-# Directory that contains the ptCal jar file
-CAL_DIR='${PTII}/lib'
-
-# We only need to look for on if $PTII/ptolemy/cal exists
-CAL_USER_DIR="$PTII/ptolemy/cal"
-if test ! -d "$CAL_USER_DIR"; then
-    echo "$as_me:$LINENO: result: $CAL_USER_DIR is not present,
-	so we need not find the Cal, the actor language." >&5
-echo "${ECHO_T}$CAL_USER_DIR is not present,
-	so we need not find the Cal, the actor language." >&6
-else
-    echo "$as_me:$LINENO: checking for Cal, the actor language" >&5
-echo $ECHO_N "checking for Cal, the actor language... $ECHO_C" >&6
-
-# Check whether --with-CAL_DIR or --without-CAL_DIR was given.
-if test "${with_CAL_DIR+set}" = set; then
-  withval="$with_CAL_DIR"
-  CAL_DIR=$withval
-else
-  CAL_DIR=$PTII/lib
-fi;
-
-    if test -f "$CAL_DIR/ptCal.jar"; then
-	echo "$as_me:$LINENO: result: $CAL_DIR" >&5
-echo "${ECHO_T}$CAL_DIR" >&6
-	# We found cal
-	echo "$as_me:$LINENO: checking for saxon7.jar (used by cal)" >&5
-echo $ECHO_N "checking for saxon7.jar (used by cal)... $ECHO_C" >&6
-	if test -f "$CAL_DIR/saxon7.jar"; then
-	   echo "$as_me:$LINENO: result: $CAL_DIR/saxon7.jar" >&5
-echo "${ECHO_T}$CAL_DIR/saxon7.jar" >&6
-	   PTCAL_DIR=cal
-	else
-           { echo "$as_me:$LINENO: WARNING: Failed to find $CAL_DIR/saxon7.jar
-    which is required by Cal, the actor language.
-    You can download saxon from http://saxon.sourceforge.net/
-    If it is not present, you will not be able to use the Cal actor
-    or run the demonstrations  in ptolemy/cal" >&5
-echo "$as_me: WARNING: Failed to find $CAL_DIR/saxon7.jar
-    which is required by Cal, the actor language.
-    You can download saxon from http://saxon.sourceforge.net/
-    If it is not present, you will not be able to use the Cal actor
-    or run the demonstrations  in ptolemy/cal" >&2;}
-	   # Note that we don't substitute in the ${PTII} here
-	   CAL_DIR='${PTII}/lib/'
-        fi
-    else
-        { echo "$as_me:$LINENO: WARNING: Failed to find PTII/lib/ptCal.jar
-    ptCal.jar should be present in your distribution.
-    If it is not present, you will not be able to use the Cal actor
-    or run the demonstrations  in ptolemy/cal" >&5
-echo "$as_me: WARNING: Failed to find PTII/lib/ptCal.jar
-    ptCal.jar should be present in your distribution.
-    If it is not present, you will not be able to use the Cal actor
-    or run the demonstrations  in ptolemy/cal" >&2;}
-	# Note that we don't substitute in the ${PTII} here
-	CAL_DIR='${PTII}/lib/'
-    fi
-fi
-
-if test -z "$PTCAL_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/cal"
-else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$CAL_DIR/ptCal.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$CAL_DIR/saxon7.jar\"/> "
-fi
-
-#--------------------------------------------------------------------
-#       "CHIC is a modular verifier for behavioral compatibility checking
-#	 of software and hardware components"
-#
-#	For more information,
-#       see http://www-cad.eecs.berkeley.edu/~tah/chic/
-#--------------------------------------------------------------------
-
-# PTCHIC_DIR is set to chic and used in
-# $PTII/ptolemy/makefile if Chic was found.
-PTCHIC_DIR=
-
-# Directory that contains the chic jar file
-CHIC_DIR='${PTII}/lib'
-
-# We only need to look for if $PTII/ptolemy/chic exists
-CHIC_USER_DIR="$PTII/ptolemy/chic"
-if test ! -d "$CHIC_USER_DIR"; then
-    echo "$as_me:$LINENO: result: $CHIC_USER_DIR is not present,
-    so we need not find Chic, the modular verifier for
-    behavioral compatibility checking of software and hardware components." >&5
-echo "${ECHO_T}$CHIC_USER_DIR is not present,
-    so we need not find Chic, the modular verifier for
-    behavioral compatibility checking of software and hardware components." >&6
-else
-    echo "$as_me:$LINENO: checking for Chic, the model checker" >&5
-echo $ECHO_N "checking for Chic, the model checker... $ECHO_C" >&6
-
-# Check whether --with-CHIC_DIR or --without-CHIC_DIR was given.
-if test "${with_CHIC_DIR+set}" = set; then
-  withval="$with_CHIC_DIR"
-  CHIC_DIR=$withval
-else
-  CHIC_DIR=$PTII/lib
-fi;
-
-    if test -f "$CHIC_DIR/chic.jar"; then
-	echo "$as_me:$LINENO: result: $CHIC_DIR" >&5
-echo "${ECHO_T}$CHIC_DIR" >&6
-	# We found chic
-	PTCHIC_DIR=chic
-    else
-        { echo "$as_me:$LINENO: WARNING: Failed to find PTII/lib/chic.jar
-    chic.jar should be present in your distribution.
-    Chic is a modular verifier for behavioral compatibility checking
-    of software and hardware components.
-    If it is not present, you will not be able to use the Chic facilities
-    or run the demonstrations in ptolemy/chic." >&5
-echo "$as_me: WARNING: Failed to find PTII/lib/chic.jar
-    chic.jar should be present in your distribution.
-    Chic is a modular verifier for behavioral compatibility checking
-    of software and hardware components.
-    If it is not present, you will not be able to use the Chic facilities
-    or run the demonstrations in ptolemy/chic." >&2;}
-	# Note that we don't substitute in the ${PTII} here
-	CHIC_DIR='${PTII}/lib/'
-    fi
-fi
-
-if test -z "$PTCHIC_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/chic"
-else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-	<classpathentry kind=\"lib\" path=\"lib/chic.jar\"/> "
-fi
-
-#--------------------------------------------------------------------
-#       commapi is the Java serial interface, see
-#	http://java.sun.com/products/javacomm/
-#	See if there was a command-line option for commapi is
-#       If not, check to see if $PTII/vendors/sun/commapi
-#--------------------------------------------------------------------
-
-# We only need to look for commapi if $PTII/ptolemy/actor/lib/io/comm is present
-COMMAPI_USER_DIR="$PTII/ptolemy/actor/lib/io/comm"
-COMMAPI_PRESENT=no
-# PTLEGO_DIR is set to lego
-# $PTII/ptolemy/apps/makefile if the Java Communications API was found
-#
-PTLEGO_DIR=
-# PTCOMM_DIR is set to comm and used in
-# $PTII/ptolemy/actor/lib/io/makefile if the Java Communications API was found
-#
-PTCOMM_DIR=
-if test ! -d "$COMMAPI_USER_DIR"; then
-    echo "$as_me:$LINENO: result: $COMMAPI_USER_DIR is not present,
-	so we need not find commapi." >&5
-echo "${ECHO_T}$COMMAPI_USER_DIR is not present,
-	so we need not find commapi." >&6
-    # Use curly brackets around PTII so that if commapi is not present
-    # then ${PTII} will appear in ptinvoke.
-    COMMAPI_DIR='${PTII}/vendors/sun/commapi'
-else
-    echo "$as_me:$LINENO: checking for commapi directory" >&5
-echo $ECHO_N "checking for commapi directory... $ECHO_C" >&6
-
-# Check whether --with-COMMAPI or --without-COMMAPI was given.
-if test "${with_COMMAPI+set}" = set; then
-  withval="$with_COMMAPI"
-  COMMAPI_DIR=$withval
-else
-  COMMAPI_DIR=$PTII/vendors/sun/commapi
-fi;
-
-    if test -f "$COMMAPI_DIR/comm.jar"; then
-	echo "$as_me:$LINENO: result: $COMMAPI_DIR" >&5
-echo "${ECHO_T}$COMMAPI_DIR" >&6
-	# Subdirectories that contains Java Communications API specific code
-	PTLEGO_DIR=lego
-	PTCOMM_DIR=comm
-	COMMAPI_PRESENT=yes
-    else
-	echo "$as_me:$LINENO: result: Did not find
-	'$COMMAPI_DIR/comm.jar'" >&5
-echo "${ECHO_T}Did not find
-	'$COMMAPI_DIR/comm.jar'" >&6
-	echo "$as_me:$LINENO: checking for commapi by compiling a test program " >&5
-echo $ECHO_N "checking for commapi by compiling a test program ... $ECHO_C" >&6
-        # We need to run javac in the config directory so that javac from
-        # jdk1.1.6 under NT and cygwin works properly
-	startdir=`pwd`
-	cd "$srcdir/config"
-	# Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-	if "$JAVAC" javaCommAPI.java ; then
-	    echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6
-	    PTLEGO_DIR=lego
-	    PTCOMM_DIR=comm
-	    COMMAPI_PRESENT=yes
-	else
-	    COMMAPI_DIR='${PTII}/vendors/sun/commapi'
-	fi
-	cd "$startdir"
-    fi
-
-    if test "$COMMAPI_PRESENT" = "no"; then
-        { echo "$as_me:$LINENO: WARNING: Perhaps commapi is not installed?
-    You need not download commapi unless you plan the actors in actor.lib.comm.
-    The commapi can be downloaded from http://java.sun.com/products/javacomm/
-    and placed  in \$PTII/vendors/sun/commapi" >&5
-echo "$as_me: WARNING: Perhaps commapi is not installed?
-    You need not download commapi unless you plan the actors in actor.lib.comm.
-    The commapi can be downloaded from http://java.sun.com/products/javacomm/
-    and placed  in \$PTII/vendors/sun/commapi" >&2;}
-    fi
-fi
-
-if test -z "$PTCOMM_DIR"; then
-   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/io/comm/"
-else
-   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$COMMAPI_DIR/comm.jar\"/>"
-fi
-
-#--------------------------------------------------------------------
-#       Garbage Collector (GC)
-#       The C code generator can use the Boehm Garbage Collector
-#       See http://www.hpl.hp.com/personal/Hans_Boehm/gc/
-#--------------------------------------------------------------------
-#
-# GC_LD_DIRECTIVE is set to the values to pass to cc or ld if
-# GC_malloc() can be found either in the default compiler location
-# or in $PTII/lib.
-# GC_LD_DIRECTIVE is used in ptolemy/copernicus/c/
-GC_LD_DIRECTIVE=
-
-# GC_DIR is set to the directory where GC can be found
-GC_DIR=
-
-if test ! -d "$PTII/ptolemy/copernicus/c"; then
-    echo "$as_me:$LINENO: result: $PTII/ptolemy/copernicus/c is not present,
-        so we need not find the Boehm GC" >&5
-echo "${ECHO_T}$PTII/ptolemy/copernicus/c is not present,
-        so we need not find the Boehm GC" >&6
-else
-    # Extract the first word of "gcc", so it can be a program name with args.
-set dummy gcc; ac_word=$2
-echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
-if test "${ac_cv_path_PTCC+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $PTCC in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_PTCC="$PTCC" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_path_PTCC="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-
-  ;;
-esac
-fi
-PTCC=$ac_cv_path_PTCC
-
-if test -n "$PTCC"; then
-  echo "$as_me:$LINENO: result: $PTCC" >&5
-echo "${ECHO_T}$PTCC" >&6
-else
-  echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-fi
-
-    if test "${PTCC:-none}" = "none"; then
-        { echo "$as_me:$LINENO: WARNING: Failed to find gcc" >&5
-echo "$as_me: WARNING: Failed to find gcc" >&2;}
-        # Extract the first word of "cc", so it can be a program name with args.
-set dummy cc; ac_word=$2
-echo "$as_me:$LINENO: checking for $ac_word" >&5
-echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
-if test "${ac_cv_path_PTCC+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  case $PTCC in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_PTCC="$PTCC" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_path_PTCC="$as_dir/$ac_word$ac_exec_ext"
-    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-
-  ;;
-esac
-fi
-PTCC=$ac_cv_path_PTCC
-
-if test -n "$PTCC"; then
-  echo "$as_me:$LINENO: result: $PTCC" >&5
-echo "${ECHO_T}$PTCC" >&6
-else
-  echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-fi
-
-        if test "${PTCC:-none}" != "none"; then
-            echo "$as_me:$LINENO: result: $PTCC" >&5
-echo "${ECHO_T}$PTCC" >&6
-        else
-            { echo "$as_me:$LINENO: WARNING: Failed to find gcc or cc, so we will
-    not be able use GC in $PTII/ptolemy/copernicus/c" >&5
-echo "$as_me: WARNING: Failed to find gcc or cc, so we will
-    not be able use GC in $PTII/ptolemy/copernicus/c" >&2;};
-        fi
-    fi
-
-    if test "${PTCC:-none}" != "none"; then
-       echo "$as_me:$LINENO: checking for Garbage Collector" >&5
-echo $ECHO_N "checking for Garbage Collector... $ECHO_C" >&6
-       ac_ext=c
+    ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
@@ -3415,203 +3013,7 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
-echo "$as_me:$LINENO: checking for GC_malloc in -lgc" >&5
-echo $ECHO_N "checking for GC_malloc in -lgc... $ECHO_C" >&6
-if test "${ac_cv_lib_gc_GC_malloc+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lgc  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any gcc2 internal prototype to avoid an error.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-/* We use char because int might match the return type of a gcc2
-   builtin and then its argument prototype would still apply.  */
-char GC_malloc ();
-int
-main ()
-{
-GC_malloc ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_gc_GC_malloc=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_cv_lib_gc_GC_malloc=no
-fi
-rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-echo "$as_me:$LINENO: result: $ac_cv_lib_gc_GC_malloc" >&5
-echo "${ECHO_T}$ac_cv_lib_gc_GC_malloc" >&6
-if test $ac_cv_lib_gc_GC_malloc = yes; then
-  PT_GC=yes
-else
-  PT_GC=no
-fi
-
-       if test "$PT_GC" = "yes"; then
-           echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6
-       else
-           if test -f "$PTII/lib/libgc.a"; then
-	      # FIXME: what about Windows?
-	      GC_LD_DIRECTIVE='"-L${PTII}/lib" -lgc'
-	      echo "$as_me:$LINENO: result: use $GC_LD_DIRECTIVE" >&5
-echo "${ECHO_T}use $GC_LD_DIRECTIVE" >&6
-           else
-	      if test -d "$PTII/vendors/gc/gc6.1"; then
-                  { echo "$as_me:$LINENO: WARNING: Failed to find GC_malloc(), but
-    \$PTII/vendors/gc/gc6.1 exists.  See the \$PTII/vendors/gc/README.txt
-    that directory if you would like to use the Garbage Collector
-    with the C code generator" >&5
-echo "$as_me: WARNING: Failed to find GC_malloc(), but
-    \$PTII/vendors/gc/gc6.1 exists.  See the \$PTII/vendors/gc/README.txt
-    that directory if you would like to use the Garbage Collector
-    with the C code generator" >&2;}
-              else
-	          if test -d "$PTII/vendors/gc/gc"; then
-                      { echo "$as_me:$LINENO: WARNING: Failed to find GC_malloc(), but
-    \$PTII/vendors/gc/gc exists.  See the \$PTII/vendors/gc/README.txt
-    that directory if you would like to use the Garbage Collector
-    with the C code generator" >&5
-echo "$as_me: WARNING: Failed to find GC_malloc(), but
-    \$PTII/vendors/gc/gc exists.  See the \$PTII/vendors/gc/README.txt
-    that directory if you would like to use the Garbage Collector
-    with the C code generator" >&2;}
-		  else
-		      { echo "$as_me:$LINENO: WARNING: Failed to find GC_malloc(), and
-    \$PTII/vendors/gc/gc6.1 does not exist.  The Boehm Garbage Collector
-    can be downloaded from
-    http://www.hpl.hp.com/personal/Hans_Boehm/gc/
-    if you wish to use it with the C code generator" >&5
-echo "$as_me: WARNING: Failed to find GC_malloc(), and
-    \$PTII/vendors/gc/gc6.1 does not exist.  The Boehm Garbage Collector
-    can be downloaded from
-    http://www.hpl.hp.com/personal/Hans_Boehm/gc/
-    if you wish to use it with the C code generator" >&2;}
-                  fi
-	      fi
-           fi
-       fi
-    fi
-   echo "$as_me:$LINENO: checking for gc.h" >&5
-echo $ECHO_N "checking for gc.h... $ECHO_C" >&6
-
-# Check whether --with-gc_include_dir or --without-gc_include_dir was given.
-if test "${with_gc_include_dir+set}" = set; then
-  withval="$with_gc_include_dir"
-  GC_INCLUDE_DIR=$withval
-else
-  GC_INCLUDE_DIR=$PTII/vendors/gc/gc/include
-fi;
-
-   if test -f "$GC_INCLUDE_DIR/gc.h"; then
-       echo "$as_me:$LINENO: result: $GC_INCLUDE_DIR/gc.h" >&5
-echo "${ECHO_T}$GC_INCLUDE_DIR/gc.h" >&6
-   else
-       if test -f "$PTII/vendors/gc/gc6.1/include/gc.h"; then
-           GC_INCLUDE_DIR=$PTII/vendors/gc/gc6.1/include
-	   echo "$as_me:$LINENO: result: $GC_INCLUDE_DIR/gc.h" >&5
-echo "${ECHO_T}$GC_INCLUDE_DIR/gc.h" >&6
-       else
-           { echo "$as_me:$LINENO: WARNING: Failed to gc.h
-    \$PTII/vendors/gc/gc6.1 does not exist.  The Boehm Garbage Collector
-    can be downloaded from
-    http://www.hpl.hp.com/personal/Hans_Boehm/gc/
-    if you wish to use it with the C code generator" >&5
-echo "$as_me: WARNING: Failed to gc.h
-    \$PTII/vendors/gc/gc6.1 does not exist.  The Boehm Garbage Collector
-    can be downloaded from
-    http://www.hpl.hp.com/personal/Hans_Boehm/gc/
-    if you wish to use it with the C code generator" >&2;}
-       fi
-   fi
-fi
-
-
-#--------------------------------------------------------------------
-#       GMP - GNU arbitrary precision arithmetic library, needed only by mescal
-#
-#--------------------------------------------------------------------
-# We only need to look for GMP if mescal/relsat is present
-MESCAL_RELSAT_USER_DIR="$PTII/mescal/relsat"
-
-PTGMP=no
-if test ! -d "$MESCAL_RELSAT_USER_DIR"; then
-    echo "$as_me:$LINENO: result: $MESCAL_RELSAT_USER_DIR is not present,
-	so we need not find GMP." >&5
-echo "${ECHO_T}$MESCAL_RELSAT_USER_DIR is not present,
-	so we need not find GMP." >&6
-else
-    case "`uname -s`" in
-	Linux) ARCH=linux;;
-        *) ARCH=unknown;;
-    esac
-
-    if test "$PTGMP" = "no"; then
-        echo "$as_me:$LINENO: checking for GMP in \$PTII/mescal/include/gmp.h" >&5
-echo $ECHO_N "checking for GMP in \$PTII/mescal/include/gmp.h... $ECHO_C" >&6
-	if test -f "$PTII/mescal/include/gmp.h"; then
-	    echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6
-	    PTGMP_INCLUDE="-I$PTII/mescal/include"
-	    PTGMP_LIB="-L$PTII/mescal/lib"
-	    PTGMP_LD_FLAGS="-Wl,-R$PTII/mescal/lib"
-	    PTGMP=yes
-        else
-	    echo "$as_me:$LINENO: result: not found, keep looking" >&5
-echo "${ECHO_T}not found, keep looking" >&6
-	fi
-    fi
-
-    if test "$PTGMP" = "no"; then
-        echo "$as_me:$LINENO: checking for GMP in /usr/local/include/gmp.h" >&5
-echo $ECHO_N "checking for GMP in /usr/local/include/gmp.h... $ECHO_C" >&6
-        if test -f "/usr/local/include/gmp.h"; then
-            echo "$as_me:$LINENO: result: ok" >&5
-echo "${ECHO_T}ok" >&6
-	    if test "$ARCH" != "linux"; then
-	        PTGMP_INCLUDE=-I/usr/local/include
-		PTGMP_LIB=-L/usr/local/lib
-	        PTGMP_LD_FLAGS="-Wl,-R/usr/local/lib"
-            fi
-	    PTGMP=yes
-        else
-	    echo "$as_me:$LINENO: result: not found, keep looking" >&5
-echo "${ECHO_T}not found, keep looking" >&6
-        fi
-    fi
-
-    if test "$PTGMP" = "no"; then
-        echo "$as_me:$LINENO: checking for GMP" >&5
-echo $ECHO_N "checking for GMP... $ECHO_C" >&6
-        ac_ext=c
+ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
@@ -4084,6 +3486,755 @@ fi
 done
 
 
+if test "${ac_cv_header_stdint_h+set}" = set; then
+  echo "$as_me:$LINENO: checking for stdint.h" >&5
+echo $ECHO_N "checking for stdint.h... $ECHO_C" >&6
+if test "${ac_cv_header_stdint_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+fi
+echo "$as_me:$LINENO: result: $ac_cv_header_stdint_h" >&5
+echo "${ECHO_T}$ac_cv_header_stdint_h" >&6
+else
+  # Is the header compilable?
+echo "$as_me:$LINENO: checking stdint.h usability" >&5
+echo $ECHO_N "checking stdint.h usability... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+#include <stdint.h>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_header_compiler=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_header_compiler=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
+echo "${ECHO_T}$ac_header_compiler" >&6
+
+# Is the header present?
+echo "$as_me:$LINENO: checking stdint.h presence" >&5
+echo $ECHO_N "checking stdint.h presence... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <stdint.h>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_c_preproc_warn_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_header_preproc=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_header_preproc=no
+fi
+rm -f conftest.err conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
+echo "${ECHO_T}$ac_header_preproc" >&6
+
+# So?  What about this header?
+case $ac_header_compiler:$ac_header_preproc in
+  yes:no )
+    { echo "$as_me:$LINENO: WARNING: stdint.h: accepted by the compiler, rejected by the preprocessor!" >&5
+echo "$as_me: WARNING: stdint.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
+    { echo "$as_me:$LINENO: WARNING: stdint.h: proceeding with the preprocessor's result" >&5
+echo "$as_me: WARNING: stdint.h: proceeding with the preprocessor's result" >&2;}
+    (
+      cat <<\_ASBOX
+## ------------------------------------ ##
+## Report this to bug-autoconf@gnu.org. ##
+## ------------------------------------ ##
+_ASBOX
+    ) |
+      sed "s/^/$as_me: WARNING:     /" >&2
+    ;;
+  no:yes )
+    { echo "$as_me:$LINENO: WARNING: stdint.h: present but cannot be compiled" >&5
+echo "$as_me: WARNING: stdint.h: present but cannot be compiled" >&2;}
+    { echo "$as_me:$LINENO: WARNING: stdint.h: check for missing prerequisite headers?" >&5
+echo "$as_me: WARNING: stdint.h: check for missing prerequisite headers?" >&2;}
+    { echo "$as_me:$LINENO: WARNING: stdint.h: proceeding with the preprocessor's result" >&5
+echo "$as_me: WARNING: stdint.h: proceeding with the preprocessor's result" >&2;}
+    (
+      cat <<\_ASBOX
+## ------------------------------------ ##
+## Report this to bug-autoconf@gnu.org. ##
+## ------------------------------------ ##
+_ASBOX
+    ) |
+      sed "s/^/$as_me: WARNING:     /" >&2
+    ;;
+esac
+echo "$as_me:$LINENO: checking for stdint.h" >&5
+echo $ECHO_N "checking for stdint.h... $ECHO_C" >&6
+if test "${ac_cv_header_stdint_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_cv_header_stdint_h=$ac_header_preproc
+fi
+echo "$as_me:$LINENO: result: $ac_cv_header_stdint_h" >&5
+echo "${ECHO_T}$ac_cv_header_stdint_h" >&6
+
+fi
+if test $ac_cv_header_stdint_h = yes; then
+  PTSTDINT_H=yes
+else
+  PTSTDINT_H=no
+fi
+
+
+    if test "$PTSTDINT_H" = "no"; then
+       { echo "$as_me:$LINENO: WARNING: Failed to find stdint.h
+    mescal/views/simulation/model/UINT.h includes stdint.h so that
+    uint32_t and uint64_t are properly typedefd.
+    Older versions of Cygwin might not include stdint.h, the solution
+    is to update Cygwin from http://sources.redhat.com/cygwin
+    See mescal/views/simulation/model/UINT.h for details." >&5
+echo "$as_me: WARNING: Failed to find stdint.h
+    mescal/views/simulation/model/UINT.h includes stdint.h so that
+    uint32_t and uint64_t are properly typedefd.
+    Older versions of Cygwin might not include stdint.h, the solution
+    is to update Cygwin from http://sources.redhat.com/cygwin
+    See mescal/views/simulation/model/UINT.h for details." >&2;}
+       fi
+fi
+
+#--------------------------------------------------------------------
+#       The CaffeineMark Kit is a Java benchmark kit
+#	that is used by C code generation
+#       See http://www-sor.inria.fr/~java/tools/cmkit
+#--------------------------------------------------------------------
+
+# Directory that contains the CaffeineMark Java Benchmark kit
+# used by C code generation in copernicus/c
+CMKIT_DIR='${PTII}/vendors/cm'
+
+# PTCM_DIR is set to cm and used in $PTII/ptolemy/copernicus/c/test/makefile
+# if the CaffeineMark Java Benchmark kit is found
+PTCM_DIR=
+
+# We only need to look for cm if $PTII/ptolemy/copernicus/c exists
+if test ! -d "$PTII/ptolemy/copernicus/c"; then
+    echo "$as_me:$LINENO: result: $PTII/ptolemy/copernicus/c is not present,
+	so we need not find the CaffeineMark Kit." >&5
+echo "${ECHO_T}$PTII/ptolemy/copernicus/c is not present,
+	so we need not find the CaffeineMark Kit." >&6
+else
+    echo "$as_me:$LINENO: checking for CaffeineMarkEmbeddedApp.class" >&5
+echo $ECHO_N "checking for CaffeineMarkEmbeddedApp.class... $ECHO_C" >&6
+
+# Check whether --with-cmkit or --without-cmkit was given.
+if test "${with_cmkit+set}" = set; then
+  withval="$with_cmkit"
+  CMKIT_DIR=$withval
+else
+  CMKIT_DIR=$PTII/vendors/cm
+fi;
+
+    if test -f "$CMKIT_DIR/CaffeineMarkEmbeddedApp.class"; then
+	echo "$as_me:$LINENO: result: $CMKIT_DIR" >&5
+echo "${ECHO_T}$CMKIT_DIR" >&6
+	PTCM_DIR=cm
+    else
+        { echo "$as_me:$LINENO: WARNING: Failed to find $CMKIT_DIR/CaffeineMarkEmbeddedApp.class
+    perhaps CaffeineMark is not installed?
+    You need not download CaffeineMark unless you plan on using C code
+    generation.  The CaffeineMark kit can be downloaded from
+    http://www-sor.inria.fr/~java/tools/cmkit/embed.zip" >&5
+echo "$as_me: WARNING: Failed to find $CMKIT_DIR/CaffeineMarkEmbeddedApp.class
+    perhaps CaffeineMark is not installed?
+    You need not download CaffeineMark unless you plan on using C code
+    generation.  The CaffeineMark kit can be downloaded from
+    http://www-sor.inria.fr/~java/tools/cmkit/embed.zip" >&2;}
+	# Note that we don't substitute in the ${PTII} here
+	CMKIT_DIR='${PTII}/vendors/cm'
+    fi
+fi
+
+#--------------------------------------------------------------------
+#       Cal is an language used to define actors
+#	For more information,
+#       see http://www.gigascale.org/cal
+#       See if there was a command-line option for where Cal is.
+#--------------------------------------------------------------------
+
+# PTCAL_DIR is set to cal and used in
+# $PTII/ptolemy/makefile if Cal was found.
+PTCAL_DIR=
+
+# Directory that contains the ptCal jar file
+CAL_DIR='${PTII}/lib'
+
+# We only need to look for on if $PTII/ptolemy/cal exists
+CAL_USER_DIR="$PTII/ptolemy/cal"
+if test ! -d "$CAL_USER_DIR"; then
+    echo "$as_me:$LINENO: result: $CAL_USER_DIR is not present,
+	so we need not find the Cal, the actor language." >&5
+echo "${ECHO_T}$CAL_USER_DIR is not present,
+	so we need not find the Cal, the actor language." >&6
+else
+    echo "$as_me:$LINENO: checking for Cal, the actor language" >&5
+echo $ECHO_N "checking for Cal, the actor language... $ECHO_C" >&6
+
+# Check whether --with-CAL_DIR or --without-CAL_DIR was given.
+if test "${with_CAL_DIR+set}" = set; then
+  withval="$with_CAL_DIR"
+  CAL_DIR=$withval
+else
+  CAL_DIR=$PTII/lib
+fi;
+
+    if test -f "$CAL_DIR/ptCal.jar"; then
+	echo "$as_me:$LINENO: result: $CAL_DIR" >&5
+echo "${ECHO_T}$CAL_DIR" >&6
+	# We found cal
+	echo "$as_me:$LINENO: checking for saxon7.jar (used by cal)" >&5
+echo $ECHO_N "checking for saxon7.jar (used by cal)... $ECHO_C" >&6
+	if test -f "$CAL_DIR/saxon7.jar"; then
+	   echo "$as_me:$LINENO: result: $CAL_DIR/saxon7.jar" >&5
+echo "${ECHO_T}$CAL_DIR/saxon7.jar" >&6
+	   PTCAL_DIR=cal
+	else
+           { echo "$as_me:$LINENO: WARNING: Failed to find $CAL_DIR/saxon7.jar
+    which is required by Cal, the actor language.
+    You can download saxon from http://saxon.sourceforge.net/
+    If it is not present, you will not be able to use the Cal actor
+    or run the demonstrations  in ptolemy/cal" >&5
+echo "$as_me: WARNING: Failed to find $CAL_DIR/saxon7.jar
+    which is required by Cal, the actor language.
+    You can download saxon from http://saxon.sourceforge.net/
+    If it is not present, you will not be able to use the Cal actor
+    or run the demonstrations  in ptolemy/cal" >&2;}
+	   # Note that we don't substitute in the ${PTII} here
+	   CAL_DIR='${PTII}/lib/'
+        fi
+    else
+        { echo "$as_me:$LINENO: WARNING: Failed to find PTII/lib/ptCal.jar
+    ptCal.jar should be present in your distribution.
+    If it is not present, you will not be able to use the Cal actor
+    or run the demonstrations  in ptolemy/cal" >&5
+echo "$as_me: WARNING: Failed to find PTII/lib/ptCal.jar
+    ptCal.jar should be present in your distribution.
+    If it is not present, you will not be able to use the Cal actor
+    or run the demonstrations  in ptolemy/cal" >&2;}
+	# Note that we don't substitute in the ${PTII} here
+	CAL_DIR='${PTII}/lib/'
+    fi
+fi
+
+if test -z "$PTCAL_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/cal"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$CAL_DIR/ptCal.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$CAL_DIR/saxon7.jar\"/> "
+fi
+
+#--------------------------------------------------------------------
+#       "CHIC is a modular verifier for behavioral compatibility checking
+#	 of software and hardware components"
+#
+#	For more information,
+#       see http://www-cad.eecs.berkeley.edu/~tah/chic/
+#--------------------------------------------------------------------
+
+# PTCHIC_DIR is set to chic and used in
+# $PTII/ptolemy/makefile if Chic was found.
+PTCHIC_DIR=
+
+# Directory that contains the chic jar file
+CHIC_DIR='${PTII}/lib'
+
+# We only need to look for if $PTII/ptolemy/chic exists
+CHIC_USER_DIR="$PTII/ptolemy/chic"
+if test ! -d "$CHIC_USER_DIR"; then
+    echo "$as_me:$LINENO: result: $CHIC_USER_DIR is not present,
+    so we need not find Chic, the modular verifier for
+    behavioral compatibility checking of software and hardware components." >&5
+echo "${ECHO_T}$CHIC_USER_DIR is not present,
+    so we need not find Chic, the modular verifier for
+    behavioral compatibility checking of software and hardware components." >&6
+else
+    echo "$as_me:$LINENO: checking for Chic, the model checker" >&5
+echo $ECHO_N "checking for Chic, the model checker... $ECHO_C" >&6
+
+# Check whether --with-CHIC_DIR or --without-CHIC_DIR was given.
+if test "${with_CHIC_DIR+set}" = set; then
+  withval="$with_CHIC_DIR"
+  CHIC_DIR=$withval
+else
+  CHIC_DIR=$PTII/lib
+fi;
+
+    if test -f "$CHIC_DIR/chic.jar"; then
+	echo "$as_me:$LINENO: result: $CHIC_DIR" >&5
+echo "${ECHO_T}$CHIC_DIR" >&6
+	# We found chic
+	PTCHIC_DIR=chic
+    else
+        { echo "$as_me:$LINENO: WARNING: Failed to find PTII/lib/chic.jar
+    chic.jar should be present in your distribution.
+    Chic is a modular verifier for behavioral compatibility checking
+    of software and hardware components.
+    If it is not present, you will not be able to use the Chic facilities
+    or run the demonstrations in ptolemy/chic." >&5
+echo "$as_me: WARNING: Failed to find PTII/lib/chic.jar
+    chic.jar should be present in your distribution.
+    Chic is a modular verifier for behavioral compatibility checking
+    of software and hardware components.
+    If it is not present, you will not be able to use the Chic facilities
+    or run the demonstrations in ptolemy/chic." >&2;}
+	# Note that we don't substitute in the ${PTII} here
+	CHIC_DIR='${PTII}/lib/'
+    fi
+fi
+
+if test -z "$PTCHIC_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/chic"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+	<classpathentry kind=\"lib\" path=\"lib/chic.jar\"/> "
+fi
+
+#--------------------------------------------------------------------
+#       commapi is the Java serial interface, see
+#	http://java.sun.com/products/javacomm/
+#	See if there was a command-line option for commapi is
+#       If not, check to see if $PTII/vendors/sun/commapi
+#--------------------------------------------------------------------
+
+# We only need to look for commapi if $PTII/ptolemy/actor/lib/io/comm is present
+COMMAPI_USER_DIR="$PTII/ptolemy/actor/lib/io/comm"
+COMMAPI_PRESENT=no
+# PTLEGO_DIR is set to lego
+# $PTII/ptolemy/apps/makefile if the Java Communications API was found
+#
+PTLEGO_DIR=
+# PTCOMM_DIR is set to comm and used in
+# $PTII/ptolemy/actor/lib/io/makefile if the Java Communications API was found
+#
+PTCOMM_DIR=
+if test ! -d "$COMMAPI_USER_DIR"; then
+    echo "$as_me:$LINENO: result: $COMMAPI_USER_DIR is not present,
+	so we need not find commapi." >&5
+echo "${ECHO_T}$COMMAPI_USER_DIR is not present,
+	so we need not find commapi." >&6
+    # Use curly brackets around PTII so that if commapi is not present
+    # then ${PTII} will appear in ptinvoke.
+    COMMAPI_DIR='${PTII}/vendors/sun/commapi'
+else
+    echo "$as_me:$LINENO: checking for commapi directory" >&5
+echo $ECHO_N "checking for commapi directory... $ECHO_C" >&6
+
+# Check whether --with-COMMAPI or --without-COMMAPI was given.
+if test "${with_COMMAPI+set}" = set; then
+  withval="$with_COMMAPI"
+  COMMAPI_DIR=$withval
+else
+  COMMAPI_DIR=$PTII/vendors/sun/commapi
+fi;
+
+    if test -f "$COMMAPI_DIR/comm.jar"; then
+	echo "$as_me:$LINENO: result: $COMMAPI_DIR" >&5
+echo "${ECHO_T}$COMMAPI_DIR" >&6
+	# Subdirectories that contains Java Communications API specific code
+	PTLEGO_DIR=lego
+	PTCOMM_DIR=comm
+	COMMAPI_PRESENT=yes
+    else
+	echo "$as_me:$LINENO: result: Did not find
+	'$COMMAPI_DIR/comm.jar'" >&5
+echo "${ECHO_T}Did not find
+	'$COMMAPI_DIR/comm.jar'" >&6
+	echo "$as_me:$LINENO: checking for commapi by compiling a test program " >&5
+echo $ECHO_N "checking for commapi by compiling a test program ... $ECHO_C" >&6
+        # We need to run javac in the config directory so that javac from
+        # jdk1.1.6 under NT and cygwin works properly
+	startdir=`pwd`
+	cd "$srcdir/config"
+	# Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+	if "$JAVAC" javaCommAPI.java ; then
+	    echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+	    PTLEGO_DIR=lego
+	    PTCOMM_DIR=comm
+	    COMMAPI_PRESENT=yes
+	else
+	    COMMAPI_DIR='${PTII}/vendors/sun/commapi'
+	fi
+	cd "$startdir"
+    fi
+
+    if test "$COMMAPI_PRESENT" = "no"; then
+        { echo "$as_me:$LINENO: WARNING: Perhaps commapi is not installed?
+    You need not download commapi unless you plan the actors in actor.lib.comm.
+    The commapi can be downloaded from http://java.sun.com/products/javacomm/
+    and placed  in \$PTII/vendors/sun/commapi" >&5
+echo "$as_me: WARNING: Perhaps commapi is not installed?
+    You need not download commapi unless you plan the actors in actor.lib.comm.
+    The commapi can be downloaded from http://java.sun.com/products/javacomm/
+    and placed  in \$PTII/vendors/sun/commapi" >&2;}
+    fi
+fi
+
+if test -z "$PTCOMM_DIR"; then
+   ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/actor/lib/io/comm/"
+else
+   ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
+    <classpathentry kind=\"lib\" path=\"$COMMAPI_DIR/comm.jar\"/>"
+fi
+
+#--------------------------------------------------------------------
+#       Garbage Collector (GC)
+#       The C code generator can use the Boehm Garbage Collector
+#       See http://www.hpl.hp.com/personal/Hans_Boehm/gc/
+#--------------------------------------------------------------------
+#
+# GC_LD_DIRECTIVE is set to the values to pass to cc or ld if
+# GC_malloc() can be found either in the default compiler location
+# or in $PTII/lib.
+# GC_LD_DIRECTIVE is used in ptolemy/copernicus/c/
+GC_LD_DIRECTIVE=
+
+# GC_DIR is set to the directory where GC can be found
+GC_DIR=
+
+if test ! -d "$PTII/ptolemy/copernicus/c"; then
+    echo "$as_me:$LINENO: result: $PTII/ptolemy/copernicus/c is not present,
+        so we need not find the Boehm GC" >&5
+echo "${ECHO_T}$PTII/ptolemy/copernicus/c is not present,
+        so we need not find the Boehm GC" >&6
+else
+    # Extract the first word of "gcc", so it can be a program name with args.
+set dummy gcc; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_PTCC+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PTCC in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PTCC="$PTCC" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PTCC="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  ;;
+esac
+fi
+PTCC=$ac_cv_path_PTCC
+
+if test -n "$PTCC"; then
+  echo "$as_me:$LINENO: result: $PTCC" >&5
+echo "${ECHO_T}$PTCC" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+    if test "${PTCC:-none}" = "none"; then
+        { echo "$as_me:$LINENO: WARNING: Failed to find gcc" >&5
+echo "$as_me: WARNING: Failed to find gcc" >&2;}
+        # Extract the first word of "cc", so it can be a program name with args.
+set dummy cc; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_PTCC+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $PTCC in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PTCC="$PTCC" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_PTCC="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  ;;
+esac
+fi
+PTCC=$ac_cv_path_PTCC
+
+if test -n "$PTCC"; then
+  echo "$as_me:$LINENO: result: $PTCC" >&5
+echo "${ECHO_T}$PTCC" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+        if test "${PTCC:-none}" != "none"; then
+            echo "$as_me:$LINENO: result: $PTCC" >&5
+echo "${ECHO_T}$PTCC" >&6
+        else
+            { echo "$as_me:$LINENO: WARNING: Failed to find gcc or cc, so we will
+    not be able use GC in $PTII/ptolemy/copernicus/c" >&5
+echo "$as_me: WARNING: Failed to find gcc or cc, so we will
+    not be able use GC in $PTII/ptolemy/copernicus/c" >&2;};
+        fi
+    fi
+
+    if test "${PTCC:-none}" != "none"; then
+       echo "$as_me:$LINENO: checking for Garbage Collector" >&5
+echo $ECHO_N "checking for Garbage Collector... $ECHO_C" >&6
+       echo "$as_me:$LINENO: checking for GC_malloc in -lgc" >&5
+echo $ECHO_N "checking for GC_malloc in -lgc... $ECHO_C" >&6
+if test "${ac_cv_lib_gc_GC_malloc+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lgc  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char GC_malloc ();
+int
+main ()
+{
+GC_malloc ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_gc_GC_malloc=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_cv_lib_gc_GC_malloc=no
+fi
+rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_gc_GC_malloc" >&5
+echo "${ECHO_T}$ac_cv_lib_gc_GC_malloc" >&6
+if test $ac_cv_lib_gc_GC_malloc = yes; then
+  PT_GC=yes
+else
+  PT_GC=no
+fi
+
+       if test "$PT_GC" = "yes"; then
+           echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+       else
+           if test -f "$PTII/lib/libgc.a"; then
+	      # FIXME: what about Windows?
+	      GC_LD_DIRECTIVE='"-L${PTII}/lib" -lgc'
+	      echo "$as_me:$LINENO: result: use $GC_LD_DIRECTIVE" >&5
+echo "${ECHO_T}use $GC_LD_DIRECTIVE" >&6
+           else
+	      if test -d "$PTII/vendors/gc/gc6.1"; then
+                  { echo "$as_me:$LINENO: WARNING: Failed to find GC_malloc(), but
+    \$PTII/vendors/gc/gc6.1 exists.  See the \$PTII/vendors/gc/README.txt
+    that directory if you would like to use the Garbage Collector
+    with the C code generator" >&5
+echo "$as_me: WARNING: Failed to find GC_malloc(), but
+    \$PTII/vendors/gc/gc6.1 exists.  See the \$PTII/vendors/gc/README.txt
+    that directory if you would like to use the Garbage Collector
+    with the C code generator" >&2;}
+              else
+	          if test -d "$PTII/vendors/gc/gc"; then
+                      { echo "$as_me:$LINENO: WARNING: Failed to find GC_malloc(), but
+    \$PTII/vendors/gc/gc exists.  See the \$PTII/vendors/gc/README.txt
+    that directory if you would like to use the Garbage Collector
+    with the C code generator" >&5
+echo "$as_me: WARNING: Failed to find GC_malloc(), but
+    \$PTII/vendors/gc/gc exists.  See the \$PTII/vendors/gc/README.txt
+    that directory if you would like to use the Garbage Collector
+    with the C code generator" >&2;}
+		  else
+		      { echo "$as_me:$LINENO: WARNING: Failed to find GC_malloc(), and
+    \$PTII/vendors/gc/gc6.1 does not exist.  The Boehm Garbage Collector
+    can be downloaded from
+    http://www.hpl.hp.com/personal/Hans_Boehm/gc/
+    if you wish to use it with the C code generator" >&5
+echo "$as_me: WARNING: Failed to find GC_malloc(), and
+    \$PTII/vendors/gc/gc6.1 does not exist.  The Boehm Garbage Collector
+    can be downloaded from
+    http://www.hpl.hp.com/personal/Hans_Boehm/gc/
+    if you wish to use it with the C code generator" >&2;}
+                  fi
+	      fi
+           fi
+       fi
+    fi
+   echo "$as_me:$LINENO: checking for gc.h" >&5
+echo $ECHO_N "checking for gc.h... $ECHO_C" >&6
+
+# Check whether --with-gc_include_dir or --without-gc_include_dir was given.
+if test "${with_gc_include_dir+set}" = set; then
+  withval="$with_gc_include_dir"
+  GC_INCLUDE_DIR=$withval
+else
+  GC_INCLUDE_DIR=$PTII/vendors/gc/gc/include
+fi;
+
+   if test -f "$GC_INCLUDE_DIR/gc.h"; then
+       echo "$as_me:$LINENO: result: $GC_INCLUDE_DIR/gc.h" >&5
+echo "${ECHO_T}$GC_INCLUDE_DIR/gc.h" >&6
+   else
+       if test -f "$PTII/vendors/gc/gc6.1/include/gc.h"; then
+           GC_INCLUDE_DIR=$PTII/vendors/gc/gc6.1/include
+	   echo "$as_me:$LINENO: result: $GC_INCLUDE_DIR/gc.h" >&5
+echo "${ECHO_T}$GC_INCLUDE_DIR/gc.h" >&6
+       else
+           { echo "$as_me:$LINENO: WARNING: Failed to gc.h
+    \$PTII/vendors/gc/gc6.1 does not exist.  The Boehm Garbage Collector
+    can be downloaded from
+    http://www.hpl.hp.com/personal/Hans_Boehm/gc/
+    if you wish to use it with the C code generator" >&5
+echo "$as_me: WARNING: Failed to gc.h
+    \$PTII/vendors/gc/gc6.1 does not exist.  The Boehm Garbage Collector
+    can be downloaded from
+    http://www.hpl.hp.com/personal/Hans_Boehm/gc/
+    if you wish to use it with the C code generator" >&2;}
+       fi
+   fi
+fi
+
+
+#--------------------------------------------------------------------
+#       GMP - GNU arbitrary precision arithmetic library, needed only by mescal
+#
+#--------------------------------------------------------------------
+# We only need to look for GMP if mescal/relsat is present
+MESCAL_RELSAT_USER_DIR="$PTII/mescal/relsat"
+
+PTGMP=no
+if test ! -d "$MESCAL_RELSAT_USER_DIR"; then
+    echo "$as_me:$LINENO: result: $MESCAL_RELSAT_USER_DIR is not present,
+	so we need not find GMP." >&5
+echo "${ECHO_T}$MESCAL_RELSAT_USER_DIR is not present,
+	so we need not find GMP." >&6
+else
+    case "`uname -s`" in
+	Linux) ARCH=linux;;
+        *) ARCH=unknown;;
+    esac
+
+    if test "$PTGMP" = "no"; then
+        echo "$as_me:$LINENO: checking for GMP in \$PTII/mescal/include/gmp.h" >&5
+echo $ECHO_N "checking for GMP in \$PTII/mescal/include/gmp.h... $ECHO_C" >&6
+	if test -f "$PTII/mescal/include/gmp.h"; then
+	    echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+	    PTGMP_INCLUDE="-I$PTII/mescal/include"
+	    PTGMP_LIB="-L$PTII/mescal/lib"
+	    PTGMP_LD_FLAGS="-Wl,-R$PTII/mescal/lib"
+	    PTGMP=yes
+        else
+	    echo "$as_me:$LINENO: result: not found, keep looking" >&5
+echo "${ECHO_T}not found, keep looking" >&6
+	fi
+    fi
+
+    if test "$PTGMP" = "no"; then
+        echo "$as_me:$LINENO: checking for GMP in /usr/local/include/gmp.h" >&5
+echo $ECHO_N "checking for GMP in /usr/local/include/gmp.h... $ECHO_C" >&6
+        if test -f "/usr/local/include/gmp.h"; then
+            echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+	    if test "$ARCH" != "linux"; then
+	        PTGMP_INCLUDE=-I/usr/local/include
+		PTGMP_LIB=-L/usr/local/lib
+	        PTGMP_LD_FLAGS="-Wl,-R/usr/local/lib"
+            fi
+	    PTGMP=yes
+        else
+	    echo "$as_me:$LINENO: result: not found, keep looking" >&5
+echo "${ECHO_T}not found, keep looking" >&6
+        fi
+    fi
+
+    if test "$PTGMP" = "no"; then
+        echo "$as_me:$LINENO: checking for GMP" >&5
+echo $ECHO_N "checking for GMP... $ECHO_C" >&6
 
 for ac_header in gmp.h
 do
@@ -7656,7 +7807,6 @@ s,@LIBS@,$LIBS,;t t
 s,@CMD_PATH@,$CMD_PATH,;t t
 s,@JAVAC@,$JAVAC,;t t
 s,@JAVA@,$JAVA,;t t
-s,@PTCC@,$PTCC,;t t
 s,@CC@,$CC,;t t
 s,@CFLAGS@,$CFLAGS,;t t
 s,@LDFLAGS@,$LDFLAGS,;t t
@@ -7666,6 +7816,7 @@ s,@EXEEXT@,$EXEEXT,;t t
 s,@OBJEXT@,$OBJEXT,;t t
 s,@CPP@,$CPP,;t t
 s,@EGREP@,$EGREP,;t t
+s,@PTCC@,$PTCC,;t t
 s,@CXX@,$CXX,;t t
 s,@CXXFLAGS@,$CXXFLAGS,;t t
 s,@ac_ct_CXX@,$ac_ct_CXX,;t t
