@@ -52,8 +52,8 @@ import ptolemy.kernel.util.Workspace;
    a finite <i>numberOfCycles</i>. The numberOfCycles has a default value
    as -1, indicating infinite length of executions. If numberOfCycles is 
    a positive number, once the specified number of cycles has been completed, 
-   then this actor will output zeros with the same type as the values in the 
-   <i>values</i> parameter.
+   then this actor returns false from the postfire method. FIXME: is this
+   the desired behavior?
    <p>
    At the beginning of each time interval of length given by <i>period</i>,
    this actor initiates a sequence of output events with values given by
@@ -311,8 +311,13 @@ public class Clock extends TimedSource {
                 }
             }
         }
+
         // If we are beyond the number of cycles requested, then
         // change the output value to zero.
+        // FIXME: is this a desired behavior? why not simply stop the firing?
+        // NOTE: This actor is intended to be used in DE domain. If this actor
+        // serves as a source, when the cycle limit is reached, it should stop
+        // producing more events and consequently the model stops. 
         int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
         if (cycleLimit > 0 ) {
             Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
