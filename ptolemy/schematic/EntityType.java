@@ -38,9 +38,22 @@ import collections.LinkedList;
 //// EntityType
 /**
 
+An EntityType contains the minimal information needed to describe
+an entity so that it can be a) instantiated in a Ptolemy II
+simulation and b) looked up in an icon library for display
+and editing of a schematic. In the external data format of Ptolemy
+II schmatics, the entity type is represented by the <type/>
+element embedded in the <entity> element.
+
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class EntityType {
+public class EntityType extends XMLElement {
+    
+    /** Create an empty EntityType
+     */
+    public EntityType () {
+        ;
+    }
 }
 
