@@ -80,6 +80,7 @@ import ptolemy.domains.dde.kernel.*;
 import ptolemy.domains.csp.kernel.*;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.ct.kernel.*;
+import ptolemy.domains.dt.kernel.*;
 
 /**
  * A module that can be plugged into Vergil that adds support for
@@ -166,8 +167,8 @@ public class PtolemyModule implements Module {
 	// Standard toolbar icons are 25x25 pixels.
 	NodeRenderer renderer = new PortController.PortRenderer();
 	Figure figure = renderer.render(null);
-	Icon icon = 
-	    new FigureIcon(figure, 25, 25, 1, true);
+
+	Icon icon = new FigureIcon(figure, 25, 25, 1, true);
 	action = new newPortAction();
 	_application.addAction(action);
 	GUIUtilities.addToolBarButton(tb, action,
@@ -191,6 +192,9 @@ public class PtolemyModule implements Module {
 	    Director dir;
 	    dir = new SDFDirector();
 	    dir.setName("SDF");
+	    _directorModel.addElement(dir);
+	     dir = new DTDirector();
+	    dir.setName("DT");
 	    _directorModel.addElement(dir);
 	    dir = new PNDirector();
 	    dir.setName("PN");
