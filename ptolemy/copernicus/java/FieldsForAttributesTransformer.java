@@ -75,8 +75,8 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
       
         // This won't actually create any fields, but will pick up
         // the fields that already exist.
-        _getAttributeFields(Scene.v().getMainClass(), _model, 
-                _model, attributeToFieldMap);
+        //   _getAttributeFields(Scene.v().getMainClass(), _model, 
+        //        _model, attributeToFieldMap);
         classToObjectMap.put(Scene.v().getMainClass(), _model);
        
         // Loop over all the actor instance classes and get the
@@ -218,20 +218,25 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
             attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
                     
-            String fieldName =
-                SootUtilities.sanitizeName(attribute.getName(container));
+            String fieldName = SootUtilities.sanitizeName(attribute.getName());
+            
             SootField field;
             if(!theClass.declaresFieldByName(fieldName)) {
-                throw new RuntimeException("Class " + theClass 
-                        + " does not declare field for attribute "
-                        + attribute.getFullName());
-            } else {
-                // retrieve the existing field.
-                field = theClass.getFieldByName(fieldName);   
-                // Make the field final and private.
-                field.setModifiers((field.getModifiers() & Modifier.STATIC) | 
-                        Modifier.FINAL | Modifier.PRIVATE);
+                // Check to see if the ModelTransformer created a field.
+                fieldName = ModelTransformer.getFieldNameForAttribute(
+                        attribute, container);
+                if(!theClass.declaresFieldByName(fieldName)) {
+                    throw new RuntimeException("Class " + theClass 
+                            + " does not declare field for attribute "
+                            + attribute.getFullName());
+                }
             }
+            // retrieve the existing field.
+            field = theClass.getFieldByName(fieldName);   
+            // Make the field final and private.
+            field.setModifiers((field.getModifiers() & Modifier.STATIC) | 
+                    Modifier.FINAL | Modifier.PRIVATE);
+
             field.addTag(new ValueTag(
                     attribute));
             attributeToFieldMap.put(attribute, field);

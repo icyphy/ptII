@@ -140,7 +140,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
             for(Iterator entities = _model.entityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
-                String fieldName = ModelTransformer.getFieldNameForEntity(entity);
+                String fieldName = ModelTransformer.getFieldNameForEntity(
+                        entity, _model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 // Get the field.
                 units.add(Jimple.v().newAssignStmt(actorLocal,
@@ -173,7 +174,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
             for(Iterator entities = _model.entityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
-                String fieldName = ModelTransformer.getFieldNameForEntity(entity);
+                String fieldName = ModelTransformer.getFieldNameForEntity(
+                        entity, _model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 // Set the field.
                 units.add(Jimple.v().newAssignStmt(actorLocal,
@@ -220,7 +222,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
             }
             while(schedule.hasNext()) {
                 Entity entity = (Entity)schedule.next();
-                String fieldName = ModelTransformer.getFieldNameForEntity(entity);
+                String fieldName = ModelTransformer.getFieldNameForEntity(
+                        entity, _model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 // Set the field.
                 units.add(Jimple.v().newAssignStmt(actorLocal,
@@ -260,7 +263,8 @@ public class InlineDirectorTransformer extends SceneTransformer {
             for(Iterator entities = _model.entityList().iterator();
                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
-                String fieldName = ModelTransformer.getFieldNameForEntity(entity);
+                String fieldName = ModelTransformer.getFieldNameForEntity(
+                        entity, _model);
                 SootField field = modelClass.getFieldByName(fieldName);
                 // Set the field.
                 units.add(Jimple.v().newAssignStmt(actorLocal,
