@@ -74,6 +74,7 @@ OTHER_FILES_TO_BE_JARED = \
 	random.xml \
 	sinks.xml \
 	sources.xml \
+	utilitiesLibrary.xml \
 	welcomeWindow.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
