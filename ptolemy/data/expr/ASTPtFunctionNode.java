@@ -36,6 +36,7 @@ package ptolemy.data.expr;
 import ptolemy.data.*;
 import ptolemy.kernel.util.*;
 import ptolemy.math.Complex;
+import ptolemy.math.FixPoint;
 
 import java.lang.reflect.*;
 import java.lang.Math;		/* Needed for javadoc */
@@ -128,6 +129,9 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             } else if (tok instanceof ComplexMatrixToken) {
                 Complex val = ((ComplexMatrixToken)tok).getElementAt(row, col);
                 return new ComplexToken(val);
+            } else if (tok instanceof FixMatrixToken) {
+                FixPoint val = ((FixMatrixToken)tok).getElementAt(row, col);
+                return new FixToken(val);
             } else {
                 throw new IllegalActionException("The value of " + _funcName
                         + " is not a supported matrix token.");
@@ -172,6 +176,9 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             } else if (child instanceof ComplexToken) {
                 argValues[i] = ((ComplexToken)child).complexValue();
                 argTypes[i] = argValues[i].getClass();;
+            } else if (child instanceof FixToken) {
+                argValues[i] = ((FixToken)child).fixValue();
+                argTypes[i] = argValues[i].getClass();;
             } else if (child instanceof IntMatrixToken) {
                 argValues[i] = child;
                 argTypes[i] = argValues[i].getClass();;
@@ -181,12 +188,15 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             } else if (child instanceof ComplexMatrixToken) {
                 argValues[i] = child;
                 argTypes[i] = argValues[i].getClass();;
+            } else if (child instanceof FixMatrixToken) {
+                argValues[i] = child;
+                argTypes[i] = argValues[i].getClass();;
             } else {
                 throw new IllegalActionException("FunctionNode: "+
                         "Invalid argument  type, valid types are: " +
-                        "boolean, complex, double, int, long, String" +
-                        "IntMatrixToken, DoubleMatrixToken, " +
-                        "ComplexMatrixToken. " );
+                        "boolean, complex, fixpoint, double, int, long, " +
+                        "String, IntMatrixToken, DoubleMatrixToken, " +
+                        "ComplexMatrixToken, FixMatrixToken. " );
             }
             // FIXME: what is the TYPE that needs to be filled
             // in in the argValues[]. Current it is from the
@@ -207,7 +217,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 // Then we invoke it, and report errors.
                 try {
                     // System.out.println("ASTPtFunctionNode: Method:" +
-                    //        method + 
+                    //        method +
                     //        " nextClass: " + nextClass +
                     //        " argValues: " + argValues);
                     result = method.invoke(nextClass, argValues);
@@ -250,10 +260,12 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     return new BooleanToken(((Boolean)result).booleanValue());
                 } else if (result instanceof Complex) {
                     return new ComplexToken((Complex)result);
+                } else if (result instanceof FixPoint) {
+                    return new FixToken((FixPoint)result);
                 } else  {
                     throw new IllegalActionException("FunctionNode: "+
                             "result of function " + _funcName +
-                            " not a valid type: boolean, complex, " +
+                            " not a valid type: boolean, complex, fixpoint" +
                             " double, int, long  and String, or a Token.");
                 }
             }
