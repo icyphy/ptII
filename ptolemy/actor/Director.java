@@ -41,7 +41,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
@@ -765,68 +764,6 @@ public class Director extends Attribute implements Executable {
         }
     }
 
-    /** Return true if this director, or any of its contained directors
-     *  requires write access on the workspace during execution.
-     *  If this director requires write access during execution
-     *  (i.e. _writeAccessRequired() returns true), then
-     *  this method returns true.   Otherwise, needWriteAccess() is called
-     *  recursively on all the local directors of all deeply
-     *  contained entities that are opaque composite actors.
-     *  If any of those lower level directors requires write access, then
-     *  this method will return true.  Otherwise, this method returns false.
-     *  <p>
-     *  This method is called on the top level director by the manager
-     *  at the start of an execution.
-     *  If it returns false (indicating that none of the directors in
-     *  the model need write access on the workspace), then the manager
-     *  will set the workspace to be read only during each toplevel iteration
-     *  of the model.  Note that mutations can still occur, but they can
-     *  only be performed by the manager.
-     *
-     *  @return true If this director, or any of its contained directors,
-     *  needs write access to the workspace.
-     *  @exception InvalidStateException If the director does not have
-     *  a container, or the container is not an instance of CompositeActor.
-     */
-    public final boolean needWriteAccess() {
-        if (_writeAccessRequired()) {
-            return true;
-        }
-
-        Nameable container = getContainer();
-
-        if (container instanceof CompositeActor) {
-            Iterator actors = ((CompositeActor) container).deepEntityList()
-                               .iterator();
-
-            while (actors.hasNext()) {
-                Actor actor = (Actor) actors.next();
-
-                // find out which of those actors has a local director.
-                if (actor instanceof CompositeActor
-                        && ((CompositeActor) actor).isOpaque()) {
-                    CompositeActor compositeActor = (CompositeActor) actor;
-
-                    // compositeActor.getDirector() is guaranteed to return a
-                    // local director, not the executive director.
-                    if (compositeActor.getDirector().needWriteAccess()) {
-                        // If any of the directors need a write access, then
-                        // everyone has to respect it.
-                        return true;
-                    }
-                }
-            }
-
-            // Up to this point, all lower level directors have been queried
-            // and none of them returned true (or else we would have returned)
-            // Therefore, return false.
-            return false;
-        } else {
-            throw new InvalidStateException("Director is not "
-                + "associated with a composite actor!");
-        }
-    }
-
     /** Return a new receiver of a type compatible with this director.
      *  In this base class, this returns an instance of Mailbox.
      *  @return A new Mailbox.
@@ -1332,26 +1269,6 @@ public class Director extends Attribute implements Executable {
 
         return true;
     }
-
-    /** Return true if this director requires write access
-     *  on the workspace during execution. Most director functions
-     *  during execution do not need write access on the workspace.
-     *  A director will generally only need write access on the workspace if
-     *  it performs mutations locally, instead of queueing them with the
-     *  manager.
-     *  <p>
-     *  In this base class, we assume
-     *  that write access is required and always return true.  This method
-     *  should probably be overridden by derived classes.
-     *
-     *  @return true
-     */
-    protected boolean _writeAccessRequired() {
-        return true;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
 
     /** The current time of the model. */
     protected Time _currentTime;

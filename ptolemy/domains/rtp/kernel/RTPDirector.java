@@ -237,17 +237,6 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Override the base class to indicate that this director does not
-     *  need write access on the workspace during an iteration.
-     *  @return False.
-     */
-    protected boolean _writeAccessRequired() {
-        return false;
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Initialize the director by creating a scheduler and iterations

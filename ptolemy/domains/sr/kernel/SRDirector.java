@@ -548,17 +548,6 @@ public class SRDirector extends StaticSchedulingDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Override the base class to indicate that this director does not
-     *  need write access on the workspace during an iteration.
-     *  @return False.
-     */
-    protected boolean _writeAccessRequired() {
-        return false;
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Return true if all the inputs of the specified actor are known.

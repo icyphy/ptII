@@ -482,18 +482,6 @@ public class GRDirector extends StaticSchedulingDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Override the base class to indicate that this director does not
-     *  need write access on the workspace during an iteration.
-     *
-     *  @return Always return false.
-     */
-    protected boolean _writeAccessRequired() {
-        return false;
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Create an actor table that caches all the actors directed by this

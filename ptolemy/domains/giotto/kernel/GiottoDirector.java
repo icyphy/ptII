@@ -700,17 +700,6 @@ public class GiottoDirector extends StaticSchedulingDirector
     public Parameter synchronizeToRealTime;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Override the base class to indicate that this director does not
-     *  need write access on the workspace during an iteration.
-     *  @return False.
-     */
-    protected boolean _writeAccessRequired() {
-        return false;
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
     /** The static default Giotto period is 100ms.

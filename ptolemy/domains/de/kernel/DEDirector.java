@@ -1212,18 +1212,9 @@ public class DEDirector extends Director implements TimedDirector {
         _eventQueue.put(newEvent);
     }
 
-    /** Override the default Director implementation, because in DE
-     *  domain, we don't need write access inside an iteration.
-     *  @return false.
-     */
-    protected boolean _writeAccessRequired() {
-        // Return false to let the workspace be write-protected.
-        // Return true to debug the PtolemyThread.
-        return false;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
     // Based on the depths of IO ports, calculate the depths of actors.
     // The results are cached in a hashtable _actorToDepth.
     // Update the depths of existing events in the event queue.

@@ -954,14 +954,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
         _iterationEndTime = time;
     }
 
-    /** Returns false always, indicating that this director does not need to
-     *  modify the topology during one iteration.
-     *  @return False.
-     */
-    protected final boolean _writeAccessRequired() {
-        return false;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
