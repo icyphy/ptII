@@ -237,9 +237,9 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
         <entity name="CTPlot" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={496, 38, 508, 355}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={538, 38, 466, 355}, maximized=false}">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[458, 300]">
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -366,13 +366,13 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
     <entity name="DEPlot" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={498, 392, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={538, 392, 468, 355}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[460, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="565.0, 260.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 260.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -443,8 +443,8 @@ Modified by Edward A. Lee and Haiyang Zheng after Ptolemy II 4.1 </text></svg></
     <link port="FIR Filter.output" relation="_R2"/>
     <link port="Quantizer.input" relation="_R2"/>
     <link port="Quantizer.output" relation="_R3"/>
-    <link port="DEPlot.input" relation="_R3"/>
     <link port="DEPlot.input" relation="relation2"/>
+    <link port="DEPlot.input" relation="_R3"/>
     <link port="Moving Average.input" relation="_R3"/>
     <link port="Moving Average.output" relation="relation"/>
     <link port="Average 50 samples.input" relation="relation"/>

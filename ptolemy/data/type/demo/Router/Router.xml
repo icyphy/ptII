@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Router" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -42,7 +42,7 @@ Rayleigh distribution.</text>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {102, 102, 819, 595}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 29, 819, 597}, maximized=false}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -119,9 +119,15 @@ and decomposition.</text></svg></configure>
         </property>
     </entity>
     <entity name="Channel Model" class="ptolemy.domains.de.lib.VariableDelay">
-        <property name="defaultDelay" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 280.0]">
+        <property name="VariableDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 214, 815, 516}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 280.0]">
         </property>
     </entity>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
@@ -205,7 +211,7 @@ and decomposition.</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="As Received">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 2, 292, 392}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={613, 6, 290, 397}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 225.0">
         </property>
@@ -217,7 +223,7 @@ and decomposition.</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Resequenced">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={302, 2, 292, 392}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={704, 328, 290, 397}, maximized=false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 325.0">
         </property>
