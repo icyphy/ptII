@@ -156,29 +156,36 @@ public class CommitActionsAttribute
                         if (channel != null) {
                             if (token == null) {
                                 destination.sendClear(channel.intValue());
-                                if (_debugging)
-                                    _debug(getFullName()+" port: "+
-                                           destination.getName()+" channel: "+
-                                           channel.intValue()+", Clear!");
+                                if (_debugging) {
+                                    _debug(getFullName() + " port: "
+                                            + detination.getName()
+                                            + " channel: "
+                                            + channel.intValue() + ", Clear!");
+                                }
                             } else {
                                 destination.send(channel.intValue(), token);
-                                if (_debugging)
-                                    _debug(getFullName()+" port: "+
-                                           destination.getName()+" channel: "+
-                                           channel.intValue()+", token: "+token);
+                                if (_debugging) {
+                                    _debug(getFullName() + " port: "
+                                            + destination.getName()
+                                            + " channel: "
+                                            + channel.intValue()
+                                            + ", token: " + token);
+                                }
                             }
                         } else {
                             if (token == null) {
                                 destination.broadcastClear();
-                                if (_debugging)
-                                    _debug(getFullName()+" port: "+
-                                           destination.getName()+" broadcast Clear!");
+                                if (_debugging) {
+                                    _debug(getFullName() + " port: "
+                                            + destination.getName()
+                                            + " broadcast Clear!");
+                                }
                             } else {
                                 destination.broadcast(token);
-                                if (_debugging)
-                                    _debug(getFullName()+" port: "+
-                                           destination.getName()+" broadcast token: "+
-                                           token);
+                                if (_debugging) {
+                                    _debug(getFullName() + " port: "
+                                            + destination.getName()
+                                            + " broadcast token: " + token);
                             }
                         }
                     } catch (NoRoomException ex) {
@@ -192,16 +199,18 @@ public class CommitActionsAttribute
                     try {
                         Token token = variable.getToken();
                         destination.setToken(token);
-                        if (_debugging)
-                            _debug(getFullName()+" variable: "+
-                                   destination.getName()+", value: "+token);
+                        if (_debugging) {
+                            _debug(getFullName() + " variable: "
+                                    + destination.getName() + ", value: "
+                                    + token);
+                        }
                     } catch (UnknownResultException ex) {
                         destination.setUnknown(true);
                     }
                 } else {
                     throw new IllegalActionException(this,
-                    "Destination is neither an IOPort nor a Variable: "
-                    + nextDestination.getFullName());
+                            "Destination is neither an IOPort nor a Variable: "
+                            + nextDestination.getFullName());
                 }
             }
         }
