@@ -1,5 +1,5 @@
-/* An IODependence contains the input/output dependence information
-of an actor.
+/* An instance of IODependence is an attribute of an actor containing
+the input-output dependence information.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -34,10 +34,10 @@ package ptolemy.actor;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.SingletonAttribute;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -46,8 +46,8 @@ import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// IODependence
-/** An instance of IODependence contains the dependence information between the inputs
-and outputs. It is an attribute associated with an actor. For atomic actors,
+/** An instance of IODependence is an attribute of an actor containing
+the input-output dependence information. For atomic actors,
 this attribute is constructed inside the constructor. For composite actors,
 this attribute is constructed in the preinitialize method of the composite
 actors, after their directors finish preinitialization. The process is 
@@ -76,18 +76,20 @@ in a MoML representation of the model containing it.
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class IODependence extends SingletonAttribute {
+public class IODependence extends Attribute {
 
-    /** Construct an IODependence in the given container with the
-     *  given name. The container argument must not be null, or a
-     *  NullPointerException will be thrown.
+    /** Construct an IODependence attribute in the given container 
+     *  with the given name. The container argument must not be null, 
+     *  or a NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
+     *  Resolve the IODependence of input and output ports. Set this
+     *  attribute nonpersistent.
      *
      *  @param container The container.
      *  @param name The name of this director.
      *  @exception IllegalActionException If the name has a period in it, or
-     *   the director is not compatible with the specified container.
+     *   the attribute is not compatible with the specified container.
      *  @exception NameDuplicationException If the container already contains
      *   an entity with the specified name.
      */
@@ -101,17 +103,17 @@ public class IODependence extends SingletonAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return an instance of IODependence describing the relation between
-     *  the inputs and outputs of a composite actor.
-     *  @param compositeActor 
-     *  @return 
+    /** Resolve the IODependence describing the relation between
+     *  the inputs and outputs of an actor. If the cached version
+     *  is valid, use the cached one. Otherwise, recaculate a new 
+     *  one. Cache and synchronize the new version with the workspace. 
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the attribute is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public void inferDependence() 
         throws IllegalActionException, NameDuplicationException {
-        NamedObj container = (NamedObj)getContainer();
-        // If the composite actor is at top level,
-        // do nothing.
-        // if (container.getContainer() == null) return;
 
         if (_dgValid != workspace().getVersion()){
             // construct a directed graph
@@ -120,17 +122,39 @@ public class IODependence extends SingletonAttribute {
         }
     }
         
+    /** Return true if there are directed cycle loops in the IODependence. 
+     *  @return True if there are directed loops.
+     */
     public boolean containsCyclicLoops() {
         return !_dg.isAcyclic();
     }
 
+    /** Return the nodes in a directed cycle loop. If there are multiple
+     *  cycles, all the nodes will be returned.
+     *  @return An array contains the nodes in the cycles.
+     */
     public Object[] getCycleNodes() {
         return _dg.cycleNodes();
     } 
     
-    public Set getNotDirectlyDependentPorts(IOPort inputPort) {
-        Set notDirectlyDependentPortsSet = new HashSet();
+    /** Return a set of output ports which not directly dependent on the
+     *  given input. 
+     * 
+     *  @param inputPort The given input port of the container.
+     *  @return A set of output ports not directly dependent on the given
+     *  input port.
+     *  @exception IllegalActionException If the given input port does not
+     *  belong to the same container of the IODependence attribute. 
+     */
+    public Set getNotDirectlyDependentPorts(IOPort inputPort) 
+        throws IllegalActionException {
+        // get container of the IODependence attribute.
         Actor actor = (Actor)getContainer();
+        if (inputPort.getContainer().getContainer().equals(getContainer())) {
+            throw new IllegalActionException(this, "doesn't belong to " +
+                ((NamedObj)actor).getName());
+        }
+        Set notDirectlyDependentPortsSet = new HashSet();
         Iterator outputs = actor.outputPortList().listIterator();
         while (outputs.hasNext()) {
             IOPort outputPort = (IOPort)outputs.next();
@@ -141,19 +165,31 @@ public class IODependence extends SingletonAttribute {
         return notDirectlyDependentPortsSet;
     }
     
+    /** Return true if the output port is directly dependent on the 
+     *  given input port.
+     * 
+     *  @param inputPort The given input port.
+     *  @param outputPort The given output port. 
+     *  @return True if the output port is directly dependent on the
+     *  input port.
+     */
     public boolean hasDependence(IOPort inputPort, IOPort outputPort){
         Collection dependentOutputs = _dg.reachableNodes(_dg.node(inputPort));
         return dependentOutputs.contains(_dg.node(outputPort));
     }
 
-    /** Clear the input ports list. This method is called in the
-     *  preinitialize method only by composite actors when the topology
-     *  of the embedded entities change.
+    /** Invalidate the cached version of this attribute.
      */
     public void invalidate() {
         _dgValid = -1;
     }
 
+    /** Remove the dependence between the input and output ports such they 
+     *  are not directly dependent.
+     * 
+     *  @param inputPort An input port.
+     *  @param outputPort An output Port.
+     */
     public void removeDependence(IOPort inputPort, IOPort outputPort){
         Object[] incidentEdgeArray = 
             _dg.incidentEdges(_dg.node(inputPort)).toArray();
@@ -168,22 +204,26 @@ public class IODependence extends SingletonAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Construct a directed graph with the nodes representing actors and
-    // directed edges representing dependencies.  The directed graph
-    // is returned.
+    // Construct a directed graph with the nodes representing input and
+    // output ports, and directed edges representing dependencies.  
+    // The directed graph is returned.
+
+    // The following code has recursive calls. 
+    // FIXME: Steve suggests the performance analysis.
+
     private DirectedGraph _constructDirectedGraph() 
         throws IllegalActionException, NameDuplicationException {
 
-        Actor actor = (Actor)getContainer();       
+        Actor container = (Actor)getContainer();       
 
         DirectedGraph dg = new DirectedGraph();
 
         // First, include all the ports as nodes in the graph.
-        // The ports may belong to the composite actor, or the
+        // The ports may belong to the container, or the
         // actors it contains.
         
-        // get all the inputs and outputs of the composite actor
-        Iterator inputs = actor.inputPortList().listIterator();
+        // get all the inputs and outputs of the container
+        Iterator inputs = container.inputPortList().listIterator();
         while (inputs.hasNext()) {
             // 'add' replaced with 'addNodeWeight' since the former
             // has been deprecated.  The change here should have no
@@ -192,17 +232,17 @@ public class IODependence extends SingletonAttribute {
             dg.addNodeWeight(inputs.next());
         }
         
-        Iterator outputs = actor.outputPortList().listIterator();
+        Iterator outputs = container.outputPortList().listIterator();
         while (outputs.hasNext()) {
             dg.addNodeWeight(outputs.next());
         }
         
-        if (actor instanceof CompositeActor) {
-            // If the actor is a composite one,
-            // get all the contained actors
+        if (container instanceof CompositeActor) {
+            // If the container is a composite actor,
+            // get all the embedded actors
             // and add their ports to directed graph.
             Iterator embeddedActors = 
-                ((CompositeActor)actor).deepEntityList().iterator();
+                ((CompositeActor)container).deepEntityList().iterator();
             while (embeddedActors.hasNext()) {
                 Actor embeddedActor = (Actor) embeddedActors.next();
                 Iterator inputsInside = 
@@ -219,14 +259,12 @@ public class IODependence extends SingletonAttribute {
 
             // Next, create the directed edges by iterating again.
             embeddedActors = 
-                ((CompositeActor)actor).deepEntityList().iterator();
-            // iterate all contained actors (include opaque composite actors)
+                ((CompositeActor)container).deepEntityList().iterator();
+            // iterate all embedded actors (include opaque composite actors)
             while (embeddedActors.hasNext()) {
                 Actor embeddedActor = (Actor)embeddedActors.next();
                 // get the IODependence attribute of the current actor
                 // if no one is available, construct one.
-                // The following code has recursive calls. 
-                // FIXME: Steve suggests the performance analysis.
                 IODependence ioDependence = embeddedActor.getIODependence();
                 if (ioDependence == null) {
                     ioDependence = 
@@ -266,9 +304,9 @@ public class IODependence extends SingletonAttribute {
                 }
             }
 
-            // Last, connect the actor inputs to the inside
+            // Last, connect the container inputs to the inside
             // ports receiving tokens from these inputs.
-            inputs = actor.inputPortList().listIterator();
+            inputs = container.inputPortList().listIterator();
             while (inputs.hasNext()) {
                 IOPort inputPort = (IOPort) inputs.next();
                 // find the inside ports connected to this input port
@@ -290,32 +328,15 @@ public class IODependence extends SingletonAttribute {
         // The reason for this is that we do not do code analysis,
         // and we can not tell the details.
 
-        inputs = actor.inputPortList().listIterator();
-        outputs = actor.outputPortList().listIterator();
-        IODependence ioDependence = actor.getIODependence();
+        inputs = container.inputPortList().listIterator();
+        outputs = container.outputPortList().listIterator();
+        IODependence ioDependence = container.getIODependence();
         while (inputs.hasNext()) {
             IOPort inputPort = (IOPort) inputs.next();
             while (outputs.hasNext()) {
                 // connected the inputs and outputs
                 dg.addEdge(inputPort, outputs.next());
             }
-            /**
-            if (ioDependence != null) {
-                Set notDirectlyDependentPorts = 
-                    ioDependence.getNotDirectlyDependentPorts(inputPort);
-                while (outputs.hasNext()) {
-                    IOPort output = (IOPort) outputs.next();
-                    if (!notDirectlyDependentPorts.contains(output)){
-                        dg.addEdge(inputPort, output);
-                    }
-                }
-            } else {
-                while (outputs.hasNext()) {
-                    // connected the inputs and outputs
-                    dg.addEdge(inputPort, outputs.next());
-                }
-            }
-            */
         }
         return dg;
     }
@@ -323,8 +344,9 @@ public class IODependence extends SingletonAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
 
-    // The directed graph of the inputs and outputs
+    // The directed graph of the input and output ports
     private DirectedGraph _dg;
+    // The validity flag of this attribute.
     private long _dgValid = -1;
     
 }

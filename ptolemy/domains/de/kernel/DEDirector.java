@@ -1372,9 +1372,6 @@ public class DEDirector extends Director {
         // director. If there is no such attribute, construct one.
         // The NameDuplicationException shouldn't happen, and is 
         // discarded.
-        // FIXME: There is little help to use SigletonAttribute 
-        // insted of Attribute because the NameDuplicatoinException
-        // will have to be catched anyway.
         IODependence ioDependence = castContainer.getIODependence();
         try {
             // When this method _constructDirectedGraph is called, 

@@ -107,17 +107,6 @@ relations to be IORelations, and the actors to be instances of
 ComponentEntity that implement the Actor interface.  Derived classes
 may impose further constraints by overriding newPort(), _addPort(),
 newRelation(), _addRelation(), and _addEntity().
-<p>
-The composite actor constructs the IODependence information of its 
-inputs and outputs if it is embedded as an opaque actor. The construction
-is made inside the preinitialize method after its director initializes.
-By this way, the construction is in a bottom up way based on its entities'
-IODependence information.
-<p>
-Note that IODependence only handles the one way relation from input to
-output. It does not handle the direct feed back loop but leaves it to 
-the scheduler to handle this because different domains assign direct 
-feed back loops different semantics.  
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
 @version $Id$
