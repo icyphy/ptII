@@ -354,7 +354,7 @@ An actor that converts tokens into expressions.
 <dl>
 <dt> Java Advanced Imaging
 <dd> (James Yeh)
-Actors that use the Java Advanced Imaginv framework
+Actors that use the Java Advanced Imagining framework
 </dl>
 
 <li>  <a href="codeDoc/ptolemy/actor/lib/jmf/package-summary.html">ptolemy.actor.lib.jmf</a>:
@@ -705,10 +705,11 @@ User Interface.
 
 <ul>
 
-<li> Under JDK1.3.1_03, the tool tips do not work.  They work under
-JDK1.3.1_02, see 
-<a href="http://developer.java.sun.com/developer/bugParade/bugs/4671567.html"><CODE>http://developer.java.sun.com/developer/bugParade/bugs/4671567.html</CODE></a>.
-
+<li> If there are multiple windows open for a model, say, the top
+level vergil window and the tree view, or the top level window
+and the inside look of a composite component, when the top
+level window is closed, all other windows are closed, but the
+user is not prompted to save any change to the model.
 
 <li> When setting the type of a port, we should provide a combo
 box that lists the common ports
@@ -721,11 +722,10 @@ be to have an information message in the status bar about this.
 mechanism should disallow port name changes on ports that are
 named in Java.  The UI could recognize this.  The UI should
 not allow the user to remove built in Java defined ports.
-<li> Query needs to be put into a scroll pane
+
 <li> Manually setting of the types of actors like ArrayToSequence that
 have constraints on their element types can cause problems.
 <li> HTVQ demo is badly laid out when run under vergil.
-<li>No undo mechanism.
 <li>Weak support for multiports in the graph editor.
 <li>It is difficult to control wire routing.
 <li>Cannot have more than one vertex in a connection.
