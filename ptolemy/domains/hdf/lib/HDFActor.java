@@ -126,7 +126,9 @@ public class HDFActor extends Transformer {
             Scheduler scheduler =
                 ((SDFDirector)director).getScheduler();
             _firingCount = 
-                ((SDFScheduler)scheduler).getFiringCount(this);
+                ((HDFDirector)director).getDirectorFiringsPerIteration()
+                    * ((SDFScheduler)scheduler).getFiringCount(this);
+                
         }
         Token[] inputToken = (Token[])input.get(0, _rateValue);
         output.broadcast(inputToken, _rateValue);

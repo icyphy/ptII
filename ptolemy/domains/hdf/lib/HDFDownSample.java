@@ -140,7 +140,9 @@ public class HDFDownSample extends Transformer {
         Scheduler scheduler =
             ((SDFDirector)director).getScheduler();
         _firingCount = 
-            ((SDFScheduler)scheduler).getFiringCount(this);
+            ((HDFDirector)director).getDirectorFiringsPerIteration()
+                * ((SDFScheduler)scheduler).getFiringCount(this);
+          
         Token[] inputToken = (Token[])input.get(0, _rateValue);
         int phaseValue = ((IntToken)phase.getToken()).intValue();
         if (phaseValue >= _rateValue) {
@@ -187,8 +189,9 @@ public class HDFDownSample extends Transformer {
             Scheduler scheduler =
                 ((SDFDirector)director).getScheduler();
                 
-            _firingCount = 
-                ((SDFScheduler)scheduler).getFiringCount(this);
+            //_firingCount = 
+                //((SDFScheduler)scheduler).getFiringCount(this);
+              //  ((HDFDirector)director).getDirectorFiringsPerIteration();
             if (_firingSoFar == _firingCount){
                 ((HDFDirector)director).invalidateSchedule();
                 _rateValue = rateValue;

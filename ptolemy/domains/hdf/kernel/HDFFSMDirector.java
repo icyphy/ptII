@@ -746,7 +746,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  method throws it.
      */
     public void updateFiringCount
-            (int directorfiringCount, boolean preinitializeFlag) 
+            (int directorFiringCount, boolean preinitializeFlag) 
             throws IllegalActionException {
         FSMActor ctrl = getController();
         State currentState;
@@ -777,10 +777,12 @@ public class HDFFSMDirector extends FSMDirector {
             }
             if (refinementDir instanceof HDFFSMDirector) {
                 ((HDFFSMDirector)refinementDir).
-                    updateFiringCount(directorfiringCount, preinitializeFlag);
+                    updateFiringCount(directorFiringCount, preinitializeFlag);
             } else if (refinementDir instanceof HDFDirector) {
                 ((HDFDirector)refinementDir).
-                    updateFiringCount(directorfiringCount, preinitializeFlag);
+                    setDirectorFiringsPerIteration(directorFiringCount);
+                ((HDFDirector)refinementDir).
+                    updateFiringCount(directorFiringCount, preinitializeFlag);
             }
         }
     }

@@ -162,6 +162,18 @@ public class HDFDirector extends SDFDirector {
      */
     public Parameter scheduleCacheSize;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Get the number of firings of current director per top-level
+     *  iteration.
+     *  @return The number of firings of current director per top-level
+     *  iteration.
+     */
+    public int getDirectorFiringsPerIteration() {
+        return _directorFiringsPerIteration;
+    }
+
     /** Return the scheduling sequence as an instance of Schedule.
      *  For efficiency, this method maintains a schedule cache and
      *  will attempt to return a cached version of the schedule.
@@ -347,6 +359,15 @@ public class HDFDirector extends SDFDirector {
         return super.postfire();
     }
     
+    /** Set the number of firings per top-level iteration of the
+     *  current director.
+     *  @param firingsPerIteration Number of firings per top-level
+     *  iteration of the current director to be set.
+     */
+    public void setDirectorFiringsPerIteration(int firingsPerIteration) {
+        _directorFiringsPerIteration = firingsPerIteration;
+    }
+    
     /** Update the number of firings per top-level iteration of
      *  each actor in the current director.
      *  @param directorFiringCount The number of firings per
@@ -376,6 +397,7 @@ public class HDFDirector extends SDFDirector {
                     ((HDFFSMDirector)director).updateFiringCount(firingCount, preinitializeFlag);  
                 } else if (director instanceof HDFDirector) {
                     firingCount = firingCount * directorFiringCount;
+                    ((HDFDirector)director).setDirectorFiringsPerIteration(firingCount);
                     ((HDFDirector)director).
                         updateFiringCount(firingCount, preinitializeFlag);
                 }
@@ -495,6 +517,10 @@ public class HDFDirector extends SDFDirector {
     // A flag indicating whether the intialize() method is
     // called immediately after the preinitialize() method.
     private boolean _preinitializeFlag;
+    
+    // Number of firings per top-level iteration 
+    // of the current director.
+    private int _directorFiringsPerIteration = 1;
     
     // Set to true to enable debugging.
     //private boolean _debug_info = true;
