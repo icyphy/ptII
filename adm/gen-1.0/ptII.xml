@@ -1,4 +1,4 @@
-<isjeProject name="Ptolemy II 1.0 beta" class="com.installshield.isje.product.TypicalProductProject" framework="com.installshield.isje.product.ProductWizardFramework">
+<isjeProject name="Ptolemy II 1.0" class="com.installshield.isje.product.TypicalProductProject" framework="com.installshield.isje.product.ProductWizardFramework">
 <section name="projectProperties" class="com.installshield.isje.project.ProjectPropertiesSection">
     <property name="authorName" displayName="Author Name" category="Author Info">Ptolemy Project, UC Berkeley EECS Dept.</property>
     <property name="authorEmail" displayName="Author Email" category="Author Info">ptolemy@eecs.berkeley.edu</property>
@@ -86,11 +86,11 @@ Berkeley, CA 94706</property>
         </key>
         <built>19691131 160000.000-0800</built>
         <name>product1</name>
-        <displayName>Ptolemy II 1.0 beta</displayName>
-        <localizedDisplayName>Ptolemy II 1.0 beta</localizedDisplayName>
+        <displayName>Ptolemy II 1.0</displayName>
+        <localizedDisplayName>Ptolemy II 1.0</localizedDisplayName>
         <vendor>University of California EECS Dept.  Ptolemy Project</vendor>
         <website>http:/ptolemy.eecs.berkeley.edu/ptolemyII</website>
-        <number>1.0ptiny beta</number>
+        <number>1.0</number>
         <location>$D(install)/Ptolemy/$P(displayName)</location>
         <shareable>false</shareable>
         <active>true</active>
@@ -294,7 +294,7 @@ Berkeley, CA 94706</property>
                         <arrayItem>./ptolemy/plot/plotapplication.jar</arrayItem>
                     </property>
                     <property array="True" length="0" name="systemProperties" type="string"/>
-                    <property name="javaArguments">-verbose:class</property>
+                    <property name="javaArguments"/>
                     <property name="JVMId">jvm</property>
                 </action>
                 <action class="com.installshield.product.actions.DesktopIcon" id="bean7">
