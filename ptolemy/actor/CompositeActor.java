@@ -194,10 +194,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  CompositeActor. If this actor is opaque, then invoke the finish() 
      *  method of the local director. Otherwise, return. This method is 
      *  read-synchronized on the workspace.
-     * @exception IllegalActionException if this actor's director
-     *  throws an IllegalActionException while calling finish().
      */
-    public void finish() throws IllegalActionException {
+    public synchronized void finish() {
         try {
             workspace().getReadAccess();
             if (!isOpaque()) {
@@ -322,7 +320,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             workspace().getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                        "Cannot initialize a non-opaque actor.");
+                        "Cannot initialize a non-opaque actor YO.");
             }
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
