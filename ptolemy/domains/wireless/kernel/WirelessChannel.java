@@ -82,6 +82,13 @@ public interface WirelessChannel extends Nameable {
      */
     public List listeningOutputPorts() throws IllegalActionException;
 
+    /** Register a PropertyTransformer for a channel. The channel may 
+     *  invoke its PropertyTransformers for each token delivered by this
+     *  channel.
+     */
+    public void registerPropertyTransformer(
+            PropertyTransformer transformer);
+    
     /** Register a PropertyTransformer for a wirelessIOPort.
      *  @param port The port with which the PropertyTransformer is registered.
      *  @param transformer The PropertyTransformer to be registered.

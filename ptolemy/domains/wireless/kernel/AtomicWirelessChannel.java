@@ -258,20 +258,28 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         }
     }
 
-    /** Register a PropertyTransformer for a wirelessIOPort.
-     */
-    public void registerPropertyTransformer(WirelessIOPort port,
-            PropertyTransformer transformer) {
-        _portPropertyTransformer.put(port, transformer);
-    }
-
     /** Remove the dependency between the dummy port returned by
      *  getChannelPort() and itself.
      */
     public void removeDependencies() {
         removeDependency(_channelPort, _channelPort);
     }
-
+    
+    /** Register a PropertyTransformer for a channel. The channel may 
+     *  invoke its PropertyTransformers for each token delivered by this
+     *  channel.
+     */
+    public void registerPropertyTransformer(PropertyTransformer transformer) {
+        //do nothing here, the extended class should over write this method
+        //when it is needed. see TerrainChannel.
+    }
+    
+    /** Register a PropertyTransformer for a wirelessIOPort.
+     */
+    public void registerPropertyTransformer(WirelessIOPort port, 
+            PropertyTransformer transformer) {
+        _portPropertyTransformer.put(port, transformer);
+    }
     /** Return a list of input ports that can potentially send data
      *  to this channel.  This includes input ports contained by
      *  the container of this channel that

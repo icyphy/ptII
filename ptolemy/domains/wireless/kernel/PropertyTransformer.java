@@ -1,4 +1,4 @@
-/* Interface for channels in the wireless domain.
+/* Interface for PropertyTransformers in the wireless domain.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -47,12 +47,12 @@ public interface PropertyTransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the interested properties. The returned value is a
-     *  RecordToken with the specified properties as labels.
+    /** Return the interested properties. Some of the feilds of
+     *  the property may be modified. 
      *  @param properties The transform properties.
      *  @param sender The sending port.
      *  @param receiver The receiving port.
-     *  @return The modified transform properties.
+     *  @return The property.
      *  @exception IllegalActionException If failed to execute the model.
      */
     public RecordToken getProperty(RecordToken properties,
