@@ -119,84 +119,18 @@ public class Port extends NamedObj {
      */
     public String description(int verbose){
         String results = new String();
-        Enumeration enum;
         switch (verbose) {
-        case pt.kernel.Nameable.RELATIONS:
-        case pt.kernel.Nameable.PRETTYPRINT:
-            try {
-                results = " { " + getClass().getName() + " {";
-                if (getContainer() != null) {
-                    results = results.concat(getContainer().getFullName());
-                }
-                results = results.concat("} {" + getFullName()+ "} }\n");
-             } catch (InvalidStateException e) {
-                results = results.concat(getName() + " " + e);
-             }
-
-            if (verbose == RELATIONS) {
-                enum = getConnectedPorts();
-                while (enum.hasMoreElements()) {
-                    Port port = (Port)enum.nextElement();
-                    results = results.concat("  {" +
-                                port.getClass().getName() + "} {");
-                    try {
-                        results = results.concat(port.getFullName() + "}");
-                    } catch (InvalidStateException e) {
-                        results = results.concat(port.getName() + " " +
-                                e + "}");
-                    }
-                }
-                return results;
-            } else {
-                // verbose == PRETTYPRINT
-                // Get the connected ports and print their names so
-                // we can connect them up later.
-                enum = getConnectedPorts();
-                while (enum.hasMoreElements()) {
-                    Port port = (Port)enum.nextElement();
-                    String name;
-                    // Don't call port.description() or we will loop forever.
-                    try {
-                        results = results.concat("  { " +
-                                port.getClass().getName() + " {");
-                        if (port.getContainer() != null) {
-                            results = results.concat(
-                                    port.getContainer().getFullName());
-                        }
-                        results = results.concat("} {" + port.getFullName()+
-                                "} }\n");
-                    } catch (InvalidStateException e) {
-                        results = results.concat(port.getName() + " " + e);
-                    }
-                }
-            }
-            return results;
-        case pt.kernel.Nameable.VERBOSE:
-        case pt.kernel.Nameable.NAMES:
-            results = _descriptionStart(verbose);
-            enum = getLinkedRelations();
+        case pt.kernel.Nameable.CONTENTS:
+            results = toString() + "\n";
+        case pt.kernel.Nameable.CONNECTIONS:
+            Enumeration enum = getLinkedRelations();
             while (enum.hasMoreElements()) {
                 Relation relation = (Relation)enum.nextElement();
-                results = results.concat(" " + relation.description(verbose));
+                results = results.concat(relation.description(verbose));
             }
-            enum = getConnectedPorts();
-            while (enum.hasMoreElements()) {
-                Port port = (Port)enum.nextElement();
-                String name;
-                // Don't call port.description() or we will loop forever.
-                if (verbose == NAMES) {
-                    try {
-                        name = " " + port.getFullName();
-                    } catch (InvalidStateException e) {
-                        name = e + ": " + port.getName();
-                    }
-                } else {
-                    name = "{ " + port.toString() + " }";
-                }
-
-                results = results.concat(" " + name);
-            }
-            return results + " }";
+            return results;
+        case pt.kernel.Nameable.PRETTYPRINT:
+            return description(CONTENTS) + description(CONNECTIONS);
         case pt.kernel.Nameable.QUIET:
         default:
             return toString();

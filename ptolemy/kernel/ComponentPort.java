@@ -215,6 +215,47 @@ public class ComponentPort extends Port {
         }
     }
 
+    /** Return a description of the object
+     *  @param verbose The level of verbosity.
+     */
+    public String description(int verbose){
+        String results = new String();
+        switch (verbose) {
+        case pt.kernel.Nameable.CONTENTS:
+            results = toString() + "\n";
+            Enumeration enum = getInsideRelations();
+            while (enum.hasMoreElements()) {
+                Relation relation = (Relation)enum.nextElement();
+                results = results.concat(relation.description(verbose));
+            }
+            enum = getLinkedRelations();
+            while (enum.hasMoreElements()) {
+                Relation relation = (Relation)enum.nextElement();
+                results = results.concat(relation.description(verbose));
+            }
+            return results;
+        case pt.kernel.Nameable.CONNECTIONS:
+            enum = getInsideRelations();
+            while (enum.hasMoreElements()) {
+                Relation relation = (Relation)enum.nextElement();
+                results = results.concat(toString() + " link "
+                        + relation.toString() + "\n");
+            }
+            enum = getLinkedRelations();
+            while (enum.hasMoreElements()) {
+                Relation relation = (Relation)enum.nextElement();
+                results = results.concat(toString() + " link "
+                        + relation.toString() + "\n");
+            }
+            return results;
+        case pt.kernel.Nameable.PRETTYPRINT:
+            return description(CONTENTS) + description(CONNECTIONS);
+        case pt.kernel.Nameable.QUIET:
+        default:
+            return toString();
+        }
+    }
+
     /** Enumerate the ports connected on the inside to this port.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.

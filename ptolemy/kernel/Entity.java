@@ -128,41 +128,23 @@ public class Entity extends NamedObj {
         }
     }
 
-    /** Return a description of the object
+    /** Return a description of the object.
      *  @param verbose The level of verbosity.
      */
     public String description(int verbose){
-        String results = new String();;
-        Enumeration enum;
+        String results = new String();
         switch (verbose) {
-        case pt.kernel.Nameable.PRETTYPRINT:
-            try {
-                results = "{ " + getClass().getName() + " {";
-                if (getContainer() != null) {
-                    results = results.concat(getContainer().getFullName());
-                }
-                results = results.concat("} {" + getFullName()+ "} }\n");
-             } catch (InvalidStateException e) {
-                results = results.concat(getName() + " " + e);
-            }
-
-            enum = getPorts();
+        case pt.kernel.Nameable.CONTENTS:
+            results = toString() + "\n";
+        case pt.kernel.Nameable.CONNECTIONS:
+            Enumeration enum = getPorts();
             while (enum.hasMoreElements()) {
                 Port port = (Port)enum.nextElement();
-                results = results.concat(" {\n " + port.description(verbose) +
-                    " }\n");
+                results = results.concat(port.description(verbose));
             }
             return results;
-        case pt.kernel.Nameable.VERBOSE:
-        case pt.kernel.Nameable.NAMES:
-            results = _descriptionStart(verbose);
-        case pt.kernel.Nameable.RELATIONS:
-            enum = getPorts();
-            while (enum.hasMoreElements()) {
-                Port port = (Port)enum.nextElement();
-                results = results.concat(" " + port.description(verbose));
-            }
-            return results + " }";
+        case pt.kernel.Nameable.PRETTYPRINT:
+            return description(CONTENTS) + description(CONNECTIONS);
         case pt.kernel.Nameable.QUIET:
         default:
             return toString();

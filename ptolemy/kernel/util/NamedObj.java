@@ -123,23 +123,20 @@ public class NamedObj implements Nameable, Serializable {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Return a description of the object
+    /** Return a description of the object.
      *  @param verbose The level of verbosity.
      */
     public String description(int verbose){
         switch (verbose) {
         case pt.kernel.Nameable.PRETTYPRINT:
-        case pt.kernel.Nameable.VERBOSE:
-            return "{ "+toString() + " }";
-        case pt.kernel.Nameable.NAMES:
-            try {
-                return "{ " + getFullName() + " }";
-            } catch (InvalidStateException e) {
-                return "{ " + e + ": " + getName() + " }";
-            }
+        case pt.kernel.Nameable.CONTENTS:
+            return toString() + "\n";
+        case pt.kernel.Nameable.CONNECTIONS:
+            // NamedObjs do not have connections, so we don't return anything.
+            return "";
         case pt.kernel.Nameable.QUIET:
         default:
-            return "{ " + toString() + " }";
+            return toString();
         }
     }
 
@@ -226,23 +223,6 @@ public class NamedObj implements Nameable, Serializable {
      */	
     public Workspace workspace() {
         return _workspace; 
-    }
-
-    
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected method                         ////
-
-    /** Return the first part of the description string. */
-    protected String _descriptionStart(int verbose) {
-        if (verbose == NAMES) {
-            try {
-                return " { " + getFullName();
-            } catch (InvalidStateException e) {
-                return " { " + e + ": " + getName();
-            }
-        } else {
-            return " { { " + toString() + " } ";
-        }
     }
 
     //////////////////////////////////////////////////////////////////////////

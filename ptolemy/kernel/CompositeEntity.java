@@ -319,42 +319,26 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
-    /** Return a description of the object
+    /** Return a description of the object.
      *  @param verbose The level of verbosity.
      */
     public String description(int verbose){
         String results = new String();
-        Enumeration enum;
         switch (verbose) {
-        case pt.kernel.Nameable.PRETTYPRINT:
-            try {
-                results = "{ { " + getClass().getName() + " {";
-                if (getContainer() != null) {
-                    results = results.concat(getContainer().getFullName());
-                }
-                results = results.concat("} {" + getFullName()+ "} }\n");
-             } catch (InvalidStateException e) {
-                results = results.concat(getName() + " " + e);
-            }
+        case pt.kernel.Nameable.CONTENTS:
+        case pt.kernel.Nameable.CONNECTIONS:
+            // Get the name and ports for this CompositeEntity.
+            results = results.concat(super.description(verbose));
 
-            enum = getEntities();
-            while (enum.hasMoreElements()) {
-                ComponentEntity entity =
-                    (ComponentEntity)enum.nextElement();
-                results = results.concat(" { " + entity.description(verbose) +
-                    "}\n");
-            }
-            return results + "}\n" ;
-        case pt.kernel.Nameable.VERBOSE:
-        case pt.kernel.Nameable.NAMES:
-            results = _descriptionStart(verbose);
-        case pt.kernel.Nameable.RELATIONS:
-            enum = getEntities();
+            // Get the name and ports for the CompositeEntities inside.
+            Enumeration enum = getEntities();
             while (enum.hasMoreElements()) {
                 ComponentEntity entity = (ComponentEntity)enum.nextElement();
-                results = results.concat(" " + entity.description(verbose));
+                results = results.concat(entity.description(verbose));
             }
-            return results + " }";
+            return results;
+        case pt.kernel.Nameable.PRETTYPRINT:
+            return description(CONTENTS) + description(CONNECTIONS);
         case pt.kernel.Nameable.QUIET:
         default:
             return toString();

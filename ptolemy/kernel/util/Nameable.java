@@ -52,7 +52,7 @@ public interface Nameable {
     /////////////////////////////////////////////////////////////////////////
     ////                         public methods                          ////
 
-    /** Return a description of the object
+    /** Return a description of the object.
      *  @param verbose The level of verbosity.
      */
     public String description(int verbose);
@@ -86,23 +86,18 @@ public interface Nameable {
      * The description() method returns the the full name of this object and 
      * any objects this object refers to.
      */ 
-    public static final int NAMES = 1;
+    public static final int CONTENTS = 1;
 
     /**
-     * The description() method returns a complete description of the
-     * object that is sufficient to recontruct the object.
+     * The description() method returns the connections between
+     * the objects contained by this object
      */ 
-    public static final int VERBOSE = 2;
+    public static final int CONNECTIONS = 2;
 
     /**
-     * The description() method returns a complete description of the
-     * object that is sufficient to recontruct the object in a format
-     * that has newlines.
+     * The description() method returns the type and names of this
+     * object and all the objects it refers to along with the connections
+     * between those objects.
      */ 
     public static final int PRETTYPRINT = 3;
-
-    /**
-     * The description() method returns only the relations.
-     */ 
-    public static final int RELATIONS = 4;
 }
