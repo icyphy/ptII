@@ -105,23 +105,26 @@ public class SDFCodeGenerator extends CompositeActorApplication
             + _outputPackageName.replace('.', File.separatorChar)
             + File.separatorChar;
 
+        if (!_makefileOnly) {
+	    // Create the directory to put the output package in,
+	    // creating subdirectories as needed.
+	    // This must be done before the Java compiler classes are loaded so
+	    // that they can find the output package.
+	    // (this is a nasty hack)
+	    System.out.println("packageDir = " + _packageDirectoryName);
+	    new File(_packageDirectoryName).mkdirs();
+	}
+
         try {
             _generateMakefile();
         } catch ( IOException ioe) {
             System.err.println("Error: failed to write makefile: " + ioe);
         }
+
         if (_makefileOnly) {
             System.out.println("generated the makefile"); 
             return;
         }
-
-        // Create the directory to put the output package in,
-        // creating subdirectories as needed.
-        // This must be done before the Java compiler classes are loaded so
-        // that they can find the output package.
-        // (this is a nasty hack)
-        System.out.println("packageDir = " + _packageDirectoryName);
-        new File(_packageDirectoryName).mkdirs();
 
         // FIXME: this should not be CG_Main.
         //_systemName = _compositeActor.getName();
