@@ -73,7 +73,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    directly controls all actors inside.
 
    @author Gang Zhou
- */
+*/
 public class ActorRecursion extends TypedCompositeActor {
 
     /** Create an ActorRecursion with a name and a container.
@@ -135,7 +135,7 @@ public class ActorRecursion extends TypedCompositeActor {
         getDirector().initialize();
         _transferOutputs();
         ((DDFDirector)getExecutiveDirector()).
-                merge((DDFDirector)getDirector());
+            merge((DDFDirector)getDirector());
         try {
             getDirector().setContainer(null);
         } catch (NameDuplicationException ex) {
@@ -246,11 +246,11 @@ public class ActorRecursion extends TypedCompositeActor {
             if (port.isInput() && !matchingPortType.isCompatible(portType))
                 throw new IllegalActionException(this, "The type of the port " +
                         port.getName() + " of the actor " + getName() + " must " +
-                                "be the same or less than the matching port.");
+                        "be the same or less than the matching port.");
             if (port.isOutput() && !portType.isCompatible(matchingPortType))
                 throw new IllegalActionException(this, "The type of the port " +
                         port.getName() + " of the actor " + getName() + " must " +
-                                "be the same or less than the matching port.");
+                        "be the same or less than the matching port.");
         }
         _isCompatibilityChecked = true;
     }
@@ -267,7 +267,7 @@ public class ActorRecursion extends TypedCompositeActor {
         try {
             // Clone the composite actor.
             CompositeActor clone = (CompositeActor)
-                    _recursionActor.clone(workspace());
+                _recursionActor.clone(workspace());
             // Place the clone inside this actor.
             clone.setContainer(this);
             int i = 0;
@@ -309,7 +309,7 @@ public class ActorRecursion extends TypedCompositeActor {
             }
         } catch (CloneNotSupportedException ex) {
             throw new IllegalActionException(this,
-                        "couldn't clone: " + ex.toString());
+                    "couldn't clone: " + ex.toString());
         } catch (NameDuplicationException ex) {
             throw new IllegalActionException(this, "name duplication.");
         }
@@ -379,23 +379,23 @@ public class ActorRecursion extends TypedCompositeActor {
                         Parameter rate = null;
                         if (port.isInput()) {
                             rate = (Parameter)port.
-                                    getAttribute("tokenConsumptionRate");
+                                getAttribute("tokenConsumptionRate");
                             // Ports of opaque SDF composite actors contain
                             // parameters named "_tokenConsumptionRate" given
                             // by inside scheduler.
                             if (rate == null) {
                                 rate = (Parameter)port.
-                                        getAttribute("_tokenConsumptionRate");
+                                    getAttribute("_tokenConsumptionRate");
                             }
                         }
                         // If DDF domain is inside another domain and the
                         // farReceiver is contained by an output port.
                         if (port.isOutput()) {
                             rate = (Parameter)port.
-                                    getAttribute("tokenProductionRate");
+                                getAttribute("tokenProductionRate");
                             if (rate == null) {
                                 rate = (Parameter)port.
-                                        getAttribute("_tokenProductionRate");
+                                    getAttribute("_tokenProductionRate");
                             }
                         }
                         if (rate != null) {
@@ -405,7 +405,7 @@ public class ActorRecursion extends TypedCompositeActor {
                                 // Scan the contained receivers of the remote
                                 // port to find the channel index.
                                 Receiver[][] portReceivers =
-                                        port.getReceivers();
+                                    port.getReceivers();
                                 int channelIndex = 0;
                                 foundChannelIndex:
                                 for (int m = 0; m < portReceivers.length; m++)
@@ -430,22 +430,22 @@ public class ActorRecursion extends TypedCompositeActor {
                 }
             }
             IntToken[] productionRateToken =
-                    new IntToken[outputPort.getWidthInside()];
+                new IntToken[outputPort.getWidthInside()];
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 productionRateToken[i] = new IntToken(productionRate[i]);
             }
             // Since this is output port, we look for token production rate
             // instead of token consumption rate.
             Parameter tokenProductionRate = (Parameter)
-                    outputPort.getAttribute("tokenProductionRate");
+                outputPort.getAttribute("tokenProductionRate");
             if (tokenProductionRate == null) {
                 tokenProductionRate = (Parameter)
-                        outputPort.getAttribute("_tokenProductionRate");
+                    outputPort.getAttribute("_tokenProductionRate");
             }
             if (tokenProductionRate == null) {
                 try {
                     tokenProductionRate =
-                            new Parameter(outputPort, "tokenProductionRate");
+                        new Parameter(outputPort, "tokenProductionRate");
                 } catch (NameDuplicationException ex) {
                     //should not happen.
                     throw new InternalErrorException(this, ex, null);

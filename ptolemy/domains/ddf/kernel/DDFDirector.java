@@ -303,14 +303,14 @@ public class DDFDirector extends Director {
             // The default vaule 0 means no requirement on this actor.
             flags[_requiredFiringsPerIteration] = 0;
             Variable requiredFiringsPerIteration = (Variable)((Entity)actor).
-                    getAttribute("requiredFiringsPerIteration");
+                getAttribute("requiredFiringsPerIteration");
             if (requiredFiringsPerIteration != null) {
                 Token token = requiredFiringsPerIteration.getToken();
                 if(token instanceof IntToken) {
                     int value = ((IntToken)token).intValue();
                     if (value > 0)
                         flags[_requiredFiringsPerIteration] = value;
-                        _actorsToCheckNumberOfFirings.add(actor);
+                    _actorsToCheckNumberOfFirings.add(actor);
                 } else
                     throw new IllegalActionException(this,
                             (ComponentEntity)actor, "The variable " +
@@ -377,7 +377,7 @@ public class DDFDirector extends Director {
      *   IllegalActionException.
      */
     public boolean prefire() throws IllegalActionException {
-            if (_debugging) {
+        if (_debugging) {
             _debug("\niterationCount " + _iterationCount);
         }
         super.prefire();
@@ -587,7 +587,7 @@ public class DDFDirector extends Director {
         while (ports.hasNext()) {
             ComponentPort port = (ComponentPort)ports.next();
             Iterator deepConnectedPorts =
-                    port.deepConnectedPortList().iterator();
+                port.deepConnectedPortList().iterator();
             while (deepConnectedPorts.hasNext()) {
                 Port deepConnectedPort = (Port)deepConnectedPorts.next();
                 Actor connectedActor = (Actor)deepConnectedPort.getContainer();
@@ -657,7 +657,7 @@ public class DDFDirector extends Director {
                             // Scan the contained receivers of the remote
                             // port to find out channel index.
                             Receiver[][] portReceivers =
-                                    port.getReceivers();
+                                port.getReceivers();
                             int channelIndex = 0;
                             foundChannelIndex:
                             for (int m = 0; m < portReceivers.length; m++)
@@ -737,7 +737,7 @@ public class DDFDirector extends Director {
                             return false;
                         }
                     }
-                                    return true;
+                    return true;
 
                 } else { // All the channels in the port has same
                          // tokenConsumptionRate.
@@ -798,7 +798,7 @@ public class DDFDirector extends Director {
      *   than port inside width.
      */
     private int[] _getTokenProductionRate(IOPort port)
-        throws IllegalActionException {
+            throws IllegalActionException {
         int[] rate = new int[port.getWidthInside()];
         Arrays.fill(rate, 1);
         Variable parameter = SDFUtilities.getRateVariable(port,
@@ -827,7 +827,7 @@ public class DDFDirector extends Director {
      *  an iterations parameter.
      */
     private void _init()
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         iterations = new Parameter(this, "iterations", new IntToken(0));
         iterations.setTypeEquals(BaseType.INT);
     }

@@ -83,23 +83,23 @@ public class DDFBooleanSelect extends TypedAtomicActor {
         output.setTypeAtLeast(falseInput);
 
         trueInputTokenConsumptionRate =
-                new Parameter(trueInput, "tokenConsumptionRate");
+            new Parameter(trueInput, "tokenConsumptionRate");
         trueInputTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         trueInputTokenConsumptionRate.setTypeEquals(BaseType.INT);
 
         falseInputTokenConsumptionRate =
-                new Parameter(falseInput, "tokenConsumptionRate");
+            new Parameter(falseInput, "tokenConsumptionRate");
         falseInputTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         falseInputTokenConsumptionRate.setTypeEquals(BaseType.INT);
 
         controlTokenConsumptionRate =
-                new Parameter(control, "tokenConsumptionRate");
+            new Parameter(control, "tokenConsumptionRate");
         controlTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         controlTokenConsumptionRate.setTypeEquals(BaseType.INT);
 
         // Put the control input on the bottom of the actor.
         StringAttribute controlCardinal
-                = new StringAttribute(control, "_cardinal");
+            = new StringAttribute(control, "_cardinal");
         controlCardinal.setExpression("SOUTH");
     }
 

@@ -77,13 +77,13 @@ public class DDFOrderedMerge extends OrderedMerge {
         super(container, name);
 
         inputA_tokenConsumptionRate =
-                new Parameter(inputA, "tokenConsumptionRate");
+            new Parameter(inputA, "tokenConsumptionRate");
         inputA_tokenConsumptionRate.setToken(new IntToken(1));
         inputA_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputA_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
         inputB_tokenConsumptionRate =
-                new Parameter(inputB, "tokenConsumptionRate");
+            new Parameter(inputB, "tokenConsumptionRate");
         inputB_tokenConsumptionRate.setToken(new IntToken(0));
         inputB_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputB_tokenConsumptionRate.setTypeEquals(BaseType.INT);
