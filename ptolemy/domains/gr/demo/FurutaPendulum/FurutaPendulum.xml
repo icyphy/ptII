@@ -136,12 +136,14 @@ The objective is to swing the pendulum up and then balance it.
             <doc name="tooltip">Package name for the generated classes.</doc>
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, -1, 992, 682}}">
+    </property>
     <entity name="FurutaPendulum" class="ptolemy.domains.ct.lib.DifferentialSystem">
         <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x1&quot;, &quot;x2&quot;, &quot;x3&quot;, &quot;x4&quot;}">
         </property>
         <property name="initialStates" class="ptolemy.data.expr.Parameter" value="[-3.0, 0.01, 0.0, 0.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="346.0, 77.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 75.0">
         </property>
         <property name="alfa" class="ptolemy.data.expr.Parameter" value="0.00260569">
         </property>
@@ -215,12 +217,6 @@ The objective is to swing the pendulum up and then balance it.
         <entity name="x1_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x2">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -256,12 +252,6 @@ The objective is to swing the pendulum up and then balance it.
         </entity>
         <entity name="x2_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1.0/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*((alfa*beta+pow(alfa*sin(x1), 2.0))*pow(x4,2.0)*sin(x1)*cos(x1)-pow(gamma*x2,2.0)*sin(x1)*cos(x1)+2.0*alfa*gamma*x2*x4*sin(x1)*pow(cos(x1),2.0)-gamma*cos(x1)*g*u+(alfa*beta+pow(alfa*sin(x1),2.0))*epsilon/alfa*sin(x1))">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -299,12 +289,6 @@ The objective is to swing the pendulum up and then balance it.
         <entity name="x3_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x4">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -341,12 +325,6 @@ The objective is to swing the pendulum up and then balance it.
         <entity name="x4_dot" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1/(alfa*beta+pow(alfa*sin(x1),2.0)-pow(gamma*cos(x1),2.0))*(-gamma*alfa*pow(x4,2.0)*sin(x1)*pow(cos(x2),2.0)-gamma*epsilon*sin(x1)*cos(x1)+gamma*alfa*pow(x2,2.0)*sin(x1)-2*pow(alfa,2.0)*x2*x4*sin(x1)*cos(x1)+alfa*g*u)">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -369,12 +347,6 @@ The objective is to swing the pendulum up and then balance it.
         <entity name="output_Theta" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x1">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -393,12 +365,6 @@ The objective is to swing the pendulum up and then balance it.
         </entity>
         <entity name="output_dTheta" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x2">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -419,12 +385,6 @@ The objective is to swing the pendulum up and then balance it.
         <entity name="output_Phi" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x3">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
@@ -443,12 +403,6 @@ The objective is to swing the pendulum up and then balance it.
         </entity>
         <entity name="output_dPhi" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="x4">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -555,9 +509,13 @@ The objective is to swing the pendulum up and then balance it.
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={571, 122, 508, 355}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="332.0, 146.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="335.0, 145.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -570,7 +528,7 @@ The objective is to swing the pendulum up and then balance it.
 <title>u</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="1.4"/>
+<xRange min="0.0" max="5.0"/>
 <yRange min="-0.5" max="0.5"/>
 </plot>?>
         </configure>
@@ -578,7 +536,7 @@ The objective is to swing the pendulum up and then balance it.
     <entity name="ZOH1" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 77.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 75.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -592,7 +550,7 @@ The objective is to swing the pendulum up and then balance it.
         </port>
     </entity>
     <entity name="controller" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="226.0, 267.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 285.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -613,6 +571,8 @@ The objective is to swing the pendulum up and then balance it.
         <property name="k" class="ptolemy.data.expr.Parameter" value="k">
         </property>
         <property name="n" class="ptolemy.data.expr.Parameter" value="n">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={284, 413, 819, 570}}">
         </property>
         <port name="Th" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -649,7 +609,7 @@ The objective is to swing the pendulum up and then balance it.
         </port>
         <port name="dPhi" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="52.116666666666674, 267.16655273437505">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 265.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -671,7 +631,7 @@ The objective is to swing the pendulum up and then balance it.
         </port>
         <port name="E" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 190.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 200.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -682,29 +642,9 @@ The objective is to swing the pendulum up and then balance it.
         </port>
         <port name="mode" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 235.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 240.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="ThConv" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 105.0">
-            </property>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="debug" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 285.0">
             </property>
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -920,7 +860,7 @@ The objective is to swing the pendulum up and then balance it.
             <relation name="relation25" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="145.0, 180.0">
+                <vertex name="vertex1" value="145.0, 180.0">
                 </vertex>
             </relation>
             <link port="y" relation="relation24"/>
@@ -960,19 +900,21 @@ The objective is to swing the pendulum up and then balance it.
             </property>
             <property name="n" class="ptolemy.data.expr.Parameter" value="n">
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={257, 173, 819, 570}}">
+            </property>
             <port name="u" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 265.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 260.0">
                 </property>
             </port>
             <port name="E" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 375.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 365.0">
                 </property>
             </port>
             <port name="mode" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 50.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 210.0">
                 </property>
             </port>
             <port name="Th" class="ptolemy.actor.TypedIOPort">
@@ -987,7 +929,7 @@ The objective is to swing the pendulum up and then balance it.
             </port>
             <port name="Phi" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 265.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 280.0">
                 </property>
             </port>
             <port name="dPhi" class="ptolemy.actor.TypedIOPort">
@@ -995,15 +937,10 @@ The objective is to swing the pendulum up and then balance it.
                 <property name="_location" class="ptolemy.kernel.util.Location" value="30.0, 365.0">
                 </property>
             </port>
-            <port name="debug" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 320.0">
-                </property>
-            </port>
             <entity name="stabilizeController" class="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="363.0, 190.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 200.0">
                 </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[590, 533]">
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                 </property>
@@ -1024,6 +961,8 @@ The objective is to swing the pendulum up and then balance it.
                 <property name="l3" class="ptolemy.data.expr.Parameter" value="-0.03254225945714">
                 </property>
                 <property name="l4" class="ptolemy.data.expr.Parameter" value="-0.05808270221773">
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={358, 146, 805, 649}}">
                 </property>
                 <port name="Th" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1078,6 +1017,16 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                     <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="E" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 450.0">
+                    </property>
+                </port>
+                <port name="mode" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 390.0">
                     </property>
                 </port>
                 <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
@@ -1271,7 +1220,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="Phi0" class="ptolemy.actor.lib.Const">
-                    <property name="value" class="ptolemy.data.expr.Parameter" value="-2.4921921">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="-2.4921920930936">
                     </property>
                     <doc>Create a constant sequence</doc>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 330.0">
@@ -1281,6 +1230,46 @@ The objective is to swing the pendulum up and then balance it.
                         </property>
                         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
                         </property>
+                    </property>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
+                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                </entity>
+                <entity name="Const" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="2">
+                    </property>
+                    <doc>Create a constant sequence</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 390.0">
+                    </property>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
+                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                </entity>
+                <entity name="Const2" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <doc>Create a constant sequence</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 450.0">
                     </property>
                     <port name="output" class="ptolemy.actor.TypedIOPort">
                         <property name="output"/>
@@ -1305,7 +1294,7 @@ The objective is to swing the pendulum up and then balance it.
                 <relation name="relation19" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="390.0, 315.0">
+                    <vertex name="vertex1" value="395.0, 390.0">
                     </vertex>
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -1324,11 +1313,17 @@ The objective is to swing the pendulum up and then balance it.
                 </relation>
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 </relation>
+                <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+                </relation>
                 <link port="Th" relation="relation2"/>
                 <link port="dTh" relation="relation4"/>
                 <link port="Phi" relation="relation15"/>
                 <link port="dPhi" relation="relation7"/>
                 <link port="u" relation="relation"/>
+                <link port="E" relation="relation9"/>
+                <link port="mode" relation="relation5"/>
                 <link port="MultiplyDivide.multiply" relation="relation10"/>
                 <link port="MultiplyDivide.multiply" relation="relation2"/>
                 <link port="MultiplyDivide.output" relation="relation17"/>
@@ -1356,6 +1351,10 @@ The objective is to swing the pendulum up and then balance it.
                 <link port="AddSubtract14.minus" relation="relation6"/>
                 <link port="AddSubtract14.output" relation="relation21"/>
                 <link port="Phi0.output" relation="relation6"/>
+                <link port="Const.output" relation="relation5"/>
+                <link port="Const.trigger" relation="relation3"/>
+                <link port="Const2.output" relation="relation9"/>
+                <link port="Const2.trigger" relation="relation3"/>
             </entity>
             <entity name="controllerFSM" class="ptolemy.domains.fsm.kernel.FSMActor">
                 <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
@@ -1364,10 +1363,10 @@ The objective is to swing the pendulum up and then balance it.
                 </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
-            <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"/></entity>
+            <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"></entity></entity>
           </configure>
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 50.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 115.0">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
                 </property>
@@ -1387,11 +1386,6 @@ The objective is to swing the pendulum up and then balance it.
                 <port name="dTh" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="48.0, 245.0">
-                    </property>
-                </port>
-                <port name="mode" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 83.0">
                     </property>
                 </port>
                 <port name="Phi" class="ptolemy.actor.TypedIOPort">
@@ -1425,7 +1419,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="init" class="ptolemy.domains.fsm.kernel.State">
-                    <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                    <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="dummyController">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="265.0, 61.0">
                     </property>
@@ -1447,7 +1441,7 @@ The objective is to swing the pendulum up and then balance it.
                 <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Th &gt; region2 || Th &lt; -region2">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="mode=0">
+                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                     </property>
                     <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                     </property>
@@ -1460,6 +1454,8 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                    <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
                 <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
@@ -1479,11 +1475,13 @@ The objective is to swing the pendulum up and then balance it.
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
+                    <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
                 </relation>
                 <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="Th&lt;region1 &amp;&amp; Th &gt;-region1">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="mode =1">
+                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                     </property>
                     <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                     </property>
@@ -1497,11 +1495,13 @@ The objective is to swing the pendulum up and then balance it.
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
+                    <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
                 </relation>
                 <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                     <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="dPhi &lt; maxSpeed &amp;&amp; dPhi &gt; -maxSpeed">
                     </property>
-                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="mode = 2">
+                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                     </property>
                     <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="stabilizeController.Phi0.value = Phi">
                     </property>
@@ -1514,6 +1514,8 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                    </property>
+                    <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                     </property>
                 </relation>
                 <link port="swing-up.incomingPort" relation="relation3"/>
@@ -1528,7 +1530,7 @@ The objective is to swing the pendulum up and then balance it.
             <entity name="swingUpController" class="ptolemy.actor.TypedCompositeActor">
                 <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 365.0">
                 </property>
-                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[609, 514]">
                 </property>
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
                 </property>
@@ -1547,6 +1549,8 @@ The objective is to swing the pendulum up and then balance it.
                 <property name="k" class="ptolemy.data.expr.Parameter" value="k">
                 </property>
                 <property name="w0" class="ptolemy.data.expr.Parameter" value="w0">
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={281, 179, 824, 630}}">
                 </property>
                 <port name="Th" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1590,6 +1594,11 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
                     <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                </port>
+                <port name="mode" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="570.0, 365.0">
                     </property>
                 </port>
                 <entity name="energyCalculation" class="ptolemy.actor.lib.Expression">
@@ -1814,12 +1823,32 @@ The objective is to swing the pendulum up and then balance it.
                         <property name="output"/>
                     </port>
                 </entity>
+                <entity name="Const" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <doc>Create a constant sequence</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 365.0">
+                    </property>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
+                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                </entity>
                 <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="50.0, 120.0">
+                    <vertex name="vertex1" value="50.0, 120.0">
                     </vertex>
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="65.0, 210.0">
+                    <vertex name="vertex1" value="65.0, 210.0">
                     </vertex>
                 </relation>
                 <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -1829,21 +1858,21 @@ The objective is to swing the pendulum up and then balance it.
                 <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="239.0, 322.0">
+                    <vertex name="vertex1" value="239.0, 322.0">
                     </vertex>
                 </relation>
                 <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="205.0, 300.0">
+                    <vertex name="vertex1" value="205.0, 300.0">
                     </vertex>
                 </relation>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="295.0, 105.0">
+                    <vertex name="vertex1" value="295.0, 105.0">
                     </vertex>
                 </relation>
                 <relation name="relation13" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="465.0, 365.0">
+                    <vertex name="vertex1" value="465.0, 365.0">
                     </vertex>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -1852,10 +1881,13 @@ The objective is to swing the pendulum up and then balance it.
                 </relation>
                 <relation name="relation11" class="ptolemy.actor.TypedIORelation">
                 </relation>
+                <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+                </relation>
                 <link port="Th" relation="relation"/>
                 <link port="dTh" relation="relation2"/>
                 <link port="u" relation="relation7"/>
                 <link port="E" relation="relation10"/>
+                <link port="mode" relation="relation12"/>
                 <link port="energyCalculation.output" relation="relation10"/>
                 <link port="energyCalculation.Th" relation="relation"/>
                 <link port="energyCalculation.dTh" relation="relation2"/>
@@ -1882,9 +1914,11 @@ The objective is to swing the pendulum up and then balance it.
                 <link port="Scale.output" relation="relation7"/>
                 <link port="k.input" relation="relation10"/>
                 <link port="k.output" relation="relation11"/>
+                <link port="Const.output" relation="relation12"/>
+                <link port="Const.trigger" relation="relation14"/>
             </entity>
             <entity name="catchController" class="ptolemy.actor.TypedCompositeActor">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="357.0, 275.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 270.0">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
                 </property>
@@ -1943,7 +1977,7 @@ The objective is to swing the pendulum up and then balance it.
                 </port>
                 <port name="dPhi" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="46.0, 400.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 405.0">
                     </property>
                     <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
@@ -1963,13 +1997,14 @@ The objective is to swing the pendulum up and then balance it.
                     <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </port>
-                <port name="debug" class="ptolemy.actor.TypedIOPort">
+                <port name="E" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="498.0, 456.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="500.0, 475.0">
                     </property>
-                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-                    </property>
-                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                </port>
+                <port name="mode" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 415.0">
                     </property>
                 </port>
                 <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
@@ -2018,7 +2053,7 @@ The objective is to swing the pendulum up and then balance it.
                     </port>
                 </entity>
                 <entity name="MultiplyDivide4" class="ptolemy.actor.lib.MultiplyDivide">
-                    <property name="_location" class="ptolemy.kernel.util.Location" value="313.0, 407.0">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 415.0">
                     </property>
                     <port name="multiply" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -2182,6 +2217,46 @@ The objective is to swing the pendulum up and then balance it.
                         <property name="multiport"/>
                     </port>
                 </entity>
+                <entity name="Const" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <doc>Create a constant sequence</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 415.0">
+                    </property>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
+                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                </entity>
+                <entity name="Const2" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <doc>Create a constant sequence</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 475.0">
+                    </property>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
+                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                </entity>
                 <relation name="relation10" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation12" class="ptolemy.actor.TypedIORelation">
@@ -2197,7 +2272,7 @@ The objective is to swing the pendulum up and then balance it.
                 <relation name="relation19" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-                    <vertex name="vertex1" class="ptolemy.moml.Vertex" value="389.0, 372.0">
+                    <vertex name="vertex1" value="395.0, 415.0">
                     </vertex>
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -2216,12 +2291,17 @@ The objective is to swing the pendulum up and then balance it.
                 </relation>
                 <relation name="relation27" class="ptolemy.actor.TypedIORelation">
                 </relation>
+                <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+                </relation>
                 <link port="Th" relation="relation2"/>
                 <link port="dTh" relation="relation4"/>
                 <link port="Phi" relation="relation15"/>
                 <link port="dPhi" relation="relation7"/>
                 <link port="u" relation="relation"/>
-                <link port="debug" relation="relation3"/>
+                <link port="E" relation="relation6"/>
+                <link port="mode" relation="relation5"/>
                 <link port="MultiplyDivide.multiply" relation="relation10"/>
                 <link port="MultiplyDivide.multiply" relation="relation2"/>
                 <link port="MultiplyDivide.output" relation="relation17"/>
@@ -2249,61 +2329,191 @@ The objective is to swing the pendulum up and then balance it.
                 <link port="AddSubtract14.minus" relation="relation27"/>
                 <link port="AddSubtract14.output" relation="relation21"/>
                 <link port="Phi0.output" relation="relation27"/>
+                <link port="Const.output" relation="relation5"/>
+                <link port="Const.trigger" relation="relation3"/>
+                <link port="Const2.output" relation="relation6"/>
+                <link port="Const2.trigger" relation="relation3"/>
+            </entity>
+            <entity name="dummyController" class="ptolemy.actor.TypedCompositeActor">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 440.0">
+                </property>
+                <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                    </property>
+                    <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 45.0">
+                    </property>
+                </property>
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={287, 250, 815, 516}}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+                <port name="dPhi" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 170.0">
+                    </property>
+                </port>
+                <port name="u" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 170.0">
+                    </property>
+                </port>
+                <port name="E" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 240.0">
+                    </property>
+                </port>
+                <port name="mode" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 320.0">
+                    </property>
+                </port>
+                <entity name="Const" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
+                    <doc>Create a constant sequence</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 170.0">
+                    </property>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
+                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                </entity>
+                <entity name="Const2" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="-2.0">
+                    </property>
+                    <doc>Create a constant sequence</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 240.0">
+                    </property>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
+                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                </entity>
+                <entity name="Const3" class="ptolemy.actor.lib.Const">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <doc>Create a constant sequence</doc>
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                        </property>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                        </property>
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 320.0">
+                    </property>
+                    <port name="output" class="ptolemy.actor.TypedIOPort">
+                        <property name="output"/>
+                    </port>
+                    <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                        <property name="input"/>
+                        <property name="multiport"/>
+                    </port>
+                </entity>
+                <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                    <vertex name="vertex1" value="155.0, 170.0">
+                    </vertex>
+                </relation>
+                <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                </relation>
+                <link port="dPhi" relation="relation2"/>
+                <link port="u" relation="relation"/>
+                <link port="E" relation="relation3"/>
+                <link port="mode" relation="relation4"/>
+                <link port="Const.output" relation="relation"/>
+                <link port="Const.trigger" relation="relation2"/>
+                <link port="Const2.output" relation="relation3"/>
+                <link port="Const2.trigger" relation="relation2"/>
+                <link port="Const3.output" relation="relation4"/>
+                <link port="Const3.trigger" relation="relation2"/>
             </entity>
             <relation name="Copy1:Copy1:relation2" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="460.0, 265.0">
+                <vertex name="vertex1" value="465.0, 260.0">
                 </vertex>
             </relation>
             <relation name="Copy1:relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="170.0, 190.0">
+                <vertex name="vertex1" value="295.0, 190.0">
                 </vertex>
             </relation>
             <relation name="Copy1:Copy1:relation8" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="154.0, 95.0">
+                <vertex name="vertex1" value="245.0, 95.0">
                 </vertex>
             </relation>
             <relation name="Copy1:Copy1:relation7" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="135.0, 365.0">
+                <vertex name="vertex1" value="320.0, 290.0">
                 </vertex>
             </relation>
             <relation name="Copy1:Copy1:relation10" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="191.0, 265.0">
+                <vertex name="vertex1" value="275.0, 280.0">
+                </vertex>
+            </relation>
+            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="440.0, 210.0">
                 </vertex>
             </relation>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="455.0, 365.0">
+                </vertex>
             </relation>
             <link port="u" relation="Copy1:Copy1:relation2"/>
             <link port="E" relation="relation"/>
-            <link port="mode" relation="relation3"/>
+            <link port="mode" relation="relation2"/>
             <link port="Th" relation="Copy1:Copy1:relation8"/>
             <link port="dTh" relation="Copy1:relation"/>
             <link port="Phi" relation="Copy1:Copy1:relation10"/>
             <link port="dPhi" relation="Copy1:Copy1:relation7"/>
-            <link port="debug" relation="relation4"/>
             <link port="stabilizeController.Th" relation="Copy1:Copy1:relation8"/>
             <link port="stabilizeController.dTh" relation="Copy1:relation"/>
             <link port="stabilizeController.Phi" relation="Copy1:Copy1:relation10"/>
             <link port="stabilizeController.dPhi" relation="Copy1:Copy1:relation7"/>
             <link port="stabilizeController.u" relation="Copy1:Copy1:relation2"/>
+            <link port="stabilizeController.E" relation="relation"/>
+            <link port="stabilizeController.mode" relation="relation2"/>
             <link port="controllerFSM.Th" relation="Copy1:Copy1:relation8"/>
             <link port="controllerFSM.dTh" relation="Copy1:relation"/>
-            <link port="controllerFSM.mode" relation="relation3"/>
             <link port="controllerFSM.Phi" relation="Copy1:Copy1:relation10"/>
             <link port="controllerFSM.dPhi" relation="Copy1:Copy1:relation7"/>
             <link port="swingUpController.Th" relation="Copy1:Copy1:relation8"/>
             <link port="swingUpController.dTh" relation="Copy1:relation"/>
             <link port="swingUpController.u" relation="Copy1:Copy1:relation2"/>
             <link port="swingUpController.E" relation="relation"/>
+            <link port="swingUpController.mode" relation="relation2"/>
             <link port="catchController.Th" relation="Copy1:Copy1:relation8"/>
             <link port="catchController.dTh" relation="Copy1:relation"/>
             <link port="catchController.Phi" relation="Copy1:Copy1:relation10"/>
             <link port="catchController.dPhi" relation="Copy1:Copy1:relation7"/>
             <link port="catchController.u" relation="Copy1:Copy1:relation2"/>
-            <link port="catchController.debug" relation="relation4"/>
+            <link port="catchController.E" relation="relation"/>
+            <link port="catchController.mode" relation="relation2"/>
+            <link port="dummyController.dPhi" relation="Copy1:Copy1:relation7"/>
+            <link port="dummyController.u" relation="Copy1:Copy1:relation2"/>
+            <link port="dummyController.E" relation="relation"/>
+            <link port="dummyController.mode" relation="relation2"/>
         </entity>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -2312,7 +2522,7 @@ The objective is to swing the pendulum up and then balance it.
         <relation name="relation17" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="300.0, 105.0">
+            <vertex name="vertex1" value="305.0, 105.0">
             </vertex>
         </relation>
         <relation name="relation20" class="ptolemy.actor.TypedIORelation">
@@ -2320,8 +2530,6 @@ The objective is to swing the pendulum up and then balance it.
         <relation name="relation21" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -2332,8 +2540,6 @@ The objective is to swing the pendulum up and then balance it.
         <link port="u" relation="relation10"/>
         <link port="E" relation="relation17"/>
         <link port="mode" relation="relation14"/>
-        <link port="ThConv" relation="relation18"/>
-        <link port="debug" relation="relation3"/>
         <link port="angleConversion.y" relation="relation18"/>
         <link port="angleConversion.u" relation="relation2"/>
         <link port="controller.u" relation="relation10"/>
@@ -2343,12 +2549,11 @@ The objective is to swing the pendulum up and then balance it.
         <link port="controller.dTh" relation="relation"/>
         <link port="controller.Phi" relation="relation20"/>
         <link port="controller.dPhi" relation="relation21"/>
-        <link port="controller.debug" relation="relation3"/>
     </entity>
     <entity name="ZOH2" class="ptolemy.domains.ct.lib.ZeroOrderHold">
         <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="-2.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 271.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 275.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2364,7 +2569,7 @@ The objective is to swing the pendulum up and then balance it.
     <entity name="Sampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="h">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="114.0, 268.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 285.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2400,9 +2605,13 @@ The objective is to swing the pendulum up and then balance it.
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={371, 332, 508, 355}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="592.0, 299.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="630.0, 275.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2415,7 +2624,7 @@ The objective is to swing the pendulum up and then balance it.
 <title>E+mode</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="1.4"/>
+<xRange min="0.0" max="5.0"/>
 <yRange min="-2.0" max="2.0"/>
 </plot>?>
         </configure>
@@ -2457,7 +2666,7 @@ The objective is to swing the pendulum up and then balance it.
         </port>
     </entity>
     <entity name="3D Viewer" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="673.0, 190.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="690.0, 195.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -2807,11 +3016,11 @@ The objective is to swing the pendulum up and then balance it.
         <relation name="relation13" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="101.0, 138.0">
+            <vertex name="vertex1" value="101.0, 138.0">
             </vertex>
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="182.0, 358.0">
+            <vertex name="vertex1" value="182.0, 358.0">
             </vertex>
         </relation>
         <link port="theta" relation="relation3"/>
@@ -2846,23 +3055,23 @@ The objective is to swing the pendulum up and then balance it.
         <link port="Translate4.sceneGraphOut" relation="relation6"/>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="442.0, 197.0">
+        <vertex name="vertex1" value="442.0, 197.0">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="431.0, 213.0">
+        <vertex name="vertex1" value="431.0, 213.0">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="420.0, 227.0">
+        <vertex name="vertex1" value="420.0, 227.0">
         </vertex>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="452.0, 181.0">
+        <vertex name="vertex1" value="452.0, 181.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="266.0, 82.0">
+        <vertex name="vertex1" value="270.0, 75.0">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
