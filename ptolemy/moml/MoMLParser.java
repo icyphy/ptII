@@ -1798,29 +1798,25 @@ public class MoMLParser extends HandlerBase {
                 // cause of the problem, and we should always provide the user
                 // with the cause of the original error in the unlikely event
                 // that our error correction fails
-                StringBuffer errorMessage = new StringBuffer();
                 try {
                     newClass = Class.forName(className, true, _classLoader);
                 } catch (Exception ex) {
                     // NOTE: Java sometimes throws ClassNotFoundException
                     // and sometimes NullPointerException when the class
                     // does not exist.  Hence the broad catch here.
-                    errorMessage.append("\n-- "
-                            + className + ": " + ex.getMessage() + "\n");
-
 		    try {
 			reference = _attemptToFindMoMLClass(className, source);
 		    } catch (Exception ex2) {
 			throw new Exception(
-                                "-- "
-                                + errorMessage.toString()
-                                + className + ": "
-                                + ": not found as a Java class.\n"
-                                + ex2.getMessage());
+                                "Cannot find class: "
+                                + className);
 		    }
                 } catch (Error error) {
                     // Java might throw a ClassFormatError, but
                     // we usually get and XmlException
+                    // NOTE: The following error message is for
+                    // the programmer, not for the user. EAL
+                    StringBuffer errorMessage = new StringBuffer();
                     errorMessage.append("\n-- "
                             + className + ": Invalid Java Class? "
                             + error.getMessage()
