@@ -1,27 +1,53 @@
+/* A class that writes JHDL files.
+
+ Copyright (c) 2001 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
+*/
+
 package ptolemy.copernicus.jhdl;
 
 import java.io.*;
 import java.util.*;
 import soot.util.*;
 import soot.toolkits.graph.*;
+/**
 
+@author Steve Neuendorffer and Ben Warlick
+*/
 public class CircuitCreator {
 
-    private static String _getWireName(Object node) {
-        return "wire" + node.toString();
-    }
-
     public static void create(HashMutableDirectedGraph operatorGraph, 
-            String fileName) throws IOException {
-        //     int[] edge_array = {0,1,2,1,1,2,1,3};
-        // String[] node_array = {"const1","add","reg","buf"};
-        
-        // int num_wires = edge_array.length / 2;
-        
+            String outDir, String packageName, 
+            String className) throws IOException {
+        String fileName = outDir + "/" + className + ".java";
+        System.out.println("Creating JHDL file: " + fileName);
         File outputFile = new File(fileName);
         FileWriter writer = new FileWriter(outputFile);
 
-        write_header(writer);
+        write_header(writer, packageName, className);
         
         for(Iterator nodes = operatorGraph.getNodes().iterator();
             nodes.hasNext();) {
@@ -33,17 +59,17 @@ public class CircuitCreator {
              nodes.hasNext();) {
             Object node = nodes.next();
             
-            if (node.toString().equals("delay")) {
+            if (node.toString().startsWith("delay")) {
                 Object pred = operatorGraph.getPredsOf(node).iterator().next();
                 write_reg(writer, pred, node);
-            } else if(node.toString().equals("add")) {
+            } else if(node.toString().startsWith("add")) {
                 Iterator preds = operatorGraph.getPredsOf(node).iterator();
                 Object in1 = preds.next();
                 Object in2 = preds.next();
 
                 write_add(writer, in1, in2, node);
                 
-            } else if(node.toString().equals("buf")) {
+            } else if(node.toString().startsWith("buf")) {
                 Object pred = operatorGraph.getPredsOf(node).iterator().next();
                 write_buf(writer, pred);
             } else {
@@ -85,8 +111,10 @@ public class CircuitCreator {
                 ", LAD_Bus_Data_Out);\r\n");
     }
 
-    static void write_header(FileWriter writer)
+    static void write_header(FileWriter writer,
+            String packageName, String className)
              throws IOException {
+        writer.write("package " + packageName + ";\r\n");
         writer.write("import byucc.jhdl.base.*;\r\n");
         writer.write("import byucc.jhdl.Logic.*;\r\n");
         writer.write("import byucc.jhdl.modgen.*;\r\n");
@@ -95,7 +123,7 @@ public class CircuitCreator {
         writer.write("import byucc.jhdl.platforms.util.*;\r\n");
         writer.write("import byucc.jhdl.modgen.arrayMult.*;\r\n");
         
-        writer.write("public class outputPE extends LogicCore {\r\n");
+        writer.write("public class " + className + " extends LogicCore {\r\n");
         
         writer.write("  public static CellInterface cell_interface[] = {\r\n");
         writer.write("    clk(\"K_Clk\"),\r\n");
@@ -104,7 +132,7 @@ public class CircuitCreator {
         
         writer.write("  };\r\n");
         
-        writer.write("  public outputPE(wc_pe parent){\r\n");
+        writer.write("  public " + className + "(wc_pe parent){\r\n");
         writer.write("    super(parent);\r\n");
         
         writer.write("    Wire K_Clk=connect(\"K_Clk\",wa(\"K_Clk\"));\r\n");
@@ -125,5 +153,10 @@ public class CircuitCreator {
         writer.write("  }\r\n");
         
         writer.write("}\r\n");
+    }
+
+
+    private static String _getWireName(Object node) {
+        return "wire" + node.toString();
     }
 }

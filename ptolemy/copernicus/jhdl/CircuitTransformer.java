@@ -70,7 +70,7 @@ import ptolemy.copernicus.java.ActorTransformer;
 
 
 /**
-
+@author Steve Neuendorffer and Ben Warlick
 */
 public class CircuitTransformer extends SceneTransformer {
     /** Construct a new transformer
@@ -111,7 +111,8 @@ public class CircuitTransformer extends SceneTransformer {
             SootClass entityClass = 
                         Scene.v().loadClassAndSupport(className);
 
-            CircuitAnalysis analysis = new CircuitAnalysis(entityClass);
+            CircuitAnalysis analysis =
+                new CircuitAnalysis(entity, entityClass);
             HashMutableDirectedGraph operatorGraph =
                 analysis.getOperatorGraph();
             
@@ -188,12 +189,14 @@ public class CircuitTransformer extends SceneTransformer {
             combinedGraph.removeNode(node);
         }
         
-        
         // Write as a circuit.
         try {
-            CircuitCreator.create(combinedGraph, "JHDL" +
-                    SootUtilities.sanitizeName(
-                            _model.getName()) + ".java");
+            String targetPackage = Options.getString(options, "targetPackage");
+            String outDir = Options.getString(options, "outDir");
+            CircuitCreator.create(combinedGraph, 
+                    outDir, targetPackage, 
+                    "JHDL" + SootUtilities.sanitizeName(
+                            _model.getName()));
         } catch (Exception ex) {
             ex.printStackTrace();
         }

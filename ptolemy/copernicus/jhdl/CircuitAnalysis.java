@@ -74,7 +74,7 @@ import ptolemy.copernicus.java.*;
 public class CircuitAnalysis {
     /** Construct a new analysis
      */
-    public CircuitAnalysis(SootClass theClass) {
+    public CircuitAnalysis(Entity entity, SootClass theClass) {
         HashMutableDirectedGraph graph = new HashMutableDirectedGraph() {
             public String toString() {
                 String string = "nodes = " + getNodes();
@@ -90,6 +90,25 @@ public class CircuitAnalysis {
                 return string;
             }
         };
+        _graph = graph;
+       
+        System.out.println("className = " + entity.getClass().getName());
+        // Handle SampleDelay specially.
+        if(entity.getClass().getName().equals(
+                "ptolemy.domains.sdf.lib.SampleDelay")) {
+            Port input = entity.getPort("input");
+            Port output = entity.getPort("output");
+            String delay = "delay" + count++;
+            graph.addNode(input);
+            graph.addNode(output);
+            graph.addNode(delay);
+            graph.addEdge(input, delay);
+            graph.addEdge(delay, output);
+            return;
+        }
+
+        // Analyze the bodies of the appropriate methods for things that
+        // are not sample delays.
         Set requiredNodeSet = new HashSet();
 
         if(theClass.declaresMethodByName("prefire")) {
@@ -125,6 +144,8 @@ public class CircuitAnalysis {
             }
         }
 
+        System.out.println("graph = " + graph);
+
         // Go though and eliminate unnecessary nodes.  These are nodes
         // that are not the names of output ports and have no targets,
         // or locals
@@ -133,7 +154,8 @@ public class CircuitAnalysis {
         for(Iterator nodes = graph.getNodes().iterator();
             nodes.hasNext();) {
             Object node = nodes.next();
-            if(node instanceof Local || !requiredNodeSet.contains(node)) {
+            if(node instanceof Local || node instanceof SootField ||
+                    !requiredNodeSet.contains(node)) {
                 // Then remove the node.
                 for(Iterator preds = graph.getPredsOf(node).iterator();
                     preds.hasNext();) {
@@ -147,9 +169,7 @@ public class CircuitAnalysis {
                 removeSet.add(node);
             }
         }
-        
-        //System.out.println("graph = " + graph);
-
+       
         // Remove all the nodes that were not required above.
         for(Iterator nodes = removeSet.iterator();
             nodes.hasNext();) {
@@ -170,7 +190,6 @@ public class CircuitAnalysis {
         }
 
         System.out.println("filteredGraph = " + graph);
-        _graph = graph;
     }
 
     public HashMutableDirectedGraph getOperatorGraph() {
@@ -190,9 +209,18 @@ public class CircuitAnalysis {
             Stmt stmt = (Stmt)units.next();
             if(stmt instanceof AssignStmt) {
                 Object leftOp = ((AssignStmt)stmt).getLeftOp();
+                if(leftOp instanceof FieldRef) {
+                    SootField field = ((FieldRef)leftOp).getField();
+                    // Then treat as a local.
+                    if(!graph.containsNode(field)) {
+                        graph.addNode(field);
+                    }
+                    leftOp = field;
+                }
+
                 if(graph.containsNode(leftOp)) {
                     // Insert a delay.
-                    Object delayNode = new String("delay");
+                    Object delayNode = new String("delay" + count++);
                     graph.addNode(delayNode);
                     graph.addEdge(delayNode, leftOp);
                     leftOp = delayNode;
@@ -228,7 +256,7 @@ public class CircuitAnalysis {
                 } else if(rightOp instanceof InvokeExpr) {
                     InvokeExpr invokeExpr = (InvokeExpr)rightOp;
                     SootMethod invokedMethod = invokeExpr.getMethod();
-                    String opName = invokedMethod.getName();
+                    String opName = invokedMethod.getName() + count++;
                     if(rightOp instanceof VirtualInvokeExpr) {
                         Value base = ((VirtualInvokeExpr)invokeExpr).getBase();
                         if(invokedMethod.getName().equals("get")) {
@@ -243,9 +271,7 @@ public class CircuitAnalysis {
                             graph.addEdge(port, leftOp);
                             continue;
                         } else {
-                            if(!graph.containsNode(opName)) {
-                                graph.addNode(opName);
-                            }
+                            graph.addNode(opName);
                             graph.addEdge(base, opName);
                         }
                     }
@@ -289,6 +315,7 @@ public class CircuitAnalysis {
     }
     private HashMutableDirectedGraph _graph;
     private Set _requiredNodeSet;
+    private int count = 0;
 }
 
 
