@@ -563,10 +563,6 @@ public class GiottoDirector extends StaticSchedulingDirector
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
-        // This method does not call the method defined in the super class,
-        // because this method provides complete new information.
-        // Default is a NonStrictFSMDirector, while FSMDirector is also
-        // in the array.
         String[] defaultSuggestions = new String[2];
         defaultSuggestions[0] = 
             "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";

@@ -433,10 +433,6 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
-        // This method does not call the method defined in the super class,
-        // because this method provides complete new information.
-        // Default is a NonStrictFSMDirector, while FSMDirector is also
-        // in the array.
         String[] defaultSuggestions = new String[3];
         defaultSuggestions[2] = "ptolemy.domains.hdf.kernel.HDFFSMDirector";
         defaultSuggestions[1] = 
