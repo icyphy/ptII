@@ -1,4 +1,5 @@
-/* An actor that assembles multiple inputs to a DoubleMatrixToken.
+/* An actor that reads a token from each input channel to assemble a
+ * DoubleMatrixToken.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +25,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (celaine@eecs.berkeley.edu)
+@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -43,24 +44,25 @@ import ptolemy.actor.lib.Transformer;
 //////////////////////////////////////////////////////////////////////////
 //// VectorAssembler
 /**
-On each firing, read exactly one token from each input port and assemble
-them into a DoubleMatrixToken with one column. If there is no input token
-at any channel of the input port, then the prefire() will return false.
-Note that the elements in the vector are not copied.
+On each firing, read exactly one token from each channel of the
+<i>input</i> port and assemble the tokens into a DoubleMatrixToken
+with one column.  The DoubleMatrixToken is sent to the <i>output</i>
+port.  If there is no input token at any channel of the <i>input</i> port,
+then prefire() will return false.  Note that the elements in the
+vector are not copied.
 
-<p>For sequential domains like SDF, the combination of the
-a Commutator and sdf.actor.lib.DoubleToDoubleMatrix is equivalent
-to this actor.  However, that combination will not work in CT,
-so we need this actor.
+<p>For sequential domains like SDF, the combination of a Commutator
+and domains.sdf.lib.DoubleToMatrix is equivalent to this actor.
+However, that combination will not work in CT, so we need this actor.
 
-@author Jie Liu
+@author Jie Liu, Elaine Cheong
 @version $Id$
 @see VectorDisassembler
 */
 
 public class VectorAssembler extends Transformer {
 
-    /** Construct a VectorAssembler with the given container and name.
+    /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If this actor cannot be contained
@@ -76,15 +78,19 @@ public class VectorAssembler extends Transformer {
         output.setTypeEquals(BaseType.DOUBLE_MATRIX);
         output.setMultiport(false);
 
-        _addIcon();
+	_attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-5\" y=\"-15\" width=\"10\" "
+                + "height=\"30\" style=\"fill:blue\"/>\n"
+                + "</svg>\n");
     }
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read one token from each input port, assemble them into a
-     *  DoubleMatrixToken, and send the token to the output.
+    /** Read one token from each channel of the <i>input</i> port,
+     *  assemble those tokens into a DoubleMatrixToken, and send the
+     *  result to the output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -101,9 +107,9 @@ public class VectorAssembler extends Transformer {
         output.send(0, result);
     }
 
-    /** Return true if all input ports have tokens, false if some input
-     *  ports do not have a token.
-     *  @return True if all input ports have tokens.
+    /** Return true if all channels of the <i>input</i> port have
+     *  tokens, false if any channel does not have a token.
+     *  @return True if all channels of the <i>input</i> port have tokens.
      *  @exception IllegalActionException If the hasToken() call to the
      *   input port throws it.
      *  @see ptolemy.actor.IOPort#hasToken(int)
@@ -115,16 +121,6 @@ public class VectorAssembler extends Transformer {
 	    }
         }
 	return true;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    private void _addIcon() {
-	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-5\" y=\"-15\" width=\"10\" " +
-                "height=\"30\" style=\"fill:blue\"/>\n" +
-                "</svg>\n");
     }
 }
 

@@ -1,4 +1,4 @@
-/* An actor that disassembles a DoubleMatrixToken to a multi-output.
+/* An actor that disassembles a DoubleMatrixToken to a multiport output.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (celaine@eecs.berkeley.edu)
+@AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -46,26 +46,27 @@ import ptolemy.actor.lib.Transformer;
 //// VectorDisassembler
 /**
 On each firing, read one column vector (i.e. a DoubleMatrixToken with
-one column) from the input port and send out individual DoubleTokens
-to the output port.
-If the width of the output port (say, <i>n</i>) is less than the number
-of rows (say <i>m</i>) in the input token, then the first <i>n<i>
-elements in the vector will be sent, and the rest is discarded.
-If <i>n</i> is greater than <i>m<i>, then the last <i>n-m</i> channels
-in the output port will never send tokens out.
+one column) from the <i>input</i> port and send out individual
+DoubleTokens to each channel of the <i>output</i> port.  If the width
+of the <i>output</i> port (say, <i>n</i>) is less than the number of
+rows (say, <i>m</i>) in the input token, then the first <i>n<i>
+elements in the vector will be sent, and the remaining tokens are
+discarded.  If <i>n</i> is greater than <i>m<i>, then the last
+<i>n-m</i> channels of the output port will never send tokens out.
+This class throws an exception if the input is not a column vector.
 
-<p>For sequential domains like SDF, the combination of the
-sdf.actor.lib.DoubleMatrixToDouble and a Distributor is equivalent
-to this actor.  However, that combination will not work in CT,
-so we need this actor.
+<p>For sequential domains like SDF, the combination of
+domains.sdf.lib.MatrixToDouble and a Distributor is equivalent to this
+actor.  However, that combination will not work in CT, so we need this
+actor.
 
-@author Jie Liu
+@author Jie Liu, Elaine Cheong
 @version $Id$
 @see VectorAssembler
 */
 public class VectorDisassembler extends Transformer {
 
-    /** Construct a VectorDisassembler with the given container and name.
+    /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If this actor cannot be contained
@@ -82,7 +83,10 @@ public class VectorDisassembler extends Transformer {
         output.setTypeEquals(BaseType.DOUBLE);
         output.setMultiport(true);
 
-        _addIcon();
+        _attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-5\" y=\"-15\" width=\"10\" "
+                + "height=\"30\" style=\"fill:blue\"/>\n"
+                + "</svg>\n");
     }
 
 
@@ -90,12 +94,14 @@ public class VectorDisassembler extends Transformer {
     ////                         public methods                    ////
 
     /** If there is a token at the input, read one column vector
-     *  (i.e. a DoubleMatrixToken with one column)
-     *  from the input port and send its first <i>n</i> elements
-     *  to the output port, one in each channel, where <i>n</i> is the
-     *  width of the output port. Otherwise, do nothing.
-     *  Note: The output tokens are copies of the corresponding elements
-     *  in the input token.
+     *  (i.e. a DoubleMatrixToken with one column) from the input port,
+     *  and for each channel i of the output port, send send the ith
+     *  element of this column vector to this channel.  Otherwise, do
+     *  nothing.
+     *
+     *  Note: The output tokens are copies of the corresponding
+     *  elements in the input token.
+     *
      *  @exception IllegalActionException If there is no director, or
      *  the input token has more than one column.
      */
@@ -109,21 +115,12 @@ public class VectorDisassembler extends Transformer {
                         + "be a DoubleMatrixToken with one column.");
             }
 
-            for (int i = 0; i < Math.min(vector.getRowCount(),
-                    output.getWidth()); i++) {
+            int min = Math.min(vector.getRowCount(), output.getWidth());
+
+            for (int i = 0; i < min; i++) {
                 output.send(i, vector.getElementAsToken(i, 0));
             }
 	}
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    private void _addIcon() {
-	_attachText("_iconDescription", "<svg>\n" +
-                "<rect x=\"-5\" y=\"-15\" width=\"10\" " +
-                "height=\"30\" style=\"fill:blue\"/>\n" +
-                "</svg>\n");
     }
 }
 
