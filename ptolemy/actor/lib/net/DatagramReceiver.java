@@ -383,7 +383,7 @@ public class DatagramReceiver extends TypedAtomicActor {
         // Cache parameters into private variables:
 
 	// This is a 'ChoiceStyle' i.e. drop-menu-choose parameter.
-        // See also ../sources.xml for other half of this mechanism.
+        // See also ../io.xml for other half of this mechanism.
         if (attribute == encoding) {
 	    //System.out.println("---" + encoding.getExpression() + "---");
 	    //System.out.println("--" + _encoding + "--");
@@ -458,6 +458,8 @@ public class DatagramReceiver extends TypedAtomicActor {
         } else if (attribute == defaultOutput) {
              synchronized(_syncDefaultOutput) {
                 _defaultOutputToken = defaultOutput.getToken();
+		// _defaultOutputToken==null when eser enters blank parameter!
+		if (false) System.out.println(_defaultOutputToken==null);
                 // This private variable is named _defaultOutputToken 
                 // instead of _defaultOutput because it is being 
                 // kept in token form (allowing any type).
@@ -743,17 +745,25 @@ public class DatagramReceiver extends TypedAtomicActor {
             //  of outputting the default, provided 
             //  there is a previous output to repeat.)
 
-            // Ensure that any change to the default output parameter 
-            // occurs atomically with respect to its use here.
-            if (_debugging) _debug(
-                    "Broadcast default output");
-	    // Use this actor's IP address and socket number as the 
-	    // default return address and socket number values.
-	    returnAddress.broadcast(new StringToken("localhost"));
-	    returnSocketNumber.broadcast(new IntToken(_socket.getLocalPort()));
-            synchronized(_syncDefaultOutput) {
-                output.broadcast(_defaultOutputToken);
-            }
+	    // _defaultOutputToken==null when eser enters blank parameter!
+	    // Thus this cool and useful test works!
+	    if (_defaultOutputToken == null) {
+		if (_debugging) _debug(
+                        "DO NOT Broadcast ANY output (blank default)");
+	    } else {
+		if (_debugging) _debug(
+                        "Broadcast default outputs");
+		// Use this actor's IP address and socket number as the 
+		// default return address and socket number values.
+		returnAddress.broadcast(new StringToken("localhost"));
+		returnSocketNumber.broadcast(
+                        new IntToken(_socket.getLocalPort()));
+		synchronized(_syncDefaultOutput) {
+		    // Ensure that any change to the default output parameter 
+		    // occurs atomically with respect to its use here.
+		    output.broadcast(_defaultOutputToken);
+		}
+	    }
         }
 
     }
