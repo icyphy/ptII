@@ -215,6 +215,8 @@ public class MoMLParser extends HandlerBase {
      *  Note that this method is static.  The specified MoMLFilter
      *  will filter all MoML for any instances of this class.
      *  @param filter  The MoMLFilter to add to the list of MoMLFilters.
+     *  @see #getMoMLFilters()
+     *  @see #setMoMLFilters(List filterList)
      */
     public void addMoMLFilter(MoMLFilter filter) {
 	if (_filterList == null) {
@@ -317,7 +319,7 @@ public class MoMLParser extends HandlerBase {
      *  @param systemId The system ID of the document type.
      *  @exception CancelException If the public ID is not that of MoML.
      */
-    public void doctypeDecl (String name, String publicId, String systemId)
+    public void doctypeDecl(String name, String publicId, String systemId)
             throws CancelException {
         if (publicId != null
                 && !publicId.trim().equals("")
@@ -454,7 +456,7 @@ public class MoMLParser extends HandlerBase {
             }
             // Create a new doc element only if there is character data.
             // NOTE: This will replace any preexisting doc element with the
-            // same name, since Documentation is a SigletonAttribute.
+            // same name, since Documentation is a SingletonAttribute.
             if (_currentCharData.length() > 0) {
                 Documentation doc
                     = new Documentation(_current, _currentDocName);
@@ -517,7 +519,7 @@ public class MoMLParser extends HandlerBase {
      *  @param column The approximate column number of the error.
      *  @exception XmlException If called.
      */
-    public void error(String message, String sysid,
+    public void error(String message, String systemId,
             int line, int column) throws XmlException {
 	String currentExternalEntity = "";
 	try {
@@ -543,6 +545,8 @@ public class MoMLParser extends HandlerBase {
      *  Note that this method is static.  The returned MoMLFilters
      *  will filter all MoML for any instances of this class.
      *  @return The MoMLFilters currently filtering.
+     *  @see #addMoMLFilter(MoMLFilter filter)
+     *  @see #setMoMLFilters(List filterList)
      */
     public List getMoMLFilters() {
         return _filterList;
@@ -553,6 +557,15 @@ public class MoMLParser extends HandlerBase {
      */
     public NamedObj getToplevel() {
         return _toplevel;
+    }
+
+    /** Return the value set by setModified(), or false if setModified()
+     *  has yet not been called.
+     *  @see #setModified(boolean)
+     *  @return True if the data has been modified.
+     */
+    public static boolean isModified() {
+        return _modified;
     }
 
     /** Parse the MoML file at the given URL, which may be a file
@@ -712,7 +725,7 @@ public class MoMLParser extends HandlerBase {
      *  @param target The name of the processing instruction.
      *  @param data The body of the processing instruction.
      */
-    public void processingInstruction (String target, String data) {
+    public void processingInstruction(String target, String data) {
         if (_currentCharData != null) {
             _currentCharData.append("<?");
             _currentCharData.append(target);
@@ -732,6 +745,7 @@ public class MoMLParser extends HandlerBase {
         _current = null;
         _docNesting = 0;
         _externalEntities = new Stack();
+	_modified = false;
         _namespace = DEFAULT_NAMESPACE;
         _namespaces = new Stack();
         _skipRendition = false;
@@ -764,6 +778,60 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
+    /** Given the name of a MoML class and a source URL, check to see
+     * whether this class has already been instantiated, and if so,
+     * return the previous instance.
+     * @param name The name of the MoML class to search for.
+     * @param source The URL source
+     * @return If the class has already been instantiated, return
+     * the previous instance.
+     */
+    public ComponentEntity searchForClass(String name, String source)
+            throws XmlException {
+
+        // If the name is absolute, the class may refer to an existing
+        // entity.  Check to see whether there is one with a matching source.
+        ComponentEntity candidate;
+        if (name.startsWith(".")) {
+            candidate = _searchForEntity(name);
+            if (candidate != null) {
+                // Check that it's a class.
+                if (candidate.getMoMLInfo().elementName.equals("class")) {
+                    // Check that its source matches.
+                    String candidateSource = candidate.getMoMLInfo().source;
+
+                    if (source == null && candidateSource == null) {
+                        return candidate;
+                    } else if (source != null
+                            && source.equals(candidateSource)) {
+                        return candidate;
+                    }
+                }
+            }
+        }
+        if (_imports != null) {
+            Iterator entries = _imports.iterator();
+            while (entries.hasNext()) {
+                Object possibleCandidate = entries.next();
+                if (possibleCandidate instanceof ComponentEntity) {
+                    candidate = (ComponentEntity)possibleCandidate;
+                    String candidateClassName
+                        = candidate.getMoMLInfo().className;
+                    if (candidateClassName.equals(name)) {
+                        String candidateSource = candidate.getMoMLInfo().source;
+                        if (source == null && candidateSource == null) {
+                            return candidate;
+                        } else if (source != null
+                                && source.equals(candidateSource)) {
+                            return candidate;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     /** Set the context for parsing.  This can be used to associate this
      *  parser with a pre-existing model, which can then be modified
      *  via incremental parsing.  This calls reset() and sets the top-level
@@ -787,6 +855,29 @@ public class MoMLParser extends HandlerBase {
      */
     public static void setErrorHandler(ErrorHandler handler) {
         _handler = handler;
+    }
+
+    /**  Set the list of MoMLFilters used to translate names.
+     *  Note that this method is static.  The specified MoMLFilters
+     *  will filter all MoML for any instances of this class.
+     *  @param filterList The List of MoMLFilters.
+     *  @see #addMoMLFilter(MoMLFilter filter)
+     *  @see #getMoMLFilters()
+     */
+    public void setMoMLFilters(List filterList) {
+        _filterList = filterList;
+    }
+
+    /** Record whether the parsing of the moml modified the data.
+     *  If a MoMLFilter modifies the model by returning a different
+     *  value, then the MoMLFilter should call this method with a true
+     *  argument.
+     *  @param modified True if the data was modified while parsing.
+     *  @see #isModified()
+     *  @see MoMLFilter
+     */
+    public static void setModified(boolean modified) {
+	_modified = modified;
     }
 
     /** Set the top-level entity.  This can be used to associate this
@@ -875,7 +966,7 @@ public class MoMLParser extends HandlerBase {
             // an XML that would call methods of this class that are not
             // intended to be called, simply by putting in an element
             // whose name matches the method name.  So instead, we do
-            // a dumb if...then...elseif... chain with string comparisons.
+            // a dumb if...then...else.if... chain with string comparisons.
             // FIXME: Instead of doing all these string comparisons, do
             // a hash lookup.
             if (elementName.equals("class")) {
@@ -1696,35 +1787,70 @@ public class MoMLParser extends HandlerBase {
         ComponentEntity reference = null;
         if (className != null) {
             // A class name is given.
-            reference = _searchForClass(className, source);
+            reference = searchForClass(className, source);
             if (reference == null) {
                 // No previously defined class with this name.
                 // First attempt to instantiate a Java class.
+
+                // If we throw an error or exception be sure to save the
+                // original error message before we go off and try to fix the
+                // error.  Sometimes, the original error message is the true
+                // cause of the problem, and we should always provide the user
+                // with the cause of the original error in the unlikely event
+                // that our error correction fails
+                StringBuffer errorMessage = new StringBuffer();
                 try {
                     newClass = Class.forName(className, true, _classLoader);
                 } catch (Exception ex) {
                     // NOTE: Java sometimes throws ClassNotFoundException
                     // and sometimes NullPointerException when the class
                     // does not exist.  Hence the broad catch here.
+                    errorMessage.append("\n-- "
+                            + className + ": " + ex.getMessage() + "\n");
+
 		    try {
 			reference = _attemptToFindMoMLClass(className, source);
 		    } catch (Exception ex2) {
 			throw new Exception(
                                 "-- "
-                                + className
+                                + errorMessage.toString()
+                                + className + ": "
                                 + ": not found as a Java class.\n"
                                 + ex2.getMessage());
 		    }
                 } catch (Error error) {
-                    // Java might throw a ClassFormatError.
+                    // Java might throw a ClassFormatError, but
+                    // we usually get and XmlException
+                    errorMessage.append("\n-- "
+                            + className + ": Invalid Java Class? "
+                            + error.getMessage()
+                            + "\n   If there is an error in the code "
+                            + "generator, "
+                            + "then an Error might be thrown here.\n");
 		    try {
 			reference = _attemptToFindMoMLClass(className, source);
-		    } catch (Exception ex2) {
+		    } catch (XmlException ex2) {
 			throw new Exception(
                                 "-- "
+                                + errorMessage.toString()
                                 + className
-                                + ": found invalid Java class file.\n"
+                                + ": XmlException:\n"
                                 + ex2.getMessage());
+		    } catch (ClassFormatError ex3) {
+			throw new Exception(
+                                "-- :"
+                                + errorMessage.toString()
+                                + className
+                                + ": ClassFormatError: "
+                                + "found invalid Java class file.\n"
+                                + ex3.getMessage());
+		    } catch (Exception ex4) {
+			throw new Exception(
+                                "-- "
+                                + errorMessage.toString()
+                                + className
+                                + ": Exception:\n"
+                                + ex4.getMessage());
 		    }
                 }
             }
@@ -1829,7 +1955,7 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
-   // Attempt to find a MoML class.
+    // Attempt to find a MoML class.
     // If there is no source defined, then use the classpath.
     private ComponentEntity _attemptToFindMoMLClass(
             String className, String source) throws Exception {
@@ -1847,14 +1973,14 @@ public class MoMLParser extends HandlerBase {
             // Search for the .xml file before searching for the .moml
             // file.  .moml files are obsolete, and we should probably
             // not bother searching for them at all.
-            classAsFile = className.replace('.','/') + ".xml";
+            classAsFile = className.replace('.', '/') + ".xml";
 	    // RIM uses .moml files, so leave them in.
-            altClassAsFile = className.replace('.','/') + ".moml";
+            altClassAsFile = className.replace('.', '/') + ".moml";
         } else {
             // Source is given.
             classAsFile = source;
         }
-       // Read external model definition in a new parser,
+        // Read external model definition in a new parser,
         // rather than in the current context.
         MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
 
@@ -1882,7 +2008,7 @@ public class MoMLParser extends HandlerBase {
                 throw ex2;
             }
         }
-       if (candidateReference instanceof ComponentEntity) {
+        if (candidateReference instanceof ComponentEntity) {
             reference = (ComponentEntity)candidateReference;
         } else {
             throw new XmlException(
@@ -1996,7 +2122,8 @@ public class MoMLParser extends HandlerBase {
 
     // Delete the port after verifying that it is contained (deeply)
     // by the current environment.
-    private Port _deletePort(String portName, String entityName) throws Exception {
+    private Port _deletePort(String portName, String entityName)
+            throws Exception {
         // NOTE: if the entity attribute is not used, then the
         // deletion of any links associated with this port will
         // not be undoable.
@@ -2176,36 +2303,36 @@ public class MoMLParser extends HandlerBase {
                     }
                 }
                 if ((security == null || withinApplet == false)
-		    && !_approvedRemoteXmlFiles.contains(xmlFile)) {
+                        && !_approvedRemoteXmlFiles.contains(xmlFile)) {
 		    // If the user invoked file -> Open URL
 		    // then do not warn for any URLS below the URL
 		    // they entered.
-		    
+
 		    // This code is not foolproof, but will work
 		    // for most simple situations.
 		    String lastOverallURLBase = null;
 		    String xmlFileBase = null;
 		    if (Top.getLastOverallURL() != null) {
 			lastOverallURLBase =
-			Top.getLastOverallURL()
-			.substring(0,
-				   Top.getLastOverallURL().lastIndexOf("/"));
+                            Top.getLastOverallURL()
+                            .substring(0,
+                                    Top.getLastOverallURL().lastIndexOf("/"));
 			xmlFileBase =
-			xmlFile.toString()
-			.substring(0,
-				   xmlFile.toString().lastIndexOf("/"));
+                            xmlFile.toString()
+                            .substring(0,
+                                    xmlFile.toString().lastIndexOf("/"));
 		    }
 		    if (Top.getLastOverallURL() == null
-			|| !xmlFileBase.startsWith(lastOverallURLBase)) {
+                            || !xmlFileBase.startsWith(lastOverallURLBase)) {
 			MessageHandler.warning("Security concern:\n"
-                            + "About to look for MoML from the "
-                            + "net at address:\n"
-                            + xmlFile.toExternalForm()
-                            + "\nOK to proceed?");
+                                + "About to look for MoML from the "
+                                + "net at address:\n"
+                                + xmlFile.toExternalForm()
+                                + "\nOK to proceed?");
 		    }
 		    // If we get to here, the the user did not hit cancel,
 		    // so we cache the file
-		    _approvedRemoteXmlFiles.add(xmlFile); 
+		    _approvedRemoteXmlFiles.add(xmlFile);
                 }
             }
             input = xmlFile.openStream();
@@ -2287,8 +2414,8 @@ public class MoMLParser extends HandlerBase {
                 attr.appendMoMLDescription(
                         "<delete" + type + " name=\"" + deleted + "\"/>");
             } catch (KernelException ex) {
-                throw new InternalErrorException(
-                        "Unable to record deletion from class!\n" + ex.toString());
+                throw new InternalErrorException(container, ex,
+                        "Unable to record deletion from class!");
             }
         }
     }
@@ -2322,8 +2449,8 @@ public class MoMLParser extends HandlerBase {
                             + "\"/>");
                 }
             } catch (KernelException ex) {
-                throw new InternalErrorException(
-                        "Unable to record extension to class!\n" + ex.toString());
+                throw new InternalErrorException(container, ex,
+                        "Unable to record extension to class!");
             }
         }
 
@@ -2339,8 +2466,8 @@ public class MoMLParser extends HandlerBase {
                         container.uniqueName("_extension"));
                 attr.appendMoMLDescription(newObj.exportMoML());
             } catch (KernelException ex) {
-                throw new InternalErrorException(
-                        "Unable to record extension to class!\n" + ex.toString());
+                throw new InternalErrorException(container, ex,
+                        "Unable to record extension to class!");
             }
         }
     }
@@ -2378,8 +2505,8 @@ public class MoMLParser extends HandlerBase {
                             + "\"/>");
                 }
             } catch (KernelException ex) {
-                throw new InternalErrorException(
-                        "Unable to record extension to class!\n" + ex.toString());
+                throw new InternalErrorException(container, ex,
+                        "Unable to record extension to class!");
             }
         }
     }
@@ -2413,55 +2540,6 @@ public class MoMLParser extends HandlerBase {
                     _parser.getColumnNumber());
         }
         return result;
-    }
-
-    // Given the name of a MoML class and a source URL, check to see
-    // whether this class has already been instantiated, and if so,
-    // return the previous instance.
-    public ComponentEntity _searchForClass(String name, String source)
-            throws XmlException {
-
-        // If the name is absolute, the class may refer to an existing
-        // entity.  Check to see whether there is one with a matching source.
-        ComponentEntity candidate;
-        if (name.startsWith(".")) {
-            candidate = _searchForEntity(name);
-            if (candidate != null) {
-                // Check that it's a class.
-                if (candidate.getMoMLInfo().elementName.equals("class")) {
-                    // Check that its source matches.
-                    String candidateSource = candidate.getMoMLInfo().source;
-
-                    if (source == null && candidateSource == null) {
-                        return candidate;
-                    } else if (source != null
-                            && source.equals(candidateSource)) {
-                        return candidate;
-                    }
-                }
-            }
-        }
-        if (_imports != null) {
-            Iterator entries = _imports.iterator();
-            while (entries.hasNext()) {
-                Object possibleCandidate = entries.next();
-                if (possibleCandidate instanceof ComponentEntity) {
-                    candidate = (ComponentEntity)possibleCandidate;
-                    String candidateClassName
-                        = candidate.getMoMLInfo().className;
-                    if (candidateClassName.equals(name)) {
-                        String candidateSource = candidate.getMoMLInfo().source;
-                        if (source == null && candidateSource == null) {
-                            return candidate;
-                        } else if (source != null
-                                && source.equals(candidateSource)) {
-                            return candidate;
-                        }
-                    }
-                }
-            }
-        }
-        return null;
     }
 
     // Given a name that is either absolute (with a leading period)
@@ -2670,6 +2748,9 @@ public class MoMLParser extends HandlerBase {
 
     // List of top-level entities imported via import element.
     private List _imports;
+
+    // Set to true if a MoMLFilter modified the model.
+    private static boolean _modified = false;
 
     // The current namespace.
     private String _namespace = DEFAULT_NAMESPACE;
