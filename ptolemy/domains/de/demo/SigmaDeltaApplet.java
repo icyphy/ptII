@@ -260,7 +260,7 @@ public class SigmaDeltaApplet extends Applet {
             DEStatistics accu = new DEStatistics(sys, "Accumulator");
             DEClock clk = new DEClock(sys, "ADClock", 1, 1);
             DEPlot deplot = new DEPlot(sys, "DEPlot", dePanel);
-            String[] deLegends = {"Accumulator output", "Quantizer output"};
+            String[] deLegends = {"Accumulator", "Quantizer"};
             deplot.setLegend(deLegends);
             DEFIRfilter mav = new DEFIRfilter(sys, "MAV", "0.1 0.1 0.1 0.1" + 
                     " 0.1 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05");
