@@ -177,8 +177,8 @@ public class Director extends Attribute implements Executable {
         }
     }
 
-    /** Schedule a firing of the given actor at the given time. It does
-     *  nothing in this base class. Derived classes
+    /** Schedule a firing of the given actor at the given (ABSOLUTE) time. 
+     *  It does nothing in this base class. Derived classes
      *  should override this method.
      *  <p>
      *  Note that this method is not made abstract to facilitate the use
@@ -189,6 +189,47 @@ public class Director extends Attribute implements Executable {
      *    permissible (e.g. the given time is in the past).
      */
     public void fireAt(Actor actor, double time)
+            throws IllegalActionException {
+
+        // do nothing in this base class.
+        // Note that, alternatively, this method could have been abstract.
+        // But we didn't do that, because otherwise we wouldn't be able
+        // to run Tcl Blend test script on this class.
+
+    }
+
+    /** Schedule a firing of the given actor at the CURRENT time. It does
+     *  nothing in this base class. Derived classes
+     *  should override this method.
+     *  <p>
+     *  Note that this method is not made abstract to facilitate the use
+     *  of the test suite.
+     *  @param actor The actor scheduled to be fired.
+     *  @exception IllegalActionException If the operation is not
+     *    permissible (e.g. the given time is in the past).
+     */
+    public void fireAtCurrentTime(Actor actor)
+            throws IllegalActionException {
+
+        // do nothing in this base class.
+        // Note that, alternatively, this method could have been abstract.
+        // But we didn't do that, because otherwise we wouldn't be able
+        // to run Tcl Blend test script on this class.
+
+    }
+
+    /** Schedule a firing of the given actor at the given RELETIVE time. 
+     *  It does nothing in this base class. Derived classes
+     *  should override this method.
+     *  <p>
+     *  Note that this method is not made abstract to facilitate the use
+     *  of the test suite.
+     *  @param actor The actor scheduled to be fired.
+     *  @param time The scheduled time.
+     *  @exception IllegalActionException If the operation is not
+     *    permissible (e.g. the given time is in the past).
+     */
+    public void fireAtReletiveTime(Actor actor, double time)
             throws IllegalActionException {
 
         // do nothing in this base class.
