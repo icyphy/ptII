@@ -52,7 +52,7 @@ JSRCS = \
 	PetriNetDirector.java \
 	PetriNetActor.java \
 	Place.java \
-	Transition.java \
+#	Transition.java \
 
 
 EXTRA_SRCS = \

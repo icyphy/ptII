@@ -209,19 +209,38 @@ public class PetriNetActor extends TypedCompositeActor  {
      */
     public boolean prefire() throws IllegalActionException {
 
-        _debug("PetriNetActor.prefire, the actors is"
-                +  getFullName() );
         PetriNetDirector director = (PetriNetDirector) getDirector();
-        Iterator components = deepEntityList().iterator();
+        TypedCompositeActor pnActor = (TypedCompositeActor) this;
+
+        LinkedList componentList = director.findTransitions(pnActor);
+        Iterator components = componentList.iterator();
         while (components.hasNext()) {
-            Nameable component = (Nameable) components.next();
-            if (component instanceof Transition) {
-                Transition transitionComponent = (Transition) component;
+            Nameable componentActor = (Nameable) components.next();
+            if (componentActor instanceof TypedCompositeActor) {
+                TypedCompositeActor transitionComponent 
+                                 = (TypedCompositeActor) componentActor;
 		if(director.testReadyTransition(transitionComponent)) {
                     return true;
-		}
+                }
             }
         }
         return false;
     }
+
+ 
 }
+
+/*               LinkedList componentList = _findTransitions(pnActor);
+                Iterator components = componentList.iterator();
+                while (components.hasNext()) {
+
+                    Nameable component1 = (Nameable) components.next();
+                    if (component1 instanceof TypedCompositeActor) {
+                        TypedCompositeActor transitionComponent 
+                                 = (TypedCompositeActor) component1;
+		        if(_testReadyTransition(transitionComponent))
+                            readyComponentList.add(transitionComponent);
+                    }
+                }
+
+*/

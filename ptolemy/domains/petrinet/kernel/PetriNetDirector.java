@@ -208,6 +208,48 @@ public class PetriNetDirector extends Director {
         return (_testReadyTransition(transition));
     }
 
+  /** This method finds all the possible transitions of the given  
+   *  compositeactor. In short, any atomic, Opaque, and other 
+   *  compositeActors can be a transition. In other words, a transition 
+   *  is an object which is not a place and not a PetrinetActor.
+   */
+    public LinkedList findTransitions(TypedCompositeActor transition) {
+
+        Iterator components = transition.entityList().iterator();
+        LinkedList temporaryList = new LinkedList();
+
+        while (components.hasNext()) {
+            Nameable component = (Nameable) components.next();
+            if (component instanceof Place) {
+
+            } 
+            else if(component instanceof PetriNetActor)
+            {
+                TypedCompositeActor componentActor = 
+                             (TypedCompositeActor) component;
+                _debug("test recursive of _findTransitions");
+                LinkedList newComponentList 
+                                 = findTransitions(componentActor);
+                Iterator pointer = newComponentList.iterator();
+                while (pointer.hasNext()) {
+                    Nameable transitionName = (Nameable) pointer.next();
+                    _debug("recursive transition is " + transitionName.getFullName() +
+                      " container " + transition.getFullName());
+                }
+                temporaryList.addAll(newComponentList);
+            } else
+                temporaryList.add(component);  
+        }
+
+        Iterator pointer = temporaryList.iterator();
+        while (pointer.hasNext()) {
+            Nameable transitionName = (Nameable) pointer.next();
+            _debug("this transition is " + transitionName.getFullName() +
+                      " container " + transition.getFullName());
+        }
+        return temporaryList;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -324,19 +366,6 @@ public class PetriNetDirector extends Director {
                     _debug("found a readyPetriNetActor  "
                             + pnActor.getFullName());
                 } 
-
-                LinkedList componentList = _findTransitions(pnActor);
-                Iterator components = componentList.iterator();
-                while (components.hasNext()) {
-
-                    Nameable component1 = (Nameable) components.next();
-                    if (component1 instanceof TypedCompositeActor) {
-                        TypedCompositeActor transitionComponent 
-                                 = (TypedCompositeActor) component1;
-		        if(_testReadyTransition(transitionComponent))
-                            readyComponentList.add(transitionComponent);
-                    }
-                }
             }
             else if (component instanceof TypedCompositeActor) {
                 TypedCompositeActor componentTransition =
@@ -671,51 +700,6 @@ public class PetriNetDirector extends Director {
         return temporaryPlaceList;
     }
 
-  /** This method finds all the possible transitions of the given  
-   *  compositeactor. In short, any atomic, Opaque, and other 
-   *  compositeActors can be a transition. In other words, a transition 
-   *  is an object which is not a place and not a PetrinetActor.
-   */
-    private LinkedList _findTransitions(TypedCompositeActor transition) {
-
-        Iterator components = transition.entityList().iterator();
-        LinkedList temporaryList = new LinkedList();
-
-        while (components.hasNext()) {
-            Nameable component = (Nameable) components.next();
-            if (component instanceof Place) {
-
-            } 
-            else if(component instanceof PetriNetActor)
-            {
-                TypedCompositeActor componentActor = 
-                             (TypedCompositeActor) component;
-                _debug("test recursive of _findTransitions");
-                LinkedList newComponentList 
-                                 = _findTransitions(componentActor);
-                Iterator pointer = newComponentList.iterator();
-                while (pointer.hasNext()) {
-                    Nameable transitionName = (Nameable) pointer.next();
-                    _debug("recursive transition is " + transitionName.getFullName() +
-                      " container " + transition.getFullName());
-                }
-
-
-
-
-                temporaryList.addAll(newComponentList);
-            } else
-                temporaryList.add(component);  
-        }
-
-        Iterator pointer = temporaryList.iterator();
-        while (pointer.hasNext()) {
-            Nameable transitionName = (Nameable) pointer.next();
-            _debug("this transition is " + transitionName.getFullName() +
-                      " container " + transition.getFullName());
-        }
-        return temporaryList;
-    }
 
     /** This method gets the weight assigned to the given relation.
      *  The current hierarchical Petri Net allows multiple arcs connecting
