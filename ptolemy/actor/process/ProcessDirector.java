@@ -350,7 +350,7 @@ public class ProcessDirector extends Director {
     }
 
 
-    /** Ends the execution of the model under the control of this
+    /** End the execution of the model under the control of this
      *  director. A flag is set in all the receivers which causes 
      *  each process to terminate at the earliest communication point.
      *  <P>
@@ -361,6 +361,62 @@ public class ProcessDirector extends Director {
      *  this director.
      */
     public void finish() throws IllegalActionException {
+	CompositeActor cont = (CompositeActor)getContainer();
+        Enumeration allMyActors = cont.deepGetEntities();
+        Enumeration actorPorts;
+        ProcessReceiver nextRec;
+        LinkedList recs = new LinkedList();
+        while (allMyActors.hasMoreElements()) {
+            Actor actor = (Actor)allMyActors.nextElement();
+            actorPorts = actor.inputPorts();
+            while (actorPorts.hasMoreElements()) {
+                IOPort port = (IOPort)actorPorts.nextElement();
+                // Setting finished flag in the receivers.
+                Receiver[][] receivers = port.getReceivers();
+                for (int i = 0; i<receivers.length; i++) {
+                    for (int j = 0; j<receivers[i].length; j++) {
+                        nextRec = (ProcessReceiver)receivers[i][j];
+                        nextRec.setFinish();
+                        recs.insertFirst(nextRec);
+                    }
+                }
+            }
+
+            // If this director is controlling a CompositeActor with
+            // output ports, need to set the finished flag
+            // there as well.
+            actorPorts  = cont.outputPorts();
+            while (actorPorts.hasMoreElements()) {
+                IOPort port = (IOPort)actorPorts.nextElement();
+                // Terminating the ports and hence the star
+                Receiver[][] receivers = port.getReceivers();
+                for (int i = 0; i<receivers.length; i++) {
+                    for (int j = 0; j<receivers[i].length; j++) {
+                        nextRec = (ProcessReceiver)receivers[i][j];
+                        nextRec.setFinish();
+                        recs.insertFirst(nextRec);
+                    }
+                }
+            }
+
+            // Now wake up all the receivers.
+            (new NotifyThread(recs)).start();
+        }
+        return;
+    }
+
+    /** End the execution of the model under the control of this
+     *  director. A flag is set in all the receivers which causes 
+     *  each process to terminate at the earliest communication point.
+     *  <P>
+     *  This method is not synchronized on the workspace, so the caller
+     *  should be.
+     * @exception IllegalActionException if an error occurs while
+     *  accessing the receivers of all actors under the contol of
+     *  this director.
+     *  FIXME
+     */
+    public void wrapup() throws IllegalActionException {
 	CompositeActor cont = (CompositeActor)getContainer();
         Enumeration allMyActors = cont.deepGetEntities();
         Enumeration actorPorts;
