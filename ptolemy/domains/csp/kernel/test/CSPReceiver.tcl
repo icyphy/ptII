@@ -59,8 +59,10 @@ test CSPReceiver-2.1 {Constructors and Containers} {
     $rcvr3 setContainer $port
     set val3 [$rcvr3 getContainer]
 
-    list [expr {$val1 == [java::null]}] [expr {$val2 == $port}] [expr {$val3 == $port}]
-} {1 1 1}
+    list [expr {$val1 == [java::null]}] \
+	    [$val2 equals $port] \
+	    [$val3 equals $port]
+} {1 { 1} { 1}}
 
 ######################################################################
 ####
