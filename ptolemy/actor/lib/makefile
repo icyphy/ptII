@@ -98,6 +98,7 @@ JSRCS = \
 	ArrayLength.java \
 	ArrayMaximum.java \
 	ArrayMinimum.java \
+	ArrayPeakSearch.java \
 	ArraySort.java \
 	Average.java \
 	Bernoulli.java \
