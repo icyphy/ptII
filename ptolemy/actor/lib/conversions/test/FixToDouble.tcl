@@ -87,10 +87,10 @@ test FixToDouble-2.1 {Test changing the precision parameter} {
 
 } {3.75}
 
-test FixToDouble-2.2 {Test changing the quantizer} {
+test FixToDouble-2.2 {Test changing the overflow} {
 
-    set quantizer [getParameter $clone quantizer]
-    $quantizer setToken [java::new {ptolemy.data.IntToken int} 1 ]
+    set overflow [getParameter $clone overflow]
+    $overflow setToken [java::new {ptolemy.data.IntToken int} 1 ]
 
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
@@ -104,7 +104,7 @@ test FixToDouble-2.2 {Test changing the quantizer} {
 #### Test FixToDouble in an SDF model
 
 test DoubleToFix-3.1 {Test rescaling to other Precision with saturate \
-	quantizer} {
+	overflow} {
 
     set e0 [sdfModel 12]
     set pulse [java::new ptolemy.actor.lib.Pulse $e0 pulse]
@@ -146,8 +146,8 @@ test DoubleToFix-3.1 {Test rescaling to other Precision with saturate \
     set precision [getParameter $conver precision]
     $precision setToken [java::new {ptolemy.data.StringToken String} "3/2" ]
 
-    set quantize [getParameter $conver quantizer ]
-    $quantize setToken [java::new {ptolemy.data.IntToken int} 0 ]
+    set overflow [getParameter $conver overflow ]
+    $overflow setToken [java::new {ptolemy.data.IntToken int} 0 ]
    
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
@@ -155,12 +155,21 @@ test DoubleToFix-3.1 {Test rescaling to other Precision with saturate \
 } {1.5 1.5 1.5 1.0 0.5 0.0 0.0 -0.5 -1.0 -2.0 -2.0 -2.0}
 
 test DoubleToFix-3.2 {Test rescaling to other Precision with zero staturate \
-	 quantizer} {
+	 overflow} {
 
-    set quantize [getParameter $conver quantizer ]
-    $quantize setToken [java::new {ptolemy.data.IntToken int} 1 ]
+    set overflow [getParameter $conver overflow ]
+    $overflow setToken [java::new {ptolemy.data.IntToken int} 1 ]
    
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 
 } {0.0 0.0 0.0 1.0 0.5 0.0 0.0 -0.5 -1.0 0.0 0.0 0.0}
+
+
+
+
+
+
+
+
+
