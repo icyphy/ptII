@@ -141,8 +141,8 @@ public abstract class Token {
      *  @return A new Token containing the result.
      */
     public Token modulo(Token rightArg) throws  IllegalActionException {
-        String str = "Modulo method not supported on ";
-        str = str + this.getClass().getName() + "objects";
+        String str = "modulo method not supported on " +
+        	this.getClass().getName() + " objects.";
         throw new IllegalActionException(str);
     }
 
