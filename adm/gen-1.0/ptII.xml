@@ -258,7 +258,7 @@ Berkeley, CA 94706</property>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32LauncherExtra">
                         <property name="showConsole">False</property>
-                        <property name="launcherUIDisplayTime">20</property>
+                        <property name="launcherUIDisplayTime">30</property>
                         <property name="fileName">vergil.exe</property>
                     </extendedProperty>
                     <property name="title">Vergil Launcher</property>
@@ -305,7 +305,7 @@ Berkeley, CA 94706</property>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32LauncherExtra">
                         <property name="showConsole">False</property>
-                        <property name="launcherUIDisplayTime">5</property>
+                        <property name="launcherUIDisplayTime">30</property>
                         <property name="fileName">ptplot.exe</property>
                     </extendedProperty>
                     <property name="title">Ptplot Launcher</property>
@@ -345,7 +345,7 @@ Berkeley, CA 94706</property>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32LauncherExtra">
                         <property name="showConsole">False</property>
-                        <property name="launcherUIDisplayTime">20</property>
+                        <property name="launcherUIDisplayTime">30</property>
                         <property name="fileName">vergildsp.exe</property>
                     </extendedProperty>
                     <property name="title">Vergil (DSP Only) Launcher</property>
