@@ -48,7 +48,6 @@ CLASSPATH = $(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
 
 JSRCS = \
 	BusContentionApplet.java \
-	BusContentionApplication.java \
 	BusContentionDemo.java \
 	BusContentionGraphic.java \
 	ContentionAlarm.java \
@@ -77,11 +76,6 @@ OPTIONAL_FILES = \
 	'BusContentionApplet$$LocalEdgeRenderer.class' \
 	'BusContentionApplet$$StateListener.class' \
 	'BusContentionApplet$$ThreadRenderer.class' \
-	'BusContentionApplication$$1.class' \
-	'BusContentionApplication$$2.class' \
-	'BusContentionApplication$$LocalEdgeRenderer.class' \
-	'BusContentionApplication$$StateListener.class' \
-	'BusContentionApplication$$ThreadRenderer.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
