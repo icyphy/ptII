@@ -159,8 +159,10 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 null);
         //_graphicalClasses.put("ptolemy.actor.lib.gui.Display",
         //        "ptolemy.actor.lib.Discard");
+        //_graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
+        //        "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
-                "ptolemy.kernel.util.Attribute");
+                null);
         _graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon",
                 null);
         _graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon",
@@ -169,8 +171,11 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.icon.ValueIcon",
                 "ptolemy.kernel.util.Attribute");
+        //_graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
+        //        "ptolemy.kernel.util.Attribute");
+
         _graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
-                "ptolemy.kernel.util.Attribute");
+                null);
         _graphicalClasses.put("ptolemy.vergil.toolbox"
                 + ".VisibleParameterEditorFactory",
                 "ptolemy.kernel.util.Attribute");
