@@ -42,7 +42,7 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-#Used to build jar files
+# Used to build jar files
 PTPACKAGE = 	demo
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
