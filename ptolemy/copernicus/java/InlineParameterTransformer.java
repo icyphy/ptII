@@ -771,8 +771,7 @@ public class InlineParameterTransformer extends SceneTransformer {
                     int modifier;
                     if (isConstant) {
                         modifier = Modifier.PUBLIC |
-                            Modifier.STATIC |
-                            Modifier.FINAL;
+                            Modifier.STATIC | Modifier.FINAL;
                     } else {
                         modifier = Modifier.PUBLIC | Modifier.STATIC;
                     }

@@ -701,18 +701,12 @@ public class ModelTransformer extends SceneTransformer {
         }
     }
 
-    /**
-     *  @exception RuntimeException If no field was created for the
-     *  given entity.
+    /** Return the entity for the given class if the given class is a
+     *  class being generated, or null if not.
      */
     public static Entity getActorForClass(SootClass theClass) {
         Entity entity = (Entity) _classToObjectMap.get(theClass);
-        if (entity != null) {
-            return entity;
-        } else {
-            throw new RuntimeException(
-                    "Failed to find entity for class " + theClass);
-        }
+        return entity;
     }
 
     /**

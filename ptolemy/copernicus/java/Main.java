@@ -128,7 +128,10 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", ClassWriter.v()));
-        
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ib",
+                        InvocationBinder.v()));
+       
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffet",
                         FieldsForEntitiesTransformer.v(toplevel)));
@@ -388,6 +391,9 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.smr",
                         SideEffectFreeInvocationRemover.v()));
+       Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ffu",
+                        FinalFieldUnfinalizer.v()));
         /**/
 
         // This snapshot should be last...

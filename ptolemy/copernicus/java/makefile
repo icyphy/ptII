@@ -62,6 +62,7 @@ JSRCS = \
 	FieldsForEntitiesTransformer.java \
 	FieldsForPortsTransformer.java \
 	FieldOptimizationTransformer.java \
+	FinalFieldUnfinalizer.java \
 	FreeVariableModelAnalysis.java \
 	FSMCreator.java \
 	GenericAtomicActorCreator.java \

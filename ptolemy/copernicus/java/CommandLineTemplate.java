@@ -320,7 +320,7 @@ public class CommandLineTemplate {
     ////                         protected variables               ////
 
     /** The list of all the models */
-    protected List _models = new LinkedList();
+    protected List _models =null; // new LinkedList();
 
     /** The count of currently open windows. */
     protected int _openCount = 0;

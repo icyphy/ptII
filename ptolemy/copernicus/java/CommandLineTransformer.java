@@ -51,6 +51,7 @@ import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootField;
 import soot.SootMethod;
+import soot.jimple.NullConstant;
 import soot.Unit;
 import soot.Value;
 import soot.ValueBox;
@@ -158,7 +159,7 @@ public class CommandLineTransformer extends SceneTransformer {
         // The final field for the model.
         SootField modelField = new SootField("_CGmodel",
                 RefType.v(modelClass),
-                Modifier.PRIVATE | Modifier.FINAL);
+                Modifier.PRIVATE);// | Modifier.FINAL);
         mainClass.addField(modelField);
 
 
