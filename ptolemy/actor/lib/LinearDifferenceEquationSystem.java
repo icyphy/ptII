@@ -349,7 +349,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
                     + "the number of columns of the A matrix.");
         }
         // reset initial state.
-         _initialStateChanged = true;
+        _initialStateChanged = true;
     }
 
 
