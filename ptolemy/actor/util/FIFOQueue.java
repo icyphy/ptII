@@ -91,7 +91,7 @@ public class FIFOQueue implements Cloneable {
     ////                         public methods                    ////
 
     /** Remove all items currently stored in the queue and
-     *  clear the history queue. The queue capacity, history 
+     *  clear the history queue. The queue capacity, history
      *  capacity and container remain unchanged.
      */
     public void clear() {
@@ -318,7 +318,7 @@ public class FIFOQueue implements Cloneable {
             throw new NoSuchElementException("The FIFOQueue" + str
                     + " is empty!");
         }
-        
+
         if (_historyCapacity != 0) {
             if (_historyCapacity == _historyList.size()) {
             	_historyList.removeFirst();

@@ -84,9 +84,9 @@ This defaults to 2, but can be specified as a constructor argument.
 Suppose the bin count factor is <i>binCountFactor</i> and the current number of
 buckets is <i>n</i> (by default, this starts at 2, but can be specified by
 a constructor argument, <i>minNumBuckets</i>).
-The number of bins will be multiplied by <i>binCountFactor</i> if the 
+The number of bins will be multiplied by <i>binCountFactor</i> if the
 queue size exceeds <i>n * binCountFactor</i>.
-The number of bins will be divided by <i>binCountFactor</i> if the 
+The number of bins will be divided by <i>binCountFactor</i> if the
 queue size falls below <i>n/binCountFactor</i>.  Thus, the queue attempts to
 keep the number of bins close to the size of the queue.
 Each time it changes the number of bins, it uses recently dequeued entries
@@ -371,7 +371,7 @@ public class CalendarQueue implements Debuggable {
                     result = _takeFromBucket(i);
                     break;
                 } else {
-                    // The entry is not in the current year. 
+                    // The entry is not in the current year.
                     // Compare to the minimum found so far.
                     if (minSoFar == null) {
                         minSoFar = minimumInBucket;

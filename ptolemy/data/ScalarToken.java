@@ -95,7 +95,7 @@ public abstract class ScalarToken extends Token {
      *  In this base class, we just throw an exception.
      *  @return A FixPoint
      *  @exception IllegalActionException always thrown.
-     */    
+     */
    public FixPoint fixValue()
             throws IllegalActionException {
        throw new IllegalActionException("Cannot convert the value in " +

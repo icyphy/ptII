@@ -74,7 +74,7 @@ public class LongToken extends ScalarToken {
 
     /** Return a LongToken containing the absolute value of the
      *  value of this token.
-     *  @return A LongToken. 
+     *  @return A LongToken.
      */
     public ScalarToken absolute() {
 	return _value >= 0 ? this : new LongToken(-_value);
@@ -194,7 +194,7 @@ public class LongToken extends ScalarToken {
             throw new IllegalActionException(
                     "divide method not supported between"
                     + this.getClass().getName() + " and "
-                    + divisor.getClass().getName() 
+                    + divisor.getClass().getName()
                     + ": " + ex.getMessage());
         }
     }

@@ -67,10 +67,10 @@ public class FixToken extends ScalarToken {
 	precision, thereby introducing quantization errors.
 	@param pre the precision of the FixToken.
 	@param value the value of the FixToken.
-	@exception IllegalArgumentException If the format of the precision 
+	@exception IllegalArgumentException If the format of the precision
 	string is incorrect
     */
-    public FixToken(double value, String pre) 
+    public FixToken(double value, String pre)
             throws IllegalArgumentException {
                 try {
                     Precision precision = new Precision( pre );
@@ -84,28 +84,28 @@ public class FixToken extends ScalarToken {
 	precision given as a String. Since FixToken has a finite
 	number uses a finite number of bits to represent a value, the
 	supplied value is rounded to the nearest value possible given
-	the precision, thereby introducing quantization errors.  
-	@param precision String giving the precision of the FixToken 
+	the precision, thereby introducing quantization errors.
+	@param precision String giving the precision of the FixToken
 	@param value Double value of the FixToken
 	@exception IllegalArgumentException If the format of the
 	precision string is incorrect */
-    public FixToken(double value, int numberOfBits, int integerBits)  
+    public FixToken(double value, int numberOfBits, int integerBits)
             throws IllegalArgumentException {
-                try {                    
-                    Precision precision = 
+                try {
+                    Precision precision =
                         new Precision( numberOfBits, integerBits);
                     _value = Quantizer.round(value, precision);
                 } catch (NumberFormatException e) {
                     throw new IllegalArgumentException(e.getMessage());
                 }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return a FixToken containing the absolute value of the
      *  value of this token.
-     *  @return An FixToken. 
+     *  @return An FixToken.
      */
     public ScalarToken absolute() {
 	return new FixToken(_value.absolute());
@@ -119,7 +119,7 @@ public class FixToken extends ScalarToken {
      *  information. The type of the returned token is one of the
      *  above two types that allows lossless conversion from the other.
      *  @param token A Token.
-     *  @return A new Token.  
+     *  @return A new Token.
      *  @exception IllegalActionException If the specified token
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
@@ -176,12 +176,12 @@ public class FixToken extends ScalarToken {
      *  above two types that allows lossless conversion from the other.
      *
      *  @param divisor A FixToken.
-     *  @return A new FixToken. 
+     *  @return A new FixToken.
      *  @exception IllegalActionException If the passed token is
      *  not of a type that can be divide this Tokens value by in a
-     *  lossless fashion. 
+     *  lossless fashion.
      */
-    public Token divide(Token divisor) 
+    public Token divide(Token divisor)
 	    throws IllegalActionException {
         int compare = TypeLattice.compare(this, divisor);
 	if (compare == CPO.INCOMPARABLE) {
@@ -234,7 +234,7 @@ public class FixToken extends ScalarToken {
     /** Return the fix point value of this token as a double. The
      *  conversion from a fix point to a double is not lossless, and
      *  the doubleValue() cannot be used. Therefore an explicit lossy
-     *  conversion method is provided, 
+     *  conversion method is provided,
      *  @return A double.
      */
     public double convertToDouble() {
@@ -323,13 +323,13 @@ public class FixToken extends ScalarToken {
      *  information. The type of the returned token is one of the
      *  above two types that allows lossless conversion from the other.
      *
-     *  @param arg A FixToken.  
-     *  @return A new FixToken.  
+     *  @param arg A FixToken.
+     *  @return A new FixToken.
      *  @exception IllegalActionException If the specified token
      *  is not of a type that can be multiplied to this Token in
      *  a lossless fashion.
      */
-    public Token multiply(Token token) 
+    public Token multiply(Token token)
             throws IllegalActionException {
         int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
@@ -343,7 +343,7 @@ public class FixToken extends ScalarToken {
 	    // type of the specified token <= FixToken
 	    FixToken tem = (FixToken)convert(token);
 	    FixPoint result = _value.multiply(tem.fixValue());
-	    return new FixToken(result);    
+	    return new FixToken(result);
         }
     }
 
@@ -372,7 +372,7 @@ public class FixToken extends ScalarToken {
     }
 
     /** Returns a new Token representing the multiplicative identity
-     *  with the same precision as the current FixToken.  
+     *  with the same precision as the current FixToken.
      *  @return A new Token containing the multiplicative identity.
      */
     public Token one() {
@@ -385,7 +385,7 @@ public class FixToken extends ScalarToken {
      *  mode selected. The following quantization modes are supported
      *  in case an overflow occurs.
      *
-     *  <ul> 
+     *  <ul>
      *  <li> mode = 0, <b>Saturate</b>: The fix point value is set,
      *  depending on its sign, equal to the Max or Min value possible
      *  with the new given precision.
@@ -393,9 +393,9 @@ public class FixToken extends ScalarToken {
      *  set equal to zero.
      *  </ul>
      *
-     *  @param newprecision The new precision of the Fixpoint.  
-     *  @param mode The mode of quantization.  
-     *  @return A new Fixpoint with the given precision.  
+     *  @param newprecision The new precision of the Fixpoint.
+     *  @param mode The mode of quantization.
+     *  @return A new Fixpoint with the given precision.
      */
     public FixToken scaleToPrecision(Precision newprecision, int mode ) {
         return new FixToken( _value.scaleToPrecision(newprecision, mode) );
@@ -410,12 +410,12 @@ public class FixToken extends ScalarToken {
      *  above two types that allows lossless conversion from the other.
      *
      *  @param token A FixToken.
-     *  @return A new FixToken. 
+     *  @return A new FixToken.
      *  @exception IllegalActionException If the specified token is
      *   not of a type that can be subtracted from this Token in a
-     *   lossless fashion. 
+     *   lossless fashion.
      */
-    public Token subtract(Token rightArg) 
+    public Token subtract(Token rightArg)
 	    throws IllegalActionException {
         int compare = TypeLattice.compare(this, rightArg);
 	if (compare == CPO.INCOMPARABLE) {
@@ -460,16 +460,16 @@ public class FixToken extends ScalarToken {
     /** Return the value contained in this Token as a String.
      *  @return A String.
      */
-    public String toString() {        
+    public String toString() {
         Precision precision = _value.getPrecision();
-	return "fix(" + _value.toString() + 
-            "," + precision.getNumberOfBits() + 
+	return "fix(" + _value.toString() +
+            "," + precision.getNumberOfBits() +
             "," + precision.getIntegerBitLength() + ")";
     }
 
     /** Returns a new token representing the additive identity with the
-     *  same precision as the current FixToken.  
-     *  @return A new Token containing the additive identity.  
+     *  same precision as the current FixToken.
+     *  @return A new Token containing the additive identity.
      */
     public Token zero()
     {
@@ -487,7 +487,7 @@ public class FixToken extends ScalarToken {
     public void print() {
         _value.printFix();
     }
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private FixPoint _value;

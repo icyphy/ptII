@@ -72,7 +72,7 @@ public class Token {
     public Token add(Token rightArg) throws IllegalActionException {
         throw new IllegalActionException("Addition not supported between "
         + this.getClass().getName() + " and "
-        + rightArg.getClass().getName() + ".");        
+        + rightArg.getClass().getName() + ".");
     }
 
     /** Return a new token whose value is the value of this
@@ -87,7 +87,7 @@ public class Token {
      */
     public Token addReverse(Token leftArg) throws IllegalActionException {
         throw new IllegalActionException("Addition not supported between "
-        + leftArg.getClass().getName() + " and "        
+        + leftArg.getClass().getName() + " and "
         + this.getClass().getName() + ".");
     }
 

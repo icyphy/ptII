@@ -76,7 +76,7 @@ public class IntToken extends ScalarToken {
 
     /** Return an IntToken containing the absolute value of the
      *  value of this token.
-     *  @return An IntToken. 
+     *  @return An IntToken.
      */
     public ScalarToken absolute() {
 	return _value >= 0 ? this : new IntToken(-_value);

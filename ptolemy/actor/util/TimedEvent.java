@@ -93,10 +93,10 @@ public class TimedEvent {
          *   of TimedEvent.
          */
         public final int compare(Object object1, Object object2) {
-            
+
             TimedEvent a = (TimedEvent) object1;
             TimedEvent b = (TimedEvent) object2;
-            
+
             if ( a.timeStamp < b.timeStamp )  {
                 return -1;
             } else if ( a.timeStamp > b.timeStamp ) {
@@ -105,7 +105,7 @@ public class TimedEvent {
                 return 0;
             }
         }
-        
+
         /** Given an entry, return a virtual bin number for the entry.
          *  The calculation performed is:
          *  <p>
@@ -125,7 +125,7 @@ public class TimedEvent {
             - _zeroReference.timeStamp)/
             _binWidth.timeStamp);
         }
-        
+
         /** Given an array of TimedEvent objects, find the appropriate bin
          *  width. By 'appropriate', we mean that
          *  the bin width is chosen such that on average
@@ -152,9 +152,9 @@ public class TimedEvent {
                 _binWidth = (TimedEvent)entryArray[0];
                 return;
             }
-            
+
             double[] diff = new double[entryArray.length - 1];
-            
+
             double average = 0;
             for (int i = 1; i < entryArray.length; ++i) {
                 diff[i-1] = ((TimedEvent)entryArray[i]).timeStamp -
@@ -178,7 +178,7 @@ public class TimedEvent {
             effAverage = effAverage / nEffSamples;
             _binWidth = new TimedEvent(3.0 * effAverage, null);
         }
-        
+
         /** Set the zero reference, to be used in calculating the virtual
          *  bin number.
          *  @exception ClassCastException If the argument is not an instance
@@ -187,13 +187,13 @@ public class TimedEvent {
         public void setZeroReference(Object zeroReference) {
             _zeroReference = (TimedEvent) zeroReference;
         }
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                         private members                   ////
-        
+
         // The bin width.
         private TimedEvent _binWidth = new TimedEvent(1.0, null);
-        
+
         // The zero reference.
         private TimedEvent _zeroReference = new TimedEvent(0.0, null);
     }
