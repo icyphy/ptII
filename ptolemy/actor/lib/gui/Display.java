@@ -516,8 +516,13 @@ public class Display extends Sink implements Placeable {
         public DisplayWindowTableau(TextEffigy container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
-            String title = Display.this.getFullName();
+            String title = Display.this.title.getExpression();
+            if (title.trim().equals("")) {
+                title = Display.this.getFullName();
+            }
             frame = new DisplayWindow(title);
+            // Also need to set the title of this Tableau.
+            setTitle(title);
             // Make sure that the effigy and the text area use the same
             // Document (so that they contain the same data).
             frame.text.setDocument(container.getDocument());
