@@ -158,15 +158,18 @@ public abstract class BaseSDFScheduler extends Scheduler {
     /** Find the channel number of the given port that corresponds to the
      *  given receiver.  If the receiver is not contained within the port,
      *  throw an InternalErrorException.
+     *  @param port The given port.
+     *  @param receiver The receiver we are looking for.
+     *  @return The channel number if any. 
+     *  @exception IllegalActionException If the receiver was not found
+     *  in the port.
      */
-
-    // FIXME: Move this functionality to the kernel.
     protected int _getChannel(IOPort port, Receiver receiver)
             throws IllegalActionException {
+        // FIXME: Move this functionality to the kernel.
         int width = port.getWidth();
         Receiver[][] receivers = port.getReceivers();
         int channel;
-
         if (_debugging && VERBOSE) {
             _debug("-- getting channels on port " + port.getFullName());
             _debug("port width = " + width);
@@ -211,6 +214,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
             }
         }
 
+        
         throw new InternalErrorException("Receiver for port "
                 + receiver.getContainer() + " not found in the port "
                 + port.getFullName());
