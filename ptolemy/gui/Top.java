@@ -489,7 +489,7 @@ public abstract class Top extends JFrame {
             // This will throw a security exception in an applet.
             // FIXME: we should support users under applets opening files
             // on the server.
-            String cwd = System.getProperty("user.dir");
+            String cwd = GUIStringUtilities.getProperty("user.dir");
             if (cwd != null) {
                 fileDialog.setCurrentDirectory(new File(cwd));
             }
@@ -604,7 +604,7 @@ public abstract class Top extends JFrame {
             // This will fail with a security exception in applets.
             // FIXME: we should support users under applets opening files
             // on the server.
-            String cwd = System.getProperty("user.dir");
+            String cwd = GUIStringUtilities.getProperty("user.dir");
             if (cwd != null) {
                 fileDialog.setCurrentDirectory(new File(cwd));
             }
