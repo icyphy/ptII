@@ -416,7 +416,7 @@ public class Token implements Serializable {
      */
     public Token zero() throws IllegalActionException {
         throw new IllegalActionException(
-                "Token.zero: Additive identity not supported on "
+                "Additive identity not supported on "
                 + this.getClass().getName() + ".");
     }
 }
