@@ -30,10 +30,8 @@
 
 package ptolemy.codegen.saveasjava;
 
-import ptolemy.actor.AtomicActor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.NamedObj;
@@ -60,8 +58,7 @@ class SaveAsJava {
     ////                         public methods                    ////
 
     /** Return the java code associated with a top level Ptolemy II
-     *  object and all of its descendants. It is assumed for now
-     *  that the "toplevel" object is of type TypedCompositeActor.
+     *  object and all of its descendants. 
      *  @param toplevel The root object of the topology to be saved.
      *  @return The generated java code.
      */
@@ -79,15 +76,16 @@ class SaveAsJava {
         String importCode = new String();
 
         // More specific representation of the root topology object 
-        TypedCompositeActor compositeModel;
+        CompositeEntity compositeModel;
 
-        // The list of classes to import in the generated Java code.
-        LinkedList importList = new LinkedList();
+        // Initialize the list of classes to import in the generated
+        // Java code.
+        _importList = new LinkedList();
 
-        // Check that the argument is a typed composite actor.
-        if (!(toplevel instanceof TypedCompositeActor)) {
+        // Check that the argument is a composite entity.
+        if (!(toplevel instanceof CompositeEntity)) {
             throw new IllegalActionException(toplevel, 
-            "SavaAsJava feature only operates on typed composite actors");
+            "SavaAsJava feature only operates on composite entities");
         }
         compositeModel = (CompositeEntity)toplevel;
 
@@ -101,22 +99,8 @@ class SaveAsJava {
                 + " IllegalActionException {\n" + _indent(2) 
                 + "super(w);\n\n" + _indent(2) + "try {\n";
 
-        // Generate code to set the Director
-        try {
-            clfullname = compositeModel.getDirector().getClass().getName();
-            clname = _extractSuffix(clfullname);
-            code += _indent(3) 
-                    + "setDirector(new "
-                    + _getClassName(compositeModel.getDirector())
-                    + "(this, \"director\"));\n";
-            _insertIfUnique(clfullname, importList);
-        } catch (Exception ex) {
-            throw new IllegalActionException(ex.getMessage()
-            + "Exception raised when setting the top level director."); 
-        }
-
         // Generate code to instantiate and connect the system components
-        code += _generateComponents(compositeModel, importList);
+        code += _generateComponents(compositeModel);
 
         // Generate trailer code for the composite actor constructor
         code +=  
@@ -127,15 +111,15 @@ class SaveAsJava {
         "}\n";
          
         // Generate statements for importing classes.
-        _insertIfUnique("ptolemy.actor.GeneratorTableau", importList);
-        _insertIfUnique("ptolemy.kernel.util.Workspace", importList);
+        _insertIfUnique("ptolemy.actor.GeneratorTableau", _importList);
+        _insertIfUnique("ptolemy.kernel.util.Workspace", _importList);
         _insertIfUnique("ptolemy.kernel.util.IllegalActionException", 
-                        importList);
+                        _importList);
         _insertIfUnique("ptolemy.kernel.util.NameDuplicationException",
-                        importList);
-        _insertIfUnique("ptolemy.actor.TypedIORelation", importList);
+                        _importList);
+        _insertIfUnique("ptolemy.actor.TypedIORelation", _importList);
         try {
-            ListIterator iter = importList.listIterator(0);
+            ListIterator iter = _importList.listIterator(0);
             while (iter.hasNext()) {
               String p = (String)(iter.next());
               importCode += "import " + p + ";\n";
@@ -159,40 +143,32 @@ class SaveAsJava {
      *  connect all components that are nested within the component. 
 
      *  @param model The component for which code is to be generated.
-     *  @param importList A list of import statements that must be
-     *  prepended in the generated code. This list is added to as 
-     *  appropriate in this method.
      *  @return The generated Ptolemy II Java code for implementing
      *   the component.
      */
-    protected String _generateComponents(ComponentEntity model,
-                                         LinkedList importList) 
+    protected String _generateComponents(ComponentEntity model) 
     throws IllegalActionException {
         String code = new String(); 
-        String clfullname; 
-        String clname;
+        String clname = _getClassName(model);
 
-        if (model instanceof AtomicActor) {
-             clfullname = model.getClass().getName();
-             clname = _extractSuffix(clfullname);
+        if (model.isAtomic()) {
              code += _indent(3)
                      + clname + " " + model.getName() + " = new "
-                     + clname + "(this, \"" + model.getName() + "\");\n";
-  
-             _insertIfUnique(clfullname, importList);
+                     + clname + "(this, \"" + model.getName()
+                             + "\");\n";
         }
-        else if (model instanceof CompositeActor) {
+        else {
 
              // Instantiate the actors inside the composite actor
-             List components = ((CompositeActor)model).entityList();
+             List components = ((CompositeEntity)model).entityList();
              ListIterator compiter = components.listIterator(0);
              while (compiter.hasNext()) {
-                 code += _generateComponents((ComponentEntity)(compiter.next()),
-                                             importList); 
+                 code += _generateComponents((ComponentEntity)
+                         (compiter.next())); 
              }
 
              // Instantiate the connections between actors
-             List relations = ((CompositeActor)model).relationList();
+             List relations = ((CompositeEntity)model).relationList();
              ListIterator reliter = relations.listIterator(0);
              while (reliter.hasNext()) {
                  Relation rel = (Relation)(reliter.next());
@@ -228,11 +204,6 @@ class SaveAsJava {
              }
            
         }
-        else {
-           throw new IllegalActionException("Exception raised while "
-             + "saving java code for component '" + model.getName() 
-             + "' has invalid component type.");
-        } 
     
         return code;
        
@@ -296,4 +267,20 @@ class SaveAsJava {
 	}
         return indent;
     }
+
+    // Return the class name associated with a named object. Also, 
+    // if it does not already exist in the list of classes to be
+    // imported in the generated Java code, insert the class name
+    // (fully qualified) into this list.
+    private String _getClassName(NamedObj object) {
+            String clfullname = object.getName();
+            String clname = _extractSuffix(clfullname);
+            _insertIfUnique(clfullname, _importList);
+            return clname;
+    }
+        
+
+    // The list of classes to import in the generated Java code.
+    LinkedList _importList;
+
 }
