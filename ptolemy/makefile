@@ -93,5 +93,9 @@ OPTIONAL_FILES = filter system
 all: suball $(EXTRA_SRCS)
 install: subinstall jars
 
+# Run all the tests that do not take much time.
+fast_tests:
+	$(MAKE) PTCOPERNICUS_DIR= tests 
+
 # Include rules for directories that contain only subdirectories.
 include $(ROOT)/mk/ptcommon.mk
