@@ -103,19 +103,6 @@ if [ -z "$JAVAHOME" ]; then
 	echo " Java distribution"
 	exit 3
     fi
-     if [ ! -r "$JAVAHOME/lib/classes.zip" \
-	    -a ! -d "$JAVAHOME/classes" \
-	    -a ! -f "$JAVAHOME/share/kaffe/Klasses.jar" ]; then
-	    -a ! -f "$JAVAHOME/lib/tools.jar" ]; then
-        # DEC alpha has the classes in $JAVAHOME/classes
-	echo "$0: \$JAVAHOME == $JAVAHOME, but $JAVAHOME/lib/classes.zip,"
-	echo " $JAVAHOME/classes, $JAVAHOME/share/kaffe/Klasses.jar,
-	echo "and $JAVAHOME/lib/tools.jar do not exist or are not readable."
-	echo " Please set \$JAVAHOME to the directory that contains your"
-	echo " Java distribution"
-	exit 3
-    fi
-
 fi
 
 if [ "$windows" = "yes" ]; then
@@ -129,5 +116,7 @@ elif [ "$PTARCH" = "alpha4" ]; then
     export CLASSPATH
     java $javastartupclass ${1+"$@"}
 else
-    $JAVAHOME/bin/java -classpath $PTII:$JAVAHOME/lib/classes.zip $javastartupclass ${1+"$@"}
+    CLASSPATH=$PTII
+    export CLASSPATH
+    $JAVAHOME/bin/java $javastartupclass ${1+"$@"}
 fi
