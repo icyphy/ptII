@@ -167,12 +167,10 @@ depend on the values of the keytool -keyalg and
             <property name="input"/>
         </port>
     </entity>
-    <entity name="KeyReader" class="ptolemy.actor.lib.security.KeyReader">
+    <entity name="PrivateKeyReader" class="ptolemy.actor.lib.security.PrivateKeyReader">
         <property name="alias" class="ptolemy.data.expr.StringParameter" value="claudius">
         </property>
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptKeystore">
-        </property>
-        <property name="getPublicKey" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="password" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
         </property>
@@ -188,12 +186,10 @@ depend on the values of the keytool -keyalg and
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="KeyReader2" class="ptolemy.actor.lib.security.KeyReader">
+    <entity name="PublicKeyReader" class="ptolemy.actor.lib.security.PublicKeyReader">
         <property name="alias" class="ptolemy.data.expr.StringParameter" value="claudius">
         </property>
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$PTII/ptKeystore">
-        </property>
-        <property name="getPublicKey" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="password" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
         </property>
@@ -365,8 +361,8 @@ depend on the values of the keytool -keyalg and
     <link port="Ramp.output" relation="relation"/>
     <link port="SequenceToArray.input" relation="relation"/>
     <link port="SequenceToArray.output" relation="relation3"/>
-    <link port="KeyReader.output" relation="relation6"/>
-    <link port="KeyReader2.output" relation="relation2"/>
+    <link port="PrivateKeyReader.output" relation="relation6"/>
+    <link port="PublicKeyReader.output" relation="relation2"/>
     <link port="Scale.input" relation="relation7"/>
     <link port="Scale.output" relation="relation8"/>
     <link port="SequenceToArray2.input" relation="relation8"/>

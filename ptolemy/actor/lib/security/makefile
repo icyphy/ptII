@@ -48,18 +48,15 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	AsymmetricDecryption.java \
-	AsymmetricEncryption.java \
 	CipherActor.java \
 	CryptographyActor.java \
-	Decryption.java \
 	Key.java \
 	KeyReader.java \
-	KeyWriter.java \
+	PrivateKeyReader.java \
+	PublicKeyReader.java \
 	ServiceInformation.java \
 	SignatureActor.java \
 	SignatureSigner.java \
-	SignatureSignerKeyPort.java \
 	SignatureVerifier.java \
 	SymmetricDecryption.java \
 	SymmetricEncryption.java
