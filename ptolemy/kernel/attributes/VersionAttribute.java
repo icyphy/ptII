@@ -195,9 +195,10 @@ public class VersionAttribute
      */
     public boolean equals(Object obj) {
         // If the _tupleList is null, then we are not fully constructed.
-        // I see no choice but to return false.
+        // Defer to the superclass, so that we return true if the argument
+        // is the same object as this.
         if (_tupleList == null) {
-            return false;
+            return super.equals(obj);
         }
         if (obj instanceof VersionAttribute) {
             return (compareTo(obj) == 0);
