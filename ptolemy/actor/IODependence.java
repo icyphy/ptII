@@ -118,6 +118,14 @@ public class IODependence extends Attribute {
         if (_dgValid != workspace().getVersion()){
             // construct a directed graph
             _dg = _constructDirectedGraph();
+            // FIXME: how to show the following debugging information
+            // when listening to director?
+            if (_debugging){ 
+                _debug(getContainer().getName() +
+                    " has a dataflow directed graph based on input and" +
+                    " output ports: ");
+                _debug(_dg.toString());
+            }
             _dgValid = workspace().getVersion();
         }
     }
@@ -329,10 +337,9 @@ public class IODependence extends Attribute {
         // and we can not tell the details.
 
         inputs = container.inputPortList().listIterator();
-        outputs = container.outputPortList().listIterator();
-        IODependence ioDependence = container.getIODependence();
         while (inputs.hasNext()) {
             IOPort inputPort = (IOPort) inputs.next();
+            outputs = container.outputPortList().listIterator();
             while (outputs.hasNext()) {
                 // connected the inputs and outputs
                 dg.addEdge(inputPort, outputs.next());
