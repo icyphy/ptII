@@ -493,7 +493,7 @@ public class CalendarQueue {
                     --_qSize;
 
                     // Halve calendar size if needed.
-                    if (_qSize < _botThreshold) {
+                    if (_qSize < _bottomThreshold) {
                         // if it is already minimum, then do nothing.
                         if (_nBuckets != _minNumBucket) {
                             if (_nBuckets/_thresholdFactor > _minNumBucket) {
@@ -673,7 +673,7 @@ public class CalendarQueue {
         // half and twice nBuckets, respectively. But in practice, botThreshold
         // is calculated as nBuckets/2 - 2. The minus two is here, so that
         // nBuckets will be biased to larger value.
-        _botThreshold = _nBuckets/_thresholdFactor;
+        _bottomThreshold = _nBuckets/_thresholdFactor;
         _topThreshold = _nBuckets*_thresholdFactor;
     }
 
@@ -1108,8 +1108,9 @@ public class CalendarQueue {
     private Object _width;
     // _topThreshold: largest queue size before number of buckets get doubled
     private int _topThreshold;
-    // _botThreshold: smallest queue size before number of buckets get halfed
-    private int _botThreshold;
+    // _bottomThreshold: smallest queue size before number of buckets
+    // get halfed
+    private int _bottomThreshold;
     // _zeroRef: the point zero needed to quantize a Object object
     private Object _zeroRef = null;
     // _bucket: an array of nBuckets buckets
