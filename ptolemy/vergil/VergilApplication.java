@@ -273,6 +273,9 @@ public class VergilApplication extends MoMLApplication {
     protected Configuration _createEmptyConfiguration() throws Exception {
         Configuration configuration = _createDefaultConfiguration();
 
+        if (_configurationSubdirectory == null) {
+            _configurationSubdirectory = "full";
+        }
         // FIXME: This code is Dog slow for some reason.
         URL inurl = specToURL("ptolemy/configs/"
                 + _configurationSubdirectory + "/welcomeWindow.xml");
