@@ -35,7 +35,7 @@ ME =		ptolemy/vergil/icon
 DIRS = 		
 
 # Root of the Java directory
-ROOT =		../../../
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
@@ -50,7 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	IconEditor.java \
-	SimpleSelection.java \
+	SimpleSelection.java
 
 EXTRA_SRCS =	$(JSRCS)
 
