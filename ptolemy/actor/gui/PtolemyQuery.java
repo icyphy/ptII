@@ -201,6 +201,11 @@ public class PtolemyQuery extends Query
 	if (_parameters.containsKey(name)) {
 	    Variable var = (Variable)(_parameters.get(name));
 
+            // Check if the variable exists.
+            if ( var == null ) {
+                return;
+            }
+            
             // Check to see if we should ignore this parameter set.
             String expr;
             try {
@@ -208,6 +213,13 @@ public class PtolemyQuery extends Query
             } catch(Exception ex) {
                 expr = var.getExpression();
             }
+
+            // Check if the variable contains an expression or
+            // variable.
+            if ( expr == null ) {
+                return;
+            }
+
             if(expr.equals(stringValue(name))) {
                 return;
             } 
