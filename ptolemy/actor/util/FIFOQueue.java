@@ -46,7 +46,7 @@ and removed from the queue with the take() method. The object
 removed is the oldest one in the queue. By default, the capacity is
 infinite, but it can be set to any nonnegative size. If the history
 capacity is greater than zero (or infinite, by setting the capacity to
-INFINITE_CAPACITY), then objects removed from the queue are transfered
+INFINITE_CAPACITY), then objects removed from the queue are transferred
 to a history queue rather than simply removed. By default, the history
 capacity is zero.
 
