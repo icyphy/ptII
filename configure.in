@@ -414,6 +414,29 @@ if test "$UPGRADE_JVM" = "yes"; then
 fi
 
 
+#
+# Check that jar can handle the -i argument
+#
+AC_MSG_CHECKING([for the jar command in $PTJAVA_DIR/bin])
+if test -f "$PTJAVA_DIR/bin/jar"; then
+    AC_MSG_RESULT($PTJAVA_DIR/bin/jar)
+    AC_MSG_CHECKING([that $PTJAVA_DIR/bin/jar can handle -i])
+    cd "$srcdir/config"
+    "$PTJAVA_DIR/bin/jar" -cf jarTest.jar confTest.class
+    if "$PTJAVA_DIR/bin/jar" -i jarTest.jar; then
+        AC_MSG_RESULT([$PTJAVA_DIR/bin/jar -i worked])
+	JAR_INDEX='"$(JAR)" -i tmp.jar'
+    else
+        AC_MSG_ERROR([$PTJAVA_DIR/bin/jar -i jarTest.jar failed,
+    so we will not index the jar files])
+	JAR_INDEX=""
+    fi
+else
+    AC_MSG_WARN([Cannot find '$PTJAVA_DIR/bin/jar'.
+    This is usually only a problem if you run 'make install'])
+fi
+cd "$startdir"
+
 #--------------------------------------------------------------------
 #	Figure out which separator to use for CLASSPATH
 #	So much for write once, run everywhere.
@@ -2188,6 +2211,10 @@ AC_SUBST(ECLIPSE_EXCLUDING_SRC)
 # Eclipse .classpath lib elements of the format
 #    <classpathentry kind="lib" path="lib/diva.jar"/>
 AC_SUBST(ECLIPSE_CLASSPATHENTRY_LIBS)
+
+# Command to run that indexes a jar file named tmp.jar
+# Usually it looks like '"$(JAR)" -i tmp.jar'
+AC_SUBST(JAR_INDEX)
 
 # Location of rt.jar, usually $(PTJAVA_DIR)/jre/lib/rt.jar
 # However, we have to be careful of backslashes and /cygwin

@@ -168,6 +168,10 @@ JDOCFLAGS = 	-author -version $(JDOCBREAKITERATOR) $(JDOCMEMORY)
 # The jar command, used to produce jar files, which are similar to tar files
 JAR =		$(PTJAVA_DIR)/bin/jar
 
+# Command to run that indexes a jar file named tmp.jar
+# Usually it looks like '"$(JAR)" -i tmp.jar'
+JAR_INDEX =	@JAR_INDEX@
+
 # The 'java' interpreter.
 JAVA =		$(PTJAVA_DIR)/bin/java
 
