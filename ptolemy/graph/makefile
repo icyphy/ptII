@@ -59,9 +59,9 @@ JARFILE = 	$(TYPACKAGE).jar
 
 
 JSRCS = \
-	Cpo.java \
+	CPO.java \
 	DirectedGraph.java \
-	FiniteCpo.java \
+	FiniteCPO.java \
 	Graph.java \
         InvalidGraphException.java \
 	StaticGraph.java \
@@ -93,6 +93,3 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk
-
-
-
