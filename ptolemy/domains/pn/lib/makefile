@@ -39,7 +39,7 @@ CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 #JAVAHOME =      ../../../../../../jdk1.1.5
 
-DIRS = 		demo #test doc
+DIRS = 		#demo #test doc
 
 # Used to build zip files
 JPACKAGE = 	pt.domains.pn.stars
@@ -54,7 +54,7 @@ CLASSPATH = ../../../..
 JSRCS = \
 	PNAdder.java \
 	PNAlternate.java \
- 	PNAudioPacker.java \
+	PNAudioPacker.java \
 	PNAudioSource.java \
 	PNCirConvFilter.java \
 	PNDAConverter.java \
@@ -76,7 +76,7 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Files or directories that are present, but that 'make checkjunk' 
 # should not complain about
-MISC_FILES =  Constan	$(DIRS) doc test
+MISC_FILES =  $(DIRS) doc # test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
