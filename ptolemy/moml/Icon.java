@@ -1,4 +1,4 @@
-/* An attribute that represents a rendarable form of the container.
+/* An attribute that represents a renderable form of the container.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -39,7 +39,7 @@ import java.io.*;
 //////////////////////////////////////////////////////////////////////////
 //// Icon
 /**
-An attribute that represents a rendarable form of the container.
+An attribute that represents a renderable form of the container.
 It represents a visual depiction that can be placed on the screen.
 
 @author  Edward A. Lee, Steve Neuendorffer
