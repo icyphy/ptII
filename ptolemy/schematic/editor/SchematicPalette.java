@@ -141,7 +141,7 @@ public class SchematicPalette extends JGraph {
             // drag recognizer can get them.
             ni.setConsuming(false);
 	    di.setConsuming(false);
-            NodeRenderer nr = new EditorNodeRenderer();
+            NodeRenderer nr = new EditorNodeRenderer(this);
 	    setNodeRenderer(nr);
 	}
 

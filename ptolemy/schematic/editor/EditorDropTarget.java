@@ -111,9 +111,16 @@ public class EditorDropTarget extends DropTarget {
                 NamedObj semanticObject = (NamedObj) data.getSemanticObject();
                 GraphImpl impl = gc.getGraphImpl();
                 CompositeNode newNode;
+                Graph graph;
 
                 try {
-                    newNode = impl.createCompositeNode(semanticObject.clone());
+                    // Figure out where this is going, so we can clone into
+                    // the right workspace.
+                    graph = gc.getGraph();
+                    NamedObj container = (NamedObj) graph.getSemanticObject();
+                    // Create the new node
+                    newNode = impl.createCompositeNode(semanticObject.clone(
+                            container.workspace()));
                     NamedObj newObject = (NamedObj)newNode.getSemanticObject();
 		    newObject.setName(semanticObject.getName() + 
 				      ((EditorGraphController)gc).createUniqueID());

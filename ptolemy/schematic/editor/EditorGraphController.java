@@ -129,17 +129,19 @@ public class EditorGraphController extends GraphController {
         setNodeInteractor(ni);
         setEdgeInteractor(ei);
 
-        NodeRenderer nr = new EditorNodeRenderer();
+        NodeRenderer nr = new EditorNodeRenderer(this);
         setNodeRenderer(nr);
 
         // Create and set up the target for connectors
         ConnectorTarget ct = new PerimeterTarget() {
 	    public boolean accept (Figure f) {
     //		System.out.println(f.getUserObject().toString());
+                System.out.println("targetfigure = " + f);
 		Object object = f.getUserObject();
                 if(object instanceof Node) {
 		    Node node = (Node) object;
 		    object = node.getSemanticObject();
+                    System.out.println("target = " + node);
 		    if(object instanceof Port) return true;
 		    if(object instanceof Vertex) return true;
 		}
@@ -282,7 +284,8 @@ public class EditorGraphController extends GraphController {
         nf.setInteractor(getNodeInteractor());
 	getGraphPane().getForegroundLayer().add(nf);
 
-        /*        if(n instanceof CompositeNode) {
+        /*
+        if(n instanceof CompositeNode) {
 	    Iterator nodes = ((CompositeNode) n).nodes();
 	    while(nodes.hasNext()) {
 		Node node = (Node) nodes.next();
@@ -292,13 +295,14 @@ public class EditorGraphController extends GraphController {
                 // Assume that CompositeNode -> CompositeFigure
 		((CompositeFigure)nf).add(nodeFigure);
 
-                CanvasUtilities.translateTo(nodeFigure, nodeX, nodeY);
+                CanvasUtilities.translateTo(nodeFigure, 20, 0);
 
                 nodeFigure.setUserObject(node);
 		node.setVisualObject(nodeFigure);
 	    }
-            }*/
-	
+           }
+        */        
+
         CanvasUtilities.translateTo(nf, x, y);
  
         // Add to the view and model
@@ -332,12 +336,12 @@ public class EditorGraphController extends GraphController {
         _relationCreator = new RelationCreator();
         _relationCreator.setMouseFilter(_shiftFilter);
         pane.getBackgroundEventLayer().addInteractor(_relationCreator);
-        /*
+        
         // Create a listener that creates new terminals
         _terminalCreator = new TerminalCreator();
         _terminalCreator.setMouseFilter(_controlFilter);
         pane.getBackgroundEventLayer().addInteractor(_terminalCreator);
-        */
+        
         // Create the interactor that drags new edges.
 	_edgeCreator = new EdgeCreator();
         _edgeCreator.setMouseFilter(_controlFilter);

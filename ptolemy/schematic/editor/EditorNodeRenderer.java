@@ -55,14 +55,16 @@ import ptolemy.schematic.util.*;
 public class EditorNodeRenderer implements NodeRenderer {
     /** Create a new editor node renderer with a default composite scale
      */
-    public EditorNodeRenderer() {
-	this(DEFAULTCOMPOSITESCALE);
+    public EditorNodeRenderer(GraphController gc) {        
+	this(DEFAULTCOMPOSITESCALE, gc);
+        _graphController = gc;
     }
 
     /** Create a new editor node renderer with the given comsposite scale
      */
-    public EditorNodeRenderer(double scale) {
+    public EditorNodeRenderer(double scale, GraphController gc) {
 	_compositeScale = scale;
+        _graphController = gc;
     }
 
     /** return the current composite scale of this renderer
@@ -87,7 +89,7 @@ public class EditorNodeRenderer implements NodeRenderer {
             //           Figure background = new BasicRectangle(-10, -10, 20, 20, Color.red);
             //icon.createFigure();
 	    Figure background = icon.createFigure(); 
-	    figure = new IconFigure(background);
+	    figure = new CompositeFigure(background);
 
             LinkedList inputs = new LinkedList();
             LinkedList outputs = new LinkedList();
@@ -122,32 +124,9 @@ public class EditorNodeRenderer implements NodeRenderer {
             System.out.println("inoutcount = "+ inOutCount);
             int nodeNumber = 0;
         
-            nodes = inputs.iterator();            
-	    while(nodes.hasNext()) {
-                nodeNumber ++;
-		Node portNode = (Node) nodes.next();
- 		Terminal nodeFigure = new StraightTerminal();                
-//render(node);
-                //		nodeFigure.setInteractor(getNodeInteractor());
-		((IconFigure)figure).addTerminal(nodeFigure, 
-                        SwingConstants.EAST, 100.0*nodeNumber/(inCount+1));
-                //                CanvasUtilities.translateTo(nodeFigure, nodeX, nodeY);
-                nodeFigure.setUserObject(portNode);
-		portNode.setVisualObject(nodeFigure);
-	    }
-    
-            nodeNumber = 0;
-            nodes = inouts.iterator();            
-	    while(nodes.hasNext()) {
-                nodeNumber ++;
-                Node portNode = (Node) nodes.next();
- 		Terminal nodeFigure = new StraightTerminal();                
-		((IconFigure)figure).addTerminal(nodeFigure, 
-                        SwingConstants.SOUTH, 100.0*nodeNumber/(inOutCount+1));
-
-                nodeFigure.setUserObject(portNode);
-		portNode.setVisualObject(nodeFigure);
-	    }
+            _createPortFigures((CompositeFigure)figure, inputs, inCount, SwingConstants.WEST);
+            _createPortFigures((CompositeFigure)figure, outputs, outCount, SwingConstants.EAST);
+            _createPortFigures((CompositeFigure)figure, inouts, inOutCount, SwingConstants.SOUTH);
    
 	} else if(object instanceof Port) {
 	    figure = new BasicRectangle(-2, -2, 4, 4, Color.black);
@@ -166,6 +145,30 @@ public class EditorNodeRenderer implements NodeRenderer {
     public void setCompositeScale(double scale) {
 	_compositeScale = scale;
     }
+
+    public void _createPortFigures(CompositeFigure figure,
+            LinkedList nodeList, int count, int direction) {        
+        int nodeNumber = 0;
+        Iterator nodes = nodeList.iterator();            
+        while(nodes.hasNext()) {
+            nodeNumber ++;
+            Node portNode = (Node) nodes.next();
+            
+            StraightTerminal nodeFigure = new StraightTerminal();
+            //nodeFigure.setEnd(new Blob());
+            BoundsSite site = new BoundsSite(figure, 0, direction, 
+                    100.0*nodeNumber/(count+1));
+            nodeFigure.setAttachSite(site);
+            
+            nodeFigure.setInteractor(_graphController.getNodeInteractor());
+            figure.add(nodeFigure);
+            //CanvasUtilities.translateTo(nodeFigure, -20, 0);
+            nodeFigure.setUserObject(portNode);
+            portNode.setVisualObject(nodeFigure);
+        }
+    }    
+
+    private GraphController _graphController;
 
     double _compositeScale;
     public static final double DEFAULTCOMPOSITESCALE = 1.0;
