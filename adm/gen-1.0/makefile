@@ -66,7 +66,7 @@ GNU_DEST =	$(FTP_DEST)/pub/gnu/$(PTOLEMY_SRC)$(VERSION)
 # For use under Windows
 # make USER=cxh PTIIHOME=//c/users/cxh/ptII TAR=tar 
 # make USER=cxh PTIIHOME=//c/users/cxh/ptII/adm/trees/ptII1.0beta TAR=tar 
-# make USER=cxh PTIIHOME=//c/users/cxh/ptII/adm/trees/ptII1.0beta TAR=tar PTIIADM=//c/users/cxh/ptII/adm
+# make USER=cxh PTIIHOME=//c/users/cxh/ptII/adm/trees/ptII1.0beta COMPRESS=gzip TAR=tar PTIIADM=//c/users/cxh/ptII/adm 
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0beta PTIIADM=/home/eecs/cxh/ptII/adm
 USER =		ptII
 PTIIHOME =	/users/ptII
@@ -894,11 +894,12 @@ clean_installshield:
 
 $(INSTALLSHIELD_APP): #$(PTII_SRC)
 	(cd $(INSTALLSHIELD_SRC); \
-	 tar -xf ../ptII$(VERSION).src.tar; \
+	$(TAR) -xf ../ptII$(VERSION).src.tar; \
 	 mv ptII$(VERSION) `basename $@`)
 
 INSTALLSHIELD_PTINY_DOMAINS=ct de fsm pn sdf
-$(INSTALLSHIELD_PTINY): bar
+installshield_ptiny: $(INSTALLSHIELD_PTINY)
+$(INSTALLSHIELD_PTINY):
 	 mkdir -p $@ $@/lib $@/ptolemy/vergil
 	 mkdir -p $@/doc/codeDoc/ptolemy/actor
 	 mkdir -p $@/moml/demo/Networked
@@ -915,7 +916,7 @@ $(INSTALLSHIELD_PTINY): bar
 	 	$(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/demo \
 		$(INSTALLSHIELD_APP)/ptolemy/domains/$$domain/doc \
 		$@/ptolemy/domains/$$domain; \
-		 mv $(INSTALLSHIELD_DOC)/doc/codeDoc/ptolemy/$$domain \
+		 mv $(INSTALLSHIELD_DOC)/doc/codeDoc/ptolemy/domains/$$domain \
 		 $@/doc/codeDoc/ptolemy; \
 	 done
 	 # We do want to ship actor/lib docs
@@ -956,6 +957,7 @@ $(INSTALLSHIELD_PTINY)/ptolemy/configs:
 	mv $(INSTALLSHIELD_APP)/ptolemy/configs/doc/demosPtiny.htm \
 		$@/doc/demos.htm
 
+installshield_designdoc: $(INSTALLSHIELD_DESIGNDOC)
 $(INSTALLSHIELD_DESIGNDOC):
 	 mkdir -p $@/doc/design
 	 mv $(INSTALLSHIELD_APP)/doc/design/design.pdf $@/doc/design
