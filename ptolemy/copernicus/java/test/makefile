@@ -69,14 +69,15 @@ JSRCS = TestUnboxingMain.java \
 JSIMPLE_TESTS = \
 	JavaTypeLattice.tcl \
 	QuickSmoke.tcl \
-	TokenUnboxing.tcl
+
 
 # Long tests, that take so damn long they are not even done in the
 # nightly build.
 # Don't add $(JSIMPLE_TESTS) to JLONG_TESTS, the JSIMPLE_TESTS are
 # automatically run when make test_long is run.
 JLONG_TESTS = \
-	Deep.tcl
+	Deep.tcl \
+	TokenUnboxing.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
