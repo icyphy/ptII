@@ -92,9 +92,21 @@ public class PlotEffigy extends Effigy {
      */
     public void writeFile(File file) throws IOException {
         if (_plot != null) {
-            FileOutputStream stream = new FileOutputStream(file);
-            _plot.write(stream);
-            stream.close();
+            FileOutputStream stream = null;
+            try {
+                stream = new FileOutputStream(file);
+                _plot.write(stream);
+            } finally {
+                if (stream != null) {
+                    try {
+                        stream.close();
+                    } catch (Throwable throwable) {
+                        System.out.println("Ignoring failure to close stream "
+                                + "on " + file);
+                        throwable.printStackTrace();
+                    }
+                }
+            }
         }
     }
 

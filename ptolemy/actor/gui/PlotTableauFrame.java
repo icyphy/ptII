@@ -229,13 +229,24 @@ public class PlotTableauFrame extends TableauFrame {
         int returnVal = fileDialog.showDialog(this, "Export");
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
+            FileOutputStream fout = null;
             try {
-                FileOutputStream fout = new FileOutputStream(file);
+                fout = new FileOutputStream(file);
                 plot.export(fout);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this,
-                        "Error exporting plot: " + ex,
+                        "Error exporting plot to '" + file + "': " + ex,
                         "Ptolemy II Error", JOptionPane.WARNING_MESSAGE);
+            } finally {
+                if (fout != null) {
+                    try {
+                        fout.close();
+                    } catch (Throwable throwable) {
+                        System.out.println("Ignoring failure to close stream "
+                                + "on " + file);
+                        throwable.printStackTrace();
+                    }
+                }
             }
         }
     }

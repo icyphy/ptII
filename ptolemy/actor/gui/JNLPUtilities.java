@@ -289,14 +289,18 @@ public class JNLPUtilities {
                 try {
                     input.close();
                 } catch (Throwable throwable) {
-                    // Ignore, not much we can do
+                        System.out.println("Ignoring failure to close stream "
+                                + "on " + sourceURL);
+                        throwable.printStackTrace();
                 }
             }
             if (output != null) {
                 try {
                     output.close();
                 } catch (Throwable throwable) {
-                    // Ignore, not much we can do
+                    System.out.println("Ignoring failure to close stream "
+                            + "on " + destinationFile);
+                    throwable.printStackTrace();
                 }
             }
         }
