@@ -32,6 +32,7 @@ output stream.
 package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.lib.SequenceActor;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -48,7 +49,7 @@ and an output port.
 @version $Id$
 */
 
-public class SDFTransformer extends TypedAtomicActor {
+public class SDFTransformer extends TypedAtomicActor implements SequenceActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
