@@ -38,16 +38,18 @@ import java.util.List;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.ScopeExtendingAttribute;
+import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 
@@ -392,7 +394,9 @@ public class MultiInstanceComposite extends TypedCompositeActor {
             (MultiInstanceComposite)super.clone(workspace);
         newObject._isMasterCopy = false;
         try {
-            new Attribute(newObject, "_hide");
+            SingletonParameter hide = new SingletonParameter(this, "_hide");
+            hide.setToken(BooleanToken.TRUE);
+            hide.setVisibility(Settable.EXPERT);
         } catch (KernelException e) {
             // This should not occur.  Ignore if it does
             // since the only downside is that the actor is
