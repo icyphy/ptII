@@ -83,6 +83,9 @@ capability.
  */
 public final class ASTReflect {
 
+    // private constructor prevent instantiation of this class
+    private ASTReflect() {}
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -98,7 +101,7 @@ public final class ASTReflect {
 
 	LinkedList memberList = new LinkedList();
 
-	// Get the AST for all the constructor.
+	// Get the AST for all the constructors.
 	memberList.addAll(constructorsASTList(myClass));
 
 	// Get the AST for all the methods.
@@ -107,14 +110,16 @@ public final class ASTReflect {
 	// Get the AST for all the fields.
 	memberList.addAll(fieldsASTList(myClass));
 
-	// Get the AST for all the inner classes.
-	memberList.addAll(innerClassesASTList(myClass));
+	// Get the AST for all the inner classes or inner interfaces
+	memberList.addAll(innerClassesOrInterfacesASTList(myClass));
 
 	TypeNameNode superClass = null;
         if (myClass.getSuperclass() == null ) {
-            // JDK1.2.2 getSuperclass can return null
+            // "If this Class represents either the Object class, an
+            // interface, a primitive type, or void, then null is
+            // returned"
             superClass =
-                new TypeNameNode((NameNode)_makeNameNode("java.lang.Object"));
+                new TypeNameNode(new NameNode(AbsentTreeNode.instance,""));
         } else {
             superClass =
 		new TypeNameNode((NameNode)_makeNameNode(
@@ -178,7 +183,7 @@ public final class ASTReflect {
     /** Return a list of constructors where each element contains
      *  a ConstructorDeclNode for that constructor.   
      *  @param myClass The class to be analyzed.
-     *  @return The List of constructors for the class.
+     *  @return The List of constructorDeclNodes for the class.
      */
     public static List constructorsASTList(Class myClass) {
 	List constructorList = new LinkedList();
@@ -193,6 +198,8 @@ public final class ASTReflect {
 	    List throwsList =
                 _typeNodeList(constructors[i].getExceptionTypes());
 
+            // Note that because we are using reflection, we don't get
+            // the bodies of the constructors.
 	    ConstructorDeclNode constructorDeclNode =
 		new ConstructorDeclNode(modifiers,
                         constructorName,
@@ -200,7 +207,7 @@ public final class ASTReflect {
                         throwsList,
                         /* body */
                         new BlockNode(new LinkedList()),
-                        /* constructor call*/
+                        /* constructor call */
                         new SuperConstructorCallNode(new LinkedList())
 					);
 	    constructorList.add(constructorDeclNode);
@@ -211,7 +218,7 @@ public final class ASTReflect {
     /** Return a list of fields where each element contains
      *  a FieldDeclNode for that field.
      *  @param myClass The class to be analyzed.
-     *  @return The List of fields for the class.
+     *  @return The List of FieldDeclNodes for the class.
      */
     public static List fieldsASTList(Class myClass) {
 	List fieldList = new LinkedList();
@@ -227,7 +234,8 @@ public final class ASTReflect {
 		new FieldDeclNode(modifiers,
                         defType,
                         fieldName,
-                        AbsentTreeNode.instance/* initExpr */);
+                        /* initExpr */
+                        AbsentTreeNode.instance);
 
     	    fieldList.add(fieldDeclNode);
 	}
@@ -235,18 +243,24 @@ public final class ASTReflect {
     }
 
     /** Return a list of inner classes where each element contains
-     *  a ClassDeclNodes for that inner class.
+     *  a ClassDeclNode or an InterfaceDeclNode  for that inner class.
      *  @param myClass The class to be analyzed.
-     *  @return The List of ClassDeclNodes for the inner classes of the class.
+     *  @return The List of ClassDeclNodes or InterfaceDeclNodes
+     *  for the inner classes and inner interfaces of the class.
      */
-    public static List innerClassesASTList(Class myClass) {
-	List innerClassList = new LinkedList();
-	// Handle inner classes
+    public static List innerClassesOrInterfacesASTList(Class myClass) {
+	List innerClassesOrInterfacesList = new LinkedList();
+	// Handle inner classes and inner interfaces
 	Class classes[] = myClass.getDeclaredClasses();
 	for(int i = 0; i < classes.length; i++) {
-	    innerClassList.add(ASTClassDeclNode(classes[i]));
+            if (classes[i].isInterface()) {
+                innerClassesOrInterfacesList.add(
+                        ASTInterfaceDeclNode(classes[i]));
+            } else {
+                innerClassesOrInterfacesList.add(ASTClassDeclNode(classes[i]));
+            }
 	}
-    	return innerClassList;
+    	return innerClassesOrInterfacesList;
     }
 
     /** Return an AST that contains an interface declaration. 
@@ -269,8 +283,8 @@ public final class ASTReflect {
 	// Get the AST for all the fields.
 	memberList.addAll(fieldsASTList(myClass));
 
-	// Get the AST for all the inner classes.
-	memberList.addAll(innerClassesASTList(myClass));
+	// Get the AST for all the inner classes and interfaces
+	memberList.addAll(innerClassesOrInterfacesASTList(myClass));
 
 	InterfaceDeclNode interfaceDeclNode =
 	    new InterfaceDeclNode(modifiers,
