@@ -191,56 +191,6 @@ public class XSLTUtilities {
         }
     }
 
-    /** Apply a list of XSL files to an input string and write the output
-     *  to a FileWriter.
-     *  @param input HSIF file to be read in.
-     *  @param xslFileNames A list of Strings naming the
-     *  xsl files to be applied sequentially.
-     *  @param fileWriter A FileWriter that will write to the MoML
-     *  file.
-     *  @exception Exception If there is a problem with the transformation.
-     */
-    public static void transform(String input, List xslFileNames,
-            FileWriter fileWriter)
-            throws Exception {
-        // This method takes a FileWriter so that the user can
-        // ensure that the FileWriter exists and is writable before going
-        // through the trouble of doing the conversion.
-
-        Document inputDocument = null;
-        try {
-            inputDocument = XSLTUtilities.parse(input);
-        } catch (Exception ex) {
-            // net.sf.saxon.om.DocumentBuilderImpl.parse()
-            // can throw a javax.xml.transform.TransformerException
-            // which extends Exception, but has  IOException as a cause,
-            // so we must catch Exception here, not IOException.
-
-            // Try it as a jar url
-            try {
-                URL jarURL =
-                    ClassUtilities.jarURLEntryResource(input);
-                if (jarURL == null) {
-                    throw new Exception("'" + input + "' was not a jar "
-                            + "URL, or was not found");
-                }
-                inputDocument = XSLTUtilities.parse(jarURL.toString());
-            } catch (Exception ex2) {
-                // FIXME: IOException does not take a cause argument
-                throw ex;
-            }
-        }
-
-        // The transform() method will look in the classpath.
-        Document outputDocument =
-            XSLTUtilities.transform(inputDocument, xslFileNames);
-
-        fileWriter.write(XSLTUtilities.toString(outputDocument));
-
-        // Let the caller close the fileWriter.
-        //fileWriter.close();
-    }
-
     /** Transform a document.
      *  @param inputDocument The Document to be transformed
      *  @param xslFileName The file name of the xsl file to be used.
