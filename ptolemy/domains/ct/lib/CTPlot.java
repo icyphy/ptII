@@ -56,13 +56,8 @@ public class  CTPlot extends CTActor {
     public CTPlot  (TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
 
-        // this(container, name, (new PlotFrame(name)).plot);
-        super(container, name);
+        this(container, name, null);
 
-        // create the input port and make it a multiport.
-        input = new TypedIOPort(this, "input", true, false);
-        input.setMultiport(true);
-        input.setDeclaredType(DoubleToken.class);
     }
 
     /** Construct a plot actor that uses the specified plot object.
@@ -72,6 +67,7 @@ public class  CTPlot extends CTActor {
      *  @exception NameDuplicationException If the parent class throws it.
      *  @exception IllegalActionException If the parent class throws it.
      *
+     */
     public CTPlot (TypedCompositeActor container, String name, Plot plot)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
@@ -83,18 +79,11 @@ public class  CTPlot extends CTActor {
         input.setDeclaredType(DoubleToken.class);
 
         _plot = plot;
-        _plot.setButtons(true);
-	_plot.setPointsPersistence(0);
-        //_plot.setMarksStyle("points");
-        _plot.setImpulses(false);
-        _plot.setConnected(true);
-        _plot.setTitle(name);
-
 
         // FIXME: This is not the right way to handle this...
         _yMin = (double)-1;
         _yMax = (double)1;
-    }*/
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -103,7 +92,11 @@ public class  CTPlot extends CTActor {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public void initialize() throws IllegalActionException {
-        _plot = (new PlotFrame(getName())).plot;
+
+        if (_plot == null) {
+            _plot = (new PlotFrame(getName())).plot;
+        }
+
         _plot.setButtons(true);
 	_plot.setPointsPersistence(0);
         //_plot.setMarksStyle("points");
