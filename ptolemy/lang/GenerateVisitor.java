@@ -9,7 +9,8 @@ public class GenerateVisitor {
 
     public static void main(String[] args) throws IOException {
         if (args.length < 1) {
-            System.out.println("Usage : GenerateVisitor TypeNameListFile [VisitorClassName] [BaseNodeName] [node path]");
+            System.out.println("Usage : GenerateVisitor TypeNameListFile " +
+                    "[VisitorClassName] [BaseNodeName] [node path]");
             return;
         }
 
@@ -89,13 +90,16 @@ public class GenerateVisitor {
     public void generate() throws IOException {
 
         _ofs.write(_visitorHeader);
-        _ofs.write("public class "+ _visitorClassName + " implements IVisitor {\n" +
+        _ofs.write("public class "+ _visitorClassName + 
+                " implements IVisitor {\n" +
                 "    public " + _visitorClassName + "() {\n" +
                 "        this(TM_CHILDREN_FIRST);\n" +
                 "    }\n\n" +
-                "    public " + _visitorClassName + "(int traversalMethod) {\n" +
+                "    public " + _visitorClassName + 
+                "(int traversalMethod) {\n" +
                 "        if (traversalMethod > TM_CUSTOM) {\n" +
-                "           throw new RuntimeException(\"Illegal traversal method\");\n" +
+                "           throw new RuntimeException(\"" +
+                "Illegal traversal method\");\n" +
                 "        }\n" +
                 "        _traversalMethod = traversalMethod;\n" +
                 "    }\n\n");
@@ -119,9 +123,12 @@ public class GenerateVisitor {
             String typeName = (String) itr.next();
             String parentTypeName = (String) parItr.next();
             boolean isConcrete = ((Boolean) concreteItr.next()).booleanValue();
-            boolean isSingleton = ((Boolean) singletonItr.next()).booleanValue();
-            boolean isInterface = ((Boolean) interfaceItr.next()).booleanValue();
-            boolean isInTree = ((Boolean) inTreeItr.next()).booleanValue();
+            boolean isSingleton =
+                ((Boolean) singletonItr.next()).booleanValue();
+            boolean isInterface =
+                ((Boolean) interfaceItr.next()).booleanValue();
+            boolean isInTree =
+                ((Boolean) inTreeItr.next()).booleanValue();
 
             LinkedList methodList = (LinkedList) methodListItr.next();
             LinkedList implList = (LinkedList) implListItr.next();
@@ -130,7 +137,8 @@ public class GenerateVisitor {
                 if (isInTree) {
                     _ofs.write(
                             "\n" +
-                            "    public Object visit" + typeName + "(" + typeName +
+                            "    public Object visit" + typeName + "(" +
+                            + typeName +
                             " node, LinkedList args) {\n" +
                             "        return _defaultVisit(node, args);\n" +
                             "    }\n");
@@ -148,10 +156,12 @@ public class GenerateVisitor {
         _ofs.write(
                 "\n" +
                 "    /** Specify the order in visiting the nodes. */\n" +
-                "    public final int traversalMethod() { return _traversalMethod; }\n" +
+                "    public final int traversalMethod() { " +
+                "return _traversalMethod; }\n" +
                 "\n" +
                 "    /** The default visit method. */\n" +
-                "    protected Object _defaultVisit(" + _baseNodeName + " node, LinkedList args) {\n" +
+                "    protected Object _defaultVisit(" + _baseNodeName +
+                " node, LinkedList args) {\n" +
                 "        return null;\n" +
                 "    }\n" +
                 "\n" +
@@ -260,8 +270,9 @@ public class GenerateVisitor {
             String idString = typeName.toUpperCase() + "_ID";
 
             // add a method to return the class id
-            methodList.add(new MethodSignature("public final", "int", "classID",
-                    new LinkedList(), new LinkedList(), "return NodeClassID." + idString + ";"));
+            methodList.add(new MethodSignature("public final", "int",
+                    "classID", new LinkedList(), new LinkedList(),
+                    "return NodeClassID." + idString + ";"));
 
             if (isInTree) {
                 // add a method that accepts a visitor
@@ -273,9 +284,11 @@ public class GenerateVisitor {
                 acceptMethodArgNames.addLast("visitor");
                 acceptMethodArgNames.addLast("args");
 
-                methodList.add(new MethodSignature("protected final", "Object", "_acceptHere",
+                methodList.add(new MethodSignature("protected final",
+                        "Object", "_acceptHere",
                         acceptMethodArgTypes, acceptMethodArgNames,
-                        "return ((" + _visitorClassName + ") visitor).visit" + typeName + "(this, args);"));
+                        "return ((" + _visitorClassName + 
+                        ") visitor).visit" + typeName + "(this, args);"));
 
             }
         }
@@ -292,8 +305,9 @@ public class GenerateVisitor {
             methodList.addLast(ms);
 
             // add a isSingleton() method
-            methodList.add(new MethodSignature("public final", "boolean", "isSingleton",
-                    new LinkedList(), new LinkedList(), "return true;"));
+            methodList.add(new MethodSignature("public final", "boolean",
+                    "isSingleton", new LinkedList(), new LinkedList(),
+                    "return true;")); 
         }
 
         // do methods first
@@ -380,12 +394,14 @@ public class GenerateVisitor {
 
                 className = strTokenizer.nextToken();
 
-                ApplicationUtility.trace("Reading class info for : " + className);
+                ApplicationUtility.trace("Reading class info for : "
+                        + className);
 
                 try {
                     _typeList.addLast(className);
                 } catch (NullPointerException e) {
-                    System.err.println("Not enough parameters in line : " + _lastLine);
+                    System.err.println("Not enough parameters in line : " +
+                            _lastLine);
                     return;
                 }
 
@@ -404,10 +420,12 @@ public class GenerateVisitor {
                     isInterface = nextToken.startsWith("I");
                     _isInterfaceList.addLast(new Boolean(isInterface));
 
-                    _isInTreeList.addLast(new Boolean(!nextToken.endsWith("N")));
+                    _isInTreeList.addLast(
+                            new Boolean(!nextToken.endsWith("N")));
 
                 } catch (NullPointerException e) {
-                    System.err.println("Not enough parameters in line : " + _lastLine);
+                    System.err.println("Not enough parameters in line : " +
+                            _lastLine);
                     return;
                 }
 
@@ -415,7 +433,8 @@ public class GenerateVisitor {
                     nextToken = strTokenizer.nextToken();
                     _parentTypeList.addLast(nextToken);
                 } catch (NullPointerException e) {
-                    System.err.println("Not enough parameters in line : " + _lastLine);
+                    System.err.println("Not enough parameters in line : " +
+                            _lastLine);
                     return;
                 }
 
@@ -431,8 +450,9 @@ public class GenerateVisitor {
                     case 'm':
                         {
                             MethodSignature ms =
-                                new MethodSignature(markChar, strTokenizer, className,
-                                        _defaultPlacement, isInterface, isConcrete);
+                                new MethodSignature(markChar, strTokenizer,
+                                        className, _defaultPlacement,
+                                        isInterface, isConcrete);
                             methodList.addLast(ms);
                         }
                         break;
@@ -440,8 +460,9 @@ public class GenerateVisitor {
                     case 'k':
                         {
                             MethodSignature ms =
-                                new MethodSignature(markChar, strTokenizer, className,
-                                        _defaultPlacement, isInterface, isConcrete);
+                                new MethodSignature(markChar, strTokenizer,
+                                        className, _defaultPlacement,
+                                        isInterface, isConcrete);
 
                             methodList.addLast(ms);
                             methodList.addAll(ms.accessors());
@@ -454,7 +475,8 @@ public class GenerateVisitor {
                             do {
                                 nextToken = strTokenizer.nextToken();
 
-                                isName = ((nextToken != null) && !nextToken.equals("i"));
+                                isName = ((nextToken != null) &&
+                                        !nextToken.equals("i"));
                                 if (isName) {
                                     implList.addLast(nextToken);
                                 }
@@ -463,7 +485,8 @@ public class GenerateVisitor {
                         break;
 
                     default:
-                        throw new RuntimeException("Unrecognized marker : " + marker);
+                        throw new RuntimeException("Unrecognized marker : " +
+                                marker);
                     }
                 }
 
@@ -479,7 +502,8 @@ public class GenerateVisitor {
     public static class MethodSignature {
         public MethodSignature() {}
 
-        public MethodSignature(String modifiers, String returnType, String name,
+        public MethodSignature(String modifiers, String returnType,
+                String name,
                 LinkedList paramTypes, LinkedList paramNames,
                 String methodBody) {
             _modifiers = modifiers;
@@ -527,8 +551,8 @@ public class GenerateVisitor {
 
                 _name = strToken.nextToken();
             } else {
-                throw new RuntimeException("Invalid token for MethodSignature : " +
-                        sigType);
+                throw new RuntimeException("Invalid token for " +
+                        "MethodSignature : " + sigType);
             }
 
             String s = strToken.nextToken();
@@ -541,14 +565,16 @@ public class GenerateVisitor {
                 }  else {
 
                     if ((defaultPlacement == 'l') && isJavaType(s)) {
-                        // make it a member if it's a Java type and we default to put it in a list
+                        // make it a member if it's a Java type and we
+                        // default to put it in a list
                         _varPlacements.addLast(new Character('m'));
                     } else {
                         if (defaultPlacement == 'l') {
                             _childListSize++;
                         }
 
-                        _varPlacements.addLast(new Character(defaultPlacement));
+                        _varPlacements.addLast(
+                                new Character(defaultPlacement));
                     }
                 }
 
@@ -590,13 +616,16 @@ public class GenerateVisitor {
             }
         }
 
-        /** A getter or a setter method for a child in the list. The childIndex parameter
-         *  is necessary to differentiate ithis constructor from the following constructor.
+        /** A getter or a setter method for a child in the list.
+         *  The childIndex parameter is necessary to differentiate 
+         *  this constructor from the following constructor. 
          */
-        public MethodSignature(String returnType, String name, int childIndex, boolean setter) {
+        public MethodSignature(String returnType, String name,
+                int childIndex, boolean setter) {
             _modifiers = "public final";
 
-            Character firstLetter = new Character(Character.toUpperCase(name.charAt(0)));
+            Character firstLetter =
+                new Character(Character.toUpperCase(name.charAt(0)));
 
             String partName = firstLetter.toString() + name.substring(1);
 
@@ -607,23 +636,27 @@ public class GenerateVisitor {
                 _paramTypes.addLast(returnType);
                 _paramNames.addLast(name);
 
-                _methodBody = "_childList.set(CHILD_INDEX_" + name.toUpperCase() + ", " + name + ");";
+                _methodBody = "_childList.set(CHILD_INDEX_" +
+                    name.toUpperCase() + ", " + name + ");";
 
             } else {
                 _returnType = returnType;
                 _name = "get" + partName;
 
 
-                _methodBody = "return (" + _returnType + ") _childList.get(CHILD_INDEX_" +
+                _methodBody = "return (" + _returnType +
+                    ") _childList.get(CHILD_INDEX_" +
                     name.toUpperCase() + ");";
             }
         }
 
         /** A getter or a setter method for data not in the list. */
-        public MethodSignature(String returnType, String name, boolean setter) {
+        public MethodSignature(String returnType, String name,
+                boolean setter) {
             _modifiers = "public final";
 
-            Character firstLetter = new Character(Character.toUpperCase(name.charAt(0)));
+            Character firstLetter =
+                new Character(Character.toUpperCase(name.charAt(0)));
 
             String partName = firstLetter.toString() + name.substring(1);
 
@@ -647,7 +680,8 @@ public class GenerateVisitor {
         public MethodSignature(String name, int dummy) {
             _modifiers = "public final";
 
-            Character firstLetter = new Character(Character.toUpperCase(name.charAt(0)));
+            Character firstLetter =
+                new Character(Character.toUpperCase(name.charAt(0)));
 
             String partName = firstLetter.toString() + name.substring(1);
 
@@ -695,7 +729,8 @@ public class GenerateVisitor {
                     do {
                         String typeStr = (String) typeItr.next();
                         String nameStr = (String) nameItr.next();
-                        char placement = ((Character) varPlaceItr.next()).charValue();
+                        char placement =
+                            ((Character) varPlaceItr.next()).charValue();
 
                         if (varCount >= _superParams) {
 
@@ -710,12 +745,14 @@ public class GenerateVisitor {
 
                             case 'm':
                             case 'h':
-                                sb.append("_" + nameStr + " = " + nameStr + ";");
+                                sb.append("_" + nameStr + " = " +
+                                        nameStr + ";");
                                 break;
 
                             case 'p':
                                 sb.append("setProperty(" + nameStr + ", " +
-                                        _wrapPrimitive(typeStr, nameStr) + ");");
+                                        _wrapPrimitive(typeStr, nameStr) +
+                                        ");");
                                 break;
 
                             case 'n':
@@ -723,7 +760,8 @@ public class GenerateVisitor {
                                 break;
 
                             default:
-                                throw new RuntimeException("unknown variable placment");
+                                throw new RuntimeException(
+                                        "unknown variable placment");
                             }
 
                             if (typeItr.hasNext()) {
@@ -736,7 +774,8 @@ public class GenerateVisitor {
                 }
 
                 if (_isConcrete) {
-                    sb.append("\n" + ident + ident + "_childList.trimToSize();");
+                    sb.append("\n" + ident + ident +
+                            "_childList.trimToSize();");
                 }
 
                 return sb.toString();
@@ -843,15 +882,18 @@ public class GenerateVisitor {
 
                     case 'l':
                         // getter
-                        retval.addLast(new MethodSignature(typeStr, nameStr, childIndex, false));
+                        retval.addLast(new MethodSignature(typeStr, nameStr,
+                                childIndex, false));
 
                         //setter
-                        retval.addLast(new MethodSignature(typeStr, nameStr, childIndex, true));
+                        retval.addLast(new MethodSignature(typeStr, nameStr,
+                                childIndex, true));
 
                         // getter index
                         retval.addLast(new ClassField("int",
                                 "CHILD_INDEX_" + nameStr.toUpperCase(),
-                                "public static final", Integer.toString(childIndex)));
+                                "public static final",
+                                Integer.toString(childIndex)));
                         break;
 
                     case 'h': // member with hasX()
@@ -862,10 +904,12 @@ public class GenerateVisitor {
                         retval.addLast(new ClassField(typeStr, nameStr));
 
                         // getter
-                        retval.addLast(new MethodSignature(typeStr, nameStr, false));
+                        retval.addLast(new MethodSignature(typeStr, nameStr,
+                                false));
 
                         // setter
-                        retval.addLast(new MethodSignature(typeStr, nameStr, true));
+                        retval.addLast(new MethodSignature(typeStr, nameStr,
+                                true));
                         break;
 
                     case 'n':
@@ -873,11 +917,13 @@ public class GenerateVisitor {
                         break;
 
                     case 'p': // property
-                        // do nothing : data is accessed through PropertyMap methods
+                        // do nothing : data is accessed through
+                        // PropertyMap methods
                         break;
 
                     default:
-                        throw new RuntimeException("unknown variable placement");
+                        throw new RuntimeException(
+                                "unknown variable placement");
 
                     }
                 }
@@ -942,7 +988,8 @@ public class GenerateVisitor {
     }
 
     public static class ClassField {
-        public ClassField(String type, String name, String modifiers, String init) {
+        public ClassField(String type, String name, String modifiers,
+                String init) {
             _type = type;
             _name = name;
             _modifiers = modifiers;

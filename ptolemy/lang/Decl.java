@@ -72,9 +72,9 @@ public class Decl extends TrackedPropertyMap {
         category = category0;
     }
 
-    /** Override Object.equals() so that equality is defined as having the same name
-     *  and category. If the object being compared against is not a Decl, throw a
-     *  RuntimeException.
+    /** Override Object.equals() so that equality is defined as having
+     *  the same name and category. If the object being compared against
+     *  is not a Decl, throw a RuntimeException.
      */
     public boolean equals(Object o) {
         if (o == this) {

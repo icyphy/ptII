@@ -42,11 +42,10 @@ import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// TreeNode
-/**
- *  The common base type for nodes in an abstract syntax tree.
- *
- *  @author Jeff Tsay
- */
+/** The common base type for nodes in an abstract syntax tree.
+@author Jeff Tsay
+@version $Id$
+*/
 public abstract class TreeNode extends TrackedPropertyMap
     implements ITreeNode {
 
@@ -87,8 +86,8 @@ public abstract class TreeNode extends TrackedPropertyMap
                 traverseChildren(v, visitorArgs);
                 retval = _acceptHere(v, visitorArgs);
 
-                // remove the children return values to prevent exponential usage
-                // of memory
+                // remove the children return values to prevent
+                // exponential usage of memory
                 removeProperty(CHILD_RETURN_VALUES_KEY);
             }
             break;

@@ -77,11 +77,12 @@ public class EnvironIter implements Iterator {
             // rewind to valid Decl
             _declIter.previous();
         } catch (NoSuchElementException e) {
-            //ApplicationUtility.trace("EnvironIter : hasNext for " + _name +
+            // ApplicationUtility.trace("EnvironIter : hasNext for " + _name +
             // " = false");
             return false;
         }
-        //ApplicationUtility.trace("EnvironIter : hasNext for " + _name + " = true");
+        // ApplicationUtility.trace("EnvironIter : hasNext for " + _name +
+        // " = true");
         return true;
     }
 
@@ -101,8 +102,8 @@ public class EnvironIter implements Iterator {
                 Decl decl = (Decl) _declIter.next();
 
                 if (decl.matches(_name, _mask)) {
-                    //ApplicationUtility.trace("EnvironIter : found match for " +
-                    // _name);
+                    //ApplicationUtility.trace("EnvironIter : found match " +
+                    //" for " +  _name);
                     return decl;
                 }
             }
@@ -111,11 +112,12 @@ public class EnvironIter implements Iterator {
                 // ApplicationUtility.trace("EnvironIter : no more elements " +
                 //  "looking for " + _name);
 
-                throw new NoSuchElementException("No more elements in EnvironIter.");
+                throw new NoSuchElementException(
+                        "No more elements in EnvironIter.");
             }
 
-            //ApplicationUtility.trace("EnvironIter : going to next environment " +
-            // "looking for " + _name);
+            //ApplicationUtility.trace("EnvironIter : going to next " +
+            // "environment looking for " + _name);
 
             _declIter = _nextEnviron.allProperDecls();
             _nextEnviron = _nextEnviron.parent();
@@ -132,7 +134,9 @@ public class EnvironIter implements Iterator {
         return retval;
     }
 
-    /** Return true if there is more than one matching Decl that can be reached. */
+    /** Return true if there is more than one matching Decl that
+     *  can be reached.
+     */
     public boolean moreThanOne() {
 
         // ApplicationUtility.trace("EnvironIter: moreThanOne for " + _name);
@@ -168,8 +172,8 @@ public class EnvironIter implements Iterator {
             }
 
             if (matches >= 2) {
-                ApplicationUtility.trace("EnvironIter: moreThanOne = true for " +
-                        _name);
+                ApplicationUtility.trace("EnvironIter: moreThanOne = true" +
+                        " for " + _name);
                 return true;
             }
 
@@ -178,7 +182,8 @@ public class EnvironIter implements Iterator {
                 return false;
             }
 
-            EnvironIter nextEnvironIter = _nextEnviron.lookupFirst(_name, _mask);
+            EnvironIter nextEnvironIter =
+                _nextEnviron.lookupFirst(_name, _mask);
 
             while (nextEnvironIter.hasNext()) {
                 Decl nextMatch = nextEnvironIter.nextDecl();
@@ -193,11 +198,12 @@ public class EnvironIter implements Iterator {
 
         } else {
             // matches == 0
-            // don't bother to move the iterator back, since there are no matches
+            // don't bother to move the iterator back, since there are
+            // no matches
 
             if (_nextEnviron == null) {
-                //ApplicationUtility.trace("EnvironIter: moreThanOne = false for " +
-                // _name);
+                //ApplicationUtility.trace("EnvironIter: moreThanOne = " +
+                // false for " +  _name);
                 return false;
             }
 
@@ -212,8 +218,8 @@ public class EnvironIter implements Iterator {
     }
 
 
-    /** Throw a RuntimeException, because we do not support the optional remove()
-     *  method of the Iterator interface.
+    /** Throw a RuntimeException, because we do not support the optional
+     *  remove() method of the Iterator interface.
      */
     public void remove() {
         // Can't do this!!!

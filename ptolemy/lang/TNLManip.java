@@ -1,5 +1,4 @@
-/*
-Static functions for manipulating lists of children of a TreeNode.
+/* Static functions for manipulating lists of children of a TreeNode.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -40,9 +39,10 @@ import java.util.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// TNLManip
 /** Static functions for manipulating lists of children of a TreeNode.
- *  In general, a list may contain TreeNodes or other lists.
- *
- *  @author Jeff Tsay
+In general, a list may contain TreeNodes or other lists.
+
+@author Jeff Tsay
+@version $Id$
  */
 public class TNLManip {
 
@@ -61,7 +61,8 @@ public class TNLManip {
             } else if (obj instanceof List) {
                 retval.add(cloneList((List) obj));
             } else {
-                throw new RuntimeException("unknown object in list : " + obj.getClass());
+                throw new RuntimeException("unknown object in list : " +
+                        obj.getClass());
             }
         }
         return retval;
@@ -99,7 +100,8 @@ public class TNLManip {
 
                 retList.add(retval);
             } else {
-                throw new RuntimeException("unknown object in list : " + obj.getClass());
+                throw new RuntimeException("unknown object in list : " +
+                        obj.getClass());
             }
         }
 
@@ -176,7 +178,8 @@ public class TNLManip {
             } else if (child instanceof List) {
                 sb.append(toString((List) child, nextIndent));
             } else {
-                throw new RuntimeException("unknown object in list : " + child.getClass());
+                throw new RuntimeException("unknown object in list : " +
+                        child.getClass());
             }
         }
 

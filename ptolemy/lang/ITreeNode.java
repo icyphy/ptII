@@ -1,5 +1,4 @@
-/*
-The interface that all nodes in an abstract syntax tree implement.
+/* The interface that all nodes in an abstract syntax tree implement.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -40,10 +39,9 @@ import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// ITreeNode
-/**
- *  The interface that all nodes in an abstract syntax tree implement.
- *
- *  @author Jeff Tsay
+/** The interface that all nodes in an abstract syntax tree implement.
+@author Jeff Tsay
+@version $Id$
  */
 public interface ITreeNode extends Cloneable {
 

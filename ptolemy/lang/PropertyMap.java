@@ -1,5 +1,4 @@
-/*
-A subclass on which to base objects that have properties.
+/* A subclass on which to base objects that have properties.
 
 Copyright (c) 1998-2000 The Regents of the University of California.
 All rights reserved.
@@ -44,8 +43,8 @@ import java.util.HashMap;
 //////////////////////////////////////////////////////////////////////////
 //// PropertyMap
 /** A subclass on which to base objects that have properties.
- *
- *  @author Jeff Tsay
+@author Jeff Tsay
+@version $Id$
  */
 public class PropertyMap implements Cloneable {
 
@@ -76,7 +75,9 @@ public class PropertyMap implements Cloneable {
         return (obj == null);
     }
 
-    /** Get a property. Throw a RuntimeException if the property in not defined. */
+    /** Get a property.
+     *  Throw a RuntimeException if the property in not defined.
+     */
     public Object getDefinedProperty(Integer property) {
         Object retval = _propertyMap.get(property);
         if (retval == null) {
@@ -90,7 +91,9 @@ public class PropertyMap implements Cloneable {
         return _propertyMap.get(property);
     }
 
-    /** Set a property. Throw a RuntimeException if the property in not defined. */
+    /** Set a property.
+     *  Throw a RuntimeException if the property in not defined.
+     */
     public Object setDefinedProperty(Integer property, Object obj) {
         if (obj == null) {
             obj = NullValue.instance;
@@ -109,7 +112,9 @@ public class PropertyMap implements Cloneable {
         return _propertyMap.keySet();
     }
 
-    /** Set a property. The property may or may not have been defined already. */
+    /** Set a property.
+     *  The property may or may not have been defined already.
+     */
     public Object setProperty(Integer property, Object obj) {
         if (obj == null) {
             obj = NullValue.instance;
@@ -117,7 +122,8 @@ public class PropertyMap implements Cloneable {
         return _propertyMap.put(property, obj);
     }
 
-    /** Remove a property, returning the value of the property if the property is
+    /** Remove a property,
+     *  returning the value of the property if the property is
      *  defined. If the property is not defined, return null.
      */
     public Object removeProperty(Integer property) {

@@ -37,10 +37,10 @@ import java.util.HashSet;
 
 //////////////////////////////////////////////////////////////////////////
 //// TrackedPropertyMap
-/** A base class for objects that may be visited. Visitors may mark such objects
- *  with their corresponding Class objects.
- *
- *  @author Jeff Tsay
+/** A base class for objects that may be visited. Visitors may mark
+such objects with their corresponding Class objects.
+@author Jeff Tsay
+@version $Id$
  */
 public class TrackedPropertyMap extends PropertyMap {
     /** Create a new TrackedPropertyMap. */

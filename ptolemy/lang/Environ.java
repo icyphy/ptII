@@ -57,15 +57,15 @@ public class Environ {
         this(null, new LinkedList());
     }
 
-    /** Constuct an environment nested inside the parent argument, without its own
-     *  proper Decl's.
+    /** Constuct an environment nested inside the parent argument,
+     *  without its own proper Decl's.
      */
     public Environ(Environ parent) {
         this(parent, new LinkedList());
     }
 
-    /** Constuct an environment nested inside the parent argument, with the given
-     *  List of Decl's in this environment itself.
+    /** Constuct an environment nested inside the parent argument,
+     *  with the given List of Decl's in this environment itself.
      */
     public Environ(Environ parent, List declList) {
         _parent = parent;
@@ -76,8 +76,8 @@ public class Environ {
         return _parent;
     }
 
-    /** Adds a mapping to the argument decl in this environment proper. This does not
-     *  affect any Environs in which this is nested.
+    /** Adds a mapping to the argument decl in this environment proper.
+     *  This does not affect any Environs in which this is nested.
      */
     public void add(Decl decl) {
         _declList.add(decl);
@@ -178,13 +178,15 @@ public class Environ {
         return lookupFirst(name, Decl.CG_ANY, true);
     }
 
-    /** Return true if there is more than one matching Decl only in this Environ. */
+    /** Return true if there is more than one matching Decl only
+     *  in this Environ.
+     */
     public boolean moreThanOne(String name, int mask) {
         return moreThanOne(name, mask, false);
     }
 
-    /** Return true if there is more than one matching Decl in this Environ, and
-     *  if proper is true, in the enclosing Environs.
+    /** Return true if there is more than one matching Decl in this Environ,
+     *  and if proper is true, in the enclosing Environs.
      */
     public boolean moreThanOne(String name, int mask, boolean proper) {
         boolean[] more = new boolean[1];
