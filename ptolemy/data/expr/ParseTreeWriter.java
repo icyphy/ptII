@@ -111,15 +111,20 @@ public class ParseTreeWriter extends AbstractParseTreeVisitor {
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
             throws IllegalActionException  {
         // This code is duplicated with the FunctionToken.
-        _writer.print("(function (");
+        _writer.print("(function(");
         List args = node.getArgumentNameList();
+        ptolemy.data.type.Type[] argTypes = node.getArgumentTypes();
         int n = args.size();
-        for (int i = 0; i < n - 1; ++i) {
+        for(int i = 0; i < n; i++) {
+            if(i > 0) {
+                _writer.print(", ");
+            }
             _writer.print((String)args.get(i));
-            _writer.print(", ");
-        }
-        if (n > 0) {
-            _writer.print((String)args.get(n - 1));
+            ptolemy.data.type.Type type = argTypes[i];
+            if(type != ptolemy.data.type.BaseType.GENERAL) {
+                _writer.print(":");
+                _writer.print(type.toString());
+            }
         }
         _writer.print(") ");
         node.getExpressionTree().visit(this);

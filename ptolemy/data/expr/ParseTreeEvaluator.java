@@ -1058,16 +1058,11 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         
         public String toString() {
             StringBuffer buffer = new StringBuffer("(function(");
-            if(_argumentNames.size() > 0) {
-                buffer.append((String)_argumentNames.get(0));
-                Type type = _argumentTypes[0];
-                if(type != BaseType.GENERAL) {
-                    buffer.append(":");
-                    buffer.append(type.toString());
+            int n = _argumentNames.size();
+            for(int i = 0; i < n; i++) {
+                if(i > 0) {
+                    buffer.append(", ");
                 }
-            }
-            for(int i = 1; i < _argumentNames.size(); i++) {
-                buffer.append(", ");
                 buffer.append((String)_argumentNames.get(i));
                 Type type = _argumentTypes[i];
                 if(type != BaseType.GENERAL) {

@@ -59,6 +59,8 @@ public class FunctionToken extends Token {
     public FunctionToken(String init) throws IllegalActionException {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
+        ParseTreeTypeInference inference = new ParseTreeTypeInference();
+        inference.inferTypes(tree);
         Token token = tree.evaluateParseTree();
         if(token instanceof FunctionToken) {
             _function = ((FunctionToken)token)._function;
