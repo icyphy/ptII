@@ -1,0 +1,13 @@
+<!-- Generic icons for filters -->
+
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE iconlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptml.dtd">
+
+<iconlibrary name="filters" version="1.0">
+<header>
+    <description>Generic filter icons</description>
+</header>
+
+
+</iconlibrary>
+
