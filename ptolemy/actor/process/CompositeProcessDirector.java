@@ -196,7 +196,6 @@ public class CompositeProcessDirector extends ProcessDirector {
         super.initialize();
        
         _blockedRcvrs.clear();
-        _blockedActorCount = 0;
         
         _inputBranchController = new BranchController(container);
         _outputBranchController = new BranchController(container);
@@ -416,8 +415,11 @@ public class CompositeProcessDirector extends ProcessDirector {
      */
     protected synchronized void _actorBlocked(ProcessReceiver rcvr) {
         _blockedRcvrs.add(rcvr);
+	/*
         _blockedActorCount++;
         notifyAll();
+	*/
+	super._actorBlocked(rcvr);
     }
 
     /** Implementations of this method must be synchronized.
@@ -428,30 +430,23 @@ public class CompositeProcessDirector extends ProcessDirector {
             return;
         }
         _blockedRcvrs.addAll(rcvrs);
+	/*
         _blockedActorCount++;
         notifyAll();
+	*/
+	super._actorBlocked(rcvrs);
     }
 
     /** Implementations of this method must be synchronized.
      * @param internal True if internal read block.
      */
     protected synchronized void _actorUnBlocked(ProcessReceiver rcvr) {
-        Thread thread = Thread.currentThread();
-        ProcessThread pThread = null;
-        if( thread instanceof ProcessThread ) {
-            pThread = (ProcessThread)thread;
-            Actor actor = pThread.getActor();
-            String name = ((Nameable)actor).getName();
-            if( _blockedRcvrs == null ) {
-                System.out.println("WARNING: " + name + " called _actorUnBlocked with null _blockedRcvrs");
-            }
-        } else {
-            System.out.println("WARNING: Unknown object called _actorUnBlocked with null _blockedRcvrs");
-        }
-        
         _blockedRcvrs.remove(rcvr); 
+	/*
         _blockedActorCount--;
         notifyAll();
+	*/
+	super._actorUnBlocked(rcvr);
     }
 
     /** Implementations of this method must be synchronized.
@@ -463,8 +458,11 @@ public class CompositeProcessDirector extends ProcessDirector {
             ProcessReceiver rcvr = (ProcessReceiver)rcvrIterator.next();
             _blockedRcvrs.remove(rcvr);
         }
+	/*
         _blockedActorCount--;
         notifyAll();
+	*/
+	super._actorUnBlocked(rcvrs);
     }
 
     /** Return true if the count of active processes in the container is 0.
@@ -534,13 +532,7 @@ public class CompositeProcessDirector extends ProcessDirector {
         }
     }
 
-    /**
-     */
-    protected synchronized int _getBlockedActorsCount() {
-	return _blockedActorCount;
-    }
-
-    /** JFIXME: This method can lead to deadlock
+    /** 
      */
     protected synchronized boolean _isInputControllerBlocked() {
         return _inputControllerIsBlocked;
@@ -691,7 +683,6 @@ public class CompositeProcessDirector extends ProcessDirector {
     private boolean _outputControllerIsBlocked = true;
     
     private LinkedList _blockedRcvrs = new LinkedList();
-    private int _blockedActorCount = 0;
     
     private Object _branchCntlrLock = new Object();
     

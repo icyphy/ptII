@@ -155,6 +155,7 @@ public class ProcessDirector extends Director {
     public void initialize() throws IllegalActionException {
 	_notDone = true;
 	_actorsActive = 0;
+        _blockedActorCount = 0;
 	_actorThreadList = new LinkedList();
 	_newActorThreadList = new LinkedList();
         CompositeActor container = ((CompositeActor)getContainer());
@@ -476,24 +477,38 @@ public class ProcessDirector extends Director {
      * @param internal True if internal read block.
      */
     protected synchronized void _actorBlocked(ProcessReceiver rcvr) {
+        _blockedActorCount++;
+        notifyAll();
     }
 
     /** Implementations of this method must be synchronized.
      * @param internal True if internal read block.
      */
     protected synchronized void _actorBlocked(LinkedList rcvrs) {
+        _blockedActorCount++;
+        notifyAll();
     }
 
     /** Implementations of this method must be synchronized.
      * @param internal True if internal read block.
      */
     protected synchronized void _actorUnBlocked(ProcessReceiver rcvr) {
+        _blockedActorCount--;
+        notifyAll();
     }
 
     /** Implementations of this method must be synchronized.
      * @param internal True if internal read block.
      */
     protected synchronized void _actorUnBlocked(LinkedList rcvrs) {
+        _blockedActorCount--;
+        notifyAll();
+    }
+
+    /**
+     */
+    protected synchronized int _getBlockedActorsCount() {
+	return _blockedActorCount;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -508,6 +523,9 @@ public class ProcessDirector extends Director {
     // Count of the number of processes that were started by this
     // director but have not yet finished.
     private long _actorsActive;
+
+    // The count of blocked actors
+    private int _blockedActorCount = 0;
 
     // The threads started by this director.
     // FIXME
