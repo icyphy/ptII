@@ -496,7 +496,7 @@ public class GiottoCodeGeneratorUtilities {
         first = true;
         for (Iterator sourceNames = driverIOMap.keySet().iterator();
              sourceNames.hasNext();) {
-            if(first) {
+            if (first) {
                 first = false;
             } else {
                 code.append(", ");
