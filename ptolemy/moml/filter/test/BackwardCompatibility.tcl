@@ -723,13 +723,13 @@ This filter is used by the nightly build, and
 can be used to run applets so that files like
 diva.jar do not need to be downloaded.
 The following actors are affected:
-ptolemy.vergil.icon.AttributeValueIconwill be removed
-ptolemy.vergil.icon.ValueIconwill be replaced by ptolemy.kernel.util.Attribute
-ptolemy.vergil.icon.UpdatedValueIconwill be removed
-ptolemy.vergil.toolbox.VisibleParameterEditorFactorywill be replaced by ptolemy.kernel.util.Attribute
-ptolemy.vergil.icon.BoxedValueIconwill be removed
-ptolemy.vergil.basic.NodeControllerFactorywill be removed
-ptolemy.vergil.toolbox.AnnotationEditorFactorywill be removed
+ptolemy.vergil.icon.AttributeValueIcon will be removed
+ptolemy.vergil.icon.ValueIcon will be replaced by ptolemy.kernel.util.Attribute
+ptolemy.vergil.icon.UpdatedValueIcon will be removed
+ptolemy.vergil.toolbox.VisibleParameterEditorFactory will be replaced by ptolemy.kernel.util.Attribute
+ptolemy.vergil.icon.BoxedValueIcon will be removed
+ptolemy.vergil.basic.NodeControllerFactory will be removed
+ptolemy.vergil.toolbox.AnnotationEditorFactory will be removed
 }}
 
 test BackwardCompatiblity-11.2 {Call BackwardCompatibility.toString} {
