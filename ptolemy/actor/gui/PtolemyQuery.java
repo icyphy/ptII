@@ -1,5 +1,5 @@
 /* A subclass of Query that provides a method to automatically set
- * a Variable when an entry is changed.
+ * a Variable when an entry is changed and vice versa.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -33,18 +33,41 @@
 package ptolemy.actor.gui;
 
 import java.util.*;
-import ptolemy.data.expr.*;
+import ptolemy.data.expr.ValueListener;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.Parameter;
 import ptolemy.gui.*;
 import ptolemy.data.*;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;
+import ptolemy.actor.*;
+import ptolemy.kernel.event.*;
+import ptolemy.actor.event.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyQuery
 /**
 This class provides a method to create a mapping from a Query entry to
-a Variable. The Variable will be automatically set each time the
-corresponding Query entity changes. To use this class, first add an entry to
+a variable. It is possible to create a mapping from more than one Querey
+entries to the same variable. The Variable will be automatically set each
+time that a corresponding Query entry that the variable is attached to
+changes. All Query entries that a variable is attached to will also be
+automatically set when the value of the variable changes.
+<p>
+One might think that this could cause a race condition, since changing
+an entry would cause the corresponding variable's value to change, 
+which would in turn cause the same entry to be set again. This class
+has code that will block such a condition from occuring, so this is
+not a problem.
+<p>
+When an entry is changed, this class queues a change request with
+the director. It is important to note, therefore, that it may take
+some time before the variable's value is actually changed, since it 
+is up to the director to decide when topology mutations may occur.
+The director will typically delagate mutation requests to the 
+Manager, although this is not necessarilly the case.
+<p>
+To use this class, first add an entry to
 the query, and then use the attachParameter method in this class
 to associate a variable to that entry.
 
@@ -54,12 +77,55 @@ to associate a variable to that entry.
 public class PtolemyQuery extends Query
     implements QueryListener, ValueListener {
 
-    /** Construct a panel with no queries in it.
+    /** Construct a panel with no queries in it. This class
+     *  requires a director, in order to queue variable change 
+     *  requests. If this constructor is used, then it is
+     *  assumed that all variables that are attached to parameters
+     *  are associated with a director. Specifically, it is
+     *  assumed that the container of each variable implements
+     *  the Actor interface. If this is not the case, then
+     *  use the other constructor that takes a director as a
+     *  parameter.
      */
     public PtolemyQuery() {
 	super();
+	_constructorDirector = false;
 	this.addQueryListener(this);
 	_parameters = new HashMap();
+
+	_ignoreValueChanged = 0;
+	_ignoreChanged = 0;
+
+	_varToListOfEntries = new HashMap();
+	_ignoreEntryChange = new HashMap();
+	_ignoreVarChangePart1 = new HashMap();
+    }
+
+    /** Construct a panel with no queries in it.
+     *  When an entry changes, a change request is
+     *  queued with the director. The director
+     *  will then schedule the corresponding variable's
+     *  value to be updated at an appropriate time in 
+     *  the execution of the model. Note that
+     *  only one PtolemyQuerey object is allowed per
+     *  director. 
+     *  @param director The director for a model. This should
+     *  be the director associated with all variables that
+     *  are attached to query entries.
+     */
+    public PtolemyQuery(Director director) {
+	super();
+	_constructorDirector = true;
+	this.addQueryListener(this);
+	_parameters = new HashMap();
+	this._director = director;
+	_ignoreValueChanged = 0;
+	_ignoreChanged = 0;
+
+	_varToListOfEntries = new HashMap();
+	_ignoreEntryChange = new HashMap();
+	_ignoreVarChangePart1 = new HashMap();
+	
     }
 
     /** Attach a variable <i>var</i> to an entry, <i>entryName</i>,
@@ -71,51 +137,198 @@ public class PtolemyQuery extends Query
      *  @param entryName The entry to attach the variable to.
      */
     public void attachParameter(Variable var, String entryName) {
+	// Put the variable in a Map from entryName -> var
 	_parameters.put(entryName, var);
         var.addValueListener(this);
         String tip = Documentation.consolidate(var);
         if (tip != null) {
             setToolTip(entryName, tip);
         }
+	// Put the variable in a Map from var -> (list of entry names
+	// attached to var), but only if entryName is not already
+	// contained by the list.
+	if (_varToListOfEntries.get(var) == null) {
+	    // No mapping for var exists.
+	    List entryNameList = new LinkedList();
+	    entryNameList.add(entryName);
+	    _varToListOfEntries.put(var, entryNameList);
+	} else {
+	    // var is mapped to a list of entry names, but need to check
+	    // if entryName is in the list. If not, add it.
+	    List entryNameList = (List)_varToListOfEntries.get(var);
+	    Iterator entryNames = entryNameList.iterator();
+	    boolean found = false;
+	    while (entryNames.hasNext()) {
+		// Check if entryName is in the list. If not, add it.
+		String name = (String)entryNames.next();
+		if (name == entryName) {
+		    found = true;
+		}
+	    }
+	    if (found == false) {
+		// Add entryName to the list.
+		entryNameList.add(entryName);
+	    }
+	}
+	if (_ignoreEntryChange.containsKey(entryName) == false) {
+	    // Add the current entry to the map and don't ignore
+	    // change requests for this entry.
+	    _ignoreEntryChange.put(entryName, new Boolean(false));
+	}
+	if (_ignoreVarChangePart1.containsKey(var) == false) {
+	    Map ignoreVarChangePart2 = new HashMap();
+	    // Add the current entry to the map and don't ignore
+	    // change requests for this entry.
+	    ignoreVarChangePart2.put(entryName, new Boolean(false));
+	    _ignoreVarChangePart1.put(var, ignoreVarChangePart2);
+	} else {
+	    Map ignoreVarChangePart2 = (Map)_ignoreVarChangePart1.get(var);
+	    // Check if entryName is in the Map.
+	    if (ignoreVarChangePart2.containsKey(entryName) == false) {
+		// Add the current entry to the map and don't ignore
+		// change requests for this entry.
+		ignoreVarChangePart2.put(entryName, new Boolean(false));;
+	    }
+	}
     }
 
-    /** Set the Variable to the value of the Query entry. This
+    /** Set the variable to the value of the Query entry. This
      *  method is called whenever an entry changes.
-     *  @param name The entry that has changed.
+     *  @param name The name of the entry that has changed.
      */
-    public void changed(String name)  {
+    // FIXME: This only works with a Parameter, not a Variable.
+    // See note below.
+    public void changed(String name) {
 	// Check if the entry that changed is in the mapping.
 	if (_parameters.containsKey(name)) {
-	    // Set the variable.
-            Variable var = (Variable)(_parameters.get(name));
+	    
+	    Variable var = (Variable)(_parameters.get(name));
+	    // Check if we should ignore 
+            if (((Boolean)_ignoreEntryChange.get(name)).booleanValue() == false) {
+		// Don't ignore.
 
-            // Temporarily disable listening, so when we are notified
-            // back, we ignore it.
-            _listening = false;
-            var.setExpression(stringValue(name));
+		//System.out.println("PtolemyQuery: changed(): getFullName of var" +
+		//	   var.getFullName() + ".");
+		//System.out.println("PtolemyQuery: changed(): name=" + name + ".");
+		//System.out.println("PtolemyQuery: changed(): stringValue(name) " +
+		//	   stringValue(name));
+		
+		// Ignore the return call to valueChanged() when the variable
+		// is updated.
+		// Increment the number of times requestChange() is called.
+		// Since the mapping is functional, only increment once.
+		_ignoreValueChanged = _ignoreValueChanged + 1;
+		
+		if (_constructorDirector == false) {
+		    // Director not specified in constructor,
+		    // so get it from the variable.
+		    // Get the director from the variable.
+		    _director = ((Actor)var.getContainer()).getDirector();
+		}
 
-            // Force evaluation, but ignore errors for now.
-            try {
-	      var.getToken();
-            } catch (IllegalActionException ex) {}
-            _listening = true;
+		if (_director == null) {
+		    // FIXME: Modify interface defn so that can throw
+		    // exception here?
+		    System.out.println("Could not get" +
+		      " director from variable: " + var.getFullName());
+		}
+
+		// Queue a change request with the director.
+		// FIXME: 1st param to SetParameter does what?
+		// Set the variable.
+		
+		// FIXME: This only works with Parameter, not Variable,
+		// becuase of the use of SetParameter.
+		// Write a SetVariable class to fix this. This should be
+		// fairly trivial to do.
+		_director.requestChange(new SetParameter((Parameter)var, (Parameter)var, stringValue(name)));
+		
+	    } else {
+		// Don't ignore next time this method is called.
+		_ignoreEntryChange.put(name, new Boolean(false));
+	    }
 	}
     }
 
     /** Notify this query that the value of the specified variable has
      *  changed.  This is called by an attached parameter when its
-     *  value changes.
+     *  value changes. Note that more than one entry may be attached
+     *  to the same variable. In this case, all such entries will
+     *  be notified.
      *  @param variable The variable that has changed.
      */
     public void valueChanged(Variable variable) {
-        if (_listening) {
-            set(variable.getName(), variable.stringRepresentation());
-        }
+
+	    // Check that variable is attached to at least one entry.
+	    if (_parameters.containsValue(variable)) {
+		
+		//System.out.println("PtolemyQuery: valueChanged(): " +
+		//	       "getFullName of var" +
+		//	       variable.getFullName() + ".");
+		//System.out.println("PtolemyQuery: valueChanged(): " +
+		//	       "stringRepresentation " + 
+		//	       variable.stringRepresentation());
+		    
+		    // Get the list of entry names that variable is
+		    // attached to.
+		    List entryNameList = (List)_varToListOfEntries.get(variable);
+		    // For each entry name, call set() to update its
+		    // value with the value of variable.
+		    Iterator entryNames = entryNameList.iterator();
+	    
+		    while (entryNames.hasNext()) {
+			// Check if entryName is in the list. If not, add it.
+			String name = (String)entryNames.next();
+			Map ignoreVarChangePart2 = 
+			    (Map)_ignoreVarChangePart1.get(variable);
+			
+			if (((Boolean)ignoreVarChangePart2.get(name)).booleanValue() == false) {
+			    // Set the entry name's value to the variable's
+			    // value.
+			    set(name, variable.stringRepresentation());
+			    
+			    // Ignore the next call to changed() since it
+			    // will just be the return call caused by
+			    // this method setting the entry.
+			    _ignoreEntryChange.put(name, new Boolean(true));
+			} else {
+			    ignoreVarChangePart2.put(name, new Boolean(false));
+			}
+		    }
+	    } else {
+		// FIXME: throw exception?
+		System.out.println("PtolemyQuery: valueChanged(): " +
+				   "No entry attached to variable " +
+				   variable.getFullName());
+	    }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private HashMap _parameters;
-    private boolean _listening = true;
+    // Maps an entry name to the variable that is attached to it.
+    private Map _parameters;
+    // Maps a variable name to a list of entry names that the
+    // variable is attached to.
+    private Map _varToListOfEntries;
+    // Maps an entry name to a boolean. If true, then do not
+    // take any action when an entry change occurs, to avoid
+    // infinite loop condition.
+    private Map _ignoreEntryChange;
+    // _ignoreVarChangePart1 and ignoreVarChangePart2 are used together
+    // as a multidimensional hashmap, indexed by variable and and entry
+    // name, and mapping to a boolean. If the value of the boolean is
+    // true, then ignore a variable changed -> change entry request
+    // for the entry.
+    // _ignoreVarChangePart1: map variable -> an instance of 
+    // ignoreVarChangePart2
+    private Map _ignoreVarChangePart1;
+    
+    // Number of calls to valueChanged() to ignore.
+    private int _ignoreValueChanged;
+    // Number of calls to calls changed() to ignore.
+    private int _ignoreChanged;
+    private Director _director;
+    private boolean _constructorDirector;
 }
+
