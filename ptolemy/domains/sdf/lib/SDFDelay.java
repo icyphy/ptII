@@ -84,25 +84,58 @@ public class SDFDelay extends SDFAtomicActor {
          */
         try{
             /* Create a new port */
-            TypedIOPort inputport = (TypedIOPort)newPort("input");
+	    input = (TypedIOPort)newPort("input");
             /* Make it an input port */
-            inputport.setInput(true);
+            input.setInput(true);
             /* Set the Consumption rate on the port.  A good way to think of
              * this is that you are making a contract with the Ptolemy system.
              * If you always consume one token from this port when fired,
              * then Ptolemy will always guarantee that there will be a token
              * ready when you are fired.
              */
-            setTokenConsumptionRate(inputport, 1);
-            /* Similarly for the output port */
-            TypedIOPort outputport = (TypedIOPort)newPort("output");
-            outputport.setOutput(true);
-            setTokenProductionRate(outputport, 1);
-        }
+	    setTokenConsumptionRate(input, 1);
+	    /* The getPort method (in ptolemy.kernel.Entity) finds a port by
+	     * name.  It returns a Port object, but all the ports in the
+	     * actor package are of type TypedIOPort, 
+	     * which extends Port.   So, we
+	     * have to upcast the return value to the appropriate type.
+	     * The setDelcaredType calls use the type system to define what
+	     * types of tokens are valid for this actor.
+	     */
+	    input.setDeclaredType(IntToken.class);
+	
+	    /* Similarly for the output port */
+	    output = (TypedIOPort)newPort("output");
+            output.setOutput(true);
+            setTokenProductionRate(output, 1);
+	    output.setDeclaredType(IntToken.class);
+       }
         catch (IllegalActionException e1) {
             System.out.println("SDFDelay: constructor error");
             e1.printStackTrace();
             throw e1;
+        }
+    }
+
+    public TypedIOPort input;
+    public TypedIOPort output;
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            SDFDelay newobj = (SDFDelay)(super.clone(ws));
+            newobj.input = (TypedIOPort)newobj.getPort("input");
+            newobj.output = (TypedIOPort)newobj.getPort("output");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
         }
     }
 
@@ -136,17 +169,14 @@ public class SDFDelay extends SDFAtomicActor {
          * The setDelcaredType calls use the type system to define what
          * types of tokens are valid for this actor.
          */
-        TypedIOPort inputport = (TypedIOPort)getPort("input");
-        inputport.setDeclaredType(IntToken.class);
-
-        TypedIOPort outputport = (TypedIOPort)getPort("output");
-        outputport.setDeclaredType(IntToken.class);
+	input.setDeclaredType(IntToken.class);
+	output.setDeclaredType(IntToken.class);
 
         /* Figure out how many tokens should be copied from the input to the
          * output.
          */
-        int tokens = getTokenConsumptionRate(inputport);
-        if(getTokenProductionRate(outputport) != tokens)
+        int tokens = getTokenConsumptionRate(input);
+        if(getTokenProductionRate(output) != tokens)
             throw new IllegalActionException(
                     "SDFDelay: Rates on input port and output port " +
                     "must match!");
@@ -157,10 +187,10 @@ public class SDFDelay extends SDFAtomicActor {
              * The argument to get is known as the channel.
              * The channel must be
              * zero, since there can only be one IORelation connected to this
-             * inputport.  Multiple channels are useful with Multiports, which
+             * input.  Multiple channels are useful with Multiports, which
              * allow more than one relation to be connected to a port.
              */
-            message = (IntToken)inputport.get(0);
+            message = (IntToken)input.get(0);
 
             /* System.out.print and System.out.println
              * are calls to the operating
@@ -176,7 +206,7 @@ public class SDFDelay extends SDFAtomicActor {
 
             /* After looking at the token, pass it along to the next actor
              */
-            outputport.send(0, message);
+            output.send(0, message);
         }
     }
 

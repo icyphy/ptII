@@ -51,10 +51,10 @@ public class SDFRamp extends SDFAtomicActor {
             NameDuplicationException {
         super(container, name);
         try{
-            TypedIOPort outputport = (TypedIOPort) newPort("output");
-            outputport.setOutput(true);
-            setTokenProductionRate(outputport, 1);
-            outputport.setDeclaredType(IntToken.class);
+            output = (TypedIOPort) newPort("output");
+            output.setOutput(true);
+            setTokenProductionRate(output, 1);
+            output.setDeclaredType(IntToken.class);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFRamp: constructor error");
@@ -63,14 +63,37 @@ public class SDFRamp extends SDFAtomicActor {
 
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    //// 
+
+   public TypedIOPort output;
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            SDFRamp newobj = (SDFRamp)(super.clone(ws));
+            newobj.output = (TypedIOPort)newobj.getPort("output");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
+
     public void fire() throws IllegalActionException {
         int i;
-        TypedIOPort outputport = (TypedIOPort) getPort("output");
-        int tokens = getTokenProductionRate(outputport);
+
+        int tokens = getTokenProductionRate(output);
         for(i = 0; i < tokens; i++) {
             Token message = new IntToken(value);
             value = value + 1;
-            outputport.send(0, message);
+            output.send(0, message);
         }
     }
 

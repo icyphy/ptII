@@ -49,21 +49,40 @@ public class SDFConsumer extends SDFAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
-            TypedIOPort inputport = (TypedIOPort)newPort("input");
-            inputport.setInput(true);
-            setTokenConsumptionRate(inputport, 1);
+            input = (TypedIOPort)newPort("input");
+            input.setInput(true);
+            setTokenConsumptionRate(input, 1);
         }
         catch (IllegalActionException e1) {
             System.out.println("SDFConsumer: Constructor error");
         }
     }
 
+    public TypedIOPort input;
+ 
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.  The new
+     *  actor will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            SDFConsumer newobj = (SDFConsumer)(super.clone(ws));
+            newobj.input = (TypedIOPort)newobj.getPort("input");
+	    return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
+
     public void fire() throws IllegalActionException {
-        TypedIOPort inputport = (TypedIOPort)getPort("input");
-        int tokens = getTokenConsumptionRate(inputport);
+        int tokens = getTokenConsumptionRate(input);
         int i;
         for(i = 0; i < tokens; i++)
-            inputport.get(0);
+            input.get(0);
     }
 
 }
