@@ -1542,7 +1542,9 @@ void cvtMethod( src_in, dst_in)
 	    *dst++ = NEWLINE;
 	} else {
 	    if ( codeblockB ) {
-	        strcpy(dst, ";\n\t addCode(_str_); }\n"); dst+=strlen(dst);
+		// FIXME: Java incompatibility
+	        //strcpy(dst, ";\n\t addCode(_str_); }\n"); dst+=strlen(dst);
+	        strcpy(dst, "\n\t addCode(_str_); }\n"); dst+=strlen(dst);
 		codeblockB = 0;
 	    }
 	    strcpy( dst, src_line); dst += strlen(dst);
@@ -2153,15 +2155,15 @@ void genDef ()
 		if (codeBody[i] && !inlineFlag[i]) {
 		    char *dst = malloc(2*strlen(codeBody[i])+MEDBUFSIZE);
 		    cvtMethod( codeBody[i], dst);
-		    char *dst2 = malloc(2*strlen(codeBody[i])+MEDBUFSIZE);
-		    insertComments(dst, dst2);	
 		    fprintf (fp, "\n    /**\n");
 		    fprintf (fp, "     */\n");
 		    strcpy (str1, codeType[i]);
 		    convertConstCharToString(str1);
 		    renameMethod(codeFuncName[i], str2);
+		    //char *dst2 = malloc(2*strlen(codeBody[i])+MEDBUFSIZE);
+		    //insertComments(dst, dst2);	
 		    fprintf (fp, "    public %s %s() {\n    %s\n",
-		      str1, str2, dst2);
+		      str1, str2, dst);
 		    if (strncmp(codeType[i], "void", 4) != 0) { 
 			    fprintf (fp, "        // Dummy return value.\n");
 			    char returnValue[SMALLBUFSIZE];
