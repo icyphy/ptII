@@ -53,6 +53,7 @@ import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConstVariableModelAnalysis
@@ -303,7 +304,8 @@ public class ConstVariableModelAnalysis {
             for(Iterator variables = list.iterator();
                 variables.hasNext();) {
                 Variable variable = (Variable)variables.next();
-                _updateChangeContext(variable, (Entity)container);
+                _updateChangeContext(variable, 
+                        ((ExplicitChangeContext)container).getContext());
             }
         }
 

@@ -43,10 +43,15 @@ import java.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// ExplicitChangeContext
 /**
- An entity that implements an explicit change context declares that it
- modifies variable values.  The information declared by this class is
- used by the ConstVariableModelAnalysis to determine what parameters
- might be modified by a given entity.
+ An entity that implements an explicit change context declares a
+ change context, in which parameters are modified.  If the
+ ExplicitChangeContext is an Entity, then the change context is
+ assumed to be the entity.  If the ExplicitChangeContext is not an
+ entity, but directly contained by an entity, then that entity is
+ considered to be the change context.  This capability allows
+ directors to easily declare change contexts.  The information
+ declared by this class is used by the ConstVariableModelAnalysis to
+ determine what parameters might be modified by a given entity.
 
 @author Steve Neuendorffer
 @version $Id$
@@ -66,4 +71,12 @@ public interface ExplicitChangeContext extends Nameable {
      * variables cannot be returned.
      */
     public List getModifiedVariables() throws IllegalActionException;
+
+    /** 
+     * Return the change context being made explicit.  In simple cases, this
+     * will simply be the entity implementing this interface.  However, in
+     * more complex cases, directors may implement this interface, or entities
+     * may modify parameters according to a different change context (i.e. HDF)
+     */
+    public Entity getContext() throws IllegalActionException;
 }
