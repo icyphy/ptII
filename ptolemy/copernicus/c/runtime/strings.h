@@ -1,8 +1,8 @@
-/*
-Header file for PCCG run-time library.
+/*******************************************************************
+Run-time C code generation functionality for converting character 
+arrays to strings.
 
 Copyright (c) 2001-2002 The University of Maryland.
-All rights reserved.
 
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -22,26 +22,18 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
+********************************************************************/
 
-@ProposedRating Red (ssb@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
+/*
+Run-time C code generation functionality for converting character arrays to
+Strings
 
-@author Shuvra S. Bhattacharyya
+@author Ankush Varma 
 @version $Id$
 */
 
-#ifndef _runtime_h
-#define _runtime_h
+#include "name_defs.h"
+#include "java/lang/String.h"
 
-#include "pccg.h"
-#include <setjmp.h>
+extern _STRING_INSTANCE_STRUCT charArrayToString(char *charArray); 
 
-extern boolean PCCG_instanceof(PCCG_CLASS_INSTANCE *operand,
-        PCCG_CLASS *checkType);
-
-/* data to enable exception-catching */
-extern jmp_buf env;
-extern int epc;
-extern char *exception_type;
-
-#endif

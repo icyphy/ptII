@@ -1,8 +1,8 @@
-/*
-PCCG run-time library.
+/*******************************************************************
+Run-time C code generation functionality for converting character
+arrays to strings.
 
 Copyright (c) 2001-2002 The University of Maryland.
-All rights reserved.
 
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -22,34 +22,36 @@ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
+********************************************************************/
 
-@ProposedRating Red (ssb@eng.umd.edu)
-@AcceptedRating Red (ssb@eng.umd.edu)
+/*
+Run-time C code generation functionality for converting character arrays to
+Strings
 
-@author Shuvra S. Bhattacharyya
+@author Ankush Varma 
 @version $Id$
 */
+#include "strings.h"
 
-#include "pccg.h"
-#include "runtime.h"
+#ifndef A_DEF_iA1_char
+#define A_DEF_iA1_char
+typedef PCCG_ARRAY_INSTANCE_PTR iA1_char;
+#endif
 
-/* data to enable exception-catching */
-jmp_buf env;
-int epc;
-char *exception_type;
+// convert a character array to a string Structure so that it can be used by
+// string constants.
+_STRING_INSTANCE_STRUCT charArrayToString(char *charArray)
+{
+    _STRING_INSTANCE_STRUCT s; //dummy string structure
+    iA1_char charArrayStruct;
 
-/**
- *  PCCG implementation of the instanceof operator.
- */
-boolean PCCG_instanceof(PCCG_CLASS_INSTANCE *operand,
-        PCCG_CLASS *checkType) {
-    PCCG_CLASS *p = operand->class;
-    do {
-        if (p == checkType) {
-            return true;
-        } else {
-            p = (PCCG_CLASS *)(p->superclass);
-        }
-    } while (p != null);
-    return false;
+    charArrayStruct->array_data = charArray;
+    
+    _INIT_STRING_WITH_CHAR_ARRAY(s, charArrayStruct); //initialize this string structure
+    
+    //FIXME: None of these structures is fully initialised.
+
+    return s;
+    
 }
+
