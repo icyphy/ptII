@@ -116,11 +116,11 @@ test MathFunction-2.5 {test with sqrt} {
 } {}
 
 ######################################################################
-#### Test MathFunction with remainder
+#### Test MathFunction with modulo
 #
-test MathFunction-3.1 {test with remainder} {
+test MathFunction-3.1 {test with modulo} {
     # Uses setup from MathFunction 1-1, 2-2 and 2-3
-    $function setExpression "remainder"
+    $function setExpression "modulo"
     # Have to make sure the expression is processed before we attempt
     # to connect to the port whose creation is triggered by changing
     # the parameter value.
@@ -142,14 +142,14 @@ test MathFunction-3.1 {test with remainder} {
 
 
 ######################################################################
-#### Test MathFunction with remainder on clone
+#### Test MathFunction with modulo on clone
 #
-test MathFunction-3.2 {test with remainder on clone} {
+test MathFunction-3.2 {test with modulo on clone} {
     # Uses setup from MathFunction 1.1, 2.2 and 2.3
     set e1 [java::new ptolemy.actor.TypedCompositeActor]
     set e1 [sdfModel 10]
 
-    # 3.1 set the function to remainder.  The clone method
+    # 3.1 set the function to modulo.  The clone method
     # should preserve this and should also have a second port
     set mathFunctionClone [java::cast ptolemy.actor.lib.MathFunction [$mathFunction clone]]
     $mathFunctionClone setContainer $e1
