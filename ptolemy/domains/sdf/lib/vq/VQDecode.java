@@ -154,7 +154,7 @@ public final class VQDecode extends SDFAtomicActor {
                         throw new IllegalActionException("Error reading " +
                                 "codebook file!");
                     for(x = 0; x < size; x++)
-                        _codebook[i][j][x] = temp[x];
+                        _codebook[i][j][x] = temp[x] & 255;
                 }
 
                // skip over the lookup tables.
