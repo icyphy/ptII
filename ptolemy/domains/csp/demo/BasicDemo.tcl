@@ -58,7 +58,9 @@ set relation [$univ connect $output $input R1]
 puts [ $univ description 1023]
 
 # For now this just returns, a bug
-puts [$manager {go int} 1]
+puts [$manager startRun]
+$dir setPauseRequested
+$dir setResumeRequested
 
 
 
