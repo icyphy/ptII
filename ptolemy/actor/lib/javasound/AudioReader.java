@@ -44,6 +44,7 @@ import ptolemy.media.javasound.SoundWriter; // For javadoc
 
 
 import java.io.IOException;
+import java.net.URL;
 
 
 /////////////////////////////////////////////////////////////////
@@ -68,11 +69,16 @@ if the current directory contains a file called "test.wav", then
 directory contains a file called "test.wav", then <i>sourceURL</i>
 should be set to "file:../test.wav". To reference the file
 test.wav, located at "/tmp/test.wav", <i>sourceURL</i>
-should be set to "file:///tmp/test.wav" The default value is
+should be set to "file:///tmp/test.wav".
+<p>
+The default initial value is
 <code>property("ptolemy.ptII.dirAsURL")
  + "/ptolemy/actor/lib/javasound/voice.wav"
-</code>
-Under Windows, to reference a file ":\WINNT\Media\chord.wav, use
+</code>.  If the initial url cannot be found, then the classpath
+is searched for <code>ptolemy/actor/lib/javasound/voice.wav</code>
+and if that value cannot be found then the initial value is the
+empty string.
+<p>Note, under Windows, to reference a file ":\WINNT\Media\chord.wav, use
 "file:///c:/WINNT/Media/chord.wav".  Note that URLS by definition
 have forward slashes, not backward slashes.
 <p>
@@ -118,9 +124,41 @@ public class AudioReader extends URLReader {
 	// We use voice.wav so that we can include the voice.wav file
 	// in the jar file for use under Web Start.
 
+        // FIXME: This should use FileAttribute, but if we did then
+        // backward compatibility would be difficult because we would have
+        // to change the sourceURL from a Parameter (which gets evaluated)
+        // to a FileAttribute.  However, we do want to provide an initial
+        // default
 	sourceURL.setExpression("property(\"ptolemy.ptII.dirAsURL\") "
 		+ "+ \"ptolemy/actor/lib/javasound/voice.wav\"");
 
+        // Check to see if we can open sourceURL.  If not, try
+        // to find it in the classpath
+        try {
+            StringToken urlToken = (StringToken)sourceURL.getToken();
+            String theURLString = urlToken.stringValue();
+            URL theURL = new URL(theURLString);
+            theURL.openStream();
+        } catch (Exception ex) {
+            try {
+                // This jar url should work:
+                //jar:file:/C:/ptII/ptolemy/actor/lib/javasound/javasound.jar!/ptolemy/actor/lib/javasound/voice.wav
+                //sourceURL.setExpression("jar:" 
+                //        + "+ property(\"ptolemy.ptII.dirAsURL\") "
+                //        + "+ \"ptolemy/actor/lib/javasound/javasound.jar\""
+                //        + " + \"!/ptolemy/actor/lib/javasound/voice.wav\"");
+                String entry = "ptolemy/actor/lib/javasound/voice.wav";
+                Class refClass =
+                    Class.forName("ptolemy.actor.lib.javasound.AudioReader");
+                URL entryURL = refClass.getClassLoader().getResource(entry);
+                // The url is inside double quotes because this is a Parameter.
+                sourceURL.setExpression("\"" + entryURL.toString() + "\"");
+            } catch (Exception ex2) {
+                // If all else fails, set it to the empty string.
+                // The url is inside double quotes because this is a Parameter.
+                sourceURL.setExpression("\"\"");
+            }
+        }    
     }
 
     ///////////////////////////////////////////////////////////////////
