@@ -30,19 +30,17 @@
 
 package ptolemy.domains.ct.demo.SquareWave;
 
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.gui.Query;
-import ptolemy.actor.gui.*;
-import ptolemy.actor.lib.*;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.IORelation;
+import ptolemy.actor.lib.Clock;
 import ptolemy.actor.lib.gui.TimedPlotter;
-import ptolemy.actor.lib.gui.XYPlotter;
-import ptolemy.data.*;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.domains.ct.kernel.*;
-import ptolemy.domains.ct.kernel.solver.*;
-import ptolemy.domains.ct.lib.*;
+import ptolemy.domains.ct.kernel.CTMultiSolverDirector;
+import ptolemy.domains.ct.lib.ContinuousTransferFunction;
 import ptolemy.plot.Plot;
 
 
