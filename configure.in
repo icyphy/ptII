@@ -168,7 +168,7 @@ so we search for the java compiler.])
     # The default location that we look for the JDK.  This should probably
     # be a list that includes /usr/local/jdk and /opt/jdk
     if test ! -d "$PTJAVA_DIR"; then
-	DEFAULT_JDK=/opt/jdk1.2.2
+	DEFAULT_JDK=/opt/jdk1.3
 	if test -d "$DEFAULT_JDK"; then
 	    PTJAVA_DIR=`cd "$DEFAULT_JDK"; pwd`
 	    AC_MSG_WARN(['${PTJAVA_DIR}' is not a directory, using the default '${DEFAULT_JDK}'])
@@ -298,21 +298,21 @@ fi
 cd "$startdir"
 
 #--------------------------------------------------------------------
-#	If we are under JDK1.2.2, then increase the size of
-#	of the Java heap when we run javadoc
+#	We require JDK1.3 or later
 #--------------------------------------------------------------------
 
-AC_MSG_CHECKING([ the JDK version to see if we need to increase heap size for javadoc])
+AC_MSG_CHECKING([ the JDK version])
 JDOCSIZE=
 case "$JVERSION" in
-	1.2.*)  JDOCSIZE="-J-Xmx132m"
-		AC_MSG_RESULT([yes, use $JDOCSIZE])
-		# The reference version of JDK 1.2 has a -native flag
-		# If we don't use -native, then some of the threading
-		# tests fail.
-		PTJACL_JFLAG=-native
+	1.2.*)
+		AC_MSG_ERROR([Ptolemy II requires JDK1.3 or later.
+    JDK1.2.2 has a bug involving compiling inner classes with protected
+    methods.
+    The RTOS domain uses java.util.Timer, which is present in JDK1.3
+    and later.
+    Please upgrade your JDK to 1.3 and try again]) 	
 	;;
-	*) AC_MSG_RESULT([no, not necessary])
+	*) AC_MSG_RESULT([ok, you are running $JVERSION])
 	;;
 esac
 
@@ -587,9 +587,7 @@ fi
 # exists.  If we are shipping ptplot, then this directory might not
 # exist
 PTJACL_JAR=$PTII/lib/ptjacl.jar
-# If we are running under JDK1.2.*, then PTJACL_JFLAG is defined
-# above to be -native
-JTCLSH='["$(JAVA)" $(PTJACL_JFLAG) tcl.lang.Shell]'
+JTCLSH='["$(JAVA)" tcl.lang.Shell]'
 
 if test ! -d "$PTII/util/testsuite"; then
     AC_MSG_RESULT([$PTII/util/testsuite is not present,
@@ -602,18 +600,17 @@ else
 
     if test -f "$PTJACL_JAR"; then
 	AC_MSG_RESULT([$PTJACL_JAR])
-	AC_MSG_CHECKING([for how to run jacl with "$JAVA" "$PTJACL_JFLAG"])
+	AC_MSG_CHECKING([for how to run jacl with "$JAVA"])
 	# This command starts up Jacl
-	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell; then
+	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell; then
 		AC_MSG_RESULT(ok)
 	else
-		AC_MSG_RESULT([CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell failed])
-		PTJACL_JFLAG=
+		AC_MSG_RESULT([CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell failed])
 		AC_MSG_CHECKING([for how to run jacl with "$JAVA" "$PTJACL_FLAG]")
-		if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell; then
+		if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell; then
 			AC_MSG_RESULT(ok)
 		else
-			AC_MSG_RESULT(['CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell' failed,
+			AC_MSG_RESULT(['CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell' failed,
 	use 'CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell'
 	instead. ptjacl is used by the test suite, so you may be able to
 	ignore this error.])
@@ -686,37 +683,6 @@ else
 	AC_MSG_WARN(['"$JAVAC" javasoundTest.java' failed.
 	Perhaps you are running under JDK1.2?
 	javasound is used in actor.lib, but you can probably
-	get away without it.])
-    fi
-    cd "$startdir"
-fi
-
-#--------------------------------------------------------------------
-#	Test for java.util.Timer, which is used by rtos
-#--------------------------------------------------------------------
-PTRTOS_USER_DIR="$PTII/ptolemy/domains/rtos"
-# PTRTOS_DIR is set to rtos and used in
-# $PTII/ptolemy/domains/makefile if rtos was found
-PTRTOS_DIR=
-
-if test ! -d "$PTRTOS_USER_DIR"; then
-    AC_MSG_RESULT([$PTRTOS_USER_DIR is not present,
-	so we need not find java.util.Timer.])
-else
-    AC_MSG_CHECKING([for java.util.Timer])
-
-    # We need to run javac in the config directory so that javac from jdk1.1.6
-    # under NT and cygwin works properly
-    startdir=`pwd`
-    cd "$srcdir/config"
-    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if $JAVAC javaUtilTimerTest.java ; then
-	AC_MSG_RESULT(ok)
-	PTRTOS_DIR=rtos
-    else
-	AC_MSG_WARN(['"$JAVAC" javaUtilTimerTest.java' failed.
-	Perhaps you are running under JDK1.2?
-	java.util.Timer is used in the rtos domain, but you can probably
 	get away without it.])
     fi
     cd "$startdir"
@@ -1253,9 +1219,6 @@ AC_SUBST(JAVACC)
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
 AC_SUBST(JAVACC_DIR)
 
-# Javadoc size flag for JDK1.2, see doc/makefile
-AC_SUBST(JDOCSIZE)
-
 # Jar file that contains JDHL, see http://www.jhdl.org
 AC_SUBST(JHDL_JAR)
 
@@ -1308,9 +1271,6 @@ AC_SUBST(PTII)
 # ptjacl.jar file, used to run the test suites
 AC_SUBST(PTJACL_JAR)
 
-# Flag to pass to java when we start up jacl
-AC_SUBST(PTJACL_JFLAG)
-
 # Location of the JDK
 AC_SUBST(PTJAVA_DIR)
 
@@ -1329,10 +1289,6 @@ AC_SUBST(PTJHDL_DIR)
 # $PTII/ptolemy/actor/lib/makefile if jini was found
 AC_SUBST(PTJSPACES_DIR)
 
-# Set to rtos and used in
-# $PTII/ptolemy/domains/makefile if javasound was found
-AC_SUBST(PTRTOS_DIR)
-
 # Set to kvm and used in
 # $PTII/ptolemy/apps/makefile if kvm was found
 AC_SUBST(PTKVM_DIR)
@@ -1349,10 +1305,6 @@ AC_SUBST(PTLEJOS_DIR)
 # Set to matlab and used in
 # $PTII/ptolemy/makefile if the Matlab was found.
 AC_SUBST(PTMATLAB_DIR)
-
-# Set to rtos and used in
-# $PTII/ptolemy/domains/makefile if util was found
-AC_SUBST(PTRTOS_DIR)
 
 # Set to tini and used in
 # $PTII/ptolemy/apps/makefile if TINI was found
