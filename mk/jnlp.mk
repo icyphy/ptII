@@ -148,7 +148,9 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/ct/demo/demo.jar \
 	ptolemy/domains/ct/doc/doc.jar \
-	ptolemy/domains/fsm/doc/doc.jar
+	ptolemy/domains/fsm/doc/doc.jar \
+	ptolemy/matlab/demo/demo.jar \
+	lib/matlab.jar
 
 
 #######
