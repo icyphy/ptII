@@ -365,9 +365,6 @@ public class Pxgraph extends Frame {
         } else if (target == _htmlButton) {
             _html();
             return true;
-        } else if (target == _pxgraphX11Button) {
-            _pxgraphX11();
-            return true;
         } else if (target == _aboutButton) {
             _about();
             return true;
@@ -409,6 +406,11 @@ public class Pxgraph extends Frame {
             case '\004':        // Control-D
             case 'q':
                 System.exit(0);
+                break;
+            case 'x':
+                // Used for debugging, brings up pxgraph.x11.
+                if (_debug > 5)
+                    _pxgraphX11();
                 break;
             }
         }
@@ -605,7 +607,6 @@ public class Pxgraph extends Frame {
             // 1.0.2 for netscape3.x compatibilty.
             _printButton.show(); // FIXME: show() deprecated, but . . .
             _htmlButton.show(); // FIXME: show() deprecated, but . . .
-            _pxgraphX11Button.show(); // FIXME: show() deprecated, but . . .
             _aboutButton.show(); // FIXME: show() deprecated, but . . .
         } else {
             _exitButton.hide(); // FIXME: hide() is
@@ -613,7 +614,6 @@ public class Pxgraph extends Frame {
             // 1.0.2 for netscape3.x compatibilty.
             _printButton.hide(); // FIXME: hide() deprecated, but . . .
             _htmlButton.hide(); // FIXME: hide() deprecated, but . . .
-            _pxgraphX11Button.hide(); // FIXME: show() deprecated, but . . .
             _aboutButton.hide(); // FIXME: hide() deprecated, but . . .
         }
     }
@@ -633,11 +633,6 @@ public class Pxgraph extends Frame {
 
         _htmlButton = new Button("HTML");
         panel.add(_htmlButton);
-
-        if (_debug > 4) {
-            _pxgraphX11Button = new Button("pxgraph.x11");
-            panel.add(_pxgraphX11Button);
-        }
 
         _aboutButton = new Button("About");
         panel.add(_aboutButton);
@@ -796,14 +791,21 @@ public class Pxgraph extends Frame {
      */ 
     private void _pxgraphX11() {
  	try {
+            boolean sawdebug = false; // True if we saw a -debug flag
             String command[] = new String[_cmdLineArgs.length +1];
             command[0] = new String("pxgraph.x11");
-            try {
-            System.arraycopy(_cmdLineArgs, 0,
-                    command, 1 ,_cmdLineArgs.length);
-            } catch (ArrayIndexOutOfBoundsException e) {}
-            catch (ArrayStoreException e) {}
-
+            System.out.print("Pxgraph: about to execute: "+command[0]+" ");
+            // Copy over args, except for -debug
+            int j = 1;
+            for(int i = 0; i < _cmdLineArgs.length; i++) {
+                if (_cmdLineArgs[i].equals("-debug")) {
+                    i++;
+                } else {
+                    command[j++] = _cmdLineArgs[i];
+                }
+                System.out.print(command[j-1]+" ");
+            }
+            System.out.println("");
  	    Runtime runtime = Runtime.getRuntime();
  	    Process browser = runtime.exec(command);
  	} catch (SecurityException e) {
@@ -818,10 +820,6 @@ public class Pxgraph extends Frame {
     ////                         private variables                        ////
 
     private Button _exitButton, _printButton, _htmlButton, _aboutButton;
-
-    // This button is only present if this class was compiled with _debug
-    // set to 5 or greater.  Setting the -debug flag has no effect.
-    private Button _pxgraphX11Button;
 
     //  Command line args pxgraph was called with.
     private String _cmdLineArgs[];
