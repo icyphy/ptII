@@ -154,6 +154,12 @@ public class CTZeroCrossingDetector extends CTActor
      *  last step.
      */
     public boolean hasMissedEvent() {
+
+	if (_first_ask) {
+            _first_ask = false;
+            return false;
+        }
+
         CTMixedSignalDirector dir = (CTMixedSignalDirector) getDirector();
         if (Math.abs(_thisTrg) < _errorTolerance) {
             if (_enabled) {
@@ -227,4 +233,5 @@ public class CTZeroCrossingDetector extends CTActor
     private double _thisTrg;
     private boolean _enabled;
     private boolean _eventNow = false;
+    private boolean _first_ask = true;
 }

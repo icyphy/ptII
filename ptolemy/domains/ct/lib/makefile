@@ -68,7 +68,8 @@ JSRCS = \
 	CTSink.java \
 	CTSquareWave.java \
 	CTZeroCrossingDetector.java \
-	CTZeroOrderHold.java
+	CTZeroOrderHold.java \
+        GeneralFunctionActor.java
 
 EXTRA_SRCS =	$(JSRCS)
 
