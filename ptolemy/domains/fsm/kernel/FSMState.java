@@ -416,35 +416,35 @@ public class FSMState extends ComponentEntity {
     ////                         private variables                 ////
 
     /** @serial The actor refining this state. */
-    Actor _refinement = null;
+    protected Actor _refinement = null;
 
     /** @serial The list of variables corresponding to the status of output
      *  of refinement.
      */
-    VariableList _localStatusVars = null;
+    protected VariableList _localStatusVars = null;
 
     /** @serial The list of variables corresponding to the value of output
      *  of refinement.
      */
-    VariableList _localValueVars = null;
+    protected VariableList _localValueVars = null;
 
     /** @serial The list of outgoing preemptive transitions. */
-    LinkedList _preTrans = null;
+    protected LinkedList _preTrans = null;
 
     /** @serial The list of outgoing non-preemptive transitions. */
-    LinkedList _nonPreTrans = null;
+    protected LinkedList _nonPreTrans = null;
 
     /** @serial The version of the transitions lists. */
-    long _transVersion = -1;
+    protected long _transVersion = -1;
 
     /** @serial If true, the subsystem refining this state is initialized
      *  each time entering this state.
      */
-    boolean _initEntry = false;
+    protected boolean _initEntry = false;
 
     /** @serial The port connects to all incoming transitions. */
-    ComponentPort _incoming = null;
+    protected ComponentPort _incoming = null;
 
     /** @serial The port connects to all outgoing transitions. */
-    ComponentPort _outgoing = null;
+    protected ComponentPort _outgoing = null;
 }
