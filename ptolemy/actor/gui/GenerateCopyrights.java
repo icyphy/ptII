@@ -131,6 +131,10 @@ public class GenerateCopyrights {
                 "mescal.domains.mescalPE.kernel.parser",
                 "mescal/configs/doc/cup-copyright.htm");
 
+        _addIfPresent(copyrightsMap,
+                "org.satlive.jsat.objects.ExternalLiteral"
+                "mescal/configs/doc/jsat-copyright.htm");
+
         // Now generate the HTML
 
         String applicationName = "Ptolemy II";
