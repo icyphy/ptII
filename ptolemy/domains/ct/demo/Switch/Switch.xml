@@ -57,7 +57,7 @@
         </property>
     </property>
     <property name="0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="35.0, 275.0">
+        <property name="_location" class="ptolemy.moml.Location" value="30.0, 240.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -95,7 +95,7 @@ CTDirector to schedule and execute the model correctly.
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="83.0, 191.0">
+        <property name="_location" class="ptolemy.moml.Location" value="75.0, 190.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -111,7 +111,7 @@ CTDirector to schedule and execute the model correctly.
     <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="192.0, 191.0">
+        <property name="_location" class="ptolemy.moml.Location" value="195.0, 190.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -129,7 +129,7 @@ CTDirector to schedule and execute the model correctly.
         </property>
         <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="362.0, 192.0">
+        <property name="_location" class="ptolemy.moml.Location" value="430.0, 190.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
@@ -148,7 +148,7 @@ CTDirector to schedule and execute the model correctly.
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="70.0, 129.0">
+        <property name="_location" class="ptolemy.moml.Location" value="75.0, 130.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -463,7 +463,7 @@ CTDirector to schedule and execute the model correctly.
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="270.0, 197.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="270.0, 190.0">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -475,7 +475,7 @@ CTDirector to schedule and execute the model correctly.
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="128.0, 250.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="260.0, 225.0">
         </vertex>
     </relation>
     <link port="EventSource.output" relation="relation6"/>
