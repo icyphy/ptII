@@ -786,7 +786,7 @@ public class CTScheduler extends Scheduler{
         // exceptions are catched.
         LinkedList actorlist = new LinkedList();
         while (actors.hasMoreElements()) {
-            AtomicActor a = (AtomicActor)actors.nextElement();
+            Actor a = (Actor)actors.nextElement();
             g.add(a);
             actorlist.insertLast(a);
         }
@@ -832,7 +832,7 @@ public class CTScheduler extends Scheduler{
         // exceptions are catched.
         LinkedList actorlist = new LinkedList();
         while (actors.hasMoreElements()) {
-            AtomicActor a = (AtomicActor)actors.nextElement();
+            Actor a = (Actor)actors.nextElement();
             g.add(a);
             actorlist.insertLast(a);
         }
