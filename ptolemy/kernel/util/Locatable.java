@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@ProposedRating Green (cxh@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 
 */
 
@@ -35,9 +35,14 @@ package ptolemy.kernel.util;
 /**
 An interface for objects storing a location.
 
+<p>This interface is generally implemented by attributes of objects
+in a model and is used by the Vergil user interface to store 
+the location of objects in the visual editor.
+
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.1
+@see Location
 */
 public interface Locatable extends Settable {
 
