@@ -69,12 +69,23 @@ MISC_FILES =	$(DIRS) \
 	alljtests.tcl \
 	meaningOfLife.c \
 	meaningOfLife.h \
-	meaningOfLife.xml
+	meaningOfLife.xml \
+	testDeux.c \
+	testDeux.h \
+	testDeux.xml \
+	testQuatre.c \
+	testQuatre.h \
+	testQuatre.xml \
+	testTrois.c \
+	testTrois.h \
+	testTrois.xml 
 
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+EXTRA_SRCS =	testDefs.tcl $(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 JCLASS = $(JSRCS:%.java=%.class)
+
+KRUFT = *.dll
 
 tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 
