@@ -33,8 +33,13 @@ package ptolemy.actor.lib.gui;
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.gui.PlotEffigy;
+import ptolemy.actor.gui.PlotTableauFrame;
 import ptolemy.actor.gui.SizeAttribute;
+import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -309,11 +314,33 @@ public class Plotter extends TypedAtomicActor
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (plot == null) {
-            // Create a new plot and frame.
+            // Create a new plot.
             plot = new Plot();
             plot.setTitle(getName());
             plot.setButtons(true);
-            _frame = new PlotterPlotFrame(getFullName(), plot);
+
+            // Need an effigy and a tableau so that menu ops work properly.
+            Effigy containerEffigy = Configuration.findEffigy(toplevel());
+            if (containerEffigy == null) {
+                throw new IllegalActionException(this,
+                        "Cannot find effigy for top level: "
+                        + toplevel().getFullName());
+            }
+            try {
+                PlotEffigy plotEffigy = new PlotEffigy(
+                        containerEffigy, containerEffigy.uniqueName("plot"));
+                // The default identifier is "Unnamed", which is no good for
+                // two reasons: Wrong title bar label, and it causes a save-as
+                // to destroy the original window.
+                plotEffigy.identifier.setExpression(getFullName());
+                PlotWindowTableau tableau = new PlotWindowTableau(
+                        plotEffigy, "tableau");
+                _frame = tableau.frame;
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, null, ex,
+                        "Error creating effigy and tableau");
+            }
+
             _windowProperties.setProperties(_frame);
             _implementDeferredConfigurations();
 
@@ -571,7 +598,7 @@ public class Plotter extends TypedAtomicActor
     ////                         private members                   ////
 
     // Frame into which plot is placed, if any.
-    private transient PlotFrame _frame;
+    private transient PlotTableauFrame _frame;
 
     // The bases and input streams given to the configure() method.
     private List _configureBases = null;
@@ -584,7 +611,7 @@ public class Plotter extends TypedAtomicActor
     /** Version of Plot class that removes its association with the
      *  plot upon closing, and also records the size of the plot window.
      */
-    private class PlotterPlotFrame extends PlotFrame {
+    private class PlotterPlotFrame extends PlotTableauFrame {
 
         /** Construct a plot frame with the specified title and the specified
          *  instance of PlotBox.  After constructing this, it is necessary
@@ -593,14 +620,14 @@ public class Plotter extends TypedAtomicActor
          *  @param plotArg the plot object to put in the frame,
          *   or null to createan instance of Plot.
          */
-        public PlotterPlotFrame(String title, PlotBox plotArg) {
-            super(title, plotArg);
+        public PlotterPlotFrame(Tableau tableau, PlotBox plotArg) {
+            super(tableau, plotArg);
         }
 
         /** Close the window.  This overrides the base class to remove
          *  the association with the Display and to record window properties.
          */
-        protected void _close() {
+        protected boolean _close() {
             // Record the window properties before closing.
             if (_frame != null) {
                 _windowProperties.setProperties(_frame);
@@ -608,8 +635,33 @@ public class Plotter extends TypedAtomicActor
             if (Plotter.this.plot != null) {
                 _plotSize.recordSize(Plotter.this.plot);
             }
-            super._close();
+            boolean result = super._close();
             place(null);
+            return result;
         }
+    }
+
+    /** Tableau that creates a PlotterPlotFrame.
+     */
+    private class PlotWindowTableau extends Tableau {
+
+        /** Construct a new tableau for the model represented by the
+         *  given effigy.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container does not accept
+         *   this entity (this should not occur).
+         *  @exception NameDuplicationException If the name coincides with an
+         *   attribute already in the container.
+         */
+        public PlotWindowTableau(PlotEffigy container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+            String title = Plotter.this.getFullName();
+            frame = new PlotterPlotFrame(this, plot);
+            setFrame(frame);
+        }
+
+        public PlotterPlotFrame frame;
     }
 }

@@ -30,8 +30,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.gui;
 
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEditor;
+import ptolemy.actor.gui.TextEffigy;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.IntToken;
@@ -206,14 +210,36 @@ public class Display extends Sink implements Placeable {
      *  not been specified, place the text area into its own frame.
      *  Otherwise, place it in the specified container.
      *  @exception IllegalActionException If the parent class throws it,
-     *   or if the numRows or numColumns parameters are incorrect.
+     *   or if the numRows or numColumns parameters are incorrect, or
+     *   if there is no effigy for the top level container, or if a problem
+     *   occurs creating the effigy and tableau.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
         if (textArea == null) {
             // No container has been specified for display.
             // Place the text area in its own frame.
-            _frame = new DisplayWindow(getFullName());
+            // Need an effigy and a tableau so that menu ops work properly.
+            Effigy containerEffigy = Configuration.findEffigy(toplevel());
+            if (containerEffigy == null) {
+                throw new IllegalActionException(this,
+                        "Cannot find effigy for top level: "
+                        + toplevel().getFullName());
+            }
+            try {
+                TextEffigy textEffigy = TextEffigy.newTextEffigy(
+                        containerEffigy, "");
+                // The default identifier is "Unnamed", which is no good for
+                // two reasons: Wrong title bar label, and it causes a save-as
+                // to destroy the original window.
+                textEffigy.identifier.setExpression(getFullName());
+                DisplayWindowTableau tableau = new DisplayWindowTableau(
+                        textEffigy, "tableau");
+                _frame = tableau.frame;
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, null, ex,
+                        "Error creating effigy and tableau");
+            }
             textArea = _frame.text;
             int numRows =
                     ((IntToken)rowsDisplayed.getToken()).intValue();
@@ -462,5 +488,33 @@ public class Display extends Sink implements Placeable {
             place(null);
             return true;
         }
+    }
+
+    /** Version of TextEditorTableau that creates DisplayWindow.
+     */
+    private class DisplayWindowTableau extends Tableau {
+
+        /** Construct a new tableau for the model represented by the
+         *  given effigy.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException If the container does not accept
+         *   this entity (this should not occur).
+         *  @exception NameDuplicationException If the name coincides with an
+         *   attribute already in the container.
+         */
+        public DisplayWindowTableau(TextEffigy container, String name)
+                throws IllegalActionException, NameDuplicationException {
+            super(container, name);
+            String title = Display.this.getFullName();
+            frame = new DisplayWindow(title);
+            // Make sure that the effigy and the text area use the same
+            // Document (so that they contain the same data).
+            frame.text.setDocument(container.getDocument());
+            setFrame(frame);
+            frame.setTableau(this);
+        }
+
+        public DisplayWindow frame;
     }
 }

@@ -444,7 +444,8 @@ public abstract class TableauFrame extends Top {
      *  to ensure that the preferred tableau of the model is opened, and
      *  that a model is not opened more than once.
      *  @param url The URL to read.
-     *  @exception Exception If the URL cannot be read.
+     *  @exception Exception If the URL cannot be read, or if there is no
+     *   tableau.
      */
     protected void _read(URL url) throws Exception {
         if (_tableau == null) {
@@ -454,8 +455,15 @@ public abstract class TableauFrame extends Top {
         // NOTE: Used to use for the first argument the following, but
         // it seems to not work for relative file references:
         // new URL("file", null, _directory.getAbsolutePath()
-        Configuration configuration = (Configuration)_tableau.toplevel();
-        configuration.openModel(url, url, url.toExternalForm());
+        Nameable configuration = _tableau.toplevel();
+        if (configuration instanceof Configuration) {
+            ((Configuration)configuration).openModel(
+                    url, url, url.toExternalForm());
+        } else {
+            throw new InternalErrorException(
+                    "Expected top-level to be a Configuration: "
+                    + _tableau.toplevel().getFullName());
+        }
     }
 
     /** Save the model to the current file, determined by the
@@ -466,6 +474,10 @@ public abstract class TableauFrame extends Top {
      *  @return True if the save succeeds.
      */
     protected boolean _save() {
+        if (_tableau == null) {
+            throw new InternalErrorException(
+                    "No associated Tableau! Can't save.");
+        }
         Effigy effigy = getEffigy();
         File file = effigy.getWritableFile();
         if ((effigy != null && !effigy.isModifiable()) || file == null) {
@@ -489,6 +501,10 @@ public abstract class TableauFrame extends Top {
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs() {
+        if (_tableau == null) {
+            throw new InternalErrorException(
+                    "No associated Tableau! Can't save.");
+        }
         JFileChooser fileDialog = new JFileChooser();
 	if (_fileFilter != null) {
 	    fileDialog.addChoosableFileFilter(_fileFilter);
@@ -598,7 +614,7 @@ public abstract class TableauFrame extends Top {
     }
 
     /** Write the model to the specified file.  This method delegates
-     *  to the top effigy containing the associated Tableau, if there
+     *  to the effigy containing the associated Tableau, if there
      *  is one, and otherwise throws an exception.
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
@@ -610,7 +626,7 @@ public abstract class TableauFrame extends Top {
             if (effigy != null) {
                 // Ensure that if we do ever try to call this method,
                 // that it is the top effigy that is written.
-                effigy.topEffigy().writeFile(file);
+                effigy.writeFile(file);
                 return;
             }
         }

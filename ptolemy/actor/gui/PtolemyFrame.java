@@ -179,6 +179,28 @@ public abstract class PtolemyFrame extends TableauFrame {
 	return super._saveAs();
     }
 
+    /** Write the model to the specified file.  This method delegates
+     *  to the top effigy containing the associated Tableau, if there
+     *  is one, and otherwise throws an exception. This ensures that the
+     *  data written is the description of the entire model, not just
+     *  the portion within some composite actor.
+     *  @param file The file to write to.
+     *  @exception IOException If the write fails.
+     */
+    protected void _writeFile(File file) throws IOException {
+        Tableau tableau = getTableau();
+        if (tableau != null) {
+            Effigy effigy = (Effigy)tableau.getContainer();
+            if (effigy != null) {
+                // Ensure that if we do ever try to call this method,
+                // that it is the top effigy that is written.
+                effigy.topEffigy().writeFile(file);
+                return;
+            }
+        }
+        throw new IOException("Cannot find an effigy to delegate writing.");
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
