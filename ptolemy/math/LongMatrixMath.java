@@ -980,11 +980,6 @@ public class LongMatrixMath {
         return true;
     }
 
-    /** Return the number of columns of a matrix. */
-    protected static final int _columns(final long[][] matrix) {
-        return matrix[0].length;
-    }
-
     /** Check that the two matrix arguments are of the same dimension.
      *  If they are not, an IllegalArgumentException is thrown.
      *  @param caller A string representing the caller method name.
@@ -1021,6 +1016,11 @@ public class LongMatrixMath {
                     " is not a square matrix.");
         }
         return _rows(matrix);
+    }
+
+    /** Return the number of columns of a matrix. */
+    protected static final int _columns(final long[][] matrix) {
+        return matrix[0].length;
     }
 
     protected static final String _dimensionString(final long[][] matrix) {

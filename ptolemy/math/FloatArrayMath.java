@@ -621,28 +621,6 @@ public class FloatArrayMath {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Throw an exception if the array is null or length 0.
-     *  Otherwise return the length of the array.
-     *  @param array An array of floats.
-     *  @param methodName A String representing the method name of the caller,
-     *  without parentheses.
-     *  @return The length of the array.
-     */
-    public static final int _nonZeroLength(final float[] array,
-            String methodName) {
-        if (array == null) {
-            throw new IllegalArgumentException("ptolemy.math." + methodName +
-                    "() : input array is null.");
-        }
-
-        if (array.length <= 0) {
-            throw new IllegalArgumentException("ptolemy.math." + methodName +
-                    "() : input array has length 0.");
-        }
-
-        return array.length;
-    }
-
     /** Throw an exception if the two arrays are not of the same length,
      *  or if either array is null. An exception is NOT thrown if both
      *  arrays are of length 0. If no exception is thrown, return the common
@@ -653,7 +631,7 @@ public class FloatArrayMath {
      *  without parentheses.
      *  @return The common length of both arrays.
      */
-    public static final int _commonLength(final float[] array1,
+    protected static final int _commonLength(final float[] array1,
             final float[] array2,
             String methodName) {
         if (array1 == null) {
@@ -675,5 +653,27 @@ public class FloatArrayMath {
         }
 
         return array1.length;
+    }
+
+    /** Throw an exception if the array is null or length 0.
+     *  Otherwise return the length of the array.
+     *  @param array An array of floats.
+     *  @param methodName A String representing the method name of the caller,
+     *  without parentheses.
+     *  @return The length of the array.
+     */
+    protected static final int _nonZeroLength(final float[] array,
+            String methodName) {
+        if (array == null) {
+            throw new IllegalArgumentException("ptolemy.math." + methodName +
+                    "() : input array is null.");
+        }
+
+        if (array.length <= 0) {
+            throw new IllegalArgumentException("ptolemy.math." + methodName +
+                    "() : input array has length 0.");
+        }
+
+        return array.length;
     }
 }

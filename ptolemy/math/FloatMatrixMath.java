@@ -657,20 +657,11 @@ public class FloatMatrixMath {
      *  output matrix will contain a column of zeros for all redundant
      *  input columns.
      */
-    public static final float[][] orthogonalizeColumns(final float[][] matrix) {
+
+    public static final float[][] orthogonalizeColumns(
+            final float[][] matrix) {
         Object[] orthoInfo = _orthogonalizeRows(transpose(matrix));
         return transpose((float[][]) orthoInfo[0]);
-    }
-
-    /** Return a new matrix that is formed by orthogonalizing the
-     *  columns of the input matrix (the column vectors are orthogonal
-     *  and have norm 1). If not all columns are linearly independent,
-     *  the output matrix will contain a column of zeros for all
-     *  redundant input columns.
-     */
-    public static final float[][] orthonormalizeColumns(
-            final float[][] matrix) {
-        return transpose(orthogonalizeRows(transpose(matrix)));
     }
 
     /** Return a new matrix that is formed by orthogonalizing the rows of the
@@ -681,6 +672,18 @@ public class FloatMatrixMath {
     public static final float[][] orthogonalizeRows(final float[][] matrix) {
         Object[] orthoInfo = _orthogonalizeRows(matrix);
         return (float[][]) orthoInfo[0];
+    }
+
+
+    /** Return a new matrix that is formed by orthogonalizing the
+     *  columns of the input matrix (the column vectors are orthogonal
+     *  and have norm 1). If not all columns are linearly independent,
+     *  the output matrix will contain a column of zeros for all
+     *  redundant input columns.
+     */
+    public static final float[][] orthonormalizeColumns(
+            final float[][] matrix) {
+        return transpose(orthogonalizeRows(transpose(matrix)));
     }
 
     /** Return a new matrix that is formed by orthonormalizing the
@@ -1026,10 +1029,6 @@ public class FloatMatrixMath {
         return true;
     }
 
-    /** Return the number of columns of a matrix. */
-    protected static final int _columns(final float[][] matrix) {
-        return matrix[0].length;
-    }
 
     /** Check that the two matrix arguments are of the same dimension.
      *  If they are not, an IllegalArgumentException is thrown.
@@ -1067,6 +1066,11 @@ public class FloatMatrixMath {
                     " is not a square matrix.");
         }
         return _rows(matrix);
+    }
+
+    /** Return the number of columns of a matrix. */
+    protected static final int _columns(final float[][] matrix) {
+        return matrix[0].length;
     }
 
     protected static final String _dimensionString(final float[][] matrix) {

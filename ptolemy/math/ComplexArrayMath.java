@@ -1043,10 +1043,14 @@ public class ComplexArrayMath {
     //    protected methods
 
     /** Throw an exception if the two arrays are not of the same length,
-     * or if either array is null. An exception is NOT thrown if both
-     * arrays are of size 0. If no exception is thrown, return the common
-     * length of the arrays.  This method should be private, but it
-     * is protected so that we can call it fro the test suite.
+     *  or if either array is null. An exception is NOT thrown if both
+     *  arrays are of length 0. If no exception is thrown, return the common
+     *  length of the arrays.
+     *  @param array The first array of doubles.
+     *  @param array The second array of doubles.
+     *  @param methodName A String representing the method name of the caller,
+     *  without parentheses.
+     *  @return The common length of both arrays.
      */
     protected static final int _commonLength(final Complex[] array1,
             final Complex[] array2, final String methodName) {
@@ -1071,9 +1075,11 @@ public class ComplexArrayMath {
     }
 
     /** Throw an exception if the array is null or length 0.
-     * Otherwise return the length of the array.
-     * This method should be private, but it
-     * is protected so that we can call it fro the test suite.
+     *  Otherwise return the length of the array.
+     *  @param array An array of doubles.
+     *  @param methodName A String representing the method name of the caller,
+     *  without parentheses.
+     *  @return The length of the array.
      */
     protected static final int _nonZeroLength(final Complex[] array,
             final String methodName) {
@@ -1089,55 +1095,3 @@ public class ComplexArrayMath {
         return array.length;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -789,28 +789,6 @@ public class IntegerArrayMath {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Throw an exception if the array is null or length 0.
-     *  Otherwise return the length of the array.
-     *  @param array An array of ints.
-     *  @param methodName A String representing the method name of the caller,
-     *  without parentheses.
-     *  @return The length of the array.
-     */
-    public static final int _nonZeroLength(final int[] array,
-            String methodName) {
-        if (array == null) {
-            throw new IllegalArgumentException("ptolemy.math." + methodName +
-                    "() : input array is null.");
-        }
-
-        if (array.length <= 0) {
-            throw new IllegalArgumentException("ptolemy.math." + methodName +
-                    "() : input array has length 0.");
-        }
-
-        return array.length;
-    }
-
     /** Throw an exception if the two arrays are not of the same length,
      *  or if either array is null. An exception is NOT thrown if both
      *  arrays are of length 0. If no exception is thrown, return the common
@@ -821,7 +799,7 @@ public class IntegerArrayMath {
      *  without parentheses.
      *  @return The common length of both arrays.
      */
-    public static final int _commonLength(final int[] array1,
+    protected static final int _commonLength(final int[] array1,
             final int[] array2,
             String methodName) {
         if (array1 == null) {
@@ -843,5 +821,26 @@ public class IntegerArrayMath {
         }
 
         return array1.length;
+    }
+    /** Throw an exception if the array is null or length 0.
+     *  Otherwise return the length of the array.
+     *  @param array An array of ints.
+     *  @param methodName A String representing the method name of the caller,
+     *  without parentheses.
+     *  @return The length of the array.
+     */
+    protected static final int _nonZeroLength(final int[] array,
+            String methodName) {
+        if (array == null) {
+            throw new IllegalArgumentException("ptolemy.math." + methodName +
+                    "() : input array is null.");
+        }
+
+        if (array.length <= 0) {
+            throw new IllegalArgumentException("ptolemy.math." + methodName +
+                    "() : input array has length 0.");
+        }
+
+        return array.length;
     }
 }

@@ -100,55 +100,6 @@ public class Interpolation {
         return _values;
     }
 
-    /** Set the reference indexes.
-     *  @param indexes An int array.
-     *  @exception IllegalArgumentException If the argument array is
-     *   not increasing and non-negative.
-     */
-    public void setIndexes(int[] indexes) {
-        int prev = -1;
-        for (int i = 0; i < indexes.length; i++) {
-            if (indexes[i] <= prev ) {
-                throw new IllegalArgumentException("Interpolation.setIndexes" +
-                        " index array is not increasing and non-negative.");
-            }
-            prev = indexes[i];
-        }
-
-        _indexes = indexes;
-    }
-
-    /** Set the value repetition period.
-     *  @param period An int.
-     *  @exception IllegalArgumentException If the period is negative.
-     */
-    public void setPeriod(int period) {
-        if (period < 0) {
-            throw new IllegalArgumentException("Interpolation.setPeriod: " +
-                    "The period is negative.");
-        }
-        _period = period;
-    }
-
-    /** Set the interpolation order.
-     *  @param order An int.
-     *  @exception IllegalArgumentException If the order is not 0, 1, or 3.
-     */
-    public void setOrder(int order) {
-        if (order != 0 && order != 1 && order != 3) {
-            throw new IllegalArgumentException("Interpolation.setOrder: " +
-                    "The order " + order + " is not valid.");
-        }
-        _order = order;
-    }
-
-    /** Set the reference values.
-     *  @param values A double array.
-     */
-    public void setValues(double[] values) {
-        _values = values;
-    }
-
     /** Return the interpolation result for the specified index.
      *  @param index The point of interpolation. Can be negative
      *  @return A double.
@@ -288,6 +239,55 @@ public class Interpolation {
         double tanEnd = 0.5 * (tanStart2End + tanEnd2After);
 
         return _hermite(index, iStart, vStart, tanStart, iEnd, vEnd, tanEnd);
+    }
+
+    /** Set the reference indexes.
+     *  @param indexes An int array.
+     *  @exception IllegalArgumentException If the argument array is
+     *   not increasing and non-negative.
+     */
+    public void setIndexes(int[] indexes) {
+        int prev = -1;
+        for (int i = 0; i < indexes.length; i++) {
+            if (indexes[i] <= prev ) {
+                throw new IllegalArgumentException("Interpolation.setIndexes" +
+                        " index array is not increasing and non-negative.");
+            }
+            prev = indexes[i];
+        }
+
+        _indexes = indexes;
+    }
+
+    /** Set the interpolation order.
+     *  @param order An int.
+     *  @exception IllegalArgumentException If the order is not 0, 1, or 3.
+     */
+    public void setOrder(int order) {
+        if (order != 0 && order != 1 && order != 3) {
+            throw new IllegalArgumentException("Interpolation.setOrder: " +
+                    "The order " + order + " is not valid.");
+        }
+        _order = order;
+    }
+
+    /** Set the value repetition period.
+     *  @param period An int.
+     *  @exception IllegalArgumentException If the period is negative.
+     */
+    public void setPeriod(int period) {
+        if (period < 0) {
+            throw new IllegalArgumentException("Interpolation.setPeriod: " +
+                    "The period is negative.");
+        }
+        _period = period;
+    }
+
+    /** Set the reference values.
+     *  @param values A double array.
+     */
+    public void setValues(double[] values) {
+        _values = values;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -56,8 +56,8 @@ infinity.
 <li>
 <i>down</i>: Round all inexact values towards zero.
 <li>
-<i>half_ceiling</i> or <i>nearest</i>: Round to the nearest value and the half-way value
-towards plus infinity.
+<i>half_ceiling</i> or <i>nearest</i>: Round to the nearest value and
+the half-way value towards plus infinity.
 <li>
 <i>half_floor</i>: Round to the nearest value and the
 half-way value towards minus infinity.

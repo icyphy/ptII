@@ -891,7 +891,8 @@ public class SignalProcessing {
      *  @see ptolemy.math.DoubleUnaryOperation
      */
     public static final double[] sampleWave(int length,
-            double startTime, double interval, DoubleUnaryOperation sampleGen) {
+            double startTime, double interval,
+            DoubleUnaryOperation sampleGen) {
         double time = startTime;
 
         double[] returnValue = new double[length];

@@ -611,6 +611,9 @@ public class FixPoint implements Cloneable, Serializable {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
     /** An instance of this class is used preserve backwards interface
      *  compatibility. It contains a description that now states that
      *  there is no tracking of applied overflow or rounding.

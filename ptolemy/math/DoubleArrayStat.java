@@ -486,17 +486,6 @@ public class DoubleArrayStat extends DoubleArrayMath {
         return d;
     }
 
-    /** Return the sum of all of the elements in the array.
-     *  Return 0.0 of the length of the array is 0.
-     */
-    public static final double sumOfElements(double[] array) {
-        double sum = 0.0;
-        for (int i = 0; i < array.length; i++) {
-            sum += array[i];
-        }
-        return sum;
-    }
-
     /** Return the standard deviation of the elements in the array.
      *  Simply return standardDeviation(array, false).
      */
@@ -525,6 +514,17 @@ public class DoubleArrayStat extends DoubleArrayMath {
      */
     public static double standardDeviation(double[] array, boolean sample) {
         return Math.sqrt(variance(array, sample));
+    }
+
+    /** Return the sum of all of the elements in the array.
+     *  Return 0.0 of the length of the array is 0.
+     */
+    public static final double sumOfElements(double[] array) {
+        double sum = 0.0;
+        for (int i = 0; i < array.length; i++) {
+            sum += array[i];
+        }
+        return sum;
     }
 
     /** Return the variance of the elements in the array, assuming

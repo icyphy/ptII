@@ -153,16 +153,16 @@ public class Fraction extends Object {
         return v;
     }
 
-    /** Return the numerator of this fraction.
-     */
-    public int getNumerator() {
-        return _num;
-    }
-
     /** Return the denominator of this fraction.
      */
     public int getDenominator() {
         return _den;
+    }
+
+    /** Return the numerator of this fraction.
+     */
+    public int getNumerator() {
+        return _num;
     }
 
     /** Find the multiplicative inverse of this fraction.

@@ -472,7 +472,9 @@ public class DoubleMatrixMath {
      */
     public static final void matrixCopy(final double[][] sourceMatrix,
             final double[][] destinationMatrix) {
-        matrixCopy(sourceMatrix, 0, 0, destinationMatrix, 0, 0, _rows(sourceMatrix),
+        matrixCopy(sourceMatrix,
+                0, 0, destinationMatrix,
+                0, 0, _rows(sourceMatrix),
                 _columns(sourceMatrix));
     }
 
@@ -668,6 +670,16 @@ public class DoubleMatrixMath {
         return transpose((double[][]) orthoInfo[0]);
     }
 
+    /** Return a new matrix that is formed by orthogonalizing the rows of the
+     *  input matrix (the row vectors are orthogonal). If not all rows are
+     *  linearly independent, the output matrix will contain a row of zeros
+     *  for all redundant input rows.
+     */
+    public static final double[][] orthogonalizeRows(final double[][] matrix) {
+        Object[] orthoInfo = _orthogonalizeRows(matrix);
+        return (double[][]) orthoInfo[0];
+    }
+
     /** Return a new matrix that is formed by orthonormalizing the
      *  columns of the input matrix (the column vectors are orthogonal
      *  and have norm 1). If not all columns are linearly independent,
@@ -677,16 +689,6 @@ public class DoubleMatrixMath {
     public static final double[][] orthonormalizeColumns(
             final double[][] matrix) {
         return transpose(orthogonalizeRows(transpose(matrix)));
-    }
-
-    /** Return a new matrix that is formed by orthogonalizing the rows of the
-     *  input matrix (the row vectors are orthogonal). If not all rows are
-     *  linearly independent, the output matrix will contain a row of zeros
-     *  for all redundant input rows.
-     */
-    public static final double[][] orthogonalizeRows(final double[][] matrix) {
-        Object[] orthoInfo = _orthogonalizeRows(matrix);
-        return (double[][]) orthoInfo[0];
     }
 
     /** Return a new matrix that is formed by orthonormalizing the
@@ -1036,11 +1038,6 @@ public class DoubleMatrixMath {
         return true;
     }
 
-    /** Return the number of columns of a matrix. */
-    protected static final int _columns(final double[][] matrix) {
-        return matrix[0].length;
-    }
-
     /** Check that the two matrix arguments are of the same dimension.
      *  If they are not, an IllegalArgumentException is thrown.
      *  @param caller A string representing the caller method name.
@@ -1076,6 +1073,11 @@ public class DoubleMatrixMath {
                     " is not a square matrix.");
         }
         return _rows(matrix);
+    }
+
+    /** Return the number of columns of a matrix. */
+    protected static final int _columns(final double[][] matrix) {
+        return matrix[0].length;
     }
 
     protected static final String _dimensionString(final double[][] matrix) {

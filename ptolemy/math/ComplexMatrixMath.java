@@ -56,6 +56,26 @@ public class ComplexMatrixMath {
     // Private constructor prevents construction of this class.
     private ComplexMatrixMath() {}
 
+    /** Return the given matrix of complex numbers with the
+     *  absolute values of the real parts.
+     *
+     *  @param matrix The matrix of complex numbers.
+     *  @return A new matrix of complex numbers formed from <i>matrix</i>
+     *  with the absolute values of the real parts.
+     */
+    public static final Complex[][] absValues(Complex[][] matrix) {
+        int rows = _rows(matrix);
+        int columns = _columns(matrix);
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                matrix[i][j] = new Complex(Math.abs(matrix[i][j].real),
+                        matrix[i][j].imag);
+            }
+        }
+        return matrix;
+    }
+
     /** Return a new matrix that is constructed from the argument by
      *  adding the second argument to every element.
      *
@@ -81,7 +101,7 @@ public class ComplexMatrixMath {
      *  @param matrix2 The second matrix of complex numbers.
      *  @return A new matrix of complex numbers formed by adding <i>matrix2</i>
      *  to <i>matrix1</i>.
-     *  @throws IllegalArgumentException If the matrices do not have the same
+     *  @exception IllegalArgumentException If the matrices do not have the same
      *   dimensions.
      */
     public static final Complex[][] add(final Complex[][] matrix1,
@@ -107,10 +127,11 @@ public class ComplexMatrixMath {
         return crop(matrix, 0, 0, _rows(matrix), _columns(matrix));
     }
 
-    /** Return a new matrix that is formed by applying an instance of a
-     *  ComplexBinaryOperation to each element in the input matrix,
-     *  using <i>z</i> as the left argument in all cases and the matrix elements
-     *  as the right arguments (z, op.operate(matrix[i][j])).
+    /** Return a new matrix that is formed by applying an instance of
+     *  a ComplexBinaryOperation to each element in the input matrix,
+     *  using <i>z</i> as the left argument in all cases and the
+     *  matrix elements as the right arguments (z,
+     *  op.operate(matrix[i][j])).
      *
      *  @param op A complex binary operation.
      *  @param z A complex number.
@@ -133,10 +154,11 @@ public class ComplexMatrixMath {
         return returnValue;
     }
 
-    /** Return a new matrix that is formed by applying an instance of a
-     *  ComplexBinaryOperation to each element in the input matrix,
-     *  using <i>z</i> as the right argument in all cases and the matrix elements
-     *  as the left arguments (op.operate(matrix[i][j], z)).
+    /** Return a new matrix that is formed by applying an instance of
+     *  a ComplexBinaryOperation to each element in the input matrix,
+     *  using <i>z</i> as the right argument in all cases and the
+     *  matrix elements as the left arguments
+     *  (op.operate(matrix[i][j], z)).
      *
      *  @param op A complex binary operation.
      *  @param z A complex number.
@@ -169,7 +191,7 @@ public class ComplexMatrixMath {
      *  @param matrix2 The second matrix of complex numbers.
      *  @return A new matrix of complex numbers with each element
      *  equal to (op.operate(matrix1[i][j], matrix2[i][j])).
-     *  @throws IllegalArgumentException If the matrices do not have the same
+     *  @exception IllegalArgumentException If the matrices do not have the same
      *   dimensions.
      */
     public static final Complex[][] applyBinaryOperation(
@@ -210,27 +232,6 @@ public class ComplexMatrixMath {
         }
         return returnValue;
     }
-
-    /** Return the given matrix of complex numbers with the
-     *  absolute values of the real parts.
-     *
-     *  @param matrix The matrix of complex numbers.
-     *  @return A new matrix of complex numbers formed from <i>matrix</i>
-     *  with the absolute values of the real parts.
-     */
-    public static final Complex[][] absValues (Complex[][] matrix) {
-        int rows = _rows(matrix);
-        int columns = _columns(matrix);
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-
-                matrix[i][j]= new Complex(Math.abs(matrix[i][j].real), matrix[i][j].imag);
-            }
-        }
-        return matrix;
-    }
-
 
     /** Return a new matrix that is constructed by conjugating the elements
      *  of the input matrix.
@@ -394,10 +395,10 @@ public class ComplexMatrixMath {
      *
      *  @param matrix1 The first matrix of complex numbers.
      *  @param matrix2 The second matrix of complex numbers.
-     *  @return A new matrix of complex numbers constructed by element-by-element
-     *  division of the two matrix arguments.
-     *  @throws IllegalArgumentException If the matrices do not have the same
-     *   dimensions.
+     *  @return A new matrix of complex numbers constructed by
+     *  element-by-element division of the two matrix arguments.
+     *  @exception IllegalArgumentException If the matrices do not
+     *  have the same dimensions.
      */
     public static final Complex[][] divide(final Complex[][] matrix1,
             final Complex[][] matrix2) {
@@ -904,32 +905,6 @@ public class ComplexMatrixMath {
         return orthogonalMatrix;
     }
 
-    /** Return a new matrix that is constructed from the argument by
-     *  subtracting the second matrix from the first one.
-     *
-     *  @param matrix1 The first matrix of complex numbers.
-     *  @param matrix2 The second matrix of complex numbers.
-     *  @return A new matrix of complex numbers constructed by
-     *  subtracting the second matrix from the first one.
-     *  @throws IllegalArgumentException If the matrices do not have the same
-     *   dimensions.
-     */
-    public static final Complex[][] subtract(final Complex[][] matrix1,
-            final Complex[][] matrix2) {
-        _checkSameDimension("subtract", matrix1, matrix2);
-
-        int rows = _rows(matrix1);
-        int columns = _columns(matrix1);
-
-        Complex[][] returnValue = new Complex[rows][columns];
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                returnValue[i][j] = matrix1[i][j].subtract(matrix2[i][j]);
-            }
-        }
-        return returnValue;
-    }
-
     /** Return a new matrix that is formed by taking the real parts of the
      *  complex numbers in the argument matrix.
      *
@@ -946,6 +921,32 @@ public class ComplexMatrixMath {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 returnValue[i][j] = matrix[i][j].real;
+            }
+        }
+        return returnValue;
+    }
+
+    /** Return a new matrix that is constructed from the argument by
+     *  subtracting the second matrix from the first one.
+     *
+     *  @param matrix1 The first matrix of complex numbers.
+     *  @param matrix2 The second matrix of complex numbers.
+     *  @return A new matrix of complex numbers constructed by
+     *  subtracting the second matrix from the first one.
+     *  @exception IllegalArgumentException If the matrices do not
+     *  have the same dimensions.
+     */
+    public static final Complex[][] subtract(final Complex[][] matrix1,
+            final Complex[][] matrix2) {
+        _checkSameDimension("subtract", matrix1, matrix2);
+
+        int rows = _rows(matrix1);
+        int columns = _columns(matrix1);
+
+        Complex[][] returnValue = new Complex[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                returnValue[i][j] = matrix1[i][j].subtract(matrix2[i][j]);
             }
         }
         return returnValue;
@@ -1073,7 +1074,7 @@ public class ComplexMatrixMath {
      *  @param matrix2 The second matrix.
      *  @param maxError A complex number whose magnitude is taken to
      *   be the distance threshold.
-     *  @throws IllegalArgumentException If the matrices do not have the same
+     *  @exception IllegalArgumentException If the matrices do not have the same
      *   dimensions.
      *  @return True or false.
      */
@@ -1082,14 +1083,15 @@ public class ComplexMatrixMath {
         return within(matrix1, matrix2, maxError.magnitude());
     }
 
-    /** Return true if all the distances between corresponding elements in
-     *  <i>matrix1</i> and <i>matrix2</i> are all less than or equal to
-     *  the magnitude of <i>maxError</i>. If both matrices are empty, return true.
+    /** Return true if all the distances between corresponding
+     *  elements in <i>matrix1</i> and <i>matrix2</i> are all less
+     *  than or equal to the magnitude of <i>maxError</i>. If both
+     *  matrices are empty, return true.
      *
      *  @param matrix1 The first matrix.
      *  @param matrix2 The second matrix.
      *  @param maxError The threshold for the magnitude of the difference.
-     *  @throws IllegalArgumentException If the matrices do not have the same
+     *  @exception IllegalArgumentException If the matrices do not have the same
      *   dimensions, or if <i>maxError</i> is negative.
      *  @return True or false.
      */
@@ -1121,14 +1123,16 @@ public class ComplexMatrixMath {
         return true;
     }
 
-    /** Return true if all the distances between corresponding elements in
-     *  <i>matrix1</i> and <i>matrix2</i> are all less than or equal to corresponding
-     *  elements in <i>maxError</i>. If both matrices are empty, return true.
+    /** Return true if all the distances between corresponding
+     *  elements in <i>matrix1</i> and <i>matrix2</i> are all less
+     *  than or equal to corresponding elements in <i>maxError</i>. If
+     *  both matrices are empty, return true.
      *
      *  @param matrix1 The first matrix.
      *  @param matrix2 The second matrix.
-     *  @param maxError The matrix of thresholds for the magnitudes of difference.
-     *  @throws IllegalArgumentException If the matrices do not have the same
+     *  @param maxError The matrix of thresholds for the magnitudes of
+     *  difference.
+     *  @exception IllegalArgumentException If the matrices do not have the same
      *   dimensions, or if an elment in <i>maxError</i> is negative.
      *  @return True or false.
      */
@@ -1145,8 +1149,8 @@ public class ComplexMatrixMath {
 
                 if (maxError[i][j] < 0) {
                     throw new IllegalArgumentException(
-                         "ComplexMatrixMath.within requires that the third argument "
-                          + "be non-negative.");
+                         "ComplexMatrixMath.within requires that the "
+                         + "third argument be non-negative.");
             }
 
             double realDifference = matrix1[i][j].real - matrix2[i][j].real;
@@ -1171,7 +1175,7 @@ public class ComplexMatrixMath {
      *  @param matrix2 The second matrix.
      *  @param maxError A matrix of complex numbers whose magnitudes
      *  for each element are taken to be the distance thresholds.
-     *  @throws IllegalArgumentException If the arrays are not of the same
+     *  @exception IllegalArgumentException If the arrays are not of the same
      *   length.
      *  @return True or false.
      */
@@ -1205,15 +1209,6 @@ public class ComplexMatrixMath {
 
     /////////////////////////////////////////////////////////////////////////
     ////                      protected methods                          ////
-
-    /** Return the number of columns of a matrix.
-     *
-     *  @param matrix A matrix of complex numbers.
-     *  @return The number of columns of the given matrix.
-     */
-    protected static final int _columns(final Complex[][] matrix) {
-        return matrix[0].length;
-    }
 
     /** Check that the two matrix arguments are of the same dimension.
      *  If they are not, an IllegalArgumentException is thrown.
@@ -1253,6 +1248,15 @@ public class ComplexMatrixMath {
                     " is not a square matrix.");
         }
         return _rows(matrix);
+    }
+
+    /** Return the number of columns of a matrix.
+     *
+     *  @param matrix A matrix of complex numbers.
+     *  @return The number of columns of the given matrix.
+     */
+    protected static final int _columns(final Complex[][] matrix) {
+        return matrix[0].length;
     }
 
     /** Print out the dimensions of the given matrix.
@@ -1343,7 +1347,7 @@ public class ComplexMatrixMath {
 
             Complex normSquared = new Complex (normSqrd, 0.0);
 
-            Complex Zero_Complex = new Complex(0.0,0.0);
+            Complex Zero_Complex = new Complex(0.0, 0.0);
             if (normSquared == Zero_Complex) {
                 if (i == 0) {
                     // The input row was the zero vector, we now have
@@ -1365,7 +1369,7 @@ public class ComplexMatrixMath {
                 nullity++;
             } else {
                 orthogonalMatrix[i] = rowArray;
-                Complex One_Complex = new Complex (1.0,0.0);
+                Complex One_Complex = new Complex (1.0, 0.0);
                 oneOverNormSquaredArray[i] = One_Complex.divide(normSquared);
             }
         }
@@ -1403,5 +1407,3 @@ public class ComplexMatrixMath {
         return matrix;
     }
 }
-
-
