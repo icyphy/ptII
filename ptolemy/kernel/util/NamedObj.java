@@ -31,6 +31,7 @@ package pt.kernel;
 
 import pt.data.*;
 import java.io.Serializable;
+import java.util.Enumeration;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
@@ -125,7 +126,11 @@ public class NamedObj implements Nameable, Serializable {
 
     /** Add a Param. this causes the version number of the workspace
      *  to be incremented.
-     *  @param The param to be added
+     *  @param p The param to be added
+     *  @exception NameDuplicationException thrown if this NamedObj already
+     *  has a Param with the same name
+     *  @exception IllegalActionionException Thrown if trying to attach 
+     *  a Param which is not contained by this NamedObj.
      */
     public void addParam(Param p) throws NameDuplicationException, IllegalActionException {
         if (((NamedObj)p.getContainer()) != this) {
@@ -136,8 +141,8 @@ public class NamedObj implements Nameable, Serializable {
                 _params = new NamedList();
             }
             _params.append(p);
-        } catch (IllegalActionException ex) {
-            // cannot happen as every Param must have a name
+        } catch (IllegalActionException ex) {   
+            // a Param cannot be constructed without a name
         }
         workspace().incrVersion();
     }
@@ -220,11 +225,33 @@ public class NamedObj implements Nameable, Serializable {
         return _name; 
     }
 
-    /** Get a NamedList of the Params attached to this object
+    /** Get the param attached to this NamedObj with the given name
+     *  @param name The name of the desired Param.
+     *  @return The requested Param if it is found, null otherwise
      */
-    public NamedList getParams() {
-        return _params;
+    public Param getParam(String name) {
+        return (Param) _params.get(name);
     }
+
+    /** Get an Enumeration of the Params attached to this object
+     */
+    public Enumeration getParams() {
+        if  (_params == null) {
+            return (new NamedList()).getElements();
+        } else {
+            return _params.getElements();
+        }
+    }
+
+    /** Remove the param attached to this NamedObj with the given name
+     *  If no Parm with the given name exists, do nothing.
+     *  @param name The name of the Param to be removed.
+     *  @return The removed Param if it is found, null otherwise
+     */
+    public Param removeParam(String name) {
+        return (Param)_params.remove(name);
+    }
+
 
     /** Set or change the name.  If a null argument is given the
      *  name is set to an empty string.
