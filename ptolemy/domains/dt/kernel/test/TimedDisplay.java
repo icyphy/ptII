@@ -63,12 +63,6 @@ public class TimedDisplay extends Display implements Placeable, SequenceActor {
     }
 
 
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        TimedDisplay newObject = (TimedDisplay)super.clone(workspace);
-        return newObject;
-    }
-
-
     public void place(Container container) {
         super.place(container);
         _scrollPane.setPreferredSize(new Dimension(400,200));
