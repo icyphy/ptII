@@ -202,66 +202,18 @@ public class BasePNDirector extends CompositeProcessDirector {
      *  The parameter "Initial_queue_capacity" has the
      *  same value as the director being cloned.
      *
-     *  @param workspace The workspace for the cloned object.
+     *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      *  @return The new BasePNDirector.
      */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        BasePNDirector newObject = (BasePNDirector)super.clone(workspace);
-        newObject._readBlockCount = 0;
-	newObject._writeBlockCount = 0;
-        newObject._writeblockedQueues = new LinkedList();
-        return newObject;
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        BasePNDirector newobj = (BasePNDirector)super.clone(ws);
+        newobj._readBlockCount = 0;
+	newobj._writeBlockCount = 0;
+        newobj._writeblockedQueues = new LinkedList();
+        return newobj;
     }
-
-    /** Wait until the detection of a deadlock. If the deadlock is real, then
-     *  return. Else (for an artificial deadlock), handle the deadlock by
-     *  incrementing the capacity of a receiver with the smallest capacity
-     *  amongst the receivers on which a process is blocked on a write.
-     *  The derived directors can override this method to handle other forms
-     *  of deadlock that they define and perform actions accordingly.
-     *  This method is synchronized on the director.
-     *  @exception IllegalActionException Not thrown in this base class. Maybe
-     *  thrown by derived classes.
-    public void fire() throws IllegalActionException {
-        // super.fire();
-	Workspace workspace = workspace();
-	// Wait while no deadlock is detected.
-        // System.out.println("DIRECTOR: START OF FIRE");
-        if( _getActveActorsCount() == 0 ) {
-            synchronized(this) {
-                _notDone = false;
-                return;
-            }
-        }
-        while( _readBlockCount != _getActiveActorsCount() ) {
-        	// && !_areActorsStopped() ) {
-	    //In this case, wait until a real deadlock occurs.
-            //System.out.println("DIRECTOR: JUST INSIDE OF OUTER FIRE LOOP");
-	    synchronized (this) {
-		while (!_areActorsDeadlocked()) {
-                // while (!_areActorsDeadlocked() && !_areActorsStopped() ) {
-		    //Wait until a deadlock is detected.
-		    workspace.wait(this);
-                    //System.out.println("PN Director Awakened"
-                    +"; Active Actors = " + _getActiveActorsCount() 
-                    +"; ReadBlocked Actors = " + _readBlockCount
-                    +"; WriteBlocked Actors = " + _writeBlockCount );
-                    // +"; Stopped Actors = " + _getStoppedProcessesCount() );
-                    Iterator threads = _actorThreadList.iterator();
-		}
-		//Set this flag as a derived class might use this variable.
-        	//System.out.println("RESOLVE DEADLOCK CALLED");
-		_notDone = _resolveDeadlock();
-        	//System.out.println("RESOLVE DEADLOCK ENDED");
-	    }
-        }
-        //System.out.println("DIRECTOR: END OF FIRE");
-        return;
-    }
-     */
 
     /** Invoke the initialize() method of ProcessDirector. Also set all the
      *  state variables to the their initial values. The list of process
@@ -318,14 +270,11 @@ public class BasePNDirector extends CompositeProcessDirector {
 	if (!((((CompositeActor)getContainer()).
 		inputPortList()).isEmpty())
 		&& _getActiveActorsCount() != 0 ){
-            /*
-            System.out.println("DIRECTOR.POSTFIRE() returning true");
-	    return true;
-            */
-            //System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone);
+            System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone);
 	    return _notDone;
 	} else {
-            //System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone + " again.");
+            System.out.println("DIRECTOR.POSTFIRE() returning " + _notDone 
+		    + " again.");
 	    return _notDone;
 	}
     }
@@ -341,39 +290,6 @@ public class BasePNDirector extends CompositeProcessDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Handle (resolve) an artificial deadlock and return false. If the
-     *  deadlock is not an artificial deadlock (it is a real deadlock), then
-     *  return true.
-     *  If it is an artificial deadlock, select the
-     *  receiver with the smallest queue capacity on which any process is
-     *  blocked on a write and increment the capacity of the contained queue.
-     *  If the capacity is non-negative, then increment the capacity by 1.
-     *  Otherwise set the capacity to 1. Unblock the process blocked on
-     *  this receiver. Notify the thread corresponding to the blocked
-     *  process and return false.
-     *  <pP
-     *  If derived classes introduce new forms of deadlocks, they should
-     *  override this method to introduce mechanisms of handling those
-     *  deadlocks. This method is called from the fire() method of the director
-     *  alone.
-     *  @return false after handling an artificial deadlock. Otherwise return
-     *  true.
-     *  @exception IllegalActionException Not thrown in this base class. This
-     *  might be thrown by derived classes.
-     protected boolean _handleDeadlock() throws IllegalActionException {
-     if (_writeBlockCount == 0) {
-     //There is a real deadlock. Hence return with a value true.
-     return true;
-     } else {
-     //This is an artificial deadlock. Hence find the input port with
-     //lowest capacity queue that is blocked on a write and increment
-     //its capacity;
-     _incrementLowestWriteCapacityPort();
-     return false;
-     }
-     }
-    */
 
     /** Double the capacity of one of the queues with the smallest
      *  capacity belonging to a receiver on which a process is blocked
@@ -411,9 +327,7 @@ public class BasePNDirector extends CompositeProcessDirector {
 	        smallestCapacityQueue.setCapacity(
 			smallestCapacityQueue.getCapacity()*2);
             }
-            // System.out.println("Calling _actorUnBlocked() with smallestCapacityQueue.");
 	    _actorUnBlocked(smallestCapacityQueue);
-            // System.out.println("Finished calling _actorUnBlocked() with smallestCapacityQueue.");
 	    smallestCapacityQueue.setWritePending(false);
             synchronized(smallestCapacityQueue) {
                 smallestCapacityQueue.notifyAll();
@@ -440,11 +354,6 @@ public class BasePNDirector extends CompositeProcessDirector {
 	    _writeblockedQueues.add(rcvr);
 	    _writeBlockCount++;
         }
-        /*
-	if (_areActorsDeadlocked() || _areActorsStopped() ) {
-	    notifyAll();
-	}
-        */
         super._actorBlocked(rcvr);
         notifyAll();
     }
@@ -467,51 +376,6 @@ public class BasePNDirector extends CompositeProcessDirector {
     }
 
 
-    /** Increment by 1 the count of processes blocked while writing to a
-     *  receiver and inform all the process listeners that the relevant process
-     *  has blocked on a write. Also check for a resultant deadlock or a
-     *  pausing of the
-     *  execution. If either of them is detected, then notify the directing
-     *  thread of the same.
-     *  @param receiver The receiver to which the blocking process was trying
-     *  to write.
-    protected synchronized void _actorWriteBlocked(PNQueueReceiver receiver) {
-	_writeblockedQueues.add(receiver);
-        _actorWriteBlocked();
-	return;
-    }
-     */
-
-    /** Increment by 1 the count of processes blocked while writing to a
-     *  receiver and inform all the process listeners that the relevant process
-     *  has blocked on a write. Also check for a resultant deadlock or a
-     *  pausing of the
-     *  execution. If either of them is detected, then notify the directing
-     *  thread of the same.
-     *  @param receiver The receiver to which the blocking process was trying
-     *  to write.
-    protected synchronized void _actorWriteBlocked() {
-	_writeBlockCount++;
-	if (_areActorsDeadlocked()) {
-	    notifyAll();
-}
-	return;
-    }
-     */
-
-    /** Decrease by 1 the count of processes blocked on a write to a receiver.
-     *  Inform all the process listeners that the relevant process has resumed
-     *  its execution.
-     *
-     *  @param receiver The receiver to which the blocked process was trying
-     *  to write.
-    protected synchronized void _actorWriteUnBlocked(PNQueueReceiver queue) {
-	_writeBlockCount--;
-	_writeblockedQueues.remove(queue);
-	return;
-    }
-     */
-
     /** Return true if a real or artificial deadlock is detected.
      *  If derived classes introduce any
      *  additional forms of deadlocks, they should override this method to
@@ -521,42 +385,12 @@ public class BasePNDirector extends CompositeProcessDirector {
      */
     protected synchronized boolean _areActorsDeadlocked() {
 	if (_getBlockedActorsCount() >= _getActiveActorsCount()) {
-            // if (_readBlockCount + _writeBlockCount >= _getActiveActorsCount()) {
 	    return true;
 	} else {
 	    return false;
 	}
     }
 
-    /** Determine if all of the threads containing actors controlled
-     *  by this director have stopped due to a call of stopFire() or
-     *  because they are blocked or delayed.
-     * @return True if all active threads containing actors controlled
-     *  by this thread have stopped; otherwise return false.
-     *  FIXME
-    protected synchronized boolean _areActorsStopped() {
-	long threadsStopped = _getStoppedProcessesCount();
-	long actorsActive = _getActiveActorsCount();
-        
-	// All threads are stopped due to stopFire()
-	if( threadsStopped != 0 && threadsStopped >= actorsActive ) {
-	    return true;
-	}
-
-	// Some threads are stopped due to stopFire() while others
-	// are blocked waiting to read or write data.
-        // if( threadsStopped + _actorsBlocked + _actorsDelayed
-	if( threadsStopped + _readBlockCount + _writeBlockCount
-        	>= actorsActive ) {
-	    if( threadsStopped != 0 ) {
-	        return true;
-	    }
-	}
-
-	return false;
-    }
-     */
-    
     /** Resolve an artificial deadlock and return true. If the
      *  deadlock is not an artificial deadlock (it is a real deadlock),
      *  then return false.
@@ -582,12 +416,13 @@ public class BasePNDirector extends CompositeProcessDirector {
 	    // There is a real deadlock.
 	    return false;
         } else if ( _getActiveActorsCount() == 0 ) {
+	    // There is a real deadlock as no processes are active.
 	    return false;
         } else {
             //This is an artificial deadlock. Hence find the input port with
 	    //lowest capacity queue that is blocked on a write and increment
 	    //its capacity;
-            //System.out.println("_resolveDeadlock() calling increment capacity");
+            System.out.println("_resolveDeadlock() calling increment capacity");
             _incrementLowestWriteCapacityPort();
 	    return true;
         }
