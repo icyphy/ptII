@@ -96,7 +96,7 @@ public class InterfaceAutomatonTransition extends Transition {
         super(container, name);
         label = new StringAttribute(this, "label");
         outputActions.setVisibility(Settable.NONE);
-        setActions.setVisibility(Settable.NONE);  
+        setActions.setVisibility(Settable.NONE);
         preemptive.setVisibility(Settable.NONE);
         reset.setVisibility(Settable.NONE);
         guardExpression.setVisibility(Settable.NONE);
@@ -121,7 +121,7 @@ public class InterfaceAutomatonTransition extends Transition {
      *  Increment the version number of the workspace.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If thrown by the superclass
-     *   attributeChanged() method, or the changed attribute is 
+     *   attributeChanged() method, or the changed attribute is
      *   <i>label</i> and it does not ends with "?" or "!" or ";".
      */
     public void attributeChanged(Attribute attribute)

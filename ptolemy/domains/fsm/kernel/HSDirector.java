@@ -149,7 +149,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                     }
                 }
             }
-    
+
             return;
         }
 	Iterator actors = _enabledRefinements.iterator();
@@ -167,8 +167,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     /** Return true if the current integration step is accurate with
      *  the respect of all the enabled refinements, which are refinements
      *  that returned true in their prefire() methods in this iteration.
-     *  Also return true if there 
-     *  are no refinements. If a refinement is not a 
+     *  Also return true if there
+     *  are no refinements. If a refinement is not a
      *  CTStepSizeControlActor, we assume the refinement thinks this
      *  step to be accurate.
      *  @return True if the current step is accurate.
@@ -218,9 +218,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return new ptolemy.domains.ct.kernel.CTReceiver();
     }
 
-    /** Return the smallest next step size predicted by the all the 
+    /** Return the smallest next step size predicted by the all the
      *  enabled refinements, which are refinements that returned true
-     *  in their prefire() methods in this iteration. 
+     *  in their prefire() methods in this iteration.
      *  If there are no refinements, then return Double.MAX_VALUE.
      *  If a refinement is not a CTStepSizeControlActor, then
      *  its prediction is Double.MAX_VALUE.
@@ -278,17 +278,17 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         if (_debugging && tr != null) {
             _debug(tr.getFullName(), "is chosen.");
         }
-        
+
         return super.postfire();
     }
 
-    /** Return the step size refined by all the enabled refinements, 
+    /** Return the step size refined by all the enabled refinements,
      *  which are refinements that returned true
-     *  in their prefire() methods in this iteration. 
+     *  in their prefire() methods in this iteration.
      *  If there are no refinements, then return the current step size
      *  of the executive director.
      *  If a refinement is not a CTStepSizeControlActor, then
-     *  its refined step size is the current step size of the 
+     *  its refined step size is the current step size of the
      *  executive director..
      *  @return The refined step size.
      */

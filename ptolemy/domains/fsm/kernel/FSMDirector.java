@@ -209,7 +209,7 @@ public class FSMDirector extends Director {
         State st = ctrl.currentState();
         Transition tr =
             ctrl._chooseTransition(st.preemptiveTransitionList());
-        
+
 	if (tr != null) {
 	    Actor[] actors = tr.destinationState().getRefinement();
             if (actors != null) {
@@ -318,7 +318,7 @@ public class FSMDirector extends Director {
             Actor[] actors = getController().currentState().getRefinement();
 	    if (actors == null || actors.length == 0) {
 		return super.getNextIterationTime();
-	    }	
+	    }
 	    double result = Double.MAX_VALUE;
 	    boolean givenByRefinement = false;
 	    for (int i = 0; i < actors.length; ++i) {

@@ -106,7 +106,7 @@ public class State extends ComponentEntity {
 
     /** Attribute specifying one or more names of refinements. The
      *  refinements must be instances of TypedActor and have the same
-     *  container as the FSMActor containing this state, otherwise 
+     *  container as the FSMActor containing this state, otherwise
      *  an exception will be thrown when getRefinement() is called.
      *  Usually, the refinement is a single name. However, if a
      *  comma-separated list of names is provided, then all the specified

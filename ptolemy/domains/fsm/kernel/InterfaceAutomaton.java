@@ -53,7 +53,7 @@ import java.util.Set;
 //// InterfaceAutomaton
 /**
 This class models an Interface Automaton. Interface automata is an automata
-model defined by Luca de Alfaro in the paper "Interface Automata". 
+model defined by Luca de Alfaro in the paper "Interface Automata".
 An InterfaceAutomaton contains a set of states and
 InterfaceAutomatonTransitions. There are three kinds transitions:
 input transition, output transition, and internal transitions.
@@ -169,7 +169,7 @@ public class InterfaceAutomaton extends FSMActor {
      *  This method iterates through all the states. If a state has just
      *  one incoming and one outgoing internal transitions, and it is
      *  not the initial state, it is removed and the two transitions are
-     *  combined into one. The label on the new transition is formed by 
+     *  combined into one. The label on the new transition is formed by
      *  <incomingLabel><NAME_CONNECTOR><outgoingLabel>.
      */
     public void combineInternalTransitions() {
@@ -187,9 +187,9 @@ public class InterfaceAutomaton extends FSMActor {
                 }
 
                 // just one incoming transition, check if it's internal
-                incomingTransition = 
+                incomingTransition =
                     (InterfaceAutomatonTransition)transitionList.get(0);
-                if (incomingTransition.getType() != 
+                if (incomingTransition.getType() !=
                     InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
                     continue;
                 }
@@ -202,9 +202,9 @@ public class InterfaceAutomaton extends FSMActor {
                 }
 
                 // just one outgoing transition, check if it's internal
-                outgoingTransition = 
+                outgoingTransition =
                     (InterfaceAutomatonTransition)transitionList.get(0);
-                if (outgoingTransition.getType() != 
+                if (outgoingTransition.getType() !=
                     InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
                     continue;
                 }
@@ -224,7 +224,7 @@ public class InterfaceAutomaton extends FSMActor {
                 String outgoingLabel = outgoingTransition.getLabel();
                 String newLabel = incomingName + NAME_CONNECTOR + outgoingLabel;
 
-                String relationNamePrefix = incomingTransition.getName() + 
+                String relationNamePrefix = incomingTransition.getName() +
                         NAME_CONNECTOR + outgoingTransition.getName();
 
                 // remove this state and add new transition
@@ -275,7 +275,7 @@ public class InterfaceAutomaton extends FSMActor {
         // remove states unreacheable from the initial state.
         composition._removeUnreacheableStates();
 
-        // Create ports for the composition.  Internal transition parameters 
+        // Create ports for the composition.  Internal transition parameters
         // were created automatically when the transition labels were set.
         _createPorts(composition);
 
@@ -465,7 +465,7 @@ public class InterfaceAutomaton extends FSMActor {
      *  Map are the old label names, and the values are the new label names.
      *  Neither the keys nor the values should include the ending character
      *  "?", "!", or ";" that indicate the type of the transtion. And this
-     *  method does not change the type. 
+     *  method does not change the type.
      *  <p>
      *  For input and output transitions, this method also renames the ports
      *  associated with the renamed transitions, if these ports are created
@@ -679,7 +679,7 @@ public class InterfaceAutomaton extends FSMActor {
         thatOutputs.retainAll(thisInternals);
         thatInternals.retainAll(thisInternals);
 
-        if ( !thatInputs.isEmpty() || 
+        if ( !thatInputs.isEmpty() ||
              !thatOutputs.isEmpty() ||
              !thatInternals.isEmpty()) {
             throw new IllegalActionException(message + "the internal "
@@ -732,7 +732,7 @@ public class InterfaceAutomaton extends FSMActor {
     // are used to easily check if a product state is in the frontier.
     //
     // init: product = (this.initialState x automaton.initialSate)
-    //       frontier = (this.initialState x automaton.initialSate, 
+    //       frontier = (this.initialState x automaton.initialSate,
     //                   this.initialState, automaton.initialState)
     // iterate: pick (remove) a state p x q from frontier;
     //          pick a step pTr from p
@@ -1003,7 +1003,7 @@ public class InterfaceAutomaton extends FSMActor {
                 "InterfaceAutomaton._computeProduct: name in product "
                 + "automaton clashes: " + exception.getMessage());
         }
-    } 
+    }
 
     // Compute the names of the input, output, and internal transitions of
     // the composition.  Set the results to _inputNames, _outputNames, and
@@ -1083,19 +1083,19 @@ public class InterfaceAutomaton extends FSMActor {
     // The Set frontier contains the references of illegal states in the
     // frontier; the Set _illegalStates contains references of all the
     // illegal states found so far. The Set frontier is always a subset
-    // of _illegalStates. When this method is called, _illegalStats contains 
+    // of _illegalStates. When this method is called, _illegalStats contains
     // an initial set of illegal states computed in _computeProduct().
     //
     // init: frontier = _illegalStates
-    // 
+    //
     // iterate: pick (remove) a state p from frontier
     //          for all states s that has an output or internal transition to p,
     //              if s is not in _illegalStates
     //                add s to both _illegalStates and frontier
-    // 
+    //
     //          end when frontier is empty
     //
-    // remove all states in _illegalstates from automaton 
+    // remove all states in _illegalstates from automaton
     //
     // Note: this method does not operate the "this" automaton, it operates
     // on the composition automaton. This is implicite since _illegalStates
@@ -1124,7 +1124,7 @@ public class InterfaceAutomaton extends FSMActor {
                 InterfaceAutomatonTransition transition =
                     (InterfaceAutomatonTransition)transitions.next();
                 int transitionType = transition.getType();
-                if (transitionType == 
+                if (transitionType ==
                         InterfaceAutomatonTransition.OUTPUT_TRANSITION ||
                     transitionType ==
                         InterfaceAutomatonTransition.INTERNAL_TRANSITION) {
@@ -1294,7 +1294,7 @@ public class InterfaceAutomaton extends FSMActor {
     // Set of illegal states in the product automaton. The elements of
     // the Set are references to states. Constructed by _computeProduct().
     private Set _illegalStates;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                            inner class                    ////
     private class Triple {

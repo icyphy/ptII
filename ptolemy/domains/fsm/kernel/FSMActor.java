@@ -506,7 +506,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         for(Iterator ports = portList().iterator();
             ports.hasNext();) {
             IOPort port = (IOPort)ports.next();
-            for(Iterator attributes = 
+            for(Iterator attributes =
                     port.attributeList(Settable.class).iterator();
                 attributes.hasNext();) {
                 Settable attribute = (Settable)attributes.next();
