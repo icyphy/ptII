@@ -301,7 +301,10 @@ ef.route();
         // MenuCreator 
         _menuCreator = new MenuCreator();
         _menuCreator.setMouseFilter(_menuFilter);
-        getNodeInteractor().addInteractor(_menuCreator);       
+        // For menus on objects
+        getNodeInteractor().addInteractor(_menuCreator);   
+        // For menus on the schematic.
+        pane.getBackgroundEventLayer().addInteractor(_menuCreator);
     }
 
     /**
@@ -456,17 +459,25 @@ ef.route();
     protected class MenuCreator extends AbstractInteractor {
         public void mousePressed(LayerEvent e) {
             Figure source = e.getFigureSource();
-	    Node sourcenode = (Node) source.getUserObject();
-            if(sourcenode instanceof SchematicEntity) {
+            if(source == null) {
+                Schematic schematic = (Schematic) getGraph();
                 JPopupMenu menu = 
-                    new ObjectContextMenu((PTMLObject)sourcenode);
+                    new SchematicContextMenu(schematic);
                 menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
             }
-            if(sourcenode instanceof SchematicTerminal) {
-                // FIXME find the right port to set parameters on.
-                JPopupMenu menu = 
-                    new ObjectContextMenu((PTMLObject)sourcenode);
-                menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
+            else {
+                Node sourcenode = (Node) source.getUserObject();
+                if(sourcenode instanceof SchematicEntity) {
+                    JPopupMenu menu = 
+                        new ObjectContextMenu((PTMLObject)sourcenode);
+                    menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
+                }
+                if(sourcenode instanceof SchematicTerminal) {
+                    // FIXME find the right port to set parameters on.
+                    JPopupMenu menu = 
+                        new ObjectContextMenu((PTMLObject)sourcenode);
+                    menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
+                }
             }
         }
     }
@@ -478,10 +489,8 @@ ef.route();
      * editing the parameters
      * of an object.  
      */
-    public class ObjectContextMenu extends JPopupMenu{
-        private JFrame _frame;
-        private Query _query;
-        private PTMLObject _target;
+    public class ObjectContextMenu extends JPopupMenu {
+        protected PTMLObject _target;
         
         public ObjectContextMenu(PTMLObject target) {
             super(target.getName());
@@ -494,14 +503,14 @@ ef.route();
                     // to the parameters of the object                    
                     PTMLObject object = (PTMLObject) getValue("target");
                     System.out.println(object);
-                    _frame = new JFrame("Parameters for " + object);
-                    JPanel pane = (JPanel) _frame.getContentPane();
+                    JFrame frame = new JFrame("Parameters for " + object.getName());
+                    JPanel pane = (JPanel) frame.getContentPane();
                     
-                    _query = new ParameterQuery(object);
+                    Query query = new ParameterQuery(object);
                     
-                    pane.add(_query);
-                    _frame.setVisible(true);
-                    _frame.pack();
+                    pane.add(query);
+                    frame.setVisible(true);
+                    frame.pack();
                 }
             };
             action.putValue("target", target);
@@ -509,6 +518,36 @@ ef.route();
             JMenuItem item = add(action);
             item.setToolTipText("Get Parameters");
             action.putValue("menuItem", item);
+        }
+    }
+
+    public class SchematicContextMenu extends ObjectContextMenu {
+        public SchematicContextMenu(Schematic target) {
+            super(target);
+
+            Action action;
+            action = new AbstractAction ("Get Director Parameters") {
+                public void actionPerformed(ActionEvent e) {
+                    // Create a dialog and attach the dialog values 
+                    // to the parameters of the schematic's director
+                    Schematic object = (Schematic) getValue("target");
+                    SchematicDirector director = object.getDirector();
+                    JFrame frame =
+                        new JFrame("Parameters for " + director.getName());
+                    JPanel pane = (JPanel) frame.getContentPane();
+                    
+                    Query query = new ParameterQuery(director);
+                    
+                    pane.add(query);
+                    frame.setVisible(true);
+                    frame.pack();
+                }
+            };
+            action.putValue("target", target);
+            action.putValue("tooltip", "Get Director Parameters");
+            JMenuItem item = add(action);
+            item.setToolTipText("Get Director Parameters");
+            action.putValue("menuItem", item);           
         }
     }
 }
