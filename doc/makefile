@@ -47,6 +47,10 @@ EXTRA_SRCS = \
 
 MISC_FILES =	$(DIRS)
 
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =	codeDoc internals
+
 # 'make realclean' should remove tclIndex
 REALCLEAN_STUFF =
 
@@ -79,14 +83,6 @@ codeDoc/tree.html: ../ptplot/*.java \
 			$$x > $$x.bak; \
 		mv $$x.bak $$x; \
 	done
-
-# Files or directories that are present, but that 'make checkjunk' 
-# should not complain about
-MISC_FILES =
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	codeDoc javahtml
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/no-compile.mk
