@@ -1090,18 +1090,16 @@ public class CompositeEntity extends ComponentEntity {
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
-        super._exportMoMLContents(output, depth);
-
-        if (depth == 0 && getContainer() == null) {
+        if (depth == 1 && getContainer() == null) {
             if ( getAttribute("_createdBy") == null) {
                 // If there is no _createdBy attribute, then add one.
-                output.write(_getIndentPrefix(depth+1)
+                output.write(_getIndentPrefix(depth)
                         + "<property name=\"_createdBy\" "
                         + "class=\"ptolemy.kernel.util.VersionAttribute\" "
                         + "value=\""
                         + VersionAttribute.CURRENT_VERSION.getExpression()
                         + "\">\n");
-                output.write(_getIndentPrefix(depth+1) + "</property>\n");
+                output.write(_getIndentPrefix(depth) + "</property>\n");
             } else if (getAttribute("_createdBy") != null) {
                 try {
                     ((VersionAttribute)getAttribute("_createdBy"))
@@ -1111,8 +1109,9 @@ public class CompositeEntity extends ComponentEntity {
                     throw new InternalErrorException(this, ex,
                             "Failed to update _createdBy");
                 }
-            }
+             }
         }
+        super._exportMoMLContents(output, depth);
 
         Iterator entities = entityList().iterator();
         while (entities.hasNext()) {
