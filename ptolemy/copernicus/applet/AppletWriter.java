@@ -108,7 +108,7 @@ public class AppletWriter extends SceneTransformer {
      *  their corresponding values.
      */
     public static String substitute(String input,
-					Map substituteMap) {
+            Map substituteMap) {
 
 	// At first glance it would appear that we could use StringTokenizer
 	// however, the token is really the String @codeBase@, not
@@ -121,7 +121,7 @@ public class AppletWriter extends SceneTransformer {
 	while (keys.hasNext()) {
 	    String key = (String)keys.next();
 	    input = StringUtilities.substitute(input, key,
-					       (String)substituteMap.get(key));
+                    (String)substituteMap.get(key));
 	}
 	return input;
     }
@@ -135,9 +135,9 @@ public class AppletWriter extends SceneTransformer {
      *  @param outputFileName The name of the file to write to.
      */
     public static void substitute(String inputFileName,
-					Map substituteMap,
-					String outputFileName)
-    throws FileNotFoundException, IOException {
+            Map substituteMap,
+            String outputFileName)
+            throws FileNotFoundException, IOException {
 	BufferedReader inputFile =
 	    new BufferedReader(new FileReader(inputFileName));
 	PrintWriter outputFile =
@@ -182,11 +182,11 @@ public class AppletWriter extends SceneTransformer {
 	    _ptIIDirectory = System.getProperty("ptolemy.ptII.dir");
         } catch (SecurityException security) {
             throw new InternalErrorException(null, security,
-                                           "Could not find "
-                                           + "'ptolemy.ptII.dir'"
-					   + " property.  Vergil should be "
-					   + "invoked with -Dptolemy.ptII.dir"
-					   + "=\"$PTII\"");
+                    "Could not find "
+                    + "'ptolemy.ptII.dir'"
+                    + " property.  Vergil should be "
+                    + "invoked with -Dptolemy.ptII.dir"
+                    + "=\"$PTII\"");
         }
 
 	// If the targetPackage is foo.bar, and the model is Bif,
@@ -216,17 +216,17 @@ public class AppletWriter extends SceneTransformer {
 	String directorPackage = director.getClass().getPackage().getName();
 	if (!directorPackage.endsWith(".kernel")) {
 	    System.out.println("Warning: the directorPackage does not end "
-			       + "with '.kernel', it is :" + directorPackage);
+                    + "with '.kernel', it is :" + directorPackage);
 	}
 
 	String directorPackageDomain =
-		directorPackage.substring(0,
-					  directorPackage.lastIndexOf(".")
-					  );
+            directorPackage.substring(0,
+                    directorPackage.lastIndexOf(".")
+                                      );
 
 	String directorDomain =
-		directorPackageDomain.substring(directorPackageDomain
-						.lastIndexOf(".") + 1);
+            directorPackageDomain.substring(directorPackageDomain
+                    .lastIndexOf(".") + 1);
 
 	_domainJar =
 	    StringUtilities.substitute(directorPackageDomain, ".", "/")
@@ -243,7 +243,7 @@ public class AppletWriter extends SceneTransformer {
 	File modelDirectoryFile = new File(_modelDirectory);
 	if (modelDirectoryFile.isDirectory()) {
 	    System.out.println(" Warning: '" + modelDirectoryFile
-			       + "' already exists.");
+                    + "' already exists.");
 	}
 	modelDirectoryFile.mkdirs();
 
@@ -255,7 +255,7 @@ public class AppletWriter extends SceneTransformer {
 	_substituteMap.put("@domainJar@", _domainJar);
 	_substituteMap.put("@modelDirectory@", _modelDirectory);
 	_substituteMap.put("@sanitizedModelName@",
-			   _sanitizedModelName);
+                _sanitizedModelName);
 	_substituteMap.put("@ptIIDirectory@", _ptIIDirectory);
 
 	// Print out the map for debugging purposes
@@ -263,7 +263,7 @@ public class AppletWriter extends SceneTransformer {
 	while (keys.hasNext()) {
 	    String key = (String)keys.next();
 	    System.out.println("AppletWriter: '" + key + "' '" +
-			       (String)_substituteMap.get(key) + "'");
+                    (String)_substituteMap.get(key) + "'");
 	}
 
 	// Generate the .xml file.
@@ -276,7 +276,7 @@ public class AppletWriter extends SceneTransformer {
 	    modelFileWriter.close();
 	} catch (IOException ex) {
 	    throw new InternalErrorException("Problem writing '"
-					     + modelFileName + "': " + ex);
+                    + modelFileName + "': " + ex);
 	}
 
 	// Read in the templates and generate new files.
@@ -285,19 +285,19 @@ public class AppletWriter extends SceneTransformer {
 	// FIXME: this could be a Ptolemy parameter?
 	_templateDirectory =
 	    StringUtilities.substitute(Options.getString(options,
-							 "templateDirectory"),
-				       "$PTII", _ptIIDirectory);
+                    "templateDirectory"),
+                    "$PTII", _ptIIDirectory);
 	try {
 	    substitute(_templateDirectory + "makefile.in", _substituteMap,
-		       _modelDirectory + "makefile");
+                    _modelDirectory + "makefile");
 	    substitute(_templateDirectory + "model.htm.in", _substituteMap,
-		       _modelDirectory + _sanitizedModelName + ".htm");
+                    _modelDirectory + _sanitizedModelName + ".htm");
 	    substitute(_templateDirectory + "modelVergil.htm.in",
-		       _substituteMap,
-		       _modelDirectory + _sanitizedModelName + "Vergil.htm");
+                    _substituteMap,
+                    _modelDirectory + _sanitizedModelName + "Vergil.htm");
 	} catch (IOException ex) {
 	    throw new InternalErrorException("Problem writing the makefile "
-					     + "or htm files: " + ex);
+                    + "or htm files: " + ex);
 	}
 
     }
@@ -342,7 +342,7 @@ public class AppletWriter extends SceneTransformer {
 
     // Initial default for _templateDirectory;
     private final String TEMPLATE_DIRECTORY_DEFAULT =
-	"$PTII/ptolemy/copernicus/applet/";
+    "$PTII/ptolemy/copernicus/applet/";
 
 
 }
