@@ -142,8 +142,8 @@ public class Port extends NamedObj {
      */
     public void setEntity(Entity entity) throws 
 	    GraphException, NameDuplicationException {
-	PortList list = entity.getPortList();
-	list.addPort( this );
+	NamedObjList list = entity.getPorts();
+	list.append( this );
 	_entity = entity;
     }
 

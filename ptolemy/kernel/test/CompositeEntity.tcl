@@ -62,9 +62,9 @@ test CompositeEntity-1.1 {Get information about an instance \
 } {{
   class:         pt.kernel.CompositeEntity
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getName {setName java.lang.String} getParams enumEntities {enumEntities java.lang.String} enumRelations {enumRelations java.lang.String} getPortList numberOfConnectedEntities {numberOfConnectedEntities java.lang.String} getAllContents getContainer getFullName isAtomic {setContainer pt.kernel.HierEntity} {setContents pt.kernel.NamedObjList}
+  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getName {setName java.lang.String} getParams enumEntities {enumEntities java.lang.String} enumRelations {enumRelations java.lang.String} getPorts numberOfConnectedEntities {numberOfConnectedEntities java.lang.String} getAllContents getContainer getFullName isAtomic {setContainer pt.kernel.HierEntity} {setContents pt.kernel.NamedObjList}
   constructors:  pt.kernel.CompositeEntity {pt.kernel.CompositeEntity java.lang.String}
-  properties:    fullName allContents portList class contents params atomic name container
+  properties:    fullName allContents ports class contents params atomic name container
   superclass:    pt.kernel.HierEntity
 }}
 
