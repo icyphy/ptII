@@ -560,6 +560,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/gui \
+	$(REMOTE1PTIIDIST)/ptolemy/copernicus/applet \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/jhdl \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/c \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
