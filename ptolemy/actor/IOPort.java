@@ -1028,13 +1028,10 @@ public class IOPort extends ComponentPort {
      *  @param token The token to send
      *  @exception CloneNotSupportedException If the token cannot be cloned
      *   and there is more than one destination.
-     *  @exception IllegalActionException If the port is not an output,
-     *   or if the index is out of range.
      *  @exception NoRoomException If there is no room in the receiver, 
      *   the port is not an output, or if the index is out of range.
      */
-    public void send(int channelindex, Token token)
-            throws NoRoomException, IllegalActionException {
+    public void send(int channelindex, Token token) throws NoRoomException {
         Receiver[][] farRec;
         try {
             workspace().getReadAccess();
