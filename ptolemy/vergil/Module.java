@@ -31,6 +31,7 @@
 package ptolemy.vergil;
 
 import diva.resource.RelativeBundle;
+import diva.gui.Application;
 
 /**
  * A module that can be plugged into Vergil.  This allows a simple mechanism
@@ -42,6 +43,11 @@ import diva.resource.RelativeBundle;
  * @version $Id$
  */
 public interface Module {
+    /** 
+     * Return the application that contains this module.
+     */
+    public Application getApplication();
+
     /** 
      * Return the resources for this module.
      */

@@ -122,7 +122,7 @@ public class PtolemyPackage implements Module {
 
         // Create the Devel menu
         JMenu menuDevel = new JMenu("Ptolemy II");
-        menuDevel.setMnemonic('D');
+        menuDevel.setMnemonic('P');
         _application.addMenu(menuDevel);
 
         action = new AbstractAction ("Print document info") {
@@ -135,7 +135,7 @@ public class PtolemyPackage implements Module {
                 }
             }
         };
-	_application.addMenuItem(menuDevel, action, 'P',
+	_application.addMenuItem(menuDevel, action, 'I',
 				 "Print current document info");
 
         action = new AbstractAction("Execute System") {
@@ -216,8 +216,7 @@ public class PtolemyPackage implements Module {
 		    timer.setRepeats(false);
 		    timer.start();
                 } catch (Exception ex) {
-                    ex.printStackTrace();
-                    throw new GraphException(ex.getMessage());
+                    getApplication().showError("Execution Failed", ex);
                 }
 
             }
@@ -290,8 +289,8 @@ public class PtolemyPackage implements Module {
 				(Director)director.clone(actor.workspace());
 			    actor.setDirector(clone);
 			} catch (Exception ex) {
-			    System.out.println(ex.getMessage());
-			    ex.printStackTrace();
+                            getApplication().showError("Failed to set " + 
+                                    "Director", ex);
 			}
 		    }
                 }
@@ -371,6 +370,13 @@ public class PtolemyPackage implements Module {
 	    list.add(_directorModel.getElementAt(i));
 	}
 	return list;
+    }
+
+    /** 
+     * Return the application that contains this module.
+     */
+    public Application getApplication() {
+        return _application;
     }
 
     /** 
@@ -623,7 +629,7 @@ public class PtolemyPackage implements Module {
                         entitylibURL.openStream());
         }
         catch (Exception e) {
-            System.out.println(e);
+           getApplication().showError("Failed to parse libraries", e);
         }
     }
 
@@ -633,14 +639,14 @@ public class PtolemyPackage implements Module {
 	    jgraph.getGraphPane().getGraphController();
         LayoutTarget target = new BasicLayoutTarget(controller);
         Graph graph = controller.getGraph();
-        PtolemyLayout layout = new PtolemyLayout(); //GridAnnealingLayout();
+        PtolemyLayout layout = new PtolemyLayout();
 	layout.setOrientation(LevelLayout.HORIZONTAL);
 	layout.setRandomizedPlacement(false);
         // Perform the layout and repaint
         try {
             layout.layout(target, graph);
         } catch (Exception e) {
-            _application.showError("layout", e);
+            getApplication().showError("Layout failed", e);
         }
         jgraph.repaint();
     }

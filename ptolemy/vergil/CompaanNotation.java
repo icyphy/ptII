@@ -125,7 +125,7 @@ public class CompaanNotation extends Attribute implements VisualNotation {
                         new PtolemyPackage.VergilExecutionListener(d.getApplication())); 
             }                
             catch (Exception e) {
-                throw new RuntimeException(e.getMessage());
+                d.getApplication().showError("Failed to create Manager", e);
             }
         }
 

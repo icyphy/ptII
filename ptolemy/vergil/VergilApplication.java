@@ -222,11 +222,10 @@ public class VergilApplication extends MDIApplication {
      * @return The first factory added with the addDocumentFactory method.
      */
     public DocumentFactory getDocumentFactory() { 
-	try {
+        if(_documentFactoryList.size() < 1) 
+            return null; 
+        else 
 	    return (DocumentFactory)_documentFactoryList.get(0);
-	} catch (Exception e) {
-	    return null;
-	}
     }
 
     /** 
@@ -370,6 +369,9 @@ public class VergilApplication extends MDIApplication {
         menuFile.setMnemonic('F');
         menuBar.add(menuFile);
 
+        _fileNewMenu = new JMenu("New");
+        _fileNewMenu.updateUI();
+        _fileNewMenu.setMnemonic('N');
 	menuFile.add(_fileNewMenu);
 
         action = DefaultActions.openAction(this);
@@ -433,7 +435,7 @@ public class VergilApplication extends MDIApplication {
     private List _documentFactoryList = new LinkedList();
 
     // The File->New menu.  Each document factory will appear in this menu.
-    private JMenu _fileNewMenu = new JMenu("New");
+    private JMenu _fileNewMenu = null;
 
     // The instance of this application.
     private static VergilApplication _instance = null;
