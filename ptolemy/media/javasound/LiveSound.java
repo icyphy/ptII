@@ -873,14 +873,6 @@ public class LiveSound {
 	}
 	if (_debug) {
 	    System.out.println("LiveSound: putSamples(): invoked");
-	    //System.out.println("LiveSound: putSamples(): " +
-	    //	       "_transferSize = " +
-	    //	       _transferSize);
-	    //System.out.println("LiveSound: putSamples(): " +
-	    //		"_bytesPerSample = " +
-	    //		_bytesPerSample);
-	    // System.out.println("LiveSound: putSamples(): " +
-	    //		    "_channels = " + _channels);
 	}
 	// Convert array of double valued samples into
 	// the proper byte array format.
@@ -891,17 +883,6 @@ public class LiveSound {
 	// Note: _data is a byte array containing data to
 	// be written to the output device.
 	// Note: consumptionRate is amount of data to write, in bytes.
-	if (_debug) {
-	    //System.out.println("LiveSound: putSamples(): " +
-	    //	       "writing samples...");
-	    //System.out.println("LiveSound: putSamples(): " +
-	    //	       "_data.length = " + _data.length);
-	    //System.out.println("LiveSound: putSamples(): " +
-	    //	       "_transferSize = " + _transferSize);
-	    //System.out.println("LiveSound: putSamples(): " +
-	    //	       "_frameSizeInBytes = " +
-	    //	       _frameSizeInBytes);
-	}
 	// Now write the array to output device.
 	_sourceLine.write(_data, 0, _transferSize*_frameSizeInBytes);
     }

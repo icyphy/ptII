@@ -127,7 +127,6 @@ public class SoundPlayback {
     public SoundPlayback(float sampleRate, int sampleSizeInBits,
             int channels, int bufferSize,
             int putSamplesSize) {
-	//System.out.println("SoundPlayback: constructor 1: invoked");
 	_isAudioPlaybackActive = false;
 	// Set mode to real-time.
 	this._playbackMode = "speaker";
@@ -136,18 +135,6 @@ public class SoundPlayback {
 	this._channels = channels;
 	this._bufferSize = bufferSize;
 	this._putSamplesSize = putSamplesSize;
-
-	// For debug only:
-	//System.out.println("SoundPlayback: constructor 1: sampleSizeInBits = "
-	//      + sampleSizeInBits);
-	//System.out.println("SoundPlayback: constructor 1: sampleRate = "
-	//      + sampleRate);
-	//System.out.println("SoundPlayback: constructor 1: channels = "
-	//      + channels);
-	//System.out.println("SoundPlayback: constructor 1: bufferSize = "
-	//      + bufferSize);
-	//System.out.println("SoundPlayback: constructor 1: putSamplesSize = "
-	//      + putSamplesSize);
     }
 
     /** Construct a sound playback object that writes audio to
@@ -183,7 +170,6 @@ public class SoundPlayback {
             float sampleRate, int sampleSizeInBits,
             int channels, int bufferSize,
             int putSamplesSize) {
-	//System.out.println("SoundPlayback: constructor 2: invoked");
 	_isAudioPlaybackActive = false;
 	this._playbackMode = "file";
 	this._fileName = fileName;
@@ -191,20 +177,6 @@ public class SoundPlayback {
 	this._sampleRate = sampleRate;
 	this._channels = channels;
 	this._productionRate = putSamplesSize;
-
-	// For debug only:
-	//System.out.println("SoundPlayback: constructor 1: fileName = "
-	//    + fileName);
-	//System.out.println("SoundPlayback: constructor 1: sampleSizeInBits = "
-	//    + sampleSizeInBits);
-	//System.out.println("SoundPlayback: constructor 1: sampleRate = "
-	//    + sampleRate);
-	//System.out.println("SoundPlayback: constructor 1: channels = "
-	//    + channels);
-	//System.out.println("SoundPlayback: constructor 1: bufferSize = "
-	//    + bufferSize);
-	//System.out.println("SoundPlayback: constructor 1: putSamplesSize = "
-	//    + putSamplesSize);
     }
 
     ///////////////////////////////////////////////////////////////
@@ -255,7 +227,6 @@ public class SoundPlayback {
      */
     public void putSamples(double[][] putSamplesArray) throws IOException,
             IllegalStateException {
-	//System.out.println("SoundPlayback: putSamples(): invoked");
 	if (_isAudioPlaybackActive == true) {
 	    if (_playbackMode == "speaker") {
 
@@ -272,8 +243,6 @@ public class SoundPlayback {
 		// Now write the array to output device.
 		_sourceLine.write(_data, 0, _putSamplesSize*_frameSizeInBytes);
 	    } else if (_playbackMode == "file") {
-		//System.out.println("SoundPlayback: putSamples(): file");
-
 		// Convert array of double valued samples into
 		// the proper byte array format.
 		_data = _doubleArrayToByteArray(putSamplesArray,
@@ -335,7 +304,6 @@ public class SoundPlayback {
      */
     public void putSamplesInt(int[][] putSamplesArray) throws IOException,
             IllegalStateException {
-	//System.out.println("SoundPlayback: putSamples(): invoked");
 	if (_isAudioPlaybackActive == true) {
 	    if (_playbackMode == "speaker") {
 
@@ -352,8 +320,6 @@ public class SoundPlayback {
 		// Now write the array to output device.
 		_sourceLine.write(_data, 0, _putSamplesSize*_frameSizeInBytes);
 	    } else if (_playbackMode == "file") {
-		//System.out.println("SoundPlayback: putSamples(): file");
-
 		// Convert array of double valued samples into
 		// the proper byte array format.
 		_data = _intArrayToByteArray(putSamplesArray,
@@ -389,7 +355,6 @@ public class SoundPlayback {
      */
     public void startPlayback() throws IOException,
             IllegalStateException {
-	//System.out.println("SoundPlayback: startPlayback(): invoked");
 	if (_isAudioPlaybackActive == false) {
 	    if (_playbackMode == "speaker") {
 		// Real time playback to speaker.
@@ -427,7 +392,6 @@ public class SoundPlayback {
      *   unsupported format.
      */
     public void stopPlayback() throws IOException {
-	//System.out.println("SoundPlayback: stopPlayback(): invoked");
 	if (_isAudioPlaybackActive == true) {
 	    if (_playbackMode == "speaker") {
 		// Stop real-time playback to speaker.
@@ -460,17 +424,9 @@ public class SoundPlayback {
 
         _frameSizeInBytes = format.getFrameSize();
 
-	//System.out.println("SoundPlayback: _startPlaybackRealTime(): " +
-			   //      "sampling rate = " + _sampleRate);
-	//System.out.println("SoundPlayback: _startPlaybackRealTime(): " +
-	//      "sample size in bits = " + _sampleSizeInBits);
-
         DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
                 format,
                 AudioSystem.NOT_SPECIFIED);
-
-	//System.out.println("SoundPlayback: Dataline.Info : " +
-	//      sourceInfo.toString());
 
         // get and open the source data line for playback.
 	try {
@@ -480,9 +436,6 @@ public class SoundPlayback {
             // Open line and suggest a buffer size (in bytes) to use or
 	    // the internal audio buffer.
 	    _sourceLine.open(format, _bufferSize*_frameSizeInBytes);
-	    //System.out.println("SoundPlayback: internal audio buffer size = " +
-	    //      _sourceLine.getBufferSize()/_frameSizeInBytes +
-	    //      " samples.");
 
 	} catch (LineUnavailableException ex) {
             throw new IOException("Unable to open the line for " +
@@ -497,7 +450,6 @@ public class SoundPlayback {
     }
 
     private void _startPlaybackToFile() {
-	//System.out.println("SoundPlayback: _startPlaybackToFile() invoked");
 	// FIXME: Performance is not great when the incoming audio
 	// samples are being captured in real-time, possibly
 	// due to resizing of the ArrayList.
@@ -519,7 +471,6 @@ public class SoundPlayback {
 
 
     private void _stopPlaybackToFile() throws IOException {
-	//System.out.println("SoundPlayback: _stopPlaybackToFile() invoked.");
 	int size =  _toFileBuffer.size();
 	byte[] audioBytes = new byte[size];
 	for (int i = 0; i < size; i++) {
@@ -534,9 +485,8 @@ public class SoundPlayback {
                     _playToFileFormat,
                     audioBytes.length /  _frameSizeInBytes);
 
-	//System.out.println("SoundPlayback: _stopPlaybackToFile() geting new file");
 	File outFile = new File(_fileName);
-	//System.out.println("SoundPlayback: _stopPlaybackToFile() done geting new file");
+
 
 
 	try {
@@ -564,11 +514,9 @@ public class SoundPlayback {
 		AudioSystem.write(audioInputStream,
                         AudioFileFormat.Type.WAVE, outFile);
 	    } else if (fileExtension.equalsIgnoreCase("wav")) {
-		//System.out.println("SoundPlayback: _stopPlaybackToFile() saving the file");
 		// Save the file.
 		AudioSystem.write(audioInputStream,
                         AudioFileFormat.Type.WAVE, outFile);
-		//System.out.println("SoundPlayback: _stopPlaybackToFile(): done saving the file");
 	    } else if (fileExtension.equalsIgnoreCase("aifc")) {
 		// Save the file.
 		AudioSystem.write(audioInputStream,
