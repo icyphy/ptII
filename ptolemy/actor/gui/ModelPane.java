@@ -103,6 +103,26 @@ public class ModelPane extends JPanel {
             }
         });
 
+        _pauseButton = new JButton("Pause");
+        _pauseButton.setToolTipText("Pause execution of the model");
+        _buttonPanel.add(_pauseButton);
+        _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        _pauseButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                pauseRun();
+            }
+        });
+
+        _resumeButton = new JButton("Resume");
+        _resumeButton.setToolTipText("Resume executing the model");
+        _buttonPanel.add(_resumeButton);
+        _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        _resumeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                resumeRun();
+            }
+        });
+
         _stopButton = new JButton("Stop");
         _stopButton.setToolTipText("Stop executing the model");
         _buttonPanel.add(_stopButton);
@@ -285,6 +305,26 @@ public class ModelPane extends JPanel {
         }
     }
 
+    /** If the model has a manager and is executing, then
+     *  pause execution by calling the pause() method of the manager.
+     *  If there is no manager, do nothing.
+     */
+    public void pauseRun() {
+        if(_manager != null) {
+            _manager.pause();
+        }
+    }
+
+    /** If the model has a manager and is executing, then
+     *  stop execution by calling the finish() method of the manager.
+     *  If there is no manager, do nothing.
+     */
+    public void resumeRun() {
+        if(_manager != null) {
+            _manager.resume();
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -311,6 +351,12 @@ public class ModelPane extends JPanel {
 
     // The stop button.
     private JButton _stopButton;
+
+    // The pause button.
+    private JButton _pauseButton;
+
+    // The resume button.
+    private JButton _resumeButton;
 
     // A panel into which to place model displays.
     private Container _displays;
