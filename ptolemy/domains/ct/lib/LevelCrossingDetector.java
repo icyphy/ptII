@@ -332,7 +332,7 @@ public class LevelCrossingDetector extends Transformer
     /** Prepare for the next iteration, by making the current trigger
      *  token to be the history trigger token.
      *  @return True always.
-     *  @throws IllegalActionException If thrown by the super class.
+     *  @exception IllegalActionException If thrown by the super class.
      */
     public boolean postfire() throws IllegalActionException {
         _lastTrigger = _thisTrigger;

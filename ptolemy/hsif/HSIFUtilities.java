@@ -115,7 +115,7 @@ public class HSIFUtilities {
      *  @param args An array of Strings.  The first element should
      *  name a HSIF file to read in, the second should name the MoML
      *  file to be generated.
-     *  @throws Exception If the conversion fails.
+     *  @exception Exception If the conversion fails.
      */
     public static void main(String [] args) throws Exception {
         if (args.length != 2) {

@@ -403,7 +403,7 @@ public class Clock extends TimedSource {
      *  parameter.
      *  @param index The index of the output values.
      *  @return A token that contains the output value. 
-     *  @throws IllegalActionException If the index is out of the range of
+     *  @exception IllegalActionException If the index is out of the range of
      *  the values parameter.
      */
     protected Token _getValue(int index) throws IllegalActionException {
@@ -443,7 +443,8 @@ public class Clock extends TimedSource {
     }
 
     /** Update the states and request refiring if necessary.
-     * @throws IllegalActionException
+     *  @exception IllegalActionException If the numberOfCycles parameter does 
+     *  not contain a valid parameter or can not request refiring. 
      */
     protected void _updateStates() throws IllegalActionException {
         _cycleStartTime = _tentativeCycleStartTime;

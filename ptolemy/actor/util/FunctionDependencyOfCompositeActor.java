@@ -136,7 +136,7 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
     /** Construct a dependency graph from a detailed dependency graph by 
      *  excluding the internal ports. The returned graph has an abstract
      *  view.
-     * @throws IllegalActionException
+     *  @exception IllegalActionException Not thrown in this class.
      */
     protected void _constructDependencyGraph() {
         // First, construct the detailed dependency graph

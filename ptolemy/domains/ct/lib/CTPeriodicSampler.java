@@ -186,7 +186,7 @@ public class CTPeriodicSampler extends Transformer implements CTEventGenerator {
     /** Set the next sampling time and return true.
      *  It computes the next sampling time, and registers it as a breakpoint.
      *  @return True.
-     *  @throws IllegalActionException If the next sampling time can not be
+     *  @exception IllegalActionException If the next sampling time can not be
      *  set as a breakpoint.
      */
     public boolean postfire() throws IllegalActionException {

@@ -61,8 +61,10 @@ public class FunctionDependencyOfModalModel
 
     /** Construct a FunctionDependency in the given actor.
      *  @param compositeActor The associated actor.
-     * @throws NameDuplicationException
-     * @throws IllegalActionException
+     *  @exception NameDuplicationException If the container already contains 
+     *  an entity with the specified name.
+     *  @exception IllegalActionException If the name has a period in it, or 
+     *  the attribute is not compatible with the specified container.
      */
     public FunctionDependencyOfModalModel(CompositeActor compositeActor,
         String name) throws IllegalActionException, NameDuplicationException {

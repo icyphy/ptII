@@ -219,7 +219,7 @@ public abstract class FunctionDependency extends Attribute {
      *  This method should only be called from by the protected method
      *  _validate(). It is protected only so that subclasses can
      *  override it, not so they can call it.
-     * @throws IllegalActionException
+     *  @exception IllegalActionException Not thrown in this class.
      */
     protected void _constructDependencyGraph() {
         _dependencyGraph = _constructConnectedDependencyGraph();
