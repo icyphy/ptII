@@ -59,7 +59,7 @@ import ptolemy.kernel.util.NamedObj;
 
     @see FunctionDependencyOfAtomicActor
     @see FunctionDependencyOfCompositeActor
-    @see ptolemy.domains.fsm.kernal.FunctionDependencyOfFSMActor
+    @see ptolemy.domains.fsm.kernel.FunctionDependencyOfFSMActor
     @see ptolemy.domains.de.kernel.DEEDirector
     @author Haiyang Zheng
     @version $Id$
