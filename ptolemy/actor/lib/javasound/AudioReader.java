@@ -56,7 +56,7 @@ on the output channels where there is no corresponding
 output data.
 <p>
 The <i>fileOrURL</i> parameter should be set to the name of the file
-or a URL, in any form accepted by FileAttribute. The default initial value is
+or a URL, in any form accepted by FileParameter. The default initial value is
 <code>$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav</code>,
 which refers to a file that is found relative to the classpath.
 <p>
