@@ -1148,6 +1148,9 @@ public class PtolemyUtilities {
     // SootMethod representing ptolemy.actor.IOPort.hasToken(int).
     public static SootMethod hasTokenMethod;
 
+    // SootClass representing ptolemy.graph.InequalityTerm.
+    public static SootClass inequalityTermClass;
+
     // SootMethod representing ptolemy.kernel.ComponentPort.insertLink().
     public static SootMethod insertLinkMethod;
 
@@ -1659,5 +1662,8 @@ public class PtolemyUtilities {
 
         Scene.v().loadClassAndSupport("ptolemy.actor.gui.Configuration");
         findEffigyMethod = Scene.v().getMethod("<ptolemy.actor.gui.Configuration: ptolemy.actor.gui.Effigy findEffigy(ptolemy.kernel.util.NamedObj)>");
+
+        inequalityTermClass =
+            Scene.v().loadClassAndSupport("ptolemy.graph.InequalityTerm");
     }
 }

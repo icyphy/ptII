@@ -75,9 +75,9 @@ public class TestApplication implements ChangeListener {
         parser.setMoMLFilters(BackwardCompatibility.allFilters());
 
 	// Filter out any graphical classes.
-	parser.addMoMLFilter(new RemoveGraphicalClasses());
+        //parser.addMoMLFilter(new RemoveGraphicalClasses());
 
-        parser.setErrorHandler(new StreamErrorHandler());
+        //parser.setErrorHandler(new StreamErrorHandler());
 
         // We use parse(URL, URL) here instead of parseFile(String)
         // because parseFile() works best on relative pathnames and
@@ -86,8 +86,9 @@ public class TestApplication implements ChangeListener {
         CompositeActor toplevel = null;
 
         try {
-            toplevel = (CompositeActor) parser.parse(null,
-                    new URL(xmlFilename));
+            URL url = new URL(null, xmlFilename);
+            toplevel = (CompositeActor) parser.parse(url,
+                    url.openStream());
         } catch (Exception ex) {
             File f = new File(xmlFilename);
             URL url = f.toURL();
@@ -103,7 +104,7 @@ public class TestApplication implements ChangeListener {
 
         SDFDirector director = (SDFDirector)toplevel.getDirector();
         Parameter iterations = (Parameter) director.getAttribute("iterations");
-        iterations.setToken(new IntToken(1000));
+        //    iterations.setToken(new IntToken(10));
 
         Manager manager = new Manager(toplevel.workspace(),
                 "TestApplication");
@@ -112,7 +113,7 @@ public class TestApplication implements ChangeListener {
 
         // First, we gc and then print the memory stats
         // BTW to get more info about gc,
-        // use java -verbose:gc . . .
+        // use java -verbose:gc -Xloggc:filename . . .
         System.gc();
         Thread.sleep(1000);
 

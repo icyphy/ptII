@@ -4,7 +4,7 @@ classpath = "c:\\jdk1.2\\jre\\lib\\rt.jar","treeshake_codegen.jar"
  
 # The jar, zip file or directory in which the obfuscated class files
 # should be written.
-dest = "obfuscated.jar"
+dest = "treeshake_codegen_obfuscated.jar"
 
 # Write the reverse translation table to translat.tbl.  With the help of
 # this table you can later undo the renaming.

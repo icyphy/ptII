@@ -136,6 +136,9 @@ public class InlineParameterTransformer extends SceneTransformer {
         for(Iterator classes = Scene.v().getApplicationClasses().iterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
+            if(SootUtilities.derivesFrom(theClass,
+                       PtolemyUtilities.inequalityTermClass)) continue;
+
             // inline calls to parameter.getToken and getExpression
             for (Iterator methods = theClass.getMethods().iterator();
                  methods.hasNext();) {

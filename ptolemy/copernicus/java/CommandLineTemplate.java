@@ -84,6 +84,14 @@ public class CommandLineTemplate {
      *  @param args The command-line arguments.
      */
     public static void main(String args[]) {
+        // Hack, to ensure that data classes are statically loaded.
+        // If you don't have this, then profiling has a difficult time
+        // distinguishing between data allocation and classes that are
+        // dynamically loaded.
+        if(ptolemy.data.type.TypeLattice.compare(new ptolemy.data.IntToken(7).getType(),new ptolemy.data.type.ArrayType(ptolemy.data.type.BaseType.BOOLEAN))<7) {
+            System.out.println(new ptolemy.data.IntToken(7).toString());
+        }
+
         try {
             CommandLineTemplate app = new CommandLineTemplate();
             app.processArgs(args);
@@ -116,76 +124,71 @@ public class CommandLineTemplate {
             Iterator models = _models.iterator();
             while (models.hasNext()) {
 
-                // First, we gc and then print the memory stats
-                // BTW to get more info about gc,
-                // use java -verbose:gc . . .
-                System.gc();
-                Thread.sleep(1000);
-
-
                 long startTime = System.currentTimeMillis();
 
                 Runtime runtime = Runtime.getRuntime();
 
-                // Get the memory stats before we get the model name
-                // just to be sure that getting the model name does
-                // not skew are data too much
-                long totalMemory1 = runtime.totalMemory()/1024;
-                long freeMemory1 = runtime.freeMemory()/1024;
-
                 CompositeActor model = (CompositeActor)models.next();
                 String modelName = model.getName();
 
-                System.out.println(modelName +
-                        ": Stats before execution:    "
-                        + timeAndMemory(startTime,
-                                totalMemory1, freeMemory1));
+                // Allocate string buffers before hand, so that it is
+                // not counted as allocated memory.
+                StringBuffer buffer1 = new StringBuffer(5000);
+                StringBuffer buffer2 = new StringBuffer(5000);
 
+                // First, we gc..  This will be recorded in a
+                // log file and used to compute memory usage.
+                System.gc();
+                Thread.sleep(1000);
+
+                long totalMemory1 = runtime.totalMemory()/1024;
+                long freeMemory1 = runtime.freeMemory()/1024;
+                timeAndMemory(startTime,
+                        totalMemory1, freeMemory1, buffer1);
+                  
                 // Second, we run and print memory stats.
                 startRun(model);
 
                 long totalMemory2 = runtime.totalMemory()/1024;
                 long freeMemory2 = runtime.freeMemory()/1024;
-                String standardStats = timeAndMemory(startTime,
-                        totalMemory2, freeMemory2);
-
-                System.out.println(modelName +
-                        ": Execution stats:           "
-                        + standardStats);
-
-
-                // Third, we gc and print memory stats.
-                // Note that these stats are only correct if no gc has 
-                // occured..  recommend using -Xmx256m -Xms256m
+                timeAndMemory(startTime,
+                        totalMemory2, freeMemory2, buffer2);
+                
+                // GC, again to the log.
                 System.gc();
                 Thread.sleep(1000);
 
+                // Print out the time and memory...   Note that we do this
+                // after GCing, to get the best possible log of memory usage.
+                System.out.println(modelName +
+                        ": Stats before execution:    "
+                        + buffer1);
+                System.out.println(modelName +
+                        ": Execution stats:           "
+                        + buffer2);
+              
                 long totalMemory3 = runtime.totalMemory()/1024;
                 long freeMemory3 = runtime.freeMemory()/1024;
                 System.out.println(modelName +
                         ": After Garbage Collection:  "
                         + timeAndMemory(startTime,
                                 totalMemory3, freeMemory3));
-                System.out.println(modelName +
-                        ": construction size:         "
-                        + totalMemory1 + "K - " + freeMemory1 + "K = "
-                        + (totalMemory1 - freeMemory1) + "K");
-                System.out.println(modelName +
-                        ": model alloc. while exec. : "
-                        + freeMemory1 + "K - " + freeMemory3 + "K = "
-                        + (freeMemory1 - freeMemory3) + "K");
-                System.out.println(modelName +
-                        ": model alloc. runtime data: "
-                        + freeMemory3 + "K - " + freeMemory2 + "K = "
-                        + (freeMemory3 - freeMemory2) + "K");
+//                 System.out.println(modelName +
+//                         ": construction size:         "
+//                         + totalMemory1 + "K - " + freeMemory1 + "K = "
+//                         + (totalMemory1 - freeMemory1) + "K");
+//                 System.out.println(modelName +
+//                         ": model alloc. while exec. : "
+//                         + freeMemory1 + "K - " + freeMemory3 + "K = "
+//                         + (freeMemory1 - freeMemory3) + "K");
+//                 System.out.println(modelName +
+//                         ": model alloc. runtime data: "
+//                         + freeMemory3 + "K - " + freeMemory2 + "K = "
+//                         + (freeMemory3 - freeMemory2) + "K");
 
                 // Print out the standard stats at the end
                 // so as not to break too many scripts
-                System.out.println(standardStats
-                        + " Stat: " + (totalMemory1 - freeMemory1)
-                        + "K StatRT: " + (freeMemory1 - freeMemory3)
-                        + "K DynRT: " + (freeMemory3 - freeMemory2)
-                        + "K");
+                System.out.println(buffer2.toString());
             }
         }
     }
@@ -313,13 +316,23 @@ public class CommandLineTemplate {
 
     public static String timeAndMemory(long startTime,
             long totalMemory, long freeMemory) {
+	StringBuffer buffer = new StringBuffer();
+        timeAndMemory(startTime, totalMemory, freeMemory, buffer);
+        return buffer.toString();
+    }
+
+    public static void timeAndMemory(long startTime,
+            long totalMemory, long freeMemory, StringBuffer buffer) {
 	Runtime runtime = Runtime.getRuntime();
-	return System.currentTimeMillis() - startTime
-	    + " ms. Memory: "
-	    + totalMemory + "K Free: " + freeMemory + "K ("
-	    + Math.round( (((double)freeMemory)/((double)totalMemory))
-                    * 100.0)
-	    + "%)";
+	buffer.append(System.currentTimeMillis() - startTime);
+	buffer.append(" ms. Memory: ");
+	buffer.append(totalMemory);
+        buffer.append("K Free: ");
+        buffer.append(freeMemory);
+        buffer.append("K (");
+	buffer.append(Math.round( (((double)freeMemory)/((double)totalMemory))
+                              * 100.0));
+        buffer.append("%)");
     }
 
     /** If the specified model has a manager and is executing, then

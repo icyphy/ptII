@@ -105,11 +105,15 @@ public class InvocationBinder extends SceneTransformer
             {
                 SootMethod container = (SootMethod)methodsList.removeFirst();
 
-                if (!container.isConcrete())
+                if (!container.isConcrete()) {
+                    System.out.println("skipping " + container + ": not concrete");
                     continue;
+                }
+                if (graph.getSitesOf(container).size() == 0) {
+                    System.out.println("skipping " + container + ": not called");
 
-                if (graph.getSitesOf(container).size() == 0)
                     continue;
+                }
 
                 JimpleBody b = (JimpleBody)container.getActiveBody();
                 
@@ -126,12 +130,16 @@ public class InvocationBinder extends SceneTransformer
                     InvokeExpr ie = (InvokeExpr)s.getInvokeExpr();
 
                     if (ie instanceof StaticInvokeExpr || 
-                        ie instanceof SpecialInvokeExpr)
-                        continue;
+                            ie instanceof SpecialInvokeExpr) {
+                        System.out.println("skipping " + container + ":" + 
+                                s + ": not virtual");
 
-                    //System.out.println("considering " + ie);
+                        continue;
+                    }
+
+                    System.out.println("considering " + ie);
                     List targets = graph.getTargetsOf(s);
-                    //System.out.println("targets = " + targets);
+                    System.out.println("targets = " + targets);
                    
                     if (targets.size() != 1)
                         continue;
@@ -140,12 +148,16 @@ public class InvocationBinder extends SceneTransformer
 
                     SootMethod target = (SootMethod)targets.get(0);
                     
-                    if (!AccessManager.ensureAccess(container, target, modifierOptions))
-                        continue;
-                    
-                    if (!target.isConcrete())
-                        continue;
+                    if (!AccessManager.ensureAccess(container, target, modifierOptions)) {
+                        System.out.println("skipping: no access");
 
+                        continue;
+                    }
+                    if (!target.isConcrete()) {
+                        System.out.println("skipping: not concrete");
+
+                        continue;
+                    }
                     // Change the InterfaceInvoke or VirtualInvoke to
                     // a new VirtualInvoke.
                     ValueBox box = s.getInvokeExprBox();

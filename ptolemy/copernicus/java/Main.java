@@ -140,7 +140,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", ClassWriter.v()));
-               
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffet",
                          FieldsForEntitiesTransformer.v(_toplevel)));
@@ -302,7 +302,7 @@ public class Main extends KernelMain {
 
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
         
-        
+             
         // Remove Unreachable methods.  This happens BEFORE NamedObjElimination
         // so that we don't have to pick between multiple constructors, if
         // there are more than one.  I'm lazy and instead of trying to pick
@@ -318,6 +318,10 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ls",
                         new TransformerAdapter(LocalSplitter.v())));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.cie",
+                        new TransformerAdapter(
+                                CastAndInstanceofEliminator.v())));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ta",
                         new TransformerAdapter(TypeAssigner.v())));
@@ -338,6 +342,7 @@ public class Main extends KernelMain {
         // Token and Type constructors, since we know that these will
         // have no interesting side effects.  More complex analysis
         // is possible here, but not likely worth it.
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.doe",
                         new TransformerAdapter(
@@ -516,8 +521,8 @@ public class Main extends KernelMain {
                         JimpleWriter.v()));
      
         // And write C!
-    //     Scene.v().getPack("wjtp").add(
-//                 new Transform("wjtp.finalSnapshot", CWriter.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.finalSnapshot", CWriter.v()));
              
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.watchDogCancel",

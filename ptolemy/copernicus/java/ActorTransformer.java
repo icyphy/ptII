@@ -1078,6 +1078,11 @@ public class ActorTransformer extends SceneTransformer {
                                             PtolemyUtilities.getEntityMethod,
                                             StringConstant.v(deepName))));
                     
+                    units.add(
+                            Jimple.v().newAssignStmt(entityLocal,
+                                    Jimple.v().newCastExpr(
+                                            entityLocal,
+                                            RefType.v(PtolemyUtilities.compositeActorClass))));
                     SootMethod rprefireMethod, rfireMethod, rpostfireMethod;
                     if(refinement instanceof CompositeActor) {
                         rprefireMethod = SootUtilities.searchForMethodByName(PtolemyUtilities.compositeActorClass, "prefire");

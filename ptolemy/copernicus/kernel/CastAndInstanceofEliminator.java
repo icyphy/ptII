@@ -96,11 +96,20 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     Value op = expr.getOp();
                     Type opType = op.getType();
 
-                    // Skip locals that are unsafe.
-                    if (castType.equals(opType) &&
-                            !unsafeLocalSet.contains(op)) {
-                        box.setValue(op);
+//                     // Skip locals that are unsafe.
+//                     if (castType.equals(opType) &&
+//                             !unsafeLocalSet.contains(op)) {
+//                         box.setValue(op);
+//                     }
+                    if (unsafeLocalSet.contains(op)) {
+                        continue;
                     }
+
+                    Hierarchy hierarchy = Scene.v().getActiveHierarchy();
+
+                    replaceCast(box, hierarchy,
+                            castType, op, opType, debug);
+
                 } else if (value instanceof InstanceOfExpr) {
                     // If the operand of the expression is
                     // declared to be of a type that implies
@@ -124,7 +133,6 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
             }
         }
     }
-
 
     /** Statically evaluate the instance of Check in the given box,
      *  if possible.  If <i>opType</i> is always an instance of
@@ -213,6 +221,93 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     if (debug) System.out.println("Replacing " +
                             box.getValue() + " with false.");
                     box.setValue(IntConstant.v(0));
+                }
+            }
+        }
+    }
+
+    /** Remove the case in the given box,
+     *  if possible.  If <i>opType</i> is always an instance of
+     *  <i>checkType</i>, based on the given hierarchy,
+     *  then replace with an assignment.
+     */
+    public static void replaceCast(ValueBox box,
+            Hierarchy hierarchy, Type checkType, 
+            Value op, Type opType, boolean debug) {
+
+        RefType checkRef, opRef;
+        if (checkType instanceof RefType &&
+                opType instanceof RefType) {
+            checkRef = (RefType)checkType;
+            opRef = (RefType)opType;
+
+        } else if (checkType instanceof ArrayType &&
+                opType instanceof ArrayType) {
+            if (((ArrayType)checkType).numDimensions !=
+                    ((ArrayType)opType).numDimensions) {
+                // We know the cast is necessary
+                return;
+            }
+            Type checkBase = ((ArrayType)checkType).baseType;
+            Type opBase = ((ArrayType)opType).baseType;
+            if (checkBase instanceof RefType &&
+                    opBase instanceof RefType) {
+                checkRef = (RefType)checkBase;
+                opRef = (RefType)opBase;
+            } else {
+                // Can't say anything?
+                return;
+            }
+        } else {
+            // Can't say anything?
+            return;
+        }
+        SootClass checkClass = ((RefType)checkRef).getSootClass();
+        SootClass opClass = ((RefType)opRef).getSootClass();
+        if (debug) System.out.println("checkClass = " + checkClass);
+        if (debug) System.out.println("opClass = " + opClass);
+        if (checkClass.isInterface()) {
+            if (opClass.isInterface()) {
+                if (hierarchy.isInterfaceSubinterfaceOf(
+                        opClass, checkClass) ||
+                        opClass.equals(checkClass)) {
+                    // Then we know the instanceof will be true.
+                    if (debug) System.out.println("Replacing " +
+                           "with assignment.");
+                    box.setValue(op);
+                }
+            } else {
+                // opClass is a class, not an interface.
+                if (hierarchy.getImplementersOf(checkClass).contains(opClass)) {
+                    // Then we know the instanceof will be true.
+                    //if (debug) System.out.println("Replacing " +
+                    //       box.getValue() + " with true.");
+                    //   box.setValue(IntConstant.v(1));
+                } else {
+                    // We need to ensure that no subclass
+                    // of opclass implements the
+                    // interface.  This will mean we
+                    // replace with false.
+                }
+            }
+        } else {
+            if (opClass.isInterface()) {
+                //???
+            } else {
+                if (hierarchy.isClassSuperclassOfIncluding(
+                        checkClass, opClass)) {
+                    // Then we know the instanceof will be true.
+                    if (debug) System.out.println("Replacing " +
+                            "with assignment.");
+                    box.setValue(op);
+                } else if (!hierarchy.isClassSuperclassOfIncluding(
+                        opClass, checkClass)) {
+                                // Then we know the instanceof will be false,
+                                // because no subclass of opClass can suddenly
+                                // become a subclass of checkClass.
+                    //if (debug) System.out.println("Replacing " +
+                    //        box.getValue() + " with false.");
+                    //                    box.setValue(IntConstant.v(0));
                 }
             }
         }
