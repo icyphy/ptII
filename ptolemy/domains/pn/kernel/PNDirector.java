@@ -134,7 +134,7 @@ public class PNDirector extends Director {
      *   container or one of the deeply contained actors throws it.
      */
     public void initialize()
-            throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             Enumeration allactors = container.deepGetEntities();
@@ -453,7 +453,7 @@ public class PNDirector extends Director {
     //Returns true for termination
     //This is not synchronized and should be synchronized in the calling method
     private boolean _handleDeadlock() 
-	    throws IllegalActionException, NameDuplicationException {
+	    throws IllegalActionException {
         // This exception should never be thrown!!
 	// Process deadlocks
 	// Wait for a deadlock to occur.
@@ -482,14 +482,20 @@ public class PNDirector extends Director {
 	    //System.out.println("Performed mutations");
 	    //boolean mutationOccured = false;
 	    //while (_performMutations()) {
-	    if (_performMutations()) {
-		//mutationOccured = true;
-		// NOTE: Should type resolution be done here?
-		// Initialize any new actors
-		//Creates receivers and then starts up threads for all
-		//System.out.println("Initializing new actors");
-		_pnActorListener.initializeNewActors();
-	    }
+            try {
+                if (_performMutations()) {
+                    //mutationOccured = true;
+                    // NOTE: Should type resolution be done here?
+                    // Initialize any new actors
+                    //Creates receivers and then starts up threads for all
+                    //System.out.println("Initializing new actors");
+	 	    _pnActorListener.initializeNewActors();
+	        }
+            } catch (NameDuplicationException nde) {
+                // FIXME: this is just to get this thing to compile
+                throw new IllegalActionException("Name duplication error: " +
+                        nde.getMessage());
+            }
 	    //System.out.println("Done mutations");
 	    //setPause(false);
 	    setResume(pausedrecs);
