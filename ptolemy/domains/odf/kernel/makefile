@@ -55,7 +55,6 @@ JSRCS = \
         ODFReceiver.java \
         ODFSourceActor.java \
         ODFThread.java \
-        RcvrTimeTriple.java \
         TimeKeeper.java \
         TimedQueueReceiver.java
 
