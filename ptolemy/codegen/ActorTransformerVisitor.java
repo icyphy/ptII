@@ -79,10 +79,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         // bring in imports for Complex and FixPoint (remove unnecessary ones later)
         List importList = node.getImports();
         
-        importList.add(new ImportNode((NameNode)
-         StaticResolution.makeNameNode("ptolemy.math.Complex")));
-        importList.add(new ImportNode((NameNode)
-         StaticResolution.makeNameNode("ptolemy.math.FixPoint")));
+        importList.add(new ImportOnDemandNode((NameNode)
+         StaticResolution.makeNameNode("ptolemy.math")));
             
         return _defaultVisit(node, args);
     }
@@ -282,8 +280,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         
         // if this is a static method call, we can't do any more.
         if (fieldAccessNode instanceof TypeFieldAccessNode) {
-           node.setMethod((FieldAccessNode) fieldAccessNode.accept(this, args));
-           return node;
+           return _defaultVisit(node, args);
         }
                         
         ExprNode accessedObj = (ExprNode) ExprUtility.accessedObject(fieldAccessNode);   
@@ -297,9 +294,10 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
            Object retval = _actorMethodCallNode(node, args);        
            
            if (retval != null) return retval;
-           
+                      
         } else if (_typeID.isSupportedTokenKind(accessedObjKind)) {
-           MethodDecl methodDecl = (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);                
+           MethodDecl methodDecl = 
+            (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);                
         
            fieldAccessNode = (FieldAccessNode) fieldAccessNode.accept(this, args);
          
@@ -309,21 +307,16 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                                        
            String methodName = methodDecl.getName();        
             
-           // transform the arguments
-           List oldMethodArgs = node.getArgs();
-           TypeNode[] oldMethodArgTypes = _typeVisitor.typeArray(oldMethodArgs);
-        
+           // transform the arguments        
            List methodArgs = 
-            TNLManip.traverseList(this, null, args, oldMethodArgs);                
+            TNLManip.traverseList(this, null, args, node.getArgs());                
          
            node.setArgs(methodArgs);
                                                                                 
            ExprNode firstArg = null;
-           TypeNode firstArgType = null;
         
-           if (oldMethodArgs.size() > 0) {
+           if (methodArgs.size() > 0) {
               firstArg = (ExprNode) methodArgs.get(0);
-              firstArgType = oldMethodArgTypes[0];
            }
                 
            boolean accessedObjIsMatrix = _typeID.isMatrixTokenKind(accessedObjKind);     
@@ -343,25 +336,32 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
               return new CastNode((TypeNode) PtolemyTypeIdentifier.COMPLEX_TYPE.clone(), 
                accessedObj);
            } else if (methodName.equals("fixValue")) {
-              return new CastNode((TypeNode) PtolemyTypeIdentifier.FIX_POINT_TYPE.clone(), 
+              return new CastNode(
+               (TypeNode) PtolemyTypeIdentifier.FIX_POINT_TYPE.clone(), 
                accessedObj);
            } else if (methodName.equals("booleanMatrix")) {
-              return new CastNode(TypeUtility.makeArrayType(BoolTypeNode.instance, 2), 
+              return new CastNode(
+               TypeUtility.makeArrayType(BoolTypeNode.instance, 2), 
                accessedObj);
            } else if (methodName.equals("intMatrix")) {
-              return new CastNode(TypeUtility.makeArrayType(IntTypeNode.instance, 2), 
+              return new CastNode(
+               TypeUtility.makeArrayType(IntTypeNode.instance, 2), 
                accessedObj);
            } else if (methodName.equals("longMatrix")) {
-              return new CastNode(TypeUtility.makeArrayType(LongTypeNode.instance, 2), 
+              return new CastNode(
+               TypeUtility.makeArrayType(LongTypeNode.instance, 2), 
                accessedObj);                                         
            } else if (methodName.equals("doubleMatrix")) {
-              return new CastNode(TypeUtility.makeArrayType(DoubleTypeNode.instance, 2), 
+              return new CastNode(
+               TypeUtility.makeArrayType(DoubleTypeNode.instance, 2), 
                accessedObj);
            } else if (methodName.equals("complexMatrix")) {
-              return new CastNode(TypeUtility.makeArrayType(PtolemyTypeIdentifier.COMPLEX_TYPE, 2), 
+              return new CastNode(
+               TypeUtility.makeArrayType(PtolemyTypeIdentifier.COMPLEX_TYPE, 2), 
                accessedObj);
            } else if (methodName.equals("fixMatrix")) {
-              return new CastNode(TypeUtility.makeArrayType(PtolemyTypeIdentifier.FIX_POINT_TYPE, 2), 
+              return new CastNode(
+               TypeUtility.makeArrayType(PtolemyTypeIdentifier.FIX_POINT_TYPE, 2), 
                accessedObj);
            } else if (methodName.equals("add")) {
               return new PlusNode(accessedObj, firstArg);               
@@ -418,12 +418,74 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                new ArrayAccessNode(accessedObj, firstArg), secondArg);                          
            } else if (methodName.equals("toString")) {
 
-              // uh duh ,...
-           
+              switch (accessedObjKind) {              
+                case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:
+                case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
+                case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
+                case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
+                return new MethodCallNode(new TypeFieldAccessNode(
+                 new NameNode(AbsentTreeNode.instance, "getValue"),
+                 (TypeNameNode) StaticResolution.STRING_TYPE.clone()),
+                 TNLManip.cons(accessedObj)); 
+                
+                case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN: 
+                case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:
+                case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:
+                return new MethodCallNode(new ObjectFieldAccessNode(
+                 new NameNode(AbsentTreeNode.instance, "toString"),
+                 accessedObj), new LinkedList());
+
+                case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:                
+                return accessedObj;
+                 
+                // for matrices, call the toString() method of
+                // the helper classes in ptolemy.math
+                                  
+                case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:
+                ApplicationUtility.warn("toString() on boolean matrix not " +
+                 "supported yet");
+                break;
+                
+                case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:
+                return new MethodCallNode(new TypeFieldAccessNode(
+                 new NameNode(AbsentTreeNode.instance, "toString"),
+                 new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+                  "IntMatrixMath"))),
+                 TNLManip.cons(accessedObj)); 
+                
+                case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:
+                return new MethodCallNode(new TypeFieldAccessNode(
+                 new NameNode(AbsentTreeNode.instance, "toString"),
+                 new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+                  "DoubleMatrixMath"))),
+                 TNLManip.cons(accessedObj)); 
+                 
+                case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:
+                return new MethodCallNode(new TypeFieldAccessNode(
+                 new NameNode(AbsentTreeNode.instance, "toString"),
+                 new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+                  "LongMatrixMath"))),
+                 TNLManip.cons(accessedObj)); 
+                                  
+                case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:
+                return new MethodCallNode(new TypeFieldAccessNode(
+                 new NameNode(AbsentTreeNode.instance, "toString"),
+                 new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+                  "ComplexMatrixMath"))),
+                 TNLManip.cons(accessedObj)); 
+                
+                case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:
+                ApplicationUtility.warn("toString() on fix matrix not " +
+                 "supported yet");
+                break;                            
+              }           
            }
                   
            // method not supported, create a new Token, and call the method
            // with new (converted) args. This may be a problem.
+           ApplicationUtility.warn("found unsupported method: " + methodName + 
+            ", replacing with creation of token and method call");
+           
            return new MethodCallNode(
              new ObjectFieldAccessNode(fieldAccessNode.getName(),
               new AllocateNode(_typeID.typeNodeForKind(accessedObjKind),
@@ -460,10 +522,10 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
            }
         } else if (_typeID.isSupportedPortKind(accessedObjKind)) {
            Object retval = _portMethodCallNode(node, args);            
-           if (retval != null) return retval;
+           if (retval != null) return retval;           
         }
                 
-        return node;
+        return _defaultVisit(node, args);
     }
 
     public Object visitAllocateNode(AllocateNode node, LinkedList args) {
@@ -914,18 +976,22 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                                             
         Iterator memberItr = memberList.iterator();
         
-        // remove unwanted fields and methods
         LinkedList newMemberList = new LinkedList();
         
         while (memberItr.hasNext()) {
            Object memberObj = memberItr.next();
            
-           if (memberObj != NullValue.instance) {
+           if (memberObj instanceof List) {
+              // allow list return values
+              newMemberList.addAll((List) memberObj);              
+           } else if (memberObj != NullValue.instance) {
+              // don't add unwanted fields and methods           
               newMemberList.add(memberObj);           
            }        
         }
-
+        
         if (_isBaseClass) {
+           // default execution methods are not transformed
            _addDefaultExecutionMethods(newMemberList);                                
         } 
         
@@ -1167,7 +1233,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         node.setArgs(TNLManip.traverseList(this, node, args, node.getArgs())); 
                                                            
         // we can only handle ports that are fields of the actor
-        if (accessedObj.classID() != THISFIELDACCESSNODE_ID) return null;
+        if (accessedObj.classID() != THISFIELDACCESSNODE_ID) return node;
             
         TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
         
@@ -1225,7 +1291,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                    methodName.equals("setTypeSameAs")) {
            return NullValue.instance; // must be eliminated by ExprStmtNode                                    
         }       
-        return null;
+        return node;
     }
 
     protected Object _visitEqualityNode(EqualityNode node, LinkedList args) {

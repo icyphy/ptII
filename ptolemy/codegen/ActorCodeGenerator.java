@@ -80,6 +80,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         
         String filename = sourceFile.toString();
 
+        System.out.println("pass1() : filename = " + filename);
+
         ApplicationUtility.trace("acg : parsing " + filename);        
                         
         // make a list of the compile unit node and compile unit nodes that 
@@ -124,7 +126,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         String filename = sourceFile.toString();
         
-        ApplicationUtility.trace("pass2() : sourceName = " + sourceName + 
+        System.out.println("pass2() : sourceName = " + sourceName + 
          ", filename = " + filename);
                                                 
         List[] listArray = 
@@ -165,6 +167,10 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         // assume the references to the compile unit nodes are still valid
         // rewrite the transformed source code
         _rewriteSources(listArray[0], listArray[1]);      
+        
+        // clear the compile unit nodes from the cache so that they may be
+        // loaded again from scratch
+        _invalidateSources(listArray[1]);
     }
     
     protected static void _makePortNameToPortMap(ActorCodeGeneratorInfo actorInfo) {
@@ -344,6 +350,16 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         
         JavaCodeGenerator.writeCompileUnitNodeList(unitList, filenameList);                
     }
+    
+    protected static void _invalidateSources(List classNameList) {
+        Iterator classNameItr = classNameList.iterator();
+        while (classNameItr.hasNext()) {
+           String filename = "c:\\users\\ctsay\\ptII\\codegen\\" +  
+            (String) classNameItr.next() + ".java";
+                
+           StaticResolution.invalidateCompileUnit(filename, 2);
+        }    
+    } 
         
     protected PtolemyTypeIdentifier _typeID;   
         
