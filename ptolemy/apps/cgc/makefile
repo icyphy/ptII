@@ -44,9 +44,11 @@ include $(CONFIG)
 
 JSRCS = \
 	CPort.java \
-	CActor.java
+	CActorBase.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	CActor.xml \
+	task_code.c
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

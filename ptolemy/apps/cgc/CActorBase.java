@@ -44,7 +44,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
-//// CActor
+//// CActorBase
 /**
    Base class for C code giotto classes.  These are classes with source
    code defined in a .c file intended for use in the giotto domain. The
@@ -65,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (vkris)
    @Pt.AcceptedRating Red (cxh)
 */
-public class CActor extends TypedAtomicActor {
+public class CActorBase extends TypedAtomicActor {
 
     /** Construct an actor in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
@@ -74,13 +74,13 @@ public class CActor extends TypedAtomicActor {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the entity.
      */
-    public CActor(Workspace workspace) {
+    public CActorBase(Workspace workspace) {
         super(workspace);
         try {
             _init();
         } catch (KernelException e) {
             throw new InternalErrorException(
-                    "Error constructing parameters of CActor.");
+                    "Error constructing parameters of CActorBase.");
         }
     }
 
@@ -93,7 +93,7 @@ public class CActor extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public CActor(CompositeEntity container, String name)
+    public CActorBase(CompositeEntity container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try {
