@@ -5,6 +5,6 @@
 # @author Christopher Hylands
 # @version $Id$
 #
-@java@
+"@java@"
  -Xfuture -classpath "@classPath@"
  @targetPackage@.Main 
