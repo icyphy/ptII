@@ -128,19 +128,6 @@ public class ProcessDirector extends Director {
         return newobj;
     }
 
-    /** End the execution of the model under the control of this
-     *  director. A flag is set in all the receivers which causes
-     *  each process to terminate at the earliest communication point.
-     */
-    public void finish() {
-	try {
-	    wrapup();
-	} catch( IllegalActionException e ) {
-	    System.err.println("Error in calling "+getName()+".wrapup()");
-	    e.printStackTrace();
-	}
-    }
-
     /** Wait until a deadlock is detected. Then handle the deadlock
      *  (by calling the protected method _handleDeadlock()) and return.
      *  This method is synchronized on the director.
@@ -469,6 +456,9 @@ public class ProcessDirector extends Director {
 		}
 		thread = (ProcessThread)threads.next();
 		thread.restartThread();
+                // FIXME: We should also set the local
+                // iterate variable of ProcessThread to
+                // false here...
 	    }
 	}
 
