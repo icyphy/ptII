@@ -315,7 +315,8 @@ public class DEDirector extends Director {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        // FIXME: how to handle the change of the other parameters?
+        // FIXME: how to handle the changes of the other parameters?
+        // Do they need private/protected variables?
         if (attribute == stopWhenQueueIsEmpty) {
             _stopWhenQueueIsEmpty =
                 ((BooleanToken)stopWhenQueueIsEmpty.getToken()).booleanValue();
@@ -367,7 +368,7 @@ public class DEDirector extends Director {
                     // parameter port of the model. Therefore, no 
                     // actors belonging to the model need to fire.
                     if (_debugging) 
-                        _debug("No actor to be fired at this time.");
+                        _debug("No actor to be fired at the current time.");
                 } else { 
                     // Case 2: 
                     // If this director is an executive director at
@@ -375,8 +376,12 @@ public class DEDirector extends Director {
                     // no events in the event queue.
                     if (_debugging) 
                         _debug("No more events on the event queue.");
+                    // Setting the follow variable to true makes the
+                    // postfire method return false.
                     _noMoreActorsToFire = true;
                 }
+                // Nothing more need to be done in this method.
+                // Simply return.
                 return;
             }
             
@@ -446,7 +451,7 @@ public class DEDirector extends Director {
                     if (!actorToFire.postfire()) {
                         // Actor requests that it not be fired again.
                         _disableActor(actorToFire);
-                        //break;
+                        break;
                     }
                 }
 
@@ -469,12 +474,16 @@ public class DEDirector extends Director {
                 }
             } while (refire); // close the do{...}while() loop
 
-            // FIXME: the following code is not necessary because it is
-            // covered in the _dequeueEvents() method.
-            // Check whether the next time stamp is equal to current time.
-            // NOTE: The following code does two things:
-            // 1. Remove duplicate pure tokens.
-            // 2. Put the tokens belonging to the same actor into its receiver  
+            // The following code also appears in the _dequeueEvents() 
+            // method. However, its function is different. 
+            // In the _dequeueEvents() method, the code is only applied 
+            // on an embedded DE director to prevent it from reacting to 
+            // the future events. The code is not applied on a top-level
+            // DE director because the top level is responsible to advance
+            // time.
+            // Here, the following code has a different function. It 
+            // enforces that a firing (or iteration) of the DE director 
+            // only handles the events with the current time. 
             synchronized(_eventQueue) {
                 if (!_eventQueue.isEmpty()) {
                     DEEvent next = _eventQueue.get();
@@ -657,22 +666,15 @@ public class DEDirector extends Director {
         }
     }
 
-    /** Invoke the initialize() method of each deeply contained actor,
-     *  and then check the event queue for any events. If there are any,
-     *  and the director is embedded in an opaque composite actor, then
-     *  request a firing of the outside director.
-     *  This method should be invoked once per execution, after the
-     *  preinitialization phase, but before any iteration.  Since type
-     *  resolution has been completed, the initialize() method of a contained
-     *  actor may produce output or schedule events.
+    /** Invoke the initialize() method of the super class. 
      *  The real start time of the model is recorded when this method
-     *  is called.
+     *  is called. 
      *
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
      *  @exception IllegalActionException If the initialize() method of
-     *   one of the associated actors throws it.
+     *   the super class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
