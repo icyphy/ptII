@@ -1,6 +1,6 @@
 /* ExampleSystem.java constructs a test hierachical graph using the pt.kernel classes.
 
- Copyright (c) 1997 The Regents of the University of California.
+ Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,7 +39,7 @@ The main function also returns the results of some key functions of
 ComponentRelation and ComponentPort.
 See Ptolemy 2 design document, Figure 11 
 @author Jie Liu
-@version @(#)ExampleSystem.java	1.2    01/27/98
+@version $Id$
 */
 public class ExampleSystem extends ExampleApplet 
 {
