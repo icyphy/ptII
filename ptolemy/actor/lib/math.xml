@@ -41,15 +41,18 @@
 	              class="ptolemy.kernel.util.StringAttribute"/>
             <property name="log" value="log"
 	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="remainder" value="remainder"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="sign" value="sign"
+	              class="ptolemy.kernel.util.StringAttribute"/>
             <property name="square" value="square"
 	              class="ptolemy.kernel.util.StringAttribute"/>
             <property name="sqrt" value="sqrt"
 	              class="ptolemy.kernel.util.StringAttribute"/>
-            <property name="remainder" value="remainder"
-	              class="ptolemy.kernel.util.StringAttribute"/>
         </property>
      </property>
   </entity>
+
 
   <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
