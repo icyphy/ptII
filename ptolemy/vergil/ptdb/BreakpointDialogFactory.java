@@ -52,7 +52,7 @@ A factory that creates a dialog box to configure breakpoints for the
 actor selected.
 
 @see ptolemy.vergil.kernel.PortDialogFactory
-   
+
 @author Elaine Cheong
 @version $Id$
 */
@@ -66,7 +66,7 @@ public class BreakpointDialogFactory implements MenuItemFactory {
         super();
         _graphController = graphController;
     }
-        
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -109,7 +109,7 @@ public class BreakpointDialogFactory implements MenuItemFactory {
                 }
             }
         };
-        
+
 	return menu.add(action, name);
     }
 

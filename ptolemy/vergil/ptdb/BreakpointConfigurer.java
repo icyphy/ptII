@@ -73,7 +73,7 @@ public class BreakpointConfigurer extends Query implements QueryListener {
     public BreakpointConfigurer(Entity object, BasicGraphController graphController) {
         super();
 	this.addQueryListener(this);
-        
+
 	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	setTextWidth(15);
 
@@ -89,7 +89,7 @@ public class BreakpointConfigurer extends Query implements QueryListener {
         if ((NamedObj)object.getAttribute("BEFORE_PREFIRE") != null) {
             selectedValues.add("before");
         }
-        if ((NamedObj)object.getAttribute("AFTER_PREFIRE") != null) 
+        if ((NamedObj)object.getAttribute("AFTER_PREFIRE") != null)
             selectedValues.add("after");
         addSelectButtons("prefire", "prefire", _optionsArray, selectedValues);
 
@@ -98,7 +98,7 @@ public class BreakpointConfigurer extends Query implements QueryListener {
         if ((NamedObj)object.getAttribute("BEFORE_FIRE") != null) {
             selectedValues.add("before");
         }
-        if ((NamedObj)object.getAttribute("AFTER_FIRE") != null) 
+        if ((NamedObj)object.getAttribute("AFTER_FIRE") != null)
             selectedValues.add("after");
         addSelectButtons("fire", "fire", _optionsArray, selectedValues);
 
@@ -107,7 +107,7 @@ public class BreakpointConfigurer extends Query implements QueryListener {
         if ((NamedObj)object.getAttribute("BEFORE_POSTFIRE") != null) {
             selectedValues.add("before");
         }
-        if ((NamedObj)object.getAttribute("AFTER_POSTFIRE") != null) 
+        if ((NamedObj)object.getAttribute("AFTER_POSTFIRE") != null)
             selectedValues.add("after");
         addSelectButtons("postfire", "postfire", _optionsArray, selectedValues);
 
@@ -116,7 +116,7 @@ public class BreakpointConfigurer extends Query implements QueryListener {
         if ((NamedObj)object.getAttribute("BEFORE_ITERATE") != null) {
             selectedValues.add("before");
         }
-        if ((NamedObj)object.getAttribute("AFTER_ITERATE") != null) 
+        if ((NamedObj)object.getAttribute("AFTER_ITERATE") != null)
             selectedValues.add("after");
         addSelectButtons("iterate", "iterate", _optionsArray, selectedValues);
     }
@@ -138,14 +138,14 @@ public class BreakpointConfigurer extends Query implements QueryListener {
             while (items.hasNext()) {
                 String item = (String)items.next();
                 String value = stringValue(item);
-                
+
                 // First, parse the value, which may be a comma-separated list.
                 Set selectedValues = new HashSet();
                 StringTokenizer tokenizer = new StringTokenizer(value, ",");
                 while (tokenizer.hasMoreTokens()) {
                     selectedValues.add(tokenizer.nextToken().trim());
                 }
-                
+
                 // selectedValues now contains either nothing, or
                 // "before" and/or "after".
                 if (selectedValues.contains("before")) {
@@ -175,7 +175,7 @@ public class BreakpointConfigurer extends Query implements QueryListener {
                     }
                 }
             }
-            
+
             // Check if there is already a DebugListener for this _object.
             DebugListener listener = (DebugListener) _object.getAttribute("DebugController");
             if (listener == null) {
@@ -183,7 +183,7 @@ public class BreakpointConfigurer extends Query implements QueryListener {
                 BasicGraphFrame frame = _graphController.getFrame();
                 DebugController debugController =
                     new DebugController(_object, _graphController);
-                
+
                 Director director = ((Actor)frame.getModel()).getDirector();
                 if (director != null) {
                     director.addDebugListener(debugController);
@@ -200,7 +200,7 @@ public class BreakpointConfigurer extends Query implements QueryListener {
                     }
                 }
             }
-                
+
         } catch (NameDuplicationException e1) {
             // do nothing
             // FIXME: should we do something here?
@@ -209,7 +209,7 @@ public class BreakpointConfigurer extends Query implements QueryListener {
             // FIXME: should we do something here?
         }
     }
-        
+
     /** Called to notify that one of the entries has changed.
      *  This simply sets a flag that enables application of the change
      *  when the apply() method is called.

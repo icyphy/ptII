@@ -90,7 +90,7 @@ public class DebugController extends TransientSingletonConfigurableAttribute
 
             if (event.getActor() == _object) {
                 // Highlight the actor that we are breaking on.
-                NamedObj objToHighlight = _object;                
+                NamedObj objToHighlight = _object;
 
                 // If the object is not contained by the associated
                 // composite, then find an object above it in the hierarchy
@@ -99,7 +99,7 @@ public class DebugController extends TransientSingletonConfigurableAttribute
                 AbstractBasicGraphModel graphModel =
                     (AbstractBasicGraphModel)_graphController.getGraphModel();
                 NamedObj toplevel = graphModel.getPtolemyModel();
-                
+
                 // FIXME: why is this null check needed?
                 while (objToHighlight != null
                         && objToHighlight.getContainer() != toplevel) {
@@ -119,7 +119,7 @@ public class DebugController extends TransientSingletonConfigurableAttribute
                                 objToHighlight.getAttribute("BEFORE_PREFIRE") != null) {
                             render(figure);
                             System.out.println("DebugController: prefire " + event.getActor().toString());
-                            
+
                         } else if (event.getType() == FiringEvent.BEFORE_FIRE &&
                                    objToHighlight.getAttribute("BEFORE_FIRE") != null) {
                             render(figure);
@@ -136,7 +136,7 @@ public class DebugController extends TransientSingletonConfigurableAttribute
             }
         }
     }
-            
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
