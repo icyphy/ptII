@@ -32,6 +32,8 @@ package ptolemy.gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.*;
 import java.lang.IllegalArgumentException;
 import javax.swing.*;
@@ -157,6 +159,22 @@ public class Query extends JPanel {
 	displayField.setEditable(false);
         displayField.setBackground(_background);
         _addPair(name, lbl, displayField, displayField);
+    }
+
+    /** Create a FileChooser
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param currentDirectory The directory to open up the file chooser in.
+     */
+    public void addFileChooser(String name, String label,
+			       String currentDirectory) {
+        JLabel lbl = new JLabel(label + ": ");
+        lbl.setBackground(_background);
+	JFileChooser fileChooser =
+	    new JFileChooser(new File(currentDirectory));
+	fileChooser.setMultiSelectionEnabled(true);
+        _addPair(name, lbl, fileChooser, fileChooser);
+        fileChooser.addActionListener(new QueryActionListener(name));
     }
 
     /** Create a single-line entry box with the specified name, label, and
@@ -780,6 +798,44 @@ public class Query extends JPanel {
         // is added.
         if (result instanceof JTextField) {
             return ((JTextField)result).getText();
+        } else if (result instanceof JFileChooser) {
+	    if (((JFileChooser)result).getSelectedFile() == null) {
+		return "";
+	    } else {
+		File files[] = ((JFileChooser)result).getSelectedFiles();
+		// FIXME: How do we handle multiple files being returned
+		// 1. We could return "file:/c:/foo/bar" if only one file
+		// was selected and {"file:/c/foo/bar", "file:c:/foo/bar"}
+		// if two files were selected
+		// 2. We could return "{file:/c:/foo/bar}" if only one file
+		// was selected and {"file:/c/foo/bar", "file:c:/foo/bar"}
+		// if two files were selected
+		// 3. We could have various FileChoosers, one for single
+		// files, one for multiple files, one for urls, one for
+		// files.  This would point to some sort of configuration
+		// mechanism being used in the style.
+		StringBuffer urls = new StringBuffer("{");
+		// If there was more than one file chosen, then return
+		// an array of strings of the format
+		// {"file:/c/foo/bar", "file:c:/foo/bar"}
+		for( int i = 0; i < files.length; i++ ) {
+		    if (i > 0) {
+			// If we throw an exception below, then 
+			// urls will have a trailing comma
+			urls.append(", ");
+		    }
+		    try {
+			urls.append("\"" + files[i].toURL().toString() + "\"");
+		    } catch (MalformedURLException malformed) {
+			// FIXME: this can't be right
+			throw new IllegalArgumentException(malformed.toString()); 
+		    }
+		}
+		if (files.length > 1) {
+		    urls.append("}");
+		}
+		return urls.toString();
+	    }
         } else if (result instanceof JTextArea) {
             return ((JTextArea)result).getText();
         } else if (result instanceof JRadioButton) {
@@ -1001,3 +1057,4 @@ public class Query extends JPanel {
         private String _name;
     }
 }
+ 
