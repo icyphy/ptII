@@ -107,7 +107,6 @@ public class ShowRawDocumentApplet extends BasicJApplet {
             String line = _bufferedReader.readLine();
             while (line != null) {
                 _jTextArea.append(line + newline);
-                showStatus(line);
                 line = _bufferedReader.readLine();
             }
             showStatus("Done");
