@@ -537,7 +537,7 @@ public final class Workspace implements Nameable, Serializable {
 	    try {
                 if (DEBUG1) {
                     System.out.println(Thread.currentThread().getName() + 
-                            ": cannot get write access.");
+                            ": cannot get write access yet, calling wait().");
                     Enumeration reads = _readers.keys();
                     while (reads.hasMoreElements()) {
                         Thread thread = (Thread)reads.nextElement();

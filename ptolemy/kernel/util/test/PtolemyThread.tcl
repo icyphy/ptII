@@ -59,10 +59,12 @@ test PtolemyThread-1.1 {Test the constructor} {
     set null [java::null]
     set pthread2 [java::new ptolemy.kernel.util.PtolemyThread $null $null nameString]
     
-    set readDepth1 [java::field $pthread1 readDepth]
-    set readDepth2 [java::field $pthread2 readDepth]
+    set readDepth1 [$pthread1 getReadDepth]
+    set readDepth2 [$pthread2 getReadDepth]
 
     list $readDepth1 $readDepth2
     
 } {0 0}
+
+
 
