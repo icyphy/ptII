@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -40,16 +40,17 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 //////////////////////////////////////////////////////////////////////////
 //// ASTBuilder
 /**
- *  This class provides functions to directly build Eclipse ASTs (Abstract
- *  Syntax Trees) from Java source files.
- *  <p>
- *  Currently only Java 1.4 source files are accepted.
- *
- *  @author Thomas Feng
- *  @version $Id$
- *  @since Ptolemy II 4.1
- *  @Pt.ProposedRating Red (tfeng)
- */
+   Static methods that build Eclipse Abstract Syntax Trees (ASTs)
+   from Java source files.
+   <p>
+   Currently only Java 1.4 source files are accepted.
+   
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 4.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class ASTBuilder {
 
     /** Parse a Java source file given by its name, and return the
@@ -57,10 +58,10 @@ public class ASTBuilder {
      *
      *  @param fileName The Java source file name.
      *  @return The root of the AST.
-     *  @exception FileNotFoundException Thrown when the source file
-     *   cannot be found.
-     *  @exception IOException Thrown when IO exception occurs.
-     *  @exception ASTMalformedException Thrown when the Java source file
+     *  @exception FileNotFoundException If the source file cannot be
+     *   found.
+     *  @exception IOException If IO exception occurs.
+     *  @exception ASTMalformedException If the Java source file
      *   does not conform to the supported Java grammar.
      *  @see #parse(char[])
      */
@@ -84,7 +85,7 @@ public class ASTBuilder {
      *  @param source The <tt>char</tt> array that contains the
      *   source code in a single Java source file.
      *  @return The root of the AST.
-     *  @exception ASTMalformedException Thrown when the Java source file
+     *  @exception ASTMalformedException If the Java source file
      *   does not conform to the supported Java grammar.
      */
     public static CompilationUnit parse(char[] source)
