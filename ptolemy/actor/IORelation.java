@@ -494,13 +494,17 @@ public class IORelation extends ComponentRelation {
             return array1;
         }
         int width = getWidth();
-        Receiver[][] result = new Receiver[width][];
+        Receiver[][] result = new Receiver[width][0];
 
         for (int i = 0; i < width; i++) {
-            if(array1[i].length <= 0) {
-                result[i] = array2[i];
-            } else if(array2[i].length <= 0) {
-                result[i] = array1[i];
+            if(array1[i] == null) {
+		result[i] = array2[i];
+	    } else if(array1[i].length <= 0) {
+		result[i] = array2[i];
+            } else if(array2[i] == null) {
+		result[i] = array1[i];
+	    } else if(array2[i].length <= 0) {
+		result[i] = array1[i];
             } else {
 
                 int m1 = array1[i].length;
