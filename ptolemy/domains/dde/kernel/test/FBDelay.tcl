@@ -59,7 +59,7 @@ set globalNullTok [java::new ptolemy.domains.dde.kernel.NullToken]
 ######################################################################
 ####
 #
-test FBDelay-2.1 {Cycle null tokens} {
+test FBDelay-2.1 {Cycle null tokens with actor/lib/clock} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
@@ -68,21 +68,28 @@ test FBDelay-2.1 {Cycle null tokens} {
     $toplevel setManager $mgr
     $dir setCompletionTime 26.0
     
+    set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
+
+    set values [java::cast ptolemy.data.expr.Parameter [$clock getAttribute values]]
+    $values setExpression {[1, 1]}
+    set period [java::cast ptolemy.data.expr.Parameter [$clock getAttribute period]]
+    $period setToken [java::new ptolemy.data.DoubleToken 20.0]
+    set offsets [java::cast ptolemy.data.expr.Parameter [$clock getAttribute offsets]]
+    $offsets setExpression {[5.0, 15.0]}
+    set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
+    $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
+    
+    set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
+    $clockOut setMultiport true
+
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
-    set actorSend [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 3]
     set join [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join"]
     set fork [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork"]
     set fBack [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack"]
 
-    set tok1 [java::new ptolemy.data.Token]
-
     $fBack setDelay 4.0
-    $actorSend setToken $tok1 5.0 0 
-    $actorSend setToken $tok1 15.0 1
-    $actorSend setToken $tok1 25.0 2
 
     set rcvrIn [$actorRcvr getPort "input"]
-    set sendOut [$actorSend getPort "output"]
     set joinIn [$join getPort "input"]
     set joinOut [$join getPort "output"]
     set forkIn [$fork getPort "input"]
@@ -91,7 +98,7 @@ test FBDelay-2.1 {Cycle null tokens} {
     set fBackIn [$fBack getPort "input"]
     set fBackOut [$fBack getPort "output"]
 
-    $toplevel connect $sendOut $joinIn
+    $toplevel connect $clockOut $joinIn
     $toplevel connect $joinOut $forkIn
     $toplevel connect $forkOut1 $rcvrIn 
     $toplevel connect $fBackOut $joinIn
@@ -111,7 +118,7 @@ test FBDelay-2.1 {Cycle null tokens} {
 ######################################################################
 ####
 #
-test FBDelay-3.1 {Cycle real tokens} {
+test FBDelay-3.1 {Cycle real tokens with actor/lib/clock} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
@@ -120,8 +127,21 @@ test FBDelay-3.1 {Cycle real tokens} {
     $toplevel setManager $mgr
     $dir setCompletionTime 20.0
     
+    set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
+
+    set values [java::cast ptolemy.data.expr.Parameter [$clock getAttribute values]]
+    $values setExpression {[1, 1]}
+    set period [java::cast ptolemy.data.expr.Parameter [$clock getAttribute period]]
+    $period setToken [java::new ptolemy.data.DoubleToken 20.0]
+    set offsets [java::cast ptolemy.data.expr.Parameter [$clock getAttribute offsets]]
+    $offsets setExpression {[5.0, 15.0]}
+    set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
+    $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
+    
+    set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
+    $clockOut setMultiport true
+
     set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 3]
-    set actorSend [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 3]
     set join [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join"]
     set fork [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork"]
     set fBack [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack"]
@@ -129,13 +149,8 @@ test FBDelay-3.1 {Cycle real tokens} {
 
     $fBack setDelay 4.0
 
-    set tok1 [java::new ptolemy.data.Token]
-    $actorSend setToken $tok1 5.0 0 
-    $actorSend setToken $tok1 15.0 1
-    $actorSend setToken $tok1 25.0 2
-
     set rcvrIn [$actorRcvr getPort "input"]
-    set sendOut [$actorSend getPort "output"]
+    set clockOut [$clock getPort "output"]
     set joinIn [$join getPort "input"]
     set joinOut [$join getPort "output"]
     set forkIn [$fork getPort "input"]
@@ -145,7 +160,7 @@ test FBDelay-3.1 {Cycle real tokens} {
     set fBackOut [$fBack getPort "output"]
     set sinkIn [$sink getPort "input"]
 
-    $toplevel connect $sendOut $joinIn
+    $toplevel connect $clockOut $joinIn
     $toplevel connect $joinOut $forkIn
     $toplevel connect $forkOut1 $rcvrIn 
     $toplevel connect $forkOut2 $sinkIn 
@@ -165,7 +180,7 @@ test FBDelay-3.1 {Cycle real tokens} {
 ######################################################################
 ####
 #
-test FBDelay-4.1 {Dual cycle with 0 delay in lower cycle} {
+test FBDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/clock} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
@@ -174,7 +189,19 @@ test FBDelay-4.1 {Dual cycle with 0 delay in lower cycle} {
     $toplevel setManager $mgr
     $dir setCompletionTime 26.0
     
-    set sender [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "sender" 3]
+    set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
+
+    set values [java::cast ptolemy.data.expr.Parameter [$clock getAttribute values]]
+    $values setExpression {[1, 1]}
+    set period [java::cast ptolemy.data.expr.Parameter [$clock getAttribute period]]
+    $period setToken [java::new ptolemy.data.DoubleToken 20.0]
+    set offsets [java::cast ptolemy.data.expr.Parameter [$clock getAttribute offsets]]
+    $offsets setExpression {[5.0, 15.0]}
+    set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
+    $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
+    
+    set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
+    $clockOut setMultiport true
 
     set rcvr1 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr1" 3]
     set join1 [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join1"]
@@ -185,15 +212,10 @@ test FBDelay-4.1 {Dual cycle with 0 delay in lower cycle} {
     set fork2 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork2"]
     set fBack2 [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack2"]
 
-    set tok1 [java::new ptolemy.data.Token]
+    #set tok1 [java::new ptolemy.data.Token]
 
     $fBack1 setDelay 4.0
     $fBack2 setDelay 0.0
-    $sender setToken $tok1 5.0 0 
-    $sender setToken $tok1 15.0 1
-    $sender setToken $tok1 25.0 2
-
-    set sendOut [$sender getPort "output"]
 
     set rcvr1In [$rcvr1 getPort "input"]
     set join1In [$join1 getPort "input"]
@@ -213,8 +235,8 @@ test FBDelay-4.1 {Dual cycle with 0 delay in lower cycle} {
     set fBack2In [$fBack2 getPort "input"]
     set fBack2Out [$fBack2 getPort "output"]
 
-    $toplevel connect $sendOut $join1In
-    $toplevel connect $sendOut $join2In
+    $toplevel connect $clockOut $join1In
+    $toplevel connect $clockOut $join2In
 
     $toplevel connect $join1Out $fork1In
     $toplevel connect $fork1Out1 $rcvr1In 
@@ -243,17 +265,26 @@ test FBDelay-4.1 {Dual cycle with 0 delay in lower cycle} {
 ######################################################################
 ####
 #
-test FBDelay-4.2 {Dual cycle with very small delay in lower cycle} {
+test FBDelay-4.2 {Dual cycle with very small delay in lower cycle with actor/lib/clock} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
     set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
     $toplevel setDirector $dir
     $toplevel setManager $mgr
-    $dir setCompletionTime 26.0
+    $dir setCompletionTime 27.0
     
-    set sender [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "sender" 3]
+    set clock [java::new ptolemy.actor.lib.Clock $toplevel "clock"]
 
+    set values [java::cast ptolemy.data.expr.Parameter [$clock getAttribute values]]
+    $values setExpression {[1, 1]}
+    set period [java::cast ptolemy.data.expr.Parameter [$clock getAttribute period]]
+    $period setToken [java::new ptolemy.data.DoubleToken 20.0]
+    set offsets [java::cast ptolemy.data.expr.Parameter [$clock getAttribute offsets]]
+    $offsets setExpression {[5.0, 15.0]}
+    set stopTime [java::cast ptolemy.data.expr.Parameter [$clock getAttribute stopTime]]
+    $stopTime setToken [java::new ptolemy.data.DoubleToken 27.0]
+    
     set rcvr1 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr1" 3]
     set join1 [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join1"]
     set fork1 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork1"]
@@ -263,15 +294,13 @@ test FBDelay-4.2 {Dual cycle with very small delay in lower cycle} {
     set fork2 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork2"]
     set fBack2 [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack2"]
 
-    set tok1 [java::new ptolemy.data.Token]
+    #set tok1 [java::new ptolemy.data.Token]
 
     $fBack1 setDelay 4.0
-    $fBack2 setDelay 0.1
-    $sender setToken $tok1 5.0 0 
-    $sender setToken $tok1 15.0 1
-    $sender setToken $tok1 25.0 2
+    $fBack2 setDelay 4.0
 
-    set sendOut [$sender getPort "output"]
+    set clockOut [java::cast ptolemy.actor.TypedIOPort [$clock getPort "output"]]
+    $clockOut setMultiport true
 
     set rcvr1In [$rcvr1 getPort "input"]
     set join1In [$join1 getPort "input"]
@@ -291,11 +320,12 @@ test FBDelay-4.2 {Dual cycle with very small delay in lower cycle} {
     set fBack2In [$fBack2 getPort "input"]
     set fBack2Out [$fBack2 getPort "output"]
 
-    $toplevel connect $sendOut $join1In
-    $toplevel connect $sendOut $join2In
+    $toplevel connect $clockOut $join1In
+    $toplevel connect $clockOut $join2In
 
     $toplevel connect $join1Out $fork1In
     $toplevel connect $fork1Out1 $rcvr1In 
+
     $toplevel connect $fBack1Out $join1In
     $toplevel connect $fBack1In $fork1Out2
 
@@ -314,15 +344,9 @@ test FBDelay-4.2 {Dual cycle with very small delay in lower cycle} {
     set time2_1 [$rcvr2 getAfterTime 1]
     set time2_2 [$rcvr2 getAfterTime 2]
 
-    list $time1_0 $time1_1 $time1_2 $time2_0 $time2_1 $time2_2
+    list $time1_0 $time1_1 $time1_2 $time2_0 $time2_1 $time2_2 
 
 } {5.0 15.0 25.0 5.0 15.0 25.0} 
-
-
-
-
-
-
 
 
 
