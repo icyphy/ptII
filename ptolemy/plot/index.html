@@ -1,0 +1,68 @@
+<!-- $Id$ -->
+<html>
+<head>
+<Title>Plot Classes</Title>
+</head>
+<body bgcolor="#faf0e6">
+<h1><a name="plot classes">Plot Classes</a></h1>
+<p>
+<h3>Authors</h3>
+<i>Edward A. Lee</i>
+<p>
+<i>Christopher Hylands</i>
+<h3>Contributors</h3>
+<i>William Wu</i>
+<h2>Description</h2>
+<p>
+This is a set of two dimensional signal plotters written in Java with
+the following properties:
+<ul>
+<li> Applet or application.
+<li> Binary or ASCII data.
+<li> Auto-ranging.
+<li> Automatic or manual labeling of axes.
+<li> Automatic or manual tick marks.
+<li> Live, animated plots.
+<li> Infinite zooming.
+<li> Various plot styles: connected lines, scatter plot, bars, etc.
+<li> Various point styles: none, dots, points, and unique marks.
+<li> Multiple data sets and a legend.
+<li> Color or black and white plotting.
+<li> 
+</ul>
+The applet implementation
+can read data to plot from a URL or construct the data in custom
+Java code.  The application can read data from a file and use
+command-line arguments to format the plot.  The command-line arguments
+are compatible with the popular Unix signal plotter xgraph.
+<p>
+There is a set of <a href=demo>demonstrations</a> of these classes.
+The main class implementing the plotter is
+<a href="Plot.java">Plot</a>.
+It is derived from
+<a href="PlotBox.java">PlotBox</a>,
+which provides only the axes and docorations of the plot.
+This is implemented in a base class so that it can be reused for different
+kinds of plots.
+Live (animated) data plots are supported by the
+<a href="PlotLive.java">PlotLive</a> class.
+This class is abstract; a derived class must be created to generate
+the data to plot (or collect it from some other application).
+The application is implemented by the
+<a href=Pxgraph.java>Pxgraph</a> class.
+<p>
+This code owes a heavy debt to David Harrison, author of xgraph.
+ <P>
+<MENU>
+<LI> <A HREF="doc/codeDoc/tree.html">The Java documentation for these classes</A>
+<LI> <A HREF="plot.zip">Zip file containing the entire package</A>
+</MENU>
+
+<HR>
+Copyright &#169 1997, The Regents of the University of California.
+All rights reserved.
+<br>
+Last updated: $Date$,
+comments to: <author>eal@eecs.berkeley.edu</author>
+</body>
+</html>
