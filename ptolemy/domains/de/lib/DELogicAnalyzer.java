@@ -53,7 +53,7 @@ public class DELogicAnalyzer extends DEActor {
      */
     public DELogicAnalyzer(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
-        this(container, name, (new LogicAnalyzerFrame(name)).logicAnalyzer);
+        this(container, name, null);
     }
 
     /** Construct a plot actor that uses the specified plot object.
@@ -73,8 +73,6 @@ public class DELogicAnalyzer extends DEActor {
         input.setMultiport(true);
 
         _logicAnalyzer = plot;
-        _logicAnalyzer.setButtons(true);
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -85,6 +83,12 @@ public class DELogicAnalyzer extends DEActor {
      */
     public void initialize() throws IllegalActionException {
 
+        if (_logicAnalyzer == null) {
+            _logicAnalyzer = new LogicAnalyzer();
+            new PlotFrame(getName(), _logicAnalyzer);
+        }
+
+        _logicAnalyzer.setButtons(true);
         _logicAnalyzer.clear(false);
 
         // FIXME: Should create and maintain a legend

@@ -100,7 +100,8 @@ public class DEPlot extends DEActor {
     public void initialize() throws IllegalActionException {
 
         if (_plot == null) {
-            _plot = (new PlotFrame(getName())).plot;
+            _plot = new Plot();
+            new PlotFrame(getName(), _plot);
         }
 
         _plot.clear(true);

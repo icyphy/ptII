@@ -72,7 +72,7 @@ public class DEHistogram extends DEActor {
             String name, double binWidth)
             throws NameDuplicationException, IllegalActionException  {
 
-        this(container, name, binWidth, (new PlotFrame(name)).plot);
+        this(container, name, binWidth, null);
     }
 
     /** Construct a plot actor that uses the specified plot object.
@@ -92,7 +92,6 @@ public class DEHistogram extends DEActor {
         input.setMultiport(true);
 
         _plot = plot;
-        _plot.setBars((1-_percentGap)*binWidth, 0.25*_percentGap*binWidth);
 
         // FIXME: This is not the right way to handle this...
         _yMin = (double)-1;
@@ -114,6 +113,14 @@ public class DEHistogram extends DEActor {
      */
     public void initialize() throws IllegalActionException {
 
+        if (_plot == null) {
+            _plot = new Plot();
+            new PlotFrame(getName(), _plot);
+        }
+
+        double binWidth = ((DoubleToken)_binWidth.getToken()).doubleValue();
+
+        _plot.setBars((1-_percentGap)*binWidth, 0.25*_percentGap*binWidth);
 
         _plot.clear(false);
 
