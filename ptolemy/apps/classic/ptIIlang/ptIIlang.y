@@ -1150,7 +1150,7 @@ void genPort ()
 		/* NOTREACHED */
 		break;
 	}
-	sprintf (str2, "        %s = new ClassicPortPort(this, \"%s\", %s);\n", portName, portName, str1);
+	sprintf (str2, "        %s = new ClassicPort(this, \"%s\", %s);\n", portName, portName, str1);
 	strcat (javaConsStuff, str2);
 
 	if (portMulti) {
