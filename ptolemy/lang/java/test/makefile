@@ -117,7 +117,7 @@ generate_codegen:
 	$(JAVA) -DPTII=$(ROOT) \
 		ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 		-class  ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem \
-		-iterations 50 \
+		-iterations 500 \
 		-outdir $(ROOT) -outpkg cg.orthocom
 compile_codegen:
 	(cd $(ROOT)/cg/orthocom; $(JAVAC) -classpath ../.. CG_Main.java)
@@ -125,6 +125,8 @@ run_codegen:
 	(cd $(ROOT)/cg/orthocom; \
 		$(JAVA) -classpath ../.. cg.orthocom.CG_Main)
 
+run_non_codegen:
+	$(JAVA) -classpath $(ROOT) ptolemy.actor.gui.CompositeActorApplication -class ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem -iterations 500
 depend:
 	@echo "no dependencies in this directory"
 
