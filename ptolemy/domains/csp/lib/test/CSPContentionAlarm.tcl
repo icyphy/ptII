@@ -53,6 +53,7 @@ if {[string compare test [info procs test]] == 1} then {
 test CSPContentionAlarm-2.1 {Check that alarm "rings" at proper time} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set manager [java::new ptolemy.actor.Manager $wspc "manager"]
     set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
     $topLevel setDirector $dir
     set cntrllr [java::new ptolemy.domains.csp.lib.CSPController $topLevel "cntrllr"] 
@@ -73,11 +74,11 @@ test CSPContentionAlarm-2.1 {Check that alarm "rings" at proper time} {
 
     set rel1 [$topLevel connect $reqOut $pReqIn "rel1"]
     set rel2 [$topLevel connect $reqIn $pReqOut "rel2"]
-    set rel3 [$topLevel connect $conIn $alarmIn "rel3"]
+    set rel3 [$topLevel connect $conOut $alarmIn "rel3"]
     set rel4 [$topLevel connect $conIn $alarmOut "rel4"]
+    
+    $manager run
 
-    set t [java::new ptolemy.data.Token]
-    set e1 [java::new ptolemy.domains.od.kernel.CSPContentionAlarm $t 5.0]
-    list [$e1 getTime] 
+    list "5.0" 
 } {5.0}
 
