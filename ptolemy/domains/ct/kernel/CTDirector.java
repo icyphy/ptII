@@ -762,7 +762,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
         }
     }
 
-    /** (non-Javadoc)
+    /** Return an array of suggested directors to use with
+     *  ModalModel. Each director is specified by its full class
+     *  name.  The first director in the array will be the default
+     *  director used by a modal model.
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
