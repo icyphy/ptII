@@ -92,7 +92,7 @@
 # The variables below are for the SunTest JavaScope code coverage tool
 # See http://www.suntest.com/JavaScope
 # JSINSTR	The 'jsinstr' command, which instruments Java code.
-# JSINTRFLAGS	Flags to pass to jsintr.
+# JSINSTRFLAGS	Flags to pass to jsinstr.
 # JSRESTORE	The 'jsrestore' command which uninstruments Java code.
 
 ##############
@@ -378,12 +378,12 @@ updatewebsite: $(TYDISTS)
 
 # Instrument Java code for use with JavaScope.
 jsinstr:
-	$(JSINSTR) $(JSINTRFLAGS) $(JSRCS)
+	$(JSINSTR) $(JSINSTRFLAGS) $(JSRCS)
 # If the jsoriginal directory does not exist, then instrument the Java files.
 jsoriginal:
 	@if [ ! -d jsoriginal -a "$(JSRCS)" != "" ]; then \
-		echo "$(JSINSTR) $(JSINTRFLAGS) $(JSRCS)"; \
-		$(JSINSTR) $(JSINTRFLAGS) $(JSRCS); \
+		echo "$(JSINSTR) $(JSINSTRFLAGS) $(JSRCS)"; \
+		$(JSINSTR) $(JSINSTRFLAGS) $(JSRCS); \
 	fi
 
 # Back out the instrumentation.
@@ -408,7 +408,8 @@ jstest_jgraphical:
 	$(MAKE) AUXCLASSPATH="$(CLASSPATHSEPARATOR)$(JSCLASSPATH)" \
 		test_jgraphical
 	@echo "To view code coverage results, run javascope or jsreport"
-	@echo "To get a summary, run jsreport or jsreport -HTML" 
+	@echo "To get a summary, run jssummary or jssummary -HTML" 
+	@echo "Note that output sometimes ends up in ~/jsreport"
 
 # If necessary, instrument the classes, then rebuild, then run the tests
 jsall: jsoriginal
