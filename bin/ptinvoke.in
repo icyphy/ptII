@@ -631,6 +631,11 @@ and run:
             $0 ptolemy.actor.gui.CompositeActorApplication -class ptolemy.domains.sdf.demo.Butterfly.Butterfly"
 	invokeHelp="$0: Usage: $0 className [commonOptions] [ptinvokeSpecificOptions][classNameOptions]"
 	passHelpArgument=no
+	# FIXME: need to process command line args here?
+	if [ "$1" = "-q" ]; then
+	    quiet=1
+	    shift
+	fi
 	javastartupclass=$1
 	javasourcedir=
 	jarfile="$ALL_JAR"
