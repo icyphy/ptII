@@ -45,7 +45,7 @@ reached. The following table summarizes the capabilities.
 ------------------------------------------------------------------------<br>
 haltAtEnd | periodic | period   | operation                            |<br>
 ------------------------------------------------------------------------<br>
-NO        | YES      | 0        | The period is the lengh of the array |<br>
+NO        | YES      | 0        | The period is the length of the array|<br>
 NO        | YES      | N>0      | the period is N                      |<br>
 NO        | NO       | anything | Output the array once then zeros     |<br>
 YES       | anything | anything | Stop after outputting the array once |<br>
