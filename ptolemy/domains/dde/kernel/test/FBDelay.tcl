@@ -162,6 +162,162 @@ test FBDelay-3.1 {Cycle real tokens} {
 
 } {5.0 9.0 13.0}
 
+######################################################################
+####
+#
+test FBDelay-4.1 {Dual cycle with 0 delay in lower cycle} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
+    set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
+    $toplevel setDirector $dir
+    $toplevel setManager $mgr
+    $dir setCompletionTime 26.0
+    
+    set sender [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "sender" 3]
+
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr1" 3]
+    set join1 [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join1"]
+    set fork1 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork1"]
+    set fBack1 [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack1"]
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr2" 3]
+    set join2 [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join2"]
+    set fork2 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork2"]
+    set fBack2 [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack2"]
+
+    set tok1 [java::new ptolemy.data.Token]
+
+    $fBack1 setDelay 4.0
+    $fBack2 setDelay 0.0
+    $sender setToken $tok1 5.0 0 
+    $sender setToken $tok1 15.0 1
+    $sender setToken $tok1 25.0 2
+
+    set sendOut [$sender getPort "output"]
+
+    set rcvr1In [$rcvr1 getPort "input"]
+    set join1In [$join1 getPort "input"]
+    set join1Out [$join1 getPort "output"]
+    set fork1In [$fork1 getPort "input"]
+    set fork1Out1 [$fork1 getPort "output1"]
+    set fork1Out2 [$fork1 getPort "output2"]
+    set fBack1In [$fBack1 getPort "input"]
+    set fBack1Out [$fBack1 getPort "output"]
+
+    set rcvr2In [$rcvr2 getPort "input"]
+    set join2In [$join2 getPort "input"]
+    set join2Out [$join2 getPort "output"]
+    set fork2In [$fork2 getPort "input"]
+    set fork2Out1 [$fork2 getPort "output1"]
+    set fork2Out2 [$fork2 getPort "output2"]
+    set fBack2In [$fBack2 getPort "input"]
+    set fBack2Out [$fBack2 getPort "output"]
+
+    $toplevel connect $sendOut $join1In
+    $toplevel connect $sendOut $join2In
+
+    $toplevel connect $join1Out $fork1In
+    $toplevel connect $fork1Out1 $rcvr1In 
+    $toplevel connect $fBack1Out $join1In
+    $toplevel connect $fBack1In $fork1Out2
+
+    $toplevel connect $join2Out $fork2In
+    $toplevel connect $fork2Out1 $rcvr2In 
+    $toplevel connect $fBack2Out $join2In
+    $toplevel connect $fBack2In $fork2Out2
+
+    $mgr run
+
+    set time1_0 [$rcvr1 getAfterTime 0]
+    set time1_1 [$rcvr1 getAfterTime 1]
+    set time1_2 [$rcvr1 getAfterTime 2]
+
+    set time2_0 [$rcvr2 getAfterTime 0]
+    set time2_1 [$rcvr2 getAfterTime 1]
+    set time2_2 [$rcvr2 getAfterTime 2]
+
+    list $time1_0 $time1_1 $time1_2 $time2_0 $time2_1 $time2_2
+
+} {5.0 15.0 25.0 5.0 -1.0 -1.0} 
+
+######################################################################
+####
+#
+test FBDelay-4.2 {Dual cycle with very small delay in lower cycle} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
+    set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
+    $toplevel setDirector $dir
+    $toplevel setManager $mgr
+    $dir setCompletionTime 26.0
+    
+    set sender [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "sender" 3]
+
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr1" 3]
+    set join1 [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join1"]
+    set fork1 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork1"]
+    set fBack1 [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack1"]
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "rcvr2" 3]
+    set join2 [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "join2"]
+    set fork2 [java::new ptolemy.domains.dde.kernel.test.TwoPut $toplevel "fork2"]
+    set fBack2 [java::new ptolemy.domains.dde.kernel.FBDelay $toplevel "fBack2"]
+
+    set tok1 [java::new ptolemy.data.Token]
+
+    $fBack1 setDelay 4.0
+    $fBack2 setDelay 0.1
+    $sender setToken $tok1 5.0 0 
+    $sender setToken $tok1 15.0 1
+    $sender setToken $tok1 25.0 2
+
+    set sendOut [$sender getPort "output"]
+
+    set rcvr1In [$rcvr1 getPort "input"]
+    set join1In [$join1 getPort "input"]
+    set join1Out [$join1 getPort "output"]
+    set fork1In [$fork1 getPort "input"]
+    set fork1Out1 [$fork1 getPort "output1"]
+    set fork1Out2 [$fork1 getPort "output2"]
+    set fBack1In [$fBack1 getPort "input"]
+    set fBack1Out [$fBack1 getPort "output"]
+
+    set rcvr2In [$rcvr2 getPort "input"]
+    set join2In [$join2 getPort "input"]
+    set join2Out [$join2 getPort "output"]
+    set fork2In [$fork2 getPort "input"]
+    set fork2Out1 [$fork2 getPort "output1"]
+    set fork2Out2 [$fork2 getPort "output2"]
+    set fBack2In [$fBack2 getPort "input"]
+    set fBack2Out [$fBack2 getPort "output"]
+
+    $toplevel connect $sendOut $join1In
+    $toplevel connect $sendOut $join2In
+
+    $toplevel connect $join1Out $fork1In
+    $toplevel connect $fork1Out1 $rcvr1In 
+    $toplevel connect $fBack1Out $join1In
+    $toplevel connect $fBack1In $fork1Out2
+
+    $toplevel connect $join2Out $fork2In
+    $toplevel connect $fork2Out1 $rcvr2In 
+    $toplevel connect $fBack2Out $join2In
+    $toplevel connect $fBack2In $fork2Out2
+
+    $mgr run
+
+    set time1_0 [$rcvr1 getAfterTime 0]
+    set time1_1 [$rcvr1 getAfterTime 1]
+    set time1_2 [$rcvr1 getAfterTime 2]
+
+    set time2_0 [$rcvr2 getAfterTime 0]
+    set time2_1 [$rcvr2 getAfterTime 1]
+    set time2_2 [$rcvr2 getAfterTime 2]
+
+    list $time1_0 $time1_1 $time1_2 $time2_0 $time2_1 $time2_2
+
+} {5.0 15.0 25.0 5.0 15.0 25.0} 
+
 
 
 
