@@ -89,7 +89,7 @@ demo:
 	@echo "   cd ../EPtolemyA; make demo"
 	@echo "in another window"
 	safePTII=`echo "$(PTII)" | sed 's@\\\@/@g'`; \
-	"$(ROOT)/bin/moml" "$$safePTII/ptolemy/moml/jxta/jxta.xml" \
+	"$(ROOT)/bin/moml" "$$safePTII/ptolemy/configs/jxta/jxta.xml" \
 		"$$safePTII/ptolemy/configs/vergilConfiguration.xml"
 
 # Get the rest of the rules
