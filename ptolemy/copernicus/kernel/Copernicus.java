@@ -392,6 +392,8 @@ public class Copernicus {
 	    Attribute attribute = (Attribute)attributes.next();
 	    if (attribute instanceof Variable) {
 		Variable variable = (Variable)attribute;
+                // If getToken() fails, make sure that you are calling
+                // setExpression with a string that has double quotes.
                 String value = variable.getToken().toString();
                 // Strip out any leading and trailing double quotes
                 if (value.startsWith("\"") && value.length() >  2) {
