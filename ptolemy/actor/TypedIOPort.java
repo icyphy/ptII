@@ -49,9 +49,6 @@ If the declared type is not null, the resolved type will be the same as
 the declared type; otherwise, the type resolution algorithm will assign
 a resolved type according to the type constraints.<p>
 
-The TypedIOPort implements the InequalityTerm interface for the purpose
-of type resolution.<p>
-
 A TypedIOPort can only link to instances of TypedIORelation. Derived
 classes may further constrain links to a subclass of TypedIORelation.
 To do this, they should override the protected methods _link() and
@@ -65,7 +62,7 @@ setContainer().
 @version $Id$
 */
 
-public class TypedIOPort extends IOPort implements InequalityTerm {
+public class TypedIOPort extends IOPort {
 
     // all the constructors are wrappers of the super class constructors.
 
@@ -115,7 +112,6 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 	super(container, name, isinput, isoutput);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -151,45 +147,15 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 	}
     }
 
-    /** Return the resolved type of this term. This method is defined in
-     *  InequalityTerm, and is for use by the type resolution algorithm.
-     *  This method is read-synchronized on the workspace.
-     *  @return a Class representing the resolved type.
+    /** Return an InequalityTerm encapsulating the resolved type of
+     *  this port. The InequalityTerm can be used to from type constraints.
+     *  If this port has a declared type, the inequality
+     *  term represents a type constant; otherwise, it represents a
+     *  type variable.
+     *  @return An InequalityTerm whose value is the resolved type.
      */
-    public Object getValue() {
-	return getResolvedType();
-    }
-
-    /** If the type of this port is undeclared, return this port in an
-     *  array. In this case, this port is an InequalityTerm representing
-     *  a type variable. If the type of this port is declared, return
-     *  an array of size zero. This method is for use by the type
-     *  resolution algorithm.
-     *  @return an array of InequalityTerm.
-     */
-     public InequalityTerm[] getVariables() {
-	if (_declaredType == null) {
-	    InequalityTerm[] variable = new InequalityTerm[1];
-	    variable[0] = this;
-	    return variable;
-	} else {
-	    return (new InequalityTerm[0]);
-	}
-    }
-
-    /** Checks if the type of this port is undeclared.
-     *  This method is for use by the type resolution algorithm.
-     *  This method is read-synchronized on the workspace.
-     *  @return true if the type of this port is undeclared; false
-     *   otherwise.
-     */
-    public boolean isSettable() {
-	try {
-	    workspace().getReadAccess();
-	    return _declaredType == null;
-	} finally {
-	    workspace().doneReading();
-	}
+    public InequalityTerm getTypeTerm() {
+	return new TypeTerm(this);
     }
 
     /** Override the method in the super class to do type checking.
@@ -213,13 +179,13 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
      *
      *  @param channelindex The index of the channel, from 0 to width-1
      *  @param token The token to send
-     *  @exception NoRoomException If there is no room in the receiver,
-     *   the port is not an output, or if the index is out of range.
-     *  @exception IllegalArgumentException If the token to be sent cannot
+     *  @exception NoRoomException If there is no room in the receiver.
+     *  @exception IllegalArgumentException If the port is not an output,
+     *   or if the index is out of range, or if the token to be sent cannot
      *   be converted to the resolved type of this IOPort.
      */
     public void send(int channelindex, Token token)
-            throws NoRoomException {
+            throws IllegalActionException, NoRoomException {
 	Receiver[][] farRec;
         try {
             workspace().getReadAccess();
@@ -238,6 +204,8 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 			"converted to the resolved type of this port.");
 	    }
 
+	    // Note that the getRemoteReceivers() method doesn't throw
+            // any non-runtime exception.
 	    farRec = getRemoteReceivers();
 	    if (farRec == null || farRec[channelindex] == null) {
 		return;
@@ -299,11 +267,12 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
     }
 
     /** Sets the declared type of this object.  The type is represented
-     *  by an instance of Class associated with a token type.
+     *  by an instance of Class associated with a token type, or null.
+     *  If the type is null, the type of this port is undeclared.
      *  This method is write-synchronized on the workspace.
      *  @param type an instance of a Class representing a token type.
      *  @exception IllegalArgumentException If the specified type is not
-     *   a toke type.
+     *   an acceptable type in the type hierarchy, or null.
      */
     // FIXME: this method may want to inform its director about this
     // change.
@@ -311,7 +280,7 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 	if (c != null && !(TypeCPO.isAType(c))) {
 	    throw new IllegalArgumentException(
 		    "TypedIOPort.setDeclaredType: argument is not " +
-		    "an acceptable token type.");
+		    "an acceptable type, or null.");
 	}
 
 	try {
@@ -328,28 +297,35 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 	}
     }
 
-    /** Sets the resolved type.
-     *  THis method is for use by the type resolution algorithm.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Sets the resolved type of this object.  The type is represented
+     *  by an instance of Class associated with a token type.
      *  This method is write-synchronized on the workspace.
-     *  @param e an instance of a Class representing a token type.
-     *  @exception IllegalActionException this port has a non-null
-     *   declared type, so the resolved type cannot be set here.
+     *  Note that this method should not be used directly. It should
+     *  only be used by the type resolution algorithm.
+     *  @param type an instance of a Class representing a token type.
+     *  @exception IllegalArgumentException If the specified type is not
+     *   an acceptable type in the type hierarchy.
      */
-    public void setValue(Object e)
-	    throws IllegalActionException {
-	if (_declaredType != null) {
-	    throw new IllegalActionException("TypedIOPort.setValue: The port "
-		+ "type cannot be set since it has a declared type.");
+    protected void setResolvedType(Class c) {
+	if ( !TypeCPO.isAType(c)) {
+	    throw new IllegalArgumentException(
+		    "TypedIOPort.setResolvedType: argument is not " +
+		    "an acceptable type.");
 	}
 
 	try {
 	    workspace().getWriteAccess();
-	    _resolvedType = (Class)e;
+	    _resolvedType = c;
+
 	    _convertMethod = null;
-        } finally {
+	} finally {
 	    workspace().doneWriting();
 	}
     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////

@@ -240,7 +240,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 		        } else {
 			    // at least one of the in/out ports does not have
 			    // declared type, form type constraint.
-			    Inequality ineq = new Inequality(outport, inport);
+			    Inequality ineq = new Inequality(
+				outport.getTypeTerm(), inport.getTypeTerm());
 			    result.insertLast(ineq);
 		        }
 		    }
