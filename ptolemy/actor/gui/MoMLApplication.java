@@ -131,9 +131,13 @@ public class MoMLApplication extends CompositeActorApplication {
                     File directory = new File(file.getAbsolutePath());
                     // base = new URL("file", null, directory);
                     base = file.toURL();
-                } catch (FileNotFoundException ex2) { 
+                } catch (FileNotFoundException ex2) {
+                    // Try one last thing, using the classpath.
                     URL inurl = Class.forName("ptolemy.kernel.util.NamedObj").
                         getClassLoader().getResource(arg);
+                    if (inurl == null) {
+                        throw new IOException("File not found: " + arg);
+                    }
                     instream = inurl.openStream();
                     base = inurl;
                 }
