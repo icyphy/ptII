@@ -143,21 +143,20 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     public void attributeChanged(Attribute attr)
             throws IllegalActionException {
-        Parameter param = (Parameter)attr;
-        if(param == ODESolver) {
+        if(attr == ODESolver) {
             if(_debugging) _debug(getFullName() + " updating  ODE solver...");
             _solverclassname =
-                ((StringToken)((Parameter)param).getToken()).stringValue();
+                ((StringToken)ODESolver.getToken()).stringValue();
             _defaultSolver = _instantiateODESolver(_solverclassname);
             _setCurrentODESolver(_defaultSolver);
-        } else if (param == breakpointODESolver) {
+        } else if (attr == breakpointODESolver) {
             if(_debugging) _debug(getName() +" updating breakpoint solver...");
             _bpsolverclassname =
-                ((StringToken)param.getToken()).stringValue();
+                ((StringToken)breakpointODESolver.getToken()).stringValue();
             _breakpointsolver =
                 _instantiateODESolver(_bpsolverclassname);
         } else {
-            super.attributeChanged(param);
+            super.attributeChanged(attr);
         }
     }
 
