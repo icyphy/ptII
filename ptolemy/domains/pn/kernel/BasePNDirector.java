@@ -485,6 +485,7 @@ public class BasePNDirector extends ProcessDirector {
             Enumeration enum = _processlisteners.elements();
             while (enum.hasMoreElements()) {
                 PNProcessListener lis = (PNProcessListener)enum.nextElement();
+		//FIXME: Change it to processFinished(event)
                 lis.processStateChanged(event);
             }
         }
