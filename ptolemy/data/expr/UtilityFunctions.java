@@ -191,10 +191,9 @@ public class UtilityFunctions {
                     //   line + newline + "\"");
                 }
             }
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException ex) {
             // what should we do here?
-            throw new IllegalActionException("File not found:\n" +
-                    e.toString() );
+            throw new IllegalActionException(null, ex, "File not found");
         }
         //System.out.println("Contents of file are: " + result);
         return new StringToken(result);
