@@ -163,7 +163,8 @@ public class ThreadDemo {
             } catch (FileNotFoundException e) {
                 System.err.println("FileNotFoundException: "+ e.toString());
             }
-            //p1.setToken(new StringToken("/users/ptII/ptolemy/domains/pn/lib/test/ptII.pbm"));
+            //p1.setToken(new StringToken("/users/ptII/ptolemy/domains/" +
+            //                 "pn/lib/test/ptII.pbm"));
             a2 = new MatrixUnpacker(c1, "A2");
             a3 = new RLEncoder(c1, "A3");
             a4 = new RLDecoder(c1, "A4");
@@ -282,6 +283,9 @@ public class ThreadDemo {
         _traceWindow.setLocation(300, 300);
         _traceWindow.setVisible(true);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     ///////////////////////////////////////////////////////////////////
     //// StateListener
