@@ -30,11 +30,15 @@
 package ptolemy.copernicus.java;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
 import ptolemy.kernel.Entity;
-
+import ptolemy.kernel.util.Attribute;
 import soot.Body;
 import soot.Hierarchy;
 import soot.IntType;
@@ -78,7 +82,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-
 /**
 A transformer that adds the command-line interface.
 @author Michael Wirthlin, Stephen Neuendorffer, Edward A. Lee, Christopher Hylands
@@ -101,7 +104,7 @@ public class CommandLineTransformer extends SceneTransformer {
     }
 
     public String getDefaultOptions() {
-        return "iterations:50";
+        return "iterations:" + _iterationsDefault;
     }
 
     public String getDeclaredOptions() {
@@ -329,6 +332,10 @@ public class CommandLineTransformer extends SceneTransformer {
 
     }
 
+    /** Default value for the iterations command line parameter
+     */	
+    protected int _iterationsDefault = 50;
+
     private String _getFinalName(String dottedName) {
         // Take the entity and it's class name and munge them into a
         // unique name for the generated class
@@ -350,7 +357,33 @@ public class CommandLineTransformer extends SceneTransformer {
         Chain units = body.getUnits();
         
         int iterationLimit = Options.getInt(options, "iterations");
-        
+
+	if (iterationLimit == _iterationsDefault) {
+	    try {
+		Director director = _model.getDirector();
+		if (director != null) {
+		    Attribute attribute =
+			director.getAttribute("iterations");
+		    if (attribute instanceof Variable) {
+			IntToken token = (IntToken)((Variable)attribute).getToken();
+			iterationLimit = token.intValue();
+			System.out.println("CommandLineTransformer"
+					   + "_insertIterateCalls(): "
+					   + "iterationLimit was the default," 
+					   + " read director.iterations, "
+					   + "value is now "
+					   + iterationLimit);
+		    }
+		}
+	    } catch (Exception e) {
+		System.out.println("CommandLineTransformer"
+				   + "_insertIterateCalls(): "
+				   + "Could not read director.iterations "
+				   + "defaulting to " + _iterationsDefault
+				   + ": " + e);
+	    }
+	}
+
         Local iterationLocal = null;
         if(iterationLimit > 1) {
             iterationLocal = Jimple.v().newLocal("iteration",
