@@ -130,7 +130,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Return the figure at the given index.
      *
-     * @throws IndexOutOfBoundsException The index is out of range.
+     * @exception IndexOutOfBoundsException The index is out of range.
      */
     public Figure get (int index) {
         return _children.get(index);
@@ -348,7 +348,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Remove the figure at the given position in the list.
      *
-     * @throws IndexOutOfBoundsException The index is out of range.
+     * @exception IndexOutOfBoundsException The index is out of range.
      */
     public void remove (int index) {
         remove(_children.get(index));
@@ -384,7 +384,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Set the index of the given figure.
      *
-     * @throws IndexOutOfBoundsException The new index is out of range.
+     * @exception IndexOutOfBoundsException The new index is out of range.
      */
     public void setIndex (int index, Figure f) {
         _children.setIndex(index, f);

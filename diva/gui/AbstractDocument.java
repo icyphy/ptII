@@ -100,7 +100,7 @@ public abstract class AbstractDocument implements Document {
      * the operation was successful, otherwise false.  In this base class
      * do nothing.
      *
-     * @throws Exception If the close operation fails.
+     * @exception Exception If the close operation fails.
      */
     public void close () throws Exception {
     }
@@ -183,7 +183,7 @@ public abstract class AbstractDocument implements Document {
     /** Open the document from its current file or URL. Throw an
      * exception if the operation failed.
      *
-     * @throws Exception If the close operation fails.
+     * @exception Exception If the close operation fails.
      */
     public abstract void open () throws Exception;
 
@@ -196,7 +196,7 @@ public abstract class AbstractDocument implements Document {
     /** Save the document to its current file or URL.  Throw an
      * exception if the operation failed.
      *
-     * @throws Exception If the save operation fails.
+     * @exception Exception If the save operation fails.
      */
     public abstract void save () throws Exception;
 
@@ -207,7 +207,7 @@ public abstract class AbstractDocument implements Document {
      * policy.
      *
      * @see #save()
-     * @throws Exception If the save-as operation fails.
+     * @exception Exception If the save-as operation fails.
      */
     public abstract void saveAs (File file) throws Exception;
 
@@ -218,7 +218,7 @@ public abstract class AbstractDocument implements Document {
      * it will do according to its storage policy.
      *
      * @see #save()
-     * @throws Exception If the save-as operation fails.
+     * @exception Exception If the save-as operation fails.
      */
     public abstract void saveAs (URL url) throws Exception;
 

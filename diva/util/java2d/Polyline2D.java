@@ -90,13 +90,13 @@ public abstract class Polyline2D implements Shape {
 
     /** Get the given X-coordinate
      *
-     * @throws IndexOutOfBoundsException The index is out of bounds.
+     * @exception IndexOutOfBoundsException The index is out of bounds.
      */
     public abstract double getX (int index);
 
     /** Get the given Y-coordinate
      *
-     * @throws IndexOutOfBoundsException The index is out of bounds.
+     * @exception IndexOutOfBoundsException The index is out of bounds.
      */
     public abstract double getY (int index);
 
@@ -150,13 +150,13 @@ public abstract class Polyline2D implements Shape {
 
     /** Set the given X-coordinate.
      *
-     * @throws IndexOutOfBoundsException The index is out of bounds.
+     * @exception IndexOutOfBoundsException The index is out of bounds.
      */
     public abstract void setX (int index, double x);
 
     /** Set the given Y-coordinate
      *
-     * @throws IndexOutOfBoundsException The index is out of bounds.
+     * @exception IndexOutOfBoundsException The index is out of bounds.
      */
     public abstract void setY (int index, double y);
 
@@ -259,7 +259,7 @@ public abstract class Polyline2D implements Shape {
 
         /** Get the given X-coordinate
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public double getX (int index) {
             if (index < 0 || index >= this.getVertexCount()) {
@@ -270,7 +270,7 @@ public abstract class Polyline2D implements Shape {
 
         /** Get the given Y-coordinate
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public double getY (int index) {
             if (index < 0 || index >= this.getVertexCount()) {
@@ -293,7 +293,7 @@ public abstract class Polyline2D implements Shape {
 
         /** Move the start point of the vertex to the given position.
          *
-         * @throws UnsupportedOperationException The polyline already
+         * @exception UnsupportedOperationException The polyline already
          * has vertices
          */
         public void moveTo (double x, double y) {
@@ -308,7 +308,7 @@ public abstract class Polyline2D implements Shape {
 
         /** Set the given X-coordinate.
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public void setX (int index, double x) {
             if (index < 0 || index >= this.getVertexCount()) {
@@ -319,7 +319,7 @@ public abstract class Polyline2D implements Shape {
 
         /** Set the given Y-coordinate
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public void setY (int index, double y) {
             if (index < 0 || index >= this.getVertexCount()) {
@@ -427,7 +427,7 @@ public abstract class Polyline2D implements Shape {
 
         /** Get the given X-coordinate
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public double getX (int index) {
             if (index < 0 || index >= this.getVertexCount()) {
@@ -438,7 +438,7 @@ public abstract class Polyline2D implements Shape {
 
         /** Get the given Y-coordinate
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public double getY (int index) {
             if (index < 0 || index >= this.getVertexCount()) {
@@ -461,7 +461,7 @@ public abstract class Polyline2D implements Shape {
 
         /** Move the start point of the vertex to the given position.
          *
-         * @throws UnsupportedOperationException The polyline already
+         * @exception UnsupportedOperationException The polyline already
          * has vertices
          */
         public void moveTo (double x, double y) {
@@ -476,7 +476,7 @@ public abstract class Polyline2D implements Shape {
 
         /** Set the given X-coordinate.
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public void setX (int index, double x) {
             if (index < 0 || index >= this.getVertexCount()) {
@@ -487,7 +487,7 @@ public abstract class Polyline2D implements Shape {
 
         /** Set the given Y-coordinate
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public void setY (int index, double y) {
             if (index < 0 || index >= this.getVertexCount()) {

@@ -168,13 +168,13 @@ public abstract class Polygon2D implements Shape {
 
     /** Get the given X-coordinate
      *
-     * @throws IndexOutOfBoundsException The index is out of bounds.
+     * @exception IndexOutOfBoundsException The index is out of bounds.
      */
     public abstract double getX (int index);
 
     /** Get the given Y-coordinate
      *
-     * @throws IndexOutOfBoundsException The index is out of bounds.
+     * @exception IndexOutOfBoundsException The index is out of bounds.
      */
     public abstract double getY (int index);
 
@@ -268,13 +268,13 @@ public abstract class Polygon2D implements Shape {
 
     /** Set the given X-coordinate.
      *
-     * @throws IndexOutOfBoundsException The index is out of bounds.
+     * @exception IndexOutOfBoundsException The index is out of bounds.
      */
     public abstract void setX (int index, double x);
 
     /** Set the given Y-coordinate
      *
-     * @throws IndexOutOfBoundsException The index is out of bounds.
+     * @exception IndexOutOfBoundsException The index is out of bounds.
      */
     public abstract void setY (int index, double y);
 
@@ -369,7 +369,7 @@ public abstract class Polygon2D implements Shape {
 
         /** Get the given X-coordinate
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public double getX (int index) {
             return _coords[index*2];
@@ -377,7 +377,7 @@ public abstract class Polygon2D implements Shape {
 
         /** Get the given Y-coordinate
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public double getY (int index) {
             return _coords[index*2+1];
@@ -401,7 +401,7 @@ public abstract class Polygon2D implements Shape {
 
         /** Move the start point of the vertex to the given position.
          *
-         * @throws UnsupportedOperationException The polygon already
+         * @exception UnsupportedOperationException The polygon already
          * has vertices
          */
         public void moveTo (double x, double y) {
@@ -416,7 +416,7 @@ public abstract class Polygon2D implements Shape {
 
         /** Set the given X-coordinate.
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public void setX (int index, double x) {
             _coords[index*2] = (float) x;
@@ -424,7 +424,7 @@ public abstract class Polygon2D implements Shape {
 
         /** Set the given Y-coordinate
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public void setY (int index, double y) {
             _coords[index*2+1] = (float) y;
@@ -527,7 +527,7 @@ public abstract class Polygon2D implements Shape {
 
         /** Get the given X-coordinate
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public double getX (int index) {
             return _coords[index*2];
@@ -535,7 +535,7 @@ public abstract class Polygon2D implements Shape {
 
         /** Get the given Y-coordinate
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public double getY (int index) {
             return _coords[index*2+1];
@@ -555,7 +555,7 @@ public abstract class Polygon2D implements Shape {
 
         /** Move the start point of the vertex to the given position.
          *
-         * @throws UnsupportedOperationException The polygon already
+         * @exception UnsupportedOperationException The polygon already
          * has vertices
          */
         public void moveTo (double x, double y) {
@@ -570,7 +570,7 @@ public abstract class Polygon2D implements Shape {
 
         /** Set the given X-coordinate.
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public void setX (int index, double x) {
             _coords[index*2] = x;
@@ -578,7 +578,7 @@ public abstract class Polygon2D implements Shape {
 
         /** Set the given Y-coordinate
          *
-         * @throws IndexOutOfBoundsException The index is out of bounds.
+         * @exception IndexOutOfBoundsException The index is out of bounds.
          */
         public void setY (int index, double y) {
             _coords[index*2+1] = y;

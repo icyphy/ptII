@@ -46,7 +46,7 @@ public abstract class AbstractXmlBuilder implements XmlBuilder {
 
     /**
      * Unable to generate XML by default.
-     * @throws UnsupportedOperationException Unable to generate XML by default
+     * @exception UnsupportedOperationException Unable to generate XML by default
      */
     public XmlElement generate(Object in) throws Exception {
         String err = getClass().getName() + ": unable to generate XML";

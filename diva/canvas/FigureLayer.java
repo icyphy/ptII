@@ -454,7 +454,7 @@ public class FigureLayer extends CanvasLayer implements FigureContainer, EventAc
      * is already contained -- clients are therefore responsible for
      * being bug-free.
      *
-     * @throws IndexOutOfBoundsException The new index is out of range.
+     * @exception IndexOutOfBoundsException The new index is out of range.
      */
     public void setIndex (int index, Figure f) {
         _zlist.setIndex(index,f);

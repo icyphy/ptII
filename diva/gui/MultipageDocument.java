@@ -102,7 +102,7 @@ public abstract class MultipageDocument extends AbstractDocument {
      * new Page to the document containing the model parsed from the
      * current file.
      *
-     * @throws Exception  If there is no file, or if the I/O operation failed.
+     * @exception Exception  If there is no file, or if the I/O operation failed.
      */
     public void open () throws Exception {
         if (getFile() == null) {
@@ -117,7 +117,7 @@ public abstract class MultipageDocument extends AbstractDocument {
 
     /** Save the document to the current file.
      *
-     * @throws Exception  If there is no file, or if the I/O operation failed.
+     * @exception Exception  If there is no file, or if the I/O operation failed.
      */
     public void save () throws Exception {
         if (getFile() == null) {
@@ -130,7 +130,7 @@ public abstract class MultipageDocument extends AbstractDocument {
     /** Save the document to the given file. Do not change the file
      * attribute to the new File object.
      *
-     * @throws Exception  If the I/O operation failed.
+     * @exception Exception  If the I/O operation failed.
      */
     public void saveAs (File file) throws Exception {
         String filename = file.getName();
@@ -144,7 +144,7 @@ public abstract class MultipageDocument extends AbstractDocument {
 
     /** Throw an exception, as save to URLs is not supported.
      *
-     * @throws Exception Always
+     * @exception Exception Always
      */
     public void saveAs (URL url) {
         throw new UnsupportedOperationException(

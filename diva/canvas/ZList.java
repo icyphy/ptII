@@ -71,7 +71,7 @@ public interface ZList extends FigureSet {
 
     /** Return the figure at the given index.
      *
-     * @throws IndexOutOfBoundsException The index is out of range.
+     * @exception IndexOutOfBoundsException The index is out of range.
      */
     public Figure get (int index);
 
@@ -105,7 +105,7 @@ public interface ZList extends FigureSet {
 
     /** Remove the figure at the given index from this list.
      *
-     * @throws IndexOutOfBoundsException The index is out of range.
+     * @exception IndexOutOfBoundsException The index is out of range.
      */
     public void remove (int index);
 
@@ -126,7 +126,7 @@ public interface ZList extends FigureSet {
      * does <i>not</i> check if the figure is already contained --
      * clients are therefore responsible for being bug-free.
      *
-     * @throws IndexOutOfBoundsException The new index is out of range.
+     * @exception IndexOutOfBoundsException The new index is out of range.
      */
     public void setIndex (int index, Figure f);
 

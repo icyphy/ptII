@@ -239,7 +239,7 @@ public final class GraphUtilities {
      * Disconnect all of the edges connected to the given node, then
      * remove it from its graph.
      *
-     * @throws GraphException if the operation fails.
+     * @exception GraphException if the operation fails.
      */
     public static final void purgeNode(Object eventSource, Object node,
             MutableGraphModel model)
