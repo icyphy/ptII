@@ -96,6 +96,9 @@ OPTIONAL_FILES = \
 	'Display$$DisplayWindow.class' \
 	'Display$$DisplayWindowTableau.class' \
 	'HistogramPlotter$$1.class' \
+	'InteractiveShell$$1.class' \
+	'InteractiveShell$$ShellFrame.class' \
+	'InteractiveShell$$ShellTableau.class' \
 	'MatrixViewer$$1.class' \
 	'MatrixViewer$$DisplayWindow.class' \
 	'MatrixViewer$$MatrixAsTable.class' \
