@@ -58,7 +58,7 @@ import javax.sound.sampled.TargetDataLine;
   speaker of the computer. The desired output port may be
   selected from the operating system.
   <p>
-  <b>Format of audio samples</be>
+  <b>Format of audio samples</b>
   <p>
   In this class, audio samples are double-valued and have a
   valid range of [-1.0, 1.0]. Thus when this class is used
@@ -76,7 +76,7 @@ import javax.sound.sampled.TargetDataLine;
   after 1998, the following formats are likely to be supported.
   <ul>
   <li><i>channels</i>: Mono (channels = 1) and stereo
-  (channels = 1) audio is supported. Note that some newer sound
+  (channels = 2) audio is supported. Note that some newer sound
   cards support more than two channels, such as 4 input, 4 output
   channels or better. Java does not support more than two
   channels, however. The default value assumed by this class is
@@ -113,7 +113,7 @@ import javax.sound.sampled.TargetDataLine;
   setBufferSize(), to simultaneously set the size of internal
   capture buffer and the internal playback buffer. The method
   getBufferSize() may be used to read the buffer size. The default
-  size of the internal buffer is 4096.
+  size of the internal buffer is 4096 samples.
   <p>
   <b>Constraints</b>
   <p>
@@ -166,7 +166,7 @@ import javax.sound.sampled.TargetDataLine;
   to playback audio immediately after startPlayback() returns.
   Note that startPlayback() takes an Object parameter,
   <i>producer</i>. In addition to starting the audio playback
-  process, startCapture() also grants an object permission to
+  process, startPlayback() also grants an object permission to
   playback audio.
   <p>
   After calling startPlayback(producer), the producer object can
@@ -299,7 +299,7 @@ public class LiveSound {
     /** Return the suggested size of the internal capture and playback audio
      *  buffers, in samples per channel. This parameter is set by the
      *  setBufferSize() method.  There is no guarantee that the value returned
-     *  is is the actual buffer size used for capture and playback.
+     *  is the actual buffer size used for capture and playback.
      *  Furthermore, the buffers used for capture and playback may have
      *  different sizes.  The default value of this parameter is 4096.
      *
@@ -464,10 +464,7 @@ public class LiveSound {
      *  used by the putSamples() and getSamples() methods. This
      *  method returns the value that was set by the
      *  setTransferSize(). If setTransferSize() was not invoked,
-     *  the default value of 128 is returns.
-     *  <p>
-     *  This method should only be called while audio capture and
-     *  playback are inactive. Otherwise an exception will occur.
+     *  the default value of 128 is returned.
      *
      *  @return The size of the 2nd dimension of the 2-dimensional
      *   array used by the putSamples() and getSamples() methods.
@@ -499,8 +496,8 @@ public class LiveSound {
     /** Play an array of audio samples. There will be a
      *  delay before the audio data is actually heard, since the
      *  audio data in <i>samplesArray</i> is queued to an
-     *  internal audio buffer. The size of the internal buffer
-     *  is set by the setTransferSize() method. A lower bound
+     *  internal audio buffer. The setBufferSize() method suggests a size
+     *  for the internal buffer. A lower bound
      *  on the latency is given by (<i>bufferSize</i> /
      *  <i>sampleRate</i>) seconds. This method should be invoked often
      *  enough to prevent underflow of the internal audio buffer.
@@ -523,7 +520,7 @@ public class LiveSound {
      *  of the (n+1)th channel. samplesArray should be a
      *  rectangular array such that samplesArray.length() gives
      *  the number of channels and samplesArray[n].length() is
-     *  equal to <i>samplesArray</i>, for all channels n. This
+     *  equal to <i>transferSize</i>, for all channels n. This
      *  is not actually checked, however.
      *  <p>
      *  Note that only the object with the exclusive lock on
@@ -618,7 +615,7 @@ public class LiveSound {
     }
 
     /** Set the number of bits per sample to use for audio capture
-     *  and playback and notify an registered listeners of the change.
+     *  and playback and notify any registered listeners of the change.
      *  Allowable values include 8 and 16 bits. If
      *  this method is not invoked, then the default value of 16
      *  bits is used.
@@ -723,7 +720,7 @@ public class LiveSound {
     }
 
     /** Set the number of audio channels to use for capture and
-     *  playback and notify an registered listeners of the change.
+     *  playback and notify any registered listeners of the change.
      *  Allowable values are 1 (for mono) and 2 (for
      *  stereo). If this method is not invoked, the default
      *  value of 1 audio channel is used. Note that this method
