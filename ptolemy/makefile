@@ -53,6 +53,7 @@ PTCLASSJAR =
 # Include these jars in PTAUXALLJAR
 PTAUXALLJARS = \
 		../collections/ptcollections.jar \
+		gui/gui.jar \
 		kernel/kernel.jar \
 		plot/plotapplet.jar \
 		graph/graph.jar \
