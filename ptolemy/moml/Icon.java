@@ -30,7 +30,7 @@
 
 package ptolemy.moml;
 
-import ptolemy.actor.TypedCompositeActor;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -56,7 +56,7 @@ public class Icon extends Attribute implements Locatable {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */	
-    public Icon(TypedCompositeActor container, String name)
+    public Icon(Entity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -92,6 +92,7 @@ public class Icon extends Attribute implements Locatable {
             if (i > 0) location.append(", ");
             location.append("" +_location[i]);
         }
+        
         return "(" + className + ", Location = (" + location.toString() + "))";
     }
 
