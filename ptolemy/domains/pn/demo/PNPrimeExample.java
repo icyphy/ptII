@@ -29,6 +29,7 @@ package ptolemy.domains.pn.demo;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.domains.pn.lib.*;
@@ -57,7 +58,9 @@ public class PNPrimeExample {
         PNRamp ramp = new PNRamp(myUniverse, "ramp");
         ramp.setParam("Initial Value", "2");
         PNSieve sieve = new PNSieve(myUniverse, "2_sieve");
-        sieve.setParam("prime", "2");
+        //sieve.setParam("prime", "2");
+        Parameter param = (Parameter)sieve.getAttribute("prime");
+        param.setToken(new IntToken(2));
         IOPort portin = (IOPort)sieve.getPort("input");
         IOPort portout = (IOPort)ramp.getPort("output");
         myUniverse.connect(portin, portout, "2_queue");
