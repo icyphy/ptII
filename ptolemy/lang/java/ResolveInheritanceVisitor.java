@@ -65,13 +65,14 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
-        //System.out.println("resolveInheritance for " +
-        //        node.getProperty(IDENT_KEY));
+        if (StaticResolution.traceLoading)
+            System.out.println("resolveInheritance for " + node.getProperty(IDENT_KEY));
 
         TNLManip.traverseList(this, null, node.getDefTypes());
 
-        //System.out.println("finished resolveInheritance for " +
-        //        node.getProperty(IDENT_KEY));
+        if (StaticResolution.traceLoading)
+            System.out.println("finished resolveInheritance for " + 
+                    node.getProperty(IDENT_KEY));
 
         return null;
     }
@@ -86,6 +87,12 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         int modifiers = node.getModifiers();
 
         ClassDecl superClass = me.getSuperClass();
+
+        if (StaticResolution.traceLoading) {
+            System.out.println("ResolveInheritanceVisitor.visitClassDeclNode: "
+                    + me.fullName() + ((superClass == null) ? " , no superclass" 
+                    : "superclass = " + superClass.fullName())); 
+        }
 
         if (superClass != null) {
             if ((superClass.getModifiers() & FINAL_MOD) != 0) {
