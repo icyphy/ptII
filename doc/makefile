@@ -114,6 +114,7 @@ ALLJSRCS = 		collections \
 			ptolemy.domains.sdf.lib.vq \
 			ptolemy.data \
 			ptolemy.data.expr \
+			ptolemy.data.type \
 			ptolemy.graph \
 			ptolemy.gui \
 			ptolemy.math \
@@ -162,6 +163,7 @@ codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
 			../ptolemy/data/*.java \
 			../ptolemy/data/expr/*.java \
+			../ptolemy/data/type/*.java \
 			../ptolemy/graph/*.java \
 			../ptolemy/gui/*.java \
 			../ptolemy/math/*.java \
