@@ -70,8 +70,11 @@ public class ComSystem extends SDFApplet {
      */
     public void init() {
         super.init();
-        // The 1 argument requests a go and a stop button.
-        getContentPane().add(_createRunControls(2), BorderLayout.SOUTH);
+        // The 2 argument requests a go and a stop button plus the
+        // number of iterations.
+        JPanel control = _createRunControls(2);
+
+        getContentPane().add(control, BorderLayout.SOUTH);
         try {
             // Create and configure data source
             Bernoulli data = new Bernoulli(_toplevel, "data");
@@ -109,7 +112,7 @@ public class ComSystem extends SDFApplet {
             plotter.plot.setXRange(0.0, 32.0);
             plotter.plot.setWrap(true);
             plotter.plot.setYRange(-1.3, 1.3);
-            plotter.plot.setMarksStyle("none");
+            plotter.plot.setMarksStyle("pixels");
             plotter.plot.setPointsPersistence(512);
 
             _toplevel.connect(data.output, coder.input);
