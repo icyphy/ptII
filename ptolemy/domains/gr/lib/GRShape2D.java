@@ -76,7 +76,7 @@ abstract public class GRShape2D extends GRActor2D {
 
         rgbFillColor = new ColorAttribute(this, "rgbFillColor");
         rgbFillColor.setExpression("{1.0,1.0,1.0,1.0}");
-        
+
         rgbOutlineColor = new ColorAttribute(this, "rgbOutlineColor");
         rgbOutlineColor.setExpression("{0.0,0.0,0.0,1.0}");
 
@@ -96,7 +96,7 @@ abstract public class GRShape2D extends GRActor2D {
     /** The red, green, blue, and alpha components of the interior color
      *  of the figure.  This parameter must contain an array of double values.
      *  The default value is {1.0,1.0,1.0,1.0}, corresponding to opaque white.
-     */  
+     */
     public ColorAttribute rgbFillColor;
 
     /** The red, green, blue and alpha components of the outline color
@@ -105,7 +105,7 @@ abstract public class GRShape2D extends GRActor2D {
      */
     public ColorAttribute rgbOutlineColor;
 
-    /** The width of the figure's outline.  This parameter must contain a 
+    /** The width of the figure's outline.  This parameter must contain a
      *  DoubleToken.  The default value is 1.0.
      */
     public Parameter outlineWidth;
@@ -140,8 +140,8 @@ abstract public class GRShape2D extends GRActor2D {
         _figure = _createFigure();
         _setAppearance(_figure);
     }
-    
-    
+
+
     public BasicFigure getFigure(){
         return _figure;
     }
@@ -167,10 +167,10 @@ abstract public class GRShape2D extends GRActor2D {
      *
      *  @exception IllegalActionException If a parameter is not valid.
      */
-    abstract protected BasicFigure _createFigure() 
+    abstract protected BasicFigure _createFigure()
             throws IllegalActionException;
-  
- 
+
+
     /** Setup the scene graph connections of this actor.
      *
      *  @exception IllegalActionException Always thrown for this base class.
@@ -190,13 +190,13 @@ abstract public class GRShape2D extends GRActor2D {
         Paint strokePaint = rgbOutlineColor.asColor();
         float lineWidth = (float)
             ((DoubleToken) outlineWidth.getToken()).doubleValue();
-        
+
         figure.setFillPaint(fillPaint);
         figure.setStrokePaint(strokePaint);
         figure.setLineWidth(lineWidth);
-        
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
 

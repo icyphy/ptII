@@ -73,7 +73,7 @@ public class Scale2D extends GRTransform2D {
         super(container, name);
 
         initialScaleFactorX = new Parameter(this, "initialScaleFactorX",
-                new DoubleToken(1.0)); 
+                new DoubleToken(1.0));
         initialScaleFactorX.setTypeEquals(BaseType.DOUBLE);
 
         initialScaleFactorY = new Parameter(this, "initialScaleFactorY",
@@ -116,11 +116,11 @@ public class Scale2D extends GRTransform2D {
      */
     protected void _applyInitialTransform(Figure figure)
             throws IllegalActionException{
-        _oldScaleFactorX = 
+        _oldScaleFactorX =
             ((DoubleToken)initialScaleFactorX.getToken()).doubleValue();
-        _oldScaleFactorY = 
+        _oldScaleFactorY =
             ((DoubleToken)initialScaleFactorY.getToken()).doubleValue();
-     
+
         figure.transform(AffineTransform.getScaleInstance(
                                  _oldScaleFactorX, _oldScaleFactorY));
     }
@@ -132,30 +132,30 @@ public class Scale2D extends GRTransform2D {
      */
     protected void _applyTransform(Figure figure)
             throws IllegalActionException{
-        
+
         double scaleFactorXValue = 1.0;
         double scaleFactorYValue = 1.0;
-        
+
         boolean needsTransform = false;
         if(scaleFactorX.getWidth() != 0 && scaleFactorX.hasToken(0)){
-            scaleFactorXValue = 
+            scaleFactorXValue =
                 ((DoubleToken) scaleFactorX.get(0)).doubleValue();
             needsTransform = true;
         }
-        
+
         if(scaleFactorY.getWidth() != 0 && scaleFactorY.hasToken(0)){
             scaleFactorYValue =
                 ((DoubleToken) scaleFactorY.get(0)).doubleValue();
             needsTransform = true;
         }
-        
-        
+
+
         if(needsTransform) {
             if(_isAccumulating()) {
                 scaleFactorXValue *= _oldScaleFactorX;
                 scaleFactorYValue *= _oldScaleFactorY;
             }
-            
+
             _oldScaleFactorX = scaleFactorXValue;
             _oldScaleFactorY = scaleFactorYValue;
             AffineTransform inputTransform = AffineTransform.getScaleInstance(

@@ -73,7 +73,7 @@ public class Image2D extends GRActor2D {
         super(container, name);
 
         fileOrURL = new FileAttribute(this, "fileOrURL");
- 
+
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
         sceneGraphOut.setTypeEquals(Scene2DToken.TYPE);
@@ -82,7 +82,7 @@ public class Image2D extends GRActor2D {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The location of the image file upon which to base the figure. 
+    /** The location of the image file upon which to base the figure.
      */
     public FileAttribute fileOrURL;
 
@@ -113,11 +113,11 @@ public class Image2D extends GRActor2D {
     protected ImageFigure _createFigure() throws IllegalActionException {
 
         URL url = fileOrURL.asURL();
-       
+
         Image image = Toolkit.getDefaultToolkit().createImage(url);
 
         ImageFigure figure = new ImageFigure(image);
-  
+
         return figure;
     }
 

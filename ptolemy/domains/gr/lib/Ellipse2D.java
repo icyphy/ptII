@@ -38,7 +38,7 @@ import diva.canvas.toolbox.BasicFigure;
 
 //////////////////////////////////////////////////////////////////////////
 //// Ellipse2D
-/** 
+/**
 An actor that creates an ellipse.  The initial size, position, and type of
 figure are specified in the parameter edit window and can be changed
 after the figure has been displayed.

@@ -42,7 +42,7 @@ import diva.canvas.toolbox.BasicFigure;
 
 //////////////////////////////////////////////////////////////////////////
 //// Rectangle2D
-/** 
+/**
 An actor that creates a rectangle or a rounded rectangle.  The initial
 size, position, and type of figure are specified in the parameter edit
 window and can be changed after the figure has been displayed.  The

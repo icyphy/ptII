@@ -50,7 +50,7 @@ import diva.canvas.Figure;
 //////////////////////////////////////////////////////////////////////////
 //// Rotate2D
 
-/** 
+/**
 Rotate a two-dimensional figure based on the angle, and anchor point
 provided by the user.  The angle, step, and anchor points can either
 be preset in the parameter edit window, or updated dynamically through
@@ -84,7 +84,7 @@ public class Rotate2D extends GRTransform2D {
         angleType = new StringAttribute(this, "angleType");
         angleType.setExpression("radians");
 
-        initialTheta = 
+        initialTheta =
             new Parameter(this, "initialTheta", new DoubleToken(0.0));
         initialTheta.setTypeEquals(BaseType.DOUBLE);
 
@@ -125,7 +125,7 @@ public class Rotate2D extends GRTransform2D {
      */
     public TypedIOPort anchorY;
 
-    /** The initial angle of rotation.  The default double value is 0.0. 
+    /** The initial angle of rotation.  The default double value is 0.0.
      */
     public Parameter initialTheta;
 
@@ -157,33 +157,33 @@ public class Rotate2D extends GRTransform2D {
         _oldAngle = ((DoubleToken)initialTheta.getToken()).doubleValue();
         _oldAnchorX = ((DoubleToken)initialAnchorX.getToken()).doubleValue();
         _oldAnchorY = ((DoubleToken)initialAnchorY.getToken()).doubleValue();
-        
+
         if (angleType.getExpression().equals("degrees")) {
             _oldAngle = Math.toRadians(_oldAngle);
         }
-        
+
         figure.transform(AffineTransform.getRotateInstance(_oldAngle,
                                  _oldAnchorX, _oldAnchorY));
     }
-    
-    
+
+
     /** Apply the current rotation transformation to the figure.
      *  @param figure The figure the transformation is to be applied to.
      *  @exception IllegalActionException If the getToken() method throws
      *  such an exception.
      */
-    protected void _applyTransform(final Figure figure) 
+    protected void _applyTransform(final Figure figure)
             throws IllegalActionException {
-        
+
         double angle = _oldAngle;
         double anchorXValue = _oldAnchorX;
         double anchorYValue = _oldAnchorY;
-        
+
         boolean needsTransform = false;
         if(theta.getWidth() != 0 && theta.hasToken(0)){
             angle = ((DoubleToken) theta.get(0)).doubleValue();
             needsTransform = true;
-            
+
             if (angleType.getExpression().equals("degrees"))
                 angle = Math.toRadians(angle);
         }
@@ -202,19 +202,19 @@ public class Rotate2D extends GRTransform2D {
         if(needsTransform){
             final AffineTransform inputTransform = AffineTransform.getRotateInstance(
                     angle, anchorXValue, anchorYValue);
-            
+
             if(!figure.getTransformContext().getTransform().equals(inputTransform)){
-                
+
                 if(!_isAccumulating()){
                     inputTransform.concatenate(
                             figure.getTransformContext().getInverseTransform());
                 }
-                
+
                 figure.transform(inputTransform);
             }
         }
     }
-    
+
     private double _oldAngle;
     private double _oldAnchorX;
     private double _oldAnchorY;

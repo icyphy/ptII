@@ -101,7 +101,7 @@ public class Line2D extends GRActor2D {
      */
     public TypedIOPort sceneGraphOut;
 
-    /** The width of the figure's outline.  This parameter must contain a 
+    /** The width of the figure's outline.  This parameter must contain a
      *  DoubleToken.  The default value is 1.0.
      */
     public Parameter lineWidth;
@@ -109,7 +109,7 @@ public class Line2D extends GRActor2D {
     /** The red, green, blue, and alpha components of the line.  This
      *  parameter must contain an array of double values.  The default
      *  value is {0.0,0.0,0.0,0.0}, corresponding to opaque black.
-     */  
+     */
     public ColorAttribute rgbColor;
 
     /** The x coordinate of the line's start position in the view screen. */
@@ -134,7 +134,7 @@ public class Line2D extends GRActor2D {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
-        if ((attribute == xStart || attribute == yStart 
+        if ((attribute == xStart || attribute == yStart
                     || attribute == xEnd || attribute == yEnd)
                 && _viewScreen != null) {
             _figure.setPrototypeShape(new java.awt.geom.Line2D.Double(
@@ -146,7 +146,7 @@ public class Line2D extends GRActor2D {
                   _viewScreen != null) {
             _setAppearance(_figure);
         }
-        
+
         super.attributeChanged(attribute);
     }
 
@@ -160,7 +160,7 @@ public class Line2D extends GRActor2D {
         _figure = _createFigure();
         _setAppearance(_figure);
     }
-    
+
     /** Return false if the scene graph is already initialized.
      *
      *  @return false if the scene graph is already initialized.
@@ -191,7 +191,7 @@ public class Line2D extends GRActor2D {
         _setAppearance(figure);
         return figure;
     }
- 
+
     /** Setup the scene graph connections of this actor.
      *
      *  @exception IllegalActionException Always thrown for this base class.
@@ -205,16 +205,16 @@ public class Line2D extends GRActor2D {
 
     // Set the appearance of the given figure consistent with the
     // parameters of this class.
-    private void _setAppearance(BasicFigure figure) 
+    private void _setAppearance(BasicFigure figure)
             throws IllegalActionException {
-        Paint strokePaint = rgbColor.asColor(); 
-        figure.setStrokePaint(strokePaint);  
+        Paint strokePaint = rgbColor.asColor();
+        figure.setStrokePaint(strokePaint);
 
         float lineWidthValue = (float)
             ((DoubleToken) lineWidth.getToken()).doubleValue();
         figure.setLineWidth(lineWidthValue);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
 

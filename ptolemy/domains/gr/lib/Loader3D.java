@@ -99,7 +99,7 @@ public class Loader3D extends GRShadedShape {
 
 
 
- 
+
     private double creaseAngle = 60.0;
     private Scene obj;
 }

@@ -80,7 +80,7 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class ViewScreen extends GRActor3D 
+public class ViewScreen extends GRActor3D
     implements Placeable, ViewScreenInterface {
 
     /** Construct a ViewScreen in the given container with the given name.
@@ -134,7 +134,7 @@ public class ViewScreen extends GRActor3D
         backgroundColor = new Parameter(this, "backgroundColor",
                 new DoubleMatrixToken(new double[][] {{ 0.0, 0.0, 0.0}} ));
         backgroundColor.setTypeEquals(BaseType.DOUBLE_MATRIX);
-        
+
         _lastTransform = new Transform3D();
     }
 

@@ -47,7 +47,7 @@ import diva.canvas.toolbox.BasicFigure;
 
 //////////////////////////////////////////////////////////////////////////
 //// RectangularFigure2D
-/** 
+/**
 A base class for actors that create figures based on rectangular
 bounding boxes, such as rectangles, rounded rectangles, and ellipses.
 The initial size, position, and type of figure are specified in the
@@ -91,7 +91,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
-        if ((attribute == xPosition 
+        if ((attribute == xPosition
                     || attribute == yPosition
                     || attribute == width
                     || attribute == height)

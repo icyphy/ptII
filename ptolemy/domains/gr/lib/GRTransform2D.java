@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// GRTransform2D
 
-/** 
+/**
 An abstract base class for a transform operator of two-dimensional
 GR shapes.
 
@@ -162,7 +162,7 @@ abstract public class GRTransform2D extends GRActor2D {
      */
     abstract protected void _applyInitialTransform(Figure figure)
             throws IllegalActionException;
-    
+
     /** Consume input tokens, and transform the given figure according
      * to the current state of the transform.  This method is invoked
      * by this base classes during the fire() method.  Derived classes
@@ -172,6 +172,6 @@ abstract public class GRTransform2D extends GRActor2D {
      */
     abstract protected void _applyTransform(Figure figure)
             throws IllegalActionException;
-    
+
     private CompositeFigure _figure;
 }

@@ -45,7 +45,7 @@ import java.awt.geom.Point2D;
 //////////////////////////////////////////////////////////////////////////
 //// Translate2D
 
-/** 
+/**
 This actor represents a translation of a two-dimensional GR scene.
 
 @author Steve Neuendorffer
@@ -130,11 +130,11 @@ public class Translate2D extends GRTransform2D {
 
     /** Consume input tokens, and transform the given figure according
      * to the current state of the transform.  This method is invoked
-     * by this base classes during the fire() method.  
+     * by this base classes during the fire() method.
      *  @exception IllegalActionException If the value of some
      *  parameters can't be obtained.
      */
-    protected void _applyTransform(Figure figure) 
+    protected void _applyTransform(Figure figure)
             throws IllegalActionException {
         boolean applyTransform = false;
         double xOffset = 0.0;
