@@ -172,11 +172,12 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
     }
 
     protected void _buildEnviron() {
-        ApplicationUtility.trace(">Building env for class " + fullName());
-
+	ApplicationUtility.trace("ClassDecl._buildEnviron(): Building env " +
+				 "for class " + fullName());
         loadSource();
 
-        // builds environments for all recently loaded classes, including this one
+        // builds environments for all recently loaded classes, including
+	// this one
         StaticResolution.buildEnvironments();
 
         // If class didn't load, give it a dummy environment, etc
@@ -184,7 +185,8 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
             ApplicationUtility.error("class " + _name + " did not load, " +
                     "using dummy environment.");
 
-            _environ = new Environ(StaticResolution.SYSTEM_PACKAGE.getEnviron());
+            _environ =
+		new Environ(StaticResolution.SYSTEM_PACKAGE.getEnviron());
 
             setSuperClass(StaticResolution.OBJECT_DECL);
 

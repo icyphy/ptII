@@ -191,8 +191,6 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             TypeNameNode currentClass, JavaDecl currentPackage,
             int categories) {
 
-        //System.out.println("StaticResolution.resolveAName(): " +
-	//			 nameString(name));
         ApplicationUtility.trace("StaticResolution.resolveAName(): " +
 				 nameString(name));
 
@@ -201,6 +199,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             ApplicationUtility.trace("decl already defined");
             return name;
         }
+
+        //System.out.println("StaticResolution.resolveAName(): " +
+	//			 nameString(name));
 
         EnvironIter possibles = _findPossibles(name, env, currentClass,
                 currentPackage, categories);
@@ -226,6 +227,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         case CG_INTERFACE:
             {
                 ClassDecl classDecl = (ClassDecl) d;
+		//System.out.println("StaticResolution.resolveAName(): " +
+		//		   "about to call classDecl.loadSource() " +
+		//		   d.category + " " + classDecl.getName() );
+
                 classDecl.loadSource();
                 int modifiers = classDecl.getModifiers();
                 boolean isPublic = ((modifiers & PUBLIC_MOD) != 0);
@@ -678,20 +683,20 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         }
 
         if (!possibles.hasNext() & ((categories & CG_CLASS) == 1)) { 
-	    // Use reflection
-	    ClassDeclNode classDeclNode =
-		ASTReflect.lookupClassDeclNode(name.getIdent());
-	    // FIXME: what if this is an interface
-            ClassDecl classDecl = new ClassDecl(name.getIdent(),
-				      CG_CLASS,
-				      new TypeNameNode(classDeclNode.getName()),
-				      classDeclNode.getModifiers(),
-				      classDeclNode, null);
-	    System.out.println("possibles.hasNext false, reflection: " + classDecl);
-	    Environ environ = new Environ();
-	    classDecl.setEnviron(environ);
-	    environ.add(classDecl);
-	    possibles = ((Environ) environ).lookupFirst(name.getIdent(), categories);
+//  	    // Use reflection
+//  	    ClassDeclNode classDeclNode =
+//  		ASTReflect.lookupClassDeclNode(name.getIdent());
+//  	    // FIXME: what if this is an interface
+//              ClassDecl classDecl = new ClassDecl(name.getIdent(),
+//  				      CG_CLASS,
+//  				      new TypeNameNode(classDeclNode.getName()),
+//  				      classDeclNode.getModifiers(),
+//  				      classDeclNode, null);
+//  	    System.out.println("possibles.hasNext false, reflection: " + classDecl);
+//  	    Environ environ = new Environ();
+//  	    classDecl.setEnviron(environ);
+//  	    environ.add(classDecl);
+//  	    possibles = ((Environ) environ).lookupFirst(name.getIdent(), categories);
 	}
 
         if (!possibles.hasNext()) {
@@ -761,24 +766,47 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         if (decl == null) {
 	    System.out.println("StaticResolution:_requireClass(): using refl");
 	    // Use reflection
-	    ClassDeclNode classDeclNode= ASTReflect.lookupClassDeclNode(name);
-	    // FIXME: what if this is an interface??
-            classDecl = new ClassDecl(name,
-				      CG_CLASS,
-				      new TypeNameNode(classDeclNode.getName()),
-				      classDeclNode.getModifiers(),
-				      classDeclNode, null);
+	    Class myClass = ASTReflect.lookupClass(name);
+	    if (myClass.isInterface()) {
+		InterfaceDeclNode interfaceDeclNode =
+		    ASTReflect.ASTInterfaceDeclNode(myClass);
+		// FIXME: seems like this should be something other
+		// than classDecl, perhaps interfaceDecl or userTypeDecl?
+		classDecl = new ClassDecl(name,
+					  CG_INTERFACE,
+					  new TypeNameNode(interfaceDeclNode.getName()),
+					  interfaceDeclNode.getModifiers(),
+					  interfaceDeclNode, null);
 
-	    //classDecl =
-	    //   (ClassDecl) classDeclNode.getDefinedProperty(DECL_KEY);
-	    if (classDecl == null) {
-		ApplicationUtility.error("could not find class or " +
-					 "interface \"" + name + 
-					 "\" in bootstrap environment: "
-					 + env);
+		//interfaceDecl =
+		//   (ClassDecl) interfaceDeclNode.getDefinedProperty(DECL_KEY);
+		if (classDecl == null) {
+		    ApplicationUtility.error("could not find class or " +
+					     "interface \"" + name + 
+					     "\" in bootstrap environment: "
+					     + env);
+		}
+		env.add(classDecl);
+	    } {
+		ClassDeclNode classDeclNode =
+		    ASTReflect.ASTClassDeclNode(myClass);
+
+		classDecl = new ClassDecl(name,
+					  CG_CLASS,
+					  new TypeNameNode(classDeclNode.getName()),
+					  classDeclNode.getModifiers(),
+					  classDeclNode, null);
+
+		//classDecl =
+		//   (ClassDecl) classDeclNode.getDefinedProperty(DECL_KEY);
+		if (classDecl == null) {
+		    ApplicationUtility.error("could not find class or " +
+					     "interface \"" + name + 
+					     "\" in bootstrap environment: "
+					     + env);
+		}
+		env.add(classDecl);
 	    }
-	    env.add(classDecl);
-
         } else {
 	    if ((decl.category & (CG_CLASS | CG_INTERFACE)) == 0) {
 		ApplicationUtility.error("fatal error: " + decl.getName() +

@@ -235,8 +235,9 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
 
                     // make sure d was a legal override/hide of member
                     if ((mm & FINAL_MOD) != 0) {
-                        ApplicationUtility.error("cannot override final " +
-                                memberName);
+                        ApplicationUtility.error(to.getName() +
+						 ": cannot override final " +
+						 memberName);
                     }
 
                     /*

@@ -164,7 +164,7 @@ public class PackageDecl extends JavaDecl implements JavaStaticSemanticConstants
                         if (_environ.lookupProper(className, CG_USERTYPE) == null) {
 
                             //ApplicationUtility.trace("adding class/interface " +
-                            // className + " from " + dirName);
+                            //className + " from " + dirName);
 
                             _environ.add(new ClassDecl(className, this));
 

@@ -59,6 +59,7 @@ public class ASTReflect {
 
 	// Get the classname, and strip off the package.
 	String fullClassName = myClass.getName();
+	// FIXME: should we use the full classname with package here?
 	NameNode className =
 	    new NameNode(AbsentTreeNode.instance,
                     fullClassName.substring(1 +
@@ -73,23 +74,28 @@ public class ASTReflect {
 	    int interfaceModifiers =
 		Modifier.convertModifiers(interfaceClasses[i].getModifiers());
 
-	    //NameNode interfaceName =
-	    //	(NameNode) _makeNameNode(interfaceClasses[i].getName());
+	    NameNode interfaceName =
+	    	(NameNode) _makeNameNode(interfaceClasses[i].getName());
 
-	    String fullInterfaceName = interfaceClasses[i].getName();
+	    TypeNode interfaceDeclNode =
+                new TypeNameNode(interfaceName);
+
+	    //String fullInterfaceName = interfaceClasses[i].getName();
 	    // FIXME: We should probably use the fully qualified name here?
 	    //TypeNode interfaceDeclNode =
             //    new TypeNameNode(new NameNode(AbsentTreeNode.instance,
             //            fullInterfaceName.substring(1 +
             //                    fullInterfaceName.lastIndexOf('.')
             //                                        )));
-	    TypeNode interfaceDeclNode =
-                new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-                        fullInterfaceName));
 
-	    /* FIXME: The output of Skelton does not seem to use
-	     * InterfaceDeclNode?
-	     */
+	    //TypeNode interfaceDeclNode =
+            //    new TypeNameNode(new NameNode(AbsentTreeNode.instance,
+            //           fullInterfaceName));
+
+	    
+	    // FIXME: The output of Skelton does not seem to use
+	    // InterfaceDeclNode?
+	    //
 	    //InterfaceDeclNode interfaceDeclNode =
 	    //	new InterfaceDeclNode(modifiers,
 	    //			      interfaceName,
@@ -113,16 +119,14 @@ public class ASTReflect {
 	// Get the AST for all the inner classes.
 	memberList.addAll(innerClassesASTList(myClass));
 
-	TreeNode superClass = null;
+	TypeNameNode superClass = null;
         if (myClass.getSuperclass() == null ) {
             // JDK1.2.2 getSuperclass can return null
             // FIXME: should this be java.lang.Object?
-            superClass =
-                (TreeNode) _makeNameNode("Object");
-
+            superClass = new TypeNameNode((NameNode)_makeNameNode("Object"));
         } else {
             superClass =
-		    (TreeNode) _makeNameNode(myClass.getSuperclass().getName());
+		new TypeNameNode((NameNode)_makeNameNode(myClass.getSuperclass().getName()));
         }
 
 	ClassDeclNode classDeclNode =
@@ -141,7 +145,7 @@ public class ASTReflect {
      *  about the package.
      */
     public static CompileUnitNode ASTCompileUnitNode(Class myClass) {
-	ClassDeclNode classDeclNode = ASTClassDeclNode(myClass);
+
         NameNode packageName = null;
         if (myClass.getPackage() == null ) {
             // JDK1.2.2 getPackage returns null
@@ -155,11 +159,22 @@ public class ASTReflect {
 	// we could look at the return values and args and import
 	// anything outside of the package.
 
-        CompileUnitNode compileUnitNode =
-            new CompileUnitNode(packageName,
-                    /*imports*/ new LinkedList(),
-                    TNLManip.cons(classDeclNode));
-
+	CompileUnitNode compileUnitNode = null;
+	if (myClass.isInterface()) {
+	    InterfaceDeclNode interfaceDeclNode =
+		ASTInterfaceDeclNode(myClass);
+	    compileUnitNode =
+		new CompileUnitNode(packageName,
+				    /*imports*/ new LinkedList(),
+				    TNLManip.cons(interfaceDeclNode));
+	} else {
+	    ClassDeclNode classDeclNode =
+		ASTClassDeclNode(myClass);
+	    compileUnitNode =
+		new CompileUnitNode(packageName,
+				    /*imports*/ new LinkedList(),
+				    TNLManip.cons(classDeclNode));
+	}
 	return compileUnitNode;
     }
 
@@ -173,10 +188,12 @@ public class ASTReflect {
 	    int modifiers =
                 Modifier.convertModifiers(constructor.getModifiers());
 	    String fullConstructorName = constructor.getName();
+	    // FIXME: should we use the full name with package here?
 	    NameNode constructorName =
 		new NameNode(AbsentTreeNode.instance,
                         fullConstructorName.substring(1 +
                                 fullConstructorName.lastIndexOf('.')));
+
 	    List paramList = _paramList(constructor.getParameterTypes());
 
 	    // FIXME: call method.getExceptionTypes and convert it to a list.
@@ -208,6 +225,8 @@ public class ASTReflect {
                 Modifier.convertModifiers(fields[i].getModifiers());
 	    TypeNode defType = _definedType(fields[i].getType());
 	    String fullFieldName = fields[i].toString();
+	    // FIXME: should we use the full name with package here?
+
 	    NameNode fieldName =
 		new NameNode(AbsentTreeNode.instance,
                         fullFieldName.substring(1 +
@@ -235,6 +254,59 @@ public class ASTReflect {
 	    innerClassList.add(ASTClassDeclNode(classes[i]));
 	}
     	return innerClassList;
+    }
+
+    /** Return an AST that contains an interface declaration. */
+    public static InterfaceDeclNode ASTInterfaceDeclNode(Class myClass) {
+	int modifiers =
+	    Modifier.convertModifiers(myClass.getModifiers());
+
+	// Get the classname, and strip off the package.
+	String fullClassName = myClass.getName();
+	// FIXME: should we use the full classname with package here?
+	NameNode className =
+	    new NameNode(AbsentTreeNode.instance,
+                    fullClassName.substring(1 +
+                            fullClassName.lastIndexOf('.')));
+
+	// Unfortunately, we can't use Arrays.asList() here since
+	// what getParameterTypes returns of type Class[], and
+	// what we want is a list of InterfaceDeclNodes
+	List interfaceList = new LinkedList();
+	Class interfaceClasses[] = myClass.getInterfaces();
+	for(int i = 0; i < interfaceClasses.length; i++) {
+	    int interfaceModifiers =
+		Modifier.convertModifiers(interfaceClasses[i].getModifiers());
+
+	    NameNode interfaceName =
+	    	(NameNode) _makeNameNode(interfaceClasses[i].getName());
+
+	    TypeNode interfaceDeclNode =
+                new TypeNameNode(interfaceName);
+
+	    interfaceList.add(interfaceDeclNode);
+	}
+
+	LinkedList memberList = new LinkedList();
+
+	// Get the AST for all the constructor.
+	memberList.addAll(constructorsASTList(myClass));
+
+	// Get the AST for all the methods.
+	memberList.addAll(methodsASTList(myClass));
+
+	// Get the AST for all the fields.
+	memberList.addAll(fieldsASTList(myClass));
+
+	// Get the AST for all the inner classes.
+	memberList.addAll(innerClassesASTList(myClass));
+
+	InterfaceDeclNode interfaceDeclNode =
+	    new InterfaceDeclNode(modifiers,
+				  className,
+				  interfaceList,
+				  memberList);
+	return interfaceDeclNode;
     }
 
     /** Given a pathname, try to find a class that corresponds with it
@@ -272,10 +344,11 @@ public class ASTReflect {
 	}
     }
 
+    /** Lookup a class by name, return the ClassDeclNode
+     */
     public static ClassDeclNode lookupClassDeclNode(String name) {
             return ASTClassDeclNode(lookupClass(name));
     }
-
 
     /** Return a List containing an AST that describes the methods
      *	for myclass.
@@ -365,12 +438,11 @@ public class ASTReflect {
 	
     }
 
-    /** Print the AST for ptolemy.lang.java.Skeleton for testing purposes. */
+    /** Print the AST of the command line argument for testing purposes. */
     public static void main(String[] args) {
 	try {
 	    System.out.println("ast: " +
-                    ASTCompileUnitNode(Class.forName(
-                            "ptolemy.lang.java.test.ReflectTest")));
+                    ASTCompileUnitNode(lookupClass(args[0])));
 	} catch (Exception e) {
 	    System.err.println("Error: " + e);
 	    e.printStackTrace();
@@ -400,10 +472,9 @@ public class ASTReflect {
 		} else {
 		    fullClassName = componentClass.getName();
 		    NameNode className =
-			new NameNode(AbsentTreeNode.instance,
-                                fullClassName.substring(1 +
-                                        fullClassName.lastIndexOf('.')));
+			(NameNode) _makeNameNode(fullClassName);
 		    baseType = new TypeNameNode(className);
+
 		}
 	    }
 	    defType =
@@ -413,11 +484,9 @@ public class ASTReflect {
 		return _primitiveTypeNode(myClass);
 	    } else {
 		fullClassName = myClass.getName();
-		defType =
-		    new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-                            fullClassName.substring(1 +
-                                    fullClassName.lastIndexOf('.')
-                                                    )));
+		NameNode className =
+		    (NameNode) _makeNameNode(fullClassName);
+		defType = new TypeNameNode(className);
 	    }
 
 	}
@@ -434,12 +503,14 @@ public class ASTReflect {
 
         int firstDotPosition;
 
+	//System.out.println("ASTReflect._makeNameNode("+ qualifiedName + ")");
         do {
             firstDotPosition = qualifiedName.indexOf('.');
 
+	    // FIXME: should we not further qualify things in java.lang
+	    // since they will be found anyway?
             if (firstDotPosition > 0) {
                 String ident = qualifiedName.substring(0, firstDotPosition);
-
 
                 retval = new NameNode(retval, ident);
 

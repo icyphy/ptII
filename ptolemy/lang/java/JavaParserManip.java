@@ -91,26 +91,33 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
 	if (javaFile.length() == 0) {
 	    Class myClass = ASTReflect.pathnameToClass(filename);
 	    if (myClass != null) {
-		System.out.println("JavaParserManip: Calling ASTCompileUnitNode on " + myClass.getName());
-		return ASTReflect.ASTCompileUnitNode(myClass);
+		ApplicationUtility.trace("JavaParserManip: Calling " +
+					 "ASTCompileUnitNode on " + 
+					 myClass.getName());
+		loadedAST = ASTReflect.ASTCompileUnitNode(myClass);
 	    }
+	} else {
+	    JavaParser p = new JavaParser();
+
+	    ApplicationUtility.trace("JavaParserManip: Calling " +
+				     "JavaParser.init() " + 
+				     StringManip.rawFilename(filename));
+
+	    try {
+		p.init(filename);
+	    } catch (Exception e) {
+		ApplicationUtility.error("error opening " + filename +
+					 " : " + e);
+	    }
+
+	    p.yydebug = debug;
+	    p.yyparse();
+	    
+	    loadedAST = p.getAST();
+
+	    // Get the part of the filename before the last '.'
+	    filename = StringManip.partBeforeLast(filename, '.');
 	}
-
-        JavaParser p = new JavaParser();
-
-        try {
-            p.init(filename);
-        } catch (Exception e) {
-            ApplicationUtility.error("error opening " + filename + " : " + e);
-        }
-
-        p.yydebug = debug;
-        p.yyparse();
-
-        loadedAST = p.getAST();
-
-        // get the part of the filename before the last '.'
-        filename = StringManip.partBeforeLast(filename, '.');
 
         loadedAST.setProperty(IDENT_KEY, filename);
 

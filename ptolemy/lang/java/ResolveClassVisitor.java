@@ -127,6 +127,10 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         } else {
 	    try {
 		//superDecl = (ClassDecl) JavaDecl.getDecl((NamedNode) superClass);
+		ApplicationUtility.trace("ResolveClassVisitor." +
+					 "visitClassDeclNode():" +
+					 "Calling JavaDecl.getDecl " + 
+					 superClass);
 		superDecl = (ClassDecl) JavaDecl.getDecl(superClass);
 	    } catch (Exception e) {
 		throw new RuntimeException("ResolveClassVisitor.visitClassDeclNode() node=" +
@@ -137,7 +141,10 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 					   ": " + e);
 	    }
         }
-
+	ApplicationUtility.trace("ResolveClassVisitor.visitClassDeclNode(): " +
+			   node.getName().getIdent() +
+			   ": " + superDecl + ": " +
+			   superClass + ": " + StaticResolution.OBJECT_DECL );
         if ((superDecl != null) && (superDecl.category != CG_CLASS)) {
             ApplicationUtility.error("class " + node.getName().getIdent() +
                     " cannot extend interface " + superDecl.getName());
@@ -157,9 +164,10 @@ public class ResolveClassVisitor extends ResolveVisitorBase
             ClassDecl intf = (ClassDecl) JavaDecl.getDecl(
                     (NamedNode) interfaceItr.next());
 
-            if (intf.category != CG_INTERFACE) {
+            if ((intf.category & CG_INTERFACE) == 0) {
                 ApplicationUtility.error("class " + node.getName().getIdent() +
-                        " cannot implement class " + intf.getName());
+                        " cannot implement class " + intf.getName() +
+			" " + intf.category);
             }
             declInterfaceList.addLast(intf);
         }
@@ -259,9 +267,10 @@ public class ResolveClassVisitor extends ResolveVisitorBase
             ClassDecl intf = (ClassDecl) JavaDecl.getDecl(
                     (NamedNode) interfaceItr.next());
 
-            if (intf.category != CG_INTERFACE) {
+            if ((intf.category & CG_INTERFACE) == 0) {
                 ApplicationUtility.error("class " + node.getName().getIdent() +
-                        " cannot implement class " + intf.getName());
+                        " cannot implement class " + intf.getName() +
+			" " + intf.category);
             }
             declInterfaceList.addLast(intf);
         }
@@ -346,16 +355,25 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         if (classDecl.category == CG_CLASS) {
 
             // private methods or methods in private or final classes are final
-            if ((modifiers & PRIVATE_MOD) != 0) {
-                modifiers |= FINAL_MOD;
-            }
+	    //
+	    // FIXME: I'm not sure if the above is true, so I've commented
+	    // out the code below
+	    // sun.misc.URLClassPath$JarLoader extends 
+	    // sun.misc.URLClassPath$Loader
+	    // both have a getResource(java.lang.String, boolean) method
+	    // To verify, use
+	    // javap sun.misc.URLClassPath\$Loader
+	    // javap sun.misc.URLClassPath\$JarLoader
 
-            int classMod = classDecl.getModifiers();
+//              if ((modifiers & PRIVATE_MOD) != 0) {
+//                  modifiers |= FINAL_MOD;
+//              }
 
-            if ((classMod & (PRIVATE_MOD | FINAL_MOD)) != 0) {
-                modifiers |= FINAL_MOD;
-            }
+//              int classMod = classDecl.getModifiers();
 
+//              if ((classMod & (PRIVATE_MOD | FINAL_MOD)) != 0) {
+//                  modifiers |= FINAL_MOD;
+//              }
         } else {
             // we are inside an interface, all methods are abstract,
             // and public if the enclosing interface is public
@@ -373,8 +391,12 @@ public class ResolveClassVisitor extends ResolveVisitorBase
                             "synchronized, or native with abstract");
                 }
             } else if ((modifiers & NATIVE_MOD) == 0) {
-                ApplicationUtility.error("abstract or native modifier  required on " +
-                        " methods without a body");
+		// If we are using reflection, then the method will not
+		// have a body.  The skeleton mechanism uses a hack
+		// to mark everything as native in the .jskel files to
+		// get by this.
+                //ApplicationUtility.error("abstract or native modifier " +
+		// required on  methods without a body");
             }
         } else if ((modifiers & (ABSTRACT_MOD | NATIVE_MOD)) != 0) {
             ApplicationUtility.error("an abstract or native method " +
