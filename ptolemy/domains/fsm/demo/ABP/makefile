@@ -47,7 +47,6 @@ CLASSPATH = 	../../../../..
 
 # Used to build jar files
 PTPACKAGE = 	ABP
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
@@ -76,7 +75,6 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass $(PTCLASSJAR)
-
 
 depend:
 	@echo "no dependencies in this directory"
