@@ -72,7 +72,9 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-        doc
+        doc \
+	'Receiver$$1.class' \
+	'Receiver$$CommandListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
