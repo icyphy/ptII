@@ -36,7 +36,6 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.event.*;
 import ptolemy.data.*;
 
-import collections.LinkedList;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
