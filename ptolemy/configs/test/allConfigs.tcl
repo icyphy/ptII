@@ -202,7 +202,9 @@ foreach i $configs {
 				\thas $size constraints, \
 				that differ from the $cloneSize \
                                 constraints its clone has."
-			
+			#set diff [diffText $c $cc]
+			#puts $diff
+
 			#set c [join [jdkPrintArray 
 			#	[$constraints toArray] "\n" ] "\n"]
 			#set cc [join [jdkPrintArray 
