@@ -209,7 +209,7 @@ public class ExternalIOPortController extends AttributeController {
                         // It would be better to couple these to the
                         // parameters by position, but this is impossible
                         // in diva, so we assign a special color.
-			fill = Color.green;
+			fill = Color.lightGray;
                     } else if (ioport.isMultiport()) {
 			fill = Color.white;
 		    } else {

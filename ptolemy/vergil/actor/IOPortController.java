@@ -44,15 +44,27 @@ import diva.graph.GraphModel;
 import diva.graph.NodeRenderer;
 import diva.util.java2d.Polygon2D;
 import diva.util.java2d.Polygon2D.Double;
+
 import ptolemy.actor.IOPort;
+import ptolemy.actor.gui.DebugListenerTableau;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TextEffigy;
+import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.Typeable;
+import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
+import ptolemy.vergil.basic.BasicGraphController;
+import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.toolbox.MenuActionFactory;
 
-import javax.swing.SwingUtilities;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// IOPortController
@@ -91,6 +103,10 @@ public class IOPortController extends AttributeController {
 	super(controller, access);
 	setNodeRenderer(new EntityPortRenderer());
 
+        // "Listen to Actor"
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(new ListenToPortAction()));
+
 	// Ports of entities do not use a selection interactor with
 	// the same selection model as the rest of the first level figures.
 	// If this were allowed, then the port would be able to be deleted.
@@ -119,12 +135,16 @@ public class IOPortController extends AttributeController {
 	    polygon.lineTo(-4, -4);
 	    polygon.closePath();
             Color fill;
-            if (port instanceof IOPort && ((IOPort)port).isMultiport()) {
+            float lineWidth = (float)1.5;
+            if (port instanceof ParameterPort) {
+                fill = Color.lightGray;
+                lineWidth = (float)0.0;
+            } else if (port instanceof IOPort && ((IOPort)port).isMultiport()) {
                 fill = Color.white;
             } else {
                 fill = Color.black;
             }
-	    Figure figure = new BasicFigure(polygon, fill, (float)1.5) {
+	    Figure figure = new BasicFigure(polygon, fill, lineWidth) {
                 // Override this because we want to show the type.
                 // It doesn't work to set it once because the type
                 // has not been resolved, and anyway, it may change.
@@ -170,5 +190,50 @@ public class IOPortController extends AttributeController {
 	    figure = new TerminalFigure(figure, tsite);
 	    return figure;
 	}
+    }
+
+    // An action to listen to debug messages of the port.
+    private class ListenToPortAction extends FigureAction {
+        public ListenToPortAction() {
+            super("Listen to Port");
+        }
+        public void actionPerformed(ActionEvent e) {
+            if (_configuration == null) {
+                MessageHandler.error(
+                        "Cannot listen to port without a configuration.");
+                return;
+            }
+
+            // Determine which entity was selected for the listen to
+            // port action.
+            super.actionPerformed(e);
+            NamedObj object = getTarget();
+            try {
+                BasicGraphController controller =
+                        (BasicGraphController)getController();
+                BasicGraphFrame frame = controller.getFrame();
+                Tableau tableau = frame.getTableau();
+
+                // effigy is of the whole model.
+                Effigy effigy = (Effigy)tableau.getContainer();
+                
+                // We want to open a new window that behaves as a
+                // child of the model window.  So, we create a new text
+                // effigy inside this one.  Specify model's effigy as
+                // a container for this new effigy.
+                Effigy textEffigy = new TextEffigy(effigy,
+                        effigy.uniqueName("debugListener" + object.getName()));
+                
+                DebugListenerTableau debugTableau =
+                    new DebugListenerTableau(textEffigy,
+                            textEffigy.uniqueName("debugListener"
+                                    + object.getName()));
+                debugTableau.setDebuggable(object);
+            }
+            catch (KernelException ex) {
+                MessageHandler.error(
+                        "Failed to create debug listener.", ex);
+            }
+        }
     }
 }
