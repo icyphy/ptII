@@ -68,7 +68,7 @@ public class JAIInvert extends Transformer {
     ////                         public methods                    ////
     
     /** Fire this actor.
-     *  Output the scaled RenderedOp.
+     *  Output the inverted RenderedOp.
      *  @exception IllegalActionException If a contained method throws it,
      *   or if a token is received that contains a null image.
      */
