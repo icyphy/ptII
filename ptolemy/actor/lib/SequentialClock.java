@@ -88,7 +88,7 @@ This actor is a timed source; the untimed version is Pulse.
 public class SequentialClock extends TypedAtomicActor implements SequenceActor {
 
     // NOTE: This cannot extend Source, because it doesn't have a trigger
-    // input.  This is too bad, since it results in alot of duplicated
+    // input.  This is too bad, since it results in a lot of duplicated
     // code with Clock.
 
     /** Construct an actor with the specified container and name.
