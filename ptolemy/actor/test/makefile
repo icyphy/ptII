@@ -49,11 +49,12 @@ JSRCS = \
 	IdentityActor.java \
 	TestTypeListener.java \
 	TestActor.java \
+	TestTypedIORelation.java \
 	TypedTestActor.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
- 	AtomicActor.tcl \
+	AtomicActor.tcl \
 	CompositeActor.tcl \
 	Director.tcl \
 	Manager.tcl \
