@@ -413,7 +413,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *   already contains an object with this name.
      */
     public void setName(String name) throws NameDuplicationException {
-        String oldname = getFullName();
+        String oldName = getFullName();
         if (name == null) {
             name = new String("");
         }
@@ -423,7 +423,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         } finally {
             workspace().doneWriting();
         }
-        _debug("Changed name from " + oldname + " to " + getFullName());
+        _debug("Changed name from " + oldName + " to " + getFullName());
     }
 
     /** Return the class name and the full name of the object,
