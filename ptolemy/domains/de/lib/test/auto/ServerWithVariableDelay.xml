@@ -18,16 +18,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
     </property>
-    <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
-        <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Aug 12, 2004 3:24:40 PM">
-        </property>
-        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Aug 13, 2004 11:43:04 AM">
-        </property>
-        <property name="author" class="ptolemy.kernel.util.StringAttribute" value="hyzheng">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 65.0]">
-        </property>
-    </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Variable service time as the output from a clock.&#10;Period 2.0, offsets [0.0, 1.0], delays [1.5, 0.5]">
         </property>
