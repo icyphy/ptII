@@ -313,7 +313,7 @@ public class SigmaDeltaApplet extends Applet {
             solver1.parameterChanged(null);
 
             Parameter solver2 =
-                (Parameter)ctdir.getAttribute("DefaultODESolver");
+                (Parameter)ctdir.getAttribute("ODESolver");
             StringToken token2 = new StringToken("ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
             solver2.setToken(token2);
             solver2.parameterChanged(null);
