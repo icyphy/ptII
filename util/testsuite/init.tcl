@@ -34,8 +34,6 @@
 # from within an Tcl interpreter that has Tcl Blend.
 
 if {[package versions java] != ""} {
-
-
     puts "Sourcing [file join $TYCHO java pt kernel test init.tcl]"
     puts "Type 'helpTclBlend' for a list of Tcl Blend helper procs."
     source [file join $TYCHO java pt kernel test testDefs.tcl]
@@ -48,4 +46,17 @@ proc helpTclBlend {} {
 	    getJavaInfo {obj} - Print the fields, methods and other info\n\
 	    enumToNames {enum} - Given a enum of Nameables, print the names\n\
 	    description2TclBlend {desc} - return Tcl Blend version of desc"
+    global TYCHO env
+    puts "Variables and Environment:"
+    if [info exists env(CLASSPATH)] {
+	puts " TYCHO =          '$TYCHO'\n\
+		CLASSPATH =      '$env(CLASSPATH)'"
+    } else {
+	puts " TYCHO = '$TYCHO'\n CLASSPATH = is not set in the environment"
+    }
+    if {[package versions java] != ""} {
+	global tcl_patchLevel
+	puts " tcl_patchLevel = $tcl_patchLevel\n\
+		java version =   [java::call System getProperty "java.version"]"
+    }
 }
