@@ -42,34 +42,43 @@ proc readin { infile } {
     set fd [open $infile r]
     # sawPage is true if we've seen %%Page:
     set sawPage 0 
+    # After we see '%%Page:', skip until we see another line that starts
+    # with %.  This gets rid of some of the annoying boxes that are
+    # in the ptplot output
+    set sawFirstPercentAfterPage 0
     set pscript ""
     while {[gets $fd line] >= 0} {
 	# puts "---> $line"
 	if [regexp {^%%Page:} $line] {
 	    set sawPage 1 
-	}
-	if { !$sawPage } {
-	    if [regexp {/PageSize \[([^ ]*) ([^ ]*)\]} $line a x y] {
-		global xmax ymax
-		set xmax $x
-		set ymax $y
-	    }
 	} else {
-	    if [regexp {^%} $line] {
-		# If it starts with a %, comment it out
-		append pscript "puts \{# $line\}\n"
-		append pscript "parsePercent {$line}\n"
-	    } else {
-		set linelist [split $line]
-		set command [lindex $linelist end]
-		set arglist [lrange $linelist 0 \
-				[expr {[llength $linelist] -2}]]\n
-		if { "$command" == "SC" } {
-		    global colorlist
-		    set colorlist [addToColorList $colorlist [string trim $arglist]]
+	    if { !$sawPage } {
+		if [regexp {/PageSize \[([^ ]*) ([^ ]*)\]} $line a x y] {
+		    global xmax ymax
+		    set xmax $x
+		    set ymax $y
 		}
-		append pscript "$command $arglist"
-	    }	    
+	    } else {
+		if [regexp {^%} $line] {
+		    set sawFirstPercentAfterPage 1
+		    # If it starts with a %, comment it out
+		    append pscript "puts \{# $line\}\n"
+    		    append pscript "parsePercent {$line}\n"
+    	        } else {
+		    if { $sawFirstPercentAfterPage } { 
+			set linelist [split $line]
+			set command [lindex $linelist end]
+			set arglist [lrange $linelist 0 \
+				[expr {[llength $linelist] -2}]]\n
+			if { "$command" == "SC" } {
+			    global colorlist
+			    set colorlist [addToColorList $colorlist \
+				    [string trim $arglist]]
+			}
+			append pscript "$command $arglist"
+		    }
+		}	    
+	    }
 	}
     }
     mifInit
@@ -133,6 +142,8 @@ proc mifColors {colorlist} {
 	puts "  <ColorCyan [expr {[lindex $color 0] / 255.0 * 100.0}]>"
 	puts "  <ColorMagenta [expr {[lindex $color 1] / 255.0 *100.0}]>"
 	puts "  <ColorYellow [expr {[lindex $color 2] / 255.0 * 100.0}]>"
+	puts "  <ColorBlack [expr {(([lindex $color 0] + [lindex $color 1] + \
+		[lindex $color 2])/3.0) / 255.0 * 100.0}]>"
 	puts " >"
     } 
     puts ">"
@@ -310,7 +321,7 @@ proc RC {args} {
 # /RF {R fill} BD
 proc RF {args} {
     debug "Region Fill RF $args"
-    puts "<PolyLine\n <GroupID 1>\n <Pen 0>\n <Fill 7>\n <HeadCap Butt>"
+    puts "<PolyLine\n <GroupID 1>\n <Pen 0>\n <Fill 0>\n <HeadCap Butt>"
     puts " <PenWidth 0.5>\n[ObColor]\n <DashedPattern <DashedStyle Solid>>"
     puts " <Point [mapx [lindex $args 0]] [mapy [lindex $args 1]]>"
 
@@ -349,7 +360,7 @@ proc SC {args} {
     set a [string trim $args]
     set currentColor "Color[lsearch $colorlist $a]"
     if { "$a" == "255 255 255" } {
-	set currentColor "Black"
+	set currentColor "White"
     }
     if { "$a" == "0 0 0" } {
 	#set currentColor "White"
