@@ -1610,11 +1610,18 @@ public class IOPort extends ComponentPort {
         _invalidate();
     }
 
-    /** Return a list of the ports that can accept data from this port
-     *  when it sends on the inside.  This includes
+    /** Return a list of the ports that may accept data from this port
+     *  when it sends on the inside.  In this base class, this includes
      *  both input ports and opaque output ports that are
-     *  connected on the inside to this port. This port must
+     *  connected on the inside to this port, which are the ports that
+     *  will receive data from this one if data is sent on the inside.
+     *  However, derived classes are free to return ports on this list
+     *  that <i>may</i> receive data from this port, even if they are
+     *  not actually currently connected.  The wireless domain, for
+     *  example, takes advantage of this and includes ports on the
+     *  inside that share the same channel. This port must
      *  be an opaque input port, otherwise return an empty list.
+     *  @see #deepGetReceivers()
      *  @return A list of IOPort objects.
      */
     public List insideSinkPortList() {
@@ -1650,9 +1657,14 @@ public class IOPort extends ComponentPort {
     }
 
     /** Return a list of the ports that can send data to this port
-     *  from the inside.  This includes
-     *  both output ports and opaque input ports that are
-     *  connected on the inside to this port. This port must
+     *  from the inside.  This includes both output ports and opaque
+     *  input ports that are connected on the inside to this port.
+     *  These are the ports that will send data from this one from the inside.
+     *  However, derived classes are free to return ports on this list
+     *  that <i>may</i> send data to this port, even if they are
+     *  not actually currently connected.  The wireless domain, for
+     *  example, takes advantage of this and includes ports on the
+     *  inside that share the same channel. This port must
      *  be an opaque output port, otherwise return an empty list.
      *  @return A list of IOPort objects.
      */
@@ -1944,7 +1956,7 @@ public class IOPort extends ComponentPort {
         _invalidate();
     }
 
-    /** Return the number of sink ports that can receive data from this one.
+    /** Return the number of sink ports that may receive data from this one.
      *  This is the number of ports returned by sinkPortList(), but
      *  this method is more efficient to call than that one if you only
      *  need to know how many ports there are (because the result is cached).
@@ -1970,7 +1982,7 @@ public class IOPort extends ComponentPort {
         return _numberOfSinks;
     }
 
-    /** Return the number of source ports that can send data to this one.
+    /** Return the number of source ports that may send data to this one.
      *  This is the number of ports returned by sourcePortList(), but
      *  this method is more efficient to call than that one if you only
      *  need to know how many ports there are (because the result is cached).
@@ -2347,10 +2359,18 @@ public class IOPort extends ComponentPort {
         _workspace.doneWriting();
     }
 
-    /** Return a list of the ports that can accept data from this port when
+    /** Return a list of the ports that may accept data from this port when
      *  it sends on the outside.  This includes
      *  opaque input ports that are connected on the outside to this port
      *  and opaque output ports that are connected on the inside to this one.
+     *  These are the ports that
+     *  will receive data from this one if data is sent on the outside.
+     *  However, derived classes are free to return ports on this list
+     *  that <i>may</i> receive data from this port, even if they are
+     *  not actually currently connected.  The wireless domain, for
+     *  example, takes advantage of this and includes ports on the
+     *  outside that share the same channel.
+     *  @see #getRemoteReceivers()
      *  @return A list of IOPort objects.
      */
     public List sinkPortList() {
@@ -2379,10 +2399,16 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Return a list of ports that can send data to this port from the
-     *  outside.  This includes all
-     *  opaque output ports that are connected on the outside to this port,
-     *  and opaque input ports that are connected on the inside to this port.
+    /** Return a list of ports that may send data to this port from the
+     *  outside.  This includes all opaque output ports that are
+     *  connected on the outside to this port, and opaque input ports
+     *  that are connected on the inside to this port. These are the ports that
+     *  will send data to this one.
+     *  However, derived classes are free to return ports on this list
+     *  that <i>may</i> send data to this port, even if they are
+     *  not actually currently connected.  The wireless domain, for
+     *  example, takes advantage of this and includes ports on the
+     *  outside that share the same channel.
      *  @return A list of IOPort objects, or an empty list if there are none.
      */
     public List sourcePortList() {
