@@ -53,7 +53,7 @@ public abstract class ODFStringSource extends ODFSourceActor {
         super(container, name);
 
 	_output = new ODFIOPort( this, "output", false, true ); 
-	_output.setDeclaredType(StringToken.class);
+	_output.setTypeEquals(StringToken.class);
         
     }
  

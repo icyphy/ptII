@@ -94,8 +94,8 @@ public class ODFSourceActor extends ODFActor {
         _reinvokeRelation = 
 	        new TypedIORelation( container, name + "_innerRel" );
 
-	_reinvokeInPort.setDeclaredType(Token.class);
-	_reinvokeOutPort.setDeclaredType(Token.class);
+	_reinvokeInPort.setTypeEquals(Token.class);
+	_reinvokeOutPort.setTypeEquals(Token.class);
 
         _reinvokeInPort.link( _reinvokeRelation );
         _reinvokeOutPort.link( _reinvokeRelation );
