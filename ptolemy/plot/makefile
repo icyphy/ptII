@@ -47,7 +47,7 @@ include $(CONFIG)
 PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    Pxgraph.java, index.html, doc/internals/changes.html
-PTVERSION =	2.1
+PTVERSION =	2.2
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
