@@ -1,4 +1,4 @@
-# Makefile the Ptolemy II test suyite that uses Tcl Blend
+# Makefile the Ptolemy II test suite that uses Tcl Blend
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -28,9 +28,6 @@
 # 
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
 
 # Root of the Java directory
 ROOT =		../..
