@@ -48,6 +48,13 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
+	expressions2.gif \
+	expressions3.gif \
+	expressions4.gif \
+	expressions5.gif \
+	expressions6.gif \
+	expressions7.gif \
+	expressionsa.gif \
 	ptIIplanet.gif \
 	PtolemyIISmall.gif
 
@@ -61,13 +68,6 @@ EXTRA_SRCS = \
 	PtolemyIISmallIcon.gif \
 	banner.gif \
 	banner.psd \
-	expressions2.gif \
-	expressions3.gif \
-	expressions4.gif \
-	expressions5.gif \
-	expressions6.gif \
-	expressions7.gif \
-	expressionsa.gif \
 	next.gif \
 	next_g.gif \
 	prev.gif \
