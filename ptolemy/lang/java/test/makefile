@@ -86,7 +86,7 @@ generate_codegen:
 	@if [ ! -d $(JAVASRC_STUBS) ]; then \
 		echo "Warning $(JAVASRC_STUBS) does not exist"; \
 	fi
-	CLASSPATH=$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS) \
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS)" \
 	$(JAVA) -DPTII=$(ROOT) \
 		ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 		-class  ptolemy.domains.sdf.demo.orthocom.OrthogonalComSystem \
