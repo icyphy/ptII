@@ -984,7 +984,7 @@ public class PlotBox extends Applet {
 	// Can't call this setBackground, or we will get confused
 	// with the Component method.
 	_background = background;
-	System.out.println("PlotBox: saveBackground:" + _background);
+	setBackground(_background);
     }
 
     /** Set the binary flag to true if we are reading pxgraph format binary
@@ -1009,6 +1009,7 @@ public class PlotBox extends Applet {
 	// Can't call this setForeground, or we will get confused
 	// with the Component method.
 	_foreground = foreground;
+	setForeground(_foreground);
     }
 
     /**
