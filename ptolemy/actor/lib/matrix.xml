@@ -9,7 +9,6 @@
 <entity name="DoubleToMatrix" class="ptolemy.domains.sdf.lib.DoubleToMatrix"/>
 <entity name="MatrixToDouble" class="ptolemy.domains.sdf.lib.MatrixToDouble"/>
 <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer"/>
-<entity name="MatrixVisualizer" class="ptolemy.actor.lib.gui.MatrixVisualizer"/>
       </group>
     ?>
   </configure>
