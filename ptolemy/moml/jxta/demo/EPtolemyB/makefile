@@ -81,7 +81,7 @@ Gaussian.class:
 
 demo:
 	@echo "Don't forget to run"
-	@echo "   cd $PTII/ptolemy/moml/jxta/demo/EPtolemyA; make demo"
+	@echo "   cd ../EPtolemyA; make demo"
 	@echo "in another window"
 	safePTII=`echo "$(PTII)" | sed 's@\\\@/@g'`; \
 	"$(ROOT)/bin/moml" "$$safePTII/ptolemy/moml/jxta/jxta.xml" \
