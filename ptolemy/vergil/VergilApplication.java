@@ -114,6 +114,15 @@ public class VergilApplication extends MDIApplication {
         final DesktopContext context = new DesktopContext(frame, palettePane);
         setAppContext(context);
 
+	Clipboard clipboard;
+	try {
+	    clipboard = 
+		java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
+	} catch (SecurityException ex) {
+	    clipboard = new Clipboard(getTitle());
+	}
+	setClipboard(clipboard);
+	
 	// Handle exceptions thrown by awt events in a nice way.
 	ApplicationExceptionHandler.setApplication(this);
 
