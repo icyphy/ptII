@@ -53,7 +53,8 @@ CLASSPATH = ../../../..
 
 JSRCS = \
 	PNInterleavingExample.java \
-	PNPrimeExample.java
+	PNPrimeExample.java \
+	TimedPrimeExample.java
 
 EXTRA_SRCS =	$(JSRCS)
 
