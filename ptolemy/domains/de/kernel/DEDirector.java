@@ -374,11 +374,6 @@ public class DEDirector extends Director implements TimedDirector {
         // NOTE: This fire method does not call super.fire()
         // because this method is very different from that of the super class.
 
-        if (_debugging) {
-            _debug("DE director fires at " + getModelTime()
-                    + "  with microstep as " + _microstep);
-        }
-
         // A BIG while loop that handles all events with the same tag.
         while (true) {
             // Find the next actor to be fired.
@@ -420,6 +415,11 @@ public class DEDirector extends Director implements TimedDirector {
             }
 
             // -- If the actor to be fired is not null.
+
+            if (_debugging) {
+                _debug("DE director fires at " + getModelTime()
+                        + "  with microstep as " + _microstep);
+            }
 
             // If the actor to be fired is the container of this director,
             // the next event to be processed is in an inside receiver of
@@ -631,11 +631,16 @@ public class DEDirector extends Director implements TimedDirector {
     /** Return the timestamp of the next event in the queue.
      *  The next iteration time, for example, is used to estimate the
      *  run-ahead time, when a continuous time composite actor is embedded
-     *  in a DE model.
+     *  in a DE model. If there is no event in the event queue, a positive
+     *  infinity object is returned.
      *  @return The time stamp of the next event in the event queue.
      */
     public Time getModelNextIterationTime() {
-        return _eventQueue.get().timeStamp();
+        Time aFutureTime = Time.POSITIVE_INFINITY;
+        if (_eventQueue.size() > 0) {
+            aFutureTime = _eventQueue.get().timeStamp();
+        }
+        return aFutureTime;
     }
 
     /** Return the start time parameter value.
@@ -725,10 +730,6 @@ public class DEDirector extends Director implements TimedDirector {
     public void initialize() throws IllegalActionException {
         _isInitializing = true;
         super.initialize();
-
-        // Register a pure event for the simulation stop time.
-        //        Actor container = (Actor)getContainer();
-        //        fireAt(container, getModelStopTime());
 
         // Reset the following private variables.
         _disabledActors = null;
