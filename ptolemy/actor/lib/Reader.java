@@ -133,7 +133,6 @@ public class Reader extends Source {
                     setReader(null);
                 } else {
                     _source = URLToken.stringValue();
-                    System.out.println("URL=" + _source);
                     if (_source.equals("")) {
                         setReader(null);
                     } else {
