@@ -692,7 +692,7 @@ public class PlotBox extends Applet {
             if (__zoomin == true){   
                 graphics.setXORMode(Color.white);
                 // Erase the previous box if necessary.
-                if (__zoomxn != -1 || __zoomyn != -1) {
+                if ((__zoomxn != -1 || __zoomyn != -1) && (__drawn == true)) {
                     int minx = Math.min(__zoomx, __zoomxn);
                     int maxx = Math.max(__zoomx, __zoomxn);
                     int miny = Math.min(__zoomy, __zoomyn);
@@ -709,12 +709,13 @@ public class PlotBox extends Applet {
                     int maxy = Math.max(__zoomy, __zoomyn);
                     graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
                     graphics.setPaintMode();
+                    __drawn = true;
                     return true;
-                }
+                } else __drawn = false;
             } else if (__zoomout == true){
                 graphics.setXORMode(Color.white);
                 // Erase previous box if necessary.
-                if (__zoomxn != -1 || __zoomyn != -1) {
+                if ((__zoomxn != -1 || __zoomyn != -1) && (__drawn == true)) {
                     int x_diff = Math.abs(__zoomx-__zoomxn);
                     int y_diff = Math.abs(__zoomy-__zoomyn);
                     graphics.drawRect(__zoomx-15-x_diff, __zoomy-15-y_diff,
@@ -728,8 +729,9 @@ public class PlotBox extends Applet {
                     graphics.drawRect(__zoomx-15-x_diff, __zoomy-15-y_diff,
                             30+x_diff*2, 30+y_diff*2);
                     graphics.setPaintMode();
+                    __drawn = true;
                     return true;
-                }
+                } else __drawn = false;
             }
         }
         graphics.setPaintMode();
@@ -794,6 +796,7 @@ public class PlotBox extends Applet {
             } 
             handled = true;
         }
+        __drawn = false;
         __zoomin = __zoomout = false;
         __zoomxn = __zoomyn = __zoomx = __zoomy = -1;
         return handled;
@@ -1270,4 +1273,5 @@ public class PlotBox extends Applet {
     // Control whether we are zooming in or out.
     private boolean __zoomin = false;
     private boolean __zoomout = false;
+    private boolean __drawn = false;
 }
