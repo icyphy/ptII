@@ -54,7 +54,7 @@ In specific, it calls the prefire(), fire() and postfire() methods
 of the actor. Before termination, this calls the wrapup() method of
 the actor.
 <P>
-If an actor returns false in its postfire() methods, the
+If an actor returns false in its prefire() or postfire() methods, the
 actor is never fired again and the thread or process would terminate
 after calling wrapup() on the actor.
 <P>
@@ -124,13 +124,25 @@ public class ProcessThread extends PtolemyThread {
      *  on the actor.
      */
     public void run() {
-      Workspace workspace = _director.workspace();
-	boolean iterate = true;
-	try {
+        Workspace workspace = _director.workspace();
+        boolean iterate = true;
+        try {
             // Initialize the actor.
             _actor.initialize();
-        // if postfire returns true and stop is not callled.
-	    while (iterate && !_threadStopRequested) {
+
+            while (iterate) {
+                // If a stop has been requested, then
+                if(_threadStopRequested) {
+                    // Tell the director we're stopped
+                    _director._actorHasStopped();
+                    // And wait until the flag has been cleared.
+                    synchronized(_director) {
+                        while(_threadStopRequested) {
+                            workspace.wait(_director);
+                        }
+                    }
+                }
+
                 // container is checked for null to detect the
                 // deletion of the actor from the topology.
                 if ( ((Entity)_actor).getContainer() != null ) {
@@ -139,24 +151,25 @@ public class ProcessThread extends PtolemyThread {
                         iterate = _actor.postfire();
                     }
                 }
-        }
+            }
         } catch (TerminateProcessException t) {
             // Process was terminated.
         } catch (IllegalActionException e) {
             _manager.notifyListenersOfException(e);
         }
-        if(_threadStopRequested) {
-             // Tell the director we're stopped
-            _director._actorHasStopped();
-        }
-        if(!iterate) {
+        finally {
             try {
-                wrapup();
+                 wrapup();
             } catch (IllegalActionException e) {
                 _manager.notifyListenersOfException(e);
             }
             _director._decreaseActiveCount();
-
+            /*
+              String name = ((Nameable)_actor).getName();
+              + _director.getName() + "; there are "
+              + _director._getActiveActorsCount()+" active actors in "
+              + _director.getName() +".");
+             */
         }
     }
 
