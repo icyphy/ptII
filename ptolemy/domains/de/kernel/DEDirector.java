@@ -530,18 +530,15 @@ public class DEDirector extends Director implements TimedDirector {
                         // jump out of the big while loop and 
                         // proceed to postfire().
                         break;
-                    } else if (
-                        next.timeStamp().compareTo(Time.NEGATIVE_INFINITY) != 0
-                        && next.timeStamp().compareTo(getModelTime()) < 0) {
+                    } else if (next.timeStamp().compareTo(getModelTime()) < 0) {
                         throw new InternalErrorException(
                                 "The time stamp of the next event " 
                                 + next.timeStamp() + " can not be less than"
                                 + " the current time " + getModelTime() + " !");
                     } else {
-                        // The next event has a time stamp either as 
-                        // Time.NEGATIVE_INFINITY or the current model time,
-                        // both indicate at least one actor is going to fire at
-                        // the current model time.
+                        // The next event has a time stamp as the current model 
+                        // time, indicating at least one actor is going to fire 
+                        // at the current model time.
                     }
                 } else {
                     // The queue is empty, proceed to postfire().
@@ -557,8 +554,6 @@ public class DEDirector extends Director implements TimedDirector {
     }
 
     /** Schedule an actor to be fired at the specified time.
-     *  This method is only intended to be called from within the main
-     *  simulation thread.  
      *  @param actor The scheduled actor to fire.
      *  @param time The scheduled time to fire.
      *  @exception IllegalActionException If this method is called
@@ -584,52 +579,18 @@ public class DEDirector extends Director implements TimedDirector {
         }
     }
 
-    /** Schedule a firing of the given actor as soon as possible.  If
-     *  this method is called from within the main simulation thread,
-     *  then this will result in the actor being fired at the current
-     *  time.  This method may also be invoked from a thread other
-     *  than the main simulation thread, making it useful for actors
-     *  that perform asynchronous processing, such as waiting for data
-     *  in another thread. In these cases, calling fireAt(actor,
-     *  getCurrentTime()) is not sufficient, since there is no way for
-     *  an asynchronous thread to ensure that time does not advance in
-     *  the model.  When invoked from an asynchronous thread, this
-     *  method will attempt to fire the actor at the earliest time
-     *  that this director is fired.
-     * <p>
-     *  This class overrides the base class method to additionally add
-     *  an pure event for the given actor to the event queue that will
-     *  be processed before all other events.
+    /** Schedule a firing of the given actor at the current time.  
      *  @param actor The actor to be fired.
      *  @exception IllegalActionException If this method is called
      *  before the model is running.
      */
     public void fireAtCurrentTime(Actor actor)
             throws IllegalActionException {
-        if (_eventQueue == null) {
-            throw new IllegalActionException(this,
-                    "Calling fireAtCurrentTime() before preinitialize().");
-        }
-        synchronized(_eventQueue) {
-            // NOTE: This does not check whether the actor is in the
-            // composite actor containing this
-            // director. I.e. the specified actor is under this director
-            // responsibility. This error would be fairly hard to make,
-            // so we don't check for it here.
-            
-            // "As soon as possible" is encoded in this class by the time
-            // Double.NEGATIVE_INFINITY.
-            // FIXME: Personally, I do not think this design is robuse. 
-            // If multi-threaded simulation is necessary, DDE domain is 
-            // a better choice where the time synchronization is 
-            // carefully handled. What is more, the Double.NEGATIVE_INFINITY
-            // special usage is not necessary.
-            _enqueueEvent(actor, Time.NEGATIVE_INFINITY);
-            _eventQueue.notifyAll();
-        }
+        fireAt(actor, getModelTime());
     }
 
-    /** Schedule an actor to be fired in the specified relative time.
+    /** Schedule an actor to be fired in the specified time relative to
+     *  the current model time.
      *  @param actor The scheduled actor to fire.
      *  @param time The scheduled time to fire.
      *  @exception IllegalActionException If the specified time contains 
@@ -865,13 +826,6 @@ public class DEDirector extends Director implements TimedDirector {
             nextEventTime =  _eventQueue.get().timeStamp();
         }
 
-        // A nextEventTime of Double.NEGATIVE_INFINITY is used to represent
-        // a firing as soon as possible.
-        if (nextEventTime.equals(Time.NEGATIVE_INFINITY)) {
-            nextEventTime = outsideCurrentTime;
-            return true;
-        }
-        
         // If the outside time is larger (later) than the first event
         // in the queue, then there's something wrong with the outside
         // domain.
@@ -1091,8 +1045,7 @@ public class DEDirector extends Director implements TimedDirector {
         int microstep = 0;
         if (time.compareTo(getModelTime()) == 0) {
             microstep = _microstep + 1;
-        } else if (!time.equals(Time.NEGATIVE_INFINITY) &&
-                time.compareTo(getModelTime()) < 0) {
+        } else if (time.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException((Nameable)actor,
                     "Attempt to queue an event in the past:"
                     + " Current time is " + getModelTime()
@@ -1183,8 +1136,7 @@ public class DEDirector extends Director implements TimedDirector {
         int microstep = 0;
         if (time == getModelTime()) {
             microstep = _microstep;
-        } else if (!time.equals(Time.NEGATIVE_INFINITY) &&
-                time.compareTo(getModelTime()) < 0) {
+        } else if (time.compareTo(getModelTime()) < 0) {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination,
                     "Attempt to queue an event in the past: "
@@ -1306,9 +1258,7 @@ public class DEDirector extends Director implements TimedDirector {
                     // An embedded director should process events 
                     // that only happen at the current time.
                     // If the event is in the past, that is an error.
-                    if (!nextEvent.timeStamp().equals(Time.NEGATIVE_INFINITY) 
-                        &&
-                        nextEvent.timeStamp().compareTo(getModelTime()) < 0){
+                    if (nextEvent.timeStamp().compareTo(getModelTime()) < 0){
                         //missed an event
                         nextEvent = null;
                         throw new InternalErrorException(
@@ -1459,11 +1409,6 @@ public class DEDirector extends Director implements TimedDirector {
                     currentTime = currentEvent.timeStamp();
                     actorToFire = currentEvent.actor();
 
-                    // Deal with a fireAtCurrentTime event.
-                    if (currentTime.equals(Time.NEGATIVE_INFINITY)) {
-                        currentTime = getModelTime();
-                    }
-
                     // NOTE: The _enqueEvent method discard the events 
                     // for disabled actors.
                     if (_disabledActors != null &&
@@ -1535,13 +1480,10 @@ public class DEDirector extends Director implements TimedDirector {
                 boolean theSameActor = nextEvent.actor().equals(
                     currentEvent.actor());
                 
-                // The three conditions of the following predicate are:
-                // 1. A pure event that requests to fire the actor just fired
-                //      again 'as soon as possible'.
-                // 2. Two token events that go to same port of the same actor.
-                // 3. A pure event and a token event that go to the actor.
-                if (nextEvent.timeStamp().equals(Time.NEGATIVE_INFINITY) ||
-                     nextEvent.hasTheSameTagAndDepthAs(currentEvent) ||
+                // The two conditions of the following predicate are:
+                // 1. Two token events that go to same port of the same actor.
+                // 2. A pure event and a token event that go to the actor.
+                if (nextEvent.hasTheSameTagAndDepthAs(currentEvent) ||
                      (nextEvent.hasTheSameTagAs(currentEvent) && isPureEvent 
                              && theSameActor)){
 

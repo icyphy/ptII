@@ -153,8 +153,7 @@ public class DEEDirector extends DEDirector {
         int microstep = 0;
         if (time.compareTo(getModelTime()) == 0) {
             microstep = _microstep + 1;
-        } else if (!time.equals(Time.NEGATIVE_INFINITY) &&
-                time.compareTo(getModelTime()) < 0) {
+        } else if (time.compareTo(getModelTime()) < 0) {
             throw new IllegalActionException((Nameable)actor,
                     "Attempt to queue an event in the past:"
                     + " Current time is " + getModelTime()
@@ -221,8 +220,7 @@ public class DEEDirector extends DEDirector {
 
         if (time.compareTo(getModelTime()) == 0) {
             microstep = _microstep;
-        } else if (!time.equals(Time.NEGATIVE_INFINITY) &&
-                time.compareTo(getModelTime()) < 0) {
+        } else if (time.compareTo(getModelTime()) < 0) {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination,
                     "Attempt to queue an event in the past: "
@@ -481,11 +479,6 @@ public class DEEDirector extends DEDirector {
                     currentTime = currentEvent.timeStamp();
                     actorToFire = currentEvent.actor();
 
-                    // Deal with a fireAtCurrentTime event.
-                    if (currentTime.equals(Time.NEGATIVE_INFINITY)) {
-                        currentTime = getModelTime();
-                    }
-
                     if (_disabledActors != null &&
                             _disabledActors.contains(actorToFire)) {
                         // This actor has requested that it not be fired again.
@@ -536,9 +529,7 @@ public class DEEDirector extends DEDirector {
                 // FIXME: the same ioPort requirement is not correct.
                 // Consider the multi-input atomic actors, e.g. the
                 // BooleanSelect and Inhibit.
-                if ((nextEvent.timeStamp().equals(
-                    Time.NEGATIVE_INFINITY) ||
-                            nextEvent.hasTheSameTagAndDepthAs(currentEvent))
+                if ((nextEvent.hasTheSameTagAndDepthAs(currentEvent))
                         && nextEvent.actor() == currentEvent.actor()) {
                     // Consume the event from the queue.
 
