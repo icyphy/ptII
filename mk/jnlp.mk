@@ -186,6 +186,23 @@ ALL_NON_APPLICATION_JNLP_JARS = \
 	$(PTINY_ONLY_JNLP_JARS) \
 	$(DSP_ONLY_JNLP_JARS)
 
+# DOMAIN_JARS is a list of separate jar files for each domain that
+# is used by the code generator.
+# This results 450K of duplicate files being downloaded.
+DOMAIN_JARS = \
+	ptolemy/domains/ct/ct.jar \
+	ptolemy/domains/dde/dde.jar \
+	ptolemy/domains/de/de.jar \
+	ptolemy/domains/dt/dt.jar \
+	ptolemy/domains/fsm/fsm.jar \
+	ptolemy/domains/giotto/giotto.jar \
+	ptolemy/domains/gr/gr.jar \
+	ptolemy/domains/petrinet/petrinet.jar \
+	ptolemy/domains/pn/pn.jar \
+	ptolemy/domains/sdf/sdf.jar \
+	ptolemy/domains/sr/sr.jar \
+	ptolemy/domains/tm/tm.jar
+
 
 # All the jar files, include the application jars
 ALL_JNLP_JARS = \
@@ -195,11 +212,9 @@ ALL_JNLP_JARS = \
 	$(PTINY_SANDBOX_MAIN_JAR) \
 	$(FULL_MAIN_JAR)
 
-
-
 # Makefile variables used to set up keys for jar signing.
 # To use Web Start, we have to sign the jars.
-KEYDNAME = "CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, S=Your State, C=US "
+KEYDNAME = "CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Tobwn, S=Your State, C=US "
 KEYSTORE = ptKeystore
 KEYALIAS = claudius
 # The password should not be stored in a makefile, for production
@@ -385,7 +400,7 @@ $(JAR_DIST_DIR):
 	if [ ! -d $(JAR_DIST_DIR) ]; then \
 		mkdir -p $(JAR_DIST_DIR); \
 	fi
-	set $(ALL_NON_APPLICATION_JNLP_JARS); \
+	set $(ALL_NON_APPLICATION_JNLP_JARS) $(DOMAIN_JARS); \
 	for x do \
 		if [ ! -f $(JAR_DIST_DIR)/$$x ]; then \
 			echo "#  Copying $$x to $(JAR_DIST_DIR)/"; \
@@ -432,4 +447,3 @@ sign_jar_dist:
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE2) \
 		$(JARFILE) $(KEYALIAS2)
-
