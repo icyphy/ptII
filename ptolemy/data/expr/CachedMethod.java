@@ -195,12 +195,17 @@ public class CachedMethod {
             // Check to see if there is a function that
             // provides a better return type.
             try {
+                int args = _argumentTypes.length;
+                Class[] typeArray = new Class[args];
+                Class typeClass = Type.class;
+                java.util.Arrays.fill(typeArray, typeClass);
+
                 Method typeFunction = _method.getDeclaringClass().getMethod(
-                        "_typeof_" + _methodName, new Class[]{Type[].class});
+                        "_typeof_" + _methodName, typeArray);
                 // Invoke the function, and save the return type.
                 try {
                     _returnType = (Type)typeFunction.invoke(
-                            null, new Object[]{_argumentTypes});
+                            null, _argumentTypes);
                 } catch (IllegalAccessException ex) {
                     throw new RuntimeException(ex); // TODO
                 } catch (InvocationTargetException ex) {

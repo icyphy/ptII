@@ -362,8 +362,7 @@ public class UtilityFunctions {
      *  If the argument is an array type, then return its element type, 
      *  otherwise return BaseType.UNKNOWN.
      */
-    public static Type _typeof_max(Type[] types) {
-        Type type = types[0];
+    public static Type _typeof_max(Type type) {
         if(type instanceof ArrayType) {
             ArrayType arrayType = (ArrayType) type;
             return arrayType.getElementType();
