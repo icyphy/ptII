@@ -70,7 +70,8 @@ This FAQ can be found at:
 
 	<li> <a href="#Customizing the GUI"><b>5.3 How do I customize the GUI?</b></a>
 	<li> <a href="#MoML"><b>5.4 What file format are the models stored in?</b></a>
-	<li> <a href="#Scripting"><b>5.5 Is there a scripting interface to Ptolemy II ?</b></a>
+	<li> <a href="#Scripting"><b>5.5 Is there a scripting interface to Ptolemy II?</b></a>
+	<li> <a href="#Contributions"><b>5.6 Does the Ptolemy project take software contributions?</b></a>
 	</menu>
 
 </menu>
@@ -227,7 +228,7 @@ target="_top">Ptolemy Website Links Page</a> for possible solutions,
 including: 
 <menu>
 
-<li> <a href="http://www.mldesigner.com/news.html">MLDesigner 2.1</a>
+<li> <a href="http://www.mldesigner.com/news.html" target="_top">MLDesigner 2.1</a>
 is a commercial product that was released in January 2002 and it
 includes a conversion utility from Ptolemy Classic models.
 
@@ -539,6 +540,36 @@ and avoiding the usual edit/compile/run loop.
 
 
 
+
+<dt> <a name="Contributions"><b>5.6 Does the Ptolemy project take software contributions?</b></a>
+<dd> Yes, the Ptolemy project has a long history of folding in software
+contributions from off site developers.
+
+ <p> The most critical issue is that it is easiest if the copyright of
+any contributed code uses the same wording as the standard Ptolemy II
+copyright.  It is best if the Regents of the University of California
+retain the copyright, but it is acceptable if the someone else retains
+the copyright.
+
+ <p>The second most critical issue is that the code follow the Ptolemy
+coding convention.  Since we consider software releases a form of
+publication, we expect code to be readable, which means that comments
+have complete sentences, identifiers are complete words with embedded
+capitalization and the source code has been spell checked.  For
+details see the Ptolemy II coding style guide in
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/style.htm"><CODE>$PTII/ptolemy/doc/coding/style.htm</CODE></a>
+and in the first few chapters of the
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm">Ptolemy II Design Document</a>.
+
+ <p>It is best if contributed code has a few small, concise examples
+illustrating its use, and includes models that can be run as part of
+the test suite.  These models usually reside in a
+<CODE>test/auto/</CODE> directory and do not use the an graphical
+actors so that they can be run as part of the nightly build.
+
+<p>If you have code that you would like to contribute, please email <a
+href="mailto:ptolemy@eecs.berkeley.edu"><CODE>ptolemy@eecs.berkeley.edu</CODE></a>
+with a description of your code.
 
 </dl>
 
