@@ -127,6 +127,15 @@ public class SetVariable extends TypedAtomicActor implements ChangeListener {
                         (Variable) container.getAttribute(
                             _variableName,
                             Variable.class);
+                    if (variable == null) {
+                        try {
+                            variable = new Variable(container, _variableName);
+                            variable.setPersistent(false);
+                        } catch (NameDuplicationException ex) {
+                            throw new IllegalActionException(SetVariable.this, ex,
+                            "Cannot create variable named: " + _variableName);
+                        }
+                    }
                     variable.setToken(value);
                     // NOTE: If we don't call validate(), then the
                     // change will not propagate to dependents.
