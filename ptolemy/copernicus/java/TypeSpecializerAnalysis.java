@@ -650,6 +650,12 @@ public class TypeSpecializerAnalysis {
                     InequalityTerm returnValueTerm = new MonotonicFunction() {
                             public Object getValue() 
                                     throws IllegalActionException{
+                                if(firstArgTerm.getValue().equals(
+                                           TypeLattice.lattice().bottom()) ||
+                                        finalBaseTerm.getValue().equals(
+                                                TypeLattice.lattice().bottom())) {
+                                    return TypeLattice.lattice().bottom();
+                                } 
                                 return TypeLattice.lattice().leastUpperBound(
                                         firstArgTerm.getValue(),
                                         finalBaseTerm.getValue());

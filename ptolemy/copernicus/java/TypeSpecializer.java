@@ -284,13 +284,13 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
 
                 if (debug) System.out.println("replacing with " + type);
                 field.setType(type);
-                TypeTag tag = (TypeTag)field.getTag("_CGType");
-                if (tag == null) {
-                    field.addTag(
-                            new TypeTag(
-                                    typeAnalysis.getSpecializedType(field)));
-                }
-
+                
+                // Update the type tag.
+                field.removeTag("_CGType");
+                field.addTag(
+                        new TypeTag(
+                                typeAnalysis.getSpecializedType(field)));
+                
                 map.put(field, typeAnalysis.getSpecializedType(field));
             }
         }
