@@ -38,6 +38,13 @@ package ptplot;
 //     less than 0.  With the dataset below, there is no bar for the 2nd val.
 //     1 1
 //     3 -0.2
+//   - Support raw 4 byte float data files.  Here, we could check to 
+//     see if the first character was d, e, n, or m.  If it was, we
+//     would assume pxgraph format.  If it was not, we would read in the
+//     data as 4 byte float x/y pairs.  We could also have a command
+//     line arg called -raw that would do the same.  It would be nice if
+//     we could handle other formats, such as raw ints and doubles, but
+//     that would be real work.
 //     
 // NOTE: The XOR drawing mode is needed in order to be able to erase
 // plotted points and restore the grid line, tick marks, and boundary
