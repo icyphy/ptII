@@ -127,38 +127,32 @@ test PNDirector-6.1 {Test an application} {
 } {23456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100}
     
 ############################################
-
 test PNDirector-7.1 {Test a mutation} {
-    set w [java::new ptolemy.kernel.util.Workspace W]
-    set b1 [java::new ptolemy.actor.CompositeActor $w]
+    set b1 [java::new ptolemy.actor.CompositeActor]
     $b1 setName b1
     set m2 [java::new ptolemy.actor.Manager m2]
     $b1 setManager $m2
-    set d5 [java::new ptolemy.domains.pn.kernel.PNDirector "D5"]
+    set d5 [java::new ptolemy.domains.pn.kernel.PNDirector "local"]
     $b1 setDirector $d5
     set r1 [java::new ptolemy.domains.pn.lib.PNRamp $b1 r1]
     $r1 setParam "Initial Value"  2
 
-    set g2 [java::new ptolemy.actor.CompositeActor $b1 "galaxy2"]
-    set sieve [java::new ptolemy.domains.pn.lib.PNGalaxySieve $g2 "2_sieve"]
-    set tok [$sieve getAttribute "prime"]
-    $tok setToken [java::new IntToken 2]
+    set sieve [java::new ptolemy.domains.pn.lib.PNSieve $b1 "2_sieve"]
+    set param [$sieve getAttribute "prime"]
+    $param setToken [java::new {ptolemy.data.IntToken int} 2]
     set portin [$sieve getPort "input"]
-    set galin [$g2 newPort "input"]
-    $g2 connect $portin $galin "2_gal"
     set portout [$r1 getPort "output"]
-    $b1 connect $galin $portout "2_queue"
-    
-    set galout [$g2 newPort "output"]
-    set portout [$sieve getPort "output"]
-    $g2 connect $galout $portout "gal_2out"
+    $b1 connect $portin $portout 
     
     set s1 [java::new ptolemy.domains.pn.kernel.test.TestSink $b1 s1]
     $s1 clear
-    set p1 [$g2 getPort output]
+    set p1 [$sieve getPort output]
     set p2 [$s1 getPort input]
-    $b1 connect $p1 $galout
+    $b1 connect $p1 $p2
     $m2 run
     
     enumToFullNames [$b1 deepGetEntities]
-} {W.b1} {KNOWN_FAILED}
+} {.b1.r1 .b1.2_sieve .b1.s1 .b1.3_sieve .b1.5_sieve .b1.7_sieve .b1.11_sieve .b1.13_sieve .b1.17_sieve .b1.19_sieve .b1.23_sieve .b1.29_sieve .b1.31_sieve .b1.37_sieve .b1.41_sieve .b1.43_sieve .b1.47_sieve .b1.53_sieve .b1.59_sieve .b1.61_sieve .b1.67_sieve .b1.71_sieve .b1.73_sieve .b1.79_sieve .b1.83_sieve .b1.89_sieve .b1.97_sieve} 
+
+
+
