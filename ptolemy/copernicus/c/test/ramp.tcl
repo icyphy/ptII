@@ -89,8 +89,10 @@ test ramp-1.1 {Generate .c, .i.h, and .h files for ramp.xml} {
     set outputDirectorySpecifier outDir:$outputDirectory
 
     # Run C code generation.
-    exec "java -classpath $classpath ptolemy.copernicus.c.Main $modelFile -d $dummyDirectory $debugFlag -p $phaseName $outputDirectorySpecifier > $diagnostics 2> $errors" 
+    #exec "java -classpath $classpath ptolemy.copernicus.c.Main $modelFile -d $dummyDirectory $debugFlag -p $phaseName $outputDirectorySpecifier > $diagnostics 2> $errors" 
 
+    # The double quotes cause problems under Solaris!
+    exec java -classpath $classpath ptolemy.copernicus.c.Main $modelFile -d $dummyDirectory $debugFlag -p $phaseName $outputDirectorySpecifier > $diagnostics 2> $errors 
 
     # Make sure all the output files were created.
     list  \

@@ -50,7 +50,7 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 ####
 #
 
-test Terp-1.1 {Generate all required files for Terp.java} {
+test CountDown-1.1 {Generate all required files for CountDown.java} {
 
     set outputDir testOutput/CountDown.out
     set className CountDown
@@ -117,8 +117,10 @@ test Terp-1.1 {Generate all required files for Terp.java} {
     
     # Run the automatically generated executible.
     cd $outputDir
-    exec $exeFile
- 
+    set results [exec $exeFile]
+    regsub -all [java::call System getProperty "line.separator"] \
+	    $results "\n" results2
+    list $results2
 } {10
 9
 8
@@ -129,6 +131,4 @@ test Terp-1.1 {Generate all required files for Terp.java} {
 3
 2
 1
-0
-}
-
+0}
