@@ -40,6 +40,7 @@ import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.LocationAttribute;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.domains.fsm.kernel.*;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
@@ -2117,7 +2118,9 @@ public class ActorTransformer extends SceneTransformer {
         if (attribute instanceof SizeAttribute ||
                 attribute instanceof LocationAttribute ||
                 attribute instanceof LibraryAttribute ||
-                attribute instanceof TableauFactory) {
+                attribute instanceof TableauFactory ||
+                attribute instanceof Location ||
+                attribute instanceof WindowPropertiesAttribute) {
             return true;
         }
         return false;
