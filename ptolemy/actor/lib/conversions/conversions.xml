@@ -81,7 +81,7 @@
     </rendition>
   </entity>
   
-  <entity name="Round" class="ptolemy.actor.lib.Round">
+  <entity name="Round" class="ptolemy.actor.lib.conversions.Round">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
