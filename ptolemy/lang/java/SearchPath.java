@@ -51,45 +51,32 @@ and Army Research Office.
  */
 public class SearchPath extends Vector {
 
-    public SearchPath(String envar, String fallbacks) {
+    /** Construct a SearchPath object by reading the propertyName
+     *  property, if propertyName is null or does not name a property
+     *  then use fallbackPaths.  The value of the property named by 
+     *  propertyName and the value of fallbackPaths should contain
+     *  a string with pathnames separated by File.separatorChar.
+     *  @param propertyName Name of the property to look for.
+     *  @param fallbackPaths Path list to use if propertyName can't be found.
+     */ 
+    public SearchPath(String propertyName, String fallbackPaths) {
+        if (propertyName != null) {
+            String propertyValue = System.getProperty(propertyName, ".");
 
-        if (envar != null) {
-            String envalue = System.getProperty(envar, ".");
+            ApplicationUtility.trace("propertyValue = " + propertyValue);
 
-            ApplicationUtility.trace("envalue = " + envalue);
-
-            if (envalue != null) {
-                _addPaths(envalue);
+            if (propertyValue != null) {
+                _addPaths(propertyValue);
             } else {
-                _addPaths(fallbacks);
+                _addPaths(fallbackPaths);
             }
         } else {
-            _addPaths(fallbacks);
+            _addPaths(fallbackPaths);
         }
     }
 
-    /** Convert a Java qualified name into a partial pathname, without the file
-     *  extension. For example, "ptolemy.lang.java.SearchPath" is converted to
-     *  "ptolemy/lang/java/SearchPath" if the platform is UNIX.
-     */
-    public String javaNameToPath(String javaName) {
-        return javaName.replace('.', File.separatorChar);
-    }
-
-    public File openDirectory(String target) {
-        for (int i = 0; i < size(); i++) {
-            String candidate = (String) get(i);
-
-            String fullname = candidate + target;
-
-            File directory = new File(fullname);
-            if (directory.isDirectory()) {
-                // target = fullname
-                return directory;
-            }
-        }
-        return null;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Open the Java source file with the qualified class name. The name may
      *  either be qualified by the '.' character or by the value of
@@ -97,22 +84,27 @@ public class SearchPath extends Vector {
      *  code before trying the ordinary version. Return an instance of File
      *  associated with the path of the source code. If the source code
      *  cannot be found, return null. This method simply calls
-     *  openSource(target, true)
+     *  openSource(target, true).
      */
     public File openSource(String target) {
         return openSource(target, true);
     }
 
 
-    /** Open the Java source file with the qualified class name. The name may
-     *  either be qualified by the '.' character or by the value of
-     *  File.pathSeparatorChar. If favorSkeletons is true, try to open
-     *  a skeleton version of the source code before trying the ordinary version.
-     *  Return an instance of File associated with the path of the source code.
-     *  If the source code cannot be found, return null.
+    /** Open the Java source file with the qualified class name.
+     *  @param The qualified class name, which may either be qualified
+     *  by the '.' character or by the value of File.pathSeparatorChar.
+     *  @param favorSkeletons True if .jskel files are opened instead of 
+     *  .java files.
+     *  @return an instance of File associated with the path of the
+     *  source code. If the source code cannot be found, return null.
      */
     public File openSource(String target, boolean favorSkeletons) {
-        String targetPath = javaNameToPath(target);
+
+	// Convert a Java qualified name into a partial pathname, without the
+	// file extension. For example, "ptolemy.lang.java.SearchPath" is
+	// converted to "ptolemy/lang/java/SearchPath" under Unix
+        String targetPath = target.replace('.', File.separatorChar);
 
         for (int i = 0; i < size(); i++) {
             String candidate = (String) get(i);
@@ -121,11 +113,11 @@ public class SearchPath extends Vector {
 
             if (favorSkeletons) {
                 // favor skeletons instead of full versions for performance
-                file = tryOpen(candidate, targetPath, "jskel");
+                file = _tryOpen(candidate, targetPath, "jskel");
             }
 
             if (file == null) {
-                file = tryOpen(candidate, targetPath, "java");
+                file = _tryOpen(candidate, targetPath, "java");
             }
 
             if (file != null) {
@@ -135,7 +127,51 @@ public class SearchPath extends Vector {
         return null;
     }
 
-    public static File tryOpen(String directory, String target, String suffix) {
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    public static final SearchPath NAMED_PATH =
+	new SearchPath("java.class.path", ".");
+
+    public static final SearchPath UNNAMED_PATH =
+	new SearchPath(null, ".");
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Split a String consisting of 0 or more pathnames separated by
+    // File.pathSeparated pathnames, and add them to the Vector of paths.
+    private void _addPaths(String paths) {
+        int begin = 0;
+
+        int end;
+        do {
+            end = paths.indexOf(File.pathSeparator, begin);
+            String path = null;
+            if (end == -1) {
+                path = paths.substring(begin);
+                if (path.length() > 0) {
+		    add(path + File.separatorChar);
+                }
+            } else {
+                path = paths.substring(begin, end);
+                if (path.length() > 0) {
+		    add(path + File.separatorChar);
+                }
+                begin = end + 1;
+            }
+        } while (end > -1);
+    }
+
+    /* Try to open a file in directory, with a filename target
+     * and a suffix.  
+     * @param directory The base directory 
+     * @param target The pathname to the file
+     * @param suffix The suffix of the path.
+     */
+    private static File _tryOpen(String directory, String target,
+			       String suffix) {
         String fullname = directory + target + '.' + suffix;
         File file = new File(fullname);
 
@@ -148,41 +184,4 @@ public class SearchPath extends Vector {
         }
         return null;
     }
-
-    protected void _addPaths(String paths) {
-        int begin = 0;
-
-        int end;
-        do {
-            end = paths.indexOf(File.pathSeparator, begin);
-            String path = null;
-            if (end == -1) {
-                path = paths.substring(begin);
-                if (path.length() > 0) {
-                    _addPath(path);
-                }
-            } else {
-                path = paths.substring(begin, end);
-                if (path.length() > 0) {
-                    _addPath(path);
-                }
-                begin = end + 1;
-            }
-        } while (end > -1);
-    }
-
-    protected void _addPath(String path) {
-        if (path.length() > 0) {
-            ApplicationUtility.trace("adding path " + path);
-            add(path + File.separatorChar);
-        } else {
-            throw new RuntimeException("_addPath() called with empty path string");
-        }
-    }
-
-    public static final SearchPath NAMED_PATH =
-    new SearchPath("java.class.path", ".");
-
-    public static final SearchPath UNNAMED_PATH =
-    new SearchPath(null, ".");
 }
