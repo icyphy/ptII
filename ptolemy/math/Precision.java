@@ -132,14 +132,21 @@ public class Precision {
 	_fraction = _length - _intBits;
 
 	if (_length <= 0 || _intBits < 0 || _intBits > _length) {
-	    throw new IllegalArgumentException("Incorrect definition of "
-					     + "Precision. Do not use negative"
-					     + "values or make the integer part"
-					     + "larger than the total length");
+	    throw new IllegalArgumentException("Incorrect definition of " + 
+                    "Precision. Do not use negative values or have an " +
+                    "integer part larger than the total length ");
 	}
 
     }
-    
+
+    /** Construct a Precision object based on the provided
+        numbers. The number define the precision in the (m/n)
+        format. Thus the precision is given by the total number of
+        bits used (m) and the number of bits used to represent the
+        integer part (n).  
+        @param length The total number of bits.
+        @param intBits Total number of integer bits.
+     */
     public Precision(int length, int intBits) {
 	_length   = length;
 	_intBits  = intBits;
