@@ -177,7 +177,7 @@ MKJNLP =		$(PTII)/bin/mkjnlp
 
 
 # JNLP files that do the actual installation
-JNLPS =	vergilDSP.jnlp vergilPtiny.jnlp  vergil.jnlp 
+JNLPS =	vergilDSP.jnlp vergilPtiny.jnlp  vergilPtinySandbox.jnlp vergil.jnlp 
 
 jnlp_all: $(SIGNED_LIB_JARS) $(JNLPS) jnlp_sign
 jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
