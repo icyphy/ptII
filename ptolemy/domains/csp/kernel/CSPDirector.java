@@ -233,10 +233,10 @@ public class CSPDirector extends ProcessDirector {
      *  @param newTime The new current simulation time.
      */
     public synchronized void setCurrentTime(double newTime) 
-          {
+            throws IllegalActionException {
         if (_actorsDelayed != 0) {
-            //throw new IllegalActionException("CSPDirector.setTime() can " +
-            //      "only be called when no processes are delayed.");
+            throw new IllegalActionException("CSPDirector.setTime() can " +
+                    "only be called when no processes are delayed.");
         }
         _currentTime = newTime;
     }
