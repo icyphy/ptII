@@ -169,7 +169,7 @@ public class Location extends SingletonAttribute
      *  or by setLocation(), whichever was most recently called,
      *  or return an empty string if neither has been called.
      *  @return The expression.
-     *  @see setExpression(String)
+     *  @see #setExpression(String)
      */
     public String getExpression() {
         if (_expressionSet) {
@@ -221,7 +221,7 @@ public class Location extends SingletonAttribute
      *  the container and value listeners are not notified until validate()
      *  is called.
      *  @param expression The value of the attribute.
-     *  @see getExpression()
+     *  @see #getExpression()
      */
     public void setExpression(String expression) {
         _expression = expression;
