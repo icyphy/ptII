@@ -172,6 +172,30 @@ test DirectedAcyclicGraph-2.8 {a 6 point CPO that's not a lattice} {
 ######################################################################
 ####
 # 
+test DirectedAcyclicGraph-2.9 {test least element } {
+    # construct a CPO with 3 elements on a chain, and an isolated one.
+    set p [java::new ptolemy.graph.DirectedAcyclicGraph]
+    set n1 [java::new {java.lang.String String} node1]
+    set n2 [java::new {java.lang.String String} node2]
+    set n3 [java::new {java.lang.String String} node3]
+    set n4 [java::new {java.lang.String String} node4]
+    $p add $n1
+    $p add $n2
+    $p add $n3
+    $p add $n4
+    $p addEdge $n2 $n1
+    $p addEdge $n3 $n2
+
+    set subset [java::new {Object[]} {4} {node2 node4 node1 node3}]
+    list [$p leastElement $subset] \
+	 [$p greatestElement $subset] \
+	 [$p leastUpperBound $subset] \
+	 [$p greatestLowerBound $subset]
+} {java0x0 java0x0 java0x0 java0x0}
+
+######################################################################
+####
+# 
 test DirectedAcyclicGraph-3.1 {a DAG with 4 nodes forming a diamond} {
     set p [java::new ptolemy.graph.DirectedAcyclicGraph]
     set n1 [java::new {java.lang.String String} node1]

@@ -510,7 +510,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         //             candidate = -1;
         //         }
         // (3) (candidate == -1 && list not empty)
-        //         if (CE > any element in list) {
+        //         if (CE >= any element in list) {
         //             discard CE;
         //         } else if (CE < all elements in list) {
         //             empty list and candidate = CE;
@@ -562,7 +562,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
                 //                    int result = _compareNodeId(ids[i], listValue);
                 //                    if (result == LOWER) {
                 //                        iter.remove();
-                //                    } else if (result == HIGHER) {
+                //                    } else if (result == HIGHER || result == SAME) {
                 //                        discard = true;
                 //                        break;
                 //                    }
@@ -576,9 +576,9 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
                     int listValue = node.intValue();
                     int result = _compareNodeId(ids[i], listValue);
                     if (result == LOWER) {
-                    } else if (result == HIGHER) {
+                    } else if (result == HIGHER || result == SAME) {
                         discard = true;
-			newList.insertLast(node);
+			newList = incompList;
                         break;
                     } else {
 			// incomparable
