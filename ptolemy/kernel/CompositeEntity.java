@@ -403,6 +403,8 @@ public class CompositeEntity extends ComponentEntity {
      *  and increments its version number.
      *  @param port1 The first port to connect.
      *  @param port2 The second port to connect.
+     *  @return The ComponentRelation that is created to connect port1 and
+     *  port2.
      *  @exception IllegalActionException If one of the arguments is null, or
      *   if a disallowed level-crossing connection would result.
      */
@@ -429,6 +431,8 @@ public class CompositeEntity extends ComponentEntity {
      *  @param port1 The first port to connect.
      *  @param port2 The second port to connect.
      *  @param relationName The name of the new relation.
+     *  @return The ComponentRelation that is created to connect port1 and
+     *  port2.
      *  @exception IllegalActionException If one of the arguments is null, or
      *   if a disallowed level-crossing connection would result, or if the two
      *   ports are not in the same workspace as this entity.
@@ -622,6 +626,8 @@ public class CompositeEntity extends ComponentEntity {
      *  @param depth The depth below the MoML export in the hierarchy.
      *  @param filter A collection of ports, parameters, and entities, or
      *   null to apply no filtering.
+     *  @return A string that describes the links present in the
+     *  <i>filter</i>.
      *  @exception IOException If an I/O error occurs.
      */
     public String exportLinks(int depth, Collection filter)
