@@ -33,14 +33,13 @@ package ptolemy.actor;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
-// import org.omg.CORBA;
 import java.util.Enumeration;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// RemoteCompositeActor
 /**
-/* A RemoteCompositeActor is a CompositeActor that catches CORBA 
+A RemoteCompositeActor is a CompositeActor that catches CORBA 
 exceptions. The purpose of a RemoteCompositeActor (RCA) is to
 facilitate CORBA remote object invocation of actors and composite
 actors during the execution of a Ptolemy II model.
@@ -69,7 +68,6 @@ RCA, it is not necessary that an RCA contain stubs. An RCA can be
 chosen to be a top level composite actor or it can be located must
 lower in a model's hierarchy. Since an RCA is opaque, it must contain
 a local director and hence it must self contain a model of computation.
-
 
 @author John S. Davis II
 @version $Id$
@@ -124,6 +122,36 @@ public class RemoteCompositeActor extends CompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a remote composite actor with clones of the ports 
+     *  of the original actor, the contained actors, and the contained 
+     *  relations. The ports of the returned actor are not connected to 
+     *  anything. The connections of the relations are duplicated in the 
+     *  new composite, unless they cross levels, in which case an exception 
+     *  is thrown. The local director is cloned, if there is one.
+     *  The executive director is not cloned. 
+     *  NOTE: This will not work if there are level-crossing transitions.
+     *
+     * @param ws The workspace for the cloned object.
+     * @exception CloneNotSupportedException If the actor contains
+     *  level crossing transitions so that its connections cannot be 
+     *  cloned, or if one of the attributes cannot be cloned.
+     * @return A new RemoteCompositeActor.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        RemoteCompositeActor newobj = 
+	        (RemoteCompositeActor)super.clone(ws);
+	if( getDirector() != getExecutiveDirector() ) {
+	    if( getDirector() != null ) {
+	        newobj._hasLocalDirector = true;
+	    }
+	}
+
+        return newobj;
+    }
 
     /** Invoke the fire() method on this actor's local director. If
      *  this actor is not opaque and does not contain a local director
@@ -212,9 +240,9 @@ public class RemoteCompositeActor extends CompositeActor {
      *  ready to fire (determined by the prefire() method of the director).
      *  It is read-synchronized on the workspace.
      *
-     *  @exception IllegalActionException If there is no director,
-     *   or if the director's prefire() method throws it, or if this actor
-     *   is not opaque, or if a CORBA SystemException has been caught.
+     * @exception IllegalActionException If there is no director,
+     *  or if the director's prefire() method throws it, or if this actor
+     *  is not opaque, or if a CORBA SystemException has been caught.
      */
     public boolean prefire() throws IllegalActionException {
         try {
@@ -235,8 +263,8 @@ public class RemoteCompositeActor extends CompositeActor {
      *  actor, and if there was previously a local director, its container
      *  is set to null. This method is write-synchronized on the workspace.
      *
-     *  @param director The Director responsible for execution.
-     *  @exception IllegalActionException If the director is not in
+     * @param director The Director responsible for execution.
+     * @exception IllegalActionException If the director is not in
      *  the same workspace as this actor or if the director is null. It 
      *  may also be thrown in derived classes if the director is not 
      *  compatible.
@@ -249,9 +277,9 @@ public class RemoteCompositeActor extends CompositeActor {
     /** If this actor is opaque, then invoke the wrapup() method of the local
      *  director. This method is read-synchronized on the workspace.
      *
-     *  @exception IllegalActionException If there is no director,
-     *   or if the director's wrapup() method throws it, or if this
-     *   actor is not opaque, or if a CORBA SystemException has been caught.
+     * @exception IllegalActionException If there is no director,
+     *  or if the director's wrapup() method throws it, or if this
+     *  actor is not opaque, or if a CORBA SystemException has been caught.
      */
     public void wrapup() throws IllegalActionException {
         try {
@@ -271,10 +299,9 @@ public class RemoteCompositeActor extends CompositeActor {
     /** Add an actor to this container with minimal error checking.
      *  This overrides the base-class method to make sure the argument
      *  implements the Actor interface and to invalidate the schedule
-     *  and type resolution. This
-     *  method does not alter the actor in any way.
-     *  It is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
+     *  and type resolution. This method does not alter the actor in 
+     *  any way. It is <i>not</i> synchronized on the workspace, so 
+     *  the caller should be.
      *
      * @param entity Actor to contain.
      * @exception IllegalActionException If the actor has no name, or the
