@@ -71,7 +71,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    most recent inputs are forgotten, as if the execution of the model
    were starting over.
    
-   @author Edward A. Lee
+   @author Edward A. Lee, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.1
    @Pt.ProposedRating Yellow (eal)
