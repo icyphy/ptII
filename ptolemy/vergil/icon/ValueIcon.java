@@ -34,9 +34,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.List;
 
 import javax.swing.SwingConstants;
 
+import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -50,7 +52,11 @@ import diva.canvas.toolbox.LabelFigure;
 //// ValueIcon
 /**
 An icon that displays the value of the container, which is assumed
-to be an instance of Settable.
+to be an instance of Settable. The display consists of a small
+circle (a bullet) with the name of the container and its value,
+separated by a colon, to the right.  If this icon contains
+an instance of ColorAttribute, then the color of the bullet
+is given by that attribute.
 
 @author Edward A. Lee, Steve Neuendorffer
 @version $Id$
@@ -144,7 +150,13 @@ public class ValueIcon extends XMLIcon {
      *  @return A figure representing a bullet.
      */
     protected Figure _createDefaultBackgroundFigure() {
-        return new BasicEllipse(-10, -6, 6, 6, Color.black, 1);
+        Color color = Color.black;
+        List colorAttributes = attributeList(ColorAttribute.class);
+        if (colorAttributes.size() > 0) {
+            ColorAttribute colorAttribute = (ColorAttribute)colorAttributes.get(0);
+            color = colorAttribute.asColor();
+        }
+        return new BasicEllipse(-10, -6, 6, 6, color, 1);
     }
 
     ///////////////////////////////////////////////////////////////////
