@@ -83,6 +83,7 @@ OPTIONAL_FILES = \
 	'ActorController$$EntityLayout.class' \
 	'ActorController$$ListenToActorAction.class' \
 	'ActorController$$LookInsideAction.class' \
+	'ActorController$$SaveInFileAction.class' \
 	'ActorController$$SaveInLibraryAction.class' \
 	'ActorEditorGraphController$$1.class' \
 	'ActorEditorGraphController$$LinkCreator.class' \

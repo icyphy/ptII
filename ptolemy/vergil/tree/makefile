@@ -69,6 +69,7 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'EntityTreeModel$$1.class' \
 	'EntityTreeModel$$TreeUpdateListener.class' \
 	'PTree$$1.class' \
 	'PTree$$DesignTreeDragGestureListener.class' \
