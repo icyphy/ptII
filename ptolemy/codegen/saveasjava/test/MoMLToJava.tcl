@@ -52,7 +52,7 @@ test MoMLToJava-1.1 {} {
     # under Javascope, which includes classes in a zip file
     set builtinClasspath [java::call System getProperty "java.class.path"]
     set classpath ../../../..[java::field java.io.File pathSeparator].[java::field java.io.File pathSeparator]$builtinClasspath
-    exec javac -classpath ../../../.. rampFileWriter.java
-    set r [exec java -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -class rampFileWriter -iterations 5] 
+    exec javac -classpath ../../../.. CGrampFileWriter.java
+    set r [exec java -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -class CGrampFileWriter -iterations 5] 
     list [lrange $r 1 4]
 } {{1 2 3 4}}

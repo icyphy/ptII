@@ -51,7 +51,7 @@ if {[info procs saveAsJava] == "" } then {
 #
 
 
-test MoMLToJava-1.0 {} {
+test autoSaveAsJava-1.0 {} {
     set results [saveAsJava rampFileWriter.xml]
     list [lrange $results 1 4]
 } {{1 2 3 4}}
