@@ -566,6 +566,10 @@ public class TypeSpecializerAnalysis {
                             unit,
                             localDefs,
                             localUses);
+                if (port == null) {
+                    throw new RuntimeException("Failed to find port for " + 
+                            unit);
+                }
                 // Don't create constant terms for
                 // ports where we don't already know the type.
                 if (!port.getType().isInstantiable()) {

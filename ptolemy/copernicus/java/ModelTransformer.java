@@ -355,6 +355,8 @@ public class ModelTransformer extends SceneTransformer {
                 continue;
             }
 
+            // Ignore frame sizes and locations.  They aren't really
+            // necessary in the generated code, I don't think.
             if (attribute instanceof SizeAttribute ||
                 attribute instanceof LocationAttribute) {
                 continue;

@@ -379,7 +379,8 @@ public class ActorTransformer extends SceneTransformer {
             // within the class.
             _inlineLocalCalls(entityInstanceClass);
 
-            // Remove the __CGInit method.
+            // Remove the __CGInit method.  This should have been
+            // inlined above.
             entityInstanceClass.removeMethod(
                     entityInstanceClass.getInitMethod());
         }
@@ -520,8 +521,6 @@ public class ActorTransformer extends SceneTransformer {
                         // FIXME: What if more than one method could be called?
                         SiteInliner.inlineSite(r.getMethod(), stmt, method);
                     }
-
-
                     // Inline other NamedObj methods here, too..
 
                 }
