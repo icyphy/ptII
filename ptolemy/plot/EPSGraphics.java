@@ -43,7 +43,7 @@ output.  Unfortunately, with standard browsers, this is not useful.
 With MS Internet Explorer, standard output is not available.
 With Netscape Navigator, standard output is available in the Java console,
 but is limited to fewer lines than what is usually generated.
-Thus, we reommend using this within Sun's appletviewer, and redirecting
+Thus, we recommend using this within Sun's appletviewer, and redirecting
 its standard output to a file.
 
 @author Edward A. Lee
