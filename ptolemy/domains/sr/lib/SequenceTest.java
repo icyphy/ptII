@@ -73,7 +73,7 @@ be, within the specified <i>tolerance</i> (which defaults to
 10<sup>-9</sup>.  The input data type is undeclared, so it can
 resolve to anything.
 
-@author Edward A. Lee
+@author Paul Whitaker, Edward A. Lee
 @version $Id$
 */
 

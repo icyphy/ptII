@@ -417,7 +417,8 @@ public class SRDirector extends Director {
 
         // All receivers have known state, so the iteration has converged.
         // This check may eliminate one unnecessary phase of actor firings.
-        if (currentNumOfKnownReceivers == _receivers.size()) return true;
+        // FIXME: 
+        //if (currentNumOfKnownReceivers == _receivers.size()) return true;
 
         // This is the first phase of actor firings.
         if (previousNumOfKnownReceivers == -1) return false;

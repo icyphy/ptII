@@ -52,6 +52,7 @@ JSRCS = \
 	Delay.java \
 	Latch.java \
 	SequenceTest.java \
+	SingleTokenDistributor.java \
 	TriggeredTime.java
 
 OTHER_FILES_TO_BE_JARED = \

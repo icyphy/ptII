@@ -71,96 +71,6 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="480.0, 94.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>SequencePlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="11.0"/>
-<yRange min="0.0" max="11.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="SequencePlotter2" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="448.0, 224.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>SequencePlotter2</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="11.0"/>
-<yRange min="0.0" max="11.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="SequencePlotter3" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="476.0, 367.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>SequencePlotter3</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="11.0"/>
-<yRange min="0.0" max="11.0"/>
-<default connected="no" marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="SingleTokenDistributor" class="ptolemy.domains.sr.lib.SingleTokenDistributor">
         <property name="_location" class="ptolemy.moml.Location" value="170.0, 212.0">
         </property>
@@ -172,12 +82,42 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="SequenceTest" class="ptolemy.domains.sr.lib.SequenceTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,3.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="413.0, 94.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="SequenceTest2" class="ptolemy.domains.sr.lib.SequenceTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0,4.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="496.0, 222.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="SequenceTest3" class="ptolemy.domains.sr.lib.SequenceTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0,5.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="477.0, 360.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -186,18 +126,24 @@
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Ramp.output" relation="relation"/>
-    <link port="TriggeredTime.output" relation="relation6"/>
+    <link port="TriggeredTime.output" relation="relation4"/>
     <link port="TriggeredTime.trigger" relation="relation2"/>
     <link port="TriggeredTime2.output" relation="relation5"/>
     <link port="TriggeredTime2.trigger" relation="relation3"/>
-    <link port="TriggeredTime3.output" relation="relation4"/>
+    <link port="TriggeredTime3.output" relation="relation6"/>
     <link port="TriggeredTime3.trigger" relation="relation7"/>
-    <link port="SequencePlotter.input" relation="relation6"/>
-    <link port="SequencePlotter2.input" relation="relation5"/>
-    <link port="SequencePlotter3.input" relation="relation4"/>
     <link port="SingleTokenDistributor.input" relation="relation"/>
     <link port="SingleTokenDistributor.output" relation="relation2"/>
     <link port="SingleTokenDistributor.output" relation="relation3"/>
     <link port="SingleTokenDistributor.output" relation="relation7"/>
+    <link port="SequenceTest.input" relation="relation4"/>
+    <link port="SequenceTest2.input" relation="relation5"/>
+    <link port="SequenceTest3.input" relation="relation6"/>
 </entity>

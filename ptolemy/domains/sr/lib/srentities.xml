@@ -16,6 +16,9 @@
 <entity name="SequenceTest" class="ptolemy.domains.sr.lib.SequenceTest">
 </entity>
 
+<entity name="SingleTokenDistributor" class="ptolemy.domains.sr.lib.SingleTokenDistributor">
+</entity>
+
 <entity name="TriggeredTime" class="ptolemy.domains.sr.lib.TriggeredTime">
 </entity>
 

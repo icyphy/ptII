@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 Upon receiving a token on the input, produce an output token with a value 
 that is the current time. The output is of Type Double.
 
-@author Jie Liu, Paul Whitaker
+@author Paul Whitaker, Jie Liu
 @version $Id$
 */
 

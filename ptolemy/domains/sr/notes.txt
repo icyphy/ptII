@@ -1,0 +1,160 @@
+
+To Do:
+
+run ptolemy classic SR
+add, update, and correct comments
+FIXMEs
+modify actors to work in SR
+       LogicFunction shouldn't produce an output unless it has enough inputs
+fix tests
+
+-------------------------------------------------------------------------------
+
+Issues:
+
+If an actor's prefire() method is called repeatedly and returns false every
+time, the actor will never be fired or postfired.  Is this right?
+
+
+
+How do we force domain-polymorphic actors to follow SR semantics?  Once
+an actor produces an output, it is not allowed to "change its mind" and
+produce a different output just because more inputs are available.  Any
+arbitrary ordering of actor firings should produce the same result.
+
+Imagine an adder that adds two constants.
+
+Case #1: Const1 fires, Const2 fires, then the adder fires (and produces an
+output).
+
+Case #2: Const1 fires, then the adder fires (must not produce an output!), 
+then Const2 fires, then the adder fires again (and produces an output).
+
+How do we get actors to distinguish between an unknown value and an absent 
+value?  Do actors need to explicitly call isKnown()?  What should hasToken() 
+return on an input port that has unknown value?
+
+Maybe actors don't distinguish: it is the director's job not to fire an actor
+until there are enough inputs.  Actors can implement an interface if they do
+not require all inputs to be present before firing.
+
+-------------------------------------------------------------------------------
+
+General:
+
+giotto input is the output from the last iteration
+sr input is the same as the output at a given tick 
+
+dt and sdf deals with loops by inserting delays
+sr repeatedly fires until values converge
+
+ct also repeatedly fires actors until convergence
+
+hasToken may not be enough - may need isKnown
+what did sedwards do?
+
+self loops?
+
+tokens can be defined (a value, or absent), or undefined (which could mean absent)
+
+distinction:
+1) not yet determined - unknown?
+2) not determinable - undefined?
+just use undefined and indeterminable?
+
+static scheduler - recursive decomposition into strongly connected components
+dynamic scheduler - chaotic iteration until convergence (shown correct in Ch 3)
+
+
+receiver:
+reset() discards token and sets known to false
+isKnown() returns known
+hasRoom() returns true - ?
+unknown:hasToken() throws exception
+absent:hasToken() returns super.hasToken (false)
+present:hasToken() returns super.hasToken (true)
+unknown:setAbsent() sets known to true
+absent:setAbsent() does nothing
+present:setAbsent() throws exception
+unknown:get() throws exception
+absent:get() calls super.get() (throws exception)
+present:get() returns super.get()
+unknown:put() calls super.put(), sets known to true
+absent:put() throws exception
+present:put() throws exception if token differs
+
+receivers vs ports
+types of exceptions
+need to add methods to Receiver or AbstractReceiver?
+maybe unknown:hasToken() should return false
+
+stable number of known receivers indicates convergence
+careful of mutation
+should this check happen in fire or postfire?  probably fire
+what about actors that may never fire or postfire?
+
+actors:
+hasFired()
+isReactive()
+isStrict() - ?
+
+
+paper:
+
+To execute under SR semantics, actors must be consistent in the sense that 
+given the same inputs, an actor will produce the same output (or lack of 
+output) in a given iteration.
+
+An event occurs at each instant and on each channel.
+
+The SR Director works by firing actors in an attempt to obtain a state in which each connection has a value, and these values have converged.  The values must eventually converge, because the ***** function is monotonic.  Transitions can only occur if the new value is ***** than the old value in the partially ordered set.  Thus, the only possible transition is for an undefined value to become a defined value.  A defined value can be either a token or absent.  However, a value determined to be absent or evaluated to a value can not change.  Thus, each value can change only once.  The maximum number of transitions before convergence equals the number of communication channels.  A channel value that remains undefined after convergence is called indeterminable*.
+
+Minimizing the worst case execution time is important, because the user may desire to synchronize the model to real-time.  If the worst case evaluation time is greater than the period of the SR system, then the excution may not exhibit real-time behavior.
+
+-------------------------------------------------------------------------------
+
+Tests:
+
+Latch is failing - need to keep actors from firing until their inputs are
+available
+
+need to test two constants feeding into an adder, with different firing orders
+
+
+kernel tests:
+
+*OrCyclic - true is fed into a logical or, and the result is complemented and 
+fed back into the logical or (all values should converge).  This test is
+bogus - LogicFunction needs to be modified.
+
+*OrCyclicUndefined - false is fed into a logical or, and the result is 
+complemented and fed back into the logical or (some values should remain 
+unknown).  This test is bogus - LogicFunction needs to be modified.
+
+PulseOr - a logical or is performed on tokens from two pulses
+
+PulseSum - tokens from two pulses are added together
+
+RampDoublePeriod - tokens from a ramp are squared (the period of the director 
+is a double)
+
+RampFiringLimit - tokens from two ramps are added together (one has a firing 
+limit)
+
+RampIntPeriod - tokens from a ramp are squared (the period of the director is 
+an int)
+
+Ramps - tokens from two ramps are added together
+
+RampSwitch - tokens from two ramps feed into a switch
+
+
+lib tests:
+
+Delay - tokens from a ramp are delayed by either 0, 1, or 2 instants
+
+*Latch - tokens from a ramp are distributed to three channels, and the tokens 
+are latched
+
+TriggeredTime - tokens from a ramp are distributed to three channels, which 
+trigger the TriggeredTime actor
