@@ -23,8 +23,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@PropsedRating Red
-@AcceptedRating Red
+@ProposedRating Red (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 package ptolemy.domains.sdf.kernel.test;
 
