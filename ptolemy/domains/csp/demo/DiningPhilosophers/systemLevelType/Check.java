@@ -117,26 +117,31 @@ public class Check {
         // (3) Compose the philosopher and chopstick model to form
         //     philosopher/chopstick pair;
         // (4) Compose all the pairs to form the complete model.
-      //
+        //
         // Compose numberOfPhilosophers instances of philosopher/chopstick
-      // pairs. Each instance is composed from scratch from clones of the
-      // basic automata loaded above. This is for make the state names
-      // of all the instances correct. If cloning the philosopher/chopstick
-      // pairs from one instance, the state names in all the clones will
-      // be the same as that in the master instance.
-      InterfaceAutomaton[] phiCho =
+        // pairs. Each instance is composed from scratch from clones of the
+        // basic automata loaded above. This is for make the state names
+        // of all the instances correct. If cloning the philosopher/chopstick
+        // pairs from one instance, the state names in all the clones will
+        // be the same as that in the master instance.
+        InterfaceAutomaton[] phiCho =
                          new InterfaceAutomaton[_numberOfPhilosophers];
         for (int i=0; i<_numberOfPhilosophers; i++) {
-          InterfaceAutomaton phiAndReceiver = _composePhiAndReceiver(i);
-          InterfaceAutomaton choAndReceiver = _composeChoAndReceiver(i);
-          phiCho[i] = phiAndReceiver.compose(choAndReceiver);
-      }
+            InterfaceAutomaton phiAndReceiver = _composePhiAndReceiver(i);
+            InterfaceAutomaton choAndReceiver = _composeChoAndReceiver(i);
+            phiCho[i] = phiAndReceiver.compose(choAndReceiver);
 
-      // compose all philosopher/chopstick pairs.
+System.out.println("finish " + i + "th philosopher/chopstick pair");
+        }
+
+        // compose all philosopher/chopstick pairs.
         InterfaceAutomaton all = phiCho[0];
-      for (int i=1; i<_numberOfPhilosophers; i++) {
-          all = all.compose(phiCho[i]);
-      }
+        for (int i=1; i<_numberOfPhilosophers; i++) {
+            all = all.compose(phiCho[i]);
+        }
+
+System.out.println(all.getInfo());
+System.out.println(all.exportMoML());
 
         // check for deadlock
     }
@@ -174,11 +179,164 @@ public class Check {
         try {
             // general a chopstick with the correct name
             InterfaceAutomaton cho = (InterfaceAutomaton)_chopstick.clone();
+            cho.setName("c" + index);
 
+            HashMap nameMap = new HashMap();
+            nameMap.put("g1", "c" + index + "gl");
+            nameMap.put("g1R", "c" + index + "glR");
 
+            nameMap.put("g2", "c" + index + "gr");
+            nameMap.put("g2R", "c" + index + "grR");
 
+            nameMap.put("c", "c" + index + "c");
+            nameMap.put("c1", "c" + index + "cl");
+            nameMap.put("c2", "c" + index + "cr");
 
-            return null;
+            cho.renameTransitionLabels(nameMap);
+
+            // create left receiver
+            InterfaceAutomaton leftReceiver =
+                                 (InterfaceAutomaton)_receiver.clone();
+            leftReceiver.setName("c" + index + "lr");
+
+            nameMap = new HashMap();
+            nameMap.put("p", "p" + index + "pr");
+            nameMap.put("pR", "p" + index + "prR");
+
+            nameMap.put("iGW", "p" + index + "iGWr");
+            nameMap.put("iGWT", "p" + index + "iGWrT");
+            nameMap.put("iGWF", "p" + index + "iGWrF");
+
+            nameMap.put("g", "c" + index + "gl");
+            nameMap.put("gR", "c" + index + "glR");
+
+            leftReceiver.renameTransitionLabels(nameMap);
+
+            // create right receiver
+            InterfaceAutomaton rightReceiver =
+                                 (InterfaceAutomaton)_receiver.clone();
+            rightReceiver.setName("c" + index + "rr");
+
+            nameMap = new HashMap();
+
+            // compute the index of the philosopher on the right
+            int rightIndex = (index + 1) % _numberOfPhilosophers;
+
+            nameMap.put("p", "c" + rightIndex + "pl");
+            nameMap.put("pR", "c" + rightIndex + "plR");
+
+            nameMap.put("iGW", "c" + rightIndex + "iGWl");
+            nameMap.put("iGWT", "c" + rightIndex + "iGWlT");
+            nameMap.put("iGWF", "c" + rightIndex + "iGWlF");
+
+            nameMap.put("g", "c" + index + "gr");
+            nameMap.put("gR", "c" + index + "grR");
+
+            rightReceiver.renameTransitionLabels(nameMap);
+
+            // create conditional branch controller
+            InterfaceAutomaton controller =
+                                   (InterfaceAutomaton)_controller.clone();
+            controller.setName("c" + index + "c");
+
+            nameMap = new HashMap();
+            nameMap.put("iA1", "c" + index + "iAl");
+            nameMap.put("iA1T", "c" + index + "iAlT");
+            nameMap.put("iA1F", "c" + index + "iAlF");
+
+            nameMap.put("iF1", "c" + index + "iFl");
+            nameMap.put("iF1T", "c" + index + "iFlT");
+            nameMap.put("iF1F", "c" + index + "iFlF");
+
+            nameMap.put("r1", "c" + index + "rl");
+            nameMap.put("d1", "c" + index + "dl");
+
+            nameMap.put("iA2", "c" + index + "iAr");
+            nameMap.put("iA2T", "c" + index + "iArT");
+            nameMap.put("iA2F", "c" + index + "iArF");
+
+            nameMap.put("iF2", "c" + index + "iFr");
+            nameMap.put("iF2T", "c" + index + "iFrT");
+            nameMap.put("iF2F", "c" + index + "iFrF");
+
+            nameMap.put("r2", "c" + index + "rr");
+            nameMap.put("d2", "c" + index + "dr");
+
+            nameMap.put("c", "c" + index + "c");
+            nameMap.put("c1", "c" + index + "cl");
+            nameMap.put("c2", "c" + index + "cr");
+
+            controller.renameTransitionLabels(nameMap);
+
+System.out.println("controller:");
+System.out.println(controller.getInfo());
+
+            // create left conditional send
+            InterfaceAutomaton leftSend = (InterfaceAutomaton)_send.clone();
+            leftSend.setName("c" + index + "sl");
+
+            nameMap = new HashMap();
+            nameMap.put("p", "c" + index + "pl");
+            nameMap.put("pR", "c" + index + "plR");
+
+            nameMap.put("iGW", "c" + index + "iGWl");
+            nameMap.put("iGWT", "c" + index + "iGWlT");
+            nameMap.put("iGWF", "c" + index + "iGWlF");
+
+            nameMap.put("iA", "c" + index + "iAl");
+            nameMap.put("iAT", "c" + index + "iAlT");
+            nameMap.put("iAF", "c" + index + "iAlF");
+
+            nameMap.put("iF", "c" + index + "iFl");
+            nameMap.put("iFT", "c" + index + "iFlT");
+            nameMap.put("iFF", "c" + index + "iFlF");
+
+            nameMap.put("r", "c" + index + "rl");
+            nameMap.put("d", "c" + index + "dl");
+
+            leftSend.renameTransitionLabels(nameMap);
+
+System.out.println("leftSend:");
+System.out.println(leftSend.getInfo());
+
+            // create right conditional send
+            InterfaceAutomaton rightSend = (InterfaceAutomaton)_send.clone();
+            rightSend.setName("c" + index + "sr");
+
+            nameMap = new HashMap();
+            nameMap.put("p", "c" + index + "pr");
+            nameMap.put("pR", "c" + index + "prR");
+
+            nameMap.put("iGW", "c" + index + "iGWr");
+            nameMap.put("iGWT", "c" + index + "iGWrT");
+            nameMap.put("iGWF", "c" + index + "iGWrF");
+
+            nameMap.put("iA", "c" + index + "iAr");
+            nameMap.put("iAT", "c" + index + "iArT");
+            nameMap.put("iAF", "c" + index + "iArF");
+
+            nameMap.put("iF", "c" + index + "iFr");
+            nameMap.put("iFT", "c" + index + "iFrT");
+            nameMap.put("iFF", "c" + index + "iFrF");
+
+            nameMap.put("r", "c" + index + "rr");
+            nameMap.put("d", "c" + index + "dr");
+
+            rightSend.renameTransitionLabels(nameMap);
+
+            // compose
+            InterfaceAutomaton choWithReceivers = cho.compose(leftReceiver);
+            choWithReceivers = choWithReceivers.compose(rightReceiver);
+
+            InterfaceAutomaton conWithSend = controller.compose(leftSend);
+System.out.println("con and left send:");
+System.out.println(conWithSend.getInfo());
+
+            conWithSend = conWithSend.compose(rightSend);
+
+            InterfaceAutomaton whole = choWithReceivers.compose(conWithSend);
+
+            return whole;
         } catch (CloneNotSupportedException cnse) {
             throw new InternalErrorException("Check._composeChoAndReceiver: "
               + "clone not supported: " + cnse.getMessage());
@@ -215,11 +373,52 @@ public class Check {
 
             phi.renameTransitionLabels(nameMap);
 
-System.out.println(phi.exportMoML());
+            // create left receiver
+            InterfaceAutomaton leftReceiver =
+                                 (InterfaceAutomaton)_receiver.clone();
+            leftReceiver.setName("p" + index + "lr");
 
+            nameMap = new HashMap();
 
+            // compute the index of the chopstick on the left
+            int leftIndex =
+                  (index + _numberOfPhilosophers - 1) % _numberOfPhilosophers;
 
-            return null;
+            nameMap.put("p", "c" + leftIndex + "pr");
+            nameMap.put("pR", "c" + leftIndex + "prR");
+
+            nameMap.put("iGW", "c" + leftIndex + "iGWr");
+            nameMap.put("iGWT", "c" + leftIndex + "iGWrT");
+            nameMap.put("iGWF", "c" + leftIndex + "iGWrF");
+
+            nameMap.put("g", "p" + index + "gl");
+            nameMap.put("gR", "p" + index + "glR");
+
+            leftReceiver.renameTransitionLabels(nameMap);
+
+            // create right receiver
+            InterfaceAutomaton rightReceiver =
+                                 (InterfaceAutomaton)_receiver.clone();
+            rightReceiver.setName("p" + index + "rr");
+
+            nameMap = new HashMap();
+
+            nameMap.put("p", "c" + index + "pl");
+            nameMap.put("pR", "c" + index + "plR");
+
+            nameMap.put("iGW", "c" + index + "iGWl");
+            nameMap.put("iGWT", "c" + index + "iGWlT");
+            nameMap.put("iGWF", "c" + index + "iGWlF");
+
+            nameMap.put("g", "p" + index + "gr");
+            nameMap.put("gR", "p" + index + "grR");
+
+            rightReceiver.renameTransitionLabels(nameMap);
+
+            InterfaceAutomaton phiWithReceivers = phi.compose(leftReceiver);
+            phiWithReceivers = phiWithReceivers.compose(rightReceiver);
+
+            return phiWithReceivers;
         } catch (CloneNotSupportedException cnse) {
             throw new InternalErrorException("Check._composePhiAndReceiver: "
               + "clone not supported: " + cnse.getMessage());
