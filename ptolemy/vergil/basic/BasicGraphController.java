@@ -437,21 +437,21 @@ public abstract class BasicGraphController extends AbstractGraphController
             
             try {
                 if (target instanceof Prototype) {
-                    Prototype deferTo = ((Prototype)target).getDeferTo();
+                    Prototype deferTo = (Prototype)((Prototype)target).getParent();
                     if (deferTo != null) {
                         _configuration.openModel(deferTo);
                         return;
                     }
                 }
-                NamedObj.MoMLInfo info = target.getMoMLInfo();
-                if (info.source != null && !info.source.trim().equals("")) {
+                String source = target.getSource();
+                if (source != null && !source.trim().equals("")) {
                     // FIXME: Is there a more reasonable base directory
                     // to give for the second argument?
                     URL sourceURL = StringUtilities.stringToURL(
-                            info.source,
+                            source,
                             null,
                             target.getClass().getClassLoader());
-                    _configuration.openModel(null, sourceURL, info.source);
+                    _configuration.openModel(null, sourceURL, source);
                     return;
                 }
                 // Target does not defer and does not have a defined "source".

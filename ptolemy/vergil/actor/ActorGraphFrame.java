@@ -443,9 +443,6 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                         new MoMLChangeRequest(this, library,
                                 buffer.toString(),
                                 file.toURL());
-                    // No need to propagate this library to instances
-                    // that defer to this one.
-                    request.enablePropagation(false);
                     library.requestChange(request);
                     _setDirectory(chooser.getCurrentDirectory());
                 } catch (Exception ex) {

@@ -262,7 +262,7 @@ public class ClassDefinitionController extends ActorController {
             // If the class has objects that defer to it, then
             // refuse to convert.
             boolean hasDeferrals = false;
-            List deferred = object.getDeferredFrom();
+            List deferred = object.getChildren();
             StringBuffer names = new StringBuffer();
             if (deferred != null) {
                 // List contains weak references, so it's not

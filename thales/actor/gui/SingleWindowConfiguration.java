@@ -196,7 +196,7 @@ public class SingleWindowConfiguration extends Configuration {
         // then open that other.
         Prototype deferredTo = null;
         if (entity instanceof Prototype) {
-            deferredTo = ((Prototype)entity).getDeferTo();
+            deferredTo = (Prototype)((Prototype)entity).getParent();
         }
         if (deferredTo != null) {
             entity = deferredTo;

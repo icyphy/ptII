@@ -154,7 +154,7 @@ public class AttributeValueIcon extends XMLIcon {
                 + " name=\""
                 + name
                 + "\" class=\""
-                + getMoMLInfo().className
+                + getClassName()
                 + "\">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</"

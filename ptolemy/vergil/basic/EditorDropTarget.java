@@ -41,14 +41,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Singleton;
@@ -237,7 +229,7 @@ public class EditorDropTarget extends DropTarget {
             
             // Find the location for the dropped objects.
             // Account for the scaling in the pane.
-            final Point2D transformedPoint = new Point2D.Double();
+            Point2D transformedPoint = new Point2D.Double();
             pane.getTransformContext().getInverseTransform().transform(
                     originalPoint, transformedPoint);
             
@@ -266,10 +258,9 @@ public class EditorDropTarget extends DropTarget {
             }
 
             // Create the MoML change request to instantiate the new objects.
-            // Count MoML change requests so that they can be undone all together.
-            int count = 0;
+            StringBuffer moml = new StringBuffer();
+            moml.append("<group>");
             while (iterator.hasNext()) {
-                count++;
                 final NamedObj dropObj = (NamedObj) iterator.next();
                 final String name;
                 if (dropObj instanceof Singleton) {
@@ -278,141 +269,22 @@ public class EditorDropTarget extends DropTarget {
                     name = container.uniqueName(dropObj.getName());
                 }
 
-                // Create the MoML command.
-                StringBuffer moml = new StringBuffer();
-                String elementName = container.getMoMLElementName();
-                moml.append("<group>");
+                // Constrain point to snap to grid.
+                Point2D newPoint = SnapConstraint.constrainPoint(transformedPoint);
+
                 moml.append(dropObj.exportMoML(name));
-                moml.append("</group>");
-
-                // NOTE: Have to know whether this is an entity,
-                // port, etc. This seems awkward. The following
-                // code needs refactoring, as there are four very
-                // similar copies.
-                MoMLChangeRequest request = null;
-                final NamedObj finalContainer = container;
-                
-                if (dropObj instanceof ComponentEntity) {
-
-                    // Dropped object is an entity.
-                    request = new MoMLChangeRequest(
-                        this, container, moml.toString()) {
-                        protected void _execute() throws Exception {
-                            // Errors will be reported to listeners as a consequence of
-                            // throwing an exception here, so don't also report them
-                            // via the error handler.
-                            setReportErrorsToHandler(false);
-                            try {
-                                super._execute();
-                            } catch (Throwable ex) {
-                                throw new IllegalActionException(finalContainer, ex,
-                                "Cannot drop " + dropObj.getName());
-                            }
-                            // If this succeeded, then the container is surely a
-                            // a CompositeEntity.
-                            if (finalContainer instanceof CompositeEntity) {
-                                NamedObj newObject
-                                        = ((CompositeEntity)finalContainer)
-                                        .getEntity(name);
-                                if (newObject != null) {
-                                    _setLocation(name, newObject, transformedPoint);
-                                }
-                            }
-                        }
-                    };
-
-                } else if (dropObj instanceof Port) {
-
-                    // Dropped object is a port.
-                    request = new MoMLChangeRequest(
-                        this, container, moml.toString()) {
-                        protected void _execute() throws Exception {
-                            // Errors will be reported to listeners as a consequence of
-                            // throwing an exception here, so don't also report them
-                            // via the error handler.
-                            setReportErrorsToHandler(false);
-                            try {
-                                super._execute();
-                            } catch (Throwable ex) {
-                                throw new IllegalActionException(finalContainer, ex,
-                                "Cannot drop " + dropObj.getName());
-                            }
-                            // If this succeeded, then the container is surely an
-                            // instance of Entity.
-                            if (finalContainer instanceof Entity) {
-                                NamedObj newObject
-                                        = ((Entity)finalContainer)
-                                        .getPort(name);
-                                if (newObject != null) {
-                                    _setLocation(name, newObject, transformedPoint);
-                                }
-                            }
-                        }
-                    };
-
-                } else if (dropObj instanceof Relation) {
-
-                    // Dropped object is a relation.
-                    request = new MoMLChangeRequest(
-                        this, container, moml.toString()) {
-                        protected void _execute() throws Exception {
-                            // Errors will be reported to listeners as a consequence of
-                            // throwing an exception here, so don't also report them
-                            // via the error handler.
-                            setReportErrorsToHandler(false);
-                            try {
-                                super._execute();
-                            } catch (Throwable ex) {
-                                throw new IllegalActionException(finalContainer, ex,
-                                "Cannot drop " + dropObj.getName());
-                            }
-                            // If this succeeded, then the container is surely
-                            // an instance of CompositeEntity.
-                            if (finalContainer instanceof CompositeEntity) {
-                                NamedObj newObject
-                                        = ((CompositeEntity)finalContainer)
-                                        .getRelation(name);
-                                if (newObject != null) {
-                                    _setLocation(name, newObject, transformedPoint);
-                                }
-                            }
-                        }
-                    };
-
-                } else if (dropObj instanceof Attribute) {
-
-                    // Dropped object is an attribute.
-                    request = new MoMLChangeRequest(
-                        this, container, moml.toString()) {
-                        protected void _execute() throws Exception {
-                            // Errors will be reported to listeners as a consequence of
-                            // throwing an exception here, so don't also report them
-                            // via the error handler.
-                            setReportErrorsToHandler(false);
-                            try {
-                                super._execute();
-                            } catch (Throwable ex) {
-                                throw new IllegalActionException(finalContainer, ex,
-                                "Cannot drop " + dropObj.getName());
-                            }
-                            NamedObj newObject = finalContainer.getAttribute(name);
-                            if (newObject != null) {
-                                _setLocation(name, newObject, transformedPoint);
-                            }
-                        }
-                    };
-                }
-
-                // NOTE: If the drop object is not recognized, nothing
-                // happens.  Is this the right behavior?
-                if (request != null) {
-                    request.setUndoable(true);
-                    if (count > 1) {
-                        request.setMergeWithPreviousUndo(true);
-                    }
-                    container.requestChange(request);
-                }
+                moml.append("<" + dropObj.getElementName() + " name=\"" + name + "\">\n");
+                moml.append("<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{");
+                moml.append((int)newPoint.getX());
+                moml.append(", ");
+                moml.append((int)newPoint.getY());
+                moml.append("}\"/>\n</" + dropObj.getElementName() + ">\n");
             }
+            moml.append("</group>");
+            MoMLChangeRequest request = new MoMLChangeRequest(
+                    this, container, moml.toString());
+            request.setUndoable(true);
+            container.requestChange(request);
             dtde.dropComplete(true); //success!
         }
 
@@ -492,51 +364,7 @@ public class EditorDropTarget extends DropTarget {
             }
             return null;
         }
-        
-        // Create a Location attribute if necessary for the specified object,
-        // and set the location to the specified point.
-        // Note that this needs to be done after the change request
-        // that creates the object has succeeded.
-        private void _setLocation(String name,
-                NamedObj newObject, Point2D point)
-                throws Exception {
-            if (newObject == null) {
-                throw new InternalErrorException("Dropped object '"
-                        + name
-                        + "' not found after "
-                        + "change completed!");
-            }
-            // Constrain point to snap to grid.
-            Point2D newPoint = SnapConstraint.constrainPoint(point);
 
-            double coords[] = new double[2];
-            coords[0] = ((int)newPoint.getX());
-            coords[1] = ((int)newPoint.getY());
-
-            /** NOTE: This used to set the location directly using the
-             *  following code, but then the change did not propagate.
-            Locatable location = (Locatable)newObject.getAttribute("_location");
-            // If there is no location, then manufacture one.
-            if (location == null) {
-                location = new Location(newObject, "_location");
-            }
-            location.setLocation(coords);
-            */
-
-            // To ensure propagation.
-            MoMLChangeRequest request = new MoMLChangeRequest(
-                    this,
-                    newObject,
-                    "<property name=\"_location\" " +
-                    "class=\"ptolemy.kernel.util.Location\" " +
-                    "value=\"" +
-                    coords[0] +
-                    ", " +
-                    coords[1] +
-                    "\"/>");
-            newObject.requestChange(request);
-        }
-        
         ///////////////////////////////////////////////////////////////
         ////                     private variables                 ////
 

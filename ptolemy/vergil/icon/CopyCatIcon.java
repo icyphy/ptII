@@ -134,12 +134,13 @@ public class CopyCatIcon extends XMLIcon {
                                 // Save my original description, in case I go
                                 // back to having nothing inside.
                                 if (_originalDescription == null) {
-                                    _originalDescription = myDescription.getText();
+                                    _originalDescription = myDescription
+                                            .getConfigureText();
                                 }
                                 myDescription.configure(
                                         null,
                                         null,
-                                        description.getText());
+                                        description.getConfigureText());
                             }
                         }
                     }

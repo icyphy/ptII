@@ -59,7 +59,7 @@ figure.
 <p>
 The dragging of a selection is undoable, and is based on the difference
 between the point where the mouse was pressed and where the mouse was
-released. This informatio is used to create MoML to undo the move if
+released. This information is used to create MoML to undo the move if
 requested.
 
 @author Steve Neuendorffer
@@ -195,7 +195,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             oldLocation[1] = newLocation[1] + transform[1];
             // Create the MoML, wrapping the new location attribute
             // in an element refering to the container
-            String containingElementName = element.getMoMLElementName();
+            String containingElementName = element.getElementName();
             String elementToMove = "<" + containingElementName + " name=\"" +
                     element.getName() + "\" >\n";
             moml.append(elementToMove);
@@ -203,7 +203,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             
             // NOTE: use the moml info element name here in case the
             // location is a vertex
-            String momlInfo = ((NamedObj)locatable).getMoMLElementName();
+            String momlInfo = ((NamedObj)locatable).getElementName();
             moml.append("<" + momlInfo + " name=\"" +
                     locatable.getName() + "\" value=\"" + newLocation[0] + ", " +
                     newLocation[1] + "\" />\n");

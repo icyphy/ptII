@@ -983,12 +983,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 }
                 // Create the MoML, wrapping the location attribute
                 // in an element refering to the container
-                String containingElementName = element.getMoMLElementName();
+                String containingElementName = element.getElementName();
                 moml.append("<" + containingElementName + " name=\"" +
                         element.getName() + "\" >\n");
                 // NOTE: use the moml info element name here in case the
                 // location is a vertex
-                moml.append("<" + location.getMoMLElementName() + " name=\"" +
+                moml.append("<" + location.getElementName() + " name=\"" +
                         location.getName() + "\" value=\"" + expression + "\" />\n");
                 moml.append("</" + containingElementName + ">\n");
             }

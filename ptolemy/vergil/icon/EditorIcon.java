@@ -333,7 +333,7 @@ public class EditorIcon extends Attribute {
                 + " name=\""
                 + name
                 + "\" class=\""
-                + getMoMLInfo().className
+                + getClassName()
                 + "\""
                 + ">\n");
         _exportMoMLContents(output, depth + 1);

@@ -33,9 +33,9 @@ package ptolemy.vergil.actor;
 import java.awt.event.ActionEvent;
 
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.Prototype;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Instantiable;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -161,7 +161,7 @@ public class ActorInstanceController extends ActorController {
             // Assumes MoML parser will convert to class.
             // NOTE: This cast should be safe because this controller is
             // used for actors.
-            if (((Prototype)object).isClassDefinition()) {
+            if (((Instantiable)object).isClassDefinition()) {
                 // Object is already a class. Do nothing.
                 return;
             }

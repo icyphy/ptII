@@ -49,7 +49,6 @@ import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.Vertex;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.NamedObjController;
@@ -499,7 +498,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             }
 
             ActorGraphModel graphModel = (ActorGraphModel)getGraphModel();
-            final double[] point = SnapConstraint.constrainPoint(x, y);
+            double[] point = SnapConstraint.constrainPoint(x, y);
             final NamedObj toplevel = graphModel.getPtolemyModel();
             if (!(toplevel instanceof CompositeEntity)) {
                 throw new InternalErrorException(
@@ -511,36 +510,15 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
             // Create the relation.
             StringBuffer moml = new StringBuffer();
             moml.append("<relation name=\"" + relationName + "\">\n");
-            moml.append("<vertex name=\"" + vertexName + "\"/>\n");
+            moml.append("<vertex name=\"" + vertexName + "\" value=\"{");
+            moml.append(point[0] + ", " + point[1]);
+            moml.append("}\"/>\n");
             moml.append("</relation>");
 
             MoMLChangeRequest request =
-                new MoMLChangeRequest(this, toplevel, moml.toString()) {
-                        protected void _execute() throws Exception {
-                            super._execute();
-                            // Set the location of the icon.
-                            // Note that this really needs to be done after
-                            // the change request has succeeded, which is why
-                            // it is done here.  When the graph controller
-                            // gets around to handling this, it will draw
-                            // the icon at this location.
-                            NamedObj newObject
-                                    = ((CompositeEntity)toplevel)
-                                    .getRelation(relationName);
-                            Vertex vertex = (Vertex) newObject.getAttribute(vertexName);
-                            vertex.setLocation(point);
-                        }
-                    };
+                new MoMLChangeRequest(this, toplevel, moml.toString());
             request.setUndoable(true);
             toplevel.requestChange(request);
-
-            //Note: this used to be here, but It causes deadlock...  I
-            //don't know why it was here in the first place
-       //      try {
-//                 request.waitForCompletion();
-//             } catch (Exception ex) {
-//                 throw new GraphException(ex);
-//             }
         }
     }
 

@@ -434,7 +434,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             }
         }
 
-        // If there are no vertecies, and the relation has exactly
+        // If there are no verticies, and the relation has exactly
         // two connections, neither of which has been made yet, then
         // create a link without a vertex for the relation.
         if (rootVertex == null && allPortCount == 2 && unlinkedPortCount == 2) {
@@ -473,6 +473,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             // Create a vertex if one is not found
             if (rootVertex == null) {
                 try {
+                    // FIXME: This needs to be propagated.
                     rootVertex = new Vertex(relation,
                             relation.uniqueName("vertex"));
                 }
