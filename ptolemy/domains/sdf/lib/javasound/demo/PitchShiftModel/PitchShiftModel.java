@@ -147,13 +147,13 @@ public class PitchShiftModel extends TypedCompositeActor {
 	    // End of gui stuff.
 
 	    // Set the sampling rate to use.
-	    int sampleRate = 11025;
+	    int sampleRate = 22050;
 
 	    int channels = 1;
 
 	    // Size of internal Java Sound buffer (in samples) to use 
 	    //for real-time capture/playback.
-	    int buffSize = 4096;
+	    int buffSize = 8000*sampleRate/22050;
 
 	    // Set the token consumption rate and production rate to use.
 	    // Larger values may speed up execution.
