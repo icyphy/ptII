@@ -439,13 +439,22 @@ public class NamedObj implements Nameable, Debuggable,
             Field fields[] = myClass.getFields();
             for (int i = 0; i < fields.length; i++) {
                 try {
-                    if (fields[i].get(newObject) instanceof Settable) {
+                    // VersionAttribute has a final field
+                    if ( !Modifier.isFinal(fields[i].getModifiers())
+                            && fields[i].get(newObject) instanceof Settable) {
                         fields[i].set(newObject,
                                 newObject.getAttribute(fields[i].getName()));
                     }
                 } catch (IllegalAccessException e) {
-                    throw new CloneNotSupportedException(e.getMessage() +
-                            ": " + fields[i].getName());
+
+                    // FIXME: This would be a nice 
+                    // place for exception chaining.
+                    throw new CloneNotSupportedException(
+                            "The field associated with " 
+                            + fields[i].getName() 
+                            + " could not be automatically cloned because "
+                            + e.getMessage() + ".  This can be caused if "
+                            + "the field is not defined in a public class.");
                 }
             }
             return newObject;
