@@ -50,7 +50,7 @@ A base class for actors that encrypt and decrypt data.
 decryption based on the Java Cryptography Extension (JCE).
 See the
 {@link ptolemy.actor.lib.security.CryptographyActor} documentation for
-resources about the JCE.
+resources about JCA and JCE.
 
 <p> Actors extending this class take in an unsigned byte array at the
 <i>input</i>, process the data based on the <i>algorithm</i> parameter
@@ -155,7 +155,7 @@ abstract public class CipherActor extends CryptographyActor {
      *  the default setting for the algorithm should be used.
      *  <p>
      *  See the
-     *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/jce/JCERefGuide.html#AppA">Java Cryptography Extension (JCE) Reference Guide</a>
+     *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/jce/JCERefGuide.html#AppA" target="_top">Java Cryptography Extension (JCE) Reference Guide</a>
      *  for details.
      */
     public StringParameter mode;
@@ -204,7 +204,7 @@ abstract public class CipherActor extends CryptographyActor {
      *  the default setting for the algorithm should be used.
      *  <p>
      *  See the
-     *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/jce/JCERefGuide.html#AppA">Java Cryptography Extension (JCE) Reference Guide</a>
+     *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/jce/JCERefGuide.html#AppA" target="_top">Java Cryptography Extension (JCE) Reference Guide</a>
      *  for details.
      */
     public StringParameter padding;

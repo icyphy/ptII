@@ -107,6 +107,10 @@ public class KeyToken extends Token {
     }
 
 
+    /** Return a String representation of the KeyToken.
+     *  @return A String representation of the KeyToken that includes
+     *  the value of the algorithm, format and encoding.
+     */
     public String toString() {
         StringBuffer result =  new StringBuffer("KeyToken( Algorithm:");
         result.append(_value.getAlgorithm() + " \n");

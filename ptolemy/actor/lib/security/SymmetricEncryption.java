@@ -56,7 +56,7 @@ symmetric algorithms.  The initial default set of algorithms that
 comes with the Sun JDK does not include an asymmetric encryption algorithm,
 though other algorithms may be installed by the system administrator.
 
-<p>This actor reads an unsigned byte array at the <i>input<i> port,
+<p>This actor reads an unsigned byte array at the <i>input</i> port,
 encrypts the data using the data from the <i>key</i> port and then
 writes the unsigned byte array results to the <i>output</i> port.
 
@@ -80,6 +80,7 @@ an exception will likely be thrown.
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).  See the
 {@link ptolemy.actor.lib.security.CryptographyActor} documentation for
+resources about the JCE.
 
 @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
 @version $Id$
@@ -118,7 +119,7 @@ public class SymmetricEncryption extends CipherActor {
 
     /** The key to be used by this actor to encrypt the data.
      *  The type is an KeyToken containing a java.security.Key.
-     *  Usually the output of the {@link ptolemy.actor.lib.security.Key}
+     *  Usually the output of the {@link ptolemy.actor.lib.security.SecretKey}
      *  actor is connected to this port
      */
     public TypedIOPort key;

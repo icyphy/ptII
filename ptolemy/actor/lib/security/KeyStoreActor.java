@@ -64,7 +64,7 @@ import java.util.Iterator;
 /** A baseclass for actors that read or write keystores.
 
 <p>Keystores are ways to manage keys and certificates.  A keystore file can
-be created by using the <code>keytool<code> executable that comes with Java.
+be created by using the <code>keytool</code> executable that comes with Java.
 To create a simple keystore that contains a private key and
 a public key signed with a self signed certificate, run:
 <pre>
@@ -72,13 +72,13 @@ cd $PTII
 make ptKeystore
 </pre>
 which will create a keystore store password and key password is
-<pre>this.is.not.secure,it.is.for.testing.only</code>
+<code>this.is.not.secure,it.is.for.testing.only</code>
 <br>The alias of the certificate will be <code>claudius</code>
 
 <p>A keystore may have at most one type, which describes the format
 of the keystore.  If a keyStore file exists, then the <i>keyStoreType</i>
 parameter is set to the type of the preexisting keyStore.  Changing
-the <i>keyStoreType<i? of a preexisting keystore to a different type
+the <i>keyStoreType</i> of a preexisting keystore to a different type
 is likely to throw an exception when the keyStore is opened.
 If a keyStore file does not exist, then when it is created it will
 be created with the type from the <i>keyStoreType</i> parameter.
@@ -95,8 +95,8 @@ set to "JCEKS".
 Derived classes should call _loadKeyStore() so that _keyStore is properly
 initialized before accessing _keyStore themselves.
 
-<h3>How to exchange data securely with a remote part<h3>
-<a href="http://java.sun.com/docs/books/tutorial/security1.2/toolfilex/index.html" target="_top">http://java.sun.com/docs/books/tutorial/security1.2/toolfilex/index.html</code>
+<h3>How to exchange data securely with a remote part</h3>
+<a href="http://java.sun.com/docs/books/tutorial/security1.2/toolfilex/index.html" target="_top">http://java.sun.com/docs/books/tutorial/security1.2/toolfilex/index.html</a>
 discusses how to exchange files using signatures, keytool
 and jarsigner.  In Ptolemy II, we use actors derived from
 the KeyStoreActor.
@@ -118,10 +118,10 @@ keytool -alias claudius -export -keystore $PTII/ptKeystore -keypass this.is.not.
 </pre>
 <li> Send the output file (claudius.cer) to the recipient
 <li>Create a Ptolemy model that uses the 
-@{link ptolemy.actor.lib.security.PrivateKeyReader} actor
+{@link ptolemy.actor.lib.security.PrivateKeyReader} actor
 to read $PTII/ptKeystore with the appropriate passwords
 and sign your data.  
-See left side of $PTII/ptolemy/actor/lib/security/test/auto/Signature.xml
+See the left side of $PTII/ptolemy/actor/lib/security/test/auto/Signature.xml
 for an example model.
 
 </ol>
@@ -160,16 +160,17 @@ cxh@cooley 94%
 If the Certificate fingerprints match, then the file has not been
 modified in transit.
 <li> The receiver should then create a model that uses the
-@{link ptolemy.actor.lib.security.PublicKeyReader} actor with
+{@link ptolemy.actor.lib.security.PublicKeyReader} actor with
 the appropriate passwords.
-See right side of $PTII/ptolemy/actor/lib/security/test/auto/Signature.xml
+See the right side of $PTII/ptolemy/actor/lib/security/test/auto/Signature.xml
 for an example model.
 
-<ol>
+</ol>
 
 <p>For more information about keystores, see
-<a href="http://java.sun.com/docs/books/tutorial/security1.2/summary/tools.html">Security Tools Summary</a>
-<br><a href="http://java.sun.com/j2se/1.4.2/docs/tooldocs/windows/keyotol.html">Keytool</a.
+<a href="http://java.sun.com/docs/books/tutorial/security1.2/summary/tools.html" target="_top">Security Tools Summary</a>
+and
+<br><a href="http://java.sun.com/j2se/1.4.2/docs/tooldocs/windows/keytool.html" target="_top">Keytool</a.
 
 @author  Christopher Hylands Brooks
 @version $Id$

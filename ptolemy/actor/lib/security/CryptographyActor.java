@@ -85,9 +85,9 @@ and <i>provider</i> parameters for use by the subclasses.
 Cryptography Extension (JCE).
 
 <br>Information about JCA can be found at
-<a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html" target="_top">http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html">.
+<a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html" target="_top">http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html</a>.
 <br>Information about JCE can be found at
-<a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/">.
+<a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/</a>.
 
 <br>The Java 1.2 security tutorial can be found at
 <a href="http://java.sun.com/docs/books/tutorial/security1.2/index.html" target="_top">http://java.sun.com/docs/books/tutorial/security1.2/index.html</a>
@@ -176,7 +176,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
      *  512 to 1024, and must be a multiple of 64. The default keysize
      *  is 1024."
      *  Refer to
-     *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB"><code>http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB</code></a>
+     *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB" target="_top">http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB</a>
      *  for a list of possible key sizes for certain algorithms.
      *  The initial default is 1024.
      */

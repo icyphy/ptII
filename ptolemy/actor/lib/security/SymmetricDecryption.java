@@ -54,7 +54,7 @@ Decrypt an unsigned byte array using a symmetric algorithm.
 <p>See {@link ptolemy.actor.lib.security.SymmetricEncryption} for a
 description of symmetric vs. asymmetric algorithms.
 
-<p>This actor reads an unsigned byte array at the <i>input<i> port,
+<p>This actor reads an unsigned byte array at the <i>input</i> port,
 dencrypts the data using the data from the <i>key</i> port and then
 writes the unsigned byte array results to the <i>output</i> port.
 
@@ -76,6 +76,7 @@ an exception will likely be thrown.
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).  See the
 {@link ptolemy.actor.lib.security.CryptographyActor} documentation for
+resources about JCA and JCE.
 
 @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
 @version $Id$
@@ -122,7 +123,7 @@ public class SymmetricDecryption extends CipherActor {
     /** Read the <i>input</i> and <i>key</i>, and send the decrypted data
      *  to the <i>output</i> port.
      *  The algorithm is obtained from the <i>key</i>, and if it
-     *  is different than the current value of the <i>algorithm<i>
+     *  is different than the current value of the <i>algorithm</i>
      *  parameter, we reinitialize _cipher.
      *
      *  @exception IllegalActionException If retrieving parameters fails,

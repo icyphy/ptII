@@ -40,10 +40,16 @@ import ptolemy.kernel.util.Settable;
 /** Open a keystore from a FileParameter and output a SecretKey.
 
 <p>This class is a wrapper class for {@link KeyReader} that always
-returns a private key.
+returns a secret key.
+
+<p>The secret key is a symmetric key can be used by the {@link
+SymmetricEncryption} and {@link SymmetricDecryption} actors.
+See {@link ptolemy.actor.lib.security.SymmetricEncryption} for a
+description of symmetric vs. asymmetric algorithms.
 
 @see PrivateKeyReader
 @see PublicKeyReader
+@see SecretKey
 @see SignatureVerifier
 @author  Christopher Hylands Brooks
 @version $Id$

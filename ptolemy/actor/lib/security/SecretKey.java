@@ -56,8 +56,8 @@ import javax.crypto.KeyGenerator;
 /**
 Create a secret key and send it on the <i>output</i>.
 
-<p>The secret key can be used by the {@link SymmetricEncryption} and
-{@link SymmetricDecryption} actors.
+<p>The secret key is a symmetric key can be used by the {@link
+SymmetricEncryption} and {@link SymmetricDecryption} actors.
 See {@link ptolemy.actor.lib.security.SymmetricEncryption} for a
 description of symmetric vs. asymmetric algorithms.
 
@@ -67,7 +67,10 @@ the encrypted message relies on the secrecy of this key.
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).  See the
 {@link ptolemy.actor.lib.security.CryptographyActor} documentation for
+resources about the JCE.
 
+@see KeyWriter
+@see SecretKeyReader
 @author Christopher Hylands Brooks, Contributor: Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
@@ -136,7 +139,7 @@ public class SecretKey extends Source {
      *  bits in the key.  The initial default depends on the algorithm
      *  that is selected, not all algorithms use <i>keySize</i>.
      *
-     *  <p>DSA is the most common algorithm that uses <i>keySize<i>,
+     *  <p>DSA is the most common algorithm that uses <i>keySize</i>,
      *  the Sun documentation says:
      *  "The length, in bits, of the modulus p. This must range from
      *  512 to 1024, and must be a multiple of 64. The default keysize
