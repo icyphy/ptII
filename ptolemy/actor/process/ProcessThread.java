@@ -223,9 +223,9 @@ public class ProcessThread extends PtolemyThread {
                             (IllegalActionException)thrownWhenWrapup);
                 } else if (thrownWhenWrapup != null) {
                     // must be a runtime exception
-                    throw (RuntimeException)thrownWhenWrapup;
+                    throw new RuntimeException(thrownWhenWrapup);
                 } else if (rethrow) {
-                    throw (RuntimeException)thrownWhenIterate;
+                    throw new RuntimeException(thrownWhenIterate);
                 }
             }
         }
