@@ -186,11 +186,10 @@ scale is used, then the values must be positive.  Non-positive values
 will be silently dropped.  Note further that when using logarithmic
 axes that the log of input data is taken as the data is added to the plot.
 This means that <pre>XLog: on</pre> or <pre>YLog: on</pre> should
-appear before any data.  Also, the value of the XTicks or YTicks
-directives should be in log units.  So, <pre>XTicks: 1K 3</pre>
-will display the string <pre>1K</pre> at the 1000 mark.
-
-
+appear before any data.  Also, the value of the XTicks, YTicks,
+XRange or YRange directives should be in log units.
+So, <pre>XTicks: 1K 3</pre> will display the string <pre>1K</pre>
+at the 1000 mark. 
 <p>
 By default, tick marks are connected by a light grey background grid.
 This grid can be turned off with the following command:
