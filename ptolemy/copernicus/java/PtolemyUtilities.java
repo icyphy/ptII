@@ -143,16 +143,13 @@ public class PtolemyUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   public static Local buildConstantTokenLocal(Body body, Unit insertPoint, Token token, String localName) {
+   public static Local buildConstantTokenLocal(Body body, 
+           Unit insertPoint, Token token, String localName) {
         Chain units = body.getUnits();
         if(token instanceof ptolemy.data.ArrayToken) {
             ArrayToken arrayToken = (ArrayToken)token;
-            RefType tokenType = getSootTypeForTokenType(arrayToken.getElementType());
-                // SootClass tokenClass =Scene.v().loadClassAndSupport("ptolemy.data.Token");
-            SootClass arrayTokenClass =
-                Scene.v().loadClassAndSupport("ptolemy.data.ArrayToken");
-            SootMethod arrayTokenConstructor =
-                arrayTokenClass.getMethod("void <init>(ptolemy.data.Token[])");
+            RefType tokenType =
+                getSootTypeForTokenType(arrayToken.getElementType());
             Type tokenArrayType = ArrayType.v(tokenType, 1);
             Local tokenArrayLocal = Jimple.v().newLocal(localName + "Array",
                     tokenArrayType);
@@ -166,9 +163,12 @@ public class PtolemyUtilities {
             for(int i = 0; i < arrayToken.length(); i++) {
                 Local argLocal = buildConstantTokenLocal(body, insertPoint,
                        arrayToken.getElement(i), localName + "_" + i);
-                units.insertBefore(Jimple.v().newAssignStmt(
-                        Jimple.v().newArrayRef(tokenArrayLocal, IntConstant.v(i)),
-                        argLocal), insertPoint);
+                units.insertBefore(
+                        Jimple.v().newAssignStmt(
+                                Jimple.v().newArrayRef(tokenArrayLocal, 
+                                        IntConstant.v(i)),
+                                argLocal), 
+                        insertPoint);
             } 
             Local tokenLocal = Jimple.v().newLocal(localName,
                     RefType.v(arrayTokenClass));
@@ -195,14 +195,17 @@ public class PtolemyUtilities {
                     insertPoint);;
             // Ugh...  otherwise we get some stupid quotes.
             if(token instanceof StringToken) {
+                StringToken stringToken = (StringToken)token;
                 units.insertBefore(Jimple.v().newInvokeStmt(
                         Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                                tokenConstructor, StringConstant.v(((StringToken)token).stringValue()))),
+                                tokenConstructor,
+                                StringConstant.v(stringToken.stringValue()))),
                         insertPoint);
             } else {
                 units.insertBefore(Jimple.v().newInvokeStmt(
                         Jimple.v().newSpecialInvokeExpr(tokenLocal,
-                                tokenConstructor, StringConstant.v(token.toString()))),
+                                tokenConstructor, 
+                                StringConstant.v(token.toString()))),
                         insertPoint);
             } 
             return tokenLocal;
@@ -255,7 +258,8 @@ public class PtolemyUtilities {
                 type.getClass().getName());
     }
 
-    /** Insert code into the given body before the given insertion point to call the
+    /** Insert code into the given body before the 
+     *  given insertion point to call the
      *  attribute changed method on the object stored in the given local.
      *  @param base A local that is assumed to have an attribute type.
      */
@@ -336,30 +340,38 @@ public class PtolemyUtilities {
      *  tokens of the ptolemy type.
      */
     // FIXME Records!
-    public static RefType getSootTypeForTokenType(ptolemy.data.type.Type type) {
+    public static RefType getSootTypeForTokenType(
+            ptolemy.data.type.Type type) {
         if(type instanceof ptolemy.data.type.ArrayType) {
             return RefType.v("ptolemy.data.ArrayToken");
         } else if(!type.isInstantiable()) {
-            // We should be able to do something better here...  This means that the port
+            // We should be able to do something better here...  
+            // This means that the port
             // has no data.
             return RefType.v("ptolemy.data.Token");
         } else if(type instanceof ptolemy.data.type.BaseType) {
-            //   System.out.println("className = " + ((ptolemy.data.type.BaseType)type).getTokenClass().getName());
-            return RefType.v(((ptolemy.data.type.BaseType)type).getTokenClass().getName());
+            //   System.out.println("className = " + 
+            // ((ptolemy.data.type.BaseType)type).getTokenClass().getName());
+            ptolemy.data.type.BaseType baseType = 
+                (ptolemy.data.type.BaseType)type;
+            return RefType.v(baseType.getTokenClass().getName());
         }
         else throw new RuntimeException("unknown type = " + type);
     }
 
-    /** Given a soot type that references a token class, return the ptolemy token type
+    /** Given a soot type that references a 
+     *  token class, return the ptolemy token type
      *  associated with the token class.  If the type is an array token, then 
      *  the returned type will have an indeterminate element type.
      */
     // FIXME Records!
-    public static ptolemy.data.type.Type getTokenTypeForSootType(RefType type) {
+    public static ptolemy.data.type.Type getTokenTypeForSootType(
+            RefType type) {
         String className = type.getSootClass().getName();
         //  System.out.println("className = " + className);
         if(className.equals("ptolemy.data.ArrayToken")) {
-            return new ptolemy.data.type.ArrayType(ptolemy.data.type.BaseType.UNKNOWN);
+            return new ptolemy.data.type.ArrayType(
+                    ptolemy.data.type.BaseType.UNKNOWN);
         } else if(className.equals("ptolemy.data.Token")) {
             return ptolemy.data.type.BaseType.UNKNOWN;
         } else if(className.equals("ptolemy.data.ScalarToken")) {
@@ -427,7 +439,8 @@ public class PtolemyUtilities {
             }
         } else if(name.equals("getTypeTerm")) {
             // FIXME: This method should be removed.
-            //Local exceptionLocal = SootUtilities.createRuntimeException(body, unit,
+            //Local exceptionLocal =
+            // SootUtilities.createRuntimeException(body, unit,
             //        "Illegal Method Call: getTypeTerm()");
             //body.getUnits().swapWith(unit, 
             //        Jimple.v().newThrowStmt(exceptionLocal));
@@ -445,7 +458,8 @@ public class PtolemyUtilities {
             body.getUnits().remove(unit);
         } else if(name.equals("typeConstraintList")) {
             //FIXME This method should be removed.
-            //            Local exceptionLocal = SootUtilities.createRuntimeException(body, unit,
+            // Local exceptionLocal =
+            //    SootUtilities.createRuntimeException(body, unit,
             //      "Illegal Method Call: typeConstraintList()");
             //body.getUnits().swapWith(unit, 
             //        Jimple.v().newThrowStmt(exceptionLocal));
@@ -460,6 +474,12 @@ public class PtolemyUtilities {
 
     // Soot Type representing the ptolemy.actor.TypedAtomicActor class.
     public static Type actorType;
+
+    // Soot class representing the ptolemy.data.ArrayToken class.
+    SootClass arrayTokenClass =
+
+    // Soot Method representing the ArrayToken(Token[]) constructor.
+    SootMethod arrayTokenConstructor =
 
     // Soot Method representing NamedObj.attributeChanged().
     public static SootMethod attributeChangedMethod;
@@ -505,8 +525,10 @@ public class PtolemyUtilities {
     // Soot Type representing the ptolemy.kernel.util.Settable class.
     public static Type settableType;
 
+    // Soot class representing the ptolemy.data.ArrayToken class.
     public static SootClass tokenClass;
 
+    // Soot Type representing the ptolemy.data.ArrayToken class.
     public static BaseType tokenType;
     
     public static SootMethod toStringMethod;
@@ -557,6 +579,11 @@ public class PtolemyUtilities {
         tokenClass = 
             Scene.v().loadClassAndSupport("ptolemy.data.Token");
         tokenType = RefType.v(tokenClass);
+
+        arrayTokenClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.ArrayToken");
+        arrayTokenConstructor =
+            arrayTokenClass.getMethod("void <init>(ptolemy.data.Token[])");
 
         typeClass =
             Scene.v().loadClassAndSupport("ptolemy.data.type.Type");
