@@ -98,7 +98,7 @@ test SimpleSingle-1.1 {Generate .c, _i.h and .h files for Simple} {
     # solve this might exist.
 
     # Move the generated files to the SimpleSingle.out directory.
-    file rename -force $cFile $hFile $iFile $outputDir
+    file rename -force $cFile $hFile $iFile $classFile $outputDir
     
     cd $outputDir
 

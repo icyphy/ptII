@@ -53,6 +53,7 @@ test Simple-1.1 {Generate all required files for Simple.java} {
 
     set outputDir testOutput/Simple.out
     set className Simple
+    set lib testOutput/j2c_lib
     
     # Adds the .java suffix after a space.
     set javaFile [concat $className ".java"]
@@ -78,6 +79,10 @@ test Simple-1.1 {Generate all required files for Simple.java} {
     # Create the output directory.
     file mkdir $outputDir
 
+    # Remove the directory for auto-generated natives.
+    if {[file isdirectory "natives"]} {
+	file delete -force "natives"
+    }
 
     # We need to get the classpath so that we can run if we are running
     # under Javascope, which includes classes in a zip file
@@ -92,7 +97,7 @@ test Simple-1.1 {Generate all required files for Simple.java} {
         [list \
         $classpath \
         "-lib" \
-        $outputDir/j2c_lib \
+        $lib \
         $className \
         ]]
 
@@ -103,20 +108,30 @@ test Simple-1.1 {Generate all required files for Simple.java} {
     exec javac $javaFile
     
     # Generate the code.
-    #java::call ptolemy.copernicus.c.JavaToC main $args
-    exec java -classpath $classpath ptolemy.copernicus.c.JavaToC $classpath -lib $outputDir/j2c_lib $className
+    # Catch errors on the first pass to prevent memory overruns.
+    if {[catch {exec java -classpath $classpath ptolemy.copernicus.c.JavaToC \
+        $classpath -lib $lib $className}]} {
+        
+        exec java -classpath $classpath ptolemy.copernicus.c.JavaToC \
+            $classpath -lib $lib $className
+    }
    
     exec make depend -s -f $makeFile
     #This creates the .mk file.
     exec make -s -f $mkFile
     
-    # Run the automatically generated executible.
-    set exeFile "./$exeFile"
-    exec $exeFile
-
     # Move all generated files to the output directory.
     file rename -force $cFile $mainCFile $oFile $mainOFile $hFile $iFile $makeFile\
-            $mkFile $exeFile $outputDir
+            $mkFile $exeFile $classFile $outputDir
     
-} {}
+    # Run the automatically generated executible.
+    cd $outputDir
+
+    exec $exeFile
+
+    list \
+        [file readable $exeFile]
+
+    
+} {1}
 

@@ -1,7 +1,7 @@
 # Makefile for testing Ptolemy II C code generation
 #
-# @Authors:  (makefile) Ankush Varma, Shuvra S. Bhattacharyya, 
-# Christopher Hylands --- based on a file by Tom Parks.
+# @Authors:  (makefile) Shuvra S. Bhattacharyya, Christopher Hylands --- based 
+# on a file by Tom Parks.
 #
 # @Version: $Id$
 #
@@ -68,8 +68,8 @@ JSIMPLE_TESTS = \
 	ramp.tcl \
 	Simple.tcl \
 	SimpleSingle.tcl \
-	Terp.tcl \
-    Terp2.tcl
+	Terp.tcl\
+        Terp2.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

@@ -1,7 +1,6 @@
-# Tests Copernicus C Code generation for the Object example in singleclass
-# mode.
+# Tests Copernicus C Code generation for the Array2DInt example.
 #
-# @Author: Christopher Hylands, Shuvra S. Bhattacharyya, Ankush Varma
+# @Author: Ankush Varma
 #
 # @Version: $Id$
 #
@@ -50,10 +49,10 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 ####
 #
 
-test ObjectSingle-1.1 {Generate .c, _i.h and .h files for java.lang.Object} {
+test Array2DInt-1.1 {Generate all required files for Array2DInt.java} {
 
-    set outputDir testOutput/ObjectSingle.out
-    set className java.lang.Object
+    set outputDir testOutput/Array2DInt.out
+    set className Array2DInt
     set lib testOutput/j2c_lib
     
     # Adds the .java suffix after a space.
@@ -61,12 +60,17 @@ test ObjectSingle-1.1 {Generate .c, _i.h and .h files for java.lang.Object} {
     # Remove that space.
     regsub " " $javaFile "" javaFile
 
-    regsub ".java" $javaFile ".class" classFile
-    regsub ".java" $javaFile ".c"     cFile
-    regsub ".java" $javaFile ".h"     hFile
-    regsub ".java" $javaFile "_i.h"   iFile
-    regsub ".java" $javaFile ".o"     oFile
-    
+    regsub ".java" $javaFile ".class"  classFile
+    regsub ".java" $javaFile ".c"      cFile
+    regsub ".java" $javaFile ".h"      hFile
+    regsub ".java" $javaFile "_i.h"    iFile
+    regsub ".java" $javaFile ".o"      oFile
+    regsub ".java" $javaFile ".make"   makeFile
+    regsub ".java" $javaFile ".mk"     mkFile
+    regsub ".java" $javaFile ".exe"    exeFile
+    regsub ".java" $javaFile "_main.c" mainCFile
+    regsub ".java" $javaFile "_main.o" mainOFile
+
     # Remove the .out directory if it exists.
     if {[file isdirectory $outputDir]} {
 	file delete -force $outputDir
@@ -75,47 +79,66 @@ test ObjectSingle-1.1 {Generate .c, _i.h and .h files for java.lang.Object} {
     # Create the output directory.
     file mkdir $outputDir
 
+    # Remove the directory for auto-generated natives.
+    if {[file isdirectory "natives"]} {
+	file delete -force "natives"
+    }
 
     # We need to get the classpath so that we can run if we are running
-    # under Javascope, which includes classes in a zip file
+    # under Javascope, which includes classes in a zip file.
     set builtinClasspath [java::call System getProperty "java.class.path"]
     set rtjar [java::call System getProperty "sun.boot.class.path"]
     set classpath .[java::field java.io.File\
             pathSeparator]$builtinClasspath[java::field java.io.File\
             pathSeparator]$rtjar
-    
+   
+    # Set the command-line arguments.
+    set args [java::new {String[]} 4 \
+        [list \
+        $classpath \
+        "-lib" \
+        $lib \
+        $className \
+        ]]
+
+    set errors $className-err.txt
+
     # Generate the .class file. This is not needed for built-in classes
     # like java.lang.Object.
-    # exec javac $javaFile
-
-    # Generate the code using singleClass compilation mode.
-    exec java -classpath $classpath ptolemy.copernicus.c.JavaToC $classpath \
-            -singleClass $className
-
-    # NOTE: JavaToC expects the class file to be converted to be in the
-    # directory from which it is invoked. It outputs the generated code
-    # files to this directory.  However, here xyz.class is in c/test/
-    # whereas we want the generated code to go to c/test/xyz.out/
-    # . We solve this by automatically moving the generated files to the
-    # xyz.out directory after they are created. A better method to
-    # solve this might exist.
-
-    # Move the generated files to the SimpleSingle.out directory.
-    file rename -force $cFile $hFile $iFile $outputDir
+    exec javac $javaFile
     
+    # Generate the code.
+    # Catch errors on the first pass to prevent memory overruns.
+    if {[catch {exec java -classpath $classpath ptolemy.copernicus.c.JavaToC \
+        $classpath -lib $lib $className}]} {
+        
+        exec java -classpath $classpath ptolemy.copernicus.c.JavaToC \
+            $classpath -lib $lib $className
+    }
+
+   
+    exec make depend -s -f $makeFile
+    #This creates the .mk file.
+    exec make -s -f $mkFile
+
+    # Move all generated files to the output directory.
+    file rename -force $cFile $mainCFile $oFile $mainOFile $hFile $iFile $makeFile\
+            $mkFile $exeFile $classFile $outputDir
+    
+    # Run the automatically generated executible.
     cd $outputDir
-
-    # Check if the generated code compiles into a .o file.
-    # A .exe file cannot be generated because we are in singleClass mode.
-    # Not done for built-in(system) classes.
-    # exec gcc -c -I ../../runtime $cFile
-
-    # Test the existence of the generated files.
-    # The existence of the .o file means that it compiled correctly. 
-    list \
-    	    [file readable $cFile] \
-    	    [file readable $hFile] \
-    	    [file readable $iFile] 
-
-} {1 1 1}
+    set output [exec $className]
+    
+    # Turn newlines into spaces.
+    regsub -all "\n" $output " " output
+    regsub -all "
+" $output "" output
+    
+    # Check if the output is correct.
+    set template "0 1 10 11"
+    
+    # Test output
+    string first $template $output
+  
+} {0}
 

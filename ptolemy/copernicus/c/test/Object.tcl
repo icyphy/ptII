@@ -53,6 +53,7 @@ test Object-1.1 {Generate all required files for java.lang.Object} {
 
     set outputDir testOutput/Object.out
     set className java.lang.Object
+    set lib testOutput/j2c_lib
     
     # Adds the .java suffix after a space.
     set javaFile [concat $className ".java"]
@@ -79,6 +80,10 @@ test Object-1.1 {Generate all required files for java.lang.Object} {
     # Create the output directory.
     file mkdir $outputDir
 
+    # Remove the directory for auto-generated natives.
+    if {[file isdirectory "natives"]} {
+	file delete -force "natives"
+    }
 
     # We need to get the classpath so that we can run if we are running
     # under Javascope, which includes classes in a zip file
@@ -96,7 +101,7 @@ test Object-1.1 {Generate all required files for java.lang.Object} {
         [list \
         $classpath \
         "-lib" \
-        $outputDir/j2c_lib \
+        $lib \
         $className \
         ]]
 
@@ -129,7 +134,7 @@ test Object-1.1 {Generate all required files for java.lang.Object} {
     	    [file readable $iFile] \
             [file readable $makeFile] \
             [file readable $mainCFile] \
-            [file isdirectory j2c_lib]
+            [file isdirectory ../../$lib]
 
 } {1 1 1 1 1 1}
 

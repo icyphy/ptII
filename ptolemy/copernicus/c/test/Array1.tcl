@@ -1,5 +1,5 @@
-# Tests Copernicus C Code generation for the printInt example that outputs
-# the number "42".
+# Tests Copernicus C Code generation for the Array1 example that uses a
+# simple array.
 #
 # @Author: Ankush Varma
 #
@@ -50,10 +50,11 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 ####
 #
 
-test Array-1.1 {Generate all required files for Array1.java} {
+test Array1-1.1 {Generate all required files for Array1.java} {
 
     set outputDir testOutput/Array1.out
     set className Array1
+    set lib testOutput/j2c_lib
     
     # Adds the .java suffix after a space.
     set javaFile [concat $className ".java"]
@@ -79,7 +80,10 @@ test Array-1.1 {Generate all required files for Array1.java} {
     # Create the output directory.
     file mkdir $outputDir
 
-
+    # Remove the directory for auto-generated natives.
+    if {[file isdirectory "natives"]} {
+	file delete -force "natives"
+    }
     # We need to get the classpath so that we can run if we are running
     # under Javascope, which includes classes in a zip file
     set builtinClasspath [java::call System getProperty "java.class.path"]
@@ -96,43 +100,44 @@ test Array-1.1 {Generate all required files for Array1.java} {
         [list \
         $classpath \
         "-lib" \
-        $outputDir/j2c_lib \
+        $lib \
         $className \
         ]]
 
     set errors $className-err.txt
 
     # Generate the code.
-    #java::call ptolemy.copernicus.c.JavaToC main $args
-    exec java -classpath $classpath ptolemy.copernicus.c.JavaToC $classpath -lib $outputDir/j2c_lib $className
+    # Catch errors on the first pass to prevent memory overruns.
+    if {[catch {exec java -classpath $classpath ptolemy.copernicus.c.JavaToC \
+        $classpath -lib $lib $className}]} {
+        
+        exec java -classpath $classpath ptolemy.copernicus.c.JavaToC \
+            $classpath -lib $lib $className
+    }
+                
    
     exec make depend -s -f $makeFile
     #This creates the .mk file.
     exec make -s -f $mkFile
-    
-    
 
     # Move all generated files to the output directory.
     file rename -force $cFile $mainCFile $oFile $mainOFile $hFile $iFile $makeFile\
-            $mkFile $exeFile $outputDir 
+            $mkFile $exeFile $classFile $outputDir 
     
     # Run the automatically generated executible.
     cd $outputDir
-
-    set exeFile "./$exeFile"
-    set results [exec $exeFile]
-
-    regsub -all [java::call System getProperty "line.separator"] \
-	    $results "\n" results2
-    list $results2
-} {{0
-10
-20
-30
-40
-50
-60
-70
-80
-90}}
+    set output [exec $className]
+    
+    # Turn newlines into spaces.
+    regsub -all "\n" $output " " output
+    regsub -all "
+" $output "" output
+    
+    # Check if the output is correct.
+    set template "0 10 20 30 40 50 60 70 80 90"
+    
+    # Test output
+    string first $template $output
+  
+} {0}
 
