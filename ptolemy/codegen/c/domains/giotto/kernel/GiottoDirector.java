@@ -45,12 +45,11 @@ import ptolemy.codegen.kernel.Director;
 */
 public class GiottoDirector extends Director {
 
-    /**
-     * @param director
+    /** Construct the code generator helper associated with the given GiottoDirector.
+     *  @param component The associated component.
      */
     public GiottoDirector(ptolemy.domains.giotto.kernel.GiottoDirector director) {
         super(director);
-        // TODO Auto-generated constructor stub
     }
 
 }
