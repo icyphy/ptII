@@ -1,4 +1,4 @@
-/* An actor that converts a complex token to polar coordinates.
+/* An actor that converts a string to an array integers, each getting one byte.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -51,13 +51,14 @@ import ptolemy.math.Complex;
 /// StringToIntArray
 
 /**
-Convert a complex token to polar coordinates, which are represented by two
-double tokens (magnitude and angle).  The output angle is in radians.
+Convert a string to an integer array.  The output is an array of integers 
+constructed by placing one byte of the string into the least significant 
+byte of each integer.  For the time being, this actor assumes an 8-bit 
+character set to be the Java default.  This actor is designed to facilitate 
+use of the SerialComm serial communication actor which uses the same kind 
+of integer array.
 <p>
-The implementation uses java.lang.Math.atan2(double, double).
-@see java.lang.Math#atan2(double, double)
-
-@author Michael Leung, Edward A. Lee, and Paul Whitaker
+@author Winthrop Williams
 @version $Id$
 */
 
@@ -90,22 +91,25 @@ public class StringToIntArray extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The port for the input, which has type ComplexToken. */
+    /** The port for the input, which has type <i>string</i>. */
     public TypedIOPort input;
 
-    /** The output port for the magnitude component, which has type
-        DoubleToken. */
+    /** The output port, which has type <i>{int}</i>. */
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume one complex token on the input port and output a new double
-     *  token on each of the two output ports (magnitude and angle). The
-     *  outputs are a polar form representation of the complex input. The
-     *  output angle is in radians.
+    /** Consume one string token on the input port and output a new array
+     *  token of integer tokens on the output port.  The low byte of each
+     *  integer is the byte form of one of the characters.  The other
+     *  three bytes of each integer may be 0x000000 or 0xFFFFFF.  The 
+     *  first character of the string is copied to the first element of 
+     *  the array, and so on.  NOTE: Assumes an 8-bit character set is 
+     *  the default setting for this implementation of Java.
      *
      *  @exception IllegalActionException If there is no director.
+     *  FIXME: Does this method actually check if there is a director?
      */
     public void fire() throws IllegalActionException {
 

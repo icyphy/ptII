@@ -1,4 +1,4 @@
-/* An actor that converts a complex token to polar coordinates.
+/* An actor that converts the low bytes of integers in an array into a string.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -51,11 +51,10 @@ import ptolemy.math.Complex;
 /// IntArrayToString
 
 /**
-Convert a complex token to polar coordinates, which are represented by two
-double tokens (magnitude and angle).  The output angle is in radians.
+Convert an integer array into a string.  Use only the low byte from 
+each integer.  Assumes an 8-bit character set.  The output is a string 
+assembled from these bytes.
 <p>
-The implementation uses java.lang.Math.atan2(double, double).
-@see java.lang.Math#atan2(double, double)
 
 @author Michael Leung, Edward A. Lee, and Paul Whitaker
 @version $Id$
@@ -90,22 +89,27 @@ public class IntArrayToString extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The port for the input, which has type ComplexToken. */
+    /** The port for the input, which has type <i>{int}</i>. */
     public TypedIOPort input;
 
-    /** The output port for the magnitude component, which has type
-        DoubleToken. */
+    /** The output port, which has type <i>string</i>. */
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume one complex token on the input port and output a new double
-     *  token on each of the two output ports (magnitude and angle). The
-     *  outputs are a polar form representation of the complex input. The
-     *  output angle is in radians.
+    /** Consume one array token of integer tokens on the input port
+     *  and output a new string token on the output port.  The least
+     *  significant byte of the first integer generates the first
+     *  character in the string, etc.  NOTE: Java has many options
+     *  regarding its character set.  This actor relys on the default
+     *  setting on the platform on which it is run.  However, it
+     *  assumes that this character set is an 8-bit character set.
      *
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If there is no director.  
+     *  FIXME: Either verify that it does check for the director,
+     *  or remove this statement.  This statement occurs in other 
+     *  conversion actor(s) as well.
      */
     public void fire() throws IllegalActionException {
         ArrayToken dataIntArrayToken = (ArrayToken) input.get(0);
