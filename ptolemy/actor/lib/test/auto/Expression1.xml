@@ -18,7 +18,7 @@
         </property>
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="5">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">

@@ -50,7 +50,7 @@
         </port>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="con ? 1 : in">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="con ? 1 : in">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">

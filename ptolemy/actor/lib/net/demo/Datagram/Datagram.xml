@@ -52,7 +52,7 @@ and Ptolemy models with each other!</text></svg></configure>
         </property>
     </property>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="N + &quot; bytes received from partner at IP = \&quot;&quot; + address + &quot;\&quot;&quot;">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="N + &quot; bytes received from partner at IP = \&quot;&quot; + address + &quot;\&quot;&quot;">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -238,7 +238,7 @@ and Ptolemy models with each other!</text></svg></configure>
         </port>
     </entity>
     <entity name="Expression1" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="input + &quot; bytes sent to partner.&quot;">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input + &quot; bytes sent to partner.&quot;">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -270,7 +270,7 @@ and Ptolemy models with each other!</text></svg></configure>
         </port>
     </entity>
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="input + &quot; bytes copied to my clipboard.&quot;">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="input + &quot; bytes copied to my clipboard.&quot;">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
