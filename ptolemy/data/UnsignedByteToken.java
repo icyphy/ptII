@@ -484,7 +484,7 @@ public class UnsignedByteToken extends ScalarToken {
      */
     protected ScalarToken _subtract(ScalarToken rightArgument) {
         byte difference = (byte) (unsignedConvert(_value)
-                * unsignedConvert(((UnsignedByteToken)rightArgument)
+                - unsignedConvert(((UnsignedByteToken)rightArgument)
 				  .byteValue()));
         return new UnsignedByteToken(difference);
     }
