@@ -109,8 +109,6 @@ public class BreakpointConfigurer extends Query {
                 _actorProfile = new DebugProfile(_graphController);
             }
 
-            // FIXME: change Query so that booleanValue becomes getBooleanValue, String, Double...
-
             // Generate checkbox entries in dialog box.
             for (int i = 0; i < _firingEventTypes.length; i++) {
                 if (_actorProfile.isListening(_firingEventTypes[i])) {
@@ -136,7 +134,7 @@ public class BreakpointConfigurer extends Query {
         DebugProfile profile = new DebugProfile(_graphController);
         for (int i = 0; i < _firingEventTypes.length; i++) {
             // Configure the DebugProfile with the selected FiringEventTypes.
-            if (booleanValue(_firingEventTypeLabels[i])) {
+            if (getBooleanValue(_firingEventTypeLabels[i])) {
                 profile.listenForEvent(_firingEventTypes[i]);
                 breakpointsSelected = true;
             } else {
