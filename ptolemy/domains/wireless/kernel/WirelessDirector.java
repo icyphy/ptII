@@ -173,7 +173,7 @@ public class WirelessDirector extends DEDirector {
      *  to perform some other randomization.  This delegates to the
      *  method _setLocationOfNode() to actually set the location of the
      *  actor.
-     *  @IllegalActionException If the range parameter is malformed.
+     *  @exception IllegalActionException If the range parameter is malformed.
      */
     protected void _randomizeLocations() throws IllegalActionException {
         // Get the range.
