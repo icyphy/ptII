@@ -116,4 +116,9 @@ java -jar -Djava.security.policy=$PTII/bin/policy.all \
 # Just so that the output start to appear before we actually exit
 sleep 5
 
+echo "Starting httpd for ptII tree"
+# You can add -verbose to the line below
+java -jar $JINI_DIR/lib/tools.jar -port 8123 -dir $PTII -trees &
+
+
 echo "Ok, done"
