@@ -36,7 +36,7 @@ DIRS = 		# test #lib doc demo
 # Root of the Java directory
 ROOT =		../../..
 
-CLASSPATH =	$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -72,9 +72,9 @@ all: jclass
 install: jclass $(PTCLASSJAR)
 
 editor:
-	$(JAVA) -classpath $(ROOT) ptolemy.schematic.editor.Editor
+	$(JAVA) -classpath $(CLASSPATH) ptolemy.schematic.editor.Editor
 grapheditor:
-	$(JAVA) -classpath $(ROOT) -DPTII=$(PTII) ptolemy.schematic.editor.GraphEditor
+	$(JAVA) -classpath $(CLASSPATH) -DPTII=$(PTII) ptolemy.schematic.editor.GraphEditor
 
 
 depend:
