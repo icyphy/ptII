@@ -87,6 +87,7 @@ public class CSPProcessor extends CSPActor {
     public void accessMemory(boolean read) throws IllegalActionException {
 
         // State 1
+        generateEvents( new ExecEvent( this, 1 ) );
         {
 	    // generateEvents( new ExecEvent( this, 1 ) );
             if( _topGraphic != null ) {
@@ -103,10 +104,6 @@ public class CSPProcessor extends CSPActor {
         }
 	*/
         double delayTime = java.lang.Math.random();
-	try {
-	    Thread.sleep(500);
-	} catch( InterruptedException e ) {
-	}
         if( delayTime < 0.25 ) {
             delayTime = 2.5;
         } else if ( delayTime >= 0.25 && delayTime < 0.5 ) {
@@ -116,13 +113,18 @@ public class CSPProcessor extends CSPActor {
         } else {
             delayTime = 10.0;
         }
-        // System.out.println(getName()+" delaying for "+delayTime+" seconds.");
         delay( delayTime );
         IntToken iToken = new IntToken( _code );
         _requestOut.broadcast(iToken);
 
         // State 2
-        generateEvents( new ExecEvent( this, 1 ) );
+        generateEvents( new ExecEvent( this, 2 ) );
+	try {
+	    Thread.sleep(300);
+	} catch( InterruptedException e ) {
+	    System.err.println("InterruptedException during Thread.sleep()");
+	    e.printStackTrace();
+	}
 	/*
         if( getName().equals("proc1") ) {
 	    System.out.println("STATE 2: " +getName());
@@ -134,8 +136,6 @@ public class CSPProcessor extends CSPActor {
 	*/
         BooleanToken bToken = (BooleanToken)_requestIn.get(0);
 
-        // State 3
-        // generateEvents( new ExecEvent( this, 3 ) );
 	/*
         if( getName().equals("proc1") ) {
 	    System.out.println("STATE 3: " +getName());
@@ -146,8 +146,14 @@ public class CSPProcessor extends CSPActor {
         }
 	*/
         if( bToken.booleanValue() ) {
-            // State 4
-	    generateEvents( new ExecEvent( this, 2 ) );
+            // State 3
+            generateEvents( new ExecEvent( this, 3 ) );
+	    try {
+	        Thread.sleep(300);
+	    } catch( InterruptedException e ) {
+	        System.err.println("InterruptedException during Thread.sleep()");
+		e.printStackTrace();
+	    }
 	    /*
             if( getName().equals("proc1") ) {
 	        System.out.println("STATE 4: " +getName());
@@ -166,10 +172,16 @@ public class CSPProcessor extends CSPActor {
             }
             return;
         } else {
-	    generateEvents( new ExecEvent( this, 3 ) );
+            // State 4
+	    generateEvents( new ExecEvent( this, 4 ) );
+	    try {
+	        Thread.sleep(300);
+	    } catch( InterruptedException e ) {
+	        System.err.println("InterruptedException during Thread.sleep()");
+		e.printStackTrace();
+	    }
 	}
 
-        // System.out.println(getName()+ ": Negative Ack!!!");
         accessMemory(read);
     }
 
