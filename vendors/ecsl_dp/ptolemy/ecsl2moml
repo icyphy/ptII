@@ -242,9 +242,9 @@ awk ' {
 } ' < $tmpfile2 > $tmpfile1
 
 
-# Convert <Line to <relation
+# Convert <Line or <Signal to <relation
 awk ' {
-    if ( $1 ~ /<Line/) {
+    if ( $1 ~ /<Line/ || $1 ~ /<Signal/ ) {
        # Get the value of the _id field
        id=""
        nf = split($0, f, "\"")   
@@ -257,29 +257,29 @@ awk ' {
        indent = substr($0, 0, index($0,"<") - 1)  
        print indent "<relation name=\"" id "\" class=\"ptolemy.actor.TypedIORelation\"/>"
 
-       if ($0 ~ /dstLine_end_/) {
-           # Get the value of the dstLine_end_ field
-           dstLine_end_=""
-           nf = split($0, f, "\"")   
-           for (i = 1; i <= nf; i++) {
-               if ( f[i] ~ /dstLine_end_=$/) {
-                   dstLine_end_ = f[i+1]
-                   break;
-               }
-           }
-           #print indent "<!--bar--><link port=\"" dstLine_end_ "\" relation=\"" id "\"/>" 
-
-           # Get the value of the srcLine_end_ field
-           srcLine_end_=""
-           nf = split($0, f, "\"")   
-           for (i = 1; i <= nf; i++) {
-               if ( f[i] ~ /srcLine_end_=$/) {
-                   srcLine_end_ = f[i+1]
-                   break;
-               }
-           }
-          #print indent "<link port=\"" srcLine_end_ "\" relation=\"" id "\"/>" 
-       }
+#        if ($0 ~ /dstLine_end_/) {
+#            # Get the value of the dstLine_end_ field
+#            dstLine_end_=""
+#            nf = split($0, f, "\"")   
+#            for (i = 1; i <= nf; i++) {
+#                if ( f[i] ~ /dstLine_end_=$/) {
+#                    dstLine_end_ = f[i+1]
+#                    break;
+#                }
+#            }
+#            #print indent "<!--bar--><link port=\"" dstLine_end_ "\" relation=\"" id "\"/>" 
+#
+#            # Get the value of the srcLine_end_ field
+#            srcLine_end_=""
+#            nf = split($0, f, "\"")   
+#            for (i = 1; i <= nf; i++) {
+#                if ( f[i] ~ /srcLine_end_=$/) {
+#                    srcLine_end_ = f[i+1]
+#                    break;
+#                }
+#            }
+#           #print indent "<link port=\"" srcLine_end_ "\" relation=\"" id "\"/>" 
+#        }
 
     } else { # bar
         print $0
@@ -448,20 +448,42 @@ $0 ~ /<entity/ {
        # Get the value of the dstLine field
        dstLine=""
        nf = split($0, f, "\"")   
-       for (i = 1; i <= nf; i++) {
-           if ( f[i] ~ /dstLine=$/) {
-               dstLine = f[i+1]
-               break;
+       if ( $0 ~ /dstLine=/ ) {
+           for (i = 1; i <= nf; i++) {
+               if ( f[i] ~ /dstLine=$/) {
+                   dstLine = f[i+1]
+                   break;
+               }
+           }
+       } else {
+           # Components have signals  
+           for (i = 1; i <= nf; i++) {
+               if ( f[i] ~ /dstSignal=$/) {
+                   dstLine = f[i+1]
+                   break;
+               }
            }
        }
+
        # Get the value of the srcLine field
        srcLine=""
        nf = split($0, f, "\"")   
-       for (i = 1; i <= nf; i++) {
-           if ( f[i] ~ /srcLine=$/) {
-              srcLine = f[i+1]
-              break;
+       if ( $0 ~ /srcLine=/ ) {
+           for (i = 1; i <= nf; i++) {
+               if ( f[i] ~ /srcLine=$/) {
+                   srcLine = f[i+1]
+                   break;
+               }
            }
+       } else {
+           # Components have signals  
+           for (i = 1; i <= nf; i++) {
+               if ( f[i] ~ /srcSignal=$/) {
+                   srcLine = f[i+1]
+                   break;
+               }
+           }
+
        }
  
        # First, we handle the usual case where OutputPort only
