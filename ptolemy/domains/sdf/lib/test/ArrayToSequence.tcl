@@ -71,7 +71,7 @@ test ArrayToSequence-2.1 {test double array} {
     $s2a setContainer $e0
     set s2aIn [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $s2a] input]
     set s2aOut [java::field [java::cast ptolemy.domains.sdf.lib.SDFTransformer $s2a] output]
-    $s2aIn setTokenConsumptionRate 2
+    [java::field $s2a arrayLength] setExpression {2}
 
     # Use the ArrayToSequence clone
     $a2s setContainer $e0

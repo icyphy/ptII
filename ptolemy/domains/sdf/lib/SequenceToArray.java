@@ -1,4 +1,4 @@
-/* Bundle a sequence of n input tokens into an ArrayToken.
+/* Bundle a sequence of N input tokens into an ArrayToken.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -30,17 +30,21 @@
 
 package ptolemy.domains.sdf.lib;
 
+import ptolemy.actor.Director;
+import ptolemy.data.Token;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.ArrayType;
+import ptolemy.graph.InequalityTerm;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.graph.InequalityTerm;
-import ptolemy.graph.Inequality;
-import ptolemy.data.Token;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.ArrayType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -48,12 +52,13 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// SequenceToArray
 /**
-This actor bundles a certain number of input tokens into an ArrayToken.
-The number of tokens to be bundled into an ArrayToken is determined
-by the parameter <i>tokenConsumptionRate</i> at the input port.
+This actor bundles a specified number of input tokens into a single array.
+The number of tokens to be bundled is specified by the <i>arrayLength</i>
+parameter.
 <p>
-This actor is polymorphic. It can accept intput of any type and will
-send ArrayTokens of corresponding type.
+This actor is polymorphic. It can accept inputs of any type, as long
+as the type does not change, and will produce an array with elements
+of the corresponding type.
 <p>
 
 @author Yuhong Xiong
@@ -82,16 +87,52 @@ public class SequenceToArray extends SDFTransformer {
 
 	// set the output type to be an ArrayType.
 	output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+
+        // Set parameters.
+        arrayLength = new Parameter(this, "arrayLength");
+        arrayLength.setExpression("1");
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The size of the output array.  This is an integer that defaults
+     *  to 1.
+     */
+    public Parameter arrayLength;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the argument is the <i>arrayLength</i> parameter, then
+     *  set the consumption rate of the input port, and invalidate
+     *  the schedule of the director.
+     *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the parameters are out of range.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if(attribute == arrayLength) {
+            int rate = ((IntToken)arrayLength.getToken()).intValue();
+            if (rate < 0) {
+                throw new IllegalActionException(this,
+                "Invalid arrayLength: " + rate);
+            }
+            input.setTokenConsumptionRate(rate);
+            Director dir = getDirector();
+            if (dir != null) {
+                dir.invalidateSchedule();
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Consume the inputs and produce the output ArrayToken.
      *  @exception IllegalActionException If not enough tokens are available.
      */
     public void fire() throws IllegalActionException {
-	int length = input.getTokenConsumptionRate();
+        int length = ((IntToken)arrayLength.getToken()).intValue();
 	Token[] valueArray = input.get(0, length);
 
         output.send(0, new ArrayToken(valueArray));
@@ -107,7 +148,7 @@ public class SequenceToArray extends SDFTransformer {
      *  @see ptolemy.actor.IOPort#hasToken(int, int)
      */
     public boolean prefire() throws IllegalActionException {
-	int length = input.getTokenConsumptionRate();
+        int length = ((IntToken)arrayLength.getToken()).intValue();
 	return input.hasToken(0, length);
     }
 
@@ -125,4 +166,3 @@ public class SequenceToArray extends SDFTransformer {
 	return result;
     }
 }
-
