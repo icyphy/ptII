@@ -161,8 +161,8 @@ public class MovieViewScreen2D extends ViewScreen2D
 
         super.initialize();
         _frameNumber = 0;
-        _frameWidth = _getHorizontalResolution();
-        _frameHeight = _getVerticalResolution();
+        _frameWidth = _getHorizontalPixels();
+        _frameHeight = _getVerticalPixels();
         try {
             QTSession.open();
    
