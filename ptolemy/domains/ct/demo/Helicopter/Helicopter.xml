@@ -1,0 +1,2266 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HelicopterSystem" class="ptolemy.actor.TypedCompositeActor">
+    <property name="OuterDirector" class="ptolemy.domains.ct.kernel.CTMultiSolverDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="70.0">
+        </property>
+        <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
+        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+        </property>
+        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+        </property>
+    </property>
+    <entity name="Controllers" class="ptolemy.domains.ct.kernel.CTCompositeActor">
+        <property name="HSDirector" class="ptolemy.domains.fsm.kernel.HSDirector">
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="HSController">
+            </property>
+        </property>
+        <port name="inputPx" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputPz" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputAction" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="outputVx" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="outputVz" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <entity name="HSController" class="ptolemy.domains.fsm.kernel.FSMActor">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="HoverState">
+            </property>
+            <port name="inputAction" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="outputV" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="outputR" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <entity name="HoverState" class="ptolemy.domains.fsm.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="HoverCTSub">
+                </property>
+                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+            </entity>
+            <entity name="AccelState" class="ptolemy.domains.fsm.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="AccelCTSub">
+                </property>
+                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+            </entity>
+            <entity name="Cruise1State" class="ptolemy.domains.fsm.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Cruise1CTSub">
+                </property>
+                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+            </entity>
+            <entity name="ClimbState" class="ptolemy.domains.fsm.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="ClimbCTSub">
+                </property>
+                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+            </entity>
+            <entity name="Cruise2State" class="ptolemy.domains.fsm.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Cruise2CTSub">
+                </property>
+                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+            </entity>
+            <relation name="tr1" class="ptolemy.domains.fsm.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="inputAction_V">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+            </relation>
+            <relation name="tr2" class="ptolemy.domains.fsm.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(outputV_V &gt;= 5.0) &amp;&amp; (inputPz_V&gt; -2.05) &amp;&amp; (inputPz_V &lt; -1.95)">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+            </relation>
+            <relation name="tr3" class="ptolemy.domains.fsm.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(outputV_V &gt; 4.9) &amp;&amp; (outputV_V &lt; 5.1) &amp;&amp; (outputR_V &gt; -0.01) &amp;&amp; (outputR_V &lt; 0.01)">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+            </relation>
+            <relation name="tr4" class="ptolemy.domains.fsm.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="(outputV_V &gt; 4.9) &amp;&amp; (outputV_V &lt; 5.1) &amp;&amp; (inputPz_V &gt; -10.05) &amp;&amp; (inputPz_V &lt; -9.95)">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+            </relation>
+            <link port="HoverState.outgoingPort" relation="tr1"/>
+            <link port="AccelState.incomingPort" relation="tr1"/>
+            <link port="AccelState.outgoingPort" relation="tr2"/>
+            <link port="Cruise1State.incomingPort" relation="tr2"/>
+            <link port="Cruise1State.outgoingPort" relation="tr3"/>
+            <link port="ClimbState.incomingPort" relation="tr3"/>
+            <link port="ClimbState.outgoingPort" relation="tr4"/>
+            <link port="Cruise2State.incomingPort" relation="tr4"/>
+        </entity>
+        <entity name="HoverCTSub" class="ptolemy.domains.ct.kernel.CTCompositeActor">
+            <property name="CTInnerDirector" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+                <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.5">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                </property>
+                <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+                </property>
+                <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
+                </property>
+                <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                </property>
+            </property>
+            <port name="inputPx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="outputVx" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="outputVz" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="outputV" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="outputR" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <entity name="Hover" class="ptolemy.domains.ct.demo.Helicopter.HoverLinearizer">
+                <property name="AlphaP" class="ptolemy.data.expr.Parameter" value="&quot;500.0 650.0 395.0 121.0 17.8 &quot;">
+                </property>
+                <property name="CPx" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="CPz" class="ptolemy.data.expr.Parameter" value="-2.0">
+                </property>
+                <port name="inputPx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputPz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="outputVx" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outputVz" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outputV" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outputR" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD3Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD4Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD3Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD4Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R9" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R10" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R11" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R12" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R13" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R14" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R15" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R16" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R17" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R18" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R19" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R20" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R21" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R22" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R23" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="inputPx" relation="_R0"/>
+            <link port="inputDPx" relation="_R1"/>
+            <link port="inputDDPx" relation="_R2"/>
+            <link port="inputD3Px" relation="_R3"/>
+            <link port="inputD4Px" relation="_R4"/>
+            <link port="inputPz" relation="_R5"/>
+            <link port="inputDPz" relation="_R6"/>
+            <link port="inputDDPz" relation="_R7"/>
+            <link port="inputD3Pz" relation="_R8"/>
+            <link port="inputD4Pz" relation="_R9"/>
+            <link port="outputVx" relation="_R20"/>
+            <link port="outputVz" relation="_R21"/>
+            <link port="outputV" relation="_R22"/>
+            <link port="outputR" relation="_R23"/>
+            <link port="Hover.inputPx" relation="_R10"/>
+            <link port="Hover.inputDPx" relation="_R11"/>
+            <link port="Hover.inputDDPx" relation="_R12"/>
+            <link port="Hover.inputD3Px" relation="_R13"/>
+            <link port="Hover.inputD4Px" relation="_R14"/>
+            <link port="Hover.inputPz" relation="_R15"/>
+            <link port="Hover.inputDPz" relation="_R16"/>
+            <link port="Hover.inputDDPz" relation="_R17"/>
+            <link port="Hover.inputD3Pz" relation="_R18"/>
+            <link port="Hover.inputD4Pz" relation="_R19"/>
+            <link port="Hover.outputVx" relation="_R20"/>
+            <link port="Hover.outputVz" relation="_R21"/>
+            <link port="Hover.outputV" relation="_R22"/>
+            <link port="Hover.outputR" relation="_R23"/>
+            <link port="HPx.input" relation="_R0"/>
+            <link port="HPx.output" relation="_R10"/>
+            <link port="HDPx.input" relation="_R1"/>
+            <link port="HDPx.output" relation="_R11"/>
+            <link port="HDDPx.input" relation="_R2"/>
+            <link port="HDDPx.output" relation="_R12"/>
+            <link port="HD3Px.input" relation="_R3"/>
+            <link port="HD3Px.output" relation="_R13"/>
+            <link port="HD4Px.input" relation="_R4"/>
+            <link port="HD4Px.output" relation="_R14"/>
+            <link port="HPz.input" relation="_R5"/>
+            <link port="HPz.output" relation="_R15"/>
+            <link port="HDPz.input" relation="_R6"/>
+            <link port="HDPz.output" relation="_R16"/>
+            <link port="HDDPz.input" relation="_R7"/>
+            <link port="HDDPz.output" relation="_R17"/>
+            <link port="HD3Pz.input" relation="_R8"/>
+            <link port="HD3Pz.output" relation="_R18"/>
+            <link port="HD4Pz.input" relation="_R9"/>
+            <link port="HD4Pz.output" relation="_R19"/>
+        </entity>
+        <entity name="AccelCTSub" class="ptolemy.domains.ct.kernel.CTCompositeActor">
+            <property name="CTInnerDirector" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+                <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.5">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                </property>
+                <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+                </property>
+                <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
+                </property>
+                <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                </property>
+            </property>
+            <port name="inputPx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="outputVx" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="outputVz" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="outputV" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="outputR" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <entity name="Accel" class="ptolemy.domains.ct.demo.Helicopter.AccelerLinearizer">
+                <property name="AlphaP" class="ptolemy.data.expr.Parameter" value="&quot;500.0 650.0 395.0 121.0 17.8 &quot;">
+                </property>
+                <property name="AlphaA" class="ptolemy.data.expr.Parameter" value="&quot;20.0 18.0 7.8 &quot;">
+                </property>
+                <property name="CAx" class="ptolemy.data.expr.Parameter" value="0.392">
+                </property>
+                <property name="CPz" class="ptolemy.data.expr.Parameter" value="-2.0">
+                </property>
+                <port name="inputPx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputPz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="outputVx" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outputVz" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outputV" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outputR" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="Mon1" class="ptolemy.domains.ct.lib.ThresholdMonitor">
+                <property name="thresholdWidth" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="thresholdCenter" class="ptolemy.data.expr.Parameter" value="-2.0">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD3Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD4Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD3Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD4Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R9" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R10" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R11" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R12" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R13" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R14" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R15" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R16" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R17" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R18" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R19" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R20" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R21" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R22" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R23" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="inputPx" relation="_R0"/>
+            <link port="inputDPx" relation="_R1"/>
+            <link port="inputDDPx" relation="_R2"/>
+            <link port="inputD3Px" relation="_R3"/>
+            <link port="inputD4Px" relation="_R4"/>
+            <link port="inputPz" relation="_R5"/>
+            <link port="inputDPz" relation="_R6"/>
+            <link port="inputDDPz" relation="_R7"/>
+            <link port="inputD3Pz" relation="_R8"/>
+            <link port="inputD4Pz" relation="_R9"/>
+            <link port="outputVx" relation="_R20"/>
+            <link port="outputVz" relation="_R21"/>
+            <link port="outputV" relation="_R22"/>
+            <link port="outputR" relation="_R23"/>
+            <link port="Accel.inputPx" relation="_R10"/>
+            <link port="Accel.inputDPx" relation="_R11"/>
+            <link port="Accel.inputDDPx" relation="_R12"/>
+            <link port="Accel.inputD3Px" relation="_R13"/>
+            <link port="Accel.inputD4Px" relation="_R14"/>
+            <link port="Accel.inputPz" relation="_R15"/>
+            <link port="Accel.inputDPz" relation="_R16"/>
+            <link port="Accel.inputDDPz" relation="_R17"/>
+            <link port="Accel.inputD3Pz" relation="_R18"/>
+            <link port="Accel.inputD4Pz" relation="_R19"/>
+            <link port="Accel.outputVx" relation="_R20"/>
+            <link port="Accel.outputVz" relation="_R21"/>
+            <link port="Accel.outputV" relation="_R22"/>
+            <link port="Accel.outputR" relation="_R23"/>
+            <link port="Mon1.input" relation="_R5"/>
+            <link port="HPx.input" relation="_R0"/>
+            <link port="HPx.output" relation="_R10"/>
+            <link port="HDPx.input" relation="_R1"/>
+            <link port="HDPx.output" relation="_R11"/>
+            <link port="HDDPx.input" relation="_R2"/>
+            <link port="HDDPx.output" relation="_R12"/>
+            <link port="HD3Px.input" relation="_R3"/>
+            <link port="HD3Px.output" relation="_R13"/>
+            <link port="HD4Px.input" relation="_R4"/>
+            <link port="HD4Px.output" relation="_R14"/>
+            <link port="HPz.input" relation="_R5"/>
+            <link port="HPz.output" relation="_R15"/>
+            <link port="HDPz.input" relation="_R6"/>
+            <link port="HDPz.output" relation="_R16"/>
+            <link port="HDDPz.input" relation="_R7"/>
+            <link port="HDDPz.output" relation="_R17"/>
+            <link port="HD3Pz.input" relation="_R8"/>
+            <link port="HD3Pz.output" relation="_R18"/>
+            <link port="HD4Pz.input" relation="_R9"/>
+            <link port="HD4Pz.output" relation="_R19"/>
+        </entity>
+        <entity name="Cruise1CTSub" class="ptolemy.domains.ct.kernel.CTCompositeActor">
+            <property name="CTInnerDirector" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+                <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.5">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                </property>
+                <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+                </property>
+                <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
+                </property>
+                <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                </property>
+            </property>
+            <port name="inputPx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="outputVx" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="outputVz" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="outputV" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="outputR" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <entity name="Cruise1" class="ptolemy.domains.ct.demo.Helicopter.CruiseLinearizer">
+                <property name="AlphaP" class="ptolemy.data.expr.Parameter" value="&quot;500.0 650.0 395.0 121.0 17.8 &quot;">
+                </property>
+                <property name="AlphaV" class="ptolemy.data.expr.Parameter" value="&quot;100.0 110.0 57.0 12.8 &quot;">
+                </property>
+                <property name="CVx" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="CPz" class="ptolemy.data.expr.Parameter" value="-2.0">
+                </property>
+                <port name="inputPx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputPz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="outputVx" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outputVz" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outputV" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outputR" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="Mon1" class="ptolemy.domains.ct.lib.ThresholdMonitor">
+                <property name="thresholdWidth" class="ptolemy.data.expr.Parameter" value="0.2">
+                </property>
+                <property name="thresholdCenter" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="Mon2" class="ptolemy.domains.ct.lib.ThresholdMonitor">
+                <property name="thresholdWidth" class="ptolemy.data.expr.Parameter" value="0.02">
+                </property>
+                <property name="thresholdCenter" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD3Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD4Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD3Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD4Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R9" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R10" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R11" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R12" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R13" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R14" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R15" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R16" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R17" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R18" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R19" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R20" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R21" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R22" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R23" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="inputPx" relation="_R0"/>
+            <link port="inputDPx" relation="_R1"/>
+            <link port="inputDDPx" relation="_R2"/>
+            <link port="inputD3Px" relation="_R3"/>
+            <link port="inputD4Px" relation="_R4"/>
+            <link port="inputPz" relation="_R5"/>
+            <link port="inputDPz" relation="_R6"/>
+            <link port="inputDDPz" relation="_R7"/>
+            <link port="inputD3Pz" relation="_R8"/>
+            <link port="inputD4Pz" relation="_R9"/>
+            <link port="outputVx" relation="_R20"/>
+            <link port="outputVz" relation="_R21"/>
+            <link port="outputV" relation="_R22"/>
+            <link port="outputR" relation="_R23"/>
+            <link port="Cruise1.inputPx" relation="_R10"/>
+            <link port="Cruise1.inputDPx" relation="_R11"/>
+            <link port="Cruise1.inputDDPx" relation="_R12"/>
+            <link port="Cruise1.inputD3Px" relation="_R13"/>
+            <link port="Cruise1.inputD4Px" relation="_R14"/>
+            <link port="Cruise1.inputPz" relation="_R15"/>
+            <link port="Cruise1.inputDPz" relation="_R16"/>
+            <link port="Cruise1.inputDDPz" relation="_R17"/>
+            <link port="Cruise1.inputD3Pz" relation="_R18"/>
+            <link port="Cruise1.inputD4Pz" relation="_R19"/>
+            <link port="Cruise1.outputVx" relation="_R20"/>
+            <link port="Cruise1.outputVz" relation="_R21"/>
+            <link port="Cruise1.outputV" relation="_R22"/>
+            <link port="Cruise1.outputR" relation="_R23"/>
+            <link port="Mon1.input" relation="_R22"/>
+            <link port="Mon2.input" relation="_R23"/>
+            <link port="HPx.input" relation="_R0"/>
+            <link port="HPx.output" relation="_R10"/>
+            <link port="HDPx.input" relation="_R1"/>
+            <link port="HDPx.output" relation="_R11"/>
+            <link port="HDDPx.input" relation="_R2"/>
+            <link port="HDDPx.output" relation="_R12"/>
+            <link port="HD3Px.input" relation="_R3"/>
+            <link port="HD3Px.output" relation="_R13"/>
+            <link port="HD4Px.input" relation="_R4"/>
+            <link port="HD4Px.output" relation="_R14"/>
+            <link port="HPz.input" relation="_R5"/>
+            <link port="HPz.output" relation="_R15"/>
+            <link port="HDPz.input" relation="_R6"/>
+            <link port="HDPz.output" relation="_R16"/>
+            <link port="HDDPz.input" relation="_R7"/>
+            <link port="HDDPz.output" relation="_R17"/>
+            <link port="HD3Pz.input" relation="_R8"/>
+            <link port="HD3Pz.output" relation="_R18"/>
+            <link port="HD4Pz.input" relation="_R9"/>
+            <link port="HD4Pz.output" relation="_R19"/>
+        </entity>
+        <entity name="ClimbCTSub" class="ptolemy.domains.ct.kernel.CTCompositeActor">
+            <property name="CTInnerDirector" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+                <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.5">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                </property>
+                <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+                </property>
+                <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
+                </property>
+                <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                </property>
+            </property>
+            <port name="inputPx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="outputVx" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="outputVz" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="outputV" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="outputR" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <entity name="Climb" class="ptolemy.domains.ct.demo.Helicopter.ClimbLinearizer">
+                <property name="AlphaV" class="ptolemy.data.expr.Parameter" value="&quot;100.0 110.0 57.0 12.8 &quot;">
+                </property>
+                <property name="CVx" class="ptolemy.data.expr.Parameter" value="4.7">
+                </property>
+                <property name="CVz" class="ptolemy.data.expr.Parameter" value="-1.7">
+                </property>
+                <port name="inputPx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputPz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="outputVx" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outputVz" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outputV" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outputR" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="Mon1" class="ptolemy.domains.ct.lib.ThresholdMonitor">
+                <property name="thresholdWidth" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="thresholdCenter" class="ptolemy.data.expr.Parameter" value="-10.0">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="Mon2" class="ptolemy.domains.ct.lib.ThresholdMonitor">
+                <property name="thresholdWidth" class="ptolemy.data.expr.Parameter" value="0.2">
+                </property>
+                <property name="thresholdCenter" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD3Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD4Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD3Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD4Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R9" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R10" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R11" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R12" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R13" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R14" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R15" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R16" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R17" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R18" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R19" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R20" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R21" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R22" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R23" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="inputPx" relation="_R0"/>
+            <link port="inputDPx" relation="_R1"/>
+            <link port="inputDDPx" relation="_R2"/>
+            <link port="inputD3Px" relation="_R3"/>
+            <link port="inputD4Px" relation="_R4"/>
+            <link port="inputPz" relation="_R5"/>
+            <link port="inputDPz" relation="_R6"/>
+            <link port="inputDDPz" relation="_R7"/>
+            <link port="inputD3Pz" relation="_R8"/>
+            <link port="inputD4Pz" relation="_R9"/>
+            <link port="outputVx" relation="_R20"/>
+            <link port="outputVz" relation="_R21"/>
+            <link port="outputV" relation="_R22"/>
+            <link port="outputR" relation="_R23"/>
+            <link port="Climb.inputPx" relation="_R10"/>
+            <link port="Climb.inputDPx" relation="_R11"/>
+            <link port="Climb.inputDDPx" relation="_R12"/>
+            <link port="Climb.inputD3Px" relation="_R13"/>
+            <link port="Climb.inputD4Px" relation="_R14"/>
+            <link port="Climb.inputPz" relation="_R15"/>
+            <link port="Climb.inputDPz" relation="_R16"/>
+            <link port="Climb.inputDDPz" relation="_R17"/>
+            <link port="Climb.inputD3Pz" relation="_R18"/>
+            <link port="Climb.inputD4Pz" relation="_R19"/>
+            <link port="Climb.outputVx" relation="_R20"/>
+            <link port="Climb.outputVz" relation="_R21"/>
+            <link port="Climb.outputV" relation="_R22"/>
+            <link port="Climb.outputR" relation="_R23"/>
+            <link port="Mon1.input" relation="_R5"/>
+            <link port="Mon2.input" relation="_R22"/>
+            <link port="HPx.input" relation="_R0"/>
+            <link port="HPx.output" relation="_R10"/>
+            <link port="HDPx.input" relation="_R1"/>
+            <link port="HDPx.output" relation="_R11"/>
+            <link port="HDDPx.input" relation="_R2"/>
+            <link port="HDDPx.output" relation="_R12"/>
+            <link port="HD3Px.input" relation="_R3"/>
+            <link port="HD3Px.output" relation="_R13"/>
+            <link port="HD4Px.input" relation="_R4"/>
+            <link port="HD4Px.output" relation="_R14"/>
+            <link port="HPz.input" relation="_R5"/>
+            <link port="HPz.output" relation="_R15"/>
+            <link port="HDPz.input" relation="_R6"/>
+            <link port="HDPz.output" relation="_R16"/>
+            <link port="HDDPz.input" relation="_R7"/>
+            <link port="HDDPz.output" relation="_R17"/>
+            <link port="HD3Pz.input" relation="_R8"/>
+            <link port="HD3Pz.output" relation="_R18"/>
+            <link port="HD4Pz.input" relation="_R9"/>
+            <link port="HD4Pz.output" relation="_R19"/>
+        </entity>
+        <entity name="Cruise2CTSub" class="ptolemy.domains.ct.kernel.CTCompositeActor">
+            <property name="CTInnerDirector" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+                <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+                </property>
+                <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.5">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                </property>
+                <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+                </property>
+                <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
+                </property>
+                <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                </property>
+            </property>
+            <port name="inputPx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="outputVx" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="outputVz" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="outputV" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="outputR" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <entity name="Cruise2" class="ptolemy.domains.ct.demo.Helicopter.CruiseLinearizer">
+                <property name="AlphaP" class="ptolemy.data.expr.Parameter" value="&quot;500.0 650.0 395.0 121.0 17.8 &quot;">
+                </property>
+                <property name="AlphaV" class="ptolemy.data.expr.Parameter" value="&quot;100.0 110.0 57.0 12.8 &quot;">
+                </property>
+                <property name="CVx" class="ptolemy.data.expr.Parameter" value="5.0">
+                </property>
+                <property name="CPz" class="ptolemy.data.expr.Parameter" value="-10.0">
+                </property>
+                <port name="inputPx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDPx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDDPx" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD3Px" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD4Px" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputPz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDPz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputDDPz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD3Pz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="inputD4Pz" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="outputVx" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outputVz" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outputV" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="outputR" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDDPx" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD3Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD4Px" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HDDPz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD3Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="HD4Pz" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R4" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R6" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R7" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R8" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R9" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R10" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R11" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R12" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R13" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R14" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R15" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R16" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R17" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R18" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R19" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R20" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R21" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R22" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R23" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="inputPx" relation="_R0"/>
+            <link port="inputDPx" relation="_R1"/>
+            <link port="inputDDPx" relation="_R2"/>
+            <link port="inputD3Px" relation="_R3"/>
+            <link port="inputD4Px" relation="_R4"/>
+            <link port="inputPz" relation="_R5"/>
+            <link port="inputDPz" relation="_R6"/>
+            <link port="inputDDPz" relation="_R7"/>
+            <link port="inputD3Pz" relation="_R8"/>
+            <link port="inputD4Pz" relation="_R9"/>
+            <link port="outputVx" relation="_R20"/>
+            <link port="outputVz" relation="_R21"/>
+            <link port="outputV" relation="_R22"/>
+            <link port="outputR" relation="_R23"/>
+            <link port="Cruise2.inputPx" relation="_R10"/>
+            <link port="Cruise2.inputDPx" relation="_R11"/>
+            <link port="Cruise2.inputDDPx" relation="_R12"/>
+            <link port="Cruise2.inputD3Px" relation="_R13"/>
+            <link port="Cruise2.inputD4Px" relation="_R14"/>
+            <link port="Cruise2.inputPz" relation="_R15"/>
+            <link port="Cruise2.inputDPz" relation="_R16"/>
+            <link port="Cruise2.inputDDPz" relation="_R17"/>
+            <link port="Cruise2.inputD3Pz" relation="_R18"/>
+            <link port="Cruise2.inputD4Pz" relation="_R19"/>
+            <link port="Cruise2.outputVx" relation="_R20"/>
+            <link port="Cruise2.outputVz" relation="_R21"/>
+            <link port="Cruise2.outputV" relation="_R22"/>
+            <link port="Cruise2.outputR" relation="_R23"/>
+            <link port="HPx.input" relation="_R0"/>
+            <link port="HPx.output" relation="_R10"/>
+            <link port="HDPx.input" relation="_R1"/>
+            <link port="HDPx.output" relation="_R11"/>
+            <link port="HDDPx.input" relation="_R2"/>
+            <link port="HDDPx.output" relation="_R12"/>
+            <link port="HD3Px.input" relation="_R3"/>
+            <link port="HD3Px.output" relation="_R13"/>
+            <link port="HD4Px.input" relation="_R4"/>
+            <link port="HD4Px.output" relation="_R14"/>
+            <link port="HPz.input" relation="_R5"/>
+            <link port="HPz.output" relation="_R15"/>
+            <link port="HDPz.input" relation="_R6"/>
+            <link port="HDPz.output" relation="_R16"/>
+            <link port="HDDPz.input" relation="_R7"/>
+            <link port="HDDPz.output" relation="_R17"/>
+            <link port="HD3Pz.input" relation="_R8"/>
+            <link port="HD3Pz.output" relation="_R18"/>
+            <link port="HD4Pz.input" relation="_R9"/>
+            <link port="HD4Pz.output" relation="_R19"/>
+        </entity>
+        <relation name="rSubPx" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="rSubDPx" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="rSubDDPx" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="rSubD3Px" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="rSubD4Px" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="rSubPz" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="rSubDPz" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="rSubDDPz" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="rSubD3Pz" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="rSubD4Pz" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="rSubOutVx" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="rSubOutVz" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="rSubOutV" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="rSubOutR" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="inputPx" relation="rSubPx"/>
+        <link port="inputDPx" relation="rSubDPx"/>
+        <link port="inputDDPx" relation="rSubDDPx"/>
+        <link port="inputD3Px" relation="rSubD3Px"/>
+        <link port="inputD4Px" relation="rSubD4Px"/>
+        <link port="inputPz" relation="rSubPz"/>
+        <link port="inputDPz" relation="rSubDPz"/>
+        <link port="inputDDPz" relation="rSubDDPz"/>
+        <link port="inputD3Pz" relation="rSubD3Pz"/>
+        <link port="inputD4Pz" relation="rSubD4Pz"/>
+        <link port="inputAction" relation="_R0"/>
+        <link port="outputVx" relation="rSubOutVx"/>
+        <link port="outputVz" relation="rSubOutVz"/>
+        <link port="HSController.inputAction" relation="_R0"/>
+        <link port="HSController.inputPz" relation="rSubPz"/>
+        <link port="HSController.outputV" relation="rSubOutV"/>
+        <link port="HSController.outputR" relation="rSubOutR"/>
+        <link port="HoverCTSub.inputPx" relation="rSubPx"/>
+        <link port="HoverCTSub.inputDPx" relation="rSubDPx"/>
+        <link port="HoverCTSub.inputDDPx" relation="rSubDDPx"/>
+        <link port="HoverCTSub.inputD3Px" relation="rSubD3Px"/>
+        <link port="HoverCTSub.inputD4Px" relation="rSubD4Px"/>
+        <link port="HoverCTSub.inputPz" relation="rSubPz"/>
+        <link port="HoverCTSub.inputDPz" relation="rSubDPz"/>
+        <link port="HoverCTSub.inputDDPz" relation="rSubDDPz"/>
+        <link port="HoverCTSub.inputD3Pz" relation="rSubD3Pz"/>
+        <link port="HoverCTSub.inputD4Pz" relation="rSubD4Pz"/>
+        <link port="HoverCTSub.outputVx" relation="rSubOutVx"/>
+        <link port="HoverCTSub.outputVz" relation="rSubOutVz"/>
+        <link port="HoverCTSub.outputV" relation="rSubOutV"/>
+        <link port="HoverCTSub.outputR" relation="rSubOutR"/>
+        <link port="AccelCTSub.inputPx" relation="rSubPx"/>
+        <link port="AccelCTSub.inputDPx" relation="rSubDPx"/>
+        <link port="AccelCTSub.inputDDPx" relation="rSubDDPx"/>
+        <link port="AccelCTSub.inputD3Px" relation="rSubD3Px"/>
+        <link port="AccelCTSub.inputD4Px" relation="rSubD4Px"/>
+        <link port="AccelCTSub.inputPz" relation="rSubPz"/>
+        <link port="AccelCTSub.inputDPz" relation="rSubDPz"/>
+        <link port="AccelCTSub.inputDDPz" relation="rSubDDPz"/>
+        <link port="AccelCTSub.inputD3Pz" relation="rSubD3Pz"/>
+        <link port="AccelCTSub.inputD4Pz" relation="rSubD4Pz"/>
+        <link port="AccelCTSub.outputVx" relation="rSubOutVx"/>
+        <link port="AccelCTSub.outputVz" relation="rSubOutVz"/>
+        <link port="AccelCTSub.outputV" relation="rSubOutV"/>
+        <link port="AccelCTSub.outputR" relation="rSubOutR"/>
+        <link port="Cruise1CTSub.inputPx" relation="rSubPx"/>
+        <link port="Cruise1CTSub.inputDPx" relation="rSubDPx"/>
+        <link port="Cruise1CTSub.inputDDPx" relation="rSubDDPx"/>
+        <link port="Cruise1CTSub.inputD3Px" relation="rSubD3Px"/>
+        <link port="Cruise1CTSub.inputD4Px" relation="rSubD4Px"/>
+        <link port="Cruise1CTSub.inputPz" relation="rSubPz"/>
+        <link port="Cruise1CTSub.inputDPz" relation="rSubDPz"/>
+        <link port="Cruise1CTSub.inputDDPz" relation="rSubDDPz"/>
+        <link port="Cruise1CTSub.inputD3Pz" relation="rSubD3Pz"/>
+        <link port="Cruise1CTSub.inputD4Pz" relation="rSubD4Pz"/>
+        <link port="Cruise1CTSub.outputVx" relation="rSubOutVx"/>
+        <link port="Cruise1CTSub.outputVz" relation="rSubOutVz"/>
+        <link port="Cruise1CTSub.outputV" relation="rSubOutV"/>
+        <link port="Cruise1CTSub.outputR" relation="rSubOutR"/>
+        <link port="ClimbCTSub.inputPx" relation="rSubPx"/>
+        <link port="ClimbCTSub.inputDPx" relation="rSubDPx"/>
+        <link port="ClimbCTSub.inputDDPx" relation="rSubDDPx"/>
+        <link port="ClimbCTSub.inputD3Px" relation="rSubD3Px"/>
+        <link port="ClimbCTSub.inputD4Px" relation="rSubD4Px"/>
+        <link port="ClimbCTSub.inputPz" relation="rSubPz"/>
+        <link port="ClimbCTSub.inputDPz" relation="rSubDPz"/>
+        <link port="ClimbCTSub.inputDDPz" relation="rSubDDPz"/>
+        <link port="ClimbCTSub.inputD3Pz" relation="rSubD3Pz"/>
+        <link port="ClimbCTSub.inputD4Pz" relation="rSubD4Pz"/>
+        <link port="ClimbCTSub.outputVx" relation="rSubOutVx"/>
+        <link port="ClimbCTSub.outputVz" relation="rSubOutVz"/>
+        <link port="ClimbCTSub.outputV" relation="rSubOutV"/>
+        <link port="ClimbCTSub.outputR" relation="rSubOutR"/>
+        <link port="Cruise2CTSub.inputPx" relation="rSubPx"/>
+        <link port="Cruise2CTSub.inputDPx" relation="rSubDPx"/>
+        <link port="Cruise2CTSub.inputDDPx" relation="rSubDDPx"/>
+        <link port="Cruise2CTSub.inputD3Px" relation="rSubD3Px"/>
+        <link port="Cruise2CTSub.inputD4Px" relation="rSubD4Px"/>
+        <link port="Cruise2CTSub.inputPz" relation="rSubPz"/>
+        <link port="Cruise2CTSub.inputDPz" relation="rSubDPz"/>
+        <link port="Cruise2CTSub.inputDDPz" relation="rSubDDPz"/>
+        <link port="Cruise2CTSub.inputD3Pz" relation="rSubD3Pz"/>
+        <link port="Cruise2CTSub.inputD4Pz" relation="rSubD4Pz"/>
+        <link port="Cruise2CTSub.outputVx" relation="rSubOutVx"/>
+        <link port="Cruise2CTSub.outputVz" relation="rSubOutVz"/>
+        <link port="Cruise2CTSub.outputV" relation="rSubOutV"/>
+        <link port="Cruise2CTSub.outputR" relation="rSubOutR"/>
+    </entity>
+    <entity name="Clock" class="ptolemy.actor.lib.Clock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="1.0E308">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0, 20.0]">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="[false, true]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Helicopter" class="ptolemy.domains.ct.demo.Helicopter.HelicopterActor">
+        <property name="Iy" class="ptolemy.data.expr.Parameter" value="0.271256">
+        </property>
+        <property name="hm" class="ptolemy.data.expr.Parameter" value="0.2943">
+        </property>
+        <property name="Mm" class="ptolemy.data.expr.Parameter" value="25.23">
+        </property>
+        <property name="Mass" class="ptolemy.data.expr.Parameter" value="4.9">
+        </property>
+        <port name="inputTm" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputA" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputTh" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="outputDDPx" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="outputDDPz" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="outputDDTh" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Controller" class="ptolemy.domains.ct.demo.Helicopter.ControllerActor">
+        <property name="Iy" class="ptolemy.data.expr.Parameter" value="0.271256">
+        </property>
+        <property name="hm" class="ptolemy.data.expr.Parameter" value="0.2943">
+        </property>
+        <property name="Mm" class="ptolemy.data.expr.Parameter" value="25.23">
+        </property>
+        <property name="Mass" class="ptolemy.data.expr.Parameter" value="4.9">
+        </property>
+        <port name="inputTm" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputDTm" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputDDTm" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputA" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputTh" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputDTh" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputVx" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputVz" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="outputDDDTm" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="outputDA" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="XZHigherDerivatives" class="ptolemy.domains.ct.demo.Helicopter.XZHigherDerivatives">
+        <property name="Iy" class="ptolemy.data.expr.Parameter" value="0.271256">
+        </property>
+        <property name="hm" class="ptolemy.data.expr.Parameter" value="0.2943">
+        </property>
+        <property name="Mm" class="ptolemy.data.expr.Parameter" value="25.23">
+        </property>
+        <property name="Mass" class="ptolemy.data.expr.Parameter" value="4.9">
+        </property>
+        <port name="inputTm" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputDTm" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputDDTm" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputA" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputTh" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="inputDTh" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="outputD3Px" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="outputD4Px" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="outputD3Pz" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="outputD4Pz" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="IntegratorPx" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="IntegratorDPx" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="IntegratorPz" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="-1.5">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="IntegratorDPz" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="IntegratorTh" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="IntegratorDTh" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="IntegratorTm" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="48.02">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="IntegratorDTm" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="IntegratorDDTm" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="IntegratorA" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="MINUS" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Helicopter Position" class="ptolemy.actor.lib.gui.XYPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <port name="inputX" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="inputY" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Helicopter Position</title>
+<xRange min="-1.0" max="100.0"/>
+<yRange min="1.0" max="12.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Horizontal Speed" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Horizontal Speed</title>
+<xRange min="0.0" max="70.0"/>
+<yRange min="0.0" max="6.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Vertical Position" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Vertical Position</title>
+<xRange min="0.0" max="70.0"/>
+<yRange min="0.0" max="12.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="Pitch Angle" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Pitch Angle</title>
+<xRange min="0.0" max="70.0"/>
+<yRange min="-0.05" max="0.05"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rPx" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rDPx" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rDDPx" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rD3Px" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rD4Px" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rPz" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rDPz" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rDDPz" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rD3Pz" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rD4Pz" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rTh" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rDTh" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rDDTh" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rTm" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rDTm" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rDDTm" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rA" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rVx" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="rVz" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="RMPz" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Controllers.inputPx" relation="rPx"/>
+    <link port="Controllers.inputDPx" relation="rDPx"/>
+    <link port="Controllers.inputDDPx" relation="rDDPx"/>
+    <link port="Controllers.inputD3Px" relation="rD3Px"/>
+    <link port="Controllers.inputD4Px" relation="rD4Px"/>
+    <link port="Controllers.inputPz" relation="rPz"/>
+    <link port="Controllers.inputDPz" relation="rDPz"/>
+    <link port="Controllers.inputDDPz" relation="rDDPz"/>
+    <link port="Controllers.inputD3Pz" relation="rD3Pz"/>
+    <link port="Controllers.inputD4Pz" relation="rD4Pz"/>
+    <link port="Controllers.inputAction" relation="_R0"/>
+    <link port="Controllers.outputVx" relation="rVx"/>
+    <link port="Controllers.outputVz" relation="rVz"/>
+    <link port="Clock.output" relation="_R0"/>
+    <link port="Helicopter.inputTm" relation="rTm"/>
+    <link port="Helicopter.inputA" relation="rA"/>
+    <link port="Helicopter.inputTh" relation="rTh"/>
+    <link port="Helicopter.outputDDPx" relation="rDDPx"/>
+    <link port="Helicopter.outputDDPz" relation="rDDPz"/>
+    <link port="Helicopter.outputDDTh" relation="rDDTh"/>
+    <link port="Controller.inputTm" relation="rTm"/>
+    <link port="Controller.inputTm" relation="rTm"/>
+    <link port="Controller.inputTm" relation="rTm"/>
+    <link port="Controller.inputDTm" relation="rDTm"/>
+    <link port="Controller.inputDDTm" relation="rDDTm"/>
+    <link port="Controller.inputA" relation="rA"/>
+    <link port="Controller.inputTh" relation="rTh"/>
+    <link port="Controller.inputDTh" relation="rTh"/>
+    <link port="Controller.inputVx" relation="rVx"/>
+    <link port="Controller.inputVz" relation="rVz"/>
+    <link port="Controller.outputDDDTm" relation="_R1"/>
+    <link port="Controller.outputDA" relation="_R2"/>
+    <link port="XZHigherDerivatives.inputTm" relation="rTm"/>
+    <link port="XZHigherDerivatives.inputDTm" relation="rDTm"/>
+    <link port="XZHigherDerivatives.inputDDTm" relation="rDDTm"/>
+    <link port="XZHigherDerivatives.inputA" relation="rA"/>
+    <link port="XZHigherDerivatives.inputTh" relation="rTh"/>
+    <link port="XZHigherDerivatives.inputDTh" relation="rDTh"/>
+    <link port="XZHigherDerivatives.outputD3Px" relation="rD3Px"/>
+    <link port="XZHigherDerivatives.outputD4Px" relation="rD4Px"/>
+    <link port="XZHigherDerivatives.outputD3Pz" relation="rD3Pz"/>
+    <link port="XZHigherDerivatives.outputD4Pz" relation="rD4Pz"/>
+    <link port="IntegratorPx.input" relation="rDPx"/>
+    <link port="IntegratorPx.output" relation="rPx"/>
+    <link port="IntegratorDPx.input" relation="rDDPx"/>
+    <link port="IntegratorDPx.output" relation="rDPx"/>
+    <link port="IntegratorPz.input" relation="rDPz"/>
+    <link port="IntegratorPz.output" relation="rPz"/>
+    <link port="IntegratorDPz.input" relation="rDDPz"/>
+    <link port="IntegratorDPz.output" relation="rDPz"/>
+    <link port="IntegratorTh.input" relation="rDTh"/>
+    <link port="IntegratorTh.output" relation="rTh"/>
+    <link port="IntegratorDTh.input" relation="rDDTh"/>
+    <link port="IntegratorDTh.output" relation="rDTh"/>
+    <link port="IntegratorTm.input" relation="rDTm"/>
+    <link port="IntegratorTm.output" relation="rTm"/>
+    <link port="IntegratorDTm.input" relation="rDDTm"/>
+    <link port="IntegratorDTm.output" relation="rDTm"/>
+    <link port="IntegratorDDTm.input" relation="_R1"/>
+    <link port="IntegratorDDTm.output" relation="rDDTm"/>
+    <link port="IntegratorA.input" relation="_R2"/>
+    <link port="IntegratorA.output" relation="rA"/>
+    <link port="MINUS.input" relation="rPz"/>
+    <link port="MINUS.output" relation="RMPz"/>
+    <link port="Helicopter Position.inputX" relation="rPx"/>
+    <link port="Helicopter Position.inputY" relation="RMPz"/>
+    <link port="Horizontal Speed.input" relation="rDPx"/>
+    <link port="Vertical Position.input" relation="RMPz"/>
+    <link port="Pitch Angle.input" relation="rTh"/>
+</entity>

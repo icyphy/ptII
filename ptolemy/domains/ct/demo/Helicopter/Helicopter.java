@@ -488,6 +488,7 @@ public class Helicopter extends TypedCompositeActor {
         // System.out.println(dir.getScheduler().description());
         // System.out.println(((CTDirector)sub.getDirector()).
         // getScheduler().description());
+        // System.out.println(exportMoML());
     }
 
     ////////////////////////////////////////////////////////////////////////

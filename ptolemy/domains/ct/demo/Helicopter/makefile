@@ -58,6 +58,7 @@ JSRCS = \
 
 EXTRA_SRCS =	$(JSRCS) \
 	Helicopter.htm \
+	Helicopter.xml \
 	modes.gif \
 	toplevel.gif
 
