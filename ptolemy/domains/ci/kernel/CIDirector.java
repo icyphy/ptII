@@ -62,7 +62,7 @@ interaction, the actor that consumes data decides when the interaction
 takes place, and the computation proceeds as demand-driven.
 <p>
 When a relation connects the push(pull) output port of one actor with the
-push(pull) input port of another, the style of interation between the two
+push(pull) input port of another, the style of interaction between the two
 actors is push(pull). To configure a port as a push port, add a parameter
 named <i>push</i> to the port, and give the value "true" to the parameter.
 Ports are pull ports by default. Relations connecting both push and pull
