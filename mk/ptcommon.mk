@@ -601,7 +601,8 @@ checkjunk:
 
 CRUD=*.o *.so core *~ *.bak ,* LOG* *.class \
 	config.cache config.log config.status manifest.tmp \
-	$(JCLASS) $(PTPACKAGE).zip $(PTCLASSJAR) $(PTAUXJAR) $(PTCLASSALLJAR) \
+	$(JCLASS) $(PTPACKAGE).zip $(PTCLASSJAR) $(PTAUXJAR) \
+	$(PTCLASSALLJAR) $(PTAUXALLJAR) \
 	$(PTDISTS) $(PTCLASSJAR) $(KRUFT)
 
 clean:
