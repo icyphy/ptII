@@ -70,17 +70,21 @@ public class RLDecoder extends AtomicActor {
         //Get and send dimensions
         _dimenout.broadcast(_dimenin.get(0));
         _dimenout.broadcast(_dimenin.get(0));
-
         //Read and decode the input
         while(true) {
             IntToken token = (IntToken)_input.get(0);
-            int value = token.intValue();
+            byte inval = (byte)token.intValue();
+	    //System.out.println("BYte read is = "+inval);
+	    int value = 0;
+	    if (inval < 0) value = 1;
+	    //int value = (unsigned)((128 & inval)>>7);
             //send the first occurence of the value
-            _output.broadcast(token);
+            //_output.broadcast(new IntToken(value));
             //Obtain the number of occurences
-            token = (IntToken)_input.get(0);
-            int count = token.intValue();
-            for (int i=1; i<count; i++) {
+            //token = (IntToken)_input.get(0);
+            //int count = token.intValue();
+	    int count = (127 & inval) + 1;
+            for (int i = 0; i < count; i++) {
                 _output.broadcast(new IntToken(value));
             }
         }

@@ -80,23 +80,46 @@ public class RLEncoder extends AtomicActor {
         //Read the stream of tokens to be encoded
         token = (IntToken)_input.get(0);
         int value = token.intValue();
+	byte outval = 0;
+	if (value == 1) outval = (byte)128;
+	//byte outval = (byte)((byte)value<<7);
         int count = 1;
         for (int i=1; i<inlen; i++) {
             int newval = ((IntToken)_input.get(0)).intValue();
             if (newval == value) {
                 count++;
+		if (count == 128) {
+		    outval = (byte)(outval | (byte)127);
+		    _output.broadcast(new IntToken(outval));
+		    _outputlength++;
+		    count = 0;
+		    if (i<inlen) {
+			value = ((IntToken)_input.get(0)).intValue();
+			i++;
+			if (value == 1) outval = (byte)128;
+			else outval = 0;
+			//outval = (byte)((byte)value<<7);
+			count = 1;
+		    }
+		}
             } else {
-                _output.broadcast(new IntToken(value));
-                _output.broadcast(new IntToken(count));
-                _outputlength += (count+127-((count+127)%128))/128;
+		outval = (byte)(outval | (byte)(count-1));
+                _output.broadcast(new IntToken(outval));
+                //_output.broadcast(new IntToken(count));
+                _outputlength ++; //= (count+127-((count+127)%128))/128;
                 value = newval;
+		if (value == 1) outval = (byte)128;
+		else outval = 0;
                 count =1;
             }
         }
-        _output.broadcast(new IntToken(value));
-        _output.broadcast(new IntToken(count));
+        //_output.broadcast(new IntToken(value));
+        //_output.broadcast(new IntToken(count));
+	outval = (byte)(outval | (byte)(count-1));
+	_output.broadcast(new IntToken(outval));
+	_outputlength++;
         System.out.println("Approximate compression ratio = "+
-                ((double)(_outputlength*8))*100/_inputlength);
+                ((double)_outputlength*100*8)/_inputlength);
     }
         
     //public boolean postfire() { 
