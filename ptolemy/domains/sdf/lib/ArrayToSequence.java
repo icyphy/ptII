@@ -159,11 +159,5 @@ public class ArrayToSequence extends SDFAtomicActor {
 	// constraints.
 	return output.typeConstraintList();
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 }
 
