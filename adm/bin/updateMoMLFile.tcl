@@ -34,9 +34,10 @@ proc updateMoMLFile { {file ../../ptolemy/domains/ct/demo/CarTracking/CarTrackin
 
     puts "parsing $file"
     set parser [java::new ptolemy.moml.MoMLParser]
+    $parser addMoMLFilters \
+	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
     #$parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
-    $parser addMoMLFilter [java::new ptolemy.moml.FilterHideAnnotationNames]
-    $parser addMoMLFilter [java::new ptolemy.moml.FilterBackwardCompatibility]
+
     set toplevel [$parser parseFile $file]
 
     if  {$toplevel == [java::null]} {
