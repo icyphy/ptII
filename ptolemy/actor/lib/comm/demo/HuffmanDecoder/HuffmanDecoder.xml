@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HuffmanDecoder" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 746}, maximized=false}">
     </property>
@@ -17,9 +17,17 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows the Huffman coding and decoding given an alphabet list and its&#10;probability mass function (pmf).The Huffman coding scheme is an optimal source&#10;coding method for data compression. It uses fewer bits to represent symbols that&#10;have high probability of occurence and more bits for symbols that have low&#10;probability of occurence. Huffman code is also an instantaneous code which means&#10;it is uniquely decodable.&#10;&#10;Author: Ye Zhou">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows the Huffman coding and decoding given an alphabet list and its&#10;probability mass function (pmf).The Huffman coding scheme is an optimal source&#10;coding method for data compression. It uses fewer bits to represent symbols that&#10;have high probability of occurence and more bits for symbols that have low&#10;probability of occurence. Huffman code is also an instantaneous code which means&#10;it is uniquely decodable.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 580.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ye Zhou">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 710.0]">
         </property>
     </property>
     <entity name="HuffmanCoder" class="ptolemy.actor.lib.comm.HuffmanCoder">
@@ -54,6 +62,8 @@
         </property>
     </entity>
     <entity name="HuffmanCode" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 304, 252, 241}, maximized=false}">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[388.6790313720703, 165.28207397460938]">
         </property>
     </entity>
