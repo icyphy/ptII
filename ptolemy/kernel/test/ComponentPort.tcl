@@ -598,3 +598,42 @@ test Port-10.2 {Test removePort} {
     list $result1 $result3
 } {{{{} R1 R2} {R1 R2 {}}} {{{} {} R2} {R1 {} {}}}}
 
+test ComponentPort-11.1 {test deepConnectedPortList} {
+    set e0 [java::new ptolemy.kernel.CompositeEntity]
+    $e0 setName E0
+    set e1 [java::new ptolemy.kernel.ComponentEntity $e0 E1]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e0 E2]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
+    set r [java::new ptolemy.kernel.ComponentRelation $e0 R0]
+    $p1 link $r
+    $p2 link $r
+    listToFullNames [$p2 deepConnectedPortList]
+} {.E0.E1.P1}
+
+test ComponentPort-11.2 {test deepConnectedPortList} {
+    # NOTE: expands on the above.
+    set e3 [java::new ptolemy.kernel.ComponentEntity $e0 E3]
+    set p3 [java::new ptolemy.kernel.ComponentPort $e3 P3]
+    $p3 link $r
+    listToFullNames [$p2 deepConnectedPortList]
+} {.E0.E1.P1 .E0.E3.P3}
+
+test ComponentPort-11.3 {test deepConnectedPortList} {
+    # NOTE: expands on the above.
+    set e4 [java::new ptolemy.kernel.CompositeEntity $e0 E4]
+    set p4 [java::new ptolemy.kernel.ComponentPort $e4 P4]
+    $p4 link $r
+    listToFullNames [$p2 deepConnectedPortList]
+} {.E0.E1.P1 .E0.E3.P3}
+
+test ComponentPort-11.4 {test deepConnectedPortList} {
+    # NOTE: expands on the above.
+    set e5 [java::new ptolemy.kernel.ComponentEntity $e4 E5]
+    set p5 [java::new ptolemy.kernel.ComponentPort $e5 P5]
+    set r5 [java::new ptolemy.kernel.ComponentRelation $e4 R5]
+    $p5 link $r5
+    $p4 link $r5
+    listToFullNames [$p2 deepConnectedPortList]
+} {.E0.E1.P1 .E0.E3.P3 .E0.E4.E5.P5}
+
