@@ -103,8 +103,8 @@ test Delay-2.5 {test with type change to error condition} {
     # Note, this order of the error message might be platform dependent
     list $msg
 } {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following Typeables:
-  .top.delay.output: matrix
   .top.rec.input: matrix
+  .top.delay.output: matrix
 }}
 
 test Delay-3.0 {test in feedback loop} {
