@@ -327,8 +327,8 @@ test DoubleToken-5.9 {Test closeness between a double and a String} {
     set stringToken [java::new ptolemy.data.StringToken "12.0"]
     catch {[$doubleToken {isCloseTo ptolemy.data.Token} $stringToken]} errMsg1
     catch {[$stringToken {isCloseTo ptolemy.data.Token} $doubleToken]} errMsg2
-    list [lrange $errMsg2 0 8] [lrange $errMsg2 0 8]
-} {{ptolemy.kernel.util.IllegalActionException: closeness method not supported between ptolemy.data.StringToken and ptolemy.data.DoubleToken} {ptolemy.kernel.util.IllegalActionException: closeness method not supported between ptolemy.data.StringToken and ptolemy.data.DoubleToken}}
+    list [lrange $errMsg2 0 10] [lrange $errMsg2 0 10]
+} {{ptolemy.kernel.util.IllegalActionException: closeness method not supported between ptolemy.data.StringToken '\"12.0\"' and ptolemy.data.DoubleToken '12.0'} {ptolemy.kernel.util.IllegalActionException: closeness method not supported between ptolemy.data.StringToken '\"12.0\"' and ptolemy.data.DoubleToken '12.0'}}
 
 
 ######################################################################

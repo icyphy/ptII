@@ -128,11 +128,8 @@ public class DoubleToken extends ScalarToken {
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.addReverse(this);
         } else {
-            throw new IllegalActionException("DoubleToken.add: Cannot add "
-                    + this.getClass().getName() + " " + this.toString()
-                    + " and "
-                    + rightArgument.getClass().getName() + " "
-                    + rightArgument.toString());
+            throw new IllegalActionException(
+                    _notSupportedMessage("add", this, rightArgument)); 
         }
     }
 
@@ -227,10 +224,7 @@ public class DoubleToken extends ScalarToken {
             return divisor.divideReverse(this);
         } else {
             throw new IllegalActionException(
-                    "DoubleToken.divide: Cannot divide "
-                    + this.getClass().getName() + " " + this.toString()
-                    + " by "
-                    + divisor.getClass().getName() + " " + divisor.toString());
+                    _notSupportedMessage("divide", this, divisor)); 
         }
     }
 
@@ -338,12 +332,8 @@ public class DoubleToken extends ScalarToken {
         } else if (typeInfo == CPO.LOWER) {
             return token.isCloseTo(this);
         } else {
-            throw new IllegalActionException("DoubleToken.isEqualTo: "
-                    + "Cannot compare "
-                    + this.getClass().getName() + " " + this.toString()
-                    + " and "
-                    + token.getClass().getName() + " " + token.toString()
-                    + " for closeness.");
+            throw new IllegalActionException(
+                    _notSupportedMessage("isCloseTo", this, token)); 
         }
     }
 
@@ -379,12 +369,8 @@ public class DoubleToken extends ScalarToken {
         } else if (typeInfo == CPO.LOWER) {
             return token.isEqualTo(this);
         } else {
-            throw new IllegalActionException("DoubleToken.isEqualTo: "
-                    + "Cannot compare "
-                    + this.getClass().getName() + " " + this.toString()
-                    + " and "
-                    + token.getClass().getName() + " " + token.toString()
-                    + " for equality.");
+            throw new IllegalActionException(
+                    _notSupportedMessage("isEqualTo", this, token)); 
         }
     }
 
@@ -425,11 +411,8 @@ public class DoubleToken extends ScalarToken {
                 return token.isLessThan(this).not();
             }
         } else {
-            throw new IllegalActionException("DoubleToken.isLessThan: "
-                    + "Cannot check whether "
-                    + this.getClass().getName() + " " + this.toString()
-                    + " is less than "
-                    + token.getClass().getName() + " " + token.toString());
+            throw new IllegalActionException(
+                    _notSupportedMessage("isLessThan", this, token)); 
         }
     }
 
@@ -465,12 +448,8 @@ public class DoubleToken extends ScalarToken {
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.moduloReverse(this);
         } else {
-            throw new IllegalActionException("DoubleToken.modulo: "
-                    + "Cannot compute the modulo of "
-                    + this.getClass().getName() + " " + this.toString()
-                    + " and "
-                    + rightArgument.getClass().getName() + " "
-                    + rightArgument.toString());
+            throw new IllegalActionException(
+                    _notSupportedMessage("modulo", this, rightArgument)); 
         }
     }
 
@@ -530,11 +509,7 @@ public class DoubleToken extends ScalarToken {
             return rightFactor.multiplyReverse(this);
         } else {
             throw new IllegalActionException(
-                    "DoubleToken.multiply: Cannot multiply "
-                    + this.getClass().getName() + " " + this.toString()
-                    + " with "
-                    + rightFactor.getClass().getName() + " "
-                    + rightFactor.toString());
+                    _notSupportedMessage("multiply", this, rightFactor)); 
         }
     }
 
@@ -592,12 +567,8 @@ public class DoubleToken extends ScalarToken {
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.subtractReverse(this);
         } else {
-            throw new IllegalActionException("DoubleToken.subtract: "
-                    + "Cannot subtract "
-                    + this.getClass().getName() + " " + this.toString()
-                    + " by "
-                    + rightArgument.getClass().getName() + " "
-                    + rightArgument.toString());
+            throw new IllegalActionException(
+                    _notSupportedMessage("subtract", this, rightArgument)); 
         }
     }
 

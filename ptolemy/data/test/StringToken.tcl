@@ -176,4 +176,4 @@ test StringToken-4.0 {Test isEqualTo} {
 
     catch {[$tok1 {isEqualTo ptolemy.data.Token} $tok2]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: equality method not supported between ptolemy.data.StringToken and ptolemy.data.IntToken}}
+} {{ptolemy.kernel.util.IllegalActionException: equality method not supported between ptolemy.data.StringToken '"33"' and ptolemy.data.IntToken '33'}}
