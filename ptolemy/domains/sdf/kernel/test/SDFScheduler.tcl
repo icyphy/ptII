@@ -767,64 +767,9 @@ test SDFScheduler-10.1 {input Broadcast Multirate Scheduling tests} {
     [java::field $a2 output] link $r1
 
     $scheduler setValid false
-
-    set sched1 [_testEnums schedule $scheduler]
-    list $sched1
-} {{{Ramp2 Ramp1 Consumer Consumer}}} {KNOWN}
-
-test SDFScheduler-10.2 {input Broadcast Multirate Scheduling tests} {
-    # uses previous setup.
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
- 
-    $scheduler setValid false
-    $s5 setValid false
-    set sched1 [_testEnums schedule $scheduler]
-    set sched2 [_testEnums schedule $s5]
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
-    list $sched1
-} {{{Ramp2 Ramp1 Consumer}}} {KNOWN}
-
-test SDFScheduler-10.3 {input Broadcast Multirate Scheduling tests} {
-    # uses previous setup.
-    $a2 setTokenProductionRate [java::field $a2 output] 2
-
-    $scheduler setValid false
-    $s5 setValid false
-    set sched1 [_testEnums schedule $scheduler]
-    set sched2 [_testEnums schedule $s5]
-    $a2 setTokenProductionRate [java::field $a2 output] 1
-    list $sched1
-} {{{Ramp1 Ramp2 Consumer Consumer Consumer}}} {KNOWN}
-
-test SDFScheduler-10.4 {input Broadcast Multirate Scheduling tests} {
-    # uses previous setup.
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
-    $a2 setTokenProductionRate [java::field $a2 output] 2
- 
-    $scheduler setValid false
-    $s5 setValid false
-    set sched1 [_testEnums schedule $scheduler]
-    set sched2 [_testEnums schedule $s5]
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
-    $a2 setTokenProductionRate [java::field $a2 output] 1
-    list $sched1
-} {Not sure} {KNOWN}
-
-test SDFScheduler-10.5 {input Broadcast Multirate Scheduling tests} {
-    # uses previous setup.
-    $a3 setTokenConsumptionRate [java::field $a3 input] 2
-    $a2 setTokenProductionRate [java::field $a2 output] 2
-    $a1 setTokenProductionRate [java::field $a1 output] 2
-
-    $scheduler setValid false
-    $s5 setValid false
-    set sched1 [_testEnums schedule $scheduler]
-    set sched2 [_testEnums schedule $s5]
-    $a3 setTokenConsumptionRate [java::field $a3 input] 1
-    $a2 setTokenProductionRate [java::field $a2 output] 1
-    $a1 setTokenProductionRate [java::field $a1 output] 1
-    list $sched1
-} {{{Ramp2 Ramp1 Consumer Consumer}}} {KNOWN}
+    catch {[$scheduler schedule]} e1
+    list $e1
+} {{ptolemy.actor.sched.NotSchedulableException: W.Toplevel.Ramp2.output and W.Toplevel.Ramp1.output: Two output ports are connected on the same relation. This is not legal in SDF.}}
 
 test SDFScheduler-10.11 {output Broadcast Multirate Scheduling tests} {
     set manager [java::new ptolemy.actor.Manager $w Manager]

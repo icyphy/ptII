@@ -429,11 +429,32 @@ public class SDFScheduler extends Scheduler {
 
             ComponentEntity currentActor =
                 (ComponentEntity) currentPort.getContainer();
+            
+            // First check to make sure that this Port is not connected to
+            // Any other output ports.  This results in a non-deterministic
+            // merge and is illegal.
+            Enumeration connectedOutPorts =
+                currentPort.deepConnectedOutPorts();
+            
+            while(connectedOutPorts.hasMoreElements()) {
+                IOPort connectedPort =
+                    (IOPort) connectedOutPorts.nextElement();
+                // connectPort might be connected on the inside to the
+                // currentPort, which is legal.
+                if(!connectedPort.getContainer().equals(
+                        currentPort.getContainer().getContainer())) {
+                    throw new NotSchedulableException(
+                            currentPort, connectedPort, 
+                            "Two output ports are connected " +
+                            "on the same relation. " +
+                            "This is not legal in SDF.");
+                }
+            }
 
             //Calculate over all the output ports of this actor.
             int currentRate = _getTokenProductionRate(currentPort);
 
-            if(currentRate>0) {
+            if(currentRate > 0) {
                 // Compute the rate for the Actor currentPort is connected to
                 Enumeration connectedPorts =
                     currentPort.deepConnectedInPorts();
