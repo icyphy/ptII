@@ -96,16 +96,15 @@ public class Synchronizer extends Transformer {
         }
     }
 
-    /** Return true if all input channels have at least one token,
-     *  and return false otherwise.
-     *  @return True If there is at least one token on each input channel,
-     *   false otherwise.
+    /** If all of the input channels have at least one token, return
+     *  what the superclass returns (presumably true).  Otherwise return 
+     *  false.
      *  @exception IllegalActionException If there is no director.
      */
     public boolean prefire() throws IllegalActionException {
         for (int i = 0; i < input.getWidth(); i++) {
             if (!input.hasToken(i)) return false;
         }
-        return true;
+        return super.prefire();
     }
 }
