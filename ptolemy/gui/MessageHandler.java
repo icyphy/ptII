@@ -99,6 +99,14 @@ public class MessageHandler {
         return _handler;
     }
 
+    /** Defer to the set message handler to show the specified 
+     *  message.
+     *  @param info The message.
+     */
+    public static void message(String info) {
+        _handler._message(info);
+    }
+
     /** Set the message handler instance that is used by the static
      *  methods in this class.  If the given handler is null, then 
      *  do nothing.
@@ -164,6 +172,13 @@ public class MessageHandler {
         if (exception instanceof CancelException) return;
         System.err.println(info);
         exception.printStackTrace();
+    }
+
+    /** Show the specified message.
+     *  @param info The message.
+     */
+    protected void _message(String info) {
+        System.err.println(info);
     }
 
     /** Show the specified message in a modal dialog.  If the user

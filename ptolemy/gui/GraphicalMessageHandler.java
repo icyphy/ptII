@@ -136,6 +136,26 @@ public class GraphicalMessageHandler extends MessageHandler {
         }
     }
 
+    /** Show the specified message in a modal dialog.
+     *  @param info The message.
+     */
+    protected void _message(String info) {
+        Object[] message = new Object[1];
+        message[0] = info;
+        Object[] options = {"OK"};
+
+        // Show the MODAL dialog
+        int selected = JOptionPane.showOptionDialog(
+                _context,
+                message,
+                "Message",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]);
+    }
+
     /** Show the specified message in a modal dialog.  If the user
      *  clicks on the "Cancel" button, then throw an exception.
      *  This gives the user the option of not continuing the
