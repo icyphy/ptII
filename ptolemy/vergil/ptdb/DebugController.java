@@ -85,8 +85,8 @@ public class DebugController extends TransientSingletonConfigurableAttribute
      */
     public void event(DebugEvent debugEvent) {
         // Ignore debug events that aren't firing events.
-	if (debugEvent instanceof FiringEvent) {
-	    FiringEvent event = (FiringEvent) debugEvent;
+        if (debugEvent instanceof FiringEvent) {
+            FiringEvent event = (FiringEvent) debugEvent;
 
             if (event.getActor() == _object) {
                 // Highlight the actor that we are breaking on.
