@@ -47,8 +47,7 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	codeDoc internals
-
+OPTIONAL_FILES =	codeDoc
 # 'make realclean' should remove tclIndex
 REALCLEAN_STUFF =
 
@@ -58,11 +57,12 @@ ALLJSRCS = 		pt/plot/*.java \
 			pt/actor/*.java \
 			pt/actor/util/*.java \
 			pt/data/*.java \
-			pt/data/expr/*.java \
-			pt/domains/pn/kernel/*.java \
-			pt/domains/ct/kernel/*.java \
-			pt/domains/pn/lib/*.java \
-			pt/domains/ct/lib/*.java
+			pt/data/expr/*.java
+
+#			pt/domains/pn/kernel/*.java \
+#			pt/domains/ct/kernel/*.java \
+#			pt/domains/pn/lib/*.java \
+#			pt/domains/ct/lib/*.java
 
 all: codeDoc/tree.html
 
@@ -72,11 +72,12 @@ codeDoc/tree.html: 	../pt/plot/*.java \
 			../pt/actor/*.java \
 			../pt/actor/util/*.java \
 			../pt/data/*.java \
-			../pt/data/expr/*.java \
-			../pt/domains/pn/kernel/*.java \
-			../pt/domains/ct/kernel/*.java \
-			../pt/domains/pn/lib/*.java \
-			../pt/domains/ct/lib/*.java \
+			../pt/data/expr/*.java
+
+#			../pt/domains/pn/kernel/*.java \
+#			../pt/domains/ct/kernel/*.java \
+#			../pt/domains/pn/lib/*.java \
+#			../pt/domains/ct/lib/*.java
 
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip:.. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
