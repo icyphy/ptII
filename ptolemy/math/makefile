@@ -55,27 +55,27 @@ JSRCS = ArrayStringFormat.java \
 	ExtendedMath.java \
 	Fraction.java \
 	Interpolation.java \
-    SampleGenerator.java \
+	SampleGenerator.java \
 	SignalProcessing.java \
-    FloatArrayMath.java \	
-    DoubleArrayMath.java \
-    IntegerArrayMath.java \
-    LongArrayMath.java \    
-    ComplexArrayMath.java \
-    DoubleArrayStat.java \       
-    FloatMatrixMath.java \
-    DoubleMatrixMath.java \
-    IntegerMatrixMath.java \
-    LongMatrixMath.java \
-    FloatUnaryOperation.java \
-    DoubleUnaryOperation.java \
-    IntegerUnaryOperation.java \
-    LongUnaryOperation.java \
-    FloatBinaryOperation.java \
-    DoubleBinaryOperation.java \
-    IntegerBinaryOperation.java \
-    LongBinaryOperation.java \
-    MatrixMath.java        
+	FloatArrayMath.java \
+	DoubleArrayMath.java \
+	IntegerArrayMath.java \
+	LongArrayMath.java \
+	ComplexArrayMath.java \
+	DoubleArrayStat.java \
+	FloatMatrixMath.java \
+	DoubleMatrixMath.java \
+	IntegerMatrixMath.java \
+	LongMatrixMath.java \
+	FloatUnaryOperation.java \
+	DoubleUnaryOperation.java \
+	IntegerUnaryOperation.java \
+	LongUnaryOperation.java \
+	FloatBinaryOperation.java \
+	DoubleBinaryOperation.java \
+	IntegerBinaryOperation.java \
+	LongBinaryOperation.java \
+	MatrixMath.java        
            
 EXTRA_SRCS =	$(JSRCS)
 
