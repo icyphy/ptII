@@ -69,7 +69,9 @@ public class ECSLSum extends AddSubtract {
         input.setMultiport(true);
 
         input.setTypeEquals(BaseType.DOUBLE);
+        output.setMultiport(true);
         output.setTypeEquals(BaseType.DOUBLE);
+
         // FIXME: hide minus and plus ports
         plus.setTypeEquals(BaseType.DOUBLE);
         minus.setTypeEquals(BaseType.DOUBLE);
@@ -127,14 +129,16 @@ public class ECSLSum extends AddSubtract {
         }
     }
 
-    /** C
+    /** FIXME
      *  @exception IllegalActionException If there is no director,
      *   or if addition and subtraction are not supported by the
      *   available tokens.
      */
-    //    public void fire() throws IllegalActionException {
-    //        plus.send(0, input.get(0));
-    //        minus.send(0, input.get(1));
-    //        super.fire();
-    //    }
+    public void fire() throws IllegalActionException {
+        if (output.getWidth() > 1) {
+            throw new IllegalActionException("Output widths greater than "
+                    + "1 not yet supported");
+        }
+        super.fire();
+    }
 }

@@ -50,12 +50,17 @@ PTCLASSJAR =    ecslptolemy.jar
 
 # Keep this list alphabetized.
 JSRCS = \
+        ECSLConstant.java \
 	ECSLDemux.java \
         ECSLGain.java \
+	ECSLMerge.java \
 	ECSLMux.java \
+	ECSLRelationalOperator.java \
 	ECSLSaturate.java \
+	ECSLSFunction.java \
 	ECSLStep.java \
-	ECSLSum.java
+	ECSLSum.java \
+	ECSLSwitch.java
 
 OTHER_FILES_TO_BE_JARED = \
 

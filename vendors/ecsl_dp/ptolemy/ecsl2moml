@@ -222,7 +222,7 @@ awk ' {
 awk 'BEGIN {
     map["Abs"] = "ptolemy.actor.lib.AbsoluteValue"
     map["Clock"] = "ptolemy.actor.lib.Clock"
-    map["Constant"] = "ptolemy.actor.lib.Const"
+    map["Constant"] = "vendors.ecsl_dp.ptolemy.ECSLConstant"
     map["Demux"] = "vendors.ecsl_dp.ptolemy.ECSLDemux"
     # FIXME
     map["DiscreteFilter"] = "ptolemy.domains.de.lib.EventFilter"
@@ -235,9 +235,8 @@ awk 'BEGIN {
     map["Goto"] = "ptolemy.actor.lib.Stop"
     map["Ground"] = "ptolemy.actor.lib.Discard"
     map["Integrator"] = "ptolemy.domains.ct.lib.Integrator"
-    #map["Integrator"] = "vendors.ecsl_dp.ptolemy.IntegratorComposite"
     map["Logic"] = "ptolemy.actor.lib.logic.LogicFunction"
-    map["Merge"] = "ptolemy.domains.de.lib.Merge"
+    map["Merge"] = "vendors.ecsl_dp.ptolemy.ECSLMerge"
     # FIXME: should be Minimum or Maximum 
     map["MinMax"] = "ptolemy.actor.lib.Maximum"
     # FIXME
@@ -245,8 +244,8 @@ awk 'BEGIN {
     map["Mux"] = "vendors.ecsl_dp.ptolemy.ECSLMux"
     map["Product"] = "ptolemy.actor.lib.MultiplyDivide"
     # FIXME
-    map["RelationalOperator"] = "ptolemy.actor.lib.logic.Comparator"
-    map["S-Function"] = "ptolemy.matlab.Expression"
+    map["RelationalOperator"] = "vendors.ecsl_dp.ptolemy.ECSLRelationalOperator"
+    map["S-Function"] = "vendors.ecsl_dp.ptolemy.ECSLSFunction"
     # FIXME
     map["Saturate"] = "vendors.ecsl_dp.ptolemy.ECSLSaturate"
     #map["Scope"] = "ptolemy.actor.lib.gui.TimedPlotter"
@@ -259,7 +258,7 @@ awk 'BEGIN {
     map["Step"] = "vendors.ecsl_dp.ptolemy.ECSLStep"
     #map["Sum"] = "ptolemy.actor.lib.AddSubtract"
     map["Sum"] = "vendors.ecsl_dp.ptolemy.ECSLSum"
-    map["Switch"] = "ptolemy.actor.lib.Switch"
+    map["Switch"] = "vendors.ecsl_dp.ptolemy.ECSLSwitch"
     map["Terminator"] = "ptolemy.actor.lib.Stop"
     # FIXME
     map["ToWorkspace"] = "ptolemy.actor.lib.Stop"
