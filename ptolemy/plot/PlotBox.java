@@ -39,12 +39,16 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.lang.*;
+import java.text.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotBox
 /** 
  * Construct a labeled box within which to place a data plot.  A title,
  * X and Y axis labels, tick marks, and a legend are all supported.
+ * Zooming in and out is supported.  To zoom in, drag the mouse
+ * downwards to draw a box.  To zoom out, drag the mouse upward.
+ *
  * The box can be configured either through a file with commands or
  * through direct invocation of the public methods of the class.
  * If a file is used, the file can be given as a URL through the
@@ -318,31 +322,30 @@ public class PlotBox extends Applet {
         int ind = 0;
         if (_yticks == null) {
             // automatic ticks
+            // First, figure out how many digits after the decimal point will be used.
+            int numfracdigits = _numFracDigits(yStep);
+
+            // NOTE: Test cases kept in case they are needed again.
+            // System.out.println("0.1 with 3 digits: " + _formatNum(0.1, 3));
+            // System.out.println("0.0995 with 3 digits: " + _formatNum(0.0995, 3));
+            // System.out.println("0.9995 with 3 digits: " + _formatNum(0.9995, 3));
+            // System.out.println("1.9995 with 0 digits: " + _formatNum(1.9995, 0));
+            // System.out.println("1 with 3 digits: " + _formatNum(1, 3));
+            // System.out.println("10 with 0 digits: " + _formatNum(10, 0));
+            // System.out.println("997 with 3 digits: " + _formatNum(997,3));
+            // System.out.println("0.005 needs: " + _numFracDigits(0.005));
+            // System.out.println("1 needs: " + _numFracDigits(1));
+            // System.out.println("999 needs: " + _numFracDigits(999));
+            // System.out.println("999.0001 needs: " + _numFracDigits(999.0001));
+            // System.out.println("0.005 integer digits: " + _numIntDigits(0.005));
+            // System.out.println("1 integer digits: " + _numIntDigits(1));
+            // System.out.println("999 integer digits: " + _numIntDigits(999));
+            // System.out.println("-999.0001 integer digits: " + _numIntDigits(999.0001));
+
             for (double ypos=yStart; ypos <= _yMax; ypos += yStep) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
-                // NOTE: The following clever solution doesn't always work:
-                String yfull = Double.toString(Math.floor(ypos*1000.0+0.5) *
-					       0.001);
-                // ... so we have to patch up the solution...
-                // This method just copies digits up to the third
-                // after the decimal point.  However, for numbers near
-                // zero, if the above yields something in scientific
-                // notation, this fails too.  We really need printf!!
-                // FIXME: add printf when java people finally realize
-                // they have to have it.
-                int point = yfull.indexOf('.');
-                if (point < 0) {
-                    ylabels[ind] = yfull;
-                } else {
-                    int endpoint = point+4;
-                    if (endpoint < yfull.length()) {
-                        ylabels[ind] = yfull.substring(0,endpoint);
-                    } else {
-                        ylabels[ind] = yfull;
-                    }
-                }
-                String yl = ylabels[ind];
+                String yl = _formatNum(ypos, numfracdigits);
                 ylabels[ind] = yl;
                 int lw = lfm.stringWidth(yl);
                 ylabwidth[ind++] = lw;
@@ -400,9 +403,9 @@ public class PlotBox extends Applet {
                     graphics.drawLine(xCoord1,yCoord1,xCoord2,yCoord1);
                     graphics.setColor(_foreground);
                 }
-                // NOTE: 3 pixel spacing between axis and labels.
+                // NOTE: 4 pixel spacing between axis and labels.
                 graphics.drawString(ylabels[ind],
-				    _ulx-ylabwidth[ind++]-3, yCoord1+offset);
+				    _ulx-ylabwidth[ind++]-4, yCoord1+offset);
             }
         
             // Draw scaling annotation for y axis.
@@ -444,16 +447,38 @@ public class PlotBox extends Applet {
         int yCoord2 = _lry-tickLength;
         if (_xticks == null) {
             // auto-ticks
-            // Number of x tick marks.
-            // Assume a worst case of 4 characters and a period for each label.
-            int maxlabelwidth = lfm.stringWidth("8.888");
-        
-            // NOTE: 5 additional pixels between labels.
-            int nx = 2 + width/(maxlabelwidth+5);
-            // Compute x increment.
-            double xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
-        
-            // Compute x starting point so it is a m_ultiple of xStep.
+
+            // Number of x tick marks. 
+            // Need to start with a guess and converge on a solution here.
+            int nx = 10;
+            double xStep = 0.0;
+            int numfracdigits = 0;
+            int charwidth = lfm.stringWidth("8");
+            // Limit to 10 iterations
+            int count = 0;
+            while (count++ <= 10) {
+                xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
+                // Compute the width of a label for this xStep
+                numfracdigits = _numFracDigits(xStep);
+                // Number of integer digits is the maximum of the two endpoints.
+                int intdigits = _numIntDigits(_xtickMax);
+                int inttemp = _numIntDigits(_xtickMin);
+                if (intdigits < inttemp) {
+                    intdigits = inttemp;
+                }
+                // Allow two extra digits (decimal point and sign).
+                int maxlabelwidth = charwidth * (numfracdigits + 2 + intdigits);
+                // Compute new estimate of number of ticks.
+                int savenx = nx;
+                // NOTE: 10 additional pixels between labels.
+                // NOTE: Try to ensure at least two tick marks.
+                nx = 2 + width/(maxlabelwidth+10);
+                if (nx - savenx <= 1 || savenx - nx <= 1) break;
+            }
+            xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
+            numfracdigits = _numFracDigits(xStep);
+
+            // Compute x starting point so it is a multiple of xStep.
             double xStart=xStep*Math.ceil(_xtickMin/xStep);
         
             // NOTE: Following disables first tick.  Not a good idea?
@@ -462,8 +487,7 @@ public class PlotBox extends Applet {
             // Label the x axis.  The labels are quantized so that
             // they don't have excess resolution.
             for (double xpos=xStart; xpos <= _xtickMax; xpos += xStep) {
-                String xticklabel = Double.toString(Math.floor(xpos*1000.0+0.5)
-						 * 0.001);
+                String xticklabel = _formatNum(xpos, numfracdigits);
                 xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
                 graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
                 graphics.drawLine(xCoord1,_lry,xCoord1,yCoord2);
@@ -740,8 +764,6 @@ public class PlotBox extends Applet {
         _fillButton = new Button("fill");
         add(_fillButton);
     }
-
-
 	
     /**
      * Set the starting point for an interactive zoom box.
@@ -1317,7 +1339,82 @@ public class PlotBox extends Applet {
         }
         return 22 + maxwidth;  // NOTE: subjective spacing parameter.
     }
-    
+
+    /*
+     * Return a string for displaying the specified number
+     * using the specified number of digits after the decimal point.
+     * NOTE: This could be replaced by the NumberFormat class
+     * which is available in jdk 1.1.  We don't do this now so that
+     * it will run on today's browsers, which use jdk 1.0.2.
+     */
+    private String _formatNum (double num, int numfracdigits) {
+        // First, round the number. 
+        String numString = Double.toString(num + 0.5*Math.pow(10.0, -numfracdigits));
+        // Next, find the decimal point.
+        int dpt = numString.lastIndexOf(".");
+        StringBuffer result = new StringBuffer();
+        if (dpt < 0) {
+            // The number we are given is an integer.
+            if (numfracdigits <= 0) {
+                // The desired result is an integer.
+                result.append(numString);
+                return result.toString();
+            }
+            // Append a decimal point and some zeros.
+            result.append(".");
+            for (int i = 0; i < numfracdigits; i++) {
+                result.append("0");
+            }
+            return result.toString();
+        } else {
+            // There are two cases.  First, there may be enough digits.
+            int shortby = numfracdigits - (numString.length() - dpt -1);
+            if (shortby <= 0) {
+                int numtocopy = dpt + numfracdigits + 1;
+                if (numfracdigits == 0) {
+                    // Avoid copying over a trailing decimal point.
+                    numtocopy -= 1;
+                }
+                result.append(numString.substring(0, numtocopy));
+                return result.toString();
+            } else {
+                result.append(numString);
+                for (int i = 0; i < shortby; i++) {
+                    result.append("0");
+                }
+                return result.toString();                
+            }
+        }
+    }
+ 
+    /*
+     * Return the number of fractional digits required to display the
+     * given number.  No number larger than 50 is returned (if
+     * more than 50 digits are required, 50 is returned).
+     */
+    private int _numFracDigits (double num) {
+        int numdigits = 0;
+        while (numdigits <= 50 && num != Math.floor(num)) {
+            num *= 10.0;
+            numdigits += 1;
+        }
+        return numdigits;
+    }
+ 
+    /*
+     * Return the number of integer digits required to display the
+     * given number.  No number larger than 50 is returned (if
+     * more than 50 digits are required, 50 is returned).
+     */
+    private int _numIntDigits (double num) {
+        int numdigits = 0;
+        while (numdigits <= 50 && (int)num != 0.0) {
+            num /= 10.0;
+            numdigits += 1;
+        }
+        return numdigits;
+    }
+
     /*
      * Parse a string of the form: "word num, word num, word num, ..."
      * where the word must be enclosed in quotes if it contains spaces,
