@@ -64,7 +64,7 @@ protected Variable _var;
      *  PtToken contained in that parameter. Otherwise return the PtToken
      *  object stored in this node.
      *  @return The PtToken stored/referenced by this node
-     *  @exception IllegalActionException Thrown when an error occurs
+     *  @exception IllegalActionException If an error occurs
      *  trying to evaluate the PtToken type and/or value to be stored in
      *  node in the tree.
      */
