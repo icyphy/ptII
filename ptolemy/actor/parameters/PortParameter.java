@@ -256,6 +256,9 @@ public class PortParameter extends Parameter {
      */
     public void setCurrentValue(ptolemy.data.Token token)
             throws IllegalActionException {
+        if (_debugging) {
+            _debug("setCurrentValue: " + token);
+        }
         _setTokenAndNotify(token);
         setUnknown(false);
     }
