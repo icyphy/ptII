@@ -99,10 +99,10 @@ public class ODFConsonants extends ODFStringSource {
         
         _consonants.insertLast( new StringTime( 18.5, "l" ) );
         
-        _consonants.insertLast( new StringTime( 19.5, "t" ) );
-        
-        // _consonants.insertLast( new StringTime( 5000.0, ";" ) );
-        
+        _consonants.insertLast( new StringTime( 19.5, "t" ) ); 
+
+	// _consonants.insertLast( new StringTime( 5000.0, ";" ) ); 
+
         // Up to "Hello!! The Ptolemy Domain is complete."
         
         return _consonants;
