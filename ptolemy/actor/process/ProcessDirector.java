@@ -484,11 +484,8 @@ public class ProcessDirector extends Director {
 
     protected LinkedList _pausedReceivers = new LinkedList();
   
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
- 
     // The threads under started by this director.
-    private LinkedList _threadList = new LinkedList();
+    protected LinkedList _threadList = new LinkedList();
 }
 
 
