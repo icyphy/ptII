@@ -210,6 +210,7 @@ public class PNDirector extends BasePNDirector {
 	    throws IllegalActionException {
 	boolean urgentmut;
         Workspace worksp = workspace();
+	System.out.println("In the fire method again");
 	synchronized (this) {
 	    while (!_checkForDeadlock() && !_urgentMutations) {
 		//System.out.println("Waiting with mutations = "+_urgentMutations);
@@ -218,12 +219,17 @@ public class PNDirector extends BasePNDirector {
 	    urgentmut = _urgentMutations;
 	    //_urgentMutations = false;
 	}
-	//System.out.println(" deadlock = "+deadl+" and mut ="+urgentmut);
+	System.out.println("mut ="+urgentmut);
 	if (urgentmut) {
-	    //System.out.println("Performed mutations");
+	    pause();
             try {
                 _processTopologyRequests();
-		//_urgentMutations = false;
+		System.out.println("Performed mutations");
+		synchronized(this) {
+		    _mutationBlockCount = 0;
+		    _urgentMutations = false;
+		    notifyAll();
+		}
                 // FIXME: Should type resolution be done here?
             } catch (TopologyChangeFailedException e) {
                 throw new IllegalActionException("Name duplication error: " +
@@ -269,7 +275,7 @@ public class PNDirector extends BasePNDirector {
 		    System.err.println(e.toString());
 		}
 	    }
-	    _informOfMutationUnblock();
+	    //_informOfMutationUnblock();
 	}
     }
 
@@ -280,6 +286,9 @@ public class PNDirector extends BasePNDirector {
      *  @return true if a deadlock is detected.
      */
     protected synchronized boolean _checkForDeadlock() {
+	System.out.println("rb="+_readBlockCount+" wb="+_writeBlockCount+
+		" mb="+_mutationBlockCount+" aa="+_getActiveActorsCount());
+	
 	if (_readBlockCount + _writeBlockCount + _mutationBlockCount
 		>= _getActiveActorsCount()) {
 	    return true;
@@ -320,7 +329,7 @@ public class PNDirector extends BasePNDirector {
     protected void _processTopologyRequests()
             throws IllegalActionException, TopologyChangeFailedException {
 	Workspace worksp = workspace();
-	pause();
+	//pause();
 	super._processTopologyRequests();
 	LinkedList threadlist = new LinkedList();
 	//FIXME: Where does the type resolution go?
@@ -335,17 +344,17 @@ public class PNDirector extends BasePNDirector {
 	}
 	//Resume the paused actors
 	resume();
-	_urgentMutations = false;
+	//_urgentMutations = false;
 	//Resume the actors paused on mutations
-	synchronized(this) {
-	    notifyAll();
-	}
+	//synchronized(this) {
+	//notifyAll();
+	//}
 	Enumeration threads = threadlist.elements();
 	//Starting threads;
 	while (threads.hasMoreElements()) {
 	    ProcessThread pnt = (ProcessThread)threads.nextElement();
 	    pnt.start();
-	    //System.out.println("Started a thread for "+((Entity)pnt.getActor()).getName());
+	    System.out.println("Started a thread for "+((Entity)pnt.getActor()).getName());
 	}
     }
 
