@@ -45,6 +45,7 @@ PTPACKAGE = 	HelloWorld
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	HelloWorld.java
 
 OTHER_FILES_TO_BE_JARED = \
 	HelloWorld.c
