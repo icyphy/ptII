@@ -209,13 +209,15 @@ public class DirectedGraph extends Graph {
      * @param nodes
      * @param graph
      */
-    public void connectedSubGraph (Collection nodes, DirectedGraph graph) {
+    public DirectedGraph connectedSubGraph (Collection nodes) {
+        DirectedGraph graph = new DirectedGraph();
         Collection dummyCollection = new LinkedList();
         Iterator nodesIterator = nodes.iterator();
         while (nodesIterator.hasNext()) {
             Node node = (Node) nodesIterator.next();
             _connectedSubGraph(node, graph, dummyCollection);
         }
+        return graph;
     }
 
     /** Return the nodes that are in cycles. If there are multiple cycles,

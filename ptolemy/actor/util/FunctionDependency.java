@@ -100,7 +100,6 @@ public abstract class FunctionDependency extends Attribute {
         // Only actors have function dependencies.
         // Other entities, such as a State, do not.
         setPersistent(false);
-        _container = container;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -130,10 +129,10 @@ public abstract class FunctionDependency extends Attribute {
     public Set getDependentOutputPorts(IOPort inputPort) {
         _validate();
         // ensure that the input port is inside the dependency graph
-        if (!inputPort.getContainer().equals(_container)) {
+        if (!inputPort.getContainer().equals(getContainer())) {
             throw new InternalErrorException("The input port " +
                 inputPort.getName() + " does not belong to the " +
-                "actor " + _container.getName());    
+                "actor " + getContainer().getName());    
         }
         Collection reachableOutputs =
             _dependencyGraph.reachableNodes(
@@ -155,10 +154,10 @@ public abstract class FunctionDependency extends Attribute {
     public Set getInputPortsDependentOn(IOPort outputPort) {
         _validate();
         // ensure that the output port is inside the dependency graph
-        if (!outputPort.getContainer().equals(_container)) {
+        if (!outputPort.getContainer().equals(getContainer())) {
             throw new InternalErrorException("The output port " +
                 outputPort.getName() + " does not belong to the " +
-                "actor " + _container.getName());    
+                "actor " + getContainer().getName());    
         }
         Collection backwardReachableInputs =
             _dependencyGraph.backwardReachableNodes(
@@ -197,11 +196,11 @@ public abstract class FunctionDependency extends Attribute {
 
         // For each input and output port pair, add a directed 
         // edge going from the input port to the output port.
-        Iterator inputs = ((Actor)_container).inputPortList().listIterator();
+        Iterator inputs = ((Actor)getContainer()).inputPortList().listIterator();
         while (inputs.hasNext()) {
             IOPort inputPort = (IOPort) inputs.next();
             Iterator outputs = 
-                ((Actor)_container).outputPortList().listIterator();
+                ((Actor)getContainer()).outputPortList().listIterator();
             while (outputs.hasNext()) {
                 // add an edge from the input port to the output port
                 dependencyGraph.addEdge(inputPort, outputs.next());
@@ -235,12 +234,12 @@ public abstract class FunctionDependency extends Attribute {
 
         // include all the externally visible ports of the associated actor
         // as nodes in the graph
-        Iterator inputs = ((Actor)_container).inputPortList().listIterator();
+        Iterator inputs = ((Actor)getContainer()).inputPortList().listIterator();
         while (inputs.hasNext()) {
             IOPort input = (IOPort)inputs.next();
             dependencyGraph.addNodeWeight(input);
         }
-        Iterator outputs = ((Actor)_container).outputPortList().listIterator();
+        Iterator outputs = ((Actor)getContainer()).outputPortList().listIterator();
         while (outputs.hasNext()) {
             IOPort output = (IOPort)outputs.next();
             dependencyGraph.addNodeWeight(output);
@@ -256,7 +255,7 @@ public abstract class FunctionDependency extends Attribute {
      *  @see ptolemy.kernel.util.Workspace#getVersion()
      */
     protected final void _validate() {
-        Workspace workspace = _container.workspace();
+        Workspace workspace = getContainer().workspace();
         long workspaceVersion = workspace.getVersion();
         if (_functionDependencyVersion != workspaceVersion) {
             try {
@@ -281,9 +280,6 @@ public abstract class FunctionDependency extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
-
-    // The container that contains this FunctionDependency attribute.
-    private Entity _container;
 
     // The version of the FunctionDependency, which is synchronized
     // to the version of the workspace.

@@ -241,8 +241,8 @@ public class ModelCompiler extends Attribute {
                 Collection inputNodes = detailedDependencyGraph.nodes(inputs);
                 // construct a subgraph that is connected with the input
                 // ports (directly or indirectly).
-                DirectedGraph subgraph = new DirectedGraph();
-                detailedDependencyGraph.connectedSubGraph(inputNodes, subgraph);
+                DirectedGraph subgraph =
+                    detailedDependencyGraph.connectedSubGraph(inputNodes);
                 
                 // remove all the entities whose ports are not included
                 // as nodes in the subgraph
@@ -319,6 +319,9 @@ public class ModelCompiler extends Attribute {
            }
             //remove this composite actor 
             compositeActor.setContainer(null);
+            functionDependency = (FunctionDependencyOfCompositeActor)
+                ((CompositeActor)container).getFunctionDependency();
+            functionDependency.getDetailedDependencyGraph();
             //System.out.println(container.exportMoML());
         } catch (KernelException ex) {
             System.out.println(ex.getMessage());
