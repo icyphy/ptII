@@ -327,6 +327,10 @@ case "$JVERSION" in
     Please upgrade your JDK to 1.3 and try again]) 	
 	;;
 	1.4*)
+		# If we call the jdk1.4 javadoc without -breakiterator,
+		# then we get lots of warnings
+		JDOCBREAKITERATOR=-breakiterator
+
 		AC_MSG_WARN([You are running '$JVERSION'.
     The deep and shallow code generation facilities use Soot, which
     does not yet work under JDK1.4.  Soot requires JDK1.3 or JDK1.3.1.
@@ -1333,6 +1337,9 @@ AC_SUBST(JAVACC)
 
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
 AC_SUBST(JAVACC_DIR)
+
+# If we are running under JDK1.4, then set JDOCBREAKITERATOR = -breakiterator
+AC_SUBST(JDOCBREAKITERATOR)
 
 # Jar file that contains JDHL, see http://www.jhdl.org
 AC_SUBST(JHDL_JAR)
