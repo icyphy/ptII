@@ -9,7 +9,7 @@ public class TutorialApplet extends DEApplet {
         try {
             Clock clock = new Clock(_toplevel,"clock");
             TimedPlotter plotter = new TimedPlotter(_toplevel,"plotter");
-            plotter.setPanel(this);
+            plotter.place(getContentPane());
             plotter.plot.setSize(700,300);
             _toplevel.connect(clock.output, plotter.input);
         } catch (Exception ex) {

@@ -15,7 +15,7 @@ public class TutorialApplet extends DEApplet implements QueryListener {
         try {
             _clock = new Clock(_toplevel,"clock");
             TimedPlotter plotter = new TimedPlotter(_toplevel,"plotter");
-            plotter.setPanel(this);
+            plotter.place(getContentPane());
             plotter.plot.setTitle("clock signal");
             plotter.plot.setXLabel("time");
             plotter.plot.setImpulses(true);

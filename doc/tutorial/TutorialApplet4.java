@@ -11,7 +11,7 @@ public class TutorialApplet extends DEApplet {
         try {
             Clock clock = new Clock(_toplevel,"clock");
             TimedPlotter plotter = new TimedPlotter(_toplevel,"plotter");
-            plotter.setPanel(this);
+            plotter.place(getContentPane());
             Dimension size = getSize();
             plotter.plot.setSize(size.width, size.height - 50);
             _toplevel.connect(clock.output, plotter.input);
