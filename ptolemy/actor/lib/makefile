@@ -61,6 +61,7 @@ JSRCS = \
 	CurrentTime.java \
 	Distributor.java \
 	Expression.java \
+	FileWriter.java \
 	Gaussian.java \
 	Interpolator.java \
 	Maximum.java \

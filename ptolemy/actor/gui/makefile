@@ -58,7 +58,6 @@ JSRCS = \
 	EditorPaneFactory.java \
 	ExecEvent.java \
 	ExecEventListener.java \
-	FileWriter.java \
 	HistogramPlotter.java \
 	MatrixViewer.java \
 	ModelFrame.java \

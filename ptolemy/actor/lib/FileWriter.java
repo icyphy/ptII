@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.gui;
+package ptolemy.actor.lib;
 
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
