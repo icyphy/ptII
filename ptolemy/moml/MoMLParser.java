@@ -2977,7 +2977,10 @@ public class MoMLParser extends HandlerBase {
     // Create an instance of the specified class name by finding a
     // constructor that matches the specified arguments.  The specified
     // class must be NamedObj or derived, or a ClassCastException will
-    // be thrown.
+    // be thrown.  NOTE: This mechanism does not support instantiation
+    // of inner classes, since those take an additional argument (the
+    // first argument), which is the enclosing class. Static inner
+    // classes, however, work fine.
     // @param newClass The class.
     // @param arguments The constructor arguments.
     // @exception Exception If no matching constructor is found, or if
@@ -3006,13 +3009,17 @@ public class MoMLParser extends HandlerBase {
         StringBuffer argumentBuffer = new StringBuffer();
         for (int i = 0; i < arguments.length; i++) {
             argumentBuffer.append(arguments[i].getClass() + " = \""
-                    + arguments[i].toString() + "\" " );
+                    + arguments[i].toString() + "\"" );
+            if (i < arguments.length - 1) {
+                argumentBuffer.append(", ");
+            }
         }
 
         throw new XmlException("Cannot find a suitable constructor ("
-                + arguments.length + " args) ( "
-                + argumentBuffer + ") for'"
-                + newClass.getName(),
+                + arguments.length + " args) ("
+                + argumentBuffer + ") for '"
+                + newClass.getName()
+                + "'",
                 _currentExternalEntity(),
                 _parser.getLineNumber(),
                 _parser.getColumnNumber());
