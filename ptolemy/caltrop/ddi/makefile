@@ -31,7 +31,7 @@
 
 ME =		ptolemy/caltrop/ddi
 
-DIRS =
+DIRS =		util
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
@@ -44,7 +44,13 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	ddi
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+		util/util.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
 	AbstractDDI.java \
