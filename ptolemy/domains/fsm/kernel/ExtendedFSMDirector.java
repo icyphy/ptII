@@ -37,7 +37,7 @@ import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.PeekReceiver;
+//import ptolemy.actor.PeekReceiver;
 import ptolemy.actor.Receiver;
 import ptolemy.data.expr.ASTPtAssignmentNode;
 import ptolemy.data.expr.ASTPtRootNode;
