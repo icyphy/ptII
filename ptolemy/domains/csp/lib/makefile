@@ -54,13 +54,18 @@ CLASSPATH = ../../../..
 JSRCS = \
 	CSPBuffer.java \
 	CSPChopstick.java \
+	CSPContentionAlarm.java \
+	CSPManager.java \
+	CSPMemory.java \
 	CSPMultiSink.java \
 	CSPMultiSource.java \
 	CSPPhilosopher.java \
+	CSPProcessor.java \
 	CSPSieve.java \
 	CSPSink.java \
 	CSPSource.java \
 	Customer.java \
+	PortChannelCode.java \
 	Server.java
 
 
