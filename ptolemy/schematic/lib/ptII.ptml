@@ -1,8 +1,7 @@
 <!-- The PtolemyII domain configuration file -->
-<!-- Do not edit. Do not add SCCS keywords. -->
 
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE domainlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/~ptdesign/ptml.dtd">
+<!DOCTYPE domainlibrary  PUBLIC "http://ptolemy.eecs.berkeley.edu/~ptdesign/ptml.dtd" "ptml.dtd">
 
 <domainlibrary name="Dataflow" version="1.0">
     <actorpackage name="domain polymorphic" package="ptolemy.lib"/>

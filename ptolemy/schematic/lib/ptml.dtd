@@ -42,32 +42,54 @@ thing.
 @author Steve Neuendorffer, John Reekie
 -->
 
-<!ELEMENT domainlibrary (actorpackage|domain)*>
+<!ELEMENT description (#PCDATA)>
+
+<!ELEMENT domainlibrary (description, actorpackage*, domain*)>
 <!ATTLIST domainlibrary
 name ID #REQUIRED
 version CDATA #REQUIRED>
 
-<!ELEMENT domain (actorpackage|director)*>
+<!ELEMENT domain (description, actorpackage, director*)>
 <!ATTLIST domain
 name ID #REQUIRED>
 
-<!ELEMENT entity (entitytype, parameter*, port*)>
+<!ELEMENT ellipse EMPTY>
+<!ATTLIST ellipse
+color CDATA "black"
+fill CDATA "black"
+coords CDATA #REQUIRED>
+
+<!ELEMENT entity (description, parameter*, port*)>
 <!ATTLIST entity
 name ID #REQUIRED
-icon CDATA "default">
+icon CDATA "default"
+terminalstyle CDATA "default">
 
-<!ELEMENT entitytype EMPTY>
-<!ATTLIST entitytype
-name ID #REQUIRED>
+<!ELEMENT entitylibrary (description, sublibrary*, entity*)>
+<!ATTLIST entitylibrary
+name ID #REQUIRED
+version CDATA #REQUIRED>
 
-<!ELEMENT icon (description, entitytype, graphic*, port*)>
+<!ELEMENT icon (description,  xmlgraphic*, port*)>
 <!ATTLIST icon
 name ID #REQUIRED>
 
-<!ELEMENT iconlibrary (header, icon*)>
+<!ELEMENT iconlibrary (description, header, icon*, terminalstyle*)>
 <!ATTLIST iconlibrary
 name ID #REQUIRED
 version CDATA #REQUIRED>
+
+<!ELEMENT image EMPTY>
+
+<!ELEMENT line EMPTY>
+<!ATTLIST rectangle
+color CDATA "black"
+coords CDATA #REQUIRED>
+
+<!ELEMENT link EMPTY>
+<!ATTLIST link
+to CDATA #REQUIRED
+from CDATA #REQUIRED>
 
 <!ELEMENT parameter EMPTY>
 <!ATTLIST parameter
@@ -75,7 +97,13 @@ name ID #REQUIRED
 value CDATA ""
 type (string|double|doubleArray) #REQUIRED>
 
-<!ELEMENT port (graphic)*>
+<!ELEMENT polygon EMPTY>
+<!ATTLIST polygon
+color CDATA "black"
+fill CDATA "black"
+coords CDATA #REQUIRED>
+
+<!ELEMENT port (xmlgraphic)*>
 <!ATTLIST port
 name ID #REQUIRED
 input (true|false) "false"
@@ -83,40 +111,42 @@ output (true|false) "false"
 multiport (true|false) "false"
 type (string|double|doubleArray) #REQUIRED>
 
+<!ELEMENT rectangle EMPTY>
+<!ATTLIST rectangle
+color CDATA "black"
+fill CDATA "black"
+coords CDATA #REQUIRED>
+
 <!ELEMENT relation (link)*>
 <!ATTLIST relation
 name ID #REQUIRED>
+
+<!ELEMENT sublibrary EMPTY>
+<!ATTLIST sublibrary
+url CDATA #REQUIRED>
 
 <!ELEMENT schematic (entity|relation|description|parameter)*>
 <!ATTLIST schematic
 name ID #REQUIRED
 version CDATA #REQUIRED>
 
+<!ELEMENT tclscript EMPTY>
 
-<!ELEMENT description (#PCDATA)>
-<!ELEMENT ellipse EMPTY>
-<!ELEMENT header (description, sublibrary*)>
-<!ELEMENT graphic (tclscript|line|rect|ellipse|polygon|textline|textbox|image)*>
-<!ATTLIST graphic
-format (xml|tcl) #REQUIRED>
-<!ELEMENT image EMPTY>
-<!ELEMENT line EMPTY>
-<!ELEMENT link EMPTY>
-<!ATTLIST link
-name CDATA #REQUIRED>
-<!ELEMENT polygon EMPTY>
-<!ELEMENT rect EMPTY>
-<!ELEMENT tclscript (#PCDATA)>
-<!ELEMENT sublibrary (#PCDATA)>
-<!ELEMENT textline (#PCDATA)>
-<!ELEMENT textbox (#PCDATA)>
+<!ELEMENT terminalstyle (terminal)*>
+<!ATTLIST terminalstyle
+name ID #REQUIRED>
 
+<!ELEMENT terminal EMPTY>
+<!ATTLIST terminal
+name ID #REQUIRED
+x CDATA #REQUIRED
+y CDATA #REQUIRED>
 
+<!ELEMENT textline EMPTY>
 
+<!ELEMENT textbox EMPTY>
 
-
-
-
+<!ELEMENT xmlgraphic (tclscript|line|rect|ellipse|polygon|textline|textbox|image)*>
 
 
 
