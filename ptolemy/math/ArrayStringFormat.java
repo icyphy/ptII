@@ -161,7 +161,7 @@ public interface ArrayStringFormat {
     public String vectorEndString() {
       return "]";
     }
-  };
+  }
 
   /////////////////////////////////////////////////////////////////////////
   ////                         Public fields                           ////
