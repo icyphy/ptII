@@ -71,9 +71,9 @@ $Id$
 
      <property name="targetPackage" 
                class="ptolemy.data.expr.Parameter"
-	       value="&quot;ptolemy.copernicus.java.cg&quot; + model"
+	       value="&quot;ptolemy.copernicus.java.cg.&quot; + model"
 	       >
-	       <doc>The package to generate code in with the model name appended. Defaults to "ptolemy.copernicus.java.cg" + model</doc>
+	       <doc>The package to generate code in with the model name appended. Defaults to "ptolemy.copernicus.java.cg." + model</doc>
      </property>
 
      <property name="targetPath" 
@@ -92,11 +92,11 @@ $Id$
 The name should be a well structured java identifier.</doc>
      </property>
 
-     <property name="sourceClass" 
+     <property name="modelPath" 
                class="ptolemy.data.expr.Parameter"
-	       value="root + &quot;ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml&quot;"
+	       value="root + &quot;/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml&quot;"
 	       >
-	       <doc>The path to the model, including the .xml extension.</doc>
+	       <doc>The path to the model, including the .xml extension.  modelPath is converted to a URL internally before use.</doc>
      </property>
 
 
@@ -195,7 +195,7 @@ The name should be a well structured java identifier.</doc>
 
      <property name="sootClasses" 
                class="ptolemy.data.expr.Parameter"
-	       value="sootDir + &quot;/sootclasses.jar&quot; + classPathSeparator + sootDir + &quot;jasminclasses.jar&quot; + classPathSeparator + javaSystemJar"
+	       value="sootDir + &quot;/sootclasses.jar&quot; + classPathSeparator + sootDir + &quot;/jasminclasses.jar&quot; + classPathSeparator + javaSystemJar"
 	       >
 	       <doc>The location of sootclasses.jar, jasminclasses.jar and
 the Java system jar (usually rt.jar).</doc>

@@ -84,10 +84,12 @@ public class Main extends KernelMain {
 }
 </pre>
 
+Soot usually takes many command line arguments, see {@link Copernicus}
+for a more convenient driver
+
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$
-@since Ptolemy II 2.0
-*/
+@since Ptolemy II 2.0 */
 public class KernelMain {
 
     /** Set up code generation arguments.

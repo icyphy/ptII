@@ -59,6 +59,12 @@ are read in from a MoML file specified by the <i>initialParametersURL</i>.
 Having the parameters defined in a MoML file allows us to easily
 add and modify parameters without lots of bookkeeping.
 
+<p>To view the initial default parameters, either call toString(), or
+run:
+<pre>
+java -classpath $PTII ptolemy.copernicus.kernel.GenerateCode -help
+</pre>
+
 @author Edward A. Lee, Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.0
@@ -91,7 +97,8 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 
 	URL initialParameters = 
 	    getClass().getClassLoader()
-	    .getResource(((StringToken)initialParametersURL.getToken()).stringValue());
+	    .getResource(((StringToken)initialParametersURL.getToken())
+			 .stringValue());
 	if (initialParameters == null) {
 	    throw new IllegalActionException(this, "Failed to find the " 
 					     + "value of the "
@@ -123,7 +130,8 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	    }
 	} catch (Exception ex) {
 	    throw new IllegalActionException(this, ex, "Failed to parse '" 
-					     + initialParametersURL.getExpression()
+					     + initialParametersURL
+					     .getExpression()
 					     + "'");
 	}
     }
@@ -144,6 +152,7 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	// FIXME: should we do anything here?
 	System.out.println("changeExecuted: " + change);
     }
+
     public void changeFailed(ChangeRequest change, final Exception exception) {
 	// FIXME: should we do anything here?
 	System.out.println("changeFailed: " + change + " " + exception);
@@ -188,28 +197,6 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	    results.append("\n\n");
 	    
 	}
-	
-//  	Field [] fields = getClass().getFields();
-//  	String fieldValue;
-//  	for (int i = 0; i < fields.length; i++) {
-//  	    try {
-//  		Object object = fields[i].get(this);
-//  		if (object instanceof StringAttribute) {
-//  		    fieldValue = "ptolemy.kernel.util.StringAttribute "
-//  			+ ((StringAttribute)object).getExpression();
-//  		} else {
-//                      if (object == null) {
-//                          fieldValue = null;
-//                      } else {
-//                          fieldValue = object.toString();
-//                      }
-//  		}
-//  	    } catch (IllegalAccessException e) {
-//  		fieldValue = "IllegalAccessException?";
-//  	    }
-//  	    results.append(fields[i].getName() + " " + fieldValue
-//                      + "\n");
-//  	}
 	return results.toString();
     }
 }

@@ -52,11 +52,11 @@ JSRCS = \
 	AliasAssignmentEliminator.java \
 	CastAndInstanceofEliminator.java \
 	ClassWriter.java \
+	Copernicus.java \
 	EntitySootClass.java \
 	FastForwardFlowAnalysis.java \
 	ImprovedDeadAssignmentEliminator.java \
 	InstanceEqualityEliminator.java \
-	GenerateCode.java \
 	GeneratorAttribute.java \
 	JimpleWriter.java \
 	KernelMain.java \
