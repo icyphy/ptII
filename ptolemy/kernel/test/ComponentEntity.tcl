@@ -155,3 +155,4 @@ test ComponentEntity-8.2 {Test for IllegalActionException on setName} {
     catch {$b2 setName B1} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: .A: already contains an entity with the name B1.}}
+
