@@ -42,6 +42,7 @@ import java.util.ListIterator;
 //// Scope
 /** An scope for declarations, which may be contained in another
 scope.  Scopes are used to implement scoping for declarations.
+
 <p>
 Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
@@ -58,7 +59,7 @@ public class Scope {
     }
 
     /** Construct an scope nested inside the parent argument,
-     *  without its own proper Decl's.
+     *  without its own local Decl's.
      */
     public Scope(Scope parent) {
         this(parent, new LinkedList());
@@ -75,52 +76,54 @@ public class Scope {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Adds a mapping to the argument decl in this scope proper.
-     *  This does not affect any Scopes in which this is nested.
+    /** Adds a mapping to the argument decl in this Scope.
+     *  This does not affect any Scopes in which this Scope is nested.
      */
     public void add(Decl decl) {
         _declList.add(decl);
     }
 
     /** Return an ScopeIterator that will iterate over all the Decls
-     *  in this Scope.
+     *  in this Scope and in any parent scope, if any.
      */
     public ScopeIterator allDecls() {
         return lookupFirst(Decl.ANY_NAME, Decl.CG_ANY, false);
     }
 
     /** Return an ScopeIterator that will iterate over all the Decls
-     *  that have any of the categories bits set in mask.
+     *  in the current scope and any parent scope, if any.
+     * that have any of the categories bits set in mask.
      */
     public ScopeIterator allDecls(int mask) {
         return lookupFirst(Decl.ANY_NAME, mask, false);
     }
 
     /** Return an ScopeIterator that will iterate over all the Decls
-     *  that have the same name.
+     *  that have the same name in the current scope and any parent
+     *  Scope, if any.
      */
     public ScopeIterator allDecls(String name) {
         return lookupFirst(name, Decl.CG_ANY, false);
     }
 
-    /** Return an ListIterator that will iterate over all the proper Decls
-     *  in this Scope and in any parent Scopes.
+    /** Return an ListIterator that will iterate over all the local
+     *  Decls in this Scope but not in any parent scopes.
      */
-    public ListIterator allProperDecls() {
+    public ListIterator allLocalDecls() {
         return _declList.listIterator();
     }
 
-    /** Return an ListIterator that will iterate over all the proper Decls
+    /** Return an ListIterator that will iterate over all the local Decls
      *  in this Scope and in any parent Scopes that have a matching mask.
      */
-    public ScopeIterator allProperDecls(int mask) {
+    public ScopeIterator allLocalDecls(int mask) {
         return lookupFirst(Decl.ANY_NAME, mask, true);
     }
 
-    /** Return an ScopeIterator that will iterate over all the proper Decls
+    /** Return an ScopeIterator that will iterate over all the local Decls
      *  in this Scope and in any parent Scopes that have the same name.
      */
-    public ScopeIterator allProperDecls(String name) {
+    public ScopeIterator allLocalDecls(String name) {
         return lookupFirst(name, Decl.CG_ANY, true);
     }
 
@@ -164,50 +167,50 @@ public class Scope {
         return lookup(name, mask, more, false);
     }
 
-    /** Lookup a decl by name in the current scope and
-     *  in the parent scope, if any.
+    /** Return an ListIterator that will iterate over all the local
+     *  Decls in this Scope but not in any parent scopes that have a
+     *  matching mask.
      */
-    public Decl lookupProper(String name) {
+    /** Lookup a decl by name in the current scope.
+     */
+    public Decl lookupLocal(String name) {
         return lookup(name, Decl.CG_ANY, new boolean[1], true);
     }
 
-    /** Lookup a decl by name and mask in the current scope and
-     *  in the parent scope, if any.
+    /** Lookup a decl by name and mask in the current scope.
      */
-    public Decl lookupProper(String name, int mask) {
+    public Decl lookupLocal(String name, int mask) {
         return lookup(name, mask, new boolean[1], true);
     }
 
-    /** Lookup a decl by name in the current scope and
-     *  in the parent scope, if any. Set more[0] to true if there
-     *  is one or more decls with the same name in the scope.
-     *  Note that more[0] will be true if the other decls have the
-     *  same name but different masks.
+    /** Lookup a decl by name in the current scope.  Set more[0] to
+     *  true if there is one or more decls with the same name in the
+     *  scope.  Note that more[0] will be true if the other decls have
+     *  the same name but different masks.
      */
-    public Decl lookupProper(String name, boolean[] more) {
+    public Decl lookupLocal(String name, boolean[] more) {
         return lookup(name, Decl.CG_ANY, more, true);
     }
 
-    /** Lookup a decl by name and mask in the current scope and
-     *  in the parent scope, if any. Set more[0] to true if there
-     *  is one or more decls with the same name in the scope.
-     *  Note that more[0] will be true if the other decls have the
-     *  same name but different masks.
+    /** Lookup a decl by name and mask in the current scope Set
+     *  more[0] to true if there is one or more decls with the same
+     *  name in the scope.  Note that more[0] will be true if the
+     *  other decls have the same name but different masks.
      */
-    public Decl lookupProper(String name, int mask, boolean[] more) {
+    public Decl lookupLocal(String name, int mask, boolean[] more) {
         return lookup(name, mask, more, true);
     }
 
     /** Lookup a decl by name and mask in the current scope or
-     *  in the parent scope, if any. Set more[0] to true if there
-     *  is one or more decls with the same name in the scope.
-     *  Note that more[0] will be true if the other decls have the
-     *  same name but different masks.  If the proper argument is
-     *  true, then look in the parent scope, if any.  If it
-     *  is false, then do not look in the parent scope.
+     *  optionally in the parent scope. Set more[0] to true if there
+     *  is one or more decls with the same name in the scope.  Note
+     *  that more[0] will be true if the other decls have the same
+     *  name but different masks.  If the local argument is true, then
+     *  look in the parent scope, if any.  If it is false, then do not
+     *  look in the parent scopes.
      */
-    public Decl lookup(String name, int mask, boolean[] more, boolean proper) {
-        ScopeIterator itr = lookupFirst(name, mask, proper);
+    public Decl lookup(String name, int mask, boolean[] more, boolean local) {
+        ScopeIterator itr = lookupFirst(name, mask, local);
 
         if (itr.hasNext()) {
             Decl retval = (Decl) itr.next();
@@ -218,37 +221,40 @@ public class Scope {
         return null;
     }
 
-    /** Lookup a decl by name in the current Scope. */
+    /** Lookup a decl by name in the current scope and in any parent
+     *  Scopes, if any.
+     */
     public ScopeIterator lookupFirst(String name) {
         return lookupFirst(name, Decl.CG_ANY, false);
     }
 
-    /** Lookup a decl by name and mask in the current Scope. */
+    /** Lookup a decl by name and mask in the current scope and in any
+     *  parent scopes, if any.
+     */   
     public ScopeIterator lookupFirst(String name, int mask) {
         return lookupFirst(name, mask, false);
     }
 
-    /** Lookup a decl by name in the current Scope or the
-     *  parent Scopes
+    /** Lookup a decl by name in the current scope.
      */
-    public ScopeIterator lookupFirstProper(String name) {
+    public ScopeIterator lookupFirstLocal(String name) {
         return lookupFirst(name, Decl.CG_ANY, true);
     }
 
-    /** Lookup a decl by name and mask in the current Scope or the
-     *  parent Scopes
+    /** Lookup a decl by name and mask in the current scope.
      */
-    public ScopeIterator lookupFirstProper(String name, int mask) {
+    public ScopeIterator lookupFirstLocal(String name, int mask) {
         return lookupFirst(name, mask, true);
     }
 
-    /** Lookup a decl by name and mask in the current Scope or the
-     *  parent Scopes.  If the proper argument is true, the look
-     *  in the parent Scopes, if the proper argument is false, the
-     *  do not look in the parent Scopes.
+    /** Lookup a decl by name and mask in the current scope or the
+     *  parent scopes, if any.  If the local argument is true, the
+     *  look in the parent scopes, if the local argument is false, the
+     *  do not look in the parent scopes.
      */
-    public ScopeIterator lookupFirst(String name, int mask, boolean proper) {
-        Scope parent = proper ? null : _parent;
+    public ScopeIterator lookupFirst(String name, int mask, boolean local) {
+        // If local is false, then get the parent scope
+        Scope parent = local ? null : _parent;
 
         return new ScopeIterator(parent, _declList.listIterator(), name, mask);
     }
@@ -261,22 +267,22 @@ public class Scope {
     }
 
     /** Return true if there is more than one matching Decl in this Scope,
-     *  and if proper is true, in the enclosing Scopes.
+     *  and if local is true, in the parent scopes.
      */
-    public boolean moreThanOne(String name, int mask, boolean proper) {
+    public boolean moreThanOne(String name, int mask, boolean local) {
         boolean[] more = new boolean[1];
 
-        lookup(name, mask, more, proper);
+        lookup(name, mask, more, local);
 
         return more[0];
     }
 
-    /** Return the parent Scope of this Scope. */
+    /** Return the parent scope of this Scope. */
     public Scope parent() {
         return _parent;
     }
 
-    /** Remove the first Decl that matches the decl arg */
+    /** Remove the first Decl that matches the decl arg. */
     public void remove(Decl decl) {
         _declList.remove(decl);
     }
@@ -288,8 +294,8 @@ public class Scope {
 
     /** Return a String representation of this Scope.  If the
      *  recursive argument is true, then append string representations
-     *  of parent Scopes as well.
-     *  @param recursive True if parent Scopes are also traversed.
+     *  of parent scopes as well.
+     *  @param recursive True if parent scopes are also traversed.
      *  @return a possibly recursive String representation of this Scope.
      */
     public String toString(boolean recursive) {
