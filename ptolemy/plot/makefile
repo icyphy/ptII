@@ -39,7 +39,7 @@ include $(CONFIG)
 JPACKAGE = 	plot
 JVERSION =	1.0
 JDIST =		$(JPACKAGE)$(JVERSION)
-JZIP =		$(JPACKAGE).zip
+JZIP =		plot/$(JPACKAGE).zip
 
 DIRS = 	demo #test
 
