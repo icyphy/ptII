@@ -52,14 +52,15 @@ public class SootDFGBuilder extends SootASTVisitor {
     public SootDFGBuilder(Block block, SootBlockDirectedGraph g) 
 	throws SootASTException {
 	_graph = g;
+	_valueMap = _graph.getValueMap();
 	processBlock(block);
     }
 
     public Stmt processDefinitionStmt(DefinitionStmt stmt, 
 					Value rightOp, Value leftOp) {
 	
-	Node rightNode = _graph.getValueNode(rightOp);
-	Node leftNode = _graph.getValueNode(leftOp);
+	Node rightNode = _valueMap.getValueNode(rightOp);
+	Node leftNode = _valueMap.getValueNode(leftOp);
 
 	// Add edge
 	_graph.addEdge(rightNode,leftNode);
@@ -71,25 +72,25 @@ public class SootDFGBuilder extends SootASTVisitor {
 	throws SootASTException {
 
 	if (!left)
-	    _graph.getOrAddValueNode(val); // make sure it is added
+	    _valueMap.getOrAddValueNode(val); // make sure it is added
 	else
-	    _graph.addValueNode(val);	
+	    _valueMap.addValueNode(val);	
 
 	Value v = super.processValue(val,left);
 	return v;
     }
 
     public Value processUnopExpr(UnopExpr expr, Value op) {
-	Node opNode = _graph.getValueNode(op);
-	Node exprNode = _graph.getValueNode(expr);	
+	Node opNode = _valueMap.getValueNode(op);
+	Node exprNode = _valueMap.getValueNode(expr);	
 	_graph.addEdge(opNode,exprNode);
 	return expr;
     }
 
     public Value processBinopExpr(BinopExpr expr, Value op1, Value op2) {
-	Node op1Node = _graph.getValueNode(op1);
-	Node op2Node = _graph.getValueNode(op2);
-	Node exprNode = _graph.getValueNode(expr);
+	Node op1Node = _valueMap.getValueNode(op1);
+	Node op2Node = _valueMap.getValueNode(op2);
+	Node exprNode = _valueMap.getValueNode(expr);
 	_graph.addEdge(op1Node,exprNode,"op1");
 	_graph.addEdge(op2Node,exprNode,"op2");
 	return expr;
@@ -97,7 +98,7 @@ public class SootDFGBuilder extends SootASTVisitor {
 
     public Stmt processReturnVoidStmt(ReturnVoidStmt stmt) { return stmt; }
     public Stmt processReturnStmt(ReturnStmt stmt, Value returnVal) { 
-	Node returnedValue = _graph.getValueNode(returnVal);
+	Node returnedValue = _valueMap.getValueNode(returnVal);
 	Node returnNode = _graph.addNodeWeight(stmt);
 	_graph.addEdge(returnedValue,returnNode);
 	return stmt; 
@@ -109,6 +110,7 @@ public class SootDFGBuilder extends SootASTVisitor {
 	return stmt;
     }
     public Stmt processGotoStmt(GotoStmt stmt) { return stmt; }
+    public Stmt processTableSwitchStmt(TableSwitchStmt stmt) { return stmt; }
     public Value processThisRef(ThisRef ifr) {return ifr;}
     public Value processParameterRef(ParameterRef ifr) {return ifr; }
     public Value processConstant(Constant c) { return c; }
@@ -119,25 +121,23 @@ public class SootDFGBuilder extends SootASTVisitor {
 
     public Value processInstanceFieldRef(InstanceFieldRef ifr, Value base,
 					 boolean left) {
+	
+	// Node that represents field-ref Base
+	Node baseNode = _valueMap.getValueNode(base);
+	// Node that represents ifr.
+	Node ifrNode = _valueMap.getValueNode(ifr);
 
-	Node baseNode = _graph.getValueNode(base);
-	Node ifrNode = _graph.getValueNode(ifr);
-
-	// Iterate through all nodes in the graph and see if there
-	// is a matching InstanceFieldRef (i.e. same base and
-	// same field).
-	InstanceFieldRef dupIfr = null;
-	for (Iterator i = _graph.nodes().iterator();i.hasNext();) {
-	    Node n = (Node) i.next();
-	    if (n.getWeight() instanceof InstanceFieldRef) {
-		InstanceFieldRef t_ifr = (InstanceFieldRef) n.getWeight();
-		if (SootBlockDirectedGraph.equal(t_ifr, ifr) &&
-		    ifr != t_ifr) {
-		    dupIfr = t_ifr;
-		}
-	    }
+	// Determine whether a base edge has been created
+	Edge baseEdge=null;
+	for (Iterator i=_graph.inputEdges(ifrNode).iterator();i.hasNext();) {
+	    Edge e = (Edge) i.next();
+	    if (e.hasWeight() && e.getWeight().equals(_graph.BASE_WEIGHT))
+		baseEdge = e;
 	}
-
+	if (baseEdge == null)
+	    _graph.addEdge(baseNode,ifrNode,_graph.BASE_WEIGHT);
+	
+	/*
 	if (dupIfr == null) {
 	    //System.out.println("No dup");
 	    // No matching IFR. Add edge for base.
@@ -148,23 +148,24 @@ public class SootDFGBuilder extends SootASTVisitor {
 	    // has been created for ifr and create a reference
 	    // between ifr with the Node of the matching ifr.
 	    _graph.removeNode(ifrNode);
-	    _graph.replaceValueNode(ifr,dupIfr);
+	    _valueMap.replaceValueNode(ifr,dupIfr);
 	    if (left) {
 		// An assignment is being made. Create a new node
 		// with the existing IFR.
-		Node newNode = _graph.addValueNode(dupIfr);
+		Node newNode = _valueMap.addValueNode(dupIfr);
 		_graph.addEdge(baseNode,newNode,_graph.BASE_WEIGHT);
 	    }
 	}
-	return ifr;
+	*/
+ 	return ifr;
     }
 
     public Value processVirtualInvokeExpr(VirtualInvokeExpr ie, 
 					  Value args[], Value base) {
-	Node invokeNode = _graph.getValueNode(ie);
-	Node baseNode = _graph.getValueNode(base);
+	Node invokeNode = _valueMap.getValueNode(ie);
+	Node baseNode = _valueMap.getValueNode(base);
 	for(int i = 0; i < args.length; i++) {
-	    Node argNode = _graph.getValueNode(args[i]);
+	    Node argNode = _valueMap.getValueNode(args[i]);
 	    //System.out.println("arg="+argNode+" invokeNode="+invokeNode);
 	    _graph.addEdge(argNode,invokeNode,"arg"+i);
 	}
@@ -193,4 +194,5 @@ public class SootDFGBuilder extends SootASTVisitor {
 
     protected SootBlockDirectedGraph _graph;
 
+    protected ValueMap _valueMap;
 }

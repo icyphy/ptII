@@ -46,25 +46,25 @@ DIRS =		util soot test
 
 # Keep this list alphabetized.
 JSRCS = \
+	BDFGToJHDLCircuit.java \
+	BinaryMuxNode.java \
+	BlockDataFlowGraph.java \
 	CircuitAnalysis.java \
 	CircuitCreator.java \
 	CircuitTransformer.java \
-	Inliner.java \
+	DirectedAcyclicCFG.java \
+	DominatorCFG.java \
+	DominatorHashMap.java \
 	InlinePrimitivePortTransformer.java \
+	Inliner.java \
+	IntervalBlockDirectedGraph.java \
+	IntervalChain.java \
+	IntervalDFG.java \
 	JHDLTransformer.java \
 	Main.java \
 	Predefined.java \
 	RegisterDelay.java \
-	RequiredBlockDataFlowGraph.java \
-	BlockDataFlowGraph.java \
-	DominatorHashMap.java \
-	DirectedAcyclicCFG.java \
-	DominatorCFG.java \
-	IntervalChain.java \
-	IntervalDFG.java \
-	IntervalBlockDirectedGraph.java \
-	BDFGToJHDLCircuit.java \
-	BinaryMuxNode.java
+	RequiredBlockDataFlowGraph.java
 
 
 OTHER_FILES_TO_BE_JARED = \

@@ -43,18 +43,21 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Keep this list alphabetized.
-JSRCS = SootASTVisitor.java \
+JSRCS = \
+	AbstractCompoundExpression.java \
+	BooleanNotCompactor.java \
+	CompoundAndExpression.java \
+	CompoundBooleanExpression.java \
+	CompoundOrExpression.java \
+	ConditionalControlCompactor.java \
+	ControlSootDFGBuilder.java \
+	JHDLNotExpr.java \
 	SootASTException.java \
+	SootASTVisitor.java \
 	SootBlockDirectedGraph.java \
 	SootDFGBuilder.java \
-	ControlSootDFGBuilder.java \
-	ConditionalControlCompactor.java \
-	BooleanNotCompactor.java \
-	JHDLNotExpr.java \
-	CompoundBooleanExpression.java \
-	AbstractCompoundExpression.java \
-	CompoundAndExpression.java \
-	CompoundOrExpression.java
+	SootDFGRequiredDefinitionsAnalysis.java \
+	ValueMap.java
 
 # should include: (move from above directory)
 # - ConditionalControlCompactor.java

@@ -53,6 +53,7 @@ JSRCS =	\
 	DirectedGraphToDotty.java \
 	GraphNode.java \
 	GraphToDotty.java \
+	MapList.java \
 	HashListMap.java \
 	JHDLUnsupportedException.java \
 	Label.java \
@@ -60,7 +61,8 @@ JSRCS =	\
 	MuxNode.java \
 	PtDirectedGraphToDotty.java \
 	SuperBlock.java \
-	SynthesisToDotty.java
+	SynthesisToDotty.java \
+	UniqueVector.java
 
 EXTRA_SRCS =	$(JSRCS)
 

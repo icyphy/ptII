@@ -1,4 +1,4 @@
-/*
+/* Computes the required definitions of a SootBlockDirectedGraph
 
  Copyright (c) 2001-2002 The Regents of the University of California.
  All rights reserved.
@@ -31,10 +31,12 @@ package ptolemy.copernicus.jhdl.soot;
 
 import ptolemy.copernicus.jhdl.util.*;
 
-import ptolemy.graph.*;
 import soot.toolkits.graph.Block;
 import soot.*;
 import soot.jimple.*;
+
+import ptolemy.graph.*;
+import ptolemy.graph.analysis.*;
 
 import java.util.*;
 
@@ -46,48 +48,29 @@ import java.util.*;
 @since Ptolemy II 2.0
 */
 
-public class SootBlockDirectedGraph extends DirectedGraph {
-    
-    public SootBlockDirectedGraph(Block block) {
-	super();
-	_block = block;
-	_valueMap = new ValueMap(this);
-	_requiredDefsAnalysis = new SootDFGRequiredDefinitionsAnalysis(this);
+public class SootDFGRequiredDefinitionsAnalysis extends Analysis {
+
+    public SootDFGRequiredDefinitionsAnalysis(SootBlockDirectedGraph graph) {
+	super(graph);
+	_sbdfGraph = graph;
     }
 
-    public ValueMap getValueMap() { return _valueMap; }
-
-    public Collection requiredDefinitions() {	
-	return (Collection) _requiredDefsAnalysis.result();
-    }
-
-
-    /**
-     * This String is used as the weight object associated with
-     * edges corresponding to base references for referenced objects.
-     **/
-    public static final String BASE_WEIGHT = "base";
-
-    protected ValueMap _valueMap;
-
-    /**
-     * This List contains all Nodes in the graph that must be defined
-     * (i.e. unresolved input Nodes).
-     **/
-    protected List _requiredDefinitionNodes;
-
-    protected Block _block;
-
-    protected SootDFGRequiredDefinitionsAnalysis _requiredDefsAnalysis;
-
-    public static void main(String args[]) {
-	SootBlockDirectedGraph graphs[] = 
-	    ControlSootDFGBuilder.getGraphs(args);
-	for (int i = 0;i<graphs.length;i++) {
-	    PtDirectedGraphToDotty.writeDotFile("bgraph"+i,graphs[i]);
-	    //graphs[i].mergeInstanceFieldRefs();
-	    PtDirectedGraphToDotty.writeDotFile("mgraph"+i,graphs[i]);
+    protected Object _compute() {
+	Vector requiredNodes = new Vector();
+	Iterator nodes = _sbdfGraph.nodes().iterator();
+	while (nodes.hasNext()) {
+	    Node n = (Node) nodes.next();
+	    Object nweight = n.getWeight();
+	    if (nweight instanceof Local) {
+		if (_sbdfGraph.predecessors(n).size() == 0)
+		    requiredNodes.add(n);
+	    } else if (nweight instanceof InstanceFieldRef) {		
+		if (_sbdfGraph.predecessors(n).size() == 1)
+		    requiredNodes.add(n);
+	    }
 	}
+	return requiredNodes;
     }
 
+    SootBlockDirectedGraph _sbdfGraph;
 }

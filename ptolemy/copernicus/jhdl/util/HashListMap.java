@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 import java.util.Iterator;
-import ptolemy.copernicus.jhdl.MapList;
+import ptolemy.copernicus.jhdl.util.MapList;
 
 //////////////////////////////////////////////////////////////////////////
 //// HashListMap
@@ -44,8 +44,10 @@ import ptolemy.copernicus.jhdl.MapList;
 @since Ptolemy II 2.0
 */
 public class HashListMap extends HashMap implements MapList {
+
     public HashListMap() { super(); }
     public HashListMap(int i) { super(i); }
+    public HashListMap(HashListMap hlm) { super(hlm); }
 
     public void add(Object key, Object value) {	
 	List l = getCreateList(key);

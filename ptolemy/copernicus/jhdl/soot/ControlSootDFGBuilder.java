@@ -67,9 +67,9 @@ public class ControlSootDFGBuilder extends SootDFGBuilder {
 
     public Value processConditionExpr(ConditionExpr ce, Value op1, Value op2) {
 	// connect Node associated with two ops 
-	Node op1Node = _graph.getValueNode(op1);
-	Node op2Node = _graph.getValueNode(op2);
-	Node ceNode = _graph.getValueNode(ce);
+	Node op1Node = _valueMap.getValueNode(op1);
+	Node op2Node = _valueMap.getValueNode(op2);
+	Node ceNode = _valueMap.getValueNode(ce);
 	System.out.println(op1Node + " " + op2Node + " " +ceNode);
 	_graph.addEdge(op1,ceNode);
 	_graph.addEdge(op2,ceNode);
@@ -101,7 +101,8 @@ public class ControlSootDFGBuilder extends SootDFGBuilder {
     }
 
     public Value processJHDLNotExpr(JHDLNotExpr expr, Value op) {
-	_graph.addEdge(_graph.getValueNode(op),_graph.getValueNode(expr));
+	_graph.addEdge(_valueMap.getValueNode(op),
+			  _valueMap.getValueNode(expr));
 	return expr;
 	//return null;
     }
@@ -128,8 +129,15 @@ public class ControlSootDFGBuilder extends SootDFGBuilder {
 
     public static void main(String args[]) {
 	SootBlockDirectedGraph[] g=getGraphs(args);
-	for (int i = 0;i<g.length;i++)
+	for (int i = 0;i<g.length;i++) {
 	    PtDirectedGraphToDotty.writeDotFile("bgraph"+i,g[i]);
+	    System.out.print("Sources=");
+	    Iterator j=g[i].requiredDefinitions().iterator();
+	    while (j.hasNext()) {
+		System.out.print(j.next() + " ");
+	    }
+	    System.out.println();
+	}
     }
 
 }
