@@ -55,32 +55,34 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// SymmetricEncryption
 /**
-This actor takes an unsigned byte array at the input and encrypts the message.
-The resulting output is an unsigned byte array. Various ciphers that are
-implemented by "providers" and installed maybe used by specifying the algorithm
-in the <i>algorithm</i> parameter.  The specified algorithm must be symmetric.
-The mode and padding can also be specified in the mode and padding parameters.
-In case a provider specific instance of an algorithm is needed the provider may
-also be specified in the provider parameter. This actor sends its secret key on
-the <i>keyOut</i> port to a decryption actor as an unsigned byte array.  This
-key should be protected in some manner as the security of the encrypted message
-relies on the secrecy of this key. Key creation is done in pre-initialization
-and is put on the <i>keyOut</i> port during initialization so the decryption
-actor has a key to use when its first fired.
 
-The following actor relies on the Java Cryptography Architecture (JCA) and Java
+This actor takes an unsigned byte array at the input and encrypts the
+message.  The resulting output is an unsigned byte array. Various
+ciphers that are implemented by "providers" and installed maybe used
+by specifying the algorithm in the <i>algorithm</i> parameter.  The
+specified algorithm must be symmetric.  The mode and padding can also
+be specified in the mode and padding parameters.  In case a provider
+specific instance of an algorithm is needed the provider may also be
+specified in the provider parameter. This actor sends its secret key
+on the <i>keyOut</i> port to a decryption actor as an unsigned byte
+array.  This key should be protected in some manner as the security of
+the encrypted message relies on the secrecy of this key. Key creation
+is done in pre-initialization and is put on the <i>keyOut</i> port
+during initialization so the decryption actor has a key to use when
+its first fired.
+
+<p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
 
 
-TODO: include sources of information on JCE cipher and algorithms
-
-TODO: Use cipher streaming to allow for easier file input reading.
 @author Rakesh Reddy
 @version $Id$
 @since Ptolemy II 3.1
 */
-
 public class SymmetricEncryption extends CipherActor {
+
+    // TODO: include sources of information on JCE cipher and algorithms
+    // TODO: Use cipher streaming to allow for easier file input reading.
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -99,7 +101,6 @@ public class SymmetricEncryption extends CipherActor {
 
         parameters = new SDFIOPort(this, "parameters", false, true);
         parameters.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,6 +112,7 @@ public class SymmetricEncryption extends CipherActor {
      */
     public SDFIOPort keyOut;
 
+    // FIXME: what does this parameter do?
     public SDFIOPort parameters;
 
 
@@ -130,22 +132,16 @@ public class SymmetricEncryption extends CipherActor {
      */
     public void fire() throws IllegalActionException {
 
-        keyOut.send(0, _unsignedByteArrayToArrayToken(_keyToBytes(_secretKey)));
+        keyOut.send(0,
+                _unsignedByteArrayToArrayToken(_keyToBytes(_secretKey)));
         if (_algParams != null) {
             try {
 
-                parameters.send(0, _unsignedByteArrayToArrayToken(_algParams.getEncoded()));
+                parameters.send(0, _unsignedByteArrayToArrayToken(
+                        _algParams.getEncoded()));
 
-            } catch (NoRoomException e) {
-                e.printStackTrace();
-                throw new IllegalActionException(this.getName()+e.getMessage());
-            } catch (IllegalActionException e) {
-                e.printStackTrace();
-                throw new IllegalActionException(this.getName()+e.getMessage());
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new IllegalActionException(this.getName()+e.getMessage());
-            }
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex, "send failed");
         }
 
         //            if (FIRST_RUN == true) {
@@ -180,18 +176,16 @@ public class SymmetricEncryption extends CipherActor {
 
     /** Get an instance of the cipher and outputs the key required for
      *  decryption.
-     *  @exception IllegalActionException if thrown by base class.
-     *  @exception NoSuchAlgorihmException if the algorithm is not found.
-     *  @exception NoSuchPaddingException if the padding scheme is illegal
-     *      for the given algorithm.
-     *  @exception NoSuchProviderException if the specified provider does not
-     *      exist.
+     *  @exception IllegalActionException If thrown by base class or
+     *  if the algorithn is not found, or if the padding scheme is illegal,
+     *  or if the specified provider does not exist.
      */
     public void initialize() throws IllegalActionException {
         try{
             super.initialize();
             _secretKey = (SecretKey)_createSymmetricKey();
-            //keyOut.send(0, _unsignedByteArrayToArrayToken(_keyToBytes(_secretKey)));
+            //keyOut.send(0, _unsignedByteArrayToArrayToken(
+            /    _keyToBytes(_secretKey)));
 
             _cipher.init(Cipher.ENCRYPT_MODE, _secretKey);
 
@@ -201,15 +195,9 @@ public class SymmetricEncryption extends CipherActor {
             //}
 
             FIRST_RUN=true;
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-            throw new IllegalActionException (this.getName()+e.getMessage());
-        } catch (NoRoomException e) {
-            e.printStackTrace();
-            throw new IllegalActionException (this.getName()+e.getMessage());
-        } catch (IllegalActionException e) {
-            e.printStackTrace();
-            throw new IllegalActionException (this.getName()+e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException (this, ex,
+                    "Failed to initialize");
         }
     }
 
@@ -258,18 +246,9 @@ public class SymmetricEncryption extends CipherActor {
 
             _byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
 
-        } catch (IllegalStateException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, 
+                    "Failed to write " + dataBytes.length + " bytes.");
         }
 
         return _byteArrayOutputStream.toByteArray();
