@@ -36,6 +36,9 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
+// NOTE: If you update the list of functions, then you will want
+// to update the list in actor/lib/math.xml.
+
 //////////////////////////////////////////////////////////////////////////
 //// TrigFunction
 /**
@@ -75,25 +78,24 @@ The following functions in java.lang.Math are implemented elsewhere:
 <ul>
 <li> <b>abs</b>: AbsoluteValue actor.
 <li> <b>atan2</b>: RectangularToPolar actor.
-<li> <b>ceil</b>: MathFunction actor. FIXME
-<li> <b>exp</b>: MathFunction actor. FIXME
-<li> <b>floor</b>: MathFunction actor. FIXME
-<li> <b>remainder</b>: MathFunction actor. FIXME
-<li> <b>log</b>: MathFunction actor. FIXME
+<li> <b>ceil</b>: MathFunction actor.
+<li> <b>exp</b>: MathFunction actor.
+<li> <b>floor</b>: MathFunction actor.
+<li> <b>remainder</b>: MathFunction actor.
+<li> <b>log</b>: MathFunction actor.
 <li> <b>max</b>: Maximum actor.
 <li> <b>min</b>: Minimum actor.
-<li> <b>round</b>: Round actor. FIXME
-<li> <b>sqrt</b>: MathFunction actor. FIXME
-<li> <b>toDegrees</b>: RadiansToDegrees actor. FIXME
-<li> <b>toRadians</b>: DegreesToRadians actor. FIXME
+<li> <b>round</b>: Round actor.
+<li> <b>sqrt</b>: MathFunction actor.
+<li> <b>toDegrees</b>: Scale actor (with factor 180.0/PI).
+<li> <b>toRadians</b>: Scale actor (with factor PI/180.0).
 </ul>
 
 @author Edward A. Lee
 @version $Id$
 @see AbsoluteValue
 @see MathFunction
-@see conversions.DegreesToRadians
-@see conversions.RadiansToDegrees
+@see Scale
 @see conversions.RectangularToPolar
 */
 
@@ -156,6 +158,8 @@ public class TrigFunction extends Transformer {
                 throw new IllegalActionException(this,
                         "Unrecognized trigonometric function: " + spec);
             }
+        } else {
+            super.attributeChanged(attribute);
         }
     }
 
@@ -202,7 +206,7 @@ public class TrigFunction extends Transformer {
      *  performed.
      */
     public int iterate(int count) throws IllegalActionException {
-	// Check if we need to reallocate the output token array.
+	// Check whether we need to reallocate the output token array.
 	if (count > _resultArray.length) {
 	    _resultArray = new DoubleToken[count];
 	}

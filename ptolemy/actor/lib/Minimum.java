@@ -39,8 +39,12 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// Minimum
 /**
-Read at most one token from each input channel and send the one with the
-least value to the output.
+Read at most one token from each input channel and broadcast the one with the
+least value to the <i>minimumValue</i> output.
+In addition, broadcast the channel number of the minimum on
+the <i>channelNumber</i> output port.  Either output port may be
+left unconnected if you do not need its results (this is why these
+are multiports).
 This actor works with any scalar token. For ComplexToken, the output
 is the one with the minimum magnitude.
 The input port is a multiport.
@@ -49,7 +53,7 @@ The input port is a multiport.
 @version $Id$
 */
 
-public class Minimum extends Transformer {
+public class Minimum extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -62,9 +66,37 @@ public class Minimum extends Transformer {
     public Minimum(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+
+        input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-	output.setTypeAtMost(BaseType.SCALAR);
+
+        minimumValue = new TypedIOPort(this, "minimumValue", false, true);
+        minimumValue.setMultiport(true);
+        minimumValue.setTypeAtMost(BaseType.SCALAR);
+
+        channelNumber = new TypedIOPort(this, "channelNumber", false, true);
+        channelNumber.setMultiport(true);
+        channelNumber.setTypeEquals(BaseType.INT);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The input port.  This base class imposes no type constraints except
+     *  that the type of the input cannot be greater than the type of the
+     *  <i>minimumValue</i> output.
+     */
+    public TypedIOPort input;
+
+    /** The output port for the minimum value. The type of this
+     *  output is constrained to be at most a scalar.
+     */
+    public TypedIOPort minimumValue;
+
+    /** The output port for the channel number. The type of this
+     *  output is an integer.
+     */
+    public TypedIOPort channelNumber;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -79,8 +111,9 @@ public class Minimum extends Transformer {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         Minimum newobj = (Minimum)super.clone(ws);
-	newobj.output.setTypeAtMost(BaseType.SCALAR);
-
+        newobj.input = (TypedIOPort)newobj.getPort("input");
+        newobj.channelNumber = (TypedIOPort)newobj.getPort("channelNumber");
+        newobj.minimumValue = (TypedIOPort)newobj.getPort("minimumValue");
         return newobj;
     }
 
@@ -91,20 +124,24 @@ public class Minimum extends Transformer {
      */
     public void fire() throws IllegalActionException {
         ScalarToken result = null;
+        int channelNum = -1;
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 ScalarToken in = (ScalarToken)input.get(i);
                 if (result == null) {
                     result = in;
+                    channelNum = i;
                 } else {
                     if (in.isLessThan(result).booleanValue() == true) {
                         result = in;
+                        channelNum = i;
                     }
                 }
             }
         }
         if (result != null) {
-            output.send(0, result);
+            minimumValue.broadcast(result);
+            channelNumber.broadcast(new IntToken(channelNum));
         }
     }
 }

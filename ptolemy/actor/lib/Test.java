@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (bilung@eecs.berkeley.edu)
+@AcceptedRating Yellow (ssachs@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -59,7 +59,7 @@ a model, checking the first few iterations against some known results.
 The input is a multiport.  If there is more than one channel connected
 to it, then each element of <i>correctValues</i> must itself be an
 ArrayToken, with length matching the number of channels.
-Suppose for example that the width of the input is one
+Suppose for example that the width of the input is one,
 and the first three inputs should be 1, 2, and 3.  Then you can
 set <i>correctValues</i> to
 <pre>
@@ -122,11 +122,14 @@ public class Test extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** A matrix specifying what the input should be. */
+    /** A matrix specifying what the input should be.
+     *  This defaults to a one-by-one array containing a boolean true.
+     */
     public Parameter correctValues;
 
     /** A double specifying how close the input has to be to the value
-     *  given by <i>correctValues</i>.
+     *  given by <i>correctValues</i>.  This is a double, with default
+     *  value 10<sup>-9</sup>.
      */
     public Parameter tolerance;
 
@@ -145,6 +148,8 @@ public class Test extends Sink {
                 throw new IllegalActionException(this,
                         "correctValues parameter is required to have an array value.");
             }
+        } else {
+            super.attributeTypeChanged(attribute);
         }
     }
 

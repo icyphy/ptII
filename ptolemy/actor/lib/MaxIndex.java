@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (ctsay@eecs.berkeley.edu)
+@AcceptedRating Yellow (ssachs@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -39,13 +39,14 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// MaxIndex
 /**
-Produce the index of the largest of the inputs.
+Produce the channel number of the largest of the inputs.
 This actor has one input port, which is multiport of type double
 and one output port, which is not a multiport, and has type int.
 The tokens on each channel of the input port will be
 compared and an IntToken giving the channel number of the largest
 one will be output.
 
+@deprecated Use Maximum instead.
 @author Jeff Tsay and Edward A. Lee
 @version $Id$
 */

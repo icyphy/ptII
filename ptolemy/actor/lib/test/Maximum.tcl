@@ -64,8 +64,7 @@ test Maximum-2.1 {test maximum} {
     set value [getParameter $const value]
     $value setExpression {0.0}
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set input [java::field [java::cast ptolemy.actor.lib.Transformer \
-            $maximum] input]
+    set input [java::field $maximum input]
     set r1 [$e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
        $input]
@@ -73,8 +72,7 @@ test Maximum-2.1 {test maximum} {
        [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
        $input]
     $e0 connect \
-       [java::field [java::cast ptolemy.actor.lib.Transformer \
-            $maximum] output] \
+       [java::field $maximum maximumValue] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
@@ -88,10 +86,8 @@ test Maximum-2.2 {check types} {
 	output]
     set constOut [java::field [java::cast ptolemy.actor.lib.Source $const] \
 	output]
-    set maximumIn [java::field [java::cast ptolemy.actor.lib.Transformer \
-	$maximum] input]
-    set maximumOut [java::field [java::cast ptolemy.actor.lib.Transformer \
-	$maximum] output]
+    set maximumIn [java::field $maximum input]
+    set maximumOut [java::field $maximum maximumValue]
     set recIn [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
     list [[$pulseOut getType] toString] [[$constOut getType] toString] \

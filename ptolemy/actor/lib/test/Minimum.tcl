@@ -64,8 +64,7 @@ test Minimum-2.1 {test Minimum} {
     set value [getParameter $const value]
     $value setExpression {0.0}
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set input [java::field [java::cast ptolemy.actor.lib.Transformer \
-            $minimum] input]
+    set input [java::field $minimum input]
     set r1 [$e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
        $input]
@@ -73,8 +72,7 @@ test Minimum-2.1 {test Minimum} {
        [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
        $input]
     $e0 connect \
-       [java::field [java::cast ptolemy.actor.lib.Transformer \
-            $minimum] output] \
+       [java::field $minimum minimumValue] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
@@ -88,10 +86,8 @@ test Minimum-2.2 {check types} {
 	output]
     set constOut [java::field [java::cast ptolemy.actor.lib.Source $const] \
 	output]
-    set minimumIn [java::field [java::cast ptolemy.actor.lib.Transformer \
-	$minimum] input]
-    set minimumOut [java::field [java::cast ptolemy.actor.lib.Transformer \
-	$minimum] output]
+    set minimumIn [java::field $minimum input]
+    set minimumOut [java::field $minimum minimumValue]
     set recIn [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
     list [[$pulseOut getType] toString] [[$constOut getType] toString] \

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (kienhuis@eecs.berkeley.edu)
+@AcceptedRating Yellow (ssachs@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -38,6 +38,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
 
 import ptolemy.data.type.BaseType;
 
@@ -49,9 +50,9 @@ Produce a token that is the value of the input in decibels.
 That is, if the input is <i>z</i>, then the output is
 <i>k</i>*log<sub>10</sub>(<em>z</em>).
 The constant <i>k</i> depends on the value of the <i>inputIsPower</i>
-parameter.  If that parameter is <i>true</i>, then <i>k</i> = 10.
+parameter.  If that parameter is true, then <i>k</i> = 10.
 Otherwise (the default) <i>k</i> = 20.
-Normally, you would set <i>inputIsPower</i> to <i>true</i> if
+Normally, you would set <i>inputIsPower</i> to true if
 the input is the square of a signal, and to false otherwise.
 <p>
 The output is never smaller than the value of the <i>min</i> parameter.
@@ -85,25 +86,28 @@ public class DB extends Transformer {
         inputIsPower =
             new Parameter(this, "inputIsPower", new BooleanToken(false));
         inputIsPower.setTypeEquals(BaseType.BOOLEAN);
-        min =
-            new Parameter(this, "min", new DoubleToken(-100.0));
+        min = new Parameter(this, "min", new DoubleToken(-100.0));
         min.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         ports and parameters              ////
 
-    /** If the input is proportional to power, then set this to true. */
+    /** If the input is proportional to power, then set this to true.
+     *  This must be a boolean, and defaults to false.
+     */
     public Parameter inputIsPower;
 
-    /** The minimum value of the output. */
+    /** The minimum value of the output.  This is a double,
+     *  and defaults to -100.0.
+     */
     public Parameter min;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and sets the public variables to point to the new ports.
+     *  base class and sets the public variables.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
@@ -126,20 +130,73 @@ public class DB extends Transformer {
             DoubleToken in = (DoubleToken) input.get(0);
             double number = in.doubleValue();
             double minValue = ((DoubleToken)min.getToken()).doubleValue();
-            double outNumber;
-            if ( number <= 0.0 ) {
-                outNumber = minValue;
-            } else {
-                outNumber = ptolemy.math.SignalProcessing.decibel( number );
-                if (((BooleanToken)inputIsPower.getToken()).booleanValue()) {
-                    System.out.println("dividing by 2.0");
-                    outNumber /= 2.0;
-                }
-                if ( outNumber < minValue ) {
-                    outNumber = minValue;
-                }
-            }
-            output.send(0, new DoubleToken( outNumber ));
+            output.send(0, _doFunction(number, minValue));
         }
     }
+
+    /** Invoke a specified number of iterations of this actor. Each
+     *  iteration converts a single token to decibels. An invocation
+     *  of this method therefore applies the conversion to <i>count</i>
+     *  successive input tokens.
+     *  <p>
+     *  This method should be called instead of the usual prefire(),
+     *  fire(), postfire() methods when this actor is used in a
+     *  domain that supports vectorized actors.  This leads to more
+     *  efficient execution.
+     *  @param count The number of iterations to perform.
+     *  @return COMPLETED if the actor was successfully iterated the
+     *   specified number of times. Otherwise, return NOT_READY, and do
+     *   not consume any input tokens.
+     *  @exception IllegalActionException If iterating cannot be
+     *  performed.
+     */
+    public int iterate(int count) throws IllegalActionException {
+	// Check whether we need to reallocate the output token array.
+	if (count > _resultArray.length) {
+	    _resultArray = new DoubleToken[count];
+	}
+
+        if (input.hasToken(0, count)) {
+            double minValue = ((DoubleToken)min.getToken()).doubleValue();
+	    // NOTE: inArray.length may be > count, in which case
+	    // only the first count tokens are valid.
+            Token[] inArray = input.get(0, count);
+	    for (int i = 0; i < count; i++) {
+		double input = ((DoubleToken)(inArray[i])).doubleValue();
+		_resultArray[i] = _doFunction(input, minValue);
+	    }
+            output.send(0, _resultArray, count);
+            return COMPLETED;
+        } else {
+            return NOT_READY;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Return the speified number in decibels,
+     *  but no less than <i>minValue</i>.
+     */
+    private DoubleToken _doFunction(double number, double minValue)
+            throws IllegalActionException {
+        double outNumber;
+        if ( number <= 0.0 ) {
+            outNumber = minValue;
+        } else {
+            outNumber = ptolemy.math.SignalProcessing.decibel( number );
+            if (((BooleanToken)inputIsPower.getToken()).booleanValue()) {
+                outNumber /= 2.0;
+            }
+            if ( outNumber < minValue ) {
+                outNumber = minValue;
+            }
+        }
+        return new DoubleToken(outNumber);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private DoubleToken[] _resultArray = new DoubleToken[1];
 }

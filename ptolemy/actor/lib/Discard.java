@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (bilung@eecs.berkeley.edu)
+@AcceptedRating Yellow (ssachs@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -37,6 +37,12 @@ import ptolemy.kernel.util.*;
 //// Discard
 /**
 A simple sink actor that consumes and discards input tokens.
+This actor is useful in situations where the value of an output is not
+needed, but for some reason, the output cannot be left unconnected.
+Also, when manipulating bus signals, this actor is useful if values
+in the middle of the bus need to be discarded.  Leaving the bus
+unconnected in the middle will not work because no channel is allocated
+to an unconnected relation in a bus.
 
 @author Edward A. Lee
 @version $Id$
@@ -61,6 +67,8 @@ public class Discard extends Sink {
     ////                         public methods                    ////
 
     /** Read one token from each input channel and discard it.
+     *  If there is no input on a channel, then skip that channel, doing
+     *  nothing with it.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {

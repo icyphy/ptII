@@ -39,8 +39,12 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// Maximum
 /**
-Read at most one token from each input channel and send the one with the
-greatest value to the output.
+Read at most one token from each input channel and broadcast the one with the
+greatest value to the <i>maximumValue</i> output.
+In addition, broadcast the channel number of the maximum on
+the <i>channelNumber</i> output port.  Either output port may be
+left unconnected if you do not need its results (this is why these
+are multiports).
 This actor works with any scalar token. For ComplexToken, the output is
 the one with the maximum magnitude.
 The input port is a multiport.
@@ -49,7 +53,7 @@ The input port is a multiport.
 @version $Id$
 */
 
-public class Maximum extends Transformer {
+public class Maximum extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -62,9 +66,37 @@ public class Maximum extends Transformer {
     public Maximum(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+
+        input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        output.setTypeAtMost(BaseType.SCALAR);
+
+        maximumValue = new TypedIOPort(this, "maximumValue", false, true);
+        maximumValue.setMultiport(true);
+        maximumValue.setTypeAtMost(BaseType.SCALAR);
+
+        channelNumber = new TypedIOPort(this, "channelNumber", false, true);
+        channelNumber.setMultiport(true);
+        channelNumber.setTypeEquals(BaseType.INT);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The input port.  This base class imposes no type constraints except
+     *  that the type of the input cannot be greater than the type of the
+     *  <i>maximumValue</i> output.
+     */
+    public TypedIOPort input;
+
+    /** The output port for the maximum value. The type of this
+     *  output is constrained to be at most a scalar.
+     */
+    public TypedIOPort maximumValue;
+
+    /** The output port for the channel number. The type of this
+     *  output is an integer.
+     */
+    public TypedIOPort channelNumber;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -79,32 +111,38 @@ public class Maximum extends Transformer {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         Maximum newobj = (Maximum)super.clone(ws);
-	newobj.output.setTypeAtMost(BaseType.SCALAR);
-
+        newobj.input = (TypedIOPort)newobj.getPort("input");
+        newobj.channelNumber = (TypedIOPort)newobj.getPort("channelNumber");
+        newobj.maximumValue = (TypedIOPort)newobj.getPort("maximumValue");
         return newobj;
     }
 
-    /** Read at most one token from each input channel and send the one
-     *  with the largest value to the output.  If there is no input,
-     *  then produce no output.
+    /** Read at most one token from each input channel and broadcast the one
+     *  with the largest value to the <i>maximumValue</i>output.
+     *  In addition, broadcast its channel number to the <i>channelNumber</i>
+     *  output.  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         ScalarToken result = null;
+        int channelNum = -1;
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 ScalarToken in = (ScalarToken)input.get(i);
                 if (result == null) {
                     result = in;
+                    channelNum = i;
                 } else {
                     if (result.isLessThan(in).booleanValue() == true) {
                         result = in;
+                        channelNum = i;
                     }
                 }
             }
         }
         if (result != null) {
-            output.send(0, result);
+            maximumValue.broadcast(result);
+            channelNumber.broadcast(new IntToken(channelNum));
         }
     }
 }

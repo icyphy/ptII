@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (ctsay@eecs.berkeley.edu)
+@AcceptedRating Yellow (ssachs@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -48,7 +48,7 @@ An actor that produces tokens with a given probability mass function.
 The probability mass function is a parameter, <i>pmf</i>, of this
 actor. The <i>pmf</i> must be a row vector that contains entries that
 are all between 0 and 1, and sum to 1. By default, the PMF is
-initialized to [0.5 0.5].
+initialized to [0.5, 0.5].
 <p>
 Output values are selected at random from the <i>values</i> parameter,
 which is a row vector with the same dimensions as <i>pmf</i>.
@@ -58,6 +58,7 @@ Thus the <i>i</i>-th symbol <i>values</i>[<i>i</i>] has probability
 integers.
 
 @author Jeff Tsay
+@version $Id$
 */
 
 public class DiscreteRandomSource extends RandomSource {
@@ -86,14 +87,14 @@ public class DiscreteRandomSource extends RandomSource {
     ////                     ports and parameters                  ////
 
     /** The probability mass function.
-     *  This parameter contains a DoubleMatrixToken, with default value
-     *  [0.5 0.5].
+     *  This parameter contains a DoubleMatrixToken, with default value 
+     *  [0.5, 0.5].
      */
     public Parameter pmf;
 
     /** The values to be sent to the output.
      *  This parameter contains a MatrixToken, initially with value
-     *  [0 1] (an IntMatrixToken).
+     *  [0, 1] (an IntMatrixToken).
      */
     public Parameter values;
 
@@ -103,6 +104,7 @@ public class DiscreteRandomSource extends RandomSource {
     /** If the specified attribute is <i>pmf</i>, then check that its
      *  entries are all between zero and one, and that they add to one,
      *  and that its dimension is correct.
+     *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the requirements are
      *   violated.
      */
@@ -131,10 +133,12 @@ public class DiscreteRandomSource extends RandomSource {
      *  the type of the output port to change. Notify the director,
      *  which will cause type resolution to be redone at the next
      *  opportunity. It is assumed that type changes in the parameter
-     *  are implemented by the director's change request mechanism,
-     *  so they are implement when it is safe to redo type
+     *  are implemented by the container's change request mechanism,
+     *  so they are implemented when it is safe to redo type 
      *  resolution.
-     *  If there is no director, do not notify anyone of the change.
+     *  @param attribute The attribute whose type has changed.
+     *  @exception IllegalActionException If the base class throws it
+     *   for some parameter other than attribute.
      */
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -154,7 +158,7 @@ public class DiscreteRandomSource extends RandomSource {
     }
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
+     *  base class and then sets the public members.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
@@ -180,6 +184,7 @@ public class DiscreteRandomSource extends RandomSource {
      *  will be sent to the output in the fire() method.
      *  @exception IllegalActionException If there is no director, or
      *   if the lengths of the two parameters are not equal.
+     *  @return True.
      */
     public boolean prefire() throws IllegalActionException {
         // Generate a double between 0 and 1, uniformly distributed.
