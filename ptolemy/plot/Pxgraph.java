@@ -234,6 +234,14 @@ Line style pattern of normal grid lines.
 </DD>
 </DL>
 <DL>
+<DT><code>-impulses</code> <DD>
+Draw a line from any plotted point down to the x axis.
+(This argument is not present in the X11 <code>pxgraph</code>,
+but it is similar to <code>-nl -bar</code>).
+<P>
+</DD>
+</DL>
+<DL>
 <DT><code>-lf</code> <code><i>&lt;fontname&gt;</i></code> <DD>
 Label font. All axis labels and grid labels are drawn
 using this font. 
@@ -575,6 +583,8 @@ public class Pxgraph extends Frame {
 	    {"-db", "Debug",  ""},
 	    // -help is not in the original X11 pxgraph.
 	    {"-help", "Help",  ""},
+	    // -impulses is not in the original X11 pxgraph.
+	    {"-impulses", "Impulses",  ""},
 	    {"-lnx", "LogX",  "(Unsupported)"},
 	    {"-lny", "LogY",  "(Unsupported)"},
 	    {"-m", "Markers",  ""},

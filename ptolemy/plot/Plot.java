@@ -264,8 +264,12 @@ public class Plot extends PlotBox {
 	throws CmdLineArgException
 	{
         int i = 0, j, argsread;
-	int width;      // Default width of the graph
-	int height;     // Default height of the graph
+	int width;         // Default width of the graph.
+	int height;        // Default height of the graph.
+
+	// If we see both -nl and -bar, assume we do an impulse plot.
+	boolean sawbararg = false; // Saw -bar arg.
+	boolean sawnlarg = false;  // Saw -nl arg.
 
 	// If this is a component, then getParameter might fail.  
 	try {
@@ -365,8 +369,15 @@ public class Plot extends PlotBox {
 		    continue;		    
 		} else if (arg.equals("-bar")) {
 		    //-bar BarGraph Bars: on Marks: none Lines: off
-		    setBars(true); 
-		    setMarksStyle("none");
+		    // If we saw the -nl arg, then assume impulses 
+		    sawbararg = true;
+		    if (sawnlarg) {
+			setImpulses(true);
+		    }
+		    else {
+			setBars(true); 
+			setMarksStyle("none");
+		    }
 		    setConnected(false);
 		    continue;
 		} else if (arg.equals("-binary")) {
@@ -386,6 +397,11 @@ public class Plot extends PlotBox {
 		    // -help is not in the original X11 pxgraph.
 		    //_help();
 		    continue;
+		} else if (arg.equals("-impulses")) {
+		    // -impulses is not in the original X11 pxgraph.
+		    setImpulses(true);
+		    setConnected(false);
+		    continue;
 		} else if (arg.equals("-m")) {
 		    // -m Markers Marks: various
 		    setMarksStyle("various");
@@ -396,6 +412,13 @@ public class Plot extends PlotBox {
 		    continue;
 		} else if (arg.equals("-nl")) {
 		    // -nl NoLines Lines: off
+		    // If we saw the -bar arg, then assume impulses 
+		    sawnlarg = true;
+		    if (sawbararg) {
+			setBars(false); 
+			setMarksStyle("none");
+			setImpulses(true);
+		    }
 		    setConnected(false);
 		    continue;
 		} else if (arg.equals("-p")) {
