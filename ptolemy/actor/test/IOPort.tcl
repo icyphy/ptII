@@ -1,10 +1,10 @@
 # Tests for the IOPort class
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Lukito Muliadi
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997- The Regents of the University of California.
+# @Copyright (c) 1997-1998 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -358,7 +358,7 @@ test IOPort-9.2 {Check unlink and send to dangling relation} {
     $p1 send 0 $token
     catch {$p2 get 0} msg
     list [$p2 getWidth] $msg
-} {0 {ptolemy.kernel.util.NoSuchItemException: ..E2.P2: get: channel index is out of range.}}
+} {0 {ptolemy.actor.NoTokenException: ..E2.P2: get: channel index is out of range.}}
 
 test IOPort-9.3 {Check unlink and get from unlinked port} {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -388,7 +388,7 @@ test IOPort-9.3 {Check unlink and get from unlinked port} {
     catch {$p1 send 0 $token} msg1
     catch {$p2 get 0} msg2
     list [$p2 getWidth] $msg1 $msg2
-} {1 {ptolemy.kernel.util.IllegalActionException: ..E1.P1: send: channel index is out of range.} {ptolemy.kernel.util.NoSuchItemException: ..E2.P2: Attempt to get data from an empty mailbox.}}
+} {1 {ptolemy.actor.NoRoomException: ..E1.P1: send: channel index is out of range.} {ptolemy.actor.NoTokenException: ..E2.P2: Attempt to get data from an empty mailbox.}}
 
 test IOPort-9.4 {Check loopback send} {
     set e0 [java::new ptolemy.actor.CompositeActor]
