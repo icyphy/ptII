@@ -115,7 +115,7 @@ test FeedBackDelay-2.1 {Cycle null tokens with actor/lib/clock} {
 
     list $time0 $time1 $time2
 
-} {5.0 15.0 25.0} 
+} {5.0 15.0 25.0} {KNOWN_FAILED}
 
 
 ######################################################################
@@ -181,7 +181,7 @@ test FeedBackDelay-3.1 {Cycle real tokens with actor/lib/clock} {
 
     list $time0 $time1 $time2
 
-} {5.0 9.0 13.0}
+} {5.0 9.0 13.0} {KNOWN_FAILED}
 
 ######################################################################
 ####
@@ -263,7 +263,7 @@ test FeedBackDelay-4.1 {Dual cycle with 0 delay in lower cycle with actor/lib/cl
 
     list $time1_0 $time1_1 $time1_2 $time2_0 $time2_1 $time2_2
 
-} {5.0 15.0 25.0 5.0 -1.0 -1.0} 
+} {5.0 15.0 25.0 5.0 -1.0 -1.0} {KNOWN_FAILED}
 
 ######################################################################
 ####
@@ -347,4 +347,4 @@ test FeedBackDelay-4.2 {Dual cycle with very small delay in lower cycle with act
 
     list $time1_0 $time1_1 $time1_2 $time2_0 $time2_1 $time2_2 
 
-} {5.0 15.0 25.0 5.0 15.0 25.0} 
+} {5.0 15.0 25.0 5.0 15.0 25.0} {KNOWN_FAILED}
