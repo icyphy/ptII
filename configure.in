@@ -383,6 +383,48 @@ else
     fi
 fi
 
+#--------------------------------------------------------------------
+#       JHDL is a Java Highlevel Description Language, see
+#	http://www.jhdl.org
+#       See if there was a command-line option for where JHDL is
+#       If not, look in $PTII/vendors/jhdl
+#--------------------------------------------------------------------
+
+# PTJHDL_DIR is set to jhdl and used in
+# $PTII/ptolemy/apps/makefile if jhdl was found
+# FIXME: we are not using PTJHDL_DIR yet
+PTJHDL_DIR=
+
+# Directory that contains the jhdl jar files
+JHDL_JAR='${PTII}/vendors/jhdl/JHDL_0_3_4.jar'
+
+# We only need to look for jhdl if $PTII/ptolemy/apps/soot exists
+if test ! -d "$PTII/ptolemy/apps/soot"; then
+    AC_MSG_RESULT([$PTII/ptolemy/apps/soot is not present, so we need not
+find the Jhdl - a Java Optimization Framework])
+    JHDL_JAR='${PTII}/vendors/jhdl/JHDL_0_3_4.jar'
+else
+    AC_MSG_CHECKING([for jhdl jar file])
+    AC_ARG_WITH(jhdl_jar, [  --with-jhdl-jar=JARFILE       use JHDL from JARFILE,
+                          defaults to \$PTII/vendors/jhdl/JHDL_0_3_4.jar],
+	JHDL_JAR=$withval,
+	JHDL_JAR=$PTII/vendors/jhdl/JHDL_0_3_4.jar)
+
+    if test -f "$JHDL_JAR"; then
+	AC_MSG_RESULT([$JHDL_JAR])
+	# Set to jhdl and used in
+	# $PTII/ptolemy/apps/makefile if jhdl was found
+	PTJHDL_DIR=jhdl
+    else
+        AC_MSG_WARN(['Failed to find PTII/vendors/jhdl/JHDL_0_3_4.jar
+    perhaps Jhdl is not installed?
+    You need not download Jhdl unless you plan on using code generation
+    The Jhdl SDK can be downloaded from http://www.jhdl.org'])
+	# Note that we don't substitute in the ${PTII} here
+	JHDL_JAR='${PTII}/vendors/jhdl/JHDL_0_3_4.jar'
+    fi
+fi
+
 
 #--------------------------------------------------------------------
 #       Lejos is a Java Virtual machine that runs on the Lego Mindstorm
@@ -1073,6 +1115,9 @@ AC_SUBST(JAVACC_DIR)
 # Javadoc size flag for JDK1.2, see doc/makefile
 AC_SUBST(JDOCSIZE)
 
+# Jar file that contains JDHL, see http://www.jhdl.org
+AC_SUBST(JHDL_JAR)
+
 # Jini home directory, see http://www.sun.com/jini/
 AC_SUBST(JINI_DIR)
 
@@ -1117,6 +1162,9 @@ AC_SUBST(PTJAVA3D_DIR)
 # Set to javasound and used in
 # $PTII/ptolemy/actor/lib/makefile if javasound was found
 AC_SUBST(PTJAVASOUND_DIR)
+
+# Set to jhdl if JDHL.jar was found
+AC_SUBST(PTJHDL_DIR)
 
 # Set to jspaces and used in
 # $PTII/ptolemy/actor/lib/makefile if jini was found

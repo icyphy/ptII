@@ -144,6 +144,9 @@ JAVA =		$(PTJAVA_DIR)/bin/java
 # The 'rmic' command - The Java Remote Method Invocation (RMI) command
 RMIC =		$(PTJAVA_DIR)/bin/rmic
 
+# Jar file that contains JDHL, see http://www.jhdl.org.
+JHDL_JAR =	@JHDL_JAR@
+
 # If Jini is present, the set to yes, otherwise, set to no
 JINI_PRESENT =  @JINI_PRESENT@
 
@@ -201,6 +204,9 @@ JTCLSH =	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR
 # Directory that contains the Java Serial Comm API, see
 # http://java.sun.com/products/javacomm/
 COMMAPI_DIR =   @COMMAPI_DIR@
+
+# PTJHDL_DIR is set to jhdl if the JHDL directory is found
+PTJHDL_DIR =    @PTJHDL_DIR@
 
 # Set to lego and used in $PTII/ptolemy/apps/makefile if
 # the Java Communications API was found
