@@ -177,7 +177,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/moml/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx32m" docs'
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m" docs'
 	-(cd ..; CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR).$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/lib/classes.zip$(CLASSPATHSEPARATOR).." $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
 
 
