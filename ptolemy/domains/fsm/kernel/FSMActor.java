@@ -720,9 +720,13 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 	BooleanToken resetToken =
 	        (BooleanToken)_lastChosenTransition.reset.getToken();
 	if (resetToken.booleanValue()) {
-	    Actor ref = _currentState.getRefinement();
+	    /*Actor ref = _currentState.getRefinement();
 	    if (ref != null) {
 		ref.initialize();
+	    }*/
+	    Actor[] actors = _currentState.getRefinement();
+	    for (int i = 0; i < actors.length; ++i) {
+		actors[i].initialize();
 	    }
 	}
         _setCurrentConnectionMap();
@@ -823,7 +827,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     protected boolean _isRefinementOutput(TypedIOPort port, int channel)
             throws IllegalActionException {
-        if (_currentState.getRefinement() == null) {
+        if (_currentState.getRefinement().length == 0) {
             return false;
         }
         if (_connectionMapsVersion != workspace().getVersion()) {
@@ -1002,13 +1006,14 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             while (states.hasNext()) {
                 st = (State)states.next();
                 Map stMap = new HashMap();
-                TypedActor ref = st.getRefinement();
+                //TypedActor ref = st.getRefinement();
+		TypedActor[] actors = st.getRefinement();
                 // Determine the boolean flags for each input port.
                 Iterator inports = inputPortList().iterator();
                 while (inports.hasNext()) {
                     IOPort inport = (IOPort)inports.next();
                     boolean[] flags = new boolean[inport.getWidth()];
-                    if (ref == null) {
+                    if (actors.length == 0) {
                         java.util.Arrays.fill(flags, false);
                         stMap.put(inport, flags);
                         continue;
@@ -1018,11 +1023,19 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     while (rels.hasNext()) {
                         IORelation rel = (IORelation)rels.next();
                         boolean linked = false;
-                        Iterator outports = ref.outputPortList().iterator();
+                        /*Iterator outports = ref.outputPortList().iterator();
                         while (outports.hasNext()) {
                             IOPort outport = (IOPort)outports.next();
                             linked = linked | outport.isLinked(rel);
-                        }
+			}*/
+			for (int i = 0; i < actors.length; ++i) {
+			    Iterator outports =
+                                    actors[i].outputPortList().iterator();
+			    while (outports.hasNext()) {
+				IOPort outport = (IOPort)outports.next();
+				linked = linked | outport.isLinked(rel);
+			    }
+			}
                         for (int j = 0; j < rel.getWidth(); ++j) {
                             flags[chindex+j] = linked;
                         }
