@@ -123,11 +123,6 @@ public class WindowPropertiesAttribute extends Parameter
     public void recordProperties(Frame frame) {
         try {
             Rectangle bounds = frame.getBounds();
-            Token[] boundsArray = new IntToken[4];
-            boundsArray[0] = new IntToken(bounds.x);
-            boundsArray[1] = new IntToken(bounds.y);
-            boundsArray[2] = new IntToken(bounds.width);
-            boundsArray[3] = new IntToken(bounds.height);
 
             // Determine whether the window is maximized.
             boolean maximized
@@ -135,20 +130,17 @@ public class WindowPropertiesAttribute extends Parameter
                 == Frame.MAXIMIZED_BOTH;
 
             // Construct values for the record token.
-            Token[] values = new Token[2];
-            values[0] = new ArrayToken(boundsArray);
-            values[1] = new BooleanToken(maximized);
-
-            // Construct field names for the record token.
-            String[] names = new String[2];
-            names[0] = "bounds";
-            names[1] = "maximized";
-
-            setToken(new RecordToken(names, values));
-
-            // If we don't do this, then the bounds may not be written.
-            // E.g., if this is inside a subclass.
-            setPersistent(true);
+            setToken("{bounds={"
+                    + bounds.x
+                    + ", "
+                    + bounds.y
+                    + ", "
+                    + bounds.width
+                    + ", "
+                    + bounds.height
+                    + "}, maximized="
+                    + maximized
+                    + "}");
 
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(
