@@ -78,8 +78,8 @@ public class ThrowException extends Sink {
     ////                         public methods                    ////
 
     /** Read one token from each input channel that has a token,
-     *  and if any token is true, call stop() on the director. 
-     *  @exception IllegalActionException If there is no director.
+     *  and if any token is true, throw an exception. 
+     *  @exception IllegalActionException If FIXME
      *  @return Whatever the base class returns (probably true).
      */
     public boolean postfire() throws IllegalActionException {
