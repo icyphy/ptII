@@ -51,23 +51,28 @@ if {[string compare test [info procs test]] == 1} then {
 #### _testGetCrossRefList
 # Given a CrossRefList, return a Tcl List containing its contents
 #
-proc _testGetCrossRefList {crossreflist} {
+proc _testGetCrossRefList {args} {
     set results {}
-    if {$crossreflist == [java::null]} {
-	return $results
-    } 
-    for {set crossrefenum [$crossreflist enumerate]} \
-	    {$crossrefenum != [java::null] && \
-	    [$crossrefenum hasMoreElements] == 1} \
-	    {} {
-	set enumelement [$crossrefenum nextElement]
-	if [ java::instanceof $enumelement pt.kernel.NamedObj] {
-	    lappend results [$enumelement getName]
-	} else {
-	    lappend results $enumElement
+    foreach crossreflist $args {
+	if {$crossreflist == [java::null]} {
+	    return $results
+	} 
+	set lresults {}
+	for {set crossrefenum [$crossreflist enumerate]} \
+		{$crossrefenum != [java::null] && \
+		[$crossrefenum hasMoreElements] == 1} \
+		{} {
+	    set enumelement [$crossrefenum nextElement]
+	    if [ java::instanceof $enumelement pt.kernel.NamedObj] {
+		lappend lresults [$enumelement getName]
+	    } else {
+		lappend lresults $enumElement
+	    }
 	}
+	lappend results $lresults
     }
     return $results
+
 }
 
 ######################################################################
@@ -112,11 +117,181 @@ test CrossRefList-2.2 {Create a CrossRefList, try to enumerate it} {
 ######################################################################
 ####
 # 
-test CrossRefList-3.1 {associate CrossRefLists} {
+test CrossRefList-3.1 {associate CrossRefLists, check out isMember} {
     set ownerone [java::new pt.kernel.NamedObj "Owner One"]
     set crlone [java::new pt.kernel.CrossRefList $ownerone]
     set ownertwo [java::new pt.kernel.NamedObj "Owner Two"]
     set crltwo [java::new pt.kernel.CrossRefList $ownertwo]
     $crlone associate $crltwo
-    list [_testGetCrossRefList $crlone] [_testGetCrossRefList $crltwo]
-} {{{Owner Two}} {{Owner One}}}
+    list [_testGetCrossRefList $crlone $crltwo] \
+	    [list \
+	    [$crlone isMember $ownerone] [$crlone isMember $crlone] \
+	    [$crlone isMember $ownertwo] [$crlone isMember $crltwo]] \
+	    [list \
+	    [$crltwo isMember $ownerone] [$crltwo isMember $crlone] \
+	    [$crltwo isMember $ownertwo] [$crltwo isMember $crltwo]]
+
+} {{{{Owner Two}} {{Owner One}}} {0 0 1 0} {1 0 0 0}}
+
+######################################################################
+####
+# 
+test CrossRefList-4.1 {associate CrossRefLists, check out Dissociate} {
+    # Create Three CrossRefLists, associate the first to the other two,
+    # then disassociate
+    set ownerone [java::new pt.kernel.NamedObj "Owner One"]
+    set crlone [java::new pt.kernel.CrossRefList $ownerone]
+    set ownertwo [java::new pt.kernel.NamedObj "Owner Two"]
+    set crltwo [java::new pt.kernel.CrossRefList $ownertwo]
+    set ownerthree [java::new pt.kernel.NamedObj "Owner Three"]
+    set crlthree [java::new pt.kernel.CrossRefList $ownerthree]
+    set result0 [_testGetCrossRefList $crlone $crltwo $crlthree]
+
+    $crlone associate $crltwo
+    set result1 [_testGetCrossRefList $crlone $crltwo $crlthree]
+
+    $crlone associate $crlthree
+    set result2 [_testGetCrossRefList $crlone $crltwo $crlthree]
+
+    $crlone dissociate $ownertwo
+    set result3 [_testGetCrossRefList $crlone $crltwo $crlthree]
+
+    $crlone dissociate $ownerthree
+    set result4 [_testGetCrossRefList $crlone $crltwo $crlthree]
+
+    list "\
+result0 = $result0\n\
+result1 = $result1\n\
+result2 = $result2\n\
+result3 = $result3\n\
+result4 = $result4\n\
+"
+} {{ result0 = {} {} {}
+ result1 = {{Owner Two}} {{Owner One}} {}
+ result2 = {{Owner Three} {Owner Two}} {{Owner One}} {{Owner One}}
+ result3 = {{Owner Three}} {} {{Owner One}}
+ result4 = {} {} {}
+ }}
+
+######################################################################
+####
+# 
+test CrossRefList-4.2 {associate CrossRefLists, check out Dissociate} {
+    set ownerone [java::new pt.kernel.NamedObj "Owner One"]
+    set crlone [java::new pt.kernel.CrossRefList $ownerone]
+    set ownertwo [java::new pt.kernel.NamedObj "Owner Two"]
+    set crltwo [java::new pt.kernel.CrossRefList $ownertwo]
+    set ownerthree [java::new pt.kernel.NamedObj "Owner Three"]
+    set crlthree [java::new pt.kernel.CrossRefList $ownerthree]
+    set result0 [_testGetCrossRefList $crlone $crltwo $crlthree]
+
+    # 1->2 2->3 3->2
+    $crlone associate $crltwo
+    $crlone associate $crlthree
+    $crltwo associate $crlthree
+    $crlthree associate $crltwo
+    set result1 [_testGetCrossRefList $crlone $crltwo $crlthree]
+
+    $crltwo dissociate 
+    set result2 [_testGetCrossRefList $crlone $crltwo $crlthree]
+
+    $crlone associate $crltwo
+    set result3 [_testGetCrossRefList $crlone $crltwo $crlthree]
+
+    $crlone dissociate
+    set result4 [_testGetCrossRefList $crlone $crltwo $crlthree]
+
+    list "\
+result0 = $result0\n\
+1->2 1->3 2-3>= $result1\n\
+dissociate 2 = $result2\n\
+1->2 = $result3\n\
+dissociate 1 = $result4\n\
+"
+} {{ result0 = {} {} {}
+ 1->2 1->3 2-3>= {{Owner Three} {Owner Two}} {{Owner Three} {Owner Three} {Owner One}} {{Owner Two} {Owner Two} {Owner One}}
+ dissociate 2 = {{Owner Three}} {} {{Owner One}}
+ 1->2 = {{Owner Two} {Owner Three}} {{Owner One}} {{Owner One}}
+ dissociate 1 = {} {} {}
+ }}
+
+######################################################################
+####
+# 
+test CrossRefList-4.3 {associate two CrossLists many times, then dissociate} {
+    set ownerone [java::new pt.kernel.NamedObj "Owner One"]
+    set crlone [java::new pt.kernel.CrossRefList $ownerone]
+    set ownertwo [java::new pt.kernel.NamedObj "Owner Two"]
+    set crltwo [java::new pt.kernel.CrossRefList $ownertwo]
+
+    set result0 [_testGetCrossRefList $crlone $crltwo $crlthree]
+
+    $crlone associate $crltwo
+    $crlone associate $crltwo
+    $crlone associate $crltwo
+    $crlone associate $crltwo
+    set result1 [_testGetCrossRefList $crlone $crltwo $crlthree]
+ 
+    $crlone dissociate $ownertwo
+    $crlone dissociate $ownertwo
+    set result2 [_testGetCrossRefList $crlone $crltwo $crlthree]
+
+    $crlone dissociate $ownertwo
+    $crlone dissociate $ownertwo
+    $crlone dissociate $ownertwo
+    $crlone dissociate $ownertwo
+    set result3 [_testGetCrossRefList $crlone $crltwo $crlthree]
+
+   list "\
+result0 = $result0\n\
+1->2 4 times = $result1\n\
+dissociate 1->2 twice = $result2\n\
+dissociate 1->2 4 times = $result3\n\
+"
+} {{ result0 = {} {} {}
+ 1->2 4 times = {{Owner Two} {Owner Two} {Owner Two} {Owner Two}} {{Owner One} {Owner One} {Owner One} {Owner One}} {}
+ dissociate 1->2 twice = {{Owner Two} {Owner Two}} {{Owner One} {Owner One}} {}
+ dissociate 1->2 4 times = {} {} {}
+ }}
+
+######################################################################
+####
+# 
+test CrossRefList-5.1 {associate CrossRefLists, then call copyList} {
+    set ownerone [java::new pt.kernel.NamedObj "Owner One"]
+    set crlone [java::new pt.kernel.CrossRefList $ownerone]
+    set ownertwo [java::new pt.kernel.NamedObj "Owner Two"]
+    set crltwo [java::new pt.kernel.CrossRefList $ownertwo]
+    set ownerthree [java::new pt.kernel.NamedObj "Owner Three"]
+    set crlthree [java::new pt.kernel.CrossRefList $ownerthree]
+    set ownerfour [java::new pt.kernel.NamedObj "Owner Four"]
+    set crlfour [java::new pt.kernel.CrossRefList $ownerfour]
+
+    set result0 [_testGetCrossRefList $crlone $crltwo $crlthree $crlfour]
+
+    $crlone associate $crltwo
+    $crlone associate $crlthree
+    set result1 [_testGetCrossRefList $crlone $crltwo $crlthree $crlfour]
+ 
+    $crlfour copyList $crlone
+    set result2 [_testGetCrossRefList $crlone $crltwo $crlthree $crlfour]
+
+    $crlone dissociate
+    set result3 [_testGetCrossRefList $crlone $crltwo $crlthree $crlfour]
+
+    $crlfour dissociate $ownerthree
+    set result4 [_testGetCrossRefList $crlone $crltwo $crlthree $crlfour]
+
+   list "\
+result0 = $result0\n\
+1->2 1->3 = $result1\n\
+copy 1 to 4 = $result2\n\
+dissociate 1 = $result3\n\
+dissociate 4->3 = $result4\n\
+"
+} {{ result0 = {} {} {} {}
+ 1->2 1->3 = {{Owner Three} {Owner Two}} {{Owner One}} {{Owner One}} {}
+ copy 1 to 4 = {{Owner Three} {Owner Two}} {{Owner Four} {Owner One}} {{Owner Four} {Owner One}} {{Owner Two} {Owner Three}}
+ dissociate 1 = {} {{Owner Four}} {{Owner Four}} {{Owner Two} {Owner Three}}
+ dissociate 4->3 = {} {{Owner Four}} {} {{Owner Two}}
+ }}
