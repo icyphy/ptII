@@ -74,7 +74,7 @@ public class Minimum extends Transformer {
      */
     public void fire() throws IllegalActionException {
         DoubleToken result = null;
-        for (int i=0; i<input.getWidth(); i++) {
+        for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 DoubleToken in = (DoubleToken)input.get(i);
                 if (result == null) {
