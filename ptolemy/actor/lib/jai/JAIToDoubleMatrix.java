@@ -168,7 +168,13 @@ public class JAIToDoubleMatrix extends Transformer {
                     _type == DataBuffer.TYPE_FLOAT) {
                 for (int i = 0; i < width; i++) {
                     for (int j = 0; j < height; j++) {
-                        data[i][j] = dataBuffer.getElemDouble(i*height + j);
+                        // There is some confusion about which order the
+                        // array should be in.
+                        // We go with i*height + j here so that we
+                        // can read in data from the SDF VQ actors.
+
+                        //data[i][j] = dataBuffer.getElemDouble(i*height + j);
+                        data[i][j] = dataBuffer.getElemDouble(i + j*width);
                         data[i][j] = data[i][j]/_maxValue;
                         data[i][j] = data[i][j]/2;
                         data[i][j] = data[i][j] + 0.5D;
@@ -177,8 +183,12 @@ public class JAIToDoubleMatrix extends Transformer {
             } else {
                 for (int i = 0; i < width; i++) {
                     for (int j = 0; j < height; j++) {
+//                         data[i][j] =
+//                             (dataBuffer.getElemDouble(i*height + j) -
+//                                     _minValue)/
+//                             (_maxValue - _minValue);
                         data[i][j] =
-                            (dataBuffer.getElemDouble(i*height + j) -
+                            (dataBuffer.getElemDouble(i + j*width) -
                                     _minValue)/
                             (_maxValue - _minValue);
                     }
@@ -187,7 +197,8 @@ public class JAIToDoubleMatrix extends Transformer {
         } else {
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
-                    data[i][j] = dataBuffer.getElemDouble(i*height + j);
+//                    data[i][j] = dataBuffer.getElemDouble(i*height + j);
+                    data[i][j] = dataBuffer.getElemDouble(i + j * width);
                 }
             }
         }
