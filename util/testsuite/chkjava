@@ -43,6 +43,7 @@
 # 11) Check for %W% %G%, which are from SCCS
 # 12) Check for // System.out.println 
 # 13) Check for @exception tags that are not worded properly
+# 14) Check for @throws
 
 for file in $@
 do
@@ -249,5 +250,13 @@ do
 	    echo " or   '@exception MyException Always thrown'"
 	    echo "$results"
 	fi
+
+	# 13) Check for @throws
+	results=`egrep '@throws' $file`
+	if [ "x$results" != "x" ]; then
+	    echo "$file: contains @throws.  Use @exception instead."
+	    echo "$results"
+	fi
+
 done
 
