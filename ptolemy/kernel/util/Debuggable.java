@@ -44,7 +44,7 @@ public interface Debuggable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a debug listerner.
+    /** Add a debug listener.
      *  If the listener is already in the set, do not add it again.
      *  @param listener The listener to which to send debug messages.
      */
