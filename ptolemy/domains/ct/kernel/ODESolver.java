@@ -194,14 +194,6 @@ public abstract class ODESolver extends NamedObj {
         return _isConverged;
     }
 
-    /** Reset the iteration start time. This is used when the current
-     *  step size is not accurate to resolve states and outputs.
-     */
-    public void resetIterationBeginTime() {
-        _container.setModelTime(
-            _container.getIterationBeginTime());
-    }
-
     /** Reset the round counter to 0.
      */
     public void resetRoundCount() {
