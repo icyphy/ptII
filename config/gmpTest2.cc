@@ -1,6 +1,6 @@
 // Simple test program for gmp, used by mescal.
 #include <gmpxx.h>
-#include <iostream.h>
+//#include <iostream.h>
 int main (void) {
     mpz_class a, b, c;
      
