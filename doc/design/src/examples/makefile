@@ -49,7 +49,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	GraphGenerateSchedule.java
 
-EXTRA_SRCS = \
+EXTRA_SRCS = deadlock.xml \
+	deadlockFixed.xml \
+	fouriertransform.xml \
+	inconsistentRates.xml \
+	inconsistentRatesFixed.xml 
+	signalPlot.xml \
 	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
