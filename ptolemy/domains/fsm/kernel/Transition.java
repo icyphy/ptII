@@ -55,12 +55,13 @@ guard is true. A transition is triggered and must be taken when its trigger
 is true.
 <p> 
 A transition can contain a set of actions. The actions are executed when
-the FSMActor containing the transition is fired or postfired and the 
-transition is taken.
+the FSMActor containing the transition is fired and the transition is chosen,
+or when the FSMActor is postfired and the transition is the last chosen 
+transition.
 <p>
 A transition can be preemptive or non-preemptive. When a preemptive transition
-is taken, the refinement of its source State is not fired. A non-preemptive
-transition is only taken after the refinement of its source State is fired.
+is chosen, the refinement of its source State is not fired. A non-preemptive
+transition is only chosen after the refinement of its source State is fired.
 
 @author Xiaojun Liu
 @version $Id$
