@@ -143,6 +143,7 @@ public class Query extends JPanel {
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         // Get rid of the border.
         _messageScrollPane.setBorder(BorderFactory.createEmptyBorder());
+        _messageScrollPane.getViewport().setBackground(null);
 
         add(_messageScrollPane);
 
@@ -152,6 +153,7 @@ public class Query extends JPanel {
         _entryScrollPane = new JScrollPane(_entryPanel);
         // Get rid of the border.
         _entryScrollPane.setBorder(BorderFactory.createEmptyBorder());
+        _entryScrollPane.getViewport().setBackground(null);
         _entryScrollPane.setBackground(null);
         add(_entryScrollPane);
 
@@ -313,8 +315,10 @@ public class Query extends JPanel {
         lbl.setBackground(_background);
         FlowLayout flow = new FlowLayout();
         flow.setAlignment(FlowLayout.LEFT);
-        // These must be JPanels, not Panels, or the scroll bars won't work.
+
+        // This must be a JPanel, not a Panel, or the scroll bars won't work.
         JPanel buttonPanel = new JPanel(flow);
+
         ButtonGroup group = new ButtonGroup();
         QueryActionListener listener = new QueryActionListener(name);
 
@@ -355,8 +359,10 @@ public class Query extends JPanel {
         lbl.setBackground(_background);
         FlowLayout flow = new FlowLayout();
         flow.setAlignment(FlowLayout.LEFT);
-        // These must be JPanels, not Panels, or the scroll bars won't work.
+
+        // This must be a JPanel, not a Panel, or the scroll bars won't work.
         JPanel buttonPanel = new JPanel(flow);
+
         QueryActionListener listener = new QueryActionListener(name);
         if (initiallySelected == null) {
             initiallySelected = new HashSet();
