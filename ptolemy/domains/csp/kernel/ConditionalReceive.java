@@ -249,9 +249,9 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                 rcvr.notifyAll();
             }
         }
-        getController()._readBranchBlocked(true);
+        getController()._branchBlocked(this.getReceiver());
         getReceiver()._checkFlagsAndWait();
-        getController()._readBranchUnblocked(true);
+        getController()._branchUnblocked(this.getReceiver());
         return true;
     }
 
@@ -273,9 +273,9 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                 controller._branchSucceeded(getID());
                 return;
             }
-            getController()._readBranchBlocked(true);
+            getController()._branchBlocked(this.getReceiver());
             getReceiver()._checkFlagsAndWait();
-            getController()._readBranchUnblocked(true);
+            getController()._branchUnblocked(this.getReceiver());
             if (!isAlive()) {
                 controller._branchFailed(getID());
                 return;
@@ -295,9 +295,9 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
             ConditionalBranchController controller)
             throws InterruptedException {
         rcvr._setConditionalReceive(true, controller);
-        getController()._readBranchBlocked(true);
+        getController()._branchBlocked(this.getReceiver());
         getReceiver()._checkFlagsAndWait();
-        getController()._readBranchUnblocked(true);
+        getController()._branchUnblocked(this.getReceiver());
         while (true) {
             if (!isAlive()) {
                 // reset state of receiver
@@ -320,9 +320,9 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                 }
             }
             //can't rendezvous this time, but still alive
-            getController()._readBranchBlocked(true);
+            getController()._branchBlocked(this.getReceiver());
             getReceiver()._checkFlagsAndWait();
-            getController()._readBranchUnblocked(true);
+            getController()._branchUnblocked(this.getReceiver());
         }
     }
 }

@@ -455,7 +455,51 @@ public class DDEDirector extends ProcessDirector {
 
     /** Increment the count of actors blocked on an internal read.
      */
-    protected synchronized void _actorReadBlocked(boolean internal) {
+    protected synchronized void _actorBlocked(DDEReceiver rcvr) {
+        if( rcvr.isReadBlocked() ) {
+            if( rcvr.isConnectedToBoundary() ) {
+                _externalReadBlocks++;
+            }
+            _internalReadBlocks++;
+        }
+        if( rcvr.isWriteBlocked() ) {
+	    if( _writeBlockedQs == null ) {
+	        _writeBlockedQs = new LinkedList();
+	    }
+	    _writeBlockedQs.addFirst(rcvr);
+            _writeBlocks++;
+        }
+	if( _isDeadlocked() ) {
+	    notifyAll();
+	}
+    }
+
+    /** Increment the count of actors blocked on an internal read.
+     */
+    protected synchronized void _actorUnBlocked(DDEReceiver rcvr) {
+        if( rcvr.isReadBlocked() ) {
+            if( rcvr.isConnectedToBoundary() ) {
+                _externalReadBlocks--;
+            }
+            _internalReadBlocks--;
+        }
+        if( rcvr.isWriteBlocked() ) {
+	    if( _writeBlockedQs == null ) {
+                // FIXME: throw exception???
+	    }
+            _writeBlockedQs.remove(rcvr);
+            if( _writeBlocks > 0 ) {
+                _writeBlocks--;
+            }
+        }
+    }
+
+    /** Increment the count of actors blocked on an internal read.
+    protected synchronized void _actorReadBlocked(DDEReceiver rcvr) {
+        boolean internal = true;
+        if( rcvr.isConnectedToBoundary() ) {
+            internal = false;
+        }
         if( internal ) {
             _internalReadBlocks++;
         } else {
@@ -465,10 +509,14 @@ public class DDEDirector extends ProcessDirector {
 	    notifyAll();
 	}
     }
+     */
 
     /** Decrement the count of actors externally blocked on a read.
-     */
-    protected synchronized void _actorReadUnBlocked(boolean internal) {
+    protected synchronized void _actorReadUnBlocked(DDEReceiver rcvr) {
+        boolean internal = true;
+        if( rcvr.isConnectedToBoundary() ) {
+            internal = false;
+        }
         if( internal ) {
             if( _internalReadBlocks > 0 ) {
                 _internalReadBlocks--;
@@ -479,48 +527,54 @@ public class DDEDirector extends ProcessDirector {
             }
         }
     }
+     */
 
     /** Increment the count of actors blocked on a write.
      * @param rcvr The DDEReceiver that has a write block.
-     */
     protected synchronized void _actorWriteBlocked(DDEReceiver rcvr) {
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
 	}
 	_writeBlockedQs.addFirst(rcvr);
-        _actorWriteBlocked();
-    }
-
-    /** Increment the count of actors blocked on a write.
-     */
-    protected synchronized void _actorWriteBlocked() {
         _writeBlocks++;
         if( _isDeadlocked() ) {
             notifyAll();
         }
     }
+     */
+
+    /** Increment the count of actors blocked on a write.
+    protected synchronized void _actorWriteBlocked(DDEReceiver rcvr) {
+        _writeBlocks++;
+        if( _isDeadlocked() ) {
+            notifyAll();
+        }
+    }
+     */
 
     /** Decrement the count of actors blocked on a write.
      *  @param rcvr The DDEReceiver that is no longer
      *   write blocked.
-     */
     protected synchronized void _actorWriteUnBlocked(DDEReceiver rcvr) {
 	if( _writeBlockedQs == null ) {
 	    _writeBlockedQs = new LinkedList();
 	}
 	_writeBlockedQs.remove(rcvr);
-        _actorWriteUnBlocked();
-    }
-
-    /** Decrement the count of actors blocked on a write.
-     *  @param rcvr The DDEReceiver that is no longer
-     *   write blocked.
-     */
-    protected synchronized void _actorWriteUnBlocked() {
         if( _writeBlocks > 0 ) {
             _writeBlocks--;
         }
     }
+     */
+
+    /** Decrement the count of actors blocked on a write.
+     *  @param rcvr The DDEReceiver that is no longer
+     *   write blocked.
+    protected synchronized void _actorWriteUnBlocked(DDEReceiver) {
+        if( _writeBlocks > 0 ) {
+            _writeBlocks--;
+        }
+    }
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                  package friendly methods                 ////
@@ -605,7 +659,7 @@ public class DDEDirector extends ProcessDirector {
     protected void _incrementLowestCapacityPort()
             throws IllegalActionException {
 	if( _writeBlockedQs == null ) {
-	    _writeBlockedQs = new LinkedList();
+            return;
 	}
         Collections.sort( _writeBlockedQs,
                 new RcvrCapacityComparator() );
@@ -618,7 +672,7 @@ public class DDEDirector extends ProcessDirector {
             int cap = smallestQueue.getCapacity();
             smallestQueue.setCapacity(cap * 2);
         }
-        _actorWriteUnBlocked( smallestQueue );
+        _actorUnBlocked( smallestQueue );
         synchronized( smallestQueue ) {
             smallestQueue.notifyAll();
         }

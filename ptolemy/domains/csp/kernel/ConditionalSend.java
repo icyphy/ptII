@@ -252,9 +252,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 rcvr.notifyAll();
             }
         }
-        getController()._writeBranchBlocked();
+        getController()._branchBlocked(this.getReceiver());
         getReceiver()._checkFlagsAndWait();
-        getController()._writeBranchUnblocked();
+        getController()._branchUnblocked(this.getReceiver());
         return true;
     }
 
@@ -278,9 +278,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 controller._branchSucceeded(getID());
                 return;
             } else {
-        	getController()._writeBranchBlocked();
+        	getController()._branchBlocked(this.getReceiver());
         	getReceiver()._checkFlagsAndWait();
-        	getController()._writeBranchUnblocked();
+        	getController()._branchUnblocked(this.getReceiver());
             }
             if (!isAlive()) {
                 controller._branchFailed(getID());
@@ -302,9 +302,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
         // ConditionalReceive. Once enter this part of main
         // loop, do not leave.
         rcvr._setConditionalSend(true, controller);
-        getController()._writeBranchBlocked();
+        getController()._branchBlocked(this.getReceiver());
         getReceiver()._checkFlagsAndWait();
-        getController()._writeBranchUnblocked();
+        getController()._branchUnblocked(this.getReceiver());
         while (true) {
             if (!isAlive()) {
                 // reset state of receiver controlling
@@ -326,9 +326,9 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                 }
             }
             //cannot rendezvous this time, still alive
-            getController()._writeBranchBlocked();
+            getController()._branchBlocked(this.getReceiver());
             getReceiver()._checkFlagsAndWait();
-            getController()._writeBranchUnblocked();
+            getController()._branchUnblocked(this.getReceiver());
         }
     }
 }

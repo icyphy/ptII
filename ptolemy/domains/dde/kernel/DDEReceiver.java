@@ -147,7 +147,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      * @see #hasToken()
      */
     public Token get() throws NoTokenException {
-	if( !_hasToken ) {
+	if( !_hasTokenCache ) {
             throw new NoTokenException( getContainer(),
                     "Attempt to get token that does not have "
 		    + "have the earliest time stamp.");
@@ -159,9 +159,9 @@ public class DDEReceiver extends PrioritizedTimedQueue
 		throw new TerminateProcessException("");
 	    }
 	    Token token = super.get();
-	    if( _writePending ) {
-                director._actorWriteUnBlocked( this );
-		_writePending = false;
+	    if( _writeBlocked ) {
+                director._actorUnBlocked(this);
+		_writeBlocked = false;
 		notifyAll();
 	    }
 
@@ -171,7 +171,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
                     ((DDEThread)thread).getTimeKeeper();
 		timeKeeper.sendOutNullTokens(this);
 	    }
-	    _hasToken = false;
+	    _hasTokenCache = false;
 	    return token;
 	}
     }
@@ -239,12 +239,12 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    ///////////////////////////
             if( super.hasToken() && !_terminate && !sendNullTokens ) {
 	        if ( !_hasNullToken() ) {
-		    _hasToken = true;
+		    _hasTokenCache = true;
 	            return true;
 	        } else {
 		    // Treat Null Tokens Normally For Feedback
 		    if( !_hideNullTokens ) {
-			_hasToken = true;
+			_hasTokenCache = true;
 		        return true;
 		    }
 
@@ -258,9 +258,9 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    // Perform Blocking Read
 	    ////////////////////////
 	    if( !super.hasToken() && !_terminate && !sendNullTokens ) {
-	        _readPending = true;
-                director._actorReadBlocked(true);
-	        while( _readPending && !_terminate ) {
+	        _readBlocked = true;
+                director._actorBlocked(this);
+	        while( _readBlocked && !_terminate ) {
 		    workspace.wait( this );
 	        }
 	    }
@@ -269,9 +269,9 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    // Check Termination
 	    ////////////////////
 	    if( _terminate ) {
-	        if( _readPending ) {
-		    _readPending = false;
-		    director._actorReadBlocked(true);
+	        if( _readBlocked ) {
+		    _readBlocked = false;
+		    director._actorBlocked(this);
 	        }
                 throw new TerminateProcessException("");
 	    }
@@ -328,6 +328,20 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	return _boundaryDetector.isOutsideBoundary();
     }
 
+    /** Return true if this receiver is read blocked; return false
+     *  otherwise.
+     */
+    public boolean isReadBlocked() {
+        return _readBlocked;
+    }
+    
+    /** Return true if this receiver is read blocked; return false
+     *  otherwise.
+     */
+    public boolean isWriteBlocked() {
+        return _writeBlocked;
+    }
+    
     /** Do a blocking write on the queue. Set the time stamp to be
      *  the current time of the sending actor. If this receiver is
      *  connected to a boundary port, then set the time stamp to
@@ -385,26 +399,26 @@ public class DDEReceiver extends PrioritizedTimedQueue
 
             if( super.hasRoom() && !_terminate ) {
                 super.put(token, time);
-		if( _readPending ) {
-		    director._actorReadUnBlocked(true);
-		    _readPending = false;
+		if( _readBlocked ) {
+		    director._actorUnBlocked(this);
+		    _readBlocked = false;
 		    notifyAll();
 		}
                 return;
             }
 
             if ( !super.hasRoom() && !_terminate ) {
-		_writePending = true;
-                director._actorWriteBlocked(this);
-		while( _writePending && !_terminate ) {
+		_writeBlocked = true;
+                director._actorBlocked(this);
+		while( _writeBlocked && !_terminate ) {
 		    workspace.wait( this );
 		}
             }
 
             if( _terminate ) {
-		if( _writePending ) {
-		    _writePending = false;
-                    director._actorWriteBlocked( this );
+		if( _writeBlocked ) {
+		    _writeBlocked = false;
+                    director._actorBlocked(this);
 		}
                 throw new TerminateProcessException( getContainer(),
                         "This receiver has been terminated "
@@ -432,9 +446,9 @@ public class DDEReceiver extends PrioritizedTimedQueue
     public void reset() {
 	super.reset();
 	_terminate = false;
-    	_readPending = false;
-    	_writePending = false;
-	_hasToken = false;
+    	_readBlocked = false;
+    	_writeBlocked = false;
+	_hasTokenCache = false;
 	_boundaryDetector.reset();
     }
 
@@ -467,10 +481,10 @@ public class DDEReceiver extends PrioritizedTimedQueue
     ////                         private variables                 ////
 
     private boolean _terminate = false;
-    private boolean _readPending = false;
-    private boolean _writePending = false;
+    private boolean _readBlocked = false;
+    private boolean _writeBlocked = false;
     private boolean _hideNullTokens = true;
-    private boolean _hasToken = false;
+    private boolean _hasTokenCache = false;
 
     private BoundaryDetector _boundaryDetector;
 

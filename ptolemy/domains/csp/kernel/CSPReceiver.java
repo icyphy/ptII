@@ -121,13 +121,13 @@ public class CSPReceiver implements ProcessReceiver {
 
                 
         	_checkFlags();
-                _getDirector()._actorReadBlocked(true);
+                _getDirector()._actorBlocked(this);
                 blocked = true;
                 while (_isGetWaiting()) {
                     _checkFlagsAndWait();
                 }
         	_checkFlags();
-                _getDirector()._actorReadUnBlocked(true);
+                _getDirector()._actorUnBlocked(this);
                 blocked = false;
                 tmp = _token;
                 _setRendezvousComplete(true);
@@ -140,8 +140,7 @@ public class CSPReceiver implements ProcessReceiver {
             if (blocked) {
                 // process was blocked, woken up and terminated.
                 // register process as being unblocked
-                _getDirector()._actorReadUnBlocked(true);
-                // _getDirector()._actorUnblocked();
+                _getDirector()._actorUnBlocked(this);
             }
         }
         return tmp;
@@ -166,6 +165,24 @@ public class CSPReceiver implements ProcessReceiver {
      */
     public synchronized boolean hasToken() {
         return _isPutWaiting();
+    }
+
+    /** Return a true or false to indicate whether there is a read block
+     *  on this receiver or not, respectively.
+     *  @return a boolean indicating whether a read is blocked on this
+     *  receiver or not.
+     */
+    public synchronized boolean isReadBlocked() {
+	return _getWaiting;
+    }
+
+    /** Return a true or false to indicate whether there is a write block
+     *  on this receiver or not.
+     *  @return A boolean indicating whether a write is blocked  on this
+     *  receiver or not.
+     */
+    public synchronized boolean isWriteBlocked() {
+	return _putWaiting;
     }
 
     /** Return true if this receiver is connected to the inside of a
@@ -249,13 +266,13 @@ public class CSPReceiver implements ProcessReceiver {
                 }
 
         	_checkFlags();
-                _getDirector()._actorWriteBlocked();
+                _getDirector()._actorBlocked(this);
                 blocked = true;
                 while(_isPutWaiting()) {
                     _checkFlagsAndWait();
                 }
         	_checkFlags();
-                _getDirector()._actorWriteUnBlocked();
+                _getDirector()._actorUnBlocked(this);
                 blocked = false;
                 _setRendezvousComplete(true);
                 notifyAll();
@@ -268,8 +285,7 @@ public class CSPReceiver implements ProcessReceiver {
             if (blocked) {
                 // process was blocked, awakened and terminated.
                 // register process as being unblocked
-                _getDirector()._actorWriteUnBlocked();
-                // _getDirector()._actorUnblocked();
+                _getDirector()._actorUnBlocked(this);
             }
         }
     }
@@ -526,17 +542,6 @@ public class CSPReceiver implements ProcessReceiver {
 
     // The token being transferred during the rendezvous.
     private Token _token;
-
-    /*
-    private boolean _insideBoundaryCacheIsOn = false;
-    private boolean _isInsideBoundaryValue = false;
-
-    private boolean _outsideBoundaryCacheIsOn = false;
-    private boolean _isOutsideBoundaryValue = false;
-
-    private boolean _connectedBoundaryCacheIsOn = false;
-    private boolean _isConnectedBoundaryValue = false;
-    */
 
     private BoundaryDetector _boundaryDetector;
 }

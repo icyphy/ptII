@@ -156,10 +156,11 @@ public class CSPDirector extends ProcessDirector {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         CSPDirector newobj = (CSPDirector)super.clone(ws);
-        // newobj._actorsBlocked = 0;
-        newobj._intReadBlockCount= 0;
+        newobj._actorsBlocked = 0;
+        /*
         newobj._extReadBlockCount= 0;
         newobj._writeBlockCount= 0;
+        */
 	newobj._actorsDelayed = 0;
         newobj._delayedActorList = new LinkedList();
         return newobj;
@@ -169,10 +170,12 @@ public class CSPDirector extends ProcessDirector {
      * @exception IllegalActionException If the super class throws it.
      */
     public void initialize() throws IllegalActionException {
-	// _actorsBlocked = 0;
+	_actorsBlocked = 0;
+        /*
 	_intReadBlockCount = 0;
 	_extReadBlockCount = 0;
 	_writeBlockCount = 0;
+        */
         _actorsDelayed = 0;
         _delayedActorList = new LinkedList();
 	super.initialize();
@@ -247,7 +250,28 @@ public class CSPDirector extends ProcessDirector {
 
     /** Increase the count of blocked processes and check for deadlock.
      */
-    protected synchronized void _actorReadBlocked(boolean internal) {
+    protected synchronized void _actorBlocked(CSPReceiver rcvr) {
+        /*
+        if( rcvr.isReadBlocked() ) {
+            if( rcvr.isConnectedToBoundary() ) {
+                _extReadBlockCount++;
+            }
+            _intReadBlockCount++;
+        }
+        */
+        _actorsBlocked++;
+        if (_isDeadlocked()) {
+	    notifyAll();
+	}
+    }
+ 
+    /** Increase the count of blocked processes and check for deadlock.
+    protected synchronized void _actorReadBlocked(CSPReceiver rcvr) {
+        boolean internal = true;
+        if( rcvr.isConnectedToBoundary() ) {
+            internal = false;
+        }
+        
         if( internal ) {
             _intReadBlockCount++;
         } else {
@@ -257,25 +281,17 @@ public class CSPDirector extends ProcessDirector {
 	    notifyAll();
 	}
     }
+     */
  
     /** Increase the count of blocked processes and check for deadlock.
-     */
-    protected synchronized void _actorWriteBlocked() {
+    protected synchronized void _actorWriteBlocked(CSPReceiver rcvr) {
         _writeBlockCount++;
         if (_isDeadlocked()) {
 	    notifyAll();
 	}
     }
- 
-    /** Increase the count of blocked processes and check for deadlock.
-    protected synchronized void _actorBlocked() {
-        _actorsBlocked++;
-        if (_isDeadlocked()) {
-	    notifyAll();
-	}
-    }
      */
-
+ 
     /** Called by a CSPActor when it wants to delay. When the
      *  director has advanced time to "getCurrentTime() + delta", the process
      *  corresponding to the actor will continue. Note that actors
@@ -308,19 +324,40 @@ public class CSPDirector extends ProcessDirector {
 
     /** An actor has unblocked, decrease the count of blocked actors.
      */
-    protected synchronized void _actorReadUnBlocked(boolean internal) {
+    protected synchronized void _actorUnBlocked(CSPReceiver rcvr) {
+        /*
+        if( rcvr.isReadBlocked() ) {
+            if( rcvr.isConnectedToBoundary() ) {
+                _extReadBlockCount--;
+            }
+            _intReadBlockCount--;
+        }
+        if( rcvr.isWriteBlocked() ) {
+            _writeBlockCount--;
+        }
+        */
+        _actorsBlocked--;
+    }
+
+    /** An actor has unblocked, decrease the count of blocked actors.
+    protected synchronized void _actorReadUnBlocked(CSPReceiver rcvr) {
+        boolean internal = true;
+        if( rcvr.isConnectedToBoundary() ) {
+            internal = false;
+        }
         if( internal ) {
             _intReadBlockCount--;
         } else {
             _extReadBlockCount--;
         }
     }
+     */
 
     /** An actor has unblocked, decrease the count of blocked actors.
-     */
-    protected synchronized void _actorWriteUnBlocked() {
+    protected synchronized void _actorWriteUnBlocked(CSPReceiver rcvr) {
         _writeBlockCount--;
     }
+     */
 
     /** Determine if all of the threads containing actors controlled
      *  by this director have stopped due to a call of stopFire() or
@@ -340,9 +377,8 @@ public class CSPDirector extends ProcessDirector {
 	// Some threads are stopped due to stopFire() while others
 	// are blocked waiting to read or write data.
         // if( threadsStopped + _actorsBlocked + _actorsDelayed
-	if( threadsStopped + _intReadBlockCount + _extReadBlockCount
-        	+ _writeBlockCount + _actorsDelayed
-		    >= actorsActive ) {
+	if( threadsStopped + _actorsBlocked
+        	+ _actorsDelayed >= actorsActive ) {
 	    if( threadsStopped != 0 ) {
 	        return true;
 	    }
@@ -355,8 +391,13 @@ public class CSPDirector extends ProcessDirector {
      *  delayed, false otherwise.
      */
     protected synchronized boolean _isDeadlocked() {
+        /*
         if (_getActiveActorsCount() == (_intReadBlockCount +
         	_extReadBlockCount + _writeBlockCount + _actorsDelayed)) {
+            return true;
+        }
+        */
+        if( _getActiveActorsCount() == _actorsBlocked + _actorsDelayed ) {
             return true;
         }
         return false;
@@ -464,16 +505,16 @@ public class CSPDirector extends ProcessDirector {
     ////                         private variables                 ////
 
     // Count of the number of processes blocked trying to rendezvous.
-    private int _intReadBlockCount = 0;
+    // private int _intReadBlockCount = 0;
 
     // Count of the number of processes blocked trying to rendezvous.
-    private int _extReadBlockCount = 0;
+    // private int _extReadBlockCount = 0;
 
     // Count of the number of processes blocked trying to rendezvous.
-    private int _writeBlockCount = 0;
+    // private int _writeBlockCount = 0;
 
     // Count of the number of processes blocked trying to rendezvous.
-    // private int _actorsBlocked = 0;
+    private int _actorsBlocked = 0;
 
     // Count of the number of processes delayed until time
     // sufficiently advances.
