@@ -200,7 +200,7 @@ public class CachedMethod {
         // Determine the return type of the method, given our argument types.
         // Do this LAST, since invoking the type constraint method might throw
         // IllegalActionException, which we throw out of the constructor.
-        if(_method != null) {
+        if (_method != null) {
             // The default is to look at the return type of the method.
             Class returnClass = _method.getReturnType();
             _returnType = ConversionUtilities.convertJavaTypeToTokenType(
@@ -435,7 +435,7 @@ public class CachedMethod {
      *  matrix.
      */
     public Method getMethod() throws IllegalActionException {
-        if(isValid()) {
+        if (isValid()) {
             return _method;
         } else {
             throw new IllegalActionException("No method " + toString() +
@@ -581,7 +581,7 @@ public class CachedMethod {
     /** Return a verbose description of the cached method being invoked
      */
     public String methodDescription() {
-        if(isValid()) {
+        if (isValid()) {
             return _method.toString();
         } else {
             return "INVALID METHOD!!!";
@@ -1116,14 +1116,14 @@ public class CachedMethod {
          * conversion.
          */
         public boolean isPreferableTo(ArgumentConversion conversion) {
-            if(_preference > conversion.getPreference()) {
+            if (_preference > conversion.getPreference()) {
                 return true;
-            } else if(_preference == conversion.getPreference()) {
+            } else if (_preference == conversion.getPreference()) {
                 // Assume it is a TypeArgumentConversion.
                 TypeArgumentConversion argumentConversion =
                     (TypeArgumentConversion)conversion;
                 // FIXME: compare types.
-                if(TypeLattice.compare(_conversionType,
+                if (TypeLattice.compare(_conversionType,
                         argumentConversion._conversionType)
                         == ptolemy.graph.CPO.LOWER) {
                     return true;

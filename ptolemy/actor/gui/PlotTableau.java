@@ -240,7 +240,7 @@ public class PlotTableau extends Tableau {
                             (PlotEffigy)effigy, "plotTableau");
                 }
                 PlotBox plotBox = ((PlotEffigy)effigy).getPlot();
-                if(plotBox != null) {
+                if (plotBox != null) {
                     // Hook into the existing plot.
                     PlotTableauFrame plotterFrame =
                         new PlotTableauFrame(tableau, plotBox);

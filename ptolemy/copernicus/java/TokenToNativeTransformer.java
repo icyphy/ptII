@@ -197,7 +197,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
             for (Iterator methods = entityClass.getMethods().iterator();
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
-                if(debug) System.out.println("method = " + method);
+                if (debug) System.out.println("method = " + method);
 
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
@@ -497,11 +497,11 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     Object arg = args.next();
                     if (arg instanceof Local) {
                         Local argLocal = (Local)arg;
-                        if(debug) System.out.println("argtype = " + argLocal.getType());
+                        if (debug) System.out.println("argtype = " + argLocal.getType());
                         isInlineableTokenMethod = _isInlineableTokenType(
                                 argLocal, typeAnalysis, unsafeLocalSet,
                                 depth, debug);
-                        if(debug) {
+                        if (debug) {
                             System.out.println("isInlineableTokenMethod = " +
                                     isInlineableTokenMethod);
                         }

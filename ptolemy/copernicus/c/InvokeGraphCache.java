@@ -159,7 +159,7 @@ public class InvokeGraphCache{
             Iterator targets = invokeGraph.getTargetsOf(method).iterator();
             targetSignatures = new LinkedList();
 
-            while(targets.hasNext()) {
+            while (targets.hasNext()) {
                 SootMethod target = (SootMethod)targets.next();
                 targetSignatures.add(target.getSignature());
             }

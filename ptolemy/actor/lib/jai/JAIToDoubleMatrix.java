@@ -91,7 +91,7 @@ public class JAIToDoubleMatrix extends Transformer {
         DataBuffer dataBuffer = raster.getDataBuffer();
         //Construct a matrix of doubles.
         double data[][] = new double[width][height];
-        for(int i = 0; i < width; i++) {
+        for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 data[i][j] = dataBuffer.getElemDouble(i*height + j);
             }

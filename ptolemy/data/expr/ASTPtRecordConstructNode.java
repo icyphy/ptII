@@ -90,20 +90,20 @@ public class ASTPtRecordConstructNode extends ASTPtRootNode {
         // congruence of the children.
 
         // Check to see that they are the same kind of node.
-        if(node._id != _id) {
+        if (node._id != _id) {
             return false;
         }
         ASTPtRecordConstructNode recordNode = (ASTPtRecordConstructNode)node;
         // Empty records are allowed (Are they?)
-        if(recordNode._fieldNames == null && _fieldNames == null) {
+        if (recordNode._fieldNames == null && _fieldNames == null) {
             return true;
         }
         // But both must be empty
-        if(recordNode._fieldNames == null || _fieldNames == null) {
+        if (recordNode._fieldNames == null || _fieldNames == null) {
             return false;
         }
         // Check that they have the same number of fields.
-        if(recordNode._fieldNames.size() != _fieldNames.size()) {
+        if (recordNode._fieldNames.size() != _fieldNames.size()) {
             return false;
         }
         // The field names must be the same.
@@ -112,20 +112,20 @@ public class ASTPtRecordConstructNode extends ASTPtRootNode {
         Set nameSet = new HashSet(_fieldNames);
         Set nodeNameSet =
             new HashSet(((ASTPtRecordConstructNode)node)._fieldNames);
-        if(!nameSet.equals(nodeNameSet)) {
+        if (!nameSet.equals(nodeNameSet)) {
             return false;
         }
         // Check that their children are congruent, under renaming.
         Iterator fieldNames = _fieldNames.iterator();
         Iterator children = _children.iterator();
-        while(fieldNames.hasNext()) {
+        while (fieldNames.hasNext()) {
             String fieldName = (String)fieldNames.next();
             ASTPtRootNode child = (ASTPtRootNode)children.next();
             int nodeIndex = recordNode._fieldNames.indexOf(fieldName);
             ASTPtRootNode nodeChild =
                 (ASTPtRootNode)recordNode._children.get(nodeIndex);
 
-            if(!child.isCongruent(nodeChild, renaming)) {
+            if (!child.isCongruent(nodeChild, renaming)) {
                 return false;
             }
         }

@@ -94,7 +94,7 @@ public class ExplicitScope implements ParserScope {
      */
     public Set identifierSet() {
         Set set = new HashSet();
-        for(Iterator variables = _list.elementList().iterator();
+        for (Iterator variables = _list.elementList().iterator();
             variables.hasNext();) {
             Variable variable = (Variable)variables.next();
             set.add(variable.getName());

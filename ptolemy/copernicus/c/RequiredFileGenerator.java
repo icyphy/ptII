@@ -348,7 +348,7 @@ public class RequiredFileGenerator {
 
             FileHandler.write(name, code);
 
-            if(verbose) System.out.println( "\texists: " + fileName
+            if (verbose) System.out.println( "\texists: " + fileName
                     + StubFileGenerator.stubFileNameSuffix());
         }
         else {
@@ -358,20 +358,20 @@ public class RequiredFileGenerator {
 
             FileHandler.write(name, code);
 
-            if(verbose) {
+            if (verbose) {
                 System.out.println( "\tcreated: " + name);
             }
         }
 
 
         // Generate the .h file.
-        if(FileHandler.exists(fileName+".h")) {
+        if (FileHandler.exists(fileName+".h")) {
             hGenerator = new HeaderFileGenerator();
             code = hGenerator.generate(sootClass);
             FileHandler.write(fileName+".h", code);
 
 
-            if(verbose) {
+            if (verbose) {
                 System.out.println( "\texists: " + fileName + ".h");
             }
         }

@@ -78,10 +78,10 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
      *  given node.
      */
     public boolean isCongruent(ASTPtRootNode node, Map renaming) {
-        if(!super.isCongruent(node, renaming)) {
+        if (!super.isCongruent(node, renaming)) {
             return false;
         }
-        if(_lexicalToken.kind != ((ASTPtLogicalNode)node)._lexicalToken.kind) {
+        if (_lexicalToken.kind != ((ASTPtLogicalNode)node)._lexicalToken.kind) {
             return false;
         }
         return true;

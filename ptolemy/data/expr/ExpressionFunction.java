@@ -120,18 +120,18 @@ public class ExpressionFunction implements FunctionToken.Function {
         // SN - 4/18/2003
 
         /**
-           if(!(function instanceof ExpressionFunction)) {
+           if (!(function instanceof ExpressionFunction)) {
            return false;
            }
            ExpressionFunction expressionFunction = (ExpressionFunction)function;
            // The functions must have the same number of arguments.
-           if(getNumberOfArguments() != function.getNumberOfArguments()) {
+           if (getNumberOfArguments() != function.getNumberOfArguments()) {
            return false;
            }
            // Construct the renaming map.
            Map renaming = new HashMap();
            Iterator argNames = expressionFunction._argumentNames.iterator();
-           for(Iterator names = _argumentNames.iterator();
+           for (Iterator names = _argumentNames.iterator();
            names.hasNext();) {
            String name = (String)names.next();
            String argName = (String)argNames.next();

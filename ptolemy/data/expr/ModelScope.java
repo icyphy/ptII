@@ -63,7 +63,7 @@ public abstract class ModelScope implements ParserScope {
         List variableList = container.attributeList(Variable.class);
         variableList.remove(exclude);
         Set nameSet = new HashSet();
-        for(Iterator variables = variableList.iterator();
+        for (Iterator variables = variableList.iterator();
             variables.hasNext();) {
             Variable variable = (Variable)variables.next();
             nameSet.add(variable.getName());
@@ -72,7 +72,7 @@ public abstract class ModelScope implements ParserScope {
         // Get variables higher in scope.  Moving up the hierarchy
         // terminates when the container is null.
         NamedObj aboveContainer = (NamedObj)container.getContainer();
-        if(aboveContainer != null) {
+        if (aboveContainer != null) {
             nameSet.addAll(getAllScopedVariableNames(exclude, aboveContainer));
         }
 

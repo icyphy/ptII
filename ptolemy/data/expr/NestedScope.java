@@ -106,7 +106,7 @@ public class NestedScope implements ParserScope {
      */
     public Set identifierSet() throws IllegalActionException {
         Set set = new HashSet();
-        for(Iterator scopes = _scopeList.iterator();
+        for (Iterator scopes = _scopeList.iterator();
             scopes.hasNext();) {
             ParserScope scope = (ParserScope) scopes.next();
             set.addAll(scope.identifierSet());

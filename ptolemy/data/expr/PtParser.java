@@ -308,7 +308,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         try {
             Class newClass = Class.forName(newClassName);
-            if(!_classesSearched.contains(newClass)) {
+            if (!_classesSearched.contains(newClass)) {
                 _classesSearched.add(newClass);
             }
         } catch (ClassNotFoundException ex) {
@@ -1441,9 +1441,9 @@ String tidied, x;
                 int prefixLength;
                 int suffixLength;
 
-                if(mustBeLong) {
+                if (mustBeLong) {
                     suffixLength = 1;
-                } else if(mustBeUnsignedByte) {
+                } else if (mustBeUnsignedByte) {
                     suffixLength = 2;
                 } else {
                     suffixLength = 0;
@@ -1453,7 +1453,7 @@ String tidied, x;
                     // Input is a hex number.
                     radix = 16;
                     prefixLength = 2;
-                } else if(x.startsWith("0")) {
+                } else if (x.startsWith("0")) {
                     // Input is an octal number.
                     radix = 8;
                     prefixLength = 0;
@@ -1665,7 +1665,7 @@ String tidied, x;
             ParseTreeTypeInference inference = new ParseTreeTypeInference();
             int argCount = jjtn000.getArgumentNameList().size();
             jjtn000._argTypes = new ptolemy.data.type.Type[argCount];
-            for(int i = 0; i < argCount; i++) {
+            for (int i = 0; i < argCount; i++) {
                 ASTPtRootNode argChild = ((ASTPtRootNode)jjtn000.jjtGetChild(i));
                 ptolemy.data.type.Type type = inference.inferTypes(argChild);
                 jjtn000._argTypes[i] = type;

@@ -105,7 +105,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
             value = _scope.get(node.getFunctionName());
         }
 
-        if(value == null) {
+        if (value == null) {
             // Just visit arguments other than the first.
             int numChildren = node.jjtGetNumChildren();
             for (int i = 1; i < numChildren; i++) {
@@ -204,7 +204,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
         int numChildren = node.jjtGetNumChildren();
         for (int i = 0; i < numChildren; i++) {
             ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
-            if(!child.isConstant()) {
+            if (!child.isConstant()) {
                 return false;
             }
         }
@@ -215,7 +215,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         _visitAllChildren(node);
         boolean isConstant = _childrenAreConstant(node);
-        if(isConstant) {
+        if (isConstant) {
             _replaceConstantNode(node);
         }
     }
@@ -232,7 +232,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
         newNode.setConstant(true);
 
         ASTPtRootNode parent = (ASTPtRootNode)node._parent;
-        if(parent == null) {
+        if (parent == null) {
             _result = newNode;
         } else {
             // Replace the old with the new.

@@ -90,20 +90,20 @@ public class ASTPtProductNode extends ASTPtRootNode {
      *  given node.
      */
     public boolean isCongruent(ASTPtRootNode node, Map renaming) {
-        if(!super.isCongruent(node, renaming)) {
+        if (!super.isCongruent(node, renaming)) {
             return false;
         }
         // The operators must be the same.
         Iterator nodeTokens =
             ((ASTPtProductNode)node)._lexicalTokens.iterator();
-        for(Iterator tokens = _lexicalTokens.iterator();
+        for (Iterator tokens = _lexicalTokens.iterator();
             tokens.hasNext();) {
             Token token = (Token)tokens.next();
             Token nodeToken = (Token)nodeTokens.next();
-            if(token.kind != nodeToken.kind) {
+            if (token.kind != nodeToken.kind) {
                 return false;
             }
-            if(!token.image.equals(nodeToken.image)) {
+            if (!token.image.equals(nodeToken.image)) {
                 return false;
             }
         }

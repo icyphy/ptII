@@ -152,7 +152,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
 
         _evaluatedChildToken = (new ArrayToken(tokens));
-        if(node.isConstant()) {
+        if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
     }
@@ -207,7 +207,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
         _evaluatedChildToken = ((ptolemy.data.Token)bitwiseResult);
-        if(node.isConstant()) {
+        if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
     }
@@ -467,7 +467,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
 
         token = conversionType.convert(token);
         _evaluatedChildToken = (token);
-        if(node.isConstant()) {
+        if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
     }
@@ -562,7 +562,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
         _evaluatedChildToken = (BooleanToken.getInstance(flag));
-        if(node.isConstant()) {
+        if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
     }
@@ -625,7 +625,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
         _evaluatedChildToken = (result);
-        if(node.isConstant()) {
+        if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
     }
@@ -720,7 +720,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             result = result.pow(times);
         }
         _evaluatedChildToken = (result);
-        if(node.isConstant()) {
+        if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
     }
@@ -758,7 +758,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
         _evaluatedChildToken = (result);
-        if(node.isConstant()) {
+        if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
     }
@@ -785,7 +785,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                 new String[numChildren]);
 
         _evaluatedChildToken = (new RecordToken(labels, tokens));
-        if(node.isConstant()) {
+        if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
     }
@@ -835,7 +835,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             }
         }
         _evaluatedChildToken = (result);
-        if(node.isConstant()) {
+        if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
     }
@@ -893,7 +893,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     "the right operand to have an integer value.");
         }
         _evaluatedChildToken = (result);
-        if(node.isConstant()) {
+        if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
     }
@@ -930,7 +930,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         }
 
         _evaluatedChildToken = (result);
-        if(node.isConstant()) {
+        if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
     }
@@ -971,7 +971,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             _assert(false, node, "Unrecognized unary node");
         }
         _evaluatedChildToken = (result);
-        if(node.isConstant()) {
+        if (node.isConstant()) {
             node.setToken(_evaluatedChildToken);
         }
     }
@@ -1124,7 +1124,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         CachedMethod method = CachedMethod.findMethod(functionName,
                 argTypes, CachedMethod.FUNCTION);
         if (method.isValid()) {
-            if(_trace != null) {
+            if (_trace != null) {
                 _trace("Invoking " + method.methodDescription());
                 _trace("as " + method);
             }
@@ -1149,7 +1149,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         CachedMethod method = CachedMethod.findMethod(methodName,
                 argTypes, CachedMethod.METHOD);
         if (method.isValid()) {
-            if(_trace != null) {
+            if (_trace != null) {
                 _trace("Invoking " + method.methodDescription());
                 _trace("as " + method);
             }
@@ -1165,8 +1165,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  If the trace is null, do nothing.
      */
     protected void _trace(String string) {
-        if(_trace != null) {
-            for(int i = 0; i < _depth; i++) {
+        if (_trace != null) {
+            for (int i = 0; i < _depth; i++) {
                 _trace.append("  ");
             }
             _trace.append(string);
@@ -1179,8 +1179,8 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  do nothing.
      */
     protected void _traceEnter(ASTPtRootNode node) {
-        if(_trace != null) {
-            for(int i = 0; i < _depth; i++) {
+        if (_trace != null) {
+            for (int i = 0; i < _depth; i++) {
                 _trace.append("  ");
             }
             _trace.append("Entering node " + node.getClass().getName() + "\n");
@@ -1193,9 +1193,9 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  do nothing.
      */
     protected void _traceLeave(ASTPtRootNode node) {
-        if(_trace != null) {
+        if (_trace != null) {
             _depth--;
-            for(int i = 0; i < _depth; i++) {
+            for (int i = 0; i < _depth; i++) {
                 _trace.append("  ");
             }
             _trace.append("Node " + node.getClass().getName() +

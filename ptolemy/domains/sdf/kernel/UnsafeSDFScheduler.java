@@ -568,7 +568,7 @@ public class UnsafeSDFScheduler extends Scheduler {
                 Integer waitingTokens = (Integer)
                     sourcePortToWaitingTokens.get(sourcePort);
                 
-                if(_debugging && VERBOSE) {
+                if (_debugging && VERBOSE) {
                     _debug("Has " + waitingTokens + 
                             " from " + sourcePort.getFullName());
                 }
@@ -1677,7 +1677,7 @@ public class UnsafeSDFScheduler extends Scheduler {
             }
 
             // Update the buffer sizes.
-            for(Iterator relations =
+            for (Iterator relations =
                     port.insideRelationList().iterator();
                 relations.hasNext();) {
                 IORelation relation = (IORelation) relations.next();
@@ -1689,13 +1689,13 @@ public class UnsafeSDFScheduler extends Scheduler {
                 }
                 
                 List relationPortList = relation.linkedDestinationPortList();
-                if(relationPortList.contains(sinkPort)) {
+                if (relationPortList.contains(sinkPort)) {
                     // The bufferSize for the current relation.  This is
                     // put back into the buffer at the end after (possibly)
                     // being updated.
                     Integer bufferSize = (Integer) 
                         minimumBufferSize.get(relation);
-                    if(bufferSize != null &&
+                    if (bufferSize != null &&
                             bufferSize.intValue() < newTokenCount) {
                         minimumBufferSize.put(relation, 
                                 new Integer(newTokenCount));
@@ -1813,7 +1813,7 @@ public class UnsafeSDFScheduler extends Scheduler {
             }
 
             // Update the buffer sizes.
-            for(Iterator relations =
+            for (Iterator relations =
                     outputPort.linkedRelationList().iterator();
                 relations.hasNext();) {
                 IORelation relation = (IORelation) relations.next();
@@ -1827,11 +1827,11 @@ public class UnsafeSDFScheduler extends Scheduler {
                 // It would be nice if we could get a list of all the
                 // relations assocated with the channel.
                 List relationPortList = relation.linkedDestinationPortList();
-                if(relationPortList.contains(sinkPort)) {
+                if (relationPortList.contains(sinkPort)) {
                     // Update the bufferSize for the current relation.
                     Integer bufferSize = (Integer) 
                         minimumBufferSize.get(relation);
-                    if(bufferSize != null &&
+                    if (bufferSize != null &&
                             bufferSize.intValue() < newTokenCount) {
                         minimumBufferSize.put(relation, 
                                 new Integer(newTokenCount));

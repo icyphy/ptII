@@ -529,7 +529,7 @@ public class UtilityFunctions {
         } else if (arity > 1){
             for (int i = 0; i < array.length(); i++) {
                 Token args = (Token)array.getElement(i);
-                if(! (args instanceof ArrayToken)) {
+                if (! (args instanceof ArrayToken)) {
                     throw new IllegalActionException(
                             "Invalid arguments to map(): mismatched arity.");
                 }
@@ -577,7 +577,7 @@ public class UtilityFunctions {
                             "map(): specified array token is not compatible "
                             + "with function argument type.");
                 }
-            } else if(castFunctionType.getArgCount() > 1) {
+            } else if (castFunctionType.getArgCount() > 1) {
                 Type firstArgType = castFunctionType.getArgType(0);
                 boolean flag = true;
                 for (int i = 1; i< castFunctionType.getArgCount(); i++) {
@@ -664,7 +664,7 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type maxReturnType(Type type) {
-        if(type instanceof ArrayType) {
+        if (type instanceof ArrayType) {
             ArrayType arrayType = (ArrayType) type;
             return arrayType.getElementType();
         } else {
@@ -716,7 +716,7 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type minReturnType(Type type) {
-        if(type instanceof ArrayType) {
+        if (type instanceof ArrayType) {
             ArrayType arrayType = (ArrayType) type;
             return arrayType.getElementType();
         } else {
@@ -806,7 +806,7 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type randomReturnType(Type type) {
-        if(type.equals(BaseType.INT)) {
+        if (type.equals(BaseType.INT)) {
             return new ArrayType(BaseType.DOUBLE);
         } else {
             return BaseType.UNKNOWN;
@@ -1072,7 +1072,7 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type sumReturnType(Type type) {
-        if(type instanceof ArrayType) {
+        if (type instanceof ArrayType) {
             ArrayType arrayType = (ArrayType) type;
             return arrayType.getElementType();
         } else {

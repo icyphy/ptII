@@ -86,7 +86,7 @@ public class ExpressionShellTableau extends Tableau
 
         // Figure out if we got an assignment... if so, then get the
         // identifier name and only evaluated the expression part.
-        if(node instanceof ASTPtAssignmentNode) {
+        if (node instanceof ASTPtAssignmentNode) {
             ASTPtAssignmentNode assignmentNode = (ASTPtAssignmentNode) node;
             targetName = assignmentNode.getIdentifier();
             node = assignmentNode.getExpressionTree();
@@ -123,7 +123,7 @@ public class ExpressionShellTableau extends Tableau
         Token result = _evaluator.evaluateParseTree(node, scope);
 
         // If a target was specified, instantiate a new token.
-        if(targetName != null) {
+        if (targetName != null) {
             Attribute attribute = model.getAttribute(targetName);
             if (attribute != null && !(attribute instanceof Parameter)) {
                 attribute.setContainer(null);

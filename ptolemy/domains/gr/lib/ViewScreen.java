@@ -379,7 +379,7 @@ public class ViewScreen extends GRActor implements Placeable {
             c = c.getParent();
         }
         // If we had created a frame before, then blow it away.
-        if(_frame != null) {
+        if (_frame != null) {
             _frame.dispose();
             _frame = null;
         }

@@ -78,23 +78,23 @@ public class ASTPtLeafNode extends ASTPtRootNode {
      *  given node.
      */
     public boolean isCongruent(ASTPtRootNode node, Map renaming) {
-        if(!super.isCongruent(node, renaming)) {
+        if (!super.isCongruent(node, renaming)) {
             return false;
         }
         // Both must be constant or not.
-        if(isConstant() != node.isConstant()) {
+        if (isConstant() != node.isConstant()) {
             return false;
         }
-        if(isConstant()) {
+        if (isConstant()) {
             // If constant, then check the value
             return getToken().equals(node.getToken());
         } else {
             // Else, check the name.
             String checkName = (String)renaming.get(getName());
-            if(checkName == null) {
+            if (checkName == null) {
                 checkName = getName();
             }
-            if(!checkName.equals(((ASTPtLeafNode)node).getName())) {
+            if (!checkName.equals(((ASTPtLeafNode)node).getName())) {
                 return false;
             } else {
                 return true;

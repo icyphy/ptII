@@ -285,7 +285,7 @@ public abstract class MatrixToken extends Token {
     public static Type arrayToMatrixReturnType(
             Type type1, Type type2, Type type3)
             throws IllegalActionException {
-        if(type1 instanceof ArrayType) {
+        if (type1 instanceof ArrayType) {
             Type elementType = ((ArrayType)type1).getElementType();
             return UnsizedMatrixType.getMatrixTypeForElementType(elementType);
         } else {
@@ -1152,7 +1152,7 @@ public abstract class MatrixToken extends Token {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type toArrayReturnType(Type type) {
-        if(type instanceof UnsizedMatrixType) {
+        if (type instanceof UnsizedMatrixType) {
             Type elementType = ((UnsizedMatrixType)type).getElementType();
             return new ArrayType(elementType);
         } else {

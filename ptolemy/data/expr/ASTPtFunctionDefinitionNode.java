@@ -126,28 +126,28 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
      *  given node.
      */
     public boolean isCongruent(ASTPtRootNode node, Map renaming) {
-        if(!(node instanceof ASTPtFunctionDefinitionNode)) {
+        if (!(node instanceof ASTPtFunctionDefinitionNode)) {
             return false;
         }
         ASTPtFunctionDefinitionNode functionNode =
             (ASTPtFunctionDefinitionNode)node;
 
         // The number of arguments must be the same.
-        if(getArgumentNameList().size() !=
+        if (getArgumentNameList().size() !=
                 functionNode.getArgumentNameList().size()) {
             return false;
         }
         Map newRenaming = new HashMap(renaming);
 
         Iterator argNames = functionNode.getArgumentNameList().iterator();
-        for(Iterator names = getArgumentNameList().iterator();
+        for (Iterator names = getArgumentNameList().iterator();
             names.hasNext();) {
             String name = (String)names.next();
             String argName = (String)argNames.next();
             newRenaming.put(name, argName);
         }
 
-        if(!super.isCongruent(node, newRenaming)) {
+        if (!super.isCongruent(node, newRenaming)) {
             return false;
         }
         return true;
