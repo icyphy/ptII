@@ -284,6 +284,8 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.domains.hdf.kernel \
 			ptolemy.domains.hdf.lib \
 			ptolemy.domains.giotto.kernel \
+			ptolemy.domains.nc.kernel \
+			ptolemy.domains.nc.lib \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.pn.kernel.event \
 			ptolemy.domains.petrinet.kernel \
@@ -437,6 +439,8 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/domains/giotto/kernel/*.java \
 			../ptolemy/domains/pn/kernel/*.java \
 			../ptolemy/domains/petrinet/kernel/*.java \
+			../ptolemy/domains/nc/kernel/*.java \
+			../ptolemy/domains/nc/lib/*.java \
 			../ptolemy/domains/sdf/kernel/*.java \
 			../ptolemy/domains/sdf/lib/*.java \
 			../ptolemy/domains/sdf/lib/vq/*.java \
