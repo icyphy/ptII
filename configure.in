@@ -605,6 +605,10 @@ fi
 # $PTII/ptolemy/makefile if Cal was found.
 PTCAL_DIR=
 
+# PTCALTROP_DIR is set to caltrop and used in
+# $PTII/ptolemy/makefile if Cal was found.
+PTCALTROP_DIR=
+
 # Directory that contains the ptCal jar file
 CAL_DIR='${PTII}/lib'
 
@@ -627,6 +631,7 @@ else
 	if test -f "$CAL_DIR/saxon7.jar"; then
 	   AC_MSG_RESULT([$CAL_DIR/saxon7.jar])
 	   PTCAL_DIR=cal
+	   PTCALTROP_DIR=caltrop
 	else   
            AC_MSG_WARN([Failed to find $CAL_DIR/saxon7.jar
     which is required by Cal, the actor language.
@@ -2485,8 +2490,11 @@ AC_SUBST(MATLAB_LIBDIR)
 # if we found boost/static_assert.hpp (mescal)
 AC_SUBST(PTBOOST_INCLUDE)
 
-# Set to cal and used in $PTII/ptoelmy/makefile if Cal was found.
+# Set to cal and used in $PTII/ptolemy/makefile if Cal was found.
 AC_SUBST(PTCAL_DIR)
+
+# Set to caltrop and used in $PTII/ptolemy/makefile if Cal was found.
+AC_SUBST(PTCALTROP_DIR)
 
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 AC_SUBST(PTCOPERNICUS_DIR)
