@@ -71,7 +71,7 @@ stream of events based on the presence or absence of events from another
 input.  This actor reacts to the presence of the other event, whereas
 Inhibit reacts to the absence of it.
 
-@author Jie Liu, Edward A. Lee, Steve Neuendorffer,Jim Armstrong
+@author Jie Liu, Edward A. Lee, Steve Neuendorffer, Jim Armstrong
 @version $Id$
 @see ptolemy.domains.de.lib.Inhibit
 */
