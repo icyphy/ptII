@@ -114,7 +114,7 @@ public class HDFDownSample extends Transformer {
     /** If the attribute being changed is <i>rate</i>, then verify
      *  that it is a positive integer.
      *  @exception IllegalActionException If <i>rate</i> is not a
-     *  positive interger.
+     *  positive integer.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -184,7 +184,7 @@ public class HDFDownSample extends Transformer {
     }
 
     /** Preinitialize the actor by setting the sample rate in the
-     *  first interation to be the initial value of the <i>rate</i>
+     *  first iteration to be the initial value of the <i>rate</i>
      *  portParameter.
      *  @exception IllegalActionException If the parent class throws it.
      */

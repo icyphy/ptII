@@ -1,4 +1,4 @@
-/* A constant source with a variable token producation rate.
+/* A constant source with a variable token production rate.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -57,7 +57,7 @@ on each firing. The default value is an IntToken with value 1.
 
 public class ConstVariableRate extends Const {
 
-    /** ConstVariableRateruct a constant source with the given container and name.
+    /** Construct a constant source with the given container and name.
      *  Create the <i>value</i> parameter, initialize its value to
      *  the default value of an IntToken with value 1.
      *  @param container The container.

@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// HDFActor
 /**
 This actor is a prototype actor that show how rate can be changed and the
-schedule can be re-computed correctly. The comsuption rate of the input
+schedule can be re-computed correctly. The consumption rate of the input
 port and the production rate of the output port are same, both set by the
 portParameter <i>rate</i>. At the end of each iteration, the actor takes
 the most recent tokens from its port, according to which the director that
@@ -101,7 +101,7 @@ public class HDFActor extends Transformer {
     /** If the attribute being changed is <i>rate</i>, then verify
      *  that it is a positive integer.
      *  @exception IllegalActionException If <i>rate</i> is not a
-     *  positive interger.
+     *  positive integer.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -159,7 +159,7 @@ public class HDFActor extends Transformer {
         return super.postfire();
     }
 
-    /** Preitialize the actor by setting the port rate in the first
+    /** Preinitialize the actor by setting the port rate in the first
      *  iteration to be the initial value of the <i>rate</i> portParameter.
      *  @exception IllegalActionException If the parent class throws it.
      */
