@@ -108,7 +108,7 @@ public class RBCell extends Cell implements ImplementationCheckable  {
 
 
 /**
- * @see collections.ImplementationCheckable.checkImplementation.
+ * @see collections.ImplementationCheckable.checkImplementation
 **/
   public void checkImplementation() 
   throws ImplementationError {
