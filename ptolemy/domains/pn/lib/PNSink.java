@@ -62,7 +62,7 @@ public class PNSink extends AtomicActor{
         IntToken data;
 	while (true) {
 	    data = (IntToken)_input.get(0);
-	    System.out.println("Sink discarded "+data.getValue());
+	    System.out.println("Sink discarded "+data.intValue());
 	}
     }
     

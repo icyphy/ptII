@@ -68,12 +68,12 @@ public class PNSieve extends AtomicActor {
 	    //System.out.println("Sieve getting data");
 	    data = _input.get(0);
 	    //System.out.println("Sieve gotten data");
-	    if (((IntToken)data).getValue()%_prime != 0) {
+	    if (((IntToken)data).intValue()%_prime != 0) {
 		// is it the next prime? 
 		if (islargestprime) {
 		    //System.out.println("Making mutations");
 		    // yes - make the mutation for it 
-		    Mutation m = makeMutation(((IntToken)data).getValue());
+		    Mutation m = makeMutation(((IntToken)data).intValue());
 		    PNDirector director = (PNDirector)getDirector();
 		    // Queue the new mutation
 		    director.queueMutation(m);
@@ -93,7 +93,7 @@ public class PNSieve extends AtomicActor {
             throws IllegalActionException {
         if (name.equals("prime")) {
 	    IntToken token = new IntToken(valueString);
-            _prime = token.getValue();
+            _prime = token.intValue();
 	    System.out.println("New prime discovered. "+valueString);
         } else {
             throw new IllegalActionException("Unknown parameter: " + name);
