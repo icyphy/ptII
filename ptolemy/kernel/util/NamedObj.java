@@ -666,7 +666,7 @@ public class NamedObj implements Nameable, Debuggable,
     /** Return the object that gives a detailed description of this moml
      *  object when exporting MoML.  For a detailed description of how this
      *  works, see the setDeferMoMLDefinitionTo method.
-     *  @return The named object that is refered to.
+     *  @return The named object that is referred to.
      *  @see #exportMoML(Writer, int)
      *  @see #deferredMoMLDefinitionFrom()
      *  @see #setDeferMoMLDefinitionTo(NamedObj)
