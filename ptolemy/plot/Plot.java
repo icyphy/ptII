@@ -136,7 +136,7 @@ import java.util.*;
  * be the lower and upper values for error bars.
  * The numbers can be separated by commas, spaces or tabs. 
  *
- * This plotter has some limitations:
+ * This plotter has some <A NAME="ptplot limitations">limitations</a>:
  * <ul>
  * <li> Marks, impulses, and bars are assumed to apply to the entire
  *      plot, i.e. to all data sets.  Although it is possible to change
@@ -148,6 +148,8 @@ import java.util.*;
  *      2<sup>32</sup> times extent of the visible area, quantization
  *      errors can result in displaying points or lines.
  *      Note that 2<sup>32</sup> is over 4 billion.
+ * <li> The limitations of the log axis facility are listed in
+ *      the <code>_gridInit()</code> method in the PlotBox class.
  * </ul>
  *
  * @author Edward A. Lee, Christopher Hylands
