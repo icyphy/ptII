@@ -214,6 +214,64 @@ test ComponentPort-3.3d {test insidePorts with null links} {
 ######################################################################
 ####
 #
+test ComponentPort-3.3e {test insidePorts with null links} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    $e1 setName E1
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 E2]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e2 P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
+    set p3 [java::new ptolemy.kernel.ComponentPort $e1 P3]
+    set a1 [java::new ptolemy.kernel.ComponentRelation $e1 A1]
+    $p1 insertLink 3 $a1
+    $p1 insertLink 3 [java::null]
+    $e1 exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="E1" class="ptolemy.kernel.CompositeEntity">
+    <port name="P3" class="ptolemy.kernel.ComponentPort">
+    </port>
+    <entity name="E2" class="ptolemy.kernel.ComponentEntity">
+        <port name="P1" class="ptolemy.kernel.ComponentPort">
+        </port>
+        <port name="P2" class="ptolemy.kernel.ComponentPort">
+        </port>
+    </entity>
+    <relation name="A1" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="E2.P1" insertAt="4" relation="A1"/>
+</entity>
+}
+
+######################################################################
+####
+#
+test ComponentPort-3.3f {test insidePorts with null inside links} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    $e1 setName E1
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 E2]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 P1]
+    set a1 [java::new ptolemy.kernel.ComponentRelation $e1 A1]
+    $p1 insertLink 3 $a1
+    $p1 insertInsideLink 3 [java::null]
+    $e1 exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="E1" class="ptolemy.kernel.CompositeEntity">
+    <port name="P1" class="ptolemy.kernel.ComponentPort">
+    </port>
+    <entity name="E2" class="ptolemy.kernel.ComponentEntity">
+    </entity>
+    <relation name="A1" class="ptolemy.kernel.ComponentRelation">
+    </relation>
+    <link port="P1" insertAt="4" relation="A1"/>
+</entity>
+}
+
+######################################################################
+####
+#
 test ComponentPort-3.4 {Level-crossing link error} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
     $e1 setName E1
