@@ -43,12 +43,12 @@ import java.util.Enumeration;
  * @author Steve Neuendorffer
  * @version $Id$
  */
-public class SDFdemo3 {
+public class SDFDemo3 {
 
     public static void main(String args[])
             throws IllegalActionException, NameDuplicationException
         {
-            SDFdemo3 demo = new SDFdemo3();
+            SDFDemo3 demo = new SDFDemo3();
             demo.execute();
         }
 

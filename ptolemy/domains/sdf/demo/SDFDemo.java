@@ -44,7 +44,7 @@ import ptolemy.domains.sdf.kernel.*;
  * @author Steve Neuendorffer
  * @version $Id$
  */
-public class SDFdemo {
+public class SDFDemo {
 
     public static void main(String args[])
             throws IllegalActionException, NameDuplicationException
@@ -52,7 +52,7 @@ public class SDFdemo {
             DebugListener debugger = new DebugListener();
 
             Debug.register(debugger);
-            SDFdemo demo = new SDFdemo();
+            SDFDemo demo = new SDFDemo();
             demo.execute();
         }
     public void execute()
