@@ -746,7 +746,7 @@ remote2distjdk1.4test: $(REMOTE2PTJACL_JAR)
 # Build on a remote host by doing a cvs checkout
 
 # Host to run on
-REMOTE3HOST = carson
+REMOTE3HOST = andrews
 
 # Directory to build in
 REMOTE3HOME = /vol/$(REMOTE3HOST)/$(REMOTE3HOST)1/ptII
