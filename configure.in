@@ -262,7 +262,9 @@ PTLEGO_DIR=
 if test ! -d "$COMMAPI_USER_DIR"; then
     AC_MSG_RESULT([$COMMAPI_USER_DIR is not present, so we need not
 find commapi])
-    COMMAPI_DIR='$(PTII)/vendors/sun/commapi'
+    # Use curly brackets around PTII so that if commapi is not present
+    # then ${PTII} will appear in ptinvoke.
+    COMMAPI_DIR='${PTII}/vendors/sun/commapi'
 else
     AC_MSG_CHECKING([for commapi directory])
     AC_ARG_WITH(COMMAPI, [  --with-commapi=DIR       use Java commapi from DIR,
@@ -277,7 +279,7 @@ else
 	COMMAPI_PRESENT=yes
     else    
         AC_MSG_WARN(['Failed to find $COMMAPI_DIR/comm.jar'])
-	COMMAPI_DIR='$(PTII)/vendors/sun/commapi'
+	COMMAPI_DIR='${PTII}/vendors/sun/commapi'
     fi    
 
     if test "$COMMAPI_PRESENT" = "no"; then
@@ -516,7 +518,7 @@ PTKVM_DIR=
 if test ! -d "$PTII/ptolemy/apps/kvm"; then
     AC_MSG_RESULT([$PTII/ptolemy/apps/kvm is not present, so we need not
 find the PalmOS kvm])
-    KVM_DIR='$(PTII)/vendors/sun/j2me_cldc'
+    KVM_DIR='${PTII}/vendors/sun/j2me_cldc'
     # Unfortunately, j2me_cldc does not ship with a jar of zip file
     # It needs to be built	
     KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
@@ -561,8 +563,8 @@ perhaps Kvm is not installed?
 You need not download Kvm unless you plan on building applications
 for the Palm Pilot or Handspring Visor.
 Kvm can be downloaded from http://java.sun.com/products/cldc'])
-	# Note that we don't substitute in the $(PTII) or $(KVM_DIR) here
-	KVM_DIR='$(PTII)/vendors/sun/kvm'
+	# Note that we don't substitute in the ${PTII} or $(KVM_DIR) here
+	KVM_DIR='${PTII}/vendors/sun/kvm'
    	KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
     else 
 	# Set to kvm and used in 
@@ -587,7 +589,7 @@ PTTINI_DIR=
 if test ! -d "$PTII/ptolemy/apps/tini"; then
     AC_MSG_RESULT([$PTII/ptolemy/apps/tini is not present, so we need not
 find the Dallas Semiconductor tini])
-    TINI_DIR='$(PTII)/vendors/dalsemi/tini'
+    TINI_DIR='${PTII}/vendors/dalsemi/tini'
     TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
 else
     AC_MSG_CHECKING([for tini directory])
@@ -643,8 +645,8 @@ else
    You need not download Tini unless you plan on building applications
    for the Dallas Semiconductor Tini board.
    The Tini SDK can be downloaded from http://www.ibutton.com'])
-	# Note that we don't substitute in the $(PTII) or $(TINI_DIR) here
-	TINI_DIR='$(PTII)/vendors/dalsemi/tini'
+	# Note that we don't substitute in the ${PTII} or $(TINI_DIR) here
+	TINI_DIR='${PTII}/vendors/dalsemi/tini'
    	TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
     else 
 	# Set to tini and used in 
@@ -668,7 +670,7 @@ PTWABA_DIR=
 if test ! -d "$PTII/ptolemy/apps/kvm"; then
     AC_MSG_RESULT([$PTII/ptolemy/apps/kvm is not present, so we need not
 find the PalmOS waba])
-    WABA_DIR='$(PTII)/vendors/misc/waba/wabasdk'
+    WABA_DIR='${PTII}/vendors/misc/waba/wabasdk'
     # Unfortunately, j2me_cldc does not ship with a jar of zip file
     # It needs to be built	
     WABA_CLASSES='$(WABA_DIR)/classes'
@@ -713,8 +715,8 @@ perhaps Waba is not installed?
 You need not download Waba unless you plan on building applications
 for the Palm Pilot or Handspring Visor.
 Waba can be downloaded from http://www.wabasoft.com'])
-	# Note that we don't substitute in the $(PTII) or $(WABA_DIR) here
-	WABA_DIR='$(PTII)/vendors/misc/waba/wabasdk'
+	# Note that we don't substitute in the ${PTII} or $(WABA_DIR) here
+	WABA_DIR='${PTII}/vendors/misc/waba/wabasdk'
    	WABA_CLASSES='$(WABA_DIR)/classes'
     else 
 	# Set to waba and used in 
