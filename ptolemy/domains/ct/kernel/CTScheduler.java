@@ -333,7 +333,7 @@ public class CTScheduler extends Scheduler {
                 arithmeticActors.add(a);
             }
 
-            // New resolve signal types to find the continuous and 
+            // Now resolve signal types to find the continuous and 
             // discrete cluster.
             if (a instanceof SequenceActor) {
                 if (predecessorList(a).isEmpty()) {
@@ -350,7 +350,7 @@ public class CTScheduler extends Scheduler {
                     }
                 }
             } else if ((a instanceof TypedCompositeActor) && 
-                    !(a instanceof CTCompositeActor)) {
+                    !(a instanceof CTStepSizeControlActor)) {
                 // Opaque composite actors that are not CTComposite actors
                 // are treated as DISCRETE actors.
                 Iterator ports = ((Entity)a).portList().iterator();
@@ -393,7 +393,7 @@ public class CTScheduler extends Scheduler {
                         if (port.isOutput()) {
                             signalTypes.propagateType(port);
                         }
-                    }
+                    } 
                 }
                 // If it is a domain polymorphic source, then treat
                 // it outputs as CONTINUOUS, unless otherwise specified.
@@ -516,7 +516,7 @@ public class CTScheduler extends Scheduler {
             Actor actor = (Actor)continuousIterator.next();
             if((actor instanceof SequenceActor) || 
                     ((actor instanceof CompositeActor) && 
-                            (!(actor instanceof CTCompositeActor)))) {
+                            (!(actor instanceof CTStepSizeControlActor)))) {
                 throw new NotSchedulableException((Nameable)actor,
                         " is in the continuous cluster, but it is a " 
                         + "sequence or discrete actor.");

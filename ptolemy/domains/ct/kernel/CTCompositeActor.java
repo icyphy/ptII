@@ -169,7 +169,7 @@ public class CTCompositeActor extends TypedCompositeActor
      *  @return The new port.
      *  @exception NameDuplicationException If the actor already has a port
      *   with the specified name.
-     */
+     
     public Port newPort(String name)
             throws NameDuplicationException {
         Port newPort = super.newPort(name);
@@ -183,4 +183,5 @@ public class CTCompositeActor extends TypedCompositeActor
         }
         return newPort;
     }
+    */
 }
