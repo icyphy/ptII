@@ -7,6 +7,9 @@
       <group>
 <doc>Discrete-event actors</doc>
 
+<entity name="EventButton" class="ptolemy.domains.de.lib.EventButton">
+</entity>
+
 <entity name="EventFilter" class="ptolemy.domains.de.lib.EventFilter">
 </entity>
 
