@@ -36,7 +36,8 @@
 proc speedComparison  {xmlFile \
 	{modelName "" } \
 	{targetPackage ptolemy.copernicus.shallow.cg} \
-	{repeat 3} } { 
+	{repeat 3} \
+        {modelClass ""} } { 
 
     global relativePathToPTII
     if { $modelName == "" } {
@@ -44,9 +45,17 @@ proc speedComparison  {xmlFile \
 	set toplevel [$parser parseFile $xmlFile]
 	set modelName [string range [$toplevel getFullName] 1 end]
     }
+
+    if { $modelClass == "" } {
+	set modelClass CG$modelName
+    }
+
+    # The fully qualified classname of the code we generated.
+    set targetClass $targetPackage.$modelName.$modelClass
+
     set args [java::new {String[]} 2 \
 	    [list \
-	    "-class" "$targetPackage.CG$modelName"]]
+	    "-class" "$targetClass"]]
 
     puts "Running builtin shallow $repeat times"
     set shallowElapsed [time {java::call \
@@ -57,7 +66,7 @@ proc speedComparison  {xmlFile \
     set shallowExecElapsed \
 	    [time {exec java -classpath $relativePathToPTII \
 	    ptolemy.actor.gui.CompositeActorApplication \
-	    -class $targetPackage.CG$modelName} $repeat]
+	    -class $targetClass} $repeat]
 
     set args [java::new {String[]} 1 \
 	    [list $xmlFile]]
@@ -173,6 +182,9 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
     # speedComparison uses this
     set targetPackage ptolemy.copernicus.shallow.cg
 
+    # speedComparison uses this
+    set modelClass ""
+
     # If this is deep code gen, then check that the model is a flat sdf model
     if { ${codeGenType} == "Deep" } {
 	set compositeActor [java::cast ptolemy.actor.CompositeActor $toplevel]
@@ -196,9 +208,9 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 	}
 	puts "We can run Deep codegen on $modelName"
 
-	# speedComparison uses this
+	# speedComparison uses these
 	set targetPackage ptolemy.copernicus.java.cg
-
+	set modelClass Main
     }
 
     set command compileDemo
@@ -215,12 +227,13 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
 #    puts $results
     # If the model has a different name than the file name, we
     # handle it here.
-    set command run${codeGenType}Demo
+    set command runDemo
     set results [exec make -C .. MODEL=$modelName \
 	    SOURCECLASS=$modelPath $command]
     puts $results
 
-    return [speedComparison $realModelPath $modelName $targetPackage]
+    return [speedComparison $realModelPath $modelName $targetPackage \
+	    3 $modelClass]
 } 
 
 
