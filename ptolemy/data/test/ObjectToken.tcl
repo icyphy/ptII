@@ -60,7 +60,7 @@ test ObjectToken-2.1 {Create an empty instance} {
 # 
 test ObjectToken-2.2 {Create an empty instance and query its value} {
     set p [java::new ptolemy.data.ObjectToken]
-    expr { [$p getObject] == [java::null] }
+    expr { [$p getValue] == [java::null] }
 } {1}
 
 ######################################################################
