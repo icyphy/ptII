@@ -101,23 +101,23 @@ ITERATIONSPARAMETER =	,iterations:$(ITERATIONS)
 
 compileDemo: $(JCLASS)
 	@echo "generate interpreted code for $(MODELPATH)"
-	"$(JAVA)" \
-		-classpath "$(ROOT)" \
-		ptolemy.copernicus.kernel.Copernicus \
+	$(PTII)/bin/copernicus \
 		-verbose \
-		-codeGenerator   '"interpreted"' \
+		-codeGenerator   "interpreted" \
 		-compile	 true \
-		-iterations      '"$(ITERATIONS)"' \
-		-iterationsParameter '"$(ITERATIONSPARAMETER)"' \
-		-java            "`echo '"$(JAVA)"' | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
-		-jvmSize         '"$(JVMSIZE)"' \
-		-modelPath       '"$(MODELPATH)"' \
+		-iterations      "$(ITERATIONS)" \
+		-iterationsParameter "$(ITERATIONSPARAMETER)" \
+		-java            "`echo "$(JAVA)" | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
+		-jvmSize         "$(JVMSIZE)" \
+		-modelPath       "$(MODELPATH)" \
 		-run		 false \
-		-ptIIUserDirectory  "`echo '"$(PTII)"' | sed 's@\\\@/@g'`" \
-		-targetPackage   '"$(TARGETPACKAGE)"' \
-		-targetPath      '"$(TARGETPATH)"' \
-		-watchDogTimeout '"$(WATCHDOGTIMEOUT)"' \
-		-compileOptions  '"$(COMPILEOPTIONS)"'
+		-ptIIUserDirectory  "`echo "$(PTII)" | sed 's@\\\@/@g'`" \
+		-targetPackage   "$(TARGETPACKAGE)" \
+		-targetPath      "$(TARGETPATH)" \
+		-watchDogTimeout "$(WATCHDOGTIMEOUT)"
+
+#       -compileOptions  "$(COMPILEOPTIONS)"
+
 
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
