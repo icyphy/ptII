@@ -93,9 +93,9 @@ test CompositeActor-3.3 {Test failure mode of setExecutiveDirector} {
     list $msg
 } {{pt.kernel.util.IllegalActionException: .E0.E3.E5 and .: Cannot set the executive director of an actor with a container.}}
 
-test CompositeActor-3.4 {Test isAtomic} {
+test CompositeActor-3.4 {Test isOpaque} {
     # NOTE: Uses the setup above
-    list [$e5 isAtomic] [$e3 isAtomic] [$e2 isAtomic] [$e1 isAtomic] [$e0 isAtomic]
+    list [$e5 isOpaque] [$e3 isOpaque] [$e2 isOpaque] [$e1 isOpaque] [$e0 isOpaque]
 } {1 0 0 0 0}
 
 ######################################################################
