@@ -212,7 +212,7 @@ public class MACActorBase extends NetworkActorBase {
     // remote variables
     /** The time that NAV ends or reservation ends.
      */
-    public static double tNavEnd;
+    public static double tNavEnd = 0.0;
     /** The flag indicating whether backoff is in progress.
      */
     public static boolean mBkIP;

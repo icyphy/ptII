@@ -250,6 +250,14 @@ public class Backoff extends MACActorBase {
         _status = Busy;
         _state = No_Backoff;
     }
+    
+    /** Explicitly declare which inputs and outputs are not dependent.
+     *
+     */
+    public void removeDependencies() {
+        super.removeDependency(getBackoff, BKDone);
+        super.removeDependency(fromDataPump, BKDone);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
@@ -259,7 +267,7 @@ public class Backoff extends MACActorBase {
     }
 
     private void _backoffDone(int cnt) throws IllegalActionException {
-        Token[] value = {new IntToken(BkDone), new IntToken(_cnt)};
+        Token[] value = {new IntToken(BkDone), new IntToken(cnt)};
         BKDone.send(0, new RecordToken(BackoffDoneMsgFields, value));
         mBkIP=false;
         _state = No_Backoff;

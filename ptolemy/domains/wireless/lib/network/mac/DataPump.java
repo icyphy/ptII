@@ -286,6 +286,16 @@ public class DataPump extends MACActorBase {
         _messageType = UNKNOWN;
         _pdu = null;
     }
+    
+    /** Explicitly declare which inputs and outputs are not dependent.
+     *
+     */
+    public void removeDependencies() {
+        super.removeDependency(TXTXRequest, TXTXConfirm);
+        super.removeDependency(RXTXRequest, RXTXConfirm);
+        super.removeDependency(TXTXRequest, RXTXConfirm);
+        super.removeDependency(RXTXRequest, TXTXConfirm);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////

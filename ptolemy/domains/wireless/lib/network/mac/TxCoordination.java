@@ -64,7 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
 
-   @author Charlie Zhong
+   @author Charlie Zhong, Yang Zhao
    @version TxCoordination.java,v 1.10 2004/04/13 03:37:57 cxh Exp
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (czhong)
@@ -167,11 +167,12 @@ public class TxCoordination extends MACActorBase {
                 isNetData=true;
                 RecordToken msg= (RecordToken)PduRequest.get(0);
 
-                if (_txQueue.size() >= QueueSize)
+                if (_txQueue.size() >= QueueSize) {
                     if (_debugging) {
                         _debug("Queue is full.");}
-                    else
-                        _txQueue.add(msg);
+                } else {
+                       _txQueue.add(msg);
+                }
             }
 
         switch(_currentState)
@@ -180,7 +181,10 @@ public class TxCoordination extends MACActorBase {
                 if (isNetData && !mBkIP)
                     _handleData();
                 else if (BkDone.hasToken(0))
+                {
+                     BkDone.get(0);
                     _checkQueue();
+                }
                 break;
 
             case Wait_Rts_Backoff:
@@ -205,6 +209,7 @@ public class TxCoordination extends MACActorBase {
             case Wait_Rts_Sent:
                 if (TXTXConfirm.hasToken(0))
                     {
+                        TXTXConfirm.get(0);
                         _Trsp=setTimer(Timeout,currentTime+_CTSTimeout*1e-6);
                         _currentState=Wait_Cts;
                     }
@@ -243,7 +248,7 @@ public class TxCoordination extends MACActorBase {
                                 cancelTimer(_Trsp);
                                 double endRx=((DoubleToken)GotCtsMsg.get("endRx")).doubleValue();
                                 _ssrc=0;
-                                setTimer(SifsTimeout, endRx+_dSifsDly*1e-6);
+                                setTimer(SifsTimeout, currentTime + endRx+_dSifsDly*1e-6);
                                 int durId=_aSifsTime+_aPreambleLength+_aPlcpHeaderLength+_sAckCtsLng/_mBrate;
                                 _setDurIdField(_tpdu,durId);
                                 _currentState=Wait_Cts_Sifs;
@@ -277,6 +282,7 @@ public class TxCoordination extends MACActorBase {
             case Wait_Pdu_Sent:
                 if (TXTXConfirm.hasToken(0))
                     {
+                        TXTXConfirm.get(0);
                         // no need to wait for ACK for broadcast
                         int Addr1=((IntToken)_tpdu.get("Addr1")).intValue();
                         if (Addr1==mac_broadcast_addr)
@@ -319,6 +325,10 @@ public class TxCoordination extends MACActorBase {
                     }
                 else if (GotAck.hasToken(0))
                     {
+                        //NOTE: Charlie, you need to get the token here to
+                        //consume it. Otherwise, there is a deadlock at 
+                        //this time. 
+                        GotAck.get(0);
                         _ssrc=0;
                         _slrc=0;
                         _ccw=_aCWmin;
@@ -330,6 +340,7 @@ public class TxCoordination extends MACActorBase {
 
             case TxC_Backoff:
                 if (BkDone.hasToken(0))
+                    BkDone.get(0);
                     if (_cont)
                         {
                             _cont=false;
@@ -346,6 +357,8 @@ public class TxCoordination extends MACActorBase {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        _txQueue = new LinkedList();
+        _currentState = 0;
         _dSifsDly=_aSifsTime-_aRxTxTurnaroundTime;
         _ssrc=0;
         _slrc=0;
@@ -526,10 +539,14 @@ public class TxCoordination extends MACActorBase {
         int durId=3*(_aSifsTime+_aPreambleLength+_aPlcpHeaderLength)+(length+
                 2*_sAckCtsLng)/_mBrate;
         // no RTS is needed for broadcast
-        if (length<= _dotllRTSThreshold || Addr1==mac_broadcast_addr)
+        if (length<= _dotllRTSThreshold || Addr1==mac_broadcast_addr) { 
+            //Note: Charlie, you didn't surround this if with {}, which causes the 
+            //else block below related to the if below. There are several of this kind
+            // of errors...
+        
             if (_debugging) {
                 _debug("RTS is not sent.");}
-            else
+        }    else
                 {
                     RecordToken pdu=_createPacket(Rts,durId,
                             dest_addr, getID());
@@ -537,7 +554,7 @@ public class TxCoordination extends MACActorBase {
                         new IntToken(TxRequest),
                         pdu,
                         new IntToken(_mBrate*(int)1e6)};
-                    RecordToken _rtsdu=new RecordToken(TxRequestMsgFields,TxRequestMsgValues);
+                    _rtsdu=new RecordToken(TxRequestMsgFields,TxRequestMsgValues);
                 }
         _sendFrag();
     }
@@ -557,7 +574,7 @@ public class TxCoordination extends MACActorBase {
     private int _dSifsDly, _ccw, _slrc, _ssrc, _CTSTimeout, _seqNum;
     private boolean _cont;
 
-    private RecordToken _pdu, _rtsdu, _tpdu;
+    private RecordToken _rtsdu, _tpdu;
     private LinkedList _txQueue;
     private Timer _Trsp;
 

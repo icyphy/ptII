@@ -90,15 +90,15 @@ public class FilterMpdu extends MACActorBase {
 
     /** Port receiving packets to be filtered.
      */
-    TypedIOPort fromValidateMpdu;
+    public TypedIOPort fromValidateMpdu;
 
     /** Send NAV (Network Allocation Vector) to ChannelState component.
      */
-    TypedIOPort toChannelState;
+    public TypedIOPort toChannelState;
 
     /** Send data to ProtocolControl component.
      */
-    TypedIOPort toProtocolControl;
+    public TypedIOPort toProtocolControl;
 
 
     /////////////////////////////////////////////////////////////////

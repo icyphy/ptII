@@ -52,7 +52,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    also notifies TxCoordination process of the receipt of either CTS or Ack.
 
    @author Charlie Zhong
-   @version $Id$
+   @version RxCoordination.java,v 1.9 2004/04/13 03:37:55 cxh Exp
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (czhong)
    @Pt.AcceptedRating Red (reviewmoderator)
@@ -172,7 +172,7 @@ public class RxCoordination extends MACActorBase {
                             int Subtype=((IntToken)pdu.get("Subtype")).intValue();
                             int durId=((IntToken)pdu.get("durId")).intValue();
                             int Addr2=((IntToken)pdu.get("Addr2")).intValue();
-                            _rate=((IntToken)pdu.get("rxRate")).intValue();
+                            _rate=((IntToken)msg.get("rxRate")).intValue();
 
                             switch(Type)
                                 {
@@ -205,7 +205,7 @@ public class RxCoordination extends MACActorBase {
                                                 {
                                                     // generate Cts
                                                     _rspdu=_createPacket(Cts,durId-_dRsp,Addr2);
-                                                    setTimer(SifsTimeout, endRx+_dSifsDly*1e-6);
+                                                    setTimer(SifsTimeout, currentTime + endRx+_dSifsDly*1e-6);
                                                     _currentState=Wait_Sifs;
                                                 }
                                             break;
@@ -249,6 +249,7 @@ public class RxCoordination extends MACActorBase {
             case Wait_TxDone:
                 if (RXTXConfirm.hasToken(0))
                     {
+                        RXTXConfirm.get(0);
                         _currentState=RxC_Idle;
                     }
                 break;

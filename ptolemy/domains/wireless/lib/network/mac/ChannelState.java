@@ -179,7 +179,7 @@ public class ChannelState extends MACActorBase {
                         }
                         DoubleToken t = (DoubleToken) _inputMessage.get("tRxEnd");
                         double tRxEnd = t.doubleValue();
-
+                        if (_IfsTimer != null ) cancelTimer(_IfsTimer);
                         _IfsTimer=setTimer(IfsTimeOut, _currentTime + tRxEnd + _dIfs*1e-6);
                     }
             } else if (channelStatus.hasToken(0)) {
@@ -200,6 +200,7 @@ public class ChannelState extends MACActorBase {
             switch(_messageType) {
             case Idle:
                 // if channel becomes idle,set timer and goes to Wait_Ifs state
+                if (_IfsTimer != null ) cancelTimer(_IfsTimer);
                 _IfsTimer=setTimer(IfsTimeOut,_currentTime + _dIfs*1e-6);
                 _state = Wait_Ifs;
                 break;
@@ -275,6 +276,7 @@ public class ChannelState extends MACActorBase {
         case noCs_Nav:
             // if the reservation is over, goes to Wait_Ifs state.
             if (kind == NavTimeOut) {
+                if (_IfsTimer != null ) cancelTimer(_IfsTimer);
                 _IfsTimer = setTimer(IfsTimeOut, _currentTime + _dIfs*1e-6);
                 _state = Wait_Ifs;
             } else {
@@ -305,6 +307,9 @@ public class ChannelState extends MACActorBase {
         _inputMessage = null;
         //_message = null;
         _messageType = UNKNOWN;
+        _IfsTimer = null;
+        _NavTimer = null;
+        
 
         // First assume channel is busy until PHY sends an idle event
         _changeStatus(Busy);
@@ -348,6 +353,7 @@ public class ChannelState extends MACActorBase {
             +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6;
         tNavEnd=expirationTime;
         if (expirationTime > _currentTime) {
+            if (_NavTimer != null ) cancelTimer(_NavTimer);
             _NavTimer=setTimer(NavTimeOut,expirationTime);
             return true;
         } else {
