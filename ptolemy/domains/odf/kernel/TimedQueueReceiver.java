@@ -83,14 +83,14 @@ public class TimedQueueReceiver {
      *  If the queue is empty, throw a NoTokenException. If there are
      *  other tokens left on the queue after this removal, then set
      *  the _rcvrTime of this receiver to equal that of the next oldest
-     *  token. Update the RcvrTimeTriple entry in the ODFThread which
+     *  token. Update the RcvrTimeTriple entry in the TimeKeeper that 
      *  manages this receiver.
      * @exception NoTokenException If the queue is empty.
      * @see ptolemy.domains.odf.kernel.RcvrTimeTriple
      */
     public Token get() {
-	// Thread thread = Thread.currentThread();
-	TimeKeeper timeKeeper = getReceivingTimeKeeper();
+	Thread thread = Thread.currentThread();
+	// TimeKeeper timeKeeper = getReceivingTimeKeeper();
 	Token token = null;
 	synchronized( this ) {
             Event event = (Event)_queue.take();
@@ -100,12 +100,10 @@ public class TimedQueueReceiver {
                         + "TimedQueueReceiver.");
             }
 	    token = event.getToken();
-	    /*
 	    if( thread instanceof ODFThread ) {
-	        ((ODFThread)thread).setCurrentTime( event.getTime() );
+	        TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
+	        timeKeeper.setCurrentTime( event.getTime() );
 	    }
-	    */
-	    timeKeeper.setCurrentTime( event.getTime() );
 
 	    if( _queue.size() > 0 ) {
 	        Event nextEvent = (Event)_queue.get(0);
@@ -114,10 +112,10 @@ public class TimedQueueReceiver {
 
 	    // Call updateRcvrList() even if _queue.size()==0, so that
 	    // the triple is no longer in front.
-	    // RFIXME: RcvrTimeTriple triple;
-	    // RFIXME: triple = new RcvrTimeTriple( this, _rcvrTime, _priority );
-	    timeKeeper.updateRcvrList( this, _rcvrTime, _priority );
-	    // timeKeeper.updateRcvrList( triple );
+	    if( thread instanceof ODFThread ) {
+		TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
+	        timeKeeper.updateRcvrList( this, _rcvrTime, _priority );
+	    }
 	}
         return token;
     }
@@ -160,19 +158,19 @@ public class TimedQueueReceiver {
      *  contains this receiver.
      * @return The time keeper that maintains time for the actor that
      *  contains this receiver.
-     */
     public TimeKeeper getReceivingTimeKeeper() {
         return _rcvingTimeKeeper;
     }
+     */
 
     /** Return the time keeper that maintains time for the actor that
      *  sends through this receiver.
      * @return The time keeper that maintains time for the actor 
      *  that sends through this receiver.
-     */
     public TimeKeeper getSendingTimeKeeper() {
         return _sendingTimeKeeper;
     }
+     */
 
     /** Return true if the number of tokens stored in the queue is
      *  less than the capacity of the queue. Return false otherwise.
@@ -212,17 +210,13 @@ public class TimedQueueReceiver {
 		    " - Attempt to set current time in the past.");
 	}
         Event event;
-	TimeKeeper timeKeeper = getReceivingTimeKeeper();
+	// TimeKeeper timeKeeper = getReceivingTimeKeeper();
         synchronized(this) {
             _lastTime = time;
             event = new Event(token, _lastTime);
 
             if( _queue.size() == 0 ) {
-                // RFIXME: RcvrTimeTriple triple;
                 _rcvrTime = _lastTime;
-                // RFIXME: triple = new RcvrTimeTriple( this, _rcvrTime, _priority );
-		timeKeeper.updateRcvrList( this, _rcvrTime, _priority );
-		// timeKeeper.updateRcvrList( triple );
             }
 
             if (!_queue.put(event)) {
@@ -250,19 +244,19 @@ public class TimedQueueReceiver {
      *  contains this receiver.
      * @param timeKeeper The time keeper that maintains time for 
      *  the actor that contains this receiver.
-     */
     public void setReceivingTimeKeeper(TimeKeeper timeKeeper) {
         _rcvingTimeKeeper = timeKeeper;
     }
+     */
 
     /** Set the time keeper that maintains time for the actor that
      *  sends through this receiver.
      * @param timeKeeper The time keeper that maintains time for 
      *  the actor that sends through this receiver.
-     */
     public void setSendingTimeKeeper(TimeKeeper timeKeeper) {
         _sendingTimeKeeper = timeKeeper;
     }
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly methods                ////

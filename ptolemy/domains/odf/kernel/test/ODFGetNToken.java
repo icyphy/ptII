@@ -85,6 +85,7 @@ public class ODFGetNToken extends ODFGet {
     /**
      */
     public void fire() throws IllegalActionException {
+	/*
 	TimeKeeper timeKeeper = null;
 	Receiver[][] rcvrs = inputPort.getReceivers();
 	for( int i = 0; i < rcvrs.length; i++ ) {
@@ -95,13 +96,18 @@ public class ODFGetNToken extends ODFGet {
 	    }
 	    break;
 	}
+	*/
 
 	int cnt = 0; 
 	Token token;
 	while(cnt < _numTokens) {
-	    _tokens[cnt] = getNextToken(); 
-            _threadTimes[cnt] = timeKeeper.getCurrentTime();
-	    cnt++;
+            Thread thread = Thread.currentThread(); 
+	    if( thread instanceof ODFThread ) {
+		TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
+	        _tokens[cnt] = getNextToken(); 
+		_threadTimes[cnt] = timeKeeper.getCurrentTime(); 
+		cnt++;
+	    }
 	    /*
 	    Receiver[][] rcvrs = inputPort.getReceivers();
 	    for( int i = 0; i < rcvrs.length; i++ ) {

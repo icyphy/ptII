@@ -102,9 +102,14 @@ public class ODFGetToken extends ODFGet {
 		    System.out.println("ODFGetToken receiver["+i+"]["+j+"]; cnt = "+cnt);
 		    if( rcvr.hasToken() ) {
 			_rcvrTimes[cnt] = rcvr.getRcvrTime();
-	                _tokens[cnt] = rcvr.get();
-	                TimeKeeper timeKeeper = rcvr.getReceivingTimeKeeper();
-			_threadTimes[cnt] = timeKeeper.getCurrentTime();
+	                _tokens[cnt] = rcvr.get(); 
+			Thread thread = Thread.currentThread(); 
+			if( thread instanceof ODFThread ) {
+			    TimeKeeper timeKeeper = 
+				    ((ODFThread)thread).getTimeKeeper();
+			    _threadTimes[cnt] = 
+				    timeKeeper.getCurrentTime();
+			}
 		    } else {
 			System.out.println("No token for cnt "+cnt);
 		    }

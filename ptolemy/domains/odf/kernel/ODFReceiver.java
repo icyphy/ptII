@@ -47,18 +47,16 @@ import java.util.Enumeration;
 A receiver that stores time stamped tokens according to ODF semantics.
 A "time stamped token" is a token that has a time stamp associated with it.
 An ODFReceiver stores time stamped tokens by enforcing a blocking read and
-blocking write format. Time stamped tokens are appended to the queue with
+blocking write style. Time stamped tokens are appended to the queue with
 either of the put() methods, both of which block on a write if the queue
 is full. Time stamped tokens are removed from the queue via the get()
 method that blocks on a read if the queue is empty. If a process blocks on
 a read or a write, the director is informed. Blocks are removed (and the
 director is informed) if the conditions of the queue contents that led to
-blocking no longer apply.
+blocking no longer exist.
 <P>
-Since ODFReceiver is derived from TimedQueueReceiver, it inherits both the
-lastTime and rcvrTime flags. ODFReceiver sets these flags in a manner
-similar to TimedQueueReceiver. The key difference between ODFReceiver and
-TimedQueueReceiver is that get() and put() block as described above.
+The key difference between ODFReceiver and TimedQueueReceiver is that 
+get() and put() block as described above.
 <P>
 This class assumes that valid time stamps have non-negative values. In
 other words, simulation time starts at 0.0 or later. At the conclusion 
@@ -141,19 +139,19 @@ public class ODFReceiver extends TimedQueueReceiver
      */
     public boolean hasToken() {
 	Workspace workspace = getContainer().workspace();
-	TimeKeeper timeKeeper = getReceivingTimeKeeper();
         ODFDirector director = (ODFDirector)
 	        ((Actor)getContainer().getContainer()).getDirector();
-
+	Thread thread = Thread.currentThread();
+	if( thread instanceof ODFThread ) {
+	    TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
+	    return _hasToken( workspace, director, timeKeeper );
+	}
+	/*
+	TimeKeeper timeKeeper = getReceivingTimeKeeper();
 	return _hasToken( workspace, director, timeKeeper );
+	*/
+	return false;
     }
-
-    /** FIXME
-    public void put(double time) {
-	Token token = null;
-        put( token, time );
-    }
-     */
 
     /** Do a blocking write on the queue. Set the time stamp to be the
      *  current time of the sending actor. If the time stamp of the 
@@ -169,12 +167,23 @@ public class ODFReceiver extends TimedQueueReceiver
      * @param token The token to put on the queue.
      */
     public void put(Token token) {
+	Thread thread = Thread.currentThread();
+	double time = getLastTime();
+	if( thread instanceof ODFThread ) {
+	    TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
+	    time = timeKeeper.getCurrentTime(); 
+	    if( time != INACTIVE ) {
+                time += timeKeeper.getDelayTime();
+	    }
+	}
+
+	/*
 	TimeKeeper timeKeeper = getSendingTimeKeeper();
 	double time = timeKeeper.getCurrentTime(); 
 	if( time != INACTIVE ) {
-	    // if( time != -1.0 ) {
             time += timeKeeper.getDelayTime();
 	}
+	*/
 	put( token, time );
 	/* 
 	Thread thread = Thread.currentThread();
@@ -206,26 +215,23 @@ public class ODFReceiver extends TimedQueueReceiver
         Workspace workspace = getContainer().workspace();
         ODFDirector director = (ODFDirector)
                 ((Actor)getContainer().getContainer()).getDirector();
-	// Thread thread = Thread.currentThread();
-	TimeKeeper timeKeeper = getSendingTimeKeeper();
+	Thread thread = Thread.currentThread();
+	// TimeKeeper timeKeeper = getSendingTimeKeeper();
 
         synchronized(this) {
             if( time > getCompletionTime() &&
                     getCompletionTime() != NOTSTARTED && !_terminate ) {
-		// getCompletionTime() != -5.0 && !_terminate ) {
 	        time = INACTIVE;
-	        // time = -1.0;
 	    }
 
             if( super.hasRoom() && !_terminate ) {
                 super.put(token, time);
                 notifyAll();
-		timeKeeper.sendOutNullTokens();
-		/*
+		// timeKeeper.sendOutNullTokens();
 		if( thread instanceof ODFThread ) {
-		    ((ODFThread)thread).sendOutNullTokens();
+		    TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
+		    timeKeeper.sendOutNullTokens();
 		}
-		*/
                 return;
             }
 
@@ -279,27 +285,29 @@ public class ODFReceiver extends TimedQueueReceiver
     private synchronized boolean _hasToken(Workspace workspace,
 	    ODFDirector director, TimeKeeper timeKeeper ) {
 	// ODFDirector director, ODFThread thread ) {
+
+	timeKeeper.resortRcvrList();
+
         if( timeKeeper.getNextTime() == INACTIVE ) {
-	    // if( timeKeeper.getNextTime() == -1.0 ) {
             requestFinish();
         }
 	if( getRcvrTime() > timeKeeper.getNextTime() && !_terminate ) {
+	    /*
+	    System.out.println("Time is not minimum");
+	    System.out.println("RcvrTime = " + getRcvrTime() + 
+		    "; NextTime = " + timeKeeper.getNextTime() );
+	    */
 	    return false;
 	} else if( !timeKeeper.hasMinRcvrTime() && !_terminate ) {
-            // RFIXME: RcvrTimeTriple triple;
-            // RFIXME: triple = timeKeeper.getHighestPriorityTriple();
-            // RFIXME: if( this != triple.getReceiver() ) {
+	    // System.out.println("Time is minimum but not unique");
             if( this != timeKeeper.getHighestPriorityReceiver() ) {
-		/*
-                triple = new RcvrTimeTriple( this, getRcvrTime(),
-                        getPriority() );
-		*/
                 timeKeeper.updateRcvrList( this, getRcvrTime(), 
 			getPriority() );
 		return false;
 	    }
 	}
         if( super.hasToken() && !_terminate ) {
+	    // System.out.println("Time is minimum but not unique");
             return true;
 	}
 	director.addReadBlock();
