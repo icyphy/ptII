@@ -144,7 +144,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
                 ", Build: $Id$\n\n"+
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n" +
-                "Copyright (c) 1997-2001, " +
+                "Copyright (c) 1997-2002, " +
                 "The Regents of the University of California.",
                 "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }

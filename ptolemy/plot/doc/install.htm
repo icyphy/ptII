@@ -7,9 +7,9 @@
 </head>
 <body>
 <h1>Installing Ptplot</h1>
-Ptplot 5.2p1 requires Java 1.2 or later.
+Ptplot 5.2 requires Java 1.2 or later.
 Java 1.3 is preferred.
-The Ptplot 5.2p1 Windows installers require Java 1.3.
+The Ptplot 5.2 Windows installers require Java 1.3.
 To run Ptplot, the Java runtime environment (JRE) is sufficient.
 To run the applets in a browser, the Java plug-in is required.
 The JRE is bundled with the plug-in, so downloading the plug-in
@@ -18,7 +18,7 @@ Java code, the Java development kit (JDK)
 or an equivalent Java development environment is required.
 The JDK includes a Java compiler.
 
-<p>To run Ptplot 5.2p1 applets, you must install the version 1.3
+<p>To run Ptplot 5.2 applets, you must install the version 1.3
 or later of the
 <a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plug-in</a>.
 In theory, it should be possible to run Ptplot using the JDK1.2 plugin,
@@ -34,7 +34,7 @@ then you should stick with Ptplot3.1, which does not use Swing.
 <p>Ptplot is distributed in several formats.
 <menu>
  <li><a href="#tarorzip">Instructions for the usual tar file and zip file format.</a>
- <li><a href="#installshield">Instructions for the Installshield Multiplatform installer.</a>
+ <li><a href="#installanywhere">Instructions for the InstallAnywhere installer.</a>
  <li>As part of the Ptolemy II distribution - This page covers the
  above two cases, for information about installing Ptolemy II
 see <code>$PTII/doc/index.htm</code>
@@ -49,14 +49,14 @@ recompile.  However, if you are using the standalone scripts such as
 <CODE>ptplot</CODE>, then you may want to go through the installation
 procedure so that the standalone scripts are properly localized.
 
- <p>This tar file (ptplot5.2p1.tar.gz), will unpack into called
-ptplot5.2p1, and the configure-make-make install process will not
-install any files outside of this ptplot5.2p1 directory.  So if you
+ <p>This tar file (ptplot5.2.tar.gz), will unpack into called
+ptplot5.2, and the configure-make-make install process will not
+install any files outside of this ptplot5.2 directory.  So if you
 unpack the tar file into /usr/local, after installing you will have
-/usr/local/ptplot5.2p1, and you may want to tell users to add
-/usr/local/ptplot5.2p1/bin to their PATH.  The scripts in the bin
+/usr/local/ptplot5.2, and you may want to tell users to add
+/usr/local/ptplot5.2/bin to their PATH.  The scripts in the bin
 directory will run the plotter as a standalone application, or they
-can add /usr/local/ptplot5.2p1 to their Java CLASSPATH.
+can add /usr/local/ptplot5.2 to their Java CLASSPATH.
 
  <p> If you are using Windows and you want to rebuild Ptplot or
 localize the standalone scripts, then you will need to install the
@@ -81,12 +81,12 @@ is in your path.
 <li> Set the <CODE>PTII</CODE> environment variable to point
 to the top of the Ptplot tree.  Under C-shell, one would do:
 <pre>
-setenv PTII ~/src/ptplot5.2p1
+setenv PTII ~/src/ptplot5.2
 </pre>
 
 Under Cygwin with bash:
 <pre>
-PTII=c:\\Program\ Files\\Ptolemy\\Ptplot\ 5.1p1 
+PTII=c:\\Program\ Files\\Ptolemy\\Ptplot\ 5.2
 export PTII
 </pre>
 
@@ -114,13 +114,13 @@ make
 
 </ol>
 
-<h2><a name="installshield">Installshield Installer</a></h2>
+<h2><a name="installanywhere">InstallAnywhere Installer</a></h2>
 Ptplot is also available in several self-extracting formats
-that were created with the Installshield Professional Multiplatform
+that were created with the InstallAnywhere Professional Multiplatform
 Edition
 
  <p>Note that when you run the installer under Windows, Ptplot is
-added to your Start menu under Ptolemy -&gt; Ptplot.
+added to your Start menu under Ptolemy -&gt; Ptplot 5.2.
 
 
 <h2>Notes about building and installing</h2>
@@ -173,7 +173,7 @@ downloaded the tar or zip files.
 <li> Set the <CODE>PTII</CODE> variable to the top-level
 directory of the Ptplot tree.
 <pre>
-C:\ptplot5.2p1&gt; PTII=c:\ptplot5.2p1
+C:\ptplot5.2&gt; PTII=c:\ptplot5.2
 </pre>
 <CODE>PTII</CODE> is used by the standalone <CODE>ptplot.bat</CODE>
 script and other scripts
@@ -193,26 +193,26 @@ Cygwin.
 ptolemy\plot.
 
 <pre>
-C:\ptplot5.2p1&gt; cd ptolemy\plot
+C:\ptplot5.2&gt; cd ptolemy\plot
 </pre>
 
 
 <li> set your CLASSPATH to ..\..
 <pre>
-C:\ptplot5.2p1\ptolemy\plot&gt;set CLASSPATH=..\..
-C:\ptplot5.2p1\ptolemy\plot&gt;echo %CLASSPATH%
+C:\ptplot5.2\ptolemy\plot&gt;set CLASSPATH=..\..
+C:\ptplot5.2\ptolemy\plot&gt;echo %CLASSPATH%
 ..\..
 </pre>
 
 <li> Remove the old Java files and compile them
 <pre>
-C:\ptplot5.2p1\ptolemy\plot&gt;del  *.class
-C:\ptplot5.2p1\ptolemy\plot&gt;javac *.java
+C:\ptplot5.2\ptolemy\plot&gt;del  *.class
+C:\ptplot5.2\ptolemy\plot&gt;javac *.java
 </pre>
 
 <li> Run <CODE>ptplot.bat</CODE>, which reads <CODE>%PTII%</CODE>
 <pre>
-C:\ptplot5.2p1\ptolemy\plot&gt;ptplot.bat
+C:\ptplot5.2\ptolemy\plot&gt;ptplot.bat
 </pre>
 
 </ol>
