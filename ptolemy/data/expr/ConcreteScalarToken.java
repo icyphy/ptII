@@ -79,34 +79,34 @@ public class ConcreteScalarToken extends ScalarToken {
 
     /** Throw an exception.
      */
-    public ScalarToken _bitwiseAnd(ScalarToken rightArgument)
-            throws IllegalActionException {
+    protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
+            throws IllegalActionException  {
         throw new IllegalActionException(
-                notSupportedMessage("and", this, rightArgument));
+                notSupportedMessage("bitwiseAnd", this, rightArgument));
     }
 
     /** Throw an exception.
      */
-    public ScalarToken _bitwiseNot()
+    protected ScalarToken _bitwiseNot()
             throws IllegalActionException {
         throw new IllegalActionException(
-                notSupportedMessage("not", this, null));
+                notSupportedMessage("bitwiseNot", this, this));
     }
 
     /** Throw an exception.
      */
-    public ScalarToken _bitwiseOr(ScalarToken rightArgument)
+    protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
             throws IllegalActionException {
         throw new IllegalActionException(
-                notSupportedMessage("or", this, rightArgument));
+                notSupportedMessage("bitwiseOr", this, rightArgument));
     }
 
     /** Throw an exception.
      */
-    public ScalarToken _bitwiseXor(ScalarToken rightArgument)
-            throws IllegalActionException {
+    protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
+        throws IllegalActionException {
         throw new IllegalActionException(
-                notSupportedMessage("xor", this, rightArgument));
+                notSupportedMessage("bitwiseXor", this, rightArgument));
     }
 
     /** Throw an exception.

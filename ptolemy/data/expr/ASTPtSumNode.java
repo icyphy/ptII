@@ -36,6 +36,9 @@ package ptolemy.data.expr;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
+import java.util.List;
+import java.util.LinkedList;
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtSumNode
 /**
@@ -52,37 +55,6 @@ the parse tree.
 */
 public class ASTPtSumNode extends ASTPtRootNode {
 
-    protected ptolemy.data.Token _resolveNode()
-            throws IllegalActionException {
-        int num =  jjtGetNumChildren();
-        if (num == 1) {
-            return _childTokens[0];
-        }
-        if (jjtGetNumChildren() != ( _lexicalTokens.size() +1) ) {
-            throw new InternalErrorException(
-                    "Invalid state in sum node, number of children is " +
-                    "not equal to number of operators plus one, " +
-                    "check PtParser.");
-        }
-        ptolemy.data.Token result = _childTokens[0];
-        String op = "";
-        for (int i = 1; i < num; i++) {
-            Token x = (Token)_lexicalTokens.get(i - 1);
-            op = x.image;
-            if (op.compareTo("+") == 0) {
-                result = result.add(_childTokens[i]);
-            } else if (op.compareTo("-") == 0) {
-                result = result.subtract(_childTokens[i]);
-            } else {
-                throw new InternalErrorException(
-                        "Invalid concatenator in sum() production, " +
-                        "check parser.");
-            }
-        }
-        return result;
-    }
-
-
     public ASTPtSumNode(int id) {
         super(id);
     }
@@ -91,11 +63,18 @@ public class ASTPtSumNode extends ASTPtRootNode {
         super(p, id);
     }
 
-    public static Node jjtCreate(int id) {
-        return new ASTPtSumNode(id);
+    /** Return the list of lexical tokens that were used to make this node.
+     */
+    public List getLexicalTokenList() {
+        return _lexicalTokens;
     }
 
-    public static Node jjtCreate(PtParser p, int id) {
-        return new ASTPtSumNode(p, id);
+    /** Traverse this node with the given visitor.
+     */
+    public void visit(ParseTreeVisitor visitor)
+            throws IllegalActionException {
+        visitor.visitSumNode(this);
     }
+
+    protected List _lexicalTokens = new LinkedList();
 }

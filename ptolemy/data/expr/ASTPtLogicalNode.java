@@ -53,49 +53,6 @@ nodes in the parse tree.
 */
 public class ASTPtLogicalNode extends ASTPtRootNode {
 
-    /** Evaluate the parse tree of a conditional-and or conditional-or
-     *  expression.
-     *  @exception IllegalActionException If an error occurs when trying to
-     *  evaluate a sub-expression.
-     *  @return The token containing the result of the expression.
-     */
-    public ptolemy.data.Token evaluateParseTree()
-            throws IllegalActionException {
-        if (_isConstant && _ptToken != null) {
-            return _ptToken;
-        }
-
-        int num = jjtGetNumChildren();
-	int numOperators = _lexicalTokens.size();
-	if (num <= 1 || numOperators != num - 1) {
-	    throw new InternalErrorException(
-	            "PtParser error: the parse tree for a conditional-and "
-		    + "or conditional-or expression does not have the correct "
-		    + "number of children or operators.");
-	}
-
-	Token operator = (Token)_lexicalTokens.get(0);
-	boolean isAnd = false;
-	if (operator.image.equalsIgnoreCase("&&")) {
-	    isAnd = true;
-	}
-
-        for (int i = 0; i < num; i++) {
-	    ASTPtRootNode child = (ASTPtRootNode)jjtGetChild(i);
-	    ptolemy.data.Token value = child.evaluateParseTree();
-            if (!(value instanceof BooleanToken)) {
-                throw new IllegalActionException("Cannot perform logical "
-                        + "operation on " + value.getClass());
-            }
-	    if (((BooleanToken)value).booleanValue() != isAnd) {
-		_ptToken = new ptolemy.data.BooleanToken(!isAnd);
-		return _ptToken;
-	    }
-	}
-	_ptToken = new ptolemy.data.BooleanToken(isAnd);
-	return _ptToken;
-    }
-
     public ASTPtLogicalNode(int id) {
         super(id);
     }
@@ -104,11 +61,32 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
         super(p, id);
     }
 
-    public static Node jjtCreate(int id) {
-        return new ASTPtLogicalNode(id);
+    /** Return the operator for child nodes of this node.
+     */
+    public Token getOperator() {
+        return _lexicalToken;
     }
 
-    public static Node jjtCreate(PtParser p, int id) {
-        return new ASTPtLogicalNode(p, id);
+    /** Return true if the node represents the logical AND of its
+     *  children.
+     */
+    public boolean isLogicalAnd() {
+        return (_lexicalToken.kind == PtParserConstants.COND_AND);
     }
+    
+    /** Return true if the node represents the logical OR of its
+     *  children.
+     */
+    public boolean isLogicalOr() {
+        return (_lexicalToken.kind == PtParserConstants.COND_OR);
+    }
+    
+    /** Traverse this node with the given visitor.
+     */
+    public void visit(ParseTreeVisitor visitor)
+            throws IllegalActionException {
+        visitor.visitLogicalNode(this);
+    }
+
+    protected Token _lexicalToken = null;
 }

@@ -1,5 +1,5 @@
 /* PtRootNode is the root node of the parse tree. It is also the base
-   class for all Ptolemy II nodes as each node "isA" root node for the
+   class for all Ptolemy II nodes as each node is a root node for the
    tree below it.
 
  Copyright (c) 1998-2002 The Regents of the University of California.
@@ -61,7 +61,7 @@ such as "2+4-9", the child nodes would be leaf nodes containing
 ptolemy.data.Token's with values 2, 4 and 9, and the parent node would
 store the lexical tokens representing the "+" and the "-".
 <p>
-The tree is resolved in a top down manner, calling evaluateTree() on the
+The tree is evaluated in a top down manner, calling evaluateParseTree() on the
 children of each node before resolving the type of the current node.
 
 @author Neil Smyth
@@ -71,8 +71,39 @@ children of each node before resolving the type of the current node.
 @see ptolemy.data.Token
 */
 public class ASTPtRootNode implements Node {
+
+    public ASTPtRootNode(int i) {
+        _id = i;
+    }
+
+    public ASTPtRootNode(PtParser p, int i) {
+        this(i);
+        //        _parser = p;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Override this method if you want to customize how the node dumps
+     *  out its children.
+     */       
+    public void displayParseTree(String prefix) {
+        if (_ptToken != null) {
+            String str = toString(prefix) + ", Token type: ";
+            str = str + _ptToken.getClass().getName() + ", Value: ";
+            System.out.println( str + _ptToken.toString());
+        } else {
+            System.out.println( toString(prefix) + "  _ptToken is null");
+        }
+        if (_children != null) {
+            for (int i = 0; i < _children.size(); ++i) {
+                ASTPtRootNode n = (ASTPtRootNode)_children.get(i);
+                if (n != null) {
+                    n.displayParseTree(prefix + " ");
+                }
+            }
+        }
+    }
 
     /** Called to recursively evaluate the parse tree
      *  of nodes returned from the parser. Starting at the top, it resolves
@@ -87,45 +118,32 @@ public class ASTPtRootNode implements Node {
      */
     public ptolemy.data.Token evaluateParseTree()
             throws IllegalActionException {
-        if (_isConstant && _ptToken != null) {
-            return _ptToken;
-        }
-        int numChildren = jjtGetNumChildren();
-        if (numChildren > 0) {
-            // NOTE: Could have a non-leaf node with no children,
-            // notably a nullary function call, like "foo()".
-            _childTokens = new ptolemy.data.Token[numChildren];
-            for (int i = 0; i < numChildren; i++) {
-                ASTPtRootNode child = (ASTPtRootNode)jjtGetChild(i);
-                _childTokens[i] = child.evaluateParseTree();
-                if (_childTokens[i] == null) {
-                    throw new IllegalActionException(
-                            "Null value found in node: " + toString());
-                }
-            }
-        }
-        _ptToken = _resolveNode();
+        ParseTreeEvaluator evaluator = new ParseTreeEvaluator();
+        return evaluator.evaluateParseTree(this);
+    }
+
+    /** Return the evaluated token value of this node.  This value may be
+     *  set during parsing, if this represents a constant value, or may be 
+     *  set during parse tree evaluation.
+     */
+    public ptolemy.data.Token getToken() {
         return _ptToken;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    public ASTPtRootNode(int i) {
-        _id = i;
+    /** Return true if this node represents a constant value.  This will 
+     *  be set to true if the node is a constant leaf node (a literal, or a 
+     *  reference to a constant, or if all of the children of this node are
+     *  constant.
+     */
+    public boolean isConstant() {
+        return _isConstant;
     }
 
-    public ASTPtRootNode(PtParser p, int i) {
-        this(i);
-        _parser = p;
-    }
-
-    public static Node jjtCreate(int id) {
-        return new ASTPtRootNode(id);
-    }
-
-    public static Node jjtCreate(PtParser p, int id) {
-        return new ASTPtRootNode(p, id);
+    /** Return true if this node has had its token value set to something
+     *  other than null.
+     */
+    public boolean isEvaluated() {
+        return _ptToken != null;
     }
 
     public void jjtOpen() {
@@ -133,7 +151,11 @@ public class ASTPtRootNode implements Node {
 
     public void jjtClose() {
         if (_children != null) {
+            // Trim the list of children, to reduce memory usage.
             _children.trimToSize();
+            
+            // Check to see if this node is constant, i.e. it has
+            // only constant children.
             _isConstant = true;
             for (int i = 0; i < _children.size(); ++i) {
                 ASTPtRootNode ch = (ASTPtRootNode)jjtGetChild(i);
@@ -168,65 +190,33 @@ public class ASTPtRootNode implements Node {
         return (_children == null) ? 0 : _children.size();
     }
 
-    /* You can override these two methods in subclasses of RootNode to
-       customize the way the node appears when the tree is dumped.  If
-       your output uses more than one line you should override
-       toString(String), otherwise overriding toString() is probably all
-       you need to do. */
-
-    public String toString() { return PtParserTreeConstants.jjtNodeName[_id]; }
-    public String toString(String prefix) { return prefix + toString() ; }
-
-    /* Override this method if you want to customize how the node dumps
-       out its children. - overridden Neil Smyth*/
-
-    public void displayParseTree(String prefix) {
-        if (_ptToken != null) {
-            String str = toString(prefix) + ", Token type: ";
-            str = str + _ptToken.getClass().getName() + ", Value: ";
-            System.out.println( str + _ptToken.toString());
-        } else {
-            System.out.println( toString(prefix) + "  _ptToken is null");
-        }
-        if (_children != null) {
-            for (int i = 0; i < _children.size(); ++i) {
-                ASTPtRootNode n = (ASTPtRootNode)_children.get(i);
-                if (n != null) {
-                    n.displayParseTree(prefix + " ");
-                }
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-
-    /** Resolves the Token to be stored in the node. When this
-     *  method is called by evaluateParseTree(), the tokens in each of the
-     *  children have been resolved. Thus this method is concerned with
-     *  evaluating both the value and type of the ptToken to be stored.
-     *  This method should be overridden in all subclasses which have children.
-     *  @exception IllegalActionException Thrown when an error occurs
-     *   trying to evaluate the PtToken type and/or value to be stored in
-     *   the current node.
-     *  @return The ptolemy.data.Token stored in this node.
+    /** Set the value of this node.  This may be set during parsing,
+     *  if the node is a constant node, or during evaluation of the
+     *  expression.
      */
-    protected ptolemy.data.Token _resolveNode()
-            throws IllegalActionException {
-        int num = jjtGetNumChildren();
-        if (num > 1) {
-            throw new IllegalActionException(
-                    "Node has several children, this method " +
-                    "should be overridden!");
-        } else if (num == 0) {
-            throw new IllegalActionException(
-                    "Node has no children, this method " +
-                    "should be overridden!");
-        }
-        return _childTokens[0];
+    public void setToken(ptolemy.data.Token token) {
+        _ptToken = token;
     }
 
+    /** You can override these two methods in subclasses of RootNode
+     * to customize the way the node appears when the tree is dumped.
+     * If your output uses more than one line you should override
+     * toString(String), otherwise overriding toString() is probably
+     * all you need to do.
+     */
+    public String toString() { return PtParserTreeConstants.jjtNodeName[_id]; }
+    public String toString(String prefix) { return prefix + toString(); }
+
+    /** Traverse this node with the given visitor.
+     *  subclasses should override this method to invoke the appropriate
+     *  method in the visitor.
+     */
+    public void visit(ParseTreeVisitor visitor)
+            throws IllegalActionException {
+        throw new IllegalActionException("The visit() method is not "
+                + " implemented for nodes of type " 
+                + getClass().getName() + ".");
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -234,10 +224,7 @@ public class ASTPtRootNode implements Node {
     protected Node _parent;
     protected ArrayList _children;
     protected int _id;
-    protected PtParser _parser;
-
-    ///////////////////////////////////////////////////////////////////
-    /// from here until next line of dashes is code for PtParser
+    //    protected PtParser _parser;
 
     /** Each node stores its type and state information in this variable.
      */
@@ -247,13 +234,12 @@ public class ASTPtRootNode implements Node {
      *  LinkedList. Note that here token refers to tokens returned by the
      *  lexical analyzer.
      */
-    protected List _lexicalTokens = new ArrayList(0);
+    //    protected List _lexicalTokens = new ArrayList(0);
 
     /** Stores the ptolemy.data.Tokens of each of the children nodes */
-    protected ptolemy.data.Token[] _childTokens;
+    //    protected ptolemy.data.Token[] _childTokens;
 
     /** Flags whether the parse tree under this root evaluates to a constant.
      */
     protected boolean _isConstant = false;
-
 }

@@ -254,9 +254,12 @@ test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist}
     $param4 setContainer $e
 
     set nl [$param1 getScope]
+    set scope [java::new ptolemy.data.expr.ExplicitScope $nl]
+    
+    set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
 
-    set root1 [ $parser {generateParseTree String ptolemy.kernel.util.NamedList} "id2 + id3 + id4\n" $nl]
-    set res1  [ $root1 evaluateParseTree ]
+    set root1 [ $parser {generateParseTree String} "id2 + id3 + id4\n"]
+    set res1  [ $evaluator evaluateParseTree $root1 $scope]
    
     list [$res1 toString] 
 } {{"11.45 hello world"}}
@@ -282,13 +285,15 @@ test PtParser-6.1 {Test reEvaluation of parse Tree} {
     $param3 setContainer $e
     $param4 setContainer $e
     set nl [$param1 getScope]
+    set scope [java::new ptolemy.data.expr.ExplicitScope $nl]    
+    set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
 
-    set root1 [ $parser {generateParseTree String ptolemy.kernel.util.NamedList} "id2 + id3 + id4\n" $nl]
-    set res1  [ $root1 evaluateParseTree ]
+    set root1 [ $parser {generateParseTree String} "id2 + id3 + id4\n"]
+    set res1  [ $evaluator evaluateParseTree $root1 $scope]
 
     set newTok [java::new {ptolemy.data.DoubleToken double} 102.45]
     $param2 setToken $newTok
-    set res2  [ $root1 {evaluateParseTree} ]
+    set res2  [ $evaluator evaluateParseTree $root1 $scope]
     
     list [$res1 toString] [$res2 toString] 
 } {{"11.45 hello world"} {"111.45 hello world"}}
@@ -347,9 +352,11 @@ test PtParser-7.4 {Test many levels of parenthesis nesting} {
 ####
 # 
 test PtParser-8.0 {Test method calls on PtTokens} {
+    set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
+
     set p1 [java::new ptolemy.data.expr.PtParser]
     set root1 [ $p1 {generateParseTree String} "(4.0).add(3.0)"]
-    set res1  [ $root1 evaluateParseTree ]
+    set res1  [ $evaluator evaluateParseTree $root1]
 
     set nl [java::new ptolemy.kernel.util.NamedList]
     set v1 [java::new ptolemy.data.expr.Variable]
@@ -360,8 +367,11 @@ test PtParser-8.0 {Test method calls on PtTokens} {
     $v2 setToken [java::new {ptolemy.data.DoubleToken double} 1.0]
     $nl prepend $v1
     $nl prepend $v2
-    set root2 [ $p1 generateParseTree "v1.add(v2)" $nl]
-    set res2 [ $root2 evaluateParseTree ]
+
+    set scope [java::new ptolemy.data.expr.ExplicitScope $nl]    
+
+    set root2 [ $parser {generateParseTree String} "v1.add(v2)\n"]
+    set res2  [ $evaluator evaluateParseTree $root2 $scope]
 
     list [$res1 toString] [$res2 toString]
 } {7.0 2.0}
@@ -566,12 +576,11 @@ test PtParser-12.4 {Test matrix construction.} {
 test PtParser-12.5 {Test matrix construction.} {
     set p1 [java::new ptolemy.data.expr.PtParser]
     set root1 [ $p1 {generateParseTree String} "\[1 : -1 : 2\]" ]
-    set res1 [java::cast ptolemy.data.IntMatrixToken [ $root1 evaluateParseTree ]]
-    set col [ $res1 getColumnCount ]
-    set row [ $res1 getRowCount ]
-
-    list $col $row
-} {0 1}
+    catch {set res1 [java::cast ptolemy.data.IntMatrixToken [ $root1 evaluateParseTree ]]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Matrix Token construction failed.
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: Sequence length cannot be determined because the increment has the wrong sign.}}
 
 # Test matrix construction, using regularly spaced vector as row.
 test PtParser-12.6 {Test matrix construction.} {
@@ -604,7 +613,9 @@ test PtParser-12.8 {Test matrix construction.} {
     catch {$root1 evaluateParseTree} msg
 
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: The LUB of the types of the terms of a regularly-spaced-vector matrix construction is not supported: complex}}
+} {{ptolemy.kernel.util.IllegalActionException: Matrix Token construction failed.
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: isLessThan operation not supported between ptolemy.data.ComplexToken '0.0 + 1.0i' and ptolemy.data.ComplexToken '0.0 + 0.0i' because complex numbers cannot be compared.}}
 
 # Test matrix construction, using regularly spaced vector as row.
 test PtParser-12.9 {Test matrix construction.} {
@@ -638,10 +649,13 @@ test PtParser-13.0 {Test array reference.} {
     $v2 setToken [java::new {ptolemy.data.IntToken int} 1]
     $nl prepend $v2
 
-    set root1 [ $p1 generateParseTree "v1(0+1,2)+v1(0, v2-1)" $nl]
-    set res1 [ [ $root1 evaluateParseTree ] toString ]
-    set root2 [ $p1 generateParseTree "v1(0+1,2)+v1(0, v2-1).add(v2)" $nl]
-    set res2 [ [ $root2 evaluateParseTree ] toString ]
+    set scope [java::new ptolemy.data.expr.ExplicitScope $nl]    
+    set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
+
+    set root1 [ $p1 generateParseTree "v1(0+1,2)+v1(0, v2-1)"]
+    set res1 [ [ $evaluator evaluateParseTree $root1 $scope] toString ]
+    set root2 [ $p1 generateParseTree "v1(0+1,2)+v1(0, v2-1).add(v2)"]
+    set res2 [ [ $evaluator evaluateParseTree $root2 $scope] toString ]
     list $res1 $res2
 } {{1.0 + 6.0i} {2.0 + 6.0i}}
 ######################################################################
@@ -660,15 +674,19 @@ test PtParser-14.0 {Test constant expressions.} {
     $vara setName "vara"
     $vara setExpression "1"
     $nl prepend $vara
-    set rb [ $p generateParseTree "vara-1" $nl]
-    set ta [ $rb evaluateParseTree ]
-    set tb [ $rb evaluateParseTree ]
+
+    set scope [java::new ptolemy.data.expr.ExplicitScope $nl]    
+    set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
+
+    set rb [ $p generateParseTree "vara-1"]
+    set ta [ $evaluator evaluateParseTree $rb $scope]
+    set tb [ $evaluator evaluateParseTree $rb $scope]
     set vc [ $ta equals $tb ]
     set vd [ [ $ta isEqualTo $tb ] toString ]
 
     set rc [ $p generateParseTree "eval(\"1+1\")" ]
-    set ta [ $rc evaluateParseTree ]
-    set tb [ $rc evaluateParseTree ]
+    set ta [ $evaluator evaluateParseTree $rc]
+    set tb [ $evaluator evaluateParseTree $rc]
     set ve [ $ta equals $tb ]
     set vf [ [ $ta isEqualTo $tb ] toString ]
 

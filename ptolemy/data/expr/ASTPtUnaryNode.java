@@ -59,49 +59,32 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
         super(p, id);
     }
 
-    public static Node jjtCreate(int id) {
-        return new ASTPtUnaryNode(id);
-    }
-
-    public static Node jjtCreate(PtParser p, int id) {
-        return new ASTPtUnaryNode(p, id);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    protected ptolemy.data.Token _resolveNode()
+    /** Traverse this node with the given visitor.
+     */
+    public void visit(ParseTreeVisitor visitor)
             throws IllegalActionException {
-        if (jjtGetNumChildren() != 1) {
-            throw new InternalErrorException(
-                    "More than one child of a Unary node");
-        }
-        ptolemy.data.Token result = _childTokens[0];
-        if (_isMinus == true) {
-            // Need to chose the type at the bottom of the hierarch
-            // so as to not do any upcasting. For now IntToken will do.
-            result = result.multiply(new ptolemy.data.IntToken(-1));
-        } else if (_isNot == true) {
-            if (!(result instanceof BooleanToken)) {
-                throw new IllegalActionException(
-                        "Not operator not support for non-boolean token: " +
-                        result.toString());
-            }
-            result = ((BooleanToken)result).not();
-        } else if (_isBitwiseNot == true) {
-            if (result instanceof IntToken) {
-                int tmp = ~(((IntToken)result).intValue());
-                return new IntToken(tmp);
-            } else if (result instanceof LongToken) {
-                long tmp = ~(((LongToken)result).longValue());
-                return new LongToken(tmp);
-            } else {
-                throw new IllegalActionException(
-                        "Cannot apply bitwise NOT \"~\" to  " +
-                        "non-integer type: " + result.toString());
-            }
-        }
-        return result;
+        visitor.visitUnaryNode(this);
+    }
+
+    /** Return true if this node represents the additive inverse of its
+     *  child.
+     */
+    public boolean isMinus() {
+        return _isMinus;
+    }
+
+    /** Return true if this node represents the boolean negation of its
+     *  child.
+     */
+    public boolean isNot() {
+        return _isNot;
+    }
+
+   /** Return true if this node represents the bitwise negation of its
+     *  child.
+     */
+    public boolean isBitwiseNot() {
+        return _isBitwiseNot;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -134,12 +134,13 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  @param stringIn The expression to be parsed
      *  @exception IllegalActionException If the parse fails.
      *  @return The list of undefined variables.
+     *  @deprecated Use a visitor instead.
      */
     public LinkedList getUndefinedList(String stringIn)
             throws IllegalActionException {
         InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
-        _scope = null;
-        _parserScope = null;
+       // _scope = null;
+ //       _parserScope = null;
         this.ReInit(stream);
         //debug = true;
         String str = stringIn.replace('\n', ' ');
@@ -163,25 +164,10 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  @exception IllegalActionException If the parse fails.
      *  @return The root node of the parse tree.
      */
-    public ASTPtRootNode generateParseTree(String stringIn)
-            throws IllegalActionException {
-        InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
-        _scope = null;
-        _parserScope = null;
-        this.ReInit(stream);
-        //debug = true;
-        String str = stringIn.replace('\n', ' ');
-        try {
-            // Parse the expression to obtain the parse tree
-            _undefined = null;
-            ASTPtRootNode rootNode = start();
-            if (debug) rootNode.displayParseTree(" ");
-            return rootNode;
-        } catch (ParseException x) {
-            throw new IllegalActionException("Error parsing expression \""
-                    + stringIn + "\":\n" + x.getMessage());
-        }
-    }
+//     public ASTPtRootNode generateParseTree(String stringIn)
+//             throws IllegalActionException {
+//          return generateParseTree(stringIn, (ParserScope)null);
+//     }
 
     /** Generates a parse tree from the given String. The root node is 
      *  returned. To evaluate the parse tree, the method evaluateParseTree()
@@ -191,25 +177,24 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  @exception IllegalActionException If the parse fails.
      *  @return The root node of the parse tree.
      */
-    public ASTPtRootNode generateParseTree(String stringIn, NamedList scope)
-            throws IllegalActionException {
-        InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
-        _scope = scope;
-        _parserScope = null;
-        this.ReInit(stream);
-        String str = stringIn.replace('\n', ' ');
-        ASTPtRootNode rootNode;
-        try {
-            // Parse the expression to obtain the parse tree
-            _undefined = null;
-            rootNode = start();
-            if (debug) rootNode.displayParseTree(" ");
-        } catch (ParseException x) {
-            throw new IllegalActionException("Error parsing expression \""
-                    + stringIn + "\":\n" + x.getMessage());
-        }
-        return rootNode;
-    }
+  //   public ASTPtRootNode generateParseTree(String stringIn, NamedList scope) 
+//             throws IllegalActionException {
+//         InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
+//         _scope = scope;
+//         _parserScope = null;
+//         this.ReInit(stream);
+//         String str = stringIn.replace('\n', ' ');
+//         try {
+//             // Parse the expression to obtain the parse tree
+//             _undefined = null;
+//             ASTPtRootNode rootNode = start();
+//             if (debug) rootNode.displayParseTree(" ");
+//             return (ASTPtRootNode)rootNode.jjtGetChild(0);
+//         } catch (ParseException x) {
+//             throw new IllegalActionException("Error parsing expression \""
+//                     + stringIn + "\":\n" + x.getMessage());
+//         }
+//     }
 
     /** Generates a parse tree from the given String. The root node is
      *  returned. To evaluate the parse tree, the method evaluateParseTree()
@@ -219,11 +204,11 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      *  @exception IllegalActionException If the parse fails.
      *  @return The root node of the parse tree.
      */
-    public ASTPtRootNode generateParseTree(String stringIn,
-            ParserScope scope) throws IllegalActionException {
+    public ASTPtRootNode generateParseTree(String stringIn)
+            throws IllegalActionException {
         InputStream stream = new ByteArrayInputStream(stringIn.getBytes());
-        _scope = null;
-        _parserScope = scope;
+//        _scope = null;
+ //       _parserScope = scope;
         this.ReInit(stream);
         String str = stringIn.replace('\n', ' ');
         ASTPtRootNode rootNode;
@@ -236,7 +221,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
             throw new IllegalActionException("Error parsing expression \""
                     + stringIn + "\":\n" + x.getMessage());
         }
-        return rootNode;
+        return (ASTPtRootNode)rootNode.jjtGetChild(0);
     }
 
     /** Return the list of classes the parser searches 
@@ -256,12 +241,13 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
     /** Return the list of Variables that comprise the current scope.
      *  @return The current scope.
      */
-    public NamedList getScope() {
-        if (_parserScope != null)
-            return _parserScope.attributeList();
-        else
-            return _scope;
-    }
+//     public NamedList getScope() {
+//         if (_parserScope != null) {
+//             return _parserScope.attributeList();
+//         } else {
+//             return new NamedList();
+//         }
+//     }
 
 
     /** Add a constant to the list of constants that the parser recognizes.
@@ -368,23 +354,23 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
     /* Return true if the id is a variable name in scope or a registered
      * constant.
      */
-    private boolean _isKnownID(String id) {
-        if (Constants.get(id) != null) {
-            return true;
-        }
-        if (_parserScope != null) {
-        {
-            if (_parserScope.get(id) != null)
-                return true;
-            }
-        }
-        if (_scope != null) {
-            if (_scope.get(id) != null) {
-                return true;
-            }
-        }
-        return false;
-    }
+   //  private boolean _isKnownID(String id) {
+//         if (Constants.get(id) != null) {
+//             return true;
+//         }
+//         if (_parserScope != null) {
+//         {
+//             if (_parserScope.get(id) != null)
+//                 return true;
+//             }
+//         }
+//         if (_scope != null) {
+//             if (_scope.get(id) != null) {
+//                 return true;
+//             }
+//         }
+//         return false;
+//     }
 
     /* Flag indicating whether the default set of classes searched 
      * by the parser has already been loaded.
@@ -399,11 +385,11 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
 
     /*  Stores the variables to which the input expression can reference
      */
-    private NamedList _scope;
+//    private NamedList _scope;
 
     /* The instance of ParserScope that represents the current scope.
      */
-    private ParserScope _parserScope;
+//    private ParserScope _parserScope;
 
     /* Keeps track of undefined variables if not null
      */
@@ -411,7 +397,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
 
   final public ASTPtRootNode start() throws ParseException {
  /*@bgen(jjtree) PtRootNode */
-  ASTPtRootNode jjtn000 = new ASTPtRootNode(this, JJTPTROOTNODE);
+  ASTPtRootNode jjtn000 = new ASTPtRootNode(JJTPTROOTNODE);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
@@ -443,7 +429,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
   }
 
   final public void funcIf() throws ParseException {
-     ASTPtFunctionalIfNode jjtn001 = new ASTPtFunctionalIfNode(this, JJTPTFUNCTIONALIFNODE);
+     ASTPtFunctionalIfNode jjtn001 = new ASTPtFunctionalIfNode(JJTPTFUNCTIONALIFNODE);
      boolean jjtc001 = true;
      jjtree.openNodeScope(jjtn001);
     try {
@@ -482,7 +468,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
 
   final public void logicalOr() throws ParseException {
  Token x;
-     ASTPtLogicalNode jjtn001 = new ASTPtLogicalNode(this, JJTPTLOGICALNODE);
+     ASTPtLogicalNode jjtn001 = new ASTPtLogicalNode(JJTPTLOGICALNODE);
      boolean jjtc001 = true;
      jjtree.openNodeScope(jjtn001);
     try {
@@ -499,7 +485,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(COND_OR);
         logicalAnd();
-                      jjtn001._lexicalTokens.add(x);
+                        jjtn001._lexicalToken = x;
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -524,7 +510,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
 
   final public void logicalAnd() throws ParseException {
  Token x;
-     ASTPtLogicalNode jjtn001 = new ASTPtLogicalNode(this, JJTPTLOGICALNODE);
+     ASTPtLogicalNode jjtn001 = new ASTPtLogicalNode(JJTPTLOGICALNODE);
      boolean jjtc001 = true;
      jjtree.openNodeScope(jjtn001);
     try {
@@ -541,7 +527,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(COND_AND);
         bitwiseOr();
-                      jjtn001._lexicalTokens.add(x);
+                        jjtn001._lexicalToken = x;
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -566,7 +552,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
 
   final public void bitwiseOr() throws ParseException {
  Token x;
-     ASTPtBitwiseNode jjtn001 = new ASTPtBitwiseNode(this, JJTPTBITWISENODE);
+     ASTPtBitwiseNode jjtn001 = new ASTPtBitwiseNode(JJTPTBITWISENODE);
      boolean jjtc001 = true;
      jjtree.openNodeScope(jjtn001);
     try {
@@ -583,7 +569,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(OR);
         bitwiseXor();
-                      jjtn001._lexicalTokens.add(x);
+                        jjtn001._lexicalToken = x;
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -608,7 +594,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
 
   final public void bitwiseXor() throws ParseException {
  Token x;
-     ASTPtBitwiseNode jjtn001 = new ASTPtBitwiseNode(this, JJTPTBITWISENODE);
+     ASTPtBitwiseNode jjtn001 = new ASTPtBitwiseNode(JJTPTBITWISENODE);
      boolean jjtc001 = true;
      jjtree.openNodeScope(jjtn001);
     try {
@@ -625,7 +611,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(XOR);
         bitwiseAnd();
-                      jjtn001._lexicalTokens.add(x);
+                       jjtn001._lexicalToken = x;
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -650,7 +636,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
 
   final public void bitwiseAnd() throws ParseException {
  Token x;
-     ASTPtBitwiseNode jjtn001 = new ASTPtBitwiseNode(this, JJTPTBITWISENODE);
+     ASTPtBitwiseNode jjtn001 = new ASTPtBitwiseNode(JJTPTBITWISENODE);
      boolean jjtc001 = true;
      jjtree.openNodeScope(jjtn001);
     try {
@@ -667,7 +653,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         x = jj_consume_token(AND);
         logicalEquals();
-                      jjtn001._lexicalTokens.add(x);
+                       jjtn001._lexicalToken = x;
       }
     } catch (Throwable jjte001) {
      if (jjtc001) {
@@ -692,7 +678,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
 
   final public void logicalEquals() throws ParseException {
  Token x;
-     ASTPtRelationalNode jjtn001 = new ASTPtRelationalNode(this, JJTPTRELATIONALNODE);
+     ASTPtRelationalNode jjtn001 = new ASTPtRelationalNode(JJTPTRELATIONALNODE);
      boolean jjtc001 = true;
      jjtree.openNodeScope(jjtn001);
     try {
@@ -713,7 +699,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
           throw new ParseException();
         }
         relational();
-                       jjtn001._lexicalTokens.add(x);
+                       jjtn001._lexicalToken = x;
         break;
       default:
         jj_la1[7] = jj_gen;
@@ -740,9 +726,50 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
     }
   }
 
+  final public void power() throws ParseException {
+ Token x;
+     ASTPtPowerNode jjtn001 = new ASTPtPowerNode(JJTPTPOWERNODE);
+     boolean jjtc001 = true;
+     jjtree.openNodeScope(jjtn001);
+    try {
+      unary();
+      label_6:
+      while (true) {
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case POWER:
+          ;
+          break;
+        default:
+          jj_la1[8] = jj_gen;
+          break label_6;
+        }
+        jj_consume_token(POWER);
+        unary();
+      }
+    } catch (Throwable jjte001) {
+     if (jjtc001) {
+       jjtree.clearNodeScope(jjtn001);
+       jjtc001 = false;
+     } else {
+       jjtree.popNode();
+     }
+     if (jjte001 instanceof RuntimeException) {
+       {if (true) throw (RuntimeException)jjte001;}
+     }
+     if (jjte001 instanceof ParseException) {
+       {if (true) throw (ParseException)jjte001;}
+     }
+     {if (true) throw (Error)jjte001;}
+    } finally {
+     if (jjtc001) {
+       jjtree.closeNodeScope(jjtn001, jjtree.nodeArity() > 1);
+     }
+    }
+  }
+
   final public void relational() throws ParseException {
  Token x;
-     ASTPtRelationalNode jjtn001 = new ASTPtRelationalNode(this, JJTPTRELATIONALNODE);
+     ASTPtRelationalNode jjtn001 = new ASTPtRelationalNode(JJTPTRELATIONALNODE);
      boolean jjtc001 = true;
      jjtree.openNodeScope(jjtn001);
     try {
@@ -766,15 +793,15 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
           x = jj_consume_token(LTE);
           break;
         default:
-          jj_la1[8] = jj_gen;
+          jj_la1[9] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
         sum();
-                       jjtn001._lexicalTokens.add(x);
+                       jjtn001._lexicalToken = x;
         break;
       default:
-        jj_la1[9] = jj_gen;
+        jj_la1[10] = jj_gen;
         ;
       }
     } catch (Throwable jjte001) {
@@ -800,12 +827,12 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
 
   final public void sum() throws ParseException {
  Token x;
-     ASTPtSumNode jjtn001 = new ASTPtSumNode(this, JJTPTSUMNODE);
+     ASTPtSumNode jjtn001 = new ASTPtSumNode(JJTPTSUMNODE);
      boolean jjtc001 = true;
      jjtree.openNodeScope(jjtn001);
     try {
       term();
-      label_6:
+      label_7:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case PLUS:
@@ -813,8 +840,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
           ;
           break;
         default:
-          jj_la1[10] = jj_gen;
-          break label_6;
+          jj_la1[11] = jj_gen;
+          break label_7;
         }
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case PLUS:
@@ -824,7 +851,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
           x = jj_consume_token(MINUS);
           break;
         default:
-          jj_la1[11] = jj_gen;
+          jj_la1[12] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
@@ -854,23 +881,22 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
 
   final public void term() throws ParseException {
  Token x;
-     ASTPtProductNode jjtn001 = new ASTPtProductNode(this, JJTPTPRODUCTNODE);
+     ASTPtProductNode jjtn001 = new ASTPtProductNode(JJTPTPRODUCTNODE);
      boolean jjtc001 = true;
      jjtree.openNodeScope(jjtn001);
     try {
-      unary();
-      label_7:
+      power();
+      label_8:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case MULTIPLY:
         case DIVIDE:
         case MODULO:
-        case POWER:
           ;
           break;
         default:
-          jj_la1[12] = jj_gen;
-          break label_7;
+          jj_la1[13] = jj_gen;
+          break label_8;
         }
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case MULTIPLY:
@@ -882,15 +908,12 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         case MODULO:
           x = jj_consume_token(MODULO);
           break;
-        case POWER:
-          x = jj_consume_token(POWER);
-          break;
         default:
-          jj_la1[13] = jj_gen;
+          jj_la1[14] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
-        unary();
+        power();
                        jjtn001._lexicalTokens.add(x);
       }
     } catch (Throwable jjte001) {
@@ -917,7 +940,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
   final public void unary() throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case MINUS:
-     ASTPtUnaryNode jjtn001 = new ASTPtUnaryNode(this, JJTPTUNARYNODE);
+     ASTPtUnaryNode jjtn001 = new ASTPtUnaryNode(JJTPTUNARYNODE);
      boolean jjtc001 = true;
      jjtree.openNodeScope(jjtn001);
       try {
@@ -947,7 +970,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
       }
       break;
     case BOOL_NOT:
-     ASTPtUnaryNode jjtn002 = new ASTPtUnaryNode(this, JJTPTUNARYNODE);
+     ASTPtUnaryNode jjtn002 = new ASTPtUnaryNode(JJTPTUNARYNODE);
      boolean jjtc002 = true;
      jjtree.openNodeScope(jjtn002);
       try {
@@ -977,7 +1000,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
       }
       break;
     case BITWISE_NOT:
-     ASTPtUnaryNode jjtn003 = new ASTPtUnaryNode(this, JJTPTUNARYNODE);
+     ASTPtUnaryNode jjtn003 = new ASTPtUnaryNode(JJTPTUNARYNODE);
      boolean jjtc003 = true;
      jjtree.openNodeScope(jjtn003);
       try {
@@ -1018,7 +1041,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
       element();
       break;
     default:
-      jj_la1[14] = jj_gen;
+      jj_la1[15] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -1026,7 +1049,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
 
   final public void element() throws ParseException {
   boolean isMethodCall = false;
-    ASTPtMethodCallNode jjtn001 = new ASTPtMethodCallNode(this, JJTPTMETHODCALLNODE);
+    ASTPtMethodCallNode jjtn001 = new ASTPtMethodCallNode(JJTPTMETHODCALLNODE);
     boolean jjtc001 = true;
     jjtree.openNodeScope(jjtn001);
     try {
@@ -1051,28 +1074,28 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         case 46:
         case 47:
           funcIf();
-          label_8:
+          label_9:
           while (true) {
             switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
             case 44:
               ;
               break;
             default:
-              jj_la1[15] = jj_gen;
-              break label_8;
+              jj_la1[16] = jj_gen;
+              break label_9;
             }
             jj_consume_token(44);
             funcIf();
           }
           break;
         default:
-          jj_la1[16] = jj_gen;
+          jj_la1[17] = jj_gen;
           ;
         }
         jj_consume_token(45);
         break;
       default:
-        jj_la1[17] = jj_gen;
+        jj_la1[18] = jj_gen;
         ;
       }
     } catch (Throwable jjte001) {
@@ -1101,7 +1124,7 @@ int len;
 String tidied, x;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case COMPLEX:
-     ASTPtLeafNode jjtn001 = new ASTPtLeafNode(this, JJTPTLEAFNODE);
+     ASTPtLeafNode jjtn001 = new ASTPtLeafNode(JJTPTLEAFNODE);
      boolean jjtc001 = true;
      jjtree.openNodeScope(jjtn001);
       try {
@@ -1128,7 +1151,7 @@ String tidied, x;
       }
       break;
     case DOUBLE:
-     ASTPtLeafNode jjtn002 = new ASTPtLeafNode(this, JJTPTLEAFNODE);
+     ASTPtLeafNode jjtn002 = new ASTPtLeafNode(JJTPTLEAFNODE);
      boolean jjtc002 = true;
      jjtree.openNodeScope(jjtn002);
       try {
@@ -1160,7 +1183,7 @@ String tidied, x;
       }
       break;
     case INTEGER:
-     ASTPtLeafNode jjtn003 = new ASTPtLeafNode(this, JJTPTLEAFNODE);
+     ASTPtLeafNode jjtn003 = new ASTPtLeafNode(JJTPTLEAFNODE);
      boolean jjtc003 = true;
      jjtree.openNodeScope(jjtn003);
       try {
@@ -1209,7 +1232,7 @@ String tidied, x;
       }
       break;
     case STRING:
-     ASTPtLeafNode jjtn004 = new ASTPtLeafNode(this, JJTPTLEAFNODE);
+     ASTPtLeafNode jjtn004 = new ASTPtLeafNode(JJTPTLEAFNODE);
      boolean jjtc004 = true;
      jjtree.openNodeScope(jjtn004);
       try {
@@ -1287,7 +1310,7 @@ String tidied, x;
       }
       break;
     case BOOLEAN:
-     ASTPtLeafNode jjtn005 = new ASTPtLeafNode(this, JJTPTLEAFNODE);
+     ASTPtLeafNode jjtn005 = new ASTPtLeafNode(JJTPTLEAFNODE);
      boolean jjtc005 = true;
      jjtree.openNodeScope(jjtn005);
       try {
@@ -1295,9 +1318,9 @@ String tidied, x;
         jjtree.closeNodeScope(jjtn005, true);
         jjtc005 = false;
           if (token.image.equalsIgnoreCase("TRUE")) {
-              jjtn005._ptToken = new BooleanToken(true);
+              jjtn005._ptToken = BooleanToken.TRUE;
           } else if (token.image.equalsIgnoreCase("FALSE")) {
-              jjtn005._ptToken = new BooleanToken(false);
+              jjtn005._ptToken = BooleanToken.FALSE;
           }
           jjtn005._isConstant = true;
       } finally {
@@ -1312,70 +1335,24 @@ String tidied, x;
       jj_consume_token(45);
       break;
     default:
-      jj_la1[18] = jj_gen;
+      jj_la1[19] = jj_gen;
       if (jj_2_1(2147483647)) {
+        matrixConstruct();
+      } else if (jj_2_2(2147483647)) {
+        recordConstruct();
+      } else if (jj_2_3(2147483647)) {
+        arrayConstruct();
+      } else if (jj_2_4(2147483647)) {
         function();
       } else {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case ID:
-     ASTPtLeafNode jjtn006 = new ASTPtLeafNode(this, JJTPTLEAFNODE);
-     boolean jjtc006 = true;
-     jjtree.openNodeScope(jjtn006);
-          try {
-            jj_consume_token(ID);
-       jjtree.closeNodeScope(jjtn006, true);
-       jjtc006 = false;
-        Variable referredVar = null;
-        if (_parserScope != null) {
-            referredVar = (Variable)_parserScope.get(token.image);
-        }
-        if (referredVar == null && _scope != null) {
-            referredVar = (Variable)_scope.get(token.image);
-        }
-        if (referredVar != null) {
-           // The Variable is stored in the node so that the tree 
-           // does not have to be reparsed whenever the Token in 
-           // the Variable changes.
-           jjtn006._var   = referredVar;
-           // Register the calling Variable as a listener
-           // of the Variable this ID references.
-           if (_owner != null) {
-                referredVar.addValueListener(_owner);
-            }
-        } else if (Constants.get(token.image) != null) {
-            // A named constant that is recognized by the parser.
-            jjtn006._ptToken = Constants.get(token.image);
-            jjtn006._isConstant = true;
-        } else {
-            if (_undefined == null) {
-                // System.out.println("Undefined <" + token.image + ">");
-                {if (true) throw new ParseException("The ID " + token.image +
-                        " is undefined.");}
-            } else {
-                // System.out.println("Defining <" + token.image + ">");
-                _undefined.add(token.image);
-                jjtn006._var = null;
-            }
-
-        }
-          } finally {
-     if (jjtc006) {
-       jjtree.closeNodeScope(jjtn006, true);
-     }
-          }
+          identifier();
           break;
         default:
-          jj_la1[19] = jj_gen;
-          if (jj_2_2(2147483647)) {
-            matrixConstruct();
-          } else if (jj_2_3(2147483647)) {
-            recordConstruct();
-          } else if (jj_2_4(2147483647)) {
-            arrayConstruct();
-          } else {
-            jj_consume_token(-1);
-            throw new ParseException();
-          }
+          jj_la1[20] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
         }
       }
     }
@@ -1383,52 +1360,14 @@ String tidied, x;
 
   final public void function() throws ParseException {
  /*@bgen(jjtree) PtFunctionNode */
-  ASTPtFunctionNode jjtn000 = new ASTPtFunctionNode(this, JJTPTFUNCTIONNODE);
+  ASTPtFunctionNode jjtn000 = new ASTPtFunctionNode(JJTPTFUNCTIONNODE);
   boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);Token x = null;
-  boolean isArrayRef = false;
+  jjtree.openNodeScope(jjtn000);
     try {
-      ASTPtLeafNode jjtn001 = new ASTPtLeafNode(this, JJTPTLEAFNODE);
-      boolean jjtc001 = true;
-      jjtree.openNodeScope(jjtn001);
-      try {
-        x = jj_consume_token(ID);
-        jjtree.closeNodeScope(jjtn001,  _isKnownID ( x . image ));
-        jjtc001 = false;
-        Variable referredVar = null;
-        if (_parserScope != null) {
-            referredVar = (Variable)_parserScope.get(token.image);
-        }
-        if (referredVar == null && _scope != null) {
-            referredVar = (Variable)_scope.get(token.image);
-        }
-        if (referredVar != null) {
-          // The Parameter is stored in the node so that the tree 
-          // does not have to be reparsed whenever the Token in 
-          // the Parameter changes.
-          jjtn001._var   = referredVar;
-          // Register the calling parameter as a listener 
-          // of this Parameter this ID references.
-          if (_owner != null) {
-            referredVar.addValueListener(_owner);
-          }
-          isArrayRef = true;
-        } else if (Constants.get(x.image) != null) {
-          // A named constant that is recognized by the parser.
-          jjtn001._ptToken = Constants.get(x.image);
-          jjtn001._isConstant = true;
-          isArrayRef = true;
-        } else {
-          if (_undefined != null)
-              _undefined.add(token.image);
-        }
-      } finally {
-      if (jjtc001) {
-        jjtree.closeNodeScope(jjtn001,  _isKnownID ( x . image ));
-      }
-      }
-      jjtn000._funcName = x.image;
-      jjtn000._isArrayRef = isArrayRef;
+      jj_consume_token(ID);
+        // Store the name of the function.
+        jjtn000._funcName = token.image;
+        jjtn000._parser = this;
       jj_consume_token(43);
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case MINUS:
@@ -1444,34 +1383,25 @@ String tidied, x;
       case 46:
       case 47:
         funcIf();
-        label_9:
+        label_10:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case 44:
             ;
             break;
           default:
-            jj_la1[20] = jj_gen;
-            break label_9;
+            jj_la1[21] = jj_gen;
+            break label_10;
           }
           jj_consume_token(44);
           funcIf();
         }
         break;
       default:
-        jj_la1[21] = jj_gen;
+        jj_la1[22] = jj_gen;
         ;
       }
       jj_consume_token(45);
-      jjtree.closeNodeScope(jjtn000, true);
-      jjtc000 = false;
-      int nch = jjtn000.jjtGetNumChildren();
-      if (isArrayRef && !(nch == 2 || nch == 3)) {
-        {if (true) throw new ParseException("PtParser: Parsed an array reference to "
-                + x.image + " having " + (nch - 1) + " indices, "
-                + "only reference to 1 and 2 dimensional arrays "
-                + "are supported.");}
-      }
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -1493,9 +1423,66 @@ String tidied, x;
     }
   }
 
+  final public void identifier() throws ParseException {
+ /*@bgen(jjtree) PtLeafNode */
+  ASTPtLeafNode jjtn000 = new ASTPtLeafNode(JJTPTLEAFNODE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+    try {
+      jj_consume_token(ID);
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+        // Store the name of this identifier...  This will be the
+        // name of a variable, a constant, or an undefined identifier.
+        // Note that this name is not actually resolved into a value
+        // until the parse tree is evaluated.
+        jjtn000._name = token.image;
+        //        Variable referredVar = null;
+      //   if (_parserScope != null) {
+//             jjtThis._ptToken = (ptolemy.data.Token)
+//                 _parserScope.get(token.image);
+//             return;
+//         }
+      //   if (referredVar == null && _scope != null) {
+//             referredVar = (Variable)_scope.get(token.image);
+//         }
+        // if (referredVar != null) {
+//             // The Variable is stored in the node so that the tree 
+//             // does not have to be reparsed whenever the Token in 
+//             // the Variable changes.
+//             jjtThis._var = referredVar; 
+//             // Register the calling Variable as a listener
+//             // of the Variable this ID references.
+//             if (_owner != null) {
+//                 //   referredVar.addValueListener(_owner);
+//                 referredVar._addValueDependent(_owner);
+//             }
+//         } else
+
+//FIXME: Constants shouldn't shadow other variables in scope.
+        if (Constants.get(token.image) != null) {
+            // A named constant that is recognized by the parser.
+            jjtn000._ptToken = Constants.get(token.image);
+            jjtn000._isConstant = true;
+        } else {
+            // The ID is undefined...  We don't care until this is 
+            // actually evaluated, however.
+            if (_undefined != null) {
+                // System.out.println("Defining <" + token.image + ">");
+                _undefined.add(token.image);
+                //            jjtThis._var = null;
+            }
+        }
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+  }
+
   final public void matrixConstruct() throws ParseException {
  /*@bgen(jjtree) PtMatrixConstructNode */
-  ASTPtMatrixConstructNode jjtn000 = new ASTPtMatrixConstructNode(this, JJTPTMATRIXCONSTRUCTNODE);
+  ASTPtMatrixConstructNode jjtn000 = new ASTPtMatrixConstructNode(JJTPTMATRIXCONSTRUCTNODE);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);int i;
   int nRows = 0;
@@ -1507,43 +1494,43 @@ String tidied, x;
       case 44:
       case 49:
       case 50:
-        label_10:
+        label_11:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case 44:
             ;
             break;
           default:
-            jj_la1[22] = jj_gen;
-            break label_10;
+            jj_la1[23] = jj_gen;
+            break label_11;
           }
           jj_consume_token(44);
             ++jjtn000._nColumns;
           funcIf();
         }
-        label_11:
+        label_12:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case 49:
             ;
             break;
           default:
-            jj_la1[23] = jj_gen;
-            break label_11;
+            jj_la1[24] = jj_gen;
+            break label_12;
           }
           jj_consume_token(49);
             ++nRows; i = 0;
           funcIf();
                                          ++i;
-          label_12:
+          label_13:
           while (true) {
             switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
             case 44:
               ;
               break;
             default:
-              jj_la1[24] = jj_gen;
-              break label_12;
+              jj_la1[25] = jj_gen;
+              break label_13;
             }
             jj_consume_token(44);
             funcIf();
@@ -1553,8 +1540,8 @@ String tidied, x;
          first row. */
         if ( i != jjtn000._nColumns ) {
           {if (true) throw new ParseException("PtParser: error parsing matrix "
-                  + "construction, the "
-                  + nRows + "th row does not have the same number of "
+                  + "construction, the row "
+                  + nRows + " does not have the same number of "
                   + "terms as the first row.");}
         }
         }
@@ -1568,15 +1555,15 @@ String tidied, x;
         funcIf();
         jj_consume_token(41);
         funcIf();
-        label_13:
+        label_14:
         while (true) {
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case 49:
             ;
             break;
           default:
-            jj_la1[25] = jj_gen;
-            break label_13;
+            jj_la1[26] = jj_gen;
+            break label_14;
           }
           jj_consume_token(49);
             ++nRows;
@@ -1592,7 +1579,7 @@ String tidied, x;
           jjtn000._form = 2; jjtn000._nRows = nRows;
         break;
       default:
-        jj_la1[26] = jj_gen;
+        jj_la1[27] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -1619,7 +1606,7 @@ String tidied, x;
 
   final public void recordConstruct() throws ParseException {
  /*@bgen(jjtree) PtRecordConstructNode */
-  ASTPtRecordConstructNode jjtn000 = new ASTPtRecordConstructNode(this, JJTPTRECORDCONSTRUCTNODE);
+  ASTPtRecordConstructNode jjtn000 = new ASTPtRecordConstructNode(JJTPTRECORDCONSTRUCTNODE);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);Token x = null;
     try {
@@ -1628,15 +1615,15 @@ String tidied, x;
         jjtn000._fieldNames.add(x.image);
       jj_consume_token(48);
       funcIf();
-      label_14:
+      label_15:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case 44:
           ;
           break;
         default:
-          jj_la1[27] = jj_gen;
-          break label_14;
+          jj_la1[28] = jj_gen;
+          break label_15;
         }
         jj_consume_token(44);
         x = jj_consume_token(ID);
@@ -1668,21 +1655,21 @@ String tidied, x;
 
   final public void arrayConstruct() throws ParseException {
  /*@bgen(jjtree) PtArrayConstructNode */
-  ASTPtArrayConstructNode jjtn000 = new ASTPtArrayConstructNode(this, JJTPTARRAYCONSTRUCTNODE);
+  ASTPtArrayConstructNode jjtn000 = new ASTPtArrayConstructNode(JJTPTARRAYCONSTRUCTNODE);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
       jj_consume_token(47);
       funcIf();
-      label_15:
+      label_16:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case 44:
           ;
           break;
         default:
-          jj_la1[28] = jj_gen;
-          break label_15;
+          jj_la1[29] = jj_gen;
+          break label_16;
         }
         jj_consume_token(44);
         funcIf();
@@ -1737,7 +1724,21 @@ String tidied, x;
     return retval;
   }
 
+  final private boolean jj_3_4() {
+    if (jj_scan_token(ID)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    if (jj_scan_token(43)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
   final private boolean jj_3_3() {
+    if (jj_scan_token(47)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
+  final private boolean jj_3_2() {
     if (jj_scan_token(47)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     if (jj_scan_token(ID)) return true;
@@ -1748,27 +1749,13 @@ String tidied, x;
   }
 
   final private boolean jj_3_1() {
-    if (jj_scan_token(ID)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(43)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
-  final private boolean jj_3_2() {
     if (jj_scan_token(46)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }
 
-  final private boolean jj_3_4() {
-    if (jj_scan_token(47)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
   public PtParserTokenManager token_source;
-  ASCII_CharStream jj_input_stream;
+  SimpleCharStream jj_input_stream;
   public Token token, jj_nt;
   private int jj_ntk;
   private Token jj_scanpos, jj_lastpos;
@@ -1776,20 +1763,20 @@ String tidied, x;
   public boolean lookingAhead = false;
   private boolean jj_semLA;
   private int jj_gen;
-  final private int[] jj_la1 = new int[29];
-  final private int[] jj_la1_0 = {0x0,0x800000,0x400000,0x8000000,0x10000000,0x4000000,0x300000,0x300000,0xf0000,0xf0000,0xc00,0xc00,0xf000,0xf000,0x23000800,0x0,0x23000800,0x0,0x20000000,0x0,0x0,0x23000800,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
-  final private int[] jj_la1_1 = {0x100,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xc8bc,0x1000,0xc8bc,0x400,0x89c,0x20,0x1000,0xc8bc,0x1000,0x20000,0x1000,0x20000,0x61200,0x1000,0x1000,};
+  final private int[] jj_la1 = new int[30];
+  final private int[] jj_la1_0 = {0x0,0x800000,0x400000,0x8000000,0x10000000,0x4000000,0x300000,0x300000,0x8000,0xf0000,0xf0000,0xc00,0xc00,0x7000,0x7000,0x23000800,0x0,0x23000800,0x0,0x20000000,0x0,0x0,0x23000800,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
+  final private int[] jj_la1_1 = {0x100,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0xc8bc,0x1000,0xc8bc,0x400,0x89c,0x20,0x1000,0xc8bc,0x1000,0x20000,0x1000,0x20000,0x61200,0x1000,0x1000,};
   final private JJCalls[] jj_2_rtns = new JJCalls[4];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
 
   public PtParser(java.io.InputStream stream) {
-    jj_input_stream = new ASCII_CharStream(stream, 1, 1);
+    jj_input_stream = new SimpleCharStream(stream, 1, 1);
     token_source = new PtParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 29; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 30; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1800,17 +1787,17 @@ String tidied, x;
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 29; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 30; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   public PtParser(java.io.Reader stream) {
-    jj_input_stream = new ASCII_CharStream(stream, 1, 1);
+    jj_input_stream = new SimpleCharStream(stream, 1, 1);
     token_source = new PtParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 29; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 30; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1821,7 +1808,7 @@ String tidied, x;
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 29; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 30; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1830,7 +1817,7 @@ String tidied, x;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 29; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 30; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1840,7 +1827,7 @@ String tidied, x;
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 29; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 30; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1955,7 +1942,7 @@ String tidied, x;
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 29; i++) {
+    for (int i = 0; i < 30; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {

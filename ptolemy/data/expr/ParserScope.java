@@ -33,6 +33,7 @@ package ptolemy.data.expr;
 
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedList;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParserScope
@@ -40,25 +41,27 @@ import ptolemy.kernel.util.NamedList;
 An interface used by the expression parser for identifier lookup.
 <p>
 An object implementing this interface represents the set of identifiers that
-can be used in an expression being parsed by PtParser.
+can be used in an expression being evaluated.
 
-@author Xiaojun Liu
+@author Xiaojun Liu, Steve Neuendorffer
 @version $Id$
 @see ptolemy.data.expr.PtParser
 */
 
 public interface ParserScope {
 
-    /** Look up and return the attribute with the specified name in the
-     *  scope. Return null if such an attribute does not exist.
-     *  @return The attribute with the specified name in the scope.
+    /** Look up and return the value with the specified name in the
+     *  scope. Return null if the name is not defined in this scope.
+     *  @return The token associated with the given name in the scope.
+     *  @exception IllegalActionException If a value in the scope
+     *  exists with the given name, but cannot be evaluated.
      */
-    public Attribute get(String name);
+    public ptolemy.data.Token get(String name) throws IllegalActionException;
 
-    /** Return the list of attributes within the scope.
-     *  @return The list of attributes within the scope.
+    /** Return the list of variables within the scope.
+     *  @return The list of variables within the scope.
      */
-    public NamedList attributeList();
+    public NamedList variableList();
 
 }
 

@@ -53,107 +53,7 @@ the parse tree.
 */
 public class ASTPtProductNode extends ASTPtRootNode {
 
-    private LinkedList _numbers = null;
-    private LinkedList _tokens = null;
-
-    protected ptolemy.data.Token _resolveNode()
-            throws IllegalActionException {
-        int num = jjtGetNumChildren();
-        if (num == 1) {
-            return _childTokens[0];
-        }
-
-        ptolemy.data.Token result = null;
-        String op = "";
-        String preOp = "";
-        int i = 1;
-
-        // Create a linked list from the child tokens
-        _numbers = new LinkedList(Arrays.asList(_childTokens));
-
-        // Create a local copy of the _lexicalTokens. This
-        // allows us to manipulate _tokens, while the list
-        // _lexicalTokens remains the same, allowing for
-        // reevaluation of the expression when needed.
-        _tokens = new LinkedList( _lexicalTokens );
-
-        // First, resolve any 'to the power' expressions.
-        ListIterator itr = _tokens.listIterator(0);
-        int index = 0;
-        while ( itr.hasNext() ) {
-            Token u = (Token)itr.next();
-            String opr = u.image;
-            if (opr.compareTo("^") == 0) {
-                // Yep resolve it.
-                itr.remove();
-                int times = 1;
-                try {
-                    times = ((ptolemy.data.ScalarToken)
-                            _numbers.get(index+1)).intValue();
-                } catch (Exception e) {
-                    throw new IllegalActionException(
-                            "Only integral power numbers (e.g. 10^3) " +
-                            "are allowed. Please check expression and use " +
-                            "pow(10,3.5) instead to express non-integer " +
-                            "powers.");
-                }
-                ptolemy.data.Token base = (ptolemy.data.Token)
-                    _numbers.get(index);
-                ptolemy.data.Token multi = base;
-                for ( int k = 0; k<times-1; k++ ) {
-                    base = base.multiply(multi);
-                }
-                // Remove base and multiplier from the number list
-                _numbers.remove(index+1);
-                // and replace it with the new calculated base
-                _numbers.set(index,base);
-            }
-            index++;
-        }
-
-
-        // Check if the expression was only a 'power' expression
-        if ( _numbers.size() == 1 ) {
-            return (ptolemy.data.Token) _numbers.get(0);
-        } else {
-
-            // Resolve the rest of the expression.
-            result = _childTokens[0];
-
-            if (result == null) {
-                throw new IllegalActionException(
-                        "Found null value in expression!");
-            }
-
-            itr = _tokens.listIterator(0);
-            index = 1;
-            while ( itr.hasNext() ) {
-
-                Token x = (Token)itr.next();
-                op = x.image;
-
-                ptolemy.data.Token base = (ptolemy.data.Token)
-                    _numbers.get(index);
-
-                if (op.compareTo("*") == 0) {
-                    result = result.multiply(base);
-                } else if (op.compareTo("/") == 0) {
-                    result = result.divide(base);
-                } else if (op.compareTo("%") == 0) {
-                    result = result.modulo(base);
-                } else {
-                    throw new InternalErrorException(
-                            "Invalid concatenator in term() production, " +
-                            "check parser");
-                }
-                index++;
-            }
-        }
-        return result;
-    }
-
-
-    public ASTPtProductNode(int id) {
+   public ASTPtProductNode(int id) {
         super(id);
     }
 
@@ -161,31 +61,18 @@ public class ASTPtProductNode extends ASTPtRootNode {
         super(p, id);
     }
 
-    public static Node jjtCreate(int id) {
-        return new ASTPtProductNode(id);
+    /** Return the list of lexical tokens that were used to make this node.
+     */
+    public List getLexicalTokenList() {
+        return _lexicalTokens;
     }
 
-    public static Node jjtCreate(PtParser p, int id) {
-        return new ASTPtProductNode(p, id);
+    /** Traverse this node with the given visitor.
+     */
+    public void visit(ParseTreeVisitor visitor)
+            throws IllegalActionException {
+        visitor.visitProductNode(this);
     }
 
-    /** Debug function. */
-    private void _show() {
-
-        System.out.println(" ----------------------------- " );
-        Iterator itr = _tokens.iterator();
-        while ( itr.hasNext() ) {
-            Token u = (Token)itr.next();
-            String opr = u.image;
-            System.out.print(" " + opr );
-        }
-
-        itr = _numbers.iterator();
-        while ( itr.hasNext() ) {
-            ptolemy.data.Token n = (ptolemy.data.Token)itr.next();
-            System.out.print(" " + n.toString() );
-        }
-
-        System.out.println(" \n============================= " );
-    }
+    protected List _lexicalTokens = new LinkedList();
 }

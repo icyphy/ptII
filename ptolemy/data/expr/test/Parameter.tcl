@@ -402,8 +402,7 @@ test Parameter-14.0 {Test the mechanism for extending scope} {
 Error evaluating expression: "p"
 In variable: ..e2.p4
 Caused by:
- ptolemy.kernel.util.IllegalActionException: Error parsing expression "p":
-The ID p is undefined.}}
+ ptolemy.kernel.util.IllegalActionException: The ID p is undefined.}}
 
 ######################################################################
 ####
@@ -426,6 +425,25 @@ test Parameter-15.0 {Test for a known bug - insert a new parameter does not shad
 
     list [$r1 toString] [$r2 toString]
 } {5 10} {KNOWN_FAILED}
+
+test Parameter-15.1 {Test for another known bug - Removing an actor that contains a parameter should not throw an exception if that parameter depends on other parameters} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
+    set p3 [java::new ptolemy.data.expr.Parameter $e2 "p3"]
+
+    $p1 setExpression "5"
+    $p3 setExpression "p"
+    
+    set r1 [$p3 getToken]
+
+    $e2 setContainer [java::null]
+    $p1 setExpression "6"
+    set msg PASSED
+    catch {$p1 validate} msg
+
+    list $msg
+} {PASSED} {KNOWN_FAILED}
 
 ######################################################################
 ####
@@ -451,9 +469,8 @@ test Parameter-16.0 {Test array and matrix references} {
 Error evaluating expression: "p1(10)"
 In variable: ..e2.p2
 Caused by:
- ptolemy.kernel.util.IllegalActionException: The index to array p1 is out of bounds: 10.} {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.e2.p2:
+ ptolemy.kernel.util.IllegalActionException: The index '10' is out of bounds to the array '{1, 2, 3}'.} {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.e2.p2:
 Error evaluating expression: "p1(4, 5)"
 In variable: ..e2.p2
 Caused by:
- ptolemy.kernel.util.IllegalActionException: The index to matrix p1 is out of bounds: 4, 5.}}
-
+ ptolemy.kernel.util.IllegalActionException: The index (4,5) is out of bounds to the matrix '[1, 2; 3, 4]'.}}

@@ -2,6 +2,8 @@
 
 package ptolemy.data.expr;
 
+import ptolemy.data.Token;
+
 public class SimpleNode implements Node {
     protected Node parent;
     protected Node[] children;
@@ -15,6 +17,10 @@ public class SimpleNode implements Node {
     public SimpleNode(PtParser p, int i) {
         this(i);
         parser = p;
+    }
+
+    public ptolemy.data.Token getToken() {
+        return null;
     }
 
     public void jjtOpen() {

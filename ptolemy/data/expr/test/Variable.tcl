@@ -147,8 +147,8 @@ test Variable-2.5 {Check that dependency cycles are flagged as an error} {
     set value3 [[$p3 getToken] toString]
     $p1 setExpression  "P3"
 
-    catch {$p1 getToken} errormsg1
-    catch {$p3 getToken} errormsg2
+    catch {set errormsg1 [[$p1 getToken] toString]} errormsg1
+    catch {set errormsg1 [[$p3 getToken] toString]} errormsg2
     list $value1 $value2 $value3 $errormsg1 $errormsg2
 } {1.1 9.9 11.0 {ptolemy.kernel.util.IllegalActionException: Object name: .E.P1:
 Error evaluating expression: "P3"
@@ -183,8 +183,7 @@ test Variable-3.1 {Next check for reasonable error message} {
 Error evaluating expression: "P2"
 In variable: .E.P1
 Caused by:
- ptolemy.kernel.util.IllegalActionException: Error parsing expression "P2":
-The ID P2 is undefined.}}
+ ptolemy.kernel.util.IllegalActionException: The ID P2 is undefined.}}
 
 #################################
 ####
@@ -337,8 +336,7 @@ test Variable-6.4 {Check removeFromScope} {
 Error evaluating expression: "P1+P2"
 In variable: .V2
 Caused by:
- ptolemy.kernel.util.IllegalActionException: Error parsing expression "P1+P2":
-The ID P1 is undefined.}}
+ ptolemy.kernel.util.IllegalActionException: The ID P1 is undefined.}}
 
 test Variable-6.5 {Check that removeFromScope does not remove container's variables} {
     set e [java::new {ptolemy.kernel.Entity String} E]
@@ -431,8 +429,7 @@ test Variable-10.0 {Check setContainer} {
 Error evaluating expression: "P1"
 In variable: .E1.P2
 Caused by:
- ptolemy.kernel.util.IllegalActionException: Error parsing expression "P1":
-The ID P1 is undefined.} {"a"}}
+ ptolemy.kernel.util.IllegalActionException: The ID P1 is undefined.} {"a"}}
 
 #################################
 ####

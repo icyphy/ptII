@@ -51,37 +51,6 @@ tree.
 */
 public class ASTPtLeafNode extends ASTPtRootNode {
 
-    ///////////////////////////////////////////////////////////////////
-    /// from here until next line of dashes is code for PtParser
-
-    /** When the input String refers to another parameter, we store the
-     *  referred parameter in the leaf node. Thus when the value of a
-     *  parameter changes, by reevaluating the parse tree we get the
-     *  correct result.
-     */
-    protected Variable _var;
-
-    /** If this leaf node represents a reference to a parameter, return the
-     *  PtToken contained in that parameter. Otherwise return the PtToken
-     *  object stored in this node.
-     *  @return The PtToken stored/referenced by this node
-     *  @exception IllegalActionException If an error occurs
-     *  trying to evaluate the PtToken type and/or value to be stored in
-     *  node in the tree.
-     */
-    public ptolemy.data.Token evaluateParseTree()
-            throws IllegalActionException {
-        if (_var != null) {
-            _ptToken = _var.getToken();
-        } else if (_ptToken == null) {
-            throw new IllegalActionException(
-                    "In a leaf node, either _ptToken or _param " +
-                    "must be non-null");
-        }
-        return _ptToken;
-    }
-
-    ///////////////////////////////////////////////////////////////////
     public ASTPtLeafNode(int id) {
         super(id);
     }
@@ -90,11 +59,22 @@ public class ASTPtLeafNode extends ASTPtRootNode {
         super(p, id);
     }
 
-    public static Node jjtCreate(int id) {
-        return new ASTPtLeafNode(id);
+    /** Return the name that this node refers to.  This may be a 
+     *  literal value, such as "5", or a reference to another object,
+     *  such as the name of a variable in scope.
+     */
+    public String getName() {
+        return _name;
     }
 
-    public static Node jjtCreate(PtParser p, int id) {
-        return new ASTPtLeafNode(p, id);
+    /** Traverse this node with the given visitor.
+     */
+    public void visit(ParseTreeVisitor visitor)
+            throws IllegalActionException {
+        visitor.visitLeafNode(this);
     }
+
+    /** The identifier that this leaf node refers to.
+     */
+    protected String _name;
 }

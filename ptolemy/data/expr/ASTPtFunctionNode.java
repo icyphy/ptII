@@ -137,7 +137,7 @@ Parameter is in the scope of this expression, it's value is
 added to the matlab path while the expression is being executed
 (like {@link ptolemy.matlab.Expression}).
 <p>
-@author Neil Smyth and Edward A. Lee, University of California;
+@author Neil Smyth, Edward A. Lee, Steve Neuendorffer
 @author Zoltan Kemenczy, Research in Motion Limited
 @version $Id$
 @see ptolemy.data.expr.ASTPtRootNode
@@ -159,27 +159,30 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    public String getFunctionName() {
+        return _funcName;
+    }
+
+    /** Return the parser used to parse this tree.  This is used to 
+     *  implement the eval() method.
+     */
+    public PtParser getParser() {
+        return _parser;
+    }
+
     public void jjtClose() {
         super.jjtClose();
-        if (!_isArrayRef) {
-            // We cannot assume anything about a function call.
-            _isConstant = false;
-        }
+        // We cannot assume that the result of a function call is 
+        // constant, even when the arguments to the function are. 
+        _isConstant = false;
     }
-
-    public static Node jjtCreate(int id) {
-        return new ASTPtFunctionNode(id);
-    }
-
-    public static Node jjtCreate(PtParser p, int id) {
-        return new ASTPtFunctionNode(p, id);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    protected ptolemy.data.Token _resolveNode()
+    
+    /** Traverse this node with the given visitor.
+     */
+    public void visit(ParseTreeVisitor visitor)
             throws IllegalActionException {
+        visitor.visitFunctionNode(this);
+        /*=======
 	int args = jjtGetNumChildren();
         boolean debug = false;
 	if (_isArrayRef) {
@@ -385,6 +388,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 	}
 	throw new IllegalActionException
             ("No matching function " + _funcName + "( " + sb + " ).");
+          >>>>>>> 1.84*/
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -392,7 +396,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 
     // Convert a token to its underlying java type and return its value
     // (Object) and type (Class).
-    protected static Object[] convertTokenToJavaType(ptolemy.data.Token token) 
+    public static Object[] convertTokenToJavaType(ptolemy.data.Token token) 
             throws ptolemy.kernel.util.IllegalActionException {
         Object[] retval = new Object[2];
         if (token instanceof DoubleToken) {
@@ -516,7 +520,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     }
 
     // Convert a java object to its corresponding Token.
-    protected static ptolemy.data.Token convertJavaTypeToToken(Object object)
+    public static ptolemy.data.Token convertJavaTypeToToken(Object object)
         throws ptolemy.kernel.util.IllegalActionException {
         ptolemy.data.Token retval = null;
         if (object instanceof ptolemy.data.Token) {
@@ -600,16 +604,6 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     ////                         protected variables               ////
 
     protected String _funcName;
-    protected boolean _isArrayRef;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // Return the variable being referenced when this node represents array
-    // or matrix reference.
-    private Variable _referredVar() {
-	return ((ASTPtLeafNode)jjtGetChild(0))._var;
-    }
-
+    protected PtParser _parser;
 }
 

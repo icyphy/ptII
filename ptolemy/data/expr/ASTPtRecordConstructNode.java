@@ -41,6 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
@@ -70,29 +71,15 @@ public class ASTPtRecordConstructNode extends ASTPtRootNode {
         super(p, id);
     }
 
-    public static Node jjtCreate(int id) {
-        return new ASTPtRecordConstructNode(id);
+    public List getFieldNames() {
+        return _fieldNames;
     }
 
-    public static Node jjtCreate(PtParser p, int id) {
-        return new ASTPtRecordConstructNode(p, id);
-    }
-
-    protected ptolemy.data.Token _resolveNode() throws IllegalActionException {
-	int numFields = _fieldNames.size();
-	if (numFields != jjtGetNumChildren()) {
-	    throw new InternalErrorException("The number of labels and values "
-                    + "does not match in parsing a record expression.");
-	}
-	String[] labels = new String[numFields];
-	int i = 0;
-	Iterator fields = _fieldNames.iterator();
-	while (fields.hasNext()) {
-	    labels[i] = (String)fields.next();
-	    ++i;
-	}
-	_ptToken = new RecordToken(labels, _childTokens);
-	return _ptToken;
+    /** Traverse this node with the given visitor.
+     */
+    public void visit(ParseTreeVisitor visitor)
+            throws IllegalActionException {
+        visitor.visitRecordConstructNode(this);
     }
 
     /** The list of field names for the record.

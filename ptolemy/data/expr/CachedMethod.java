@@ -143,8 +143,7 @@ public class CachedMethod {
      * and argument values by first checking in the method cache
      * followed by checking the first argument's class, followed by
      * checking all the function classes registered with PtParser. */
-    public static Object findAndRunMethod
-    (String methodName,
+    public static Object findAndRunMethod(String methodName,
             Class[] argTypes,
             Object[] argValues,
             int type
@@ -307,8 +306,8 @@ public class CachedMethod {
 	// If that failed, then try to reduce argument dimensions if possible
 	// and try again (recursively)
 	if (result == null) {
-	    // Check if any arguments are of array type and, if any are, that they
-	    // all have the same length.
+	    // Check if any arguments are of array type and, if any
+	    // are, that they all have the same length.
 	    boolean resIsArray = false;
 	    int dim = 0;
 	    Class[] nArgTypes = new Class[argTypes.length];
@@ -317,9 +316,10 @@ public class CachedMethod {
 		resIsArray |= argTypes[i].isArray();
 		if (argTypes[i].isArray()) {
 		    if (dim != 0 && Array.getLength(argValues[i]) != dim) {
-                        // This argument does not have the same dimension as the
-                        // first array argument encountered. Cannot recurse
-                        // using this approach...
+                        // This argument does not have the same
+                        // dimension as the first array argument
+                        // encountered. Cannot recurse using this
+                        // approach...
 			resIsArray = false;
 			break;
 		    }

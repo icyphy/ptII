@@ -53,88 +53,6 @@ nodes in the parse tree.
 */
 public class ASTPtBitwiseNode extends ASTPtRootNode {
 
-    protected ptolemy.data.Token _resolveNode()
-            throws IllegalActionException {
-        int num = jjtGetNumChildren();
-        if (num == 1) {
-            return _childTokens[0];
-        }
-        if (jjtGetNumChildren() != (_lexicalTokens.size() + 1) ) {
-            throw new IllegalActionException(
-                    "Not enough/too many operators for number of children");
-        }
-        ptolemy.data.Token result = _childTokens[0];
-        boolean isBoolean = false;
-        if (result instanceof BooleanToken) {
-            isBoolean = true;
-        }
-        String op = "";
-        for (int i = 1; i < num; i++ ) {
-            // need to take the top object, AND put it back at the
-            // end so that the tree can be reparsed
-            Object x = _lexicalTokens.get(i - 1);
-            op = ((Token)x).image;
-            if (isBoolean) {
-                if ( !(_childTokens[i] instanceof BooleanToken) ) {
-                    throw new IllegalActionException("Operation " + op +
-                            " not defined between a BooleanToken and a "
-                            + _childTokens[i].getClass());
-                }
-                boolean arg1 = ((BooleanToken)result).booleanValue();
-                boolean arg2 =
-                    ((BooleanToken)_childTokens[i]).booleanValue();
-                if (op.equals("&")) {
-                    result = new BooleanToken(arg1 & arg2);
-                } else if (op.equals("|")) {
-                    result = new BooleanToken(arg1 | arg2);
-                } else {
-                    throw new IllegalActionException("Operation " + op +
-                            " not supported between BooleanTokens.");
-                }
-            } else {
-                // must be applying bitwise operation between integer types
-                // integer types are long and int
-                if ( !((result instanceof IntToken) ||
-                        (_childTokens[i] instanceof LongToken)) ) {
-                    throw new IllegalActionException("Bitwise operation "
-                            + op + " is not supported between " +
-                            result.getClass() + " and " +
-                            _childTokens[i].getClass());
-                }
-                if ( (result instanceof LongToken) ||
-                        (_childTokens[i] instanceof LongToken) ) {
-                    long arg1 = ((ScalarToken)result).longValue();
-                    long arg2 = ((ScalarToken)_childTokens[i]).longValue();
-                    if (op.equals("&")) {
-                        result = new LongToken(arg1 & arg2);
-                    } else if (op.equals("|")) {
-                        result = new LongToken(arg1 | arg2);
-                    } else if (op.equals("#")) {
-                        result = new LongToken(arg1 ^ arg2);
-                    } else {
-                        throw new IllegalActionException(
-                                "Bitwise operation " + op + " not supported"
-                                + " between LongTokens.");
-                    }
-                } else {
-                    int arg1 = ((ScalarToken)result).intValue();
-                    int arg2 = ((ScalarToken)_childTokens[i]).intValue();
-                    if (op.equals("&")) {
-                        result = new IntToken(arg1 & arg2);
-                    } else if (op.equals("|")) {
-                        result = new IntToken(arg1 | arg2);
-                    } else if (op.equals("#")) {
-                        result = new IntToken(arg1 ^ arg2);
-                    } else {
-                        throw new IllegalActionException(
-                                "Bitwise operation " + op + " not supported"
-                                + " between IntTokens.");
-                    }
-                }
-            }
-        }
-        return result;
-    }
 
     public ASTPtBitwiseNode(int id) {
         super(id);
@@ -144,11 +62,36 @@ public class ASTPtBitwiseNode extends ASTPtRootNode {
         super(p, id);
     }
 
-    public static Node jjtCreate(int id) {
-        return new ASTPtBitwiseNode(id);
+   /** Traverse this node with the given visitor.
+     */
+    public void visit(ParseTreeVisitor visitor)
+            throws IllegalActionException {
+        visitor.visitBitwiseNode(this);
     }
 
-    public static Node jjtCreate(PtParser p, int id) {
-        return new ASTPtBitwiseNode(p, id);
+    /** Return true if this operation represents a boolean AND operation.
+     */
+    public boolean isBitwiseAnd() {
+    	return (_lexicalToken.kind == PtParserConstants.AND);
     }
+
+    /** Return true if this operation represents a boolean OR operation.
+     */
+    public boolean isBitwiseOr() {
+    	return (_lexicalToken.kind == PtParserConstants.OR);
+    }
+
+    /** Return true if this operation represents a boolean XOR operation.
+     */
+    public boolean isBitwiseXor() {
+    	return (_lexicalToken.kind == PtParserConstants.XOR);
+    }
+
+    /** Return the token that represents the operation of this node.
+     */
+    public Token getOperator() {
+  	return _lexicalToken;
+    }
+
+    protected Token _lexicalToken = null;
 }

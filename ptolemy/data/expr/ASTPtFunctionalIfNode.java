@@ -58,53 +58,6 @@ The token returned depends on the value of the boolean.
 */
 public class ASTPtFunctionalIfNode extends ASTPtRootNode {
 
-    /** Evaluate the parse tree of a functional if-then-else expression.
-     *  This expression has three sub-expressions. The first sub-expression
-     *  should be of type boolean. If the first sub-expression evaluates
-     *  to true, the value of the whole expression is given by the second
-     *  sub-expression. Otherwise, the value is given by the third
-     *  sub-expression. Depending on the value of the first sub-expression,
-     *  only one of the second and third sub-expressions is evaluated.
-     *  @exception IllegalActionException If an error occurs when
-     *  trying to evaluate one of the sub-expressions.
-     *  @return The token containing the value of the expression.
-     */
-    public ptolemy.data.Token evaluateParseTree()
-            throws IllegalActionException {
-        if (_isConstant && _ptToken != null) {
-            return _ptToken;
-        }
-
-        int num = jjtGetNumChildren();
-	if (num != 3) {
-	    // A functional-if node MUST have three children in the parse
-	    // tree.
-	    throw new InternalErrorException(
-		    "PtParser error: a functional-if node does not have "
-		    + "three children in the parse tree.");
-	}
-
-	// evaluate the first sub-expression
-	ASTPtRootNode child = (ASTPtRootNode)jjtGetChild(0);
-        ptolemy.data.Token test = child.evaluateParseTree();
-        if (!(test instanceof BooleanToken)) {
-            throw new IllegalArgumentException(
-                    "Functional-if must branch on a boolean: "
-		    + test.toString());
-        }
-
-        boolean value = ((BooleanToken)test).booleanValue();
-	// choose the correct sub-expression to evaluate
-        if (value) {
-	    child = (ASTPtRootNode)jjtGetChild(1);
-        } else {
-            child = (ASTPtRootNode)jjtGetChild(2);
-        }
-	_ptToken = child.evaluateParseTree();
-
-	return _ptToken;
-    }
-
     public ASTPtFunctionalIfNode(int id) {
         super(id);
     }
@@ -113,11 +66,10 @@ public class ASTPtFunctionalIfNode extends ASTPtRootNode {
         super(p, id);
     }
 
-    public static Node jjtCreate(int id) {
-        return new ASTPtFunctionalIfNode(id);
-    }
-
-    public static Node jjtCreate(PtParser p, int id) {
-        return new ASTPtFunctionalIfNode(p, id);
+    /** Traverse this node with the given visitor.
+     */
+    public void visit(ParseTreeVisitor visitor)
+            throws IllegalActionException {
+        visitor.visitFunctionalIfNode(this);
     }
 }

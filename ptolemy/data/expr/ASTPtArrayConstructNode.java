@@ -64,18 +64,10 @@ public class ASTPtArrayConstructNode extends ASTPtRootNode {
         super(p, id);
     }
 
-    public static Node jjtCreate(int id) {
-        return new ASTPtArrayConstructNode(id);
+    /** Traverse this node with the given visitor.
+     */
+    public void visit(ParseTreeVisitor visitor)
+            throws IllegalActionException {
+        visitor.visitArrayConstructNode(this);
     }
-
-    public static Node jjtCreate(PtParser p, int id) {
-        return new ASTPtArrayConstructNode(p, id);
-    }
-
-    protected ptolemy.data.Token _resolveNode() throws IllegalActionException {
-	// Create an ArrayToken from the parsed elements.
-	_ptToken = new ArrayToken(_childTokens);
-	return _ptToken;
-    }
-
 }
