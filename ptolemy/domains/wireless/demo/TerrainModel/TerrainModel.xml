@@ -23,7 +23,7 @@
         </property>
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 50.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 45.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {297, 120, 801, 610}, maximized = false}">
@@ -35,7 +35,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{245.5316722972973, 257.2899070945946}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This simple example illustrates modeling terrain effects. The TerrainProperty&#10;models some obstacle which blocks the communication from the Sender &#10;to the Receiver if the communication path between them intersects with&#10;the terrain shape. When you run this model, the sender will emit a signal&#10;every second. The Receiver will move around the Sender and measure the &#10;received power. It then plots the received power on timed plot if it is &#10;greater than 0.0. The plot shows that the receiver can only receive the&#10;signal (with power value larger than 0) when it is not shadowed by the &#10;terrain model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This simple example illustrates modeling terrain effects. The TerrainProperty&#10;models some obstacle which blocks the communication from the Sender &#10;to the Receiver if the communication path between them intersects with&#10;the terrain shape. When you run this model, the sender will emit a signal&#10;every second from time 0.0 to time 37.0. The Receiver will move around &#10;the Sender and measure the received power. It then plots the received &#10;power on timed plot if it is greater than 0.0. The plot shows that the &#10;receiver can only receive the signal (with power value larger than 0) &#10;when it is not shadowed by the terrain model.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 285.0]">
         </property>
