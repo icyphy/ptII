@@ -616,7 +616,7 @@ Optional Packages:
   --with-jhdl-jar=JARFILE       use JHDL from JARFILE,
                           defaults to \$PTII/vendors/jhdl/JHDL_0_3_4.jar
   --with-jmf-jar=JARFILE       use JMF from JARFILE,
-                          defaults to c:/Program Files/JMF2.1.1/lib/jmf.jar
+                          defaults to \$JMFHOME/lib/jmf.jar
   --with-lejos=DIR       use Java lejos from DIR,
                           defaults to \$PTII/vendors/lejos/lejosBeta3
   --with-javacc=DIR       use JavaCC.zip from DIR,
@@ -626,7 +626,7 @@ Optional Packages:
   --with-jini=DIR       use Jini from DIR,
                           defaults to \$PTII/vendors/sun/$JINI_VERSION
   --with-jode=DIR       use JODE from DIR,
-                          defaults to \$PTII/vendors/jode/1.0.93
+                          defaults to \$PTII/vendors/jode/1.1.1
   --with-kvm=DIR       use PalmOS KVM from DIR,
                           defaults to \$PTII/vendors/sun/j2me_cldc
   --with-soot=DIR       use SOOT from DIR,
@@ -1681,7 +1681,7 @@ fi
 PTJMF_DIR=
 
 # Directory that contains the jmf jar files
-JMF_JAR='c:/Program Files/JMF2.1.1/lib/jmf.jar'
+JMF_JAR='${PTII}/vendors/jmf/JMF_0_3_4.jar'
 
 # We only need to look for jmf if $PTII/ptolemy/apps/jmf exists
 if test ! -d "$PTII/ptolemy/apps/jmf"; then
@@ -1689,7 +1689,7 @@ if test ! -d "$PTII/ptolemy/apps/jmf"; then
 	so we need not find the JMF - The Java Media Framework." >&5
 echo "${ECHO_T}$PTII/ptolemy/apps/jmf is not present,
 	so we need not find the JMF - The Java Media Framework." >&6
-    JMF_JAR='c:/Program Files/JMF2.1.1/lib/jmf.jar'
+    JMF_JAR='${PTII}/vendors/jmf/JMF_0_3_4.jar'
 else
     echo "$as_me:1694: checking for jmf jar file" >&5
 echo $ECHO_N "checking for jmf jar file... $ECHO_C" >&6
@@ -1699,7 +1699,7 @@ if test "${with_jmf_jar+set}" = set; then
   withval="$with_jmf_jar"
   JMF_JAR=$withval
 else
-  JMF_JAR='c:/Program Files/JMF2.1.1/lib/jmf.jar'
+  JMF_JAR=$JMFHOME/lib/jmf.jar
 fi;
 
     if test -f "$JMF_JAR"; then
@@ -1709,7 +1709,7 @@ echo "${ECHO_T}$JMF_JAR" >&6
 	# $PTII/ptolemy/apps/makefile if jmf was found
 	PTJMF_DIR=jmf
     else
-	JMF_JAR=$PTII/vendors/jmf/lib/jmf.jar
+	JMF_JAR=$PTII/vendors/jmf/JMF_0_3_4_1.jar
 	if test -f "$JMF_JAR"; then
 	    echo "$as_me:1714: result: $JMF_JAR" >&5
 echo "${ECHO_T}$JMF_JAR" >&6
@@ -1719,16 +1719,22 @@ echo "${ECHO_T}$JMF_JAR" >&6
 	fi
     fi
 
+    if test "$JMFHOME" = ""; then
+        { echo "$as_me:1723: WARNING: '\$JMFHOME is not set, perhaps you
+    did not reboot after installing JMF?'" >&5
+echo "$as_me: WARNING: '\$JMFHOME is not set, perhaps you
+    did not reboot after installing JMF?'" >&2;}
+    fi
     if test "$PTJMF_DIR" = ""; then
-        { echo "$as_me:1723: WARNING: 'Failed to find c:/Program Files/JMF2.1.1/lib/jmf.jar
-    perhaps JMF is not installed?
-    You need not download JMF unless you plan on using the video
+        { echo "$as_me:1729: WARNING: 'Failed to find \$JMFHOME/lib/jmf.jar
+    perhaps Jmf is not installed?
+    You need not download Jmf unless you plan on using the video
     actors in $PTII/apps/jmf
     The JMF SDK can be downloaded from
     http://java.sun.com/products/java-media/jmf/index.html'" >&5
-echo "$as_me: WARNING: 'Failed to find c:/Program Files/JMF2.1.1/lib/jmf.jar
-    perhaps JMF is not installed?
-    You need not download JMF unless you plan on using the video
+echo "$as_me: WARNING: 'Failed to find \$JMFHOME/lib/jmf.jar
+    perhaps Jmf is not installed?
+    You need not download Jmf unless you plan on using the video
     actors in $PTII/apps/jmf
     The JMF SDK can be downloaded from
     http://java.sun.com/products/java-media/jmf/index.html'" >&2;}
@@ -1751,7 +1757,7 @@ LEJOS_PRESENT=no
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
 PTLEJOS_DIR=
 if test ! -d "$LEJOS_USER_DIR"; then
-    echo "$as_me:1754: result: $COMMAPI_USER_DIR is not present,
+    echo "$as_me:1760: result: $COMMAPI_USER_DIR is not present,
 	so we need not find lejos." >&5
 echo "${ECHO_T}$COMMAPI_USER_DIR is not present,
 	so we need not find lejos." >&6
@@ -1760,10 +1766,10 @@ echo "${ECHO_T}$COMMAPI_USER_DIR is not present,
     LEJOS_DIR='${PTII}/vendors/lejos/lejosBeta3'
 else
     if test "$COMMAPI_PRESENT" = "no"; then
-        { echo "$as_me:1763: WARNING: 'Lejos requires commapi, which was not found'" >&5
+        { echo "$as_me:1769: WARNING: 'Lejos requires commapi, which was not found'" >&5
 echo "$as_me: WARNING: 'Lejos requires commapi, which was not found'" >&2;}
     else
-	echo "$as_me:1766: checking for lejos directory" >&5
+	echo "$as_me:1772: checking for lejos directory" >&5
 echo $ECHO_N "checking for lejos directory... $ECHO_C" >&6
 
 # Check whether --with-LEJOS or --without-LEJOS was given.
@@ -1775,19 +1781,19 @@ else
 fi;
 
 	if test -d "$LEJOS_DIR/classes/josx"; then
-	    echo "$as_me:1778: result: $LEJOS_DIR" >&5
+	    echo "$as_me:1784: result: $LEJOS_DIR" >&5
 echo "${ECHO_T}$LEJOS_DIR" >&6
 	    # Subdirectory that contains Java Communications API specific code
 	    PTLEJOS_DIR=lejos
 	    LEJOS_PRESENT=yes
 	else
-	    { echo "$as_me:1784: WARNING: 'Failed to find $LEJOS_DIR/classes/josx/'" >&5
+	    { echo "$as_me:1790: WARNING: 'Failed to find $LEJOS_DIR/classes/josx/'" >&5
 echo "$as_me: WARNING: 'Failed to find $LEJOS_DIR/classes/josx/'" >&2;}
 	    LEJOS_DIR='${PTII}/vendors/lejos'
 	fi
     fi
     if test "$LEJOS_PRESENT" = "no"; then
-	{ echo "$as_me:1790: WARNING: 'Perhaps Lejos is not installed?
+	{ echo "$as_me:1796: WARNING: 'Perhaps Lejos is not installed?
 	You need not download Lejos unless you plan on use the Lego Mindstorm
 	demos in \$PTII/ptolemy/apps/lejos. Lejos can be downloaded from
 	http://lejos.sourceforge.net
@@ -1808,7 +1814,7 @@ fi
 
 # We only need to look for JavaCC if $PTII/ptolemy/data/expr exists
 if test ! -d "$PTII/ptolemy/data/expr"; then
-    echo "$as_me:1811: result: $PTII/ptolemy/data/expr is not present,
+    echo "$as_me:1817: result: $PTII/ptolemy/data/expr is not present,
 	so we need not find JavaCC." >&5
 echo "${ECHO_T}$PTII/ptolemy/data/expr is not present,
 	so we need not find JavaCC." >&6
@@ -1816,7 +1822,7 @@ echo "${ECHO_T}$PTII/ptolemy/data/expr is not present,
     JAVACC=javacc
     JJTREE=jjtree
 else
-    echo "$as_me:1819: checking for JavaCC" >&5
+    echo "$as_me:1825: checking for JavaCC" >&5
 echo $ECHO_N "checking for JavaCC... $ECHO_C" >&6
 
 # Check whether --with-javacc or --without-javacc was given.
@@ -1831,19 +1837,19 @@ fi;
 		"`uname -s`" = "CYGWIN_NT-5.0" ; then
 	JJTREE='\$(JAVA) COM.sun.labs.jjtree.Main'
 	JAVACC='\$(JAVA) COM.sun.labs.javacc.Main'
-	{ echo "$as_me:1834: WARNING:
+	{ echo "$as_me:1840: WARNING:
 Be sure that your CLASSPATH includes JavaCC.zip" >&5
 echo "$as_me: WARNING:
 Be sure that your CLASSPATH includes JavaCC.zip" >&2;};
     else
 	if test ! -d "$JAVACC_DIR"; then
-	    { echo "$as_me:1840: WARNING: '${JAVACC_DIR}' is not a directory,
+	    { echo "$as_me:1846: WARNING: '${JAVACC_DIR}' is not a directory,
     so we search for the jjtree command." >&5
 echo "$as_me: WARNING: '${JAVACC_DIR}' is not a directory,
     so we search for the jjtree command." >&2;}
 	    # Extract the first word of "jjtree", so it can be a program name with args.
 set dummy jjtree; ac_word=$2
-echo "$as_me:1846: checking for $ac_word" >&5
+echo "$as_me:1852: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_path_JJTREE+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -1860,7 +1866,7 @@ for ac_dir in $ac_dummy; do
   test -z "$ac_dir" && ac_dir=.
   if $as_executable_p "$ac_dir/$ac_word"; then
    ac_cv_path_JJTREE="$ac_dir/$ac_word"
-   echo "$as_me:1863: found $ac_dir/$ac_word" >&5
+   echo "$as_me:1869: found $ac_dir/$ac_word" >&5
    break
 fi
 done
@@ -1871,53 +1877,53 @@ fi
 JJTREE=$ac_cv_path_JJTREE
 
 if test -n "$JJTREE"; then
-  echo "$as_me:1874: result: $JJTREE" >&5
+  echo "$as_me:1880: result: $JJTREE" >&5
 echo "${ECHO_T}$JJTREE" >&6
 else
-  echo "$as_me:1877: result: no" >&5
+  echo "$as_me:1883: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
 
 	    if test -x "$JJTREE"; then
-		echo "$as_me:1882: result: $JJTREE" >&5
+		echo "$as_me:1888: result: $JJTREE" >&5
 echo "${ECHO_T}$JJTREE" >&6;
 		JAVACCBIN=`dirname $JJTREE`
 		JAVACC_DIR=`dirname $JAVACCBIN`
 	    else
-		{ echo "$as_me:1887: WARNING: Failed to find jjtree" >&5
+		{ echo "$as_me:1893: WARNING: Failed to find jjtree" >&5
 echo "$as_me: WARNING: Failed to find jjtree" >&2;};
 	    fi
 	fi
 	if test -d "$JAVACC_DIR"; then
-	    echo "$as_me:1892: result: $JAVACC_DIR" >&5
+	    echo "$as_me:1898: result: $JAVACC_DIR" >&5
 echo "${ECHO_T}$JAVACC_DIR" >&6
-	    echo "$as_me:1894: checking for jjtree" >&5
+	    echo "$as_me:1900: checking for jjtree" >&5
 echo $ECHO_N "checking for jjtree... $ECHO_C" >&6
 	    if test -x "$JAVACC_DIR/bin/jjtree"; then
 		# Note that we don't substitute in the $(JAVACC_DIR) here
 		JJTREE='$(JAVACC_DIR)/bin/jjtree'
-		echo "$as_me:1899: result: $JJTREE" >&5
+		echo "$as_me:1905: result: $JJTREE" >&5
 echo "${ECHO_T}$JJTREE" >&6
 	    else
-		{ echo "$as_me:1902: WARNING: Failed to find jjtree in '$JAVACC_DIR/bin'" >&5
+		{ echo "$as_me:1908: WARNING: Failed to find jjtree in '$JAVACC_DIR/bin'" >&5
 echo "$as_me: WARNING: Failed to find jjtree in '$JAVACC_DIR/bin'" >&2;};
 	    fi
-	    echo "$as_me:1905: checking for javacc" >&5
+	    echo "$as_me:1911: checking for javacc" >&5
 echo $ECHO_N "checking for javacc... $ECHO_C" >&6
 	    if test -x "$JAVACC_DIR/bin/javacc"; then
 		# Note that we don't substitute in the $(JAVACC_DIR) here
 		JAVACC='$(JAVACC_DIR)/bin/javacc'
-		echo "$as_me:1910: result: $JAVACC" >&5
+		echo "$as_me:1916: result: $JAVACC" >&5
 echo "${ECHO_T}$JAVACC" >&6
 	    else
-		{ echo "$as_me:1913: WARNING: Failed to find javacc in '$JAVACC_DIR/bin'" >&5
+		{ echo "$as_me:1919: WARNING: Failed to find javacc in '$JAVACC_DIR/bin'" >&5
 echo "$as_me: WARNING: Failed to find javacc in '$JAVACC_DIR/bin'" >&2;};
 	    fi
 	fi
     fi
 
     if test ! -d "$JAVACC_DIR"; then
-        { echo "$as_me:1920: WARNING: Failed to find javacc, perhaps JavaCC is not installed?
+        { echo "$as_me:1926: WARNING: Failed to find javacc, perhaps JavaCC is not installed?
     You need not download JavaCC unless you plan on modifying certain files
     in ptolemy/data/expr.
     JavaCC used to be available from
@@ -1950,12 +1956,12 @@ JTCLSH='"$(JAVA)" $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" tcl.lang.Shell'
 PTJACL_DIR=
 
 if test ! -d "$PTII/util/testsuite"; then
-    echo "$as_me:1953: result: $PTII/util/testsuite is not present,
+    echo "$as_me:1959: result: $PTII/util/testsuite is not present,
 	so we need not find Jacl." >&5
 echo "${ECHO_T}$PTII/util/testsuite is not present,
 	so we need not find Jacl." >&6
 else
-    echo "$as_me:1958: checking for ptjacl.jar" >&5
+    echo "$as_me:1964: checking for ptjacl.jar" >&5
 echo $ECHO_N "checking for ptjacl.jar... $ECHO_C" >&6
 
 # Check whether --with-ptjacl_jar or --without-ptjacl_jar was given.
@@ -1967,25 +1973,25 @@ else
 fi;
 
     if test -f "$PTJACL_JAR"; then
-	echo "$as_me:1970: result: $PTJACL_JAR" >&5
+	echo "$as_me:1976: result: $PTJACL_JAR" >&5
 echo "${ECHO_T}$PTJACL_JAR" >&6
-	echo "$as_me:1972: checking for how to run jacl with \"$JAVA\"" >&5
+	echo "$as_me:1978: checking for how to run jacl with \"$JAVA\"" >&5
 echo $ECHO_N "checking for how to run jacl with \"$JAVA\"... $ECHO_C" >&6
 	# This command starts up Jacl
 	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell; then
-		echo "$as_me:1976: result: ok" >&5
+		echo "$as_me:1982: result: ok" >&5
 echo "${ECHO_T}ok" >&6
 		PTJACL_DIR=ptjacl
 	else
-		echo "$as_me:1980: result: CLASSPATH=$PTJACL_JAR \"$JAVA\" tcl.lang.Shell failed" >&5
+		echo "$as_me:1986: result: CLASSPATH=$PTJACL_JAR \"$JAVA\" tcl.lang.Shell failed" >&5
 echo "${ECHO_T}CLASSPATH=$PTJACL_JAR \"$JAVA\" tcl.lang.Shell failed" >&6
-		echo "$as_me:1982: checking for how to run jacl with \"$JAVA\" \"$PTJACL_FLAG\"" >&5
+		echo "$as_me:1988: checking for how to run jacl with \"$JAVA\" \"$PTJACL_FLAG\"" >&5
 echo $ECHO_N "checking for how to run jacl with \"$JAVA\" \"$PTJACL_FLAG\"... $ECHO_C" >&6
 		if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell; then
-			echo "$as_me:1985: result: ok" >&5
+			echo "$as_me:1991: result: ok" >&5
 echo "${ECHO_T}ok" >&6
 		else
-			echo "$as_me:1988: result: 'CLASSPATH=$PTJACL_JAR \"$JAVA\" tcl.lang.Shell' failed,
+			echo "$as_me:1994: result: 'CLASSPATH=$PTJACL_JAR \"$JAVA\" tcl.lang.Shell' failed,
 	use 'CLASSPATH=$PTJACL_JAR \"$JAVA\" tcl.lang.Shell'
 	instead. ptjacl is used by the test suite, so you may be able to
 	ignore this error." >&5
@@ -1997,7 +2003,7 @@ echo "${ECHO_T}'CLASSPATH=$PTJACL_JAR \"$JAVA\" tcl.lang.Shell' failed,
 		JTCLSH='"$(JAVA)" $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" tcl.lang.Shell'
 	fi
     else
-	{ echo "$as_me:2000: WARNING: The ptjacl.jar file was not found at '$PTJACL_JAR'
+	{ echo "$as_me:2006: WARNING: The ptjacl.jar file was not found at '$PTJACL_JAR'
     ptjacl.jar is only necessary if you plan on running the test suite.
     You can download ptjacl.jar from
     http://ptolemy.eecs.berkeley.edu/~cxh/java/jacl/ptjacl.html" >&5
@@ -2018,12 +2024,12 @@ PTJAVA3D_DIR=
 JAVA3D_USER_DIR="$PTII/ptolemy/domains/gr"
 
 if test ! -d "$JAVA3D_USER_DIR"; then
-    echo "$as_me:2021: result: $JAVA3D_USER_DIR is not present,
+    echo "$as_me:2027: result: $JAVA3D_USER_DIR is not present,
 	so we need not find Java 3D." >&5
 echo "${ECHO_T}$JAVA3D_USER_DIR is not present,
 	so we need not find Java 3D." >&6
 else
-    echo "$as_me:2026: checking for Java 3D" >&5
+    echo "$as_me:2032: checking for Java 3D" >&5
 echo $ECHO_N "checking for Java 3D... $ECHO_C" >&6
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
@@ -2031,11 +2037,11 @@ echo $ECHO_N "checking for Java 3D... $ECHO_C" >&6
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" java3dTest.java ; then
-       echo "$as_me:2034: result: ok" >&5
+       echo "$as_me:2040: result: ok" >&5
 echo "${ECHO_T}ok" >&6
        PTJAVA3D_DIR=gr
     else
-       { echo "$as_me:2038: WARNING: '\"$JAVAC\" java3dTest.java' failed.
+       { echo "$as_me:2044: WARNING: '\"$JAVAC\" java3dTest.java' failed.
 	http://java.sun.com/products/java-media/3D/download.html
 	Java 3D is only needed if you want to build in
 	$JAVA3D_USER_DIR,
@@ -2059,12 +2065,12 @@ PTJAVASOUND_USER_DIR="$PTII/ptolemy/actor/lib/javasound"
 PTJAVASOUND_DIR=
 
 if test ! -d "$PTJAVASOUND_USER_DIR"; then
-    echo "$as_me:2062: result: $PTJAVASOUND_USER_DIR is not present,
+    echo "$as_me:2068: result: $PTJAVASOUND_USER_DIR is not present,
 	so we need not find javax.sound." >&5
 echo "${ECHO_T}$PTJAVASOUND_USER_DIR is not present,
 	so we need not find javax.sound." >&6
 else
-    echo "$as_me:2067: checking for javax.sound" >&5
+    echo "$as_me:2073: checking for javax.sound" >&5
 echo $ECHO_N "checking for javax.sound... $ECHO_C" >&6
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
@@ -2072,11 +2078,11 @@ echo $ECHO_N "checking for javax.sound... $ECHO_C" >&6
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if $JAVAC javasoundTest.java ; then
-	echo "$as_me:2075: result: ok" >&5
+	echo "$as_me:2081: result: ok" >&5
 echo "${ECHO_T}ok" >&6
 	PTJAVASOUND_DIR=javasound
     else
-	{ echo "$as_me:2079: WARNING: '\"$JAVAC\" javasoundTest.java' failed.
+	{ echo "$as_me:2085: WARNING: '\"$JAVAC\" javasoundTest.java' failed.
 	Perhaps you are running under JDK1.2?
 	javasound is used in actor.lib, but you can probably
 	get away without it." >&5
@@ -2102,7 +2108,7 @@ JINI_PRESENT=no
 # $PTII/ptolemy/actor/lib/makefile if jini was found
 PTJSPACES_DIR=
 if test ! -d "$JINI_USER_DIR"; then
-    echo "$as_me:2105: result: $JINI_USER_DIR is not present,
+    echo "$as_me:2111: result: $JINI_USER_DIR is not present,
 	so we need not find Jini." >&5
 echo "${ECHO_T}$JINI_USER_DIR is not present,
 	so we need not find Jini." >&6
@@ -2110,7 +2116,7 @@ echo "${ECHO_T}$JINI_USER_DIR is not present,
     # in the makefile
     JINI_DIR='\$PTII/vendors/sun/jini/jini1_0_1'
 else
-    echo "$as_me:2113: checking for jini directory" >&5
+    echo "$as_me:2119: checking for jini directory" >&5
 echo $ECHO_N "checking for jini directory... $ECHO_C" >&6
 
 # Check whether --with-jini or --without-jini was given.
@@ -2122,7 +2128,7 @@ else
 fi;
 
     if test -d "$JINI_DIR"; then
-	echo "$as_me:2125: result: $JINI_DIR" >&5
+	echo "$as_me:2131: result: $JINI_DIR" >&5
 echo "${ECHO_T}$JINI_DIR" >&6
 	JINI_PRESENT=yes
 	# Subdirectory that contains Java spaces specific code
@@ -2131,7 +2137,7 @@ echo "${ECHO_T}$JINI_DIR" >&6
 	JINI_DIR='$PTII'/vendors/sun/jini/$JINI_VERSION
     fi
     if test "$JINI_PRESENT" = "no"; then
-        { echo "$as_me:2134: WARNING: 'Failed to find $JINI_DIR/lib/jini-core.jar
+        { echo "$as_me:2140: WARNING: 'Failed to find $JINI_DIR/lib/jini-core.jar
     Perhaps Jini is not installed?
     You need not download Jini unless you plan on use Jini and JavaSpaces
     Jini can be downloaded from http://java.sun.com/jini' and placed
@@ -2161,17 +2167,17 @@ fi
 # Defaults for ptII.mk and bin/ptinvoke.in
 # Use {} here instead of () because bin/ptinvoke uses JODE_DIR and JODE_CLASSES
 # and under /bin/sh $(FOO) does not work, but ${FOO} does
-JODE_DIR='${PTII}/vendors/jode/1.0.93'
+JODE_DIR='${PTII}/vendors/jode/1.1.1'
 JODE_CLASSES='${JODE_DIR}/jode.jar'
 
 # We only need to look for jode if $PTII/ptolemy/apps/jode exists
 if test ! -d "$PTII/vendors/jode"; then
-    echo "$as_me:2169: result: $PTII/vendors/jode is not present,
+    echo "$as_me:2175: result: $PTII/vendors/jode is not present,
 	so we need not find Jode, which is a java disassembler." >&5
 echo "${ECHO_T}$PTII/vendors/jode is not present,
 	so we need not find Jode, which is a java disassembler." >&6
 else
-    echo "$as_me:2174: checking for jode directory" >&5
+    echo "$as_me:2180: checking for jode directory" >&5
 echo $ECHO_N "checking for jode directory... $ECHO_C" >&6
 
 # Check whether --with-jode or --without-jode was given.
@@ -2179,19 +2185,19 @@ if test "${with_jode+set}" = set; then
   withval="$with_jode"
   JODE_DIR=$withval
 else
-  JODE_DIR=$PTII/vendors/jode/1.0.93
+  JODE_DIR=$PTII/vendors/jode/1.1.1
 fi;
 
     if test -d "$JODE_DIR"; then
-	echo "$as_me:2186: result: $JODE_DIR" >&5
+	echo "$as_me:2192: result: $JODE_DIR" >&5
 echo "${ECHO_T}$JODE_DIR" >&6
-        echo "$as_me:2188: checking for \$JODE_DIR/jode.jar" >&5
+        echo "$as_me:2194: checking for \$JODE_DIR/jode.jar" >&5
 echo $ECHO_N "checking for \$JODE_DIR/jode.jar... $ECHO_C" >&6
 	if test -f "$JODE_DIR/jode.jar"; then
-	    echo "$as_me:2191: result: $JODE_DIR/jode.jar" >&5
+	    echo "$as_me:2197: result: $JODE_DIR/jode.jar" >&5
 echo "${ECHO_T}$JODE_DIR/jode.jar" >&6
 	    JODE_CLASSES=$JODE_DIR/jode.jar
-	    echo "$as_me:2194: result: $JODE_CLASSES" >&5
+	    echo "$as_me:2200: result: $JODE_CLASSES" >&5
 echo "${ECHO_T}$JODE_CLASSES" >&6
         else
 	    JODE_CLASSES=no
@@ -2199,7 +2205,7 @@ echo "${ECHO_T}$JODE_CLASSES" >&6
     fi
 
     if test "$JODE_CLASSES" = "no"; then
-        { echo "$as_me:2202: WARNING: 'Failed to find jode/jode.jar
+        { echo "$as_me:2208: WARNING: 'Failed to find jode/jode.jar
     perhaps Jode is not installed?
     Jode is used to disassemble Java .class files and is only necessary
     if you plan on debugging the byte code based code generator.
@@ -2210,7 +2216,7 @@ echo "$as_me: WARNING: 'Failed to find jode/jode.jar
     if you plan on debugging the byte code based code generator.
     Jode can be downloaded from http://jode.sourceforge.net/download.php'" >&2;}
 	# Note that we don't substitute in the ${PTII} or $(JODE_DIR) here
-	JODE_DIR='${PTII}/vendors/jode/1.0.93'
+	JODE_DIR='${PTII}/vendors/jode/1.1.1'
    	JODE_CLASSES='${JODE_DIR}/jode.jar'
     #else
 	# Set to jode and used in
@@ -2232,7 +2238,7 @@ PTKVM_DIR=
 #
 # We only need to look for kvm if $PTII/ptolemy/apps/kvm exists
 if test ! -d "$PTII/ptolemy/apps/kvm"; then
-    echo "$as_me:2235: result: $PTII/ptolemy/apps/kvm is not present,
+    echo "$as_me:2241: result: $PTII/ptolemy/apps/kvm is not present,
 	so we need not find the PalmOS kvm." >&5
 echo "${ECHO_T}$PTII/ptolemy/apps/kvm is not present,
 	so we need not find the PalmOS kvm." >&6
@@ -2241,7 +2247,7 @@ echo "${ECHO_T}$PTII/ptolemy/apps/kvm is not present,
     # It needs to be built
     KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
 else
-    echo "$as_me:2244: checking for kvm directory" >&5
+    echo "$as_me:2250: checking for kvm directory" >&5
 echo $ECHO_N "checking for kvm directory... $ECHO_C" >&6
 
 # Check whether --with-kvm or --without-kvm was given.
@@ -2253,32 +2259,32 @@ else
 fi;
 
     if test -d "$KVM_DIR"; then
-	echo "$as_me:2256: result: $KVM_DIR" >&5
+	echo "$as_me:2262: result: $KVM_DIR" >&5
 echo "${ECHO_T}$KVM_DIR" >&6
-        echo "$as_me:2258: checking for \$KVM_DIR/bin/api/classes" >&5
+        echo "$as_me:2264: checking for \$KVM_DIR/bin/api/classes" >&5
 echo $ECHO_N "checking for \$KVM_DIR/bin/api/classes... $ECHO_C" >&6
 	if test -d "$KVM_DIR/bin/api/classes"; then
 	    KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
-	    echo "$as_me:2262: result: $KVM_CLASSES" >&5
+	    echo "$as_me:2268: result: $KVM_CLASSES" >&5
 echo "${ECHO_T}$KVM_CLASSES" >&6
         else
 	    KVM_CLASSES=no
         fi
     else
-	echo "$as_me:2268: result: Not found in $KVM_DIR" >&5
+	echo "$as_me:2274: result: Not found in $KVM_DIR" >&5
 echo "${ECHO_T}Not found in $KVM_DIR" >&6
-	echo "$as_me:2270: checking for kvm directory in /j2me_cldc" >&5
+	echo "$as_me:2276: checking for kvm directory in /j2me_cldc" >&5
 echo $ECHO_N "checking for kvm directory in /j2me_cldc... $ECHO_C" >&6
 	# Likely place for kvm under windows
 	KVM_DIR=/j2me_cldc
         if test -d "$KVM_DIR"; then
-	    echo "$as_me:2275: result: $KVM_DIR" >&5
+	    echo "$as_me:2281: result: $KVM_DIR" >&5
 echo "${ECHO_T}$KVM_DIR" >&6
-            echo "$as_me:2277: checking for \$KVM_DIR/bin/api/classes" >&5
+            echo "$as_me:2283: checking for \$KVM_DIR/bin/api/classes" >&5
 echo $ECHO_N "checking for \$KVM_DIR/bin/api/classes... $ECHO_C" >&6
 	    if test -d "$KVM_DIR/bin/api/classes"; then
 	        KVM_CLASSES='$(KVM_DIR)/bin/api/classes'
-	        echo "$as_me:2281: result: $KVM_CLASSES" >&5
+	        echo "$as_me:2287: result: $KVM_CLASSES" >&5
 echo "${ECHO_T}$KVM_CLASSES" >&6
             else
 	        KVM_CLASSES=no
@@ -2289,7 +2295,7 @@ echo "${ECHO_T}$KVM_CLASSES" >&6
 
     fi
     if test "$KVM_CLASSES" = "no"; then
-        { echo "$as_me:2292: WARNING: 'Failed to find j2me_cldc/bin/api/classes,
+        { echo "$as_me:2298: WARNING: 'Failed to find j2me_cldc/bin/api/classes,
     perhaps Kvm is not installed?
     You need not download Kvm unless you plan on building applications
     for the Palm Pilot or Handspring Visor.
@@ -2319,7 +2325,7 @@ PTMATLAB_DIR=
 
 # We only need to look for matlab if $PTII/ptolemy/matlab exists
 if test ! -d "$PTII/ptolemy/matlab"; then
-    echo "$as_me:2322: result: $PTII/ptolemy/matlab is not present,
+    echo "$as_me:2328: result: $PTII/ptolemy/matlab is not present,
 	so we need not find matlab, gcc and dlltool." >&5
 echo "${ECHO_T}$PTII/ptolemy/matlab is not present,
 	so we need not find matlab, gcc and dlltool." >&6
@@ -2327,11 +2333,11 @@ echo "${ECHO_T}$PTII/ptolemy/matlab is not present,
     PTCC=gcc
     PTDLLTOOL=dlltool
 else
-    echo "$as_me:2330: checking for matlab" >&5
+    echo "$as_me:2336: checking for matlab" >&5
 echo $ECHO_N "checking for matlab... $ECHO_C" >&6
     # Extract the first word of "matlab", so it can be a program name with args.
 set dummy matlab; ac_word=$2
-echo "$as_me:2334: checking for $ac_word" >&5
+echo "$as_me:2340: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_path_MATLAB+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -2348,7 +2354,7 @@ for ac_dir in $ac_dummy; do
   test -z "$ac_dir" && ac_dir=.
   if $as_executable_p "$ac_dir/$ac_word"; then
    ac_cv_path_MATLAB="$ac_dir/$ac_word"
-   echo "$as_me:2351: found $ac_dir/$ac_word" >&5
+   echo "$as_me:2357: found $ac_dir/$ac_word" >&5
    break
 fi
 done
@@ -2359,15 +2365,15 @@ fi
 MATLAB=$ac_cv_path_MATLAB
 
 if test -n "$MATLAB"; then
-  echo "$as_me:2362: result: $MATLAB" >&5
+  echo "$as_me:2368: result: $MATLAB" >&5
 echo "${ECHO_T}$MATLAB" >&6
 else
-  echo "$as_me:2365: result: no" >&5
+  echo "$as_me:2371: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
 
     if test "${MATLAB:-none}" = "none"; then
-	{ echo "$as_me:2370: WARNING: Failed to find matlab executable in the path.
+	{ echo "$as_me:2376: WARNING: Failed to find matlab executable in the path.
     Perhaps Matlab is not installed?
     If Matlab is not present, then the Ptolemy II/Matlab interface in
     \$PTII/ptolemy/matlab will not be usable." >&5
@@ -2379,24 +2385,24 @@ echo "$as_me: WARNING: Failed to find matlab executable in the path.
         startdir=`pwd`
 	cd "$srcdir/config"
 	if "$JAVAC" MatlabRootDirectory.java ; then
-	    echo "$as_me:2382: result: ok" >&5
+	    echo "$as_me:2388: result: ok" >&5
 echo "${ECHO_T}ok" >&6
-	    echo "$as_me:2384: checking the value of the Matlab root directory " >&5
+	    echo "$as_me:2390: checking the value of the Matlab root directory " >&5
 echo $ECHO_N "checking the value of the Matlab root directory ... $ECHO_C" >&6
 	    if env CLASSPATH=$PTII/config "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
 		# Run it again and get the results
 		MATLAB_DIR=`CLASSPATH=$PTII/config "$JAVA" MatlabRootDirectory "$MATLAB"`
-		echo "$as_me:2389: result: '$MATLAB_DIR'" >&5
+		echo "$as_me:2395: result: '$MATLAB_DIR'" >&5
 echo "${ECHO_T}'$MATLAB_DIR'" >&6
 	    else
-		{ echo "$as_me:2392: WARNING: 'CLASSPATH=$PTII/config $JAVA MatlabRootDirectory \"$MATLAB\" failed.
+		{ echo "$as_me:2398: WARNING: 'CLASSPATH=$PTII/config $JAVA MatlabRootDirectory \"$MATLAB\" failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab" >&5
 echo "$as_me: WARNING: 'CLASSPATH=$PTII/config $JAVA MatlabRootDirectory \"$MATLAB\" failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab" >&2;};
 
 	    fi
 	else
-	    { echo "$as_me:2399: WARNING: 'CLASSPATH=$PTII/config $JAVAC SystemJar.java failed.
+	    { echo "$as_me:2405: WARNING: 'CLASSPATH=$PTII/config $JAVAC SystemJar.java failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab" >&5
 echo "$as_me: WARNING: 'CLASSPATH=$PTII/config $JAVAC SystemJar.java failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab" >&2;};
@@ -2404,7 +2410,7 @@ echo "$as_me: WARNING: 'CLASSPATH=$PTII/config $JAVAC SystemJar.java failed.
 	cd "$startdir"
 
 	if test ! -d "$MATLAB_DIR"; then
-		{ echo "$as_me:2407: WARNING: Failed to find '${MATLAB_DIR}'
+		{ echo "$as_me:2413: WARNING: Failed to find '${MATLAB_DIR}'
         If Matlab is not present, then the Ptolemy II/Matlab interface in
     \$PTII/ptolemy/matlab will not be usable." >&5
 echo "$as_me: WARNING: Failed to find '${MATLAB_DIR}'
@@ -2412,13 +2418,13 @@ echo "$as_me: WARNING: Failed to find '${MATLAB_DIR}'
     \$PTII/ptolemy/matlab will not be usable." >&2;};
 	else
 	    if test -f "${MATLAB_DIR}/extern/include/libeng.def"; then
-		echo "$as_me:2415: result: $MATLAB_DIR" >&5
+		echo "$as_me:2421: result: $MATLAB_DIR" >&5
 echo "${ECHO_T}$MATLAB_DIR" >&6
-		echo "$as_me:2417: checking for gcc" >&5
+		echo "$as_me:2423: checking for gcc" >&5
 echo $ECHO_N "checking for gcc... $ECHO_C" >&6
 		# Extract the first word of "gcc", so it can be a program name with args.
 set dummy gcc; ac_word=$2
-echo "$as_me:2421: checking for $ac_word" >&5
+echo "$as_me:2427: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_path_PTCC+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -2435,7 +2441,7 @@ for ac_dir in $ac_dummy; do
   test -z "$ac_dir" && ac_dir=.
   if $as_executable_p "$ac_dir/$ac_word"; then
    ac_cv_path_PTCC="$ac_dir/$ac_word"
-   echo "$as_me:2438: found $ac_dir/$ac_word" >&5
+   echo "$as_me:2444: found $ac_dir/$ac_word" >&5
    break
 fi
 done
@@ -2446,25 +2452,25 @@ fi
 PTCC=$ac_cv_path_PTCC
 
 if test -n "$PTCC"; then
-  echo "$as_me:2449: result: $PTCC" >&5
+  echo "$as_me:2455: result: $PTCC" >&5
 echo "${ECHO_T}$PTCC" >&6
 else
-  echo "$as_me:2452: result: no" >&5
+  echo "$as_me:2458: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
 
 		if test "${PTCC:-none}" != "none"; then
-		    echo "$as_me:2457: result: $PTCC" >&5
+		    echo "$as_me:2463: result: $PTCC" >&5
 echo "${ECHO_T}$PTCC" >&6
 		    PTMATLAB_DIR=matlab
 		else
-		    { echo "$as_me:2461: WARNING: Failed to find gcc" >&5
+		    { echo "$as_me:2467: WARNING: Failed to find gcc" >&5
 echo "$as_me: WARNING: Failed to find gcc" >&2;}
-		    echo "$as_me:2463: checking for cc" >&5
+		    echo "$as_me:2469: checking for cc" >&5
 echo $ECHO_N "checking for cc... $ECHO_C" >&6
 		    # Extract the first word of "cc", so it can be a program name with args.
 set dummy cc; ac_word=$2
-echo "$as_me:2467: checking for $ac_word" >&5
+echo "$as_me:2473: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_path_PTCC+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -2481,7 +2487,7 @@ for ac_dir in $ac_dummy; do
   test -z "$ac_dir" && ac_dir=.
   if $as_executable_p "$ac_dir/$ac_word"; then
    ac_cv_path_PTCC="$ac_dir/$ac_word"
-   echo "$as_me:2484: found $ac_dir/$ac_word" >&5
+   echo "$as_me:2490: found $ac_dir/$ac_word" >&5
    break
 fi
 done
@@ -2492,19 +2498,19 @@ fi
 PTCC=$ac_cv_path_PTCC
 
 if test -n "$PTCC"; then
-  echo "$as_me:2495: result: $PTCC" >&5
+  echo "$as_me:2501: result: $PTCC" >&5
 echo "${ECHO_T}$PTCC" >&6
 else
-  echo "$as_me:2498: result: no" >&5
+  echo "$as_me:2504: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
 
 		    if test "${PTCC:-none}" != "none"; then
-			echo "$as_me:2503: result: $PTCC" >&5
+			echo "$as_me:2509: result: $PTCC" >&5
 echo "${ECHO_T}$PTCC" >&6
 			PTMATLAB_DIR=matlab
 		    else
-			{ echo "$as_me:2507: WARNING: Failed to find gcc or cc, so we will
+			{ echo "$as_me:2513: WARNING: Failed to find gcc or cc, so we will
     not be able to compile the Matlab interface in ptolemy/matlab" >&5
 echo "$as_me: WARNING: Failed to find gcc or cc, so we will
     not be able to compile the Matlab interface in ptolemy/matlab" >&2;};
@@ -2512,11 +2518,11 @@ echo "$as_me: WARNING: Failed to find gcc or cc, so we will
 		fi
 		# FIXME: currently, the Matlab interface only works
 		# under Windows
-		echo "$as_me:2515: checking for dlltool" >&5
+		echo "$as_me:2521: checking for dlltool" >&5
 echo $ECHO_N "checking for dlltool... $ECHO_C" >&6
 		# Extract the first word of "dlltool", so it can be a program name with args.
 set dummy dlltool; ac_word=$2
-echo "$as_me:2519: checking for $ac_word" >&5
+echo "$as_me:2525: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_path_PTDLLTOOL+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -2533,7 +2539,7 @@ for ac_dir in $ac_dummy; do
   test -z "$ac_dir" && ac_dir=.
   if $as_executable_p "$ac_dir/$ac_word"; then
    ac_cv_path_PTDLLTOOL="$ac_dir/$ac_word"
-   echo "$as_me:2536: found $ac_dir/$ac_word" >&5
+   echo "$as_me:2542: found $ac_dir/$ac_word" >&5
    break
 fi
 done
@@ -2544,22 +2550,22 @@ fi
 PTDLLTOOL=$ac_cv_path_PTDLLTOOL
 
 if test -n "$PTDLLTOOL"; then
-  echo "$as_me:2547: result: $PTDLLTOOL" >&5
+  echo "$as_me:2553: result: $PTDLLTOOL" >&5
 echo "${ECHO_T}$PTDLLTOOL" >&6
 else
-  echo "$as_me:2550: result: no" >&5
+  echo "$as_me:2556: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
 
 		if test "${PTDLLTOOL:-none}" = "none"; then
 		    PTMATLAB_DIR=
-		    { echo "$as_me:2556: WARNING: Failed to find dlltool, so we will
+		    { echo "$as_me:2562: WARNING: Failed to find dlltool, so we will
     not be able to compile the Matlab interface in ptolemy/matlab" >&5
 echo "$as_me: WARNING: Failed to find dlltool, so we will
     not be able to compile the Matlab interface in ptolemy/matlab" >&2;};
 		fi
 	    else
-		{ echo "$as_me:2562: WARNING: Failed to find matlab libeng.def file at
+		{ echo "$as_me:2568: WARNING: Failed to find matlab libeng.def file at
     ${MATLAB_DIR}/extern/include/libeng.def.
     Perhaps Matlab is not installed?" >&5
 echo "$as_me: WARNING: Failed to find matlab libeng.def file at
@@ -2597,13 +2603,13 @@ SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasmin
 
 # We only need to look for soot if $PTII/ptolemy/copernicus exists
 if test ! -d "$PTII/ptolemy/copernicus"; then
-    echo "$as_me:2600: result: $PTII/ptolemy/copernicus is not present,
+    echo "$as_me:2606: result: $PTII/ptolemy/copernicus is not present,
 	so we need not find the Soot - a Java Optimization Framework." >&5
 echo "${ECHO_T}$PTII/ptolemy/copernicus is not present,
 	so we need not find the Soot - a Java Optimization Framework." >&6
     SOOT_DIR='${PTII}/lib'
 else
-    echo "$as_me:2606: checking for soot directory" >&5
+    echo "$as_me:2612: checking for soot directory" >&5
 echo $ECHO_N "checking for soot directory... $ECHO_C" >&6
 
 # Check whether --with-soot or --without-soot was given.
@@ -2615,20 +2621,20 @@ else
 fi;
 
     if test -d "$SOOT_DIR"; then
-	echo "$as_me:2618: result: $SOOT_DIR" >&5
+	echo "$as_me:2624: result: $SOOT_DIR" >&5
 echo "${ECHO_T}$SOOT_DIR" >&6
-        echo "$as_me:2620: checking for \$SOOT_DIR/sootclasses.jar" >&5
+        echo "$as_me:2626: checking for \$SOOT_DIR/sootclasses.jar" >&5
 echo $ECHO_N "checking for \$SOOT_DIR/sootclasses.jar... $ECHO_C" >&6
 	if test -f "$SOOT_DIR/sootclasses.jar"; then
-	    echo "$as_me:2623: result: $SOOT_DIR/sootclasses.jar" >&5
+	    echo "$as_me:2629: result: $SOOT_DIR/sootclasses.jar" >&5
 echo "${ECHO_T}$SOOT_DIR/sootclasses.jar" >&6
-	    echo "$as_me:2625: checking for \$SOOT_DIR/jasminclasses.jar" >&5
+	    echo "$as_me:2631: checking for \$SOOT_DIR/jasminclasses.jar" >&5
 echo $ECHO_N "checking for \$SOOT_DIR/jasminclasses.jar... $ECHO_C" >&6
   	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
-                echo "$as_me:2628: result: $SOOT_DIR/jasminclasses.jar" >&5
+                echo "$as_me:2634: result: $SOOT_DIR/jasminclasses.jar" >&5
 echo "${ECHO_T}$SOOT_DIR/jasminclasses.jar" >&6
             fi
-	    echo "$as_me:2631: result: $SOOT_CLASSES" >&5
+	    echo "$as_me:2637: result: $SOOT_CLASSES" >&5
 echo "${ECHO_T}$SOOT_CLASSES" >&6
         else
 	    SOOT_CLASSES_FOUND=no
@@ -2638,7 +2644,7 @@ echo "${ECHO_T}$SOOT_CLASSES" >&6
     fi
 
     if test "$SOOT_CLASSES_FOUND" = "no"; then
-        { echo "$as_me:2641: WARNING: Failed to find soot/sootclasses.jar
+        { echo "$as_me:2647: WARNING: Failed to find soot/sootclasses.jar
     perhaps Soot is not installed?
     You need not download Soot unless you plan on using code generation
     The Soot SDK can be downloaded from http://www.sable.mcgill.ca/soot/" >&5
@@ -2654,7 +2660,7 @@ echo "$as_me: WARNING: Failed to find soot/sootclasses.jar
 	PTCOPERNICUS_DIR=copernicus
     fi
 
-    echo "$as_me:2657: checking for rt.jar by compiling config/SystemJar.java" >&5
+    echo "$as_me:2663: checking for rt.jar by compiling config/SystemJar.java" >&5
 echo $ECHO_N "checking for rt.jar by compiling config/SystemJar.java... $ECHO_C" >&6
 
 # Check whether --with-javasystemjar or --without-javasystemjar was given.
@@ -2668,24 +2674,24 @@ fi;
     startdir=`pwd`
     cd "$srcdir/config"
     if "$JAVAC" SystemJar.java ; then
-	echo "$as_me:2671: result: ok" >&5
+	echo "$as_me:2677: result: ok" >&5
 echo "${ECHO_T}ok" >&6
-	echo "$as_me:2673: checking the value of the java.home property " >&5
+	echo "$as_me:2679: checking the value of the java.home property " >&5
 echo $ECHO_N "checking the value of the java.home property ... $ECHO_C" >&6
 	if env CLASSPATH=$PTII/config "$JAVA" SystemJar > /dev/null; then
 	    # Run it again and get the results
 	    JAVA_SYSTEM_JAR=`CLASSPATH=$PTII/config "$JAVA" SystemJar`
-   	    echo "$as_me:2678: result: '$JAVA_SYSTEM_JAR'" >&5
+   	    echo "$as_me:2684: result: '$JAVA_SYSTEM_JAR'" >&5
 echo "${ECHO_T}'$JAVA_SYSTEM_JAR'" >&6
 	else
-	    { { echo "$as_me:2681: error: 'CLASSPATH=$PTII/config $JAVA SystemJar failed.
+	    { { echo "$as_me:2687: error: 'CLASSPATH=$PTII/config $JAVA SystemJar failed.
     Classes that use Soot will compile, but will fail to run.'" >&5
 echo "$as_me: error: 'CLASSPATH=$PTII/config $JAVA SystemJar failed.
     Classes that use Soot will compile, but will fail to run.'" >&2;}
    { (exit 1); exit 1; }; }
         fi
     else
-	{ { echo "$as_me:2688: error: 'CLASSPATH=$PTII/config $JAVAC SystemJar.java failed.
+	{ { echo "$as_me:2694: error: 'CLASSPATH=$PTII/config $JAVAC SystemJar.java failed.
     Classes that use Soot will compile, but will fail to run.'" >&5
 echo "$as_me: error: 'CLASSPATH=$PTII/config $JAVAC SystemJar.java failed.
     Classes that use Soot will compile, but will fail to run.'" >&2;}
@@ -2708,14 +2714,14 @@ PTTINI_DIR=
 #
 # We only need to look for tini if $PTII/ptolemy/apps/tini exists
 if test ! -d "$PTII/ptolemy/apps/tini"; then
-    echo "$as_me:2711: result: $PTII/ptolemy/apps/tini is not present,
+    echo "$as_me:2717: result: $PTII/ptolemy/apps/tini is not present,
 	so we need not find the Dallas Semiconductor tini." >&5
 echo "${ECHO_T}$PTII/ptolemy/apps/tini is not present,
 	so we need not find the Dallas Semiconductor tini." >&6
     TINI_DIR='${PTII}/vendors/dalsemi/tini'
     TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
 else
-    echo "$as_me:2718: checking for tini directory" >&5
+    echo "$as_me:2724: checking for tini directory" >&5
 echo $ECHO_N "checking for tini directory... $ECHO_C" >&6
 
 # Check whether --with-tini or --without-tini was given.
@@ -2727,63 +2733,63 @@ else
 fi;
 
     if test -d "$TINI_DIR"; then
-	echo "$as_me:2730: result: $TINI_DIR" >&5
+	echo "$as_me:2736: result: $TINI_DIR" >&5
 echo "${ECHO_T}$TINI_DIR" >&6
-        echo "$as_me:2732: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
+        echo "$as_me:2738: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
 echo $ECHO_N "checking for \$TINI_DIR/bin/tiniclasses.jar... $ECHO_C" >&6
 	if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
-	    echo "$as_me:2735: result: $TINI_DIR/bin/tiniclasses.jar" >&5
+	    echo "$as_me:2741: result: $TINI_DIR/bin/tiniclasses.jar" >&5
 echo "${ECHO_T}$TINI_DIR/bin/tiniclasses.jar" >&6
-	    echo "$as_me:2737: checking for \$TINI_DIR/bin/tini.jar" >&5
+	    echo "$as_me:2743: checking for \$TINI_DIR/bin/tini.jar" >&5
 echo $ECHO_N "checking for \$TINI_DIR/bin/tini.jar... $ECHO_C" >&6
   	    if test -f "$TINI_DIR/bin/tini.jar"; then
-                echo "$as_me:2740: result: $TINI_DIR/bin/tini.jar" >&5
+                echo "$as_me:2746: result: $TINI_DIR/bin/tini.jar" >&5
 echo "${ECHO_T}$TINI_DIR/bin/tini.jar" >&6
 	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
 	    else
 	        TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
             fi
-	    echo "$as_me:2746: result: $TINI_CLASSES" >&5
+	    echo "$as_me:2752: result: $TINI_CLASSES" >&5
 echo "${ECHO_T}$TINI_CLASSES" >&6
         else
 	    TINI_CLASSES=no
         fi
     else
-	echo "$as_me:2752: result: Not found in $TINI_DIR" >&5
+	echo "$as_me:2758: result: Not found in $TINI_DIR" >&5
 echo "${ECHO_T}Not found in $TINI_DIR" >&6
-	echo "$as_me:2754: checking for tini directory in /tini" >&5
+	echo "$as_me:2760: checking for tini directory in /tini" >&5
 echo $ECHO_N "checking for tini directory in /tini... $ECHO_C" >&6
 	# Likely place for tini under windows
 	TINI_DIR=/tini
         if test -d "$TINI_DIR"; then
-	    echo "$as_me:2759: result: $TINI_DIR" >&5
+	    echo "$as_me:2765: result: $TINI_DIR" >&5
 echo "${ECHO_T}$TINI_DIR" >&6
-            echo "$as_me:2761: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
+            echo "$as_me:2767: checking for \$TINI_DIR/bin/tiniclasses.jar" >&5
 echo $ECHO_N "checking for \$TINI_DIR/bin/tiniclasses.jar... $ECHO_C" >&6
 	    if test -f "$TINI_DIR/bin/tiniclasses.jar"; then
-	        echo "$as_me:2764: result: $TINI_DIR/bin/tiniclasses.jar" >&5
+	        echo "$as_me:2770: result: $TINI_DIR/bin/tiniclasses.jar" >&5
 echo "${ECHO_T}$TINI_DIR/bin/tiniclasses.jar" >&6
-	        echo "$as_me:2766: checking for \$TINI_DIR/bin/tini.jar" >&5
+	        echo "$as_me:2772: checking for \$TINI_DIR/bin/tini.jar" >&5
 echo $ECHO_N "checking for \$TINI_DIR/bin/tini.jar... $ECHO_C" >&6
 	        if test -f "$TINI_DIR/bin/tini.jar"; then
-	            echo "$as_me:2769: result: $TINI_DIR/bin/tini.jar" >&5
+	            echo "$as_me:2775: result: $TINI_DIR/bin/tini.jar" >&5
 echo "${ECHO_T}$TINI_DIR/bin/tini.jar" >&6
 	            TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
 	        else
 	            TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar'
 	        fi
             fi
-	    echo "$as_me:2776: result: $TINI_CLASSES" >&5
+	    echo "$as_me:2782: result: $TINI_CLASSES" >&5
 echo "${ECHO_T}$TINI_CLASSES" >&6
         else
 	    TINI_CLASSES='$(TINI_DIR)/bin/tiniclasses.jar$(CLASSPATHSEPARATOR)$(TINI_DIR)/bin/tini.jar'
-	    echo "$as_me:2780: result: $TINI_CLASSES" >&5
+	    echo "$as_me:2786: result: $TINI_CLASSES" >&5
 echo "${ECHO_T}$TINI_CLASSES" >&6
         fi
 
     fi
     if test "$TINI_CLASSES" = "no"; then
-        { echo "$as_me:2786: WARNING: Failed to find tini/bin/tiniclasses.jar
+        { echo "$as_me:2792: WARNING: Failed to find tini/bin/tiniclasses.jar
     perhaps Tini is not installed?
     You need not download Tini unless you plan on building applications
     for the Dallas Semiconductor Tini board.
@@ -2816,7 +2822,7 @@ PTWABA_DIR=
 #
 # We only need to look for waba if $PTII/ptolemy/apps/kvm exists
 if test ! -d "$PTII/ptolemy/apps/kvm"; then
-    echo "$as_me:2819: result: $PTII/ptolemy/apps/kvm is not present,
+    echo "$as_me:2825: result: $PTII/ptolemy/apps/kvm is not present,
 	so we need not find the PalmOS waba." >&5
 echo "${ECHO_T}$PTII/ptolemy/apps/kvm is not present,
 	so we need not find the PalmOS waba." >&6
@@ -2825,7 +2831,7 @@ echo "${ECHO_T}$PTII/ptolemy/apps/kvm is not present,
     # It needs to be built
     WABA_CLASSES='$(WABA_DIR)/classes'
 else
-    echo "$as_me:2828: checking for waba directory" >&5
+    echo "$as_me:2834: checking for waba directory" >&5
 echo $ECHO_N "checking for waba directory... $ECHO_C" >&6
 
 # Check whether --with-waba or --without-waba was given.
@@ -2837,32 +2843,32 @@ else
 fi;
 
     if test -d "$WABA_DIR"; then
-	echo "$as_me:2840: result: $WABA_DIR" >&5
+	echo "$as_me:2846: result: $WABA_DIR" >&5
 echo "${ECHO_T}$WABA_DIR" >&6
-        echo "$as_me:2842: checking for \$WABA_DIR/classes" >&5
+        echo "$as_me:2848: checking for \$WABA_DIR/classes" >&5
 echo $ECHO_N "checking for \$WABA_DIR/classes... $ECHO_C" >&6
 	if test -d "$WABA_DIR/classes"; then
 	    WABA_CLASSES='$(WABA_DIR)/classes'
-	    echo "$as_me:2846: result: $WABA_CLASSES" >&5
+	    echo "$as_me:2852: result: $WABA_CLASSES" >&5
 echo "${ECHO_T}$WABA_CLASSES" >&6
         else
 	    WABA_CLASSES=no
         fi
     else
-	echo "$as_me:2852: result: Not found in $WABA_DIR" >&5
+	echo "$as_me:2858: result: Not found in $WABA_DIR" >&5
 echo "${ECHO_T}Not found in $WABA_DIR" >&6
-	echo "$as_me:2854: checking for waba directory in /waba" >&5
+	echo "$as_me:2860: checking for waba directory in /waba" >&5
 echo $ECHO_N "checking for waba directory in /waba... $ECHO_C" >&6
 	# Likely place for waba under windows
 	WABA_DIR=/waba/wabasdk
         if test -d "$WABA_DIR"; then
-	    echo "$as_me:2859: result: $WABA_DIR" >&5
+	    echo "$as_me:2865: result: $WABA_DIR" >&5
 echo "${ECHO_T}$WABA_DIR" >&6
-            echo "$as_me:2861: checking for \$WABA_DIR/classes" >&5
+            echo "$as_me:2867: checking for \$WABA_DIR/classes" >&5
 echo $ECHO_N "checking for \$WABA_DIR/classes... $ECHO_C" >&6
 	    if test -d "$WABA_DIR/classes"; then
 	        WABA_CLASSES='$(WABA_DIR)/classes'
-	        echo "$as_me:2865: result: $WABA_CLASSES" >&5
+	        echo "$as_me:2871: result: $WABA_CLASSES" >&5
 echo "${ECHO_T}$WABA_CLASSES" >&6
             else
 	        WABA_CLASSES=no
@@ -2873,7 +2879,7 @@ echo "${ECHO_T}$WABA_CLASSES" >&6
 
     fi
     if test "$WABA_CLASSES" = "no"; then
-        { echo "$as_me:2876: WARNING: Failed to find waba/wabasdk
+        { echo "$as_me:2882: WARNING: Failed to find waba/wabasdk
     perhaps Waba is not installed?
     You need not download Waba unless you plan on building applications
     for the Palm Pilot or Handspring Visor.
@@ -3115,7 +3121,7 @@ rm -f confdef2opt.sed
 : ${CONFIG_STATUS=./config.status}
 ac_clean_files_save=$ac_clean_files
 ac_clean_files="$ac_clean_files $CONFIG_STATUS"
-{ echo "$as_me:3118: creating $CONFIG_STATUS" >&5
+{ echo "$as_me:3124: creating $CONFIG_STATUS" >&5
 echo "$as_me: creating $CONFIG_STATUS" >&6;}
 cat >$CONFIG_STATUS <<_ACEOF
 #! $SHELL
@@ -3285,7 +3291,7 @@ cat >>$CONFIG_STATUS <<\EOF
     echo "$ac_cs_version"; exit 0 ;;
   --he | --h)
     # Conflict between --help and --header
-    { { echo "$as_me:3288: error: ambiguous option: $1
+    { { echo "$as_me:3294: error: ambiguous option: $1
 Try \`$0 --help' for more information." >&5
 echo "$as_me: error: ambiguous option: $1
 Try \`$0 --help' for more information." >&2;}
@@ -3304,7 +3310,7 @@ Try \`$0 --help' for more information." >&2;}
     ac_need_defaults=false;;
 
   # This is an error.
-  -*) { { echo "$as_me:3307: error: unrecognized option: $1
+  -*) { { echo "$as_me:3313: error: unrecognized option: $1
 Try \`$0 --help' for more information." >&5
 echo "$as_me: error: unrecognized option: $1
 Try \`$0 --help' for more information." >&2;}
@@ -3342,7 +3348,7 @@ do
   "mk/ptII.mk" ) CONFIG_FILES="$CONFIG_FILES mk/ptII.mk" ;;
   "bin/ptinvoke" ) CONFIG_FILES="$CONFIG_FILES bin/ptinvoke" ;;
   "default" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default" ;;
-  *) { { echo "$as_me:3345: error: invalid argument: $ac_config_target" >&5
+  *) { { echo "$as_me:3351: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
    { (exit 1); exit 1; }; };;
   esac
@@ -3581,7 +3587,7 @@ done; }
   esac
 
   if test x"$ac_file" != x-; then
-    { echo "$as_me:3584: creating $ac_file" >&5
+    { echo "$as_me:3590: creating $ac_file" >&5
 echo "$as_me: creating $ac_file" >&6;}
     rm -f "$ac_file"
   fi
@@ -3599,7 +3605,7 @@ echo "$as_me: creating $ac_file" >&6;}
       -) echo $tmp/stdin ;;
       [\\/$]*)
          # Absolute (can't be DOS-style, as IFS=:)
-         test -f "$f" || { { echo "$as_me:3602: error: cannot find input file: $f" >&5
+         test -f "$f" || { { echo "$as_me:3608: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          echo $f;;
@@ -3612,7 +3618,7 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
            echo $srcdir/$f
          else
            # /dev/null tree
-           { { echo "$as_me:3615: error: cannot find input file: $f" >&5
+           { { echo "$as_me:3621: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          fi;;
