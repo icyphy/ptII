@@ -70,7 +70,7 @@ public class TestProcessActor extends TestActor {
     /** Record the firing and force postfire to return false.
      */
     public void fire() {
-        _actions.append(getFullName() + ".fire\n");
+        super.fire();
         _notdone = false;
     }
 
@@ -78,7 +78,7 @@ public class TestProcessActor extends TestActor {
      *  Else return false.
      */
     public boolean postfire() {
-        _actions.append(getFullName() + ".postfire\n");
+        super.postfire();
         return _notdone;
     }
 
