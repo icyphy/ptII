@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Java deep and shallow code generation
+# Makefile for Ptolemy II Java deep code generation
 #
 # @Authors: Steve Neuendorffer, Christopher Hylands
 #
@@ -83,19 +83,17 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "To run the demo, run 'make demo' or 'make shallowDemo' or 'make deepDemo'"
+	@echo "To run the demo, run 'make demo'"
 
 install: all
 
 depend:
 	@echo "no dependencies in this directory"
 
-demo: shallowDemo deepDemo
-shallowDemo: compileShallowDemo runShallowDemo
+demo: deepDemo
 deepDemo: compileDeepDemo runDeepDemo
 
-SHALLOWTARGETPACKAGE = 	ptolemy.copernicus.java.cg.shallow
-SHALLOWTARGETPATH =	ptolemy/copernicus/java/cg/shallow
+DEEPTARGETPATH =	ptolemy/copernicus/java/cg/shallow
 
 JADTARGETPACKAGE =	ptolemy.copernicus.java.cg.jad
 JADTARGETPATH =		$(ROOT)/ptolemy/copernicus/java/cg/jad
@@ -107,61 +105,14 @@ DEEPSOURCECLASS = $(DEEPSOURCEPACKAGE).$(DEEPMODEL)
 DEEPTARGETCLASS = $(SHALLOWTARGETPACKAGE).CGToplevelModel
 #make DEEPSOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDeepDemo
 
-# IIR
-MODEL = IIR
-SOURCECLASS = $(ROOT)/ptolemy/actor/lib/test/auto/$(MODEL).xml
-#DEEPSOURCECLASS = $(SOURCECLASS)
-SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).CG$(MODEL)
-
-
 DEEPTARGETPACKAGE = ptolemy.copernicus.java.cg.deep
 DEEPTARGETCLASS = $(DEEPTARGETPACKAGE).$(MODEL)
 
-
 JVM_SIZE = -Xmx256m
-
-# make SOURCECLASS=../test/RampFileWriter.xml compileDemo
 
 # Soot command line arguments for the user.  To list all the arguments, use
 # make SOOT_USER_ARGS=-h
 SOOT_USER_ARGS =
-
-compileShallowDemo: $(JCLASS)
-	@echo "generate shallow code for '$(SOURCECLASS)'"
-	$(JAVA) $(JVM_SIZE) \
-	 -classpath "$(CLASSPATH)" \
-	ptolemy.copernicus.java.Main "$(SOURCECLASS)" -d "$(ROOT)"  \
-		-p wjtp.at targetPackage:$(SHALLOWTARGETPACKAGE) \
-		-p wjtp.mt targetPackage:$(SHALLOWTARGETPACKAGE) \
-		-p wjtp.umr disabled \
-		-p wjtp.iee disabled \
-		$(SOOT_USER_ARGS)
-#	@echo "Here is that javap output"
-#	javap -verbose -l -s -classpath $(ROOT) $(SHALLOWTARGETCLASS)
-
-runShallowDemo:
-	@echo "Run the model"
-	$(JAVA) -Xfuture -classpath "$(ROOT)" \
-		ptolemy.actor.gui.CompositeActorApplication \
-		-class $(SHALLOWTARGETCLASS)
-
-# Jad is a Java disassembler
-JAD=jad
-
-# Generate a .java file from a class file and recompile it
-recompileShallowDemo:
-	@echo "Convert .class file back to .java file, compile it, run it"
-	$(JAD) -o -d $(JADTARGETPATH) $(ROOT)/$(SHALLOWTARGETPATH)/CG$(MODEL)
-	sed 's/$(SHALLOWTARGETPACKAGE)/$(JADTARGETPACKAGE)/' \
-		$(JADTARGETPATH)/CG$(MODEL).jad > \
-		$(JADTARGETPATH)/CG$(MODEL).jad2
-	sh test/jad2java $(JADTARGETPATH)/CG$(MODEL).jad2 \
-		> $(JADTARGETPATH)/CG$(MODEL).java
-	$(JAVAC) -classpath $(ROOT) $(JADTARGETPATH)/CG$(MODEL).java
-	$(JAVA) -Xfuture -classpath "$(ROOT)" \
-		ptolemy.actor.gui.CompositeActorApplication \
-		-class $(JADTARGETPACKAGE).CG$(MODEL)
-
 
 compileDeepDemo: $(JCLASS)
 	@echo "generate deep code for $(DEEPSOURCEPACKAGE)"
