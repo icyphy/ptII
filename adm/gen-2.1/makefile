@@ -534,6 +534,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces/util \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/giotto \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/configs
