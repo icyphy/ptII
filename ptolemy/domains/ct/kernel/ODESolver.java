@@ -221,9 +221,9 @@ public abstract class ODESolver extends NamedObj {
     public abstract double integratorPredictedStepSize(
             CTBaseIntegrator integrator);
 
-    /** Return true if the states of the system have been resolved successfully.
-     *  In this base class, true is always returned. Derived classes may change
-     *  the returned value.
+    /** Return true if the states of the system have been resolved
+     *  successfully.  In this base class, true is always
+     *  returned. Derived classes may change the returned value.
      *  @return True If states of the system have been resolved sucessfully.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -314,10 +314,10 @@ public abstract class ODESolver extends NamedObj {
         }
     }
 
-    /** Reset the round counter to 0. This method is called when either the
-     *  fixed-point solution of states has been found or the current integration
-     *  fails to find the fixed-point solution within the maimum number of
-     *  rounds.
+    /** Reset the round counter to 0. This method is called when
+     *  either the fixed-point solution of states has been found or
+     *  the current integration fails to find the fixed-point solution
+     *  within the maimum number of rounds.
      */
     protected void _resetRoundCount() {
         _roundCount = 0;
