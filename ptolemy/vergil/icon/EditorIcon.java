@@ -41,8 +41,11 @@ import javax.swing.SwingConstants;
 
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
@@ -84,6 +87,29 @@ both createBackgroundFigure() and createIcon().
 */
 public class EditorIcon extends Attribute {
 
+    /** Construct an icon in the specified workspace and name.
+     *  This constructor is typically used in conjuction with
+     *  setContainerToBe() and createFigure() to create an icon
+     *  and generate a figure without having to have write access
+     *  to the workspace.
+     *  If the workspace argument is null, then use the default workspace.
+     *  The object is added to the directory of the workspace.
+     *  @see #setContainerToBe(NamedObj)
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
+     *  @exception IllegalActionException If the specified name contains
+     *   a period.
+     */
+    public EditorIcon(Workspace workspace, String name)
+            throws IllegalActionException {
+        super(workspace);
+        try {
+            setName(name);
+        } catch (NameDuplicationException ex) {
+            throw new InternalErrorException(ex);
+        }
+    }
+    
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
      *  @param name The name of the attribute.
@@ -156,7 +182,7 @@ public class EditorIcon extends Attribute {
         Rectangle2D backBounds = background.getBounds();
         CompositeFigure figure = new CompositeFigure(background);
              
-        NamedObj container = (NamedObj)getContainer();
+        NamedObj container = (NamedObj)getContainerOrContainerToBe();
         // Create the label, unless this is a visible attribute,
         // which typically carries no label.
         // NOTE: backward compatibility problem...
@@ -240,6 +266,50 @@ public class EditorIcon extends Attribute {
         output.write(_getIndentPrefix(depth) + "</"
                 + getMoMLInfo().elementName + ">\n");
     }
+    
+    /** Return the container of this object, if there is one, or
+     *  if not, the container specified by setContainerToBe(), if
+     *  there is one, or if not, null. This rather specialized method is
+     *  used to create an icon and generate a figure without having
+     *  to have write access to the workspace. To use it, use the
+     *  constructor that takes a workspace and a name, then call
+     *  setContainerToBe() to indicate what the container will be. You
+     *  can then call createFigure() or createBackgroundFigure(),
+     *  and the appropriate figure for the container specified here
+     *  will be used.  Then queue a ChangeRequest that sets the
+     *  container to the same specified container. Once the container
+     *  has been set by calling setContainer(), then the object
+     *  specified to this method is no longer relevant.
+     *  @param container The container that will eventually be set.
+     *  @see #setContainerToBe(NamedObj)
+     */
+    public Nameable getContainerOrContainerToBe() {
+        Nameable container = getContainer();
+        if (container != null) {
+            return container;
+        } else {
+            return _containerToBe;
+        }
+    }
+
+    /** Indicate that the container of this icon will eventually
+     *  be the specified object. This rather specialized method is
+     *  used to create an icon and generate a figure without having
+     *  to have write access to the workspace. To use it, use the
+     *  constructor that takes a workspace and a name, then call
+     *  this method to indicate what the container will be. You
+     *  can then call createFigure() or createBackgroundFigure(),
+     *  and the appropriate figure for the container specified here
+     *  will be used.  Then queue a ChangeRequest that sets the
+     *  container to the same specified container. Once the container
+     *  has been set by calling setContainer(), then the object
+     *  specified to this method is no longer relevant.
+     *  @param container The container that will eventually be set.
+     *  @see #getContainerOrContainerToBe()
+     */
+    public void setContainerToBe(NamedObj container) {
+        _containerToBe = container;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -266,6 +336,9 @@ public class EditorIcon extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** The container to be eventually the container for this icon. */
+    protected NamedObj _containerToBe;
+    
     /** The cached Swing icon. */
     protected javax.swing.Icon _iconCache = null;
 

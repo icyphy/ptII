@@ -36,11 +36,13 @@ import java.net.URL;
 
 import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
+import ptolemy.kernel.util.Workspace;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.PaintedFigure;
 import diva.canvas.toolbox.SVGParser;
@@ -76,6 +78,29 @@ only supports a small subset of SVG.
 */
 public class XMLIcon extends EditorIcon implements ValueListener {
 
+    /** Construct an icon in the specified workspace and name.
+     *  This constructor is typically used in conjuction with
+     *  setContainerToBe() and createFigure() to create an icon
+     *  and generate a figure without having to have write access
+     *  to the workspace.
+     *  If the workspace argument is null, then use the default workspace.
+     *  The object is added to the directory of the workspace.
+     *  @see #setContainerToBe(NamedObj)
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
+     *  @exception IllegalActionException If the specified name contains
+     *   a period.
+     */
+    public XMLIcon(Workspace workspace, String name)
+            throws IllegalActionException {
+        super(workspace, name);
+        try {
+            setName(name);
+        } catch (NameDuplicationException ex) {
+            throw new InternalErrorException(ex);
+        }
+    }
+    
     /** Create a new icon with the given name in the given container.
      *  By default, the icon contains no graphic objects.
      *  @param container The container for this attribute.
@@ -98,7 +123,7 @@ public class XMLIcon extends EditorIcon implements ValueListener {
     public Figure createBackgroundFigure() {
 
         // Get the description.
-        NamedObj container = (NamedObj)getContainer();
+        NamedObj container = (NamedObj)getContainerOrContainerToBe();
         ConfigurableAttribute description =
             (ConfigurableAttribute)container.getAttribute(
                     "_iconDescription");
@@ -148,7 +173,7 @@ public class XMLIcon extends EditorIcon implements ValueListener {
         }
         // No cached object, so rerender the icon.
         // Get the description.
-        NamedObj container = (NamedObj)getContainer();
+        NamedObj container = (NamedObj)getContainerOrContainerToBe();
         ConfigurableAttribute description =
             (ConfigurableAttribute)container.getAttribute(
                     "_smallIconDescription");

@@ -35,6 +35,7 @@ import diva.canvas.Figure;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
 
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Locatable;
@@ -79,16 +80,38 @@ public class IconController extends ParameterizedNodeController {
     public static class IconRenderer implements NodeRenderer {
         public Figure render(Object n) {
             Locatable location = (Locatable)n;
-            NamedObj object = (NamedObj) location.getContainer();
+            final NamedObj object = (NamedObj) location.getContainer();
 
             // NOTE: this code is similar to that in PtolemyTreeCellRenderer
             Figure result = null;
             try {
                 List iconList = object.attributeList(EditorIcon.class);
                 if (iconList.size() == 0) {
-                    EditorIcon icon = new XMLIcon(object, "_icon");
+                    // NOTE: This used to directly create an XMLIcon within
+                    // the container "object". However, this is not cosher,
+                    // since we may not be able to get write access on the
+                    // workspace. We instead use a hack supported by XMLIcon
+                    // to create an XMLIcon with no container (this does not
+                    // require write access to the workspace), and specify
+                    // to it what the container will eventually be. Then
+                    // we queue a change request to make that the container.
+                    final EditorIcon icon = new XMLIcon(object.workspace(), "_icon");
+                    icon.setContainerToBe(object);
                     icon.setPersistent(false);
                     result = icon.createFigure();
+                    ChangeRequest request = new ChangeRequest(this,
+                            "Set the container of a new XMLIcon.") {
+                         // NOTE: The KernelException should not be thrown, but
+                         // if it is, it will be handled properly.
+                         protected void _execute() throws KernelException {
+                             // If the icon already has a container, do nothing.
+                             if (icon.getContainer() != null) return;
+                             // If the container already has an icon, do nothing.
+                             if (object.getAttribute("_icon") != null) return;
+                             icon.setContainer(object);
+                         }
+                    };
+                    object.requestChange(request);
                 } else if (iconList.size() == 1) {
                     EditorIcon icon = (EditorIcon)iconList.iterator().next();
                     result = icon.createFigure();
