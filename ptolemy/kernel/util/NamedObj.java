@@ -1186,6 +1186,29 @@ public class NamedObj implements
     public boolean isPersistent() {
         return (_isPersistent == null || _isPersistent.booleanValue());
     }
+    
+    /** Return true if propagateValue() has been called, which
+     *  indicates that the value of this object (if any) has been
+     *  overridden from the default defined by its class definition.
+     *  Note that if setDerivedLevel() is called after propagateValue(),
+     *  then this method will return false, since setDerivedLevel()
+     *  resets the override property.
+     *  @return True if propagateValues() has been called.
+     *  @see #propagateValue()
+     *  @see #setDerivedLevel()
+     */
+    public boolean isOverridden() {
+        // Return true only if _override is a list of length 1
+        // with the value 0.
+        if (_override == null) {
+            return false;
+        }
+        if (_override.size() != 1) {
+            return false;
+        }
+        int override = ((Integer)_override.get(0)).intValue();
+        return (override == 0);
+    }
 
     /** React to a debug message by relaying it to any registered
      *  debug listeners.
@@ -1220,9 +1243,10 @@ public class NamedObj implements
      *  This leaves all derived objects unchanged if any single
      *  derived object throws an exception
      *  when attempting to propagate the value to it.
-     *  This also marks this object as overridden directly.
+     *  This also marks this object as overridden.
      *  @return The list of objects to which this propagated.
      *  @throws IllegalActionException If propagation fails.
+     *  @see #isOverridden()
      */
     public List propagateValue() throws IllegalActionException {
         // Mark this object as having been modified directly.
@@ -1958,6 +1982,56 @@ public class NamedObj implements
      */
     protected static String _getIndentPrefix(int level) {
         return StringUtilities.getIndentPrefix(level);
+    }
+
+    /** Search for an object from which the specified object is derived,
+     *  and if one is found, return it. This search is conducted breadth
+     *  first; specifically, if the specified container has a parent,
+     *  and that parent contains an object of the same class as this
+     *  object with the specified relative name, then that object is
+     *  returned. If there is no such object, then container of the
+     *  specified container is similarly examined.  If this reaches the
+     *  top of the hierarchy without finding a prototype, then we assume
+     *  no prototype exists and return null. This breadth-first search
+     *  ensures that the most local prototype is returned if there is
+     *  more than one prototype.
+     *  In a typical usage, this method would be called as follows:
+     *  <pre>
+     *    NamedObj prototype = _getPrototype(getName(), getContainer());
+     *  </pre>
+     *  The returned object is assured of being an instance of the
+     *  same class as this object.
+     *  @param relativeName The name of the object to look for, relative
+     *   to the specified container.
+     *  @param container The container in which to look for a parent.
+     *  @return The prototype from which the specified object is derived,
+     *   or null if none is found.
+     *  @exception IllegalActionException If the object exists
+     *   and has the wrong class. Not thrown in this base class.
+     */
+    protected NamedObj _getPrototype(
+            String relativeName, NamedObj container)
+            throws IllegalActionException {
+        if (container == null) {
+            return null;
+        }
+        if (container instanceof Instantiable) {
+            Instantiable parent = ((Instantiable)container).getParent();
+            if (parent != null) {
+                // Check whether the parent has it...
+                NamedObj prototype = _getContainedObject(
+                        relativeName, ((NamedObj)parent));
+                if (prototype != null) {
+                    return prototype;
+                }
+            }
+        }
+        // If we get here, then either the container has no
+        // parent or the parent does not contain a prototype for
+        // this object.  Search up the hierarchy.
+        return _getPrototype(
+                container.getName() + "." + relativeName,
+                container.getContainer());
     }
 
     /** Mark the contents of this object as being derived objects.

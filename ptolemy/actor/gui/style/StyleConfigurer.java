@@ -227,8 +227,6 @@ public class StyleConfigurer extends Query implements QueryListener {
             moml.append(found.exportMoML("style"));
             moml.append("</group></property></group>");
         }
-        // FIXME
-        System.out.println(moml.toString());
         MoMLChangeRequest change = new MoMLChangeRequest(
                 this, _object, moml.toString());
         _object.requestChange(change);

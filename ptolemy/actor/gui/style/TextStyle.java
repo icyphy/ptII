@@ -135,6 +135,7 @@ public class TextStyle extends ParameterEditorStyle {
                     name,
                     defaultValue,
                     PtolemyQuery.preferredBackgroundColor(container),
+                    PtolemyQuery.preferredForegroundColor(container),
                     heightValue,
                     widthValue);
             query.attachParameter(container, name);

@@ -113,7 +113,8 @@ public class PasswordStyle extends ParameterEditorStyle {
                 name,
                 name,
                 defaultValue,
-                PtolemyQuery.preferredBackgroundColor(container));
+                PtolemyQuery.preferredBackgroundColor(container),
+                PtolemyQuery.preferredForegroundColor(container));
         query.attachParameter(container, name);
     }
 }

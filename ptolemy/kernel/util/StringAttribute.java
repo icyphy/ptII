@@ -66,7 +66,7 @@ import ptolemy.util.StringUtilities;
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Green (cxh)
 */
-public class StringAttribute extends Attribute implements Settable {
+public class StringAttribute extends AbstractSettableAttribute {
 
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
@@ -207,6 +207,7 @@ public class StringAttribute extends Attribute implements Settable {
      */
     public void setExpression(String expression)
             throws IllegalActionException {
+        super.setExpression(expression);
         _value = expression;
 
         // Notify the container and any value listeners immediately,

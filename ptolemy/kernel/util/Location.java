@@ -177,6 +177,29 @@ public class Location extends SingletonAttribute
                 + _elementName + ">\n");
     }
 
+    /** Return the default value of this Settable,
+     *  if there is one.  If this is a derived object, then the default
+     *  is the value of the object from which this is derived (the
+     *  "prototype").  If this is not a derived object, then the default
+     *  is the first value set using setExpression(), or null if
+     *  setExpression() has not been called.
+     *  @return The default value of this attribute, or null
+     *   if there is none.
+     *  @see #setExpression(String)
+     */
+    public String getDefaultExpression() {
+        try {
+            NamedObj prototype = _getPrototype(getName(), getContainer());
+            if (prototype != null) {
+                return ((Settable)prototype).getExpression();
+            }
+        } catch (IllegalActionException e) {
+            // This should not occur.
+            throw new InternalErrorException(e);
+        }
+        return _default;
+    }
+
     /** Get the value that has been set by setExpression() or by
      *  setLocation(), whichever was most recently called, or return
      *  an empty string if neither has been called.
@@ -252,6 +275,9 @@ public class Location extends SingletonAttribute
      *  @see #getExpression()
      */
     public void setExpression(String expression) {
+        if (_default == null) {
+            _default = expression;
+        }
         _expression = expression;
         _expressionSet = true;
     }
@@ -409,6 +435,9 @@ public class Location extends SingletonAttribute
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The default value.
+    private String _default = null;
+        
     // The expression given in setExpression().
     private String _expression;
 

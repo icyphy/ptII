@@ -51,6 +51,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	AbstractSettableAttribute.java \
 	Attribute.java \
 	BasicModelErrorHandler.java \
 	Changeable.java \

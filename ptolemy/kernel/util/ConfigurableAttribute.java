@@ -126,10 +126,15 @@ public class ConfigurableAttribute
      */
     public void configure(URL base, String source, String text)
             throws Exception {
+        if (_defaultText == null) {
+            _defaultText = _configureText;
+        }
+
         _base = base;
         _configureSource = source;
         _configureText = text;
-        // FIXME: Do we really want to call this right away?
+
+        // NOTE: Do we really want to call this right away?
         validate();
     }
 
@@ -157,6 +162,29 @@ public class ConfigurableAttribute
      */
     public String getConfigureText() {
         return _configureText;
+    }
+    
+    /** Return the default value of this Settable,
+     *  if there is one.  If this is a derived object, then the default
+     *  is the value of the object from which this is derived (the
+     *  "prototype").  If this is not a derived object, then the default
+     *  is the first value set using setExpression(), or null if
+     *  setExpression() has not been called.
+     *  @return The default value of this attribute, or null
+     *   if there is none.
+     *  @see #setExpression(String)
+     */
+    public String getDefaultExpression() {
+        try {
+            NamedObj prototype = _getPrototype(getName(), getContainer());
+            if (prototype != null) {
+                return ((Settable)prototype).getExpression();
+            }
+        } catch (IllegalActionException e) {
+            // This should not occur.
+            throw new InternalErrorException(e);
+        }
+        return _defaultText;
     }
 
     /** Return the the result of calling value().
@@ -338,6 +366,9 @@ public class ConfigurableAttribute
 
     // The text in the body of the configure.
     private String _configureText;
+
+    // The default text in the body of the configure.
+    private String _defaultText;
 
     // Listeners for changes in value.
     private List _valueListeners;

@@ -49,6 +49,7 @@ import ptolemy.data.type.Typeable;
 import ptolemy.graph.CPO;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
+import ptolemy.kernel.util.AbstractSettableAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -214,8 +215,8 @@ import ptolemy.kernel.util.Workspace;
    @see #setPersistent(boolean)
 */
 
-public class Variable extends Attribute
-    implements Typeable, Settable, ValueListener {
+public class Variable extends AbstractSettableAttribute
+    implements Typeable, ValueListener {
 
     /** Construct a variable in the default workspace with an empty string
      *  as its name. The variable is added to the list of objects in the
@@ -726,6 +727,11 @@ public class Variable extends Attribute
      *  @param expr The expression for this variable.
      */
     public void setExpression(String expr) {
+        try {
+            super.setExpression(expr);
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         if (_debugging) {
             _debug("setExpression: " + expr);
         }

@@ -134,7 +134,8 @@ public class ChoiceStyle extends ParameterEditorStyle {
                 values,
                 defaultChoice,
                 _isEditable,
-                PtolemyQuery.preferredBackgroundColor(container));
+                PtolemyQuery.preferredBackgroundColor(container),
+                PtolemyQuery.preferredForegroundColor(container));
         query.attachParameter(container, name);
     }
 
