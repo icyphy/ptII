@@ -52,6 +52,7 @@ JSRCS = \
 	EditorIcon.java \
 	GraphicElement.java \
 	GraphPalette.java \
+	JDesignTree.java \
 	LibraryIcon.java \
 	PatternIcon.java \
 	XMLIcon.java

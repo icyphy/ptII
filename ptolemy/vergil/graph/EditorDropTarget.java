@@ -81,7 +81,7 @@ public class EditorDropTarget extends DropTarget {
          * Accept the event if the data is a known key.
          */
         public void dragEnter(DropTargetDragEvent dtde) {
-            if(dtde.isDataFlavorSupported(GraphPalette.nodeFlavor)) {
+            if(dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
                 dtde.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
             }
             else {
@@ -108,14 +108,14 @@ public class EditorDropTarget extends DropTarget {
          * graph editor.
          */
         public void drop(DropTargetDropEvent dtde) {
-            Node data = null;
+            NamedObj data = null;
 
-            if(dtde.isDataFlavorSupported(GraphPalette.nodeFlavor)) {
+            if(dtde.isDataFlavorSupported(PtolemyTransferable.namedObjFlavor)) {
                 try {
-		    // System.out.println(GraphPalette.nodeFlavor);
+		    // System.out.println(PtolemyTransferable.namedObjFlavor);
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
-		    data = (Node)dtde.getTransferable().
-			getTransferData(GraphPalette.nodeFlavor);
+		    data = (NamedObj)dtde.getTransferable().
+			getTransferData(PtolemyTransferable.namedObjFlavor);
 		    // System.out.println("Data is [" + data + "]");//DEBUG
                 }
                 catch(Exception e) {
@@ -135,36 +135,42 @@ public class EditorDropTarget extends DropTarget {
                 Point p = dtde.getLocation();
                 GraphController gc =
 		    ((JGraph)getComponent()).getGraphPane().getGraphController();
-		Object object = (Object) data.getSemanticObject();
 		// Figure out where this is going, so we can clone into
 		// the right workspace.
 		Graph graph = gc.getGraph();
 		NamedObj container = (NamedObj) graph.getSemanticObject();
 		try {
 		    Node newNode = null;
-		    if(object instanceof Icon) {
-			Icon sourceIcon = (Icon) object;
+		    if(data instanceof Entity) {
 			NamedObj sourceEntity = 
-			    (NamedObj) sourceIcon.getContainer();
+			    (NamedObj) data;
 			// Create the new node
 			NamedObj entity = (NamedObj) sourceEntity.clone(
 				container.workspace());
 			// FIXME get by class.
 			Icon icon = (Icon) entity.getAttribute("_icon");
+			// If there is no icon, then manufacture one.
+			if(icon == null) {
+			    icon = new EditorIcon(entity, "_icon");
+			}
+			
 			// FIXME it would be nice if this was 
 			// not editor specific.
 			entity.setName(container.uniqueName(
 			    sourceEntity.getName()));  
 		        newNode = 
 			    gc.getGraphImpl().createCompositeNode(icon);
-		    } else if(object instanceof Port) {
-			Port sourcePort = (Port) object;
+		    } else if(data instanceof Port) {
+			Port sourcePort = (Port) data;
 			Port port = 
 			    (Port)sourcePort.clone(container.workspace());
 			port.setName(container.uniqueName(
 			    sourcePort.getName()));
 			newNode =
 			    gc.getGraphImpl().createNode(port);
+		    } else {
+			throw new RuntimeException("Drop target doesn't " + 
+						   "recognize data");
 		    }
 		    gc.addNode(newNode, p.x, p.y);
 		}

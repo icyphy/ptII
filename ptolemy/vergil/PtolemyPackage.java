@@ -32,6 +32,7 @@ package ptolemy.vergil;
 
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
+import ptolemy.actor.gui.util.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.data.expr.Parameter;
@@ -69,6 +70,7 @@ import java.awt.event.*;
 import java.awt.geom.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.tree.*;
 
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.pn.kernel.*;
@@ -241,15 +243,33 @@ public class PtolemyPackage implements Module {
 	String dflt = "";
 	
 	_directorModel = new DefaultComboBoxModel();
-	_directorModel.addElement(new SDFDirector());
-	_directorModel.addElement(new PNDirector());
-	_directorModel.addElement(new DEDirector());
-	_directorModel.addElement(new CSPDirector());
-	_directorModel.addElement(new DDEDirector());
-	_directorModel.addElement(new FSMDirector());
+	try {
+	    Director dir;
+	    dir = new SDFDirector();
+	    dir.setName("SDF");
+	    _directorModel.addElement(dir);
+	    dir = new PNDirector();
+	    dir.setName("PN");
+	    _directorModel.addElement(dir);
+	    dir = new DEDirector();
+	    dir.setName("DE");
+	    _directorModel.addElement(dir);
+	    dir = new CSPDirector();
+	    dir.setName("CSP");
+	    _directorModel.addElement(dir);
+	    dir = new DDEDirector();
+	    dir.setName("DDE");
+	    _directorModel.addElement(dir);
+	    dir = new FSMDirector();
+	    dir.setName("FSM");
+	    _directorModel.addElement(dir);
+	}
+	catch (Exception ex) {
+	    _application.showError("Director combobox creation failed", ex);
+	}
 	//FIXME find these names somehow.
 	_directorComboBox = new JComboBox(_directorModel);
-	_directorComboBox.setRenderer(new NamedObjCellRenderer());
+	_directorComboBox.setRenderer(new PtolemyListCellRenderer());
 	_directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());
         _directorComboBox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
@@ -413,38 +433,25 @@ public class PtolemyPackage implements Module {
 	public void run() {
 	    DesktopFrame frame = 
 		((DesktopFrame) _application.getApplicationFrame());
-	    JTreePane pane = (JTreePane)frame.getPalettePane();
-
-	    JSplitPane splitPane = frame.getSplitPane();
-
-	    // There are differences in the way swing acts in JDK1.2 and 1.3
-	    // The way to get it to work with both is to set
-	    // the preferred size along with the minimum size.   JDK1.2 has a
-	    // bug where the preferred size may be inferred to be less than the
-	    // minimum size when the pane is first created.
-	    pane.setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-		setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-		setPreferredSize(new Dimension(150, 150));
+	    JPanel pane = (JPanel)frame.getPalettePane();
+	    
 	    _parseLibraries();
 
 	    //System.out.println("Icons = " + _iconLibrary.description());
 
-	    CompositeEntity lib = getEntityLibrary();
+	    CompositeEntity library = getEntityLibrary();
 
 	    // We have "" because that is the name that was given in the
 	    // treepane constructor.
 	    //System.out.println("lib = " + lib.description());
-	    _application.createTreeNodes(pane, lib.getFullName(), lib);
-
-	    pane.setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-	    setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-		setPreferredSize(new Dimension(150, 150));
-	    splitPane.validate();
-	}
+		// createNodes(pane, "TreePane", library);
+	    JTree designTree = new JDesignTree(library);
+	    JScrollPane scrollPane = new JScrollPane(designTree);
+	    pane.setMinimumSize(new Dimension(200, 200));
+	    pane.setPreferredSize(new Dimension(200, 200));
+	    pane.setLayout(new BorderLayout());
+	    pane.add(scrollPane, BorderLayout.CENTER);
+	} 
     }
 
     // An execution listener that displays the status of the current
@@ -471,25 +478,6 @@ public class PtolemyPackage implements Module {
 	    statusBar.setMessage(manager.getState().getDescription());
 	}
         private Application _application;
-    }
-
-    // A class that renders named objects in a combobox.
-    private class NamedObjCellRenderer extends JLabel
-	implements ListCellRenderer {
-	public NamedObjCellRenderer() {
-	    setOpaque(true);
-	}
-	public Component getListCellRendererComponent(
-	    JList list, Object value, int index,
-	    boolean isSelected, boolean cellHasFocus) {
-            if(value == null) 
-                setText("");
-            else 
-                setText(((NamedObj)value).getClass().getName());
-	    setBackground(isSelected ? Color.blue : Color.white);
-	    setForeground(isSelected ? Color.white : Color.black);
-	    return this;
-	}
     }
 
     // A class for properly doing the layout of the graphs we have
@@ -647,6 +635,7 @@ public class PtolemyPackage implements Module {
         Graph graph = controller.getGraph();
         PtolemyLayout layout = new PtolemyLayout(); //GridAnnealingLayout();
 	layout.setOrientation(LevelLayout.HORIZONTAL);
+	layout.setRandomizedPlacement(false);
         // Perform the layout and repaint
         try {
             layout.layout(target, graph);

@@ -50,6 +50,7 @@ import diva.graph.toolbox.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 
+import java.awt.Dimension;
 import java.awt.event.*;
 import java.util.*;
 
@@ -95,19 +96,32 @@ public class PtolemyDocument extends AbstractDocument
     /** Construct a view on this document.  In this class, return a 
      */
     public JComponent createView() {
+	//JPanel view = new JPanel();
+	//view.setLayout(new OverlayLayout(view));
+	
 	VisualNotation notation = _getVisualNotation(getModel());
 	GraphPane pane = notation.createView(this);
-
 	JGraph jgraph = new JGraph(pane);
-	new EditorDropTarget(jgraph);
-        GraphController controller =
+	GraphController controller =
 	    jgraph.getGraphPane().getGraphController();
 
+	/*	JPanel panel = new JPanel();
+	panel.setMinimumSize(new Dimension(200, 100));
+	panel.setMaximumSize(new Dimension(200, 100));
+	panel.setAlignmentX(1);
+	panel.setAlignmentY(1);
+	view.add(panel);
+	view.add(jgraph);*/
+
+	new EditorDropTarget(jgraph);
+       
 	ActionListener deletionListener = new DeletionListener();
         jgraph.registerKeyboardAction(deletionListener, "Delete",
                 KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
         jgraph.setRequestFocusEnabled(true);
+	jgraph.setAlignmentX(1);
+	jgraph.setAlignmentY(1);
 	return jgraph;
     }
 

@@ -33,6 +33,7 @@ package ptolemy.vergil;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
+import ptolemy.actor.*;
 import ptolemy.moml.MoMLParser;
 
 import diva.graph.*;
@@ -40,13 +41,16 @@ import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.resource.DefaultBundle;
 import diva.resource.RelativeBundle;
+import java.awt.dnd.*;
+import java.awt.event.*;
+import java.awt.datatransfer.*;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
-import java.awt.event.*;
+import java.awt.Point;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -93,8 +97,9 @@ public class VergilApplication extends MDIApplication {
         super();
 
         // Create local objects
-	JTreePane treepane = new JTreePane(".");
-        DesktopFrame frame = new DesktopFrame(this, treepane);
+	//JTreePane treepane = new JTreePane(".");
+       	
+	DesktopFrame frame = new DesktopFrame(this, new JPanel());
         setApplicationFrame(frame);
 
         // Create and initialize the storage policy
@@ -122,7 +127,7 @@ public class VergilApplication extends MDIApplication {
         chooser = storage.getSaveFileChooser();
         chooser.addChoosableFileFilter(filter);
         chooser.setFileFilter(filter);
-
+    
         // _incrementalLayout = new LevelLayout();
 
         // Initialize the menubar, toolbar, and palettes
@@ -138,10 +143,6 @@ public class VergilApplication extends MDIApplication {
         frame.setIconImage(iconImage);
 
         setCurrentDocument(null);
-
-        // Swing is stupid and adds components with the cross-platform UI and
-        // not the system UI.
-        SwingUtilities.updateComponentTreeUI(treepane);
 
 	// FIXME read this out of resources somehow.
 	new PtolemyPackage(this);
@@ -187,48 +188,6 @@ public class VergilApplication extends MDIApplication {
 	if(frame == null) return;
 	JMenuBar menuBar = frame.getJMenuBar();
 	menuBar.add(menu);
-    }
-
-    /** 
-     * Populate the tree pane with icons for each entity in the given
-     * composite entity.
-     * @param pane The tree pane.
-     * @param parent The name of the node in the tree to add the icons to.
-     * @param library The composite entity to add icons for.
-     */
-    public void createTreeNodes(JTreePane pane,
-            String parent, CompositeEntity library) {
-        int i = 0;
-	Iterator ports = library.portList().iterator();
-	while(ports.hasNext()) {
-	    Port port = (Port)ports.next();
-	    GraphPalette palette = (GraphPalette)
-		pane.getComponentAt(library.getFullName());
-	    palette.addNode(port,
-			    60, 50 + (i++) * 50);
-	}
-	    
-        Iterator entities = library.entityList().iterator();
-	while(entities.hasNext()) {
-            Entity entity = (Entity)entities.next();
-            if(!(entity instanceof CompositeEntity)) {
-		GraphPalette palette = (GraphPalette)
-		    pane.getComponentAt(library.getFullName());
-		ptolemy.moml.Icon icon =
-		    (ptolemy.moml.Icon) entity.getAttribute("_icon");
-                palette.addNode(icon,
-                        60, 50 + (i++) * 50);
-            }
-
-            if(entity instanceof CompositeEntity) {
-                GraphPalette palette = new GraphPalette();
-		//palette.setMinimumSize(new Dimension(200, 200));
-		//palette.setPreferredSize(new Dimension(600, 250));
-		pane.addEntry(parent, entity.getFullName(), palette);
-		createTreeNodes(pane, entity.getFullName(),
-                        (CompositeEntity)entity);
-            }
-        }
     }
 
     /** 
@@ -389,7 +348,7 @@ public class VergilApplication extends MDIApplication {
             }
         }
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
