@@ -69,12 +69,12 @@ fi
 
 # Without any command line arguments, do all .h, .c, .cc  and *ake* files
 if [ $1x = x ] ; then
-    echo Adding copyrights to all .h, .c, .cc, .mk, .tcl, .itcl and .java files.
+    echo Adding copyrights to all .h, .c, .cc, .cpp, .mk, .tcl, .itcl and .java files.
     #exec $0 *.h *.c *.cc makefile make.template Makefile
-	if [ "`ls *.H *.h *.cpp *.c *.cc makefile make.template Makefile *.mk *.tcl *.itcl *.java 2> /dev/null`" = "" ]; then
+	if [ "`ls *.H *.h *.cpp *.c *.cc *.cpp makefile make.template Makefile *.mk *.tcl *.itcl *.java 2> /dev/null`" = "" ]; then
 		exit
 	fi
-	set `ls *.h *.c *.cc makefile make.template Makefile *.mk *.tcl *.itcl *.java 2> /dev/null` 
+	set `ls *.h *.c *.cc *.cpp makefile make.template Makefile *.mk *.tcl *.itcl *.java 2> /dev/null` 
 fi
 
 # Directory to save files in.
@@ -119,6 +119,7 @@ while [ $1x != x ] ; do
     tmpbase=""
     case $F in
 	*.cc) tmpbase=`basename $F .cc`;;
+	*.cpp) tmpbase=`basename $F .cpp`;;
 	*.h) tmpbase=`basename $F .h`;;
 	*.htm) tmpbase=`basename $F .htm`;;
     esac
@@ -254,7 +255,7 @@ while [ $1x != x ] ; do
     case $F in
 	*Makefile|*makefile|*make.template|*.mk|*.tcl|*.itcl) \
 			shcomments=yes;;
-	*.c|*.h|*.cc|*.html|*.java )   shcomments=no;;
+	*.c|*.h|*.cc|*.cpp|*.html|*.java )   shcomments=no;;
 	*) echo "Panic, cannot handle $F, skipping"; continue;;
     esac
 
