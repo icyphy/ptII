@@ -49,11 +49,12 @@ import ptolemy.plot.Plot;
 //////////////////////////////////////////////////////////////////////////
 //// SquareWave
 /**
-The square wave response of any transfer function. This simple
-CT system demonstrate the use of ODE solvers and the ContinuouTransferFunction
-actor in the CT domain.
-The solvers are not allowed to change during the execution.
-It is also useful for correctness and performance testing.
+The square wave response of any transfer function. This simple CT
+system demonstrate the use of ODE solvers and the
+ContinuousTransferFunction actor in the CT domain.  The solvers are
+not allowed to change during the execution.  It is also useful for
+correctness and performance testing.
+
 @author  Jie Liu
 @version $Id$
 */
