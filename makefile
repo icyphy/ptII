@@ -48,7 +48,7 @@ PTPACKAGE = 	ptII
 # If you change the version number, be sure to edit doc/*,
 # ptolemy/configs/*, ptolemy/configs/doc and
 # ptolemy/kernel/attributes/VersionAttribute.java
-PTVERSION =	2.1-devel-2
+PTVERSION =	2.2-alpha
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
@@ -166,13 +166,19 @@ configure: configure.in
 	@echo "this problem."
 	autoconf
 
-# This requires that the CVS directory be present and takes
+# Arguments for cvs2cl.pl, which is used to generate a ChangeLog
+# from the CVS logs.  
+# -W 3600 means unify entries that are within 3600 seconds or 1 hr.
+CVS2CL_ARGS = -W 3600
+
+# Generate a ChangeLog file from the CVS logs
+# This rurequires that the CVS directory be present and takes
 # quite awhile to update
 ChangeLog:
 	@if [ -d CVS ]; then \
 		echo "Running ./util/testsuite/cvs2cl.pl"; \
 		echo " This could take several minutes"; \
-		./util/testsuite/cvs2cl.pl; \
+		./util/testsuite/cvs2cl.pl -W 3600; \
 	else \
 		echo "CVS directory not present, so we can't update $@"; \
 	fi
