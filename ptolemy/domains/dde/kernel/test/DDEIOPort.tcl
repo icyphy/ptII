@@ -79,7 +79,9 @@ test DDEIOPort-2.1 {Check send()} {
     $rcvr setCapacity 1
 
     set hasRoom [$rcvr hasRoom]
-    $outPort send 0 $tok 5.0
+    # Tcl requires a fully qualified method signature for the overloaded
+    # send() method.
+    $outPort {send int ptolemy.data.Token double}  0 $tok 5.0
     set noRoom [$rcvr hasRoom]
 
     list $hasRoom $noRoom
