@@ -150,7 +150,7 @@ public class SerialComm extends TypedAtomicActor
         String defaultChoice = null;
         while (ports.hasMoreElements()) {
             CommPortIdentifier identifier =
-                    (CommPortIdentifier) ports.nextElement();
+                (CommPortIdentifier) ports.nextElement();
             if (identifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
                 String value = identifier.getName();
                 serialPortName.addChoice(value);
@@ -273,14 +273,14 @@ public class SerialComm extends TypedAtomicActor
                 = ((IntToken)minimumOutputSize.getToken()).intValue();
             if (_minimumOutputSize < 1) {
                 throw new IllegalActionException(this,
-                "minimumOutputSize is required to be strictly positive.");
+                        "minimumOutputSize is required to be strictly positive.");
             }
         } else if (attribute == maximumOutputSize) {
             _maximumOutputSize
                 = ((IntToken)maximumOutputSize.getToken()).intValue();
             if (_maximumOutputSize < 1) {
                 throw new IllegalActionException(this,
-                "maximumOutputSize is required to be strictly positive.");
+                        "maximumOutputSize is required to be strictly positive.");
             }
         } else if (attribute == discardOldData) {
             _discardOldData
@@ -322,7 +322,7 @@ public class SerialComm extends TypedAtomicActor
                     wait();
                 } catch (InterruptedException ex) {
                     throw new IllegalActionException(this,
-                    "Thread interrupted waiting for serial port data.");
+                            "Thread interrupted waiting for serial port data.");
                 }
             }
 
@@ -355,7 +355,7 @@ public class SerialComm extends TypedAtomicActor
                 OutputStream out = _serialPort.getOutputStream();
                 for (int j = 0; j < dataArrayToken.length(); j++) {
                     UnsignedByteToken dataToken =
-                           (UnsignedByteToken)dataArrayToken.getElement(j);
+                        (UnsignedByteToken)dataArrayToken.getElement(j);
                     out.write(dataToken.byteValue());
                 }
                 out.flush();
@@ -381,9 +381,9 @@ public class SerialComm extends TypedAtomicActor
         try {
 
             String serialPortNameValue =
-                    ((StringToken)(serialPortName.getToken())).stringValue();
+                ((StringToken)(serialPortName.getToken())).stringValue();
             CommPortIdentifier portID =
-                    CommPortIdentifier.getPortIdentifier(serialPortNameValue);
+                CommPortIdentifier.getPortIdentifier(serialPortNameValue);
             _serialPort = (SerialPort) portID.open("Ptolemy", 2000);
             // The 2000 above is 2000mS to open the port, otherwise time out.
 
