@@ -168,7 +168,9 @@ public abstract class AbstractCase extends TypedCompositeActor {
          */
         public boolean prefire() throws IllegalActionException {
             _currentChoice = _choose();
-            if (_currentChoice == null) return false;
+            if (_currentChoice == null) {
+                return false;
+            }
             return _currentChoice.prefire();
         }
 
