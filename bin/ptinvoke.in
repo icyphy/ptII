@@ -121,7 +121,11 @@ SOOT_JFLAG=
 
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
 # arbitrary files
-ALL_JAR="${DIVA_JAR}${CLASSPATHSEPARATOR}${JINI_JARS}${COMMAPI_JAR}"
+if [ "$CLASSPATH" = "" ]; then
+    ALL_JAR="${DIVA_JAR}${CLASSPATHSEPARATOR}${JINI_JARS}${COMMAPI_JAR}"
+else
+    ALL_JAR="${DIVA_JAR}${CLASSPATHSEPARATOR}${JINI_JARS}${COMMAPI_JAR}${CLASSPATHSEPARATOR}${CLASSPATH}"
+fi
 
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG}"
 
