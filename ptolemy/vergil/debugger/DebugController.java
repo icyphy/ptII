@@ -274,7 +274,7 @@ public class DebugController implements DebugListener {
 	    }
 	}
 	_frame.putCmd = false;
-	_command = _frame.getuserCommand();
+	_command = _frame.getUserCommand();
     }
 
     /**

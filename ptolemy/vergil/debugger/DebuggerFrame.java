@@ -285,7 +285,7 @@ public class DebuggerFrame extends PtolemyFrame
     /** Return the command entered
      * @return a reference on the command string
      */
-    public String getuserCommand() {
+    public String getUserCommand() {
 	return _cmd;
     }
 
