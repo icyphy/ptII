@@ -87,8 +87,6 @@ constrain the container by overriding _checkContainer().
 */
 public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
-    // All the constructors are wrappers of the super class constructors.
-
     /** Construct a TypedCompositeActor in the default workspace with no
      *  container and an empty string as its name. Add the actor to the
      *  workspace directory.  You should set the local director or
