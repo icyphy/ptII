@@ -63,6 +63,9 @@ JSRCS = \
 	DirectedGraph.java \
 	FiniteCPO.java \
 	Graph.java \
+	Inequality.java \
+	InequalitySolver.java \
+	InequalityTerm.java \
         InvalidGraphException.java \
 	StaticGraph.java \
 	IllegalTopologyException.java \
