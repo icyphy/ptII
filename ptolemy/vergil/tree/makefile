@@ -69,7 +69,9 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'PTree$$1.class' \
 	'PTree$$DesignTreeDragGestureListener.class' \
-	'TreeEditor$$1.class'
+	'TreeEditor$$1.class' \
+	'TreeTableau$$Factory.class' \
+	'TreeTableau$$TreeFrame.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -47,10 +47,9 @@ PTPACKAGE = 	vergil
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = DisplayList.java \
-	BrlptEditor.java \
-	DebuggerUI.java
-
+JSRCS = BrkptEditor.java \
+	DebuggerUI.java \
+	DisplayList.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -61,10 +60,35 @@ EXTRA_SRCS =	$(JSRCS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'BrkptEditor$$1.class' \
+	'BrkptEditor$$2.class' \
+	'BrkptEditor$$3.class' \
+	'BrkptEditor$$4.class' \
+	'BrkptEditor$$5.class' \
+	'DebuggerUI$$1.class' \
+	'DebuggerUI$$10.class' \
+	'DebuggerUI$$11.class' \
+	'DebuggerUI$$12.class' \
+	'DebuggerUI$$13.class' \
+	'DebuggerUI$$14.class' \
+	'DebuggerUI$$15.class' \
+	'DebuggerUI$$16.class' \
+	'DebuggerUI$$2.class' \
+	'DebuggerUI$$3.class' \
+	'DebuggerUI$$4.class' \
+	'DebuggerUI$$5.class' \
+	'DebuggerUI$$6.class' \
+	'DebuggerUI$$7.class' \
+	'DebuggerUI$$8.class' \
+	'DebuggerUI$$9.class' \
+	'DisplayList$$1.class' \
+	'DisplayList$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 install: jclass $(PTCLASSJAR)
 
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk
