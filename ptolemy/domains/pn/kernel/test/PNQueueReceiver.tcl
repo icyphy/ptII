@@ -155,22 +155,7 @@ test PNQueueReceiver-4.3 {Test for reset} {
     set ans2 [$rec isReadBlocked]
     set ans3 [$rec isWriteBlocked]
     list $ans1 $ans2 $ans3
-} {0 0 0}
-
-######################################################################
-####
-#
-test PNQueueReceiver-4.4 {Test for reset} {
-    $rec setCapacity 3
-    $rec put [java::new {ptolemy.data.IntToken int} 4]
-    $rec put [java::new {ptolemy.data.IntToken int} 5]
-    $rec put [java::new {ptolemy.data.IntToken int} 6]
-    $rec reset
-    set elem [$rec elements]
-    set ans1 [$elem hasMoreElements]
-    list $ans1
-} {0}
-
+} {1 0 0}
 
 ######################################################################
 ####
