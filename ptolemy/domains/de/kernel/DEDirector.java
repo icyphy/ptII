@@ -1292,7 +1292,7 @@ public class DEDirector extends Director {
         Iterator actors = castContainer.deepEntityList().iterator();
         while (actors.hasNext()) {
 	    // 'add' replaced with 'addNodeWeight' since the former
-	    // has been deprocated.  The change here should have no
+	    // has been deprecated.  The change here should have no
 	    // effect since .add had already been defined as a call
 	    // to .addNodeWeight -winthrop
             dag.addNodeWeight(actors.next());
