@@ -718,14 +718,28 @@ public class ComplexArrayMath {
         return returnValue;
     }
 
+    /** Return a new array that is constructed from the argument by
+     *  scaling each element in the array by factor, which is a
+     *  complex number. If the array argument is of length 0, return a new
+     *  array of length 0.
+     */
+    public static final Complex[] scale (final Complex[] array, final Complex factor) {
+        int len = array.length;
+        Complex[] returnValue = new Complex[len];
+	
+	for (int i = 0; i < len; i++) {
+	    returnValue[i] = array[i].multiply(factor);
+	}
+	
+	return returnValue;
+    }
 
     /** Return a new array that is constructed from the argument by
      *  scaling each element in the array by factor, which is a
      *  double. If the array argument is of length 0, return a new
      *  array of length 0.
      */
-    public static final Complex[] scale(
-            final Complex[] array, final double factor) {
+    public static final Complex[] scale (final Complex[] array, final double factor) {
         int len = array.length;
         Complex[] returnValue = new Complex[len];
 
@@ -735,24 +749,7 @@ public class ComplexArrayMath {
 
         return returnValue;
     }
-
-    /** Return a new array that is constructed from the argument by
-     *  scaling each element in the array by factor, which is a
-     *  complex number. If the array argument is of length 0, return a new
-     *  array of length 0.
-     *
-     * public static final Complex[] scale(
-     *        final Complex[] array, final Complex factor) {
-     *   int len = array.length;
-     *   Complex[] returnValue = new Complex[len];
-     *
-     *  for (int i = 0; i < len; i++) {
-     *      returnValue[i] = array[i].multiply(factor);
-     *  }
-     *
-     *  return returnValue;
-     * }
-     */
+     
     /** Return a new array that is constructed by subtracting the complex
      *  number z from every element in the first array. If the array argument
      *  is of length 0, return a new array of length 0.
