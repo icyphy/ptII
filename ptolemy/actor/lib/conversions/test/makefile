@@ -54,8 +54,7 @@ JSIMPLE_TESTS = \
 	ComplexToReal.tcl \
 	PolarToRectangular.tcl \
 	RealToComplex.tcl \
-	RectangularToPolar.tcl \
-	dB.tcl
+	RectangularToPolar.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
