@@ -29,8 +29,8 @@
 */
 package ptolemy.domains.gr.lib;
 
-import java.awt.Container;
-import java.awt.Dimension;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.Iterator;
@@ -41,7 +41,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.apps.superb.actor.lib.FigureInteractor;
-import ptolemy.apps.superb.actor.lib.ViewScreen2DListener;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -52,22 +51,17 @@ import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
-import diva.canvas.GraphicsPane;
-import diva.canvas.JCanvas;
-import diva.canvas.OverlayLayer;
-import diva.canvas.event.EventLayer;
+import diva.canvas.*;
+import diva.canvas.event.*;
 import diva.canvas.toolbox.BasicFigure;
 
 //////////////////////////////////////////////////////////////////////////
 //// ViewScreen2D
 
 /** 
-A sink actor that renders a two-dimensional scene into a display screen.  All
-mouse and keyboard events within the viewscreen are handled by a ViewScreen2DListener
-which must be made aware of this viewscreen by having its setViewScreen() method
-invoked.
+A sink actor that renders a two-dimensional scene into a display
+screen.  All mouse and keyboard events within the viewscreen are
+handled by a ViewScreen2DListener.
 
 @author Steve Neuendorffer, Ismael M. Sarmiento
 @version $Id$
@@ -181,8 +175,7 @@ public class ViewScreen2D extends GRActor2D
         // Repaint the entire canvas.  This ensures that drawing is
         // done correctly, despite the fact that all of the transform
         // calls on figures are happening outside of the swing thread.
-        
-        
+               
         _canvas.repaint();
     }
 
@@ -192,25 +185,23 @@ public class ViewScreen2D extends GRActor2D
         return _canvas;
     }
     
-    /** Return the horizontal component of the crosshair which marks the origin.
-     * @return The horizontal component of the crosshair which marks the origin.
+    /** Return the horizontal component of the crosshair which marks
+     * the origin.
+     * @return The horizontal component of the crosshair which marks
+     * the origin.
      */
     public BasicFigure getCrosshairX(){
         return _crosshairX;
     }
     
     
-    /** Return the vertical component of the crosshair which marks the origin.
-     * @return The vertical component of the crosshair which marks the origin.
+    /** Return the vertical component of the crosshair which marks the
+     * origin.
+     * @return The vertical component of the crosshair which marks the
+     * origin.
      */
     public BasicFigure getCrosshairY(){
         return _crosshairY;
-    }
-    
-    
-    public Iterator getFigureIterator()
-    {
-        return _layer.figures();
     }
     
     /** Return the location of the origin of the viewscreen.
@@ -260,14 +251,6 @@ public class ViewScreen2D extends GRActor2D
             // FIXME: handle translation
         }
     }
-    
-    /** Return true if the origin is relocatable or false if it is not.
-     * @return Whether or not the origin can be relocated.
-     */
-    public boolean isOriginRelocatable()
-    {
-        return _originRelocatable;
-    }
 
     /** Set the container that this actor should display data in.  If
      * place is not called, then the actor will create its own frame
@@ -290,35 +273,8 @@ public class ViewScreen2D extends GRActor2D
     }
     
     
-    /** Iterate through all of the figures on the viewscreen to deselect any figures
-     *  which were selected before the user clicked a blank area of the viewscreen.
-     * @param hit The location on the viewscreen a mouse click was performed.
-     */
-    public void setFigureStatus(Point2D hit)
-    {
-        Iterator figureIterator = _layer.figures();
-        while(figureIterator.hasNext())
-        {
-            Figure figure = (Figure)figureIterator.next();
-            if(!figure.contains(hit)){
-                ((FigureInteractor)figure.getInteractor()).setSelected(false);
-            }
-            
-        }
-    }
-    
-    
-    /** Specify whether or not the origin can be relocated.
-     * @param enable True if the origin can be relocated, false otherwise.
-     */
-    public void setOriginRelocatable(boolean enable)
-    {
-        _originRelocatable = enable;
-    }
-    
-    
-    /** Update the state of this object to reflect which figure is currently selected
-     *  in the viewscreen.
+    /** Update the state of this object to reflect which figure is
+     *  currently selected in the viewscreen.
      * @param figure The figure currently selected.
      */
     public void setSelectedFigure(Figure figure)
@@ -334,13 +290,10 @@ public class ViewScreen2D extends GRActor2D
         _isSceneGraphInitialized = false;
     }
     
-
-    
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-   /**  Add a figure to the figure layer and set its interactor.
+    /**  Add a figure to the figure layer and set its interactor.
      *
      *  @exception IllegalActionException Always thrown for this base class.
      */
@@ -350,7 +303,7 @@ public class ViewScreen2D extends GRActor2D
         }
         _layer.add(figure);
     }
-
+    
     /** Create the view screen component.  If place() was called with
      * a container, then use the container.  Otherwise, create a new
      * frame and use that.
@@ -410,7 +363,7 @@ public class ViewScreen2D extends GRActor2D
         _overlayLayer.add(_crosshairX.getShape());
         _overlayLayer.add(_crosshairY.getShape());
         
-        _eventHandler = new ViewScreen2DListener(this);
+        _eventHandler = new ViewScreen2DListener();
         _eventLayer  = new EventLayer();
         _eventLayer.addLayerListener(_eventHandler);
         _eventLayer.addLayerMotionListener(_eventHandler);      
@@ -436,10 +389,11 @@ public class ViewScreen2D extends GRActor2D
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+    
     protected int _getHorizontalResolution() throws IllegalActionException {
         return ((IntToken) horizontalResolution.getToken()).intValue();
     }
-
+    
     protected int _getVerticalResolution() throws IllegalActionException {
         return ((IntToken) verticalResolution.getToken()).intValue();
     }
@@ -456,6 +410,180 @@ public class ViewScreen2D extends GRActor2D
         return ((BooleanToken) translatable.getToken()).booleanValue();
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                       private inner classes               ////
+
+    public class ViewScreen2DListener 
+        implements LayerListener, LayerMotionListener, KeyListener {
+        
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+        
+        /** Forward any keyPressed events to the figure which is selected
+         *  in the viewscreen.  Allow the origin of the viewscreen to be
+         *  translated if the user holds the 'o' key.
+         * @param e The KeyEvent generated by the frame containing the
+         * viewscreen.
+         */
+        public void keyPressed(KeyEvent e){
+            Figure selectedFigure = getSelectedFigure();
+            Iterator allFigures = _layer.figures();
+            
+            if (selectedFigure != null){
+                ((FigureInteractor)selectedFigure.getInteractor()).keyPressed(e);
+                while(allFigures.hasNext()) {
+                    AbstractFigure figure = ((AbstractFigure)allFigures.next());
+                    //if(selectedFigure.hit(figure.getFigure().getBounds()))
+                    {
+                        
+                        //((RectangularFigure2D)selectedFigure).collision(), false);
+                        
+                    }
+                }
+            }
+            
+            if (e.getKeyCode() == KeyEvent.VK_O){
+                _originRelocatable = true;
+            }
+            
+            if (e.getKeyCode() == KeyEvent.VK_Z){
+                _canvas.getCanvasPane().scale(_origin.x, _origin.y, 2, 2);
+            }
+            
+            if (e.getKeyCode() == KeyEvent.VK_A){
+                _canvas.getCanvasPane().scale(_origin.x, _origin.y, .5, .5);
+                
+            }
+        }
+        
+        
+        /** Forward any keyReleased events to the figure which is
+         * selected in the viewscreen.  Disable relocation of the
+         * origin of the viewscreen if the user releases the 'o' key.
+         * @param e The KeyEvent generated by the frame containing the
+         * viewscreen.
+         */
+        public void keyReleased(KeyEvent e) {
+            Figure selectedFigure = getSelectedFigure();
+            if(selectedFigure != null){
+                ((FigureInteractor)selectedFigure.getInteractor()).keyReleased(e);
+            }
+
+            if (e.getKeyCode() == KeyEvent.VK_O){
+                _originRelocatable = true;
+            }
+        }
+
+
+        /** Forward any keyTyped events to the figure which is
+         *  selected in the viewscreen.  If no figure is selected,
+         *  this method does nothing.
+         * @param e The KeyEvent generated by the frame containing the
+         * viewscreen.
+         */
+        public void keyTyped(KeyEvent e){
+            Figure selectedFigure = getSelectedFigure();
+
+            if(selectedFigure != null){
+                ((FigureInteractor)selectedFigure.getInteractor()).keyTyped(e);
+            }
+        }
+
+
+        /** Included to comply with the LayerListener interface
+         *  requirements.  This method does nothing in its current
+         *  implementation.
+         *  @param e The layer event generated by the informing layer.
+         */
+        public void mouseClicked(LayerEvent e) {
+        }
+
+
+        /** Translate the origin of the viewScreen2D if the user drags the
+         *  origin marker.  To enable this function, the user must hold
+         *  the 'o' key while dragging the origin marker.
+         * @param e The layer event generated by the informing layer.
+         */
+        public void mouseDragged(LayerEvent e){
+            Iterator allFigures = _layer.figures();
+
+            //Translate the origin while the mouse cursor is in the window
+            //and the user is dragging the origin marker.
+            if(_originRelocatable && _mouseInWindow &&
+                    (getCrosshairX().getBounds().contains(e.getLayerPoint()) ||
+                            getCrosshairY().getBounds().contains(e.getLayerPoint()) ||
+                            _mouseDragging == true)){
+
+                _mouseDragging = true;
+                _canvas.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                _origin = (Point2D.Double)e.getLayerPoint();
+                _canvas.getCanvasPane().translate(_origin.x, _origin.y);
+            }
+
+        }
+
+
+        /** Update the state of this object to reflect that the mouse
+         * is in the viewscreen.
+         * @param e The layer event generated by the informing layer.
+         */
+        public void mouseEntered(LayerEvent e){
+            _mouseInWindow = true;
+        }
+
+
+        /** Update the state of this object to reflect that the mouse is
+         * no longer in the viewscreen.
+         */
+        public void mouseExited(LayerEvent e){
+            _mouseInWindow =false;
+        }
+
+
+        /** Included to comply with the LayerMotionListener interface
+         *  requirement.  This method does nothing in its current
+         *  implementation.
+         *  @param e The layer event generated by the informing layer.
+         */
+        public void mouseMoved(LayerEvent e){}
+
+
+        /** Update the status of any figures which were deselected by the
+         *  user clicking on a blank area of the viewscreen.
+         *  @param e The layer event generated by the informing layer.
+         */
+        public void mousePressed(LayerEvent e){
+            Iterator figureIterator = _layer.figures();
+            while(figureIterator.hasNext()) {
+                Figure figure = (Figure)figureIterator.next();
+                if(!figure.contains(e.getLayerPoint())){
+                    ((FigureInteractor)figure.getInteractor()).setSelected(false);
+                }
+            }
+        }
+
+
+        /** Update the state of this object to reflect that the mouse is no
+         *  longer being dragged.
+         * @param e The layer event generated by the informing layer.
+         */
+        public void mouseReleased(LayerEvent e){
+            _mouseDragging = false;
+            _canvas.setCursor(
+                    Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        }
+
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         private fields                    ////
+
+        // Whether or not the mousing is being dragged.
+        private boolean _mouseDragging;
+
+        // Whether or not the mouse is in the window.
+        private boolean _mouseInWindow;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
     
@@ -497,6 +625,4 @@ public class ViewScreen2D extends GRActor2D
     
     //The figure, if any, currently selected in the viewscreen.
     private Figure _selectedFigure;
-    
-    private Iterator _allFigures;
 }

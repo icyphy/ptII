@@ -24,15 +24,13 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (chf@eecs.berkeley.edu)
+@ProposedRating Yellow (chf@eecs.berkeley.edu)
 @AcceptedRating Red (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.gr.lib;
 
-import java.awt.geom.Point2D;
-
-import javax.swing.SwingUtilities;
+import diva.canvas.Figure;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
@@ -41,7 +39,8 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import diva.canvas.Figure;
+
+import java.awt.geom.Point2D;
 
 //////////////////////////////////////////////////////////////////////////
 //// Translate2D
@@ -69,6 +68,7 @@ public class Translate2D extends GRTransform2D {
 
         xTranslate = new TypedIOPort(this, "xTranslate", true, false);
         xTranslate.setTypeEquals(BaseType.DOUBLE);
+
         yTranslate = new TypedIOPort(this, "yTranslate", true, false);
         yTranslate.setTypeEquals(BaseType.DOUBLE);
 
@@ -111,6 +111,23 @@ public class Translate2D extends GRTransform2D {
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
 
+    /** Set the initial transform of the given figure.  This method is
+     * invoked by this base class during the initialize() method.
+     * Derived classes should implement it to provide class-specific
+     * behavior.
+     *  @exception IllegalActionException If the value of some
+     *  parameters can't be obtained.
+     */
+    protected void _applyInitialTransform(Figure figure)
+            throws IllegalActionException {
+        double initialX = ((DoubleToken)
+                initialXTranslation.getToken()).doubleValue();
+        double initialY = ((DoubleToken)
+                initialYTranslation.getToken()).doubleValue();
+        // Translate to?
+        figure.translate(initialX, initialY);
+    }
+
     /** Consume input tokens, and transform the given figure according
      * to the current state of the transform.  This method is invoked
      * by this base classes during the fire() method.  
@@ -148,35 +165,9 @@ public class Translate2D extends GRTransform2D {
                 }
             }
         }
-        
-        final Figure finalFigure = figure;
-        final double finalXOffset = xOffset;
-        final double finalYOffset = yOffset;
 
         if (applyTransform) {
-            Runnable doSet = new Runnable() {
-                public void run() {
-                    finalFigure.translate(finalXOffset,finalYOffset);
-                    finalFigure.getParent().repaint();
-                }
-            };
-            SwingUtilities.invokeLater(doSet);
-            
+            figure.translate(xOffset,yOffset);
         }
-    }
-
-    /** Set the initial transform of the given figure.  This method is
-     * invoked by this base class during the initialize() method.
-     * Derived classes should implement it to provide class-specific
-     * behavior.
-     *  @exception IllegalActionException If the value of some
-     *  parameters can't be obtained.
-     */
-    protected void _applyInitialTransform(Figure figure)
-            throws IllegalActionException {
-                
-        // Translate to?
-        figure.translate(((DoubleToken) initialXTranslation.getToken()).doubleValue(),
-                         ((DoubleToken) initialYTranslation.getToken()).doubleValue());
     }
 }

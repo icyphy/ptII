@@ -1,4 +1,4 @@
-/* An abstract base class for shaded GR Actors
+/* Create a line with the endpoints provided by the user.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -24,9 +24,10 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (chf@eecs.berkeley.edu)
+@ProposedRating Yellow (ismael@eecs.berkeley.edu)
 @AcceptedRating Red (chf@eecs.berkeley.edu)
 */
+
 package ptolemy.domains.gr.lib;
 
 import java.awt.Paint;
@@ -46,17 +47,14 @@ import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicFigure;
 
 //////////////////////////////////////////////////////////////////////////
-//// GRShape2D
-/** An abstract base class for two-dimensional GR Actors representing
-figures.  The color of the figure is chosen from a color chooser dialog,
-or can be entered manually as an array of double values of the form
-{red, green, blue, alpha}.
+//// Line2D
+/** Create a line with the endpoints provided by the user.
 
 @author Steve Neuendorffer, Ismael M. Sarmiento
 @version $Id$
 @since Ptolemy II 1.0
 */
-abstract public class GRShape2D extends GRActor2D {
+public class Line2D extends GRActor2D {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -66,67 +64,89 @@ abstract public class GRShape2D extends GRActor2D {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public GRShape2D(CompositeEntity container, String name)
+    public Line2D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-
         super(container, name);
+
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
         sceneGraphOut.setTypeEquals(Scene2DToken.TYPE);
 
-        rgbFillColor = new ColorAttribute(this, "rgbFillColor");
-        rgbFillColor.setExpression("{1.0,1.0,1.0,1.0}");
-        
-        rgbOutlineColor = new ColorAttribute(this, "rgbOutlineColor");
-        rgbOutlineColor.setExpression("{0.0,0.0,0.0,1.0}");
+        rgbColor = new ColorAttribute(this, "rgbColor");
+        rgbColor.setExpression("{0.0,0.0,0.0,1.0}");
 
-        outlineWidth = new Parameter(this, "outlineWidth",
+        lineWidth = new Parameter(this, "lineWidth",
                 new DoubleToken(1.0));
-        outlineWidth.setTypeEquals(BaseType.DOUBLE);
+        lineWidth.setTypeEquals(BaseType.DOUBLE);
+
+        xStart = new Parameter(this, "xStart", new DoubleToken(0.0));
+        xStart.setTypeEquals(BaseType.DOUBLE);
+
+        yStart = new Parameter(this, "yStart", new DoubleToken(0.0));
+        yStart.setTypeEquals(BaseType.DOUBLE);
+
+        xEnd = new Parameter(this, "xEnd", new DoubleToken(100.0));
+        xEnd.setTypeEquals(BaseType.DOUBLE);
+
+        yEnd = new Parameter(this, "yEnd", new DoubleToken(0.0));
+        yEnd.setTypeEquals(BaseType.DOUBLE);
+
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
+    ////                     ports and parameters                  ////
 
     /** The output port for connecting to other GR Actors in
      *  the scene graph
      */
     public TypedIOPort sceneGraphOut;
 
-    /** The red, green, blue, and alpha components of the interior color
-     *  of the figure.  This parameter must contain an array of double values.
-     *  The default value is {1.0,1.0,1.0,1.0}, corresponding to opaque white.
-     */  
-    public ColorAttribute rgbFillColor;
-
-    /** The red, green, blue and alpha components of the outline color
-     *  of the figure.  This parameter must contain an array of double values.
-     *  The default value is {0.0,0.0,0.0,1.0}, corresponding to opaque black.
-     */
-    public ColorAttribute rgbOutlineColor;
-
     /** The width of the figure's outline.  This parameter must contain a 
      *  DoubleToken.  The default value is 1.0.
      */
-    public Parameter outlineWidth;
+    public Parameter lineWidth;
+
+    /** The red, green, blue, and alpha components of the line.  This
+     *  parameter must contain an array of double values.  The default
+     *  value is {0.0,0.0,0.0,0.0}, corresponding to opaque black.
+     */  
+    public ColorAttribute rgbColor;
+
+    /** The x coordinate of the line's start position in the view screen. */
+    public Parameter xStart;
+
+    /** The y coordinate of the line's start position in the view screen. */
+    public Parameter yStart;
+
+    /** The x coordinate of the line's end position in the view screen. */
+    public Parameter xEnd;
+
+    /** The y coordinate of the line's end position in the view screen. */
+    public Parameter yEnd;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Update the position and location of the figure on the screen when
+    /* Update the position and location of the line on the screen when
      * the user changes the parameters.
-     * @param attribute The attribute which changed.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
-        if ((attribute == rgbFillColor
-                    || attribute == rgbOutlineColor
-                    || attribute == outlineWidth)
+        if ((attribute == xStart || attribute == yStart 
+                    || attribute == xEnd || attribute == yEnd)
                 && _viewScreen != null) {
+            _figure.setPrototypeShape(new java.awt.geom.Line2D.Double(
+                    ((DoubleToken)xStart.getToken()).doubleValue(),
+                    ((DoubleToken)yStart.getToken()).doubleValue(),
+                    ((DoubleToken)xEnd.getToken()).doubleValue(),
+                    ((DoubleToken)xEnd.getToken()).doubleValue()));
+        } else if((attribute == rgbColor || attribute == lineWidth) &&
+                  _viewScreen != null) {
             _setAppearance(_figure);
         }
-
+        
         super.attributeChanged(attribute);
     }
 
@@ -141,11 +161,6 @@ abstract public class GRShape2D extends GRActor2D {
         _setAppearance(_figure);
     }
     
-    
-    public BasicFigure getFigure(){
-        return _figure;
-    }
-
     /** Return false if the scene graph is already initialized.
      *
      *  @return false if the scene graph is already initialized.
@@ -162,14 +177,20 @@ abstract public class GRShape2D extends GRActor2D {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the figure for this actor.  Derived classes should implement
-     *  this method to create the correct figure.
+    /** Create the figure for this actor.
      *
      *  @exception IllegalActionException If a parameter is not valid.
      */
-    abstract protected BasicFigure _createFigure() 
-            throws IllegalActionException;
-  
+    protected BasicFigure _createFigure() throws IllegalActionException {
+        BasicFigure figure =
+            new BasicFigure(new java.awt.geom.Line2D.Double(
+                    ((DoubleToken)xStart.getToken()).doubleValue(),
+                    ((DoubleToken)yStart.getToken()).doubleValue(),
+                    ((DoubleToken)xEnd.getToken()).doubleValue(),
+                    ((DoubleToken)yEnd.getToken()).doubleValue()));
+        _setAppearance(figure);
+        return figure;
+    }
  
     /** Setup the scene graph connections of this actor.
      *
@@ -184,21 +205,19 @@ abstract public class GRShape2D extends GRActor2D {
 
     // Set the appearance of the given figure consistent with the
     // parameters of this class.
-    private void _setAppearance(BasicFigure figure)
+    private void _setAppearance(BasicFigure figure) 
             throws IllegalActionException {
-        Paint fillPaint = rgbFillColor.asColor();
-        Paint strokePaint = rgbOutlineColor.asColor();
-        float lineWidth = (float)
-            ((DoubleToken) outlineWidth.getToken()).doubleValue();
-        
-        figure.setFillPaint(fillPaint);
-        figure.setStrokePaint(strokePaint);
-        figure.setLineWidth(lineWidth);
-        
+        Paint strokePaint = rgbColor.asColor(); 
+        figure.setStrokePaint(strokePaint);  
+
+        float lineWidthValue = (float)
+            ((DoubleToken) lineWidth.getToken()).doubleValue();
+        figure.setLineWidth(lineWidthValue);
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
 
-    protected BasicFigure _figure;
+    private BasicFigure _figure;
+
 }

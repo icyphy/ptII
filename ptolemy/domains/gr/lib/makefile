@@ -61,25 +61,31 @@ PTCLASSALLJARS =
 #PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	Box2D.java \
-	Rotate3D.java \
-	Scale3D.java \
-	Translate2D.java \
-	Translate3D.java \
-	GRTransform.java \
-	GRTransform2D.java \
 	Box3D.java \
 	CircularSweep3D.java \
 	Cone3D.java \
 	Cylinder3D.java \
+	Ellipse2D.java \
 	GRShadedShape.java \
 	GRShape2D.java \
+	GRTransform.java \
+	GRTransform2D.java \
+	Image2D.java \
+	KeyInput3D.java \
+	Line2D.java \
+	MouseInput3D.java \
 	PolyCylinder3D.java \
+	Rectangle2D.java \
+	RectangularFigure2D.java \
+	Rotate2D.java \
+	Rotate3D.java \
+	Scale2D.java \
+	Scale3D.java \
 	Sphere3D.java \
 	TextString3D.java \
 	Torus3D.java \
-	KeyInput3D.java \
-	MouseInput3D.java \
+	Translate2D.java \
+	Translate3D.java \
 	ViewScreen.java \
 	ViewScreen2D.java
 
