@@ -1113,7 +1113,6 @@ public class DEDirector extends Director {
                     }
                 }
 
-                currentDepth = currentEvent.depth();
                 _microstep = currentEvent.microstep();
 
                 if (currentTime > getStopTime()) {
