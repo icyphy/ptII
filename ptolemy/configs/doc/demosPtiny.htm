@@ -99,6 +99,25 @@ models a packet in a packet-switched network, where variable
 delays may result in out-of-order arrival of packets.
 </li>
 
+<li>The <a href="../ptolemy/data/type/unit/demo/Units/Units.htm">Units</a>.<br>
+This model illustrates the unit sytem.
+
+<br>A major source of errors in embedded software is incorrect application
+of units. Yuhong Xiong and Xiaojun Liu have created a unit system for
+Ptolemy II that is quite clever. A suite of constants are defined, with
+names such as "meter", "cm", "feet", "miles", "seconds", "hours", and
+"days". In each unit category ("length" or "time" for example), there
+is a primary unit with respect to which all the others are specified.
+Thus, for example, if the primary unit of length is meters, then the
+expression "1.0 * cm" will have an internal value of 0.01 * meters.
+Compound units are specified by just multiplying and dividing, as in
+for example "1.0 * cm/second".
+
+<br>The way this is realized is that these unit constants are tokens just
+like other Ptolemy II data, and multiplication and division are
+overloaded in the base classes for numeric valued tokens.
+
+</li>
 <!--vergilDocs-->
 </ul>
 
