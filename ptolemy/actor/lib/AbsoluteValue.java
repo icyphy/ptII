@@ -32,16 +32,24 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.data.*;
+import ptolemy.data.type.Type;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
+
+import java.util.Enumeration;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// AbsoluteValue
 /**
 Produce an output token on each firing with a value that is
-equal to the absolute value of the input. The input and output types
-are DoubleToken.
+equal to the absolute value of the input. The input can have any
+scalar type. If the input type is not Complex, the output has the
+same type as the input. If the input type is Complex, the output
+type is Double, in which case, the output value is the magnitude
+of the input complex.
 
 @author Edward A. Lee
 @version $Id$
@@ -60,12 +68,39 @@ public class AbsoluteValue extends Transformer {
     public AbsoluteValue(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input.setTypeEquals(BaseType.DOUBLE);
-        output.setTypeEquals(BaseType.DOUBLE);
+
+	output.setTypeAtLeast(new FunctionTerm(input));
+	output.setTypeAtMost(BaseType.SCALAR);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the type constraints.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   has an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        AbsoluteValue newobj = (AbsoluteValue)super.clone(ws);
+	newobj.output.setTypeAtLeast(new FunctionTerm(newobj.input));
+	newobj.output.setTypeAtMost(BaseType.SCALAR);
+
+        return newobj;
+    }
+
+    /** Return the following type constraints: If the input type is Complex,
+     *  the output type is no less than Double, otherwise, the output type
+     *  is no less than the input; The output type is no greater than Scalar.
+     *  @return An empty Enumeration.
+     */
+    public Enumeration typeConstraints () {
+	// type constraints are stored in the output port.
+	return output.typeConstraints();
+    }
 
     /** Compute the absolute value of the input.  If there is no input, then
      *  produce no output.
@@ -73,9 +108,112 @@ public class AbsoluteValue extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            DoubleToken in = (DoubleToken)input.get(0);
-            double result = Math.abs(in.doubleValue());
-            output.send(0, new DoubleToken(result));
+            ScalarToken in = (ScalarToken)input.get(0);
+            output.send(0, in.absolute());
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    // This class implements a monotonic function of the input port
+    // type. The result of the function is the same as the input type
+    // if is not Complex; otherwise, the result is Double.
+    private class FunctionTerm implements InequalityTerm {
+
+	// The constructor takes a port argument so that the clone()
+	// method can construct an instance of this class for the
+	// input port on the clone.
+	private FunctionTerm(TypedIOPort port) {
+	    _port = port;
+	}
+
+	///////////////////////////////////////////////////////////////
+	////                       public inner methods            ////
+
+	/** Do nothing.
+	 */
+	public void fixValue() {
+	}
+
+	/** Return null.
+	 *  @return null.
+	 */
+	public Object getAssociatedObject() {
+	    return null;
+	}
+
+	/** Return the function result.
+	 *  @return A Type.
+	 */
+	public Object getValue() {
+	    Type inputType = _port.getType();
+	    return inputType == BaseType.COMPLEX ? BaseType.DOUBLE : inputType;
+        }
+
+        /** Return a one element array containing the InequalityTerm
+	 *  representing the type of the input port.
+	 *  @return An array of InequalityTerm.
+         */
+        public InequalityTerm[] getVariables() {
+	    InequalityTerm[] variable = new InequalityTerm[1];
+	    variable[0] = _port.getTypeTerm();
+	    return variable;
+        }
+
+        /** Throw an Exception.
+         *  @exception IllegalActionException Alway thrown.
+         */
+        public void initialize(Object e)
+		throws IllegalActionException {
+	    throw new IllegalActionException("AbsoluteValue$FunctionTerm." +
+		"initialize: Cannot initialize a function term.");
+
+        }
+
+        /** Return false.
+         *  @return false.
+         */
+        public boolean isSettable() {
+	    return false;
+        }
+
+        /** Return true.
+         *  @return True.
+         */
+        public boolean isValueAcceptable() {
+            return true;
+        }
+
+        /** Throw an Exception.
+         *  @exception IllegalActionException Always thrown.
+         */
+        public void setValue(Object e)
+		throws IllegalActionException {
+	    throw new IllegalActionException(
+		"AbsolutionValue$FunctionTerm.setValue: The type is not " +
+		"settable.");
+        }
+
+        /** Override the base class to give a description of this term.
+         *  @return A description of this term.
+         */
+        public String toString() {
+            return "(AbsoluteValue$FunctionTerm, " + getValue() + ")";
+        }
+
+	/** Do nothing.
+	 */
+	public void unfixValue() {
+	}
+
+        ///////////////////////////////////////////////////////////////
+        ////                       private inner variable          ////
+
+	private TypedIOPort _port;
+    }
 }
+

@@ -589,12 +589,9 @@ public class TypedIOPort extends IOPort implements Typeable {
          */
         public InequalityTerm[] getVariables() {
 	    if (isSettable()) {
-	    	if ( !_declaredType.isConstant()) {
-	    	    InequalityTerm[] variable = new InequalityTerm[1];
-	    	    variable[0] = this;
-	    	    return variable;
-	        }
-	        return (new InequalityTerm[0]);
+	    	InequalityTerm[] variable = new InequalityTerm[1];
+	    	variable[0] = this;
+	    	return variable;
 	    }
 	    return (new InequalityTerm[0]);
         }

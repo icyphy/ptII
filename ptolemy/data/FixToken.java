@@ -49,9 +49,6 @@ A token that contains a FixPoint.
 */
 public class FixToken extends ScalarToken {
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
     /** Construct a FixToken with value 0.0 and a precision of (16/16)
      */
     public FixToken() {
@@ -102,6 +99,19 @@ public class FixToken extends ScalarToken {
 	}
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return a FixToken containing the absolute value of the
+     *  value of this token.
+     *  @return An FixToken. 
+     */
+    public ScalarToken absolute() {
+	// FIXME: implement this method
+	throw new UnsupportedOperationException("FixToken.absolute: method" +
+	    "not implemented yet.");
+    }
+
     /** Return a new FixToken with value equal to the sum of this
      *  FixToken number and the argument. 
      *  @param arg A FixToken.

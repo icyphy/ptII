@@ -80,6 +80,13 @@ public class DoubleToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a DoubleToken containing the absolute value of the
+     *  value of this token.
+     *  @return A DoubleToken. 
+     */
+    public ScalarToken absolute() {
+	return _value >= 0.0 ? this : new DoubleToken(-_value);
+    }
 
     /** Return a new token whose value is the sum of this token
      *  and the argument. Type resolution also occurs here, with

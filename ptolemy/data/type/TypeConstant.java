@@ -72,6 +72,7 @@ public class TypeConstant implements InequalityTerm {
     }
 
     /** Return the constant type represented by this term.
+     *  @return A Type.
      */
     public Object getValue() {
 	return _type;

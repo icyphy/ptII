@@ -74,6 +74,14 @@ public class IntToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return an IntToken containing the absolute value of the
+     *  value of this token.
+     *  @return An IntToken. 
+     */
+    public ScalarToken absolute() {
+	return _value >= 0 ? this : new IntToken(-_value);
+    }
+
     /** Return a new token whose value is the sum of this token
      *  and the argument. Type resolution also occurs here, with
      *  the returned Token type chosen to achieve a lossless conversion.

@@ -71,3 +71,74 @@ test AbsoluteValue-2.1 {test with the default output values} {
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {2.0 1.0 0.0 1.0 2.0}
+
+######################################################################
+#### Check types of above model
+#
+test AbsoluteValue-2.2 {check types} {
+    set rampOut [java::field [java::cast ptolemy.actor.lib.Source $ramp] \
+	output]
+    set absIn [java::field [java::cast ptolemy.actor.lib.Transformer $abs] \
+	input]
+    set absOut [java::field [java::cast ptolemy.actor.lib.Transformer $abs] \
+	output]
+    set recIn [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+
+    list [[$rampOut getType] toString] [[$absIn getType] toString] \
+	[[$absOut getType] toString] [[$recIn getType] toString]
+} {double double double general}
+
+######################################################################
+#### Test int type
+#
+test AbsoluteValue-2.3 {test int type} {
+    $init setExpression {-4}
+    $step setExpression {2}
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {4 2 0 2 4}
+
+######################################################################
+#### Check types of above model
+#
+test AbsoluteValue-2.4 {check types} {
+    list [[$rampOut getType] toString] [[$absIn getType] toString] \
+	[[$absOut getType] toString] [[$recIn getType] toString]
+} {int int int general}
+
+######################################################################
+#### Test complex type
+#
+test AbsoluteValue-2.5 {test complex type} {
+    $init setExpression {0}
+    $step setExpression {3+4i}
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {0.0 5.0 10.0 15.0 20.0}
+
+######################################################################
+#### Check types of above model
+#
+test AbsoluteValue-2.6 {check types} {
+    list [[$rampOut getType] toString] [[$absIn getType] toString] \
+	[[$absOut getType] toString] [[$recIn getType] toString]
+} {complex complex double general}
+
+######################################################################
+#### Test long type
+#
+test AbsoluteValue-2.7 {test long type} {
+    $init setExpression {-6l}
+    $step setExpression {3}
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {6 3 0 3 6}
+
+######################################################################
+#### Check types of above model
+#
+test AbsoluteValue-2.6 {check types} {
+    list [[$rampOut getType] toString] [[$absIn getType] toString] \
+	[[$absOut getType] toString] [[$recIn getType] toString]
+} {long long long general}
+

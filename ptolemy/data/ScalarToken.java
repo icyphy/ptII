@@ -53,6 +53,14 @@ public abstract class ScalarToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a ScalarToken containing the absolute value of the
+     *  value of this token. If this token contains a non-negative
+     *  number, it is returned directly; otherwise, a new token is
+     *  is return.
+     *  @return A ScalarToken of the same type as the argument.
+     */
+    public abstract ScalarToken absolute();
+
     /** Return the value of this token as a Complex.
      *  In this base class, we just throw an exception.
      *  @return A Complex

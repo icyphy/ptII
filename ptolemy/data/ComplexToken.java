@@ -72,6 +72,14 @@ public class ComplexToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return a DoubleToken containing the magnitude of the complex
+     *  value of this token.
+     *  @return A DoubleToken. 
+     */
+    public ScalarToken absolute() {
+	return new DoubleToken(_value.magnitude());
+    }
+
     /** Return a new token whose value is the sum of this token
      *  and the argument. The type of the specified token
      *  must be such that either it can be converted to the type

@@ -296,7 +296,7 @@ public class BaseType implements Type {
 	});
 
     /** The general data type */
-    public static final BaseType GENERAL = new BaseType(Token.class, "token",
+    public static final BaseType GENERAL = new BaseType(Token.class, "general",
 	new ConvertOperator() {
 	    public Token convert(Token t) throws IllegalActionException {
 		return Token.convert(t);
