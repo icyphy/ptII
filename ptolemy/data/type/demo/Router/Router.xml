@@ -26,29 +26,6 @@
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
-    <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 0.0">
-        </property>
-        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model illustrates composite types in Ptolemy II.
-The Record Assembler actor composes a string with an
-integer into a record token, which is then passed through
-a channel that has random delay.  The tokens arrive
-possibly in another order.  The Record Disassembler
-actor separates the string from the sequence number.
-The strings are displayed as received (possible out
-of order), and resequenced by the Sequencer actor,
-which puts them back in order.  This example demonstrates
-how types propagate through record composition and
-decomposition.</text>
-           </svg>
-           </configure>
-        </property>
-        <property name="_hideName" class="ptolemy.data.expr.Parameter">
-        </property>
-    </property>
     <property name="1:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 375.0">
         </property>
@@ -65,7 +42,36 @@ Rayleigh distribution.</text>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 572}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 563}}">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model illustrates composite types in Ptolemy II. The
+Record Assembler actor composes a string with an integer into
+a record token, which is then passed through a channel that
+has random delay. The tokens arrive possibly in another
+order. The Record Disassembler actor separates the string
+from the sequence number. The strings are displayed as
+received (possible out of order), and resequenced by the
+Sequencer actor, which puts them back in order. This example
+demonstrates how types propagate through record composition
+and decomposition.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 0.0">
+        </property>
     </property>
     <entity name="Record Assembler" class="ptolemy.actor.lib.RecordAssembler">
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 240.0">
@@ -236,13 +242,13 @@ Rayleigh distribution.</text>
         </port>
     </entity>
     <entity name="Display As Received" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="As Received">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={367, 270, 290, 227}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 2, 292, 392}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 225.0">
         </property>
@@ -252,13 +258,13 @@ Rayleigh distribution.</text>
         </port>
     </entity>
     <entity name="Display Resequenced" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute" value="Resequenced">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={671, 270, 290, 227}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={302, 2, 292, 392}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="495.0, 325.0">
         </property>
