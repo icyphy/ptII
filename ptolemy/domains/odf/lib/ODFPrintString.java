@@ -63,7 +63,6 @@ public class ODFPrintString extends ODFActor {
     /** 
      */
     public void fire() throws IllegalActionException {
-    // System.out.println("printer is beginning to fire()");
         StringToken token = null;
         double time = 0.0;
 
@@ -80,7 +79,7 @@ public class ODFPrintString extends ODFActor {
             // System.out.println("\nStarting ODFPrintString.getNextToken()");
             // token = (StringToken)_input.get(0);
             token = (StringToken)getNextToken();
-            System.out.println("Finished ODFPrintString.getNextToken()");
+            // System.out.println("Finished ODFPrintString.getNextToken()");
 	    Thread thread = Thread.currentThread();
 	    if( thread instanceof ODFThread ) {
                 time = ((ODFThread)thread).getCurrentTime();
@@ -93,37 +92,13 @@ public class ODFPrintString extends ODFActor {
             // System.out.println("\tTime is " + time);
             System.out.println("\t"+token.stringValue()+"\tTime is " + time);
             System.out.print("\n");
-        }
+        } 
     }
     
     /** 
      */
     public void wrapup() throws IllegalActionException {
         System.out.println("\nIt is finished.\n");
-	/*
-	int queue = 0;
-	Enumeration inputPorts = null;
-	inputPorts = inputPorts();
-	if( inputPorts == null ) {
-	    // System.out.println("Queue Size = " + queue);
-	    return;
-	}
-	while( inputPorts.hasMoreElements() ) {
-	    IOPort port = (IOPort)inputPorts.nextElement();
-	    Receiver rcvrs[][] = (Receiver[][])port.getReceivers();
-	    if( rcvrs == null ) {
-	        return;
-	    }
-            for (int j = 0; j < rcvrs.length; j++) {
-                for (int i = 0; i < rcvrs[j].length; i++) {
-	            queue += ((ODFConservativeRcvr) rcvrs[j][i]).getSize();
-		}
-            }
-	}
-	System.out.println("Queue Size = " + queue);
-	System.out.println("Active Actors = " 
-                + ((ODFDirector)getDirector())._getActiveActorsCount() );
-	*/
         super.wrapup();
     }
 
