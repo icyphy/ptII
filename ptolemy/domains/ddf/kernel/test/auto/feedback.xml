@@ -34,7 +34,7 @@
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
