@@ -47,7 +47,7 @@ detail message is adjusted accordingly.
 Derived classes can provide multiple constructors that take 0, 1 or 2
 Nameable references, a Throwable cause and a detail String.
 
-<p>The cause argument to the constructor is a Throwable that 
+<p>The cause argument to the constructor is a Throwable that
 caused the exception.  The cause argument is used when code throws
 an exception and we want to rethrow the exception but print
 the stacktrace where the first exception occurred.  This is called
@@ -65,7 +65,7 @@ message from the cause argument.
 <li>The printStackTrace() methods print the stack of the cause
 exception, which should include frames from the primary exception.
 In JDK1.4, the stack trace for the primary exception is printed, then
-the stack trace for the cause exception.  
+the stack trace for the cause exception.
 </menu>
 
 @see KernelRuntimeException

@@ -48,7 +48,7 @@ This exception supports all the constructor forms of KernelException,
 but is implemented as a RuntimeException so that it does not have to
 be declared.
 
-<p>The cause argument to the constructor is a Throwable that 
+<p>The cause argument to the constructor is a Throwable that
 caused the exception.  The cause argument is used when code throws
 an exception and we want to rethrow the exception but print
 the stacktrace where the first exception occurred.  This is called
@@ -126,7 +126,7 @@ public class KernelRuntimeException extends RuntimeException {
         if (detail != null) {
             if (!detail.equals("")) {
                 if (!prefix.equals("")) {
-                    _setMessage(prefix + ": " + detail); 
+                    _setMessage(prefix + ": " + detail);
                 } else {
                     _setMessage(detail);
                 }
@@ -153,7 +153,7 @@ public class KernelRuntimeException extends RuntimeException {
      *  @param cause The cause of this exception.
      *  @param detail The message.
      */
-    public KernelRuntimeException(Enumeration objects, 
+    public KernelRuntimeException(Enumeration objects,
 				  Throwable cause, String detail) {
         String prefix = "";
         String name;

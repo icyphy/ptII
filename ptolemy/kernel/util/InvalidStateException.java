@@ -42,7 +42,7 @@ permitted. E.g., a NamedObj has a null name. Or a topology has
 inconsistent or contradictory information in it, e.g. an entity
 contains a port that has a different entity as it container. Our
 design should make it impossible for this exception to ever occur,
-so occurrence is a bug. 
+so occurrence is a bug.
 
 @author Edward A. Lee, Jie Liu
 @version $Id$
