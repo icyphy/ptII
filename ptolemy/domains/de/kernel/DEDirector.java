@@ -748,7 +748,7 @@ public class DEDirector extends Director {
             // which will have the effect of stopping the simulation.
 
             // FIXME: This should return the actor, not use a private variable.
-            // lukito: Good idea! Also, maybe change the method name to
+            // Lukito: Good idea! Also, maybe change the method name to
             // _obtainActorToFire or _getActorToFire
             private boolean _prepareActorToFire() {
                 // During prefire, new actor will be chosen to fire
