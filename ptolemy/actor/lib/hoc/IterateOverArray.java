@@ -85,7 +85,8 @@ import ptolemy.moml.HandlesInternalLinks;
    populate that actor with a submodel that will be applied to the
    array elements.  The submodel is required to have a director.
    An SDF director will
-   often be sufficient for operations taken on array elements.
+   often be sufficient for operations taken on array elements,
+   but other directors can be used as well.
    Note that this inside director should not impose a limit
    on the number of iterations of the inside model. If it does,
    then that limit will be respected, which may result in a failure
@@ -122,7 +123,20 @@ import ptolemy.moml.HandlesInternalLinks;
    actor. There should be no need to because class instances
    inside it can be instances of classes defined outside of it.
    <p>
-   There are a number of known bugs or limitations:
+   This actor (and many of the other higher-order components)
+   has its intellectual roots in the higher-order functions
+   of functional languages, which have been in use since
+   the 1970s. Similar actors were implemented in Ptolemy
+   Classic, and are described in Lee & Parks, "Dataflow
+   Process Networks," <i>Proceedings of the IEEE</i>, 1995.
+   Those were inspired by [2].
+   Alternative approaches are found dataflow visual programming
+   since the beginning (Sutherland in the 1960s, Prograph and
+   Labview in the 1980s), and in time-based visual languages
+   (Simulink in the 1990s).
+   <p>
+   There are a number of known bugs or limitations in this
+   implementation:
    <ul>
    <li>
    FIXME: When you drop in an actor, and then another actor,
@@ -152,7 +166,15 @@ import ptolemy.moml.HandlesInternalLinks;
    entity of the instance in the base class is replaced and
    then an undo is requested.
    </ul>
-
+   <p><b>References</b>
+   <p><ol>
+   <li> E. A. Lee and T. M. Parks, "Dataflow Process Networks,"
+        Proceedings of the IEEE, 83(5): 773-801, May, 1995.
+   <li> H. J. Reekie, "Toward Effective Programming for
+        Parallel Digital Signal Processing," Ph.D. Thesis,
+        University of Technology, Sydney, Sydney, Australia, 1992.
+   </ol>
+   
    @author Edward A. Lee, Steve Neuendorffer
    @version $Id$
    @since Ptolemy II 4.0
