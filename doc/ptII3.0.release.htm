@@ -92,14 +92,35 @@ java.lang.URI class, which is present only in Java 1.4 and later
 <!--whatsnew-->
 <h2>Major Features that are new in Ptolemy 3.0 </h2>
 <menu>
+
+<li> HSIF Support
+(Haiyang Zheng)
+ <br>
+The Hybrid System Interchange Format (HSIF), was developed by the
+<a href="http://www.isis.vanderbilt.edu#in_browser">Institute of Software Integrated Systems (ISIS) at Vanderbilt University</a>
+as part of the <a href="http://www.isis.vanderbilt.edu/Projects/mobies/default.html#in_browser">ISIS MoBIES</a> effort.
+The HSIF documentation states:
+
+<blockquote>
+"The goal of HSIF is to define an interchange format for hybrid system
+models that can be shared between modeling and analysis tools. HSIF
+models represent dynamic systems, whose dynamics includes both
+continuous and discrete behaviors."
+</blockquote>
+
+Haiyang Zheng developed a set of XSLT files that convert
+HSIF into MoML, the XML format used to represent Ptolemy II Models.
+
+ <br>See the <a href="../ptolemyhsif/demo/index.htm">HSIF/MoML documentation</a> for details.
+<a href="hsif/demo/SwimmingPool/SwimmingPool.xml"></a>
+
+
 <li> Expression language rework
  (Steve Neuendorffer, Edward A. Lee)
-<br>
-</li>
 
 
-to work on this architecture to enable users to customize the unit
-system on a per-model basis.
+<li> Continuous Time rework
+(Haiyang Zheng, Jie Liu (Parc)
 
 <li> <a href="../ptolemy/domains/ci/doc/body.htm" target="body">Component Interaction Domain</a>
 (Yang Zhao, Xiaojun Liu) - The CI domain models systems that contain
@@ -110,15 +131,35 @@ both event-driven and demand-driven styles of computation.
  Vergil has been improved
  and the following features have been added
 	<menu>
+	<li> Run buttons on the toolbar and hotkeys. 
 	<li> Undo/Redo
 	<li> Port Parameters
+	<li> GUI components for viewing Ptolemy II data,
+	as given in the expression language. Files with the extension .ptd are
+	now
+opened by a token viewer. The default viewer is a text editor, but if
+the data is a matrix, then the matrix viewer is used.
+	<li> Ptolemy II configurations have been refactored into
+	separate directories in <CODE>$PTII/ptolemy/configs</CODE>
+
+	<li><CODE>vergil -help</CODE> will list the possible configurations.
+	<li> A full-screen mode was created for viewing Ptolemy II
+	models.  This could be used, for example, in presentations.
+  
 </menu>
 
 <h2>Other Features that are new in Ptolemy II 3.0</h2>
 
 <ul>
 
-<li> Ptolemy II Matlab interface
+
+<li> <a href="codeDoc/ptolemy/actor/lib/python/PythonScript.java">PythoScript</a>
+(Xiaojun Liu)
+An interface to 
+<a href="http://www.jython.org/#in_browser" target="_top">Jython</a>,
+a Java implementation of Python.
+
+<li> Ptolemy II Matlab interface updates
 (Zoltan Kemenczy and Sean Simmons, Research In Motion, Ltd.) -
 The Matlab interface has been updated to provide
 <menu>
@@ -139,15 +180,18 @@ Resources:
  an applet, but will work with Web Start
  </menu>
 
-<li> <a href="codeDoc/ptolemy/data/expr/package-summary.html">Expression improvements</a>
-(Zoltan Kemenczy and Sean Simmons of Research In Motion, Ltd.)
-Functions with scalar arguments applied to arrays and matrices
-element-by-element (recursive argument dimension reduction); widened search
-for static function (and method) signatures that includes most ptolemy.math
-classes; performance improvements by caching search results; widened token to
-java-type conversions for function arguments and results.
+<li> <a href="codegen.htm">Code generator</a>
+(Steve Neuendorffer, Christopher Hylands)
+The Java code generator now handles Expression actors.
+The code generator now works with Java 1.4.
+ <br>The applet generator has been extended to copy necessary jar
+files on an as needed basis.
 
-
+<li> <a href="codeDoc/ptolemy/kernel/attributes/FileAttribute.html">ptolemy.kernel.data.FileAttribute</a> 
+(Edward A. Lee)
+- Manages platform dependencies in file
+system interaction, and provides a convenient user interface for
+selecting and accessing files on the file system.
 
 <li> <a href="codeDoc/ptolemy/data/FunctionToken.html">ptolemy.data.FunctionToken</a> 
 (Xiaojun Liu, Steve Neuendorffer)
@@ -162,6 +206,13 @@ href="codeDoc/ptolemy/actor/lib/jai/JAIImageToken.html">ptolemy.actor.lib.jai.JA
 extend ImageToken.
 
 
+
+<li> Interface to C actors using the Java Native Interface.
+(Vincent Arnould (Thales), contributor: Christopher Hylands)
+The <a href="codeDoc/jni/package-summary.htm">jni</a>
+package contains a prototype of an interface between Ptolemy II actors
+and C code by using the Java Native Interface (JNI).
+
 </ul>
 
 <h3>New Demonstrations</h3>
@@ -173,6 +224,26 @@ extend ImageToken.
  <menu>
  <li> <a href="../domains/ci/demo/Router/Router.xml">Router</a> 
  </menu>
+
+<li> <a href="../ptolemy/domains/ct/doc/body.htm" target="body">CT</a>:
+	Continuous Time
+<menu>
+<li> 
+
+
+<li><a href="../ptolemy/hsif/demo/Thermostat/Thermostat.xml">HSIF Thermostat</a>.
+<br> This example shows a simple thermostat modeled as a hybrid system.
+The purpose of the example is to demonstrate the ability that HyVisual has
+to import models defined in HSIF, the <i>Hybrid System Interchange Format</i>.
+See the <a href="../ptolemy/hsif/demo/index.htm">HSIF/MoML documentation</a> for details.
+
+<li><a href="../ptolemy/hsif/demo/SwimmingPool/SwimmingPool.xml">HSIF Swimming Pool</a>.
+<br> This example shows a simple hybrid system model of a pool.
+The purpose of the example is to demonstrate the ability that HyVisual has
+to import models defined in HSIF, the <i>Hybrid System Interchange Format</i>.
+See the <a href="../ptolemyhsif/demo/index.htm">HSIF/MoML documentation</a> for details.
+</li>
+</menu>
 
 <li> <a href="../ptolemy/domains/de/doc/body.htm" target="body">DE</a>:
 	 Discrete Event
@@ -231,6 +302,28 @@ An actor that throws a model error when it receives a true token.
 
 </dl>
 
+<li> <a href="codeDoc/ptolemy/actor/lib/package-summary.html">ptolemy.actor.lib</a>:
+
+<dl>
+
+ <dt> <a href="codeDoc/ptolemy/actor/lib/comm/ConvolutionalCoder.html"><code>ConvolutionalCoder</code></a>
+
+<dd> (Rachel Zhou) Generate a convolutional code.
+
+ <dt> <a href="codeDoc/ptolemy/actor/lib/comm/DeScrambler.html"><code>DeScrambler</code></a>
+<dd> (Rachel Zhou) Descramble the input bit sequence using a feedback shift register.
+
+ <dt> <a href="codeDoc/ptolemy/actor/lib/comm/HadamardCode.html"><code>HadamardCode</code></a>
+<dd> (Rachel Zhou) Produce a Hadamard codeword by selecting a row from a Hadamard matrix.
+
+ <dt> <a href="codeDoc/ptolemy/actor/lib/comm/Scrambler.html"><code>Scrambler</code></a>
+<dd> (Rachel Zhou) Given an input bit sequence, scramble it in a pseudo random way.
+
+ <dt> <a href="codeDoc/ptolemy/actor/lib/comm/ViterbiDecoder.html"><code>ViterbiDecoder</code></a>
+<dd> (Rachel Zhou) Viterbi Decoder.
+
+</dl>
+
 <li>  <a href="codeDoc/ptolemy/actor/lib/conversions/package-summary.html">ptolemy.actor.lib.conversions</a>:
 
 <dl>
@@ -267,6 +360,7 @@ Actors that use the Java Media Framework
 
 
 <h2>Backward compatibility issues</h2>
+
 Most models developed under Ptolemy II 1.0.1 should run under Ptolemy II 3.0.
 
  <p>The MoMLParser has been extended to include a list of backward
@@ -340,12 +434,37 @@ Update any actor port class names that have been renamed.
 Below are the changes that are not handled automatically:
 <menu>
 
+<li> The SerialComm that was in ptolemy.actor.lib.comm
+is now ptolemy.actor.lib.io.comm.SerialComm.java
 <li> AudioReader now uses a FileAttribute instead of a string valued
 parameter.  The name of this parameter has changed from
 sourceURL to fileOrURL to conform with LineReader and ExpressionReader.
 
 <li> Longs are now printed with a trailing capital <CODE>L</CODE>
 character.
+
+
+<li> We have improved the way that the SDF (synchronous dataflow) domain
+implements rate propagation. Previously, SDF would infer the rates of
+ports of an SDF model, and create parameters named
+"tokenConsumptionRate" "tokenInitProduction" and
+"tokenConsumptionRate". However, this has two bad side effects:
+
+<ol>
+<li> 
+ If a port has these parameters already, then the SDF scheduler
+   overrides them.  This may not be correct.
+
+<li> If a port has these parameters already, then running a model
+   will mark it dirty, resulting in a prompt to save the model
+   on exit.
+</ol>
+
+We've changed this so that it sets these values only if the parameters
+do not exist already, and stores them in new attributes called
+"_tokenConsumptionRate" "_tokenInitProduction" and
+"_tokenConsumptionRate". These are transient (Variable rather than
+Parameter), so they will not trigger a prompt to save.
 </menu>
 
 If you have developed your own actors under Ptolemy II 1.0.1 by
