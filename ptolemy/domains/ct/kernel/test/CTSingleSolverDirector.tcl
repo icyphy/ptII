@@ -84,7 +84,7 @@ test CTSingleSolverDirector-2.1 {Get default values} {
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
 	    [$dir getCurrentTime] \
-	    [$dir getFireBeginTime] \
+	    [$dir getIterationBeginTime] \
 	    [$dir getInitialStepSize] \
 	    [$dir getErrorTolerance] \
 	    [$dir getMaxIterations] \
@@ -116,7 +116,7 @@ test CTSingleSolverDirector-2.2 {set Parameters} {
     $param setExpression 0.5
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute LocalTrancationErrorTolerance]]
+	    [$dir getAttribute ErrorTolerance]]
     $param setExpression 0.4
 
     set param [java::cast ptolemy.data.expr.Parameter \
@@ -151,7 +151,7 @@ test CTSingleSolverDirector-2.2 {set Parameters} {
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
 	    [$dir getCurrentTime] \
-	    [$dir getFireBeginTime] \
+	    [$dir getIterationBeginTime] \
 	    [$dir getInitialStepSize] \
 	    [$dir getErrorTolerance] \
 	    [$dir getMaxIterations] \
