@@ -13,69 +13,159 @@ so that we can easily find and update the version number
 </head>
 <body>
 <h1>
-Quick Tour of What's New in Version 4.0
+What's New in Version 4.0
 </h1>
+<h2>
+Highlights
+</h2>
 <ul>
-<li> <a href="../../domains/sdf/demo/MultipleRuns/MultipleRuns.xml">
-Using one model to control repeated runs of another</a>.
-<li> <a href="../../domains/de/demo/SmartSender/SmartSender.xml">
-Self repairing model</a>.
-<li> <a href="../../vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml">
+<li>
+<a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">
+Modeling wireless sensor networks</a> (see also
+<a href="../visualsense/intro.htm">VisualSense</a>).
+<br>
+The wireless domain extends the DE domain with wireless channel modeling and
+library of components and methodologies for modeling wireless systems.
+This domain is packaged in a Ptolemy II configuration called
+VisualSense, which includes
+an extensive suite of demos.
+
+<li>
+<a href="../../domains/sdf/demo/NoisySinewave/NoisySinewave.xml">
+Hierarchical classes, subclasses, and inner classes</a>. (See also
+<a href="ClassesIllustrated.xml">
+classes illustrated visually</a> and
+<a href="../../domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.xml">
+Rijndael Encryption</a>).
+<br>
+Version 4.0 introduces actor-oriented classes, subclasses, and
+inner classes with inheritance. This is a major improvement in
+the modularity mechanisms available in actor-oriented design. 
+A side effect of the class mechanism is that MoML files are now
+much smaller since they do not duplicate information defined
+in a base class.
+
+<li>
+<a href="../../domains/sdf/demo/MultipleRuns/MultipleRuns.xml">
+Lifecycle management</a>.
+<br>
+Version 4.0 introduces the first of a family of
+<i>lifecycle management</i> actors, which are actors
+that control the execution of associated models.
+This example uses one model to control repeated runs of another.
+
+<li>
+FIXME: Higher-order components.
+
+</ul>
+<h2>
+Other Key New Capabilities
+</h2>
+<ul>
+<li>
+<a href="../../data/unit/demo/StaticUnits/StaticUnits.xml">
+Statically Checked Unit System</a> (see also the older
+<a href="../../data/unit/demo/Units/Units.xml">
+Dynamically Checked Units System</a>).
+<br>
+The new statically checked units system associates
+units with ports and checks compatibility in connections.
+
+<li>
+<a href="../../vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml">
 Interactive decorations in Vergil diagrams</a>.
+<br>
+Actors can have custom icons, diagrams can be decorated with
+decorative elements, and parameters of the icons and decorative
+elements can be tied to values compute by the model.
 
-<li> <a href="../../domains/sdf/demo/Array/Array.xml">
-Library actors for manipulating arrays</a>.
-<li><a href="../../domains/sdf/demo/NoisySinewave/NoisySinewave.xml">
-Hierarchical classes, subclasses, and inner classes</a>
-(See also <a href="../../domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.xml">Rijndael Encryption</a>)
+<li>
+<a href="../../domains/de/demo/HierarchicalModel/HierarchicalModel.xml">
+Causality analysis</a> (see also
+<a href="../../domains/sr/demo/FeedbackLoop/FeedbackLoop.xml">SR FeedbackLoop</a>).
+<br>
+A new (and still evolving) capability unifies causality analysis
+that is required by several domains. It provides a systematic
+framework for determining whether events at a particular input
+affect a particular output.
 
-<li> <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">
-Modeling wireless sensor networks</a>.
-<li> <a href="../../domains/ct/demo/Transmission/Transmission.xml">
-Using function closures to simplify a hybrid system model (of a car transmission)</a>.
+<li> FIXME: String parameters
 
-<li> <a href="../../actor/lib/security/demo/Signature/Signature.xml">java.security actors</a>: <a href="../../actor/lib/security/demo/Signature/Signature.xml">Security Signature</a>
+</ul>
+<h2>
+New and Enhanced Actor Libraries
+</h2>
+<ul>
 
-<li> <li><a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/package-summary.html#package_description">Communications demos</a>:
+<li> <a href="../../actor/lib/security/demo/Signature/Signature.xml">
+Security library</a>.
+
+<li>
+<a href="../../domains/sdf/demo/Array/Array.xml">
+Array manipulation library</a>.
+
+<li>
+<a href="../../../doc/codeDoc/ptolemy/actor/lib/comm/package-summary.html#package_description">
+Communications library</a> (see also
    <a href="../../actor/lib/comm/demo/ConvolutionalCoder/ConvolutionalCoder.xml">ConvolutionalCoder</a>,
    <a href="../../actor/lib/comm/demo/Scrambler/Scrambler.xml">Scrambler</a>,
    <a href="../../actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.xml">TrellisDecoder</a>,
-   <a href="../../actor/lib/comm/demo/ViterbiDecoder/ViterbiDecoder.xml">ViterbiDecoder</a>
-
-
-<li> <a href="../../domains/de/demo/HierarchicalModel/HierarchicalModel.xml">HierarchichalModel</a>.
-<li> <a href="../../domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml">SynthesizedVoice</a>.
-<li> <a href="../../domains/sr/demo/FeedbackLoop/FeedbackLoop.xml">SR FeedbackLoop</a>.
+   <a href="../../actor/lib/comm/demo/ViterbiDecoder/ViterbiDecoder.xml">ViterbiDecoder</a>).
+   
+<li>
+FIXME: String library
 
 </ul>
+<h2>
+New Demonstrations of Older Capabilities
+</h2>
+<ul>
+<li> <a href="../../domains/de/demo/SmartSender/SmartSender.xml">
+Self repairing model</a>.
 
-<h1>Some capabilities in Version 4.0 require additional software and/or hardware</h1>
+<li> <a href="../../domains/ct/demo/Transmission/Transmission.xml">
+Using function closures to simplify a hybrid system model (of a car transmission)</a>.
+
+<li> <a href="../../domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml">
+SynthesizedVoice</a>.
+
+</ul>
+<h2>
+Capabilities requiring additional software and/or hardware
+</h2>
 
 <ul>
-<li> <a href="../../actor/lib/io/comm/demo/SerialPort/SerialPort.xml">Using the serial port</a>
-(see <a href="../../../doc/codeDoc/ptolemy/actor/lib/io/comm/SerialComm.html">SerialPort actor documentation</a>).
-<li> <a href="../../actor/lib/x10/demo/OnOff/OnOff.xml">X10 power-line network</a>
+<li> <a href="../../actor/lib/io/comm/demo/SerialPort/SerialPort.xml">
+Using the serial port</a>.
+
+(see <a href="../../../doc/codeDoc/ptolemy/actor/lib/io/comm/SerialComm.html">
+SerialPort actor documentation</a>).
+
+<li><a href="../../actor/lib/x10/demo/OnOff/OnOff.xml">
+X10 power-line network</a>.
 (see <a href="../../../doc/codeDoc/ptolemy/actor/lib/x10/X10Interface.html">
 X10Interface actor documentation</a>).
 
-<li> The 
+<li>
+The 
 <a href="../../../doc/codeDoc/ptolemy/matlab/Expression.html">Matlab Expression actor</a>
 now takes a String Parameter instead of a  StringAttribute.
-
 This means that you can now reference parameters in scope using the
 $name or ${name} syntax.  For instance, if there is a parameter named
-foo, you can specifcy a Matlab expression like:
-
+foo, you can specify a Matlab expression like:
 <pre>
     output = fft(in, $foo)
 </pre>
 Before, you would have to have read foo in a Const actor and
 provided it as input to the Matlab expression actor.
 
-<li> <a href="../../actor/lib/jmf/demo/VideoCapture/VideoCapture.xml">Java Media Framework (JMF)</a>  
-(see <a href="../../../doc/codeDoc/ptolemy/actor/lib/jmf/package-summary.html#package_description">JMF actor documentation</a>).
+<li> <a href="../../actor/lib/jmf/demo/VideoCapture/VideoCapture.xml">
+Java Media Framework (JMF)</a>
+(see <a href="../../../doc/codeDoc/ptolemy/actor/lib/jmf/package-summary.html#package_description">
+JMF actor documentation</a>).
 
-<li>(see <a href="../../../doc/codeDoc/ptolemy/domains/gr/lib/quicktime/package-summary.html#package_description">GR Quicktime actors</a>).
+<li>(see <a href="../../../doc/codeDoc/ptolemy/domains/gr/lib/quicktime/package-summary.html#package_description">
+GR Quicktime actors</a>).
 
 </ul>
 
@@ -84,34 +174,19 @@ Below are new features that were not present in Ptolemy II 3.x
 <ul>
 
 
-<li> Classes and inheritance at the block diagram level
-(Edward A. Lee)
 
-<li> Lifecycle management components
-(Yang Zhao)
-
-<li> Unit system rework
-(Rowland Johnson)
-<a href="../../data/unit/demo/StaticUnits/StaticUnits.xml">Static Units</a> (New in Ptolemy II 4.0)
-
-<li> Copernicus/Actor
-(Steve Neuendorffer)
-
-<li> Updates to Vergil, the user interface for building models
-(Steve Neuendorffer, Edward A. Lee)
+<li> Other updates to Vergil:
 	<menu>
-	<li> Decorative elements in block diagrams (boxes, etc.)
-        <li> Much smaller XML files
-	<li> Icon editor (and animated icons)
 	<li> Expert mode parameter editing
 	<li><CODE>vergil -help</CODE> lists available configurations.
-	<li> Full-screen mode for use in presentations.
-	<li> <a href="../../../doc/codeDoc/ptolemy/vergil/kernel/attributes/DocumentationAttribute.html">DocumentationAttributeptolemy.actor.lib</a>
-	 (Rowland R Johnson) 
-        </menu>
+	<li> Full-screen mode for use in presentations (accessible from the toolbar).
+	<li> <a href="../../../doc/codeDoc/ptolemy/vergil/kernel/attributes.DocumentationAttribute.html">
+	     DocumentationAttribute</a>
+	<li> <a href="../../../doc/codeDoc/ptolemy/kernel/attributes/IDAttribute.html">
+	     IDAttribute</a>
+    </menu>
 
-<li> Single Window Mode
-(J.  Blanc (Thales),  B. Masson (Thales))
+<li> Single Window Mode (contributed by Thales).
 <br> If <code>vergil -single</code> is invoked, then a single window interface
 is used.  This interface is experimental.
 <br>Limitations:
@@ -124,7 +199,6 @@ is used.  This interface is experimental.
 (Yang Zhao)
 
 <li> Sandbox support
-<br>(Christopher Hylands Brooks)
 <br>Vergil has better support for operating in a security sandbox.
 For details, see the
 <a href="../../../doc/sandbox.htm">Ptolemy II Sandbox documentation</a>.
