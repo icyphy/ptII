@@ -114,16 +114,16 @@ public class TypeApplet extends SDFApplet {
 
 	    _buildType2String();
 
-	    setLayout(new GridLayout(3, 1));
-            //setLayout(new BorderLayout());
+	    //setLayout(new GridLayout(3, 1));
+            setLayout(new BorderLayout());
             _ioPanel.setLayout(new GridLayout(1, 2));
-            add(_ioPanel);
-	    add(_schemPanel);
+            //add(_ioPanel);
+	    //add(_schemPanel);
 
-            //add(BorderLayout.NORTH,_ioPanel);
-            //_ioPanel.setSize(new Dimension(800,200));
-	    //add(BorderLayout.CENTER,_schemPanel);
-            //_schemPanel.setSize(new Dimension(800,250));
+            add(BorderLayout.NORTH,_ioPanel);
+            _ioPanel.setSize(new Dimension(800,200));
+	    add(BorderLayout.CENTER,_schemPanel);
+            _schemPanel.setSize(new Dimension(800,250));
 
             Panel controlPanel = new Panel();
 	    controlPanel.setLayout(new BorderLayout());
@@ -134,10 +134,12 @@ public class TypeApplet extends SDFApplet {
 
             JPanel visPanel = new JPanel();
             visPanel.setLayout(new BorderLayout());
-            add(visPanel);
+            //add(visPanel);
+            add(BorderLayout.SOUTH,visPanel);
+
             visPanel.add(jgraph, BorderLayout.WEST);
-            jgraph.setPreferredSize(new Dimension(300, 300));
-            jgraph.setSize(new Dimension(300, 300));
+            jgraph.setPreferredSize(new Dimension(400, 300));
+            jgraph.setSize(new Dimension(400, 300));
 
             // Construct the Ptolemy type lattice model
             final GraphModel graphModel = constructLattice();
@@ -174,6 +176,8 @@ public class TypeApplet extends SDFApplet {
          Node n6 = model.createNode(Token.class);
          Node n7 = model.createNode(BooleanToken.class);
          Node n8 = model.createNode(ObjectToken.class);
+         Node n9 = model.createNode(ScalarToken.class);
+         Node n10 = model.createNode(LongToken.class);
 
          model.addNode(n1);
          model.addNode(n2);
@@ -183,6 +187,8 @@ public class TypeApplet extends SDFApplet {
          model.addNode(n6);
          model.addNode(n7);
          model.addNode(n8);
+         model.addNode(n9);
+         model.addNode(n10);
 
          /** 
          nodeMap.put(a1,n1);
@@ -196,17 +202,20 @@ public class TypeApplet extends SDFApplet {
          */
 
          // Edges
+         model.createEdge(n8,n1);
+         model.createEdge(n6,n8);
+
+         model.createEdge(n6,n5);
+         model.createEdge(n5,n7);
+         model.createEdge(n7,n1);
+
+         model.createEdge(n5,n9);
+         model.createEdge(n9,n10);
+         model.createEdge(n10,n2);
          model.createEdge(n2,n1);
          model.createEdge(n3,n2);
          model.createEdge(n4,n3);
-         model.createEdge(n5,n4);
-         model.createEdge(n6,n5);
-
-         model.createEdge(n7,n1);
-         model.createEdge(n6,n7);
-
-         model.createEdge(n8,n1);
-         model.createEdge(n6,n8);
+         model.createEdge(n9,n4);
 
          return model;
      }
@@ -268,16 +277,34 @@ public class TypeApplet extends SDFApplet {
          TraceModel model = tracePane.getTraceModel();
          _currentElement = new TraceModel.Element[model.size()];
 
-         for (int i = 0; i < model.size(); i++ ) {
+         for (int i = 0; i < model.size()-2; i++ ) {
              TraceModel.Trace trace = model.getTrace(i);
-             final TraceModel.Element element = new TraceModel.Element(
-                     0, 1, 7);
+             TraceModel.Element element = new TraceModel.Element(0, 1, 7);
              element.closure = TraceModel.Element.OPEN_END;
              trace.add(element);
              _currentElement[i] = element;
              view.drawTrace(trace);
              view.drawTraceElement(element);
-        }
+         }
+
+         // Hack hack hack
+         int i = 5;
+         TraceModel.Trace trace = model.getTrace(i);
+         TraceModel.Element element = new TraceModel.Element(0, 1, 8);
+         element.closure = TraceModel.Element.OPEN_END;
+         trace.add(element);
+         _currentElement[i] = element;
+         view.drawTrace(trace);
+         view.drawTraceElement(element);
+
+         i = 6;
+         trace = model.getTrace(i);
+         element = new TraceModel.Element(0, 1, 5);
+         element.closure = TraceModel.Element.OPEN_END;
+         trace.add(element);
+         _currentElement[i] = element;
+         view.drawTrace(trace);
+         view.drawTraceElement(element);
     }
         
     /**
@@ -289,7 +316,7 @@ public class TypeApplet extends SDFApplet {
         
         // Configure the view
         TraceView traceView = tracePane.getTraceView();
-        traceView.setTimeScale(1.0);
+        traceView.setTimeScale(0.5);
         traceView.setLayout(10,10,500,30,5);
         traceView.setTraceModel(traceModel);
 
@@ -530,7 +557,7 @@ public class TypeApplet extends SDFApplet {
     private class SchematicPanel extends Panel {
 
 	public SchematicPanel() {
-	    setBackground(new Color(0.9F, 1.0F, 0.7F));
+	    //setBackground(new Color(0.9F, 1.0F, 0.7F));
 	}
 
     	public void paint(Graphics graph) {
@@ -750,6 +777,12 @@ public class TypeApplet extends SDFApplet {
             } else if (typeObj == ObjectToken.class) {
                 color = Color.yellow;
                 label = "Object";
+            } else if (typeObj == ScalarToken.class) {
+                color = Color.gray;
+                label = "Scalar";
+            } else if (typeObj == LongToken.class) {
+                color = Color.orange;
+                label = "Long";
             }
 
             // Set the color and label
@@ -794,25 +827,25 @@ public class TypeApplet extends SDFApplet {
             int id = 0;
             if (port == _ramp1.output) {
                 _ramp1Type = typeString;
-                id = 1;
+                id = 0;
             } else if (port == _ramp2.output) {
                 _ramp2Type = typeString;
-                id = 2;
+                id = 1;
             } else if (port == _expr.getPort("input1")) {
                 _exprIn1Type = typeString;
-                id = 3;
+                id = 2;
             } else if (port == _expr.getPort("input2")) {
                 _exprIn2Type = typeString;
-                id = 4;
+                id = 3;
             } else if (port == _expr.output) {
                 _exprOutType = typeString;
-                id = 5;
+                id = 4;
             } else if (port == _plotter.input) {
                 _plotterType = typeString;
-                id = 6;
+                id = 5;
             } else if (port == _printer.input) {
                 _printerType = typeString;
-                id = 7;
+                id = 6;
             }
             
             _schemPanel.repaint();
@@ -837,6 +870,10 @@ public class TypeApplet extends SDFApplet {
                   color = 9;
               } else if (typeObj == ObjectToken.class) {
                   color = 2;
+              } else if (typeObj == ScalarToken.class) {
+                  color = 6;
+              } else if (typeObj == LongToken.class) {
+                  color = 1;
               }
 
               // Get the trace and element figure
