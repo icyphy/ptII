@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="model3f" class="ptolemy.actor.TypedCompositeActor">
+<entity name="DatagramCounter" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
@@ -78,6 +78,17 @@ firing them in that order.
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>HistogramPlotter</title>
+<xRange min="1.0" max="3.5"/>
+<yRange min="0.0" max="900.0"/>
+<barGraph width="0.5" offset="0.15"/>
+<bin width="1.0" offset="0.0"/>
+</plot>?>
+        </configure>
     </entity>
     <entity name="ArrayLength" class="ptolemy.actor.lib.ArrayLength">
         <property name="_location" class="ptolemy.moml.Location" value="410.0, 220.0">
@@ -128,7 +139,7 @@ firing them in that order.
         </property>
         <property name="actorBufferLength" class="ptolemy.data.expr.Parameter" value="440">
         </property>
-        <property name="platformBufferLength" class="ptolemy.data.expr.Parameter">
+        <property name="platformBufferLength" class="ptolemy.data.expr.Parameter" value="8192">
         </property>
         <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
         </property>
