@@ -167,6 +167,24 @@ public class Effigy extends CompositeEntity {
         return newobj;
     }
 
+    /** Close all tableaux contained by this effigy, and by any effigies
+     *  it contains.
+     *  @return False if the user cancels on a save query.
+     */
+    public boolean closeTableaux() {
+        Iterator effigies = entityList(Effigy.class).iterator();
+        while(effigies.hasNext()) {
+            Effigy effigy = (Effigy)effigies.next();
+            if (!effigy.closeTableaux()) return false;
+        }
+        Iterator tableaux = entityList(Tableau.class).iterator();
+        while(tableaux.hasNext()) {
+            Tableau tableau = (Tableau)tableaux.next();
+            if (!tableau.close()) return false;
+        }
+        return true;
+    }
+
     /** Get a tableau factory that offers multiple views of this effigy, or
      *  null if none has been specified.
      *  This can be used by a contained tableau to set up a View menu.
@@ -262,12 +280,18 @@ public class Effigy extends CompositeEntity {
         _factory = factory;
     }
 
-    /** Make all tableaux associated with this model visible by raising
-     *  or deiconifying them.  If there is no tableau associated with
+    /** Make all tableaux associated with this effigy and any effigies it
+     *  contains visible by raising or deiconifying them.
+     *  If there is no tableau contained directly by
      *  this effigy, then create one by calling createPrimaryTableau()
      *  in the configuration.
      */
     public void showTableaux() {
+        Iterator effigies = entityList(Effigy.class).iterator();
+        while(effigies.hasNext()) {
+            Effigy effigy = (Effigy)effigies.next();
+            effigy.showTableaux();
+        }
         Iterator tableaux = entityList(Tableau.class).iterator();
         boolean foundOne = false;
         while(tableaux.hasNext()) {

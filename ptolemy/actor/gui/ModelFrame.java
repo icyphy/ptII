@@ -205,9 +205,10 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
 
     /** Close the window.  Override the base class to remove the
      *  execution listener from the manager.
+     *  @return False if the user cancels on a save query.
      */
-    protected void _close() {
-        super._close();
+    protected boolean _close() {
+        boolean result = super._close();
         CompositeEntity model = getModel();
         if (model instanceof CompositeActor) {
             Manager manager = ((CompositeActor)model).getManager();
@@ -215,6 +216,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
                 manager.removeExecutionListener(this);
             }
         }
+        return result;
     }
 
     /** Display more detailed information than given by _about().

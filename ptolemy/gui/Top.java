@@ -68,7 +68,7 @@ line like:
 Derived classes may wish to modify the menus.  The File
 and Help menus are exposed as protected members.
 The File menu items in the _fileMenuItems protected array are,
-in order, Open, New, Save, SaveAs, Print, and Close.
+in order, Open, New, Save, SaveAs, Print, Close, and Exit.
 The Help menu items in the _helpMenuItems protected array are,
 in order, About and Help.
 <p>
@@ -304,6 +304,7 @@ public abstract class Top extends JFrame {
         new JMenuItem("SaveAs", KeyEvent.VK_A),
         new JMenuItem("Print", KeyEvent.VK_P),
         new JMenuItem("Close", KeyEvent.VK_C),
+        new JMenuItem("Exit", KeyEvent.VK_X),
     };
 
     /** Help menu for this frame. */
@@ -375,8 +376,9 @@ public abstract class Top extends JFrame {
      *  if the data associated with this window has been modified,
      *  as indicated by isModified(), then ask the user whether to
      *  save the data before closing.
+     *  @return False if the user cancels on a save query.
      */
-    protected void _close() {
+    protected boolean _close() {
         // NOTE: We use dispose() here rather than just hiding the
         // window.  This ensures that derived classes can react to
         // windowClosed events rather than overriding the
@@ -384,10 +386,28 @@ public abstract class Top extends JFrame {
         if (isModified()) {
             if (_queryForSave()) {
                 dispose();
+                return true;
             }
+            return false;
         } else {
             // Window is not modified, so just dispose.
             dispose();
+            return true;
+        }
+    }
+
+    /** Exit the application after querying the user to save data.
+     *  Derived classes should override this to do something more
+     *  reasonable, so that user data is not discarded.
+     */
+    protected void _exit() {
+        if (isModified()) {
+            if (_queryForSave()) {
+                System.exit(0);
+            }
+        } else {
+            // Window is not modified, so just exit.
+            System.exit(0);
         }
     }
 
@@ -572,6 +592,7 @@ public abstract class Top extends JFrame {
             else if (actionCommand.equals("SaveAs")) _saveAs();
             else if (actionCommand.equals("Print")) _print();
             else if (actionCommand.equals("Close")) _close();
+            else if (actionCommand.equals("Exit")) _exit();
 
             // NOTE: The following should not be needed, but jdk1.3beta
             // appears to have a bug in swing where repainting doesn't

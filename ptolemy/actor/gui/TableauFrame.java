@@ -278,8 +278,9 @@ public abstract class TableauFrame extends Top {
      *  and there are no other tableaux in the parent effigy or
      *  any effigy that contains it,
      *  then ask the user whether to save the data before closing.
+     *  @return False if the user cancels on a save query.
      */
-    protected void _close() {
+    protected boolean _close() {
         // NOTE: We use dispose() here rather than just hiding the
         // window.  This ensures that derived classes can react to
         // windowClosed events rather than overriding the
@@ -287,8 +288,43 @@ public abstract class TableauFrame extends Top {
         if (_otherOpenTableaux(getEffigy(), 1)) {
             // There are other tableau, so just close.
             dispose();
+            return true;
         } else {
-            super._close();
+            return super._close();
+        }
+    }
+
+    /** Close all open tableaux, querying the user as necessary to save data,
+     *  and then exit the application.  If the user cancels on any save,
+     *  then do not exit.
+     */
+    protected void _exit() {
+        ModelDirectory directory = getDirectory();
+        Iterator effigies = directory.entityList(Effigy.class).iterator();
+        while (effigies.hasNext()) {
+            Effigy effigy = (Effigy)effigies.next();
+            if (!effigy.closeTableaux()) return;
+            try {
+                effigy.setContainer(null);
+            } catch (Exception ex) {
+                throw new InternalErrorException(
+                    "Unable to set effigy container to null! " + ex);
+            }
+        }
+        // Some of the effigies closed may have triggered other
+        // effigies being opened (if they were unnamed, and a saveAs()
+        // was triggered).  So we need to close those now.
+        // This is just a repeat of the above.
+        effigies = directory.entityList(Effigy.class).iterator();
+        while (effigies.hasNext()) {
+            Effigy effigy = (Effigy)effigies.next();
+            if (!effigy.closeTableaux()) return;
+            try {
+                effigy.setContainer(null);
+            } catch (Exception ex) {
+                throw new InternalErrorException(
+                    "Unable to set effigy container to null! " + ex);
+            }
         }
     }
 

@@ -108,6 +108,23 @@ public class Tableau extends ComponentEntity {
         }
     }
 
+    /** Close this tableau visible by calling dispose() on the associated
+     *  frame, or if the associated frame is an instance of TableauFrame,
+     *  by calling _close() on it.
+     *  @return False if the user cancels on a save query.
+     */
+    public boolean close() {
+        JFrame frame = getFrame();
+        if (frame instanceof TableauFrame) {
+            // NOTE: Calling a protected method, but this class is in the
+            // same package.
+            if (!((TableauFrame)frame)._close()) return false;
+        } else if (frame != null) {
+            frame.dispose();
+        }
+        return true;
+    }
+
     /** Return the top-level window that implements the display of
      *  this tableau.
      *  @return A top-level window.
@@ -197,7 +214,7 @@ public class Tableau extends ComponentEntity {
 
         // Set up a listener for window closing events.
         frame.addWindowListener(new WindowAdapter() {
-            // This is invoked if the window once the window
+            // This is invoked if the window
             // is disposed by the _close() method of Top.
             public void windowClosed(WindowEvent e) {
                 try {
