@@ -321,7 +321,7 @@
                 </port>
             </entity>
             <entity name="P2" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="3.0">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="449.0, 269.0">
                 </property>
