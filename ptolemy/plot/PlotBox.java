@@ -1063,7 +1063,7 @@ public class PlotBox extends JPanel implements Printable {
         // Find the width and height of the total drawing area, and clear it.
         Rectangle drawRect = getBounds();
         graphics.setPaintMode();
-        /* NOTE: The following seems to be unncessary with Swing...
+        /* NOTE: The following seems to be unnecessary with Swing...
         if (clearfirst) {
             // NOTE: calling clearRect() here permits the background
             // color to show through, but it messes up printing.
