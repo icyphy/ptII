@@ -64,30 +64,41 @@ public class StringToken extends ObjectToken {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** This method is here for the parser */
-    public Token add(Token a, Token b) throws Exception {
-        String val1 = a.toString();
-        String val2 = b.toString();
-        return new StringToken(val1 + val2);
+    /** Add the value of the argument Token to this Token. Type resolution
+     *  also occurs here, with the returned Token type chosen to achieve
+     *  a lossless conversion.
+     * FIXME: what do do about long in the next six methods?
+     *  @param a The token to add to this Token
+     *  @exception Thrown if the passed token is not of a type that can be 
+     *   added to this Tokens value in a lossless fashion.
+     */
+    public Token add(Token a) throws IllegalActionException {
+        String result = toString() + a.toString();
+        return new StringToken(result);
+    }
+     
+   
+    /** Test the values of this Token and the argument Token for equality.
+     *  Type resolution also occurs here, with the returned Token type 
+     *  chosen to achieve a lossless conversion. 
+     *  @param a The token to divide this Token by
+     *  @exception Thrown if the passed token is not of a type that can be 
+     *   compared this Tokens value.
+     */
+    public BooleanToken equality(Token a) throws IllegalActionException {
+        if (a instanceof StringToken) {
+            if( !(_value.compareTo(a.toString()))) {
+                return new BooleanToken(true);
+            } else {
+                return new BooleanToken(false);
+            } 
+       } else {
+            String str = "supported between " + this.getClass().getName();
+            str = str + " and " + a.getClass().getName();
+            throw new IllegalActionException("equality method not " + str);
+        }
     }
 
-    /** This method is here for the parser */
-    public Token subtract(Token a, Token b) throws Exception {
-        System.out.println("invalid operation on string objects, sub");
-        throw new Exception();
-    }
-
-    /** This method is here for the parser */
-    public Token multiply(Token a, Token b) throws Exception {
-        System.out.println("invalid operation on string objects, mult");
-        throw new Exception();
-    }
-
-    /** This method is here for the parser */
-    public Token divide(Token a, Token b) throws Exception {
-        System.out.println("invalid operation on string objects, divide");
-        throw new Exception();
-    }
 
     /** Set the value of the token to the specified string.
      *  If the argument is null, then the value is set to an empty string
