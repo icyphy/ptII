@@ -65,11 +65,13 @@ such as plotters or textual output.
 <p>
 The applet parameters are:
 <ul>
+
 <li>
 <i>background</i>: The background color, typically given as a hex
 number of the form "#<i>rrggbb</i>" where <i>rr</i> gives the red
 component, <i>gg</i> gives the green component, and <i>bb</i> gives
 the blue component.
+
 <li>
 <i>controls</i>:
 This gives a comma-separated list
@@ -83,9 +85,11 @@ is included in the comma-separated list, then controls for the
 top-level parameters of the model are placed on the screen, below
 the buttons.  If the word "directorParameters" is included,
 then controls for the director parameters are also included.
+
 <li>
 <i>modelClass</i>: The fully qualified class name of a Java class
 that extends NamedObj.  This class defines the model.
+
 <li>
 <i>orientation</i>: This can have value "horizontal", "vertical", or
 "controls_only" (case insensitive).  If it is "vertical", then the
@@ -93,7 +97,14 @@ controls are placed above the visual elements of the Placeable actors.
 This is the default.  If it is "horizontal", then the controls
 are placed to the left of the visual elements.  If it is "controls_only"
 then no visual elements are placed.
+
+<li>
+<i>autoRun</i>: This can have value "true", or "false".  If it is
+"true", then the model will be run when the applet's start() method is
+called.  If false, then the model will not be run automatically.  The
+default is "true".
 </ul>
+
 <p>
 To create a model in a different way, say without a <i>modelClass</i>
 applet parameter, you may extend this class and override the
@@ -167,6 +178,8 @@ public class PtolemyApplet extends BasicJApplet
             {"orientation", "",
              "Orientation: vertical, horizontal, or controls_only"},
             {"controls", "", "List of on-screen controls"},
+            {"autoRun", "boolean",
+             "Determines if the model is run automatically"}
         };
         return _concatStringArrays(super.getParameterInfo(), newInfo);
     }
@@ -218,20 +231,30 @@ public class PtolemyApplet extends BasicJApplet
 
     /** Start execution of the model. This method is called by the
      *  browser or applet viewer to inform this applet that it should
-     *  start its execution. It is called after the init method
-     *  and each time the applet is revisited in a Web page.
-     *  In this base class, this method calls the protected method
-     *  _go(), which executes the model.  If a derived class does not
-     *  wish to execute the model each time start() is called, it should
-     *  override this method with a blank method.
+     *  start its execution. It is called after the init method and
+     *  each time the applet is revisited in a Web page.  In this base
+     *  class, this method calls the protected method _go(), which
+     *  executes the model, unless the noAutoRun parameter has been
+     *  set.  If a derived class does not wish to execute the model
+     *  each time start() is called, it should override this method
+     *  with a blank method.
      */
     public void start() {
         // If an exception occurred during init, do not execute.
         if (!_setupOK) return;
-        try {
-            _go();
-        } catch (Exception ex) {
-            report(ex);
+
+        String autoRunSpec = getParameter("autoRun");
+        // Default is to run automatically.
+        boolean autoRun = true;
+        if (autoRunSpec != null) {
+            autoRun = Boolean.valueOf(autoRunSpec).booleanValue();
+        }
+        if (autoRun) {
+            try {
+                _go();
+            } catch (Exception ex) {
+                report(ex);
+            }
         }
     }
 
