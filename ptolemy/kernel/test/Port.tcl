@@ -67,12 +67,13 @@ test Port-1.1 {Get information about an instance of Port} {
 } {{
   class:         pt.kernel.Port
   fields:        
-  methods:       {equals java.lang.Object} getClass getConnectedPorts ge
-    tContainer getFullName getLinkedRelations getName hashC
-    ode {link pt.kernel.Relation} notify notifyAll numLinks
-     {setContainer pt.kernel.Entity} {setName java.lang.Str
-    ing} toString {unlink pt.kernel.Relation} unlinkAll wai
-    t {wait long} {wait long int} workspace
+  methods:       {description int} {equals java.lang.Object} getClass ge
+    tConnectedPorts getContainer getFullName getLinkedRelat
+    ions getName hashCode {link pt.kernel.Relation} notify 
+    notifyAll numLinks {setContainer pt.kernel.Entity} {set
+    Name java.lang.String} toString {unlink pt.kernel.Relat
+    ion} unlinkAll wait {wait long} {wait long int} workspa
+    ce
     
   constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.la
     ng.String} {pt.kernel.Port pt.kernel.Workspace}

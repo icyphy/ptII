@@ -67,15 +67,15 @@ test ComponentPort-1.1 {Get information about an instance of ComponentPort} {
   class:         pt.kernel.ComponentPort
   fields:        
   methods:       {_checkRelation pt.kernel.Relation} {_outside pt.kernel
-    .Nameable} deepGetConnectedPorts deepGetInsidePorts {eq
-    uals java.lang.Object} getClass getConnectedPorts getCo
-    ntainer getFullName getInsidePorts getInsideRelations g
-    etLinkedRelations getName hashCode {liberalLink pt.kern
-    el.Relation} {link pt.kernel.Relation} notify notifyAll
-     numInsideLinks numLinks {setContainer pt.kernel.Entity
-    } {setName java.lang.String} toString {unlink pt.kernel
-    .Relation} unlinkAll wait {wait long} {wait long int} w
-    orkspace
+    .Nameable} deepGetConnectedPorts deepGetInsidePorts {de
+    scription int} {equals java.lang.Object} getClass getCo
+    nnectedPorts getContainer getFullName getInsidePorts ge
+    tInsideRelations getLinkedRelations getName hashCode {l
+    iberalLink pt.kernel.Relation} {link pt.kernel.Relation
+    } notify notifyAll numInsideLinks numLinks {setContaine
+    r pt.kernel.Entity} {setName java.lang.String} toString
+     {unlink pt.kernel.Relation} unlinkAll wait {wait long}
+     {wait long int} workspace
     
   constructors:  pt.kernel.ComponentPort {pt.kernel.ComponentPort pt.ker
     nel.ComponentEntity java.lang.String} {pt.kernel.Compon

@@ -62,12 +62,12 @@ test Relation-1.1 {Get information about an instance of Relation} {
 } {{
   class:         pt.kernel.Relation
   fields:        
-  methods:       {equals java.lang.Object} getClass getContainer getFull
-    Name getLinkedEntities getLinkedPorts {getLinkedPortsEx
-    cept pt.kernel.Port} getName hashCode notify notifyAll 
-    numLinks {setName java.lang.String} toString {unlink pt
-    .kernel.Relation} unlinkAll wait {wait long} {wait long
-     int} workspace
+  methods:       {description int} {equals java.lang.Object} getClass ge
+    tContainer getFullName getLinkedEntities getLinkedPorts
+     {getLinkedPortsExcept pt.kernel.Port} getName hashCode
+     notify notifyAll numLinks {setName java.lang.String} t
+    oString {unlink pt.kernel.Relation} unlinkAll wait {wai
+    t long} {wait long int} workspace
     
   constructors:  pt.kernel.Relation {pt.kernel.Relation java.lang.String
     } {pt.kernel.Relation pt.kernel.Workspace java.lang.Str

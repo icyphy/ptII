@@ -57,10 +57,10 @@ test NamedObj-1.1 {Get information about an instance of NamedObj} {
 } {{
   class:         pt.kernel.NamedObj
   fields:        
-  methods:       {equals java.lang.Object} getClass getContainer getFull
-    Name getName hashCode notify notifyAll {setName java.la
-    ng.String} toString wait {wait long} {wait long int} wo
-    rkspace
+  methods:       {description int} {equals java.lang.Object} getClass ge
+    tContainer getFullName getName hashCode notify notifyAl
+    l {setName java.lang.String} toString wait {wait long} 
+    {wait long int} workspace
     
   constructors:  pt.kernel.NamedObj {pt.kernel.NamedObj java.lang.String
     } {pt.kernel.NamedObj pt.kernel.Workspace java.lang.Str

@@ -68,18 +68,18 @@ test CompositeEntity-1.1 {Get information about an instance \
     nentPort pt.kernel.ComponentPort} {connect pt.kernel.Co
     mponentPort pt.kernel.ComponentPort java.lang.String} {
     deepContains pt.kernel.ComponentEntity} deepGetEntities
-     {equals java.lang.Object} getClass getConnectedPorts g
-    etContainer getEntities {getEntity java.lang.String} ge
-    tFullName getLinkedRelations getName {getPort java.lang
-    .String} getPorts {getRelation java.lang.String} getRel
-    ations hashCode isAtomic {newPort java.lang.String} {ne
-    wRelation java.lang.String} notify notifyAll numEntitie
-    s numRelations removeAllEntities removeAllPorts removeA
-    llRelations {removeEntity pt.kernel.ComponentEntity} {r
-    emovePort pt.kernel.Port} {removeRelation pt.kernel.Com
-    ponentRelation} {setContainer pt.kernel.CompositeEntity
-    } {setName java.lang.String} toString wait {wait long} 
-    {wait long int} workspace
+     {description int} {equals java.lang.Object} getClass g
+    etConnectedPorts getContainer getEntities {getEntity ja
+    va.lang.String} getFullName getLinkedRelations getName 
+    {getPort java.lang.String} getPorts {getRelation java.l
+    ang.String} getRelations hashCode isAtomic {newPort jav
+    a.lang.String} {newRelation java.lang.String} notify no
+    tifyAll numEntities numRelations removeAllEntities remo
+    veAllPorts removeAllRelations {removeEntity pt.kernel.C
+    omponentEntity} {removePort pt.kernel.Port} {removeRela
+    tion pt.kernel.ComponentRelation} {setContainer pt.kern
+    el.CompositeEntity} {setName java.lang.String} toString
+     wait {wait long} {wait long int} workspace
     
   constructors:  pt.kernel.CompositeEntity {pt.kernel.CompositeEntity pt
     .kernel.CompositeEntity java.lang.String} {pt.kernel.Co

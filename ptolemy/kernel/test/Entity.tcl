@@ -63,13 +63,13 @@ test Entity-1.1 {Get information about an instance of Entity} {
 } {{
   class:         pt.kernel.Entity
   fields:        
-  methods:       {addPort pt.kernel.Port} {equals java.lang.Object} getC
-    lass getConnectedPorts getContainer getFullName getLink
-    edRelations getName {getPort java.lang.String} getPorts
-     hashCode {newPort java.lang.String} notify notifyAll r
-    emoveAllPorts {removePort pt.kernel.Port} {setName java
-    .lang.String} toString wait {wait long} {wait long int}
-     workspace
+  methods:       {addPort pt.kernel.Port} {description int} {equals java
+    .lang.Object} getClass getConnectedPorts getContainer g
+    etFullName getLinkedRelations getName {getPort java.lan
+    g.String} getPorts hashCode {newPort java.lang.String} 
+    notify notifyAll removeAllPorts {removePort pt.kernel.P
+    ort} {setName java.lang.String} toString wait {wait lon
+    g} {wait long int} workspace
     
   constructors:  pt.kernel.Entity {pt.kernel.Entity java.lang.String} {p
     t.kernel.Entity pt.kernel.Workspace java.lang.String}
