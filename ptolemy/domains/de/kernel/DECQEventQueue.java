@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.de.kernel;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.util.CQComparator;
 import ptolemy.actor.util.CalendarQueue;
@@ -117,15 +118,18 @@ public class DECQEventQueue implements DEEventQueue {
         return _cQueue.isEmpty();
     }
 
-    /** Enqueue a DE event into the event queue and notify all threads
+    /** If the given DE event is not in the event queue, enqueue it
+     *  into the event queue and notify all threads
      *  that are stalled waiting for a DE event to be put in the queue.
      *  This method is synchronized since there
      *  may be actors running under different threads in the DE domain.
      *  @param event The event to enqueue.
      */
     public synchronized final void put(DEEvent event) {
-        _cQueue.put(event);
-        notifyAll();
+        if (!_cQueue.includes(event)) {
+            _cQueue.put(event);
+            notifyAll();
+        }
     }
 
     /** Unregister a debug listener.  If the specified listener has not
@@ -230,7 +234,7 @@ public class DECQEventQueue implements DEEventQueue {
 
             if ( entryArray == null || entryArray.length < 2) {
                 _zeroReference = 
-                    new DEEvent(null, new Time(_director, 0.0), 0, 0);
+                    new DEEvent((Actor)null, new Time(_director, 0.0), 0, 0);
                 return;
             }
             double[] diff = new double[entryArray.length - 1];
@@ -256,7 +260,7 @@ public class DECQEventQueue implements DEEventQueue {
             }
             effectiveAverage /= (double)effectiveSamples;
             _binWidth = 
-                new DEEvent(null, new Time(_director, 3.0 * effectiveAverage), 
+                new DEEvent((Actor)null, new Time(_director, 3.0 * effectiveAverage), 
                 0, 0);
         }
 
@@ -275,11 +279,11 @@ public class DECQEventQueue implements DEEventQueue {
 
         // The bin width.
         private DEEvent _binWidth 
-            = new DEEvent(null, new Time(_director, 1.0), 0, 0);
+            = new DEEvent((Actor)null, new Time(_director, 1.0), 0, 0);
 
         // The zero reference.
         private DEEvent _zeroReference
-            = new DEEvent(null, new Time(_director, 0.0), 0, 0);
+            = new DEEvent((Actor)null, new Time(_director, 0.0), 0, 0);
     }
 
 

@@ -44,26 +44,21 @@ import ptolemy.kernel.util.InternalErrorException;
 //// DEReceiver
 
 /** An implementation of the ptolemy.actor.Receiver interface for the
-    DE domain. Tokens that are put into this receiver logically have time
-    stamps. The put() method sends the specified token to the
-    director, which returns it to this receiver (via the protected method
-    _triggerEvent()) when current time matches the time stamp of the
-    token. The get() method returns only tokens that the director has so
-    returned. Thus, when a token is put into the receiver using put(), it
-    does not become immediately available to the get() method.
-
-    <p>By default, the time stamp of a token is the current model time of the
-    director when put() is called. This should be done in a synchronized manner, 
-    since there could be multiple thread running in this domain.
-
-    <p>Before firing an actor, the director is expected to put at least one
+    DE domain. 
+    <p>
+    The put() method stores the given token in this receiver and posts a
+    trigger event to the director. The director is responsible to dequeue that
+    trigger event and invoke the actor that contains this receiver. 
+    The get() method returns the first available token from the receiver. 
+    <p>
+    Before firing an actor, the director is expected to put at least one
     token into at least one of the receivers contained by the actor.
 
     @author Lukito Muliadi, Edward A. Lee, Jie Liu
     @version $Id$
     @since Ptolemy II 0.2
-    @Pt.ProposedRating Green (liuj)
-    @Pt.AcceptedRating Green (cxh)
+    @Pt.ProposedRating Red (hyzheng)
+    @Pt.AcceptedRating Yellow (hyzheng)
 */
 public class DEReceiver extends AbstractReceiver {
 
@@ -121,6 +116,7 @@ public class DEReceiver extends AbstractReceiver {
      *  tokens into it (via the put() method).
      *  Returning true in this method should also guarantee that calling
      *  the put() method will not result in an exception.
+     *  @param tokens An int indicating the number of spaces available.
      *  @return True.
      */
     public boolean hasRoom(int tokens) {
@@ -144,13 +140,10 @@ public class DEReceiver extends AbstractReceiver {
         return (_tokens.size() >= numberOfTokens);
     }
 
-    /** Put a token into this receiver. Note that
-     *  this token does not become immediately available to the get() method.
-     *  Instead, the token is queued with the director, and the director
-     *  must put the token back into this receiver using the protected method
-     *  _triggerEvent() in order for the token to become available to
-     *  the get() method. This token will be enqueued by
-     *  the director with the current model time of the director.  
+    /** Put a token into this receiver and post a trigger event to the director.
+     *  The director will be responsible to dequeue the trigger event at at
+     *  the correct timestamp and microstep and invoke the corresponding actor
+     *  whose input port contains this receiver.   
      *  This method is synchronized since the actor may not
      *  execute in the same thread as the director.
      *  @param token The token to be put.
@@ -158,23 +151,14 @@ public class DEReceiver extends AbstractReceiver {
     public synchronized void put(Token token) {
         try {
             DEDirector dir = _getDirector();
-            dir._enqueueEvent(this, token, dir.getModelTime());
+            // Instead of put tokens into global event queue, 
+            // put triggers into the global event queue.
+            //dir._enqueueEvent(this, token, dir.getModelTime());
+            dir._enqueueEvent(getContainer(), dir.getModelTime());
+            _tokens.add(token);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(null, ex, null);
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Make a token available to the get() method.
-     *  Normally, only a director will call this method. It calls it
-     *  when current time matches the time stamp of the token, i.e.
-     *  when the delay specified by setDelay() has elapsed.
-     *  @param token The token to make available to get().
-     */
-    protected void _triggerEvent(Token token) {
-        _tokens.add(token);
     }
 
     ///////////////////////////////////////////////////////////////////

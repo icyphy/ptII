@@ -55,9 +55,9 @@ import ptolemy.kernel.util.NameDuplicationException;
    available inputs.  Each time this actor fires, it reads the first
    available token from the input channels and sends it to the output
    port. If the <i>discardEvents</i> parameter is configured to true,
-   then this actor discards all the remaining inputs in other
+   then this actor discards all the remaining inputs in the rest of
    channels. Otherwise, this actor requests refirings at the current
-   time till no more events are left in the channels. By this way, we
+   time until no more events are left in the channels. By this way, we
    construct an output signal that no two events share the same
    tag. By default, the discardEvents parameter is false.
 
@@ -83,8 +83,8 @@ public class Merge extends DETransformer  {
         super(container, name);
         input.setMultiport(true);
 
-        discardEvents = new Parameter(this, "discardEvents",
-                new BooleanToken(false));
+        discardEvents = new Parameter(this, "discardEvents");
+        discardEvents.setExpression("false");
         discardEvents.setTypeEquals(BaseType.BOOLEAN);
 
         _attachText("_iconDescription", "<svg>\n" +

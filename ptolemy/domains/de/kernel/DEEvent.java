@@ -101,7 +101,7 @@ public final class DEEvent implements Comparable {
         _depth = depth;
     }
 
-    /** Construct a pure DE event with the specified destination actor, time
+    /** Construct a pure event with the specified destination actor, time
      *  stamp, microstep, and depth.
      *  @param actor The destination actor
      *  @param timeStamp The time when the event occurs.
@@ -111,6 +111,23 @@ public final class DEEvent implements Comparable {
     public DEEvent(Actor actor, Time timeStamp, int microstep, int depth) {
         _actor = actor;
         _ioPort = null;
+        _receiver = null;
+        _token = null;
+        _timeStamp = timeStamp;
+        _microstep = microstep;
+        _depth = depth;
+    }
+    
+    /** Construct a trigger event with the specified destination IO port, time
+     *  stamp, microstep, and depth.
+     *  @param ioPort The destination IO port.
+     *  @param timeStamp The time when the event occurs.
+     *  @param microstep The phase of execution within a fixed time.
+     *  @param depth The topological depth of the destination IO Port.
+     */
+    public DEEvent(IOPort ioPort, Time timeStamp, int microstep, int depth) {
+        _actor = (Actor)ioPort.getContainer();
+        _ioPort = ioPort;
         _receiver = null;
         _token = null;
         _timeStamp = timeStamp;
@@ -210,21 +227,6 @@ public final class DEEvent implements Comparable {
         return _ioPort;
     }
 
-    /** Return true if this event is simultaneous with the given event.
-     *  This method is a little bit different from the 
-     *  {@link #hasTheSameTagAndDepthAs(DEEvent)} method, where this method 
-     *  always returns true if either event is a pure event and these
-     *  events have the same tag.  
-     *  @param event The event to compare against.
-     *  @return True if this event is simultaneous with the given event.
-     */
-    public final boolean isSimultaneousWith(DEEvent event) {
-        return hasTheSameTagAs(event) &&
-            (depth() == event.depth() ||
-                receiver() == null || 
-                event.receiver() == null);
-    }
-
     /** Return the microstep of this event.
      *  @return The microstep of this event.
      */
@@ -268,6 +270,18 @@ public final class DEEvent implements Comparable {
             return "DEEvent(token= " + _token + ", time= " + _timeStamp 
                 + ", dest= " + ((NamedObj)_actor).getFullName() + ")" 
                 + " -- A PURE EVENT.";
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    /** Update the depth of this event if the new depth is no less than
+     *  0. Otherwise, do nothing.
+     *  @param newDepth The new depth for this event.
+     */
+    protected void _updateDepth(int newDepth) {
+        if (_depth >= 0) {
+            _depth = newDepth;
         }
     }
 
