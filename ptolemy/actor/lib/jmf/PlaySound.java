@@ -50,7 +50,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.actor.parameters.SliderParameter;
+import ptolemy.actor.parameters.IntRangeParameter;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
     	onOff = new TypedIOPort(this, "onOff", true, false);
         onOff.setTypeEquals(BaseType.BOOLEAN);
 
-        percentGain = new SliderParameter(this, "percentGain");
+        percentGain = new IntRangeParameter(this, "percentGain");
         // Set the default value to full scale.
         percentGain.setToken(new IntToken(100));
     }
@@ -110,7 +110,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
     /** The gain (in percent).  This has as its value a record of the form
      *  {min = m, max = M, current = c}, where min <= c <= max.
      */
-    public SliderParameter percentGain;
+    public IntRangeParameter percentGain;
 
     /** Indicator to play to the end before returning from fire().
      *  This is a boolean, and defaults to true.

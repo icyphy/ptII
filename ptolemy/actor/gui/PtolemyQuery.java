@@ -44,7 +44,7 @@ import ptolemy.gui.QueryListener;
 import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.actor.parameters.SliderParameter;
+import ptolemy.actor.parameters.IntRangeParameter;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;
@@ -169,11 +169,11 @@ public class PtolemyQuery extends Query
             // have write access to the workspace.
             String name = attribute.getName();
             try{
-                if (attribute instanceof SliderParameter) {
-                    int current = ((SliderParameter)attribute)
+                if (attribute instanceof IntRangeParameter) {
+                    int current = ((IntRangeParameter)attribute)
                            .getCurrentValue();
-                    int min = ((SliderParameter)attribute).getMinValue();
-                    int max = ((SliderParameter)attribute).getMaxValue();
+                    int min = ((IntRangeParameter)attribute).getMinValue();
+                    int max = ((IntRangeParameter)attribute).getMaxValue();
 
                     addSlider(name, name, current, min, max);
                     attachParameter(attribute, name);
