@@ -1,4 +1,4 @@
-/* A PTMLParser can read PTML files
+/* A PTMLParser can read PTML files.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -43,15 +43,24 @@ import ptolemy.schematic.*;
 //// PTMLParser
 /**
 This class interfaces to the Microstar Aelfred XML parser in order to
-parse PTML files.  Calling one of the parse methods will read the XML
+parse XML files.  Calling one of the parse methods will read the XML
 input and create a parse tree of XMLElements, returning the root of the
-tree.   Some of the nodes in the tree may actually be subclasses of
-XMLElement.  The subclass that is created depends solely on the type
-of the element.   These subclasses encapsulate the semantic meaning
-of the contained parse tree.  For Example an element in the XML document
-of type "iconlibrary" will be placed in an instance of the IconLibrary class.
-an IconLibrary represents a collection of Icons, and contains methods
-to directly access its child elements that represent icons.
+tree.   
+
+This parser is capable of resolving external entities using either public IDs
+or system IDs.  System IDs are usually given as a complete URL to the given 
+file.  Public IDs are given as partial pathnames to which the parser prepends 
+a locally known location for libraries of XML files, such as local Document
+Type Descriptors (DTDs).  Where both IDs are given, this parser prefers to 
+use public IDs for resolving external entities.
+
+This parser assumes that public IDs are relative to the Ptolemy II classpath.
+To expand public IDs, this parser determines the location of the classpath
+from the $PTII environment variable and appends the public ID to that value.
+
+This parser is relatively general, and implements little specific
+functionality.  To implement some function using this class, traverse the 
+returned parse tree. 
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
@@ -59,20 +68,26 @@ to directly access its child elements that represent icons.
 public class PTMLParser extends HandlerBase{
 
     /**
-     * Create a PTMLParser
+     * Create a PTMLParser with the default public ID path.
      */
     public PTMLParser() {
         super();
     }
 
-    /**
-     * Implement com.microstar.xml.XMLHandler.attribute
-     * Accumulate all the attributes until the next startElement.
-     *
-     * @throws XmlException if the attribute is not valid.
+    /** Handle an attribute assignment that is part of an XML element.
+     *  This method is called prior to the corresponding startElement()
+     *  call, so it simply accumulates attributes in a hashtable for
+     *  use by startElement().
+     *  @param name The name of the attribute.
+     *  @param value The value of the attribute, or null if the attribute
+     *   is <code>#IMPLIED</code> and not specified.
+     *  @param specified True if the value is specified, false if the
+     *   value comes from the default value in the DTD rather than from
+     *   the XML file.
+     *  @exception XmlException If the name or value is null.
      */
     public void attribute(String name, String value, boolean specified)
-    throws Exception {
+            throws Exception {
         if(DEBUG) {
             System.out.println(
                     "Attribute name = " + name + 
@@ -81,68 +96,73 @@ public class PTMLParser extends HandlerBase{
         }
         if(name == null) throw new XmlException("Attribute has no name",
                 _currentExternalEntity(),
-                parser.getLineNumber(),
-                parser.getColumnNumber());
+                _parser.getLineNumber(),
+                _parser.getColumnNumber());
         if(value == null) throw new XmlException("Attribute with name " + 
                 name + " has no value",
                 _currentExternalEntity(),
-                parser.getLineNumber(),
-                parser.getColumnNumber());
-        attributes.putAt(name, value);
+                _parser.getLineNumber(),
+                _parser.getColumnNumber());
+        _attributes.putAt(name, value);
     }
 
     /**
-     * Implement com.microstar.xml.XMLHandler.charData
+     * Append the given character bytes to the character data of the current
+     * XML element.
      */
-    public void charData(char c[],int offset, int length)
-    throws Exception {
-        String s = new String(c,offset,length);
-        current.appendPCData(s);
+    public void charData(char c[], int offset, int length)
+            throws Exception {
+        String s = new String(c, offset, length);
+        _currentElement.appendPCData(s);
+    }
+
+    /** 
+     * Get the current public ID path. 
+     * @see #resolveEntity
+     */ 
+    public String getPublicIDPath() {
+        return _publicIDPath;
     }
 
     /**
-     * Implement com.microstar.xml.XMLHandler.endDocument
+     * End the document
      * If we've finished the parse and didn't get back to the root of the
-     * parse tree, then something is wrong, and throw an exception.
+     * parse tree, then throw an exception.
      */
     public void endDocument() throws Exception {
+        //FIXME: actually do what the documentation says.
     }
 
     /**
-     * Implement com.microstar.xml.XMLHandler.endElement
-     * Move up one level in the parse tree and apply any semantic meaning
-     * that the element that is ending might have within its parent.  For
-     * example, if the element is an Icon contained within an IconLibrary,
-     * then the icon should be added to the library's list of icons.
+     * Move up one level in the parse tree.
      */
     public void endElement(String name) throws Exception {
         if(DEBUG)
             System.out.println("Ending Element:" + name);
-        XMLElement parent= current.getParent();
-        if(parent!=null)
-            parent.applySemanticsToChild(current);
-        current = parent;
+        XMLElement parent = _currentElement.getParent();
+        _currentElement = parent;
     }
 
     /**
-     * Implement com.microstr.xml.XMLHandler.endExternalEntity
-     * move up one leve in the entity tree.
+     * Move up one level in the external entity tree.
+     * @exception XmlException If given URI was not the URI that was expected,
+     * based on the external entity tree. 
      */
     public void endExternalEntity(String URI) throws Exception {
-        String current = _currentExternalEntity();
+        String _currentElement = _currentExternalEntity();
         if(DEBUG)
             System.out.println("endExternalEntity: URI=\"" + URI + "\"\n");
-        if(!current.equals(URI))
+        if(!_currentElement.equals(URI))
             throw new XmlException("Entities out of order",
-                    _currentExternalEntity(),
-                    parser.getLineNumber(),
-                    parser.getColumnNumber());
-        sysids.removeFirst();
+                    _currentElement,
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
+        _externalEntities.removeFirst();
     }
 
     /**
-     * Implement com.microstar.xml.XMLHandler.error
-     * @throws XmlException if called.
+     * Throw an exception.
+     * @exception XmlException If called.
      */
     public void error(String message, String sysid,
             int line, int column) throws Exception {
@@ -150,110 +170,143 @@ public class PTMLParser extends HandlerBase{
     }
 
     /**
-     * Parse the URL associated with this library.  The URL should specify
-     * an XML file that is valid with IconLibrary.dtd.
+     * Parse the file located at the given url.
      *
      * @return the XMLElement that contains the root of the parse tree.
-     * this element will have element type of "document".
-     * @throws IllegalActionException if the URL is not valid or the file
-     * could not be retrieved.
-     * @throws IllegalActionException if the parser fails.
+     * @exception Exception If the parser fails.  Regrettably, the Microstar
+     * &AElig;lfred parser is not more specific about what exceptions
+     * it might throw.
      */
     public XMLElement parse(String url) throws Exception {
         try {
-        parser.setHandler(this);
-        parser.parse(url, null, (String)null);
+            _parser.setHandler(this);
+            _parser.parse(url, null, (String)null);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        root.setXMLFileLocation(url);
-        return root;
+        _rootElement.setXMLFileLocation(url);
+        return _rootElement;
     }
 
     /**
      * Parse the given stream, using the url associated with this library
-     * to expand any external references within the XML.  The stream should
-     * be valid with IconLibrary.dtd.
+     * to expand any external references within the XML.  
      *
-     * @return the XMLElement that contains the root of the parse tree.
-     * this element will have element type of "document".
-     * @throws IllegalActionException if the parser fails.
+     * @param url The context URL.
+     * @param input The stream from which to read XML.
+     * @return The XMLElement that contains the root of the parse tree.
+     * @exception Exception If the parser fails.  Regrettably, the Microstar
+     * &AElig;lfred parser is not more specific about what exceptions
+     * it might throw.
      */
     public XMLElement parse(String url, InputStream is)
-    throws Exception {
+            throws Exception {
         try {
-            parser.setHandler(this);
-            parser.parse(url, null, is, null);
+            _parser.setHandler(this);
+            _parser.parse(url, null, is, null);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        root.setXMLFileLocation(url);
-        return root;
+        _rootElement.setXMLFileLocation(url);
+        return _rootElement;
     }
 
     /**
-     * Implement com.microstar.xml.XMLHandler.resolveEntity
-     * If no public ID is given, then return the system ID.
-     * Otherwise, construct a local absolute URL by appending the
-     * public ID to the location of the XML files.
+     * Attempt resolve the public ID representing an XML external entity
+     * into a valid string url.  All public external entities are located
+     * relative to the Ptolemy II classpath in the public ID path directory.
+     * This path can be set using the setPublicIDPath method.
+     *  
+     * @return The "PTII" environment variable appended by the public ID path 
+     * and the public ID path, or the system ID if the environment variable 
+     * is not set, or the public ID is null.
      */
     public Object resolveEntity(String pubID, String sysID)
             throws Exception {
-        System.out.println(pubID + " : " + sysID);
-        // Use System ID if the public on unknown
+        if (DEBUG) {
+            System.out.println("resolveEntity: " + pubID + " : " + sysID);
+        }
+
+        String result;
+        // Use System ID if the public one is unknown
         if(pubID == null) {
-            return sysID;
-        }
-
-        // Construct the path to the DTD file. The PTII root MUST be
-        // defined as a system property (this can be done by using
-        // the -D option to java.
-        StringBuffer dtdPath = new StringBuffer(System.getProperty("PTII"));
-        System.out.println("dtdPath = " + dtdPath);
-
-        //// FIXME FIXME
-        //// StringBuffer dtdPath = new StringBuffer(DomainLibrary.getPTIIRoot());
-        // StringBuffer dtdPath = new StringBuffer("/users/ptII");
-
-        // Use System ID if there's no PTII environment variable
-        if(dtdPath.toString().equals("UNKNOWN")) {
-            return sysID;
-        }
-
-        // Always use slashes as file separator, since this is a URL
-        //String fileSep = java.lang.System.getProperty("file.separator");
-        String fileSep = "/";
-
-        // Construct the URL
-        int last = dtdPath.length()-1;
-        if (dtdPath.charAt(last) != fileSep.charAt(0)) {
-            dtdPath.append(fileSep);
-        }
-        dtdPath.append("ptolemy" + fileSep + "schematic" + fileSep);
-        dtdPath.append("lib" + fileSep + pubID);
-
-        // Windows is special. Very special.
-        if (System.getProperty("os.name").equals("Windows NT")) {
-            return "file:/" + dtdPath;
+            result = sysID;
         } else {
-            return "file:" + dtdPath;
+
+            // Construct the path to the DTD file. The PTII root MUST be
+            // defined as a system property (this can be done by using
+            // the -D option to java).
+            String ptII = System.getProperty("PTII");
+            if(ptII == null) {
+                ptII = "UNKNOWN";
+            }
+
+            StringBuffer dtdPath = 
+                new StringBuffer(ptII);
+
+            if (DEBUG) {
+                System.out.println("dtdPath = " + dtdPath);
+            }
+
+            // Use System ID if there's no PTII environment variable
+            if(dtdPath.toString().equals("UNKNOWN")) {
+                result = sysID;
+            } else {
+            
+                // Always use slashes as file separator, since this is a URL
+                //String fileSep = 
+                // java.lang.System.getProperty("file.separator");
+                String fileSep = "/";
+                
+                // Construct the URL
+                int last = dtdPath.length() - 1;
+                if (dtdPath.charAt(last) != fileSep.charAt(0)) {
+                    dtdPath.append(fileSep);
+                }
+                //FIXME this seems like a bad Idea to hardwire in.
+                dtdPath.append(getPublicIDPath() + pubID);
+                
+                // Windows is special. Very special.
+                if (System.getProperty("os.name").equals("Windows NT")) {
+                    result = "file:/" + dtdPath;
+                } else {
+                    result = "file:" + dtdPath;
+                }
+            }
         }
+        if (DEBUG) System.out.println("resolveEntity result: " + result);
+        return result;
     }
 
+    /** 
+     * Set the public ID path.
+     * @see #resolveEntity
+     */
+    public void setPublicIDPath(String path) {
+        _publicIDPath = path;
+    }
+        
     /**
-     * Implement com.microstar.xml.XMLHandler.startDocument
+     * Start a document.  This method is called just before the parser
+     * attempts to read the first entity (the root of the document).
+     * It is guaranteed that this will be the first method called.
      * Initialize the parse tree to contain no elements.
      */
     public void startDocument() {
-        attributes = (LLMap) new LLMap();
-        root = null;
+        if(DEBUG) System.out.println("-- Starting Document.");
+        _attributes = (LLMap) new LLMap();
+        _rootElement = null;
     }
 
-    /**
-     * Implement com.microstar.xml.XMLHandler.startElement
-     * Create a new XMLElement. 
+    /** 
+     * Start an element.
+     * This is called at the beginning of each XML
+     * element.  By the time it is called, all of the attributes
+     * for the element will already have been reported using the
+     * attribute() method.  
+     * Create a new XMLElement to represent the element. 
      * Set the attributes of the new XMLElement equal
      * to the attributes that have been accumulated since the last
      * call to this method.  If this is the first element encountered
@@ -268,41 +321,69 @@ public class PTMLParser extends HandlerBase{
         if(DEBUG)
             System.out.println("Starting Element:"+name);
 
-        e=new XMLElement(name,attributes);
-        e.setParent(current);
-        if(current == null)
-            root = e;
+        e = new XMLElement(name, _attributes);
+        e.setParent(_currentElement);
+        if(_currentElement == null)
+            _rootElement = e;
         else
-            current.addChildElement(e);
-        current = e;
-        attributes = (LLMap) new LLMap();
+            _currentElement.addChildElement(e);
+        _currentElement = e;
+        _attributes = (LLMap) new LLMap();
     }
 
     /**
-     * implement com.microstar.xml.XMLHandler.startExternalEntity
-     * move down one level in the entity tree.
+     * Move down one level in the entity tree.
      */
     public void startExternalEntity(String URI) throws Exception {
         if(DEBUG)
             System.out.println("startExternalEntity: URI=\"" + URI + "\"\n");
-        sysids.insertFirst(URI);
+        _externalEntities.insertFirst(URI);
     }
+
+    /**
+     * The default path that is appended to the classpath to resolve public 
+     * IDs
+     */ 
+    public static final String DEFAULTPUBLICIDPATH = "ptolemy/schematic/lib/";
 
     protected String _currentExternalEntity() {
         if(DEBUG)
             System.out.println("currentExternalEntity: URI=\"" +
-                    (String)sysids.first() + "\"\n");
-        return (String)sysids.first();
+                    (String)_externalEntities.first() + "\"\n");
+        return (String)_externalEntities.first();
     }
 
-    /* this linkedlist contains the current path in the tree of
-     * entities being parsed.  The leaf is first in the list.
+    /* A map for accumulating the XML attributes before the start of the next
+     * entity.  This is a map from a String representing the attribute's name
+     * to a string representing the attribute's value.
      */
-    private LinkedList sysids = new LinkedList();
-    private LLMap attributes;
-    private XMLElement current;
-    private XMLElement root;
-    private XmlParser parser = new XmlParser();
+    private LLMap _attributes;
+
+    /* The current element being created in the parse tree.
+     */
+    private XMLElement _currentElement;
+
+    /* The contained parser object.
+     */
+    private XmlParser _parser = new XmlParser();
+
+    /* The current public ID path.
+     * 
+     */
+    private String _publicIDPath = DEFAULTPUBLICIDPATH;
+
+    /* The root of the parse tree.
+     */
+    private XMLElement _rootElement;
+
+    /* This linkedlist contains the current path in the tree of
+     * XML external entities being parsed.  The current external entity
+     * is first in the list.
+     */
+    private LinkedList _externalEntities = new LinkedList();
+
+    /* If true, then print debugging messages for each tag and attribute 
+     * parsed.
+     */
     private static final boolean DEBUG = false;
-    private String _dtdlocation = null;
 }

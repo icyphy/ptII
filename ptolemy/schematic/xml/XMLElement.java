@@ -300,45 +300,23 @@ public class XMLElement extends Object {
         return s;
     }
 
-    /**
-     * Add an attribute with the given name to this element.
-     * This method is package-private, since only the XML
-     * parser is allowed to add attributes. The initial value
-     * of a new attribute is the null string.
-     */
-    void addAttribute (String name) {
-        ;
-    }
-
-    /**
-     * Take an arbitrary XMLElement and figure out what type it is, then
-     * figure out what semantic meaning that has within this XMLElement.
-     * By default an arbitrary XMLElement has no semantic meaning for its
-     * child elements, so it passes the element to its parent to see if the
-     * parent has any semantics for it.
-     * This is primarily used by the parser to keep the semantic structures
-     * within an XMLElement consistent with the childElements.
-     */
-    void applySemanticsToChild(XMLElement e) {
-        if(_parent != null) _parent.applySemanticsToChild(e);
-    }
-
-    // The child elements of this element
+    // The child elements of this element.
     private LinkedList _childelements;
 
-    // The attributes of this element
+    // The attributes of this element.
     private LLMap _attributes;
 
-    // The element type of this element
+    // The element type of this element.
     private String _elementtype;
 
-    // The character data that is contained in this element
+    // The character data that is contained in this element.
     private String _pcdata;
 
     // The XMLElement that contains this element (possibly null).
     private XMLElement _parent;
 
-    // The location that thisfile was parsed from
+    // The location that this file was parsed from, if this represents the root
+    // element of an XML document.
     private String _xmlFileLocation = null;
 }
 
