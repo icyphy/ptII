@@ -173,7 +173,6 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/domains/fsm/demo/demo.jar \
 	ptolemy/domains/fsm/doc/doc.jar \
 	ptolemy/domains/pn/demo/demo.jar \
-	ptolemy/domains/pn/doc/doc.jar \
         ptolemy/domains/pn/doc/doc.jar \
 	ptolemy/moml/demo/demo.jar
 
@@ -238,8 +237,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/giotto/doc/doc.jar \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/gr/doc/doc.jar \
-	ptolemy/domains/pn/demo/demo.jar \
-	ptolemy/domains/pn/doc/doc.jar \
 	ptolemy/domains/sdf/lib/vq/data/data.jar \
 	ptolemy/domains/sr/demo/demo.jar \
 	ptolemy/domains/sr/doc/doc.jar \
@@ -289,6 +286,7 @@ VISUAL_SENSE_JNLP_JARS =	\
 ALL_NON_APPLICATION_JNLP_JARS = \
 	$(NATIVE_SIGNED_LIB_JARS) \
 	$(CORE_JNLP_JARS) \
+	$(DOC_CODEDOC_JAR) \
 	$(FULL_ONLY_JNLP_JARS) \
 	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
 	$(VISUAL_SENSE_ONLY_JNLP_JARS) \
@@ -638,7 +636,7 @@ OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
 	ptolemy/configs/hyvisual/hyvisualPlanet.gif
 KEYSTORE2=/users/ptII/adm/certs/ptkeystore
 KEYALIAS2=ptolemy
-# make jnlp_dist STOREPASSWORD="-storepass xxx"
+# make jnlp_dist STOREPASSWORD="-storepass xxx" KEYPASSWORD="-storepass xxx"
 # make DIST_DIR=c:/cxh/hyv DIST_URL=file:///c:/cxh/hyv jnlp_dist KEYSTORE2=ptKeystore KEYALIAS2=claudius
 
 
@@ -646,7 +644,7 @@ jnlp_dist: jnlp_dist_1 jnlp_dist_update
 jnlp_dist_1:
 	rm -rf $(JNLPS) $(SIGNED_DIR)
 	$(MAKE) KEYSTORE=$(KEYSTORE2) \
-		KEYALIAS=$(KEYALIAS2) KEYPASSWORD= \
+		KEYALIAS=$(KEYALIAS2) \
 		PTII_LOCALURL=$(DIST_URL) jnlp_sign
 
 jnlp_dist_update:
