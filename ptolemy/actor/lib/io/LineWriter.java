@@ -232,9 +232,13 @@ public class LineWriter extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
+    /** The current writer. */
+    protected PrintWriter _writer;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
     /** Previous value of fileName parameter. */
     private String _previousFileName;
 
-    /** The current writer. */
-    protected PrintWriter _writer;
 }
