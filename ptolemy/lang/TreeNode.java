@@ -48,7 +48,7 @@ import java.util.LinkedList;
  *  @author Jeff Tsay
  */
 public abstract class TreeNode extends TrackedPropertyMap
-     implements ITreeNode {
+    implements ITreeNode {
 
     /** Construct a TreeNode with an unspecified number of children to
      *  be added to the child list later.
@@ -81,35 +81,35 @@ public abstract class TreeNode extends TrackedPropertyMap
 
         switch (v.traversalMethod()) {
 
-          case IVisitor.TM_CHILDREN_FIRST:
-          {
-          // Traverse the children first
-          traverseChildren(v, visitorArgs);
-          retval = _acceptHere(v, visitorArgs);
+        case IVisitor.TM_CHILDREN_FIRST:
+            {
+                // Traverse the children first
+                traverseChildren(v, visitorArgs);
+                retval = _acceptHere(v, visitorArgs);
 
-          // remove the children return values to prevent exponential usage
-          // of memory
-          removeProperty(CHILD_RETURN_VALUES_KEY);
-          }
-          break;
+                // remove the children return values to prevent exponential usage
+                // of memory
+                removeProperty(CHILD_RETURN_VALUES_KEY);
+            }
+            break;
 
-          case IVisitor.TM_SELF_FIRST:
-          {
-          // Visit myself first
-          retval = _acceptHere(v, visitorArgs);
-          traverseChildren(v, visitorArgs);
-          }
-          break;
+        case IVisitor.TM_SELF_FIRST:
+            {
+                // Visit myself first
+                retval = _acceptHere(v, visitorArgs);
+                traverseChildren(v, visitorArgs);
+            }
+            break;
 
-          case IVisitor.TM_CUSTOM:
-          {
-          // Let visitor do custom traversal
-          retval = _acceptHere(v, visitorArgs);
-          }
-          break;
+        case IVisitor.TM_CUSTOM:
+            {
+                // Let visitor do custom traversal
+                retval = _acceptHere(v, visitorArgs);
+            }
+            break;
 
-          default:
-          throw new RuntimeException("Unknown traversal method for visitor");
+        default:
+            throw new RuntimeException("Unknown traversal method for visitor");
         } // end switch
 
         return retval;
@@ -128,10 +128,10 @@ public abstract class TreeNode extends TrackedPropertyMap
         int index = 0;
 
         while (itr.hasNext()) {
-          if (child == itr.next()) {
-             return childReturnValueAt(index);
-          }
-          index++;
+            if (child == itr.next()) {
+                return childReturnValueAt(index);
+            }
+            index++;
         }
         ApplicationUtility.error("Child not found");
         return null;
@@ -144,7 +144,7 @@ public abstract class TreeNode extends TrackedPropertyMap
     public Object clone() {
         // don't clone singletons
         if (isSingleton()) {
-           return this;
+            return this;
         }
 
         TreeNode copy = (TreeNode) super.clone();
@@ -175,7 +175,7 @@ public abstract class TreeNode extends TrackedPropertyMap
      */
     public void traverseChildren(IVisitor v, LinkedList args) {
         setProperty(CHILD_RETURN_VALUES_KEY,
-         TNLManip.traverseList(v, this, args, _childList));
+                TNLManip.traverseList(v, this, args, _childList));
     }
 
     public void setChildren(ArrayList childList) {
@@ -203,7 +203,7 @@ public abstract class TreeNode extends TrackedPropertyMap
 
         // If the number property is defined, print the number.
         if (hasProperty(NUMBER_KEY)) {
-           sb.append(" (" + getDefinedProperty(NUMBER_KEY) + ')');
+            sb.append(" (" + getDefinedProperty(NUMBER_KEY) + ')');
         }
 
         Method[] methodArr = c.getMethods();
@@ -218,45 +218,45 @@ public abstract class TreeNode extends TrackedPropertyMap
             String methodName = method.getName();
 
             if (methodName.startsWith("get") &&
-                (method.getParameterTypes().length == 0) &&
-                !methodName.equals("getClass")) {
+                    (method.getParameterTypes().length == 0) &&
+                    !methodName.equals("getClass")) {
 
-               matchingMethods++;
-               if (matchingMethods == 1) {
-                  sb.append('\n');
-               }
+                matchingMethods++;
+                if (matchingMethods == 1) {
+                    sb.append('\n');
+                }
 
-               String methodLabel = methodName.substring(3);
+                String methodLabel = methodName.substring(3);
 
-               String totalIndent = nextIndent +
-                _makeSpaceString(methodLabel.length()) + "  ";
+                String totalIndent = nextIndent +
+                    _makeSpaceString(methodLabel.length()) + "  ";
 
-               sb.append(nextIndent + methodLabel + ": ");
+                sb.append(nextIndent + methodLabel + ": ");
 
-               Object retval = null;
-               try {
-                  retval = method.invoke(this, null);
-               } catch (Exception e) {
-                  throw new RuntimeException("Error invoking method " +
-                   methodName);
-               }
+                Object retval = null;
+                try {
+                    retval = method.invoke(this, null);
+                } catch (Exception e) {
+                    throw new RuntimeException("Error invoking method " +
+                            methodName);
+                }
 
-               if (retval instanceof TreeNode) {
-                  TreeNode node = (TreeNode) retval;
-                  sb.append(node.toString(totalIndent));
-               } else if (retval instanceof List) {
-                  sb.append(TNLManip.toString((List) retval, nextIndent));
-               } else {
-                  sb.append(retval.toString() + '\n');
-               }
+                if (retval instanceof TreeNode) {
+                    TreeNode node = (TreeNode) retval;
+                    sb.append(node.toString(totalIndent));
+                } else if (retval instanceof List) {
+                    sb.append(TNLManip.toString((List) retval, nextIndent));
+                } else {
+                    sb.append(retval.toString() + '\n');
+                }
 
             } // if (methodName.startsWith("get") ...
         } // for
 
         if (matchingMethods < 1) {
-           sb.append(" (leaf)"); // Node has no children
+            sb.append(" (leaf)"); // Node has no children
         } else {
-           sb.append(indent + "END " + className);
+            sb.append(indent + "END " + className);
         }
 
         sb.append('\n');
@@ -270,39 +270,39 @@ public abstract class TreeNode extends TrackedPropertyMap
      */
     protected Object _acceptHere(IVisitor v, LinkedList visitArgs) {
         if (_myClass == null) {
-           _myClass = getClass();
+            _myClass = getClass();
 
-           String myClassName = StringManip.unqualifiedPart(
-            _myClass.getName());
-           _visitMethodName = "visit" + myClassName;
+            String myClassName = StringManip.unqualifiedPart(
+                    _myClass.getName());
+            _visitMethodName = "visit" + myClassName;
 
-           _visitParamTypes[0] = _myClass;
-           _visitParamTypes[1] = _linkedListClass;
+            _visitParamTypes[0] = _myClass;
+            _visitParamTypes[1] = _linkedListClass;
 
-           _visitArgs[0] = this;
+            _visitArgs[0] = this;
         }
 
         Method method;
         Class visitorClass = v.getClass();
 
         try {
-          method = visitorClass.getMethod(_visitMethodName, _visitParamTypes);
+            method = visitorClass.getMethod(_visitMethodName, _visitParamTypes);
         } catch (NoSuchMethodException e) {
-          throw new RuntimeException(e.toString());
+            throw new RuntimeException(e.toString());
         }
 
         _visitArgs[1] = (Object) visitArgs;
 
         try {
-          return method.invoke(v, _visitArgs);
+            return method.invoke(v, _visitArgs);
         } catch (IllegalAccessException iae) {
-          ApplicationUtility.error("Illegal access exception invoking method "
-           + _visitMethodName);
+            ApplicationUtility.error("Illegal access exception invoking method "
+                    + _visitMethodName);
         } catch (InvocationTargetException ite) {
-          ApplicationUtility.error(
-           "Invocation target exception invoking method "
-           + _visitMethodName + " : target = " +
-           ite.getTargetException().toString());
+            ApplicationUtility.error(
+                    "Invocation target exception invoking method "
+                    + _visitMethodName + " : target = " +
+                    ite.getTargetException().toString());
         }
         return null;
     }

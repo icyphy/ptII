@@ -49,7 +49,7 @@ public class ApplicationUtility {
      */
     public static final void assert(boolean condition) {
         if (enableAsserts) {
-           assert(condition, "no reason specified");
+            assert(condition, "no reason specified");
         }
     }
 
@@ -59,7 +59,7 @@ public class ApplicationUtility {
      */
     public static final void assert(boolean condition, String errMsg) {
         if (enableAsserts && !condition) {
-           error("Assertion failed: " + errMsg);
+            error("Assertion failed: " + errMsg);
         }
     }
 
@@ -70,13 +70,13 @@ public class ApplicationUtility {
     public static final void error(String msg) {
         errors++;
         if (exceptionOnError) {
-           throw new RuntimeException(msg);
+            throw new RuntimeException(msg);
         } else {
-           System.err.println("Error: " + msg);
+            System.err.println("Error: " + msg);
 
-           if (exitOnError) {
-              System.exit(-1);
-           }
+            if (exitOnError) {
+                System.exit(-1);
+            }
         }
     }
 
@@ -90,12 +90,12 @@ public class ApplicationUtility {
      */
     public static final void warn(String msg) {
         if (enableWarnings) {
-           System.err.println("Warning: " + msg);
-           warnings++;
+            System.err.println("Warning: " + msg);
+            warnings++;
 
-           if (errorOnWarning) {
-              error("Error on warning");
-           }
+            if (errorOnWarning) {
+                error("Error on warning");
+            }
         }
     }
 
@@ -104,13 +104,13 @@ public class ApplicationUtility {
      */
     public static final void trace(String msg, String separator) {
         if (enableTrace) {
-           System.out.print(msg + separator);
+            System.out.print(msg + separator);
         }
     }
     /** Print a trace message to standard out if enableTrace is true. */
     public static final void trace(String msg) {
         if (enableTrace) {
-           System.out.println("Trace: " + msg);
+            System.out.println("Trace: " + msg);
         }
     }
 
@@ -139,3 +139,4 @@ public class ApplicationUtility {
 
     /** The number of warnings encountered. */
     public static int warnings = 0;
+}

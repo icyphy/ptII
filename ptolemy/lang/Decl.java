@@ -71,47 +71,47 @@ package ptolemy.lang;
  */
 public class Decl extends TrackedPropertyMap {
 
-  public Decl(String name, int category0) {
-    _name = name;
-    category = category0;
-  }
-
-  /** Override Object.equals() so that equality is defined as having the same name
-   *  and category. If the object being compared against is not a Decl, throw a
-   *  RuntimeException.
-   */
-  public boolean equals(Object o) {
-    if (o == this) {
-       return true;
+    public Decl(String name, int category0) {
+        _name = name;
+        category = category0;
     }
 
-    if (!(o instanceof Decl)) {
-       throw new RuntimeException("cannot compare a Decl with a non-Decl");
+    /** Override Object.equals() so that equality is defined as having the same name
+     *  and category. If the object being compared against is not a Decl, throw a
+     *  RuntimeException.
+     */
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof Decl)) {
+            throw new RuntimeException("cannot compare a Decl with a non-Decl");
+        }
+
+        Decl d = (Decl) o;
+        return matches(d.getName(), d.category);
     }
 
-    Decl d = (Decl) o;
-    return matches(d.getName(), d.category);
-  }
-
-  public final boolean matches(String name, int mask) {
-    if ((category & mask) != 0) {
-       return (name.equals(ANY_NAME) || name.equals(_name));
+    public final boolean matches(String name, int mask) {
+        if ((category & mask) != 0) {
+            return (name.equals(ANY_NAME) || name.equals(_name));
+        }
+        return false;
     }
-    return false;
-  }
 
-  public final String getName() { return _name; }
+    public final String getName() { return _name; }
 
-  public final void setName(String name) { _name = name; }
+    public final void setName(String name) { _name = name; }
 
-  public String toString() {
-    return "{" + _name + ", " + category + "}";
-  }
+    public String toString() {
+        return "{" + _name + ", " + category + "}";
+    }
 
-  public int category;
+    public int category;
 
-  protected String _name;
+    protected String _name;
 
-  public static final int CG_ANY = 0xFFFFFFFF; // Any category
-  public static final String ANY_NAME = "*";
+    public static final int CG_ANY = 0xFFFFFFFF; // Any category
+    public static final String ANY_NAME = "*";
 }

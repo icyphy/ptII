@@ -54,8 +54,8 @@ public class Interrogator {
      */
     public static void interrogate(Object obj, BufferedReader reader) {
         if (obj == null) {
-           System.out.println("null");
-           return;
+            System.out.println("null");
+            return;
         }
 
         int propertyNumber = -1;
@@ -69,65 +69,65 @@ public class Interrogator {
 
         do {
 
-           System.out.print("[" + className + "] " +
-            "Enter method name or property number to inspect (0 to quit) : ");
+            System.out.print("[" + className + "] " +
+                    "Enter method name or property number to inspect (0 to quit) : ");
 
-           try {
-             lineString = reader.readLine();
-           } catch (IOException e) {
-             throw new RuntimeException("I/O error reading method name or property number.");
-           }
+            try {
+                lineString = reader.readLine();
+            } catch (IOException e) {
+                throw new RuntimeException("I/O error reading method name or property number.");
+            }
 
-           try {
-             propertyNumber = Integer.parseInt(lineString);
+            try {
+                propertyNumber = Integer.parseInt(lineString);
 
-             if (propertyNumber != 0) {
-                // user input was a property number
-                if (propertyMap != null) {
-                   Object childObj = propertyMap.getProperty(new Integer(propertyNumber));
+                if (propertyNumber != 0) {
+                    // user input was a property number
+                    if (propertyMap != null) {
+                        Object childObj = propertyMap.getProperty(new Integer(propertyNumber));
 
-                   if (childObj != null) {
-                      interrogate(childObj, reader);
-                   }
-                } else {
-                   System.err.println("Cannot retrieve a property of an object that is not a PropertyMap.");
+                        if (childObj != null) {
+                            interrogate(childObj, reader);
+                        }
+                    } else {
+                        System.err.println("Cannot retrieve a property of an object that is not a PropertyMap.");
+                    }
                 }
-             }
 
-           } catch (NumberFormatException nfe) {
+            } catch (NumberFormatException nfe) {
 
-             // user input was a method or field name
+                // user input was a method or field name
 
-             try {
-               Method method = myClass.getMethod(lineString, null);
+                try {
+                    Method method = myClass.getMethod(lineString, null);
 
-               // can we use null instead of new Object[0] here? It doesn't say
-               // in the spec for Method.invoke()
-               try {
-                   Object childObj = method.invoke(obj, new Object[0]);
-                   interrogate(childObj, reader);
-               } catch (IllegalAccessException iae) {
-                   System.err.println("Illegal access exception invoking method "
-                    + lineString);
-               } catch (InvocationTargetException ite) {
-                   System.err.println("Invocation target exception invoking method "
-                    + lineString + " : target = " + ite.getTargetException().toString());
-               }
-             } catch (NoSuchMethodException nsme) {
-               try {
-                   Field field = myClass.getField(lineString);
-                   Object childObj = field.get(obj);
-                   interrogate(childObj, reader);
-               } catch (IllegalAccessException iae) {
-                   System.err.println("Illegal access exception getting field "
-                    + lineString);
-               } catch (NoSuchFieldException nsfe) {
-                   System.err.println("no such method or field " + lineString);
-               }
-             }
+                    // can we use null instead of new Object[0] here? It doesn't say
+                    // in the spec for Method.invoke()
+                    try {
+                        Object childObj = method.invoke(obj, new Object[0]);
+                        interrogate(childObj, reader);
+                    } catch (IllegalAccessException iae) {
+                        System.err.println("Illegal access exception invoking method "
+                                + lineString);
+                    } catch (InvocationTargetException ite) {
+                        System.err.println("Invocation target exception invoking method "
+                                + lineString + " : target = " + ite.getTargetException().toString());
+                    }
+                } catch (NoSuchMethodException nsme) {
+                    try {
+                        Field field = myClass.getField(lineString);
+                        Object childObj = field.get(obj);
+                        interrogate(childObj, reader);
+                    } catch (IllegalAccessException iae) {
+                        System.err.println("Illegal access exception getting field "
+                                + lineString);
+                    } catch (NoSuchFieldException nsfe) {
+                        System.err.println("no such method or field " + lineString);
+                    }
+                }
 
-             propertyNumber = -1; // dummy number to ensure we don't exit the loop
-           }
+                propertyNumber = -1; // dummy number to ensure we don't exit the loop
+            }
         } while (propertyNumber != 0);
     }
 }

@@ -59,9 +59,9 @@ public class PropertyMap implements Cloneable {
         // There's no reason that clone() should fail, so just catch the
         // theoretical exception.
         try {
-          pm = (PropertyMap) super.clone();
+            pm = (PropertyMap) super.clone();
         } catch (CloneNotSupportedException e) {
-          throw new RuntimeException("clone not supported on PropertyNode");
+            throw new RuntimeException("clone not supported on PropertyNode");
         }
 
         // make a shallow copy of keys and values
@@ -78,28 +78,28 @@ public class PropertyMap implements Cloneable {
 
     /** Get a property. Throw a RuntimeException if the property in not defined. */
     public Object getDefinedProperty(Integer property) {
-      Object retval = _propertyMap.get(property);
-      if (retval == null) {
-         throw new RuntimeException("Property " + property + " not defined");
-      }
-      return retval;
+        Object retval = _propertyMap.get(property);
+        if (retval == null) {
+            throw new RuntimeException("Property " + property + " not defined");
+        }
+        return retval;
     }
 
     /** Get a property. If the property is not defined, returned null. */
     public Object getProperty(Integer property) {
-      return _propertyMap.get(property);
+        return _propertyMap.get(property);
     }
 
     /** Set a property. Throw a RuntimeException if the property in not defined. */
     public Object setDefinedProperty(Integer property, Object obj) {
         if (obj == null) {
-           obj = NullValue.instance;
+            obj = NullValue.instance;
         }
 
         Object retval = _propertyMap.put(property, obj);
 
         if (retval == null) {
-           throw new RuntimeException("Property " + property + " not defined");
+            throw new RuntimeException("Property " + property + " not defined");
         }
         return retval;
     }
@@ -112,7 +112,7 @@ public class PropertyMap implements Cloneable {
     /** Set a property. The property may or may not have been defined already. */
     public Object setProperty(Integer property, Object obj) {
         if (obj == null) {
-           obj = NullValue.instance;
+            obj = NullValue.instance;
         }
         return _propertyMap.put(property, obj);
     }

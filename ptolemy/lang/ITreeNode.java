@@ -60,13 +60,13 @@ public interface ITreeNode extends Cloneable {
     public ArrayList children();
 
     /** Syntactic sugar to get the return value of the most recent
-      * visitor to the i-th child node, where the argument is i.
-      */
+     * visitor to the i-th child node, where the argument is i.
+     */
     public Object childReturnValueAt(int index);
 
     /** Syntactic sugar to get the return value of the most recent
-      * visitor to the specified child node.
-      */
+     * visitor to the specified child node.
+     */
     public Object childReturnValueFor(Object child);
 
     /** Return the class ID number (the node ID), which is unique for

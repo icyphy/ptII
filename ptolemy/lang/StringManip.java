@@ -5,11 +5,11 @@ import java.io.File;
 public class StringManip {
 
     public static final String unqualifiedPart(String qualifiedName) {
-      return partAfterLast(qualifiedName, '.');
+        return partAfterLast(qualifiedName, '.');
     }
 
     public static final String rawFilename(String filename) {
-      return partAfterLast(filename, File.separatorChar);
+        return partAfterLast(filename, File.separatorChar);
     }
 
     /** Return the substring that follows the last occurence of the
@@ -28,3 +28,4 @@ public class StringManip {
         return str.substring(0, str.lastIndexOf(c));
     }
 
+}

@@ -54,15 +54,15 @@ public class TNLManip {
         ArrayList retval = new ArrayList(list.size());
 
         while (itr.hasNext()) {
-           Object obj = itr.next();
+            Object obj = itr.next();
 
-           if (obj instanceof TreeNode) {
-              retval.add(((TreeNode) obj).clone());
-           } else if (obj instanceof List) {
-              retval.add(cloneList((List) obj));
-           } else {
-              throw new RuntimeException("unknown object in list : " + obj.getClass());
-           }
+            if (obj instanceof TreeNode) {
+                retval.add(((TreeNode) obj).clone());
+            } else if (obj instanceof List) {
+                retval.add(cloneList((List) obj));
+            } else {
+                throw new RuntimeException("unknown object in list : " + obj.getClass());
+            }
         }
         return retval;
     }
@@ -74,36 +74,36 @@ public class TNLManip {
      *  NullValue.instance.
      */
     public static final ArrayList traverseList(IVisitor v, TreeNode parent,
-     LinkedList args, List childList) {
-       Object retval;
-       ArrayList retList = new ArrayList(childList.size());
+            LinkedList args, List childList) {
+        Object retval;
+        ArrayList retList = new ArrayList(childList.size());
 
-       Iterator itr = childList.iterator();
+        Iterator itr = childList.iterator();
 
-       while (itr.hasNext()) {
-         Object obj = itr.next();
+        while (itr.hasNext()) {
+            Object obj = itr.next();
 
-         if (obj instanceof TreeNode) {
-            TreeNode node = (TreeNode) obj;
+            if (obj instanceof TreeNode) {
+                TreeNode node = (TreeNode) obj;
 
-            retval = node.accept(v, args);
+                retval = node.accept(v, args);
 
-            if (retval == null) {
-               retList.add(NullValue.instance);
+                if (retval == null) {
+                    retList.add(NullValue.instance);
+                } else {
+                    retList.add(retval);
+                }
+
+            } else if (obj instanceof List) {
+                retval = traverseList(v, null, args, (List) obj);
+
+                retList.add(retval);
             } else {
-               retList.add(retval);
+                throw new RuntimeException("unknown object in list : " + obj.getClass());
             }
+        }
 
-         } else if (obj instanceof List) {
-            retval = traverseList(v, null, args, (List) obj);
-
-            retList.add(retval);
-         } else {
-            throw new RuntimeException("unknown object in list : " + obj.getClass());
-         }
-       }
-
-       return retList;
+        return retList;
     }
 
     /** Create a LinkedList with one element. If obj is null, the element in
@@ -111,16 +111,16 @@ public class TNLManip {
      *  may be used to create a list from any object.
      */
     public static final LinkedList cons(Object obj) {
-       return cons(obj, new LinkedList());
+        return cons(obj, new LinkedList());
     }
 
     public static final LinkedList cons(Object obj, LinkedList list) {
-       if (obj == null) {
-          list.addFirst(NullValue.instance);
-       } else {
-          list.addFirst(obj);
-       }
-       return list;
+        if (obj == null) {
+            list.addFirst(NullValue.instance);
+        } else {
+            list.addFirst(obj);
+        }
+        return list;
     }
 
     /** Convert an array of objects into a LinkedList with elements in the same
@@ -129,61 +129,61 @@ public class TNLManip {
      *  may be used for lists of any objects.
      */
     public static final LinkedList arrayToList(Object[] objArray) {
-       LinkedList retval = new LinkedList();
-       for (int i = 0; i < objArray.length; i++) {
-           Object obj = objArray[i];
-           if (obj == null) {
-              retval.addLast(NullValue.instance);
-           } else {
-              retval.addLast(objArray[i]);
-           }
-       }
-       return retval;
+        LinkedList retval = new LinkedList();
+        for (int i = 0; i < objArray.length; i++) {
+            Object obj = objArray[i];
+            if (obj == null) {
+                retval.addLast(NullValue.instance);
+            } else {
+                retval.addLast(objArray[i]);
+            }
+        }
+        return retval;
     }
 
     /** Return a string representation of the list. This method simply calls
      *  toString(list, "")
      */
     public static final String toString(List list) {
-       return toString(list, "");
+        return toString(list, "");
     }
 
     /** Return a string representation of the list. The string representation
      *  is indented by the argument string.
      */
     public static final String toString(List list, String indent) {
-       if (list.isEmpty()) {
-          return "<empty list>\n";
-       }
+        if (list.isEmpty()) {
+            return "<empty list>\n";
+        }
 
-       String nextIndent = indent + " ";
+        String nextIndent = indent + " ";
 
-       StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer();
 
-       sb.append("list\n");
+        sb.append("list\n");
 
-       Iterator itr = list.iterator();
+        Iterator itr = list.iterator();
 
-       while (itr.hasNext()) {
+        while (itr.hasNext()) {
 
-          sb.append(nextIndent);
+            sb.append(nextIndent);
 
-          Object child = itr.next();
+            Object child = itr.next();
 
-          if (child instanceof TreeNode) {
-             TreeNode childNode = (TreeNode) child;
-             sb.append(childNode.toString(nextIndent));
-          } else if (child instanceof List) {
-             sb.append(toString((List) child, nextIndent));
-          } else {
-             throw new RuntimeException("unknown object in list : " + child.getClass());
-          }
-       }
+            if (child instanceof TreeNode) {
+                TreeNode childNode = (TreeNode) child;
+                sb.append(childNode.toString(nextIndent));
+            } else if (child instanceof List) {
+                sb.append(toString((List) child, nextIndent));
+            } else {
+                throw new RuntimeException("unknown object in list : " + child.getClass());
+            }
+        }
 
-       sb.append(indent);
+        sb.append(indent);
 
-       sb.append("END list\n");
+        sb.append("END list\n");
 
-       return sb.toString();
+        return sb.toString();
     }
 }

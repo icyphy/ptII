@@ -44,161 +44,161 @@ public class EnvironIter implements Iterator {
 
     // no elements
     public EnvironIter() {
-      _nextEnviron = null;
-      _declIter = null;
-      _name = null;
-      _mask = 0;
+        _nextEnviron = null;
+        _declIter = null;
+        _name = null;
+        _mask = 0;
     }
 
     public EnvironIter(Environ nextEnviron, ListIterator declIter, String name,
-                       int mask) {
-      _nextEnviron = nextEnviron;
-      _declIter = declIter;
-      _name = name;
-      _mask = mask;
+            int mask) {
+        _nextEnviron = nextEnviron;
+        _declIter = declIter;
+        _name = name;
+        _mask = mask;
     }
 
     public boolean hasNext() {
-       //ApplicationUtility.trace("EnvironIter : hasNext for " + _name);
+        //ApplicationUtility.trace("EnvironIter : hasNext for " + _name);
 
-       try {
-         nextDecl();
+        try {
+            nextDecl();
 
-         // rewind to valid Decl
-         _declIter.previous();
-       } catch (NoSuchElementException e) {
-         //ApplicationUtility.trace("EnvironIter : hasNext for " + _name +
-         // " = false");
-         return false;
-       }
-       //ApplicationUtility.trace("EnvironIter : hasNext for " + _name + " = true");
-       return true;
+            // rewind to valid Decl
+            _declIter.previous();
+        } catch (NoSuchElementException e) {
+            //ApplicationUtility.trace("EnvironIter : hasNext for " + _name +
+            // " = false");
+            return false;
+        }
+        //ApplicationUtility.trace("EnvironIter : hasNext for " + _name + " = true");
+        return true;
     }
 
     public Object next() {
-      return nextDecl();
+        return nextDecl();
     }
 
     public Decl nextDecl() {
 
-      if (_declIter == null) {
-         throw new NoSuchElementException("No elements in EnvironIter.");
-      }
+        if (_declIter == null) {
+            throw new NoSuchElementException("No elements in EnvironIter.");
+        }
 
-      do {
+        do {
 
-         while (_declIter.hasNext()) {
-            Decl decl = (Decl) _declIter.next();
+            while (_declIter.hasNext()) {
+                Decl decl = (Decl) _declIter.next();
 
-            if (decl.matches(_name, _mask)) {
-               //ApplicationUtility.trace("EnvironIter : found match for " +
-               // _name);
-               return decl;
+                if (decl.matches(_name, _mask)) {
+                    //ApplicationUtility.trace("EnvironIter : found match for " +
+                    // _name);
+                    return decl;
+                }
             }
-         }
 
-         if (_nextEnviron == null) {
-           // ApplicationUtility.trace("EnvironIter : no more elements " +
-           //  "looking for " + _name);
+            if (_nextEnviron == null) {
+                // ApplicationUtility.trace("EnvironIter : no more elements " +
+                //  "looking for " + _name);
 
-            throw new NoSuchElementException("No more elements in EnvironIter.");
-         }
+                throw new NoSuchElementException("No more elements in EnvironIter.");
+            }
 
-         //ApplicationUtility.trace("EnvironIter : going to next environment " +
-         // "looking for " + _name);
+            //ApplicationUtility.trace("EnvironIter : going to next environment " +
+            // "looking for " + _name);
 
-         _declIter = _nextEnviron.allProperDecls();
-         _nextEnviron = _nextEnviron.parent();
+            _declIter = _nextEnviron.allProperDecls();
+            _nextEnviron = _nextEnviron.parent();
 
-      } while (true);
+        } while (true);
     }
 
     public Decl head() {
-      Decl retval = nextDecl();
+        Decl retval = nextDecl();
 
-      // rewind back to valid Decl
-      _declIter.previous();
+        // rewind back to valid Decl
+        _declIter.previous();
 
-      return retval;
+        return retval;
     }
 
     /** Return true if there is more than one matching Decl that can be reached. */
     public boolean moreThanOne() {
 
-      // ApplicationUtility.trace("EnvironIter: moreThanOne for " + _name);
-      if (_declIter == null) {
-         // empty list
-         return false;
-      }
-
-      Decl lastMatch = null;
-      int movesAfterMatch = 0;
-      int matches = 0;
-
-      while (_declIter.hasNext() && (matches < 2)) {
-
-        Decl d = (Decl) _declIter.next();
-
-        // make sure we don't have a reference to the last found match
-        if (d.matches(_name, _mask) && (d != lastMatch)) {
-           matches++;
-           lastMatch = d;
-        }
-
-        if (matches > 0) {
-           movesAfterMatch++;
-        }
-      }
-
-      if (matches >= 1) {
-
-         // rewind back to first matching Decl
-         for (; movesAfterMatch > 0; movesAfterMatch--) {
-             _declIter.previous();
-         }
-
-         if (matches >= 2) {
-            ApplicationUtility.trace("EnvironIter: moreThanOne = true for " +
-             _name);
-            return true;
-         }
-
-         if (_nextEnviron == null) {
-            // just one match
+        // ApplicationUtility.trace("EnvironIter: moreThanOne for " + _name);
+        if (_declIter == null) {
+            // empty list
             return false;
-         }
+        }
 
-         EnvironIter nextEnvironIter = _nextEnviron.lookupFirst(_name, _mask);
+        Decl lastMatch = null;
+        int movesAfterMatch = 0;
+        int matches = 0;
 
-         while (nextEnvironIter.hasNext()) {
-            Decl nextMatch = nextEnvironIter.nextDecl();
+        while (_declIter.hasNext() && (matches < 2)) {
+
+            Decl d = (Decl) _declIter.next();
 
             // make sure we don't have a reference to the last found match
-            if (lastMatch != nextMatch) {
-               return true;
+            if (d.matches(_name, _mask) && (d != lastMatch)) {
+                matches++;
+                lastMatch = d;
             }
-         }
 
-         return false;
+            if (matches > 0) {
+                movesAfterMatch++;
+            }
+        }
 
-      } else {
-         // matches == 0
-         // don't bother to move the iterator back, since there are no matches
+        if (matches >= 1) {
 
-         if (_nextEnviron == null) {
-            //ApplicationUtility.trace("EnvironIter: moreThanOne = false for " +
-            // _name);
+            // rewind back to first matching Decl
+            for (; movesAfterMatch > 0; movesAfterMatch--) {
+                _declIter.previous();
+            }
+
+            if (matches >= 2) {
+                ApplicationUtility.trace("EnvironIter: moreThanOne = true for " +
+                        _name);
+                return true;
+            }
+
+            if (_nextEnviron == null) {
+                // just one match
+                return false;
+            }
+
+            EnvironIter nextEnvironIter = _nextEnviron.lookupFirst(_name, _mask);
+
+            while (nextEnvironIter.hasNext()) {
+                Decl nextMatch = nextEnvironIter.nextDecl();
+
+                // make sure we don't have a reference to the last found match
+                if (lastMatch != nextMatch) {
+                    return true;
+                }
+            }
+
             return false;
-         }
 
-         // move on to the next environment, discarding last environment
+        } else {
+            // matches == 0
+            // don't bother to move the iterator back, since there are no matches
 
-         _declIter = _nextEnviron.allProperDecls();
-         _nextEnviron = _nextEnviron.parent();
+            if (_nextEnviron == null) {
+                //ApplicationUtility.trace("EnvironIter: moreThanOne = false for " +
+                // _name);
+                return false;
+            }
 
-         // try again on this modified EnvironIter
-         return moreThanOne();
-      }
+            // move on to the next environment, discarding last environment
+
+            _declIter = _nextEnviron.allProperDecls();
+            _nextEnviron = _nextEnviron.parent();
+
+            // try again on this modified EnvironIter
+            return moreThanOne();
+        }
     }
 
 
@@ -206,8 +206,8 @@ public class EnvironIter implements Iterator {
      *  method of the Iterator interface.
      */
     public void remove() {
-      // Can't do this!!!
-      throw new RuntimeException("remove() not supported on EnvironIter");
+        // Can't do this!!!
+        throw new RuntimeException("remove() not supported on EnvironIter");
     }
 
     protected Environ _nextEnviron;

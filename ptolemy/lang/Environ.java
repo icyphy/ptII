@@ -68,7 +68,7 @@ public class Environ {
     }
 
     public Environ parent() {
-      return _parent;
+        return _parent;
     }
 
     /** Adds a mapping to the argument decl in this environment proper. This does not
@@ -119,9 +119,9 @@ public class Environ {
         EnvironIter itr = lookupFirst(name, mask, proper);
 
         if (itr.hasNext()) {
-           Decl retval = (Decl) itr.next();
-           more[0] = itr.hasNext();
-           return retval;
+            Decl retval = (Decl) itr.next();
+            more[0] = itr.hasNext();
+            return retval;
         }
         more[0] = false;
         return null;
@@ -199,23 +199,23 @@ public class Environ {
         StringBuffer retval = new StringBuffer("[");
 
         while (declItr.hasNext()) {
-          Decl d = (Decl) declItr.next();
-          retval.append(d.toString());
-          if (declItr.hasNext()) {
-             retval.append(", ");
-          }
+            Decl d = (Decl) declItr.next();
+            retval.append(d.toString());
+            if (declItr.hasNext()) {
+                retval.append(", ");
+            }
         }
 
         retval.append("] ");
 
         if (_parent != null) {
-           retval.append("has parent\n");
+            retval.append("has parent\n");
 
-           if (recursive) {
-              retval.append(_parent.toString(true));
-           }
+            if (recursive) {
+                retval.append(_parent.toString(true));
+            }
         } else {
-           retval.append("no parent\n");
+            retval.append("no parent\n");
         }
         return retval.toString();
     }
