@@ -47,7 +47,13 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// ArrayAppend
 /**
-read array tokens from the input and append them to eachother.
+An actor that appends ArrayTokens together.  This actor has a single input
+multiport, and a single output port.  The types on the input and the output 
+port must both be the same array type.  During each firing, this actor reads
+up to one ArrayToken from each channel of the input port and creates an 
+ArrayToken of the same type on the output port.  If no token is available on
+a particular channel, then there will be no contribution to the output.
+
 @author Steve Neuendorffer
 @version $Id$
 */
