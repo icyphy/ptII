@@ -114,7 +114,7 @@ public class FixToFix extends Converter {
         integer matrix. */
     public Parameter precision;
 
-    /** The rounbing strategy used, such as "nearest" or "truncate". */
+    /** The rounding strategy used, such as "nearest" or "truncate". */
     public StringAttribute rounding;
 
     /** The overflow strategy used to convert a double into a fix point,
