@@ -783,6 +783,7 @@ proc createAndExecute {file} {
 	    || "$file" == "compat2/Cascade.xml" \
 	    || "$file" == "compat2/HierarchyTest.xml" \
 	    || "$file" == "compat3/Cascade.xml" \
+	    || "$file" == "compat3/Clock5.xml" \
 	    || "$file" == "compat3/ControllersTestNonPreemptive.xml" \
 	    || "$file" == "compat3/ControllersTestPreemptive.xml" \
 	    || "$file" == "compat3/HierarchyTest.xml" \
