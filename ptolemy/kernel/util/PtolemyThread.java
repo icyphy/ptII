@@ -39,20 +39,7 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 ////
 /** PtolemyThread
-PtolemyThread extends Thread by adding a <i>readDepth</i> field. This field is
-used for counting the number of read accesses this thread has gotten from the
-workspace.
-<p>
-In general, if a thread will ever need a read or write access from the
-workspace (by calling the getReadAccess() or getWriteAccess() method) then
-it should use the PtolemyThread class. One advantage is that it provides a
-more efficient access to the readDepth field, as otherwise the workspace has
-to store the readDepth fields for the thread in a hash table.
-<p>
-For flexibility, one can still use the reader-writer mechanism in the Workspace
-class just by using the Thread class. Obviously, some efficiency will be lost
-as the workspace has to store and then search the readDepth fields in a hash
-table. (as was mentioned in the previous paragraph)
+PtolemyThread extends Thread by adding rudimentary debugging capability.
 
 @author Lukito Muliadi, contributor: Edward A. Lee
 @version $Id$
@@ -150,13 +137,6 @@ public class PtolemyThread extends Thread implements Debuggable {
         _debugging = true;
     }
 
-    /** Get the read depth field.
-     *  @return The read depth field.
-     */
-    public int getReadDepth() {
-        return readDepth;
-    }
-
     /** Unregister a debug listener.  If the specified listener has not
      *  been previously registered, then do nothing.
      *  @param listener The listener to remove from the list of listeners
@@ -238,13 +218,4 @@ public class PtolemyThread extends Thread implements Debuggable {
      *  @since Ptolemy II 2.3
      */
     protected LinkedList _debugListeners = null;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         package variables                 ////
-
-    /** readDepth the number of read permissions this thread holds.
-     *  This field is made 'package friendly' because only the Workspace class
-     *  should access this field.
-     */
-    int readDepth;
 }
