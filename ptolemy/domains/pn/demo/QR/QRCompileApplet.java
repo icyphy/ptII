@@ -42,7 +42,6 @@ import ptolemy.gui.QueryListener;
 import java.net.URL;
 
 import ptolemy.domains.pn.kernel.*;
-import ptolemy.domains.pn.lib.*;
 import ptolemy.domains.pn.demo.QR.*;
 import ptolemy.domains.pn.gui.PNApplet;
 
