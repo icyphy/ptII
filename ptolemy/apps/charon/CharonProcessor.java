@@ -103,6 +103,7 @@ public class CharonProcessor {
 
   // Process the agent from the first elemnet of the agents list
   private void _constructor() throws IllegalActionException {
+    System.out.println(agentsList.size() + " ********* " + modesList.size());
     if(agentsList.size() > 0) {
       Agent agent = (Agent) agentsList.get(0);
       _topLevel = agent.constructor(new Workspace());
@@ -198,20 +199,26 @@ public class CharonProcessor {
       }
 
       switch (st.ttype) {
+	case StreamTokenizer.TT_EOL:
+	  break;
+
 	case StreamTokenizer.TT_EOF:
           if (_counter != 0) throw new IllegalActionException ("Not a good Charon file!");
 	  return blockString;
 
 	case StreamTokenizer.TT_WORD:
 
-	  line = st.sval;
-// System.out.println("      ====> " + line);
+	  line = st.sval.trim();
+
+	  // ignore comments
+	  if (line.startsWith("//") || line.startsWith("/*") || line.startsWith("*"))
+	    break;
 
 	  // limitation:
 	  // the content of two blocks must not appear in the same line.
 
-	  if (line.startsWith(blockName) && firstLine) {
-//            System.out.println("  reading one line: " + line);
+	  if ((line.indexOf("=") == -1) && line.startsWith(blockName) && firstLine) {
+//System.out.println("  Beginning to read block: " + line);
 	    blockString += line + "\n";
 	    break;
 	  }
@@ -224,7 +231,7 @@ public class CharonProcessor {
 	  }
 
 	  if (!firstLine) {
-//            System.out.println("  reading one line: " + line);
+//System.out.println("  reading one line: " + line);
 	    blockString += line + "\n";
 	    _leftDelimiterChecker(line, leftDelimiter);
 	    _rightDelimiterChecker(line, rightDelimiter);
@@ -233,7 +240,7 @@ public class CharonProcessor {
 	  break;
 
 	default:
-	  throw new IllegalActionException ("Unexpected input character: " + (char) st.ttype);
+	  //throw new IllegalActionException ("Unexpected input character: " + st.ttype);
       }
     } while (_counter != 0 || firstLine);
 

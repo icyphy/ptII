@@ -31,11 +31,13 @@
 package ptolemy.apps.charon;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.lib.Assertion;
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.Expression;
 import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.StringToken;
@@ -49,8 +51,6 @@ import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.TypedIORelation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -72,14 +72,17 @@ public class Agent {
    *  The constructor parses the content of the agent,
    *  initializes agent name and agent parameters.
    *  @param content The content of agent.
+   *  @exception IllegalActionException If NameDuplicationException is thrown inside.
    */
-  public Agent(String content) {
+  public Agent(String content) throws IllegalActionException {
     //    System.out.println("Agent content: " + content);
 
     // save the string content of the agent
     _content = content;
 
+    // global variables
     String token;
+    StringTokenizer tokenST;
 
     // StringTokenizer for agent content
     _contentST = new StringTokenizer(content,  "()");
@@ -93,15 +96,103 @@ public class Agent {
     token = _contentST.nextToken();
 
     // notice there may be no parameters, e.g. topLevel
-    StringTokenizer tokenST = new StringTokenizer(token, " ,\n\t\r");
+    tokenST = new StringTokenizer(token, " ,\n\t\r");
 
     while (tokenST.hasMoreTokens()) {
       String tokenToken = tokenST.nextToken().trim();
       if (!tokenToken.equals("real")) {
+//  System.out.println("parameter: " + tokenToken);
 	_parameters.add(tokenToken);
       }
     }
+
+    // beginning of parsing
+    while (_contentST.hasMoreTokens()) {
+
+      // the stringTokenizer get token line by line
+      // FIXME: this needs very strictly formated Charon code.
+      token = _contentST.nextToken("\n");
+
+//System.out.println("    Token is: " + token);
+
+      // when the token of the output ports is read
+      if (token.trim().startsWith("write")) {
+	  tokenST = new StringTokenizer(token, " ,\n\t\r;");
+	  tokenST.nextToken(); // ignore write
+	  tokenST.nextToken(); // ignore analog
+	  while (tokenST.hasMoreTokens()) {
+	    String tokenToken = tokenST.nextToken().trim();
+	    if (!tokenToken.equals("real")) {
+	      _outputs.add(tokenToken);
+	    }
+	  }
+      // when the token of the input ports is read
+      } else if (token.trim().startsWith("read")) {
+	  tokenST = new StringTokenizer(token, " ,\n\t\r;");
+	  tokenST.nextToken(); // ignore read
+	  tokenST.nextToken(); // ignore analog
+	  while (tokenST.hasMoreTokens()) {
+	    String tokenToken = tokenST.nextToken().trim();
+	    if (!tokenToken.equals("real")) {
+	      _inputs.add(tokenToken);
+	    }
+	  }
+      // when the token of the private variables is read
+      } else if (token.trim().startsWith("private")) {
+	  tokenST = new StringTokenizer(token, " ,\n\t\r;");
+	  tokenST.nextToken(); // ignore private
+	  tokenST.nextToken(); // ignore analog
+	  while (tokenST.hasMoreTokens()) {
+	    String tokenToken = tokenST.nextToken().trim();
+	    if (!tokenToken.equals("real")) {
+	      _privateVariables.add(tokenToken);
+	    }
+	  }
+      // when the token of the initial states is read
+      } else if (token.trim().startsWith("init")) {
+	  // this token use "{};" as delimiter
+	  tokenST = new StringTokenizer(token, "{};");
+	  // get rid of "init"
+	  String tokenToken = tokenST.nextToken();
+	  // get initial variable expression
+	  tokenToken = tokenST.nextToken();
+	  _initialState = tokenToken.substring(tokenToken.indexOf("=") + 1);
+      // when the token of a sub agent is read
+      } else if (token.trim().startsWith("agent")) {
+	  tokenST = new StringTokenizer(token);
+	  tokenST.nextToken("=");
+	  _subAgents.add(new Agent("agent " + tokenST.nextToken()));
+      // when the token of the mode is read
+      } else if (token.trim().startsWith("mode")) {
+	  tokenST = new StringTokenizer(token);
+	  tokenST.nextToken("=");
+	  tokenST.nextToken(" "); // ignore the "='
+	  _modeName = tokenST.nextToken("(").trim();
+//System.out.println("**************** the mode name is: " + _modeName);
+      // when the token of the connection conditions is read
+      } else if (token.trim().startsWith("[")) {
+//	    System.out.println("Connection: " + token);
+	  int seperator = token.indexOf(":=");
+	  String inputs = token.substring(1, seperator - 1).trim();
+	  String outputs = token.substring(seperator + 2).trim();
+//	    System.out.println("    Stirng pair is: " + inputs + " : " + outputs );
+	  StringTokenizer inputST = new StringTokenizer(inputs, " \n\r\t,[]");
+	  StringTokenizer outputST = new StringTokenizer(outputs, " \n\r\t,[]");
+	  while (inputST.hasMoreTokens()) {
+	    String input = inputST.nextToken();
+	    String output = outputST.nextToken();
+//	      System.out.println("    pair is: " + input + " . " + output );
+	    // the connections list is composed of connections
+	    // each connection is a pair, with
+	    // the input port at left and output port at right.
+	    _connections.add(new Pair(input, output));
+	  }
+      }
+    }
  }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                   ////
 
   /** Return the content of the agent.
    */
@@ -115,6 +206,12 @@ public class Agent {
     return _name;
   }
 
+  /** Return the name of the agent.
+   */
+  public String getModeName() {
+    return _modeName;
+  }
+
   /** Set the name of the agent.
    *  @param name The new name for the agent.
    */
@@ -126,6 +223,12 @@ public class Agent {
    */
   public LinkedList getParameters() {
     return _parameters;
+  }
+
+  /** Get the list of the subAgents of the agent.
+   */
+  public LinkedList getSubAgents() {
+    return _subAgents;
   }
 
   /** Get the list of the inputs of the agent.
@@ -158,7 +261,7 @@ public class Agent {
     _topLevel = true;
 
     try {
-      _container.setName(_name);
+      _container.setName(getName());
     } catch (NameDuplicationException e) {
       throw new IllegalActionException(e.getMessage());
     }
@@ -208,6 +311,7 @@ public class Agent {
     StringTokenizer modeST = new StringTokenizer(modeString,"\n");
     while (modeST.hasMoreTokens()) {
       String token = modeST.nextToken().trim();
+//System.out.println("   Mode String Token is: " + token);
       // The token begins with "diff" is an ODE.
       if (token.startsWith("diff")) {
 
@@ -231,7 +335,36 @@ public class Agent {
 	if (_expression.indexOf(_integratorOutput) != -1) {
 	  _expressionInputs.add(_integratorOutput);
 	}
+      // when sub mode is read
+      } else if (token.trim().startsWith("mode")) {
+	  if (token.indexOf("=") == -1)
+	    continue;
+	  StringTokenizer tokenST = new StringTokenizer(token);
 
+System.out.println(" ^^^^^^^^^^^^^ " + token + " -------- " + tokenST.nextToken("="));
+	  _subModes.add(new Agent("mode " + tokenST.nextToken()));
+
+      // contruct assertion actors
+      } else if (token.startsWith("inv")) {
+
+	// get the expression of the ODE
+	int startOfExpression = token.indexOf("{") + 1;
+	int endOfExpression = token.indexOf("}");
+	_assertion = token.substring(startOfExpression, endOfExpression).trim();
+
+	// construct the inputs for assertion actor
+	ListIterator inputs = _inputs.listIterator();
+	while (inputs.hasNext()) {
+	  String input = (String) inputs.next();
+	  if (_assertion.indexOf(input) != -1) {
+	    _assertionInputs.add(input);
+	  }
+	}
+
+	if (_assertion.indexOf(_integratorOutput) != -1) {
+	  _assertionInputs.add(_integratorOutput);
+	}
+System.out.println("=================================> Assertion has inputs number: " + _assertionInputs.size());
       // the token begins with "trans" means the agent is a FSM
       } else if (token.startsWith("trans")) {
 	// It should be a modal model.
@@ -279,105 +412,29 @@ public class Agent {
 
     try {
 
-      // global variables for _constructor()
-      String token;
-      StringTokenizer tokenST;
-
-      // beginning of parsing
-      while (_contentST.hasMoreTokens()) {
-
-	// the stringTokenizer get token line by line
-	// FIXME: this needs very strictly formated Charon code.
-	token = _contentST.nextToken("\n");
-
-//	System.out.println("    Token is: " + token);
-
-	// when the token of the output ports is read
-	if (token.trim().startsWith("write")) {
-	    tokenST = new StringTokenizer(token, " ,\n\t\r;");
-	    tokenST.nextToken(); // ignore write
-	    tokenST.nextToken(); // ignore analog
-	    while (tokenST.hasMoreTokens()) {
-	      String tokenToken = tokenST.nextToken().trim();
-	      if (!tokenToken.equals("real")) {
-		_outputs.add(tokenToken);
-	      }
-	    }
-	// when the token of the input ports is read
-	} else if (token.trim().startsWith("read")) {
-	    tokenST = new StringTokenizer(token, " ,\n\t\r;");
-	    tokenST.nextToken(); // ignore read
-	    tokenST.nextToken(); // ignore analog
-	    while (tokenST.hasMoreTokens()) {
-	      String tokenToken = tokenST.nextToken().trim();
-	      if (!tokenToken.equals("real")) {
-		_inputs.add(tokenToken);
-	      }
-	    }
-	// when the token of the private variables is read
-	} else if (token.trim().startsWith("private")) {
-	    tokenST = new StringTokenizer(token, " ,\n\t\r;");
-	    tokenST.nextToken(); // ignore private
-	    tokenST.nextToken(); // ignore analog
-	    while (tokenST.hasMoreTokens()) {
-	      String tokenToken = tokenST.nextToken().trim();
-	      if (!tokenToken.equals("real")) {
-		_privateVariables.add(tokenToken);
-	      }
-	    }
-	// when the token of the initial states is read
-	} else if (token.trim().startsWith("init")) {
-	    // this token use "{};" as delimiter
-	    tokenST = new StringTokenizer(token, "{};");
-	    // get rid of "init"
-	    String tokenToken = tokenST.nextToken();
-	    // get initial variable expression
-	    tokenToken = tokenST.nextToken();
-	    _initialState = tokenToken.substring(tokenToken.indexOf("=") + 1);
-	// when the token of a sub agent is read
-	} else if (token.trim().startsWith("agent")) {
-	    tokenST = new StringTokenizer(token);
-	    tokenST.nextToken("=");
-	    _subAgents.add(new Agent("agent " + tokenST.nextToken()));
-	// when the token of the connection conditions is read
-    	} else if (token.trim().startsWith("[")) {
-//	    System.out.println("Connection: " + token);
-	    int seperator = token.indexOf(":=");
-	    String inputs = token.substring(1, seperator - 1).trim();
-	    String outputs = token.substring(seperator + 2).trim();
-//	    System.out.println("    Stirng pair is: " + inputs + " : " + outputs );
-	    StringTokenizer inputST = new StringTokenizer(inputs, " \n\r\t,[]");
-	    StringTokenizer outputST = new StringTokenizer(outputs, " \n\r\t,[]");
-	    while (inputST.hasMoreTokens()) {
-	      String input = inputST.nextToken();
-	      String output = outputST.nextToken();
-//	      System.out.println("    pair is: " + input + " . " + output );
-	      // the connections list is composed of connections
-	      // each connection is a pair, with
-	      // the input port at left and output port at right.
-	      _connections.add(new Pair(input, output));
-	    }
-	}
-      }
-
       // associate the agent with according mode
 
-      String searchAgentName;
-      // this is used for refinements of the modal model
-      // since the Charon code has a name convention that the modes for
-      // the refinements in end with "Mode"
-      if (getName().endsWith("Mode")) {
-	searchAgentName = getName();
-      // this is used for other agents
-      } else {
-	searchAgentName = getName() + "TopMode";
-      }
+      String searchModeName = getModeName();
 
       // search a mode via name matching
       // and associate the mode to the agent or the refinement
-      Agent mode = _searchAgent(searchAgentName, CharonProcessor.modesList);
+System.out.println("Search Mode: " + 	searchModeName);
+
+      Agent mode = (Agent) _searchAgent(searchModeName, CharonProcessor.modesList);
       if (mode != null) {
 	addMode(mode.getContent());
+      }
+
+      String containerAgentName = _container.getName();
+      Agent containerAgent = (Agent) _searchAgent(containerAgentName, CharonProcessor.agentsList);
+      if (containerAgent != null) {
+	LinkedList referSubAgents = containerAgent.getSubAgents();
+	if (referSubAgents.size() != 0) {
+	  Agent subAgent = (Agent) _searchAgent(getName(), referSubAgents);
+	  if (subAgent != null) {
+	    _referParameters = subAgent.getParameters();
+	  }
+	}
       }
 
       // update the container
@@ -385,6 +442,7 @@ public class Agent {
       // Note the transitions are discovered in addMode() part.
       if (_transitions.size() != 0) {
 	_container = new ModalModel(_container, _name);
+System.out.println(" Container is an instance of " + _container.getClass().toString());
       } else if (!(_container instanceof Refinement)) {
         _container = new TypedCompositeActor(_container, _name);
       }
@@ -395,6 +453,11 @@ public class Agent {
       System.out.println("inputs number: " + _inputs.size());
       System.out.println("outputs number: " + _outputs.size());
       System.out.println("parameters Number: " + _parameters.size());
+/*      ListIterator iii = _parameters.listIterator();
+      while (iii.hasNext()) {
+	System.out.println((String) iii.next());
+      }
+*/
       System.out.println("transitions Number: " + _transitions.size());
 
       System.out.println("constructing new Agent: " + getName());
@@ -410,23 +473,27 @@ public class Agent {
 	// refinement should have a CTEmbeddedDirector
 	if (_container instanceof Refinement) {
 	  _director = new CTEmbeddedDirector(_container, "CT Embedded Director");
-	} else {
+	} else if (_referParameters.size() != 0) {
   	  ListIterator paraIterator = _parameters.listIterator();
-	  while (paraIterator.hasNext()) {
+	  ListIterator referParaIterator = _referParameters.listIterator();
+	  while (referParaIterator.hasNext()) {
 	    String paraName = (String) paraIterator.next();
+	    String referParaName = (String) referParaIterator.next();
 	    // Note that since it is not top level,
 	    // the parameter does not have actual value.
 	    // The actual value is eveluated during simulation
 	    // referring to the upper level parameters.
 	    Parameter parameter = new Parameter(_container, paraName);
-	    parameter.setExpression(paraName);
+	    parameter.setExpression(referParaName);
 	  }
+	} else {
 	}
-      } else {
+
+      } else if (!(_container instanceof ModalModel)){
 	// topLevel should have a CTMixedSignalDirector
 	_director = new CTMixedSignalDirector(_container, "CT Director");
 
-	// This composite actor has the top Level as its container,
+/*	// This composite actor has the top Level as its container,
 	// it should provide the actual values for the parameters.
 	// However, the names of the parameters have to be associated
 	// with parameters from subAgents.
@@ -437,10 +504,10 @@ public class Agent {
 
 	while (subAgents.hasNext()) {
 	  Agent subAgent = (Agent) subAgents.next();
-	  Agent agent = _searchAgent(subAgent.getName(), CharonProcessor.agentsList);
+	  Agent agent = (Agent) _searchAgent(subAgent.getName(), CharonProcessor.agentsList);
 
 	  if (agent == null) {
-	    System.out.println("         Something wrong when finding subAgent! " + subAgent.getName());
+	    System.out.println("         Something wrong when looking for subAgent! " + subAgent.getName());
 	  } else {
 	    System.out.println("         Found subAgent " + subAgent.getName() +
 			       " with parameters number " + subAgent.getParameters().size());
@@ -464,6 +531,7 @@ public class Agent {
 	  }
 
 	}
+  */
       }
 
       // add relations and links
@@ -510,11 +578,12 @@ public class Agent {
 	if (_transitions.size() == 0) {
 	  // An agent with single mode
 
-	  // This agent has one expression actor and one integrator
+	  // This mode has one expression actor and one integrator
+	  // FIXME: There may be several integrators and expressions.
 	  Integrator integrator = new Integrator(_container, "integrator");
 	  Expression expression = new Expression(_container, "expression");
-
 	  expression.expression.setExpression(_expression);
+
 
 	  TypedIOPort expressionOutput = expression.output;
 	  TypedIOPort integratorInput = integrator.input;
@@ -551,6 +620,23 @@ public class Agent {
 	    }
       	  }
 
+	  // The mode may have one invariant.
+	  if (_assertion != "") {
+	  Assertion assertion = new Assertion(_container, "assertion");
+	    assertion.assertion.setExpression(_assertion);
+	    ListIterator asserInputs = _assertionInputs.listIterator();
+	    while (asserInputs.hasNext()) {
+	      String inputPortName = (String) asserInputs.next();
+	      TypedIOPort expressionInput = new TypedIOPort(assertion, inputPortName, true, false);
+	      // If the container is a refinement,
+	      // We have to configure the signal Type of the inputs for expression actor
+	      // as "CONTINUOUS"
+	      if (_container instanceof Refinement) {
+		signalType = new Parameter(expressionInput, "signalType", new StringToken("CONTINUOUS"));
+	      }
+	    }
+	  }
+
 	  ListIterator outputs = getOutputs().listIterator();
 	  // It is presumed that there is only one output for one agent.
 	  if (getOutputs().size() > 1) throw new IllegalActionException ("Can not handle actor with more than one output.");
@@ -580,20 +666,19 @@ public class Agent {
 	      signalType = new Parameter(expressionInput, "signalType", new StringToken("CONTINUOUS"));
 	    }
 	  }
+
 	} else {
 	  // The agent is a modal model.
 
-    	  ListIterator transitions = _transitions.listIterator();
+	  // Note that the states and transitions have the controller as their container,
+	  // while the refinements have the modal model as their container.
+	  FSMActor controller = ((FSMDirector) _container.getDirector()).getController();
+
+   	  ListIterator transitions = _transitions.listIterator();
 	  int transitionIndex = 0;
 	  while (transitions.hasNext()) {
 	    TxtTransition transition = (TxtTransition) transitions.next();
 	    System.out.println("transition from: " + transition.getState() + " ----> " + transition.getNextState());
-
-	    Refinement refinement = new Refinement(_container, transition.getState());
-
-	    // Note that the states and transitions have the controller as their container,
-	    // while the refinements have the modal model as their container.
-	    FSMActor controller = ((FSMDirector) _container.getDirector()).getController();
 
 	    // It is presumed that the first appeared state in Charon code is
 	    // also the initial state of the controller.
@@ -606,24 +691,38 @@ public class Agent {
 	    State state = _getState(controller, transition.getState());
 	    State nextState = _getState(controller, transition.getNextState());
 
+	    if (state.getRefinement() == null) {
+	      Refinement refinement = new Refinement(_container, transition.getState());
+	    }
+
+	    if (nextState.getRefinement() == null) {
+	      Refinement refinement = new Refinement(_container, transition.getNextState());
+	    }
+
 	    state.refinementName.setExpression(transition.getState());
 	    nextState.refinementName.setExpression(transition.getNextState());
 
-	    // Add the parameters to the current state.
-	    Agent modeState = _searchAgent(transition.getState() + "Mode", CharonProcessor.modesList);
-	    if (modeState != null) {
+	    // Add the parameters to the current state and refinement.
+	    Agent modeState = (Agent) _searchAgent(transition.getState() + "Mode", CharonProcessor.modesList);
+	    Agent referMode = (Agent) _searchAgent(transition.getState() + "Mode", _subModes);
+	    Refinement stateRefinement = (Refinement) state.getRefinement()[0];
+	    if (modeState != null && referMode != null) {
 	      ListIterator parameters = modeState.getParameters().listIterator();
+	      ListIterator referParas = referMode.getParameters().listIterator();
 	      while (parameters.hasNext()) {
 		String parameter = (String) parameters.next();
+		String referPara = (String) referParas.next();
 		Parameter para = new Parameter(state, parameter);
-		para.setExpression(parameter);
+		Parameter refinementPara = new Parameter(stateRefinement, parameter);
+		para.setExpression(referPara);
+		refinementPara.setExpression(referPara);
 	      }
 
 	      // The modeState recursively call the constructor to
 	      // construct the according refinement.
 	      modeState.setName(transition.getState());
 	      modeState.addMode(modeState.getContent());
-	      modeState.constructor(refinement);
+	      modeState.constructor(stateRefinement);
 	    }
 
 	    Transition fsmTransition = new Transition(controller, transition.getState() + "->" + transition.getNextState());
@@ -671,7 +770,7 @@ public class Agent {
 	while (agents.hasNext()) {
 	  Agent subAgent = (Agent) agents.next();
 //	  TypedCompositeActor tca = new TypedCompositeActor(_container, subAgent.getName());
-	  Agent agent = _searchAgent(subAgent.getName(), CharonProcessor.agentsList);
+	  Agent agent = (Agent) _searchAgent(subAgent.getName(), CharonProcessor.agentsList);
 	  // The sub agent recursively calls its constructor.
 	  agent.constructor(_container);
 	}
@@ -768,10 +867,17 @@ public class Agent {
 	      while (outputs.hasNext()) {
 		TypedIOPort output = (TypedIOPort) outputs.next();
 		System.out.println("      Refinement Output port name: " + output.getFullName());
-		if(output.linkedRelationList().size() > 0)
-		  throw new IllegalActionException ("Should not have any relation in modal model level before adding relations.");
-
-		output.link(containerOutputRelation);
+		if(output.linkedRelationList().size() > 0) {
+		  ListIterator orelations = output.linkedRelationList().listIterator();
+		  while (orelations.hasNext()) {
+//		    System.out.println(orelations.next());
+		    TypedIORelation tir = (TypedIORelation) orelations.next();
+		    System.out.println(tir.linkedSourcePortList());
+		  }
+//		  throw new IllegalActionException ("Should not have any relation in modal model level before adding relations.");
+		} else {
+		  output.link(containerOutputRelation);
+		}
 	      }
 	    }
 	  }
@@ -984,17 +1090,21 @@ public class Agent {
   private String _integratorOutput;
   private String _initialState;
   private String _expression = "";
+  private String _assertion = "";
   private LinkedList _expressionInputs = new LinkedList();
+  private LinkedList _assertionInputs = new LinkedList();
 
   // The properties for the agent or the mode.
-  private String _name;
-  private String _modeName;
+  private String _name = "";
+  private String _modeName = "";
   private LinkedList _inputs = new LinkedList();
   private LinkedList _outputs = new LinkedList();
   private LinkedList _parameters = new LinkedList();
+  private LinkedList _referParameters = new LinkedList();
   private LinkedList _modeParameters = new LinkedList();
   private LinkedList _initVariables = new LinkedList();
   private LinkedList _privateVariables = new LinkedList();
+  private LinkedList _subModes = new LinkedList();
   private LinkedList _subAgents = new LinkedList();
   private LinkedList _connections = new LinkedList();
   private LinkedList _transitions = new LinkedList();
