@@ -175,14 +175,14 @@ test SDFReceiver-2.2 {Check put and get and hasToken with more than 1 token in t
     catch {$receiver hasToken -1} result7
 
     list $result1 $result2 $result3 $result4 [$receivedToken toString] [$receivedToken2 toString] [$receivedToken3 toString] [$receivedToken4 toString] $result5 $result6 $result7
-} {0 1 1 0 {"foo"} {"bar"} {"foo"} {"bar"} 1 {ptolemy.actor.NoTokenException: : Offset 2 out of range with 2 tokens in the receiver and 0 in history.} {java.lang.IllegalArgumentException: The argument must not be negative. It was: -1}}
+} {0 1 1 0 {"foo"} {"bar"} {"foo"} {"bar"} 1 {ptolemy.actor.NoTokenException: Offset 2 out of range with 2 tokens in the receiver and 0 in history.} {java.lang.IllegalArgumentException: The argument must not be negative. It was: -1}}
 
 test SDFReceiver-2.3 {Check noTokenException} {
     # uses previous setup.
     catch {$receiver get} result1
     catch {$receiver {getArray int} 2} result2
     list $result1 $result2
-} {{ptolemy.actor.NoTokenException: : Attempt to get token from an empty QueueReceiver.} {java.util.NoSuchElementException: The FIFOQueue does not contain enough elements!}}
+} {{ptolemy.actor.NoTokenException: Attempt to get token from an empty QueueReceiver.} {java.util.NoSuchElementException: The FIFOQueue does not contain enough elements!}}
 
 ######################################################################
 ####
@@ -317,7 +317,7 @@ test SDFReceiver-5.2 {Check noRoomException} {
     catch {$receiver {put ptolemy.data.Token} $token} result1
     catch {$receiver {putArray ptolemy.data.Token[] int} $tokenArray 2} result2
     list $result1 $result2
-} {{ptolemy.actor.NoRoomException: : Queue is at capacity. Cannot put a token.} {ptolemy.actor.NoRoomException: : Queue is at capacity. Cannot put a token.}}
+} {{ptolemy.actor.NoRoomException: Queue is at capacity. Cannot put a token.} {ptolemy.actor.NoRoomException: Queue is at capacity. Cannot put a token.}}
 
 test SDFReceiver-5.3 {Check setCapacity errors} {
     set receiver [java::new ptolemy.domains.sdf.kernel.SDFReceiver]
