@@ -329,7 +329,7 @@ public class DDEReceiver extends TimedQueueReceiver
     	_readPending = false;
     	_writePending = false;
     	_ignoreNotSeen = true;
-        clearRcvr();
+        // clearRcvr();
         Director director = 
                 ((Actor)getContainer().getContainer()).getDirector();
         String name =  
