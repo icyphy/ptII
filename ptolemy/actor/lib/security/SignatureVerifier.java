@@ -98,13 +98,15 @@ public class SignatureVerifier extends SignatureActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** The original data in clear text that is signed.
+     *  The type is unsigned byte array.   
+     */
+    public TypedIOPort data;
+
     /** This port receives the public key to be used from the
      *  The type is an ObjectToken of type java.security.Key.
      */
     public TypedIOPort publicKey;
-
-    // FIXME: what is this port?
-    public TypedIOPort data;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -120,12 +122,14 @@ public class SignatureVerifier extends SignatureActor {
      *  @exception IllegalActionException If thrown by base class.
      */
     public void fire() throws IllegalActionException {
+        System.out.println("SignatureVerifier.fire()");
         if (publicKey.hasToken(0)) {
             ObjectToken objectToken = (ObjectToken)publicKey.get(0);
             _publicKey = (PublicKey)objectToken.getValue(); 
         }
         if (input.hasToken(0) && data.hasToken(0) && _publicKey != null) {
             _data = _arrayTokenToUnsignedByteArray((ArrayToken)data.get(0));
+            // Don't read input here, super.fire() will read it for us.
             super.fire();
         }
     }
@@ -149,15 +153,17 @@ public class SignatureVerifier extends SignatureActor {
             throws IllegalActionException {
         ByteArrayOutputStream byteArrayOutputStream =
             new ByteArrayOutputStream();
-
+        System.out.println("SignatureVerifier: _process");
         try {
             _signature.initVerify(_publicKey);
             _signature.update(_data);
             boolean verify = _signature.verify(signatureData);
             if (verify) {
+                System.out.println("SignatureVerifier: data verified");
                 return _data;
             } else {
-                return new String("Signature verification failed").getBytes();
+                throw new IllegalActionException("Signature verification "
+                        + "failed");
             }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,

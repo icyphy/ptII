@@ -141,7 +141,6 @@ public class SymmetricEncryption extends CipherActor {
                 ObjectToken objectToken = (ObjectToken)key.get(0);
                 //SecretKey key = (SecretKey)objectToken.getValue();
                 java.security.Key key = (java.security.Key)objectToken.getValue(); 
-                System.out.println("SymmetricEncryption: " + key);
                 _cipher.init(Cipher.ENCRYPT_MODE, key);
                 _algorithmParameters = _cipher.getParameters();
             } catch (Exception ex) {

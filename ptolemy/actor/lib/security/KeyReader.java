@@ -214,7 +214,8 @@ public class KeyReader extends Source {
             _certificate = _keyStore.getCertificate(_alias);
             System.out.println("KeyReader: certificate: " + _certificate);
             if (_certificate == null) {
-                throw new KeyStoreException("Failed to get alias '"
+                throw new KeyStoreException("Failed to get certificate "
+                        + "for alias '"
                         + _alias + "' from  keystore '" + _url + "'");
             }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Symmetric4" class="ptolemy.actor.TypedCompositeActor">
+<entity name="Symmetric" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 50.0">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
@@ -38,7 +38,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 30.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 75.0">
         </property>
     </property>
     <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="DES">
@@ -57,7 +57,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 25.0">
         </property>
     </property>
     <property name="keySize" class="ptolemy.data.expr.Parameter" value="56">
@@ -76,7 +76,33 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 80.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 50.0">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Symmetric encryption uses a secret
+key that is shared between the 
+encryptor and decryptor.
+
+In this case we generate a key 
+using the Key actor.
+</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 240.0">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -120,7 +146,7 @@
         </property>
         <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 75.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 155.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -136,7 +162,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="525.0, 95.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 170.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -160,7 +186,7 @@
         <doc>Receives a key from a SymmetricEncryption actor and
           uses it to decrypt a data input based on a given symmetric
           algorithm.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 260.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 150.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -189,7 +215,7 @@
         <doc>Creates and sends a key to a SymmetricDecryption and
 	  encrypts incoming data based on a given symmetric
 	  algorithm.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 260.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 150.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -212,7 +238,7 @@
         <property name="keySize" class="ptolemy.data.expr.Parameter" value="keySize">
         </property>
         <doc>Create a Key and output it.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 325.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 200.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -225,7 +251,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="180.0, 325.0">
+        <vertex name="vertex1" value="185.0, 200.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">

@@ -221,6 +221,7 @@ public class CryptographyActor extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        System.out.println("CrypoActor: fire()");
         try {
             if (input.hasToken(0)) {
                 byte[] dataBytes =
@@ -337,9 +338,9 @@ public class CryptographyActor extends TypedAtomicActor {
         try {
             KeyPairGenerator keyPairGen;
             if (_provider.equalsIgnoreCase("SystemDefault")) {
-                keyPairGen = KeyPairGenerator.getInstance(_keyAlgorithm);
+                keyPairGen = KeyPairGenerator.getInstance(_keyPairGenerator);
             } else {
-                keyPairGen = KeyPairGenerator.getInstance(_keyAlgorithm,
+                keyPairGen = KeyPairGenerator.getInstance(_keyPairGenerator,
                         _provider);
             }
 
@@ -350,8 +351,8 @@ public class CryptographyActor extends TypedAtomicActor {
             throw new IllegalActionException(this, ex,
                     "Failed to create asymmetric keys. "
                     + "algorithm: '"
-                    + _algorithm + "', keyAlgorithm: '"
-                    + _keyAlgorithm + "', keySize: '"
+                    + _algorithm + "', keyGenerator: '"
+                    + _keyPairGenerator + "', keySize: '"
                     + _keySize + "', provider: '"
                     + _provider + "'");
         }
@@ -376,8 +377,8 @@ public class CryptographyActor extends TypedAtomicActor {
             throw new IllegalActionException(this, ex,
                     "Failed to create symmetric key, "
                     + "algorithm: '"
-                    + _algorithm + "', keyAlgorithm: '"
-                    + _keyAlgorithm + "', keySize: '"
+                    + _algorithm + "', keyGenerator: '"
+                    + _keyPairGenerator + "', keySize: '"
                     + _keySize + "', provider: '"
                     + _provider + "'");
         }
@@ -407,7 +408,7 @@ public class CryptographyActor extends TypedAtomicActor {
      * same as the _algorithm for Ciphers but needs to be specified
      * separately for Signatures
      */
-    protected String _keyAlgorithm;
+    protected String _keyPairGenerator;
 
     /** The key size to be used when processing information. */
     protected int _keySize;

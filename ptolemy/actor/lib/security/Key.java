@@ -198,7 +198,6 @@ public class Key extends Source {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        System.out.println("Key: " + _secretKey);
         output.send(0, _secretKeyObjectToken);
     }
 
@@ -238,12 +237,6 @@ public class Key extends Source {
 
     /** The name of the algorithm to be used. */
     protected String _algorithm;
-
-    /** The algorithm to be used for generating the key.  This is the
-     * same as the _algorithm for Ciphers but needs to be specified
-     * separately for Signatures
-     */
-    protected String _keyAlgorithm;
 
     /** The key size to be used when processing information. */
     protected int _keySize;

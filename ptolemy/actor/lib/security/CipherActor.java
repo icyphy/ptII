@@ -222,7 +222,6 @@ public class CipherActor extends CryptographyActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _keyAlgorithm = _algorithm;
         _mode = ((StringToken)mode.getToken()).stringValue();
         _padding = ((StringToken)padding.getToken()).stringValue();
         try {

@@ -96,27 +96,16 @@ public class SignatureSigner extends SignatureActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        // Reset the choices to possible signatures
-        algorithm.removeAllChoices();
-        Set algorithms = Security.getAlgorithms("Signature");
+        keyPairGenerator = new StringParameter(this, "keyPairGenerator");
+        // Get the possible choices
+        Set algorithms = Security.getAlgorithms("KeyPairGenerator");
         Iterator algorithmsIterator = algorithms.iterator();
         for(int i = 0; algorithmsIterator.hasNext(); i++) {
             String algorithmName = (String)algorithmsIterator.next();
             if (i == 0) {
-                algorithm.setExpression(algorithmName);
+                keyPairGenerator.setExpression(algorithmName);
             }
-            algorithm.addChoice(algorithmName);
-        }
-
-        keyAlgorithm = new StringParameter(this, "keyAlgorithm");
-        algorithms = Security.getAlgorithms("KeyGenerator");
-        algorithmsIterator = algorithms.iterator();
-        for(int i = 0; algorithmsIterator.hasNext(); i++) {
-            String algorithmName = (String)algorithmsIterator.next();
-            if (i == 0) {
-                keyAlgorithm.setExpression(algorithmName);
-            }
-            keyAlgorithm.addChoice(algorithmName);
+            keyPairGenerator.addChoice(algorithmName);
         }
 
         publicKey = new TypedIOPort(this, "publicKey", false, true);
@@ -130,21 +119,21 @@ public class SignatureSigner extends SignatureActor {
     ////                     ports and parameters                  ////
 
 
-    /** This port outputs the key to be used by the
-     *  AsymmetricEncryption actor as an unsigned byte array.
-     */
-    public TypedIOPort publicKey;
-
     /** This port sends out the original data to be verified with the
      *  encrypted digest
      */
     public TypedIOPort data;
 
+    /** This port outputs the key to be used by the
+     *  AsymmetricEncryption actor as an unsigned byte array.
+     */
+    public TypedIOPort publicKey;
+
     /** The algorithm to be used to generate the key pair.  For
      *  example, using RSAwithMD5 as the signature algorithm, RSA
-     *  would be used for the <i>keyAlgorithm</i> parameter.
+     *  would be used for the <i>keyPairGenerator</i> parameter.
      */
-    public StringParameter keyAlgorithm;
+    public StringParameter keyPairGenerator;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -157,9 +146,9 @@ public class SignatureSigner extends SignatureActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == keyAlgorithm) {
-            _keyAlgorithm =
-                ((StringToken)keyAlgorithm.getToken()).stringValue();
+        if (attribute == keyPairGenerator) {
+            _keyPairGenerator =
+                ((StringToken)keyPairGenerator.getToken()).stringValue();
         } else {
             super.attributeChanged(attribute);
         }
@@ -175,8 +164,9 @@ public class SignatureSigner extends SignatureActor {
      *  @exception IllegalActionException If thrown by base class.
      */
     public void fire() throws IllegalActionException {
+        System.out.println("SignatureSigner.fire()");
         super.fire();
-        publicKey.send(0, (new ObjectToken(_publicKey)));
+        //publicKey.send(0, (new ObjectToken(_publicKey)));
     }
 
     /** Get an instance of the cipher and outputs the key required for
@@ -189,7 +179,7 @@ public class SignatureSigner extends SignatureActor {
         KeyPair pair = _createAsymmetricKeys();
         _publicKey = pair.getPublic();
         _privateKey = pair.getPrivate();
-        //publicKey.send(0, new ObjectToken(_publicKey));
+        publicKey.send(0, new ObjectToken(_publicKey));
     }
 
     /** Takes the data and calculates a message digest for it.
@@ -200,7 +190,9 @@ public class SignatureSigner extends SignatureActor {
     protected byte[] _process(byte[] dataBytes) throws IllegalActionException{
         ByteArrayOutputStream byteArrayOutputStream =
             new ByteArrayOutputStream();
+        System.out.println("SignatureSigner._process()");
         try {
+            // The data port contains the unsigned data.
             data.send(0,
                     CryptographyActor.unsignedByteArrayToArrayToken(dataBytes));
             _signature.initSign(_privateKey);

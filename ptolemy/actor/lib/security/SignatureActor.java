@@ -30,15 +30,17 @@
 
 package ptolemy.actor.lib.security;
 
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.Signature;
-
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import java.util.Iterator;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// SignatureActor
@@ -80,6 +82,18 @@ public class SignatureActor extends CryptographyActor {
     public SignatureActor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+
+        // Reset the choices to possible signatures
+        algorithm.removeAllChoices();
+        Set algorithms = Security.getAlgorithms("Signature");
+        Iterator algorithmsIterator = algorithms.iterator();
+        for(int i = 0; algorithmsIterator.hasNext(); i++) {
+            String algorithmName = (String)algorithmsIterator.next();
+            if (i == 0) {
+                algorithm.setExpression(algorithmName);
+            }
+            algorithm.addChoice(algorithmName);
+        }
     }
 
 

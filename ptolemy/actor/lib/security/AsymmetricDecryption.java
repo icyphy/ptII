@@ -142,15 +142,15 @@ public class AsymmetricDecryption extends CipherActor {
      *  the parameters and initialize the cipher.
      *  @exception IllegalActionException If the kyes cannot be created.
      */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        //KeyPair pair = _createAsymmetricKeys();
-        //_publicKey = pair.getPublic();
-        //_privateKey = pair.getPrivate();
-        //keyOut.send(0,
-        //        CryptographyActor.unsignedByteArrayToArrayToken(
-        //                CryptographyActor.keyToBytes(_publicKey)));
-    }
+//     public void initialize() throws IllegalActionException {
+//         super.initialize();
+//         //KeyPair pair = _createAsymmetricKeys();
+//         //_publicKey = pair.getPublic();
+//         //_privateKey = pair.getPrivate();
+//         //keyOut.send(0,
+//         //        CryptographyActor.unsignedByteArrayToArrayToken(
+//         //                CryptographyActor.keyToBytes(_publicKey)));
+//     }
 
     /** Sets token production for keyOut to 1 and resolves scheduling.
      *

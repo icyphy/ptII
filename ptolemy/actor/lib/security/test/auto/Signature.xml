@@ -15,7 +15,7 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 35.0">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
@@ -38,10 +38,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 25.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 60.0">
         </property>
     </property>
-    <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="SHA1WITHDSA">
+    <property name="signature" class="ptolemy.data.expr.StringParameter" value="MD5WITHRSA">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -57,7 +57,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 40.0">
         </property>
     </property>
     <property name="keySize" class="ptolemy.data.expr.Parameter" value="1024">
@@ -76,10 +76,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 80.0">
         </property>
     </property>
-    <property name="keyAlgorithm" class="ptolemy.data.expr.StringParameter" value="DSA">
+    <property name="keyPairGenerator" class="ptolemy.data.expr.StringParameter" value="RSA">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -95,7 +95,108 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 85.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 20.0">
+        </property>
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Try
+ keyPairGenerator: DSA
+ signature: SHA1WITHDSA
+or
+ keyPairGenerator: RSA
+ signature: MD5WithRSA</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 0.0">
+        </property>
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Digital Signatures are used to verify
+that the data was not modified in transit.
+
+In this case, the SignatureSigner actor
+generatesprivate and public keys.
+The private key is used to create a 
+signature for each block of data
+that is passed to the
+SignatureVerifier actor.
+The SignatureSigner also passes the 
+public key to the SignatureVerifier
+actor, which is used to verify that
+the data has not been tampered with.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 165.0">
+        </property>
+    </property>
+    <property name="scale" class="ptolemy.data.expr.Parameter" value="1ub">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 285.0">
+        </property>
+    </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">You can test that the signatures
+get properly verified by changing
+the scale parameter from 1ub to 2ub,
+which will change the cleartext
+data in transit, simulating a 
+man in the middle attack.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 285.0">
         </property>
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -106,7 +207,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1ub">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 125.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 105.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -122,7 +223,7 @@
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
         <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="arraySize">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 125.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -166,17 +267,17 @@
         </port>
     </entity>
     <entity name="SignatureSigner" class="ptolemy.actor.lib.security.SignatureSigner">
-        <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="$algorithm">
+        <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="$signature">
         </property>
         <property name="provider" class="ptolemy.data.expr.StringParameter" value="SystemDefault">
         </property>
-        <property name="keySize" class="ptolemy.data.expr.Parameter" value="keySize">
+        <property name="keySize" class="ptolemy.data.expr.Parameter" value="1024">
         </property>
-        <property name="keyAlgorithm" class="ptolemy.data.expr.StringParameter" value="$keyAlgorithm">
+        <property name="keyPairGenerator" class="ptolemy.data.expr.StringParameter" value="$keyPairGenerator">
         </property>
         <doc>Creates a signature for the given piece of data and
 	  creates the key to be sent to the signature verifier.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 155.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 150.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -192,16 +293,16 @@
         </port>
     </entity>
     <entity name="SignatureVerifier" class="ptolemy.actor.lib.security.SignatureVerifier">
-        <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="SHA1withDSA">
+        <property name="algorithm" class="ptolemy.data.expr.StringParameter" value="$signature">
         </property>
         <property name="provider" class="ptolemy.data.expr.StringParameter" value="SystemDefault">
         </property>
-        <property name="keySize" class="ptolemy.data.expr.Parameter" value="1024">
+        <property name="keySize" class="ptolemy.data.expr.Parameter" value="keySize">
         </property>
         <doc>Receives a key from an AsymmetricDecryption actor and
           uses it to encrypt a data input based on a given asymmetric
           algorithm.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 155.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 155.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -216,18 +317,50 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="Cleartext Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{1ub, 2ub, 3ub, 4ub, 5ub}}, {{6ub, 7ub, 8ub, 9ub, 10ub}}, {{11ub, 12ub, 13ub, 14ub, 15ub}}}">
+    <entity name="SequenceToArray2" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="arraySize">
         </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 235.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 250.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="ArrayToSequence2" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="arraySize">
+        </property>
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 245.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Scale" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="scale">
+        </property>
+        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 265.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -239,31 +372,38 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="305.0, 145.0">
-        </vertex>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="305.0, 165.0">
-        </vertex>
     </relation>
     <link port="Ramp.output" relation="relation"/>
     <link port="SequenceToArray.input" relation="relation"/>
-    <link port="SequenceToArray.output" relation="relation6"/>
+    <link port="SequenceToArray.output" relation="relation8"/>
     <link port="ArrayToSequence.input" relation="relation2"/>
     <link port="ArrayToSequence.output" relation="relation7"/>
     <link port="Decrypted Data Test.input" relation="relation7"/>
-    <link port="SignatureSigner.input" relation="relation6"/>
-    <link port="SignatureSigner.output" relation="relation5"/>
-    <link port="SignatureSigner.publicKey" relation="relation4"/>
-    <link port="SignatureSigner.data" relation="relation3"/>
-    <link port="SignatureVerifier.input" relation="relation5"/>
+    <link port="SignatureSigner.input" relation="relation8"/>
+    <link port="SignatureSigner.output" relation="relation3"/>
+    <link port="SignatureSigner.publicKey" relation="relation5"/>
+    <link port="SignatureSigner.data" relation="relation6"/>
+    <link port="SignatureVerifier.input" relation="relation3"/>
     <link port="SignatureVerifier.output" relation="relation2"/>
-    <link port="SignatureVerifier.publicKey" relation="relation4"/>
-    <link port="SignatureVerifier.data" relation="relation3"/>
-    <link port="Cleartext Test.input" relation="relation3"/>
+    <link port="SignatureVerifier.publicKey" relation="relation5"/>
+    <link port="SignatureVerifier.data" relation="relation9"/>
+    <link port="SequenceToArray2.input" relation="relation4"/>
+    <link port="SequenceToArray2.output" relation="relation9"/>
+    <link port="ArrayToSequence2.input" relation="relation6"/>
+    <link port="ArrayToSequence2.output" relation="relation10"/>
+    <link port="Scale.input" relation="relation10"/>
+    <link port="Scale.output" relation="relation4"/>
 </entity>
