@@ -243,11 +243,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     exe.fireAt(ca, getIterationEndTime());
                     _setEventPhase(false);
                     return;
-                } else {
-                    // should never happen.
-                    throw new InternalErrorException(
-                            "Time is screwed up in " + getFullName());
-                }
+                } 
             }
         }
     }
