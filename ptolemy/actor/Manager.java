@@ -453,7 +453,7 @@ public final class Manager extends NamedObj implements Runnable {
      *  container.   This should cause any actors to free up any resources
      *  they have allocated and Directors should kill any threads they have
      *  created.   However, a consistant state is not guaranteed.   The
-     *  topology should probably be recreated before attemping any
+     *  topology should probably be recreated before attempting any
      *  further operations.   This is not synchronized because we want it to
      *  happen as soon as possible, no matter what.
      */

@@ -108,7 +108,7 @@ public interface Executable {
 
     /** This method should be invoked exactly once per execution
      *  of an application.  None of the other action methods should be
-     *  be invoked afer it.  It finalizes an execution, typically closing
+     *  be invoked after it.  It finalizes an execution, typically closing
      *  files, displaying final results, etc.
      *
      *  @exception IllegalActionException If wrapup is not permitted.
