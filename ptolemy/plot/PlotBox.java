@@ -146,7 +146,7 @@ public class PlotBox extends Panel {
      * Create the peer of the plot box.
      */
     public void addNotify() {
-        // This method is called after our Panel is firt created
+        // This method is called after our Panel is first created
         // but before it is actually displayed.
         super.addNotify();
         _measureFonts();
@@ -202,7 +202,8 @@ public class PlotBox extends Panel {
      * If the argument is true, clear the display before redrawing.
      */
     public synchronized void drawPlot(Graphics graphics, boolean clearfirst) {
-        if (_debug > 7) System.out.println("PlotBox: drawPlot"+graphics);
+        if (_debug > 7)
+            System.out.println("PlotBox: drawPlot"+graphics+" "+clearfirst);
         if (graphics == null) {
             System.out.println("Attempt to draw axes without "+
                     "a Graphics object.");
@@ -701,8 +702,23 @@ public class PlotBox extends Panel {
         }
     }
       
-    /**
-     * Initialize the component, creating the fill button and setting
+    /** Get the minimum size of this component.
+     */
+    public Dimension getMinimumSize() {
+        if (_debug > 8) System.out.println("PlotBox: getMinimumSize");
+        return new Dimension(_width, _height);
+    }
+
+
+    /** Get the preferred size of this component.
+     */
+    public Dimension getPreferredSize() {
+        if (_debug > 8) System.out.println("PlotBox: getPreferredSize");
+       return new Dimension(_width, _height);
+    }
+
+
+    /** Initialize the component, creating the fill button and setting
      * the colors.  If the dataurl has been set, then parse that file.
      */
     public void init() {
@@ -752,6 +768,16 @@ public class PlotBox extends Panel {
         }
     }
         
+    /** The minimum size.
+     * @deprecated As of JDK1.1 in java.awt.component, but we need 
+     * to compile under 1.0.2 for netscape3.x compatibility.
+     */
+    public Dimension minimumSize() {
+        if (_debug > 9)
+            System.out.println("PlotBox: minimumSize "+_width+" "+_height);
+        return getMinimumSize();
+    }
+
     /**
      * Set the starting point for an interactive zoom box.
      * @deprecated As of JDK1.1 in java.awt.component 
@@ -1036,6 +1062,27 @@ public class PlotBox extends Panel {
         
     } 
   
+    /** The preferred size.
+     * @deprecated As of JDK1.1 in java.awt.component, but we need 
+     * to compile under 1.0.2 for netscape3.x compatibility.
+     */
+    public Dimension preferredSize() {
+        if (_debug > 9)
+            System.out.println("PlotBox: preferredSize "+_width+" "+_height);
+        return getPreferredSize();
+    }
+
+    /** Reshape
+     */
+    public void reshape(int x, int y, int width, int height) {
+        if (_debug > 9)
+            System.out.println("PlotBox: reshape: "+x+" "+y+" "+
+                    width+" "+height);
+        _width = width;
+        _height = height;
+        super.reshape(x,y,_width,_height);
+    }
+
     /** 
      * Resize the plot.
      * @deprecated As of JDK1.1 in java.awt.component, but we need 
@@ -1044,6 +1091,8 @@ public class PlotBox extends Panel {
     public void resize(int width, int height) {
         if (_debug > 8)
             System.out.println("PlotBox: resize"+width+" "+height);
+        _width = width;
+        _height = height;
         super.resize(width,height); // FIXME: resize() is deprecated.
     }
 
@@ -1366,6 +1415,9 @@ public class PlotBox extends Panel {
         new Color(0x00aaaa),   // cyan-ish
     };
         
+    // Width and height of component in pixels.
+    protected int _width, _height;
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
 
