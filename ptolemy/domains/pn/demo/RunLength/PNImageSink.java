@@ -94,7 +94,7 @@ public class PNImageSink extends AtomicActor {
         out.print(" ");
         out.println(image.length);
         for (int i = 0; i<image.length; i++) {
-            for (int j=0; j<image[0].length; j++) {
+            for (int j = 0; j<image[0].length; j++) {
                 out.print(image[i][j]);
                 out.print(" ");
             }

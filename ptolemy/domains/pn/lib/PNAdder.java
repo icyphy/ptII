@@ -74,7 +74,7 @@ public class PNAdder extends AtomicActor {
 		System.out.println("Error: Lengths in adder not equal: length 0 ="+data[0].length+"length 1 = "+sum[0].length);
 	    }
 	    for (int j = 0; j < sum.length; j++) {
-		for (int k=0; k<sum[j].length; k++) {
+		for (int k = 0; k<sum[j].length; k++) {
 		    sum[j][k] += data[j][k];
 		}
 	    }

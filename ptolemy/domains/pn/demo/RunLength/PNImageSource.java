@@ -118,7 +118,7 @@ public class PNImageSource extends AtomicActor {
                 int[][] image = new int[datarow][datacol];
                 datastr = new StreamTokenizer(_file);
                 for (int i = 0; i<datarow; i++) {
-                    for (int j=0; j<datacol; j++) {
+                    for (int j = 0; j<datacol; j++) {
                         while (datastr.nextToken() !=
                                 StreamTokenizer.TT_NUMBER);
                         image[i][j] = (int)datastr.nval;

@@ -75,7 +75,7 @@ public class MatrixUnpacker extends AtomicActor {
         //Now sequentialize the Matrix
         //int[] result = new int[image.length*image[0].length];
         for (int i = 0; i<image.length; i++) {
-            for (int j=0; j<image[0].length; j++) {
+            for (int j = 0; j<image[0].length; j++) {
                 //result[i*image.length +j] = image[i][j];
                 _output.broadcast(new IntToken(image[i][j]));
             }
