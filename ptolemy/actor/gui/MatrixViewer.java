@@ -229,7 +229,7 @@ public class MatrixViewer extends Sink implements Placeable {
 
     /** This class provides the implementations of the methods in the
         TableModel interface. To create a concrete TableModel of a
-        Matrix as a sublcass of AbstractTableModel, the class provides
+        Matrix as a subclass of AbstractTableModel, the class provides
         implementations for the most important methods. */
     public class MatrixAsTable extends AbstractTableModel {
 
