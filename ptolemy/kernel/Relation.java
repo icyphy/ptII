@@ -329,7 +329,7 @@ public class Relation extends NamedObj {
                 result += "links {\n";
                 Enumeration linkedPorts = linkedPorts();
                 while (linkedPorts.hasMoreElements()) {
-                    Port port = (Port)linkedPorts nextElement();
+                    Port port = (Port)linkedPorts.nextElement();
                     result += port._description(detail, indent + 1, 2) + "\n";
                 }
                 result += _getIndentPrefix(indent) + "}";

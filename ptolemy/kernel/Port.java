@@ -147,23 +147,24 @@ public class Port extends NamedObj {
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
      *  The result is a new port with no connections and no container.
-     *  @param ws The workspace for the cloned object.
+     *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
      *  @return A new Port.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Port newobj = (Port)super.clone(ws);
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        Port newObject = (Port)super.clone(workspace);
         try {
-            newobj._relationsList = new CrossRefList(newobj);
+            newObject._relationsList = new CrossRefList(newObject);
         } catch (IllegalActionException ex) {
-            // This exception should not occur because newobj is not null.
+            // This exception should not occur because newObject is not null.
             throw new InternalErrorException(
                     "Internal error in Port clone() method!"
                     + ex.getMessage());
         }
-        newobj._container = null;
-        return newobj;
+        newObject._container = null;
+        return newObject;
     }
 
     /** List the connected ports.  Note that a port may be listed
@@ -304,7 +305,7 @@ public class Port extends NamedObj {
      *  @return An enumeration of Relation objects.
      */
     public Enumeration linkedRelations() {
-        // NOTE: There is no reason to deprecate this because it does
+        // NOTE: There is no reason to deprecate this because it does not
         // depend on Doug Lea's collections, and it is more efficient than
         // the list version.
         try {
@@ -399,18 +400,18 @@ public class Port extends NamedObj {
         try {
             _workspace.getWriteAccess();
             _checkContainer(entity);
-            Entity prevcontainer = (Entity)getContainer();
-            if (prevcontainer == entity) return;
+            Entity previousContainer = (Entity)getContainer();
+            if (previousContainer == entity) return;
             // Do this first, because it may throw an exception.
             if (entity != null) {
                 entity._addPort(this);
-                if (prevcontainer == null) {
+                if (previousContainer == null) {
                     _workspace.remove(this);
                 }
             }
             _container = entity;
-            if (prevcontainer != null) {
-                prevcontainer._removePort(this);
+            if (previousContainer != null) {
+                previousContainer._removePort(this);
             }
             if (entity == null) {
                 unlinkAll();
@@ -572,15 +573,17 @@ public class Port extends NamedObj {
                 // when querying the Ports.
                 detail &= ~LINKS;
                 result += "links {\n";
-                Enumeration enum = linkedRelations();
-                while (enum.hasMoreElements()) {
-                    Relation rel = (Relation)enum.nextElement();
-                    if (rel != null) {
-                        result += rel._description(detail, indent+1, 2) + "\n";
+                Enumeration linkedRelations = linkedRelations();
+                while (linkedRelations.hasMoreElements()) {
+                    Relation relation =
+                        (Relation)linkedRelations.nextElement();
+                    if (relation != null) {
+                        result += relation._description(detail,
+                                indent + 1, 2) + "\n";
                     } else {
                         // A null link (supported since indexed links) might
                         // yield a null relation here. EAL 7/19/00.
-                        result += _getIndentPrefix(indent+1) + "null\n";
+                        result += _getIndentPrefix(indent + 1) + "null\n";
                     }
                 }
                 result += _getIndentPrefix(indent) + "}";
