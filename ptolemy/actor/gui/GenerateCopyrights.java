@@ -131,7 +131,7 @@ public class GenerateCopyrights {
 
         _addIfPresent(copyrightsMap,
                 "ptolemy.domains.gr.lib.quicktime.MovieViewScreen2D",
-                "ptolemy/domains/gr/lib/quicktime/quicktime-copyright.html");
+                "ptolemy/domains/gr/lib/quicktime/quicktime-copyright.htm");
 
         _addIfPresent(copyrightsMap,
                 "ptolemy.domains.psdf.kernel.PSDFScheduler",
