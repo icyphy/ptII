@@ -69,11 +69,11 @@ FIXME: EXPERIMENTAL.
 @author Jie Liu
 @version $Id$
 */
-public class TMCompositeFacade extends TypedCompositeActor 
+public class TMCompositeFacade extends TypedCompositeActor
     implements TMActor {
-    
+
     /** Construct an actor with the specified container and name.
-     *  There is one parameter which is the full class name of 
+     *  There is one parameter which is the full class name of
      *  a Ptolemy actor. No ports.
      */
     public TMCompositeFacade(CompositeEntity container, String name)
@@ -85,10 +85,10 @@ public class TMCompositeFacade extends TypedCompositeActor
         executionTime = new Parameter(this, "executionTime",
                 new DoubleToken(0.0));
         executionTime.setTypeEquals(BaseType.DOUBLE);
-    } 
+    }
 
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -105,7 +105,7 @@ public class TMCompositeFacade extends TypedCompositeActor
 
     /** update local cache of executionTime.
      */
-    public void attributeChanged(Attribute attribute) 
+    public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == executionTime) {
             double time = ((DoubleToken)executionTime.getToken()).
@@ -168,9 +168,9 @@ public class TMCompositeFacade extends TypedCompositeActor
             return true;
         }
     }
-        
 
-    protected synchronized void _transferInputs() 
+
+    protected synchronized void _transferInputs()
             throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
         while(inputPorts.hasNext()) {
@@ -192,15 +192,15 @@ public class TMCompositeFacade extends TypedCompositeActor
             }
         }
     }
-    
+
     public double getExecutionTime() {
         return _executionTime;
     }
-            
+
 
     /////////////////////////////////////////////////////////////////////
     ////                        private variables                    ////
-   
+
     // Indicating whether the execution of the internal model is idle.
     private boolean _idle = true;
 
@@ -212,7 +212,7 @@ public class TMCompositeFacade extends TypedCompositeActor
 
     /////////////////////////////////////////////////////////////////////
     ////                        inner class                          ////
-    
+
     private class RunnableDirector implements Runnable {
         public void run() {
             _idle = false;
@@ -223,7 +223,7 @@ public class TMCompositeFacade extends TypedCompositeActor
             }
             _idle = true;
         }
-        
+
     }
 }
 
