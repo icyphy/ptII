@@ -60,7 +60,7 @@ message to the chopstick to say that it is finished using it.
 Note this actor has been slowed down with Thread.sleep() statements to
 mimic the eating nature of the philosophers in real time.
 <p>
-This actor is aparameterized by three parameters: "eatingRate" which
+This actor is parameterized by three parameters: "eatingRate" which
 controls the distribution of the eating times, and "thinkingRate"
 which controls the distribution of the thinking times. Both these
 rates characterize a uniform distribution between 0 and the rate.
