@@ -59,7 +59,6 @@ JSRCS = \
         FBDelay.java \
         TimeKeeper.java \
         TimedQueueReceiver.java
-        #DDENullFBDelay.java \
 
 
 EXTRA_SRCS =	$(JSRCS)

@@ -62,7 +62,6 @@ JSIMPLE_TESTS = \
 	TimeKeeper.tcl \
 	DDEReceiver.tcl 
 
-	#DDENullFBDelay.tcl 
 	#Test.tcl
 
 # Graphical Java tests that use Tcl.
