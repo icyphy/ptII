@@ -336,8 +336,8 @@ public class DEDirector extends Director {
      *  @exception IllegalActionException If the firing actor throws it.
      */
     public void fire() throws IllegalActionException {
+        _stopRequested = false;
         while (true) {
-            _stopRequested = false;
 
             Actor actorToFire = _dequeueEvents();
             if (actorToFire == null) {
@@ -913,8 +913,8 @@ public class DEDirector extends Director {
         if (_eventQueue == null) return null;
 
         // Keep taking events out until there are no more event with the same
-        // tag or until the queue is empty.
-        while (true) {
+        // tag or until the queue is empty, or until a stop is requested.
+        while (!_stopRequested) {
             // Get the next event off the event queue.
             if (_stopWhenQueueIsEmpty) {
                 if (_eventQueue.isEmpty()) {
