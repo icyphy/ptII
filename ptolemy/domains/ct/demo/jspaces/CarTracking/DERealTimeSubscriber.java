@@ -101,7 +101,7 @@ public class DERealTimeSubscriber extends DEActor
      */
     public Parameter jspaceName;
 
-    /** The name for the subcribed entry. The default value is
+    /** The name for the subscribed entry. The default value is
      *  an empty string of type StringToken.
      */
     public Parameter entryName;
