@@ -36,13 +36,13 @@ package ptolemy.plot.plotml;
 import ptolemy.plot.Histogram;
 import ptolemy.plot.PlotBox;
 import ptolemy.plot.Plot;
-import ptolemy.plot.Message;
 import ptolemy.gui.Query;
 import ptolemy.gui.PanelDialog;
 
 import java.awt.MenuItem;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JOptionPane;
 
 //////////////////////////////////////////////////////////////////////////
 //// HistogramMLApplication
@@ -87,6 +87,7 @@ public class HistogramMLApplication extends PlotMLApplication {
     public HistogramMLApplication(Histogram plot, String args[])
             throws Exception {
         super(plot, args);
+        setTitle("Ptolemy Histogram");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,32 +121,30 @@ public class HistogramMLApplication extends PlotMLApplication {
     /** Display basic information about the application.
      */
     protected void _about() {
-        Message message = new Message(
+        JOptionPane.showMessageDialog(this,
                 "HistogramMLApplication class\n" +
-                "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
+                "By: Edward A. Lee, eal@eecs.berkeley.edu " +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
                 "Version 3.1, Build: $Id$\n\n"+
                 "For more information, see\n" +
-                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n" +
-                "Copyright (c) 1997-1999,\n" +
-                "The Regents of the University of California.");
-        message.setTitle("About Ptolemy Plot");
+                "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n" +
+                "Copyright (c) 1997-1999, " +
+                "The Regents of the University of California.",
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Display more detailed information than given by _about().
      */
     protected void _help() {
-        // Use newlines here since we are displaying with scrollbars.
-        Message message = new Message(
+        JOptionPane.showMessageDialog(this,
                 "HistogramMLApplication is a standalone plot " +
                 " application.\n" +
-                "It can read files in the PlotML format (an XML extension).\n" +
-                "Drag the right mouse button to edit the plot.\n" +
-                "Use the File menu to open and edit plot files.\n" +
-                "Use the Edit menu to select a dataset to edit " +
-                "(if there is more than one dataset)." +
-                _usage());
-        message.setTitle("Usage of Ptolemy Plot");
+                "  File formats understood: PlotML and Ptplot ASCII.\n" +
+                "  Left mouse button: Zooming.\n" +
+                "  Right mouse button: Editing data (use edit menu to select " +
+                "a dataset).\n\n" +
+                _usage(),
+                "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /** Create a new parser object for the application.  Derived classes can
