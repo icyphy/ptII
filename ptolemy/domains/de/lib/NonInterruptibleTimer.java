@@ -115,7 +115,8 @@ public class NonInterruptibleTimer extends Server {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        Timer newObject = (Timer)super.clone(workspace);
+        NonInterruptibleTimer newObject 
+            = (NonInterruptibleTimer)super.clone(workspace);
         newObject.output.setTypeSameAs(value);
         return newObject;
     }
@@ -158,8 +159,8 @@ public class NonInterruptibleTimer extends Server {
      }
 
     /** If there are delayed input events that are not processed and the
-     *  timer is ready, begin process the earliest input event and schedule 
-     *  future firings to produce them.
+     *  timer is ready, begin processing the earliest input event and schedule 
+     *  a future firing to produce it.
      *  @exception IllegalActionException If there is no director or can not
      *  schedule future firings to handle delayed input events.
      */
