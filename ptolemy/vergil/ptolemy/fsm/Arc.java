@@ -72,7 +72,7 @@ using this class, see ArcModel in FSMGraphModel.
 
 @author Steve Neuendorffer
 @version $Id$
-@see FSMGraphModel$ArcModel
+@see FSMGraphModel.ArcModel
 */
 public class Arc {
 
