@@ -989,7 +989,7 @@ public class PlotBox extends Panel {
      * getDocumentBase() might fail.
      */
     public void parseFile(String dataurl, URL documentBase) {
-        DataInputStream in;
+        DataInputStream in = null;
         if (_debug > 2) System.out.println("PlotBox: parseFile("+ dataurl+" "+
                 documentBase+") _dataurl = "+_dataurl+" "+_documentBase);
         if (dataurl == null || dataurl.length() == 0) {
@@ -997,7 +997,7 @@ public class PlotBox extends Panel {
             in = new DataInputStream(System.in);
         } else {
             try {
-                URL url;
+                URL url = null;
                 if (documentBase == null && _documentBase != null) {
                     documentBase = _documentBase;
                 }
@@ -1323,14 +1323,12 @@ public class PlotBox extends Panel {
         if (lcLine.startsWith("xticks:")) {
             // example:
             // XTicks "label" 0, "label" 1, "label" 3
-            boolean cont = true;
             _parsePairs(line.substring(7), true);
             return true;
         }
         if (lcLine.startsWith("yticks:")) {
             // example:
             // YTicks "label" 0, "label" 1, "label" 3
-            boolean cont = true;
             _parsePairs(line.substring(7), false);
             return true;
         }
@@ -1378,10 +1376,10 @@ public class PlotBox extends Panel {
     // The graphics context to operate in.  Note that printing will call
     // paint with a different graphics object, so we have to pass this
     // around properly.
-    protected Graphics _graphics;
+    protected Graphics _graphics = null;
 
     // The range of the plot.
-    protected double _yMax, _yMin, _xMax, _xMin;
+    protected double _yMax = 0, _yMin = 0, _xMax = 0, _xMin = 0;
 
     // Whether the ranges have been given.
     protected boolean _xRangeGiven = false;
@@ -1409,10 +1407,10 @@ public class PlotBox extends Panel {
     // The plot rectangle in pixels.
     // The naming convention is: "_ulx" = "upper left x", where "x" is
     // the horizontal dimension.
-    protected int _ulx, _uly, _lrx, _lry;
+    protected int _ulx = 1 , _uly = 1, _lrx = 100, _lry = 100;
 
     // Scaling used in plotting points.
-    protected double _yscale, _xscale;
+    protected double _yscale = 1.0, _xscale = 1.0;
     
     // Indicator whether to use _colors
     protected boolean _usecolor = true;
@@ -1449,7 +1447,6 @@ public class PlotBox extends Panel {
     private int _drawLegend(Graphics graphics, int urx, int ury) {
         // FIXME: consolidate all these for efficiency
         graphics.setFont(_labelfont);
-        FontMetrics _labelFontMetrics = graphics.getFontMetrics();
         int spacing = _labelFontMetrics.getHeight();
 
         Enumeration v = _legendStrings.elements();
@@ -1584,14 +1581,14 @@ public class PlotBox extends Panel {
         boolean cont = true;
         while (cont) {
             int comma = line.indexOf(",", start);
-            String pair;
+            String pair = null ;
             if (comma > start) {
                 pair = (line.substring(start,comma)).trim();
             } else {
                 pair = (line.substring(start)).trim();
                 cont = false;
             }
-            int close;
+            int close = -1;
             int open = 0;
             if (pair.startsWith("\"")) {
                 close = pair.indexOf("\"",1);
@@ -1622,8 +1619,7 @@ public class PlotBox extends Panel {
      * Note: The argument must be strictly positive.
      */
     private double _roundUp(double val) {
-        int exponent, idx;
-        exponent = (int) Math.floor(Math.log(val)*_log10scale);
+        int exponent = (int) Math.floor(Math.log(val)*_log10scale);
         val *= Math.pow(10, -exponent);
         if (val > 5.0) val = 10.0;
         else if (val > 2.0) val = 5.0;
@@ -1705,17 +1701,19 @@ public class PlotBox extends Panel {
     private boolean _binary = false;
 
     // The range of the plot as labeled (multiply by 10^exp for actual range.
-    private double _ytickMax, _ytickMin, _xtickMax, _xtickMin;
+    private double _ytickMax = 0.0, _ytickMin = 0.0,
+        _xtickMax = 0.0 , _xtickMin = 0.0 ;
     // The power of ten by which the range numbers should be multiplied.
-    private int _yExp, _xExp;
+    private int _yExp = 0, _xExp = 0;
 
     // Scaling used in making tick marks
-    private double _ytickscale, _xtickscale;
+    private double _ytickscale = 0.0, _xtickscale = 0.0;
 
     // Font information.
     private Font _labelfont = null, _superscriptfont = null,
         _titlefont = null;
-    FontMetrics _labelFontMetrics = null, _superscriptFontMetrics = null,
+    private FontMetrics _labelFontMetrics = null, 
+        _superscriptFontMetrics = null,
         _titleFontMetrics = null;
 
     // For use in calculating log base 10.  A log times this is a log base 10.
@@ -1732,10 +1730,11 @@ public class PlotBox extends Panel {
     private Vector _legendDatasets = new Vector();
     
     // If XTicks or YTicks are given
-    private Vector _xticks, _xticklabels, _yticks, _yticklabels;
+    private Vector _xticks = null, _xticklabels = null,
+        _yticks = null, _yticklabels = null;
 
     // A button for filling the plot
-    private Button _fillButton;
+    private Button _fillButton = null;
     
     // Variables keeping track of the interactive zoom box.
     // Initialize to impossible values.
