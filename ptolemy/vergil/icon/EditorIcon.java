@@ -403,10 +403,6 @@ public class EditorIcon extends Attribute {
         // look like:
         /*
           StringBuffer moml = new StringBuffer();
-          NamedObj context = MoMLChangeRequest.getDeferredToParent(this);
-          if (context != null && context != this) {
-          moml.append("<property name=\"" + getName(context) + "\">\n");
-          }
           moml.append("<group name=\"auto\">" +
           "<property name=\"defaultFigure\" " +
           "class=\"ptolemy.vergil.kernel.attributes.RectangleAttribute\">\n" +
@@ -415,14 +411,9 @@ public class EditorIcon extends Attribute {
           "<property name=\"centered\" value=\"true\"/>\n" +
           "<property name=\"fillColor\" value=\"{1.0, 1.0, 1.0, 1.0}\"/>\n" +
           "</property></group>" );
-          if (context != null && context != this) {
-          moml.append("</property>");
-          } else {
-          context = this;
-          }
           MoMLChangeRequest request = new MoMLChangeRequest(
-          this, context, moml.toString());
-          context.requestChange(request);
+          this, this, moml.toString());
+          requestChange(request);
         */
 
         return new BasicRectangle(-30, -20, 60, 40, Color.white, 1);
