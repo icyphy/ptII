@@ -124,7 +124,7 @@ public class ComponentPort extends Port {
      */	
     public ComponentPort(ComponentEntity container, String name) 
             throws IllegalActionException, NameDuplicationException {
-	super(container,name);
+	super(container, name);
         // Ignore exception because "this" cannot be null.
         try {
             _insideLinks = new CrossRefList(this);
