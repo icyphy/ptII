@@ -65,7 +65,7 @@ import ptolemy.plot.*;
 /**
 An applet that demonstrates the Ptolemy II type system.
 
-@author Yuhong Xiong
+@author Yuhong Xiong, John Reekie
 @version $Id$
 */
 
