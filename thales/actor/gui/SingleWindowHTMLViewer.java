@@ -164,7 +164,7 @@ public class SingleWindowHTMLViewer
      * Creates a new Tab to the TabbedPane. Add a "windows closed" listener to
      * automaticly remove Tabs;
      *
-     * @param frame
+     * @param tableau
      */
     public void newTabbedPanel(Tableau tableau) {
         removeEmptyTabs();
@@ -232,7 +232,7 @@ public class SingleWindowHTMLViewer
      * Replaces corresponding Menu and Toolbar from the frame.
      * And hides the report bar
      *
-     * @param frame
+     * @param menuBar
      */
     public void fillMainFrame(JMenuBar menuBar) {
         if (_originalMenuBar == null) {
@@ -274,7 +274,7 @@ public class SingleWindowHTMLViewer
     /**
      * Finds the corresponding Tableau according to the
      * Component contained by a Tab.
-     * @param aComp
+     * @param tableauFullName
      * @return the corresponding Tableau.
      */
     protected Tableau findComponentTableau(String tableauFullName) {
