@@ -52,7 +52,6 @@ JSRCS = \
 	Configurer.java \
 	Message.java \
 	PanelDialog.java \
-	ParameterConfigurer.java \
 	Query.java \
 	QueryListener.java
 
