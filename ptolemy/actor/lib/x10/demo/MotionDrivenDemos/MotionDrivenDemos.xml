@@ -4,46 +4,9 @@
 <entity name="MotionDrivenDemos" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 953, 590}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 953, 592}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[738, 474]">
-    </property>
-    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
-        </property>
-        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
-        </property>
-        <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="72.5, 45.0">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
-    </property>
-    <property name="timeoutForMotion" class="ptolemy.data.expr.Parameter" value="120.0">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 30.0">
-        </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -108,6 +71,37 @@ detector and executes Ptolemy demos.</text></svg></configure>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 50.0">
+        </property>
+    </property>
+    <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 25.0">
+        </property>
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 50.0">
         </property>
     </property>
     <entity name="Controller" class="ptolemy.vergil.fsm.modal.ModalModel">
@@ -560,9 +554,9 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <entity name="Middle Spotlight" class="ptolemy.actor.lib.x10.LampController">
                 <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
                 </property>
-                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
+                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
                 </property>
-                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="D">
+                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="$houseCode">
                 </property>
                 <property name="unitCode" class="ptolemy.data.expr.StringParameter" value="1">
                 </property>
@@ -595,9 +589,9 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <entity name="Side Lights" class="ptolemy.actor.lib.x10.LampController">
                 <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
                 </property>
-                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
+                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
                 </property>
-                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="D">
+                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="$houseCode">
                 </property>
                 <property name="unitCode" class="ptolemy.data.expr.StringParameter" value="3">
                 </property>
@@ -715,9 +709,9 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <entity name="Middle Spotlight" class="ptolemy.actor.lib.x10.LampController">
                 <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
                 </property>
-                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
+                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
                 </property>
-                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="D">
+                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="$houseCode">
                 </property>
                 <property name="unitCode" class="ptolemy.data.expr.StringParameter" value="1">
                 </property>
@@ -750,9 +744,9 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <entity name="Side Lights" class="ptolemy.actor.lib.x10.LampController">
                 <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
                 </property>
-                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
+                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
                 </property>
-                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="D">
+                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="$houseCode">
                 </property>
                 <property name="unitCode" class="ptolemy.data.expr.StringParameter" value="3">
                 </property>
@@ -804,7 +798,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 226, 815, 516}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={18, 226, 815, 518}}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -871,9 +865,9 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <entity name="Middle Spotlight" class="ptolemy.actor.lib.x10.LampController">
                 <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
                 </property>
-                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
+                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
                 </property>
-                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="D">
+                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="$houseCode">
                 </property>
                 <property name="unitCode" class="ptolemy.data.expr.StringParameter" value="1">
                 </property>
@@ -906,9 +900,9 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <entity name="Side Lights" class="ptolemy.actor.lib.x10.LampController">
                 <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
                 </property>
-                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
+                <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
                 </property>
-                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="D">
+                <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="$houseCode">
                 </property>
                 <property name="unitCode" class="ptolemy.data.expr.StringParameter" value="3">
                 </property>
@@ -941,10 +935,6 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-            </relation>
-            <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" value="525.0, 310.0">
-                </vertex>
             </relation>
             <link port="Const.output" relation="relation2"/>
             <link port="Const2.output" relation="relation3"/>
@@ -987,7 +977,11 @@ a refinement that executes a sequence of demos.</text></svg></configure>
     <entity name="Listener2" class="ptolemy.actor.lib.x10.Listener">
         <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM11A">
         </property>
-        <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="COM1">
+        <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="$serialPortName">
+        </property>
+        <property name="blocking" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="discardOldData" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Serial-port command listener for x10 devices</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 115.0">
@@ -1007,7 +1001,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={688, 22, 292, 229}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={688, 22, 290, 227}}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 55.0">
         </property>
@@ -1021,7 +1015,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
         </property>
         <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="firstString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&lt;D16-ON-0&gt;">
         </property>
         <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&lt;${houseCode}5-ON">
         </property>
@@ -1049,7 +1043,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
         </property>
         <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="firstString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&lt;D16-ON-0&gt;">
         </property>
         <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&lt;${houseCode}5-OFF">
         </property>
@@ -1077,7 +1071,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
         </property>
         <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="firstString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&lt;D16-ON-0&gt;">
         </property>
         <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&lt;${houseCode}16-ON">
         </property>
@@ -1105,7 +1099,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
         </property>
         <property name="ignoreCase" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="firstString" class="ptolemy.actor.parameters.PortParameter">
+        <property name="firstString" class="ptolemy.actor.parameters.PortParameter" value="&lt;D16-ON-0&gt;">
         </property>
         <property name="secondString" class="ptolemy.actor.parameters.PortParameter" value="&lt;${houseCode}16-OFF">
         </property>
