@@ -33,6 +33,8 @@ import pt.domains.pn.kernel.*;
 import pt.domains.pn.stars.*;
 import java.util.Enumeration;
 
+import gui.DynamicGraphView;
+
 //////////////////////////////////////////////////////////////////////////
 //// PNPrimeExample
 /** 
@@ -65,13 +67,17 @@ public class PNPrimeExample {
 
         //System.out.println(myUniverse.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
 
-        DebugMutationListener d = new DebugMutationListener();
-        myUniverse.getDirector().addMutationListener(d);
+        DynamicGraphView view = DynamicGraphView.makeView(
+                "Sieve of Eratosthenes", 800, 600);
+
+        view.loadPtolemyGraph(myUniverse);
+
+        // DebugMutationListener d = new DebugMutationListener();
+        // myUniverse.getDirector().addMutationListener(d);
+        myUniverse.getDirector().addMutationListener(view);
 
         myUniverse.start();
         System.out.println("Bye World\n");
         return;
     }
 }
-
-
