@@ -7,9 +7,6 @@ import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
-import gui.DynamicGraphView;
-
- 
 
 public class SDFDelay extends SDFAtomicActor {
     public IOPort inputport;
