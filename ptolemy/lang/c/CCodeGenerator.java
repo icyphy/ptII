@@ -543,11 +543,17 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
     }
 
     public Object visitForNode(ForNode node, LinkedList args) {
-        return TNLManip.arrayToList(new Object[] {_indent(node), "for (",
-                                                      _forInitStringList(node.getInit()), "; ",
-                                                      node.childReturnValueAt(node.CHILD_INDEX_TEST), "; ",
-                                                      _commaList((List) node.childReturnValueAt(node.CHILD_INDEX_UPDATE)),
-                                                      ") ", node.childReturnValueAt(node.CHILD_INDEX_STMT), "\n"});
+        LinkedList retList = new LinkedList();
+        retList.addLast(_indent(node) + "for (");
+        retList.addLast(_forInitStringList(node.getInit()));
+        retList.addLast("; ");
+        retList.addLast(node.childReturnValueAt(node.CHILD_INDEX_TEST));
+        retList.addLast("; ");
+        retList.addLast(_commaList((List) 
+                node.childReturnValueAt(node.CHILD_INDEX_UPDATE)));
+        retList.addLast(") ");
+        _generateStmtOrBlock(node, node.CHILD_INDEX_STMT, retList);
+        return retList;
     }
 
     public Object visitBreakNode(BreakNode node, LinkedList args) {
@@ -928,7 +934,7 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
 
         e1StringList = _parenExpr(node.getExpr1(), e1StringList);
         e2StringList = _parenExpr(node.getExpr2(), e2StringList);
-        e3StringList = _parenExpr(node.getExpr3(), e2StringList);
+        e3StringList = _parenExpr(node.getExpr3(), e3StringList);
 
         return TNLManip.arrayToList(new Object[] {e1StringList, " ? ",
                                                       e2StringList, " : ", e3StringList});
@@ -1106,7 +1112,7 @@ public class CCodeGenerator extends JavaVisitor implements CCodeGeneratorConstan
             // expressions. This has the effect of ignoring indentation
             // level settings.
             return _separateList(
-                    TNLManip.traverseList(this, null, list), "; ");
+                    TNLManip.traverseList(this, null, list), ", ");
         }
     }
 
