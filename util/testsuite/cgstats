@@ -28,12 +28,13 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-
-if [ $# -eq 0 ]
+# Usage: cgstats [ptIInightly.txt file]
+if [ $# -eq 0 ]; then
     statsfile=/vol/cooley/cooley1/cxh/ptII/ptolemy/copernicus/java/runDemoTest2.out
 else
     statsfile=$1
 fi
+
 grep StatRT $statsfile | grep ave |
 	awk 'BEGIN { runs["codegen"] = 1
 		     runs["interpreted"] = 1
@@ -43,22 +44,30 @@ grep StatRT $statsfile | grep ave |
 		     runs["jimple4"] = 1
 		     runs["jimple5"] = 1
 		     runs["jimple6"] = 1
+		     runs["codegen"] = 1
+		     print "# Time and Memory"
+		     printf ("# Model Name     ")
+		     for (run in runs) {		     
+			    printf("%s: time mem free static statRT dynRT ",
+				    run);
+		     }
+		     printf("\n");
+
 		}
 		{   if ($1 != current ) {
-		        printf("%-16s    time  mem   free static statRT  dynRT", current)
-			if (time["interpreted"] == 0) {
-			    printf("code/interp 0 0 0 0 0 0 ");
-			} else {    
-			    printf("code/interp %3d% %3d% %3d% %3d% %3d% %3d% ", int( (time["codegen"]+0.0)/(time["interpreted"]+0.0) * 100 + 0.5),
-  int( (mem["codegen"]+0.0)/(mem["interpreted"]+0.0) * 100 + 0.5),
-  int( (free["codegen"]+0.0)/(free["interpreted"]+0.0) * 100 + 0.5),
-  int( (static["codegen"]+0.0)/(static["interpreted"]+0.0) * 100 + 0.5),
-  int( (staticRT["codegen"]+0.0)/(staticRT["interpreted"]+0.0) * 100 + 0.5),
-  int( (dynamicRT["codegen"]+0.0)/(dynamicRT["interpreted"]+0.0) * 100 + 0.5))
-
-			}
+		        printf("%-16s ", current)
+			#if (time["interpreted"] == 0) {
+			#    printf("code/interp 0 0 0 0 0 0 ");
+			#} else {    
+			#    printf("code/interp %3d %3d %3d %3d %3d %3d ", int( (time["codegen"]+0.0)/(time["interpreted"]+0.0) * 100 + 0.5),
+  #int( (mem["codegen"]+0.0)/(mem["interpreted"]+0.0) * 100 + 0.5),
+  #int( (free["codegen"]+0.0)/(free["interpreted"]+0.0) * 100 + 0.5),
+  #int( (static["codegen"]+0.0)/(static["interpreted"]+0.0) * 100 + 0.5),
+  #int( (staticRT["codegen"]+0.0)/(staticRT["interpreted"]+0.0) * 100 + 0.5),
+  #int( (dynamicRT["codegen"]+0.0)/(dynamicRT["interpreted"]+0.0) * 100 + 0.5))
+			#}
 			for (run in runs) {
-			    printf("%s %3d %5s %5s %5s %5s %5s ", run, time[run], mem[run], free[run], static[run], staticRT[run], dynamicRT[run]);
+			    printf("%s: %3d %5s %5s %5s %5s %5s ", run, time[run], mem[run], free[run], static[run], staticRT[run], dynamicRT[run]);
 			    time[run] = 0
 			    mem[run] = 0
 			    free[run] = 0
@@ -87,7 +96,8 @@ grep /treeshake $statsfile | egrep '^-rw' | sort | uniq |
 	sed 's/treeshake_//' | sed 's/.jar//' |
 	awk '{n=split($8,f,"/"); print f[n-1], f[n], $4}' | sort |
 	awk '
-	     BEGIN { print "Model          interp  codegen jimple1"  
+		BEGIN { print "# Jar File sizes"
+			print "#Model        cg/interp% interp codegen jimple1 jimple2"  
 		}
 		{   if ($1 != current ) {
 			if (row["interp"] == 0) {
