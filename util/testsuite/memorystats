@@ -52,9 +52,15 @@ awk 'BEGIN {min=99999999}
 		    freeSum+=free;
 		}
 	    }
-	END {   timeAverage= int(sum/count+0.5)
-		percentFree=int (((freeSum/count)+0.0)/((memorySum/count)+0.0) * 100.0 + 0.5)
-		print description ": Averages of second and succeeding " count-1 " runs:" 
-		print description " ave: " timeAverage " ms. Memory: " memorySum/count "K Free: " freeSum/count "K ("  percentFree "%)"
+	END {   
+		if (count==0) {
+		    print description ": count == 0! Perhaps the output did not contain   \"ms. Memory\""
+		} else {
+		    timeAverage= int(sum/count+0.5)
+		    percentFree=int (((freeSum/count)+0.0)/((memorySum/count)+0.0) * 100.0 + 0.5)
+		    print description ": Averages of second and succeeding " count-1 " runs:" 
+
+		    print description " ave: " timeAverage " ms. Memory: " memorySum/count "K Free: " freeSum/count "K ("  percentFree "%)"
+	       }
 }' description="$1" -
 
