@@ -87,6 +87,7 @@
 <entity name="Pulse" class="ptolemy.actor.lib.Pulse"/>
 <entity name="Ramp" class="ptolemy.actor.lib.Ramp"/>
 <entity name="SketchedSource" class="ptolemy.actor.lib.gui.SketchedSource"/>
+<entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
 <entity name="Uniform" class="ptolemy.actor.lib.Uniform"/>
       </group>
   </configure>
@@ -111,7 +112,7 @@
 </entity>
 <!-- END sinks -->
 
-            <input source="../actor/lib/math.xml"/>
+            <input source="ptolemy/actor/lib/math.xml"/>
 
 <!-- BEGIN flow control -->
 <entity name="flow control" class="ptolemy.moml.EntityLibrary">
@@ -133,10 +134,10 @@
   </configure>
 </entity>
 <!-- END flow control -->
-            <input source="../actor/lib/logic/logic.xml"/>
-            <input source="../actor/lib/conversions/conversions.xml"/>
-            <input source="../actor/lib/array.xml"/>
-            <input source="../actor/lib/signalprocessing.xml"/>
+            <input source="ptolemy/actor/lib/logic/logic.xml"/>
+            <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
+            <input source="ptolemy/actor/lib/array.xml"/>
+            <input source="ptolemy/actor/lib/signalprocessing.xml"/>
           </group>
         ?>
       </configure>
