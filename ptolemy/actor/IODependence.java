@@ -61,7 +61,7 @@ This attribute can be invalidated by calling the <i>invalididate()<i/>
 method. It is the executive director of the container of this IODependence
 attribute decides when to invalidate this attribute. For example, the
 DEDirector invalidates this attribute when its scheule needs recalculated.
-@see ptolemy.domains.de.kernel.DEDirector.
+@see ptolemy.domains.de.kernel.DEDirector
 <p>
 This attribute is not persistent by default, so it will not be exported
 into a MoML representation of the model.
