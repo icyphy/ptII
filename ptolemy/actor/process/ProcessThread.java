@@ -85,7 +85,8 @@ public class ProcessThread extends PtolemyThread {
         super();
 	_actor = actor;
         _director = director;
-        _manager = ((CompositeActor)((NamedObj)actor).getContainer()).getManager();
+        _manager = ((CompositeActor)
+                ((NamedObj)actor).getContainer()).getManager();
 
 	//This method is called here and not in the run() method as the 
 	//count should be incremented before any thread is started 
