@@ -648,3 +648,48 @@ test Scheduler-6.7 {Test Schedule.actorIterator for complex schedule} {
     list [$actor1 getName] [$actor2 getName] [$actor3 getName] [$actor4 getName] [$actor5 getName] [$actor6 getName] [$actor7 getName] [$actor8 getName] [$actor9 getName]
     
 } {A B C B C B C D D}
+
+######################################################################
+####
+# This is the schedule in the Schedule.java class documentation.
+test Scheduler-6.8 {Test Schedule.actorIterator for another schedule} {
+    # Create actors
+    set toplevel [java::new ptolemy.actor.CompositeActor $w]
+    set a [java::new ptolemy.actor.test.TestActor $toplevel A]
+    set b [java::new ptolemy.actor.test.TestActor $toplevel B]
+    set c [java::new ptolemy.actor.test.TestActor $toplevel C]
+
+    # Construct schedule (1, (1, A, B, C), (1, null)) 
+    set S [java::new ptolemy.actor.sched.Schedule]
+    set S1 [java::new ptolemy.actor.sched.Schedule]
+    set S2 [java::new ptolemy.actor.sched.Schedule]
+    set S2_1 [java::new ptolemy.actor.sched.Firing $a]
+    set S2_2 [java::new ptolemy.actor.sched.Firing $b]
+    set S2_3 [java::new ptolemy.actor.sched.Firing $c]
+    $S1 add $S2_1
+    $S1 add $S2_2
+    $S1 add $S2_3
+    $S add $S1
+    $S add $S2
+
+    # Test the schedule
+
+    # Test actorIterator on subschedule (1, A, B, C)
+    set actorIterator [$S1 actorIterator]
+
+    set actor1 [$actorIterator next]
+    set actor1 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor1]
+
+    set actor2 [$actorIterator next]
+    set actor2 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor2]
+
+    set actor3 [$actorIterator next]
+    set actor3 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor3]
+    $actorIterator hasNext
+
+    list [$actor1 getName] [$actor2 getName] [$actor3 getName] 
+    
+} {A B C}
