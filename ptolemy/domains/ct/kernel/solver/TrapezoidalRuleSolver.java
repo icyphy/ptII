@@ -166,7 +166,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
             0.1*Math.abs(integrator.getTentativeState() - k[0]);
         integrator.setAuxVariables(1, localError);
         _debug("Integrator: "+ integrator.getName() +
-                " local truncation error = " + e);
+                " local truncation error = " + localError);
         if(localError < tolerance) {
             _debug("Integrator: " + integrator.getName() +
                     " report a success.");
@@ -194,7 +194,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
         double h = dir.getCurrentStepSize();
         double tolerance = dir.getErrorTolerance();
         double newh = h;
-        if(localError/tolernace < 0.1) {
+        if(localError/tolerance < 0.1) {
             newh = 
                 h* Math.min(2, Math.pow((3.0*tolerance/localError), 1.0/3.0));
         }
