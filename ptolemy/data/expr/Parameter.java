@@ -192,11 +192,11 @@ public class Parameter extends Attribute implements ParameterListener {
 
     /** Evaluate the current expression to a Token. If this parameter
      *  was last set directly with a Token do nothing. This method is also
-     *  called after a Parameter is cloned. 
+     *  called after a Parameter is cloned.
      *  <p>
      *  This method is defined by The ParameterListener interface which
-     *  all Parameters implement. When a Parameter changes, it calls 
-     *  this method on all ParameterListeners registered with it. This 
+     *  all Parameters implement. When a Parameter changes, it calls
+     *  this method on all ParameterListeners registered with it. This
      *  method also detects dependency loops between Parameters.
      *  <p>
      *  Some of this method is read-synchronized on the workspace.
@@ -206,7 +206,7 @@ public class Parameter extends Attribute implements ParameterListener {
     public void evaluate() throws IllegalArgumentException {
         if (_currentExpression == null) {
 	    return;
-	} 
+	}
 	if (_dependencyLoop) {
             throw new IllegalArgumentException("Found dependency loop in " +
 		    getFullName() +  ": " + _currentExpression);
@@ -214,7 +214,7 @@ public class Parameter extends Attribute implements ParameterListener {
         _dependencyLoop = true;
 
         try {
-	    workspace().getReadAccess(); 
+	    workspace().getReadAccess();
 	    // if an expression was placed in this parameter but has not
 	    // yet been evaluated, do it now
 	    if (_needsEvaluation) {
@@ -246,7 +246,7 @@ public class Parameter extends Attribute implements ParameterListener {
 	    workspace().doneReading();
 	}
     }
-    
+
     /** Obtain a NamedList of the parameters that the value of this
      *  Parameter can depend on. The scope is limited to the parameters in the
      *  same NamedObj and those one level up in the hierarchy.
@@ -331,7 +331,7 @@ public class Parameter extends Attribute implements ParameterListener {
     }
 
     /** Register an interest with this Parameter.
-     *  @param newListener The ParameterListener that is will be notified 
+     *  @param newListener The ParameterListener that is will be notified
      *   whenever the token stored in this Parameter changes.
      */
      public void registerListener(ParameterListener newListener) {

@@ -67,7 +67,7 @@ public class ASTPtSumNode extends ASTPtRootNode {
                 // take from the front, put back at the end
                 Token x = (Token)_lexicalTokens.take();
                 // here so that tree can be reparsed
-                _lexicalTokens.insertLast(x); 
+                _lexicalTokens.insertLast(x);
                 op = x.image;
                 if (op.compareTo("+") == 0) {
                     result = result.add(childTokens[i]);

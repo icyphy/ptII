@@ -45,7 +45,7 @@ public interface ParameterListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** When a Parameter changes value, this method is invoked on 
+    /** When a Parameter changes value, this method is invoked on
      *  all ParameterListeners registered with it.
      **/
     public void evaluate();

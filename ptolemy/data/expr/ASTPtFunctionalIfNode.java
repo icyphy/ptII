@@ -55,7 +55,7 @@ The token returned depends on the value of the boolean.
 @see ptolemy.data.Token
 */
 public class ASTPtFunctionalIfNode extends ASTPtRootNode {
-    
+
     /** Resolves the Token to be stored in the node. When this
      *  method is called by resolveTree, the tokens in each of the children
      *  have been resolved. This method is concerned with evaluating
@@ -64,10 +64,10 @@ public class ASTPtFunctionalIfNode extends ASTPtRootNode {
      *  @exception IllegalArgumentException Thrown when an error occurs
      *  trying to evaluate the PtToken type and/or value to be stored.
      */
-    protected ptolemy.data.Token _resolveNode() 
+    protected ptolemy.data.Token _resolveNode()
             throws IllegalArgumentException {
         int num = jjtGetNumChildren();
-        // A functional-if node MUST have three children in parse tree, the 
+        // A functional-if node MUST have three children in parse tree, the
         // first of which is of type BooleanToken.
         ptolemy.data.Token test = childTokens[0];
         if ( !(test instanceof BooleanToken)) {
@@ -87,7 +87,7 @@ public class ASTPtFunctionalIfNode extends ASTPtRootNode {
             return childTokens[2];
         }
     }
-     
+
     public ASTPtFunctionalIfNode(int id) {
         super(id);
     }

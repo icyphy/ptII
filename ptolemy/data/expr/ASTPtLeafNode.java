@@ -59,7 +59,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
      *  correct result.
      */
     protected Parameter _param;
-    
+
     /** If this leaf node represents a reference to a parameter, return the
      *  PtToken contained in that parameter. Otherwise return the PtToken
      *  object stored in this node.
@@ -68,7 +68,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
      *  trying to evaluate the PtToken type and/or value to be stored in
      *  node in the tree.
      */
-    public ptolemy.data.Token evaluateParseTree() 
+    public ptolemy.data.Token evaluateParseTree()
             throws IllegalArgumentException {
         if (_param != null) {
             _ptToken = _param.getToken();

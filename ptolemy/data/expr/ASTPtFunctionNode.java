@@ -45,12 +45,12 @@ The parse tree created from the expression string consists of a
 hierarchy of node objects. This class represents function nodes in
 the parse tree.
 <p>
-A function node is created when a function call is parsed. This node 
-will search for the function, using refla]ection, in the classes 
-registered for this purpose with the parser. Thus to add to the lsit 
-of functions available to the expression, it is only necessary to 
-create a new class with the functions defined in it and register 
-it with the parser. By default only java.lang.Math and 
+A function node is created when a function call is parsed. This node
+will search for the function, using refla]ection, in the classes
+registered for this purpose with the parser. Thus to add to the lsit
+of functions available to the expression, it is only necessary to
+create a new class with the functions defined in it and register
+it with the parser. By default only java.lang.Math and
 ptolemy.data.expr.UtilityFunctions are searched for a given function.
 <p>
 FIXME: need to add in ComplexToken when it is written.
@@ -66,7 +66,7 @@ FIXME: need to add in ComplexToken when it is written.
 public class ASTPtFunctionNode extends ASTPtRootNode {
     protected String funcName;
 
-    protected ptolemy.data.Token _resolveNode() 
+    protected ptolemy.data.Token _resolveNode()
             throws IllegalArgumentException {
         int args = jjtGetNumChildren();
         Class[] argTypes = new Class[args];
@@ -96,7 +96,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                         "boolean, complex, double, int, long  and String");
             }
         }
-        // Now have the arguments converted, look through all the 
+        // Now have the arguments converted, look through all the
         // classes registered with the parser for the appropriate function.
         Enumeration allClasses = PtParser.getRegisteredClasses().elements();
         boolean foundMethod = false;
@@ -108,7 +108,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 result = m.invoke(nextClass, argValues);
                 foundMethod = true;
             } catch (Exception  ex) {
-                // FIXME: a lot of exceptions get caught here, perhaps 
+                // FIXME: a lot of exceptions get caught here, perhaps
                 // want to specify each of them seperately?
                 //System.out.println("Method " + funcName + " not found in " +
                   //  nextClass.getName());
@@ -133,12 +133,12 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 } else  {
                     throw new IllegalArgumentException("FunctionNode: "+
                         "result of function " + funcName + " not a valid type"+
-                        ": boolean, complex, double, int, long  and String" + 
+                        ": boolean, complex, double, int, long  and String" +
                         ", or a Token.");
                 }
             }
         }
-        // If reach here it means the function was not found on the 
+        // If reach here it means the function was not found on the
         // search path.
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i<args; i++) {
@@ -151,7 +151,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         throw new IllegalArgumentException("Function " + funcName + "(" + sb +
                 ") cannot be executed with given arguments.");
     }
-    
+
 
 
     public ASTPtFunctionNode(int id) {

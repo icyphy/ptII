@@ -48,7 +48,7 @@ nodes in the parse tree.
 */
 public class ASTPtLogicalNode extends ASTPtRootNode {
 
-    protected ptolemy.data.Token _resolveNode() 
+    protected ptolemy.data.Token _resolveNode()
             throws IllegalArgumentException {
         int num = jjtGetNumChildren();
         if (num == 1) {

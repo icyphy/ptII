@@ -42,7 +42,7 @@ import java.lang.reflect.*;
 //// ASTPtMethodCallNode
 /**
 The parse tree created from the expression string consists of a
-hierarchy of node objects. This class represents method call nodes 
+hierarchy of node objects. This class represents method call nodes
 in the parse tree.
 <p>
 To allow extension of the parser capabilities without modifying
@@ -70,7 +70,7 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
      *  @exception IllegalArgumentException Thrown when an error occurs
      *  trying to evaluate the PtToken type and/or value to be stored.
      */
-    protected ptolemy.data.Token _resolveNode() 
+    protected ptolemy.data.Token _resolveNode()
             throws IllegalArgumentException {
         int num = jjtGetNumChildren();
         // if only one child, then must be an enclosing parenthesis
@@ -127,8 +127,8 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
             throw new IllegalArgumentException(ex.getMessage());
         }
     }
-    
-    
+
+
     public ASTPtMethodCallNode(int id) {
         super(id);
     }
