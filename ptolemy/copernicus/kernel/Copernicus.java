@@ -61,9 +61,16 @@ import java.util.Map;
 /** 
 A Standalone application that generates code using the Ptolemy II code
 generation system.  This class acts a wrapper for the copernicus.*.Main
-classes by providing defaults arguments for the various backends.  The
-default arguments are read in from a compileCommandTemplate.in file,
-variables are substituted and the command executed.
+classes by providing defaults arguments for the various backends. 
+
+The <i>generatorAttribute</a> Parameter names a MoML file that
+contains definitions for other Parameters and Variables that control
+the compilation and execution of the model
+
+The default compilation arguments are read in from a file named
+compileCommandTemplate.in, variables are substituted and the compile
+command executed and then default arguments are read in from a file
+named runCommandTemplate.in.
 
 <p>For example:
 <pre>
@@ -86,7 +93,7 @@ then code is generated for
 that can be set as the other arguments.  
 
 <p>The general format is
-<code>-<i>ParameterName</i> <i>ParameterValue</i></code>, for example:
+<code>-<i>VariableName</i> <i>VariableValue</i></code>, for example:
 <code>-codeGenerator "shallow"</code>
 <p>For example:
 <pre>
@@ -348,24 +355,24 @@ public class Copernicus {
 	Iterator attributes = namedObj.attributeList().iterator();
 	while(attributes.hasNext()) {
 	    Attribute attribute = (Attribute)attributes.next();
-	    if (attribute instanceof Parameter) {
-		Parameter parameter = (Parameter)attribute;
+	    if (attribute instanceof Variable) {
+		Variable variable = (Variable)attribute;
 		try {
-		    String value = parameter.getToken().toString();
+		    String value = variable.getToken().toString();
 		    // Strip out any leading and trailing double quotes 
 		    if (!value.startsWith("\"") || value.length() <= 2) { 
-			substituteMap.put("@" + parameter.getName() + "@",
+			substituteMap.put("@" + variable.getName() + "@",
 					  value);
 		    } else {
-			substituteMap.put("@" + parameter.getName() + "@",
+			substituteMap.put("@" + variable.getName() + "@",
 					  value.substring(1,
 							  value.length()-1));
 		    }
 
 		} catch (Exception ex) {
 		    throw new IOException("Problem with '" 
-					  + parameter.getName() + "': '"
-					  + parameter.getExpression() + "': "
+					  + variable.getName() + "': '"
+					  + variable.getExpression() + "': "
 					  + ex);
 		}
 	    }
