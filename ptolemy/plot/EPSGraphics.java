@@ -88,7 +88,7 @@ public class EPSGraphics extends Graphics {
     }
 
     public void drawArc(int x, int y, int width, int height,
-             int startAngle, int arcAngle) {
+            int startAngle, int arcAngle) {
     }
 
     public boolean drawImage(Image img, int x, int y, ImageObserver observer) {
@@ -111,21 +111,21 @@ public class EPSGraphics extends Graphics {
     }
 
     public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2,
-    int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
+            int sx1, int sy1, int sx2, int sy2, ImageObserver observer) {
         return true;
     }
 
     public boolean drawImage(Image img,
-                                   int dx1,
-                                   int dy1,
-                                   int dx2,
-                                   int dy2,
-                                   int sx1,
-                                   int sy1,
-                                   int sx2,
-                                   int sy2,
-                                   Color bgcolor,
-                                   ImageObserver observer) {
+            int dx1,
+            int dy1,
+            int dx2,
+            int dy2,
+            int sx1,
+            int sy1,
+            int sx2,
+            int sy2,
+            Color bgcolor,
+            ImageObserver observer) {
         return true;
     }
 
@@ -176,7 +176,7 @@ public class EPSGraphics extends Graphics {
         int radius = width/2;
         Point center = _convert(x + radius, y + radius);
         _buffer.append("newpath " + center.x + " " + center.y + " "
-        + radius + " 0 360 arc closepath stroke\n");
+                + radius + " 0 360 arc closepath stroke\n");
     }
 
     public void drawRect(int x, int y, int width, int height) {
@@ -232,7 +232,7 @@ public class EPSGraphics extends Graphics {
         int radius = width/2;
         Point center = _convert(x + radius, y + radius);
         _buffer.append("newpath " + center.x + " " + center.y + " "
-        + radius + " 0 360 arc closepath fill\n");
+                + radius + " 0 360 arc closepath fill\n");
     }
 
     /** Fill the specified rectangle and draw a thin outline around it.
@@ -261,7 +261,7 @@ public class EPSGraphics extends Graphics {
     }
 
     public void fillRoundRect(int x, int y, int width, int height,
-             int arcWidth, int arcHeight) {
+            int arcWidth, int arcHeight) {
     }
 
     public Shape getClip() {
@@ -357,11 +357,11 @@ public class EPSGraphics extends Graphics {
         } else {
             // Write to clipboard instead
             // FIXME: This doesn't work with jdk 1.1.4.
-//             if (_clipboard == null) {
-//                 _clipboard = new Clipboard("UCB Plot");
-//             }
-//             StringSelection sel = new StringSelection(_buffer.toString());
-//             _clipboard.setContents(sel, sel);
+            //             if (_clipboard == null) {
+            //                 _clipboard = new Clipboard("UCB Plot");
+            //             }
+            //             StringSelection sel = new StringSelection(_buffer.toString());
+            //             _clipboard.setContents(sel, sel);
             System.out.println(_buffer);
         }
     }
@@ -381,7 +381,7 @@ public class EPSGraphics extends Graphics {
     // Return false if arguments are misformed.
     private boolean _polygon(int xPoints[], int yPoints[], int nPoints) {
         if (nPoints < 3 || xPoints.length < nPoints
-                 || yPoints.length < nPoints) return false;
+                || yPoints.length < nPoints) return false;
         Point start = _convert(xPoints[0],yPoints[0]);
         _buffer.append("newpath " + start.x + " " + start.y + " moveto\n");
         for (int i=1; i < nPoints; i++) {
@@ -412,7 +412,7 @@ public class EPSGraphics extends Graphics {
         _buffer.append("" + graylevel + " setgray\n");
         // NOTE -- for debugging, output color spec in comments
         _buffer.append("%---- rgb: " + red + " " +
-               green + " " + blue +"\n");
+                green + " " + blue +"\n");
     }
 
     ////////////////////////////////////////////////////////////////////////
