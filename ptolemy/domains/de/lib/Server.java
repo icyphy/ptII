@@ -38,6 +38,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.math.Utilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Server
@@ -154,8 +155,10 @@ public class Server extends DETransformer {
             _currentInput = input.get(0);
             double delay =
                 ((DoubleToken)serviceTime.getToken()).doubleValue();
-            _nextTimeFree = ((DEDirector)getDirector()).getCurrentTime()
+            double nextTimeFree = ((DEDirector)getDirector()).getCurrentTime()
                 + delay;
+            _nextTimeFree = Utilities.round(nextTimeFree, 
+                getDirector().getTimeResolution());
         } else {
             _currentInput = null;
         }
