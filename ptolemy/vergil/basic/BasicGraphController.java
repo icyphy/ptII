@@ -62,8 +62,7 @@ import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import ptolemy.vergil.toolbox.SnapConstraint;
 import ptolemy.vergil.toolbox.FigureAction.SourceType;
 
-import javax.swing.JMenu;
-import javax.swing.JToolBar;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -71,6 +70,11 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// BasicGraphController
@@ -234,82 +238,79 @@ public abstract class BasicGraphController extends AbstractGraphController
     /** React to the fact that the specified Settable has changed.
      *  If the specified Settable implements the Locatable interface,
      *  then this method will move the figure and reroute any connections
-     *  to it.
+     *  to it. This is done immediately if the caller is in the Swing
+     *  event thread, but otherwise is deferred to the event thread.
      *  @param settable The object that has changed value.
      */
-    public void valueChanged(Settable settable) {
+    public void valueChanged(final Settable settable) {
         if (settable instanceof Locatable && !_inValueChanged) {
-            Locatable location = (Locatable)settable;
-            Figure figure = getFigure(location);
-            Point2D origin = figure.getOrigin();
-            double originalUpperLeftX = origin.getX();
-            double originalUpperLeftY = origin.getY();
-
-            // NOTE: the following call may trigger an evaluation,
-            // which results in another recursive call to this method.
-            // This seems to cause a bug in diva resulting in the
-            // translation being done twice to two different places.
-            // Thus, we ignore the inside call and detect it with a
-            // private variable.
-            double[] newLocation;
-            try {
-                _inValueChanged = true;
-                newLocation = location.getLocation();
-            } finally {
-                _inValueChanged = false;
-            }
-
-            double translationX = newLocation[0] - originalUpperLeftX;
-            double translationY = newLocation[1] - originalUpperLeftY;
-
-            if (translationX != 0.0 || translationY != 0.0) {
-                // Request repaint before translation to repaint the
-                // damaged area.
-                // NOTE: Doesn't work.
-                // figure.repaint();
-                figure.translate(translationX, translationY);
-
-                // Reroute edges linked to this figure.
-                GraphModel model = getGraphModel();
-                Object userObject = figure.getUserObject();
-                if (userObject != null) {
-                    Iterator inEdges = model.inEdges(userObject);
-                    while(inEdges.hasNext()) {
-                        Figure connector = getFigure(inEdges.next());
-                        if (connector instanceof Connector) {
-                            ((Connector)connector).reroute();
-                        }
+            // Have to defer this to the event thread, or repaint
+            // doesn't work properly.
+            Runnable action = new Runnable() {
+                public void run() {
+                    Locatable location = (Locatable)settable;
+                    Figure figure = getFigure(location);
+                    Point2D origin = figure.getOrigin();
+                    double originalUpperLeftX = origin.getX();
+                    double originalUpperLeftY = origin.getY();
+                    
+                    // NOTE: the following call may trigger an evaluation,
+                    // which results in another recursive call to this method.
+                    // Thus, we ignore the inside call and detect it with a
+                    // private variable.
+                    double[] newLocation;
+                    try {
+                        _inValueChanged = true;
+                        newLocation = location.getLocation();
+                    } finally {
+                        _inValueChanged = false;
                     }
-                    Iterator outEdges = model.outEdges(userObject);
-                    while(outEdges.hasNext()) {
-                        Figure connector = getFigure(outEdges.next());
-                        if (connector instanceof Connector) {
-                            ((Connector)connector).reroute();
-                        }
-                    }
-                    if(model.isComposite(userObject)) {
-                        Iterator edges = GraphUtilities.partiallyContainedEdges(
-                                userObject, model);
-                        while(edges.hasNext()) {
-                            Figure connector = getFigure(edges.next());
-                            if (connector instanceof Connector) {
-                                ((Connector)connector).reroute();
+                    
+                    double translationX = newLocation[0] - originalUpperLeftX;
+                    double translationY = newLocation[1] - originalUpperLeftY;
+                    
+                    if (translationX != 0.0 || translationY != 0.0) {
+                        // The translate method supposedly handles the required
+                        // repaint.
+                        figure.translate(translationX, translationY);
+                        
+                        // Reroute edges linked to this figure.
+                        GraphModel model = getGraphModel();
+                        Object userObject = figure.getUserObject();
+                        if (userObject != null) {
+                            Iterator inEdges = model.inEdges(userObject);
+                            while(inEdges.hasNext()) {
+                                Figure connector = getFigure(inEdges.next());
+                                if (connector instanceof Connector) {
+                                    ((Connector)connector).reroute();
+                                }
+                            }
+                            Iterator outEdges = model.outEdges(userObject);
+                            while(outEdges.hasNext()) {
+                                Figure connector = getFigure(outEdges.next());
+                                if (connector instanceof Connector) {
+                                    ((Connector)connector).reroute();
+                                }
+                            }
+                            if(model.isComposite(userObject)) {
+                                Iterator edges = GraphUtilities
+                                        .partiallyContainedEdges(
+                                        userObject, model);
+                                while(edges.hasNext()) {
+                                    Figure connector = getFigure(edges.next());
+                                    if (connector instanceof Connector) {
+                                        ((Connector)connector).reroute();
+                                    }
+                                }
                             }
                         }
                     }
-                }
-                // NOTE: A very inelegant way to handle repainting is below.
-                // It's accessing a protected member of BasicGraphFrame.
-                // NOTE: This is very slow... It make preinitialize()
-                // take forever, presumably because all these variables
-                // are getting validated.  However, without it, then if
-                // a component moves during a run, e.g. by updating its
-                // _location variable, then it will leave a trail of
-                // cruft on the screen.
-                // FIXME: Better would be to figure out from the bounding
-                // box before translation and the translation what region
-                // needs to be repainted and just repaint that region.
-                getFrame()._jgraph.repaint();
+                } /* end of run() method */
+            }; /* end of Runnable definition. */
+            if (EventQueue.isDispatchThread()) {
+                action.run();
+            } else {
+                SwingUtilities.invokeLater(action);
             }
         }
     }
