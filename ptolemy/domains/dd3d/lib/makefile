@@ -67,8 +67,7 @@ JSRCS = \
 	Text3DActor.java \
 	ViewScreen.java 
 
-EXTRA_SRCS =	$(JSRCS) \
-	3dentities.xml
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
