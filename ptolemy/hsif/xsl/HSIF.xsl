@@ -322,34 +322,7 @@ For more help, choose Help from the upper menu bar.</text>
 
 <!-- Modal Director -->
 <xsl:template name="ModalDirector">
-
-        <property  value="ptolemy.domains.fsm.kernel.HSDirector" class="ptolemy.kernel.util.StringAttribute" name="directorClass" >
-            <property class="ptolemy.actor.gui.style.ChoiceStyle" name="style">
-                <property value="ptolemy.domains.fsm.kernel.HSDirector" class="ptolemy.kernel.util.StringAttribute" name="style0">
-                </property>
-                <property value="ptolemy.domains.fsm.kernel.FSMDirector" class="ptolemy.kernel.util.StringAttribute" name="style1">
-                </property>
-            </property>
-        </property>
-        
-        <!-- _tableau -->
-        <xsl:element name="property">
-            <xsl:attribute name="name">_tableauFactory</xsl:attribute>
-            <xsl:attribute name="class">ptolemy.vergil.fsm.modal.ModalTableauFactory</xsl:attribute>
-        </xsl:element>
-
-    <xsl:element name="property">
-        <!-- attributes of entity -->
-        <xsl:attribute name="name">_Director</xsl:attribute>
-        <xsl:attribute name="class">ptolemy.domains.fsm.kernel.HSDirector</xsl:attribute>
-
-
-        <xsl:element name="property">
-            <xsl:attribute name="name">controllerName</xsl:attribute>
-            <xsl:attribute name="class">ptolemy.kernel.util.StringAttribute</xsl:attribute>
-            <xsl:attribute name="value">_Controller</xsl:attribute>
-        </xsl:element>
-    </xsl:element>
+<!-- The director for modal model is automatically configured by the ModalModel java class. -->
 </xsl:template>
 
 <!-- ==========================================================
