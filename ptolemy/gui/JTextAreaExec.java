@@ -65,7 +65,7 @@ http://java.sun.com/products/jfc/tsc/articles/threads/threads2.html
 <p>See also
 http://developer.java.sun.com/developer/qow/archive/135/index.jsp
 and
-http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html
+http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html
 
 @author Christopher Hylands
 @version $Id$
