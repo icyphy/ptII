@@ -200,8 +200,11 @@ public class StyleConfigurer extends Query implements QueryListener {
             // Entry is not expertMode.
             // Figure out which style is being requested.
             ParameterEditorStyle found = null;
-            for (int i = 0; i < _parameterStyles.length && found == null; i++) {
-                if (getStringValue(name).equals(_parameterStyles[i].getName())) {
+            for (int i = 0;
+                 i < _parameterStyles.length && found == null;
+                 i++) {
+                if (getStringValue(name)
+                        .equals(_parameterStyles[i].getName())) {
                     found = _parameterStyles[i];
                 }
             }
@@ -210,12 +213,15 @@ public class StyleConfigurer extends Query implements QueryListener {
             Attribute param = _object.getAttribute(name);
             moml.append("<property name=\"" + param.getName() + "\">");
             Iterator styles
-                    = param.attributeList(ParameterEditorStyle.class).iterator();
+                    = param.attributeList(
+                            ParameterEditorStyle.class).iterator();
             boolean foundOne = false;
             while (styles.hasNext()) {
                 foundOne = true;
-                ParameterEditorStyle style = (ParameterEditorStyle)styles.next();
-                moml.append("<deleteProperty name=\"" + style.getName() + "\"/>\n");
+                ParameterEditorStyle style =
+                    (ParameterEditorStyle)styles.next();
+                moml.append("<deleteProperty name=\""
+                        + style.getName() + "\"/>\n");
             }
             if (foundOne) {
                 // Have to close and re-open the context to ensure
@@ -251,7 +257,8 @@ public class StyleConfigurer extends Query implements QueryListener {
         Top.deferIfNecessary(new Runnable() {
                 public void run() {
                     // Treat the expertMode entry specially.
-                    Attribute currentExpert = _object.getAttribute("_expertMode");
+                    Attribute currentExpert =
+                        _object.getAttribute("_expertMode");
                     boolean isExpert = currentExpert != null;
                     if (isExpert != _originalExpertMode) {
                         try {
