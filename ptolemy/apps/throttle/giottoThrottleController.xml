@@ -103,8 +103,9 @@
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Heterogeneous model of the UC Berkeley Vehicle Dynamics Lab
 Electronic Throttle Controller.
 
-by Paul Griffiths, Christoph Kirsch, Tunc Simsek, Jason Souder
-Last updated January 15, 2002</text></svg></configure>
+by Paul Griffiths, Christoph Kirsch, Tunc Simsek, Jason Souder,
+Edward Lee, Haiyang Zheng
+Last updated January 27, 2002</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -578,8 +579,8 @@ the pedal is not depressed and pi means full throttle.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>throttle position</title>
-<xRange min="0.0" max="0.3638499999999669"/>
-<yRange min="0.7012026941358411" max="1.000774367855814"/>
+<xRange min="0.0" max="0.39899999999996305"/>
+<yRange min="0.7010570171345809" max="1.000774367855814"/>
 </plot>?>
         </configure>
     </entity>
@@ -676,21 +677,21 @@ the drivers for the pulse-width modulated (pwm) actuators.
             </property>
             <port name="throttle_positions" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="100.0, 365.0">
+                <property name="_location" class="ptolemy.moml.Location" value="98.0, 364.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <port name="desired_throttle_position" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="100.0, 295.0">
+                <property name="_location" class="ptolemy.moml.Location" value="98.0, 294.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
             </port>
             <port name="current" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="480.0, 195.0">
+                <property name="_location" class="ptolemy.moml.Location" value="481.5, 195.0">
                 </property>
                 <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -699,7 +700,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
             </port>
             <port name="actual_motor_current" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.moml.Location" value="100.0, 230.0">
+                <property name="_location" class="ptolemy.moml.Location" value="98.5, 229.0">
                 </property>
                 <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -930,7 +931,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>pwm_signal</title>
-<xRange min="0.0" max="0.362999999999967"/>
+<xRange min="0.0" max="0.39899999999996305"/>
 <yRange min="0.0" max="1.0"/>
 </plot>?>
                 </configure>
@@ -965,7 +966,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                 <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector">
                     <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
                     </property>
-                    <property name="period" class="ptolemy.data.expr.Parameter" value="p*10">
+                    <property name="period" class="ptolemy.data.expr.Parameter" value="0.03">
                     </property>
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
@@ -981,7 +982,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                 </port>
                 <port name="motor_current" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="70.0, 95.0">
+                    <property name="_location" class="ptolemy.moml.Location" value="68.0, 94.0">
                     </property>
                 </port>
                 <port name="pedal_position" class="ptolemy.actor.TypedIOPort">
@@ -991,12 +992,12 @@ the drivers for the pulse-width modulated (pwm) actuators.
                 </port>
                 <port name="throttle_position" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="75.0, 180.0">
+                    <property name="_location" class="ptolemy.moml.Location" value="74.0, 179.0">
                     </property>
                 </port>
                 <port name="user_mode" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
-                    <property name="_location" class="ptolemy.moml.Location" value="180.0, 300.0">
+                    <property name="_location" class="ptolemy.moml.Location" value="180.0, 299.0">
                     </property>
                 </port>
                 <entity name="manager" class="ptolemy.actor.TypedCompositeActor">
@@ -1143,7 +1144,7 @@ the drivers for the pulse-width modulated (pwm) actuators.
                     </property>
                     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 10]">
                     </property>
-                    <property name="frequency" class="ptolemy.data.expr.Parameter" value="10">
+                    <property name="frequency" class="ptolemy.data.expr.Parameter" value="30">
                     </property>
                     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
                         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
