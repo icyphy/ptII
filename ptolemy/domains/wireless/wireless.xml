@@ -7,6 +7,18 @@
       <group>
   <doc>Wireless/Sensor network actors</doc>
 
+  <property name="AcousticChannel" class="ptolemy.domains.wireless.lib.AcousticChannel">
+  </property>
+
+  <property name="CircularRangeChannel" class="ptolemy.domains.wireless.lib.CircularRangeChannel">
+  </property>
+
+  <property name="DelayChannel" class="ptolemy.domains.wireless.lib.DelayChannel">
+  </property>
+
+  <property name="RadioChannel" class="ptolemy.domains.wireless.lib.RadioChannel">
+  </property>
+
   <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
   </property>
 

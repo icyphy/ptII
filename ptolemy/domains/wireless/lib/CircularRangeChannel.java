@@ -87,9 +87,10 @@ public class CircularRangeChannel extends WirelessChannel {
     protected boolean _isInRange(
             WirelessIOPort source, WirelessIOPort destination, Token properties)
             throws IllegalActionException {
+        // FIXME: Or convertible to DoubleToken
         if (properties instanceof DoubleToken) {
             double range = ((DoubleToken)properties).doubleValue();
-            return (_distanceBetween(source, destination) >= range);
+            return (_distanceBetween(source, destination) <= range);
         }
         return super._isInRange(source, destination, properties);
     }
