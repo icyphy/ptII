@@ -53,6 +53,7 @@ PTCLASSALLJARS = \
 	Eye/Eye.jar \
 	FixFIR/FixFIR.jar \
 	FixPoint/FixPoint.jar \
+	FourierSeries/FourierSeries.jar \
 	HTVQ/HTVQ.jar \
 	LMSAdaptive/LMSAdaptive.jar \
 	MaximumEntropySpectrum/MaximumEntropySpectrum.jar \
