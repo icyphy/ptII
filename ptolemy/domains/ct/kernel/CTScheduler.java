@@ -242,38 +242,6 @@ public class CTScheduler extends Scheduler {
         return discreteActors.contains(actor);
     }
 
-    /** Return the successive actors of the given actor in the topology.
-     *  If the argument is null, returns null.
-     *  If the actor is a sink, returns an empty list.
-     *  @param The specified actor. If the actor is null, returns null.
-     *  @return The enumerations of predecessors.
-     */
-    public List successorList(Actor actor) {
-        if (actor == null) {
-            return null;
-        }
-        LinkedList successors = new LinkedList();
-        Iterator outports = actor.outputPortList().iterator();
-        while (outports.hasNext()) {
-            IOPort outPort = (IOPort) outports.next();
-            Iterator inPorts = outPort.deepConnectedInPortList().iterator();
-            while (inPorts.hasNext()) {
-                IOPort inPort = (IOPort)inPorts.next();
-                Actor post = (Actor)inPort.getContainer();
-                // NOTE: This could be done by using
-                // NamedObj.depthInHierarchy() instead of comparing the
-                // executive directors, but its tested this way, so we
-                // leave it alone.
-                if ((actor.getExecutiveDirector()
-                        == post.getExecutiveDirector()) &&
-                        !successors.contains(post)) {
-                    successors.addLast(post);
-                }
-            }
-        }
-        return successors;
-    }
-
     /** Return the predecessors of the given actor in the topology within
      *  this opaque composite actor.
      *  If the argument is null, returns null.
@@ -317,6 +285,39 @@ public class CTScheduler extends Scheduler {
             return "UNKNOWN";
         }
         return "INVALID:" + signalType + " is invalid";
+    }
+
+
+    /** Return the successive actors of the given actor in the topology.
+     *  If the argument is null, returns null.
+     *  If the actor is a sink, returns an empty list.
+     *  @param The specified actor. If the actor is null, returns null.
+     *  @return The enumerations of predecessors.
+     */
+    public List successorList(Actor actor) {
+        if (actor == null) {
+            return null;
+        }
+        LinkedList successors = new LinkedList();
+        Iterator outports = actor.outputPortList().iterator();
+        while (outports.hasNext()) {
+            IOPort outPort = (IOPort) outports.next();
+            Iterator inPorts = outPort.deepConnectedInPortList().iterator();
+            while (inPorts.hasNext()) {
+                IOPort inPort = (IOPort)inPorts.next();
+                Actor post = (Actor)inPort.getContainer();
+                // NOTE: This could be done by using
+                // NamedObj.depthInHierarchy() instead of comparing the
+                // executive directors, but its tested this way, so we
+                // leave it alone.
+                if ((actor.getExecutiveDirector()
+                        == post.getExecutiveDirector()) &&
+                        !successors.contains(post)) {
+                    successors.addLast(post);
+                }
+            }
+        }
+        return successors;
     }
 
     /** Return all the scheduling information in a String.

@@ -298,23 +298,6 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Check whether the container implements the CTStepSizeControlActor
-     *  interface. If not, then throw an exception.
-     *  @exception IllegalActionException If the container of this
-     *  director does not implement CTStepSizeControlActor, or one of
-     *  the actors throws it.
-     */
-    public void preinitialize() throws IllegalActionException {
-        if(!(getContainer() instanceof CTStepSizeControlActor)) {
-            throw new IllegalActionException(this, "can only be contained by "
-                    + "a composite actor that implements "
-                    + "the CTStepSizeControlActor "
-                    + "interface, for example, the continuous "
-                    + "time composite actor or the modal model.");
-        }
-        super.preinitialize();
-    }
-
     /** Update the states of actors directed by this director.
      *  Discrete events at current time will be consumed and produced.
      *  @return True if this is not a top-level director, or the simulation
@@ -366,6 +349,23 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             setScheduleValid(true);
         }
         return true;
+    }
+
+    /** Check whether the container implements the CTStepSizeControlActor
+     *  interface. If not, then throw an exception.
+     *  @exception IllegalActionException If the container of this
+     *  director does not implement CTStepSizeControlActor, or one of
+     *  the actors throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        if(!(getContainer() instanceof CTStepSizeControlActor)) {
+            throw new IllegalActionException(this, "can only be contained by "
+                    + "a composite actor that implements "
+                    + "the CTStepSizeControlActor "
+                    + "interface, for example, the continuous "
+                    + "time composite actor or the modal model.");
+        }
+        super.preinitialize();
     }
 
     /** Return the refined step size if the current fire is not accurate.
