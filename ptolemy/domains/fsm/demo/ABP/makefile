@@ -74,7 +74,12 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
 install: jclass $(PTCLASSJAR)
+
+demo: $(PTCLASSJAR)
+	CLASSPATH=$(CLASSPATH) appletviewer ABP.html
 
 depend:
 	@echo "no dependencies in this directory"
