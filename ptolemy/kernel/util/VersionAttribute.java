@@ -30,6 +30,8 @@
 
 package ptolemy.kernel.util;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,7 +40,8 @@ import java.util.StringTokenizer;
 //////////////////////////////////////////////////////////////////////////
 //// VersionAttribute
 /**
-An attribute that identifies the version of an object.
+A nonpersistent attribute that identifies the version of an object.
+This attribute does not export MoML 
 The value of the attribute contains a String version-id that represents
 the version.
 A version-id is a string with substrings separated by one of '.', '-' or '_'.
@@ -63,6 +66,7 @@ matches within a regular expression.  At this time, this class does
 not implement version-strings.
 
 <p>
+@see TransientSingletonConfigurableAttribute
 @author Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.0
@@ -194,6 +198,18 @@ public class VersionAttribute
             return (compareTo(obj) == 0);
         }
         return false;
+    }
+
+    /** Write a MoML description of this object, which in this case is
+     *  empty.  Nothing is written.
+     *  We handle exporting this attribute in {@link NamedObj#exportMoML()}.
+     *  
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @param name The name to use instead of the current name.
+     */
+    public void exportMoML(Writer output, int depth, String name)
+            throws IOException {
     }
 
     /** Return true if this version is less than the specified version.
