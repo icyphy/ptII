@@ -171,7 +171,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public CompositeActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _addIODependence();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -721,16 +720,27 @@ public class CompositeActor extends CompositeEntity implements Actor {
             _workspace.getReadAccess();
             _createReceivers();
             
-            // clear the IODependence attribute if there is one
-            // already.
-            if (_IODependence != null) {
-                _IODependence.clear();
-            } 
-            
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
                         "Cannot preinitialize a non-opaque actor.");
             }
+
+            // clear the IODependence attribute if there is one
+            // already.
+            if (_IODependence != null) {
+                _IODependence.clear();
+            } else {
+                try {
+                    _IODependence = new IODependence(this, "IODependence");
+                } catch (NameDuplicationException e) {
+                    // This should not happen.
+                    // We do nothing.
+                    throw new IllegalActionException(this, 
+                        "has name duplication occurred. This should not " +
+                        "happen. Please save your file, close and open it again.");
+                }
+            }
+                        
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
             getDirector().preinitialize();
@@ -738,7 +748,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // if this composite actor is an opaque and embedded one,
             // resolve the IODependence attribute.
         
-            if (getExecutiveDirector() != null && isOpaque()) {
+            if (getExecutiveDirector() != null) {
                 _resolveIODependence();
             }
         } finally {
@@ -1106,17 +1116,6 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /*  Add the IODependence attribute.
-     *  @exception IllegalActionException If the constructor of 
-     *  IODependence throws it.
-     *  @exception NameDuplicationException If an attribute with the same 
-     *  name already exists.
-     */
-    private void _addIODependence() 
-        throws IllegalActionException, NameDuplicationException {
-        _IODependence = new IODependence(this, "IODependence");
-    }
 
     /*  Create receivers for each input port.
      *  @exception IllegalActionException If any port throws it.
