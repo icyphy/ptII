@@ -55,8 +55,9 @@ JSRCS =
 
 # HTML Files that are derived from other HTML files.
 DERIVED_FILES = \
+	completeDemosPtiny.htm \
 	demosPtiny.htm \
-	completeDemosPtiny.htm
+	docsPtiny.htm
 
 OTHER_FILES_TO_BE_JARED = \
 	$(DERIVED_FILES) \
@@ -88,11 +89,12 @@ install: all jars
 
 # Generate a file that consists of only the text within
 # <!--vergilDoc--> ... <!--/vergilDoc--> blocks
-demosPtiny.htm: demos.htm
-	awk -f $(ROOT)/doc/javahtml.awk $< | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
-
 completeDemosPtiny.htm: completeDemos.htm
 	awk -f $(ROOT)/doc/javahtml.awk $< | sed 's/demos.htm/demosPtiny.htm/' > $@  
+demosPtiny.htm: demos.htm
+	awk -f $(ROOT)/doc/javahtml.awk $< | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
+docsPtiny.htm: docs.htm
+	awk -f $(ROOT)/doc/javahtml.awk $< | sed 's/intro.htm/introPtiny.htm/' > $@  
 
 update: $(DERIVED_FILES)
 	cvs commit -m "Master files changed" $(DERIVED_FILES)
