@@ -138,7 +138,7 @@ do
 	words="@version @author Copyright Regents"
 	for word in $words
 	do
-	  egrep -s $word $file
+	  egrep -s $word $file > /dev/null
 	  retval=$?
     	  if [ $retval != 0 ]; then
 	    echo "$file does not contain $word"
@@ -211,7 +211,7 @@ do
 	    echo "$file: does not have an @AcceptedRating doc tag"
 	fi
 
-	results=`egrep '(public|private|protected) .* .*\(' $file | egrep ' \(|\( ' | grep -v ') throws ` 
+	results=`egrep '(public|private|protected) .* .*\(' $file | egrep ' \(|\( ' | grep -v ') throws' ` 
 	if [ "x$results" != "x" ]; then
 	    echo "$file: has extra spaces around '(' in decl (should be foo(int a)"
 	    echo "$results"
