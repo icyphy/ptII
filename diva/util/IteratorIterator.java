@@ -63,7 +63,7 @@ public abstract class IteratorIterator extends IteratorAdapter {
     }
 
     /* Convert an object returned by the top-level iterator
-     * into a sub-itreator.
+     * into a sub-iterator.
      */
     abstract protected Iterator iterator (Object o);
 
