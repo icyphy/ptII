@@ -42,20 +42,13 @@ import ptolemy.actor.lib.Transformer;
 //////////////////////////////////////////////////////////////////////////
 //// ZeroOrderHold
 /**
-An actor that converts events into continuous signals. This actor acts
-as the zero order hold. It consume the token when the consumeCurrentEvent()
-is called. This value will be hold and emitted every time the actor is
-fired, until the next consumeCurrentEvent() is called. If nothing has
-been consumed from the starting of execution, a zero token of resolved
-type will be sent. This actor has one
-single input port, one single output, and no parameter. The ports are
-data type polymorphic.
+Convert discrete events at the input to a continuous-time
+signal at the output by holding the value of the discrete
+event until the next discrete event arrives.
 
 @author Jie Liu
 @version $Id$
 */
-
-//FIXME: Consider make it type polymorphic.
 
 public class ZeroOrderHold extends Transformer
     implements CTWaveformGenerator{

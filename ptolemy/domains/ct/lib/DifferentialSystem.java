@@ -160,8 +160,8 @@ public class DifferentialSystem extends TypedCompositeActor {
                         "The initialStates must be a row vector.");
             }
             // Changes of the initialStates parameter are ignored after
-            // the execution.
-        }else if (attribute instanceof Parameter) {
+            // the execution.  
+        } else if (attribute instanceof Parameter) {
             // Change of other parameters triggers reinitialization.
             super.attributeChanged(attribute);
             _requestInitialization();
