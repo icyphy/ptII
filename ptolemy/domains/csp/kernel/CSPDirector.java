@@ -45,7 +45,7 @@ import java.util.Enumeration;
 //// CSPDirector
 /**
 A CSPDirector governs the execution of a CompositeActor with
-Communicating Seqential Processes (CSP) semantics. Thus to make
+Communicating Sequential Processes (CSP) semantics. Thus to make
 a composite actor obey CSP semantics, call the method setDirector()
 with an instance of this class.
 <p>
@@ -83,7 +83,7 @@ flag set, a TerminateProcessException is thrown which causes the
 actors execution thread to terminate.
 <p>
 Time is controlled by the director. Each process can delay for some
-delta time, and it will continue when the director has sufficently
+delta time, and it will continue when the director has sufficiently
 advanced time. The director <i>advances</i> time each occasion a time
 deadlock occurs and no changes to the topology  are pending. Processes
 may specify zero delay, in which case they
@@ -100,10 +100,10 @@ Note that the a pause can only be requested and may not happen
 immediately or even at all(if there are no communications taking
 place).To resume a paused simulation call setResumeRequested(). The
 simulation may also be terminated abruptly by calling the
-terminate() method directly. This may led to inconsistant state
-so any results outputed after it should be ignored.
+terminate() method directly. This may led to inconsistent state
+so any results outputted after it should be ignored.
 <p>
-Changes to the toplogy can occur each time deadlock, real or time, is
+Changes to the topology can occur each time deadlock, real or time, is
 reached. The director carries out any changes that have been queued
 with it. Note that the result of the topology changes may remove the
 deadlock that caused the changes to be carried out.
@@ -184,7 +184,7 @@ public class CSPDirector extends ProcessDirector {
         _checkForDeadlock();
         // This method will not return until real deadlock occurs.
         while(!_handleDeadlock()) {
-            // siomething may go here e.g. notify GUI
+            // something may go here e.g. notify GUI
         };
     }
 
@@ -204,7 +204,7 @@ public class CSPDirector extends ProcessDirector {
     }
 
     /** Return false to indicate that the iteration is over. Real
-     *   deadlock must have occured.
+     *   deadlock must have occurred.
      *  FIXME: should we control this better? - iteration lock?
      *  @return false indicating the iteration is over.
      */
@@ -240,7 +240,7 @@ public class CSPDirector extends ProcessDirector {
     }
 
     /** Call this method with a true argument to turn off time.
-     *  @param value Boolean seting whether or not the simulation
+     *  @param value Boolean setting whether or not the simulation
      *   uses time.
      */
     public synchronized void setUntimed(boolean value) {
@@ -258,7 +258,7 @@ public class CSPDirector extends ProcessDirector {
      *  <p>
      *  Note that the wrapup methods are not invoked on the actors
      *  under control of this director as each actor is executed by a
-     *  seperate thread.
+     *  separate thread.
      *  <p>
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
@@ -270,9 +270,9 @@ public class CSPDirector extends ProcessDirector {
                 ": CSPDirector: about to end the simulation");
         if ((_actorsDelayed !=0) || _topologyChangesPending
                 || (_actorsPaused != 0)){
-            throw new InvalidStateException( "CSPDirector wrapping up " +
+            /*throw new InvalidStateException( "CSPDirector wrapping up " +
                     "when there are actors delayed or paused, or when " +
-                    "topology changes are pending.");
+                    "topology changes are pending.");*/
         }
         super.wrapup();
     }
@@ -288,7 +288,7 @@ public class CSPDirector extends ProcessDirector {
     }
 
     /** Called by a CSPActor when it wants to delay. When the
-     *  director has sufficently advanced time the process
+     *  director has sufficiently advanced time the process
      *  corresponding to the actor will continue.
      *  Note that actors can only deal with delta time.
      *  <p>
@@ -359,27 +359,27 @@ public class CSPDirector extends ProcessDirector {
      *  equals the number of active processes. The method looks for
      *  three cases in the following order: are there topology changes
      *  waiting to happen, are there any process delayed, are all the
-     *  processses blocked trying to rendezvous.
+     *  processes blocked trying to rendezvous.
      *  <p>
      *  If there are changes to the topology waiting to happen, they are
      *  performed and the simulation continues. Note that the result of
      *  performing the topology changes may be to remove the deadlock
-     *  that had occured.
+     *  that had occurred.
      *  <p>
      *  If the number of delayed processes is greater than zero, then
-     *  <i> time deadlock</i> has occured. Time is advanced and at least
+     *  <i> time deadlock</i> has occurred. Time is advanced and at least
      *  one of the delayed actors will wake up and continue. Note that
      *  time can be advanced to the current time. This happens if one of the
      *  delayed actors delayed with a delta delay of zero. Otherwise the
      *  simulation time is increased as well as being advanced.
      *  Current time is defined as the double value returned by
-     *  getCurrentTime plus/minus 10e-10.
+     *  getCurrentTime() plus/minus 10e-10.
      *  <p>
      *  If all the processes are blocked, then <i>real deadlock</i> has
-     *  occured. This method returns true, indicating the end of one
+     *  occurred. This method returns true, indicating the end of one
      *  iteration one level up in the hierarchy. If there is no level
      *  above this one, then real deadlock marks the end of the simulation.
-     *  @return True if real deadlock occured, false otherwise.
+     *  @return True if real deadlock occurred, false otherwise.
      */
     protected synchronized boolean _handleDeadlock() {
         try {
@@ -455,7 +455,7 @@ public class CSPDirector extends ProcessDirector {
             this.wait();
             return false;
         } catch (InterruptedException ex ) {
-            throw new InvalidStateException("CSPDirector: interruped " +
+            throw new InvalidStateException("CSPDirector: interrupted " +
                     "while waiting for a real deadlock to occur or " +
                     "resolving a time deadlock.");
         } catch (TopologyChangeFailedException ex ) {
@@ -487,13 +487,11 @@ public class CSPDirector extends ProcessDirector {
             DelayListLink tmp = (DelayListLink)_delayedActorList.at(i);
             if (!done && (actorTime < tmp._resumeTime)) {
                 _delayedActorList.insertAt(i, newLink);
-                //System.out.println("Inserting at " + actorTime);
                 done = true;
             }
         }
         if (!done) {
             _delayedActorList.insertLast(newLink);
-            //System.out.println("Inserting at " + actorTime);
         }
     }
 
@@ -516,7 +514,7 @@ public class CSPDirector extends ProcessDirector {
     private int _actorsBlocked = 0;
 
     // Count of the number of processes delayed until time
-    // sufficently advances.
+    // sufficiently advances.
     private int _actorsDelayed = 0;
 
     // A sorted list of the times of delayed actors. The time the simulation

@@ -52,14 +52,14 @@ The branches used in a conditional communication construct are
 controlled by the chooseBranch() method of CSPActor. Thus any actor
 that wishes to use a CDO or a CIF must derive from CSPActor.
 <p>
-Each branch is created to perfrom one communication. If more than
+Each branch is created to perform one communication. If more than
 one branch is enabled (the guard is true or absent), then a thread
-is created for each enabled branch to try and perfrom
+is created for each enabled branch to try and perform
 the appropriate rendezvous. If the branch
-suceeds and is allowed to rendezvous, then it registers itself with
-the parent actor and the thread it is running in dies. Otherwsise it
-continues to trya nd rendezvous until it suceeds or it is notified that
-another branch has suceeded in with its rendezvous, in which case this
+succeeds and is allowed to rendezvous, then it registers itself with
+the parent actor and the thread it is running in dies. Otherwise it
+continues to try and rendezvous until it succeeds or it is notified that
+another branch has succeeded in with its rendezvous, in which case this
 branch has failed and the thread it is running in dies.
 <p>
 For rendezvous, the receiver is the key synchronization point. The
@@ -78,7 +78,7 @@ branch ready to rendezvous. If it succeeds it performs the rendezvous,
 notifies the parent that it succeeded and returns. If it is not the first, it
 keeps on trying to register itself until it finally succeeds or another
 branch successfully rendezvoused in which case it fails and terminates. Note
-that a put cannot "go away" so it remains in an innerloop trying to
+that a put cannot "go away" so it remains in an inner-loop trying to
 rendezvous or failing.
 <br>
 Case 2: There is a conditional send waiting. In this case it tries to
@@ -100,7 +100,7 @@ the receiver, notifies the parent actor and returns. Note that it only needs
 to wait on a put as if a conditional send is executed on the receiver, it is
 the branch which is responsible for checking that the rendezvous can proceed.
 Thus, in the case where two conditional branches are trying to rendezvous
-at a receiver, it is the responsibilty of the branch arriving second to
+at a receiver, it is the responsibility of the branch arriving second to
 check that the rendezvous can proceed(see case 2).
 <p>
 @author  Neil Smyth

@@ -40,15 +40,15 @@ import ptolemy.kernel.util.InvalidStateException;
 //// CSPReceiver
 /**
 Receiver for CSP style communication. In CSP all communication is via
-synchronous message passing, so bothe the sending and receiving
+synchronous message passing, so both the the sending and receiving
 process need to rendezvous at the receiver. For rendezvous, the
 receiver is the key synchronization point. It is assumed each receiver
 has at most one
 thread trying to send to it and at most one thread trying to receive
 from it at any one time. The receiver performs the synchronization
 necessary for simple rendezvous (get() and put() operations). It
-also stores the flags that allow conditionalSends and conditionalReceives
-to know when they can proceed.
+also stores the flags that allow the ConditionalSend and ConditionalReceive 
+branches to know when they can proceed.
 <p>
 @author Neil Smyth
 @version $Id$
@@ -186,15 +186,15 @@ public class CSPReceiver implements ProcessReceiver {
                     ex.getMessage());
         } finally {
             if (blocked) {
-                // process was blocked, woken up and terminated.
+                // process was blocked, awakened and terminated.
                 // register process as being unblocked
                 _getDirector()._actorUnblocked();
             }
         }
     }
 
-    /** Return the IOPort containing this recciever.
-     *  @return The port to which this receiver is atteached.
+    /** Return the IOPort containing this receiver.
+     *  @return The port to which this receiver is attached.
      */
     public IOPort getContainer() {
         return _container;
@@ -248,7 +248,7 @@ public class CSPReceiver implements ProcessReceiver {
     /** This method wraps the wait() call between checks on the state
      *  of the receiver. The flags checked are whether the receiver
      *  has been paused or has finished. The actions taken depending
-     *  on the falgs apply to whatever process this method was invoked from.
+     *  on the flags apply to whatever process this method was invoked from.
      *  Note: It should only be called from CSPReceiver and conditional
      *  rendezvous branches, and then only from code that already has
      *  the lock on this receiver.
@@ -279,18 +279,18 @@ public class CSPReceiver implements ProcessReceiver {
         return _otherParent;
     }
 
-    /** Flag indicating whether or not a conditionalReceive is trying
+    /** Flag indicating whether or not a ConditionalReceive is trying
      *  to rendezvous with this receiver.
-     *  @return Flag indicating if a conditionalReceive branch is
+     *  @return Flag indicating if a ConditionalReceive branch is
      *   trying to rendezvous with this receiver.
      */
     protected boolean _isConditionalReceiveWaiting() {
         return _conditionalReceiveWaiting;
     }
 
-    /** Flag indicating whether or not a conditionalSend is trying
+    /** Flag indicating whether or not a ConditionalSend is trying
      *  to rendezvous with this receiver.
-     *  @return Flag indicating if a conditionalSend branch is
+     *  @return Flag indicating if a ConditionalSend branch is
      *   trying to rendezvous with this receiver.
      */
     protected boolean _isConditionalSendWaiting() {
@@ -390,7 +390,7 @@ public class CSPReceiver implements ProcessReceiver {
             Actor cont = (Actor)getContainer().getContainer();
             return  (CSPDirector)cont.getDirector();
         } catch (NullPointerException ex) {
-            // If a thread has a reference to a receiver with no directer it
+            // If a thread has a reference to a receiver with no director it
             // is an error so terminate the process.
 	    throw new TerminateProcessException("CSPReceiver: trying to " +
                     " rendezvous with a receiver with no " +
@@ -484,7 +484,7 @@ public class CSPReceiver implements ProcessReceiver {
     private boolean _rendezvousComplete = false;
 
     // Flag indicating that any subsequent attempts to rendezvous
-    // at this receiver should cause the attaempting processes to terminate.
+    // at this receiver should cause the attempting processes to terminate.
     private boolean _simulationFinished = false;
 
     // Flag indicating that the director controlling the simulation
