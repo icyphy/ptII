@@ -101,7 +101,7 @@ never pause in that model.
 @author Mudit Goel
 @version $Id$
 */
-public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
+public class BasePNDirector extends ProcessDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -477,7 +477,8 @@ public class BasePNDirector extends ptolemy.actor.process.ProcessDirector {
             ProcessThread pro = (ProcessThread)Thread.currentThread();
             Actor actor = pro.getActor();
             PNProcessEvent event = new PNProcessEvent(actor, 
-                    PNProcessEvent.PROCESS_FINISHED);
+                    PNProcessEvent.PROCESS_FINISHED, 
+		    PNProcessEvent.FINISHED_PROPERLY);
             Enumeration enum = _processlisteners.elements();
             while (enum.hasMoreElements()) {
                 PNProcessListener lis = (PNProcessListener)enum.nextElement();
