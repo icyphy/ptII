@@ -1,0 +1,19 @@
+#!/bin/sh
+# $Id$
+# Script to harvest fix
+
+destinationSubdir=ptolemy/domains/sdf/cgc
+dirs="lib dsp/lib"
+for dir in $dirs
+do
+    destinationDirectory=$PTII/$destinationSubdir/$dir
+    actors=`ls -1 $destinationDirectory/*.java`
+    for actor in $actors
+    do
+	cat $actor |
+            sed -e 's@//# line [0-9]*.*$@@' \
+	        -e 's@//\([ 	]*addCode\)@\1@' \
+                > $actor.tmp
+        diff $actor $actor.tmp 
+    done
+done
