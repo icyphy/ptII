@@ -239,14 +239,14 @@ public class JNIUtilities {
             throws Exception {
         System.out.println("Generating JNI for " + actor.getName());
 
-        // V‰rification qu'il y a un return, place le return en void sinon
+        // Verification qu'il y a un return, place le return en void sinon
         if (actor.getArgumentReturn() == null) {
             MessageHandler.warning(
                     "No return was configured,\n so we set it as void");
             actor.addArgumentReturn();
         }
 
-        //Cr‰ation des ports
+        //Creation des ports
         Iterator relations = model.relationList().iterator();
         while (relations.hasNext()) {
             ((ptolemy.kernel.ComponentRelation)(relations.next())).unlinkAll();
@@ -312,7 +312,7 @@ public class JNIUtilities {
             + nativeLibrary;
 
 
-        //Cr‰ation du fichier Java
+        //Creation du fichier Java
         _exportJavaInterfaceFile(actor, destinationDirectory);
 
         // FIXME: if we are running under Vergil, we should use
@@ -323,7 +323,7 @@ public class JNIUtilities {
         //Compilation java de la classe interface:
 
 
-        //Cr‰ation du fichier C
+        //Creation du fichier C
         _exportCInterfaceFile(actor, destinationDirectory);
         _exportDSP(actor, destinationDirectory);
         _exportMakefile(actor, destinationDirectory);
@@ -413,7 +413,7 @@ public class JNIUtilities {
                 + "/" + libraryDirectory + "/"
                 + nativeLibrary
                 + ".h\"\n"
-                // le fichier entete g‰n‰r‰ par javah
+                // le fichier entete genere par javah
                 +"#include \"jni_"
                 + nativeLibrary
                 + "_Jni"
@@ -604,7 +604,7 @@ public class JNIUtilities {
                     + _indent1 + "env->ExceptionClear();\n\n");
         }
 
-        results.append(_indent1 + "// M‰nage\n");
+        results.append(_indent1 + "// Menage\n");
 
         /*arguments = _getArgumentsOut(actor).iterator();
           while (arguments.hasNext()) {
