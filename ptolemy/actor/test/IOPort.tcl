@@ -258,7 +258,8 @@ test IOPort-7.1 {Check getReceivers on an unlinked port} {
     $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
-    expr {[$p1 getReceivers] == [java::null]}
+    set p1Rcvrs [$p1 getReceivers]
+    expr { [$p1Rcvrs length] == 0 }
 } {1}
 
 test IOPort-7.2 {Check getReceivers} {
@@ -281,7 +282,8 @@ test IOPort-8.1 {Check getRemoteReceivers on a port with no links} {
     $e0 setManager $manager
     set e1 [java::new ptolemy.actor.AtomicActor $e0 E1]
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 true true]
-    expr {[$p1 getRemoteReceivers] == [java::null]}
+    set p1Rcvrs [$p1 getReceivers]
+    expr { [$p1Rcvrs length] == 0 }
 } {1}
 
 test IOPort-8.2 {Check getRemoteReceivers on a port after unlinking} {
@@ -308,6 +310,8 @@ test IOPort-8.2 {Check getRemoteReceivers on a port after unlinking} {
 
     $p1 getRemoteReceivers
     $p2 unlink $r1
+    set p1Rcvrs [$p1 getRemoteReceivers]
+    $p1Rcvrs length
     expr {[$p1 getRemoteReceivers] == [java::null]}
 } {0}
 # JFIXME} {0}
