@@ -1,6 +1,6 @@
 # Tests for the FIFOQueue class
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Xiaojun Liu
 #
 # @Version: $Id$
 #
@@ -68,11 +68,11 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test FIFOQueue-2.1 {Construct an empty queue and check defaults} {
     set queue [java::new ptolemy.actor.util.FIFOQueue]
-    list [$queue capacity] \
+    list [$queue getCapacity] \
             [_testEnums elements $queue] \
-            [$queue full] \
-            [_testEnums history $queue] \
-            [$queue historyCapacity] \
+            [$queue isFull] \
+            [_testEnums historyElements $queue] \
+            [$queue getHistoryCapacity] \
             [$queue historySize] \
             [$queue size]
 } {-1 {{}} 0 {{}} 0 0 0}
@@ -80,12 +80,13 @@ test FIFOQueue-2.1 {Construct an empty queue and check defaults} {
 ######################################################################
 ####
 #
-test FIFOQueue-2.2 {Construct an empty queue and attempt a get, previous, take} {
+test FIFOQueue-2.2 {Construct an empty queue and attempt two gets and a take} {
     set queue [java::new ptolemy.actor.util.FIFOQueue]
     catch { [$queue get 0] } msg1
-    catch { [$queue previous 0] } msg2
-    list $msg1 $msg2 [expr { [$queue take] == [java::null] }]
-} {{java.util.NoSuchElementException: Element access on empty collection} {java.util.NoSuchElementException: Element access on empty collection} 1}
+    catch { [$queue get -1] } msg2
+    catch { [$queue take] } msg3
+    list $msg1 $msg2 $msg3
+} {{java.util.NoSuchElementException: No object at offset 0 in the FIFOQueue.} {java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue.} {java.util.NoSuchElementException: The FIFOQueue is empty!}}
 
 ######################################################################
 ####
@@ -93,6 +94,16 @@ test FIFOQueue-2.2 {Construct an empty queue and attempt a get, previous, take} 
 test FIFOQueue-2.3 {Construct an empty queue with a container} {
     set container [java::new ptolemy.kernel.util.NamedObj "parent"]
     set queue [java::new {ptolemy.actor.util.FIFOQueue ptolemy.kernel.util.Nameable} $container]
+    [$queue getContainer] getName
+} {parent}
+
+######################################################################
+####
+#
+test FIFOQueue-2.4 {Set container} {
+    set container [java::new ptolemy.kernel.util.NamedObj "parent"]
+    set queue [java::new ptolemy.actor.util.FIFOQueue]
+    $queue setContainer $container
     [$queue getContainer] getName
 } {parent}
 
@@ -123,8 +134,8 @@ test FIFOQueue-3.1 {Put data on a queue} {
 ####
 #
 test FIFOQueue-3.2 {Get individual items} {
-    list [[$queue get 1] getName] [$queue size] [$queue full]
-} {n4 5 0}
+    list [[$queue get 1] getName] [$queue size] [$queue isFull]
+} {n2 5 0}
 
 ######################################################################
 ####
@@ -171,26 +182,26 @@ test FIFOQueue-5.1 {Test history} {
     $queue take
     $queue take
     $queue take
-    list [_testEnums elements $queue] [_testEnums history $queue]
-} {{{n4 n5}} {{n1 n2 n3}}}
+    list [$queue historySize] [_testEnums elements $queue] [_testEnums historyElements $queue]
+} {3 {{n4 n5}} {{n1 n2 n3}}}
 
 ######################################################################
 ####
 #
-test FIFOQueue-5.2 {Test previous} {
+test FIFOQueue-5.2 {Get elements from history queue} {
     list \
-            [[$queue previous 0] getName] \
-            [[$queue previous 1] getName] \
-            [[$queue previous 2] getName]
+            [[$queue get -1] getName] \
+            [[$queue get -2] getName] \
+            [[$queue get -3] getName]
 } {n3 n2 n1}
 
 ######################################################################
 ####
 #
-test FIFOQueue-5.3 {Test previous with error} {
-    catch {[$queue previous 3]} msg
+test FIFOQueue-5.3 {Test get elements from history queue with error} {
+    catch {[$queue get -4]} msg
     list $msg
-} {{java.util.NoSuchElementException: Index -1 out of range for collection of size3}}
+} {{java.util.NoSuchElementException: No object at offset -4 in the FIFOQueue.}}
 
 ######################################################################
 ####
@@ -206,5 +217,36 @@ test FIFOQueue-6.1 {Test history with bounded capacity} {
     $queue take
     $queue take
     $queue take
-    list [_testEnums elements $queue] [_testEnums history $queue]
+    list [_testEnums elements $queue] [_testEnums historyElements $queue]
 } {{{n4 n5}} {{n2 n3}}}
+
+######################################################################
+####
+#
+test FIFOQueue-6.2 {Test clear history queue} {
+    set queue [java::new ptolemy.actor.util.FIFOQueue]
+    set container [java::new ptolemy.kernel.util.NamedObj QueueContainer]
+    $queue setContainer $container
+    $queue put $n1
+    $queue put $n2
+    $queue setHistoryCapacity 2
+    $queue take
+    $queue take
+    set newqueue [$queue clone]
+    $queue setHistoryCapacity 0
+    catch {[$queue get 0]} msg1
+    catch {[$queue get -1]} msg2
+    list [_testEnums historyElements $newqueue] $msg1 $msg2
+} {{{n1 n2}} {java.util.NoSuchElementException: No object at offset 0 in the FIFOQueue contained by .QueueContainer} {java.util.NoSuchElementException: No object at offset -1 in the FIFOQueue contained by .QueueContainer}}
+
+
+
+
+
+
+
+
+
+
+
+
