@@ -66,9 +66,9 @@ proc sootShallowCodeGeneration {model} {
 	    "-p" "wjtp.mt" "targetPackage:ptolemy.copernicus.java.test.cg" \
 	    ]]
     set main [java::new ptolemy.copernicus.java.Main $args]
-    $main initialize
+    set toplevel [$main readInModel $model]
+    $main initialize $toplevel
     $main addTransforms
-    set toplevel [$main toplevel]
     set modelName ptolemy.copernicus.java.test.cg.[$toplevel getName]
 
     # Make a stab at getting the iterations
