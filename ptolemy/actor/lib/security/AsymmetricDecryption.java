@@ -65,7 +65,7 @@ creates a private key for decryption use and a public key which is sent on the
 is done in pre-initialization and is put on the <i>keyOut</i> port during
 initialization so the encryption actor has a key to use when it is first fired.
 
-The following actor relies on the Java Cryptography Architecture (JCA) and Java
+<p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
 
 
@@ -75,7 +75,6 @@ TODO: include sources of information on JCE cipher and algorithms
 @version $Id$
 @since Ptolemy II 3.1
 */
-
 public class AsymmetricDecryption extends CipherActor {
 
     /** Construct an actor with the given container and name.
@@ -116,11 +115,12 @@ public class AsymmetricDecryption extends CipherActor {
      *  port.  All parameters should be the same as the corresponding
      *  encryption actor.
      *
-     *  @exception IllegalActionException if thrown by base class.
+     *  @exception IllegalActionException If thrown by base class.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        keyOut.send(0, _unsignedByteArrayToArrayToken(_keyToBytes(_publicKey)));
+        keyOut.send(0,
+                _unsignedByteArrayToArrayToken(_keyToBytes(_publicKey)));
     }
 
     /** Outputs the key required for decryption.  The base classes retrieve
@@ -131,12 +131,13 @@ public class AsymmetricDecryption extends CipherActor {
         KeyPair pair = _createAsymmetricKeys();
         _publicKey = pair.getPublic();
         _privateKey = pair.getPrivate();
-        keyOut.send(0, _unsignedByteArrayToArrayToken(_keyToBytes(_publicKey)));
+        keyOut.send(0,
+                _unsignedByteArrayToArrayToken(_keyToBytes(_publicKey)));
     }
 
     /** Sets token production for keyOut to 1 and resolves scheduling.
      *
-     * @throws IllegalActionException if thrown by base class.
+     * @throws IllegalActionException If thrown by base class.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -149,42 +150,33 @@ public class AsymmetricDecryption extends CipherActor {
      *
      * @param dataBytes the data to be decrypted.
      * @return byte[] the decrypted data.
-     * @throws IllegalActionException if exception below is thrown.
-     * @exception IOException when error occurs in ByteArrayOutputStream.
+     * @exception IllegalActionException If exception below is thrown.
+     * @exception IOException when 
      * @exception InvalideKeyException when key is invalid.
      * @exception BadPaddingException when padding is bad.
      * @exception IllegalBockSizeException for illegal block sizes.
      */
     protected byte[] _process(byte[] dataBytes)throws IllegalActionException{
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
         try{
             _cipher.init(Cipher.DECRYPT_MODE, _privateKey);
             int blockSize = _cipher.getBlockSize();
             int length = 0;
-            for(int i = 0; i<dataBytes.length; i+=blockSize){
+            for(int i = 0; i < dataBytes.length; i+=blockSize){
                 if(dataBytes.length-i <= blockSize){
                     length = dataBytes.length-i;
                 } else{
                     length = blockSize;
                 }
-                baos.write(_cipher.doFinal(dataBytes, i, length));
+                byteOutputStream.write(_cipher.doFinal(dataBytes, i, length));
             }
-            baos.flush();
-            baos.close();
-        } catch (IOException e){
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (InvalidKeyException e){
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (BadPaddingException e){
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
-        } catch (IllegalBlockSizeException e){
-            e.printStackTrace();
-            throw new IllegalActionException(this.getName()+e.getMessage());
+            byteOutputStream.flush();
+            byteOutputStream.close();
+        } catch (Exception ex){
+            throw new IllegalActionException(this, ex,
+                    "Problem decrypting data with the private key");
         }
-        return baos.toByteArray();
+        return byteOutputStream.toByteArray();
     }
 
     ///////////////////////////////////////////////////////////////////
