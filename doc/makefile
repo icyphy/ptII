@@ -55,7 +55,8 @@ PTCLASSJAR =
 #
 UI_FILES_TO_BE_JARED = \
 	acks.htm \
-	authors.htm
+	authors.htm \
+	webStartHelp.htm
 
 EXTRA_SRCS = \
 	$(UI_FILES_TO_BE_JARED) \
@@ -85,8 +86,7 @@ EXTRA_SRCS = \
 	toc.css \
 	toc.htm \
 	troubleshooting.htm \
-	types.htm \
-	webStartHelp.htm
+	types.htm
 
 # Derived files that are preprocessed for use within vergil.
 VERGIL_DOCS = \
