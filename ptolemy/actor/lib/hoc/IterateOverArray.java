@@ -237,8 +237,7 @@ public class IterateOverArray extends TypedCompositeActor
     public Port newPort(String name) throws NameDuplicationException {
         try {
             IteratePort result = new IteratePort(this, name);
-            // FIXME: The following suppresses export, despite
-            // the second call.
+            // FIXME: Is the following needed?  Why?
             // result.setDerived(true);
             // result.setPersistent(true);
             return result;
