@@ -140,7 +140,8 @@ public class Port extends NamedObj {
      *  instances of the same class with identical names in the same 
      *  container.
      */
-    public void setEntity(Entity entity) throws NameDuplicationException {
+    public void setEntity(Entity entity) throws 
+	    GraphException, NameDuplicationException {
 	PortList list = entity.getPortList();
 	list.addPort( this );
 	_entity = entity;
