@@ -166,15 +166,15 @@ public final class ASTReflect {
 		ASTInterfaceDeclNode(myClass);
 	    compileUnitNode =
 		new CompileUnitNode(packageName,
-				    /*imports*/ new LinkedList(),
-				    TNLManip.addFirst(interfaceDeclNode));
+                        /*imports*/ new LinkedList(),
+                        TNLManip.addFirst(interfaceDeclNode));
 	} else {
 	    ClassDeclNode classDeclNode =
 		ASTClassDeclNode(myClass);
 	    compileUnitNode =
 		new CompileUnitNode(packageName,
-				    /*imports*/ new LinkedList(),
-				    TNLManip.addFirst(classDeclNode));
+                        /*imports*/ new LinkedList(),
+                        TNLManip.addFirst(classDeclNode));
 	}
 	return compileUnitNode;
     }
@@ -287,9 +287,9 @@ public final class ASTReflect {
 
 	InterfaceDeclNode interfaceDeclNode =
 	    new InterfaceDeclNode(modifiers,
-				  className,
-				  interfaceList,
-				  memberList);
+                    className,
+                    interfaceList,
+                    memberList);
 	return interfaceDeclNode;
     }
 
@@ -301,7 +301,7 @@ public final class ASTReflect {
 	// FIXME: This get(0) worries me.
         StringBuffer packageBuffer =
 	    new StringBuffer(((UserTypeDeclNode) loadedAST.
-			     getDefTypes().get(0)).getName().getIdent());
+                    getDefTypes().get(0)).getName().getIdent());
 
 	NameNode packageNode = (NameNode) loadedAST.getPkg();
 	while (packageNode.getQualifier() != AbsentTreeNode.instance) {
@@ -354,7 +354,7 @@ public final class ASTReflect {
                         new String(candidate.replace(File.separatorChar, '.')+
                                 "." + className);
                     System.out.println("ASTReflect.lookupClass: qualified: " +
-                        qualifiedName);
+                            qualifiedName);
                     try {
                         return Class.forName(qualifiedName);
                     } catch (ClassNotFoundException ee) {
@@ -368,11 +368,11 @@ public final class ASTReflect {
                 packageBuffer.append(packages[i].getName() + " ");
             }
 	    throw new RuntimeException("ASTReflect.lookupClass(): " +
-				       "Could not find class '" + className +
-				       "'. The package of this class has " +
-				       "not yet been loaded, so we need to " +
-				       "look in the searchPath. Looked in " +
-                                       packageBuffer);
+                    "Could not find class '" + className +
+                    "'. The package of this class has " +
+                    "not yet been loaded, so we need to " +
+                    "look in the searchPath. Looked in " +
+                    packageBuffer);
 	}
     }
 
@@ -381,7 +381,7 @@ public final class ASTReflect {
      *  @return The ClassDeclNode that represents the class.
      */
     public static ClassDeclNode lookupClassDeclNode(String className) {
-            return ASTClassDeclNode(lookupClass(className));
+        return ASTClassDeclNode(lookupClass(className));
     }
 
     /** Return a list of methods for a class where each element contains
@@ -471,7 +471,7 @@ public final class ASTReflect {
 	    // First time through, we pull off the file name, after that
 	    // we pull off directories.
 	    restOfPath = StringManip.partBeforeLast(restOfPath,
-						    File.separatorChar);
+                    File.separatorChar);
 	    classname.insert(0, StringManip.baseFilename(restOfPath) + ".");
 	}
 

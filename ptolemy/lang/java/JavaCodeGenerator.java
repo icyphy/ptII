@@ -59,7 +59,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         Object retval = node.accept(jcg, null);
 
         if (retval instanceof String) {
-           return (String) retval;
+            return (String) retval;
         }
 
         return _stringListToString((List) retval);
