@@ -251,7 +251,7 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 all: suball whatsnew.htm whatsnewVergil.htm \
 	codeDoc/tree.html codeDocHybridSystems/doc/codeDoc/tree.html
 
-install: all jars codeDoc.jar
+install: all jars codeDoc.jar codeDocHybridSystems.jar
 
 codeDoc.jar:
 	"$(JAR)" -cvf $@ -C $(ROOT) doc/codeDoc
