@@ -440,8 +440,6 @@ public class SDFDirector extends StaticSchedulingDirector {
                     "Cannot create default iterations parameter:\n" +
                     e.getMessage());
         }
-
-	addDebugListener(new StreamListener());
     }
 
     ///////////////////////////////////////////////////////////////////
