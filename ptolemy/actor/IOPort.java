@@ -2346,7 +2346,6 @@ public class IOPort extends ComponentPort {
      *  outside that can send data to this port.  This includes all
      *  opaque output ports that are connected on the outside to this port,
      *  and opaque input ports that are connected on the inside to this port.
-     *  @see #sourcePortList(Receiver)
      *  @return A list of IOPort objects, or an empty list if there are none.
      */
     public List sourcePortList() {
