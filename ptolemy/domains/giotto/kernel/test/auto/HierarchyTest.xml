@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HierarchyTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
     <property name="GiottoDirector" class="ptolemy.domains.giotto.kernel.GiottoDirector">
         <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
         </property>
@@ -10,9 +12,9 @@
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
             <doc>Number of iterations in an execution.</doc>
         </property>
-        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
-        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="80.0, 46.0">
         </property>
@@ -42,11 +44,11 @@
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
-            </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="68.0, 35.0">
+            </property>
+            <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
             </property>
         </property>
         <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="3">
@@ -66,11 +68,11 @@
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
-            </property>
             <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="68.0, 35.0">
+            </property>
+            <property name="filename" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.giotto&quot;">
             </property>
         </property>
         <property name="internalFrequency" class="ptolemy.data.expr.Parameter" value="2">

@@ -2,14 +2,22 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="hierarchy1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="HDFDirector" class="ptolemy.domains.hdf.kernel.HDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="Scheduler2" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="scheduleCacheSize" class="ptolemy.data.expr.Parameter" value="100">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="276.0, 53.0">
         </property>
@@ -71,6 +79,10 @@
             <entity name="level2_controller" class="ptolemy.domains.hdf.kernel.HDFFSMActor">
                 <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="level2_state1">
                 </property>
+                <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+                </property>
+                <property name="tokenHistorySize" class="ptolemy.data.expr.Parameter" value="1">
+                </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
                     <configure>
             <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"></entity></entity>
@@ -119,6 +131,10 @@
                     </property>
                     <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                     </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                    </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
                     <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -132,6 +148,10 @@
                     <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                     </property>
                     <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                    </property>
+                    <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+                    </property>
+                    <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
@@ -153,6 +173,8 @@
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
                 </property>
                 <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                    </property>
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -178,6 +200,8 @@
                 </port>
                 <entity name="Scale" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="3.0">
+                    </property>
+                    <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="266.0, 194.0">
                     </property>
@@ -205,6 +229,8 @@
                 <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
                 </property>
                 <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                    <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                    </property>
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -230,6 +256,8 @@
                 </port>
                 <entity name="Scale" class="ptolemy.actor.lib.Scale">
                     <property name="factor" class="ptolemy.data.expr.Parameter" value="5.0">
+                    </property>
+                    <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                     <property name="_location" class="ptolemy.moml.Location" value="288.0, 174.0">
                     </property>
@@ -274,6 +302,8 @@
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
             </property>
             <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -300,6 +330,8 @@
             <entity name="Scale" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
+                <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="_location" class="ptolemy.moml.Location" value="281.0, 165.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -320,6 +352,10 @@
         </entity>
         <entity name="level1_controller" class="ptolemy.domains.hdf.kernel.HDFFSMActor">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state1">
+            </property>
+            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+            </property>
+            <property name="tokenHistorySize" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
@@ -369,6 +405,10 @@
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
@@ -382,6 +422,10 @@
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
+                </property>
+                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
+                </property>
+                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
