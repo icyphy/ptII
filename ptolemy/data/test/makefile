@@ -47,6 +47,7 @@ JSRCS =
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	BooleanToken.tcl \
+	DoubleToken.tcl \
 	IntToken.tcl \
 	LongToken.tcl \
 	ObjectToken.tcl \
