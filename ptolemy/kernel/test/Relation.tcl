@@ -129,7 +129,7 @@ test Relation-6.1 {Test a Relation with three ports} {
     set p1 [java::new pt.kernel.Port $e1 P1]
     set p2 [java::new pt.kernel.Port $e1 P2]
     set p3 [java::new pt.kernel.Port $e1 P3]
-    $p3 setContainer $e1
+    $p3 setAssocEntity $e1
     $p1 link $r1
     $p2 link $r1
     $p3 link $r1

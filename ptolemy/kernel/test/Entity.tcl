@@ -132,8 +132,8 @@ test Entity-5.0 {move port from one entity to another} {
     set b [java::new pt.kernel.Port $ramp b]
     list [_testEntityGetPorts $ramp] \
             [_testEntityGetPorts $old] \
-            [[$a getContainer] getName] \
-            [[$b getContainer] getName]
+            [[$a getAssocEntity] getName] \
+            [[$b getAssocEntity] getName]
 } {{{a b}} {{}} Ramp Ramp}
 
 ######################################################################
@@ -186,7 +186,7 @@ test Entity-6.0 {remove port by name} {
     $ramp removePort [$ramp getPort a]
     list [_testEntityGetPorts $ramp] \
             [expr { [$a getContainer] == [java::null] }] \
-            [[$b getContainer] getName]
+            [[$b getAssocEntity] getName]
 } {b 1 Ramp}
 
 ######################################################################
@@ -215,7 +215,7 @@ test Entity-6.2 {remove port by reference} {
     $ramp removePort $a
     list [_testEntityGetPorts $ramp] \
             [expr { [$a getContainer] == [java::null] }] \
-            [[$b getContainer] getName]
+            [[$b getAssocEntity] getName]
 } {b 1 Ramp}
 
 ######################################################################
@@ -281,7 +281,7 @@ test Entity-6.7 {set the name of a port to null, then check state} {
     set b [java::new pt.kernel.Port $ramp b]
     $a setName [java::null]
     list [_testEntityGetPorts $ramp] \
-            [[$a getContainer] getName]
+            [[$a getAssocEntity] getName]
 } {{{{} b}} Ramp}
 
 ######################################################################
@@ -311,7 +311,7 @@ test Entity-6.9 {remove port set in the constructor by reference} {
     $ramp removePort $b
     list [_testEntityGetPorts $ramp] \
             [expr { [$b getContainer] == [java::null] }] \
-            [[$a getContainer] getName]
+            [[$a getAssocEntity] getName]
 } {a 1 Ramp}
 
 ######################################################################
