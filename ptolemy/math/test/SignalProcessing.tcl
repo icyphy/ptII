@@ -52,6 +52,8 @@ test SignalProcessing-1.1 {close} {
 	    [list 1 1] \
 	    [list -1 [expr {-1 + $EPSILON/2}]] \
 	    [list -1 [expr {-1 - $EPSILON/2}]] \
+	    [list [expr {-1 + $EPSILON/2}] -1] \
+	    [list [expr {-1 - $EPSILON/2}] -1] \
 	    [list 1 2] \
 	    [list -1 2] \
 	    [list 1 -2] \
@@ -87,5 +89,5 @@ test SignalProcessing-1.1 {close} {
 	}
     }
     return $results
-} {1 1 1 0 0 0 0 0 0 0 0 0 1 1 1 1 1}
+} {1 1 1 1 1 0 0 0 0 0 0 0 0 0 1 1 1 1 1}
 
