@@ -29,10 +29,12 @@ COPYRIGHTENDKEY
 package ptolemy.domains.fsm.modal;
 
 import ptolemy.actor.IOPort;
+import ptolemy.actor.IORelation;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
@@ -100,6 +102,16 @@ public class RefinementPort extends TypedIOPort {
             return true;
         } else {
             return super.isTypeAcceptable();
+        }
+    }
+
+    /** Set the connected relation to a bus if this port is a multiport. 
+     */
+    public void link(Relation relation) throws IllegalActionException {
+        super.link(relation);
+        // NOTE: the following procedure is also performed in a modal port.
+        if (isMultiport()) {
+            ((IORelation)relation).setWidth(0);
         }
     }
 

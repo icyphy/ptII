@@ -146,6 +146,7 @@ public class OutputActionsAttribute
                             + nextDestination.getFullName());
                 }
                 IOPort destination = (IOPort)nextDestination;
+                boolean isInput = destination.isInput();
                 Integer channel = (Integer)channels.next();
                 ASTPtRootNode parseTree = (ASTPtRootNode)parseTrees.next();
                 Token token;
@@ -159,13 +160,18 @@ public class OutputActionsAttribute
                 }
                 try {
                     if (token != null) {
-                        // Since this port is both input and output, it needs
-                        // to cache the tokens to be sent out.
+                        // get the local receivers of the destination port.
+                        // Note that if the destination port is an output port,
+                        // an _EMPTY_RECEIVER_ARRAY is returned.
                         Receiver[][] localReceivers 
                             = destination.getReceivers();
                         if (channel != null) {
                             destination.send(channel.intValue(), token);
-                            localReceivers[channel.intValue()][0].put(token);
+                            if (isInput) {
+                                // If the destination is both input and output, 
+                                // also send the tokens to local receivers.
+                                localReceivers[channel.intValue()][0].put(token);
+                            }
                             if (_debugging) {
                                 _debug(getFullName()+ " port: "
                                         + destination.getName() + " channel: "
@@ -174,8 +180,12 @@ public class OutputActionsAttribute
                             }
                         } else {
                             destination.broadcast(token);
-                            for(int i = 0; i < localReceivers.length; i++) {
-                                localReceivers[i][0].put(token);
+                            if (isInput) {
+                                // If the destination is both input and output, 
+                                // also send the tokens to local receivers.
+                                for(int i = 0; i < localReceivers.length; i++) {
+                                    localReceivers[i][0].put(token);
+                                }
                             }
                             if (_debugging) {
                                 _debug(getFullName() + " port: "
