@@ -63,13 +63,15 @@ public class Main extends ptolemy.copernicus.java.Main {
     /** Add transforms to the Scene.
      */
     public void addTransforms() {
-        super.addTransforms();
+        // super.addTransforms();
+        addStandardTransforms(_toplevel);
+
         Pack pack = PackManager.v().getPack("wjtp");
 
-        addTransform(pack, "wjtp.finalSnapshot", CWriter.v());
+        addTransform(pack, "wjtp.finalSnapshotC", CWriter.v());
 
         addTransform(pack, "wjtp.watchDogCancel",
-                        WatchDogTimer.v(), "cancel:true");
+                WatchDogTimer.v(), "cancel:true");
     }
 
 
@@ -102,10 +104,14 @@ public class Main extends ptolemy.copernicus.java.Main {
             // Create instance classes for the actors.
             main.initialize(toplevel);
 
+            // Parse any copernicus args.
+            String[] sootArgs = _parseArgs(args);
+
             // Add Transforms to the Scene.
             main.addTransforms();
 
-            main.generateCode(args);
+            // Generate C code
+            main.generateCode(sootArgs);
 
             // Print out memory usage info
             System.out.println(modelName + " "
@@ -115,7 +121,7 @@ public class Main extends ptolemy.copernicus.java.Main {
             // plotter fall in this category.
             System.exit(0);
         } catch (Exception ex) {
-            System.err.println("Code generation of '" + modelName
+            System.err.println("C code generation of '" + modelName
                     + "' failed:");
             ex.printStackTrace(System.err);
             System.err.flush();
