@@ -1175,10 +1175,11 @@ public class Graph implements Cloneable {
         _edges.remove(edge);
         if (hidden(edge)) {
             _hiddenEdgeSet.remove(edge);
+            return false;
         } else {
             _disconnectEdge(edge);
+            return true;
         }
-        return true;
     }
 
     /** Remove a node from this graph if it exists in the graph.
