@@ -72,11 +72,11 @@ public final class NodeUtil implements JavaStaticSemanticConstants {
 				 + "has encountered a CompileUnitNode with multiple type definitions."
 				 + ". \nA dump of the offending AST follows.\n"
 				 + compileUnit.toString());
-	    for(int i = 0; i< definedTYpes.size(); i++){
+	    for(int i = 0; i< definedTypes.size(); i++){
 		buffer.append("\nDefined Type #" + i + definedTypes.get(0));
 	    }
 
-	    throw new RuntimeException(buffer);
+	    throw new RuntimeException(buffer.toString());
 	}
         else return (UserTypeDeclNode)(definedTypes.get(0));
     }
