@@ -301,10 +301,10 @@ test IntMatrixToken-7.1.1 {Test multiply operator between IntMatrixToken and Dou
   
     list [$res1 toString] $msg2 $msg3 [$res4 toString]
 } {{[22.0, 9.0, 39.0; 12.0, 5.0, 21.0]} {ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.DoubleMatrixToken '[2.0, 1.0, 3.0; 3.0, 1.0, 6.0]' and ptolemy.data.IntMatrixToken '[5, 4; 3, 2]'
-Caused by:
- ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.DoubleMatrixToken '[2.0, 1.0, 3.0; 3.0, 1.0, 6.0]' and ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' because the matrices have incompatible dimensions.} {ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.DoubleMatrixToken '[2.0, 1.0, 3.0; 3.0, 1.0, 6.0]' and ptolemy.data.IntMatrixToken '[5, 4; 3, 2]'
-Caused by:
- ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.DoubleMatrixToken '[2.0, 1.0, 3.0; 3.0, 1.0, 6.0]' and ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' because the matrices have incompatible dimensions.} {[22.0, 9.0, 39.0; 12.0, 5.0, 21.0]}}
+Because:
+multiply operation not supported between ptolemy.data.DoubleMatrixToken '[2.0, 1.0, 3.0; 3.0, 1.0, 6.0]' and ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' because the matrices have incompatible dimensions.} {ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.DoubleMatrixToken '[2.0, 1.0, 3.0; 3.0, 1.0, 6.0]' and ptolemy.data.IntMatrixToken '[5, 4; 3, 2]'
+Because:
+multiply operation not supported between ptolemy.data.DoubleMatrixToken '[2.0, 1.0, 3.0; 3.0, 1.0, 6.0]' and ptolemy.data.DoubleMatrixToken '[5.0, 4.0; 3.0, 2.0]' because the matrices have incompatible dimensions.} {[22.0, 9.0, 39.0; 12.0, 5.0, 21.0]}}
 
 test IntMatrixToken-7.2 {Test multiplying IntMatrixToken to BooleanMatrixToken.} {
     set b [java::new {boolean[][]} {2 2} {{true false} {true false}}]
@@ -369,10 +369,10 @@ test IntMatrixToken-7.3.1 {Test multiply operator between IntMatrixToken and Com
   
     list [$res1 toString] $msg2 $msg3 [$res4 toString]
 } {{[22.0 + 0.0i, 9.0 + 0.0i, 39.0 + 0.0i; 12.0 + 0.0i, 5.0 + 0.0i, 21.0 + 0.0i]} {ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.ComplexMatrixToken '[2.0 + 0.0i, 1.0 + 0.0i, 3.0 + 0.0i; 3.0 + 0.0i, 1.0 + 0.0i, 6.0 + 0.0i]' and ptolemy.data.IntMatrixToken '[5, 4; 3, 2]'
-Caused by:
- ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.ComplexMatrixToken '[2.0 + 0.0i, 1.0 + 0.0i, 3.0 + 0.0i; 3.0 + 0.0i, 1.0 + 0.0i, 6.0 + 0.0i]' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the matrices have incompatible dimensions.} {ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.ComplexMatrixToken '[2.0 + 0.0i, 1.0 + 0.0i, 3.0 + 0.0i; 3.0 + 0.0i, 1.0 + 0.0i, 6.0 + 0.0i]' and ptolemy.data.IntMatrixToken '[5, 4; 3, 2]'
-Caused by:
- ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.ComplexMatrixToken '[2.0 + 0.0i, 1.0 + 0.0i, 3.0 + 0.0i; 3.0 + 0.0i, 1.0 + 0.0i, 6.0 + 0.0i]' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the matrices have incompatible dimensions.} {[22.0 + 0.0i, 9.0 + 0.0i, 39.0 + 0.0i; 12.0 + 0.0i, 5.0 + 0.0i, 21.0 + 0.0i]}}
+Because:
+multiply operation not supported between ptolemy.data.ComplexMatrixToken '[2.0 + 0.0i, 1.0 + 0.0i, 3.0 + 0.0i; 3.0 + 0.0i, 1.0 + 0.0i, 6.0 + 0.0i]' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the matrices have incompatible dimensions.} {ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.ComplexMatrixToken '[2.0 + 0.0i, 1.0 + 0.0i, 3.0 + 0.0i; 3.0 + 0.0i, 1.0 + 0.0i, 6.0 + 0.0i]' and ptolemy.data.IntMatrixToken '[5, 4; 3, 2]'
+Because:
+multiply operation not supported between ptolemy.data.ComplexMatrixToken '[2.0 + 0.0i, 1.0 + 0.0i, 3.0 + 0.0i; 3.0 + 0.0i, 1.0 + 0.0i, 6.0 + 0.0i]' and ptolemy.data.ComplexMatrixToken '[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]' because the matrices have incompatible dimensions.} {[22.0 + 0.0i, 9.0 + 0.0i, 39.0 + 0.0i; 12.0 + 0.0i, 5.0 + 0.0i, 21.0 + 0.0i]}}
 
 test IntMatrixToken-7.4 {Test multiplying IntMatrixToken to IntToken.} {
     set r [java::new {ptolemy.data.IntToken int} 2]

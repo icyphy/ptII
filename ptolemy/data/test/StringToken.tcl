@@ -174,8 +174,8 @@ test StringToken-3.7 {Test subtracting String and boolean} {
     catch {[$tok1 subtract $tok2] toString} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.StringToken '"foo"' and ptolemy.data.BooleanToken 'true'
-Caused by:
- ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.StringToken '"foo"' and ptolemy.data.StringToken '"true"'}}
+Because:
+subtract operation not supported between ptolemy.data.StringToken '"foo"' and ptolemy.data.StringToken '"true"'}}
 
 ######################################################################
 ####
