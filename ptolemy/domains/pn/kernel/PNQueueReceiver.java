@@ -95,7 +95,12 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
+    /** Prepare to register a block. If the branch object specified as
+     *  a parameter is non-null then register the block with the branch.
+     *  If the branch object specified as a parameter is null then
+     *  register the block with the local director.
+     *
+     *  @param branch The Branch managing execution of this method.
      */
     public synchronized void prepareToBlock(Branch branch) {
         if( branch != null ) {
@@ -109,7 +114,11 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         }
     }
             
-    /**
+    /** Unblock this receiver and register this new state with
+     *  either the monitoring branch or the local director. If
+     *  there is no blocked branch waiting, then register the
+     *  new state with the local director; otherwise, register
+     *  the new state with the blocked branch.
      */
     public synchronized void wakeUpBlockedPartner() {
         if( _otherBranch != null ) {
@@ -123,51 +132,13 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         notifyAll();
     }
     
-    /**
-    public synchronized void prepareToWakeBlockedPartner() {
-        if( _otherBranch != null ) {
-            _otherBranch.registerRcvrUnBlocked(this);
-        } else {
-            BasePNDirector director = ((BasePNDirector)((Actor)
-        	    (getContainer().getContainer())).getDirector());
-            director._actorUnBlocked(this);
-            
-        }
-        notifyAll();
-    }
-     */
-    
-    /**
-    public synchronized void waitForBranchPermission(Branch branch) 
-    	    throws TerminateBranchException {
-        if( branch == null ) {
-            return;
-        }
-        
-        Workspace workspace = getContainer().workspace();
-        while( !branch.isBranchPermitted() && !branch.isIterationOver() ) {
-            branch.registerRcvrBlocked(this);
-            workspace.wait(this);
-        }
-        branch.registerRcvrUnBlocked(this);
-        
-        checkIfBranchIterationIsOver(branch);
-    }
-     */
-            
-    /**
-    public synchronized void checkIfBranchIterationIsOver(Branch branch) 
-    	    throws TerminateBranchException {
-        if( branch != null ) {
-            if( branch.isIterationOver() ) {
-                throw new TerminateBranchException("The current "
-                        + "iteration has ended.");
-            }
-        }
-    }
-     */
-    
-    /**
+    /** Get a token from this receiver. If the receiver is empty then
+     *  block until a token becomes available. Use the local director
+     *  to manage blocking reads that occur. If this receiver is
+     *  terminated during the execution of this method, then throw a
+     *  TerminateProcessException.
+     *
+     *  @return The token contained by this receiver.
      */
     public Token get() {
         return get(null);
@@ -206,11 +177,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             if (_terminate) {
                 throw new TerminateProcessException("");
             } else {
-                /*
-                checkIfBranchIterationIsOver(branch);
-                waitForBranchPermission(branch);
-                */
-                
                 result = super.get();
                 //Check if pending write to the Queue;
                 if (_writeBlocked) {
@@ -227,7 +193,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** Return true since a channel in the Kahn process networks
      *  model of computation is of infinite capacity and always has room.
      *  @return true
-     *  FIXME
      */
     public boolean hasRoom() {
 	return true;
@@ -251,7 +216,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     /** Return true since a call to the get() method of the receiver will
      *  always return a token if the call to get() ever returns.
      *  @return true
-     *  FIXME
      */
     public boolean hasToken() {
 	return true;
@@ -432,11 +396,6 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             if (_terminate) {
                 throw new TerminateProcessException("");
             } else {
-                /*
-                checkIfBranchIterationIsOver(branch);
-                waitForBranchPermission(branch);
-                */
-                
                 //token can be put in the queue;
                 super.put(token);
                 //Check if pending write to the Queue;
