@@ -160,14 +160,15 @@ public class Sine extends Transformer {
 	}
 
         if (input.hasToken(0, count)) {
-	    // NOTE: _inArray.length may be > count, in which case
+	    // NOTE: inArray.length may be > count, in which case
 	    // only the first count tokens are valid.
-            _inArray = (DoubleToken[])input.get(0, count);
+            Token[] inArray = input.get(0, count);
             double A = ((DoubleToken)amplitude.getToken()).doubleValue();
             double w = ((DoubleToken)omega.getToken()).doubleValue();
             double p = ((DoubleToken)phase.getToken()).doubleValue();
 	    for (int i = 0; i < count; i++) {
-		double result = A*Math.sin(w*_inArray[i].doubleValue()+p);
+		double result = A*Math.sin(
+                        w*(((DoubleToken)(inArray[i])).doubleValue())+p);
 		_resultArray[i] = new DoubleToken(result);
 	    }
             output.send(0, _resultArray, count);
@@ -178,7 +179,6 @@ public class Sine extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private DoubleToken[] _inArray;
     private DoubleToken[] _resultArray = new DoubleToken[1];
 
 }
