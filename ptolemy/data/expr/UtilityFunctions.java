@@ -85,6 +85,7 @@ public class UtilityFunctions {
         BufferedReader fin = null;
         String line;
         String result = "";
+        String newline = System.getProperty("line.separator");
         try {
             if (fileT.exists()) {
                 fin = new BufferedReader(new FileReader(fileT));
@@ -96,8 +97,9 @@ public class UtilityFunctions {
                     }
 
                     if (line == null) break;
-                    result += line;
-                    //System.out.println("read in line: " + line);
+                    result += line + newline;
+                    //System.out.println("read in line: \"" +
+                    //   line + newline + "\"");
                 }
             }
         } catch (FileNotFoundException e) {
