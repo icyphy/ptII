@@ -66,7 +66,8 @@ JSIMPLE_TESTS = \
 	CTExecutionPhase.tcl \
 	CTMixedSignalDirector.tcl \
 	CTReceiver.tcl \
-	CTScheduler.tcl
+	CTScheduler.tcl \
+	NumericalNonconvergeException.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
