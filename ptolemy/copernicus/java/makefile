@@ -113,13 +113,12 @@ timeDemo: compileDemo timeOrthoCommDemo
 
 # OrthogonalCom
 MODEL =			OrthogonalCom
-#SOURCECLASS =		ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
-SOURCECLASS =		$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
+MODELPATH =		$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
 
 # Usually, we run code gen on OrthogonalCom, to run on the IIR model, use:
-#  make SOURCECLASS=../../../ptolemy/actor/lib/test/auto/CommDistDiscard.xml MODEL=CommDistDiscard compileDemo runDemo 
+#  make MODELPATH=../../../ptolemy/actor/lib/test/auto/CommDistDiscard.xml MODEL=CommDistDiscard compileDemo runDemo 
 # To run on ArrayAppend:
-#  make SOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDemo runDemo
+#  make MODELPATH=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDemo runDemo
 
 # Location where we create code that we are generating
 TARGETPACKAGE = 	ptolemy.copernicus.java.cg.$(MODEL)
@@ -132,49 +131,37 @@ DECOMPILERTARGETPACKAGE =	$(TARGETPACKAGE)
 # Directory that the decompiler creates classes in
 DECOMPILERTARGETPATH =		$(ROOT)/$(TARGETPATH)
 
-JVM_SIZE = -Xmx256m
+JVMSIZE = -Xmx256m
 
 # Soot command line arguments for the user.  To list all the arguments, use
-# make SOOT_USER_ARGS=-h
-SOOT_USER_ARGS =
+# make COMPILEOPTIONS=-h
+COMPILEOPTIONS=
 
 # Time that we should let code generation run before exiting in ms.
-WATCH_DOG_TIMEOUT =     600000
+WATCHDOGTIMEOUT =     600000
 # Number of Iterations to run the generated code for.
 ITERATIONS =		1000
-ITERATIONS_PARAMETER =	,iterations:$(ITERATIONS)
+ITERATIONSPARAMETER =	,iterations:$(ITERATIONS)
 
 compileDemo: $(JCLASS)
-	@echo "generate deep code for $(SOURCECLASS)"
-	$(JAVA) $(JVM_SIZE) \
-	 -classpath "$(CLASSPATH)" \
-	 -Dptolemy.ptII.dir=$(PTII) \
-	ptolemy.copernicus.java.Main $(SOURCECLASS) -d "$(ROOT)"  \
-		-p wjtp.watchDog time:$(WATCH_DOG_TIMEOUT) \
-		-p wjtp.at targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.mt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.clt \
-		targetPackage:$(TARGETPACKAGE)$(ITERATIONS_PARAMETER) \
-		-p wjtp.fot targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.ffat targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.ffpt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.idt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.iat targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.ipt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.itt targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.ttn disabled,debug,targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.ts targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.noe targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.nee targetPackage:$(TARGETPACKAGE) \
-		-p wjtp.snapshot1 outDir:$(ROOT)/$(TARGETPATH)/jimple1 \
-		-p wjtp.snapshot2 outDir:$(ROOT)/$(TARGETPATH)/jimple2 \
-		-p wjtp.snapshot3 outDir:$(ROOT)/$(TARGETPATH)/jimple3 \
-		-p wjtp.snapshot4 outDir:$(ROOT)/$(TARGETPATH)/jimple4 \
-		-p wjtp.snapshot5 outDir:$(ROOT)/$(TARGETPATH)/jimple5 \
-		-p wjtp.snapshot6 outDir:$(ROOT)/$(TARGETPATH)/jimple6 \
-		-p wjtp.finalSnapshot outDir:$(ROOT)/$(TARGETPATH) \
-		-p wjtp.iee enabled \
-		$(SOOT_USER_ARGS)
+	@echo "generate deep code for $(MODELPATH)"
+	$(JAVA) \
+		-classpath "$(ROOT)" \
+		ptolemy.copernicus.kernel.Copernicus \
+		-verbose \
+		-compile	 true \
+		-iterations      '"$(ITERATIONS)"' \
+		-iterationsParameter '"$(ITERATIONSPARAMETER)"' \
+		-java            '"$(JAVA)"' \
+		-jvmSize         '"$(JVMSIZE)"' \
+		-modelPath       '"$(MODELPATH)"' \
+		-run		 false \
+		-root            '"$(PTII)"' \
+		-targetPackage   '"$(TARGETPACKAGE)"' \
+		-targetPath      '"$(TARGETPATH)"' \
+		-watchDogTimeout '"$(WATCHDOGTIMEOUT)"' \
+		-compileOptions  '"$(COMPILEOPTIONS)"'
+
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
 
@@ -212,7 +199,7 @@ treeShakeWithoutCodegen:
 	@CLASSPATH="$(CLASSPATH)" \
 		$(TREESHAKE) $(JAR) $(TREESHAKE_PREFIX).jar \
 			$(JAVA) ptolemy.copernicus.java.TestApplication \
-			$(SOURCECLASS) \
+			$(MODELPATH) \
 			| tail -1
 	ls -l $(TREESHAKE_PREFIX).jar
 	@rm -f  $(STATSFILE)
@@ -223,7 +210,7 @@ runTreeShakeWithoutCodegen:
 		$(JAVA) \
 			-classpath $(TREESHAKE_PREFIX).jar \
 			ptolemy.copernicus.java.TestApplication \
-			$(SOURCECLASS) \
+			$(MODELPATH) \
 			| tail -1 | \
 			tee -a $(STATSFILE); \
 	done
