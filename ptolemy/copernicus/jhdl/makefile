@@ -50,6 +50,7 @@ JSRCS = \
 	CircuitCreator.java \
 	CircuitTransformer.java \
 	JHDLTransformer.java \
+	HashMutableToDotty.java \
 	Main.java
 
 EXTRA_SRCS =	$(JSRCS) \
