@@ -63,7 +63,7 @@ public class ODStringDemo {
         // Set up Manager, Director and top level CompositeActor
         Workspace workSpc = new Workspace();
         CompositeActor topLevelActor = new CompositeActor(workSpc);
-        topLevelActor.setName("hnic");
+        topLevelActor.setName("theBoss");
         Manager manager = new Manager(workSpc, "manager");
         ODDirector director = new ODDirector(workSpc, "director");
         topLevelActor.setManager( manager );
