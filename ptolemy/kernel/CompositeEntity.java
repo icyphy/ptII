@@ -939,7 +939,7 @@ public class CompositeEntity extends ComponentEntity {
      *  by the contained entities and relations.
      *  Errors that are triggered by this validation are handled by calling
      *  handleError().
-     *  @see NamedObj#handleError(NamedObj context, IllegalActionException exception)
+     *  @see NamedObj#handleError(NamedObj, IllegalActionException)
      */
     public void validateSettables() throws IllegalActionException {
         super.validateSettables();
