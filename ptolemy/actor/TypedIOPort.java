@@ -214,11 +214,15 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param token The token to send
      *  @exception IllegalActionException If the port is not an output,
      *   or if the index is out of range, or if the token to be sent cannot
-     *   be converted to the type of this port.
+     *   be converted to the type of this port, or if the token is null.
      *  @exception NoRoomException If there is no room in the receiver.
      */
     public void send(int channelindex, Token token)
             throws IllegalActionException, NoRoomException {
+        if (token == null) {
+            throw new IllegalActionException(this,
+            "Cannot send a null token.");
+        }
 	Receiver[][] farRec;
         try {
             workspace().getReadAccess();
