@@ -419,15 +419,16 @@ public class Director extends NamedObj implements Executable {
     public void transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque input port.");
+                    "transferInputs: port argument is not an opaque" +
+                    "input port.");
         }
         Receiver[][] insiderecs = port.deepGetReceivers();
-        for (int i=0; i < port.getWidth(); i++) {
+        for (int i = 0; i < port.getWidth(); i++) {
             if (port.hasToken(i)) {
                 try {
                     Token t = port.get(i);
                     if (insiderecs != null && insiderecs[i] != null) {
-                        for (int j=0; j < insiderecs[i].length; j++) {
+                        for (int j = 0; j < insiderecs[i].length; j++) {
                             insiderecs[i][j].put(t);
                         }
                     }
@@ -452,13 +453,14 @@ public class Director extends NamedObj implements Executable {
     public void transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "transferOutputs: port argument is not an opaque output port.");
+                    "transferOutputs: port argument is not " +
+                    "an opaque output port.");
         }
         Receiver[][] insiderecs = port.getInsideReceivers();
         if (insiderecs != null) {
-            for (int i=0; i < insiderecs.length; i++) {
+            for (int i = 0; i < insiderecs.length; i++) {
                 if (insiderecs[i] != null) {
-                    for (int j=0; j < insiderecs[i].length; j++) {
+                    for (int j = 0; j < insiderecs[i].length; j++) {
                         if (insiderecs[i][j].hasToken()) {
                             try {
                                 Token t = insiderecs[i][j].get();
@@ -597,8 +599,8 @@ public class Director extends NamedObj implements Executable {
             try {
                 r.constructEventQueue();
             } catch (Exception ex) {
-                //FIXME: better error message???
-                System.out.println("arrggg" + ex.getClass().getName() + ex.getMessage());
+                System.out.println("constructEventQueue threw and Exception "+
+                        ex.getClass().getName() + ex.getMessage());
             }
             r.performRequest();
 
