@@ -518,34 +518,6 @@ public class SDFDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Add a DependencyDeclaration (with the name
-     * "_SDFRateDependencyDeclaration") to the variable with the given
-     * name in the given port that declares the variable is dependent
-     * on the given list of variables.  If a dependency declaration
-     * with that name already exists, then simply set its dependents
-     * list to the given list.
-     */
-    protected void _declareDependency(ConstVariableModelAnalysis analysis,
-            Port port, String name, List dependents) 
-            throws IllegalActionException {
-        Variable variable = 
-            (Variable)SDFUtilities._getRateVariable(port, name);
-        DependencyDeclaration declaration = (DependencyDeclaration)
-            variable.getAttribute(
-                    "_SDFRateDependencyDeclaration", 
-                    DependencyDeclaration.class);
-        if(declaration == null) {
-            try {
-                declaration = new DependencyDeclaration(variable, 
-                        "_SDFRateDependencyDeclaration");
-            } catch (NameDuplicationException ex) {
-                // Ignore... should not happen.
-            }
-        }
-        declaration.setDependents(dependents);
-        analysis.addDependencyDeclaration(declaration);
-    }
-
     /** Initialize the object.   In this case, we give the SDFDirector a
      *  default scheduler of the class SDFScheduler, an iterations
      *  parameter and a vectorizationFactor parameter.
