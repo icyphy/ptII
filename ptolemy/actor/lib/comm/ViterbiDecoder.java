@@ -277,7 +277,7 @@ public class ViterbiDecoder extends Transformer {
             // the value until all parameters have been set.
             _inputNumberInvalid = true;
 
-            // Set the input comsumption rate.
+            // Set the input consumption rate.
             _outputRate.setToken(new IntToken(_inputNumber));
         } else if (attribute == delay) {
             _depth = ((IntToken) delay.getToken()).intValue();
@@ -715,7 +715,7 @@ public class ViterbiDecoder extends Transformer {
 
     /** Convert an integer to its binary form. The bits
      *  are stored in an array.
-     *  @param integer Interger that should be converted.
+     *  @param integer The integer to be converted.
      *  @param length The length of "integer" in binary form.
      *  @return The bits of "integer" stored in an array.
      */
@@ -780,7 +780,7 @@ public class ViterbiDecoder extends Transformer {
     // _depth is invalid.
     private transient boolean _depthInvalid = true;
 
-    // Truth table for the corresponding convolutinal code.
+    // Truth table for the corresponding convolutional code.
     private int[][][] _truthTable;
 
     // Size of first dimension of the truth table.
