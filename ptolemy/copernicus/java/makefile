@@ -181,7 +181,7 @@ TREESHAKE_PREFIX = $(ROOT)/$(TARGETPATH)/treeshake
 TREESHAKE=$(ROOT)/util/testsuite/treeshake
 treeShakeDemo:
 	@echo "Create the minimal jar file and run it" 
-	$(TREESHAKE) $(TREESHAKE_PREFIX).jar \
+	$(TREESHAKE) $(JAR) $(TREESHAKE_PREFIX).jar \
 		$(JAVA)	-Xfuture -classpath "$(CLASSPATH)" \
 		$(TARGETPACKAGE).Main 
 	ls -l $(TREESHAKE_PREFIX).jar
@@ -202,7 +202,7 @@ treeShakeAll: treeShakeWithoutCodegen runTreeShakeWithoutCodegen \
 treeShakeWithoutCodegen:
 	@echo "Treeshake $(MODEL) without codegen"
 	@CLASSPATH="$(CLASSPATH)" \
-		$(ROOT)/util/testsuite/treeshake $(TREESHAKE_PREFIX).jar \
+		$(TREESHAKE) $(JAR) $(TREESHAKE_PREFIX).jar \
 			$(JAVA) ptolemy.copernicus.java.TestApplication \
 			$(SOURCECLASS) \
 			| tail -1
@@ -227,7 +227,7 @@ treeShakeAndRunSnapshots:
 	do \
 		echo "Running the code from $(TARGETPATH)/$${snapshot}"; \
 		echo "Treeshake $$snapshot"; \
-		$(ROOT)/util/testsuite/treeshake $(TREESHAKE_PREFIX)_$${snapshot}.jar \
+		$(TREESHAKE) $(JAR) $(TREESHAKE_PREFIX)_$${snapshot}.jar \
 			$(JAVA) \
 				-Xfuture -classpath \
 	"$(ROOT)/$(TARGETPATH)/$$snapshot$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
@@ -246,7 +246,7 @@ treeShakeAndRunSnapshots:
 
 treeShakeCodegen:
 	@echo "Treeshake the final codegen version"
-	@$(ROOT)/util/testsuite/treeshake $(TREESHAKE_PREFIX)_codegen.jar \
+	@$(TREESHAKE) $(JAR) $(TREESHAKE_PREFIX)_codegen.jar \
 		$(JAVA) \
 			-classpath "$(CLASSPATH)" \
 			$(TARGETPACKAGE).Main | tail -1
@@ -278,7 +278,18 @@ compareTreeShakeJars:
 	@rm -f /tmp/treeshake_toc /tmp/treeshake_codegen_toc	
 	ls -l ${TREESHAKE_PREFIX}*
 
-gcjsetup:	demo treeShakeCodegen runTreeShakeCodegen
+############################################################################
+# Rules to run gcj, the GNU Java -> Native compiler
+# This code is very experimental, and not likely to work
+
+gcj:
+	echo "To compile a demo with gcj:" 
+	echo " 1) Run 'make gcjSetup gcjFix'"
+	echo " 2) Fix CGoutputBitDisplay.java so that 'make gcjFixCompile' works"
+	echo " 3) Run 'make gcj2'"
+	echo " 4) Run 'make gcjRun'"
+
+gcjSetup:	demo treeShakeCodegen runTreeShakeCodegen
 
 
 gcjFix: $(TARGETPATH)/CGoutputBitDisplay.java
