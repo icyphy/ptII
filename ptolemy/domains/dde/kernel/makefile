@@ -48,6 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	FooBar.java \
 	NullToken.java \
         DDEActor.java \
         DDEDirector.java \
