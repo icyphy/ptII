@@ -87,7 +87,7 @@ test ConfigurableAttribute-1.6 {test export moml with null text} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="N0" class="ptolemy.kernel.util.NamedObj">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <property name="P1" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure source="NotASource.xml"/>

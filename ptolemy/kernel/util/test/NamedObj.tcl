@@ -399,7 +399,7 @@ test NamedObj-11.1.1 {Test exportMoML(String)} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="NewName" class="ptolemy.kernel.util.NamedObj">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <property name="A1" class="ptolemy.kernel.util.Attribute">
         <property name="A2" class="ptolemy.kernel.util.Attribute">

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="spectrumEstimation" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
     </property>
@@ -46,7 +46,7 @@ by three different techniques.</text></svg></configure>
         </property>
     </property>
     <entity name="MaximumEntropySpectrum" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
         </property>
@@ -113,7 +113,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         </property>
     </entity>
     <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
@@ -164,7 +164,7 @@ the output is a periodogram spectral estimate.</text>
         </port>
     </entity>
     <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
@@ -204,7 +204,7 @@ the output is a periodogram spectral estimate.</text>
         </property>
     </entity>
     <entity name="Sinewave2" class="ptolemy.actor.lib.Sinewave">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
@@ -244,7 +244,7 @@ the output is a periodogram spectral estimate.</text>
         </property>
     </entity>
     <entity name="Sinewave3" class="ptolemy.actor.lib.Sinewave">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
@@ -342,7 +342,7 @@ the output is a periodogram spectral estimate.</text>
         </port>
     </entity>
     <entity name="SmoothedPeriodogram" class="ptolemy.domains.sdf.lib.SmoothedPeriodogram">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>

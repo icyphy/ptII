@@ -2472,7 +2472,7 @@ test MoMLParser-9.2 {test namespace with auto naming} {
 
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
-  <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+  <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2"/>
   <entity name="b" class="ptolemy.kernel.CompositeEntity">
      <port name="p" class="ptolemy.kernel.ComponentPort"/>
   </entity>
@@ -2499,7 +2499,7 @@ test MoMLParser-9.3 {test namespace with auto naming} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <entity name="b" class="ptolemy.kernel.CompositeEntity">
         <port name="p" class="ptolemy.kernel.ComponentPort">
@@ -2942,7 +2942,7 @@ test MoMLParser-15.1 {test link persistence in instatiation of a class} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="top" class="ptolemy.actor.CompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <port name="p" class="ptolemy.actor.IOPort">
     </port>

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ABP" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -405,7 +405,7 @@
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
-            <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+            <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 454]">
             </property>
@@ -419,7 +419,7 @@
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
-            <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+            <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
             </property>
             <property name="count" class="ptolemy.data.expr.Parameter" value="5">
             </property>
@@ -435,7 +435,7 @@
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
-            <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+            <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
             </property>
             <property name="trying" class="ptolemy.data.expr.Parameter" value="true">
             </property>
@@ -509,7 +509,7 @@
         </property>
         <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
         </property>
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 150.0">
         </property>

@@ -77,7 +77,7 @@ test LibraryAttribute-1.1 {parse some moml like annotation.ml, call getLibrary} 
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="state library" class="ptolemy.kernel.CompositeEntity">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <property name="myAttribute" class="ptolemy.kernel.util.Attribute">
     </property>
@@ -95,7 +95,7 @@ test LibraryAttribute-2.1 {No arg constructor} {
     catch {$libraryAttribute getLibrary} errMsg
     list [$libraryAttribute exportMoML] $errMsg
 } {{<property name="" class="ptolemy.moml.LibraryAttribute">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
 </property>
 } {java.io.EOFException: XML parser input stack was empty, end of file or xml fragment reached. Perhaps there is a missing '>' or a comment is unterminated by '->'?}}
@@ -111,7 +111,7 @@ test LibraryAttribute-3.1 {Workspace constructor} {
     catch {$libraryAttribute getLibrary} errMsg
     list [$libraryAttribute exportMoML] $errMsg
 } {{<property name="" class="ptolemy.moml.LibraryAttribute">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
 </property>
 } {java.io.EOFException: XML parser input stack was empty, end of file or xml fragment reached. Perhaps there is a missing '>' or a comment is unterminated by '->'?}}

@@ -146,7 +146,7 @@ proc print_verbose {test_name test_description contents_of_test code answer {tes
 proc ptFilterOutVersion {answer passing_results} {
 
     set createdByRegularExpression \
-	    {[ ]*<property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="[0-9][^"]*">\n[ ]*</property>\n}
+	    {[ ]*<property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="[0-9][^"]*">\n[ ]*</property>\n}
 
 
     regsub -all [java::call System getProperty "line.separator"] \

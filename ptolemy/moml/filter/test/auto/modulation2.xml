@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="modulation2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -23,7 +23,7 @@
     <property name="frequency2" class="ptolemy.data.expr.Parameter" value="0.02 * PI">
     </property>
     <entity name="Signal" class="ptolemy.actor.lib.Sinewave">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="2.0 * PI">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
@@ -63,7 +63,7 @@
         </property>
     </entity>
     <entity name="Carrier" class="ptolemy.actor.lib.Sinewave">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="2.0*PI">
             <doc>The sampling frequency, in the same units as the frequency.</doc>

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DFTSubSet" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={155, 4, 951, 533}}">
     </property>
@@ -312,7 +312,7 @@ Zoltan Kemenczy, Research in Motion</text></svg></configure>
         <link port="InputBlockDelay.output" relation="relation4"/>
     </entity>
     <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+        <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
         </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="1.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
