@@ -426,15 +426,17 @@ public final class IntMatrixToken extends MatrixToken {
     /** Return a String representing the value of this token.
      */
     public String stringValue() {
-	String s = "{\n";
+	String s = "[";
 	for (int i = 0; i < _rowCount; i++) {
-	    s += "{"; 
+	    s += "["; 
             for (int j = 0; j < _columnCount; j++) {
-                s += _value[i * _columnCount + j] + ", ";
+                s += _value[i * _columnCount + j];
+                if (j < _columnCount - 1) s += " ";
             }
-	    s += "}\n";
+	    s += "]";
+            if (i < _rowCount - 1) s += " ";            
         }
-	s += "}";
+	s += "]";
 	return s;
     }
 
