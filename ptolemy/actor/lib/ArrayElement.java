@@ -134,16 +134,5 @@ public class ArrayElement extends Transformer {
             output.broadcast(token.getElement(indexValue));
         }
     }
-
-    /** Return the type constraint that the type of the output port is no
-     *  less than the type of the elements of the input array.
-     *  @return A list of inequalities.
-     */
-    public List typeConstraintList() {
-	// Override the base class implementation to not use the default
-	// constraints.
-	return output.typeConstraintList();
-    }
 }
-
 
