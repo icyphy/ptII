@@ -30,7 +30,8 @@ awk ' { if ($0 ~ /JVM INSTR/) {
 	    if (sawjvminstr == 1) {
 		sawjvminstr = 0
 		# remove text up to the first .
-		position = match($0, /\./)
+		#position = match($0, "/\./")
+		position = index($0, ".")
 		printf("%s\n", substr($0,position+1, length($0)));
 	    } else {
 		print $0
@@ -64,12 +65,10 @@ awk '{ if($0 ~ /__CGInit\(\);/) {
 	    print $0
 	}
     }' |
-awk '{ if( $0 ~ /CompositeEntity compositeentity, String s)$/) {
+awk '{ if( $0 ~ /CompositeEntity compositeentity, String s\)$/) {
 	    print $0, "throws IllegalActionException, NameDuplicationException"
 	} else {
 	    print $0
 	}
-
-'}
-
+    '}
 
