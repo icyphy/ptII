@@ -36,7 +36,6 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.Actor;
 import ptolemy.data.Token;
 
-import java.util.Enumeration;
 import java.lang.Comparable;
 
 //////////////////////////////////////////////////////////////////////////
