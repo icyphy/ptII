@@ -42,8 +42,8 @@
 #
 # Standard Ptolemy II external makefile variables that this file uses:
 #
-# CLASSPATHSEPARATOR   Either : or ; for Unix or Windows.  Usually set in 
-#		$PTII/mk/ptII.mk by configure		
+# CLASSPATHSEPARATOR   Either : or ; for Unix or Windows.  Usually set in
+#		$PTII/mk/ptII.mk by configure
 # JAVA		The location of the Java Interpreter.  Set in ptII.mk
 # JAVAC		The location of the Java Compiler.  Set in ptII.mk
 # TINI_CLASSES	CLASSPATH specification to find the TINI.  Set in ptII.mk
@@ -116,7 +116,7 @@ $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class: \
 
 # Compile the non-codegen tini code in $(PTII)/$(OUTPKG)
 # Note that we compile without debug as the default
-compile_tini: 
+compile_tini:
 	@echo "###################################"
 	@echo "# Compiling non-codegen tini *.java files in $(PTII)/$(OUTPKG)"
 	@echo "###################################"
@@ -127,9 +127,9 @@ compile_tini:
 
 
 
-# Create a Tini binary from the class files in 
+# Create a Tini binary from the class files in
 # $(PTII)/$(OUTPKG)
-build_prc: 
+build_prc:
 	@echo "###################################"
 	@echo "# Creating Tini executable from classes in"
 	@echo "# $(PTII)/$(OUTPKG_DIR)"
@@ -142,7 +142,7 @@ build_prc:
 		-d $(TINI_DIR)/bin/tini.db \
 		)
 
-run_codegen: 	
+run_codegen:
 	(cd $(ROOT)/$(OUTPKG_DIR); \
 	CLASSPATH="$(OUTPKG_ROOT)$(CLASSPATHSEPARATOR)$(TINI_CLASSES)" \
 		$(JAVA) tini.applet.Applet $(OUTPKG).$(OUTPKG_MAIN_CLASS))

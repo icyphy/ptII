@@ -42,8 +42,8 @@
 #
 # Standard Ptolemy II external makefile variables that this file uses:
 #
-# CLASSPATHSEPARATOR   Either : or ; for Unix or Windows.  Usually set in 
-#		$PTII/mk/ptII.mk by configure		
+# CLASSPATHSEPARATOR   Either : or ; for Unix or Windows.  Usually set in
+#		$PTII/mk/ptII.mk by configure
 # JAVA		The location of the Java Interpreter.  Set in ptII.mk
 # JAVAC		The location of the Java Compiler.  Set in ptII.mk
 # WABA_CLASSES	CLASSPATH specification to find the WABA.  Set in ptII.mk
@@ -75,7 +75,7 @@
 #JAVA_VERBOSE =	-verbose:class
 #MAKEPALMAPP_VERBOSE = -v -v
 
-WARP = $(WABA_DIR)/bin/warp 
+WARP = $(WABA_DIR)/bin/warp
 EXEGEN = $(WABA_DIR)/bin/exegen
 
 # Run the demo via the usual method without any codegen.
@@ -125,7 +125,7 @@ $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class: \
 
 # Compile the non-codegen waba code in $(PTII)/$(OUTPKG)
 # Note that we compile without debug as the default
-compile_waba: 
+compile_waba:
 	@echo "###################################"
 	@echo "# Compiling non-codegen waba *.java files in $(PTII)/$(OUTPKG)"
 	@echo "###################################"
@@ -136,12 +136,12 @@ compile_waba:
 
 
 
-# Create a Palm binary from the class files in 
+# Create a Palm binary from the class files in
 # $(PTII)/$(OUTPKG)/output/$(OUTPKG_DIR)
 # Waba Extras at http://www.cygnus.uwa.edu.au/~rnielsen/wextras/
 # has java implementations of warp and exegen
 WEXTRAS_DIR=$(PTII)/vendors/misc/waba/wextras130
-build_prc: 
+build_prc:
 	@echo "###################################"
 	@echo "# Creating Palm executable from classes in"
 	@echo "# $(PTII)/$(OUTPKG_DIR)"
@@ -161,7 +161,7 @@ foo:
 	#$(EXEGEN) /q \
 	#	$(OUTPKG_MAIN_CLASS) $(OUTPKG_MAIN_CLASS) $(OUTPKG_MAIN_CLASS)
 
-run_codegen: 	
+run_codegen:
 	(cd $(ROOT)/$(OUTPKG_DIR); \
 	CLASSPATH="$(OUTPKG_ROOT)$(CLASSPATHSEPARATOR)$(WABA_CLASSES)" \
 		$(JAVA) waba.applet.Applet $(OUTPKG).$(OUTPKG_MAIN_CLASS))

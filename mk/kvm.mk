@@ -42,8 +42,8 @@
 #
 # Standard Ptolemy II external makefile variables that this file uses:
 #
-# CLASSPATHSEPARATOR   Either : or ; for Unix or Windows.  Usually set in 
-#		$PTII/mk/ptII.mk by configure		
+# CLASSPATHSEPARATOR   Either : or ; for Unix or Windows.  Usually set in
+#		$PTII/mk/ptII.mk by configure
 # JAVA		The location of the Java Interpreter.  Set in ptII.mk
 # JAVAC		The location of the Java Compiler.  Set in ptII.mk
 # KVM_CLASSES	CLASSPATH specification to find the KVM.  Set in ptII.mk
@@ -112,7 +112,7 @@ $(ROOT)/$(OUTPKG_DIR)/$(OUTPKG_MAIN_CLASS).class: \
 
 # Compile the non-codegen kvm code in $(PTII)/$(OUTPKG)
 # Note that we compile without debug as the default
-compile_kvm: 
+compile_kvm:
 	@echo "###################################"
 	@echo "# Compiling non-codegen kvm *.java files in $(PTII)/$(OUTPKG)"
 	@echo "###################################"
@@ -139,7 +139,7 @@ preverify:
 	done)
 
 
-# Create a Palm binary from the class files in 
+# Create a Palm binary from the class files in
 # $(PTII)/$(OUTPKG)/output/$(OUTPKG_DIR)
 #   Note that to build a Palm binary, you should first run the preverifier
 #   and then use the .class files from the output directory that are
@@ -178,7 +178,7 @@ fix:
 		cp tmp $$files; \
 	done)
 
-run_codegen: 	
+run_codegen:
 	(cd $(ROOT)/$(OUTPKG_DIR); \
 		$(JAVA) -classpath $(OUTPKG_ROOT) \
 			$(OUTPKG).$(OUTPKG_MAIN_CLASS))
@@ -186,7 +186,7 @@ run_codegen:
 # FIXME: what about Solaris?
 KVM_BINARY = $(KVM_DIR)/kvm/VmWin/build/kvm.exe
 # Run a Java simulator of the Palm
-# kvm.exe needs to be built by hand, see the kvm instructions. 
+# kvm.exe needs to be built by hand, see the kvm instructions.
 kvm:
 	if [ ! -f "$(KVM_BINARY)" ]; then \
 		echo "$(KVM_BINARY) is not found."; \

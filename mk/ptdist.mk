@@ -1,4 +1,4 @@
-# Makefile rules for building distributions 
+# Makefile rules for building distributions
 #
 # Author: Christopher Hylands
 
@@ -7,26 +7,26 @@
 #
 # Copyright (c) 1990-2000 The Regents of the University of California.
 # All rights reserved.
-# 
+#
 # Permission is hereby granted, without written agreement and without
 # license or royalty fees, to use, copy, modify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
-# 
+#
 # IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 # FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 # ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 # THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
-# 
+#
 # THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 # INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 # MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 # PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
-# 
+#
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
@@ -52,7 +52,7 @@
 #  PTVERSION =	2.0
 #  PTDIST =	$(PTPACKAGE)$(PTVERSION)
 #  PTCLASSJAR = 	$(PTPACKAGE).jar
-# 
+#
 #  3. It should have a fixtmpdist rule that makes any modifications
 #  that are necessary to adm/tmp/$(PTDIST).  For example:
 #
@@ -69,16 +69,16 @@
 # Makefile variables
 
 # The distributions to build
-PTDISTS =	$(PTDIST).tar.gz $(PTDIST).zip 
+PTDISTS =	$(PTDIST).tar.gz $(PTDIST).zip
 
-# Temporary directory 
+# Temporary directory
 # If you change PTTMPDIR, you may need to change RELATIVE_ME
 PTTMPDIR =	adm/tmp
 
 # The relative pathname from the PTTMPDIR to the ME
 RELATIVE_ME = ../..
 
-# Temporary distribution, PTDIST is set in the calling makefile 
+# Temporary distribution, PTDIST is set in the calling makefile
 PTTMPDIST =	$(PTMPDIR)/$(PTDIST)
 
 # Files to ship in the top level directory
@@ -92,7 +92,7 @@ PTDIST_EX_BASE = $(PTDIST).ex
 PTDIST_EX =	$(PTTMPDIR)/$(PTDIST_EX_BASE)
 
 # GNU tar
-GNUTAR =	gtar 
+GNUTAR =	gtar
 
 # Minimal path for testing.  The path should not include GNU make.
 TESTPATH = 	/opt/jdk1.1.6/bin:/bin:/usr/ccs/bin:.
@@ -179,9 +179,9 @@ buildjdist:
 	$(MAKE) dists
 
 # Test the distribution
-diststest: 
+diststest:
 	rm -rf $(PTTMPDIR)/$(PTDIST)
-	gzcat < $(PTDIST).tar.gz > $(PTTMPDIR)/$(PTDIST).tar 
+	gzcat < $(PTDIST).tar.gz > $(PTTMPDIR)/$(PTDIST).tar
 	cd $(PTTMPDIR);	/bin/tar -xvf $(PTDIST).tar
 	(cd $(PTTMPDIR)/$(PTDIST); \
 		PATH=$(TESTPATH) configure; \
