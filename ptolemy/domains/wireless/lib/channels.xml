@@ -8,10 +8,6 @@
     <?moml
       <group>
 
-<entity name="AcousticChannel" class="ptolemy.domains.wireless.lib.AcousticChannel">
-<doc></doc>
-</entity>
-
 <entity name="DelayChannel" class="ptolemy.domains.wireless.lib.DelayChannel">
 <doc></doc>
 </entity>
@@ -25,10 +21,6 @@
 </entity>
 
 <entity name="PowerLossChannel" class="ptolemy.domains.wireless.lib.PowerLossChannel">
-<doc></doc>
-</entity>
-
-<entity name="RadioChannel" class="ptolemy.domains.wireless.lib.RadioChannel">
 <doc></doc>
 </entity>
 

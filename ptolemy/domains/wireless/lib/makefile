@@ -47,7 +47,6 @@ PTPACKAGE = 	lib
 PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
-	AcousticChannel.java \
 	DelayChannel.java \
 	ErasureChannel.java \
 	GetProperties.java \
@@ -55,7 +54,6 @@ JSRCS = \
 	LimitedRangeChannel.java \
 	Locator.java \
 	PowerLossChannel.java \
-	RadioChannel.java \
 	Triangulator.java \
 	WiredToWireless.java \
 	WirelessToWired.java
