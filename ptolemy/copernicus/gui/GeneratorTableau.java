@@ -349,20 +349,6 @@ public class GeneratorTableau extends Tableau {
 				    throw new IllegalActionException(model, ex, null);
 				}
 			    } else if (codeGenerator.equals(options
-                                    .sootJHDL.
-                                    getExpression())){
-				// FIXME: we should disable the compile
-				// button.
-
-				exec.updateStatusBar("Starting jhdl "
-                                        + "code generation");
-				ptolemy.copernicus.jhdl
-				    .Main.generate((CompositeActor)model,
-                                            directoryName);
-				exec.updateStatusBar("Code generation "
-                                        + "complete.");
-
-			    } else if (codeGenerator.equals(options
                                     .sootShallow.
                                     getExpression())){
 				// FIXME: we should disable the compile
