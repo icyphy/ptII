@@ -4,7 +4,7 @@
 <entity name="MotionDrivenDemos" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 953, 583}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 953, 590}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[738, 474]">
     </property>
@@ -335,7 +335,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="idle">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
@@ -811,7 +811,7 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <link port="Const.output" relation="relation"/>
             <link port="Const2.output" relation="relation2"/>
             <link port="Middle Spotlight.on" relation="relation"/>
-            <link port="Side Lights.dim" relation="relation2"/>
+            <link port="Side Lights.off" relation="relation2"/>
         </entity>
         <entity name="toDemo" class="ptolemy.vergil.fsm.modal.TransitionRefinement">
             <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -963,6 +963,10 @@ a refinement that executes a sequence of demos.</text></svg></configure>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="525.0, 310.0">
+                </vertex>
             </relation>
             <link port="Const.output" relation="relation2"/>
             <link port="Const2.output" relation="relation3"/>
