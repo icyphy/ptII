@@ -101,9 +101,9 @@ public class TestGraphReader {
         System.out.println("Number of source nodes = " + 
                 sourceCollection.size()); 
         Iterator sources = sourceCollection.iterator();
+        int sourceNumber = 1;
         while (sources.hasNext()) {
-            int i=0;
-            System.out.println("source #" + i + ": " + 
+            System.out.println("source #" + sourceNumber++ + ": " + 
                     ((Node)(sources.next())).getWeight()); 
             System.out.println(); 
         }
@@ -113,9 +113,9 @@ public class TestGraphReader {
         System.out.println("Number of sink nodes = " + 
                 sinkCollection.size()); 
         Iterator sinks = sinkCollection.iterator();
+        int sinkNumber = 1;
         while (sinks.hasNext()) {
-            int i=0;
-            System.out.println("sink #" + i + ": " + 
+            System.out.println("sink #" + sinkNumber++ + ": " + 
                     ((Node)(sinks.next())).getWeight()); 
             System.out.println(); 
         }
