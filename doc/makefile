@@ -268,11 +268,11 @@ whatsnewVergil.htm: whatsnew.htm
 	diff whatsnew.htm whatsnewVergil.htm
 
 update: ptII$(PTVERSION).releaseVergil.htm troubleshootingVergil.htm \
-		whatsnew.htm
+		whatsnew.htm whatsnewVergil.htm
 	cvs commit -m "Master files changed" \
 		ptII$(PTVERSION).releaseVergil.htm \
 		troubleshootingVergil.htm \
-		whatsnew.htm
+		whatsnew.htm whatsnewVergil.htm
 
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
