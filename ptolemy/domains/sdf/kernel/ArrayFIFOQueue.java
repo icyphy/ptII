@@ -281,48 +281,20 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  @return A boolean indicating success.
      */
     public boolean putArray(Object element[]) {
-        if (_queueArray.length - _queueSize >= element.length) {
-            int i;
-            if(element.length <= (_queueArray.length - _queueFront)) {
-                System.arraycopy(element, 0, _queueArray, _queueFront,
-                        element.length);
-                _queueFront += element.length;
-                if(_queueFront >= _queueArray.length)
-                    _queueFront = _queueFront % _queueArray.length;
-                _queueSize += element.length;
-            } else {
-                System.arraycopy(element, 0, _queueArray, _queueFront,
-                        _queueArray.length - _queueFront);
-                System.arraycopy(element, _queueArray.length - _queueFront,
-                        _queueArray, 0,
-                        element.length - (_queueArray.length - _queueFront));
-                _queueFront += element.length;
-                if(_queueFront >= _queueArray.length)
-                    _queueFront = _queueFront % _queueArray.length;
-                _queueSize += element.length;
-            }
-            return true;
-        } else {
-	    if(_queueMaxCapacity == INFINITE_CAPACITY) {
-		try {
-		    _resizeArray(_queueArray.length * 2);
-		}
-		catch (Exception e) {
-		    e.printStackTrace();
-		}
-		return putArray(element);
-	    } else
-		return false;
-        }
+	int count = element.length;
+	return putArray(element, count);
     }
 
     /** Put an array of objects in the queue and return true if this will not
      *  cause the capacity to be exceeded. Otherwise, do not put
-     *  any of the object in the queue and return false.
+     *  any of the object in the queue and return false. The
+     *  specified number of objects from the array will be put
+     *  in the queue.
+     *
      *  @param element An array of objects to be put in the queue.
+     *  @param count The number of objects to be put in the queue.
      *  @return A boolean indicating success.
      */
-    // FIXME: Make this work.
     public boolean putArray(Object element[], int count) {
         if (_queueArray.length - _queueSize >= count) {
             int i;
@@ -367,7 +339,6 @@ public final class ArrayFIFOQueue implements Cloneable {
      *   objects than the proposed capacity or the proposed capacity
      *   is illegal.
      */
-
     public void setCapacity(int capacity)
             throws IllegalActionException {
         if (capacity == INFINITE_CAPACITY) {
@@ -470,40 +441,13 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  then put the taken object in the history queue. If the capacity
      *  of the history queue would be exceeded by this, then first remove
      *  the oldest object in the history queue.
-     *  @return An array of objects from the queue.
+     *
+     *  @param obj An array of objects from the queue.
      *  @exception NoSuchElementException If the queue is empty.
      */
     public void takeArray(Object obj[]) throws NoSuchElementException {
         int count = obj.length;
-        if(size() < count) {
-            String str = "";
-            if (_container != null) {
-                str = " contained by " + _container.getFullName();
-            }
-            throw new NoSuchElementException("The FIFOQueue" + str
-                    + " does not contain enough elements!");
-        }
-
-        if(count <= (_queueArray.length - _queueBack)) {
-            System.arraycopy(_queueArray, _queueBack, obj, 0,
-                    count);
-        } else {
-            System.arraycopy(_queueArray, _queueBack, obj, 0,
-                    _queueArray.length - _queueBack);
-            System.arraycopy(_queueArray, 0,
-                    obj, _queueArray.length - _queueBack,
-                    count - (_queueArray.length - _queueBack));
-        }
-        _queueBack += count;
-        if(_queueBack >= _queueArray.length)
-            _queueBack = _queueBack % _queueArray.length;
-        _queueSize -= count;
-        if (_historyCapacity != 0) {
-            if (_historyCapacity == _historyList.size()) {
-                _historyList.removeFirst();;
-            }
-            _historyList.addLast(obj);
-        }
+	takeArray(obj, count);
     }
 
     /** Remove the count oldest objects from the queue and return them.
@@ -512,10 +456,11 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  then put the taken object in the history queue. If the capacity
      *  of the history queue would be exceeded by this, then first remove
      *  the oldest object in the history queue.
-     *  @return An array of objects from the queue.
+     * 
+     *  @param obj An array of objects from the queue.
+     *  @param count The number of objects to return.
      *  @exception NoSuchElementException If the queue is empty.
      */
-    // FIXME: Does this work?, Fix docs.
     public void takeArray(Object obj[], int count) throws NoSuchElementException {
         if(size() < count) {
             String str = "";

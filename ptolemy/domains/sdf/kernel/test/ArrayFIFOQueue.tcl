@@ -180,7 +180,7 @@ test ArrayFIFOQueue-3.3 {Take items} {
 ######################################################################
 ####
 #
-test ArrayFIFOQueue-3.4 {Put array of data on a queue} {
+test ArrayFIFOQueue-3.4.1 {Put array of data on a queue} {
     set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
     set array [java::new {Object[]} {5} {}]
     $array set 0 $n1
@@ -189,6 +189,21 @@ test ArrayFIFOQueue-3.4 {Put array of data on a queue} {
     $array set 3 $n4
     $array set 4 $n5
     $queue putArray $array
+    _testEnums elements $queue
+} {{n1 n2 n3 n4 n5}}
+
+######################################################################
+####
+#
+test ArrayFIFOQueue-3.4.2 {Put array of data on a queue} {
+    set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
+    set array [java::new {Object[]} {5} {}]
+    $array set 0 $n1
+    $array set 1 $n2
+    $array set 2 $n3
+    $array set 3 $n4
+    $array set 4 $n5
+    $queue putArray $array 5
     _testEnums elements $queue
 } {{n1 n2 n3 n4 n5}}
 
@@ -215,7 +230,7 @@ test ArrayFIFOQueue-3.5 {Get individual items} {
 ######################################################################
 ####
 #
-test ArrayFIFOQueue-3.6 {Takearray items} {
+test ArrayFIFOQueue-3.6.1 {Takearray items} {
     set array [java::new {Object[]} {5} {}]
     $queue takeArray $array
     list [jdkPrintArray $array] [_testEnums elements $queue]
@@ -224,7 +239,24 @@ test ArrayFIFOQueue-3.6 {Takearray items} {
 ######################################################################
 ####
 #
-test ArrayFIFOQueue-3.7 {Test getting the data in the queue when the data wraps around the circular array.} {
+test ArrayFIFOQueue-3.6.2 {Takearray items} {
+    set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
+    set array [java::new {Object[]} {5} {}]
+    $array set 0 $n1
+    $array set 1 $n2
+    $array set 2 $n3
+    $array set 3 $n4
+    $array set 4 $n5
+    $queue putArray $array 5
+    set array [java::new {Object[]} {5} {}]
+    $queue takeArray $array 5
+    list [jdkPrintArray $array] [_testEnums elements $queue]
+} {{{ptolemy.kernel.util.NamedObj {.n1}} {ptolemy.kernel.util.NamedObj {.n2}} {ptolemy.kernel.util.NamedObj {.n3}} {ptolemy.kernel.util.NamedObj {.n4}} {ptolemy.kernel.util.NamedObj {.n5}}} {{}}}
+
+######################################################################
+####
+#
+test ArrayFIFOQueue-3.7.1 {Test getting the data in the queue when the data wraps around the circular array.} {
     set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
     set array [java::new {Object[]} {5} {}]
     $array set 0 $n1
@@ -233,6 +265,25 @@ test ArrayFIFOQueue-3.7 {Test getting the data in the queue when the data wraps 
     $array set 3 $n4
     $array set 4 $n5
     $queue putArray $array
+    $queue take
+    $queue take
+    $queue put $n1
+    $queue put $n2
+    _testEnums elements $queue
+} {{n3 n4 n5 n1 n2}}
+
+######################################################################
+####
+#
+test ArrayFIFOQueue-3.7.2 {Test getting the data in the queue when the data wraps around the circular array.} {
+    set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
+    set array [java::new {Object[]} {5} {}]
+    $array set 0 $n1
+    $array set 1 $n2
+    $array set 2 $n3
+    $array set 3 $n4
+    $array set 4 $n5
+    $queue putArray $array 5
     $queue take
     $queue take
     $queue put $n1
@@ -292,7 +343,7 @@ test ArrayFIFOQueue-4.3 {resize a bounded capacity queue} {
 ######################################################################
 ####
 #
-test ArrayFIFOQueue-4.4 {Put array of data on a queue of bounded capacity} {
+test ArrayFIFOQueue-4.4.1 {Put array of data on a queue of bounded capacity} {
     set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
     $queue setCapacity 4
     set array0 [java::new {Object[]} {4} {}]
@@ -309,6 +360,30 @@ test ArrayFIFOQueue-4.4 {Put array of data on a queue of bounded capacity} {
     set r1 [$queue putArray $array1]
     set r2 [$queue putArray $array0]
     set r3 [$queue putArray $array0]
+    set r4 [$queue put $n4]
+    list $r1 $r2 $r3 $r4 [_testEnums elements $queue]
+} {0 1 0 0 {{n1 n2 n3 n4}}}
+
+######################################################################
+####
+#
+test ArrayFIFOQueue-4.4.2 {Put array of data on a queue of bounded capacity} {
+    set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
+    $queue setCapacity 4
+    set array0 [java::new {Object[]} {4} {}]
+    set array1 [java::new {Object[]} {5} {}]
+    $array0 set 0 $n1
+    $array0 set 1 $n2
+    $array0 set 2 $n3
+    $array0 set 3 $n4
+    $array1 set 0 $n1
+    $array1 set 1 $n2
+    $array1 set 2 $n3
+    $array1 set 3 $n4
+    $array1 set 4 $n5
+    set r1 [$queue putArray $array1 5]
+    set r2 [$queue putArray $array0 4]
+    set r3 [$queue putArray $array0 4]
     set r4 [$queue put $n4]
     list $r1 $r2 $r3 $r4 [_testEnums elements $queue]
 } {0 1 0 0 {{n1 n2 n3 n4}}}
@@ -333,7 +408,7 @@ test ArrayFIFOQueue-4.5 {Get individual items from a queue of bounded capacity} 
 ######################################################################
 ####
 #
-test ArrayFIFOQueue-4.6 {Takearray items} {
+test ArrayFIFOQueue-4.6.1 {Takearray items} {
     set array1 [java::new {Object[]} {5} {}]
     set array2 [java::new {Object[]} {4} {}]
     catch {[$queue takeArray $array1]} s1
@@ -346,7 +421,37 @@ test ArrayFIFOQueue-4.6 {Takearray items} {
 ######################################################################
 ####
 #
-test ArrayFIFOQueue-4.7 {Test getting the data in the queue when the data wraps around the circular array.} {
+test ArrayFIFOQueue-4.6.2 {Takearray items} {
+    set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
+    $queue setCapacity 4
+    set array0 [java::new {Object[]} {4} {}]
+    set array1 [java::new {Object[]} {5} {}]
+    $array0 set 0 $n1
+    $array0 set 1 $n2
+    $array0 set 2 $n3
+    $array0 set 3 $n4
+    $array1 set 0 $n1
+    $array1 set 1 $n2
+    $array1 set 2 $n3
+    $array1 set 3 $n4
+    $array1 set 4 $n5
+    set r1 [$queue putArray $array1 5]
+    set r2 [$queue putArray $array0 4]
+    set r3 [$queue putArray $array0 4]
+    set r4 [$queue put $n4]
+    set array1 [java::new {Object[]} {5} {}]
+    set array2 [java::new {Object[]} {4} {}]
+    catch {[$queue takeArray $array1 5]} s1
+    $queue takeArray $array2 4
+    $queue put $n1
+    catch {[$queue takeArray $array1 5]} s2
+    list $s1 [jdkPrintArray $array2] $s1 [_testEnums elements $queue]
+} {{java.util.NoSuchElementException: The FIFOQueue does not contain enough elements!} {{ptolemy.kernel.util.NamedObj {.n1}} {ptolemy.kernel.util.NamedObj {.n2}} {ptolemy.kernel.util.NamedObj {.n3}} {ptolemy.kernel.util.NamedObj {.n4}}} {java.util.NoSuchElementException: The FIFOQueue does not contain enough elements!} n1}
+
+######################################################################
+####
+#
+test ArrayFIFOQueue-4.7.1 {Test getting the data in the queue when the data wraps around the circular array.} {
     set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
     set array [java::new {Object[]} {5} {}]
     $array set 0 $n1
@@ -355,6 +460,25 @@ test ArrayFIFOQueue-4.7 {Test getting the data in the queue when the data wraps 
     $array set 3 $n4
     $array set 4 $n5
     $queue putArray $array
+    $queue take
+    $queue take
+    $queue put $n1
+    $queue put $n2
+    _testEnums elements $queue
+} {{n3 n4 n5 n1 n2}}
+
+######################################################################
+####
+#
+test ArrayFIFOQueue-4.7.2 {Test getting the data in the queue when the data wraps around the circular array.} {
+    set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
+    set array [java::new {Object[]} {5} {}]
+    $array set 0 $n1
+    $array set 1 $n2
+    $array set 2 $n3
+    $array set 3 $n4
+    $array set 4 $n5
+    $queue putArray $array 5
     $queue take
     $queue take
     $queue put $n1

@@ -157,6 +157,7 @@ public final class SDFIOPort extends TypedIOPort {
      *  semantically equivalent to calling IOPort.get() consecutively for
      *  each element in the array.
      *
+     *  @deprecated Use the vectorized get() of IOPort instead.
      *  @param channelindex The channel index.
      *  @param tokens An array to fill with Tokens from the port.
      *  @exception NoTokenException If there are not enough tokens.
@@ -251,6 +252,7 @@ public final class SDFIOPort extends TypedIOPort {
      *  semantically equivalent to calling IOPort.put() consecutively for
      *  each element in the array.
      *
+     *  @deprecated Use the vectorized send() of IOPort instead.
      *  @param channelindex The index of the channel, from 0 to width-1
      *  @param tokens The tokens to send
      *  @exception NoRoomException If there is no room in the receiver.
