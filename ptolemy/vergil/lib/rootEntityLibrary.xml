@@ -8,12 +8,14 @@
   <import source="../../domains/sdf/lib/sdfentities.xml"/>
   <import source="../../domains/sdf/lib/vq/sdfvqentities.xml"/>
   <import source="../../domains/ct/lib/ctentities.xml"/>
+  <import source="../../domains/de/lib/deentities.xml"/>
   <import source="../../domains/fsm/lib/fsmentities.xml"/>
   <import source="../../apps/lego/legoentities.xml"/>
   <entity name="generic" class=".generic"/>
   <entity name="sdf" class=".sdf"/>
   <entity name="sdfvq" class=".sdfvq"/>
   <entity name="ct" class=".ct"/>
+  <entity name="de" class=".de"/>
   <entity name="fsm" class=".fsm"/>
   <entity name="lego" class=".lego"/>
 </class>
