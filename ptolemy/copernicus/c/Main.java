@@ -248,8 +248,9 @@ public class Main extends KernelMain {
             // generated. More specifically, we ignore any exceptions that
             // occur after code generation is completed.
             if ((_writer == null) || (!_writer.completedTransform())) {
+                // In JDK1.4, we can include the cause
                 throw new RuntimeException(exception.getMessage()
-                        + exception.getClass().getName());
+                        + ": " + exception.getClass().getName(), exception);
             } else if (_debug) {
                 System.err.println("Warning: exception after code generation"
                         + " completed.\n" + exception + "\n");
