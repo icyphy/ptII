@@ -90,8 +90,12 @@ demo4: GraphicsConfigurationTest.class
 demo5: FadeDemo.class
 	$(JAVA) -classpath . FadeDemo
 
+# http://java.sun.com/products/java-media/2D/samples/suite/Composite/FadeAnim.java
+demo6: FadeAnim.class
+	$(JAVA) -classpath . FadeAnim
+
 #See http://java.sun.com/docs/books/tutorial/2d/display/compositing.html 
-demo6: Composite.class
+demo7: Composite.class
 	$(JAVA) -classpath . Composite
 
 # Get the rest of the rules
