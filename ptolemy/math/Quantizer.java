@@ -78,7 +78,7 @@ public class Quantizer {
      */
     public static FixPoint round(double value, Precision precision) {
         BigDecimal newValue = new BigDecimal( value );
-        return round( newValue, precision);;
+        return round( newValue, precision);
     }
 
     /** Return the fixed point number that is nearest to the specified
