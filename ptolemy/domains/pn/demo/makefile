@@ -32,6 +32,7 @@
 # Root of the Java directory
 ROOT =		../../../..
 
+ME =		java/ptolemy/domains/pn/demo
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -52,8 +53,6 @@ CLASSPATH = ../../../..
 
 JSRCS = \
 	PNInterleavingExample.java \
-	PNPrimeExample.java \
-	PNWavepacket.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -62,7 +61,7 @@ EXTRA_SRCS =	$(JSRCS)
 MISC_FILES =	$(DIRS) doc #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(JARFILE)
 
@@ -78,3 +77,10 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+
+
+
+
+
+
