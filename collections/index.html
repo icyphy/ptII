@@ -96,7 +96,7 @@ Collections or build new Collections with various properties.
 
  <P>
 <DL>
-<DT> <A HREF="../doc/codeDoc/collections/Collection.html">Collection</A>
+<DT> <A HREF="../doc/codeDoc/collections/Collection.html" target="_top">Collection</A>
 <DD> Collection is the base interface for all collection classes defined
  in this package.  Every collection can:
 
@@ -131,7 +131,7 @@ Collections or build new Collections with various properties.
       Most implementation
       classes support a constructor with an argument supplying an element
       screener (an object of type
-      <A HREF="../doc/codeDoc/collections/Predicate.html">Predicate</A>) that checks
+      <A HREF="../doc/codeDoc/collections/Predicate.html" target="_top">Predicate</A>) that checks
       whether a value is considered to be a potentially
       legal element of the collection. For example, you
       could supply a screener that requires
@@ -150,7 +150,7 @@ Collections or build new Collections with various properties.
 
  <LI> Produce an <A HREF="#secEnumerations">enumeration</A> of its <CODE>elements</CODE>.  The
       enumeration returned is of type
-      <A HREF="../doc/codeDoc/collections/CollectionEnumeration.html">
+      <A HREF="../doc/codeDoc/collections/CollectionEnumeration.html" target="_top">
       CollectionEnumeration</A>, a
       stronger kind of enumeration than java.util.Enumeration. <P>
 
@@ -158,9 +158,9 @@ Collections or build new Collections with various properties.
       the consistency and properties of the internal state of a
       collection implementation object. <CODE>Collection</CODE> is a
       subinterface of
-<A HREF="../doc/codeDoc/collections/ImplementationCheckable.html">
+<A HREF="../doc/codeDoc/collections/ImplementationCheckable.html" target="_top">
 ImplementationCheckable</A>, which is in turn a subinterface
-of <A HREF="../doc/codeDoc/collections/Assertable.html">Assertable</A>, the base
+of <A HREF="../doc/codeDoc/collections/Assertable.html" target="_top">Assertable</A>, the base
 interface for classes with an <CODE>assert</CODE> method that can
 be used to help track down errors.  <P>
 
@@ -242,20 +242,20 @@ be used to help track down errors.  <P>
        </OL>
  </UL>
 
-<DT> <A HREF="../doc/codeDoc/collections/Set.html">Sets</A>
+<DT> <A HREF="../doc/codeDoc/collections/Set.html" target="_top">Sets</A>
 <DD> Sets are collections in which the number of occurrences of
      any object is at most one. They support an operation that
      causes <CODE>includes</CODE> to be true; i.e., adding an
      element only if it is not present.
 
-<DT> <A HREF="../doc/codeDoc/collections/Bag.html">Bags</A>
+<DT> <A HREF="../doc/codeDoc/collections/Bag.html" target="_top">Bags</A>
 <DD> Bags may contain multiple occurrences of each element.
  Bags can do anything that Sets can and more, except that they
  do not intrinsically guarantee that the number of occurrences of any element
  is at most one. (However, you can always use a Bag in a way that
  `manually' enforces that the number of occurrences is at most one.)
 
-<DT> <A HREF="../doc/codeDoc/collections/Seq.html">Seqs</A>
+<DT> <A HREF="../doc/codeDoc/collections/Seq.html" target="_top">Seqs</A>
 <DD> Seqs maintain elements in sequential order.
  They are sequential lists that can be accessed by positional
  indices ranging from 0..size()-1. Other Collections that are not
@@ -263,7 +263,7 @@ be used to help track down errors.  <P>
  of elements, but don't support access of these elments via
  indices.
 
-<DT> <A HREF="../doc/codeDoc/collections/Map.html">Maps</A>
+<DT> <A HREF="../doc/codeDoc/collections/Map.html" target="_top">Maps</A>
 <DD> Maps are collections in which each element has a key.  Any kind
  of Object may serve as a key for an element.  (While you could
  use regular Collections in which each element holds a pair,
@@ -277,9 +277,9 @@ be used to help track down errors.  <P>
  your class as the basis for entering and finding elements,
  you could use a Map, entering pairs of (x.prop(), x). <P>
 
-<DT> <A HREF="../doc/codeDoc/collections/ElementSortedCollection.html">ElementSortedCollections</A>
+<DT> <A HREF="../doc/codeDoc/collections/ElementSortedCollection.html" target="_top">ElementSortedCollections</A>
 <DD> A mixin for collections that always maintain elements in sorted order
-     with respect to a give <A HREF="../doc/codeDoc/collections/Comparator.html">Comparator</A>
+     with respect to a give <A HREF="../doc/codeDoc/collections/Comparator.html" target="_top">Comparator</A>
      Note: SortedCollections rely on the ordering properties of
      elements <EM>NOT</EM> to change once they have been placed in
      the collection. They cannot in general deal with cases
@@ -291,25 +291,25 @@ be used to help track down errors.  <P>
  ElementSorted Collections provide a different way to use
 properties of objects as their access keys.
  You can define your class to implement interface
-<A HREF="../doc/codeDoc/collections/Keyed.html">
+<A HREF="../doc/codeDoc/collections/Keyed.html" target="_top">
 Keyed</A>,
  with a method key() that returns
  the key (for example it might just return prop()). Then use
- a <A HREF="../doc/codeDoc/collections/Comparator.html"> Comparator</A>
+ a <A HREF="../doc/codeDoc/collections/Comparator.html" target="_top"> Comparator</A>
  that compares on keys(). The
- <A HREF="../doc/codeDoc/collections/DefaultComparator.html">DefaultComparator</A>
+ <A HREF="../doc/codeDoc/collections/DefaultComparator.html" target="_top">DefaultComparator</A>
  class does this automatically before trying to perform comparsions,
  but you can write your own Comparator that does this in a
  more specialized and efficient way.) <P>
 
-<DT> <A HREF="../doc/codeDoc/collections/KeySortedCollection.html">KeySortedCollections</A>
+<DT> <A HREF="../doc/codeDoc/collections/KeySortedCollection.html" target="_top">KeySortedCollections</A>
 <DD> A mixin for Maps that always maintain keys in sorted order
 
 </DL>
 
 <H2>
 <A NAME="secUpdatable"></A>
- <A HREF="../doc/codeDoc/collections/UpdatableCollection.html">UpdatableCollections</A>
+ <A HREF="../doc/codeDoc/collections/UpdatableCollection.html" target="_top">UpdatableCollections</A>
 </H2>
 
 <IMG SRC="UpdatableIfc.gif">
@@ -332,18 +332,18 @@ Updatable collections are `normal' mutable collections. They:
 
 <DL>
 
-<DT> <A HREF="../doc/codeDoc/collections/UpdatableSet.html">UpdatableSets</A>
+<DT> <A HREF="../doc/codeDoc/collections/UpdatableSet.html" target="_top">UpdatableSets</A>
 <DD> Updatable collections maintaining Set semantics. They support
      an `include' operation that adds
      an element if not present, plus a version that includes
      all elements from a supplied Eunumeration.
 
-<DT> <A HREF="../doc/codeDoc/collections/UpdatableBag.html">UpdatableBags</A>
+<DT> <A HREF="../doc/codeDoc/collections/UpdatableBag.html" target="_top">UpdatableBags</A>
 <DD> Updatable collections with an add(v) operation, that adds
  an occurrence of v to the collection, and addIfAbsent that only
  conditionally adds the element.
 
-<DT> <A HREF="../doc/codeDoc/collections/UpdatableSeq.html">UpdatableSeqs</A>
+<DT> <A HREF="../doc/codeDoc/collections/UpdatableSeq.html" target="_top">UpdatableSeqs</A>
 <DD> Seqs with standard indexed update operations (insertAt, replaceAt,
  removeAt). They also support
  method <CODE>insertElementsAt(int index, Enumeration e)</CODE>
@@ -351,11 +351,11 @@ Updatable collections are `normal' mutable collections. They:
  UpdatableSeqs also support special (often more efficient)
  methods operating on the front and back of the sequence,
 
-<DT> <A HREF="../doc/codeDoc/collections/UpdatableMap.html">UpdatableMaps</A>
+<DT> <A HREF="../doc/codeDoc/collections/UpdatableMap.html" target="_top">UpdatableMaps</A>
 <DD> Maps with update operations, principally
   putAt(key, element) and removeAt(key).
 
-<DT> <A HREF="../doc/codeDoc/collections/SortableCollection.html">SortableCollections</A>
+<DT> <A HREF="../doc/codeDoc/collections/SortableCollection.html" target="_top">SortableCollections</A>
 <DD> A `mixin' for collections that support a sort
  operation that accepts a  Comparator.
  The difference between Sorted and Sortable is that
@@ -397,7 +397,7 @@ Updatable collections are `normal' mutable collections. They:
  object that will be passed around and used polymorphically
  has to care about these issues. If you do not care, just use
  the ones handed out by
- <A HREF="../doc/codeDoc/collections/DefaultImplementations.html">
+ <A HREF="../doc/codeDoc/collections/DefaultImplementations.html" target="_top">
  DefaultImplementations</A>, which makes
  pretty reasonable choices.  If you do care, be sure to look
  over the time complexities listed in the documentation for
@@ -411,7 +411,7 @@ Updatable collections are `normal' mutable collections. They:
  LinkedList if you only rarely need to access by index.
  <P>
  All current implementations are subclasses of
- <A HREF="../doc/codeDoc/collections/UpdatableImpl.html">UpdatableImpl</A>
+ <A HREF="../doc/codeDoc/collections/UpdatableImpl.html" target="_top">UpdatableImpl</A>
  a convenient abstract class
  that provides default implementations of many UpdatableCollection
  operations.
@@ -422,40 +422,40 @@ Updatable collections are `normal' mutable collections. They:
  <P>
  Current implementations include: <P>
 <DL>
-<DT> <A HREF="../doc/codeDoc/collections/HashedSet.html">HashedSets </A>
+<DT> <A HREF="../doc/codeDoc/collections/HashedSet.html" target="_top">HashedSets </A>
         implement UpdatableSet
 <DD> Standard implementation of hash tables of single elements.
 
-<DT> <A HREF="../doc/codeDoc/collections/RBTree.html">RBTrees </A>
+<DT> <A HREF="../doc/codeDoc/collections/RBTree.html" target="_top">RBTrees </A>
         implement UpdatableBag, ElementSortedCollection
 <DD> Implementation of red-black trees, a form of
      balanced sorted binary search tree.
 
-<DT> <A HREF="../doc/codeDoc/collections/LinkedList.html">LinkedLists </A>
+<DT> <A HREF="../doc/codeDoc/collections/LinkedList.html" target="_top">LinkedLists </A>
         implement UpdatableSeq, SortableCollection
 <DD> Standard implementation of linked lists.
 
-<DT> <A HREF="../doc/codeDoc/collections/CircularList.html">CircularLists </A>
+<DT> <A HREF="../doc/codeDoc/collections/CircularList.html" target="_top">CircularLists </A>
         implement UpdatableSeq
 <DD> Standard implementation of double-linked circluar lists.
 
-<DT> <A HREF="../doc/codeDoc/collections/Dynarray.html">Dynarrays </A>
+<DT> <A HREF="../doc/codeDoc/collections/Dynarray.html" target="_top">Dynarrays </A>
         implement UpdatableSeq, SortableCollection
 <DD> Buffered array that dynamically resizes when necessary.
 
-<DT> <A HREF="../doc/codeDoc/collections/LinkedBuffer.html">LinkedBuffers </A>
+<DT> <A HREF="../doc/codeDoc/collections/LinkedBuffer.html" target="_top">LinkedBuffers </A>
         implement UpdatableBag
 <DD> An expandable list of array-based buffers.
 
-<DT> <A HREF="../doc/codeDoc/collections/HashedMap.html">HashedMaps </A>
+<DT> <A HREF="../doc/codeDoc/collections/HashedMap.html" target="_top">HashedMaps </A>
         implement Map
 <DD> Hash Table of keyed elements,
 
-<DT> <A HREF="../doc/codeDoc/collections/LLMap.html">LLMaps </A>
+<DT> <A HREF="../doc/codeDoc/collections/LLMap.html" target="_top">LLMaps </A>
         implement Map
 <DD> LinkedLists of (key, element) pairs supporting Map operations.
 
-<DT> <A HREF="../doc/codeDoc/collections/RBMap.html">RBMaps</A>
+<DT> <A HREF="../doc/codeDoc/collections/RBMap.html" target="_top">RBMaps</A>
         implement Map, KeySortedCollection
 <DD> Red-Black trees of keyed elements
 
@@ -491,33 +491,33 @@ Many of the implementation classes themselves rely on yet
  them as the building-blocks of other Collection implementations.
  They currently include:  <P>
 <DL>
-<DT> <A HREF="../doc/codeDoc/collections/Cell.html">Cell </A>
+<DT> <A HREF="../doc/codeDoc/collections/Cell.html" target="_top">Cell </A>
 <DD> A simple box holding an Object
 
-<DT> <A HREF="../doc/codeDoc/collections/LLCell.html">LLCell </A>
+<DT> <A HREF="../doc/codeDoc/collections/LLCell.html" target="_top">LLCell </A>
 <DD> Cells with next-pointers. Each cell knows how to do
      basic linked list operations like insert another LLCell
      after itself.
 
-<DT> <A HREF="../doc/codeDoc/collections/LLPair.html">LLPair </A>
+<DT> <A HREF="../doc/codeDoc/collections/LLPair.html" target="_top">LLPair </A>
 <DD> An extension of LLCell in which each node has a key
 
-<DT> <A HREF="../doc/codeDoc/collections/CLCell.html">CLCell </A>
+<DT> <A HREF="../doc/codeDoc/collections/CLCell.html" target="_top">CLCell </A>
 <DD> A cell with next- and prev- pointers, and operations so that
      objects maintain themselves in proper circular list order.
 
-<DT> <A HREF="../doc/codeDoc/collections/RBCell.html">RBCell </A>
+<DT> <A HREF="../doc/codeDoc/collections/RBCell.html" target="_top">RBCell </A>
 <DD> A cell with red-black-tree pointers and color, and methods
      to add new RBCells, properly rebalancing the tree it is in
      upon insertion. And so on
 
-<DT> <A HREF="../doc/codeDoc/collections/RBPair.html">RBPair </A>
+<DT> <A HREF="../doc/codeDoc/collections/RBPair.html" target="_top">RBPair </A>
 <DD> RBCells with keys.
 
 </DL>
 <H2>
 <A NAME="secImmutable"></A>
-<A HREF="../doc/codeDoc/collections/Immutable.html">Immutable</A> Collections.
+<A HREF="../doc/codeDoc/collections/Immutable.html" target="_top">Immutable</A> Collections.
 </H2>
 
 <IMG SRC="ImmutableIfc.gif">
@@ -530,7 +530,7 @@ Many of the implementation classes themselves rely on yet
  Immutable classes exceedingly safe.
  <P>
  In Java, the <EM>concept</EM> of immutablity is best expressed as
- an in-the-small <a href="http://g.oswego.edu/dl/pats/aopintro.html">
+ an in-the-small <a href="http://g.oswego.edu/dl/pats/aopintro.html" target="_top">
  design pattern</a> consisting of:
 
 <OL>
@@ -551,13 +551,13 @@ Many of the implementation classes themselves rely on yet
  <P>
   The <CODE>collections</CODE> package currently contains four
   implementation classes using this scheme.
- <A HREF="../doc/codeDoc/collections/IncrSet.html">IncrSets</A>
- <A HREF="../doc/codeDoc/collections/IncrBag.html">IncrBags</A>
- <A HREF="../doc/codeDoc/collections/IncrSeq.html">IncrSeqs</A>
- <A HREF="../doc/codeDoc/collections/IncrMap.html">IncrMaps</A>
+ <A HREF="../doc/codeDoc/collections/IncrSet.html" target="_top">IncrSets</A>
+ <A HREF="../doc/codeDoc/collections/IncrBag.html" target="_top">IncrBags</A>
+ <A HREF="../doc/codeDoc/collections/IncrSeq.html" target="_top">IncrSeqs</A>
+ <A HREF="../doc/codeDoc/collections/IncrMap.html" target="_top">IncrMaps</A>
  are all implementation subclasses of abstract
  class
- <A HREF="../doc/codeDoc/collections/IncrImpl.html">IncrImpl</A>
+ <A HREF="../doc/codeDoc/collections/IncrImpl.html" target="_top">IncrImpl</A>
  that uses a `negative delta' algorithm to
  do lazy copying of collections formed via creational
  update methods. This algorithm can be applied to <EM>any</EM>
@@ -632,15 +632,15 @@ Collection methods are defined to throw only a small
 
 <DT>  java.util.NoSuchElementException
 <DD> Thrown for attempts to access elements that do not exist.
-<DT> <A HREF="../doc/codeDoc/collections/IllegalElementException.html">
+<DT> <A HREF="../doc/codeDoc/collections/IllegalElementException.html" target="_top">
      IllegalElementExceptions</A> (a subclass of IllegalArgumentException)
 <DD> Thrown for attempts place null or invalid elements.
-<DT> <A HREF="../doc/codeDoc/collections/CorruptedEnumerationExceptions.html">CorruptedEnumerationExceptions </A>
+<DT> <A HREF="../doc/codeDoc/collections/CorruptedEnumerationExceptions.html" target="_top">CorruptedEnumerationExceptions </A>
 (A subclass of NoSuchElementException)
 <DD> Thrown for attempts to access elements in enumerations that have been
       detectably compromised because the collection serving as the
       base of the collection has been modified in the course of traversal.
-<DT> <A HREF="../doc/codeDoc/collections/ImplementationError.html">ImplementationErrors</A>
+<DT> <A HREF="../doc/codeDoc/collections/ImplementationError.html" target="_top">ImplementationErrors</A>
      (a subclass of Error)
 <DD> Thrown for detected failures due to coding errors (i.e., cases in
       which internal consistency checks or required postconditions fail).
@@ -678,7 +678,7 @@ needed to be redone from scratch.)
  <P>
 All <CODE>Collection</CODE> classes actually produce
 <CODE>CollectionEnumerations</CODE> to report elements.
-<A HREF="../doc/codeDoc/collections/CollectionEnumeration.html">
+<A HREF="../doc/codeDoc/collections/CollectionEnumeration.html" target="_top">
 CollectionEnumeration</A> is a subinterface of the standard
 <CODE>java.util.Enumeration</CODE> that adds two methods:
 <CODE>corrupted</CODE> which reports true if the enumeration is
@@ -790,7 +790,7 @@ it easier to deal in Enumerations rather than Collections or
 other special data structures. They include:
 
 <DL>
-<DT> <A HREF="../doc/codeDoc/collections/ArrayEnumeration.html">ArrayEnumeration</A>
+<DT> <A HREF="../doc/codeDoc/collections/ArrayEnumeration.html" target="_top">ArrayEnumeration</A>
 <DD> A utility class that allows you to traverse arrays as
      enumerations. For example:
  <PRE>
@@ -799,10 +799,10 @@ other special data structures. They include:
   s.insertElementsAt(0, new ArrayEnumeration(arr));
  </PRE>
  <P>
-<DT> <A HREF="../doc/codeDoc/collections/FilteringEnumeration.html">FilteringEnumeration</A>
+<DT> <A HREF="../doc/codeDoc/collections/FilteringEnumeration.html" target="_top">FilteringEnumeration</A>
 <DD> A class that allows you to ignore elements in an enumeration
      that don't meet some criterion (expressed as a
-     <A HREF="../doc/codeDoc/collections/Predicate.html">Predicate</A>).
+     <A HREF="../doc/codeDoc/collections/Predicate.html" target="_top">Predicate</A>).
   For example, if you want to screen out everything but Panel
   objects from a collection coll that might hold things other than Panels,
   write something of the form:
@@ -819,10 +819,10 @@ other special data structures. They include:
   }
   </PRE>
  <P>
-<DT> <A HREF="../doc/codeDoc/collections/MappingEnumeration.html">MappingEnumeration</A>
+<DT> <A HREF="../doc/codeDoc/collections/MappingEnumeration.html" target="_top">MappingEnumeration</A>
 <DD> A class that allows you to  transform elements from
      other enumerations before they are seen by their `consumers'
-     by invoking an arbitrary <A HREF="../doc/codeDoc/collections/Function.html">Function</A>)
+     by invoking an arbitrary <A HREF="../doc/codeDoc/collections/Function.html" target="_top">Function</A>)
      on each <CODE>nextElement</CODE> access.
   For example, if you want to process only the parent() fields
   of java.awt.Component elements held by a collection coll
@@ -849,7 +849,7 @@ other special data structures. They include:
   All this requires too much set-up to be reasonable in most
   situations, but is invaluable in others. <P>
 
-<DT> <A HREF="../doc/codeDoc/collections/InterleavingEnumeration.html">InterleavingEnumeration</A>
+<DT> <A HREF="../doc/codeDoc/collections/InterleavingEnumeration.html" target="_top">InterleavingEnumeration</A>
 <DD> A class that allows you to
   combine the elements
   of two different enumerations as if they were one enumeration
@@ -876,7 +876,7 @@ other special data structures. They include:
 
 <H2>
 <A NAME="secChecked"></A>
-<A HREF="../doc/codeDoc/collections/CheckedCollection.html">Checked </A> Collections
+<A HREF="../doc/codeDoc/collections/CheckedCollection.html" target="_top">Checked </A> Collections
 </H2>
 
  <P>
@@ -895,10 +895,10 @@ other special data structures. They include:
  to hold, at least in the cases actually tested.
   <P>
  Checked versions of each of the major Updatable interfaces exist --
- <A HREF="../doc/codeDoc/collections/CheckedSet.html">CheckedSet </A>
- <A HREF="../doc/codeDoc/collections/CheckedBag.html">CheckedBag </A>
- <A HREF="../doc/codeDoc/collections/CheckedSeq.html">CheckedSeq </A>
- <A HREF="../doc/codeDoc/collections/CheckedMap.html">CheckedMap </A>.
+ <A HREF="../doc/codeDoc/collections/CheckedSet.html" target="_top">CheckedSet </A>
+ <A HREF="../doc/codeDoc/collections/CheckedBag.html" target="_top">CheckedBag </A>
+ <A HREF="../doc/codeDoc/collections/CheckedSeq.html" target="_top">CheckedSeq </A>
+ <A HREF="../doc/codeDoc/collections/CheckedMap.html" target="_top">CheckedMap </A>.
   Each
  one `wraps' a normal collection object, and for each operation,
  asks the inner collection to perform it, checks as best it can that the effects
@@ -987,7 +987,7 @@ restrictions.
 
 <LI> <A HREF="BinaryFunction.java">BinaryFunction.java</A>
 
-<LI> <A HREF="CEImpl.java">CEImpl.java</A>
+<LI> <A HREF="CEImpl.java"">CEImpl.java</A>
 
 <LI> <A HREF="CLCell.java">CLCell.java</A>
 
@@ -1185,7 +1185,7 @@ History
 <HR>
 
 <address>
-<A HREF="http://g.oswego.edu/dl">Doug Lea</A>
+<A HREF="http://g.oswego.edu/dlDoug Lea</A>
 </address>
 <!-- hhmts start -->
 Last modified: Tue Apr 16 18:32:40 EDT 1996
