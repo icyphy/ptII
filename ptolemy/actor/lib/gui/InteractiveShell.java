@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.gui;
 
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Configuration;
@@ -103,6 +104,12 @@ public class InteractiveShell extends TypedAtomicActor
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
         
+        prompt = new PortParameter(this, "prompt",
+                new StringToken(">>"));
+        // Make command be a StringParameter (no surrounding double quotes).
+        prompt.setTypeEquals(BaseType.STRING);
+        prompt.setStringMode(true);
+
         _windowProperties = new WindowPropertiesAttribute(
                 this, "_windowProperties");
                 
@@ -129,6 +136,12 @@ public class InteractiveShell extends TypedAtomicActor
     /** The output port. */
     public TypedIOPort output;
     
+    /** The prompt.
+     * The initial default is the string >>.   
+     * Double quotes are not necessary.
+     */  
+    public PortParameter prompt;
+
     /** The shell window object. */
     public ShellTextArea shell;
 
@@ -175,6 +188,9 @@ public class InteractiveShell extends TypedAtomicActor
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        prompt.update();
+        shell.mainPrompt = ((StringToken)prompt.getToken()).stringValue();
+
         if (input.numberOfSources() > 0 && input.hasToken(0)) {
             String value = ((StringToken)input.get(0)).stringValue();
             // If window has been dismissed, there is nothing more to do.
