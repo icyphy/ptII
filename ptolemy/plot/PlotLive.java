@@ -72,9 +72,8 @@ public abstract class PlotLive extends Plot implements Runnable {
    
     /**
      * Handle button presses to enable or disable plotting.
-     * @deprecated FIXME: action() in java.awt.component 
-     * is deprecated in JDK1.1, but we need 
-     * to compile under 1.0.2 for netscape3.x compatibility.
+     * @deprecated As of JDK1.1 in java.awt.component 
+     * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean action (Event evt, Object arg) {
 	// 

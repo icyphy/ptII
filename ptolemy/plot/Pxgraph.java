@@ -99,9 +99,8 @@ public class Pxgraph extends Frame {
     //    }
 
     /** handle an event.
-     * @deprecated handleEvent() is deprecated in 1.1, we should use
-     * processEvent(), However, we need to compile under 1.0.2,
-     * so we stick with handleEvent().
+     * @deprecated As of JDK1.1 in java.awt.component 
+     * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean handleEvent(Event e) {
         switch (e.id) {

@@ -124,9 +124,8 @@ public class PlotBox extends Applet {
     /** 
      * Handle button presses to fill the plot.  This rescales so that
      * the data that is currently plotted just fits.
-     * @deprecated FIXME: action() in java.awt.component 
-     * is deprecated in JDK1.1, but we need 
-     * to compile under 1.0.2 for netscape3.x compatibility.
+     * @deprecated As of JDK1.1 in java.awt.component 
+     * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean action (Event evt, Object arg) {
         if (evt.target == __fillButton) {
@@ -667,9 +666,8 @@ public class PlotBox extends Applet {
 	
     /**
      * Set the starting point for an interactive zoom box.
-     * @deprecated FIXME: mouseDown() in java.awt.component 
-     * is deprecated in JDK1.1, but we need 
-     * to compile under 1.0.2 for netscape3.x compatibility.
+     * @deprecated As of JDK1.1 in java.awt.component 
+     * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean mouseDown(Event evt, int x, int y) { // deprecated
         // ignore if out of range
@@ -685,9 +683,8 @@ public class PlotBox extends Applet {
      * Set the starting point for an interactive zoom box.
      * Return a boolean indicating whether or not we have dealt with
      * the event.
-     * @deprecated FIXME: mouseDown() in java.awt.component 
-     * is deprecated in JDK1.1, but we need 
-     * to compile under 1.0.2 for netscape3.x compatibility.
+     * @deprecated As of JDK1.1 in java.awt.component 
+     * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean mouseDrag(Event evt, int x, int y) {
         boolean pointinside = y <= _lry && y >= _uly &&
@@ -758,9 +755,8 @@ public class PlotBox extends Applet {
 
     /**
      * Set the starting point for an interactive zoom box.
-     * @deprecated FIXME: mouseUp() in java.awt.component 
-     * is deprecated in JDK1.1, but we need 
-     * to compile under 1.0.2 for netscape3.x compatibility.
+     * @deprecated As of JDK1.1 in java.awt.component 
+     * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean mouseUp(Event evt, int x, int y) { // deprecated
         // ignore if there hasn't been a drag, or if x,y is out of range
