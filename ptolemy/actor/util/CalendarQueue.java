@@ -31,7 +31,11 @@
 package ptolemy.actor.util;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.InternalErrorException;
+
+import java.util.LinkedList;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// CalendarQueue
@@ -139,19 +143,35 @@ public class CalendarQueue {
      *  The minimum number of buckets is also the initial number
      *  of buckets.  It too defaults to 2 if the other constructor is used.
      *  @param comparator The comparator used to sort entries.
-     *  @param minNumBucket The minimum number of buckets.
+     *  @param minNumBuckets The minimum number of buckets.
      *  @param resizeFactor The threshold factor.
      */
     public CalendarQueue(CQComparator comparator,
-            int minNumBucket,
+            int minNumBuckets,
             int resizeFactor) {
         this(comparator);
-        _minNumBucket = minNumBucket;
+        _minNumBuckets = minNumBuckets;
         _queueResizeFactor = resizeFactor;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Append a listener to the current set of debug listeners.
+     *  If the listener is already in the set, do not add it again.
+     *  @param listener The listener to which to send debug messages.
+     */
+    public void addDebugListener(DebugListener listener) {
+        if (_debugListeners == null) {
+            _debugListeners = new LinkedList();
+        } else {
+            if (_debugListeners.contains(listener)) {
+                return;
+            }
+        }
+        _debugListeners.add(listener);
+        _debugging = true;
+    }
 
     /** Empty the queue.
      */
@@ -270,14 +290,19 @@ public class CalendarQueue {
                 "CalendarQueue.put() can't accept null key"
             );
         }
+        if (_debugging) _debug("+ queueing event: " + cqEntry.value
+                + ", tag: " + cqEntry.key);
 
         // If this is the first put since the queue creation,
         // then do initialization.
         if (_zeroRef == null) {
             _zeroRef = cqEntry.key;
             _qSize = 0;
-            _localInit(_minNumBucket, _cqComparator.getBinWidth(null),
+            _localInit(_minNumBuckets, _cqComparator.getBinWidth(null),
                     cqEntry.key);
+            // Indicate that we do not have enough samples redo width.
+            _sampleValid = false;
+            _previousTakenKey = null;
         }
 
         // Get the virtual bin number.
@@ -304,7 +329,8 @@ public class CalendarQueue {
         ++_qSize;
 
         // Change the calendar size if needed.
-        if (_qSize > _topThreshold) {
+        if (_qSize > _topThreshold) _qSizeOverThreshold++;
+        if (_qSizeOverThreshold > _RESIZE_LAG) {
             _resize(_nBuckets*_queueResizeFactor);
         }
 
@@ -348,6 +374,23 @@ public class CalendarQueue {
         return result;
     }
 
+    /** Unregister a debug listener.  If the specified listener has not
+     *  been previously registered, then do nothing.
+     *  @param listener The listener to remove from the list of listeners
+     *   to which debug messages are sent.
+     */
+    public void removeDebugListener(DebugListener listener) {
+        if (_debugListeners == null) {
+            return;
+        }
+        _debugListeners.remove(listener);
+        if (_debugListeners.size() == 0) {
+            _debugListeners = null;
+            _debugging = false;
+        }
+        return;
+    }
+
     /** Enable or disable changing the number of bins (or buckets)
      *  in the queue.  These change operations are fairly expensive,
      *  so in some circumstances you may wish to simply set the
@@ -372,7 +415,10 @@ public class CalendarQueue {
     /** Remove the entry with the smallest key and return its value.
      *  If there are multiple entries with the same smallest key,
      *  then return the first one that was put in the queue (FIFO
-     *  behavior).  Note that since values are
+     *  behavior).  If the key returned is not the same as the key
+     *  previously returned by this method, then add it to the
+     *  collection of keys to use in any future recalculations of
+     *  the bin width.  Note that since values are
      *  permitted to be null, this method could return null.
      *  @return The value associated with the smallest key.
      *  @exception IllegalActionException If the queue is empty.
@@ -392,6 +438,7 @@ public class CalendarQueue {
         int i = _minBucket, j = 0;
         int indexOfMinimum = i;
         Object minKeySoFar = null;
+        Object result = null;
         while (true) {
             // At each bucket, we first determine if the bucket is empty.
             // If not, then we check whether the first entry in the
@@ -406,7 +453,8 @@ public class CalendarQueue {
                 Object minimumKeyInBucket = _bucket[i].head.contents.key;
                 if (_getBinIndex(minimumKeyInBucket) == _minVirtualBucket + j) {
                     // The entry is in the current year. Return it.
-                    return _takeFromBucket(i);
+                    result = _takeFromBucket(i);
+                    break;
                 } else {
                     // The entry is not in the current year. 
                     // Compare key to minimum found so far.
@@ -431,9 +479,13 @@ public class CalendarQueue {
                     throw new InternalErrorException(
                         "Queue is empty, but size() is not zero!");
                 }
-                return _takeFromBucket(indexOfMinimum);
+                result = _takeFromBucket(indexOfMinimum);
+                break;
             }
         }
+        _collect(_takenKey);
+        if (_debugging) _debug("- taking event: " + result);
+        return result;
     }
 
     /** Return the keys and values currently in the queue as a pair
@@ -460,6 +512,7 @@ public class CalendarQueue {
     public synchronized final Object[][] toArray(int limit) {
         if (limit > _qSize) limit = _qSize;
         Object[][] result = new Object[2][limit];
+        if (_qSize == 0) return result;
         int index = 0;
 
         // Iterate through the buckets collecting entries in order.
@@ -478,7 +531,6 @@ public class CalendarQueue {
         for (int i = 0; i < _bucket.length; i++) {
             bucketHead[i] = _bucket[i].head;
         }
-
         while (true) {
 
             // At each bucket, we first determine whether there are more
@@ -506,6 +558,7 @@ public class CalendarQueue {
                     nextKeyInBucket = bucketHead[currentBucket].contents.key;
                 }
                 long nextVirtualBucket = _getBinIndex(nextKeyInBucket);
+
                 if (nextVirtualBucket < minimumNextVirtualBucket) {
                     minimumNextVirtualBucket = nextVirtualBucket;
                     nextStartBucket = currentBucket;
@@ -520,7 +573,8 @@ public class CalendarQueue {
             if (currentBucket == nextStartBucket) {
                 if (minimumNextVirtualBucket == Long.MAX_VALUE) {
                     throw new InternalErrorException(
-                        "Queue is empty, but size() is not zero!");
+                        "Queue is empty, but size() is not zero! It is: "
+                        + _qSize);
                 }
                 virtualBucket = minimumNextVirtualBucket;
                 minimumNextVirtualBucket = Long.MAX_VALUE;
@@ -531,31 +585,33 @@ public class CalendarQueue {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Calculate a new width to use for buckets.  This is done by
-    // providing a few samples from the queue to the CQComparator
-    // getBinWidth() method.  If the queue has fewer than two
-    // elements, then the CQComparator is consulted for a default
-    // width.
-    private Object _computeNewWidth() {
-        // Decide how many queue elements to sample.
-        // If the size is too small, stick with the default bin width.
-        if (_qSize < 2) return _cqComparator.getBinWidth(null);
+    // Collect a key for later use to recalculate bin widths.
+    private void _collect(Object key) {
+        if ((_previousTakenKey == null) ||
+                (_cqComparator.compare(key, _previousTakenKey) > 0)) {
+            _sampleKeys[_sampleKeyIndex++] = key;
+            if(_sampleKeyIndex == _SAMPLE_SIZE) {
+                _sampleKeyIndex = 0;
+                _sampleValid = true;
+            }
+            _previousTakenKey = key;
+        }
+    }
 
-        // If there are fewer than five samples, use all of them.
-        // Otherwise, use roughly 1/10 of the samples.
-        int nSamples;
-        if (_qSize <= 5) nSamples = _qSize;
-        else nSamples = 5 + (_qSize-5)/10;
-
-        // In any case, do not use more than 25.
-        if (nSamples > 25) nSamples = 25;
-
-        // Get the array contents as an array.
-        Object[][] contents = toArray(nSamples);
-
-        // Delegate to the comparator to figure
-        // out the bin width from the data.
-        return _cqComparator.getBinWidth(contents[0]);
+    /** Send a debug message to all debug listeners that have registered.
+     *  By convention, messages should not include a newline at the end.
+     *  The newline will be added by the listener, if appropriate.
+     *  @param message The message.
+     */
+    private final void _debug(String message) {
+        if (_debugListeners == null || !_debugging) {
+            return;
+        } else {
+            Iterator listeners = _debugListeners.iterator();
+            while (listeners.hasNext()) {
+                ((DebugListener)listeners.next()).message(message);
+            }
+        }
     }
 
     // Note: This is basically a macro..
@@ -593,6 +649,7 @@ public class CalendarQueue {
         // Set the queue size change thresholds.
         _bottomThreshold = _nBuckets/_queueResizeFactor;
         _topThreshold = _nBuckets*_queueResizeFactor;
+        _qSizeOverThreshold = _qSizeUnderThreshold = 0;
     }
 
     // Copy the queue into a new queue with the specified number of buckets.
@@ -604,9 +661,15 @@ public class CalendarQueue {
     // 3. Transfer all elements from the old queue into the new queue.
     private void _resize(int newsize) {
         if (!_resizeEnabled) return;
+        if (_debugging) _debug(">>>>>> changing number of buckets to: "
+                + newsize);
 
-        // Find new bucket width
-        Object new_width = _computeNewWidth();
+        // Find new bucket width, if appropriate.
+        Object new_width = _width;
+        if (_sampleValid) {
+            new_width = _cqComparator.getBinWidth(_sampleKeys);
+            if (_debugging) _debug(">>> changing bin width to: " + new_width);
+        }
 
         // Save location and size of the old calendar.
         CQLinkedList[] old_bucket = _bucket;
@@ -617,7 +680,9 @@ public class CalendarQueue {
         _qSize = 0;
 
         // Go through each of the old buckets and add its elements
-        // to the new queue.
+        // to the new queue. Disable debugging to not report these puts.
+        boolean saveDebugging = _debugging;
+        _debugging = false;
         _resizeEnabled = false;
         for (int i = 0; i < old_nbuckets; i++) {
             while (!old_bucket[i].isEmpty()) {
@@ -625,6 +690,7 @@ public class CalendarQueue {
                 put(entry);
             }
         }
+        _debugging = saveDebugging;
         _resizeEnabled = true;
     }
 
@@ -641,9 +707,10 @@ public class CalendarQueue {
         if (_qSize == 0) _minKey = null;
 
         // Reduce the calendar size if needed.
-        if (_qSize < _bottomThreshold) {
+        if (_qSize < _bottomThreshold) _qSizeUnderThreshold++;
+        if (_qSizeUnderThreshold > _RESIZE_LAG) {
             // If it is already minimum or close, do nothing.
-            if (_nBuckets/_queueResizeFactor > _minNumBucket) {
+            if (_nBuckets/_queueResizeFactor > _minNumBuckets) {
                 _resize (_nBuckets/_queueResizeFactor);
             }
         }
@@ -695,14 +762,14 @@ public class CalendarQueue {
         }
     }
 
-    // Specialized sorted list of CQEntry objects.
-    // The main reason for having a customized linked list here is that
-    // we need essentially a SortedMap with bag instead of set behavior.
-    // That is, it can contain multiple entries with the same key.
-    // Nonetheless, this is a debatable decision.  In particular, it would
-    // be nice to have a tree structure here rather than a linear list.
-    // The TreeMap class in java.util could do this, but it would have
-    // set semantics.
+    // Specialized sorted list of CQEntry objects.  This class is used
+    // instead of java's SortedMap in order to provide the following
+    // features:
+    //   - multiset behavior.  An entry can appear more than once.
+    //   - monitoring of buckets in order to trigger reallocation.
+    //   - monitoring of time stamps in order to help set bin width.
+    // The class is very specialized, with many features of generic
+    // collections missing.
     private class CQLinkedList {
 
         // Construct an empty list.
@@ -740,7 +807,7 @@ public class CalendarQueue {
             // then tail != null as well.
 
             // Special case: Check if obj is greater than or equal to tail.
-            if ( _cqComparator.compare(obj.key, tail.contents.key) >= 0) {
+            if (_cqComparator.compare(obj.key, tail.contents.key) >= 0) {
                 // obj becomes new tail.
                 CQCell newTail = new CQCell(obj, null);
                 tail.next = newTail;
@@ -873,11 +940,28 @@ public class CalendarQueue {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** @serial The list of DebugListeners registered with this object. */
+    private LinkedList _debugListeners = null;
+
+    /** @serial A flag indicating whether there are debug listeners. */
+    private boolean _debugging;
+
     // The number of buckets in the queue.
     private int _nBuckets;
 
     // The current queue size.
     private int _qSize = 0;
+
+    // The number of times that the queue has exceeded the current
+    // threshold.
+    private int _qSizeOverThreshold = 0;
+
+    // The number of times that the queue has dropped the current
+    // threshold.
+    private int _qSizeUnderThreshold = 0;
+
+    // The number of times a threshold must be exceeded to trigger resizing.
+    private final static int _RESIZE_LAG = 8;
 
     // The width of each bucket, as specified by the associated CQComparator.
     private Object _width;
@@ -896,7 +980,7 @@ public class CalendarQueue {
 
     // The number of buckets to start with and the lower bound
     // on the number of buckets.
-    private int _minNumBucket = 2;
+    private int _minNumBuckets = 2;
 
     // The factor by which to multiply (or divide)
     // the number of bins to when resizing.
@@ -919,4 +1003,19 @@ public class CalendarQueue {
 
     // The positive modulo of _minKey (the physical bin number).
     private int _minBucket;
+
+    // Number of key samples to calculate bin width.
+    private final static int _SAMPLE_SIZE = 8;
+
+    // Sample keys to use to calculate bin width.
+    private Object[] _sampleKeys = new Object[_SAMPLE_SIZE];
+
+    // Index into the sample keys array.
+    private int _sampleKeyIndex = 0;
+
+    // Indicator of whether there are enough sample keys to calculate width.
+    private boolean _sampleValid = false;
+
+    // The most recently collected key.
+    private Object _previousTakenKey = null;
 }
