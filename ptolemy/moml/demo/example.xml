@@ -3,7 +3,9 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="top" class="ptolemy.actor.TypedCompositeActor">
   <director class="ptolemy.domains.sdf.kernel.SDFDirector">
-    <parameter name="iterations" value="100"/>
+    <property name="iterations" value="100">
+        <doc>Number of iterations in an execution.</doc>
+    </property>
   </director>
   <entity name="ramp" class="ptolemy.actor.lib.Ramp">
     <property name="step" value="0.1"/>
