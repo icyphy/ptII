@@ -3,7 +3,7 @@ dnl	generate the file "configure", which is run to configure the
 dnl	Makefile in this directory.
 
 # Version: $Id$
-# Copyright (c) 1997-1998 The Regents of the University of California.
+# Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
 # 
 # Permission is hereby granted, without written agreement and without
@@ -205,93 +205,110 @@ AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
 #       if it is does not, look for javacc on the path.
 #--------------------------------------------------------------------
 
-AC_MSG_CHECKING([for JavaCC])
-AC_ARG_WITH(javacc, [  --with-javacc=DIR       use JavaCC.zip from DIR,
-                           defaults to \$PTII/vendors/sun/JavaCC],
-    JAVACC_DIR=$withval, JAVACC_DIR=$PTII/vendors/sun/JavaCC)
-
-if test "`uname -s`" = "CYGWIN_NT-4.0"; then
-    JJTREE='\$(JAVA) COM.sun.labs.jjtree.Main'
-    JAVACC='\$(JAVA) COM.sun.labs.javacc.Main'
-    AC_MSG_WARN([Be sure that your CLASSPATH includes JavaCC.zip]);
+# We only need to look for JavaCC if $PTII/ptolemy/data/expr exists
+if test ! -d "$PTII/ptolemy/data/expr"; then
+    AC_MSG_RESULT([$PTII/ptolemy/data/expr is not present, so we need not
+find JavaCC])
+    JAVACC_DIR=$PTII/vendors/sun/JavaCC
+    JAVACC=javacc
+    JJTREE=jjtree
 else
-    if test ! -d "$JAVACC_DIR"; then
-	AC_MSG_WARN(['${JAVACC_DIR}' is not a directory, 
-so we search for the jjtree command.])
-	AC_PATH_PROG(JJTREE, jjtree)
-	if test -x "$JJTREE"; then	
-	    AC_MSG_RESULT([$JJTREE]);
-	    JAVACCBIN=`dirname $JJTREE`
-	    JAVACC_DIR=`dirname $JAVACCBIN`
-	else  	
-	    AC_MSG_WARN([Failed to find jjtree]);
-	fi
-    fi	
-    if test -d "$JAVACC_DIR"; then
-	AC_MSG_RESULT([$JAVACC_DIR])
-	AC_MSG_CHECKING([for jjtree])
- 	if test -x "$JAVACC_DIR/bin/jjtree"; then
-	    # Note that we don't substitute in the $(JAVACC_DIR) here
-	    JJTREE='$(JAVACC_DIR)/bin/jjtree'
-	    AC_MSG_RESULT([$JJTREE])
-	else    
-	    AC_MSG_WARN([Failed to find jjtree in '$JAVACC_DIR/bin']);
-	fi    
-	AC_MSG_CHECKING([for javacc])
- 	if test -x "$JAVACC_DIR/bin/javacc"; then
-	    # Note that we don't substitute in the $(JAVACC_DIR) here
-	    JAVACC='$(JAVACC_DIR)/bin/javacc'
-	    AC_MSG_RESULT([$JAVACC])
-	else    
-	    AC_MSG_WARN([Failed to find javacc in '$JAVACC_DIR/bin']);
-	fi    
-    fi
-fi
+    AC_MSG_CHECKING([for JavaCC])
+    AC_ARG_WITH(javacc, [  --with-javacc=DIR       use JavaCC.zip from DIR,
+                           defaults to \$PTII/vendors/sun/JavaCC],
+	JAVACC_DIR=$withval, JAVACC_DIR=$PTII/vendors/sun/JavaCC)
 
-if test ! -d "$JAVACC_DIR"; then
+    if test "`uname -s`" = "CYGWIN_NT-4.0"; then
+	JJTREE='\$(JAVA) COM.sun.labs.jjtree.Main'
+	JAVACC='\$(JAVA) COM.sun.labs.javacc.Main'
+	AC_MSG_WARN([Be sure that your CLASSPATH includes JavaCC.zip]);
+    else
+	if test ! -d "$JAVACC_DIR"; then
+	    AC_MSG_WARN(['${JAVACC_DIR}' is not a directory, 
+so we search for the jjtree command.])
+	    AC_PATH_PROG(JJTREE, jjtree)
+	    if test -x "$JJTREE"; then	
+		AC_MSG_RESULT([$JJTREE]);
+		JAVACCBIN=`dirname $JJTREE`
+		JAVACC_DIR=`dirname $JAVACCBIN`
+	    else  	
+		AC_MSG_WARN([Failed to find jjtree]);
+	    fi
+	fi	
+	if test -d "$JAVACC_DIR"; then
+	    AC_MSG_RESULT([$JAVACC_DIR])
+	    AC_MSG_CHECKING([for jjtree])
+	    if test -x "$JAVACC_DIR/bin/jjtree"; then
+		# Note that we don't substitute in the $(JAVACC_DIR) here
+		JJTREE='$(JAVACC_DIR)/bin/jjtree'
+		AC_MSG_RESULT([$JJTREE])
+	    else    
+		AC_MSG_WARN([Failed to find jjtree in '$JAVACC_DIR/bin']);
+	    fi    
+	    AC_MSG_CHECKING([for javacc])
+	    if test -x "$JAVACC_DIR/bin/javacc"; then
+		# Note that we don't substitute in the $(JAVACC_DIR) here
+		JAVACC='$(JAVACC_DIR)/bin/javacc'
+		AC_MSG_RESULT([$JAVACC])
+	    else    
+		AC_MSG_WARN([Failed to find javacc in '$JAVACC_DIR/bin']);
+	    fi    
+	fi
+    fi
+
+    if test ! -d "$JAVACC_DIR"; then
         AC_MSG_WARN([Failed to find javacc, perhaps JavaCC is not installed?
 You need not download JavaCC unless you plan on modifying certain files 
 in ptolemy/data/expr. 
 JavaCC can be downloaded from http://www.sun.com/suntest'])
+    fi
 fi
 
 #--------------------------------------------------------------------
 #	See if there was a command-line option for where Tcl Blend is
 #--------------------------------------------------------------------
 
-AC_ARG_WITH(jtclsh, [  --with-jtclsh=SCRIPT    tclsh is atY. jtclsh is
-                           used for running the test scripts],
-    JTCLSH=$withval, JTCLSH=jtclsh)
-if test "$JTCLSH" != "jtclsh"; then
-    AC_MSG_CHECKING([for jtclsh])
-    AC_MSG_RESULT($JTCLSH);
+# We only need to find Tcl Blend if $PTII/util/testsuite
+# exists.  If we are shipping ptplot, then this directory might not
+# exist
+if test ! -d "$PTII/util/testsuite"; then
+    AC_MSG_RESULT([$PTII/testsuite is not a directory, so we need not
+find Tcl Blend or Jacl])
+    JTCLSH=jtclsh
 else
-    AC_PATH_PROG(JTCLSH, jtclsh)
-    if test ! -x "$JTCLSH"; then	
-	AC_MSG_WARN([jtclsh not found, so we'll look for tclsh.
+    AC_ARG_WITH(jtclsh, [  --with-jtclsh=SCRIPT    tclsh is at. jtclsh is
+                           used for running the test scripts],
+	JTCLSH=$withval, JTCLSH=jtclsh)
+    if test "$JTCLSH" != "jtclsh"; then
+	AC_MSG_CHECKING([for jtclsh])
+	AC_MSG_RESULT($JTCLSH);
+    else
+	AC_PATH_PROG(JTCLSH, jtclsh)
+	if test ! -x "$JTCLSH"; then	
+	    AC_MSG_WARN([jtclsh not found, so we'll look for tclsh.
 jtclsh is a startup script for Tcl Blend, which is used to run the test suite.
 You only need to have jtclsh or tclsh if you are planning on running
 the test suite.
 See http://www.scriptics.com/java for Tcl Blend sources and binaries.])
 
-	case "`uname -s`" in
-		CYGWIN_NT-4.0) DEFAULT_TCLSH=tclsh80;;
-		*) DEFAULT_TCLSH=tclsh;;
-	esac
-echo "DEFAULT_TCLSH=$DEFAULT_TCLSH"
-	# Apparently AC_PATH_PROGS fails if the path contains directories
-	# with spaces in their names.
-	AC_PATH_PROGS(TCLSH, "tclsh80 tclsh8.0 tclsh tclsh80.exe",
-			 $DEFAULT_TCLSH)
-        if test ! -x "$TCLSH"; then	
-		AC_MSG_WARN([tclsh80 not found either,
-so we default to '$TCLSH'.
-tclsh is only necessary for the test suite.]);
-	fi
-	JTCLSH=$TCLSH
-   fi     
-fi 
-
+	    case "`uname -s`" in
+		    CYGWIN_NT-4.0) DEFAULT_TCLSH=tclsh80;;
+		    *) DEFAULT_TCLSH=tclsh;;
+	    esac
+	echo "DEFAULT_TCLSH=$DEFAULT_TCLSH"
+	    # Apparently AC_PATH_PROGS fails if the path contains directories
+	    # with spaces in their names.
+	    AC_PATH_PROGS(TCLSH, "tclsh80 tclsh8.0 tclsh tclsh80.exe",
+			    $DEFAULT_TCLSH)
+	    if test ! -x "$TCLSH"; then	
+		    AC_MSG_WARN([tclsh80 not found either,
+	so we default to '$TCLSH'.
+	tclsh is only necessary for the test suite.]);
+	    fi
+	    JTCLSH=$TCLSH
+	fi     
+    fi 
+fi
 
 # Keep these substitutions alphabetical, with a description
 
