@@ -218,9 +218,17 @@ public class Parameter extends Variable {
         }
     }
         
+    /** Remove all the choices.
+     *  @see #removeChoice(String)
+     */
+    public void removeAllChoices() {
+        _choices = null;
+    }
+
     /** Remove a choice.
      *  @param choice A choice to remove from the list offered to the user.
-     *  @see #removeChoice(String)
+     *  @see #addChoice(String)
+     *  @see #removeAllChoices()
      */
     public void removeChoice(String choice) {
         if (_choices != null) {
