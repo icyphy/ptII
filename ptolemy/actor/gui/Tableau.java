@@ -29,6 +29,7 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.data.IntMatrixToken;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.Top;
@@ -76,19 +77,15 @@ public class Tableau extends ComponentEntity {
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
 
-        size = new StringAttribute(this, "size");
-        size.setExpression("");
+        size = new SizeAttribute(this, "size");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
 
-    /** A specification for the size of the frame.  The syntax for this
-     *  is "<i>w</i>x</i>h</i>", where <i>w</i> is the width in pixels
-     *  and <i>h</i> is the height in pixels.  An empty string (the
-     *  default value) indicates that there is no preference as to size.
+    /** A specification for the size of the frame.
      */
-    public StringAttribute size;
+    public SizeAttribute size;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -322,16 +319,11 @@ public class Tableau extends ComponentEntity {
      *  size spec consists only of white space, then do nothing.
      */
     private void _setSize() {
-        // FIXME: Need to support positioning as well.
-        // Syntax is nxm+y+z, where + can be replaced by -.
-        String sizeSpec = size.getExpression();
-        if (_frame != null && !sizeSpec.trim().equals("")) {
-            int xIndex = sizeSpec.indexOf("x");
-            if (xIndex > 0) {
-                String xSpec = sizeSpec.substring(0,xIndex).trim();
-                String ySpec = sizeSpec.substring(xIndex+1).trim();
-                int x = Integer.decode(xSpec).intValue();
-                int y = Integer.decode(ySpec).intValue();
+        try {
+            IntMatrixToken token = (IntMatrixToken)size.getToken();
+            if (_frame != null && token != null) {
+                int x = token.getElementAt(0, 0);
+                int y = token.getElementAt(0, 1);
                 // NOTE: As usual with swing, it's not obvious what the
                 // right way to do this is. The sequence below seems to
                 // mostly work, however, when the packer first runs, it
@@ -342,6 +334,8 @@ public class Tableau extends ComponentEntity {
                 _frame.getRootPane().setPreferredSize(new Dimension(x,y));
                 _frame.getContentPane().setSize(x,y);
             }
+        } catch (IllegalActionException ex) {
+            // Ignore... should not be thrown, and worst case is default size.
         }
     }
 

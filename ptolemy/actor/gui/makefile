@@ -66,6 +66,7 @@ JSRCS = \
 	HTMLEffigyFactory.java \
 	HTMLViewer.java \
 	HTMLViewerTableau.java \
+	LocationAttribute.java \
 	ModelDirectory.java \
 	ModelFrame.java \
 	ModelPane.java \
@@ -84,6 +85,7 @@ JSRCS = \
 	RenameConfigurer.java \
 	RenameDialog.java \
 	RunTableau.java \
+	SizeAttribute.java \
 	TableauFrame.java \
 	TextEditor.java \
 	TextEditorTableau.java \
