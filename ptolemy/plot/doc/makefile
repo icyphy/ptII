@@ -55,7 +55,7 @@ EXTRA_SRCS = \
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =	download img
+MISC_FILES =	img
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
