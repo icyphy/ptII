@@ -71,8 +71,9 @@ public class MakeFileGenerator {
                 + "\n");
 
         // The -g flag is for gdb debugging.
-        code.append("CFLAGS = -g -Wall -pedantic\n");
-        code.append("DEPEND = gcc -MM -I $(RUNTIME) -I $(LIB) "
+        //code.append("CFLAGS = -g -Wall -pedantic\n");
+        code.append("CFLAGS = -g -Wall -Wno-trigraphs\n");
+        code.append("DEPEND = gcc -Wno-trigraphs -MM -I $(RUNTIME) -I $(LIB) "
                 + "-I $(NATIVE_BODIES) -I $(OVER_BODIES)\n\n");
 
         code.append("THIS = " + className + ".make\n");
