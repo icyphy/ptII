@@ -41,6 +41,7 @@ import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.domains.ct.kernel.CTDirector;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
 import ptolemy.domains.ct.kernel.CTTransparentDirector;
+import ptolemy.domains.fsm.kernel.AssertionModelErrorHandler;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.HSDirector;
@@ -378,6 +379,9 @@ public class ModalModel extends TypedCompositeActor
         _controller = new ModalController(this, "_Controller");
 
         director.controllerName.setExpression("_Controller");
+
+	// Register the modal model with model error handler.
+	setModelErrorHandler(new AssertionModelErrorHandler(this));
 
         // NOTE This library will be described in the exported MoML
         // file, so when that is encountered, it will match this.
