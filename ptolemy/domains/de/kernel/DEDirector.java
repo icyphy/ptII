@@ -1792,8 +1792,7 @@ public class DEDirector extends Director implements TimedDirector {
             }
             throw new IllegalActionException(this.getContainer(),
                     "Found zero delay loop including: " + names.toString()
-                    + "\n Model requires a TimedDelay in this " +
-                        "directed cycle.");
+                    + "\n Model requires a TimedDelay in this " +                        "directed cycle.");
         }
         
         // now we can safely cast the dag into an acyclic graph.
