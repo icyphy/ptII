@@ -99,12 +99,12 @@ public class ChicController extends AttributeController {
                 new MenuActionFactory(new AsynchronousIOAction()));
         _menuFactory.addMenuItemFactory(
                 new MenuActionFactory(new SynchronousAGAction()));
-//        _menuFactory.addMenuItemFactory(
-//                new MenuActionFactory(new BidirectionalSynAction()));
-//        _menuFactory.addMenuItemFactory(
-//                new MenuActionFactory(new StatelessSoftwareAction()));
-//        _menuFactory.addMenuItemFactory(
-//                new MenuActionFactory(new StatefulSoftwareAction()));
+        //        _menuFactory.addMenuItemFactory(
+        //                new MenuActionFactory(new BidirectionalSynAction()));
+        //        _menuFactory.addMenuItemFactory(
+        //                new MenuActionFactory(new StatelessSoftwareAction()));
+        //        _menuFactory.addMenuItemFactory(
+        //                new MenuActionFactory(new StatefulSoftwareAction()));
 
         // Add a command to look inside
         if (_configuration != null) {
@@ -146,10 +146,10 @@ public class ChicController extends AttributeController {
 
     // Error message used when we can't find the inside definition.
     private static String _CANNOT_FIND_MESSAGE =
-            "Cannot find inside definition. "
-            + "Perhaps source code is not installed? "
-            + "You can obtain source code for Berkeley actors at: "
-            + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
+    "Cannot find inside definition. "
+    + "Perhaps source code is not installed? "
+    + "You can obtain source code for Berkeley actors at: "
+    + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -180,31 +180,31 @@ public class ChicController extends AttributeController {
         }
     }
 
-//    /** An action to invoke CHIC: Bidirectional Syn A/G
-//     */
-//    private class BidirectionalSynAction extends FigureAction {
-//
-//        public BidirectionalSynAction() {
-//            super("CHIC: Bidirectional Syn A/G");
-//        }
-//
-//        public void actionPerformed(ActionEvent e) {
-//
-//            // Determine which entity was selected for the look inside action.
-//            super.actionPerformed(e);
-//            NamedObj object = getTarget();
-//            try {
-//                ((ChicInvoker)object).checkInterfaceCompatibility(
-//                        ChicInvoker.BIDIRECTIONAL_SYN_AG,
-//                        false);
-//            } catch (IllegalActionException ex) {
-//                MessageHandler.error(ex.getMessage());
-//            } catch (NameDuplicationException ex) {
-//                MessageHandler.error(ex.getMessage());
-//            }
-//            return;
-//        }
-//    }
+    //    /** An action to invoke CHIC: Bidirectional Syn A/G
+    //     */
+    //    private class BidirectionalSynAction extends FigureAction {
+    //
+    //        public BidirectionalSynAction() {
+    //            super("CHIC: Bidirectional Syn A/G");
+    //        }
+    //
+    //        public void actionPerformed(ActionEvent e) {
+    //
+    //            // Determine which entity was selected for the look inside action.
+    //            super.actionPerformed(e);
+    //            NamedObj object = getTarget();
+    //            try {
+    //                ((ChicInvoker)object).checkInterfaceCompatibility(
+    //                        ChicInvoker.BIDIRECTIONAL_SYN_AG,
+    //                        false);
+    //            } catch (IllegalActionException ex) {
+    //                MessageHandler.error(ex.getMessage());
+    //            } catch (NameDuplicationException ex) {
+    //                MessageHandler.error(ex.getMessage());
+    //            }
+    //            return;
+    //        }
+    //    }
 
     /** An action to look inside the Chic visible attribute.
      */
@@ -215,8 +215,8 @@ public class ChicController extends AttributeController {
             // For some inexplicable reason, the I key doesn't work here.
             // Use L, which used to be used for layout.
             putValue(
-                GUIUtilities.ACCELERATOR_KEY,
-                KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
+                    GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -250,57 +250,57 @@ public class ChicController extends AttributeController {
         }
     }
 
-//    /** An action to invoke CHIC: Stateful Software
-//     */
-//    private class StatefulSoftwareAction extends FigureAction {
-//
-//        public StatefulSoftwareAction() {
-//            super("CHIC: Stateful Software");
-//        }
-//
-//        public void actionPerformed(ActionEvent e) {
-//
-//            // Determine which entity was selected for the look inside action.
-//            super.actionPerformed(e);
-//            NamedObj object = getTarget();
-//            try {
-//                ((ChicInvoker)object).checkInterfaceCompatibility(
-//                        ChicInvoker.STATEFUL_SOFTWARE,
-//                        false);
-//            } catch (IllegalActionException ex) {
-//                MessageHandler.error(ex.getMessage());
-//            } catch (NameDuplicationException ex) {
-//                MessageHandler.error(ex.getMessage());
-//            }
-//            return;
-//        }
-//    }
+    //    /** An action to invoke CHIC: Stateful Software
+    //     */
+    //    private class StatefulSoftwareAction extends FigureAction {
+    //
+    //        public StatefulSoftwareAction() {
+    //            super("CHIC: Stateful Software");
+    //        }
+    //
+    //        public void actionPerformed(ActionEvent e) {
+    //
+    //            // Determine which entity was selected for the look inside action.
+    //            super.actionPerformed(e);
+    //            NamedObj object = getTarget();
+    //            try {
+    //                ((ChicInvoker)object).checkInterfaceCompatibility(
+    //                        ChicInvoker.STATEFUL_SOFTWARE,
+    //                        false);
+    //            } catch (IllegalActionException ex) {
+    //                MessageHandler.error(ex.getMessage());
+    //            } catch (NameDuplicationException ex) {
+    //                MessageHandler.error(ex.getMessage());
+    //            }
+    //            return;
+    //        }
+    //    }
 
-//    /** An action to invoke CHIC: Stateless Software
-//     */
-//    private class StatelessSoftwareAction extends FigureAction {
-//
-//        public StatelessSoftwareAction() {
-//            super("CHIC: Stateless Software");
-//        }
-//
-//        public void actionPerformed(ActionEvent e) {
-//
-//            // Determine which entity was selected for the look inside action.
-//            super.actionPerformed(e);
-//            NamedObj object = getTarget();
-//            try {
-//                ((ChicInvoker)object).checkInterfaceCompatibility(
-//                        ChicInvoker.STATELESS_SOFTWARE,
-//                        false);
-//            } catch (IllegalActionException ex) {
-//                MessageHandler.error(ex.getMessage());
-//            } catch (NameDuplicationException ex) {
-//                MessageHandler.error(ex.getMessage());
-//            }
-//            return;
-//        }
-//    }
+    //    /** An action to invoke CHIC: Stateless Software
+    //     */
+    //    private class StatelessSoftwareAction extends FigureAction {
+    //
+    //        public StatelessSoftwareAction() {
+    //            super("CHIC: Stateless Software");
+    //        }
+    //
+    //        public void actionPerformed(ActionEvent e) {
+    //
+    //            // Determine which entity was selected for the look inside action.
+    //            super.actionPerformed(e);
+    //            NamedObj object = getTarget();
+    //            try {
+    //                ((ChicInvoker)object).checkInterfaceCompatibility(
+    //                        ChicInvoker.STATELESS_SOFTWARE,
+    //                        false);
+    //            } catch (IllegalActionException ex) {
+    //                MessageHandler.error(ex.getMessage());
+    //            } catch (NameDuplicationException ex) {
+    //                MessageHandler.error(ex.getMessage());
+    //            }
+    //            return;
+    //        }
+    //    }
 
     /** An action to invoke CHIC: Synchronous A/G
      */
