@@ -129,7 +129,7 @@ possible to use hierarchical DT in Vergil by doing the following steps
  
        
  @author C. Fong
- @version  
+ @version $Id$ 
 */
 public class DTDirector extends SDFDirector {
 
