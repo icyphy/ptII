@@ -1,0 +1,36 @@
+#!/bin/sh
+# Run deep codegen on a number of models
+
+modelfiles=$@
+
+
+
+for modelPath in $modelfiles
+do
+    if [ ! -e $modelPath ]; then
+	echo "$0: $modelPath does not exist!!"
+    else 	
+	#<hack>
+	# Create a file that contains jacl commands that will
+	# print the name of the model.
+	modelnamescript=modelname.tcl
+	cat > $modelnamescript <<EOF
+	    # Simple jacl script that prints the name of a model
+	    set parser [java::new ptolemy.moml.MoMLParser]
+	    set toplevel [\$parser parseFile $modelPath]
+	    # Strip off the leading .
+	    set modelName [string range [\$toplevel getFullName] 1 end]
+	    puts \$modelName
+	    exit
+EOF
+
+	modelName=`"$PTII"/bin/ptjacl $modelnamescript | tail -1`
+	#</hack>
+
+	#model=`basename $modelfile .xml`
+	model=$modelName
+	echo "modelName: $modelName"
+	make -C .. MODEL=$model SOURCECLASS=$modelPath compileDeepDemo
+	make -C .. MODEL=$model SOURCECLASS=$modelPath runDeepDemo 
+    fi
+done
