@@ -11,7 +11,6 @@
         </entity>
         <entity name="interface automaton"
                 class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
-          <input source="ptolemy/configs/fsmLibrary.xml"/>
         </entity>
       </group>
     ?>

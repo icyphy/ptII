@@ -4,7 +4,7 @@
 <property name="_library" class="ptolemy.moml.LibraryAttribute">
   <configure>
     <entity name="state library" class="ptolemy.kernel.CompositeEntity">
-      <input source="ptolemy/configs/annotation.xml"/>
+      <input source="ptolemy/configs/basicUtilities.xml"/>
       <entity name="state" class="ptolemy.domains.fsm.kernel.State">
         <property name="_centerName" class="ptolemy.kernel.util.Attribute"/>
       </entity>

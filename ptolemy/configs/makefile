@@ -59,6 +59,7 @@ OTHER_FILES_TO_BE_JARED = \
 	basicActorLibrary.xml \
 	basicDirectors.xml \
 	basicLibrary.xml \
+	basicUtilities.xml \
 	basicTableauFactories.xml \
 	defaultFullConfiguration.xml \
 	experimentalDirectors.xml \
