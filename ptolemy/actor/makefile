@@ -70,6 +70,7 @@ JSRCS = \
 	FiringEvent.java \
 	GraphReader.java \
 	InvariantViolationException.java \
+	IODependence.java \
 	IOPort.java \
 	IORelation.java \
 	Mailbox.java \
