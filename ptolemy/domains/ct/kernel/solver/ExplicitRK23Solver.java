@@ -95,6 +95,30 @@ public class ExplicitRK23Solver extends VariableStepSolver{
         }
         resetRound();
         Enumeration actors;
+        // for the first iteration after a breakpoint, create the history.
+        if(dir.isBPIteration()) {
+            if(dir.STAT) {
+                dir.NFUNC ++;
+            }
+            actors = sch.dynamicActorSchedule();
+            while(actors.hasMoreElements()) {
+                CTDynamicActor next = (CTDynamicActor)actors.nextElement();
+                if(DEBUG) {
+                    System.out.println("Build history"
+                            +((Nameable)next).getName());
+                }
+                next.emitTentativeOutputs();
+            }
+            actors = sch.stateTransitionSchedule();
+            while(actors.hasMoreElements()) {
+                Actor next = (Actor)actors.nextElement();
+                if(DEBUG) {
+                    System.out.println("Build history..."
+                            +((Nameable)next).getName());
+                }
+                next.fire();
+            }
+        } 
         for (int i = 0; i < _timeInc.length; i++) {
             if(dir.STAT) {
                 dir.NFUNC ++;
@@ -146,7 +170,12 @@ public class ExplicitRK23Solver extends VariableStepSolver{
         switch (r) {
             case 0:
                 //derivative at t;
-                double k0 = (integrator.getHistory(0))[1];
+                double k0;
+                if(dir.isBPIteration()) {
+                    k0 = ((DoubleToken)integrator.input.get(0)).doubleValue();
+                } else {
+                    k0 = (integrator.getHistory(0))[1];
+                }
                 integrator.setAuxVariables(0, k0);
                 outvalue = xn + h * k0 *_B[0][0];
                 break;
