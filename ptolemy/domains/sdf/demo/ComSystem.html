@@ -9,16 +9,24 @@
 
 <H1>Communication System</H1>
 
+The following plot shows the eye diagram for a received waveform
+for a real, baseband channel.
 <CENTER>
 <P><APPLET name="ComSystem"
    code=ptolemy.domains.sdf.demo.ComSystem.class
    codebase=../../../..
-   width=600 height=400>
+   width=600 height=300>
 <param name="background" value="#faf0e6">
-<param name="iterations" value="1000">
+<param name="iterations" value="5000">
 <BR><I>If you were able to run applets, you would have one here.</I>
 <BR>
 </APPLET>
 </CENTER>
+The assumptions are:
+<UL>
+<LI> Additive Gaussian noise with standard deviation 0.1.
+<LI> 100 % excess bandwidth square-root raised-cosine pulse.
+<LI> Matched filter in the receiver.
+</UL>
 </BODY>
 </HTML>

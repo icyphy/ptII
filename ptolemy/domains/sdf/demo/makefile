@@ -47,6 +47,7 @@ JSRCS = \
 	ComSystem.java \
 	ExpressionApplet.java \
 	HTVQApplet.java \
+	Pulses.java \
 	VideoTest.java \
 	SDFApplet.java \
 	SDFDemo.java \

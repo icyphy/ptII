@@ -33,6 +33,7 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Enumeration;
+import java.lang.Math;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -40,6 +41,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
+import ptolemy.actor.util.*;
 import ptolemy.actor.util.PtolemyApplet;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.sdf.lib.*;
@@ -63,34 +65,64 @@ public class ExpressionApplet extends SDFApplet {
     public void init() {
         super.init();
         try {
-            // Create and configure ramp
-            Ramp ramp = new Ramp(_toplevel, "ramp");
-            ramp.init.setToken(new DoubleToken(1.0));
-            ramp.step.setToken(new DoubleToken(1.0));
+            Panel controlpanel = new Panel();
+            controlpanel.setLayout(new BorderLayout());
+            add(controlpanel);
+
+            Panel runcontrols = new Panel();
+            controlpanel.add("North", runcontrols);
+            _createRunControls(runcontrols, 0);
+
+            _query = new Query();
+            controlpanel.add("South", _query);
+            _query.line("expr", "Expression", "cos(slow) + cos(fast)");
+
+            // Create and configure ramp1
+            Ramp ramp1 = new Ramp(_toplevel, "ramp1");
+            ramp1.init.setToken(new DoubleToken(0.0));
+            ramp1.step.setToken(new DoubleToken(0.01*Math.PI));
+
+            // Create and configure ramp2
+            Ramp ramp2 = new Ramp(_toplevel, "ramp2");
+            ramp2.init.setToken(new DoubleToken(0.0));
+            ramp2.step.setToken(new DoubleToken(0.1*Math.PI));
 
             // Create and configure expr
-            Expression expr = new Expression(_toplevel, "expr");
-            TypedIOPort exprinput = new TypedIOPort(expr,"input");
-            exprinput.setInput(true);
-            expr.expression.setToken(new StringToken("3.0*input"));
+            _expr = new Expression(_toplevel, "expr");
+            TypedIOPort slow = new TypedIOPort(_expr, "slow", true, false);
+            TypedIOPort fast = new TypedIOPort(_expr, "fast", true, false);
 
             // Create and configure plotter
             TimePlot myplot = new TimePlot(_toplevel, "plot");
             myplot.setPanel(this);
             myplot.plot.setGrid(false);
-            myplot.plot.setMarksStyle("dots");
-            myplot.plot.setTitle("Eye Diagram");
-            myplot.plot.setXRange(0.0, 10.0);
-            myplot.plot.setWrap(true);
-            myplot.plot.setYRange(-100.0, 1.0);
-            myplot.plot.setPointsPersistence(100);
-
+            myplot.plot.setXRange(0.0, 200.0);
+            myplot.plot.setYRange(-2.0, 2.0);
+            myplot.plot.setSize(500,300);
             myplot.timed.setToken(new BooleanToken(false));
 
-            _toplevel.connect(ramp.output, exprinput, "R1");
-            _toplevel.connect(expr.output, myplot.input, "R2");
+            _toplevel.connect(ramp1.output, slow);
+            _toplevel.connect(ramp2.output, fast);
+            _toplevel.connect(_expr.output, myplot.input);
         } catch (Exception ex) {
             report("Setup failed:", ex);
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
+
+    /** Execute the system.  This overrides the base class to read the
+     *  values in the query box first.
+     */
+    protected void _go() {
+        _expr.expression.setToken(new StringToken(_query.get("expr")));
+        super._go();
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                      ////
+
+    private Query _query;
+    private Expression _expr;
 }

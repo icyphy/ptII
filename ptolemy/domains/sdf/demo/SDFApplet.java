@@ -45,7 +45,6 @@ import ptolemy.actor.lib.*;
 import ptolemy.actor.util.PtolemyApplet;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.sdf.lib.*;
-import ptolemy.plot.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFApplet
@@ -61,13 +60,12 @@ public class SDFApplet extends PtolemyApplet {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Initialize the applet.  After invoking the base class init() method,
-     *  Create a "Go" button.  The number of iterations is given by an
-     *  applet parameter "iterations".  If no such parameter is given,
-     *  then the Go button triggers exactly one iteration. This method
-     *  creates a manager, top-level composite actor, and director for
-     *  that composite.  All three are accessible via protected members
-     *  to derived classes.
+    /** Initialize the applet. The number of iterations is given by an
+     *  applet parameter "iterations".  The default value is one.
+     *  After calling the base class init() method,
+     *  this method creates a top-level composite actor
+     *  and director for that composite.  Both are accessible
+     *  to derived classes via protected members.
      */
     public void init() {
         super.init();
@@ -85,11 +83,6 @@ public class SDFApplet extends PtolemyApplet {
 
         try {
             // Initialization
-            _goButton = new Button("Go");
-
-            _manager = new Manager();
-            _toplevel = new TypedCompositeActor();
-            _toplevel.setName("ComSystem");
             _director = new SDFDirector();
             Parameter iterparam =
                     (Parameter)_director.getAttribute("Iterations");
@@ -97,45 +90,17 @@ public class SDFApplet extends PtolemyApplet {
             SDFScheduler scheduler = new SDFScheduler();
 
             _toplevel.setDirector(_director);
-            _toplevel.setManager(_manager);
             _director.setScheduler(scheduler);
             _director.setScheduleValid(false);
-
-            // Add a control panel in the main panel.
-            Panel controlPanel = new Panel();
-            add(controlPanel);
-            controlPanel.add(_goButton);
-
-            _goButton.addActionListener(new GoButtonListener());
         } catch (Exception ex) {
-            report("Setup failed:", ex);
+            report("Failed to setup director and scheduler:\n", ex);
         }
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         protected variables                    ////
 
-    /** The manager, created in the init() method. */
-    protected Manager _manager;
-
-    /** The top-level composite actor, created in the init() method. */
-    protected TypedCompositeActor _toplevel;
-
     /** The director for the top-level composite actor, created in the
      *  init() method. */
-    SDFDirector _director;
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
-
-    private Button _goButton;
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                       inner classes                              ////
-
-    private class GoButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            _manager.startRun();
-        }
-    }
+    protected SDFDirector _director;
 }
