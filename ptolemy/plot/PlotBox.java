@@ -294,7 +294,7 @@ public class PlotBox extends Panel {
      *  <code>System.out</code> as an argument.
      *  @param file A file writer to which to send the description.
      */
-    public void export (OutputStream out) {
+    public void export(OutputStream out) {
         EPSGraphics g = new EPSGraphics(out, _width, _height);
         _drawPlot(g, false);
         g.showpage();
