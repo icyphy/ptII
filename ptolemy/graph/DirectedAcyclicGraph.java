@@ -474,7 +474,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
         
         if (virtualLength == 0) {
             return null;
-        } else if (incomparables.size() != 0){
+        } else if (incomparables.size() != 0) {
             for (ListIterator iterator = incomparables.listIterator(0);
                  iterator.hasNext() ;) {
                 int result = _compareNodeId(ids[0], 

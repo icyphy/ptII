@@ -238,7 +238,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             // NOTE: To view all type constraints, uncomment these.
             /*
             Iterator constraintsIterator = constraintList.iterator();
-            while(constraintsIterator.hasNext()) {
+            while (constraintsIterator.hasNext()) {
                 System.out.println(constraintsIterator.next().toString());
             }
             */

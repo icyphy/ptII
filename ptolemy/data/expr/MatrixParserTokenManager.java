@@ -62,7 +62,7 @@ static private final int jjStartNfaWithStates_0(int pos, int kind, int state)
    jjmatchedKind = kind;
    jjmatchedPos = pos;
    try { curChar = input_stream.readChar(); }
-   catch(java.io.IOException e) { return pos + 1; }
+   catch (java.io.IOException e) { return pos + 1; }
    return jjMoveNfa_0(state, pos + 1);
 }
 static private final int jjMoveStringLiteralDfa0_0()
@@ -271,7 +271,7 @@ static private final int jjMoveNfa_0(int startState, int curPos)
                   break;
                default : break;
             }
-         } while(i != startsAt);
+         } while (i != startsAt);
       }
       else if (curChar < 128)
       {
@@ -304,7 +304,7 @@ static private final int jjMoveNfa_0(int startState, int curPos)
                   break;
                default : break;
             }
-         } while(i != startsAt);
+         } while (i != startsAt);
       }
       else
       {
@@ -320,7 +320,7 @@ static private final int jjMoveNfa_0(int startState, int curPos)
                   break;
                default : break;
             }
-         } while(i != startsAt);
+         } while (i != startsAt);
       }
       if (kind != 0x7fffffff)
       {
@@ -332,7 +332,7 @@ static private final int jjMoveNfa_0(int startState, int curPos)
       if ((i = jjnewStateCnt) == (startsAt = 23 - (jjnewStateCnt = startsAt)))
          return curPos;
       try { curChar = input_stream.readChar(); }
-      catch(java.io.IOException e) { return curPos; }
+      catch (java.io.IOException e) { return curPos; }
    }
 }
 static final int[] jjnextStates = {
@@ -429,7 +429,7 @@ public static Token getNextToken()
    {     
       curChar = input_stream.BeginToken();
    }     
-   catch(java.io.IOException e)
+   catch (java.io.IOException e)
    {        
       jjmatchedKind = 0;
       matchedToken = jjFillToken();

@@ -280,10 +280,10 @@ public class TaskCoordinator extends Transformer {
 
         public void register(String clientName, Client clientRef) throws CorbaIllegalActionException {
             synchronized(_lock2) {
-                if (!_clientRefs.containsKey(clientName)){
+                if (!_clientRefs.containsKey(clientName)) {
                     _clientRefs.put(clientName, clientRef);
                     _availableClients.add(clientRef);
-                    if(_fireIsWaiting) {
+                    if (_fireIsWaiting) {
                         synchronized(_lock1) {
                             _lock1.notifyAll();
                         }        
@@ -323,7 +323,7 @@ public class TaskCoordinator extends Transformer {
         
         public void unregister(String clientName) throws CorbaIllegalActionException {
             synchronized(_lock2) {
-                if (_clientRefs.containsKey(clientName)){
+                if (_clientRefs.containsKey(clientName)) {
                     Client client = (Client)_clientRefs.get(clientName); 
                     _availableClients.remove(client);
                     _clientRefs.remove(clientName);

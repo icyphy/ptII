@@ -178,7 +178,7 @@ public class SetVariable extends TypedAtomicActor
     public List getModifiedVariables() throws IllegalActionException {
         Attribute attribute = getModifiedVariable();
         List list = new ArrayList(1);
-        if(attribute instanceof Variable) {
+        if (attribute instanceof Variable) {
             list.add(attribute);
         }
         return list;

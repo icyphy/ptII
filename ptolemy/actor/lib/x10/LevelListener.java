@@ -130,7 +130,7 @@ public class LevelListener extends Receiver {
         super.fire();
         
         // Check whether a command is ready
-        if (_commandReady()){
+        if (_commandReady()) {
             Command sensedCommand = _getCommand();
             byte function = sensedCommand.getFunctionByte();
             byte functionOfInterest = Command.BRIGHT;

@@ -214,7 +214,7 @@ public class DataUtilities {
 
             // Look for parameter in actor.
             Variable result = null;
-            if(_entity != null) {
+            if (_entity != null) {
                 result = getScopedVariable(
                         null, _entity, name);
             }
@@ -241,7 +241,7 @@ public class DataUtilities {
                                 thisLocal),
                         _insertPoint);
                 NamedObj container = _entity;
-                while(container != entityContainer) {
+                while (container != entityContainer) {
                     Local containerLocal2 = Jimple.v().newLocal("container",
                             RefType.v(PtolemyUtilities.namedObjClass));
                     _body.getLocals().add(containerLocal2);
@@ -329,7 +329,7 @@ public class DataUtilities {
         }
         
         public Set identifierSet() {
-            if(_entity == null) {
+            if (_entity == null) {
                 return Collections.EMPTY_SET;
             } else {
                 return getAllScopedVariableNames(null, _entity);

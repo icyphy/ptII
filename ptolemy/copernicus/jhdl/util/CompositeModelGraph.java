@@ -93,7 +93,7 @@ public class CompositeModelGraph extends ModelGraph {
             // to port. Also add edge between entity and port
             for (Iterator outPorts =
                      ((Actor)entity).outputPortList().iterator();
-                 outPorts.hasNext();){
+                 outPorts.hasNext();) {
                 Object port=outPorts.next();
                 Node outputPortNode = addNodeWeight(port);
                 addEdge(entityNode,outputPortNode);
@@ -103,7 +103,7 @@ public class CompositeModelGraph extends ModelGraph {
             // to port. Also add edge between entity and port
             for (Iterator inPorts =
                      ((Actor)entity).inputPortList().iterator();
-                 inPorts.hasNext();){
+                 inPorts.hasNext();) {
                 Object port=inPorts.next();
                 Node inputPortNode = addNodeWeight(port);
                 addEdge(inputPortNode, entityNode);
@@ -112,7 +112,7 @@ public class CompositeModelGraph extends ModelGraph {
 
         // 2. Add top-level outputPorts (no connections)
         for (Iterator outputPorts=getCompositeActor().outputPortList().iterator();
-             outputPorts.hasNext();){
+             outputPorts.hasNext();) {
             IOPort port = (IOPort)outputPorts.next();
             Node n = addIOPortNode(port);
         }
@@ -121,7 +121,7 @@ public class CompositeModelGraph extends ModelGraph {
         // TODO: Does this catch connections between top-level input
         // ports and top-level output ports?
         for (Iterator inputPorts=getCompositeActor().inputPortList().iterator();
-             inputPorts.hasNext();){
+             inputPorts.hasNext();) {
             IOPort port = (IOPort)inputPorts.next();
             Node n = addIOPortNode(port);
             for (Iterator insideSinks = port.insideSinkPortList().iterator();
@@ -138,7 +138,7 @@ public class CompositeModelGraph extends ModelGraph {
         // representing topology of model
         for (Iterator i = getCompositeActor().entityList().iterator(); i.hasNext();) {
             Entity entity = (Entity)i.next();
-            for (Iterator outPorts = ((Actor)entity).outputPortList().iterator(); outPorts.hasNext();){
+            for (Iterator outPorts = ((Actor)entity).outputPortList().iterator(); outPorts.hasNext();) {
                 IOPort port = (IOPort) outPorts.next();
                 for (Iterator sinkPorts = port.sinkPortList().iterator();
                      sinkPorts.hasNext();) {

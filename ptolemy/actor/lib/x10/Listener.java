@@ -87,7 +87,7 @@ public class Listener extends Receiver {
 		super.fire();
         
         // Check whether a command is ready. 
-        if(_commandReady()){
+        if (_commandReady()) {
             Command command = _getCommand();
             receivedCommand.send(0, new StringToken(_commandToString(command)));
         } else {

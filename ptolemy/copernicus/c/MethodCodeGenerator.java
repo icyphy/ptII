@@ -541,7 +541,7 @@ public class MethodCodeGenerator {
                 }
             }
             // Handler for exceptions.
-            else if (tracker.isHandlerUnit(unit)){
+            else if (tracker.isHandlerUnit(unit)) {
                 target = unit;
                 if (target != null) {
                     visitor.addTarget(target);

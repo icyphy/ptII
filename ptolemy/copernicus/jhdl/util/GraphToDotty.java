@@ -134,7 +134,7 @@ public abstract class GraphToDotty {
             FileWriter dotFile = new FileWriter(filename);
             dotFile.write(convert(graph, basename));
             dotFile.close();
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println(e);
         }
     }

@@ -323,7 +323,7 @@ public class ViewScreen2D extends GRActor2D
             c = c.getParent();
         }
         // If we had created a frame before, then blow it away.
-        if(_frame != null) {
+        if (_frame != null) {
             _frame.dispose();
             _frame = null;
         }
@@ -360,7 +360,7 @@ public class ViewScreen2D extends GRActor2D
      *  @exception IllegalActionException Always thrown for this base class.
      */
     protected void _addChild(Figure figure) throws IllegalActionException {
-        if(figure.getInteractor() instanceof FigureInteractor) {
+        if (figure.getInteractor() instanceof FigureInteractor) {
             ((FigureInteractor)(figure.getInteractor())).setViewScreen(this);
         }
         _layer.add(figure);
@@ -412,7 +412,7 @@ public class ViewScreen2D extends GRActor2D
                 verticalDimension));
         _canvas.setPreferredSize(new Dimension(horizontalDimension,
                 verticalDimension));
-        if(_frame != null) {
+        if (_frame != null) {
             _frame.pack();
         }
 
@@ -430,7 +430,7 @@ public class ViewScreen2D extends GRActor2D
                     upperLeftYValue,
                     lowerRightXValue - upperLeftXValue,
                     lowerRightYValue - upperLeftYValue);
-        if(visibleRect.getHeight() == 0 || visibleRect.getWidth() == 0) {
+        if (visibleRect.getHeight() == 0 || visibleRect.getWidth() == 0) {
             throw new IllegalActionException(this, "The width and height " +
                     "of the visible rectangle cannot be zero.");
         }
@@ -461,7 +461,7 @@ public class ViewScreen2D extends GRActor2D
         pane.setOverlayLayer(_overlayLayer);
         pane.setForegroundEventLayer(_eventLayer);
 
-        if(_frame != null) {
+        if (_frame != null) {
             _frame.addKeyListener(_eventHandler);
         }
 
@@ -525,10 +525,10 @@ public class ViewScreen2D extends GRActor2D
             if (selectedFigure != null) {
                 ((FigureInteractor)selectedFigure.getInteractor())
                     .keyPressed(e);
-                while(allFigures.hasNext()) {
+                while (allFigures.hasNext()) {
                     AbstractFigure figure =
                         ((AbstractFigure)allFigures.next());
-                    //if(selectedFigure.hit(figure.getFigure().getBounds()))
+                    //if (selectedFigure.hit(figure.getFigure().getBounds()))
                     {
 
                         //((RectangularFigure2D)selectedFigure)
@@ -561,7 +561,7 @@ public class ViewScreen2D extends GRActor2D
          */
         public void keyReleased(KeyEvent e) {
             Figure selectedFigure = getSelectedFigure();
-            if(selectedFigure != null) {
+            if (selectedFigure != null) {
                 ((FigureInteractor)selectedFigure
                         .getInteractor()).keyReleased(e);
             }
@@ -581,7 +581,7 @@ public class ViewScreen2D extends GRActor2D
         public void keyTyped(KeyEvent e) {
             Figure selectedFigure = getSelectedFigure();
 
-            if(selectedFigure != null) {
+            if (selectedFigure != null) {
                 ((FigureInteractor)selectedFigure.getInteractor()).keyTyped(e);
             }
         }
@@ -606,7 +606,7 @@ public class ViewScreen2D extends GRActor2D
 
             //Translate the origin while the mouse cursor is in the window
             //and the user is dragging the origin marker.
-            if(_originRelocatable && _mouseInWindow &&
+            if (_originRelocatable && _mouseInWindow &&
                     (getCrosshairX().getBounds().contains(e.getLayerPoint()) ||
                             getCrosshairY().getBounds()
                             .contains(e.getLayerPoint()) ||
@@ -653,9 +653,9 @@ public class ViewScreen2D extends GRActor2D
          */
         public void mousePressed(LayerEvent e) {
             Iterator figureIterator = _layer.figures();
-            while(figureIterator.hasNext()) {
+            while (figureIterator.hasNext()) {
                 Figure figure = (Figure)figureIterator.next();
-                if(!figure.contains(e.getLayerPoint())) {
+                if (!figure.contains(e.getLayerPoint())) {
                     ((FigureInteractor)figure.getInteractor())
                         .setSelected(false);
                 }

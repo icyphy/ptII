@@ -74,7 +74,7 @@ public class ASTPtFunctionApplicationNode extends ASTPtRootNode {
             return null;
         else {
             ASTPtLeafNode leaf = (ASTPtLeafNode)n;
-            if(leaf.isIdentifier()) {
+            if (leaf.isIdentifier()) {
                 return leaf.getName();
             } else {
                 return null;

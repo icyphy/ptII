@@ -258,10 +258,10 @@ public class TransmitPropertyTransformer extends RunCompositeActor
 
         DoubleToken[] t1 = new DoubleToken[p1.length];
         DoubleToken[] t2 = new DoubleToken[p2.length];
-        for(int i = 0; i < p1.length; i++) {
+        for (int i = 0; i < p1.length; i++) {
             t1[i] = new DoubleToken(p1[i]);
         }
-        for(int i = 0; i < p2.length; i++) {
+        for (int i = 0; i < p2.length; i++) {
             t2[i] = new DoubleToken(p2[i]);
         }
         senderLocation.setToken(new ArrayToken(t1));

@@ -239,14 +239,14 @@ public class Scrambler extends Transformer {
         // Find the parity of the "masked".
         int parity = 0;
         // Calculate the parity of the masked word.
-        while (masked > 0){
+        while (masked > 0) {
             parity = parity ^ (masked & 1);
             masked = masked >> 1;
         }
 
         // Exclusive-or with the input if there is any.
-        for (int i = 0; i < input.getWidth(); i++){
-            if (input.hasToken(0)){
+        for (int i = 0; i < input.getWidth(); i++) {
+            if (input.hasToken(0)) {
                 BooleanToken inputToken = (BooleanToken)input.get(0);
                 boolean inputTokenValue = inputToken.booleanValue();
                 parity = parity ^ (inputTokenValue ? 1:0);

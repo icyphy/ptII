@@ -159,10 +159,10 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
             Node sink = edge.sink();
             //_edgeCostsMap.put(edge, _edgeCosts.toInt());
             // For all the edges that have at least one delay
-            if(_edgeCosts.toInt(edge) != 0) {
+            if (_edgeCosts.toInt(edge) != 0) {
                 graphPlusDelaysAsNodes.removeEdge(edge);
                 int delays = _edgeCosts.toInt(edge);
-                for(int i = 0; i < delays; i++) {
+                for (int i = 0; i < delays; i++) {
                     Node addedNode = graphPlusDelaysAsNodes
                             .addNodeWeight(new String("D" + j + i));
                     _delayNodeList.add(addedNode);
@@ -185,7 +185,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
         edges = graphPlusDelaysAsNodes.edges().toArray();
         // compute the first order longest path matrix
         HashMap predecessorMap = new HashMap();
-        for(Iterator delayNodes = _delayNodeList.iterator();
+        for (Iterator delayNodes = _delayNodeList.iterator();
             delayNodes.hasNext();) {
             Node delayNode = (Node)delayNodes.next();
             DirectedGraph thisRoundGraph =
@@ -195,7 +195,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                 Edge edge = (Edge)edges[j];
                 Node source = edge.source();
                 Node sink = edge.sink();
-                if(sink == delayNode) {
+                if (sink == delayNode) {
                     predecessorMap.put(delayNode, source);
                 }
                 if (_delayNodeList.contains(source) ||
@@ -207,7 +207,7 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
                         thisRoundGraph.removeEdge(edge);
                     }
                     if (source != delayNode && sink != delayNode) {
-                        if(_delayNodeList.contains(source)) {
+                        if (_delayNodeList.contains(source)) {
                             thisRoundGraph.removeEdge(edge);
                         } else {
                             delayGraphProfitMap.put(edge,
@@ -256,9 +256,9 @@ public class ParhiMaximumProfitToCostRatioStrategy extends CachedStrategy
         // creating the cycle that leads to the result
         edges = graphPlusDelaysAsNodes.edges().toArray();
         Object[] delayNodes = _delayCycle.toArray();
-        for(int i = 0; i < delayNodes.length; i++) {
+        for (int i = 0; i < delayNodes.length; i++) {
             Node delayNode = (Node)delayNodes[i];
-            for(int j = 0; j < delayNodes.length; j++) {
+            for (int j = 0; j < delayNodes.length; j++) {
                 if (i != j || (delayNodes.length != 1)) {
                     Node endDelayNode = (Node)delayNodes[j];
                     List path = ((SingleSourceLongestPathAnalysis)

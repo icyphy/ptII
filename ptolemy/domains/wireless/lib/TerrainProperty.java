@@ -146,7 +146,7 @@ public class TerrainProperty extends TypedAtomicActor
                     _xPoints = new int[_numberOfPoints];
                     _yPoints = new int[_numberOfPoints];
                 }
-                for(int i = 0; i < xypointsArray.length(); i++) {
+                for (int i = 0; i < xypointsArray.length(); i++) {
                     ArrayToken xypointArray = (ArrayToken)
                         xypointsArray.getElement(i);
                     _xPoints[i] = ((IntToken)xypointArray.
@@ -232,7 +232,7 @@ public class TerrainProperty extends TypedAtomicActor
                     a = p1[0]-x0;
                     b = p2[0]-x0;
                 }
-                if(p2[0]-p1[0] != 0) {
+                if (p2[0]-p1[0] != 0) {
                     k = (p2[1]-p1[1])/(p2[0]-p1[0]);
                     c = y0 - p1[1]-k*(x0-p1[0]);
                     d = y1 - p1[1]-k*(x1-p1[0]);
@@ -267,7 +267,7 @@ public class TerrainProperty extends TypedAtomicActor
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if(_channel != null){
+        if (_channel != null) {
             _channel.unregisterPropertyTransformer(this, null);
         }
     }

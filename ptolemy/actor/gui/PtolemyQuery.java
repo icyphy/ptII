@@ -193,7 +193,7 @@ public class PtolemyQuery extends Query
                             attribute.getExpression());
                     attachParameter(attribute, name);
                     foundStyle = true;
-                } else if (attribute instanceof FileParameter){
+                } else if (attribute instanceof FileParameter) {
                     // Specify the directory in which to start browsing
                     // to be the location where the model is defined,
                     // if that is known.

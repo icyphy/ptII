@@ -330,7 +330,7 @@ public class CollisionDetector extends TypedAtomicActor {
             _debug("---------------------------------");
             _debug("Current time is: " + currentTime);
         }
-        if(message.hasToken(0) && power.hasToken(0)
+        if (message.hasToken(0) && power.hasToken(0)
                 && duration.hasToken(0)) {
             double powerValue = ((DoubleToken)
                     power.get(0)).doubleValue();
@@ -400,7 +400,7 @@ public class CollisionDetector extends TypedAtomicActor {
                 // Quantization errors may take this negative. Do not allow.
                 if (_totalPower < 0.0) _totalPower = 0.0;
 
-                if(!priorReception.collided) {
+                if (!priorReception.collided) {
                     received.send(0, priorReception.data);
                     if (_debugging) {
                         _debug("Message has been received: "

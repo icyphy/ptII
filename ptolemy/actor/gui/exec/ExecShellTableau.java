@@ -242,7 +242,7 @@ public class ExecShellTableau extends Tableau
             Runtime runtime = Runtime.getRuntime();
             try {
 
-                //if (_process != null){
+                //if (_process != null) {
                 //    _process.destroy();
                 //}
 

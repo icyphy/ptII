@@ -273,7 +273,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        if (!_reinitialize){
+        if (!_reinitialize) {
             super.initialize();
             _reinitialize = true;
         } else {
@@ -345,16 +345,16 @@ public class HDFFSMDirector extends FSMDirector {
     public List getModifiedVariables() throws IllegalActionException {
         List list = super.getModifiedVariables();
 
-        if(!_allRefinementsHaveSameRate()) {
+        if (!_allRefinementsHaveSameRate()) {
             CompositeActor container = (CompositeActor)getContainer();
-            for(Iterator ports = container.inputPortList().iterator();
+            for (Iterator ports = container.inputPortList().iterator();
                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 Parameter param = (Parameter)
                     SDFUtilities.getRateVariable(port, "tokenConsumptionRate");
                 list.add(param);
             }
-            for(Iterator ports = container.outputPortList().iterator();
+            for (Iterator ports = container.outputPortList().iterator();
                 ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 Parameter param = (Parameter)
@@ -676,14 +676,14 @@ public class HDFFSMDirector extends FSMDirector {
             throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
         FSMActor controller = getController();
-        for(Iterator ports = container.portList().iterator();
+        for (Iterator ports = container.portList().iterator();
             ports.hasNext();) {
             IOPort port = (IOPort)ports.next();
             String name = port.getName();
             int previousTokenProductionRate = 0;
             int previousTokenConsumptionRate = 0;
             boolean firstTime = true;
-            for(Iterator states = controller.entityList().iterator();
+            for (Iterator states = controller.entityList().iterator();
                 states.hasNext();) {
                 State state = (State)states.next();
                 // FIXME
@@ -692,12 +692,12 @@ public class HDFFSMDirector extends FSMDirector {
                 IOPort refinementPort = (IOPort)refinement.getPort(name);
                 int tokenProductionRate = 0;
                 int tokenConsumptionRate = 0;
-                if(refinementPort == null) {
+                if (refinementPort == null) {
                     // Check directionality
-                    if(port.isInput() != refinementPort.isInput()) {
+                    if (port.isInput() != refinementPort.isInput()) {
                         return false;
                     }
-                    if(port.isOutput() != refinementPort.isOutput()) {
+                    if (port.isOutput() != refinementPort.isOutput()) {
                         return false;
                     }
                     tokenConsumptionRate = 
@@ -707,10 +707,10 @@ public class HDFFSMDirector extends FSMDirector {
                         SDFUtilities._getRateVariableValue(
                                 refinementPort, "tokenProductionRate", 0);
                 }
-                if(previousTokenConsumptionRate != tokenConsumptionRate) {
+                if (previousTokenConsumptionRate != tokenConsumptionRate) {
                     return false;
                 }
-                if(previousTokenProductionRate != tokenProductionRate) {
+                if (previousTokenProductionRate != tokenProductionRate) {
                     return false;
                 }
             }                    
@@ -833,7 +833,7 @@ public class HDFFSMDirector extends FSMDirector {
                         if (transition != null) { 
                             TypedActor[] trRefinements
                                 = (transition.getRefinement());
-                            if (trRefinements != null){
+                            if (trRefinements != null) {
                                 for (int i = 0;
                                     i < trRefinements.length; i ++) {
                                     TypedCompositeActor trRefinement

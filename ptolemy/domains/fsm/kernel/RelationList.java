@@ -142,7 +142,7 @@ public class RelationList extends Attribute {
     /** Return true if there is some event caused by some relation
      *  type change.  Return True If there is some event detected.
      */
-    public boolean hasEvent(){
+    public boolean hasEvent() {
         boolean result = false;
         ListIterator relations = _relationList.listIterator();
         while (relations.hasNext() && !result) {
@@ -283,7 +283,7 @@ public class RelationList extends Attribute {
          *  to detect whether a continuous variable cross a level.
          *  @return True If event has been detected.
          */
-        public boolean hasEvent(){
+        public boolean hasEvent() {
             if (typeChanged()) {
                 return  (_formerType * _currentType == 20);
             }
@@ -303,7 +303,7 @@ public class RelationList extends Attribute {
          *  @return True If the type changed and the former type
          *  information is valid.
          */
-        public boolean typeChanged(){
+        public boolean typeChanged() {
             return (_formerType != 0) && (_formerType != _currentType);
         }
 

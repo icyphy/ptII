@@ -126,7 +126,7 @@ public class Datagram extends TypedAtomicActor
             Clipboard clipboard = Toolkit.getDefaultToolkit()
                 .getSystemClipboard();
             Transferable transferable = clipboard.getContents(this);
-            try{
+            try {
                 output.broadcast(new StringToken( (String)transferable
                         .getTransferData(DataFlavor.stringFlavor) ));
                 // NullPointerException also possible //

@@ -261,7 +261,7 @@ public class FIR extends TypedAtomicActor {
     //          c=a+5;
     //          d=b-c;
 
-    //          if (d > 8){
+    //          if (d > 8) {
     //              d=a*a;
     //          }
     //      }
@@ -283,7 +283,7 @@ public class FIR extends TypedAtomicActor {
 
         _data0=input.get(0);
 
-        //          switch(_mostRecent){
+        //          switch(_mostRecent) {
         //          case 0: _data0 = input.get(0); break;
         //          case 1: _data1 = input.get(0); break;
         //          case 2: _data2 = input.get(0);
@@ -291,11 +291,11 @@ public class FIR extends TypedAtomicActor {
 
         //Until switch support is working, use a bunch of ifs (should be
         //identical in the results, however
-        //          if (_mostRecent == 0){
+        //          if (_mostRecent == 0) {
         //              _data0 = input.get(0);
-        //          } else if (_mostRecent == 1){
+        //          } else if (_mostRecent == 1) {
         //              _data1 = input.get(0);
-        //          } else if (_mostRecent == 2){
+        //          } else if (_mostRecent == 2) {
         //              _data2 = input.get(0);
         //          }
 
@@ -337,11 +337,11 @@ public class FIR extends TypedAtomicActor {
             //Man, I need to find a way to get arrays working...
             //_dataItem = _data[dataIndex];
 
-            if (dataIndex == 0){
+            if (dataIndex == 0) {
                 _dataItem = _data0;
-            } else if (dataIndex == 1){
+            } else if (dataIndex == 1) {
                 _dataItem = _data1;
-            } else if (dataIndex == 2){
+            } else if (dataIndex == 2) {
                 _dataItem = _data2;
             }
 
@@ -359,11 +359,11 @@ public class FIR extends TypedAtomicActor {
         //              //Man, I need to find a way to get arrays working...
         //              //_dataItem = _data[dataIndex];
 
-        //              if (dataIndex == 0){
+        //              if (dataIndex == 0) {
         //                  _dataItem = _data0;
-        //              } else if (dataIndex == 1){
+        //              } else if (dataIndex == 1) {
         //                  _dataItem = _data1;
-        //              } else if (dataIndex == 2){
+        //              } else if (dataIndex == 2) {
         //                  _dataItem = _data2;
         //              }
 
@@ -381,11 +381,11 @@ public class FIR extends TypedAtomicActor {
         //              //Man, I need to find a way to get arrays working...
         //              //_dataItem = _data[dataIndex];
 
-        //              if (dataIndex == 0){
+        //              if (dataIndex == 0) {
         //                  _dataItem = _data0;
-        //              } else if (dataIndex == 1){
+        //              } else if (dataIndex == 1) {
         //                  _dataItem = _data1;
-        //              } else if (dataIndex == 2){
+        //              } else if (dataIndex == 2) {
         //                  _dataItem = _data2;
         //              }
 

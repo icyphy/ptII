@@ -98,7 +98,7 @@ public class DependencyDeclaration extends Attribute {
      * @exception RuntimeException If the list of dependents is null.
      */
     public void setDependents(List dependents) {
-        if(dependents == null) {
+        if (dependents == null) {
             throw new RuntimeException("Attempt to set dependents to null!");
         }
         _dependents = dependents;

@@ -53,7 +53,7 @@ public class DependedClasses {
 
         _addClasses(initialClasses);
         
-        while(classes.hasNext()) {
+        while (classes.hasNext()) {
             SootClass nextClass = (SootClass)classes.next();
             _processClass(nextClass);
         }           
@@ -64,17 +64,17 @@ public class DependedClasses {
     }
     
     private void _addClasses(Collection set) {
-        for(Iterator i = set.iterator(); i.hasNext();) {
+        for (Iterator i = set.iterator(); i.hasNext();) {
             _addClass((SootClass)i.next());
         }
     }
 
     private void _addClass(SootClass theClass) {
-        if(!_reachableClasses.contains(theClass) && 
+        if (!_reachableClasses.contains(theClass) && 
                 !theClass.getName().startsWith("java")) {
             // System.out.println("adding class " + theClass);
             _reachableClasses.add(theClass);
-            if(!theClass.isInterface()) {
+            if (!theClass.isInterface()) {
                 _unprocessedClasses.add(theClass);
             }
         }
@@ -85,7 +85,7 @@ public class DependedClasses {
         Hierarchy hierarchy = Scene.v().getActiveHierarchy();
 
         // Make the method bodies analyzeable.
-        if(!theClass.isApplicationClass()) {
+        if (!theClass.isApplicationClass()) {
             theClass.setLibraryClass();
         }
 
@@ -94,11 +94,11 @@ public class DependedClasses {
         _addClasses(theClass.getInterfaces());
       
         // Grab the types of all fields.
-        for(Iterator fields = theClass.getFields().iterator();
+        for (Iterator fields = theClass.getFields().iterator();
             fields.hasNext();) {
             SootField field = (SootField)fields.next();
             Type type = field.getType();
-            if(type instanceof RefType) {
+            if (type instanceof RefType) {
                 _addClass(((RefType)type).getSootClass());
             }
         }
@@ -109,10 +109,10 @@ public class DependedClasses {
             
             //   System.out.println("processing method = " + method);
             // Grab the classes of all arguments.
-            for(Iterator types = method.getParameterTypes().iterator(); 
+            for (Iterator types = method.getParameterTypes().iterator(); 
                 types.hasNext();) {
                 Type type = (Type)types.next();
-                if(type instanceof RefType) {
+                if (type instanceof RefType) {
                     _addClass(((RefType)type).getSootClass());
                 }
             }
@@ -120,19 +120,19 @@ public class DependedClasses {
             // Grab the method return types.
             {
                 Type type = method.getReturnType();
-                if(type instanceof RefType) {
+                if (type instanceof RefType) {
                     _addClass(((RefType)type).getSootClass());
                 }
             } 
             
             // Don't drag in the bodies of abstract methods.
-            if(!method.isConcrete()) {
+            if (!method.isConcrete()) {
                 continue;
             }
 
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
             // Grab the types of all traps.
-            for(Iterator it = body.getTraps().iterator();
+            for (Iterator it = body.getTraps().iterator();
                 it.hasNext();) {
                 Trap t = (Trap)it.next();
                 _addClass(t.getException());
@@ -147,22 +147,22 @@ public class DependedClasses {
                      boxes.hasNext();) {
                     ValueBox box = (ValueBox)boxes.next();
                     Value value = box.getValue();
-                    if(value instanceof FieldRef) {
+                    if (value instanceof FieldRef) {
                         SootField field = ((FieldRef)value).getField();
                         SootClass refClass = field.getDeclaringClass();
-                        if(!refClass.equals(theClass)) {
+                        if (!refClass.equals(theClass)) {
                             _addClass(refClass);
                         }
-                    } else if(value instanceof InvokeExpr) {
+                    } else if (value instanceof InvokeExpr) {
                         SootMethod refMethod = ((InvokeExpr)value).getMethod();
                         SootClass refClass = refMethod.getDeclaringClass();
-                        if(!refClass.equals(theClass)) {
+                        if (!refClass.equals(theClass)) {
                             _addClass(refClass);
                         }
-                    } else if(value instanceof NewExpr) {
+                    } else if (value instanceof NewExpr) {
                         SootClass refClass = 
                             ((NewExpr)value).getBaseType().getSootClass();
-                        if(!refClass.equals(theClass)) {
+                        if (!refClass.equals(theClass)) {
                             _addClass(refClass);
                         }
                     }

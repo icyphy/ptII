@@ -765,7 +765,7 @@ public class GiottoPortInliner implements PortInliner {
     private void _createPortBufferReference(SootClass entityClass,
             TypedIOPort port, ptolemy.data.type.Type type,
             Map typeNameToBufferField) {
-        if(_debug) {  
+        if (_debug) {  
             System.out.println("creating  buffer reference for " + port 
                     + " type = " + type);
         }
@@ -822,7 +822,7 @@ public class GiottoPortInliner implements PortInliner {
     // communication buffers for each port in the given entity.
     // This includes both the communication buffers and index arrays.
     private void _createInsideBufferReferences() {
-        if(_debug) {
+        if (_debug) {
             System.out.println("creating inside buffer references for "
                     + _model.getFullName());
         }
@@ -835,7 +835,7 @@ public class GiottoPortInliner implements PortInliner {
             _portToTypeNameToInsideBufferField.put(port,
                     typeNameToInsideBufferField);
 
-            if(_debug) {
+            if (_debug) {
                 System.out.println("port = " + port.getFullName() 
                         + " type = " + port.getType());
             }

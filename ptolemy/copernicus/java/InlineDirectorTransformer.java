@@ -576,7 +576,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                 
                 Parameter initialValueParameter = (Parameter)
                     ((NamedObj) port).getAttribute("initialValue");
-                if(initialValueParameter != null) {
+                if (initialValueParameter != null) {
                     String initialValueNameInContext = 
                         initialValueParameter.getName(entity);
                     
@@ -1605,7 +1605,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
 
-            if(iterationLimit > 0) {
+            if (iterationLimit > 0) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 Jimple.v().newInstanceFieldRef(
@@ -1718,7 +1718,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
             for (Iterator ports = model.inputPortList().iterator();
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
-                if(port instanceof ParameterPort) {
+                if (port instanceof ParameterPort) {
                     continue;
                 }
                 int rate;

@@ -303,7 +303,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
 
             SootClass attributeClass = (SootClass)
                 _objectToClassMap.get(attribute);
-            if(attributeClass == null) {
+            if (attributeClass == null) {
                 attributeClass = Scene.v().loadClassAndSupport(attribute.getClass().getName());
             }
             String className = attributeClass.getName();
@@ -407,7 +407,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             // Deal with ParameterPorts specially, since they are
             // created by the PortParameter.  Just use the
             // portParameter to get a reference to the ParameterPort.
-            if(port instanceof ParameterPort) {
+            if (port instanceof ParameterPort) {
                 updateCreatedSet(entity.getFullName() + "."
                         + port.getName(),
                         port, port, createdSet);
@@ -682,7 +682,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                     insertPoint);
         }
        
-        if(namedObj instanceof Entity) {
+        if (namedObj instanceof Entity) {
             Entity entity = (Entity)namedObj;
             for (Iterator ports = entity.portList().iterator();
                  ports.hasNext();) {
@@ -759,7 +759,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
      *  given entity.
      */
     public static String getFieldNameForPort(Port port, NamedObj context) {
-        if(port instanceof ParameterPort) {
+        if (port instanceof ParameterPort) {
             return StringUtilities.sanitizeName(port.getName(context) + "Port");
         } else {
             return StringUtilities.sanitizeName(port.getName(context));
@@ -1033,7 +1033,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                     Type type = targetMethod.getReturnType();
                     if (type instanceof RefType) {
                         SootClass typeClass = ((RefType)type).getSootClass();
-                        if(SootUtilities.derivesFrom(typeClass,
+                        if (SootUtilities.derivesFrom(typeClass,
                                    PtolemyUtilities.namedObjClass)) {
                             hasDangerousType = true;
                         }
@@ -1045,7 +1045,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                     Type type = (Type)argTypes.next();
                     if (type instanceof RefType) {
                         SootClass typeClass = ((RefType)type).getSootClass();
-                        if(SootUtilities.derivesFrom(typeClass,
+                        if (SootUtilities.derivesFrom(typeClass,
                                    PtolemyUtilities.namedObjClass)) {
                             hasDangerousType = true;
                         }
@@ -1267,7 +1267,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             // Ignore ParameterPorts, since they are created by the
             // PortParameter.  Just use the portParameter to get a
             // reference to the ParameterPort.
-            if(port instanceof ParameterPort) {
+            if (port instanceof ParameterPort) {
                 updateCreatedSet(entity.getFullName() + "."
                         + port.getName(),
                         port, port, createdSet);

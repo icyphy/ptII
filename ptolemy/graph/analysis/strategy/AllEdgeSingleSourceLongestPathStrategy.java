@@ -108,7 +108,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
 
         if ((predecessorsIndex != -1)) {
             predecessor = graph().node(predecessorsIndex);
-            do{
+            do {
                 pathNodes.add(predecessor);
                 predecessorsIndex =
                         predecessors[graph().nodeLabel(predecessor)];
@@ -117,7 +117,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
                 } else {
                     break;
                 }
-            } while(predecessor != _startNode);
+            } while (predecessor != _startNode);
             if (predecessor == _startNode) {
                 pathNodes.add(endNode);
             }
@@ -185,7 +185,7 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
         //HashMap color = new HashMap();
         double[] distance = new double[graph.nodeCount()];
         _predecessor = new int[graph.nodeCount()];
-        for(Iterator nodes = graph.nodes().iterator();
+        for (Iterator nodes = graph.nodes().iterator();
                 nodes.hasNext();) {
             Node node = (Node)nodes.next();
             if (node != _startNode) {
@@ -198,11 +198,11 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
         }
         queue.add(_startNode);
         _predecessor[graph.nodeLabel(_startNode)] = -1 ;
-        while(!queue.isEmpty()) {
+        while (!queue.isEmpty()) {
             Node u = (Node)queue.get(0);
             Collection successors = graph.successors(u);
             if (successors != null) {
-                for(Iterator successorNodes = successors.iterator();
+                for (Iterator successorNodes = successors.iterator();
                         successorNodes.hasNext();) {
                     Node v = (Node)successorNodes.next();
                     double predecessorDistance = distance[graph().nodeLabel(u)];
@@ -210,9 +210,9 @@ public class AllEdgeSingleSourceLongestPathStrategy extends CachedStrategy
                     Collection edgeCollection = graph.predecessorEdges(v, u);
                     Iterator edges = edgeCollection.iterator();
                     double connectingEdgeCost = - Double.MAX_VALUE;
-                    while(edges.hasNext()) {
+                    while (edges.hasNext()) {
                         Edge edge = (Edge) edges.next();
-                        if(_edgeLengths.toDouble(edge) > connectingEdgeCost) {
+                        if (_edgeLengths.toDouble(edge) > connectingEdgeCost) {
                             connectingEdgeCost = _edgeLengths.toDouble(edge);
                         }
                     }

@@ -183,7 +183,7 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
                             Local baseLocal = (Local)r.getBase();
                             Value newFieldRef = _createPortField(
                                     baseLocal, name, unit, localDefs);
-                            if(unit instanceof AssignStmt) {
+                            if (unit instanceof AssignStmt) {
                                 box.setValue(newFieldRef);
                             } else {
                                 body.getUnits().remove(unit);

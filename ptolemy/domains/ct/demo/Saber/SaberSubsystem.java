@@ -121,20 +121,20 @@ public class SaberSubsystem extends TypedAtomicActor
         }
         _outtoken = new DoubleToken[_numout];
         // start saber
-        try{
+        try {
             _debug(getFullName() + "starts saber with "+getToolName());
             _tool = Runtime.getRuntime().exec(getToolName());
             _instream = _tool.getInputStream();
             _errorstream = _tool.getErrorStream();
             _outstream = _tool.getOutputStream();
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new IllegalActionException(this, "can not execute tool");
         }
         // read in the netlist
-        if ((_instream != null) && (_outstream != null)){
+        if ((_instream != null) && (_outstream != null)) {
             _debug(getFullName() + ": tool start ok");
             _ps = new PrintWriter(_outstream, true);
-            if (_ps != null){
+            if (_ps != null) {
                 _debug(getFullName() + "read netlist "+_netlist);
             }
             _reader = new BufferedReader(
@@ -145,14 +145,14 @@ public class SaberSubsystem extends TypedAtomicActor
                         "instream reading error.");
             }
             _ps.println();
-            while (true){
+            while (true) {
                 try {
                     String line = _reader.readLine();
                     _debug(line);
-                    if (line.startsWith(new String(">"))){
+                    if (line.startsWith(new String(">"))) {
                         break;
                     }
-                }catch (IOException e){
+                } catch (IOException e) {
                     throw new IllegalActionException(this,
                             "IO error while in reading" + e.getMessage());
                 }
@@ -163,17 +163,17 @@ public class SaberSubsystem extends TypedAtomicActor
             _ps.println("di "+_startpt);
             _ps.println();
             _ps.println("bye");
-            while (true){
+            while (true) {
                 try {
                     //if (_reader.ready()) {
                     String line = _reader.readLine();
                     _debug(line);
                     if (line == null) continue;
-                    if (line.startsWith(new String("bye"))){
+                    if (line.startsWith(new String("bye"))) {
                         break;
                     }
                     //}
-                }catch (IOException e){
+                } catch (IOException e) {
                     throw new IllegalActionException(this,
                             "IO error while in reading" + e.getMessage());
                 }
@@ -188,7 +188,7 @@ public class SaberSubsystem extends TypedAtomicActor
                     String line = _reader.readLine();
                     _debug(line);
                     if (line == null) continue;
-                    if (line.startsWith(new String("bye"))){
+                    if (line.startsWith(new String("bye"))) {
                         break;
                     }
                     int locsep = line.indexOf(' ');
@@ -207,7 +207,7 @@ public class SaberSubsystem extends TypedAtomicActor
                             outindex ++;
                         }
                     }
-                } catch (IOException e){
+                } catch (IOException e) {
                     throw new IllegalActionException(this,
                             "IO error while in reading" + e.getMessage());
 
@@ -263,15 +263,15 @@ public class SaberSubsystem extends TypedAtomicActor
             _ps.println("cont tr (tend " + endTime + ", tstep "+_innerStep);
         }
         _ps.println("bye");
-        while (true){
+        while (true) {
             try {
                 String line = _reader.readLine();
                 _debug(line);
                 if (line == null) continue;
-                if (line.startsWith(new String("bye"))){
+                if (line.startsWith(new String("bye"))) {
                     break;
                 }
-            }catch (IOException e){
+            } catch (IOException e) {
                 //throw new IllegalActionException(this,
                 //        "IO error while in reading" + e.getMessage());
                 if (_tool == null) {
@@ -290,7 +290,7 @@ public class SaberSubsystem extends TypedAtomicActor
                             " IO error while in reading " + e.getMessage());
                 }
                 _ps = new PrintWriter(_outstream, true);
-                if (_ps == null){
+                if (_ps == null) {
                     throw new IllegalActionException(this,
                             " Can't refresh output buffer." +
                             " IO error while in reading " + e.getMessage());
@@ -317,12 +317,12 @@ public class SaberSubsystem extends TypedAtomicActor
         _ps.println("bye");
         boolean firstsep = false;
         boolean secondsep = false;
-        while (true){
+        while (true) {
             try {
                 String line = _reader.readLine();
                 _debug(line);
-                if (secondsep){
-                    if (line.startsWith(new String(">"))){
+                if (secondsep) {
+                    if (line.startsWith(new String(">"))) {
                         secondsep = false;
                     }else {
                         // assume the time is in units of m or u
@@ -335,7 +335,7 @@ public class SaberSubsystem extends TypedAtomicActor
                         for (int i = 0; i < outindex; i++) {
                             // get ride of space between
                             // separator and first number
-                            while (line.charAt(tmp) == ' '){
+                            while (line.charAt(tmp) == ' ') {
                                 tmp++;
                             }
                             int tmp2;
@@ -350,16 +350,16 @@ public class SaberSubsystem extends TypedAtomicActor
                         }
                     }
                 }
-                if (line.startsWith(new String("------------"))){
+                if (line.startsWith(new String("------------"))) {
                     if (!firstsep) firstsep = true;
                     else secondsep = true;
                     continue;
                 }
                 if (line == null) continue;
-                if (line.startsWith(new String("bye"))){
+                if (line.startsWith(new String("bye"))) {
                     break;
                 }
-            }catch (IOException e){
+            } catch (IOException e) {
                 //throw new IllegalActionException(this,
                 //   "IO error while in reading" + e.getMessage());
                 if (_tool == null) {
@@ -446,35 +446,35 @@ public class SaberSubsystem extends TypedAtomicActor
         int locm = text.indexOf('m', begpt);
         int locn, locu;
         double number;
-        if ((locm > begpt) && (locm <= endpt)){
+        if ((locm > begpt) && (locm <= endpt)) {
             number = new Double(text.substring(begpt, locm)).doubleValue();
             number *= 0.001;
         } else {
             locu = text.indexOf('u', begpt);
-            if ((locu > begpt) && (locu <= endpt)){
+            if ((locu > begpt) && (locu <= endpt)) {
                 number = new Double(text.substring(begpt, locu)).doubleValue();
                 number *= 0.001*0.001;
             } else {
                 locn = text.indexOf('n', begpt);
-                if ((locn > begpt) && (locn <= endpt)){
+                if ((locn > begpt) && (locn <= endpt)) {
                     number = new Double(text.substring(begpt,
                             locn)).doubleValue();
                     number *= 0.001*0.001*0.001;
                 } else {
                     locn = text.indexOf('p', begpt);
-                    if ((locn > begpt) && (locn <= endpt)){
+                    if ((locn > begpt) && (locn <= endpt)) {
                         number = new Double(text.substring(begpt,
                                 locn)).doubleValue();
                         number *= 0.001*0.001*0.001*0.001;
                     } else {
                         locn = text.indexOf('f', begpt);
-                        if ((locn > begpt) && (locn <= endpt)){
+                        if ((locn > begpt) && (locn <= endpt)) {
                             number = new Double(text.substring(begpt,
                                     locn)).doubleValue();
                             number *= 0.001*0.001*0.001*0.001*0.001;
                         } else {
                             locn = text.indexOf('a', begpt);
-                            if ((locn > begpt) && (locn <= endpt)){
+                            if ((locn > begpt) && (locn <= endpt)) {
                                 number = new Double(text.substring(begpt,
                                         locn)).doubleValue();
                                 number *= 1e-18;

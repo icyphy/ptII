@@ -156,7 +156,7 @@ public class TextEditorTableauFactory
         // textEffigy may already have a tableau.
         Iterator tableaux =
             textEffigy.entityList(TextEditorTableau.class).iterator();
-        if(tableaux.hasNext()) {
+        if (tableaux.hasNext()) {
             return (TextEditorTableau)tableaux.next();
         }
 

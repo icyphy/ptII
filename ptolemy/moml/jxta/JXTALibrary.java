@@ -354,7 +354,7 @@ public class JXTALibrary extends EntityLibrary
                     }
 
                 }
-                catch (java.lang.NullPointerException e){
+                catch (java.lang.NullPointerException e) {
                     System.out.println("Warning: cannot creat the file.\n"
                             + e.getMessage());
                 }
@@ -392,7 +392,7 @@ public class JXTALibrary extends EntityLibrary
             _actorQueryResponse.setQueryId(query.getQueryId());
             return _actorQueryResponse;
         }
-        else if (qry.startsWith("<PtolemyInputPipe>") ){
+        else if (qry.startsWith("<PtolemyInputPipe>") ) {
             int len = qry.length();
             String pipeStr = qry.substring(18, len-19) ;
             //System.out.println("the pipe information: " + pipeStr + "\n");
@@ -413,7 +413,7 @@ public class JXTALibrary extends EntityLibrary
             _sendMsg();
             return null;
         }
-        else{
+        else {
             return null;
         }
     }
@@ -423,7 +423,7 @@ public class JXTALibrary extends EntityLibrary
         System.out.println("Got response from remote peers. \n");
 
         //FIXME:check if we want the actor.
-        try{
+        try {
             if (rp.startsWith("<peerID>")) {
                 int index = rp.lastIndexOf("</peerID>");
                 String peerID = rp.substring(8, index) ;

@@ -53,35 +53,35 @@ public class SuperBlock implements GraphNode {
     /**
      * The head of a new tree
      */
-    public SuperBlock(Block block, DirectedGraph graph){
+    public SuperBlock(Block block, DirectedGraph graph) {
         _block = block;
         _graph = graph;
 
         _labels = null; //new HashMap();
     }
 
-    public Vector primaryInputs(){
+    public Vector primaryInputs() {
         return _primaryInputs;
     }
 
-    public Vector primaryOutputs(){
+    public Vector primaryOutputs() {
         return _primaryOutputs;
     }
 
-    public DirectedGraph getGraph(){
+    public DirectedGraph getGraph() {
         return _graph;
     }
 
-    public Block getBlock(){
+    public Block getBlock() {
         return _block;
     }
 
-    //      public Vector getLabels(){
+    //      public Vector getLabels() {
     //          return _labels;
     //      }
 
-    public void addLabel(Label label, SuperBlock from){
-        if (from == null){
+    public void addLabel(Label label, SuperBlock from) {
+        if (from == null) {
             //Ummm.. this is a hack.  The source node in a graph will have a
             //label that doesn't come "from" anything.. but I want to
             //prevent a NullPointerException
@@ -92,21 +92,21 @@ public class SuperBlock implements GraphNode {
 
         Vector labelVector = (Vector)_labels.get(from);
 
-        if (labelVector == null){
+        if (labelVector == null) {
             labelVector = new Vector();
             _labels.put(from, labelVector);
         }
         labelVector.add(label);
     }
 
-    public void combineLabels(DirectedGraph graph){
+    public void combineLabels(DirectedGraph graph) {
         _shrinkLabels(graph);
         _combineNonShrinkable(graph);
     }
 
     // propagate labels to a specific block. I know that I am further upstream
     // in the dag.
-    public void propagateLabelsTo(SuperBlock succ){
+    public void propagateLabelsTo(SuperBlock succ) {
         Unit first = succ._block.getHead();
         Unit last = this._block.getTail();
 
@@ -119,24 +119,24 @@ public class SuperBlock implements GraphNode {
 
         Vector labelVector = (Vector)c.toArray()[0];
 
-        if (last instanceof IfStmt){
+        if (last instanceof IfStmt) {
             // The block ends in an if statement, so create a new label for the successor
             Unit target = ((IfStmt)last).getTarget();
             //ConditionExpr condition = (ConditionExpr)((IfStmt)last).getCondition();
 
-            for (Iterator labels = labelVector.iterator(); labels.hasNext();){
+            for (Iterator labels = labelVector.iterator(); labels.hasNext();) {
                 Label label=(Label)labels.next();
                 succ.addLabel(new Label(label, first == target, this), this);
             }
         } else {
-            for (Iterator labels = labelVector.iterator(); labels.hasNext();){
+            for (Iterator labels = labelVector.iterator(); labels.hasNext();) {
                 Label label=(Label)labels.next();
                 succ.addLabel(label, this);
             }
         } //if else (last instanceof IfStmt)
     }
 
-    public Node createDataFlow(DirectedGraph graph, Object value){
+    public Node createDataFlow(DirectedGraph graph, Object value) {
 
         System.out.println(">>>>>>>>>createDataFlow on " + this +" for " + value);
         System.out.println(">>>>>>>>>>>>> "+value.getClass());
@@ -144,15 +144,15 @@ public class SuperBlock implements GraphNode {
         GraphNode predecessor;
         Node returnNode;
 
-        if (pred.size() == 0){
+        if (pred.size() == 0) {
             predecessor= null;
-        } else{
+        } else {
             predecessor= (GraphNode)pred.toArray()[0];
         }
 
         if (predecessor == this) predecessor = null; //hack to fix a hack
 
-        //          if (!_graph.containsNodeWeight(value)){
+        //          if (!_graph.containsNodeWeight(value)) {
 
         //            System.out.println("---------This block doesn't have it");
         //              //This block doesn't define 'value', so pass the request to its
@@ -164,14 +164,14 @@ public class SuperBlock implements GraphNode {
         Collection c=_graph.nodes();
         Set equalSet=new HashSet();
 
-        for (Iterator i=c.iterator(); i.hasNext();){
+        for (Iterator i=c.iterator(); i.hasNext();) {
             Node n = (Node)i.next();
-            if (_matches(n.getWeight(),  value)){
+            if (_matches(n.getWeight(),  value)) {
                 equalSet.add(n);
             }
         }
 
-        if (equalSet.size() == 0){
+        if (equalSet.size() == 0) {
             //This block doesn't define 'value', so pass the request to its
             //predecessor
             if (predecessor == null) return null; //No predecessor
@@ -185,8 +185,8 @@ public class SuperBlock implements GraphNode {
         //When is the last time this block defines (i.e. write to) this value?
         Node lastDefinition=nodes[0];
 
-        for (int i=1; i < nodes.length; i++ ){
-            if (_graph.reachableNodes(lastDefinition).contains(nodes[i])){
+        for (int i=1; i < nodes.length; i++ ) {
+            if (_graph.reachableNodes(lastDefinition).contains(nodes[i])) {
                 //If nodes[i] is reachable from lastDefintion, then nodes[i]
                 //is defined later and needs to be the new lastDefinition
                 lastDefinition=nodes[i];
@@ -199,19 +199,19 @@ public class SuperBlock implements GraphNode {
             }
         }
 
-        if (_graph.sourceNodes().contains(lastDefinition)){
+        if (_graph.sourceNodes().contains(lastDefinition)) {
             //if lastDefinition is a source, then it really isn't defined here
             if (predecessor == null) {
-                if (!graph.containsNode(lastDefinition)){
+                if (!graph.containsNode(lastDefinition)) {
                     graph.addNode(lastDefinition);
                 }
                 return lastDefinition;
             }
 
             Node gn=predecessor.createDataFlow(graph, value);
-            if (gn == null){
+            if (gn == null) {
                 //Nobody else wrote to it.. must be some kind of invariant or constant
-                if (!graph.containsNode(lastDefinition)){
+                if (!graph.containsNode(lastDefinition)) {
                     graph.addNode(lastDefinition);
                 }
                 return lastDefinition;
@@ -227,16 +227,16 @@ public class SuperBlock implements GraphNode {
 
         currentBlockDefs.add(lastDefinition);
 
-        for (int i=0; i< currentBlockDefs.size(); i++){
+        for (int i=0; i< currentBlockDefs.size(); i++) {
             Node currNode = (Node)currentBlockDefs.elementAt(i);
             System.out.println("currentBlockDefs: "+currNode);
             if (!graph.containsNode(currNode))
                 graph.addNode(currNode);
 
-            for (Iterator j=_graph.predecessors(currNode).iterator(); j.hasNext();){
+            for (Iterator j=_graph.predecessors(currNode).iterator(); j.hasNext();) {
                 Node predNode = (Node)j.next();
                 System.out.println("  "+predNode);
-                if (sources.contains(predNode)){
+                if (sources.contains(predNode)) {
                     //If its a source, look for it later in the predecessor node
                     predecessorDefs.add(predNode);
                 } else {
@@ -249,8 +249,8 @@ public class SuperBlock implements GraphNode {
             }
         }
 
-        if (predecessor != null){
-            for (Iterator i=predecessorDefs.iterator(); i.hasNext();){
+        if (predecessor != null) {
+            for (Iterator i=predecessorDefs.iterator(); i.hasNext();) {
                 Node n = (Node)i.next();
                 if (n.getWeight() instanceof Constant) continue;
                 System.out.println("going to "+predecessor+" to look for "+n);
@@ -263,7 +263,7 @@ public class SuperBlock implements GraphNode {
         return lastDefinition;
     }
 
-    public String toString(){
+    public String toString() {
         return _block.toShortString();
     }
 
@@ -271,13 +271,13 @@ public class SuperBlock implements GraphNode {
     /**
      *  Check to see if the two objects match
      */
-    protected boolean _matches(Object one, Object two){
-        if ((one == two) || (one.equals(two))){
+    protected boolean _matches(Object one, Object two) {
+        if ((one == two) || (one.equals(two))) {
             return true;
         }
 
-        if ((one instanceof FieldRef) && (two instanceof FieldRef)){
-            if ( ((FieldRef)one).equivTo(two)){
+        if ((one instanceof FieldRef) && (two instanceof FieldRef)) {
+            if ( ((FieldRef)one).equivTo(two)) {
                 return true;
             }
 
@@ -287,9 +287,9 @@ public class SuperBlock implements GraphNode {
     }
 
     /** Combine Labels that have same parent label. **/
-    protected void _shrinkLabels(DirectedGraph graph){
+    protected void _shrinkLabels(DirectedGraph graph) {
 
-        if (_labels == null){
+        if (_labels == null) {
             //If no labels were added to this node, it must be the head of the graph
 
             // Hashing a superblock to a vector of Labels
@@ -306,28 +306,28 @@ public class SuperBlock implements GraphNode {
 
         //Iterate over all labels
         //  get all keys in hashMap
-        for (Iterator blocks = _labels.keySet().iterator(); blocks.hasNext();){
+        for (Iterator blocks = _labels.keySet().iterator(); blocks.hasNext();) {
             GraphNode key = (GraphNode)blocks.next();
             Vector labelVector = (Vector)_labels.get(key);
             // get all Labels in vector associated within given key
-            for (Iterator labels = labelVector.iterator(); labels.hasNext();){
+            for (Iterator labels = labelVector.iterator(); labels.hasNext();) {
                 Label label = (Label)labels.next();
 
                 //Now we need to iterate over the labels again (compare all labels against each other)
-                for (Iterator blocks2 = _labels.keySet().iterator(); blocks2.hasNext();){
+                for (Iterator blocks2 = _labels.keySet().iterator(); blocks2.hasNext();) {
                     GraphNode key2 = (GraphNode)blocks2.next();
                     Vector labelVector2 = (Vector)_labels.get(key2);
-                    for (Iterator labels2 = labelVector2.iterator(); labels2.hasNext();){
+                    for (Iterator labels2 = labelVector2.iterator(); labels2.hasNext();) {
 
                         Label label2 = (Label)labels2.next();
                         //Do a pairwise comparison
-                        if ((label != label2) && label.canCombine(label2)){
+                        if ((label != label2) && label.canCombine(label2)) {
                                 //Combine labels
 
                             Label lowest;
                             GraphNode first, second;
 
-                            if (label.level() <= label2.level()){
+                            if (label.level() <= label2.level()) {
                                 first=key;
                                 second=key2;
                                 lowest=label;
@@ -358,7 +358,7 @@ public class SuperBlock implements GraphNode {
 
                                 //If labelVector is empty, remove its entry from _labels and remove
                                 //the arc from the graph
-                            if (labelVector.isEmpty()){
+                            if (labelVector.isEmpty()) {
                                 _labels.remove(key);
                                 Node n1=(Node)graph.node(key);
                                 Node n2=(Node)graph.node(this);
@@ -367,7 +367,7 @@ public class SuperBlock implements GraphNode {
 
                                 //If labelVector2 is empty, remove its entry from _labels and remove
                                 //the arc from the graph
-                            if (labelVector2.isEmpty()){
+                            if (labelVector2.isEmpty()) {
                                 _labels.remove(key2);
                                 Node n1=(Node)graph.node(key2);
                                 Node n2=(Node)graph.node(this);
@@ -386,11 +386,11 @@ public class SuperBlock implements GraphNode {
     } //Method _shrinkLabels
 
     /** Put muxes on wires that cannot be shrunk. **/
-    protected void _combineNonShrinkable(DirectedGraph graph){
+    protected void _combineNonShrinkable(DirectedGraph graph) {
 
-        while (true){
+        while (true) {
             Collection c = _labels.keySet();
-            if (c.size() < 2){
+            if (c.size() < 2) {
                 return;
             }
 
@@ -402,13 +402,13 @@ public class SuperBlock implements GraphNode {
             Label low1 = (Label)v1.get(0);
             Label low2 = (Label)v2.get(0);
 
-            for (Iterator i = v1.iterator(); i.hasNext();){
+            for (Iterator i = v1.iterator(); i.hasNext();) {
                 Label l = (Label)i.next();
                 if (l.level() < low1.level())
                     low1 = l;
             }
 
-            for (Iterator i = v2.iterator(); i.hasNext();){
+            for (Iterator i = v2.iterator(); i.hasNext();) {
                 Label l = (Label)i.next();
                 if (l.level() < low2.level())
                     low2 = l;

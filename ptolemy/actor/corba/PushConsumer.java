@@ -191,7 +191,7 @@ public class PushConsumer extends Source {
             }
         }
 
-        if(_blocking) {
+        if (_blocking) {
             if (_lastReadToken == null) {
                 try {
 
@@ -212,7 +212,7 @@ public class PushConsumer extends Source {
                             e.getMessage());
                 }
             }
-            if(_lastReadToken != null){
+            if (_lastReadToken != null) {
                 output.send(0, _lastReadToken);
                 _defaultToken = _lastReadToken;
                 _lastReadToken = null;
@@ -321,7 +321,7 @@ public class PushConsumer extends Source {
             if (_debugging) {
                 _debug("got pushed data");
             }
-            //try{
+            //try {
                 synchronized(_lock) {
                     // Variable variable = new Variable();
                     if (_debugging) {
@@ -353,7 +353,7 @@ public class PushConsumer extends Source {
                    }
                 }
 
-            //}catch (IllegalActionException e){
+            //} catch (IllegalActionException e) {
             //    throw new CorbaIllegalActionException("failed to construct.");
             //}
         }

@@ -106,8 +106,8 @@ public class Analysis {
      *  analyzer for this analysis.
      */
     public void changeAnalyzer(GraphAnalyzer analyzer) {
-        if(validAnalyzerInterface(analyzer)) {
-            if(analyzer instanceof CachedStrategy) {
+        if (validAnalyzerInterface(analyzer)) {
+            if (analyzer instanceof CachedStrategy) {
                 if (graph() == analyzer().graph()) {
                     ((CachedStrategy)analyzer)
                             .setCachedResult((CachedStrategy)_analyzer);

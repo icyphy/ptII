@@ -84,13 +84,13 @@ public class PTreeMenuCreator extends MouseAdapter {
      *  the third button, then menu is created and shown.
      */
     public void mousePressed(MouseEvent e) {
-        if(e.getButton() != MouseEvent.BUTTON3) {
+        if (e.getButton() != MouseEvent.BUTTON3) {
             return;
         }
         PTree tree = (PTree) e.getComponent();
         TreePath treePath = tree.getPathForLocation(e.getX(), e.getY()); 
         Object object = treePath.getLastPathComponent(); 
-        if(object instanceof NamedObj) {
+        if (object instanceof NamedObj) {
             NamedObj namedObj = (NamedObj)object;
             JContextMenu menu = new JContextMenu(
                     namedObj, namedObj.getFullName());

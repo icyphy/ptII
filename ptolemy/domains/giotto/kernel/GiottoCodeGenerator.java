@@ -352,7 +352,7 @@ public class GiottoCodeGenerator extends Attribute {
         codeString +=  "{"
             + _endLine;
         String portSeparator = ",";
-        if(inputPorts.equals("") || outputPorts.equals("")) {
+        if (inputPorts.equals("") || outputPorts.equals("")) {
             portSeparator = "";
         }
         codeString +=  "        schedule CG"
@@ -390,7 +390,7 @@ public class GiottoCodeGenerator extends Attribute {
      */
     private static String _driverCode(TypedCompositeActor model, Actor actor)
             throws IllegalActionException {
-        if(!_needsInputDriver(actor)) {
+        if (!_needsInputDriver(actor)) {
             return "";
         }
 
@@ -624,7 +624,7 @@ public class GiottoCodeGenerator extends Attribute {
                         getToken()).intValue();
             }
             String driverName = "";
-            if(_needsInputDriver(actor)) {
+            if (_needsInputDriver(actor)) {
                 driverName = actorName + "_driver";
             }
             codeString += "    taskfreq "
@@ -648,7 +648,7 @@ public class GiottoCodeGenerator extends Attribute {
      *  requires it to have an input driver.
      */
     private static boolean _needsInputDriver(Actor actor) {
-        if( actor.inputPortList().size() <= 0) {
+        if (actor.inputPortList().size() <= 0) {
             return false;
         } else {
             return true;

@@ -112,7 +112,7 @@ public class CountTrues extends SDFTransformer {
         Token[] inputBlock = input.get(0, count);
         int trueCount = 0;
         for (int i = 0; i < count; i += 1) {
-            if(((BooleanToken)inputBlock[i]).booleanValue()) {
+            if (((BooleanToken)inputBlock[i]).booleanValue()) {
                 trueCount++;
             }
         }

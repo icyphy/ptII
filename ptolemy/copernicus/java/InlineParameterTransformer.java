@@ -302,7 +302,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                     inlinee.getDeclaringClass().setLibraryClass();
                                 }
                                 inlinee.retrieveActiveBody();
-                                if(inlinee.equals(method)) {
+                                if (inlinee.equals(method)) {
                                     System.out.println("Skipping inline at " + r 
                                             + " because we can't inline methods into themselves.");
                                 } else {
@@ -369,7 +369,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
 
                         // Inline getType, setTypeEquals, etc...
                         if (attribute instanceof Typeable) {
-                            if(PtolemyUtilities.inlineTypeableMethods(body,
+                            if (PtolemyUtilities.inlineTypeableMethods(body,
                                        stmt, box, r, (Typeable)attribute)) {
                                 continue;
                             }
@@ -389,7 +389,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                             continue;
                         }
 
-                        if(r instanceof SpecialInvokeExpr) {
+                        if (r instanceof SpecialInvokeExpr) {
                             continue;
                         }
 
@@ -480,7 +480,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                     throw new RuntimeException(
                                             "No tokenField found for attribute " + attribute);
                                 }
-                                if(stmt instanceof InvokeStmt) {
+                                if (stmt instanceof InvokeStmt) {
                                     body.getUnits().remove(stmt);
                                 } else {
                                     box.setValue(Jimple.v().newInstanceFieldRef(containerLocal, tokenField));
@@ -666,7 +666,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                             + " that cannot be removed!");
                                 }
                             }
-                        } else {// if(false) { //FIXME
+                        } else {// if (false) { //FIXME
                                 // It's just settable, so handle get/setExpression
                             if (r.getMethod().getSubSignature().equals(
                                     PtolemyUtilities.getExpressionMethod.getSubSignature())) {
@@ -951,7 +951,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                         }
                         field.addTag(new TypeTag(type));
                     }
-                } else {// if(false) { //FIXME
+                } else {// if (false) { //FIXME
                     field = new SootField(
                             fieldName + "_CGExpression",
                             stringType,

@@ -1175,12 +1175,12 @@ public class SignalProcessing {
      *  frequency response.
      */
     public static final Complex[] poleZeroToFrequency(Complex[] poles,
-            Complex[] zeros, Complex gain, int numSteps){
+            Complex[] zeros, Complex gain, int numSteps) {
         double step = 2*Math.PI/numSteps;
         Complex[] freq = new Complex[numSteps];
 
         double angle = -Math.PI;
-        for (int index = 0; index < freq.length; index++){
+        for (int index = 0; index < freq.length; index++) {
             Complex polesContribution = Complex.ONE;
             Complex zerosContribution = Complex.ONE;
             Complex ejw = new Complex(Math.cos(angle), Math.sin(angle));

@@ -160,7 +160,7 @@ public class DerivativeResolver extends ODESolver
      *  @return The initial step size.
      */
     public double integratorPredictedStepSize(
-            CTBaseIntegrator integrator){
+            CTBaseIntegrator integrator) {
         CTDirector dir = (CTDirector)getContainer();
         return dir.getInitialStepSize();
     }

@@ -41,16 +41,16 @@ class Label {
     /**
      * The head of a new tree
      */
-    public Label(){
+    public Label() {
         this(null, false, null);
     }
 
-    public Label(Label parent, boolean branch, SuperBlock block){
+    public Label(Label parent, boolean branch, SuperBlock block) {
         _parent = parent;
         _branch = branch;
         _block = block;
 
-        if (_parent == null){
+        if (_parent == null) {
             _level = 0;
         } else {
             _level = _parent._level + 1;
@@ -59,8 +59,8 @@ class Label {
 
     }
 
-    public void addChild(Label child, boolean branch){
-        if (branch){
+    public void addChild(Label child, boolean branch) {
+        if (branch) {
             _trueChild=child;
         } else {
             _falseChild=child;
@@ -70,31 +70,31 @@ class Label {
     /**
      * Return whether this Label is the true or false case of the beginCondition
      */
-    public boolean branch(){
+    public boolean branch() {
         return _branch;
     }
 
-    public int level(){
+    public int level() {
         return _level;
     }
 
-    public Label getParent(){
+    public Label getParent() {
         return _parent;
     }
 
-    public boolean canCombine(Label l){
+    public boolean canCombine(Label l) {
         return (_parent == l._parent);
     }
 
-    public SuperBlock getSuperBlock(){
+    public SuperBlock getSuperBlock() {
         return _block;
     }
 
-    //      public ConditionExpr beginCondition(){
+    //      public ConditionExpr beginCondition() {
     //          return _beginCondition;
     //      }
 
-    public ConditionExpr endCondition(){
+    public ConditionExpr endCondition() {
         //return _endCondition;
         return null;
     }

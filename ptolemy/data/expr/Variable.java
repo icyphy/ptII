@@ -358,7 +358,7 @@ public class Variable extends Attribute
      *  @exception IllegalActionException If the expression cannot be parsed.
      */
     public Set getFreeIdentifiers() throws IllegalActionException {
-        if(_currentExpression == null) {
+        if (_currentExpression == null) {
             return Collections.EMPTY_SET;
         }
         try {

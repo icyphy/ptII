@@ -147,7 +147,7 @@ public class TransitionRefinementPort extends RefinementPort {
                 _mirrorDisable = true;
                 boolean success = false;
                 String portName = getName();
-                if (_hasSibling && isInput() && !isOutput()){
+                if (_hasSibling && isInput() && !isOutput()) {
                     // we are the input sibling, extract "real" port name
                     portName = getName().substring(0, getName().length() - 3);
                 }
@@ -389,11 +389,11 @@ public class TransitionRefinementPort extends RefinementPort {
                             sibling.link(relation);
                         }
                         _hasSibling = true;
-                    } catch(IllegalActionException ex) {
+                    } catch (IllegalActionException ex) {
                         throw new InternalErrorException(
                                 "TransitionRefinementPort.setOutput: Internal error: " +
                                 ex.getMessage());
-                    } catch(NameDuplicationException ex) {
+                    } catch (NameDuplicationException ex) {
                         throw new InternalErrorException(
                                 "TransitionRefinementPort.setOutput: Internal error: " +
                                 ex.getMessage());

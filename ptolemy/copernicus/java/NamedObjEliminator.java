@@ -228,7 +228,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                                             unit);
                                 }
                                 body.getUnits().remove(unit);
-                            } else if(expr.getMethod().getSubSignature().equals(
+                            } else if (expr.getMethod().getSubSignature().equals(
                                     PtolemyUtilities.handleModelErrorMethod.getSubSignature())) {
                                 // Replace handleModelError with a throw clause.
                                 body.getUnits().insertBefore(
@@ -274,7 +274,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                     System.out.println("Methods = " + theClass.getMethods());
                     throw ex;
                 }
-                if(method.getParameterCount() == 2) {
+                if (method.getParameterCount() == 2) {
                     // Change the constructor so that it only takes the container.
                     SootField containerField = theClass.getFieldByName(
                             ModelTransformer.getContainerFieldName());
@@ -323,7 +323,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                         Value value = identityStmt.getRightOp();
                         if (value instanceof ParameterRef) {
                             ParameterRef parameterRef = (ParameterRef)value;
-                            if(parameterRef.getIndex() == 0 && 
+                            if (parameterRef.getIndex() == 0 && 
                                     method.getParameterCount() == 1) {
                                 //       System.out.println("found = " + identityStmt);
                                 ValueBox box = identityStmt.getRightOpBox();
@@ -394,7 +394,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
 //                                         + unit + " in method " + method);
                                 SootMethod newConstructor = 
                                     declaringClass.getMethodByName("<init>");
-                                if(newConstructor.getParameterCount() == 1) {
+                                if (newConstructor.getParameterCount() == 1) {
                                     // Replace with just container arg constructor.
                                     List args = new LinkedList();
                                     args.add(expr.getArg(0));
@@ -494,10 +494,10 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
              i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
                         
-            for(Iterator interfaces = theClass.getInterfaces().snapshotIterator();
+            for (Iterator interfaces = theClass.getInterfaces().snapshotIterator();
                 interfaces.hasNext();) {
                 SootClass theInterface = (SootClass)interfaces.next();
-                if(theInterface.equals(PtolemyUtilities.inequalityTermClass)) {
+                if (theInterface.equals(PtolemyUtilities.inequalityTermClass)) {
                     theClass.getInterfaces().remove(theInterface);
                 }
             }

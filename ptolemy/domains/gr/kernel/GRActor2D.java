@@ -79,7 +79,7 @@ abstract public class GRActor2D extends GRActor {
      *  ViewScreen2D.
      */
     protected void _setViewScreen(GRActor actor) {
-        if(actor instanceof ViewScreen2D) {
+        if (actor instanceof ViewScreen2D) {
             _viewScreen = (ViewScreen2D)actor;
         } else {
             throw new RuntimeException("Actor " + getClass().getName() + 

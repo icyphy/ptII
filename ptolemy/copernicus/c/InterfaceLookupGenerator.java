@@ -83,7 +83,7 @@ public class InterfaceLookupGenerator {
         code.append(_indent(indentLevel++) + "{\n");
 
         Iterator interfaceMethods = interfaceMethodsMap.keySet().iterator();
-        while (interfaceMethods.hasNext()){
+        while (interfaceMethods.hasNext()) {
             SootMethod interfaceMethod = (SootMethod)interfaceMethods.next();
 
             // The corresponding actual method.
@@ -125,11 +125,11 @@ public class InterfaceLookupGenerator {
             .iterator();
 
 
-        while (interfaces.hasNext()){
+        while (interfaces.hasNext()) {
             SootClass thisInterface = (SootClass)interfaces.next();
             Iterator methods = thisInterface.getMethods().iterator();
 
-            while (methods.hasNext()){
+            while (methods.hasNext()) {
                 // The method in the interface.
                 SootMethod method = (SootMethod) methods.next();
 

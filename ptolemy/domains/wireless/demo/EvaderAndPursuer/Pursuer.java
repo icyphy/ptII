@@ -163,7 +163,7 @@ public class Pursuer extends TypedAtomicActor {
         }
         _myLocation = locationAttribute.getLocation();
         
-        if(trigger.hasToken(0)) {
+        if (trigger.hasToken(0)) {
             //System.out.println("receiving an trigger and firing the persure.");
             
             trigger.get(0);

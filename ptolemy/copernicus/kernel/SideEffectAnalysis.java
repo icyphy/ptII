@@ -73,23 +73,23 @@ public class SideEffectAnalysis {
         _reachables.update();
         
         // Process all the reachableMethods.
-        for(Iterator reachableMethods = _reachables.listener();
+        for (Iterator reachableMethods = _reachables.listener();
             reachableMethods.hasNext();) {
             _addMethod((SootMethod)reachableMethods.next());
         }
         
-        while(methods.hasNext()) {
+        while (methods.hasNext()) {
             SootMethod nextMethod = (SootMethod)methods.next();
             EffectFlow in = _getEffectFlow(nextMethod);
             EffectFlow out = _processMethod(nextMethod);
             // If the flow has changed, then add all the reachable
             // methods that invoke this method.
-            if(!in.equals(out)) {
+            if (!in.equals(out)) {
                 _setEffectFlow(nextMethod, out);
-                for(Iterator invokers = new Sources(callGraph.edgesInto(nextMethod));
+                for (Iterator invokers = new Sources(callGraph.edgesInto(nextMethod));
                     invokers.hasNext();) {
                     SootMethod invoker = (SootMethod)invokers.next();
-                    if(_reachables.contains(invoker)) {
+                    if (_reachables.contains(invoker)) {
                         _addMethod(invoker);
                     }
                 }
@@ -98,14 +98,14 @@ public class SideEffectAnalysis {
     }
 
     private void _addMethod(Collection set) {
-        for(Iterator i = set.iterator(); i.hasNext();) {
+        for (Iterator i = set.iterator(); i.hasNext();) {
             _addMethod((SootMethod)i.next());
         }
     }
 
     private void _addMethod(SootMethod method) {
         // System.out.println("adding method " + method);
-        if(_getEffectFlow(method) == null) {
+        if (_getEffectFlow(method) == null) {
             _setEffectFlow(method, new EffectFlow());
         }
         _unprocessedMethods.add(method);
@@ -120,7 +120,7 @@ public class SideEffectAnalysis {
     // then set the given flow to have unknown side effects.
     private void _mergeFlow(EffectFlow flow, SootMethod method) {
         EffectFlow targetFlow = _getEffectFlow(method);
-        if(targetFlow != null) {
+        if (targetFlow != null) {
             flow.mergeEffectFlow(targetFlow);
         } else {
             flow.setUnknownSideEffects();

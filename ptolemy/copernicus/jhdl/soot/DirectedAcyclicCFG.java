@@ -120,7 +120,7 @@ public class DirectedAcyclicCFG extends DirectedGraph {
 
         // Add one Node for each Block in the graph. The
         // weight of the Node is the corresponding Block.
-        for (Iterator blocks=blockList.iterator(); blocks.hasNext();){
+        for (Iterator blocks=blockList.iterator(); blocks.hasNext();) {
             Block block=(Block)blocks.next();
             addNodeWeight(block);
         }
@@ -128,14 +128,14 @@ public class DirectedAcyclicCFG extends DirectedGraph {
         // Copy edges. Iterate through each Node in the graph and
         // copy edges to its successors.
         //
-        for (Iterator blocks=blockList.iterator(); blocks.hasNext();){
+        for (Iterator blocks=blockList.iterator(); blocks.hasNext();) {
             Block block=(Block)blocks.next();
             Node nb = node(block);
 
             List succs = block.getSuccs();
             //Get successors to this block and add an edge to graph for
             //each one.
-            for (Iterator successors=succs.iterator(); successors.hasNext();){
+            for (Iterator successors=succs.iterator(); successors.hasNext();) {
                 Block succ=(Block)successors.next();
                 addEdge(nb,node(succ));
             }

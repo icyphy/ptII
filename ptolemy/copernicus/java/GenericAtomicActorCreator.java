@@ -248,7 +248,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
             SootMethod method = (SootMethod)methods.next();
             // Only do this in the constructor.  FIXME: should also
             // include things reachable from the constructor....
-            if(!method.getName().equals("<init>")) {
+            if (!method.getName().equals("<init>")) {
                 continue;
             }
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();

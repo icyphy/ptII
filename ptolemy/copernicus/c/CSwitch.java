@@ -331,7 +331,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         String constant = v.toString();
 
         if ((constant.compareTo("#Infinity") == 0)
-                ||(constant.compareTo("#NaN")) == 0){
+                ||(constant.compareTo("#NaN")) == 0) {
             constant = new String("_MAX_DOUBLE");
             //as close to +infinity as we can get
         }
@@ -599,7 +599,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                         "Warning: index out of range of long: "
                         + "truncated by CSWitch.caseLookupSwitchStmt()"));
             }
-            else if(dummyLookupValue < -maxLong) {
+            else if (dummyLookupValue < -maxLong) {
                 dummyLookupValue = -maxLong;
                 code.append(Utilities.comment(
                         "Warning: index out of range of long: "
@@ -1451,7 +1451,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         if ((expression instanceof VirtualInvokeExpr)
                 && (Scene.v().getSootClass("java.lang.Object")
                         .declaresMethod(method.getSubSignature()))
-            ){
+            ) {
             Type baseType = expression.getBase().getType();
             if (baseType instanceof RefType) {
                 declaringClass = ((RefType)baseType).getSootClass();

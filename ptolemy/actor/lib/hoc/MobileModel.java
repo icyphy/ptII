@@ -230,7 +230,7 @@ public class MobileModel extends TypedCompositeActor {
             StringToken str = null;
             try {
                 str = (StringToken) modelString.get(0);
-                //if(_refresh) {
+                //if (_refresh) {
                     _parser.reset();
                 //}
                 CompositeActor model = (CompositeActor) _parser.parse(str.stringValue());
@@ -426,9 +426,9 @@ public class MobileModel extends TypedCompositeActor {
         requestChange(removeRequest);
         super.wrapup();
         if (_director != null) {
-            try{
+            try {
                 _director.setContainer(null);
-            } catch(NameDuplicationException ex) {
+            } catch (NameDuplicationException ex) {
                 throw new IllegalActionException("get an exception" +
                         "when delete the director" + ex);
             }
@@ -484,7 +484,7 @@ public class MobileModel extends TypedCompositeActor {
                     _debug("create a instance of the specified director");
                 }
             }
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             throw new IllegalActionException("get an illegal action exception" +
                     "when create director" + ex);
         }

@@ -35,7 +35,7 @@ import java.util.HashMap;
 
 public class MuxNode implements GraphNode {
 
-    public MuxNode(GraphNode firstInput, GraphNode secondInput, Label label){
+    public MuxNode(GraphNode firstInput, GraphNode secondInput, Label label) {
         _conditionBlock=label.getSuperBlock();
         _trueInput = label.branch() ? firstInput : secondInput;
         _falseInput = label.branch() ? secondInput : firstInput;
@@ -44,13 +44,13 @@ public class MuxNode implements GraphNode {
     }
 
     //A place holder.  We probably need another class for these "specific" muxes
-    public MuxNode(Object trueInput, Object falseInput, Object condition, int dummy){
+    public MuxNode(Object trueInput, Object falseInput, Object condition, int dummy) {
         //_trueInput = trueInput;
         //_falseInput = falseInput;
         //_conditionBlock = condition;  //WRONG
     }
 
-    public Node createDataFlow(DirectedGraph graph, Object value){
+    public Node createDataFlow(DirectedGraph graph, Object value) {
         /*
           This mux is really only useful if the value is written to
           between here and the block that defines the condition.  For
@@ -58,7 +58,7 @@ public class MuxNode implements GraphNode {
         */
 
         Node returnNode = (Node)_valueToResult.get(value);
-        if (returnNode != null){
+        if (returnNode != null) {
             return returnNode;
         }
 
@@ -81,12 +81,12 @@ public class MuxNode implements GraphNode {
             return null;
         }
 
-        if (trueResult == null){
+        if (trueResult == null) {
             _valueToResult.put(value, falseResult);
             return falseResult;
         }
 
-        if (falseResult == null){
+        if (falseResult == null) {
             _valueToResult.put(value, trueResult);
             return trueResult;
         }
@@ -106,7 +106,7 @@ public class MuxNode implements GraphNode {
         return newMuxNode;
     }
 
-    public String toString(){
+    public String toString() {
         return "mux";
     }
 

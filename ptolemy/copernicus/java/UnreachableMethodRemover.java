@@ -104,7 +104,7 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
             // way of preserving the container, name constructor
             // instead of the no arg constructor for the toplevel.
             //            SootClass modelClass = ModelTransformer.getModelClass();
-            //           if(theClass.equals(modelClass)) {
+            //           if (theClass.equals(modelClass)) {
 //                 Set methodSet = _getMethodSet(theClass);
 //                 forcedReachableMethodSet.addAll(methodSet);
 //             }
@@ -112,7 +112,7 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
             // Assume that any method that is part of an interface that this
             // object implements, is reachable.
             //  System.out.println("forcing interfaces of " + theClass);
-            if(!theClass.isInterface()) {
+            if (!theClass.isInterface()) {
                 for (Iterator interfaces = theClass.getInterfaces().iterator();
                      interfaces.hasNext();) {
                     SootClass theInterface = (SootClass)interfaces.next();
@@ -177,7 +177,7 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
             }
         }
         
-        for(Iterator superInterfaces = theInterface.getInterfaces().iterator();
+        for (Iterator superInterfaces = theInterface.getInterfaces().iterator();
             superInterfaces.hasNext();) {
             _addMethodsFrom(forcedReachableMethodSet,
                     (SootClass)superInterfaces.next(), theClass); 

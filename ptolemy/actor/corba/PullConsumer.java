@@ -194,7 +194,7 @@ public class PullConsumer extends Source {
                     trigger.get(i);
                 }
             }
-            if(_blocking) {
+            if (_blocking) {
                 if (_lastReadToken == null) {
                     try {
                         synchronized (_fire) {
@@ -214,7 +214,7 @@ public class PullConsumer extends Source {
                                 e.getMessage());
                     }
                 }
-                if(_lastReadToken != null){
+                if (_lastReadToken != null) {
                     output.send(0, _lastReadToken);
                     _defaultToken = _lastReadToken;
                     _lastReadToken = null;
@@ -248,7 +248,7 @@ public class PullConsumer extends Source {
      *
      */
     public void wrapup() throws IllegalActionException {
-        if(_dataReadingThread != null) {
+        if (_dataReadingThread != null) {
             _dataReadingThread.interrupt();
             _dataReadingThread = null;
         } else {
@@ -284,7 +284,7 @@ public class PullConsumer extends Source {
             _remoteSupplier =
                 ptolemy.actor.corba.CorbaIOUtil.pullSupplierHelper.narrow(
                         ncRef.resolve(path));
-            if(_remoteSupplier == null) {
+            if (_remoteSupplier == null) {
                 throw new IllegalActionException(this,
                         " can not find the remote supplier.");
             }
@@ -342,13 +342,13 @@ public class PullConsumer extends Source {
          */
         public void run() {
             while (true) {
-                try{
-                    if(!_requestData) {
+                try {
+                    if (!_requestData) {
                         synchronized (_lock) {
                             _lock.wait();
                         }
                     }
-                    if(_requestData) {
+                    if (_requestData) {
                         org.omg.CORBA.Any data = _remoteSupplier.pull();
                         if (data != null) {
                             Variable variable = new Variable();
@@ -366,7 +366,7 @@ public class PullConsumer extends Source {
 
                         }
                     }
-                } catch (CorbaIllegalActionException e){
+                } catch (CorbaIllegalActionException e) {
                     //fixme what should it throw here.
                 } catch (InterruptedException ex) {
 

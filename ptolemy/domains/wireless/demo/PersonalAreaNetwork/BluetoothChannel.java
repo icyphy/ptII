@@ -150,7 +150,7 @@ public class BluetoothChannel extends LimitedRangeChannel {
         if (result) {
         	double dist = _distanceBetween(source, destination);
         	double incrRange = (dist/range)*100;
-        	if (incrRange < 90){
+        	if (incrRange < 90) {
         		 increaseRange = true;
         	}
         }

@@ -968,7 +968,7 @@ public abstract class Top extends JFrame {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
             try {
-                if (actionCommand.equals("About")){
+                if (actionCommand.equals("About")) {
                     _about();
                 } else if (actionCommand.equals("Help")) {
                     _help();

@@ -125,7 +125,7 @@ abstract public class CryptographyActor extends TypedAtomicActor {
                 algorithm = new StringParameter(this, "algorithm");
                 Set algorithms = Security.getAlgorithms("Cipher");
                 Iterator algorithmsIterator = algorithms.iterator();
-                for(int i = 0; algorithmsIterator.hasNext(); i++) {
+                for (int i = 0; algorithmsIterator.hasNext(); i++) {
                     String algorithmName = (String)algorithmsIterator.next();
                     if (i == 0) {
                         algorithm.setExpression(algorithmName);

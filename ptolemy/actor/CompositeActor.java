@@ -237,7 +237,7 @@ public class CompositeActor extends CompositeEntity
                     // check for director above.
                     try {
                         castPort.createReceivers();
-                    } catch(IllegalActionException ex) {
+                    } catch (IllegalActionException ex) {
                         // Should never happen.
                         throw new InternalErrorException(
                                 this, ex, "Cannot create receivers");
@@ -246,7 +246,7 @@ public class CompositeActor extends CompositeEntity
                 if (castPort.isInput() && getExecutiveDirector() != null) {
                     try {
                         castPort.createReceivers();
-                    } catch(IllegalActionException ex) {
+                    } catch (IllegalActionException ex) {
                         // Should never happen.
                         throw new InternalErrorException(
                                 this, ex, "Cannot create receivers");
@@ -293,20 +293,20 @@ public class CompositeActor extends CompositeEntity
             // set from ParameterPorts.
 
             // Use the local director to first read from port parameters.
-            for(Iterator inputPorts = inputPortList().iterator();
+            for (Iterator inputPorts = inputPortList().iterator();
                 inputPorts.hasNext() && !_stopRequested;) {
                 IOPort p = (IOPort)inputPorts.next();
-                if(p instanceof ParameterPort) {
+                if (p instanceof ParameterPort) {
                     ((ParameterPort)p).getParameter().update();
                     //Used to be: _director.transferInputs(p);
                 }
             }
             // Use the local director to transfer inputs from
             // everything that is not a port parameter.
-            for(Iterator inputPorts = inputPortList().iterator();
+            for (Iterator inputPorts = inputPortList().iterator();
                 inputPorts.hasNext() && !_stopRequested;) {
                 IOPort p = (IOPort)inputPorts.next();
-                if(!(p instanceof ParameterPort)) {
+                if (!(p instanceof ParameterPort)) {
                     _director.transferInputs(p);
                 }
             }
@@ -425,18 +425,18 @@ public class CompositeActor extends CompositeEntity
             }
 
             // Clear all of the contained actor's input ports.
-            for(Iterator actors = entityList(Actor.class).iterator();
+            for (Iterator actors = entityList(Actor.class).iterator();
                 actors.hasNext();) {
                 Entity actor = (Entity)actors.next();
                 Iterator ports = actor.portList().iterator();
                 while (ports.hasNext()) {
                     IOPort port = (IOPort)ports.next();
-                    if(port.isInput()) {
+                    if (port.isInput()) {
                         // Clear all receivers.
                         Receiver[][] receivers = port.getReceivers();
-                        for(int i = 0; i < receivers.length; i++) {
+                        for (int i = 0; i < receivers.length; i++) {
                             Receiver[] receivers2 = receivers[i];
-                            for(int j = 0; j < receivers2.length; j++) {
+                            for (int j = 0; j < receivers2.length; j++) {
                                 receivers2[j].clear();
                             }
                         } 
@@ -448,12 +448,12 @@ public class CompositeActor extends CompositeEntity
             Iterator ports = portList().iterator();
             while (ports.hasNext()) {
                 IOPort port = (IOPort)ports.next();
-                if(port.isOutput()) {
+                if (port.isOutput()) {
                     // Clear all insideReceivers.
                     Receiver[][] receivers = port.getInsideReceivers();
-                    for(int i = 0; i < receivers.length; i++) {
+                    for (int i = 0; i < receivers.length; i++) {
                         Receiver[] receivers2 = receivers[i];
-                        for(int j = 0; j < receivers2.length; j++) {
+                        for (int j = 0; j < receivers2.length; j++) {
                             receivers2[j].clear();
                         }
                     } 

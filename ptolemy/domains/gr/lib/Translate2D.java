@@ -147,7 +147,7 @@ public class Translate2D extends GRTransform2D {
                 double in = ((DoubleToken) xTranslate.get(0)).doubleValue();
                 applyTransform = true;
                 xOffset = in;
-                if(!isAccumulating) {
+                if (!isAccumulating) {
                     // Subtract the current xOrigin.
                     xOffset = xOffset-origin.getX();
                 }
@@ -159,7 +159,7 @@ public class Translate2D extends GRTransform2D {
                 double in = ((DoubleToken) yTranslate.get(0)).doubleValue();
                 applyTransform = true;
                 yOffset = in;
-                if(!isAccumulating) {
+                if (!isAccumulating) {
                     // Subtract the current yOrigin.
                     yOffset = yOffset-origin.getY();
                 }

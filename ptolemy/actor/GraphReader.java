@@ -91,7 +91,7 @@ public class GraphReader {
         Iterator actors = compositeActor.deepEntityList().iterator();
         while (actors.hasNext()) {
             Object entity = actors.next();
-            if(entity instanceof AtomicActor || 
+            if (entity instanceof AtomicActor || 
                     entity instanceof CompositeActor) {
                 Actor actor = (Actor)entity;
                 Node newNode = graph.addNodeWeight(_computeNodeWeight(actor));

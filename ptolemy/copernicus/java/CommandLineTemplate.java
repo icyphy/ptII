@@ -91,9 +91,9 @@ public class CommandLineTemplate {
      */
     public void processArgs(String args[]) throws Exception {
         if (args != null) {
-            for(int i = 0; i < args.length; i++) {
+            for (int i = 0; i < args.length; i++) {
                 String arg = args[i];
-                if(arg.startsWith("-iterationLimit=")) {
+                if (arg.startsWith("-iterationLimit=")) {
                     String countString = arg.substring(arg.indexOf("=") + 1);
                     _iterationLimit = Integer.parseInt(countString);
                 }

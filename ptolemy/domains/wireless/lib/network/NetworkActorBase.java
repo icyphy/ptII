@@ -151,7 +151,7 @@ public class NetworkActorBase extends TypedAtomicActor {
 	// iterate through the queue to find the timer to be canceled
         while (timers.hasNext()) {
             Timer timer = (Timer) timers.next();
-	        if (timer==timerToCancel){
+	        if (timer==timerToCancel) {
 	            _timersSet.remove(timer);
                 break;
             }

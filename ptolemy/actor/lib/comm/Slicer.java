@@ -122,7 +122,7 @@ public class Slicer extends Transformer {
         int index = 0;
         double distance = _computeEuclideanDistance
             (_table[0], inputToken.complexValue());
-        for(int i = 1; i < _size; i++) {
+        for (int i = 1; i < _size; i++) {
             double tempDistance = _computeEuclideanDistance
                 (_table[i], inputToken.complexValue());
             if (tempDistance < distance) {

@@ -188,7 +188,7 @@ public class IterateOverArray extends TypedCompositeActor {
      */
     public List typeConstraintList() throws IllegalActionException {
         Iterator ports = portList().iterator();
-        while(ports.hasNext()) {
+        while (ports.hasNext()) {
             TypedIOPort port = (TypedIOPort)ports.next();
             ArrayType arrayType = new ArrayType(BaseType.UNKNOWN);
             ((TypedIOPort)port).setTypeEquals(arrayType);
@@ -266,7 +266,7 @@ public class IterateOverArray extends TypedCompositeActor {
                     // Remove all inside relations. This will have the
                     // side effect of removing connections on the inside.
                     Iterator relations = relationList().iterator();
-                    while(relations.hasNext()) {
+                    while (relations.hasNext()) {
                         command.append("<deleteRelation name=\""
                                 + ((NamedObj)relations.next()).getName()
                                 + "\"/>\n");
@@ -485,7 +485,7 @@ public class IterateOverArray extends TypedCompositeActor {
                     // If the source port belongs to me, then we want to
                     // compare its array element type to the type of the
                     // destination.
-                    if(sourcePort.getContainer() == this
+                    if (sourcePort.getContainer() == this
                             && destinationPort.getContainer() != this) {
 
                         // The source port belongs to me, but not the
@@ -495,7 +495,7 @@ public class IterateOverArray extends TypedCompositeActor {
                             ((ArrayType)srcDeclared).getElementType();
                         compare = TypeLattice.compare(srcElementType,
                                 destinationDeclared);
-                    } else if(sourcePort.getContainer() != this
+                    } else if (sourcePort.getContainer() != this
                             && destinationPort.getContainer() == this) {
 
                         // The destination port belongs to me, but not
@@ -583,7 +583,7 @@ public class IterateOverArray extends TypedCompositeActor {
             if (srcUndeclared || destUndeclared) {
                 // At least one of the source/destination ports does
                 // not have declared type, form type constraint.
-                if(sourcePort.getContainer() == this &&
+                if (sourcePort.getContainer() == this &&
                         destinationPort.getContainer() == this) {
                     // Both ports belong to this, so their type must be equal.
                     // Represent this with two inequalities.
@@ -709,7 +709,7 @@ public class IterateOverArray extends TypedCompositeActor {
                     Iterator inPorts = actor.inputPortList().iterator();
                     while (inPorts.hasNext()) {
                         IOPort port = (IOPort)inPorts.next();
-                        for(int i = 0; i < port.getWidth(); i++) {
+                        for (int i = 0; i < port.getWidth(); i++) {
                             if (port.hasToken(i)) {
                                 outOfData = false;
                                 break;
@@ -808,7 +808,7 @@ public class IterateOverArray extends TypedCompositeActor {
                                         + port.getName());
                             }
                             ArrayToken arrayToken = (ArrayToken)t;
-                            for(int j = 0; j < arrayToken.length(); j++) {
+                            for (int j = 0; j < arrayToken.length(); j++) {
                                 port.sendInside(i, arrayToken.getElement(j));
                             }
                             result = true;
@@ -836,11 +836,11 @@ public class IterateOverArray extends TypedCompositeActor {
             for (int i = 0; i < port.getWidthInside(); i++) {
                 try {
                     ArrayList list = new ArrayList();
-                    while(port.isKnownInside(i) && port.hasTokenInside(i)) {
+                    while (port.isKnownInside(i) && port.hasTokenInside(i)) {
                         Token t = port.getInside(i);
                         list.add(t);
                     }
-                    if(list.size() != 0) {
+                    if (list.size() != 0) {
                         Token[] tokens =
                             (Token[])list.toArray(new Token[list.size()]);
                         if (_debugging) {

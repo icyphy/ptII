@@ -92,7 +92,7 @@ public abstract class KernelMain {
     public static void addTransform(Pack pack, String name,
             Transformer transformer, String defaultOptions) {
         Transform t = new Transform(name, transformer);
-        if(transformer instanceof HasPhaseOptions) {
+        if (transformer instanceof HasPhaseOptions) {
             HasPhaseOptions options = (HasPhaseOptions) transformer;
             // Note: First appearance of an option has precendence
             t.setDefaultOptions(defaultOptions + " " + 

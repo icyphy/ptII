@@ -203,7 +203,7 @@ public class ComputeHistogram extends TypedAtomicActor {
         }
         // Send the output array.
         Token[] values = new Token[_bins.length];
-        for(int i = 0; i < _bins.length; i++) {
+        for (int i = 0; i < _bins.length; i++) {
             values[i] = new IntToken(_bins[i]);
         }
         output.send(0, new ArrayToken(values));
@@ -236,7 +236,7 @@ public class ComputeHistogram extends TypedAtomicActor {
     private void _addPoint(double value) {
         // Calculate the bin number.
         int bin = (int)(Math.round((value - (_minimumValue + _binWidth * 0.5)) / _binWidth));
-        if(bin >= 0 && bin < _numberOfBins) {
+        if (bin >= 0 && bin < _numberOfBins) {
             _bins[bin]++;
         }
     }

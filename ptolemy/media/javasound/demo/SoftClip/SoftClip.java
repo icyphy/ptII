@@ -84,7 +84,7 @@ public class SoftClip {
 
 
         // Initialize and begin real-time capture and playback.
-        try{
+        try {
             //soundCapture.startCapture();
 
             // Set up LiveSound parameters for capture/playback
@@ -114,7 +114,7 @@ public class SoftClip {
         System.out.println("  Actual audio playback buffer size: " +
                 LiveSound.getBufferSizePlayback() + " samples.");
 
-        try{
+        try {
             // Loop forever.
             System.out.println("starting");
             int count = 0;

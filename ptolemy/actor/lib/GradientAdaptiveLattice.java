@@ -146,7 +146,7 @@ public class GradientAdaptiveLattice extends Lattice {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        for(int i = 0; i <= _order; i ++) {
+        for (int i = 0; i <= _order; i ++) {
             _estimatedErrorPowerCache[i] = 0;
         }
     }

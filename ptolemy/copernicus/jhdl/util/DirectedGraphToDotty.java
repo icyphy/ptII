@@ -65,7 +65,7 @@ public class DirectedGraphToDotty extends GraphToDotty {
             hm.put(source, name);
         }
         sb.append("\t// Edges\r\n");
-        for (Iterator nodes=g.iterator(); nodes.hasNext();){
+        for (Iterator nodes=g.iterator(); nodes.hasNext();) {
             Object source = nodes.next();
             for (Iterator succs = g.getSuccsOf(source).iterator(); succs.hasNext();) {
                 Object dest= succs.next();

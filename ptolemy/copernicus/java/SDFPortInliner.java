@@ -1116,7 +1116,7 @@ public class SDFPortInliner implements PortInliner {
                             arrayType,
                             Modifier.PUBLIC);
                     _modelClass.addField(field);
-                    if(_debug) {
+                    if (_debug) {
                         System.out.println("creating field = " + field +
                                 " of size " + bufferSize);
                     }
@@ -1124,12 +1124,12 @@ public class SDFPortInliner implements PortInliner {
                     field.addTag(new TypeTag(type));
 
                     // Add initialization code to each constructor
-                    for(Iterator methods = _modelClass.getMethods().iterator();
+                    for (Iterator methods = _modelClass.getMethods().iterator();
                         methods.hasNext();) {
                         SootMethod initMethod = (SootMethod) methods.next();
                         
                         // Only look at constructors.
-                        if(!initMethod.getName().equals("<init>")) {
+                        if (!initMethod.getName().equals("<init>")) {
                             continue;
                         }
                         JimpleBody initBody = (JimpleBody)initMethod.getActiveBody();
@@ -1359,7 +1359,7 @@ public class SDFPortInliner implements PortInliner {
     // communication buffers for each port in the given entity.
     // This includes both the communication buffers and index arrays.
     private void _createInsideBufferReferences() {
-        if(_debug) {
+        if (_debug) {
             System.out.println("creating inside buffer references for " 
                     + _model.getFullName());
         }
@@ -1372,7 +1372,7 @@ public class SDFPortInliner implements PortInliner {
             _portToTypeNameToInsideBufferField.put(port,
                     typeNameToInsideBufferField);
 
-            if(_debug) {
+            if (_debug) {
                 System.out.println("port = " + port.getFullName() +
                         " type = " + port.getType());
             }

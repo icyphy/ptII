@@ -177,7 +177,7 @@ public class MovieWriter extends Sink
             } catch (MalformedURLException ex) {
                 throw new IllegalActionException(this, ex, "URL malformed");
             }
-        } else if (attribute == confirmOverwrite){
+        } else if (attribute == confirmOverwrite) {
             _confirmOverwrite =
                 ((BooleanToken)confirmOverwrite.getToken()).booleanValue();
         } else if (attribute == fileType) {
@@ -247,7 +247,7 @@ public class MovieWriter extends Sink
      *  @exception IllegalActionException If a contained method throws it.
      */
     public void initialize() throws IllegalActionException {
-        if(_debugging) {
+        if (_debugging) {
             _debug("I am in initialize");
         }
         _bufferArrayList = new ArrayList();
@@ -264,7 +264,7 @@ public class MovieWriter extends Sink
         _jmfImageToken = (JMFImageToken) input.get(0);
         Buffer buffer;
         buffer = _jmfImageToken.getValue();
-        if(!_bufferArrayList.add(buffer)) {
+        if (!_bufferArrayList.add(buffer)) {
             throw new IllegalActionException("Could not add buffer "
                     + "to the array list");
         }
@@ -277,8 +277,8 @@ public class MovieWriter extends Sink
      */
     public void wrapup() throws IllegalActionException {
         _bufferIterator = _bufferArrayList.iterator();
-        if(_file.exists()) {
-            if(_debugging) {
+        if (_file.exists()) {
+            if (_debugging) {
                 _debug("file exists!");
             }
             if (_confirmOverwrite) {
@@ -355,7 +355,7 @@ public class MovieWriter extends Sink
                     + "output DataSource");
         }
 
-        if(_debugging) {
+        if (_debugging) {
             _debug(_fileRoot);
         }
         DataSink dataSink;
@@ -378,7 +378,7 @@ public class MovieWriter extends Sink
                     "Could not start processor and datasink");
         }
 
-        if(!_waitForFileDone()) {
+        if (!_waitForFileDone()) {
             throw new IllegalActionException("Could not write the file");
         }
 
@@ -514,17 +514,17 @@ public class MovieWriter extends Sink
         }
 
         public void read(Buffer buffer) {
-            if(_bufferIterator.hasNext()) {
+            if (_bufferIterator.hasNext()) {
                 //buffer = (Buffer)_bufferIterator.next();
                 //buffer.copy((Buffer)_bufferIterator.next(), false);
-                if(_debugging) {
+                if (_debugging) {
                     _debug("I about to write 1 frame of data");
                 }
                 buffer.setData(((Buffer)_bufferIterator.next()).getData());
                 _bufferIterator.remove();
             }
             else {
-                if(_debugging) {
+                if (_debugging) {
                     _debug("I am about to write the eom!");
                 }
                 buffer.setEOM(true);

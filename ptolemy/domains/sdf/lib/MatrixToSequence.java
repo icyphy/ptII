@@ -142,7 +142,7 @@ public class MatrixToSequence extends SDFTransformer {
                 throw new IllegalActionException(this,
                         "Invalid number of rows: " + rowsValue);
             }   
-        } else if(attribute == columns) {
+        } else if (attribute == columns) {
             int columnsValue = ((IntToken)columns.getToken()).intValue();
             if (columnsValue <= 0) {
                 throw new IllegalActionException(this,

@@ -135,7 +135,7 @@ public class FreeVariableModelAnalysis {
             Variable variable = (Variable)variables.next();
             String expression = variable.getExpression();
             ASTPtRootNode root;     
-            if(variable.isStringMode()) {
+            if (variable.isStringMode()) {
                 root = parser.generateStringParseTree(expression);
             } else {
                 root = parser.generateParseTree(expression);

@@ -547,7 +547,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                     // The breakpoints in the past or at now.
                     table.removeFirst();
                 } else if (Math.abs(breakpoint - now) < getTimeResolution() &&
-                        breakpoint < getIterationEndTime()){
+                        breakpoint < getIterationEndTime()) {
                     // break point now! stopped by event
                     return true;
                 } else {

@@ -200,7 +200,7 @@ public class DECQEventQueue implements DEEventQueue {
         public final long getVirtualBinNumber(Object event) {
             long value = (long)((((DEEvent) event).timeStamp()
                     - _zeroReference.timeStamp())/_binWidth.timeStamp());
-            if(value != Long.MAX_VALUE) {
+            if (value != Long.MAX_VALUE) {
                 return value;
             } else {
                 return Long.MAX_VALUE-1;

@@ -146,7 +146,7 @@ public class VersionAttribute
             tuples = _tupleList.iterator();
         }
         while (versionTuples.hasNext()
-                || (tuples != null && tuples.hasNext())){
+                || (tuples != null && tuples.hasNext())) {
             String versionTuple, tuple;
 
             // FIXME: deal with * and + in the JNLP Version String spec.

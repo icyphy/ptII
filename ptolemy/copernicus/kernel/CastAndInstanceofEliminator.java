@@ -76,7 +76,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
         JimpleBody body = (JimpleBody)b;
         
         boolean debug = PhaseOptions.getBoolean(options, "debug");
-        if(debug) {
+        if (debug) {
             System.out.println("CastAndInstanceofEliminator.internalTransform("
                     + b.getMethod() + phaseName + ")");
         }
@@ -119,9 +119,9 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
 
                     Hierarchy hierarchy = Scene.v().getActiveHierarchy();
 
-                  //   if(debug) System.out.println("checking cast in " + unit);
-//                     if(debug) System.out.println("op = " + op);
-//                     if(debug) System.out.println("opType = " + opType);
+                  //   if (debug) System.out.println("checking cast in " + unit);
+//                     if (debug) System.out.println("op = " + op);
+//                     if (debug) System.out.println("opType = " + opType);
                     replaceCast(box, hierarchy,
                             castType, op, opType, debug);
 
@@ -142,9 +142,9 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
 
                     Hierarchy hierarchy = Scene.v().getActiveHierarchy();
 
-                    if(debug) System.out.println("checking instanceof in " + unit);
-                    if(debug) System.out.println("op = " + op);
-                    if(debug) System.out.println("opType = " + opType);
+                    if (debug) System.out.println("checking instanceof in " + unit);
+                    if (debug) System.out.println("op = " + op);
+                    if (debug) System.out.println("opType = " + opType);
                     replaceInstanceofCheck(box, hierarchy,
                             checkType, opType, debug);
                 }
@@ -221,15 +221,15 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
                     // interface.  This will mean we
                     // replace with false.
                     boolean foundOne = false;
-                    for(Iterator implementors = implementorList.iterator();
+                    for (Iterator implementors = implementorList.iterator();
                         implementors.hasNext() && !foundOne;) {
                         SootClass implementor = (SootClass)implementors.next();
-                        if(hierarchy.getSuperclassesOf(implementor).contains(
+                        if (hierarchy.getSuperclassesOf(implementor).contains(
                                    opClass)) {
                             foundOne = true;
                         }
                     }
-                    if(!foundOne) {
+                    if (!foundOne) {
                         if (debug) System.out.println("Replacing " +
                                 box.getValue() + " with false.");
                         box.setValue(IntConstant.v(0));

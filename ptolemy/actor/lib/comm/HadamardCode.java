@@ -136,7 +136,7 @@ public class HadamardCode extends Source {
             // Set a flag indicating that the private variable _row
             // is invalid, but don't recompute the value until all
             // parameters have been set.
-            if (indexValue != _previousIndex){
+            if (indexValue != _previousIndex) {
                 _rowValueInvalid = true;
             }
         } else if (attribute == log2Length) {

@@ -783,7 +783,7 @@ public class DTDirector extends SDFDirector {
                 Actor actor = (Actor) allActors.next();
                 // Get all input ports
                 Iterator allInputs = actor.inputPortList().iterator();
-                while (allInputs.hasNext()){
+                while (allInputs.hasNext()) {
                     IOPort inputPort = (IOPort)allInputs.next();
                     Receiver[][] receivers = inputPort.getReceivers();
                     if (receivers != null) {

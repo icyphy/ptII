@@ -335,7 +335,7 @@ public class ViterbiDecoder extends Transformer {
         //    ((BooleanToken)trellisDecoding.getToken()).booleanValue();
         int constellationOrder;
         int inputRate;
-        if (_mode == _TRELLIS){
+        if (_mode == _TRELLIS) {
             constellationOrder = _maskNumber;
             inputRate = 1;
         }else {
@@ -343,7 +343,7 @@ public class ViterbiDecoder extends Transformer {
             inputRate = _maskNumber;
         }
 
-        if (_mode == _TRELLIS){
+        if (_mode == _TRELLIS) {
             _constellation = new Complex[1 << constellationOrder];
             ArrayToken ampToken = ((ArrayToken)constellation.getToken());
             if (ampToken.length() != 1 << constellationOrder) {
@@ -582,7 +582,7 @@ public class ViterbiDecoder extends Transformer {
             // Find the parity of the "masked".
             parity[i] = 0;
             // Calculate the parity of the masked word.
-            while (masked > 0){
+            while (masked > 0) {
                 parity[i] = parity[i] ^ (masked & 1);
                 masked = masked >> 1;
             }

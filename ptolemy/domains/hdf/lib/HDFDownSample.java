@@ -175,7 +175,7 @@ public class HDFDownSample extends Transformer {
                 //((SDFScheduler)scheduler).getFiringCount(this);
               //  ((HDFDirector)director).getDirectorFiringsPerIteration();
               
-            if (_requestChange){
+            if (_requestChange) {
                 _requestChange = false;
                 ChangeRequest request =
                     new ChangeRequest(this, "change sampling rate") {

@@ -273,7 +273,7 @@ public class SDFUtilities {
             try {
                 String altName = "_" + name;
                 rateParameter = (Variable)port.getAttribute(altName);
-                if(rateParameter == null) {
+                if (rateParameter == null) {
                     rateParameter = new Parameter(port, altName);
                     rateParameter.setVisibility(Settable.NOT_EDITABLE);
                     rateParameter.setPersistent(false);
@@ -301,7 +301,7 @@ public class SDFUtilities {
             try {
                 String altName = "_" + name;
                 rateParameter = (Variable)port.getAttribute(altName);
-                if(rateParameter == null) {
+                if (rateParameter == null) {
                     rateParameter = new Parameter(port, altName);
                     rateParameter.setVisibility(Settable.NOT_EDITABLE);
                     rateParameter.setPersistent(false);

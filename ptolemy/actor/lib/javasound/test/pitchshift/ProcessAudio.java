@@ -145,7 +145,7 @@ public class ProcessAudio implements Runnable {
                 putSamplesSize);
 
         // Initialize and begin real-time capture and playback.
-        try{
+        try {
             soundCapture.startCapture();
             soundPlayback.startPlayback();
         } catch (Exception ex) {

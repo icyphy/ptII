@@ -360,7 +360,7 @@ public class NCCodeGenerator extends Director {
      *  requires it to have an input driver.
      */
     private static boolean _needsInputDriver(Actor actor) {
-        if( actor.inputPortList().size() <= 0) {
+        if (actor.inputPortList().size() <= 0) {
             return false;
         } else {
             return true;

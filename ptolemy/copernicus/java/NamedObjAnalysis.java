@@ -63,37 +63,37 @@ public class NamedObjAnalysis {
         }
         JimpleBody body = (JimpleBody)method.getActiveBody();
         _localToObject = new HashMap();
-        if(method.isStatic()) {
+        if (method.isStatic()) {
   //           System.out.println("Ignoring this binding for static method: "
 //                     + method);
         } else {
             _set(body.getThisLocal(), thisBinding);
         }
         _notDone = true;
-        while(_notDone) {
+        while (_notDone) {
             _notDone = false;
-            for(Iterator units = body.getUnits().iterator();
+            for (Iterator units = body.getUnits().iterator();
                 units.hasNext();) {
                 Unit unit = (Unit)units.next();
-                if(unit instanceof DefinitionStmt) {
+                if (unit instanceof DefinitionStmt) {
                     DefinitionStmt stmt = (DefinitionStmt)unit;
                     Value rightValue = (Value)stmt.getRightOp();
                   
-                    if(stmt.getLeftOp() instanceof Local) {
+                    if (stmt.getLeftOp() instanceof Local) {
                         Local local = (Local)stmt.getLeftOp();
                         if (rightValue instanceof Local) {
                             _update(local, (Local)rightValue);
                         } else if (rightValue instanceof CastExpr) {
                             Value value = ((CastExpr)rightValue).getOp();
-                            if(value instanceof Local) {
+                            if (value instanceof Local) {
                                 _update(local, (Local)value);
                             }
                         } else if (rightValue instanceof FieldRef) {
                             SootField field = ((FieldRef)rightValue).getField();
                             _set(local, _getFieldObject(field));
                         }
-                    } else if(stmt.getLeftOp() instanceof FieldRef) {
-                        if(rightValue instanceof Local) {
+                    } else if (stmt.getLeftOp() instanceof FieldRef) {
+                        if (rightValue instanceof Local) {
                             SootField field = 
                                 ((FieldRef)stmt.getLeftOp()).getField();
                             _set((Local)rightValue, _getFieldObject(field));
@@ -109,7 +109,7 @@ public class NamedObjAnalysis {
     
     public NamedObj getObject(Local local) {
         Object current = _localToObject.get(local);
-        if(current != null && 
+        if (current != null && 
                 current.equals(_errorObject)) {
             throw new RuntimeException( 
                     "Could not determine the static value of "
@@ -125,7 +125,7 @@ public class NamedObjAnalysis {
      *  return a unique namedObj.
      */
     private NamedObj _getFieldObject(SootField field) {
-        if(field.getType() instanceof RefType &&
+        if (field.getType() instanceof RefType &&
                 SootUtilities.derivesFrom(
                         ((RefType)field.getType()).getSootClass(), 
                                     PtolemyUtilities.namedObjClass)) {
@@ -150,11 +150,11 @@ public class NamedObjAnalysis {
 //                 " to value of " + object);
         Object current = _localToObject.get(local);
 //         System.out.println("current = " + current);
-         if(object == null) {
+         if (object == null) {
             // No new information.
             return;
-        } else if(current != null) {
-            if(current.equals(_errorObject) ||
+        } else if (current != null) {
+            if (current.equals(_errorObject) ||
                     current.equals(object)) {
                 return;
             } else {

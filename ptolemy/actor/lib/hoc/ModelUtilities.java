@@ -126,7 +126,7 @@ public class ModelUtilities {
             (CompositeActor model, RecordToken args, 
             String[] resultLabels) throws IllegalActionException {
         Manager manager = model.getManager();
-        if(manager == null) {
+        if (manager == null) {
             //System.out.println("create manager for the model");
             manager = new Manager(model.workspace(), "Manager");
             model.setManager(manager);
@@ -161,7 +161,7 @@ public class ModelUtilities {
             String label = (String)labels[i];
             Attribute attribute = model.getAttribute(label);
             // Use the token directly rather than a string if possible.
-            if(attribute != null) {
+            if (attribute != null) {
                 Token token = args.get(label);
                 if (attribute instanceof Variable) {
                     ((Variable) attribute).setToken(token);

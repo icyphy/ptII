@@ -193,7 +193,7 @@ public class HammingCoder extends Transformer {
                 if (i == 1 << flag) {
                     flag ++;
                 } else {
-                    for (int j = 0; j < _order; j++){
+                    for (int j = 0; j < _order; j++) {
                         _parityMatrix[index][j]
                             = i >> (_order - j - 1) & 1;
                     }

@@ -566,7 +566,7 @@ public class LiveSound {
         int written = _sourceLine.write(
                 _playbackData, 0, _playbackData.length);
 
-        if(written != _playbackData.length) {
+        if (written != _playbackData.length) {
             System.out.println("dropped!");
 
         }

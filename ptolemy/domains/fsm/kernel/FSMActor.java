@@ -339,7 +339,7 @@ public class FSMActor extends CompositeEntity
      */
     public FunctionDependency getFunctionDependencies() {
         if (_functionDependency == null) {
-            try{
+            try {
                 TypedActor[] refinements = _currentState.getRefinement();
                 if (refinements == null || refinements.length < 1) {
                     //FIXME: what to do if no refinement?
@@ -578,7 +578,7 @@ public class FSMActor extends CompositeEntity
             workspace().getWriteAccess();
             //Director director = getDirector();
             Transition tr = new Transition(this, name);
-            if (_HDFFSMActor){
+            if (_HDFFSMActor) {
                 (tr.preemptive).setVisibility(Settable.NONE);
             }
             return tr;
@@ -652,13 +652,13 @@ public class FSMActor extends CompositeEntity
         
         // Populate a map from identifier to the input port represented.
         _identifierToPort.clear();
-        for(Iterator inputPorts = inputPortList().iterator();
+        for (Iterator inputPorts = inputPortList().iterator();
             inputPorts.hasNext();) {
             IOPort inPort = (IOPort)inputPorts.next();
             _setIdentifierToPort(inPort.getName(), inPort);
             _setIdentifierToPort(inPort.getName() + "_isPresent", inPort);
             _setIdentifierToPort(inPort.getName() + "Array", inPort);
-            for(int i = 0; i < inPort.getWidth(); i++) {
+            for (int i = 0; i < inPort.getWidth(); i++) {
                 _setIdentifierToPort(inPort.getName() + "_" + i, inPort);
                 _setIdentifierToPort(inPort.getName() + "_" + i + "_isPresent", inPort);
                 _setIdentifierToPort(inPort.getName() + "_" + i + "Array", inPort);
@@ -1275,7 +1275,7 @@ public class FSMActor extends CompositeEntity
     private void _setIdentifierToPort(String name, Port inputPort) 
             throws IllegalActionException {
         Port previousPort = (Port)_identifierToPort.get(name);
-        if(previousPort != null && previousPort != inputPort) {
+        if (previousPort != null && previousPort != inputPort) {
             throw new IllegalActionException("Name conflict in finite state"
                     + " machine.  The identifier \"" + name 
                     + "\" is associated with the port " + previousPort 
@@ -1300,7 +1300,7 @@ public class FSMActor extends CompositeEntity
                 throws IllegalActionException {
             // Check to see if it is something we refer to.
             Token token = (Token)_inputTokenMap.get(name);
-            if(token != null) {
+            if (token != null) {
                 return token;
             }
 
@@ -1324,7 +1324,7 @@ public class FSMActor extends CompositeEntity
                 throws IllegalActionException {
             // Check to see if this is something we refer to.
             Port port = (Port)_identifierToPort.get(name);
-            if(port != null && port instanceof Typeable) {
+            if (port != null && port instanceof Typeable) {
                 return ((Typeable)port).getType();
             }
                             
@@ -1349,7 +1349,7 @@ public class FSMActor extends CompositeEntity
                 throws IllegalActionException {
             // Check to see if this is something we refer to.
             Port port = (Port)_identifierToPort.get(name);
-            if(port != null && port instanceof Typeable) {
+            if (port != null && port instanceof Typeable) {
                 return ((Typeable)port).getTypeTerm();
             }
                             

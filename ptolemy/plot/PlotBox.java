@@ -2959,7 +2959,7 @@ public class PlotBox extends JPanel implements Printable {
         for (_gridCurJuke = -1;
              (_gridCurJuke+1) < grid.size() && x >=
                  ((Double)grid.elementAt(_gridCurJuke+1)).doubleValue();
-             _gridCurJuke++){
+             _gridCurJuke++) {
         }
         return grid;
     }
@@ -3264,7 +3264,7 @@ public class PlotBox extends JPanel implements Printable {
         // Ignore if there is no graphics object to draw on.
         if (graphics == null) return;
 
-        if ((_zoomin == true) && (_drawn == true)){
+        if ((_zoomin == true) && (_drawn == true)) {
             if (_zoomxn != -1 || _zoomyn != -1) {
                 // erase previous rectangle.
                 int minx = Math.min(_zoomx, _zoomxn);
@@ -3298,7 +3298,7 @@ public class PlotBox extends JPanel implements Printable {
                 }
                 repaint();
             }
-        } else if ((_zoomout == true) && (_drawn == true)){
+        } else if ((_zoomout == true) && (_drawn == true)) {
             // Erase previous rectangle.
             graphics.setXORMode(_boxColor);
             int x_diff = Math.abs(_zoomx-_zoomxn);
@@ -3322,7 +3322,7 @@ public class PlotBox extends JPanel implements Printable {
             // if (newy2 < _yBottom) newy2 = _yBottom;
             zoom(newx2, newy2, newx1, newy1);
             repaint();
-        } else if (_drawn == false){
+        } else if (_drawn == false) {
             repaint();
         }
         _drawn = false;
@@ -3365,7 +3365,7 @@ public class PlotBox extends JPanel implements Printable {
             // Ability to zoom out added by William Wu.
             // If we are not already zooming, figure out whether we
             // are zooming in or out.
-            if (_zoomin == false && _zoomout == false){
+            if (_zoomin == false && _zoomout == false) {
                 if (y < _zoomy) {
                     _zoomout = true;
                     // Draw reference box.
@@ -3376,7 +3376,7 @@ public class PlotBox extends JPanel implements Printable {
                 }
             }
 
-            if (_zoomin == true){
+            if (_zoomin == true) {
                 // Erase the previous box if necessary.
                 if ((_zoomxn != -1 || _zoomyn != -1) && (_drawn == true)) {
                     int minx = Math.min(_zoomx, _zoomxn);
@@ -3399,7 +3399,7 @@ public class PlotBox extends JPanel implements Printable {
                     _drawn = true;
                     return;
                 } else _drawn = false;
-            } else if (_zoomout == true){
+            } else if (_zoomout == true) {
                 // Erase previous box if necessary.
                 if ((_zoomxn != -1 || _zoomyn != -1) && (_drawn == true)) {
                     int x_diff = Math.abs(_zoomx-_zoomxn);
@@ -3408,7 +3408,7 @@ public class PlotBox extends JPanel implements Printable {
                     graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
                             30+x_diff*2, 30+y_diff*2);
                 }
-                if (y < _zoomy){
+                if (y < _zoomy) {
                     _zoomxn = x;
                     _zoomyn = y;
                     int x_diff = Math.abs(_zoomx-_zoomxn);

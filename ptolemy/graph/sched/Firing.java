@@ -160,8 +160,8 @@ public class Firing extends ScheduleElement {
      *  @param firingElement The firing element to associate with this firing.
      */
     public void setFiringElement(Object firingElement) {
-        if(this.firingElementClass() != null) {
-            if(this.firingElementClass()
+        if (this.firingElementClass() != null) {
+            if (this.firingElementClass()
                     .isAssignableFrom(firingElement.getClass())) {
                 _incrementVersion();
                 _firingElement  = firingElement;

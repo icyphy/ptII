@@ -159,8 +159,8 @@ public class KarpCycleMeanStrategy extends CachedStrategy
         DirectedGraph[] graph = ((DirectedGraph)graph()).sccDecomposition();
         double maximumResult = - Double.MAX_VALUE;
         double result = 0;
-        for(int i = 0; i < graph.length; i++) {
-            if(!graph[i].isAcyclic()) {
+        for (int i = 0; i < graph.length; i++) {
+            if (!graph[i].isAcyclic()) {
                 result = _computeMCMOfSCC(graph[i]);
                 if (result > maximumResult) {
                     maximumResult = result;
@@ -171,7 +171,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy
                 }
             }
         }
-        if(_maximumAnalysis) {
+        if (_maximumAnalysis) {
             result = maximumResult;
         } else {
             result = -maximumResult;
@@ -226,7 +226,7 @@ public class KarpCycleMeanStrategy extends CachedStrategy
                             .get(nodePredecessor)).doubleValue();
                     double distance = _getCost(nodePredecessor, node);
                     double cost = dKMinusOneU + distance;
-                    if(dKOfV < cost) {
+                    if (dKOfV < cost) {
                         predecessor[k].put(node, nodePredecessor);
                         maximumPathLength[k].put(node, new Double(cost));
                     }
@@ -249,14 +249,14 @@ public class KarpCycleMeanStrategy extends CachedStrategy
                 double testValue =
                         ((maximumPathLengthToLevelN - maximumPathLengthToLevelK)
                         /(n-k));
-                if(cycleMeanValue > testValue) {
+                if (cycleMeanValue > testValue) {
                     cycleMean.put(node, new Double(testValue));
                     cycleMeanLevel.put(node, new Integer(k));
                  }
             }
             double cycleMeanValue = ((Double)(cycleMean.get(node)))
                     .doubleValue();
-            if(result < cycleMeanValue) {
+            if (result < cycleMeanValue) {
                 result = cycleMeanValue;
                  resultNode = node;
             }
@@ -272,8 +272,8 @@ public class KarpCycleMeanStrategy extends CachedStrategy
         int firstNodeLevel = 0;
         int secondNodeLevel = 0;
 
-        for(int i = n; i > 0; i--) {
-            for(int j = i; j > 0; j--) {
+        for (int i = n; i > 0; i--) {
+            for (int j = i; j > 0; j--) {
                 secondNode = (Node)predecessor[j].get(secondNode);
                 if (secondNode == firstNode) {
                     firstNodeLevel = i;
@@ -318,10 +318,10 @@ public class KarpCycleMeanStrategy extends CachedStrategy
         Collection edgeCollection = directedCyclicGraph.predecessorEdges(v, u);
         Iterator edges = edgeCollection.iterator();
         double weight = -Double.MAX_VALUE;
-        if(!_maximumAnalysis) {
+        if (!_maximumAnalysis) {
             weight = Double.MAX_VALUE;
         }
-        while(edges.hasNext()) {
+        while (edges.hasNext()) {
             Edge edge = (Edge) edges.next();
             if (_maximumAnalysis) {
                 double nextWeight = _edgeLengths.toDouble(edge);

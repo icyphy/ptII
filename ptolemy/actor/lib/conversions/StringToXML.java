@@ -89,7 +89,7 @@ public class StringToXML extends Transformer{
                 output.broadcast(_outToken);
                 //k++;
                 }
-                catch (java.lang.Exception ex){
+                catch (java.lang.Exception ex) {
                     throw new IllegalActionException(this, ex,
                             "Can't construct an XML Token from '" +  in + "'");
                 }
@@ -105,7 +105,7 @@ public class StringToXML extends Transformer{
             _outToken = new XmlToken(in);
 
             }
-            catch (Exception e){
+            catch (Exception e) {
             e.printStackTrace();
             System.out.println("exception is " + e.getClass());
                 System.out.println("### can't construct an XmlToken from: " + in + "\n");

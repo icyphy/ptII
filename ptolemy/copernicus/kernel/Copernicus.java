@@ -138,7 +138,7 @@ public class Copernicus {
         // Parse the command-line arguments
         _parseArgs(args);
         
-        if(_modelPath == null) {
+        if (_modelPath == null) {
             throw new RuntimeException("No model found in command line " +
                     "arguments.\nRun 'copernicus -help' for information " +
                     "on command line arguments.");
@@ -149,7 +149,7 @@ public class Copernicus {
         
         _generatorAttribute = 
             (GeneratorAttribute)toplevel.getAttribute(GENERATOR_NAME);
-        if(_generatorAttribute == null) {
+        if (_generatorAttribute == null) {
             _generatorAttribute =
                 new GeneratorAttribute(toplevel, GENERATOR_NAME);
             _generatorAttribute.initialize();
@@ -177,7 +177,7 @@ public class Copernicus {
             _generatorAttribute.getAttribute("output");
         if (output != null && output.getToken() != null) {
             String fileName = output.stringValue();
-            if(!fileName.equals("")) {
+            if (!fileName.equals("")) {
                 File outputFile = new File(fileName);
                 OutputStream outputStream = new FileOutputStream(outputFile);
                 System.setOut(new PrintStream(outputStream));
@@ -844,7 +844,7 @@ public class Copernicus {
             _generatorAttribute.sanityCheckAndUpdateParameters(null);
 
             usage.append(_generatorAttribute.toString());
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             usage.append("Problem evaluating default arguments: " + ex);
         }
 

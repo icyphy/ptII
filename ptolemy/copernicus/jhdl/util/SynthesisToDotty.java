@@ -68,19 +68,19 @@ public class SynthesisToDotty extends GraphToDotty {
             Node source = (Node)nodes.next();
             String name;
 
-            if (source.getWeight() instanceof SuperBlock){
+            if (source.getWeight() instanceof SuperBlock) {
                 SuperBlock b = (SuperBlock)source.getWeight();
                 name = "cluster_"+count;
                 sb.append("\t"+subGraph(b,name));
                 blockToVertex.put(source, bigHack);
-                if (bigHack == null){
+                if (bigHack == null) {
                     sb.append("\t\""+name+"\" [label=\""+
                             b.getBlock().toShortString()+"\"];\r\n");
                 }
             } else {
                 name="v"+count;
                 sb.append("\t\""+name+"\"");
-                if (source.hasWeight()){
+                if (source.hasWeight()) {
                     sb.append(" [label=\""
                             +convertSpecialsToEscapes(source.getWeight().toString())
                             +"\"]");
@@ -92,7 +92,7 @@ public class SynthesisToDotty extends GraphToDotty {
         }
 
         sb.append("\t// Edges\r\n");
-        for (Iterator nodes=g.nodes().iterator(); nodes.hasNext();){
+        for (Iterator nodes=g.nodes().iterator(); nodes.hasNext();) {
             Node source = (Node)nodes.next();
             for (Iterator succs = g.outputEdges(source).iterator(); succs.hasNext();) {
                 Edge edge= (Edge)succs.next();
@@ -103,33 +103,33 @@ public class SynthesisToDotty extends GraphToDotty {
                 boolean destIsSB=(dest.getWeight() instanceof SuperBlock) &&
                     (blockToVertex.get(dest) != null);
 
-                if (sourceIsSB){
+                if (sourceIsSB) {
                     sb.append("\t"+blockToVertex.get(source));
                 } else {
                     sb.append("\t"+hm.get(source));
                 }
                 sb.append(" -> ");
-                if (destIsSB){
+                if (destIsSB) {
                     sb.append(blockToVertex.get(dest));
                 } else {
                     sb.append(hm.get(dest));
                 }
 
                 sb.append(" [");
-                if (sourceIsSB){
+                if (sourceIsSB) {
                     sb.append(" ltail="+hm.get(source));
                 }
 
-                if (sourceIsSB && destIsSB){
+                if (sourceIsSB && destIsSB) {
                     sb.append(",");
                 }
 
-                if (destIsSB){
+                if (destIsSB) {
                     sb.append(" lhead="+hm.get(dest));
                 }
 
-                if (edge.hasWeight()){
-                    if (sourceIsSB || destIsSB){
+                if (edge.hasWeight()) {
+                    if (sourceIsSB || destIsSB) {
                         sb.append(",");
                     }
 
@@ -145,7 +145,7 @@ public class SynthesisToDotty extends GraphToDotty {
         return sb.toString();
     }
 
-    protected String subGraph(SuperBlock b, String cluster_num){
+    protected String subGraph(SuperBlock b, String cluster_num) {
 
         HashMap hm=new HashMap();
         StringBuffer sb = new StringBuffer();
@@ -163,7 +163,7 @@ public class SynthesisToDotty extends GraphToDotty {
             if (bigHack==null) bigHack=name;
             sb.append("\t\t\""+name+"\"");
 
-            if (source.hasWeight()){
+            if (source.hasWeight()) {
                 sb.append(" [label=\""
                         +convertSpecialsToEscapes(source.getWeight().toString())
                         +"\"]");
@@ -172,13 +172,13 @@ public class SynthesisToDotty extends GraphToDotty {
             hm.put(source, name);
         }
         sb.append("\t\t// Edges\r\n");
-        for (Iterator nodes=g.nodes().iterator(); nodes.hasNext();){
+        for (Iterator nodes=g.nodes().iterator(); nodes.hasNext();) {
             Node source = (Node)nodes.next();
             for (Iterator succs = g.outputEdges(source).iterator(); succs.hasNext();) {
                 Edge edge= (Edge)succs.next();
                 Node dest= edge.sink();
                 sb.append("\t\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");
-                if (edge.hasWeight()){
+                if (edge.hasWeight()) {
                     sb.append(" [label=\""+
                             convertSpecialsToEscapes(edge.getWeight().toString())
                             +"\"]");

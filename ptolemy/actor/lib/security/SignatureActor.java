@@ -114,7 +114,7 @@ public class SignatureActor extends TypedAtomicActor {
         signatureAlgorithm = new StringParameter(this, "signatureAlgorithm");
         Iterator signatureAlgorithms =
             Security.getAlgorithms("Signature").iterator();
-        for(int i = 0; signatureAlgorithms.hasNext(); i++) {
+        for (int i = 0; signatureAlgorithms.hasNext(); i++) {
             String algorithmName = (String)signatureAlgorithms.next();
             if (i == 0) {
                 signatureAlgorithm.setExpression(algorithmName);

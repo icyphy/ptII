@@ -225,7 +225,7 @@ public class Manager extends NamedObj implements Runnable {
     /** Add a static analysis to this manager.
      */
     public void addAnalysis(String name, Object analysis) {
-        if(_nameToAnalysis == null) {
+        if (_nameToAnalysis == null) {
             _nameToAnalysis = new HashMap();
         }
         _nameToAnalysis.put(name, analysis);
@@ -366,7 +366,7 @@ public class Manager extends NamedObj implements Runnable {
      *  analysis exists.
      */
     public Object getAnalysis(String name) {
-        if(_nameToAnalysis == null) {
+        if (_nameToAnalysis == null) {
             return null;
         } else {
             return _nameToAnalysis.get(name);
@@ -684,7 +684,7 @@ public class Manager extends NamedObj implements Runnable {
             _container.preinitialize();
 
             // Clear the preinitialization analyses.
-            if(_nameToAnalysis != null) {
+            if (_nameToAnalysis != null) {
                 _nameToAnalysis.clear();
                 _nameToAnalysis = null;
             }
@@ -724,7 +724,7 @@ public class Manager extends NamedObj implements Runnable {
      */
     public void requestInitialization(Actor actor) {
         // Only initialize once.
-        if(_actorsToInitialize.contains(actor)) {
+        if (_actorsToInitialize.contains(actor)) {
             return;
         }
         // Only initialize containers.  This avoids initializing an
@@ -732,8 +732,8 @@ public class Manager extends NamedObj implements Runnable {
         // being added.
         {
             NamedObj container = (NamedObj)((NamedObj)actor).getContainer();
-            while(container != null) {
-                if(_actorsToInitialize.contains(container)) {
+            while (container != null) {
+                if (_actorsToInitialize.contains(container)) {
                     return;
                 }
                 container = (NamedObj)container.getContainer();
@@ -743,13 +743,13 @@ public class Manager extends NamedObj implements Runnable {
         // don't need to initialize any actors contained by this
         // actor.
         List list = new LinkedList(_actorsToInitialize);
-        for(Iterator actors = list.iterator();
+        for (Iterator actors = list.iterator();
             actors.hasNext();) {
             NamedObj otherActor = (NamedObj)actors.next();
             NamedObj otherActorContainer = (NamedObj)otherActor.getContainer();
-            while(otherActorContainer != null) {
+            while (otherActorContainer != null) {
                 // If otherActor is contained by actor, then remove it.
-                if(otherActorContainer == actor) {
+                if (otherActorContainer == actor) {
                     _actorsToInitialize.remove(otherActor);
                     otherActorContainer = null;
                 } else {

@@ -50,7 +50,7 @@ public class PtDirectedGraphToDotty  extends GraphToDotty {
      * Return a string which contains the DirectedGraph in dotty form
      * @param ename Title of the graph
      */
-    public String convert(Object graph, String ename){
+    public String convert(Object graph, String ename) {
         DirectedGraph g = (DirectedGraph)graph;
         int count=0;
         HashMap hm=new HashMap();
@@ -61,7 +61,7 @@ public class PtDirectedGraphToDotty  extends GraphToDotty {
             String name="v" + count++;
             sb.append("\t\""+name+"\"");
 
-            if (source.hasWeight()){
+            if (source.hasWeight()) {
                 sb.append(" [label=\""
                         +convertSpecialsToEscapes(source.getWeight().toString())
                         +"\"]");
@@ -70,13 +70,13 @@ public class PtDirectedGraphToDotty  extends GraphToDotty {
             hm.put(source, name);
         }
         sb.append("\t// Edges\r\n");
-        for (Iterator nodes=g.nodes().iterator(); nodes.hasNext();){
+        for (Iterator nodes=g.nodes().iterator(); nodes.hasNext();) {
             Node source = (Node)nodes.next();
             for (Iterator succs = g.outputEdges(source).iterator(); succs.hasNext();) {
                 Edge edge= (Edge)succs.next();
                 Node dest= edge.sink();
                 sb.append("\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");
-                if (edge.hasWeight()){
+                if (edge.hasWeight()) {
                     sb.append(" [label=\""+
                             convertSpecialsToEscapes(edge.getWeight().toString())
                             +"\"]");

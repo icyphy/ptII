@@ -122,7 +122,7 @@ public class ConstVariableModelAnalysis {
             throws IllegalActionException {
         _variableToChangeContext = new HashMap();
 
-        for(Iterator variables = variableSet.iterator();
+        for (Iterator variables = variableSet.iterator();
             variables.hasNext();) {
             Variable variable = (Variable)variables.next();
             _variableToChangeContext.put(variable, model);
@@ -157,7 +157,7 @@ public class ConstVariableModelAnalysis {
 
         ConstVariableModelAnalysis analysis = (ConstVariableModelAnalysis) 
             manager.getAnalysis("ConstVariableModelAnalysis");
-        if(analysis == null) {
+        if (analysis == null) {
             analysis = new ConstVariableModelAnalysis(toplevel);
             manager.addAnalysis("ConstVariableModelAnalysis", analysis);
         }
@@ -201,22 +201,22 @@ public class ConstVariableModelAnalysis {
         DependencyDeclaration declaration) {
         Node targetNode = null;
         Variable variable = (Variable)declaration.getContainer();
-        if(_dependencyGraph.containsNodeWeight(variable)) {
+        if (_dependencyGraph.containsNodeWeight(variable)) {
             targetNode = _dependencyGraph.node(variable);
         } else {
             targetNode = _dependencyGraph.addNodeWeight(variable);
         }
-        for(Iterator dependents =
+        for (Iterator dependents =
                 declaration.getDependents().iterator();
             dependents.hasNext();) {
             Variable dependent = (Variable)dependents.next();
             Node node;
-            if(_dependencyGraph.containsNodeWeight(dependent)) {
+            if (_dependencyGraph.containsNodeWeight(dependent)) {
                 node = _dependencyGraph.node(dependent);
             } else {
                 node = _dependencyGraph.addNodeWeight(dependent);
             }
-            //  if(!_dependencyGraph.edgeExists(node, targetNode)) {
+            //  if (!_dependencyGraph.edgeExists(node, targetNode)) {
             _dependencyGraph.addEdge(node, targetNode);
             //}
         }
@@ -225,7 +225,7 @@ public class ConstVariableModelAnalysis {
     // Collect all of the constraints from the given variable.
     private void _collectConstraints(Variable variable) {
         Node targetNode = null;
-        if(_dependencyGraph.containsNodeWeight(variable)) {
+        if (_dependencyGraph.containsNodeWeight(variable)) {
             targetNode = _dependencyGraph.node(variable);
         } else {
             targetNode = _dependencyGraph.addNodeWeight(variable);
@@ -239,9 +239,9 @@ public class ConstVariableModelAnalysis {
                 String name = (String)names.next();
                 Variable dependent = ModelScope.getScopedVariable(
                         variable, variable, name);
-                if(dependent != null) {
+                if (dependent != null) {
                     Node node;
-                    if(_dependencyGraph.containsNodeWeight(dependent)) {
+                    if (_dependencyGraph.containsNodeWeight(dependent)) {
                         node = _dependencyGraph.node(dependent);
                     } else {
                         node = _dependencyGraph.addNodeWeight(dependent);
@@ -253,7 +253,7 @@ public class ConstVariableModelAnalysis {
                 //                         // they will likely be bound to parser
                 //                         // constants or looked up as Java
                 //                         // methods.
-                //                         if(!_assumeUnboundVariablesAreConstant) {
+                //                         if (!_assumeUnboundVariablesAreConstant) {
                 //                             _variableToChangeContext.put(variable,
                 //                                     container.toplevel());
                 //                         }          
@@ -293,7 +293,7 @@ public class ConstVariableModelAnalysis {
             // Under what conditions is a PortParameter not associated
             // with a port?  This came up in the context of
             // IterateOverArray.
-            if(port != null && port.getWidth() > 0) {
+            if (port != null && port.getWidth() > 0) {
                 _updateChangeContext(parameter,
                         (Entity)parameter.getContainer());
             }
@@ -301,7 +301,7 @@ public class ConstVariableModelAnalysis {
         if (container instanceof ExplicitChangeContext) {
             List list = 
                 ((ExplicitChangeContext)container).getModifiedVariables();
-            for(Iterator variables = list.iterator();
+            for (Iterator variables = list.iterator();
                 variables.hasNext();) {
                 Variable variable = (Variable)variables.next();
                 _updateChangeContext(variable, 
@@ -324,7 +324,7 @@ public class ConstVariableModelAnalysis {
             }
         }
         if (container instanceof Entity) {
-            for(Iterator ports = 
+            for (Iterator ports = 
                     ((Entity)container).portList().iterator();
                 ports.hasNext();) {
                 Port port = (Port)ports.next();
@@ -346,12 +346,12 @@ public class ConstVariableModelAnalysis {
             Node node = _dependencyGraph.node(variable);
             Entity changeContext = (Entity) 
                 _variableToChangeContext.get(variable);
-            for(Iterator outputEdges = _dependencyGraph.outputEdges(node).iterator();
+            for (Iterator outputEdges = _dependencyGraph.outputEdges(node).iterator();
                 outputEdges.hasNext();) {
                 Node sinkNode = ((Edge)outputEdges.next()).sink();
                 Variable targetVariable = 
                     (Variable) sinkNode.getWeight();
-                if(_updateChangeContext(targetVariable, changeContext)
+                if (_updateChangeContext(targetVariable, changeContext)
                         && !workList.contains(targetVariable)) {
                     workList.addLast(targetVariable);
                 }
@@ -372,8 +372,8 @@ public class ConstVariableModelAnalysis {
         Entity newChangeContext = 
             _computeBound(changeContext, oldChangeContext);
 //         System.out.println("newChangeContext = " + newChangeContext);
-        if(newChangeContext != oldChangeContext) {
-            if(newChangeContext != null) {
+        if (newChangeContext != oldChangeContext) {
+            if (newChangeContext != null) {
                 _variableToChangeContext.put(variable,
                         newChangeContext);
             }
@@ -387,12 +387,12 @@ public class ConstVariableModelAnalysis {
     // exception.  If entity2 is null (corresponding to a static
     // change context), then return entity1.
     private final Entity _computeBound(Entity entity1, Entity entity2) {
-        if(entity2 == null || entity2.equals(entity1)) {
+        if (entity2 == null || entity2.equals(entity1)) {
             return entity1;
         } 
-        if(entity2.deepContains(entity1)) {
+        if (entity2.deepContains(entity1)) {
             return entity1;
-        } else if(entity1.deepContains(entity2)) {
+        } else if (entity1.deepContains(entity2)) {
             return entity2;
         } else {
             throw new RuntimeException("Illegal change context");

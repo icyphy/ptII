@@ -133,7 +133,7 @@ public class LibraryUsageReporter extends SceneTransformer
             if (!declaringClass.getName().startsWith("java")) {
                 necessaryClasses.add(declaringClass);
             }
-            if(method.isConcrete())
+            if (method.isConcrete())
             for (Iterator units = 
                      method.retrieveActiveBody().getUnits().iterator();
                  units.hasNext();) {
@@ -145,7 +145,7 @@ public class LibraryUsageReporter extends SceneTransformer
                     if (value instanceof CastExpr) {
                         CastExpr expr = (CastExpr)value;
                         Type castType = expr.getCastType();
-                        if(castType instanceof RefType) {
+                        if (castType instanceof RefType) {
                             SootClass castClass = 
                                 ((RefType)castType).getSootClass();
                             necessaryClasses.addAll(
@@ -157,10 +157,10 @@ public class LibraryUsageReporter extends SceneTransformer
                     } else if (value instanceof InstanceOfExpr) {
                         InstanceOfExpr expr = (InstanceOfExpr)value;
                         Type checkType = expr.getCheckType();
-                        if(checkType instanceof RefType) {
+                        if (checkType instanceof RefType) {
                             SootClass checkClass = 
                                 ((RefType)checkType).getSootClass();
-                            if(!checkClass.isInterface()) {
+                            if (!checkClass.isInterface()) {
                                 necessaryClasses.addAll(
                                         hierarchy.getSuperclassesOfIncluding(
                                                 checkClass));
@@ -188,7 +188,7 @@ public class LibraryUsageReporter extends SceneTransformer
             for (Iterator classes = dependedClasses.list().iterator();
                  classes.hasNext();) {
                 SootClass theClass = (SootClass)classes.next();
-                if(analyzeAllReachables) {
+                if (analyzeAllReachables) {
                     // Set the class to be an application class, so we can
                     // analyze it.
                     theClass.setApplicationClass();
@@ -197,13 +197,13 @@ public class LibraryUsageReporter extends SceneTransformer
                 writer.write("\n");
             }
             writer.close();
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
     private void _addAllInterfaces(Set classSet, SootClass theClass) {
-        for(Iterator i = theClass.getInterfaces().iterator();
+        for (Iterator i = theClass.getInterfaces().iterator();
             i.hasNext();) {
             SootClass theInterface = (SootClass)i.next();
             classSet.add(theInterface);

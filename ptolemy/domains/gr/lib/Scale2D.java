@@ -137,21 +137,21 @@ public class Scale2D extends GRTransform2D {
         double scaleFactorYValue = 1.0;
 
         boolean needsTransform = false;
-        if(scaleFactorX.getWidth() != 0 && scaleFactorX.hasToken(0)){
+        if (scaleFactorX.getWidth() != 0 && scaleFactorX.hasToken(0)) {
             scaleFactorXValue =
                 ((DoubleToken) scaleFactorX.get(0)).doubleValue();
             needsTransform = true;
         }
 
-        if(scaleFactorY.getWidth() != 0 && scaleFactorY.hasToken(0)){
+        if (scaleFactorY.getWidth() != 0 && scaleFactorY.hasToken(0)) {
             scaleFactorYValue =
                 ((DoubleToken) scaleFactorY.get(0)).doubleValue();
             needsTransform = true;
         }
 
 
-        if(needsTransform) {
-            if(_isAccumulating()) {
+        if (needsTransform) {
+            if (_isAccumulating()) {
                 scaleFactorXValue *= _oldScaleFactorX;
                 scaleFactorYValue *= _oldScaleFactorY;
             }

@@ -216,13 +216,13 @@ public class Sensor extends TypedAtomicActor {
 
         super.fire();
         
-        if(signal.hasToken(0)) {
+        if (signal.hasToken(0)) {
             String signalValue = ((StringToken) signal.get(0)).stringValue();
             if (_debugging) {
                 _debug("signal token received: " + signalValue);
             }
             //FIXME: Assumes the pursure uses "SPIDER" in its signal header.
-            if (!signalValue.equals("SPIDER")){
+            if (!signalValue.equals("SPIDER")) {
                 //detect the envader, set this to be the root node in the
                 //spanning tree.
                 String[] labels = {"location", "time", "depth"};
@@ -244,7 +244,7 @@ public class Sensor extends TypedAtomicActor {
                 output.send(0, result);                
             } else {
                 // It is the pursuer. Send its parent info to the pursuer.
-                if(_timeValue > 0.0) {
+                if (_timeValue > 0.0) {
                     String[] labels = {"location", "time", "depth"};
             
                     Token[] values = {

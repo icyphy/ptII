@@ -293,7 +293,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                              + "hops = " + hops);
             */
             
-            if (getName().equals(destination)){
+            if (getName().equals(destination)) {
                 // Change the color of the icon to red.
                 _circle2.fillColor.setToken("{1.0, 0.0, 0.1, 0.7}");
                 //_isRed = true;
@@ -303,7 +303,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 double delayTime = ((DoubleToken)delay.getToken()).doubleValue();
                 double time = director.getCurrentTime() + delayTime;
                 director.fireAt(this, time);    
-            } else if (getName().equals(routeTo) || hops == 0){
+            } else if (getName().equals(routeTo) || hops == 0) {
                 // Change the color of the icon to green.
                 _circle2.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
                 CompositeEntity container = (CompositeEntity)getContainer();
@@ -325,7 +325,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 boolean multi = ((BooleanToken)doublePath.getToken()).booleanValue();
                 double nextMinDistance = _distanceBetween(destLocation, myLocation);
                 String to2 = " ";
-                while(nodes.hasNext()) {
+                while (nodes.hasNext()) {
                     Entity node = (Entity) nodes.next();
                     Locatable location = (Locatable)node.getAttribute(
                                         "_location", Locatable.class);
@@ -338,7 +338,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                     }
                     double d = _distanceBetween(destLocation, location);
                     if (multi) {
-                        if (d < minDistance){
+                        if (d < minDistance) {
                             nextMinDistance = minDistance;
                             to2 = to;
                             minDistance = d;
@@ -348,7 +348,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                             to2 = node.getName();
                         }
                     } else {
-                        if (d < minDistance){
+                        if (d < minDistance) {
                             minDistance = d;
                             to = node.getName();
                         }      
@@ -373,7 +373,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 _receptions.put(timeDouble, result);
             
                 director.fireAt(this, time);
-                if(multi) {
+                if (multi) {
                     Token[] values2 = {new DoubleToken(data),
                                       new StringToken(destination),
                                       new StringToken(to2),
@@ -402,7 +402,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
 
                 }
             }
-            //if (_isRed){
+            //if (_isRed) {
                 //Set color back to white.
                 _circle2.fillColor.setToken("{1.0, 1.0, 1.0, 1.0}");
                 //_isRed = false;

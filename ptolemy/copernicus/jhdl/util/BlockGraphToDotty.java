@@ -48,7 +48,7 @@ public class BlockGraphToDotty extends GraphToDotty {
      * Return a string which contains the BlockGraph in dotty form
      * @param ename Title of the graph
      */
-    public String convert(Object graph, String ename){
+    public String convert(Object graph, String ename) {
         BlockGraph g = (BlockGraph)graph;
 
         //Code copied from buildMapForBlock() in Block.java
@@ -79,7 +79,7 @@ public class BlockGraphToDotty extends GraphToDotty {
             hm.put(source, name);
         }
         sb.append("\t// Edges\r\n");
-        for (Iterator nodes=g.iterator(); nodes.hasNext();){
+        for (Iterator nodes=g.iterator(); nodes.hasNext();) {
             Block source = (Block)nodes.next();
             boolean endsWithIf = source.getTail() instanceof IfStmt;
 
@@ -88,9 +88,9 @@ public class BlockGraphToDotty extends GraphToDotty {
             for (Iterator succs = g.getSuccsOf(source).iterator(); succs.hasNext();) {
                 Block dest= (Block)succs.next();
                 sb.append("\t\""+hm.get(source)+"\" -> \""+hm.get(dest)+"\"");
-                if (endsWithIf){
+                if (endsWithIf) {
                     sb.append(" [\"label\"=");
-                    if (((IfStmt)source.getTail()).getTargetBox().getUnit() == dest.getHead()){
+                    if (((IfStmt)source.getTail()).getTargetBox().getUnit() == dest.getHead()) {
                         sb.append("\"true\"");
                     } else {
                         sb.append("\"false\"");

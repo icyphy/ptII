@@ -88,7 +88,7 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener{
      */
     public void keyPressed(KeyEvent e) {
 
-        switch(e.getKeyCode()){
+        switch(e.getKeyCode()) {
         case KeyEvent.VK_UP:    _figure.translate(0, -1);
             break;
         case KeyEvent.VK_DOWN:  _figure.translate(0, 1);
@@ -196,7 +196,7 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener{
     public void setSelected(boolean selected) {
         _isSelected = selected;
         if (_isSelected) {
-            if(_figure instanceof BasicFigure) {
+            if (_figure instanceof BasicFigure) {
                 ((BasicFigure)_figure).setLineWidth(4);
             }
             _viewScreen.setSelectedFigure(_figure);

@@ -124,7 +124,7 @@ public class MirrorTransformerStrategy extends CachedStrategy
      *  @return The mirror graph.
      */
     public Graph mirror(Graph graph, boolean cloneWeights) {
-        if(graph.getClass() != graph().getClass() ||
+        if (graph.getClass() != graph().getClass() ||
                 cloneWeights != _cloneWeights) {
             reset();
         }

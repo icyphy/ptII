@@ -210,7 +210,7 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
 
             // Set the hardcoded iteration limit, if necessary.
             int iterationLimit = PhaseOptions.getInt(options, "iterations");
-            if(iterationLimit != Integer.MAX_VALUE) {
+            if (iterationLimit != Integer.MAX_VALUE) {
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 Jimple.v().newInstanceFieldRef(body.getThisLocal(),

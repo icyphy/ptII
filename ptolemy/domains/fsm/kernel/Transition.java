@@ -476,7 +476,7 @@ public class Transition extends ComponentRelation {
                     .setConstructionMode(false);
             }
             FSMActor fsmActor = (FSMActor)getContainer();
-            if(_guardParseTree == null) {
+            if (_guardParseTree == null) {
                 String expr = getGuardExpression();
                 // Parse the guard expression.
                 PtParser parser = new PtParser();
@@ -522,7 +522,7 @@ public class Transition extends ComponentRelation {
     public boolean isTriggered() throws IllegalActionException {
         FSMActor fsmActor = (FSMActor)getContainer();
 
-        if(_triggerParseTree == null) {
+        if (_triggerParseTree == null) {
             String expr = triggerExpression.getExpression();
             // Parse the guard expression.
             PtParser parser = new PtParser();
@@ -532,7 +532,7 @@ public class Transition extends ComponentRelation {
                     _triggerParseTree, fsmActor.getPortScope());
         boolean triggerValue = ((BooleanToken)triggerToken).booleanValue();
      
-        if(_guardParseTree == null) {
+        if (_guardParseTree == null) {
             String expr = guardExpression.getExpression();
             // Parse the guard expression.
             PtParser parser = new PtParser();

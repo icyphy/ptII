@@ -283,7 +283,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             ptolemy.data.Token result;
                         
             // Evaluate it, if necessary.
-            if(value == null) {
+            if (value == null) {
                 value = _evaluateChild(node, 0);
             }
 

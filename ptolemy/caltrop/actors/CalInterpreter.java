@@ -357,7 +357,7 @@ public class CalInterpreter extends TypedAtomicActor {
 
         CompositeEntity container = (CompositeEntity)getContainer();
         if (_lastGeneratedActorName != null && _lastGeneratedActorName.equals(this.getName())) {
-            if(container != null
+            if (container != null
                     && container.getEntity(actor.getName()) != this) {
                 _lastGeneratedActorName = ((CompositeEntity) this.getContainer())
                                   .uniqueName(actor.getName());

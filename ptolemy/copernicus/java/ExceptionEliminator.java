@@ -168,14 +168,14 @@ public class ExceptionEliminator extends SceneTransformer implements HasPhaseOpt
                                 RefType.v(PtolemyUtilities.runtimeExceptionClass));
 
                     }
-                } else if(value instanceof CastExpr) {
+                } else if (value instanceof CastExpr) {
                     CastExpr expr = (CastExpr) value;
                     Type castType = expr.getCastType();
-                    if(castType instanceof RefType &&
+                    if (castType instanceof RefType &&
                             _isPtolemyException(((RefType)castType).getSootClass())) {
                         expr.setCastType(RefType.v(PtolemyUtilities.runtimeExceptionClass));
                     }
-                } else if(value instanceof SpecialInvokeExpr) {
+                } else if (value instanceof SpecialInvokeExpr) {
                     // Fix the exception constructors.
                     SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
                     SootClass exceptionClass =
@@ -205,7 +205,7 @@ public class ExceptionEliminator extends SceneTransformer implements HasPhaseOpt
                 } else if (value instanceof VirtualInvokeExpr) {
                     VirtualInvokeExpr expr = (VirtualInvokeExpr)value;
                     Type exceptionType = expr.getBase().getType();
-                    if(exceptionType instanceof RefType) {
+                    if (exceptionType instanceof RefType) {
                         SootClass exceptionClass =
                             ((RefType)exceptionType).getSootClass();
                         if (_isPtolemyException(exceptionClass)) {

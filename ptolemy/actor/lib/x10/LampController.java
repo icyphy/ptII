@@ -141,7 +141,7 @@ public class LampController extends Sender {
         boolean isOff = _hasTrueInput(off);
         boolean isOn = _hasTrueInput(on);
         
-        if (brightLevel >= 0 && brightLevel <= 100){
+        if (brightLevel >= 0 && brightLevel <= 100) {
             _transmit(new Command((_destination), x10.Command.BRIGHT,
                     brightLevel));
         }

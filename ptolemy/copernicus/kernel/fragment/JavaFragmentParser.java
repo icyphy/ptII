@@ -23,7 +23,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
     }
 
     public void parse(String string) throws ParseException {
-        if(_idMap == null) {
+        if (_idMap == null) {
             _idMap = new HashMap();
         }
         ReInit(new StringReader(string));
@@ -31,14 +31,14 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
     }
 
     public void put(String string, Object object) {
-        if(_idMap == null) {
+        if (_idMap == null) {
             _idMap = new HashMap();
         }
         _idMap.put(string, object);
     }
 
     public Object get(String string) {
-        if(_idMap == null) {
+        if (_idMap == null) {
             _idMap = new HashMap();
         }
         return _idMap.get(string);
@@ -55,7 +55,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
     }
 
     private void _bindNameToLocal(String name, Local local) {
-        if(_idMap.get(name) != null) {
+        if (_idMap.get(name) != null) {
             throw new RuntimeException("multiply bound name = " + name);
         } else {
             _idMap.put(name, local);
@@ -75,9 +75,9 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
     }
 
     private Type _findType(String name) {
-        if(_idMap.containsKey(name)) {
+        if (_idMap.containsKey(name)) {
             Object object = _idMap.get(name);
-            if(object instanceof Type) {
+            if (object instanceof Type) {
                 return (Type)object;
             } else {
                 throw new RuntimeException("ID " + name + " is not a type!");
@@ -102,19 +102,19 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
         Value baseValue, String name, List argList) {
 
         int lastDotPosition = name.lastIndexOf(".");
-        if(lastDotPosition == -1) {
+        if (lastDotPosition == -1) {
             SootClass refClass;
-            if(baseValue == null) {
+            if (baseValue == null) {
                 // No required baseValue..  If method is not static, then 
                 // We can use the thisLocal as the baseValue.
                 refClass = _body.getMethod().getDeclaringClass();
-                if(!_body.getMethod().isStatic()) {
+                if (!_body.getMethod().isStatic()) {
                     baseValue = _body.getThisLocal();
                     refClass = _body.getMethod().getDeclaringClass();
                 }
             } else {
                 Type type = baseValue.getType();
-                if(type instanceof RefType) {
+                if (type instanceof RefType) {
                     refClass = ((RefType)type).getSootClass();
                 } else {
                     throw new RuntimeException(
@@ -123,10 +123,10 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
             }
 
             SootMethod method = refClass.getMethodByName(name);
-            if(method.isStatic()) {
+            if (method.isStatic()) {
                 return Jimple.v().newStaticInvokeExpr(method, argList);
             } else {
-                if(baseValue == null) {
+                if (baseValue == null) {
                     throw new RuntimeException(
                         "Attempt to invoke non-static method \""
                         + name + "\" from static context!");
@@ -150,25 +150,25 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
      */
     private Value _processInstanceField(Value baseValue, String name) {
         int lastDotPosition = name.lastIndexOf(".");
-        if(lastDotPosition == -1) {
+        if (lastDotPosition == -1) {
             // See if there is a local with the right name.
             Value value = (Value) _idMap.get(name);
-            if(value != null) {
+            if (value != null) {
                 return value;
             }
 
             SootClass refClass;
-            if(baseValue == null) {
+            if (baseValue == null) {
                 // No required baseValue..  If method is not static, then 
                 // We can use the thisLocal as the baseValue.
                 refClass = _body.getMethod().getDeclaringClass();
-                if(!_body.getMethod().isStatic()) {
+                if (!_body.getMethod().isStatic()) {
                     baseValue = _body.getThisLocal();
                     refClass = _body.getMethod().getDeclaringClass();
                 }
             } else {
                 Type type = baseValue.getType();
-                if(type instanceof RefType) {
+                if (type instanceof RefType) {
                     refClass = ((RefType)type).getSootClass();
                 } else {
                     throw new RuntimeException(
@@ -176,10 +176,10 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
                 }
             }
             SootField field = refClass.getFieldByName(name);
-            if(field.isStatic()) {
+            if (field.isStatic()) {
                 return Jimple.v().newStaticFieldRef(field);
             } else {
-                if(baseValue == null) {
+                if (baseValue == null) {
                     throw new RuntimeException(
                         "Attempt to reference non-static field \""
                         + name + "\" from static context!");
@@ -1768,9 +1768,9 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
     value = PrimaryExpression();
         Local local = _createLocal(
             "$increment", Jimple.v().newAddExpr(value, IntConstant.v(1)));
-        if(value instanceof Local) {
+        if (value instanceof Local) {
             _insert(Jimple.v().newAssignStmt((Local)value, local));
-        } else if(value instanceof FieldRef) {
+        } else if (value instanceof FieldRef) {
             _insert(Jimple.v().newAssignStmt((FieldRef)value, local));
         } else {
             {if (true) throw new RuntimeException("Illegal Increment");}
@@ -1785,9 +1785,9 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
     value = PrimaryExpression();
         Local local = _createLocal(
             "$decrement", Jimple.v().newAddExpr(value, IntConstant.v(-1)));
-        if(value instanceof Local) {
+        if (value instanceof Local) {
             _insert(Jimple.v().newAssignStmt((Local)value, local));
-        } else if(value instanceof FieldRef) {
+        } else if (value instanceof FieldRef) {
             _insert(Jimple.v().newAssignStmt((FieldRef)value, local));
         } else {
             {if (true) throw new RuntimeException("Illegal Decrement");}
@@ -1931,9 +1931,9 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
             copyLocal = _createLocal("$copy", value);
             local = _createLocal(
                 "$increment", Jimple.v().newAddExpr(value, IntConstant.v(1)));
-            if(value instanceof Local) {
+            if (value instanceof Local) {
                 _insert(Jimple.v().newAssignStmt((Local)value, local));
-            } else if(value instanceof FieldRef) {
+            } else if (value instanceof FieldRef) {
                 _insert(Jimple.v().newAssignStmt((FieldRef)value, local));
             } else {
                 {if (true) throw new RuntimeException("Illegal Increment");}
@@ -1946,9 +1946,9 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
             copyLocal = _createLocal("$copy", value);
             local = _createLocal(
                 "$decrement", Jimple.v().newAddExpr(value, IntConstant.v(-1)));
-            if(value instanceof Local) {
+            if (value instanceof Local) {
                 _insert(Jimple.v().newAssignStmt((Local)value, local));
-            } else if(value instanceof FieldRef) {
+            } else if (value instanceof FieldRef) {
                 _insert(Jimple.v().newAssignStmt((FieldRef)value, local));
             } else {
                 {if (true) throw new RuntimeException("Illegal Decrement");}
@@ -2039,29 +2039,29 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
         type = ResultType();
         jj_consume_token(DOT);
         jj_consume_token(CLASS);
-      if(type instanceof VoidType) {
+      if (type instanceof VoidType) {
           {if (true) return VoidClassConstant.v();}
-      } else if(type instanceof IntType) {
+      } else if (type instanceof IntType) {
           {if (true) return IntClassConstant.v();}
-      } else if(type instanceof LongType) {
+      } else if (type instanceof LongType) {
           {if (true) return LongClassConstant.v();}
-      } else if(type instanceof BooleanType) {
+      } else if (type instanceof BooleanType) {
           {if (true) return BooleanClassConstant.v();}
-      } else if(type instanceof ByteType) {
+      } else if (type instanceof ByteType) {
           {if (true) return ByteClassConstant.v();}
-      } else if(type instanceof CharType) {
+      } else if (type instanceof CharType) {
           {if (true) return CharClassConstant.v();}
-      } else if(type instanceof DoubleType) {
+      } else if (type instanceof DoubleType) {
           {if (true) return DoubleClassConstant.v();}
-      } else if(type instanceof FloatType) {
+      } else if (type instanceof FloatType) {
           {if (true) return FloatClassConstant.v();}
-      } else if(type instanceof ShortType) {
+      } else if (type instanceof ShortType) {
           {if (true) return ShortClassConstant.v();}
-      } else if(type instanceof NullType) {
+      } else if (type instanceof NullType) {
           {if (true) return VoidClassConstant.v();} // Correct?
-      } else if(type instanceof ArrayType) {
+      } else if (type instanceof ArrayType) {
           {if (true) throw new RuntimeException("array.class not supported.");}
-      } else if(type instanceof RefType) {
+      } else if (type instanceof RefType) {
           {if (true) return ClassConstant.v(type.toString());}
       }
       } else {
@@ -2250,7 +2250,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
     case LPAREN:
       argList = Arguments();
             SootClass theClass;
-            if(!(type instanceof RefType)) {
+            if (!(type instanceof RefType)) {
                 {if (true) throw new RuntimeException("Cannot instantiate primitive type");}
             }
             theClass = ((RefType)type).getSootClass();
@@ -2302,11 +2302,11 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
         jj_consume_token(RBRACKET);
                               type = type.makeArrayType();
       }
-        if(sizeValues.size() == 1) {
+        if (sizeValues.size() == 1) {
             {if (true) return Jimple.v().newNewArrayExpr(type, sizeValue);}
         } else {
             // FIXME: Is this right?
-            for(int i = 0; i < sizeValues.size(); i++) {
+            for (int i = 0; i < sizeValues.size(); i++) {
                 type = type.makeArrayType();
             }
             {if (true) return Jimple.v().newNewMultiArrayExpr((ArrayType)type, sizeValues);}
@@ -2858,7 +2858,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
         ;
       }
         // No assignment..
-        if(lvalue instanceof InvokeExpr) {
+        if (lvalue instanceof InvokeExpr) {
             _insert(Jimple.v().newInvokeStmt(lvalue));
         }
       break;
@@ -3362,7 +3362,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
       ;
     }
     jj_consume_token(SEMICOLON);
-        if(value == null) {
+        if (value == null) {
             _insert(Jimple.v().newReturnVoidStmt());
         } else {
             _insert(Jimple.v().newReturnStmt(value));
@@ -3413,12 +3413,12 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
       type = FormalParameter();
       jj_consume_token(RPAREN);
       Block();
-            if(!(type instanceof RefType)) {
+            if (!(type instanceof RefType)) {
                 {if (true) throw new RuntimeException("Cannot catch " + type);}
             }
             RefType refType = (RefType)type;
             SootClass exceptionClass = refType.getSootClass();
-            if(!SootUtilities.derivesFrom(
+            if (!SootUtilities.derivesFrom(
                    exceptionClass,
                    Scene.v().loadClassAndSupport("java.lang.Throwable"))) {
                 {if (true) throw new RuntimeException("Cannot catch " + type);}
@@ -3435,196 +3435,196 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
   final private boolean jj_2_1(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_1(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(0, xla); }
   }
 
   final private boolean jj_2_2(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_2(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(1, xla); }
   }
 
   final private boolean jj_2_3(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_3(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(2, xla); }
   }
 
   final private boolean jj_2_4(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_4(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(3, xla); }
   }
 
   final private boolean jj_2_5(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_5(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(4, xla); }
   }
 
   final private boolean jj_2_6(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_6(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(5, xla); }
   }
 
   final private boolean jj_2_7(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_7(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(6, xla); }
   }
 
   final private boolean jj_2_8(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_8(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(7, xla); }
   }
 
   final private boolean jj_2_9(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_9(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(8, xla); }
   }
 
   final private boolean jj_2_10(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_10(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(9, xla); }
   }
 
   final private boolean jj_2_11(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_11(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(10, xla); }
   }
 
   final private boolean jj_2_12(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_12(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(11, xla); }
   }
 
   final private boolean jj_2_13(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_13(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(12, xla); }
   }
 
   final private boolean jj_2_14(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_14(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(13, xla); }
   }
 
   final private boolean jj_2_15(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_15(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(14, xla); }
   }
 
   final private boolean jj_2_16(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_16(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(15, xla); }
   }
 
   final private boolean jj_2_17(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_17(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(16, xla); }
   }
 
   final private boolean jj_2_18(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_18(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(17, xla); }
   }
 
   final private boolean jj_2_19(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_19(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(18, xla); }
   }
 
   final private boolean jj_2_20(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_20(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(19, xla); }
   }
 
   final private boolean jj_2_21(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_21(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(20, xla); }
   }
 
   final private boolean jj_2_22(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_22(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(21, xla); }
   }
 
   final private boolean jj_2_23(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_23(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(22, xla); }
   }
 
   final private boolean jj_2_24(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_24(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(23, xla); }
   }
 
   final private boolean jj_2_25(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_25(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(24, xla); }
   }
 
   final private boolean jj_2_26(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_26(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(25, xla); }
   }
 
   final private boolean jj_2_27(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_27(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(26, xla); }
   }
 
   final private boolean jj_2_28(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_28(); }
-    catch(LookaheadSuccess ls) { return true; }
+    catch (LookaheadSuccess ls) { return true; }
     finally { jj_save(27, xla); }
   }
 

@@ -203,45 +203,45 @@ public class BluetoothNode extends TypedAtomicActor {
  double incRange = 100.0;
 		super.fire();
 		
-		if(BluetoothChannel.increaseRange){
+		if (BluetoothChannel.increaseRange) {
 		
 		 incRange = (((DoubleToken)(range.getToken())).doubleValue());
 						
 				incRange = incRange + incRange*.10;
-				if (incRange <= 55.0){
+				if (incRange <= 55.0) {
 				range.setToken("55");
 				_circle.width.setToken("range*2");
 				_circle.height.setToken("range*2");	
 				}
-				if (incRange >= 60.5 && incRange <= 61.0){
+				if (incRange >= 60.5 && incRange <= 61.0) {
 					range.setToken("60.5");
 					_circle.width.setToken("range*2");
 					_circle.height.setToken("range*2");
 				}
-			if (incRange >= 66.55 && incRange <= 67.0){
+			if (incRange >= 66.55 && incRange <= 67.0) {
 				range.setToken("66.55");
 				_circle.width.setToken("range*2");
 				_circle.height.setToken("range*2");
 			}
-			if (incRange > 66.55 ){
+			if (incRange > 66.55 ) {
 				range.setToken("100");
 				_circle.width.setToken("range*2");
 				_circle.height.setToken("range*2");
 			}
 		}
-		if(!BluetoothChannel.increaseRange) {
+		if (!BluetoothChannel.increaseRange) {
 			range.setToken("50");
 			_circle.width.setToken("range*2");
 			_circle.height.setToken("range*2");
 		}
         
-		if(signal.hasToken(0)) {
+		if (signal.hasToken(0)) {
 			String signalValue = ((StringToken) signal.get(0)).stringValue();
 			if (_debugging) {
 				_debug("signal token received: " + signalValue);
 			}
 			//FIXME: Assumes the pursure uses "SPIDER" in its signal header.
-			if (!signalValue.equals("SPIDER")){
+			if (!signalValue.equals("SPIDER")) {
 				//detect the envader, set this to be the root node in the
 				//spanning tree.
 				String[] labels = {"location", "time", "depth"};
@@ -263,7 +263,7 @@ public class BluetoothNode extends TypedAtomicActor {
 				output.send(0, result);                
 			} else {
 				// It is the pursuer. Send its parent info to the pursuer.
-				if(_timeValue > 0.0) {
+				if (_timeValue > 0.0) {
 					String[] labels = {"location", "time", "depth"};
             
 					Token[] values = {

@@ -418,7 +418,7 @@ public class ChicInvoker extends Attribute {
         //            chicAttribute = new ChicAttribute(model, name);
         //            chicAttribute.setExpression(chicInterface);
         //        }
-        //        if(!silent) System.out.println(chicInterface + "\n");
+        //        if (!silent) System.out.println(chicInterface + "\n");
         //        return true;
     }
 

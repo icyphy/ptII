@@ -206,7 +206,7 @@ public class AudioPlayer extends LiveSoundActor {
             Token[] inputArray = input.get(j, count);
             
             // Convert to doubles.
-            for(int element = 0; element < count; element++) {
+            for (int element = 0; element < count; element++) {
                 _audioPutArray[j][element] =
                     ((DoubleToken)inputArray[element]).doubleValue();
             }

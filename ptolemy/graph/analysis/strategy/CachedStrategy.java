@@ -202,7 +202,7 @@ abstract public class CachedStrategy extends Strategy implements GraphAnalyzer {
             _cachedResult = _compute();
             _registerComputation();
             result = _cachedResult;
-        } else if(_cachingEnabled) {
+        } else if (_cachingEnabled) {
             result = _cachedResult;
         } else {
             // Do not call _registerComputation to keep the obsolete status as

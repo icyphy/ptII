@@ -76,7 +76,7 @@ public class NonlinearServant extends _CorbaActorImplBase {
     */
     public void fire( ) throws
             CorbaIllegalActionException {
-        if (_input == null){
+        if (_input == null) {
             _output = null;
             throw new CorbaIllegalActionException(
                     "No input data.");

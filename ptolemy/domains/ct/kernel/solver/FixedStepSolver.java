@@ -85,7 +85,7 @@ public abstract class FixedStepSolver extends ODESolver {
      *  @return The current step size of the director.
      */
     public final double integratorPredictedStepSize(
-            CTBaseIntegrator integrator){
+            CTBaseIntegrator integrator) {
         CTDirector dir = (CTDirector) getContainer();
         return dir.getCurrentStepSize();
     }

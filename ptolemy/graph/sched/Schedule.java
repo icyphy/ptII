@@ -179,11 +179,11 @@ public class Schedule extends ScheduleElement {
         // Give element a reference to this schedule so that it can
         // notify this schedule (via _incrementVersions()) when
         // element is modified.
-        if(this.firingElementClass() != null) {
+        if (this.firingElementClass() != null) {
             Class firingElementClass =  this.firingElementClass();
             Class elementClass = element.firingElementClass();
-            if(elementClass != null) {
-                if(firingElementClass.isAssignableFrom(elementClass)) {
+            if (elementClass != null) {
+                if (firingElementClass.isAssignableFrom(elementClass)) {
                     element.setParent(this);
                     _incrementVersion();
                     _schedule.add(index, element);

@@ -624,7 +624,7 @@ public class FSMCreator implements AtomicActorCreator {
                 try {
                     BooleanToken resetToken =
                         (BooleanToken)transition.reset.getToken();
-                    if(resetToken.booleanValue()) {
+                    if (resetToken.booleanValue()) {
                         refinements = ((State)transition.destinationState()).
                             getRefinement();
                     }

@@ -134,7 +134,7 @@ public class PullSupplier extends Sink {
      *  or any remote exceptions.
      */
     public void fire() throws IllegalActionException {
-        if(input.hasToken(0)){
+        if (input.hasToken(0)) {
             _lastReadToken = input.get(0);
             synchronized(_pullThread) {
                 _pullThread.notifyAll();
@@ -170,7 +170,7 @@ public class PullSupplier extends Sink {
          if (_debugging) {
             _debug(getName(), "_pullIsWaiting = " + _pullIsWaiting);
         }
-         if(_pullIsWaiting) {
+         if (_pullIsWaiting) {
              boolean b = input.hasToken(0);
              if (_debugging) {
                 _debug(getName(), "hasToken = " + b);
@@ -282,7 +282,7 @@ public class PullSupplier extends Sink {
          */
         public org.omg.CORBA.Any pull() throws CorbaIllegalActionException
         {
-            try{
+            try {
 
                 if (_lastReadToken == null) {
                     if (_debugging) {
@@ -293,7 +293,7 @@ public class PullSupplier extends Sink {
                             _debug(getName(), "pull() is waiting.");
                         }
                         _pullIsWaiting = true;
-                        if(_prefireIsWaiting) {
+                        if (_prefireIsWaiting) {
                             if (_debugging) {
                                 _debug(getName(), "pull for data and wake up prefire().");
                             }
@@ -322,7 +322,7 @@ public class PullSupplier extends Sink {
                 }
                 return null;
 
-            }catch (InterruptedException e){
+            } catch (InterruptedException e) {
                 throw new InternalErrorException("pull method interrupted." + e.getMessage());
             }
         }

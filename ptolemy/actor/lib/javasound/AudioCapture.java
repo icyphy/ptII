@@ -219,7 +219,7 @@ public class AudioCapture extends LiveSoundActor {
         }
         for (int j = 0; j < _channels; j++) {
             // Convert to DoubleToken.
-            for(int element = 0; element < count; element++) {
+            for (int element = 0; element < count; element++) {
                 _audioSendArray[element] = new DoubleToken(
                         _audioInDoubleArray[j][element]);
             }

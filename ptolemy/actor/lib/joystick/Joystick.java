@@ -151,7 +151,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (_debugging){
+        if (_debugging) {
             _debug("Joystick.attributeChanged(): " + attribute );
         }
 
@@ -202,7 +202,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (_debugging){
+        if (_debugging) {
             _debug("Joystick.initialize() start");
         }
         double deadZoneValue
@@ -212,7 +212,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
 
         try {
             _joy = com.centralnexus.input.Joystick.createInstance();
-            if (_debugging){
+            if (_debugging) {
                 _debug("JoystickID: " + _joy.getID());
             }
         }
@@ -226,7 +226,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
         if (!_isPollingValue) {
             _joy.addJoystickListener(this);
         }
-        if (_debugging){
+        if (_debugging) {
             _debug("Joystick.initialize() end");
         }
 

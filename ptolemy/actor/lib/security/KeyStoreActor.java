@@ -215,7 +215,7 @@ public class KeyStoreActor extends TypedAtomicActor {
                 keyStoreType = new StringParameter(this, "keyStoreType");
                 keyStoreType.setExpression(KeyStore.getDefaultType());
                 Iterator keyStoreTypes = Security.getAlgorithms("KeyStore").iterator();
-                while(keyStoreTypes.hasNext()) {
+                while (keyStoreTypes.hasNext()) {
                     String keyStoreName = (String)keyStoreTypes.next();
                     keyStoreType.addChoice(keyStoreName);
                 }

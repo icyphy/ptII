@@ -248,7 +248,7 @@ public class CNames {
                 ||(className.startsWith("org."))
                 ||(className.startsWith("com."))
                 ||(className.startsWith("javax."))
-            ){
+            ) {
             return (true);
         }
         else {

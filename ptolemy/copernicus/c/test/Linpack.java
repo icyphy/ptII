@@ -305,7 +305,7 @@ public class Linpack{
      * to compute    inverse(a) * c    where    c    is a matrix
      * with    p    columns
      * dgeco(a,lda,n,ipvt,rcond,z)
-     * if (!rcond is too small){
+     * if (!rcond is too small) {
      * for (j=0,j<p,j++)
      * dgesl(a,lda,n,ipvt,c[j][0],0);
      * }
@@ -328,7 +328,7 @@ public class Linpack{
                 for (k = 0; k < nm1; k++) {
                     l = ipvt[k];
                     t = b[l];
-                    if (l != k){
+                    if (l != k) {
                         b[l] = b[k];
                         b[k] = t;
                     }

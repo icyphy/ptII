@@ -358,7 +358,7 @@ public class SerialComm extends TypedAtomicActor
                     && _blocking
                     && !_stopRequested
                     && !_stopFireRequested) {
-                try{
+                try {
                     if (_debugging) {
                         _debug("Blocking waiting for minimum number of bytes: "
                         + _minimumOutputSize);

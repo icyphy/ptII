@@ -112,7 +112,7 @@ public class TextAttribute extends Attribute {
         String[] families = GraphicsEnvironment
             .getLocalGraphicsEnvironment()
             .getAvailableFontFamilyNames();
-        for(int i = 0; i < families.length; i++) {
+        for (int i = 0; i < families.length; i++) {
             fontFamily.addChoice(families[i]);
         }
         

@@ -156,7 +156,7 @@ public class CallGraphPruner {
      */
     protected void _add(Collection nodes) {
         Iterator i = nodes.iterator();
-        while (i.hasNext()){
+        while (i.hasNext()) {
             _add(i.next());
         }
     }
@@ -216,7 +216,7 @@ public class CallGraphPruner {
         LinkedList entryPoints = new LinkedList();
         Iterator nodes = _getCompulsoryNodes().iterator();
 
-        while (nodes.hasNext()){
+        while (nodes.hasNext()) {
             Object node = nodes.next();
             if (node instanceof SootMethod) {
                 SootMethod method = (SootMethod)node;
@@ -319,7 +319,7 @@ public class CallGraphPruner {
 
                 if (source.declaresMethod(subSignature)
                     && allParents.contains(method.getDeclaringClass())
-                    ){
+                    ) {
                     requiredMethodSet.add(source.getMethod(subSignature));
                 }
             }
@@ -536,7 +536,7 @@ public class CallGraphPruner {
                     && !OverriddenMethodGenerator.isOverridden(method)) {
                 Iterator traps = method.retrieveActiveBody().getTraps()
                     .iterator();
-                while (traps.hasNext()){
+                while (traps.hasNext()) {
                     Trap trap = (Trap)traps.next();
                     _add(trap.getException());
                 }

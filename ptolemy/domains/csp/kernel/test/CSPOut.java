@@ -34,7 +34,7 @@ public class CSPOut extends CSPActor {
             hasSent[i] = false;
         }
         Token token = new IntToken(_count);
-        while(true) {
+        while (true) {
             ConditionalSend [] branches = new ConditionalSend[2];
             for (int i = 0; i < branches.length; i++) {
                 branches[i] = new ConditionalSend(!hasSent[i], _ports[i], 0, i, token, this.getConditionalBranchController());

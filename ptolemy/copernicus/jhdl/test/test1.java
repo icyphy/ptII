@@ -649,7 +649,7 @@ public class test1 extends TypedAtomicActor {
         c=a+5+t1.e+t1.e;
         d=b-c + f();
 
-        if (d > 8){
+        if (d > 8) {
             d=a*a+e;
         }
     }

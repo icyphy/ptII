@@ -184,7 +184,7 @@ public class DataPump extends MACActorBase {
         } else if (fromPhysical.hasToken(0)) {
             _inputMessage = (RecordToken) fromPhysical.get(0);
         }
-        if(_inputMessage != null) {
+        if (_inputMessage != null) {
             _messageType = ((IntToken)
                     _inputMessage.get("kind")).intValue();
             switch (_state) {
@@ -304,7 +304,7 @@ public class DataPump extends MACActorBase {
         } else if (fromFilterMpdu.hasToken(0)) {
             _inputMessage = (RecordToken) fromFilterMpdu.get(0);
 	    }
-        if(_inputMessage != null) {
+        if (_inputMessage != null) {
             _messageType = ((IntToken)
             _inputMessage.get("kind")).intValue();
         } 

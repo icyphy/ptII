@@ -143,9 +143,9 @@ public class DynamicEditorIcon extends EditorIcon {
                 public boolean hasNext() {
                     // Pull the next valid element out of the list of
                     // WeakReferences.
-                    while(_object == null && iterator.hasNext()) {
+                    while (_object == null && iterator.hasNext()) {
                         _object = ((WeakReference)iterator.next()).get();
-                        if(_object == null) {
+                        if (_object == null) {
                             iterator.remove();
                         }
                     }
@@ -154,13 +154,13 @@ public class DynamicEditorIcon extends EditorIcon {
                 public Object next() throws NoSuchElementException {
                     // Just to make sure that someone wasn't stupid
                     // and didn't call hasNext();
-                    while(_object == null && iterator.hasNext()) {
+                    while (_object == null && iterator.hasNext()) {
                         _object = ((WeakReference)iterator.next()).get();
-                        if(_object == null) {
+                        if (_object == null) {
                             iterator.remove();
                         }                    
                     } 
-                    if(_object == null) {
+                    if (_object == null) {
                         throw new NoSuchElementException(
                                 "The iterator is empty.");
                     } else {

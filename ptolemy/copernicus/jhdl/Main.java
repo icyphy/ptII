@@ -103,7 +103,7 @@ public class Main extends KernelMain {
                new TransformerAdapter(TypeAssigner.v()));
        addStandardOptimizations(pack,1);
 
-       if(_snapshots) {
+       if (_snapshots) {
            addTransform(pack,"wjtp.snapshot1",
                    JimpleWriter.v(), "outDir:" + _outputDirectory +
                    "/jimple1");
@@ -190,7 +190,7 @@ public class Main extends KernelMain {
                new TransformerAdapter(CopyPropagator.v()));
 
        
-       if(_snapshots) {
+       if (_snapshots) {
            addTransform(pack, "wjtp.snapshot2", ClassWriter.v(),
                    "outDir:" + _outputDirectory + "/jimple2");
            addTransform(pack, "wjtp.snapshot2jimple", JimpleWriter.v(),
@@ -245,7 +245,7 @@ public class Main extends KernelMain {
     protected String[] _parseArgs(GeneratorAttribute attribute) 
             throws Exception {
        //  String snapshots = attribute.getParameter("snapshots");
-//         if(snapshots.equals("true")) {
+//         if (snapshots.equals("true")) {
 //             _snapshots = true;
 //         } else {
 //             _snapshots = false;

@@ -356,7 +356,7 @@ public abstract class ActorController extends AttributeController {
                         ports.remove( index );
                         try {
                             ordinal.setExpression( Integer.toString( size -1 ) );
-                        } catch( Exception e ) {
+                        } catch ( Exception e ) {
                             MessageHandler.error("Error setting ordinal property", e);
                         }
                         ports.add( port );
@@ -370,7 +370,7 @@ public abstract class ActorController extends AttributeController {
                         }
                         ports.add( 0, port );
                     }
-                    else if ( number != index ){
+                    else if ( number != index ) {
                         ports.remove( index );
                         ports.add( number, port );
                     }

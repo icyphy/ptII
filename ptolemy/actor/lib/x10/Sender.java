@@ -106,7 +106,7 @@ public class Sender extends X10Interface {
      * broadcasted in a FIFO manner. 
      * @param command The command to be sent on the x10 network.
      */
-    protected void _transmit(Command command){
+    protected void _transmit(Command command) {
         _interface.addCommand(command);
     }
     
@@ -120,9 +120,9 @@ public class Sender extends X10Interface {
         
         boolean hasTrue = false;
         
-        if (port.getWidth() > 0){
+        if (port.getWidth() > 0) {
             for (int i = 0; i < port.getWidth(); i++) {
-                if (port.hasToken(i)){
+                if (port.hasToken(i)) {
                     if (((BooleanToken)port.get(i)).booleanValue() == true) {
                         hasTrue = true;
                     }

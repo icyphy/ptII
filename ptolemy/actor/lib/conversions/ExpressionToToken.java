@@ -88,7 +88,7 @@ public class ExpressionToToken extends Converter {
         String string = ((StringToken)input.get(0)).stringValue();
         Token result;
         try {
-            if(_parser == null) {
+            if (_parser == null) {
                 _parser = new PtParser();
             }
             ASTPtRootNode parseTree = _parser.generateParseTree(string);

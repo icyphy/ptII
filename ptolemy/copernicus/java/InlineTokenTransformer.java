@@ -120,7 +120,7 @@ public class InlineTokenTransformer extends SceneTransformer implements HasPhase
         System.out.println("InlineTokenTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
         
-        for(Iterator classes = Scene.v().getApplicationClasses().iterator();
+        for (Iterator classes = Scene.v().getApplicationClasses().iterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             _inlineTokenCalls(theClass);

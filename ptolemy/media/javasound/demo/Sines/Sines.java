@@ -67,7 +67,7 @@ public class Sines {
                 putSamplesSize);
 
         // Initialize and begin playback.
-        try{
+        try {
             soundPlayback.startPlayback();
         } catch (Exception ex) {
             System.err.println(ex);
@@ -78,7 +78,7 @@ public class Sines {
         // keep track of time, used in calculating the sine wave values.
         double[] samples = new double[channels];
 
-        try{
+        try {
             // Loop forever.
             while (true) {
                 for (int j=0; j< channels; j++) {

@@ -97,7 +97,7 @@ public class AddEditorFactory implements MoMLFilter {
 
         if (attributeName.equals("class")) {
             if (attributeValue
-                    .equals("ptolemy.data.expr.Parameter")){
+                    .equals("ptolemy.data.expr.Parameter")) {
                 _currentlyProcessingActorThatMayNeedAnEditorFactory = true;
                 if (container != null ) {
                     _currentActorFullName = container.getFullName()

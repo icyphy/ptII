@@ -230,7 +230,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                         //     System.out.println("Argument type is : " + in.get(r.getArg(0)));
                         ptolemy.data.type.Type argType = 
                             (ptolemy.data.type.Type)in.get(r.getArg(0));
-                        if(argType == null) {
+                        if (argType == null) {
                             argType = BaseType.UNKNOWN;
                         }
                         out.put(r.getBase(), new ArrayType(argType));
@@ -333,7 +333,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                         // in which case, return double.
                         ptolemy.data.type.Type inType =
                             (ptolemy.data.type.Type)in.get(r.getBase());
-                        if(inType.equals(BaseType.COMPLEX)) {
+                        if (inType.equals(BaseType.COMPLEX)) {
                             out.put(leftOp, BaseType.DOUBLE);
                         } else {
                             out.put(leftOp, inType);

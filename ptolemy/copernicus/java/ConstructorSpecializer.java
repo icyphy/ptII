@@ -122,12 +122,12 @@ public class ConstructorSpecializer extends SceneTransformer implements HasPhase
                             PtolemyUtilities.compositeActorClass) ||
                     SootUtilities.derivesFrom(theClass,
                             PtolemyUtilities.attributeClass)) {
-                if(theClass.declaresFieldByName(
+                if (theClass.declaresFieldByName(
                            ModelTransformer.getContainerFieldName())) {
                     for (Iterator methods = theClass.getMethods().iterator();
                          methods.hasNext();) {
                         SootMethod method = (SootMethod)methods.next();
-                        if(method.getName().equals("<init>") && 
+                        if (method.getName().equals("<init>") && 
                                 method.getParameterCount() == 2) {
                             // Change the constructor so that it takes an
                             // appropriate container type.
@@ -159,7 +159,7 @@ public class ConstructorSpecializer extends SceneTransformer implements HasPhase
                                     Value value = identityStmt.getRightOp();
                                     if (value instanceof ParameterRef) {
                                         ParameterRef parameterRef = (ParameterRef)value;
-                                        if(parameterRef.getIndex() == 0) {
+                                        if (parameterRef.getIndex() == 0) {
                                             ValueBox box = identityStmt.getRightOpBox();
                                             box.setValue(Jimple.v().newParameterRef(
                                                                  method.getParameterType(0), 0));
@@ -215,7 +215,7 @@ public class ConstructorSpecializer extends SceneTransformer implements HasPhase
 //                                         + unit + " in method " + method);
                                 SootMethod newConstructor = 
                                     declaringClass.getMethodByName("<init>");
-                                if(newConstructor.getParameterCount() == 1) {
+                                if (newConstructor.getParameterCount() == 1) {
                                     // Replace with just container arg constructor.
                                     List args = new LinkedList();
                                     args.add(expr.getArg(0));

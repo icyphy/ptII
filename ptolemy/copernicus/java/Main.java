@@ -102,7 +102,7 @@ public class Main extends KernelMain {
         addStandardOptimizations(pack, 1);
         
         
-        if(_snapshots) {
+        if (_snapshots) {
             addTransform(pack, "wjtp.snapshot1jimple", JimpleWriter.v(),
                     "outDir:" + _outputDirectory + "/jimple1");
             addTransform(pack, "wjtp.snapshot1", ClassWriter.v(),
@@ -231,7 +231,7 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.cp1",
                 new TransformerAdapter(CopyPropagator.v()));
         
-        if(_snapshots) {
+        if (_snapshots) {
             addTransform(pack, "wjtp.snapshot2jimple", JimpleWriter.v(),
                     "outDir:" + _outputDirectory + "/jimple2");
             addTransform(pack, "wjtp.snapshot2", ClassWriter.v(),
@@ -273,7 +273,7 @@ public class Main extends KernelMain {
         // pack.add(new Transform("wjtp.si",
         //        StaticInliner.v());
         
-        if(_snapshots) {
+        if (_snapshots) {
             addTransform(pack, "wjtp.snapshot3jimple", JimpleWriter.v(),
                     "outDir:" + _outputDirectory + "/jimple3");
             addTransform(pack, "wjtp.snapshot3", ClassWriter.v(),
@@ -356,7 +356,7 @@ public class Main extends KernelMain {
                         DeadObjectEliminator.v()));
         addStandardOptimizations(pack, 7);
           
-        if(_snapshots) {
+        if (_snapshots) {
             addTransform(pack, "wjtp.snapshot4jimple", JimpleWriter.v(),
                     "outDir:" + _outputDirectory + "/jimple4");
             addTransform(pack, "wjtp.snapshot4", ClassWriter.v(),
@@ -367,7 +367,7 @@ public class Main extends KernelMain {
                     "/jimple4/jarClassList.txt");
         }
         
-        if(_unboxing) {
+        if (_unboxing) {
             addTransform(pack, "wjtp.ttn",
                     TokenToNativeTransformer.v(toplevel));//, "debug:true level:1");
             
@@ -461,18 +461,18 @@ public class Main extends KernelMain {
      */ 
     protected String[] _parseArgs(GeneratorAttribute attribute) 
             throws Exception {
-        if(attribute.hasParameter("snapshots")) {
+        if (attribute.hasParameter("snapshots")) {
             String snapshots = attribute.getParameter("snapshots");
-            if(snapshots.equals("true")) {
+            if (snapshots.equals("true")) {
                 _snapshots = true;
             } else {
                 _snapshots = false;
             }
         }
         
-        if(attribute.hasParameter("unboxing")) {
+        if (attribute.hasParameter("unboxing")) {
             String unboxing = attribute.getParameter("unboxing");
-            if(unboxing.equals("false")) {
+            if (unboxing.equals("false")) {
                 _unboxing = false;
             } else {
                 _unboxing = true;

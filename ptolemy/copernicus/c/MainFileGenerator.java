@@ -95,7 +95,7 @@ public class MainFileGenerator extends CodeGenerator {
         // Call the Class Structure Initializations for all required
         // classes.
         headerCode.append("\n");
-        while (requiredClasses.hasNext()){
+        while (requiredClasses.hasNext()) {
             SootClass nextClass = (SootClass)requiredClasses.next();
             headerCode.append("#include \""
                     + CNames.includeFileNameOf(nextClass)
@@ -120,7 +120,7 @@ public class MainFileGenerator extends CodeGenerator {
         headerCode.append("\nvoid _INITIALIZE_SYSTEM_CLASS();\n");
 
         // Call the actual main method of the class, if it exists.
-        if (mainExists){
+        if (mainExists) {
             bodyCode.append(_generateMain(source) + "\n");
             bodyCode.append(_generateClassStructInit() + "\n");
             bodyCode.append(_generateStaticInit() + "\n");
@@ -150,7 +150,7 @@ public class MainFileGenerator extends CodeGenerator {
 
         // Call the Class Structure Initializations for all required
         // classes.
-        while (requiredClasses.hasNext()){
+        while (requiredClasses.hasNext()) {
             SootClass nextClass = (SootClass)requiredClasses.next();
 
             code.append("\n" + _indent(1) + "/* " + nextClass.toString()
@@ -227,7 +227,7 @@ public class MainFileGenerator extends CodeGenerator {
 
         // Call static initializers for required classes.
         if ((Options.v().getInt("pruneLevel") > 0)
-            && (!Options.v().get("target").equals("C6000"))){
+            && (!Options.v().get("target").equals("C6000"))) {
             bodyCode.append(_indent(1) + "staticInit();\n");
         }
         else {
@@ -300,7 +300,7 @@ public class MainFileGenerator extends CodeGenerator {
         Iterator requiredClasses = RequiredFileGenerator
             .getRequiredClasses().iterator();
 
-        while (requiredClasses.hasNext()){
+        while (requiredClasses.hasNext()) {
             // Invoke the static initializer method (clinit) for the class if it
             // exists.
             SootClass nextClass = (SootClass)requiredClasses.next();
@@ -309,7 +309,7 @@ public class MainFileGenerator extends CodeGenerator {
 
             if ((initializer!= null)
                     &&(!OverriddenMethodGenerator
-                            .isOverridden(initializer))){
+                            .isOverridden(initializer))) {
 
                 code.append("\n" + _indent(1)
                         + _comment("Static initializer method for "

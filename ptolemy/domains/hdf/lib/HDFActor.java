@@ -149,7 +149,7 @@ public class HDFActor extends Transformer {
         Director director = getDirector();
         CompositeActor container = (CompositeActor)getContainer();
         if (director instanceof HDFDirector) {
-            if (_requestChange){
+            if (_requestChange) {
                 _requestChange = false;
                 ChangeRequest request =
                     new ChangeRequest(this, "change rates") {

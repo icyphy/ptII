@@ -311,9 +311,9 @@ public class ConvolutionalCoder extends Transformer {
 
         // Send the parity results to the output.
         for (int i = 0; i < _maskNumber; i++) {
-            if (parity[i] == 1){
+            if (parity[i] == 1) {
                 result[i] = BooleanToken.TRUE;
-            }else{
+            }else {
                 result[i] = BooleanToken.FALSE;
             }
         }
@@ -356,7 +356,7 @@ public class ConvolutionalCoder extends Transformer {
             // Find the parity of the "masked".
             parity[i] = 0;
             // Calculate the parity of the masked word.
-            while (masked > 0){
+            while (masked > 0) {
                 parity[i] = parity[i] ^ (masked & 1);
                 masked = masked >> 1;
             }

@@ -206,8 +206,8 @@ public class Receiver extends X10Interface {
      *  @return The first command in the command queue, or null if there
      *   is none. 
      */
-    protected Command _getCommand (){
-        synchronized (_commandQueue){
+    protected Command _getCommand () {
+        synchronized (_commandQueue) {
             return (Command) _commandQueue.removeFirst();   
         }       
     }
@@ -216,9 +216,9 @@ public class Receiver extends X10Interface {
      *  otherwise.
      *  @return True if there is a command in the command queue.
      */
-    protected boolean _commandReady (){
-        synchronized (_commandQueue){
-            if (_commandQueue.size() != 0){
+    protected boolean _commandReady () {
+        synchronized (_commandQueue) {
+            if (_commandQueue.size() != 0) {
                 return(true);
             } else {
                 return(false);
@@ -234,19 +234,19 @@ public class Receiver extends X10Interface {
         
         String functionString = "UNRECOGNIZED_COMMAND";
 
-        if (function == x10.Command.ALL_LIGHTS_OFF){
+        if (function == x10.Command.ALL_LIGHTS_OFF) {
             functionString = "ALL_LIGHTS_OFF";
-        } else if (function == x10.Command.ALL_LIGHTS_ON){
+        } else if (function == x10.Command.ALL_LIGHTS_ON) {
             functionString = "ALL_LIGHTS_ON";
-        } else if (function == x10.Command.ALL_UNITS_OFF){
+        } else if (function == x10.Command.ALL_UNITS_OFF) {
             functionString = "ALL_UNITS_OFF";
-        } else if (function == x10.Command.BRIGHT){
+        } else if (function == x10.Command.BRIGHT) {
             functionString = "BRIGHT";
-        } else if (function == x10.Command.DIM){
+        } else if (function == x10.Command.DIM) {
             functionString = "DIM";
-        } else if (function == x10.Command.OFF){
+        } else if (function == x10.Command.OFF) {
             functionString = "OFF";
-        } else if (function == x10.Command.ON){
+        } else if (function == x10.Command.ON) {
             functionString = "ON";
         }
         
@@ -292,25 +292,25 @@ public class Receiver extends X10Interface {
         ///////////////////////////////////////////////////////////////////
         ///                       public methods                       ////
         
-        public void allLightsOff(UnitEvent event){
+        public void allLightsOff(UnitEvent event) {
             _appendCommand(event);
         }
-        public void allLightsOn(UnitEvent event){
+        public void allLightsOn(UnitEvent event) {
             _appendCommand(event);
         }
-        public void allUnitsOff(UnitEvent event){
+        public void allUnitsOff(UnitEvent event) {
             _appendCommand(event);
         }
-        public void unitBright(UnitEvent event){
+        public void unitBright(UnitEvent event) {
             _appendCommand(event);
         }
-        public void unitDim(UnitEvent event){
+        public void unitDim(UnitEvent event) {
             _appendCommand(event);
         }
-        public void unitOff(UnitEvent event){
+        public void unitOff(UnitEvent event) {
             _appendCommand(event);
         }
-        public void unitOn(UnitEvent event){
+        public void unitOn(UnitEvent event) {
             _appendCommand(event); 
         }          
         
@@ -320,11 +320,11 @@ public class Receiver extends X10Interface {
        /** Append a received command onto the </i>commandQueue<i>.
          * @return void
          */
-        private void _appendCommand (UnitEvent event){
+        private void _appendCommand (UnitEvent event) {
             if (_debugging) {
                 _debug("Detected X10 command: " + _commandToString(event.getCommand()));
             }
-            synchronized (_commandQueue){
+            synchronized (_commandQueue) {
                 _commandQueue.addLast(event.getCommand());
             }
             if (!_fireAtCurrentTimeCalled) {

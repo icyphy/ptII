@@ -192,7 +192,7 @@ public class HammingDecoder extends Transformer {
                     flag ++;
                 } else {
                     _index[i] = pos;
-                    for (int j = 0; j < _order; j++){
+                    for (int j = 0; j < _order; j++) {
                         _parityMatrix[pos][j]
                             = i >> (_order - j - 1) & 1;
                     }

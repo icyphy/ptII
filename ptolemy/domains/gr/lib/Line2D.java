@@ -142,7 +142,7 @@ public class Line2D extends GRActor2D {
                     ((DoubleToken)yStart.getToken()).doubleValue(),
                     ((DoubleToken)xEnd.getToken()).doubleValue(),
                     ((DoubleToken)xEnd.getToken()).doubleValue()));
-        } else if((attribute == rgbColor || attribute == lineWidth) &&
+        } else if ((attribute == rgbColor || attribute == lineWidth) &&
                   _viewScreen != null) {
             _setAppearance(_figure);
         }

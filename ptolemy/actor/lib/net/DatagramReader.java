@@ -448,7 +448,7 @@ public class DatagramReader extends TypedAtomicActor {
                 //multicast IP ranges from 224.0.0.1 to 239.255.255.255(inclusive).
                 //Note: don't use 224.0.0.1 ~ 224.255.255.255 when the live time
                 //of the socket is specified larger than 1. 
-                if(_defaultReturnAddress.compareTo("224.0.0.1")>=0 &&
+                if (_defaultReturnAddress.compareTo("224.0.0.1")>=0 &&
 					_defaultReturnAddress.compareTo("239.255.255.255")<=0 ) {
 					_multiCast = true;
 					try {
@@ -548,7 +548,7 @@ public class DatagramReader extends TypedAtomicActor {
                     if (_socketReadingThread == null) {
                         throw new IllegalActionException(this,
                                 "thread == null");
-                    } else if (!_socketReadingThread.isAlive()){
+                    } else if (!_socketReadingThread.isAlive()) {
                         throw new IllegalActionException(this,
                                 "thread is not Alive");
                     }
@@ -790,7 +790,7 @@ public class DatagramReader extends TypedAtomicActor {
 		_defaultReturnAddress = ((StringToken)
 								defaultReturnAddress.getToken()).stringValue();
 		//check whether is ip multicase datagram.
-		if(_defaultReturnAddress.compareTo("224.0.0.1")>=0 &&
+		if (_defaultReturnAddress.compareTo("224.0.0.1")>=0 &&
 				_defaultReturnAddress.compareTo("239.255.255.255")<=0 ) {
 			_multiCast = true;
 		} else {
@@ -1122,11 +1122,11 @@ public class DatagramReader extends TypedAtomicActor {
                             // platformBufferLength parameter value
                             // (in bytes).
                             if (((BooleanToken)setPlatformBufferLength.getToken()).booleanValue()) {
-                                if(_multiCast) {
+                                if (_multiCast) {
                                		_multicastSocket.setReceiveBufferSize(
                                         ((IntToken)platformBufferLength.getToken())
                                         .intValue());
-                                } else{
+                                } else {
 									_socket.setReceiveBufferSize(
 										((IntToken)platformBufferLength.getToken())
 										.intValue());
@@ -1217,7 +1217,7 @@ public class DatagramReader extends TypedAtomicActor {
 							// -> java.lang.RuntimeException: -null ptr-
 							//     at ptolemy.actor.lib.net.DatagramReceiver$ListenerThread.run(DatagramReceiver.java:935)
 						}                    
-                    }else{
+                    }else {
 	                    try {
 	                        // NOTE: The following call may block.
 	                        _socket.receive(_receivePacket);

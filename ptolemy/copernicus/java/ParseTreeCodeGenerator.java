@@ -189,7 +189,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         // First check to see if the name references a valid variable.
         Local local = null;
         String functionName = node.getFunctionName();
-        if(functionName != null && _isValidName(functionName)) {
+        if (functionName != null && _isValidName(functionName)) {
             local = _getLocalForName(node.getFunctionName());
         }
 
@@ -209,7 +209,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             _body.getLocals().add(resultLocal);
            
             // Evaluate it, if necessary. 
-            if(local == null) {
+            if (local == null) {
                 _generateChild(node, 0);
                 local = (Local)_nodeToLocal.get(node.jjtGetChild(0));   
             }
@@ -261,7 +261,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                     throw new IllegalActionException("Wrong number of indices "
                             + "when referencing " + node.getFunctionName());
                 }
-            } else if(type instanceof UnsizedMatrixType) {
+            } else if (type instanceof UnsizedMatrixType) {
                 if (argCount == 2) {
                     // matrix..
                     Local tokenCastLocal = Jimple.v().newLocal("indexToken",
@@ -1129,7 +1129,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         // A list of types corresponding to the Soot type for every
         // freeVariable
         List argumentSootTypes = new LinkedList();
-        for(Iterator freeVariables = freeVariableList.iterator();
+        for (Iterator freeVariables = freeVariableList.iterator();
             freeVariables.hasNext();) {
             String freeVariable = (String)freeVariables.next();
             ptolemy.data.type.Type type = _scope.getType(freeVariable);
@@ -1161,7 +1161,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                                     Collections.EMPTY_LIST)));
             // Read the parameters to the closure constructor.
             int i = 0;
-            for(Iterator freeVariables = freeVariableList.iterator();
+            for (Iterator freeVariables = freeVariableList.iterator();
                 freeVariables.hasNext();) {
                 String freeVariable = (String)freeVariables.next();
                 Local local = body.getParameterLocal(i);
@@ -1196,7 +1196,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             List list = node.getArgumentNameList();
             Local paramLocal = body.getParameterLocal(0);
             int count = 0;
-            for(Iterator names = list.iterator(); names.hasNext(); count++) {
+            for (Iterator names = list.iterator(); names.hasNext(); count++) {
                 String name = (String)names.next();
                 Local argLocal = Jimple.v().newLocal("argument_" + name ,
                         RefType.v(PtolemyUtilities.tokenClass));
@@ -1300,7 +1300,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         // Build a list of args for the instantiation.
         List argList = new ArrayList();
-        for(Iterator freeVariables = freeVariableList.iterator();
+        for (Iterator freeVariables = freeVariableList.iterator();
             freeVariables.hasNext();) {
             String freeVariable = (String)freeVariables.next();
             Local local = _scope.getLocal(freeVariable);
@@ -2284,7 +2284,7 @@ public class ParseTreeCodeGenerator extends AbstractParseTreeVisitor {
     /** Print a debugging message.
      */
     protected void _debug(ASTPtRootNode node) {
-        if(false) {
+        if (false) {
             System.out.println("Visiting node of type " + node.getClass());
         }
     }

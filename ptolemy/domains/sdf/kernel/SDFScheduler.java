@@ -183,15 +183,15 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             ConstVariableModelAnalysis.getAnalysis(this);
         SDFDirector director = (SDFDirector)getContainer();
         CompositeActor model = (CompositeActor)director.getContainer();
-        for(Iterator ports = model.portList().iterator();
+        for (Iterator ports = model.portList().iterator();
             ports.hasNext();) {
             IOPort port = (IOPort) ports.next();
-            if(!(port instanceof ParameterPort)) {
-                if(port.isInput()) {
+            if (!(port instanceof ParameterPort)) {
+                if (port.isInput()) {
                     _declareDependency(analysis, port, "tokenConsumptionRate",
                             _rateVariables);
                 } 
-                if(port.isOutput()) {
+                if (port.isOutput()) {
                     _declareDependency(analysis, port, "tokenProductionRate",
                             _rateVariables);
                     _declareDependency(analysis, port, "tokenInitProduction",
@@ -239,7 +239,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      */
     public void valueChanged(Settable settable) {
         // FIXME: causes 
-        //for(Iterator variables = _rateVariables.iterator();
+        //for (Iterator variables = _rateVariables.iterator();
 //             variables.hasNext();) {
 //             Variable variable = (Variable)variables.next();
 //             variable.removeValueListener(this);
@@ -683,10 +683,10 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             throws IllegalActionException {
         boolean allowRateChanges = ((BooleanToken)
                 ((SDFDirector)getContainer()).allowRateChanges.getToken()).booleanValue();
-        if(allowRateChanges) {
+        if (allowRateChanges) {
             // The schedule depends on the rate parameter.
-            if(!rateVariables.contains(variable)) {
-                if(_debugging) {
+            if (!rateVariables.contains(variable)) {
+                if (_debugging) {
                     _debug("Listening to rate variable " + variable);
                 }
                 variable.addValueListener(this);
@@ -704,7 +704,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         }
         Entity changeContext = 
             analysis.getChangeContext(variable);
-        if(!(changeContext == model || 
+        if (!(changeContext == model || 
                    changeContext.deepContains(model))) {
             throw new IllegalActionException(variable, 
                     "The SDF rate parameter changes during " +
@@ -721,29 +721,29 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             ConstVariableModelAnalysis.getAnalysis(
                     (SDFDirector)getContainer());
         Entity scheduleChangeContext = (Entity)toplevel();
-        for(Iterator entities = model.deepEntityList().iterator();
+        for (Iterator entities = model.deepEntityList().iterator();
             entities.hasNext();) {
             Entity entity = (Entity)entities.next();
-            for(Iterator ports = entity.portList().iterator();
+            for (Iterator ports = entity.portList().iterator();
                 ports.hasNext();) {
                 Port port = (Port) ports.next();
                 Set set = analysis.getNotConstVariables(port);
                 Variable variable;
                 variable = SDFUtilities.getRateVariable(
                         port, "tokenInitProduction");
-                if(set.contains(variable)) {
+                if (set.contains(variable)) {
                     _assertDynamicRateVariable(
                             model, variable, rateVariables, analysis);
                 } 
                 variable = SDFUtilities.getRateVariable(
                         port, "tokenConsumptionRate");
-                if(set.contains(variable)) {
+                if (set.contains(variable)) {
                     _assertDynamicRateVariable( 
                             model, variable, rateVariables, analysis);
                 } 
                 variable = SDFUtilities.getRateVariable(
                         port, "tokenProductionRate");
-                if(set.contains(variable)) {
+                if (set.contains(variable)) {
                     _assertDynamicRateVariable(
                             model, variable, rateVariables, analysis);
                 } 

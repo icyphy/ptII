@@ -71,7 +71,7 @@ public class NavigationTreeModel extends ClassAndEntityTreeModel {
      * Register a listener
      * @param tree
      */
-    public void register(NavigationPTree tree){
+    public void register(NavigationPTree tree) {
         listeners.add(tree);
     }
 
@@ -80,7 +80,7 @@ public class NavigationTreeModel extends ClassAndEntityTreeModel {
      * @param tree
      * @return wether the tree was in the listeners or not
      */
-    public boolean unRegister(NavigationPTree tree){
+    public boolean unRegister(NavigationPTree tree) {
         return listeners.remove(tree);
     }
 
@@ -102,9 +102,9 @@ public class NavigationTreeModel extends ClassAndEntityTreeModel {
     public void expandPath(TreePath aPath, boolean collapse) {
         for (Iterator it = listeners.iterator(); it.hasNext();) {
             NavigationPTree aTree = (NavigationPTree) it.next();
-            if (collapse){
+            if (collapse) {
                 aTree.collapsePath(aPath);
-            }else{
+            }else {
                 aTree.expandPath(aPath);
             }
         }

@@ -264,7 +264,7 @@ public class ContinuousClock extends Clock {
         _done = _tentativeDone;
 
         _cycleCount += _tentativeCycleCountIncrement;
-        if (_debugging){
+        if (_debugging) {
             _debug("Phase for next iteration: " + _phase);
         }
 
@@ -291,7 +291,7 @@ public class ContinuousClock extends Clock {
                 _debug("Done with requested number of cycles.");
             }
         }
-        if (_debugging){
+        if (_debugging) {
             _debug("Cycle count for next iteration: " + _cycleCount + ".");
         }
         return super.postfire();

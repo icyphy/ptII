@@ -49,7 +49,7 @@ public class Interface1_Main {
         print(b);
     }
 
-    public static void print(Interface1 i){
+    public static void print(Interface1 i) {
         i.print();
     }
 }

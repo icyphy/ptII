@@ -180,7 +180,7 @@ public class Rotate2D extends GRTransform2D {
         double anchorYValue = _oldAnchorY;
 
         boolean needsTransform = false;
-        if (theta.getWidth() != 0 && theta.hasToken(0)){
+        if (theta.getWidth() != 0 && theta.hasToken(0)) {
             angle = ((DoubleToken) theta.get(0)).doubleValue();
             needsTransform = true;
 
@@ -188,7 +188,7 @@ public class Rotate2D extends GRTransform2D {
                 angle = Math.toRadians(angle);
         }
 
-        if (anchorX.getWidth() != 0 && anchorX.hasToken(0)){
+        if (anchorX.getWidth() != 0 && anchorX.hasToken(0)) {
             anchorXValue = ((DoubleToken) anchorX.get(0)).doubleValue();
             needsTransform = true;
         }
@@ -199,15 +199,15 @@ public class Rotate2D extends GRTransform2D {
         }
 
 
-        if (needsTransform){
+        if (needsTransform) {
             final AffineTransform inputTransform =
                 AffineTransform.getRotateInstance(angle,
                         anchorXValue, anchorYValue);
 
             if ( !figure.getTransformContext().getTransform()
-                    .equals(inputTransform)){
+                    .equals(inputTransform)) {
 
-                if (!_isAccumulating()){
+                if (!_isAccumulating()) {
                     inputTransform.concatenate(
                             figure.getTransformContext()
                             .getInverseTransform());

@@ -154,7 +154,7 @@ public class Backoff extends MACActorBase {
             } else if (channelStatus.hasToken(0)) {
                 _inputMessage = (RecordToken) channelStatus.get(0);
             } 
-            if(_inputMessage != null) {
+            if (_inputMessage != null) {
                 _messageType = ((IntToken)
                         _inputMessage.get("kind")).intValue();
 
@@ -163,7 +163,7 @@ public class Backoff extends MACActorBase {
                 
         switch (_state) {
             case No_Backoff:
-              switch (_messageType){
+              switch (_messageType) {
                   case Backoff:
                       mBkIP = true;
                       _cnt = ((IntToken)_inputMessage.get("cnt")).intValue();
@@ -213,7 +213,7 @@ public class Backoff extends MACActorBase {
                       ct = -1;
                   _backoffDone(ct);
               }
-              switch(_messageType){
+              switch(_messageType) {
               // modify standard here
                   case Busy:
                       _slotCnt -= (int)((_currentTime - _backoffStartTime)*1e6/_aSlotTime);
@@ -253,7 +253,7 @@ public class Backoff extends MACActorBase {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
-    private int _generateRandom(int ccw){
+    private int _generateRandom(int ccw) {
         double r = _random.nextDouble();
         return (int)Math.ceil(ccw * r);
     }

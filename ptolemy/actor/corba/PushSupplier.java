@@ -205,7 +205,7 @@ public class PushSupplier extends Sink {
                        _debug("thread is interrupted when trying to find" +
                         "remote consumer");
 					}
-	            }catch (Exception exp) {
+	            } catch (Exception exp) {
 				    // ignor here and retry.
                     _debug("failed to resolve the remote consumer. will try again." );
 				try {

@@ -126,7 +126,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
     /** Return true if the first object is contained in the second.
      */
     public static boolean isContained(Nameable object1, Nameable object2) {
-        while(object1 != null && object1 != object2) {
+        while (object1 != null && object1 != object2) {
             object1 = object1.getContainer();
         }
         return (object1 == object2);
@@ -142,13 +142,13 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
             Entity entity, SootClass sourceClass, Local local, 
             JimpleBody body, Unit unit, Map options) {
         //  System.out.println("Get reference to " + entity + " from " + sourceClass);
-        if(ModelTransformer.isActorClass(sourceClass)) {
+        if (ModelTransformer.isActorClass(sourceClass)) {
             Entity sourceEntity = 
                 ModelTransformer.getActorForClass(sourceClass);
-            if(entity.equals(sourceEntity)) {
+            if (entity.equals(sourceEntity)) {
                 return local;
             }
-            if(isContained(entity, sourceEntity)) {
+            if (isContained(entity, sourceEntity)) {
                 Entity entityContainer = getEntityContainerOfObject(entity);
                 SootClass entityContainerClass = 
                 ModelTransformer.getClassForActor(entityContainer);
@@ -232,25 +232,25 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
         _options = options;
         _debug = PhaseOptions.getBoolean(options, "debug");
 
-        for(Iterator classes =
+        for (Iterator classes =
                 ModelTransformer.actorClassList().iterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             _createContainerField(theClass);
         }
-        for(Iterator classes = 
+        for (Iterator classes = 
                 ModelTransformer.attributeClassList().iterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             _createContainerField(theClass);
         }
-        for(Iterator classes = 
+        for (Iterator classes = 
                 ModelTransformer.actorClassList().iterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             _replaceEntityCalls(theClass);
         }
-        for(Iterator classes = 
+        for (Iterator classes = 
                 ModelTransformer.attributeClassList().iterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
@@ -264,7 +264,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
         // Create a field referencing the container, for all but the top level.
     //     System.out.println("theClass = " + theClass);
 //         System.out.println("object = " + correspondingObject);
-        if(!correspondingObject.equals(_model)) {
+        if (!correspondingObject.equals(_model)) {
             Entity container = (Entity)correspondingObject.getContainer();
             SootClass containerClass = 
                 ModelTransformer.getClassForActor(container);
@@ -282,8 +282,8 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
             for (Iterator methods = theClass.getMethods().iterator();
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
-                if(method.getName().equals("<init>")) {
-                    if(method.getParameterCount() == 2) {
+                if (method.getName().equals("<init>")) {
+                    if (method.getParameterCount() == 2) {
                         // Assign to the container field.  Assume this
                         // is a container, name constructor.  Note
                         // that classes might have strange types for
@@ -316,7 +316,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
     }
 
     private void _replaceEntityCalls(SootClass theClass) {
-        if(_debug) {
+        if (_debug) {
             System.out.println("replacing entity calls in " + theClass);
         }
         NamedObj correspondingObject = ModelTransformer.getObjectForClass(theClass);
@@ -466,7 +466,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer implements Ha
                 ModelTransformer.getEntityForField(field);
             entity = container.getEntity(name);
         }
-        if(_debug) System.out.println("found entity = " + entity.getFullName());
+        if (_debug) System.out.println("found entity = " + entity.getFullName());
         return getLocalReferenceForEntity(entity, sourceClass, 
                 body.getThisLocal(), body, unit, _options);
     }

@@ -146,13 +146,13 @@ public class DeScrambler extends Transformer {
         int masked = mask & reg;
         int parity = 0;
         // Calculate the parity of the masked word.
-        while (masked >0){
+        while (masked >0) {
             parity = parity ^ (masked & 1);
             masked = masked >> 1;
         }
 
         _latestShiftReg = reg;
-        if (parity == 1){
+        if (parity == 1) {
             output.broadcast(BooleanToken.TRUE);
         }else {
             output.broadcast(BooleanToken.FALSE);

@@ -115,8 +115,8 @@ public class JHDLCompositeActor
 		    System.out.println(resolved + " resolving "+r);
 		}
 	    }
-	    //} while(false);
-	} while(resolvedNodes.size() < unresolvedNodes.size());
+	    //} while (false);
+	} while (resolvedNodes.size() < unresolvedNodes.size());
 	
 	return true;
     }
@@ -164,7 +164,7 @@ public class JHDLCompositeActor
 
 	    sb.append("\t\""+e.getName()+"\"");
 	    /*
-	    if (source.hasWeight()){
+	    if (source.hasWeight()) {
 		sb.append(" [label=\""
 			  +convertSpecialsToEscapes(source.getWeight().toString())
 			  +"\"]");

@@ -378,12 +378,12 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         try {
             if (!_stateAcceptable) {
                 return _refinedStepWRTState();
-            } else if (!_outputAcceptable){
+            } else if (!_outputAcceptable) {
                 return _refinedStepWRTOutput();
             } else {
                 return Double.MAX_VALUE;
             }
-        } catch( IllegalActionException ex) {
+        } catch ( IllegalActionException ex) {
             throw new InternalErrorException (
                     "Fail to refine step size. " + ex.getMessage());
         }

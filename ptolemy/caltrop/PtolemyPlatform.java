@@ -1008,7 +1008,7 @@ public class PtolemyPlatform implements Platform {
                                 " in " + composite.toString(), iae);
                     }
                 }
-                if(composite instanceof RecordToken) {
+                if (composite instanceof RecordToken) {
                     return ((RecordToken)composite).get(fieldName);
                 }
                 // assume it's a method.

@@ -172,7 +172,7 @@ public class StreamExec {
             Runtime runtime = Runtime.getRuntime();
             try {
 
-                if (_process != null){
+                if (_process != null) {
                     _process.destroy();
                 }
                 _setProgressBarMaximum(_commands.size());

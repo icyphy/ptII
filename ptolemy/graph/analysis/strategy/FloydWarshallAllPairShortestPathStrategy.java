@@ -91,11 +91,11 @@ public class FloydWarshallAllPairShortestPathStrategy
         int endNodeLabel = graph().nodeLabel(endNode);
         int n = graph().nodeCount();
         int[][] nodeLabels = predecessors();
-        if(nodeLabels[startNodeLabel][endNodeLabel] != -1 ) {
+        if (nodeLabels[startNodeLabel][endNodeLabel] != -1 ) {
             shortestPath = new ArrayList();
             shortestPath.add(endNode);
             Node nodeOnPath = endNode;
-            while(nodeOnPath != startNode) {
+            while (nodeOnPath != startNode) {
                 int nodeOnPathLabel = graph().nodeLabel(nodeOnPath);
                 nodeOnPath =
                         graph().node(nodeLabels[startNodeLabel]
@@ -220,9 +220,9 @@ public class FloydWarshallAllPairShortestPathStrategy
         if (i != k && k != j) {
         b = _allPairShortestPath[k][i][k]
                 + _allPairShortestPath[k][k][j];
-        } else if(i == k && k != j) {
+        } else if (i == k && k != j) {
             b = _allPairShortestPath[k][k][j];
-        } else if(i != k && k == j) {
+        } else if (i != k && k == j) {
             b = _allPairShortestPath[k][i][k];
         }
         if (b >= a) {

@@ -106,7 +106,7 @@ public class KeyToken extends Token {
         if (rightEncoded.length !=  leftEncoded.length) {
             return BooleanToken.FALSE;
         }
-        for(int i = 0; i < rightEncoded.length; i++) {
+        for (int i = 0; i < rightEncoded.length; i++) {
             if (rightEncoded[i] != leftEncoded[i]) {
                 return BooleanToken.FALSE;
             }
@@ -129,7 +129,7 @@ public class KeyToken extends Token {
                 + ", encoded = ");
         result.append(" Encoded: ");
         byte [] encoded = _value.getEncoded();
-        for(int i = 0; i < encoded.length -1; i++) {
+        for (int i = 0; i < encoded.length -1; i++) {
             result.append(" " + encoded[i] + ",");
         }
         result.append(" " + encoded[encoded.length - 1] + ")");

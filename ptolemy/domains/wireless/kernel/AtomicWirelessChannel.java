@@ -416,7 +416,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
                     properties, (RecordToken)defaultPropertiesValue);
         }
 
-        if(_propertyTransformersByPort != null) {
+        if (_propertyTransformersByPort != null) {
             Set transformers = (Set)_propertyTransformersByPort.get(source);
             if (transformers != null) {
                 Iterator iterator = transformers.iterator();
@@ -429,7 +429,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
             }
         }
         
-        if(_propertyTransformers != null) {
+        if (_propertyTransformers != null) {
             Iterator iterator = _propertyTransformers.iterator();
             while (iterator.hasNext()) {
                 PropertyTransformer transformer

@@ -96,7 +96,7 @@ public class Main extends KernelMain {
                new TransformerAdapter(TypeAssigner.v()));
        addStandardOptimizations(pack, 1);
        
-       if(_snapshots) {
+       if (_snapshots) {
            addTransform(pack, "wjtp.snapshot1jimple", JimpleWriter.v(),
                    "outDir:" + _outputDirectory + "/jimple1");
            addTransform(pack, "wjtp.snapshot1", ClassWriter.v(),
@@ -211,7 +211,7 @@ public class Main extends KernelMain {
        
        //       _addStandardOptimizations(pack, 4);
        
-       if(_snapshots) {
+       if (_snapshots) {
            addTransform(pack, "wjtp.snapshot2jimple", JimpleWriter.v(),
                    "outDir:" + _outputDirectory + "/jimple2");
            addTransform(pack, "wjtp.snapshot2", ClassWriter.v(),
@@ -253,7 +253,7 @@ public class Main extends KernelMain {
        // pack.add(new Transform("wjtp.si",
        //        StaticInliner.v());
        
-       if(_snapshots) {
+       if (_snapshots) {
            addTransform(pack, "wjtp.snapshot3jimple", JimpleWriter.v(),
                    "outDir:" + _outputDirectory + "/jimple3");
            addTransform(pack, "wjtp.snapshot3", ClassWriter.v(),
@@ -335,7 +335,7 @@ public class Main extends KernelMain {
                                 DeadObjectEliminator.v()));
        addStandardOptimizations(pack, 7);
        
-       if(_snapshots) {
+       if (_snapshots) {
            addTransform(pack, "wjtp.snapshot4jimple", JimpleWriter.v(),
                    "outDir:" + _outputDirectory + "/jimple4");
            addTransform(pack, "wjtp.snapshot4", ClassWriter.v(),

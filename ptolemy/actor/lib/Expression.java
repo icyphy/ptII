@@ -447,7 +447,7 @@ public class Expression extends TypedAtomicActor {
                      elements.hasNext();) {
                     String name = (String)elements.next();
                     InequalityTerm term = _scope.getTypeTerm(name);
-                    if(term != null && term.isSettable()) {
+                    if (term != null && term.isSettable()) {
                         termList.add(term);
                     }
                 }

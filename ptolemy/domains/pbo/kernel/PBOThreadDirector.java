@@ -589,7 +589,7 @@ public class PBOThreadDirector extends Director {
                 // container is checked for null to detect the
                 // deletion of the actor from the topology.
                 if ( ((Entity)_actor).getContainer() != null ) {
-                    if (_actor.prefire()){
+                    if (_actor.prefire()) {
                         _actor.fire();
                         _actor.postfire();
                     }

@@ -78,7 +78,7 @@ public class TransformerAdapter extends SceneTransformer {
 
                     JimpleBody body = (JimpleBody) method.retrieveActiveBody();
 
-                    for(Iterator transformers = _transformers.iterator();
+                    for (Iterator transformers = _transformers.iterator();
                         transformers.hasNext();) {
                         BodyTransformer transformer = (BodyTransformer)
                             transformers.next();

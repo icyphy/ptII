@@ -134,7 +134,7 @@ public class TokenInstanceofEliminator extends BodyTransformer
                     // Don't try to replace non-instantiable types, since they
                     // might be more refined later.
                     // General, is unfortuantely, considered instantiable.
-                    if(type.equals(BaseType.UNKNOWN) || //!type.isInstantiable() ||
+                    if (type.equals(BaseType.UNKNOWN) || //!type.isInstantiable() ||
                             type.equals(BaseType.GENERAL)) {
                         continue;
                     }
@@ -153,9 +153,9 @@ public class TokenInstanceofEliminator extends BodyTransformer
 
                     Hierarchy hierarchy = Scene.v().getActiveHierarchy();
 
-                    if(debug) System.out.println("checking cast in " + unit);
-                    if(debug) System.out.println("op = " + op);
-                    if(debug) System.out.println("opType = " + opType);
+                    if (debug) System.out.println("checking cast in " + unit);
+                    if (debug) System.out.println("op = " + op);
+                    if (debug) System.out.println("opType = " + opType);
                     CastAndInstanceofEliminator.replaceCast(box, hierarchy,
                             castType, op, opType, debug);
                     
@@ -179,7 +179,7 @@ public class TokenInstanceofEliminator extends BodyTransformer
                     // Don't try to replace non-instantiable types, since they
                     // might be more refined later.
                     // General, is unfortuantely, considered instantiable.
-                    if(type.equals(BaseType.UNKNOWN) || //!type.isInstantiable() ||
+                    if (type.equals(BaseType.UNKNOWN) || //!type.isInstantiable() ||
                             type.equals(BaseType.GENERAL)) {
                         continue;
                     }

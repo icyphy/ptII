@@ -227,7 +227,7 @@ public class CircuitTransformer extends SceneTransformer {
             // to port. Also add edge between entity and port
             for (Iterator outPorts =
                      ((TypedAtomicActor)entity).outputPortList().iterator();
-                 outPorts.hasNext();){
+                 outPorts.hasNext();) {
                 Object port=outPorts.next();
                 System.out.println("     Adding outport "+((Nameable)port).getName());
                 combinedGraph.addNodeWeight(port);
@@ -238,7 +238,7 @@ public class CircuitTransformer extends SceneTransformer {
             // to port. Also add edge between entity and port
             for (Iterator inPorts =
                      ((TypedAtomicActor)entity).inputPortList().iterator();
-                 inPorts.hasNext();){
+                 inPorts.hasNext();) {
                 Object port=inPorts.next();
                 System.out.println("     Adding inport "+((Nameable)port).getName());
                 combinedGraph.addNodeWeight(port);
@@ -250,7 +250,7 @@ public class CircuitTransformer extends SceneTransformer {
         // actors
         System.out.println("   Add top-level input ports");
         for (Iterator inputPorts=model.inputPortList().iterator();
-             inputPorts.hasNext();){
+             inputPorts.hasNext();) {
             IOPort port = (IOPort)inputPorts.next();
             System.out.println("    Input Port = " + port + " inside sinks="
                     + port.insideSinkPortList().size());
@@ -268,7 +268,7 @@ public class CircuitTransformer extends SceneTransformer {
         System.out.println("   Add output connections");
         for (Iterator i = model.entityList().iterator(); i.hasNext();) {
             Entity entity = (Entity)i.next();
-            for (Iterator outPorts = ((TypedAtomicActor)entity).outputPortList().iterator(); outPorts.hasNext();){
+            for (Iterator outPorts = ((TypedAtomicActor)entity).outputPortList().iterator(); outPorts.hasNext();) {
                 IOPort port = (IOPort) outPorts.next();
                 System.out.println("    Entity output Port="+port+
                         " sinks="+port.sinkPortList().size());
@@ -335,7 +335,7 @@ public class CircuitTransformer extends SceneTransformer {
         DirectedGraph fireGraph=null;
         try {
             fireGraph = new IntervalBlockDirectedGraph(method);
-        } catch(IllegalActionException e) {
+        } catch (IllegalActionException e) {
             System.err.println("Error "+e);
             e.printStackTrace();
             System.exit(1);

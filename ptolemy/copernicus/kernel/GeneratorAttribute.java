@@ -147,13 +147,13 @@ public class GeneratorAttribute extends SingletonAttribute
      */
     public String getParameter(String name) throws IllegalActionException {
         Attribute attribute = getAttribute(name);
-        if(attribute instanceof StringAttribute) {
+        if (attribute instanceof StringAttribute) {
             StringAttribute stringAttribute = (StringAttribute)attribute;
             return stringAttribute.getExpression();
-        } else if(attribute instanceof Parameter) {
+        } else if (attribute instanceof Parameter) {
             Parameter parameter = (Parameter)attribute;
             Token token = parameter.getToken();
-            if(token instanceof StringToken) {
+            if (token instanceof StringToken) {
                 return ((StringToken)token).stringValue();
             } else {
                 throw new IllegalActionException("Parameter with name " + name 
@@ -377,7 +377,7 @@ public class GeneratorAttribute extends SingletonAttribute
     public void setParameter(String name, String value) 
             throws IllegalActionException {
         Attribute attribute = getAttribute(name);
-        if(attribute instanceof Settable) {
+        if (attribute instanceof Settable) {
             ((Settable)attribute).setExpression(value);
             ((Settable)attribute).validate();
         } else {
@@ -403,7 +403,7 @@ public class GeneratorAttribute extends SingletonAttribute
                 }
                 
                 String className = "Parameter";
-                if(attribute instanceof StringParameter) {
+                if (attribute instanceof StringParameter) {
                     className = "StringParameter";
                 }
                 results.append(className + ":      " + attribute.getName()

@@ -202,7 +202,7 @@ public class TypeSpecializerAnalysis {
         try {
             Type type = local.getType();
             Type type2 = _getUpdateType(local, type);
-            if(type2 == null) {
+            if (type2 == null) {
                 return type;
             } else {
                 return type2;
@@ -216,7 +216,7 @@ public class TypeSpecializerAnalysis {
         try {
             Type type = expr.getBaseType();
             Type type2 = _getUpdateType(expr, type);
-            if(type2 == null) {
+            if (type2 == null) {
                 return type;
             } else {
                 return type2;
@@ -229,7 +229,7 @@ public class TypeSpecializerAnalysis {
         try {
             Type type = field.getType();
             Type type2 = _getUpdateType(field, type);
-            if(type2 == null) {
+            if (type2 == null) {
                 return type;
             } else {
                 return type2;
@@ -335,7 +335,7 @@ public class TypeSpecializerAnalysis {
 //         System.out.println("type2 = " + type2);
 //         System.out.println("result = " + TypeLattice.compare(type1, type2));
         // Only inline if both are concrete types.
-        if(type1.isInstantiable() && type2.isInstantiable()) {
+        if (type1.isInstantiable() && type2.isInstantiable()) {
             box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
         }
     }
@@ -634,7 +634,7 @@ public class TypeSpecializerAnalysis {
                     InequalityTerm returnTypeTerm = (InequalityTerm)
                         new MonotonicFunction() {
                             public Object getValue() throws IllegalActionException {
-                                if(matrixTerm.getValue() instanceof UnsizedMatrixType) {
+                                if (matrixTerm.getValue() instanceof UnsizedMatrixType) {
                                     UnsizedMatrixType type = (UnsizedMatrixType) matrixTerm.getValue();
                                     return type.getElementType();
                                 } else {
@@ -642,7 +642,7 @@ public class TypeSpecializerAnalysis {
                                 }
                             }
                             public InequalityTerm[] getVariables() {
-                                if(matrixTerm.isSettable()) {
+                                if (matrixTerm.isSettable()) {
                                     InequalityTerm[] terms = 
                                         new InequalityTerm[1];
                                     terms[0] = matrixTerm;

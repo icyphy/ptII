@@ -167,7 +167,7 @@ public class StringFunction extends Transformer {
      *  @param inputString The string received from the input port.
      */
     private String _doFunction(String inputString) {
-        switch (_function){
+        switch (_function) {
         case _TRIM:
             return inputString.trim();
         case _TOUPPERCASE:

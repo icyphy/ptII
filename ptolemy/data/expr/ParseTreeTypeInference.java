@@ -139,7 +139,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             baseType = _scope.getType(functionName);
         }
 
-        if(baseType != null || functionName == null) {
+        if (baseType != null || functionName == null) {
             baseType = _inferChild(node, 0);
             
             // Handle as an array or matrix index into a named

@@ -270,7 +270,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                         + "which is not allowed in SDF.");
             } else if (port.isInput()) {
                 List sinks = port.insideSinkPortList();
-                if(sinks.size() > 0) {
+                if (sinks.size() > 0) {
                     IOPort connectedPort = (IOPort)sinks.get(0);
                     Entity entity = (Entity)connectedPort.getContainer();
                     String name = connectedPort.getName(container);
@@ -288,7 +288,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 }
             } else if (port.isOutput()) {
                 List sources = port.insideSourcePortList();
-                if(sources.size() > 0) {
+                if (sources.size() > 0) {
                     IOPort connectedPort = (IOPort)sources.get(0);
                     Entity entity = (Entity)connectedPort.getContainer();
                     String name = connectedPort.getName(container);
@@ -348,7 +348,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
             }
         }        
     
-        if(resultSchedule instanceof Schedule) {
+        if (resultSchedule instanceof Schedule) {
             return (Schedule)resultSchedule;
         } else {
             // Must be ScheduleElement.
@@ -494,12 +494,12 @@ public class PSDFScheduler extends BaseSDFScheduler {
             SymbolicScheduleElement element, String expression) 
             throws IllegalActionException, NameDuplicationException {
         String recursiveExpression;
-        if(expression == null) {
+        if (expression == null) {
             recursiveExpression = element.expression();
         } else {
             recursiveExpression = expression + "*" + element.expression();
         }
-        if(element instanceof SymbolicFiring) {
+        if (element instanceof SymbolicFiring) {
             SymbolicFiring firing = (SymbolicFiring)element;
             Entity actor = (Entity)firing.getActor();
             Variable parameter = (Variable)actor.getAttribute("firingCount");
@@ -509,10 +509,10 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 parameter.setPersistent(false);
             }
             parameter.setExpression(recursiveExpression);
-        } else if(element instanceof SymbolicSchedule) {
+        } else if (element instanceof SymbolicSchedule) {
             SymbolicSchedule schedule = (SymbolicSchedule)element;
             
-            for(Iterator i = schedule.iterator(); i.hasNext();) {
+            for (Iterator i = schedule.iterator(); i.hasNext();) {
                 _inferFiringCounts((SymbolicScheduleElement)i.next(), 
                         recursiveExpression);
             }

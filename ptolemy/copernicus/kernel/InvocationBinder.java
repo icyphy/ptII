@@ -122,9 +122,9 @@ public class InvocationBinder extends SceneTransformer
                                                    
                     Iterator targets = new Targets( cg.edgesOutOf(s) );
  
-                    if( !targets.hasNext() ) continue;
+                    if (!targets.hasNext() ) continue;
                     SootMethod target = (SootMethod)targets.next();
-                    if( targets.hasNext() ) continue;
+                    if (targets.hasNext() ) continue;
                     
                     // Ok, we have an Interface or VirtualInvoke going to 1.
 

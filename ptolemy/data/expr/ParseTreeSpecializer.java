@@ -68,7 +68,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
         try {
             _result = (ASTPtRootNode) node.clone();
             _result._parent = null;
-        } catch(CloneNotSupportedException ex) {
+        } catch (CloneNotSupportedException ex) {
             throw new IllegalActionException(null, ex,
                     "Failed to clone node for specialization");
         }
@@ -143,10 +143,10 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
             if (_scope != null) {
                 token = _scope.get(node.getName());
             }
-            if(token == null) {
+            if (token == null) {
                 token = Constants.get(node.getName());
             }
-            if(token != null) {
+            if (token != null) {
                 node.setToken(token);
                 node.setConstant(true);
                 // Reset the name, since it no longer makes sense.

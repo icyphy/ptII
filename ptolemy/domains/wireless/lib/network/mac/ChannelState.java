@@ -170,7 +170,7 @@ public class ChannelState extends MACActorBase {
 	            {
                     if (_messageType == UseDifs) {
                         _dIfs = _dDIfs - _aRxTxTurnaroundTime;
-                    } else if (_messageType == UseEifs){
+                    } else if (_messageType == UseEifs) {
                         _dIfs = _dEIfs - _aRxTxTurnaroundTime;
                     }
                     if (_debugging) {
@@ -187,7 +187,7 @@ public class ChannelState extends MACActorBase {
             } else if (fromFilterMpdu.hasToken(0)) {
                 _inputMessage = (RecordToken) fromFilterMpdu.get(0);
 	        }
-            if(_inputMessage != null) {
+            if (_inputMessage != null) {
                 _messageType = ((IntToken)
                         _inputMessage.get("kind")).intValue();
 
@@ -206,7 +206,7 @@ public class ChannelState extends MACActorBase {
                     
                      case SetNav:
 			             // if a reservation is needed, make it and goes to Cs_Nav state
-                         if(_setNav()) {
+                         if (_setNav()) {
                              _state = Cs_Nav;
                          }
                      break;     
@@ -241,14 +241,14 @@ public class ChannelState extends MACActorBase {
                 
             case noCs_noNav:
 		        //_getMsgType();
-                switch(_messageType){
+                switch(_messageType) {
                     case Busy:
 			            _changeStatus(Busy);
                         _state = Cs_noNav;
                     break;
 
                     case SetNav:
-                        if (_setNav()){
+                        if (_setNav()) {
 			               _changeStatus(Busy);
                            _state = noCs_Nav;
                         }
@@ -347,7 +347,7 @@ public class ChannelState extends MACActorBase {
         double expirationTime =  ((DoubleToken)_inputMessage.get("tRef")).doubleValue()
                    +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6;
         tNavEnd=expirationTime;
-        if(expirationTime > _currentTime) {
+        if (expirationTime > _currentTime) {
 	        _NavTimer=setTimer(NavTimeOut,expirationTime);
             return true;
         } else {
@@ -369,7 +369,7 @@ public class ChannelState extends MACActorBase {
         } else if (fromFilterMpdu.hasToken(0)) {
             _inputMessage = (RecordToken) fromFilterMpdu.get(0);
 	    }
-        if(_inputMessage != null) {
+        if (_inputMessage != null) {
             _messageType = ((IntToken)
             _inputMessage.get("kind")).intValue();
         } 
