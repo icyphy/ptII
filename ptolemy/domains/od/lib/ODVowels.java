@@ -79,9 +79,17 @@ public class ODVowels extends ODStringSource {
         
         _vowels.insertLast( new StringTime( 13.5, "i" ) );
         
+        _vowels.insertLast( new StringTime( 15.0, "i" ) );
+        
+        _vowels.insertLast( new StringTime( 17.0, "o" ) );
+        
+        _vowels.insertLast( new StringTime( 19.0, "e" ) );
+        
+        _vowels.insertLast( new StringTime( 20.0, "e" ) );
+        
         _vowels.insertLast( new StringTime( 5000.0, ";" ) );
         
-        // Up to "Hello!! The"
+        // Up to "Hello!! The Ptolemy Domain is complete."
         
         return _vowels;
     }
