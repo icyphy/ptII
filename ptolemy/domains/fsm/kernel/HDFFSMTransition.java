@@ -121,10 +121,14 @@ public class HDFFSMTransition extends FSMTransition {
         newobj._stateVersion = -1;
         if (_trigger != null) {
             newobj._trigger = (VariableList)newobj.getAttribute("Trigger");
-            newobj._te = (Variable)newobj._trigger.getAttribute("TriggerEvent");
-            newobj._tc = (Variable)newobj._trigger.getAttribute("TriggerCondition");
-            newobj._actions = (VariableList)newobj.getAttribute("Actions");
-            newobj._localVarUpdates = (VariableList)newobj.getAttribute("LocalVarUpdates");
+            newobj._te =
+                (Variable)newobj._trigger.getAttribute("TriggerEvent");
+            newobj._tc =
+                (Variable)newobj._trigger.getAttribute("TriggerCondition");
+            newobj._actions =
+                (VariableList)newobj.getAttribute("Actions");
+            newobj._localVarUpdates =
+                (VariableList)newobj.getAttribute("LocalVarUpdates");
         }
         return newobj;
     }
@@ -136,7 +140,9 @@ public class HDFFSMTransition extends FSMTransition {
 
         if (_teSet) {
 
-            if (_debugging) _debug("HDFFSMTransition: isEnabled(): Testing trigger event of " + this.getFullName());
+            if (_debugging)
+                _debug("HDFFSMTransition: isEnabled(): Testing trigger " +
+                        "event of " + this.getFullName());
 
             _te.getToken();
 	    /*
@@ -147,29 +153,33 @@ public class HDFFSMTransition extends FSMTransition {
         }
         if (_tcSet) {
 
-            if (_debugging) _debug("HDFFSMTransition: isEnabled(): Testing condition of " + this.getFullName());
+            if (_debugging)
+                _debug("HDFFSMTransition: isEnabled(): Testing condition " +
+                        "of " + this.getFullName());
 
             _tc.getToken();
             if (((BooleanToken)_tc.getToken()).booleanValue() == false) {
                 return false;
             }
         }
-	if (_debugging) _debug("HDFFSMTransition: isEnabled(): returning TRUE");
+	if (_debugging)
+            _debug("HDFFSMTransition: isEnabled(): returning TRUE");
         return true;
     }
 
 
     /** Set the trigger event (guard expression) of this transition.
-     *  The guard expressions use the Ptolemy II expression language. Currently,
-     *  the only variables allowed in the guard expressions are variables
-     *  containing tokens transfered through the input and output ports of
-     *  the HDF actor. Following the syntax of [1], if the HDF actor contains
-     *  an input port called dataIn, then use dataIn$0 in the guard
-     *  expression to reference the token most recently transfered through
-     *  port dataIn. Use dataIn$1 to reference the next most recent token,
-     *  dataIn$2 to reference the next most recent token, and so on. By
-     *  default, only the most recently transfered token is allowed.
-     *  In order to be able to reference up to the m'th most recently
+     *  The guard expressions use the Ptolemy II expression
+     *  language. Currently, the only variables allowed in the guard
+     *  expressions are variables containing tokens transfered through
+     *  the input and output ports of the HDF actor. Following the
+     *  syntax of [1], if the HDF actor contains an input port called
+     *  dataIn, then use dataIn$0 in the guard expression to reference
+     *  the token most recently transfered through port dataIn. Use
+     *  dataIn$1 to reference the next most recent token, dataIn$2 to
+     *  reference the next most recent token, and so on. By default,
+     *  only the most recently transfered token is allowed.  In order
+     *  to be able to reference up to the m'th most recently
      *  transfered token (dataIn$m), call the setGuardTokenHistory()
      *  method of the director with m as the parameter.
      */
@@ -219,9 +229,11 @@ public class HDFFSMTransition extends FSMTransition {
           if (dirScopeVars != null) {
           _te.addToScope(dirScopeVars);
           _tc.addToScope(dirScopeVars);
-          System.out.println("HDFFSMTransition: setupScope(): added guard vars to scope");
+          System.out.println("HDFFSMTransition: setupScope(): " +
+              "added guard vars to scope");
           } else {
-          //throw new IllegalActionException((HDFFSMController)getContainer(), this,
+          //throw new IllegalActionException(
+          //      (HDFFSMController)getContainer(), this,
           //      "The guard variable is null");
           System.out.println("The guard variable list is null");
           }
