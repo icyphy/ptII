@@ -142,7 +142,8 @@ public class StaticSchedulingDirector extends Director {
 		int iterationCount = firing.getIterationCount();
 
 		if(_debugging) {
-                    _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
+                    _debug(new FiringEvent(this, actor, 
+                            FiringEvent.BEFORE_ITERATE));
 		}
 
 		int returnVal =
@@ -155,6 +156,10 @@ public class StaticSchedulingDirector extends Director {
                             "is not ready to fire.");
 		} else if (returnVal == STOP_ITERATING) {
 		    _postfireReturns = false;
+		}
+		if(_debugging) {
+                    _debug(new FiringEvent(this, actor, 
+                            FiringEvent.AFTER_ITERATE));
 		}
             }
         }
