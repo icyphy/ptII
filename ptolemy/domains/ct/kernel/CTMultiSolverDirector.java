@@ -166,7 +166,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     /** clear obsolete breakpoints, switch to breakpointODESolver if this
      *  is the first fire after a breakpoint, and adjust step sizes
      *  accordingly.
-     *  @exception IllgalActionException If breakpoint solver is not 
+     *  @exception IllegalActionException If breakpoint solver is not 
      *     illegal.
      */
     protected void _processBreakpoints() throws IllegalActionException  {
