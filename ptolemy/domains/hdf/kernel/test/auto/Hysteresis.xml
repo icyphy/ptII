@@ -4,10 +4,12 @@
 <entity name="State2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[81, 15]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="45">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -43,6 +45,8 @@
         </port>
         <entity name="Controller" class="ptolemy.domains.hdf.kernel.HDFFSMActor">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="State1">
+            </property>
+            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure>
@@ -83,29 +87,29 @@
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input1 &lt; -0.3">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="input1 &gt; 0.3">
                 </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
             <link port="State1.incomingPort" relation="relation3"/>
@@ -121,6 +125,8 @@
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
             </property>
             <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -181,6 +187,8 @@
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
             </property>
             <property name="SDF2" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+                </property>
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -249,56 +257,16 @@
         <link port="State2.input1" relation="relation"/>
         <link port="State2.output1" relation="relation3"/>
     </entity>
-    <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
-        <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
-            <doc>The sampling frequency, in the same units as the frequency.</doc>
+    <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="frequency" class="ptolemy.data.expr.Parameter" value="440.0">
-            <doc>The frequency of the sinusoid, in the same units as the sampling frequency.</doc>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1, 2, 3}">
         </property>
-        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
-            <doc>The phase, in radians.</doc>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, -1.0, -1.0}">
         </property>
-        <doc>This composite actor generates a sine wave.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="90.0, 157.0">
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-    </entity>
-    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="498.0, 260.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title></title>
-<xRange min="0.0" max="44.0"/>
-<yRange min="-1.1833369944260135" max="1.1503759425165965"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="GaussianNoiseSource" class="ptolemy.actor.lib.Gaussian">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="mean" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="79.0, 256.0">
+        <property name="_location" class="ptolemy.moml.Location" value="121.0, 168.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -308,38 +276,26 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="244.0, 188.0">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.0, -1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0}">
         </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="468.0, 130.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
         </port>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="298.0, 193.0">
         </vertex>
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="HDF1.input1" relation="relation4"/>
-    <link port="HDF1.output1" relation="relation2"/>
-    <link port="Sinewave.output" relation="relation"/>
-    <link port="SequencePlotter.input" relation="relation2"/>
-    <link port="SequencePlotter.input" relation="relation4"/>
-    <link port="GaussianNoiseSource.output" relation="relation3"/>
-    <link port="AddSubtract.plus" relation="relation"/>
-    <link port="AddSubtract.minus" relation="relation3"/>
-    <link port="AddSubtract.output" relation="relation4"/>
+    <link port="HDF1.output1" relation="relation"/>
+    <link port="Pulse.output" relation="relation4"/>
+    <link port="Test.input" relation="relation"/>
 </entity>
