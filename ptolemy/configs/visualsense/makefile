@@ -65,6 +65,7 @@ OTHER_FILES_TO_BE_JARED = \
 	intro.htm \
 	makefile \
 	visualsense.gif \
+	visualsenseIcon.gif \
 	welcomeWindow.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
