@@ -127,7 +127,7 @@ public interface Derivable extends Nameable {
      *  the derivation chain (this object).
      *  @param depthList If non-null, then the specified list will
      *   be populated with instances of java.lang.Integer representing
-     *   the depths of propogation along the derivation chain.
+     *   the depths of propagation along the derivation chain.
      *  @return A list of objects of the same class as the object on
      *   which this is called.
      *  @see #isModifiedHeritage()
@@ -190,7 +190,7 @@ public interface Derivable extends Nameable {
      *  modified directly. To reverse the effect of this call, call it again
      *  with -1 argument.
      *  @param depth The depth above this object in the hierarchy at
-     *   which the propogation occurred, or 0 to indicate that the
+     *   which the propagation occurred, or 0 to indicate that the
      *   override is direct (not propagated), or -1 to indicate that
      *   the object is not overridden.
      *  @see #setDerived(boolean)

@@ -261,7 +261,7 @@ public class HDFFSMDirector extends FSMDirector {
         return;
     }
 
-    /** If this method is called immediately after preinitialze(),
+    /** If this method is called immediately after preinitialize(),
      *  initialize the mode controller and all the refinements.
      *  If this is a reinitialization, it typically means this
      *  is a sub-layer HDFFSMDirector and a "reset" has been called

@@ -62,7 +62,7 @@ public class UnitConstraints implements UnitPresentation {
     }
 
     /** Construct a collection of Unit constraints from the specified
-     * componentEntities and realtions of a model.
+     * componentEntities and relations of a model.
      * <p>
      * For each componentEntity each constraints in
      * the form of Unit equation is retrieved and then used a basis to create a

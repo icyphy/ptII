@@ -48,7 +48,7 @@ should implement commutative operations on the properties (such as
 multiplying a field by a value). 
 <p>
 It is possible to return the modified transmission properties with 
-different record types from the previours transmit property, i.e. some  
+different record types from the previous transmit property, i.e. some  
 record fields may be removed or added. The channel should merge the 
 returned transmission properties with its <i>defaultProperties<i> to 
 make sure that the transmission properties contains at least all the  

@@ -111,7 +111,7 @@ public class NonStrictDelay extends Transformer {
      *  on the next iteration. Otherwise, store an AbsentToken for
      *  output on the next iteration.  
      *  If a token was received on the previous iteration, output it to the
-     *  recerivers. Otherwise, notify the receivers that there will never be
+     *  receivers. Otherwise, notify the receivers that there will never be
      *  any token available in the current iteration. 
      *  @exception IllegalActionException If there is no director.
      */

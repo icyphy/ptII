@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /** 
 This is a base class designed for the MAC actors. Since these actors
-largely share a set of prameters, we would like to declare them here
+largely share a set of parameters, we would like to declare them here
 to avoid repeatly do the same amount of work in every MAC actor.
 FIXME: Currently, the parameters in this actor are extracted from
 the ChannelState component...
