@@ -175,21 +175,21 @@ public class BusContentionApplication implements ActionListener {
         model.addNode(n5);
         model.addNode(n6);
 
-        _nodeMap.put(_contentionActor,n1);
-        _nodeMap.put(_alarmActor,n2);
-        _nodeMap.put(_memoryActor,n3);
-        _nodeMap.put(_processActor1,n4);
-        _nodeMap.put(_processActor2,n5);
-        _nodeMap.put(_processActor3,n6);
+        _nodeMap.put(_contentionActor, n1);
+        _nodeMap.put(_alarmActor, n2);
+        _nodeMap.put(_memoryActor, n3);
+        _nodeMap.put(_processActor1, n4);
+        _nodeMap.put(_processActor2, n5);
+        _nodeMap.put(_processActor3, n6);
 
         // Edges
-        model.createEdge(n1,n2);
-        model.createEdge(n1,n4);
-        model.createEdge(n1,n5);
-        model.createEdge(n1,n6);
-        model.createEdge(n3,n4);
-        model.createEdge(n3,n5);
-        model.createEdge(n3,n6);
+        model.createEdge(n1, n2);
+        model.createEdge(n1, n4);
+        model.createEdge(n1, n5);
+        model.createEdge(n1, n6);
+        model.createEdge(n3, n4);
+        model.createEdge(n3, n5);
+        model.createEdge(n3, n6);
 
         return model;
     }
@@ -584,7 +584,7 @@ public class BusContentionApplication implements ActionListener {
 
             // Create an arrow at the tail
             Arrowhead tailArrow = new Arrowhead(
-                    tailSite.getX(), tailSite.getY(),
+                    tailSite.getX(), tailSite.getY()
                     tailSite.getNormal());
             c.setTailEnd(tailArrow);
 
