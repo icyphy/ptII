@@ -692,7 +692,7 @@ public class CTScheduler extends Scheduler {
         Iterator actors = list.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
-            graph.add(actor);
+            graph.addNodeWeight(actor);
         }
 
         // Create the edges.
@@ -731,7 +731,7 @@ public class CTScheduler extends Scheduler {
         Iterator actors = list.iterator();
         while (actors.hasNext()) {
             Actor a = (Actor)actors.next();
-            g.add(a);
+            g.addNodeWeight(a);
         }
         // Create the edges.
         actors = list.iterator();

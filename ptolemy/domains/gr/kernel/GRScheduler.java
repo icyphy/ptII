@@ -151,7 +151,7 @@ public class GRScheduler extends Scheduler {
         int actorCount =  entities.size();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            dag.add(actor);
+            dag.addNodeWeight(actor);
         }
 
         actors = castContainer.deepEntityList().iterator();
