@@ -54,7 +54,7 @@ systems.
 Communication between port-based objects is *NOT* based on FIFO queues!
 Instead, the processes have a concept of a shared memory.   The shared
 memory is synchronized across processes that may be executing concurrently,
-so that an object is always guaraunteed to have the most recent consistent
+so that an object is always guaranteed to have the most recent consistent
 available state of its inputs when it fires.   Note that in this communication
 model, data may be lost!
 <p>
