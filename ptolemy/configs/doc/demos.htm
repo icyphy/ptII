@@ -73,17 +73,17 @@ of operation. A modal model in Ptolemy II uses the
 <i>finite state machine</i> (FSM) domain
 combined hierarchically with other models. A state in the FSM represents
 a mode of operation, and can have a refinement that gives the behavior
-in that model.
+in that mode.
 The refinement can be another FSM or some other model using some other
 Ptolemy domain. This example combines DE, FSM, and SDF to model a
-system where regularly sampled signals are purturbed by irregular
+system where regularly sampled signals are perturbed by irregular
 events in time.
 </li>
 
 <li><a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">
 Hybrid Systems</a> (Modal version is new in Ptolemy II 2.0).
 <br> <i>Hybrid systems</i> are a special case of modal models
-where the FSM domains is is combined with the CT domain
+where the FSM domain is combined with the CT domain
 to get mixed continuous-time and discrete-event models.
 This example models a physical system consisting of two point masses
 on springs that stick together when they collide.
@@ -189,6 +189,7 @@ version 1.3 of Java, and a reasonably capable computer.
 </br></li>
 <!--/vergilDocs-->
 
+<!-- Removed pending changes to Director (post 2.0 release).
 <li><a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">
 Process Networks</a>.<br>
 This example illustrates the <i>process networks</i> (PN) domain,
@@ -196,6 +197,7 @@ where each actor executes in a separate Ptolemy II thread.
 The example calculates all multiples of 2, 3, and 5, and produces
 them in an ordered sequence.
 </br></li>
+-->
 
 <li><a href="../../domains/sr/demo/TokenRing/TokenRing.xml">
 Synchronous/Reactive Modeling</a>.<br>
