@@ -55,8 +55,7 @@ test composition-1.0 {DE model contained within SDF} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [$director getScheduler]
 
     set a1 [java::new ptolemy.actor.lib.Ramp $toplevel Ramp]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]

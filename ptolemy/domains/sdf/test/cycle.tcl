@@ -55,8 +55,7 @@ test cycle-1.0 {Cycle Scheduling tests} {
     $toplevel setName Toplevel
     $toplevel setManager $manager
     $toplevel setDirector $director
-    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
-    $director setScheduler $scheduler
+    set scheduler [$director getScheduler]
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Actor1]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $toplevel Actor2]
