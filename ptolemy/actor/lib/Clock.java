@@ -309,29 +309,27 @@ public class Clock extends TimedSource {
                 if (_debugging) {
                     _debug("next firing is at " + _tentativeNextFiringTime);
                 }
+                // If we are beyond the number of cycles requested, then
+                // change the output value to zero.
+                // FIXME: is this a desired behavior? why not simply stop the firing?
+                // NOTE: This actor is intended to be used in DE domain. If this actor
+                // serves as a source, when the cycle limit is reached, it should stop
+                // producing more events and consequently the model stops. 
+                int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
+                if (cycleLimit > 0 ) {
+                    Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
+                    if (currentTime.compareTo(stopTime) >= 0) {
+                        _tentativeCurrentValue = _tentativeCurrentValue.zero();
+                    }
+                }
+                // Used to use any negative number here to indicate
+                // that no future firing should be scheduled.
+                // Now, we leave it up to the director, unless the value
+                // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
+                output.send(0, _tentativeCurrentValue);
+                if (_debugging)_debug("Output: " + _tentativeCurrentValue + ".");
             }
-        }
-
-        // If we are beyond the number of cycles requested, then
-        // change the output value to zero.
-        // FIXME: is this a desired behavior? why not simply stop the firing?
-        // NOTE: This actor is intended to be used in DE domain. If this actor
-        // serves as a source, when the cycle limit is reached, it should stop
-        // producing more events and consequently the model stops. 
-        int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
-        if (cycleLimit > 0 ) {
-            Time stopTime = _tentativeStartTime.add(cycleLimit * periodValue);
-            if (currentTime.compareTo(stopTime) >= 0) {
-                _tentativeCurrentValue = _tentativeCurrentValue.zero();
-            }
-        }
-
-        // Used to use any negative number here to indicate
-        // that no future firing should be scheduled.
-        // Now, we leave it up to the director, unless the value
-        // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
-        output.send(0, _tentativeCurrentValue);
-        if (_debugging)_debug("Output: " + _tentativeCurrentValue + ".");
+        } 
     }
 
     /** Schedule the first firing and initialize local variables.
