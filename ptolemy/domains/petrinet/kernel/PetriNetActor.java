@@ -122,7 +122,6 @@ public class PetriNetActor extends TypedCompositeActor  {
      *  as its name. Add the actor to the workspace directory.
      *  Increment the version number of the workspace.
      */
-
     public PetriNetActor() {
         super();
         getMoMLInfo().className =
@@ -136,7 +135,6 @@ public class PetriNetActor extends TypedCompositeActor  {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will list the actor.
      */
-
     public PetriNetActor(Workspace workspace) {
 	super(workspace);
         getMoMLInfo().className =
@@ -154,7 +152,6 @@ public class PetriNetActor extends TypedCompositeActor  {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-
     public PetriNetActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -188,7 +185,7 @@ public class PetriNetActor extends TypedCompositeActor  {
      */
     public void fire() throws IllegalActionException {
         Nameable container = getContainer();
-        System.out.println("inside the _PetriNetActor.fire, the actors is"
+        _debug("PetriNetActor.fire, the actors is"
                 + container.getFullName() + "  " + getFullName());
         TypedCompositeActor pn = (TypedCompositeActor) this;
         PetriNetDirector director = (PetriNetDirector) getDirector();
@@ -211,7 +208,8 @@ public class PetriNetActor extends TypedCompositeActor  {
      *  @return true or false, a PetriNetActor is ready to fire or not.
      */
     public boolean prefire() throws IllegalActionException {
-        System.out.println("inside the PetriNetActor.prefire, the actors is"
+
+        _debug("PetriNetActor.prefire, the actors is"
                 +  getFullName() );
         PetriNetDirector director = (PetriNetDirector) getDirector();
         Iterator components = deepEntityList().iterator();

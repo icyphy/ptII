@@ -107,15 +107,7 @@ public class PetriNetDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new receiver of a type compatible with this director.
-     *  In this base class, this returns an instance of PetriNetReceiver.
-     *  @return A new PetriNetReceiver.
-     */
-    public Receiver newReceiver() {
-        return new PetriNetReceiver();
-    }
-
-    /** Thid method fires the enabled transitions in the container
+    /** This method fires the enabled transitions in the container
      *  with the firing sequence defined by the method
      *  fireHierarchicalPetriNet.
      *  For hierarchical structure, the chosen Transition
@@ -130,7 +122,7 @@ public class PetriNetDirector extends Director {
     public void fire() throws IllegalActionException {
         Nameable container = getContainer();
         if (container instanceof TypedCompositeActor) {
-            System.out.println("PetriNetDirector, the top container is "
+            _debug("PetriNetDirector, the top container is "
                     + container.getFullName());
             TypedCompositeActor pnContainer =
                 (TypedCompositeActor) container;
@@ -156,27 +148,23 @@ public class PetriNetDirector extends Director {
      */
     public void fireHierarchicalPetriNet(TypedCompositeActor container)
             throws IllegalActionException {
-
-        System.out.println(" _fireHierarchicalPetriNet ___________");
-
+        _debug(" _fireHierarchicalPetriNet ___________");
         LinkedList components = _readyComponents(container);
         LinkedList nextComponents = components;
         int i = components.size();
         int iteration = 0;
+        if (i == 0) {
+            _debug(" found no ready component to fire");
+        }
         while (i > 0 & iteration < 5) {
-            System.out.print(i + "  transitions ready in choosing");
-            System.out.println(" transitions--");
-
+            _debug(i + "  transitions ready in choosing transitions");
             java.util.Random generator = new
                 java.util.Random(System.currentTimeMillis());
-
             int randomIndex = generator.nextInt(i);
             Nameable chosenTransition = (Nameable)
                                     nextComponents.get(randomIndex);
-
-            System.out.println();
-            System.out.println("start firing "
-                                   + chosenTransition.getFullName());
+            _debug("start firing "
+                             + chosenTransition.getFullName());
             if(chosenTransition instanceof Transition) {
                 Transition realTransition = (Transition) chosenTransition;
                 _fireTransition(realTransition);
@@ -185,22 +173,17 @@ public class PetriNetDirector extends Director {
                 PetriNetActor realPetriNetActor =
                     (PetriNetActor) chosenTransition;
                 _fireHierarchicalPetriNetOnce(realPetriNetActor);
-
             }
-
-            System.out.println(" _finished fireHierarchicalPetriNet_____");
-            System.out.println();
-            System.out.println();
-            System.out.println();
-            System.out.println();
-
+            _debug(" _finished fireHierarchicalPetriNet_____");
+            _debug("  ");
+            _debug("   ");
+            _debug("   ");
             nextComponents = _readyComponents(container);
             i = nextComponents.size();
-
             Iterator pointer = nextComponents.iterator();
             while (pointer.hasNext()) {
                 Nameable item = (Nameable) pointer.next();
-                System.out.println(i +" ready item is "
+                _debug(i +" ready item is "
                                           + item.getFullName());
             }
             iteration++;
@@ -237,6 +220,9 @@ public class PetriNetDirector extends Director {
      *  multiple arcs are allowed between ports, port-places, and
      *  transition-place. the total weight of the edge from a transition
      *  to a place is the sum of all edges.
+     *
+     *  Unattached transitions are always ready. They can be treated as
+     *  inputs.
      *
      *  It is assumed that the place is connected to transitions or ports
      *  and transitions are connected to places or ports. no action is
@@ -277,17 +263,11 @@ public class PetriNetDirector extends Director {
                              } else if( weightPort.isInput()) {
                                   newRelationList.addAll
                                      (weightPort.linkedRelationList());
-                            } if(weightPort.isOutput()) {
-                                newRelationList.addAll
-                                    (weightPort.insideRelationList());
-                            } else if( weightPort.isInput()) {
-                                newRelationList.addAll
-                                    (weightPort.linkedRelationList());
                             }
                         }
                     }
                     else
-                        System.out.println("*******found used source port"
+                        _debug("*******found used source port"
                                           + weightPort.getFullName());
                 }
 
@@ -302,7 +282,7 @@ public class PetriNetDirector extends Director {
                         return false;
                 }
             } else
-                System.out.println("the arc weight is null");
+                _debug("the arc weight is null");
             newRelationList.remove(weights);
         }
 
@@ -328,7 +308,7 @@ public class PetriNetDirector extends Director {
                 PetriNetActor pnActor = (PetriNetActor) component;
                 if( pnActor.prefire()) {
                     readyComponentList.add(pnActor);
-                    System.out.println("found a readyPetriNetActor  "
+                    _debug("found a readyPetriNetActor  "
                             + pnActor.getFullName());
                 }
             }
@@ -353,14 +333,19 @@ public class PetriNetDirector extends Director {
      */
     private void _fireTransition(Transition transition)
            throws IllegalActionException {
+
+        if(transition.isOpaque()) {
+            transition.fire();
+        } else {
+            _debug("transition can not fire, update places");
+        }
         LinkedList newRelationList = new LinkedList();
         newRelationList.addAll(transition.output.linkedRelationList());
         LinkedList temporaryDestinationPortList = new LinkedList();
         while(newRelationList.size()>0 )  {
             IORelation weights = (IORelation) newRelationList.getFirst();
             if (weights != null) {
-                System.out.println(
-                           "start to increase the weight of relation "
+                _debug("start to increase the weight of relation "
                         +"*********"     + weights.getFullName());
                 Iterator weightPorts =
                     weights.linkedDestinationPortList().iterator();
@@ -381,11 +366,11 @@ public class PetriNetDirector extends Director {
                         }
                         else if( weightPlace instanceof Place) {
                             Place realPlace = (Place) weightPlace;
-                            System.out.print("found a place "
+                            _debug("  found a place "
                                     + realPlace.getFullName() + "  "
                                     + realPlace.getMarking());
                         } else {
-                            System.out.println("something wrong "
+                            _debug("something wrong "
                                     + weightPlace.getFullName());
 			}
                     }
@@ -401,16 +386,15 @@ public class PetriNetDirector extends Director {
                     itemCount++;
                     int j = itemForward.getMarking();
                     itemForward.increaseMarking(weightNumber);
-                    System.out.println("  the " + itemCount
+                    _debug("  the " + itemCount
                             + " item is "
                             + itemForward.getFullName()
                             +"  "+ j
                             + "  "+ itemForward.getMarking());
                 }
             } else
-                System.out.println("the arc weight is null");
+                _debug("the arc weight is null");
             newRelationList.remove(weights);
-
         }
 
         LinkedList backRelationList = new LinkedList();
@@ -419,8 +403,7 @@ public class PetriNetDirector extends Director {
         while(backRelationList.size()>0 )  {
             IORelation weights = (IORelation) backRelationList.getFirst();
             if (weights != null) {
-                System.out.println
-                              ("start to decrease the weight of relation "
+                _debug("start to decrease the weight of relation "
                         +"*********"      + weights.getFullName());
                 Iterator weightPorts =
                     weights.linkedSourcePortList().iterator();
@@ -450,12 +433,12 @@ public class PetriNetDirector extends Director {
                     i++;
                     int j = item.getMarking();
                     item.decreaseMarking(weightNumber);
-                    System.out.println("  the " + i + " item is " +
+                    _debug("  the " + i + " item is " +
                             item.getFullName() + " old " + j
                             + " new  " + item.getMarking());
                 }
             } else
-                System.out.println("the arc weight is null");
+                _debug("the arc weight is null");
             backRelationList.remove(weights);
         }
     }
@@ -468,22 +451,19 @@ public class PetriNetDirector extends Director {
      */
     private void _fireHierarchicalPetriNetOnce(TypedCompositeActor container)
            throws IllegalActionException {
-        System.out.println(" _fireHierarchicalPetriNetOnce_");
+        _debug(" _fireHierarchicalPetriNetOnce_");
 
         LinkedList components = _readyComponents(container);
         int i = components.size();
         if (i > 0) {
-            System.out.print(i + "  transitions ready in choosing");
-            System.out.println(" transitions--");
+            _debug(i + "  transitions ready in choosing");
+            _debug(" transitions--");
 
             java.util.Random generator = new
                 java.util.Random(System.currentTimeMillis());
             int j = generator.nextInt(i);
             Nameable chosenTransition = (Nameable) components.get(j);
-
-            System.out.println();
-            System.out.println("start firing "
-                                    + chosenTransition.getFullName());
+            _debug("start firing " + chosenTransition.getFullName());
             if(chosenTransition instanceof Transition) {
                 Transition realTransition
                                  = (Transition) chosenTransition;
@@ -494,7 +474,7 @@ public class PetriNetDirector extends Director {
                     (PetriNetActor) chosenTransition;
                 _fireHierarchicalPetriNetOnce(realPetriNetActor);
             }
-            System.out.println(" _finished fireHierarchicalPetriNetOnce");
+            _debug(" _finished fireHierarchicalPetriNetOnce");
         }
     }
 
@@ -508,6 +488,7 @@ public class PetriNetDirector extends Director {
      *  fires.
      */
     private LinkedList _findForwardConnectedPlaces(IORelation weight) {
+
         LinkedList newRelationList = new LinkedList();
         newRelationList.add(weight);
         LinkedList temporaryDestinationPortList = new LinkedList();
@@ -532,13 +513,12 @@ public class PetriNetDirector extends Director {
                     else if(weightPlace instanceof Place)
                         temporaryPlaceList.add(weightPlace);
                     else {
-                        System.out.println(
+                        _debug(
                               "*******found no place/PetriNetActor"
                                 + weightPort.getFullName());
                         return null;
                     }
                 }
-
             }
             newRelationList.remove(weights);
         }
@@ -556,7 +536,6 @@ public class PetriNetDirector extends Director {
      *  the weight is ready to fire or not.
      */
     private LinkedList  _findBackwardConnectedPlaces(IORelation weight) {
-
         LinkedList newRelationList = new LinkedList();
         newRelationList.add(weight);
         LinkedList temporarySourcePortList = new LinkedList();
@@ -581,13 +560,12 @@ public class PetriNetDirector extends Director {
                     else if(weightPlace instanceof Place)
                         temporaryPlaceList.add(weightPlace);
                     else {
-                        System.out.println(
+                        _debug(
                                   "*******found no place/PetriNetActor  "
                                 + weightPort.getFullName());
                         return null;
                     }
                 }
-
             }
             newRelationList.remove(weights);
         }
@@ -628,9 +606,11 @@ public class PetriNetDirector extends Director {
      *  transition.
      *  @return The weight associated with the relation, default is 1.
      *  @exception IllegalActionException If attribute.getToken or
-     *  token.intValue throws an exception.  */
+     *  token.intValue throws an exception.
+     */
     private  int  _getWeightNumber(IORelation weights)
             throws IllegalActionException {
+
         Attribute temporaryAttribute = (Attribute)
             weights.getAttribute("Weight");
         if (temporaryAttribute == null) {
@@ -646,7 +626,7 @@ public class PetriNetDirector extends Director {
                 return 0;
 	    }
         } else {
-            System.out.println(" something wrong with the edge" );
+            _debug(" something wrong with the edge" );
             return 0;
         }
     }

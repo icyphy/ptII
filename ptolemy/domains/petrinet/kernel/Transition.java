@@ -97,15 +97,6 @@ public class Transition extends Transformer {
         output.setMultiport(true);
         output.setTypeEquals(BaseType.GENERAL);
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** FIXME: What does this method do?
-     */
-    public void fire() throws IllegalActionException {
-	// FIXME: Why is this method empty?
-    }
 }
 
 

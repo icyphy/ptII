@@ -50,10 +50,9 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	PetriNetDirector.java \
-	PetriNetReceiver.java \
+	PetriNetActor.java \
 	Place.java \
 	Transition.java \
-        PetriNetActor.java 
 
 
 EXTRA_SRCS =	$(JSRCS)
