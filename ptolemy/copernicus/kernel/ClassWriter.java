@@ -101,9 +101,11 @@ public class ClassWriter extends SceneTransformer {
             try {
                 theClass.write(outDir);
             } catch (Exception ex) {
-                ex.printStackTrace();
-                throw new RuntimeException("Creating class file for " +
-                        theClass + " failed because " + ex.getMessage());
+                // If we get an IOException, we might not have any idea
+                // of which directory was problematic
+                 throw new RuntimeException("Creating class file for '" +
+                         theClass + "' in directory '" + outDir + "' failed",
+                         ex);
             }
         }
     }
