@@ -98,6 +98,15 @@ mk/ptII.mk: configure mk/ptII.mk.in
 	./configure
 
 configure: configure.in
+	@echo "configure.in is newer than configure, so we run"
+	@echo "autoconf to update the configure file"
+	@echo "This may occur if you do a cvs update, and the mod time"
+	@echo "of configure.in is newer than that of configure"
+	@echo "even though the configure script in the repository"
+	@echo "was modified after configure.in was modified." 
+	@echo "Note that if you don't have GNU autoconf installed,"
+	@echo "you can try running 'touch configure' to work around"
+	@echo "this problem."  
 	autoconf
 
 # Get the rest of the rules
