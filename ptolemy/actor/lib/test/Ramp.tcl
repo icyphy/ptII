@@ -224,6 +224,6 @@ test Ramp-3.1 {Run a CT model which will detect errors in scheduling} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     catch {[$e0 getManager] execute} msg
     list $msg
-} {{ptolemy.actor.sched.NotSchedulableException: .top.CTMultiSolverDirector: ptolemy.actor.lib.Recorder {.top.rec} is a successor of a discrete actor ptolemy.actor.lib.Ramp {.top.ramp}, but it is not a waveform generator.}}
+} {{ptolemy.actor.sched.NotSchedulableException: .top.ramp:  is in the continuous cluster, but it is a sequence or discrete actor.}}
 
 
