@@ -31,6 +31,7 @@ package ptolemy.actor.lib.security;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.security.KeyStore;
 import java.security.Provider;
@@ -40,23 +41,31 @@ import java.util.Iterator;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.parameters.PortParameter;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-
+import ptolemy.kernel.util.Nameable;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// KeyStore
 /** A baseclass for actors that read or write keystores.
 
 <p>Keystores are ways to manage keys and certificates.  A keystore file can
-be created by using the <code>keytool</code> executable that comes with Java.
-To create a simple keystore that contains a private key and
+be created by using the <code>keytool</code> executable that comes with Java,
+or, if the <i>createFileOrURLIfNecessary</i> parameter is true,
+then a keystore will be created for you.
+
+To create a simple keystore by hand that contains a private key and
 a public key signed with a self signed certificate, run:
 <pre>
 cd $PTII
@@ -193,9 +202,15 @@ public class KeyStoreActor extends TypedAtomicActor {
                 alias = new StringParameter(this, "alias");
                 alias.setExpression("claudius");
 
+                createFileOrURLIfNecessary = new Parameter(this,
+                        "createFileOrURLIfNecessary");
+                createFileOrURLIfNecessary.setExpression("true");
+                createFileOrURLIfNecessary.setTypeEquals(BaseType.BOOLEAN);
+
                 fileOrURL = new FileParameter(this, "fileOrURL");
                 // To create the initial default KeyStore, do
-                // cd $PTII; make ptKeystore
+                // cd $PTII; make ptKeystore 
+                // or set createFileOrURLIfNecessary to true.
                 fileOrURL.setExpression("$PTII/ptKeystore");
 
                 keyPassword = new PortParameter(this, "keyPassword");
@@ -239,10 +254,17 @@ public class KeyStoreActor extends TypedAtomicActor {
      */
     public StringParameter alias;
 
+    /** If true, then create the keystore named by <i>fileOrURL</i>
+     *  if the <i>fileOrURL</i> does not exist.
+     *  The default value is true.
+     */
+    public Parameter createFileOrURLIfNecessary;
+
     /** The file name or URL from which to read.  This is a string with
      *  any form accepted by FileParameter.
      *  The initial default is "$PTII/ptKeystore".  To create the
      *  initial default keystore, run "cd $PTII; make ptKeystore"
+     *  or set the <i>createFileOrURLIfNecessary</i> to true.
      *  @see FileParameter
      */
     public FileParameter fileOrURL;
@@ -308,6 +330,58 @@ public class KeyStoreActor extends TypedAtomicActor {
         }
     }
 
+    /** Create the keystore file.
+     *  @param keystoreFilename The name of the keystore file.
+     *  @exception IllegalActionException If there is a problem creating
+     *  the keystore.
+     */
+    public void createKeystore(String keystoreFilename)
+            throws IllegalActionException {
+        System.out.println("Creating keystore " + keystoreFilename);
+        String javaDir = StringUtilities.getProperty("ptolemy.ptII.java.dir");
+        File javaDirFile = new File(javaDir);
+        if ( !javaDirFile.isDirectory()) {
+            throw new InternalErrorException(this, null,
+                    "Could not find the Java "
+                    + "directory that contains bin/keytool.  Perhaps the "
+                    + "ptolemy.ptII.java.dir property was not set?");
+        }
+        String keytoolPath = javaDir + "/bin/keytool";
+
+        String commonCommand = " -keystore " + keystoreFilename
+                + " -storetype " + _keyStoreType
+                + " -alias " + _alias
+                + " -storepass \"" + _storePassword + "\""
+                + " -keypass \"" + _keyPassword + "\"";
+
+        String command1 = keytoolPath 
+                + " -genkey"
+                + " -dname \"CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, S=Your State, C=US\""
+                + commonCommand;
+        
+        String command2 = keytoolPath 
+                + " -selfcert"
+                + commonCommand;
+
+        String command3 = keytoolPath 
+                + " -list"
+                + " -keystore " + keystoreFilename
+                + " -storepass \"" + _storePassword + "\"";
+
+        
+        _exec(command1);
+        _exec(command2);
+        _exec(command3);
+        
+
+        if (! (new File(keystoreFilename)).exists()) {
+            throw new IllegalActionException(this,
+                    "Failed to create '" + keystoreFilename
+                    + "', try running\n" + command1 + "\n" + command2 + "\n"
+                    + command3);
+        }
+    }
+
     /** Load the keystore for use by derived classes.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -332,6 +406,28 @@ public class KeyStoreActor extends TypedAtomicActor {
 
         // _loadKeystore() reads _keyPassword and _storePassword.
         _loadKeyStore();
+    }
+
+    /** Override the base class to stop waiting for input data.
+     */
+    public synchronized void stopFire() {
+        super.stopFire();
+        _stopFireRequested = true;
+        try {
+            _terminateProcess();
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex);
+        }
+    }
+
+    /** Terminate the subprocess.
+     *  This method is invoked exactly once per execution
+     *  of an application.  None of the other action methods should be
+     *  be invoked after it.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void wrapup() throws IllegalActionException {
+        _terminateProcess();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -410,6 +506,35 @@ public class KeyStoreActor extends TypedAtomicActor {
             } catch (Exception ex) {
                 // Ignore, this means that the file does not exist,
                 // so we are trying to create a new empty keyStore.
+            }
+            if (keyStoreInputStream == null) {
+                if (((BooleanToken)createFileOrURLIfNecessary.getToken()).booleanValue()) {
+                    String keystoreFileName = fileOrURL.stringValue();
+                    try {
+                        String classpathProperty = ((StringToken)Constants.get("CLASSPATH")).stringValue();
+                        if (keystoreFileName.startsWith(classpathProperty)) {
+                            keystoreFileName =
+                                ((StringToken) Constants.get("PTII"))
+                                .stringValue()
+                                + "/"
+                                + keystoreFileName.substring(
+                                        classpathProperty.length());
+
+                        }
+                        createKeystore(keystoreFileName);
+                    } catch (IllegalActionException ex) {
+                        throw new IllegalActionException(this, ex,
+                                "Failed to create keystore '"
+                                + keystoreFileName + "'");
+                    }
+                    try {
+                        // Try again
+                        keyStoreInputStream = fileOrURL.asURL().openStream();
+                    } catch (Exception ex) {
+                        // Ignore, this means that the file does not exist,
+                        // so we are trying to create a new empty keyStore.
+                    }
+                }
             }
             if (keyStoreInputStream == null) {
                 // fileOrURL does not yet exist, so we are creating
@@ -504,12 +629,222 @@ public class KeyStoreActor extends TypedAtomicActor {
     protected boolean _loadKeyStoreNeeded = true;
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Execute a command.
+    private void _exec(String command) throws IllegalActionException {
+        String outputString = "";
+        String errorString = "";
+        try {
+            _stopFireRequested = false;
+            
+            System.out.println("Keystore Command: " + command);
+
+            if (_process != null) {
+                // Note that we assume that _process is null upon entry
+                // to this method, but we check again here just to be sure.
+                _terminateProcess();
+            }
+
+            Runtime runtime = Runtime.getRuntime();
+            // Preprocess by removing lines that begin with '#'
+            // and converting substrings that begin and end
+            // with double quotes into one array element.
+            final String [] commandTokens =
+                StringUtilities
+                .tokenizeForExec(command);
+            _process = runtime.exec(commandTokens);
+
+            // Create two threads to read from the subprocess.
+            _outputGobbler =
+                new _StreamReaderThread(_process.getInputStream(),
+                        "KeyStoreActor Stdout Gobbler-"
+                        + _keystoreStreamReaderThreadCount++,
+                        this);
+            _errorGobbler =
+                new _StreamReaderThread(_process.getErrorStream(),
+                        "KeyStoreActor Stderr Gobbler-"
+                        +  _keystoreStreamReaderThreadCount++,
+                        this);
+            _errorGobbler.start();
+            _outputGobbler.start();
+            try {
+                int processReturnCode = _process.waitFor();
+                synchronized(this) {
+                    _process = null;
+                }
+            } catch (InterruptedException interrupted) {
+                // Ignored
+            }
+            outputString = _outputGobbler.getAndReset();
+            errorString = _errorGobbler.getAndReset();
+
+            if (_debugging) {
+                _debug("Exec: Error: '" + errorString + "'");
+                _debug("Exec: Output: '" + outputString + "'");
+            }
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Problem setting up command '" + command + "'\n" 
+                                             + outputString + "\n"
+                                             + errorString);
+        }
+        System.out.print(outputString);
+        System.err.print(errorString);
+    }
+
+    // Terminate the process and close any associated streams.
+    private void _terminateProcess() throws IllegalActionException {
+        if (_process != null) {
+            _process.destroy();
+            _process = null;
+        }
+    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    // Private class that reads a stream in a thread and updates the
+    // stringBuffer.
+    private class _StreamReaderThread extends Thread {
+
+        /** Create a _StreamReaderThread.
+         *  @param inputStream The stream to read from.
+         *  @param name The name of this StreamReaderThread,
+         *  which is useful for debugging.
+         *  @param actor The parent actor of this thread, which
+         *  is used in error messages.
+         */
+        _StreamReaderThread(InputStream inputStream, String name,
+                Nameable actor) {
+            super(name);
+            _inputStream = inputStream;
+            _inputStreamReader =
+                new InputStreamReader(_inputStream);
+            _actor = actor;
+            _stringBuffer = new StringBuffer();
+
+        }
+
+        /** Read any remaining data in the input stream and return the
+         *  data read thus far.  Calling this method resets the
+         *  cache of data read thus far.
+         */
+        public String getAndReset() {
+            if (_debugging) {
+                try {
+                    _debug("getAndReset: Gobbler '" + getName()
+                            + "' Ready: " + _inputStreamReader.ready()
+                            + " Available: " + _inputStream.available());
+
+                } catch (Exception ex) {
+                    throw new InternalErrorException(ex);
+                }
+            }
+
+            try {
+                // Read any remaining data.
+                _read();
+            } catch (Throwable throwable) {
+                if (_debugging) {
+                    _debug("WARNING: getAndReset(): _read() threw an "
+                            + "exception, which we are ignoring.\n"
+                            + throwable.getMessage());
+                }
+            }
+
+            String results = _stringBuffer.toString();
+            _stringBuffer = new StringBuffer();
+            try {
+                _inputStreamReader.close();
+            } catch (Exception ex) {
+                throw new InternalErrorException(null, ex, getName()
+                        + " failed to close.");
+            }
+            return results;
+        }
+
+        /** Read lines from the inputStream and append them to the
+         *  stringBuffer.
+         */
+        public void run() {
+            _read();
+        }
+
+        // Read from the stream until we get to the end of the stream
+        private void _read() {
+            // We read the data as a char[] instead of using readline()
+            // so that we can get strings that do not end in end of
+            // line chars.
+
+            char [] chars = new char[80];
+            int length; // Number of characters read.
+
+            try {
+                // Oddly, InputStreamReader.read() will return -1
+                // if there is no data present, but the string can still
+                // read.
+                while ((length = _inputStreamReader.read(chars, 0, 80))
+                        != -1
+                        && !_stopRequested
+                        && !_stopFireRequested
+                       ) {
+                    if (_debugging) {
+                        // Note that ready might be false here since
+                        // we already read the data.
+                        _debug("_read(): Gobbler '" + getName()
+                                + "' Ready: " + _inputStreamReader.ready()
+                                + " Value: '"
+                                + String.valueOf(chars, 0, length) + "'");
+                    }
+
+                    _stringBuffer.append(chars, 0, length);
+                }
+            } catch (Throwable throwable) {
+                throw new InternalErrorException(_actor, throwable,
+                        getName() + ": Failed while reading from "
+                        + _inputStream);
+            }
+        }
+
+
+        // The actor associated with this stream reader.
+        private Nameable _actor;
+
+        // StringBuffer to update.
+        private StringBuffer _stringBuffer;
+
+        // Stream from which to read.
+        private InputStream _inputStream;
+
+        // Stream from which to read.
+        private InputStreamReader _inputStreamReader;
+
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+
+    // StreamReader with which we read stderr.
+    private _StreamReaderThread _errorGobbler;
+
+    // Instance count of output and error threads, used for debugging.
+    // When the value is greater than 1000, we reset it to 0.
+    private static int _keystoreStreamReaderThreadCount = 0;
 
     // Set to true if either the keyStoreType or provider attribute changed
     // and _keyStore needs to be updated.
     private boolean _initializeKeyStoreNeeded = true;
 
+    // StreamReader with which we read stdout.
+    private _StreamReaderThread _outputGobbler;
+
+    // The Process that we are running.
+    private Process _process;
+
+    // Indicator that stopFire() has been called.
+    private boolean _stopFireRequested = false;
+
     // The URL of the file.
     private URL _url;
+
 }
