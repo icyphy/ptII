@@ -306,7 +306,7 @@ test ParseTreeEvaluator-8.1.3 {Test bitwise operators on mixed types} {
 	[theTest "5L&2ub"] [theTest "5ub|2"] [theTest "5ub\#4ub"] \
 	[theTest "~5ub"]\
 	[theTest "5L&2L"]
-} {0L 7L 1 -6L 0L 7 1ub 2}
+} {0L 7L 1 -6L 0L 7 1ub 250ub 0L}
 
 ######################################################################
 ####
