@@ -16,7 +16,7 @@
         	if (javawsInstalled) { 
                 	document.write("<li> <a href=" + url + ">"  + name + "</a>"); 
                 } else { 
-                	document.write("You need to <a href=http://java.sun.com/cgi-bin/javawebstart-platform.sh?>Install Web Start from Sun</a> before installing <a href=" + url + ">"  + name + "</a>"); 
+                	document.write("You need to <a href="http://java.sun.com/cgi-bin/javawebstart-platform.sh?">Install Web Start from Sun</a> before installing <a href=" + url + ">"  + name + "</a>"); 
                 } 
         } 
  </SCRIPT> 
@@ -38,6 +38,10 @@ is a product from Sun that uses the Web to download applications.
              <!-- 
              insertLink("../vergilPtiny.jnlp", 
                         "Vergil (Ptiny version) Web Start Download"); 
+             // --> 
+             <!-- 
+             insertLink("../vergilPtinySandbox.jnlp", 
+                        "Vergil (Ptiny Sandbox version) Web Start Download"); 
              // --> 
              <!-- 
              insertLink("../vergilDSP.jnlp", 
