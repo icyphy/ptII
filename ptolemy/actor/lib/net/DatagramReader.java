@@ -210,6 +210,11 @@ public class DatagramReader extends TypedAtomicActor {
 
         platformBufferLength = new Parameter(this, "platformBufferLength");
         platformBufferLength.setTypeEquals(BaseType.INT);
+        platformBufferLength.setToken(new IntToken(64));
+
+        setPlatformBufferLength = new Parameter(
+                this, "setPlatformBufferLength", new BooleanToken(false));
+        setPlatformBufferLength.setTypeEquals(BaseType.BOOLEAN);
 
         overwrite = new Parameter(this, "overwrite", new BooleanToken(true));
         overwrite.setTypeEquals(BaseType.BOOLEAN);
@@ -313,22 +318,33 @@ public class DatagramReader extends TypedAtomicActor {
      */
     public Parameter actorBufferLength;
 
-    /** Length (in bytes) of the buffer within java and/or the platform
-     *  layers below java.  Java documents refers to all this
+    /** Length (in bytes) of the buffer within java and/or the
+     *  platform layers below java.  Java documents refers to all this
      *  collectively as the platform.  The size of this buffer is
      *  controlled via the getReceiveBufferSize() and
      *  setReceiveBufferSize() methods.  @see java.net.DatagramSocket.
      *  Caution #1 - The platform treats setReceiveBufferSize() as a
      *  suggestion only.  It supposedly reports the actual buffer size
-     *  granted in subsequent calls to getReceiveBufferSize().  However,
-     *  my experiments with this showed it granting buffers as large as
-     *  2 gigabytes, with no apparent limit except the maximum representable
-     *  integer value.  Thus, I suggest taking this with a grain of salt.
-     *  Caution #2 - the get/setReceiveBufferSize() calls block when
-     *  called as long as another thread is in a receive() call on that
-     *  same socket.  This is undocumented in Java's documentation.
+     *  granted in subsequent calls to getReceiveBufferSize().
+     *  However, my experiments with this showed it granting buffers
+     *  as large as 2 gigabytes, with no apparent limit except the
+     *  maximum representable integer value.  Thus, I suggest taking
+     *  this with a grain of salt.  Caution #2 - the
+     *  get/setReceiveBufferSize() calls block when called as long as
+     *  another thread is in a receive() call on that same socket.
+     *  This is undocumented in Java's documentation.  Also note that
+     *  the setReceiveBufferSize() method is not available in early
+     *  JDK's, which makes it important to have
+     *  setPlatformBufferLength set to false when generating code.
      */
     public Parameter platformBufferLength;
+
+    /** Determine whether the platformBufferLength parameter will be
+     *  used to set the platform's receive buffer size.  This
+     *  parameter must contain a boolean token, and has a default of
+     *  false.
+     */  
+    public Parameter setPlatformBufferLength;
 
     /** Whether to overwrite when inundated with datagrams or let
      *  them pile up.  Default is true.  If false, datagrams will
@@ -550,7 +566,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  of the output port.
      */
     public void fire() throws IllegalActionException {
-
+           
         // Consume trigger input(s), otherwise model can hang.
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
@@ -935,13 +951,14 @@ public class DatagramReader extends TypedAtomicActor {
                     if (_ChangeRequestedToPlatformBufferLength > 0) {
                         _ChangeRequestedToPlatformBufferLength = -1;
                         try {
-                            // [Set].
-                            // Unless the platformBufferLength parameter
-                            // has been left blank, suggest the platform
-                            // set its buffer size to this value (bytes).
-                            if (platformBufferLength.getToken() != null) {
-                                _socket.setReceiveBufferSize(((IntToken)
-                                        platformBufferLength.getToken())
+                            // [Set].  If the setPlatformBufferLength
+                            // parameter is true, then suggest the
+                            // platform set its buffer size to the
+                            // platformBufferLength parameter value
+                            // (in bytes).
+                            if (((BooleanToken)setPlatformBufferLength.getToken()).booleanValue()) {
+                                _socket.setReceiveBufferSize(
+                                        ((IntToken)platformBufferLength.getToken())
                                         .intValue());
                             }
                             // Get.
@@ -972,7 +989,7 @@ public class DatagramReader extends TypedAtomicActor {
                     if (_receivePacket == null ||
                             _receiveAllocated != _actorBufferLength) {
                         _receivePacket = new DatagramPacket(
-                                new byte[_actorBufferLength], 0,
+                                new byte[_actorBufferLength],
                                 _actorBufferLength);
                         _receiveAllocated = _actorBufferLength;
                     }
@@ -985,7 +1002,7 @@ public class DatagramReader extends TypedAtomicActor {
                     // FIXME Maybe it is not necessary at all!
                     synchronized(_syncBufferLength) {
                         _broadcastPacket = new DatagramPacket(
-                                new byte[_actorBufferLength], 0,
+                                new byte[_actorBufferLength],
                                 _actorBufferLength);
                         _broadcastAllocated = _actorBufferLength;
                     }
@@ -1068,7 +1085,10 @@ public class DatagramReader extends TypedAtomicActor {
                         try {
                             _syncFireAndThread.wait();
                         } catch (InterruptedException ex) {
-                            throw new RuntimeException("-interrupted-", ex);
+                            // Don't use exception chaining so the
+                            // code generator will be able to generate
+                            // code for jdk1.1 compatible devices.
+                            throw new RuntimeException("-interrupted-");
                         }
                     }
 
