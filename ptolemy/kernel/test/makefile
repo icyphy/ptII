@@ -86,6 +86,10 @@ test_java: jclass
 test_jsimple: $(EXTRA_SRCS) jclass alljtests.tcl
 	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) alljtests.tcl
 
+# These tests do not require a graphics terminal, but do use Jacl and Java
+test_jsimple_jacl: $(EXTRA_SRCS) jclass alljtests.tcl
+	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) jacl alljtests.tcl
+
 docs: javadocs
 
 depend:
