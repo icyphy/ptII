@@ -63,7 +63,7 @@ import java.applet.Applet;
  *
  * @author: Edward A. Lee
  * @version: 
-$Id$
+@(#)PlotLive.java	1.15    09/19/97
  */
 public abstract class PlotLive extends Plot implements Runnable {
 
@@ -97,7 +97,7 @@ public abstract class PlotLive extends Plot implements Runnable {
      * However, the plot will also be somewhat less responsive to user
      * inputs such as zooming, filling, or stopping.
      */
-    public abstract void addPoints();
+    public synchronized abstract void addPoints();
 
     /**
      * Return a string describing this applet.
@@ -105,7 +105,7 @@ public abstract class PlotLive extends Plot implements Runnable {
     public String getAppletInfo() {
         return "PlotLive 1.0: A live data plotter.\n" +
 	    "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
-	    "($Id$)";
+	    "(@(#)PlotLive.java	1.15 09/19/97)";
     }
 
     /**
@@ -147,7 +147,7 @@ public abstract class PlotLive extends Plot implements Runnable {
                 try {
                     // NOTE: Using wait here with notifyAll in the action method
                     // leads to inexplicable deadlocks.  So we just sleep.
-                    Thread.sleep(1000);
+                    Thread.sleep(200);
                 } catch (InterruptedException e) {}
             }
         }
