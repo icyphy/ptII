@@ -88,10 +88,10 @@ public class FunctionDependencyOfCompositeActor extends FunctionDependency {
 
         // FIXME: for special domains, like Giotto, the inputs
         // and outputs are always independent.
-        if (_container.getDirector()
-            instanceof ptolemy.domains.giotto.kernel.GiottoDirector) {
-                return;
-        }
+        //if (_container.getDirector()
+        //    instanceof ptolemy.domains.giotto.kernel.GiottoDirector) {
+        //        return;
+        //}
 
         // Here we may add constraints on which actors to be used to
         // construct graph. For example, in a modal model, we only
