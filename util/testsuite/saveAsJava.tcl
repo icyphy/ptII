@@ -43,8 +43,9 @@ proc saveAsJava {model} {
     # under Javascope, which includes classes in a zip file
     set builtinClasspath [java::call System getProperty "java.class.path"]
     set classpath $relativePathToPTII[java::field java.io.File pathSeparator].[java::field java.io.File pathSeparator]$builtinClasspath
-    set modelName [string range $f 0 [expr {[string length $f]-6}]]
-    exec javac -classpath $relativePathToPTII $javaFile.java
+    set modelName [string range $javaFile \
+	    0 [expr {[string length $javaFile]-6}]]
+    exec javac -classpath $relativePathToPTII $javaFile
     return [exec java -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -class string range $modelName
 }
 
