@@ -54,6 +54,11 @@ BIN_INSTALL_DIR =	$(exec_prefix)/bin
 # The line below gets substituted by the configure script
 PTJAVA_DIR = 	@PTJAVA_DIR@
 
+# Location of rt.jar, usually $(PTJAVA_DIR)/jre/lib/rt.jar
+# However, we have to be careful of backslashes and /cygwin
+# Soot uses this variable to find java.lang.Object
+JAVA_SYSTEM_JAR = @JAVA_SYSTEM_JAR@
+
 # JDK Version from the java.version property
 JVERSION =	@JVERSION@
 

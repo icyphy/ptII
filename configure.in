@@ -806,16 +806,27 @@ fi
 #       See if there was a command-line option for where Soot is
 #       If not, look in $PTII/vendors/sun/soot
 #--------------------------------------------------------------------
+
 # PTSOOT_DIR is set to soot and used in
 # $PTII/ptolemy/apps/makefile if soot was found
 PTSOOT_DIR=
-#
+
+# Directory that contains the soot jar files
+SOOT_DIR='${PTII}/vendors/soot/1.2.2'
+
+# Soot needs to find java.lang.Object	
+JAVA_SYSTEM_JAR='$(PTJAVA_DIR)/jre/lib/rt.jar'
+
+# We don't bother overriding this below so that something close
+# to the right default is in ptII.mk and the user can just change
+# SOOT_DIR or JAVA_SYSTEM_JAR	
+SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar$(CLASSPATHSEPARATOR)$(JAVA_SYSTEM_JAR)'
+
 # We only need to look for soot if $PTII/ptolemy/apps/soot exists
 if test ! -d "$PTII/ptolemy/apps/soot"; then
     AC_MSG_RESULT([$PTII/ptolemy/apps/soot is not present, so we need not
 find the Soot - a Java Optimization Framework])
     SOOT_DIR='${PTII}/vendors/soot/1.2.2'
-    SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/jre/lib/rt.jar'
 else
     AC_MSG_CHECKING([for soot directory])
     AC_ARG_WITH(soot, [  --with-soot=DIR       use SOOT from DIR,
@@ -831,41 +842,52 @@ else
 	    AC_MSG_CHECKING([for \$SOOT_DIR/jasminclasses.jar])
   	    if test -f "$SOOT_DIR/jasminclasses.jar"; then
                 AC_MSG_RESULT([$SOOT_DIR/jasminclasses.jar])
-	        SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar'
-	        AC_MSG_CHECKING([for \$PTJAVA_DIR/jre/lib/rt.jar])
-  	        if test -f "$PTJAVA_DIR/jre/lib/rt.jar"; then
-                    AC_MSG_RESULT([$PTJAVA_DIR/jre/lib/rt.jar])
-		    SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar$(CLASSPATHSEPARATOR)$(PTJAVA_DIR)/jre/lib/rt.jar'
-	        else	
-		    # We could resurrect config/SystemJar.java and run it?
-		    SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar'
-		   AC_MSG_WARN(['Failed to find $PTJAVA_DIR/jre/lib/rt.jar
-    Classes that use Soot will compile, but will fail to run'])
-	        fi
-	    else
-	        SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar'
             fi
 	    AC_MSG_RESULT([$SOOT_CLASSES])
         else
-	    SOOT_CLASSES=no
+	    SOOT_CLASSES_FOUND=no
         fi
     # else
     # We could look in other places . . .
     fi
     	
-    if test "$SOOT_CLASSES" = "no"; then
+    if test "$SOOT_CLASSES_FOUND" = "no"; then
         AC_MSG_WARN(['Failed to find soot/sootclasses.jar
     perhaps Soot is not installed?
     You need not download Soot unless you plan on using code generation
     The Soot SDK can be downloaded from http://www.sable.mcgill.ca/soot/'])
 	# Note that we don't substitute in the ${PTII} or $(SOOT_DIR) here
 	SOOT_DIR='${PTII}/vendors/soot/1.2.2'
-   	SOOT_CLASSES='$(SOOT_DIR)/sootclasses.jar$(CLASSPATHSEPARATOR)$(SOOT_DIR)/jasminclasses.jar'
     else
 	# Set to soot and used in
 	# $PTII/ptolemy/apps/makefile if soot was found
 	PTSOOT_DIR=soot
     fi
+
+    AC_MSG_CHECKING([for rt.jar by compiling config/SystemJar.java])
+    AC_ARG_WITH(javasystemjar, [  --with-javasystemjar=DIR       use rt.lib from DIR,
+                          defaults to JRE java.home property],
+	JAVA_SYSTEM_JAR=$withval,
+	JAVA_SYSTEM_JAR='$(PTJAVA_DIR)/jre/lib/rt.jar')
+
+    startdir=`pwd`
+    cd "$srcdir/config"
+    if "$JAVAC" SystemJar.java ; then
+	AC_MSG_RESULT(ok)
+	AC_MSG_CHECKING([the value of the java.home property ])
+	if env CLASSPATH=$PTII/config "$JAVA" SystemJar > /dev/null; then
+	    # Run it again and get the results
+	    JAVA_SYSTEM_JAR=`CLASSPATH=$PTII/config "$JAVA" SystemJar`
+   	    AC_MSG_RESULT('$JAVA_SYSTEM_JAR')
+	else	
+	    AC_MSG_ERROR(['CLASSPATH=$PTII/config $JAVA SystemJar failed.
+    Classes that use Soot will compile, but will fail to run.'])
+        fi
+    else
+	AC_MSG_ERROR(['CLASSPATH=$PTII/config $JAVAC SystemJar.java failed.
+    Classes that use Soot will compile, but will fail to run.'])
+    fi
+    cd "$startdir"
 fi
 
 
@@ -1031,6 +1053,11 @@ AC_SUBST(COMMAPI_DIR)
 
 # If Commapi is present, then set to yes, otherwise set to no
 AC_SUBST(COMMAPI_PRESENT)
+
+# Location of rt.jar, usually $(PTJAVA_DIR)/jre/lib/rt.jar
+# However, we have to be careful of backslashes and /cygwin
+# Soot uses this variable to find java.lang.Object
+AC_SUBST(JAVA_SYSTEM_JAR)
 
 # javacc binary
 AC_SUBST(JAVACC)
