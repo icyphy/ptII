@@ -1,4 +1,5 @@
-/* This constructs a sequence of prime numbers based on Sieve of Erathsenes
+/* Sieve filtering out all multiples of a given number for 
+the Sieve of Erathsenes.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -36,15 +37,22 @@ import ptolemy.data.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
-//// PNSieve
+//// CSPSieve
 /**
+Used in the Sieve of Eratosthenes demo. This actor represents a 
+sieve process which filters out all multiples of a particular number.
+The first time the filter encounters a number it cannot filter it 
+creates a new process to filter out all multiples of that number and 
+appends it to the string of filters already created. This is a illustration
+of changing the topology.
+<p>
 @author Neil Smyth
 @version @$Id$
 */
 public class CSPSieve extends CSPActor {
 
     /** Calls the super class constructor and creates the neccessary ports.
-     * @exception NameDuplicationException is thrown if more than one port
+     *  @exception NameDuplicationException is thrown if more than one port
      *  with the same name is added to the star
      */
     public CSPSieve(CompositeActor container, String name, int prime)
@@ -76,19 +84,8 @@ public class CSPSieve extends CSPActor {
 	    if (lastSeen % _prime != 0) {
 		// is it the next prime?
 		if (islargestprime) {
-		    System.out.println(getName() + ": Queuing Topology " +
-                            "Change.");
-		    // yes - make the topologyChange for it
+		  // yes - make and queue the topologyChange
 		    TopologyChangeRequest t = _makeChangeRequest(lastSeen);
-                    /*try {
-                        System.out.println(getName() + ":1");
-                        //t.constructEventQueue();
-                        System.out.println(getName() + ":2");
-                    } catch (Exception ex) {
-                        System.out.println("It seems we may have a " +
-                                "small PROBLEM");
-                                }*/
-		    // Queue the new TopologyChangeRequest
 		    getDirector().queueTopologyChangeRequest(t);
                     System.out.println(getName() +":Queued TopologyChange");
 		    delay();
@@ -114,7 +111,10 @@ public class CSPSieve extends CSPActor {
         return _output;
     }
 
-    /** Create and return a new TopologyChangeRequest object that
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private methods                        ////
+
+    /*  Create and return a new TopologyChangeRequest object that
      *  adds a new sieve.
      *  @param value The prime the new filter should sieve.
      */
@@ -128,15 +128,12 @@ public class CSPSieve extends CSPActor {
                 ComponentRelation newRel = null;
                 try {
                     newSieve = new CSPSieve(container,value + "_sieve", value);
-
                     // If we use a 1-1 relation this needs to change.
                     newRel = new IORelation(container, "R" + value);
-
                 } catch (NameDuplicationException ex) {
                     throw new InvalidStateException("11Cannot create " +
                             "new sieve.");
                 } catch (IllegalActionException ex) {
-                    System.out.println("XXX" + ex.getClass().getName() + ex.getMessage());
                     throw new InvalidStateException("Cannot create " +
                             "new sieve.");
                 }

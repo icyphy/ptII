@@ -91,26 +91,18 @@ public class Server extends CSPActor {
                 count++;
             }
             System.out.println("Server(" + getName() + "):finished normally.");
-            finish();
             return;
         } catch (IllegalActionException ex) {
-            System.out.println("CSPSink invalid get, exiting...");
-        } catch (NoTokenException ex) {
-            System.out.println("CSPSink invalid get, exiting...");
-        } finally {
+            throw new TerminateProcessException(getName() + ": invalid get.");
+	} catch (NoTokenException ex) {
+            throw new TerminateProcessException(getName() + ": invalid get.");
+        } 
+    }
 
-            /*try {
-                setContainer(null);
-            } catch (NameDuplicationException ex) {
-                // should not happen.
-                throw new InternalErrorException(getName() + ": cannot" +
-                        "set container to null.");
-            } catch (IllegalActionException ex) {
-                // should not happen.
-                throw new InternalErrorException(getName() + ": cannot" +
-                        "set container to null.");
-                        }*/
-        }
+    /** Return false so that the process terminates.
+     */
+    public boolean postfire() {
+        return false;
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -122,5 +114,4 @@ public class Server extends CSPActor {
     ////                         private variables                      ////
 
     private Parameter _rate;
-
 }

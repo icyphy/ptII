@@ -36,12 +36,11 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
-import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPSink
 /**
-    FIXME: add description!!
+Accepts Tokens from a single channel. 
 
 @author Neil Smyth
 @version $Id$
@@ -62,19 +61,15 @@ public class CSPSink extends AtomicActor {
     ////                         public methods                         ////
 
     public void fire() {
-        Random rand = new Random();
         int count = 0;
         try {
             while (count < 10 ) {
-                //System.out.println(getName() + " getting...");
                 Token t = input.get(0);
                 System.out.println(getName() + " received Token: " +
                       t.toString());
                 count++;
-                //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
             }
             System.out.println("CSPSink(" + getName() + "):finished normally.");
-            _again = false;
             return;
         } catch (IllegalActionException ex) {
             System.out.println("CSPSink invalid get, exiting...");
@@ -83,10 +78,9 @@ public class CSPSink extends AtomicActor {
         }
     }
 
-    public boolean prefire() {
-        return _again;
+    public boolean postfire() {
+        return false;
     }
 
    public IOPort input;
-   private boolean _again = true;
 }

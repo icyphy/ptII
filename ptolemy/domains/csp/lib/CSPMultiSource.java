@@ -1,4 +1,4 @@
-/* CSPMultiSource atomic actor.
+/* Sends a Token on any channel connected to its output port.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (nsmyth@eecs.berkeley.edu)
-
+@AcceptedRating Red (nsmyth@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.csp.lib;
@@ -40,12 +40,14 @@ import ptolemy.data.IntToken;
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSource
 /**
-Waits to send a Token on any arc connected to its output port.
-FIXME: add longer description!!
-
+Sends a Token on any channel connected to its output port. It uses a 
+CDO construct to always be ready to send a new Token when another 
+proces is ready to accept along one of the channels..
+The channels it can accept from is set at the start of each firing. 
+<p>
 @author Neil Smyth
 @version $Id$
-
+@see ptolemy.domains.csp.kernel.CSPActor
 */
 public class CSPMultiSource extends CSPActor {
     public CSPMultiSource() {
@@ -105,15 +107,14 @@ public class CSPMultiSource extends CSPActor {
                 count++;
             }
         } catch (IllegalActionException ex) {
-            System.out.println( "Error: could not create ConditionalSend " +
-                    "branch");
+            throw new TerminatePocessException(getName() + ": could not " +
+		    "create all branches for CDO.");
         }
-        _again = false;
-        return;
+	return;
     }
 
-    public boolean prefire() {
-        return _again;
+    public boolean postfire() {
+        return false;
     }
 
     public void wrapup() {
@@ -127,10 +128,7 @@ public class CSPMultiSource extends CSPActor {
     public IOPort output;
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
-
-    // Flag indicating if this actor should be fired again.
-    private boolean _again = true;
+    ////                         private variables                      ////
 
     // Array storing the number of times each brach rendezvoused.
     private int[] _branchCount;

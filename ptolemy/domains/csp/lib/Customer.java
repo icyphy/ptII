@@ -94,33 +94,24 @@ public class Customer extends CSPActor {
                         t.toString());
                 count++;
             }
-            System.out.println("Customer(" + getName() +
-                    "):finished normally.");
-            finish();
             return;
         } catch (IllegalActionException ex) {
-            System.out.println("Customer: illegalActionException, exiting");
-        } finally {
+	    throw new TerminateProcessException(getName() + ": invalid put.");
+	}
+    }
 
-            /*try {
-                setContainer(null);
-            } catch (NameDuplicationException ex) {
-                // should not happen.
-                throw new InternalErrorException("CSPBuffer: cannot" +
-                        "set container to null.");
-            } catch (IllegalActionException ex) {
-                // should not happen.
-                throw new InternalErrorException("CSPBuffer: cannot" +
-                        "set container to null.");
-                        }*/
-        }
+    /** Return false to terminate the process.
+     */
+    public boolean postfire() {
+        System.out.println("Customer(" + getName() +
+		"):finished normally.");
+	return false;
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
 
     public IOPort output;
-
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////

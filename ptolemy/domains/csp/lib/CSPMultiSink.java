@@ -1,4 +1,4 @@
-/* CSPMultiSink atomic actor.
+/* Accepts a Token from any channel connected to its port.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (nsmyth@eecs.berkeley.edu)
-
+@AcceptedRating Red (nsmyth@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.csp.lib;
@@ -35,17 +35,17 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
-import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSink
 /**
-    Waits to receive a Token on any arc connected to its input port.
-FIXME: add longer description!!
-
+Accepts a Token from any channel connected to its port. It uses a 
+CDO construct to always be ready to accept a new Token.
+The channels it can accept from is set at the start of each firing. 
+<p>
 @author Neil Smyth
 @version $Id$
-
+@see ptolemy.domains.csp.kernel
 */
 public class CSPMultiSink extends CSPActor {
     public CSPMultiSink() {
@@ -104,15 +104,14 @@ public class CSPMultiSink extends CSPActor {
                 count++;
             }
         } catch (IllegalActionException ex) {
-            String str = "Error: could not create ConditionalReceive branch";
-            System.out.println(str);
+            throw new TerminateProcessException(getName() + ": Error: " + 
+			"could not create ConditionalReceive branch");
         }
-        _again = false;
         return;
     }
 
-    public boolean prefire() {
-        return _again;
+    public boolean postfire() {
+        return false;
     }
 
     public void wrapup() {
@@ -126,10 +125,7 @@ public class CSPMultiSink extends CSPActor {
     public IOPort input;
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
-
-    // Flag indicating if this actor should be fired again.
-    private boolean _again = true;
+    ////                         private variables                      ////
 
     // Array storing the number of times each brach rendezvoused.
     private int[] _branchCount;
