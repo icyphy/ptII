@@ -113,3 +113,18 @@ proc jdkStackTrace {} {
     }
     puts $errorInfo
 }
+
+# Turn on and off instruction tracing
+# Turn on instruction tracing with
+# jdkTraceInstructions True
+proc jdkTraceInstructions { traceboolean } {
+    set runtime [java::call Runtime getRuntime]
+    $runtime traceInstructions $traceboolean
+}
+
+proc jdkTraceMethodCalls { traceboolean } {
+    set runtime [java::call Runtime getRuntime]
+    $runtime traceMethodCalls $traceboolean
+}
+
+
