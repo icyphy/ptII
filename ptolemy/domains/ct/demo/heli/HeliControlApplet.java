@@ -67,7 +67,7 @@ public class HeliControlApplet extends CTApplet {
         super.init();
         // Initialization
         _stopTimeBox = new TextField("70.0", 10);
-        _currentTimeLabel = new Label("Current time = 0.0     ");
+        _currentTimeLabel = new Label("Now: 0.0     ");
         _goButton = new Button("Go");
         _actionButton = new Button("Action");
 
@@ -517,15 +517,76 @@ public class HeliControlApplet extends CTApplet {
             xmin.parameterChanged(null);
             
             Parameter xmax = (Parameter)ctPlot.getAttribute("X_Max");
-            xmax.setExpression("70.0");
+            xmax.setExpression("100.0");
             xmax.parameterChanged(null);
 
             Parameter ymin = (Parameter)ctPlot.getAttribute("Y_Min");
-            ymin.setExpression("-10.0");
+            ymin.setExpression("1.0");
             ymin.parameterChanged(null);
 
             Parameter ymax = (Parameter)ctPlot.getAttribute("Y_Max");
-            ymax.setExpression("0.0");
+            ymax.setExpression("12.0");
+            ymax.parameterChanged(null);
+            /* CTPlot pxPlot = new CTPlot(sys, "VxPlot", pxPanel);
+            String[] pxLegends = {"Vx"};
+            pxPlot.setLegend(pxLegends);
+
+            CTPlot pzPlot = new CTPlot(sys, "PzPlot", pzPanel);
+            String[] pzLegends = {"Pz"};
+            pzPlot.setLegend(pzLegends);
+
+            CTPlot thPlot = new CTPlot(sys, "ThPlot", thPanel);
+            String[] thLegends = {"Th"};
+            thPlot.setLegend(thLegends);*/
+            //VxPlot
+            xmin = (Parameter)pxPlot.getAttribute("X_Min");
+            xmin.setExpression("0.0");
+            xmin.parameterChanged(null);
+            
+            xmax = (Parameter)pxPlot.getAttribute("X_Max");
+            xmax.setExpression("70.0");
+            xmax.parameterChanged(null);
+
+            ymin = (Parameter)pxPlot.getAttribute("Y_Min");
+            ymin.setExpression("0.0");
+            ymin.parameterChanged(null);
+
+            ymax = (Parameter)pxPlot.getAttribute("Y_Max");
+            ymax.setExpression("6.0");
+            ymax.parameterChanged(null);
+
+            //PzPlot
+            xmin = (Parameter)pzPlot.getAttribute("X_Min");
+            xmin.setExpression("0.0");
+            xmin.parameterChanged(null);
+            
+            xmax = (Parameter)pzPlot.getAttribute("X_Max");
+            xmax.setExpression("70.0");
+            xmax.parameterChanged(null);
+
+            ymin = (Parameter)pzPlot.getAttribute("Y_Min");
+            ymin.setExpression("1.0");
+            ymin.parameterChanged(null);
+
+            ymax = (Parameter)pzPlot.getAttribute("Y_Max");
+            ymax.setExpression("12.0");
+            ymax.parameterChanged(null);
+
+            //thPlot
+            xmin = (Parameter)thPlot.getAttribute("X_Min");
+            xmin.setExpression("0.0");
+            xmin.parameterChanged(null);
+            
+            xmax = (Parameter)thPlot.getAttribute("X_Max");
+            xmax.setExpression("70.0");
+            xmax.parameterChanged(null);
+
+            ymin = (Parameter)thPlot.getAttribute("Y_Min");
+            ymin.setExpression("-0.05");
+            ymin.parameterChanged(null);
+
+            ymax = (Parameter)thPlot.getAttribute("Y_Max");
+            ymax.setExpression("0.05");
             ymax.parameterChanged(null);
 
             // Setting up parameters.
@@ -802,7 +863,7 @@ public class HeliControlApplet extends CTApplet {
             while (_isSimulationRunning) {
                 // get the current time from director.
                 double currenttime = _dir.getCurrentTime();
-                _currentTimeLabel.setText("Current time = "+currenttime);
+                _currentTimeLabel.setText(("Now: "+currenttime).substring(10));
                 try {
                     sleep(500);
                 } catch (InterruptedException e) {}
