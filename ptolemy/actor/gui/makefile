@@ -174,6 +174,13 @@ demo_caa: all
 	 "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication \
 	 -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
 
+# Demonstrate MoMLSimpleApplication, which does not necessarily
+# require graphics, though this demo does use the
+demo_momlsimple:
+	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)" \
+	 "$(JAVA)" ptolemy.actor.gui.MoMLSimpleApplication \
+		$(ROOT)/ptolemy/actor/gui/test/test.xml
+
 depend:
 	@echo "no dependencies in this directory"
 
