@@ -915,13 +915,15 @@ public class Plot extends PlotBox {
         // This method is similar to _parseLine() below, except it parses
         // an entire file at a time.
         int c;
+
         boolean connected = false;
+	if (_connected) connected = true;
+
         if (_debug > 8)
 	    System.out.println("Plot: _parseBinaryStream _connected = " + 
 			       _connected);
 	try {
 	    while (true) {
-                if (_connected) connected = true;
 		// Here, we read pxgraph binary format data.
 		// For speed reasons, the Ptolemy group extended 
 		// pxgraph to read binary format data.
@@ -940,6 +942,7 @@ public class Plot extends PlotBox {
 			float y = in.readFloat();
                         connected = _addLegendIfNecessary(connected);
                         addPoint(_currentdataset, x, y, connected);
+			if (_connected) connected = true;
 		    }
 		    break;
 		case 'e':
@@ -989,7 +992,6 @@ public class Plot extends PlotBox {
 	    // We convert the line to lower case so that the command
 	    // names are case insensitive
 	    String lcLine = new String(line.toLowerCase());
-            int start = 0;
             if (lcLine.startsWith("marks:")) {
                 String style = (line.substring(6)).trim();
                 setMarksStyle(style);
@@ -1056,22 +1058,24 @@ public class Plot extends PlotBox {
             } else if (line.startsWith("move:")) {
                 // a disconnected point
                 connected = false;
-                start = 5;
+		// deal with 'move: 1 2' and 'move:2 2'
+		line = line.substring(5,line.length()).trim();
             } else if (line.startsWith("draw:")) {
                 // a connected point, if connect is enabled.
-                start = 5;
+		line = line.substring(5,line.length()).trim();
             }
             // See if an x,y or x<Space>y x<Taby> point is given
-         	int fieldsplit = line.indexOf(",", start);
+	        line = line.trim();
+         	int fieldsplit = line.indexOf(",");
         	if (fieldsplit == -1) {
-		    fieldsplit = line.indexOf(" ", start);
+		    fieldsplit = line.indexOf(" ");
 		}
         	if (fieldsplit == -1) {
-		    fieldsplit = line.indexOf("	", start);  // a tab
+		    fieldsplit = line.indexOf("	");  // a tab
 		}
 
         	if (fieldsplit > 0) {
-                    String x = (line.substring(start, fieldsplit)).trim();
+                    String x = (line.substring(0, fieldsplit)).trim();
                     String y = (line.substring(fieldsplit+1)).trim();
         	    try {
         	        Double xpt = new Double(x);
