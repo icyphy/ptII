@@ -736,6 +736,13 @@ public class Graph implements Cloneable {
         return _hiddenEdgeSet.contains(edge);
     }
 
+    /** Return the number of hidden edges in the graph.
+     *  @return The number of hidden edges.
+     */
+    public int hiddenEdgeCount() {
+        return _hiddenEdgeSet.size();
+    }
+
     /** Return all the hidden edges in this graph in the form of a collection.
      *  Each element in the returned collection is an instance of {@link Edge}.
      *  This is an <em>O(1)</em> operation.
