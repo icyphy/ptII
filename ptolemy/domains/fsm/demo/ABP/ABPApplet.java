@@ -467,7 +467,7 @@ public class ABPApplet extends DEApplet implements QueryListener {
             _plot.plot.setXLabel("Time");
             _plot.plot.setYLabel("Events");
             _plot.plot.setXRange(0.0, _getStopTime());
-            _plot.plot.setYRange(0.0, 4.0);
+            _plot.plot.setYRange(0.0, 12.0);
             _plot.plot.setConnected(false);
             _plot.plot.setImpulses(true);
             _plot.plot.setMarksStyle("dots");
