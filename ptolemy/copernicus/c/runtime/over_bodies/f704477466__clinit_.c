@@ -1,6 +1,5 @@
 /*******************************************************************
 Dummy C code for overridden method java.lang.ref.Reference.clinit().
-Overridden because it accessed an inner class.
 
 Copyright (c) 2001 The University of Maryland.
 
@@ -28,4 +27,3 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @author Ankush Varma 
 @version $Id$
 */
-

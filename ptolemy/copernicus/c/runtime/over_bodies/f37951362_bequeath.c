@@ -1,5 +1,8 @@
 /*******************************************************************
-Dummy C code for overridden method.
+C code for overridden method java.lang.InheritableThreadLocah.bequeath().
+
+Overridden because call to an interface led to a statement with no effect
+which caused a warning.
 
 Copyright (c) 2001 The University of Maryland.
 
@@ -24,7 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 ********************************************************************/
 
 /*
-Dummy C code for overridden method.
+C code for overridden method java.lang.InheritableThreadLocah.bequeath().
 
 @author Ankush Varma 
 @version $Id$

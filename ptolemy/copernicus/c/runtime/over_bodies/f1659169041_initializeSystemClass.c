@@ -1,7 +1,6 @@
 /*******************************************************************
 Dummy C code for overridden method 
-java.util.HashTable.clinit().
-Overridden because it accessed an inner class.
+java.lang.System.initializeSystemClass().
 
 Copyright (c) 2001 The University of Maryland.
 
