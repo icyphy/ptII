@@ -57,11 +57,11 @@ public class FloatArrayMath {
      */
     public static final float[] add(final float[] array, final float z) {
         int length = array.length;
-        float[] retval = new float[length];
+        float[] returnValue = new float[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array[i] + z;
+            returnValue[i] = array[i] + z;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element sum of the two
@@ -73,11 +73,11 @@ public class FloatArrayMath {
     public static final float[] add(final float[] array1,
             final float[] array2) {
         int length = _commonLength(array1, array2, "FloatArrayMath.add");
-        float[] retval = new float[length];
+        float[] returnValue = new float[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] + array2[i];
+            returnValue[i] = array1[i] + array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the result of appending array2 to the end
@@ -107,17 +107,17 @@ public class FloatArrayMath {
     public static final float[] append(
             final float[] array1, final int idx1, final int length1,
             final float[] array2, final int idx2, final int length2) {
-        float[] retval = new float[length1 + length2];
+        float[] returnValue = new float[length1 + length2];
 
         if (length1 > 0) {
-            System.arraycopy(array1, idx1, retval, 0, length1);
+            System.arraycopy(array1, idx1, returnValue, 0, length1);
         }
 
         if (length2 > 0) {
-            System.arraycopy(array2, idx2, retval, length1, length2);
+            System.arraycopy(array2, idx2, returnValue, length1, length2);
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -129,11 +129,11 @@ public class FloatArrayMath {
     public static final float[] applyBinaryOperation(
             FloatBinaryOperation op, final float[] array, final float z) {
         int length = array.length;
-        float[] retval = new float[length];
+        float[] returnValue = new float[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = op.operate(array[i], z);
+            returnValue[i] = op.operate(array[i], z);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -145,11 +145,11 @@ public class FloatArrayMath {
     public static final float[] applyBinaryOperation(
             FloatBinaryOperation op, final float z, final float[] array) {
         int length = array.length;
-        float[] retval = new float[length];
+        float[] returnValue = new float[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = op.operate(array[i], z);
+            returnValue[i] = op.operate(array[i], z);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -166,11 +166,11 @@ public class FloatArrayMath {
             final float[] array2) {
         int length = _commonLength(array1, array2,
                 "FloatArrayMath.applyBinaryOperation");
-        float[] retval = new float[length];
+        float[] returnValue = new float[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = op.operate(array1[i], array2[i]);
+            returnValue[i] = op.operate(array1[i], array2[i]);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -181,11 +181,11 @@ public class FloatArrayMath {
     public static final float[] applyUnaryOperation(
             final FloatUnaryOperation op, final float[] array) {
         int length = array.length;
-        float[] retval = new float[length];
+        float[] returnValue = new float[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = op.operate(array[i]);
+            returnValue[i] = op.operate(array[i]);
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -206,11 +206,11 @@ public class FloatArrayMath {
     public static final float[] divide(final float[] array1,
             final float[] array2) {
         int length = _commonLength(array1, array2, "FloatArrayMath.divide");
-        float[] retval = new float[length];
+        float[] returnValue = new float[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] / array2[i];
+            returnValue[i] = array1[i] / array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return the dot product of the two arrays.
@@ -254,26 +254,26 @@ public class FloatArrayMath {
      */
     public static final float[] limit(final float[] array,
             final float bottom, final float top) {
-        float[] retval = new float[array.length];
+        float[] returnValue = new float[array.length];
         for (int i = 0; i < array.length; i++) {
             if ((array[i] > top) ||
                     (array[i] == Float.NaN) ||
                     (array[i] == Float.POSITIVE_INFINITY)) {
 
 
-                retval[i] = top;
+                returnValue[i] = top;
             } else if ((array[i] < bottom) ||
                     (array[i] == -Float.NaN) ||
                     (array[i] == Float.NEGATIVE_INFINITY)) {
 
 
-                retval[i] = bottom;
+                returnValue[i] = bottom;
 
             } else {
-                retval[i] = array[i];
+                returnValue[i] = array[i];
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -287,11 +287,11 @@ public class FloatArrayMath {
     public static final float[] multiply(final float[] array1,
             final float[] array2) {
         int length = _commonLength(array1, array2, "FloatArrayMath.multiply");
-        float[] retval = new float[length];
+        float[] returnValue = new float[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] * array2[i];
+            returnValue[i] = array1[i] * array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the formed by the additive inverse of each
@@ -299,11 +299,11 @@ public class FloatArrayMath {
      */
     public static final float[] negative(final float[] array) {
         int length = array.length;
-        float[] retval = new float[length];
+        float[] returnValue = new float[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = -array[i];
+            returnValue[i] = -array[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by scaling the array so that
@@ -343,15 +343,15 @@ public class FloatArrayMath {
         double halfLength   = length * 0.5;
         int halfLengthFloor = (int) Math.floor(halfLength);
         int halfLengthCeil  = (int) Math.ceil(halfLength);
-        float[] retval = new float[newLength];
+        float[] returnValue = new float[newLength];
 
-        System.arraycopy(array, 0, retval, 0, halfLengthCeil);
+        System.arraycopy(array, 0, returnValue, 0, halfLengthCeil);
 
-        System.arraycopy(array,  halfLengthFloor, retval,
+        System.arraycopy(array,  halfLengthFloor, returnValue,
                 newLength - halfLengthCeil, halfLengthCeil);
 
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of length newLength that is formed by
@@ -386,7 +386,7 @@ public class FloatArrayMath {
     public static final float[] resize(float[] array,
             final int newLength, final int startIdx) {
 
-        float[] retval = new float[newLength];
+        float[] returnValue = new float[newLength];
         int copySize = Math.min(newLength, array.length - startIdx);
         if ((startIdx >= array.length) && (copySize > 0)) {
             throw new IllegalArgumentException(
@@ -395,10 +395,10 @@ public class FloatArrayMath {
         }
 
         if (copySize > 0) {
-            System.arraycopy(array, startIdx, retval, 0, copySize);
+            System.arraycopy(array, startIdx, returnValue, 0, copySize);
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of floats produced by scaling the input
@@ -406,11 +406,11 @@ public class FloatArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final float[] scale(float[] array, float scaleFactor) {
-        float[] retval = new float[array.length];
+        float[] returnValue = new float[array.length];
         for (int i = 0; i < array.length; i++) {
-            retval[i] = scaleFactor * array[i];
+            returnValue[i] = scaleFactor * array[i];
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -422,12 +422,12 @@ public class FloatArrayMath {
     public static final float[] subtract(final float[] array1,
             final float[] array2) {
         int length = _commonLength(array1, array2, "FloatArrayMath.subtract");
-        float[] retval = new float[length];
+        float[] returnValue = new float[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] - array2[i];
+            returnValue[i] = array1[i] - array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return the sum of the squares of all of the elements in the array.
@@ -452,12 +452,12 @@ public class FloatArrayMath {
      */
     public static final double[] toDoubleArray(final float[] array) {
         int length = array.length;
-        double[] retval = new double[length];
+        double[] returnValue = new double[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = (double) array[i];
+            returnValue[i] = (double) array[i];
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -470,12 +470,12 @@ public class FloatArrayMath {
      */
     public static final int[] toIntegerArray(final float[] array) {
         int length = array.length;
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = (int) array[i];
+            returnValue[i] = (int) array[i];
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -487,12 +487,12 @@ public class FloatArrayMath {
      */
     public static final long[] toLongArray(final float[] array) {
         int length = array.length;
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = (long) array[i];
+            returnValue[i] = (long) array[i];
         }
-        return retval;
+        return returnValue;
     }
 
 

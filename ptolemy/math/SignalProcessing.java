@@ -81,16 +81,16 @@ public class SignalProcessing {
      */
     public static final double[] convolve(double[] array1, double[] array2) {
         double[] result;
-        int resultsize = array1.length + array2.length - 1;
+        int resultSize = array1.length + array2.length - 1;
 
-        if (resultsize < 0) {
+        if (resultSize < 0) {
             // If we attempt to convolve two zero length arrays, return
             // a zero length array.
             result = new double[0];
             return result;
         }
 
-        result = new double[resultsize];
+        result = new double[resultSize];
 
         // The result is assumed initialized to zero.
         for (int i = 0; i < array1.length; i++) {
@@ -118,16 +118,16 @@ public class SignalProcessing {
     public static final Complex[] convolve(
             Complex[] array1, Complex[] array2) {
         Complex[] result;
-        int resultsize = array1.length + array2.length - 1;
-        if (resultsize < 0) {
+        int resultSize = array1.length + array2.length - 1;
+        if (resultSize < 0) {
             // If we attempt to convolve two zero length arrays, return
             // a zero length array.
             result = new Complex[0];
             return result;
         }
 
-        double[] reals = new double[resultsize];
-        double[] imags = new double[resultsize];
+        double[] reals = new double[resultSize];
+        double[] imags = new double[resultSize];
         for (int i = 0; i < array1.length; i++) {
             for (int j = 0; j < array2.length; j++) {
                 reals[i+j] += array1[i].real * array2[j].real
@@ -137,7 +137,7 @@ public class SignalProcessing {
             }
         }
 
-        result = new Complex[resultsize];
+        result = new Complex[resultSize];
         for (int i = 0; i < result.length; i++) {
             result[i] = new Complex(reals[i], imags[i]);
         }
@@ -191,21 +191,21 @@ public class SignalProcessing {
         if (order >  _FFCTGenLimit)
             _FFCTTableGen(order);
 
-        double[] retval =  _DCT(x, size, order);
+        double[] returnValue =  _DCT(x, size, order);
 
         switch (type) {
 
         case DCT_TYPE_ORTHONORMAL:
             double factor = Math.sqrt(2.0 / size);
-            retval = DoubleArrayMath.scale(retval, factor);
+            returnValue = DoubleArrayMath.scale(returnValue, factor);
             // no break here
 
         case DCT_TYPE_NORMALIZED:
-            retval[0] *= ExtendedMath.ONE_OVER_SQRT_2;
+            returnValue[0] *= ExtendedMath.ONE_OVER_SQRT_2;
             break;
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return the value of the argument <em>z</em>
@@ -276,17 +276,17 @@ public class SignalProcessing {
         }
 
         int length = (x.length - startIndex) / n;
-        double[] retval = new double[length];
+        double[] returnValue = new double[length];
 
         int destIndex;
         int srcIndex = startIndex;
 
         for (destIndex = 0; destIndex < length; destIndex++) {
-            retval[destIndex] = x[srcIndex];
+            returnValue[destIndex] = x[srcIndex];
             srcIndex += n;
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of doubles that is the inverse, normalized
@@ -608,19 +608,19 @@ public class SignalProcessing {
 
         double[] imagPart = _sinDFT(x, size, order);
 
-        double[] retval = new double[size];
+        double[] returnValue = new double[size];
 
         // Don't bother to look at the array for element 0
-        // retval[0] = 0.0; // not necessary in Java
+        // returnValue[0] = 0.0; // not necessary in Java
 
         for (int k = 1; k < halfN; k++) {
-            retval[k] = -imagPart[k];
-            retval[size - k] = imagPart[k];
+            returnValue[k] = -imagPart[k];
+            returnValue[size - k] = imagPart[k];
         }
 
-        // retval[halfN] = 0.0; // not necessary in Java
+        // returnValue[halfN] = 0.0; // not necessary in Java
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of doubles which is the real part of the
@@ -694,15 +694,15 @@ public class SignalProcessing {
         }
 
         double[] realPart = _cosDFT(x, size, order);
-        double[] retval = new double[size];
+        double[] returnValue = new double[size];
 
-        System.arraycopy(realPart, 0, retval, 0, halfN + 1);
+        System.arraycopy(realPart, 0, returnValue, 0, halfN + 1);
 
         for (int k = halfN + 1; k < size; k++) {
-            retval[k] = realPart[size - k];
+            returnValue[k] = realPart[size - k];
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is filled with samples of a window of a
@@ -820,14 +820,14 @@ public class SignalProcessing {
             double startTime, double interval, DoubleUnaryOperation sampleGen) {
         double time = startTime;
 
-        double[] retval = new double[length];
+        double[] returnValue = new double[length];
 
         for (int t = 0; t < length; t++) {
-            retval[t] = sampleGen.operate(time);
+            returnValue[t] = sampleGen.operate(time);
             time += interval;
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return the "order" of a transform size, i.e. the base-2 logarithm
@@ -1030,17 +1030,17 @@ public class SignalProcessing {
         }
 
         int length = x.length * n;
-        double[] retval = new double[length];
+        double[] returnValue = new double[length];
         int srcIndex = 0;
         int destIndex;
 
-        // Assume retval has been zeroed out
+        // Assume returnValue has been zeroed out
         for (destIndex = 0; destIndex < length; destIndex += n) {
-            retval[destIndex] = x[srcIndex];
+            returnValue[destIndex] = x[srcIndex];
             srcIndex++;
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Modify the specified array to unwrap the angles.  That is, if
@@ -1613,27 +1613,27 @@ public class SignalProcessing {
 
         case 1:
             {
-                double[] retval = new double[1];
-                retval[0] = x[0];
-                return retval;
+                double[] returnValue = new double[1];
+                returnValue[0] = x[0];
+                return returnValue;
             }
 
         case 2:
             {
-                double[] retval = new double[2];
-                retval[0] = x[0] + x[1];
-                retval[1] = x[0] - x[1];
-                return retval;
+                double[] returnValue = new double[2];
+                returnValue[0] = x[0] + x[1];
+                returnValue[1] = x[0] - x[1];
+                return returnValue;
             }
 
             // Optimized base case for higher orders
         case 4:
             {
-                double[] retval = new double[3];
-                retval[0] = x[0] + x[1] + x[2] + x[3];
-                retval[1] = x[0] - x[2];
-                retval[2] = x[0] - x[1] + x[2] - x[3];
-                return retval;
+                double[] returnValue = new double[3];
+                returnValue[0] = x[0] + x[1] + x[2] + x[3];
+                returnValue[1] = x[0] - x[2];
+                returnValue[2] = x[0] - x[1] + x[2] - x[3];
+                return returnValue;
             }
         }
 
@@ -1654,19 +1654,19 @@ public class SignalProcessing {
         double[] halfCosDFT = _cosDFT(x1, halfN, order - 1);
         double[] quarterDCT = _DCT(x2, quarterN, order - 2);
 
-        double[] retval = new double[halfN + 1];
+        double[] returnValue = new double[halfN + 1];
         for (int k = 0; k < quarterN; k++) {
-            retval[k] = halfCosDFT[k] + quarterDCT[k];
+            returnValue[k] = halfCosDFT[k] + quarterDCT[k];
         }
 
-        retval[quarterN] = halfCosDFT[quarterN];
+        returnValue[quarterN] = halfCosDFT[quarterN];
 
         for (int k = quarterN + 1; k <= halfN; k++) {
             int idx = halfN - k;
-            retval[k] = halfCosDFT[idx] - quarterDCT[idx];
+            returnValue[k] = halfCosDFT[idx] - quarterDCT[idx];
         }
 
-        return retval;
+        return returnValue;
     }
 
     // Returns an array with half the size because of the symmetry
@@ -1683,12 +1683,12 @@ public class SignalProcessing {
             // Optimized base case for higher orders
         case 4:
             {
-                double[] retval = new double[2];
-                // retval[0] = 0.0; // not necessary for Java,
+                double[] returnValue = new double[2];
+                // returnValue[0] = 0.0; // not necessary for Java,
                 // also not read
 
-                retval[1] = x[1] - x[3];
-                return retval;
+                returnValue[1] = x[1] - x[3];
+                return returnValue;
             }
         }
 
@@ -1710,38 +1710,38 @@ public class SignalProcessing {
         double[] halfSinDFT = _sinDFT(x1, halfN, order - 1);
         double[] quarterDCT = _DCT(x3, quarterN, order - 2);
 
-        double[] retval = new double[halfN];
+        double[] returnValue = new double[halfN];
 
-        // retval[0] = 0.0; // not necessary in Java
+        // returnValue[0] = 0.0; // not necessary in Java
 
         for (int k = 1; k < quarterN; k++) {
-            retval[k] = halfSinDFT[k] + quarterDCT[quarterN - k];
+            returnValue[k] = halfSinDFT[k] + quarterDCT[quarterN - k];
         }
 
-        retval[quarterN] = quarterDCT[0];
+        returnValue[quarterN] = quarterDCT[0];
 
         for (int k = quarterN + 1; k < halfN; k++) {
-            retval[k] = quarterDCT[k - quarterN] - halfSinDFT[halfN - k];
+            returnValue[k] = quarterDCT[k - quarterN] - halfSinDFT[halfN - k];
         }
 
-        return retval;
+        return returnValue;
     }
 
     private static double[] _DCT(double[] x, int size, int order) {
 
-        double[] retval;
+        double[] returnValue;
 
         if (size == 1) {
-            retval = new double[1];
-            retval[0] = x[0];
-            return retval;
+            returnValue = new double[1];
+            returnValue[0] = x[0];
+            return returnValue;
         }
 
         if (size == 2) {
-            retval = new double[2];
-            retval[0] = x[0] + x[1];
-            retval[1] = ExtendedMath.ONE_OVER_SQRT_2 * (x[0] - x[1]);
-            return retval;
+            returnValue = new double[2];
+            returnValue[0] = x[0] + x[1];
+            returnValue[1] = ExtendedMath.ONE_OVER_SQRT_2 * (x[0] - x[1]);
+            return returnValue;
         }
 
         int halfN = size >> 1;
@@ -1761,21 +1761,21 @@ public class SignalProcessing {
         double[] p2tab = _P2Table[order];
         double[] ctab  = _CTable[order];
 
-        retval = new double[size];
+        returnValue = new double[size];
 
-        retval[0] = cosDFTarray[0];
+        returnValue[0] = cosDFTarray[0];
 
         for (int k = 1; k < halfN; k++) {
             double m1 = (cosDFTarray[k] + sinDFTarray[k]) * ctab[k];
             double m2 = sinDFTarray[k] * p1tab[k];
             double m3 = cosDFTarray[k] * p2tab[k];
-            retval[k] = m1 - m2;
-            retval[size - k] = m1 + m3;
+            returnValue[k] = m1 - m2;
+            returnValue[size - k] = m1 + m3;
         }
 
-        retval[halfN] = ExtendedMath.ONE_OVER_SQRT_2 * cosDFTarray[halfN];
+        returnValue[halfN] = ExtendedMath.ONE_OVER_SQRT_2 * cosDFTarray[halfN];
 
-        return retval;
+        return returnValue;
     }
 
     private synchronized static void _FFCTTableGen(int limit) {

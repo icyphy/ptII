@@ -62,13 +62,13 @@ public class LongMatrixMath {
      *  @return A new matrix of longs.
      */
     public static final long[][] add(long[][] matrix, long z) {
-        long[][] retval = new long[_rows(matrix)][_columns(matrix)];
+        long[][] returnValue = new long[_rows(matrix)][_columns(matrix)];
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
-                retval[i][j] = matrix[i][j] + z;
+                returnValue[i][j] = matrix[i][j] + z;
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed from the argument by
@@ -82,13 +82,13 @@ public class LongMatrixMath {
             final long[][] matrix2) {
         _checkSameDimension("add", matrix1, matrix2);
 
-        long[][] retval = new long[_rows(matrix1)][_columns(matrix1)];
+        long[][] returnValue = new long[_rows(matrix1)][_columns(matrix1)];
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < _columns(matrix1); j++) {
-                retval[i][j] = matrix1[i][j] + matrix2[i][j];
+                returnValue[i][j] = matrix1[i][j] + matrix2[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is a copy of the matrix argument.
@@ -109,13 +109,13 @@ public class LongMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = op.operate(z, matrix[i][j]);
+                returnValue[i][j] = op.operate(z, matrix[i][j]);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -128,13 +128,13 @@ public class LongMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = op.operate(matrix[i][j], z);
+                returnValue[i][j] = op.operate(matrix[i][j], z);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -152,13 +152,13 @@ public class LongMatrixMath {
 
         _checkSameDimension("applyBinaryOperation", matrix1, matrix2);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = op.operate(matrix1[i][j], matrix2[i][j]);
+                returnValue[i][j] = op.operate(matrix1[i][j], matrix2[i][j]);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -170,13 +170,13 @@ public class LongMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = op.operate(matrix[i][j]);
+                returnValue[i][j] = op.operate(matrix[i][j]);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is the formed by bitwise ANDing z
@@ -187,15 +187,15 @@ public class LongMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = matrix[i][j] & z;
+                returnValue[i][j] = matrix[i][j] & z;
             }
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element bitwise AND
@@ -210,14 +210,14 @@ public class LongMatrixMath {
 
         _checkSameDimension("bitwiseAnd", matrix1, matrix2);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = matrix1[i][j] & matrix2[i][j];
+                returnValue[i][j] = matrix1[i][j] & matrix2[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that formed by the bitwise complement of
@@ -227,14 +227,14 @@ public class LongMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = ~matrix[i][j];
+                returnValue[i][j] = ~matrix[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is the formed by bitwise ORing z with
@@ -245,15 +245,15 @@ public class LongMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = matrix[i][j] | z;
+                returnValue[i][j] = matrix[i][j] | z;
             }
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element bitwise OR
@@ -268,14 +268,14 @@ public class LongMatrixMath {
 
         _checkSameDimension("bitwiseOr", matrix1, matrix2);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = matrix1[i][j] | matrix2[i][j];
+                returnValue[i][j] = matrix1[i][j] | matrix2[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is the formed by bitwise XORing z
@@ -286,15 +286,15 @@ public class LongMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = matrix[i][j] ^ z;
+                returnValue[i][j] = matrix[i][j] ^ z;
             }
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element bitwise XOR
@@ -309,14 +309,14 @@ public class LongMatrixMath {
 
         _checkSameDimension("bitwiseXor", matrix1, matrix2);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = matrix1[i][j] ^ matrix2[i][j];
+                returnValue[i][j] = matrix1[i][j] ^ matrix2[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -332,12 +332,12 @@ public class LongMatrixMath {
     public static final long[][] crop(final long[][] matrix,
             final int rowStart, final int colStart,
             final int rowSpan, final int colSpan) {
-        long[][] retval = new long[rowSpan][colSpan];
+        long[][] returnValue = new long[rowSpan][colSpan];
         for (int i = 0; i < rowSpan; i++) {
             System.arraycopy(matrix[rowStart + i], colStart,
-                    retval[i], 0, colSpan);
+                    returnValue[i], 0, colSpan);
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -354,13 +354,13 @@ public class LongMatrixMath {
 
         _checkSameDimension("divideElements", matrix1, matrix2);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix1[i][j] / matrix2[i][j];
+                returnValue[i][j] = matrix1[i][j] / matrix2[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is filled with the contents of the matrix.
@@ -390,11 +390,11 @@ public class LongMatrixMath {
      */
     public static final long[] fromMatrixToArray(final long[][] matrix,
             int maxRow, int maxCol) {
-        long[] retval = new long[maxRow * maxCol];
+        long[] returnValue = new long[maxRow * maxCol];
         for (int i = 0; i < maxRow; i++) {
-            System.arraycopy(matrix[i], 0, retval, i * maxCol, maxCol);
+            System.arraycopy(matrix[i], 0, returnValue, i * maxCol, maxCol);
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -402,12 +402,12 @@ public class LongMatrixMath {
      *  matrix is square, so only one dimension specifier is needed.
      */
     public static final long[][] identity(final int dim) {
-        long[][] retval = new long[dim][dim];
+        long[][] returnValue = new long[dim][dim];
         // we rely on the fact Java fills the allocated matrix with 0's
         for (int i = 0; i < dim; i++) {
-            retval[i][i] = 1L;
+            returnValue[i][i] = 1L;
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -455,13 +455,13 @@ public class LongMatrixMath {
      */
     public static final long[][] moduloElements(final long[][] matrix,
 						final long z) {
-        long[][] retval = new long[_rows(matrix)][_columns(matrix)];
+        long[][] returnValue = new long[_rows(matrix)][_columns(matrix)];
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
-                retval[i][j] = matrix[i][j] % z;
+                returnValue[i][j] = matrix[i][j] % z;
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed by computing the
@@ -474,13 +474,13 @@ public class LongMatrixMath {
             final long[][] matrix2) {
         _checkSameDimension("moduloElements", matrix1, matrix2);
 
-        long[][] retval = new long[_rows(matrix1)][_columns(matrix1)];
+        long[][] returnValue = new long[_rows(matrix1)][_columns(matrix1)];
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < _columns(matrix1); j++) {
-                retval[i][j] = matrix1[i][j] % matrix2[i][j];
+                returnValue[i][j] = matrix1[i][j] % matrix2[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -492,13 +492,13 @@ public class LongMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix[i][j] * scaleFactor;
+                returnValue[i][j] = matrix[i][j] * scaleFactor;
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is constructed from the argument by
@@ -520,15 +520,15 @@ public class LongMatrixMath {
                     "of the matrix (" + rows + ")");
         }
 
-        long[] retval = new long[columns];
+        long[] returnValue = new long[columns];
         for (int i = 0; i < columns; i++) {
             long sum = 0L;
             for (int j = 0; j < rows; j++) {
                 sum += matrix[j][i] * array[j];
             }
-            retval[i] = sum;
+            returnValue[i] = sum;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is constructed from the argument by
@@ -549,15 +549,15 @@ public class LongMatrixMath {
                     "columns of the matrix (" + columns + ")");
         }
 
-        long[] retval = new long[rows];
+        long[] returnValue = new long[rows];
         for (int i = 0; i < rows; i++) {
             long sum = 0L;
             for (int j = 0; j < columns; j++) {
                 sum += matrix[i][j] * array[j];
             }
-            retval[i] = sum;
+            returnValue[i] = sum;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed from the argument by
@@ -574,17 +574,17 @@ public class LongMatrixMath {
      */
     public static final long[][] multiply(long[][] matrix1,
             long[][] matrix2) {
-        long[][] retval = new long[_rows(matrix1)][matrix2[0].length];
+        long[][] returnValue = new long[_rows(matrix1)][matrix2[0].length];
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < matrix2[0].length; j++) {
                 long sum = 0L;
                 for (int k = 0; k < matrix2.length; k++) {
                     sum += matrix1[i][k] * matrix2[k][j];
                 }
-                retval[i][j] = sum;
+                returnValue[i][j] = sum;
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed by element by element
@@ -599,13 +599,13 @@ public class LongMatrixMath {
 
         _checkSameDimension("multiplyElements", matrix1, matrix2);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix1[i][j] * matrix2[i][j];
+                returnValue[i][j] = matrix1[i][j] * matrix2[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is the additive inverse of the
@@ -615,13 +615,13 @@ public class LongMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = -matrix[i][j];
+                returnValue[i][j] = -matrix[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -645,23 +645,23 @@ public class LongMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
 
         if (shiftAmount >= 0) {
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {
-                    retval[i][j] = matrix[i][j] << shiftAmount;
+                    returnValue[i][j] = matrix[i][j] << shiftAmount;
                 }
             }
         } else if (shiftAmount < 0) {
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {
-                    retval[i][j] = matrix[i][j] >>> -shiftAmount;
+                    returnValue[i][j] = matrix[i][j] >>> -shiftAmount;
                 }
             }
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed from the argument by
@@ -681,23 +681,23 @@ public class LongMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
 
         if (shiftAmount >= 0) {
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {
-                    retval[i][j] = matrix[i][j] << shiftAmount;
+                    returnValue[i][j] = matrix[i][j] << shiftAmount;
                 }
             }
         } else if (shiftAmount < 0) {
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {
-                    retval[i][j] = matrix[i][j] >> -shiftAmount;
+                    returnValue[i][j] = matrix[i][j] >> -shiftAmount;
                 }
             }
         }
 
-        return retval;
+        return returnValue;
     }
 
 
@@ -713,13 +713,13 @@ public class LongMatrixMath {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix1[i][j] - matrix2[i][j];
+                returnValue[i][j] = matrix1[i][j] - matrix2[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -734,14 +734,14 @@ public class LongMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        double[][] retval = new double[rows][columns];
+        double[][] returnValue = new double[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = (double) matrix[i][j];
+                returnValue[i][j] = (double) matrix[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -754,14 +754,14 @@ public class LongMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        float[][] retval = new float[rows][columns];
+        float[][] returnValue = new float[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = (float) matrix[i][j];
+                returnValue[i][j] = (float) matrix[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -774,14 +774,14 @@ public class LongMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        int[][] retval = new int[rows][columns];
+        int[][] returnValue = new int[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = (int) matrix[i][j];
+                returnValue[i][j] = (int) matrix[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -800,11 +800,11 @@ public class LongMatrixMath {
      */
     public static final long[][] toMatrixFromArray(long[] array, int rows,
             int cols) {
-        long[][] retval = new long[rows][cols];
+        long[][] returnValue = new long[rows][cols];
         for (int i = 0; i < rows; i++) {
-            System.arraycopy(array, i * cols, retval[i], 0, cols);
+            System.arraycopy(array, i * cols, returnValue[i], 0, cols);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new String representing the matrix, formatted as
@@ -872,13 +872,13 @@ public class LongMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        long[][] retval = new long[columns][rows];
+        long[][] returnValue = new long[columns][rows];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[j][i] = matrix[i][j];
+                returnValue[j][i] = matrix[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Returns true iff the differences of all corresponding elements of

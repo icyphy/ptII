@@ -61,13 +61,13 @@ public class ComplexMatrixMath {
      *  @return A new matrix of complex numbers.
      */
     public static final Complex[][] add(Complex[][] matrix, Complex z) {
-        Complex[][] retval = new Complex[_rows(matrix)][_columns(matrix)];
+        Complex[][] returnValue = new Complex[_rows(matrix)][_columns(matrix)];
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
-                retval[i][j] = matrix[i][j].add(z);
+                returnValue[i][j] = matrix[i][j].add(z);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed from the argument by
@@ -82,13 +82,13 @@ public class ComplexMatrixMath {
             final Complex[][] matrix2) {
         _checkSameDimension("add", matrix1, matrix2);
 
-        Complex[][] retval = new Complex[_rows(matrix1)][_columns(matrix1)];
+        Complex[][] returnValue = new Complex[_rows(matrix1)][_columns(matrix1)];
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < _columns(matrix1); j++) {
-                retval[i][j] = matrix1[i][j].add(matrix2[i][j]);
+                returnValue[i][j] = matrix1[i][j].add(matrix2[i][j]);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is a copy of the matrix argument.
@@ -110,13 +110,13 @@ public class ComplexMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        Complex[][] retval = new Complex[rows][columns];
+        Complex[][] returnValue = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = op.operate(z, matrix[i][j]);
+                returnValue[i][j] = op.operate(z, matrix[i][j]);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -130,13 +130,13 @@ public class ComplexMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        Complex[][] retval = new Complex[rows][columns];
+        Complex[][] returnValue = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = op.operate(matrix[i][j], z);
+                returnValue[i][j] = op.operate(matrix[i][j], z);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -155,13 +155,13 @@ public class ComplexMatrixMath {
 
         _checkSameDimension("applyBinaryOperation", matrix1, matrix2);
 
-        Complex[][] retval = new Complex[rows][columns];
+        Complex[][] returnValue = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = op.operate(matrix1[i][j], matrix2[i][j]);
+                returnValue[i][j] = op.operate(matrix1[i][j], matrix2[i][j]);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -173,13 +173,13 @@ public class ComplexMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        Complex[][] retval = new Complex[rows][columns];
+        Complex[][] returnValue = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = op.operate(matrix[i][j]);
+                returnValue[i][j] = op.operate(matrix[i][j]);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Returns true iff the differences of all the real and imaginary
@@ -231,13 +231,13 @@ public class ComplexMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        Complex[][] retval = new Complex[rows][columns];
+        Complex[][] returnValue = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix[i][j].conjugate();
+                returnValue[i][j] = matrix[i][j].conjugate();
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -250,13 +250,13 @@ public class ComplexMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        Complex[][] retval = new Complex[columns][rows];
+        Complex[][] returnValue = new Complex[columns][rows];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[j][i] = matrix[i][j].conjugate();
+                returnValue[j][i] = matrix[i][j].conjugate();
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is a sub-matrix of the input
@@ -271,12 +271,12 @@ public class ComplexMatrixMath {
     public static final Complex[][] crop(final Complex[][] matrix,
             final int rowStart, final int colStart,
             final int rowSpan, final int colSpan) {
-        Complex[][] retval = new Complex[rowSpan][colSpan];
+        Complex[][] returnValue = new Complex[rowSpan][colSpan];
         for (int i = 0; i < rowSpan; i++) {
             System.arraycopy(matrix[rowStart + i], colStart,
-                    retval[i], 0, colSpan);
+                    returnValue[i], 0, colSpan);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return the determinate of a square matrix.
@@ -354,15 +354,15 @@ public class ComplexMatrixMath {
     public static final Complex[][] diag(final Complex[] array) {
         int n = array.length;
 
-        Complex[][] retval = new Complex[n][n];
+        Complex[][] returnValue = new Complex[n][n];
 
-        _zeroMatrix(retval, n, n);
+        _zeroMatrix(returnValue, n, n);
 
         for (int i = 0; i < n; i++) {
-            retval[i][i] = array[i];
+            returnValue[i][i] = array[i];
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed by element by element
@@ -379,13 +379,13 @@ public class ComplexMatrixMath {
 
         _checkSameDimension("divideElements", matrix1, matrix2);
 
-        Complex[][] retval = new Complex[rows][columns];
+        Complex[][] returnValue = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix1[i][j].divide(matrix2[i][j]);
+                returnValue[i][j] = matrix1[i][j].divide(matrix2[i][j]);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is filled with the contents of the matrix.
@@ -415,25 +415,25 @@ public class ComplexMatrixMath {
      */
     public static final Complex[] fromMatrixToArray(final Complex[][] matrix,
             int maxRow, int maxCol) {
-        Complex[] retval = new Complex[maxRow * maxCol];
+        Complex[] returnValue = new Complex[maxRow * maxCol];
         for (int i = 0; i < maxRow; i++) {
-            System.arraycopy(matrix[i], 0, retval, i * maxCol, maxCol);
+            System.arraycopy(matrix[i], 0, returnValue, i * maxCol, maxCol);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return an new identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
      */
     public static final Complex[][] identity(final int dim) {
-        Complex[][] retval = new Complex[dim][dim];
+        Complex[][] returnValue = new Complex[dim][dim];
 
-        _zeroMatrix(retval, dim, dim);
+        _zeroMatrix(returnValue, dim, dim);
 
         for (int i = 0; i < dim; i++) {
-            retval[i][i] = Complex.ONE;
+            returnValue[i][i] = Complex.ONE;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is formed by taking the imaginary parts of the
@@ -445,14 +445,14 @@ public class ComplexMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        double[][] retval = new double[rows][columns];
+        double[][] returnValue = new double[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix[i][j].imag;
+                returnValue[i][j] = matrix[i][j].imag;
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -594,13 +594,13 @@ public class ComplexMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        Complex[][] retval = new Complex[rows][columns];
+        Complex[][] returnValue = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix[i][j].scale(scaleFactor);
+                returnValue[i][j] = matrix[i][j].scale(scaleFactor);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed by multiplying the matrix
@@ -611,13 +611,13 @@ public class ComplexMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        Complex[][] retval = new Complex[rows][columns];
+        Complex[][] returnValue = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix[i][j].multiply(z);
+                returnValue[i][j] = matrix[i][j].multiply(z);
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -641,15 +641,15 @@ public class ComplexMatrixMath {
                     "of the matrix (" + rows + ")");
         }
 
-        Complex[] retval = new Complex[columns];
+        Complex[] returnValue = new Complex[columns];
         for (int i = 0; i < columns; i++) {
             Complex sum = Complex.ZERO;
             for (int j = 0; j < rows; j++) {
                 sum = sum.add(matrix[j][i].multiply(array[j]));
             }
-            retval[i] = sum;
+            returnValue[i] = sum;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is constructed from the argument by
@@ -670,15 +670,15 @@ public class ComplexMatrixMath {
                     "columns of the matrix (" + columns + ")");
         }
 
-        Complex[] retval = new Complex[rows];
+        Complex[] returnValue = new Complex[rows];
         for (int i = 0; i < rows; i++) {
             Complex sum = Complex.ZERO;
             for (int j = 0; j < columns; j++) {
                 sum = sum.add(matrix[i][j].multiply(array[j]));
             }
-            retval[i] = sum;
+            returnValue[i] = sum;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed from the argument by
@@ -695,17 +695,17 @@ public class ComplexMatrixMath {
      */
     public static final Complex[][] multiply(Complex[][] matrix1,
             Complex[][] matrix2) {
-        Complex[][] retval = new Complex[_rows(matrix1)][matrix2[0].length];
+        Complex[][] returnValue = new Complex[_rows(matrix1)][matrix2[0].length];
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < matrix2[0].length; j++) {
                 Complex sum = Complex.ZERO;
                 for (int k = 0; k < matrix2.length; k++) {
                     sum = sum.add(matrix1[i][k].multiply(matrix2[k][j]));
                 }
-                retval[i][j] = sum;
+                returnValue[i][j] = sum;
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed by element by element
@@ -720,13 +720,13 @@ public class ComplexMatrixMath {
 
         _checkSameDimension("multiplyElements", matrix1, matrix2);
 
-        Complex[][] retval = new Complex[rows][columns];
+        Complex[][] returnValue = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix1[i][j].multiply(matrix2[i][j]);
+                returnValue[i][j] = matrix1[i][j].multiply(matrix2[i][j]);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is the additive inverse of the
@@ -736,13 +736,13 @@ public class ComplexMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        Complex[][] retval = new Complex[rows][columns];
+        Complex[][] returnValue = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix[i][j].negate();
+                returnValue[i][j] = matrix[i][j].negate();
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed from the argument by
@@ -757,13 +757,13 @@ public class ComplexMatrixMath {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        Complex[][] retval = new Complex[rows][columns];
+        Complex[][] returnValue = new Complex[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix1[i][j].subtract(matrix2[i][j]);
+                returnValue[i][j] = matrix1[i][j].subtract(matrix2[i][j]);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is formed by taking the real parts of the
@@ -775,14 +775,14 @@ public class ComplexMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        double[][] retval = new double[rows][columns];
+        double[][] returnValue = new double[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix[i][j].real;
+                returnValue[i][j] = matrix[i][j].real;
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix of complex numbers that is initialized
@@ -800,11 +800,11 @@ public class ComplexMatrixMath {
     public static final Complex[][] toMatrixFromArray(Complex[] array,
             int rows,
             int cols) {
-        Complex[][] retval = new Complex[rows][cols];
+        Complex[][] returnValue = new Complex[rows][cols];
         for (int i = 0; i < rows; i++) {
-            System.arraycopy(array, i * cols, retval[i], 0, cols);
+            System.arraycopy(array, i * cols, returnValue[i], 0, cols);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new String representing the matrix, formatted as
@@ -873,13 +873,13 @@ public class ComplexMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        Complex[][] retval = new Complex[columns][rows];
+        Complex[][] returnValue = new Complex[columns][rows];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[j][i] = matrix[i][j];
+                returnValue[j][i] = matrix[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new complex matrix whose entries are all zero.

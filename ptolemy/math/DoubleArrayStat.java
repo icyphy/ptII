@@ -118,8 +118,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  and an Object array is returned containing these values.
      *  If the array is of length zero, throw an IllegalArgumentException.
      *  @param array An array of doubles.
-     *  @return An array of two Objects, retval[0] is the Double
-     *  representation of the maximum value, retval[1] is the Integer
+     *  @return An array of two Objects, returnValue[0] is the Double
+     *  representation of the maximum value, returnValue[1] is the Integer
      *  representation of the corresponding index.
      */
     public static final Object[] maxAndIndex(double[] array) {
@@ -153,8 +153,8 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  and an Object array is returned containing these values.
      *  If the array is of length zero, throw an IllegalArgumentException.
      *  @param array An array of doubles.
-     *  @return An array of two Objects, retval[0] is the Double
-     *  representation of the minimum value, retval[1] is the Integer
+     *  @return An array of two Objects, returnValue[0] is the Double
+     *  representation of the minimum value, returnValue[1] is the Integer
      *  representation of the corresponding index.
      */
     public static final Object[] minAndIndex(double[] array) {
@@ -330,7 +330,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     public static final double[] crossCorrelation(double[] x, double[] y, int N,
             int startLag, int endLag) {
         int outputLength = endLag - startLag + 1;
-        double[] retval = new double[outputLength];
+        double[] returnValue = new double[outputLength];
 
         for (int lag = startLag; lag < endLag; lag++) {
 
@@ -348,10 +348,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
                 sum += x[i] * y[i + lag];
             }
 
-            retval[lag - startLag] = sum;
+            returnValue[lag - startLag] = sum;
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the auto-correlation of the
@@ -369,7 +369,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     public static final double[] autoCorrelation(double[] x, int N,
             int startLag, int endLag) {
         int outputLength = endLag - startLag + 1;
-        double[] retval = new double[outputLength];
+        double[] returnValue = new double[outputLength];
 
         for (int lag = startLag; lag < endLag; lag++) {
 
@@ -387,10 +387,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
                 sum += x[i] * x[i + lag];
             }
 
-            retval[lag - startLag] = sum;
+            returnValue[lag - startLag] = sum;
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Given an array of probabilities, treated as a probability mass
@@ -477,11 +477,11 @@ public class DoubleArrayStat extends DoubleArrayMath {
      */
     public static double[] randomUniform(double a, double b, int N) {
         double range = b - a;
-        double[] retval = new double[N];
+        double[] returnValue = new double[N];
         for (int i = 0; i < N; i++) {
-            retval[i] = _random.nextDouble() * range + a;
+            returnValue[i] = _random.nextDouble() * range + a;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of Gaussian distributed doubles with a given
@@ -491,12 +491,12 @@ public class DoubleArrayStat extends DoubleArrayMath {
      */
     public static final double[] randomGaussian(double mean,
             double standardDeviation, int N) {
-        double[] retval = new double[N];
+        double[] returnValue = new double[N];
 
         for (int i = 0; i < N; i++) {
-            retval[i] = mean + _random.nextGaussian()*standardDeviation;
+            returnValue[i] = mean + _random.nextGaussian()*standardDeviation;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of Bernoulli random variables with a given
@@ -505,12 +505,12 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  The number of elements to allocate is given by N.
      */
     public static final double[] randomBernoulli(double p, int N) {
-        double[] retval = new double[N];
+        double[] returnValue = new double[N];
 
         for (int i = 0; i < N; i++) {
-            retval[i] = (_random.nextDouble() < p) ? 1.0 : 0.0;
+            returnValue[i] = (_random.nextDouble() < p) ? 1.0 : 0.0;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of exponentially distributed doubles with parameter
@@ -518,7 +518,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  Note lambda may not be 0!
      */
     public static final double[] randomExponential(double lambda, int N) {
-        double[] retval = new double[N];
+        double[] returnValue = new double[N];
 
         for (int i = 0; i < N; i++) {
             double r;
@@ -526,9 +526,9 @@ public class DoubleArrayStat extends DoubleArrayMath {
                 r = _random.nextDouble();
             } while (r != 0.0);
 
-            retval[i] = -Math.log(r) / lambda;
+            returnValue[i] = -Math.log(r) / lambda;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of Poisson random variables (as doubles) with
@@ -536,7 +536,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  This algorithm is from [1].
      */
     public static final double[] randomPoisson(double mean, int N) {
-        double[] retval = new double[N];
+        double[] returnValue = new double[N];
 
         for (int i = 0; i < N; i++) {
             double j;
@@ -552,9 +552,9 @@ public class DoubleArrayStat extends DoubleArrayMath {
                 j += 1.0;
             }
 
-            retval[i] = j;
+            returnValue[i] = j;
         }
-        return retval;
+        return returnValue;
     }
 
     ///////////////////////////////////////////////////////////////////

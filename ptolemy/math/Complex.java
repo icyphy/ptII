@@ -440,7 +440,7 @@ public class Complex implements Cloneable, Serializable {
                     + "n must be greater than or equal to one.");
         }
 
-        Complex[] retval = new Complex[n];
+        Complex[] returnValue = new Complex[n];
 
         double oneOverN = 1.0 / (double) n;
         double twoPIOverN = 2.0 * Math.PI * oneOverN;
@@ -451,11 +451,11 @@ public class Complex implements Cloneable, Serializable {
         double retMag = Math.pow(magnitudeSquared(), 0.5 * oneOverN);
 
         for (int k = 0; k < n; k++) {
-            retval[k] = polarToComplex(retMag, thetaOverN + twoPIkOverN);
+            returnValue[k] = polarToComplex(retMag, thetaOverN + twoPIkOverN);
             twoPIkOverN += twoPIOverN;
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new complex number with value equal to the product

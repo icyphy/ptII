@@ -57,11 +57,11 @@ public class IntegerArrayMath {
      */
     public static final int[] add(final int[] array, final int z) {
         int length = array.length;
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array[i] + z;
+            returnValue[i] = array[i] + z;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element sum of the two
@@ -73,11 +73,11 @@ public class IntegerArrayMath {
     public static final int[] add(final int[] array1,
             final int[] array2) {
         int length = _commonLength(array1, array2, "IntegerArrayMath.add");
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] + array2[i];
+            returnValue[i] = array1[i] + array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the result of appending array2 to the end
@@ -107,17 +107,17 @@ public class IntegerArrayMath {
     public static final int[] append(final int[] array1,
             final int idx1, final int length1,
             final int[] array2, final int idx2, final int length2) {
-        int[] retval = new int[length1 + length2];
+        int[] returnValue = new int[length1 + length2];
 
         if (length1 > 0) {
-            System.arraycopy(array1, idx1, retval, 0, length1);
+            System.arraycopy(array1, idx1, returnValue, 0, length1);
         }
 
         if (length2 > 0) {
-            System.arraycopy(array2, idx2, retval, length1, length2);
+            System.arraycopy(array2, idx2, returnValue, length1, length2);
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -129,11 +129,11 @@ public class IntegerArrayMath {
     public static final int[] applyBinaryOperation(
             IntegerBinaryOperation op, final int[] array, final int z) {
         int length = array.length;
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = op.operate(array[i], z);
+            returnValue[i] = op.operate(array[i], z);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -145,11 +145,11 @@ public class IntegerArrayMath {
     public static final int[] applyBinaryOperation(
             IntegerBinaryOperation op, final int z, final int[] array) {
         int length = array.length;
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = op.operate(array[i], z);
+            returnValue[i] = op.operate(array[i], z);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -166,11 +166,11 @@ public class IntegerArrayMath {
             final int[] array2) {
         int length = _commonLength(array1, array2,
                 "IntegerArrayMath.applyBinaryOperation");
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = op.operate(array1[i], array2[i]);
+            returnValue[i] = op.operate(array1[i], array2[i]);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -181,11 +181,11 @@ public class IntegerArrayMath {
     public static final int[] applyUnaryOperation(
             final IntegerUnaryOperation op, final int[] array) {
         int length = array.length;
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = op.operate(array[i]);
+            returnValue[i] = op.operate(array[i]);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the formed by bitwise ANDing z with
@@ -194,11 +194,11 @@ public class IntegerArrayMath {
      */
     public static final int[] bitwiseAnd(final int[] array, final int z) {
         int length = array.length;
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array[i] & z;
+            returnValue[i] = array[i] & z;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element bitwise AND
@@ -211,11 +211,11 @@ public class IntegerArrayMath {
             final int[] array2) {
         int length = _commonLength(array1, array2,
 				   "IntegerArrayMath.bitwiseAnd");
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] & array2[i];
+            returnValue[i] = array1[i] & array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element bitwise
@@ -224,11 +224,11 @@ public class IntegerArrayMath {
      */
     public static final int[] bitwiseComplement(final int[] array) {
         int length = array.length;
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = ~array[i];
+            returnValue[i] = ~array[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the formed by bitwise ORing z with
@@ -237,11 +237,11 @@ public class IntegerArrayMath {
      */
     public static final int[] bitwiseOr(final int[] array, final int z) {
         int length = array.length;
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array[i] | z;
+            returnValue[i] = array[i] | z;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element bitwise OR of the two
@@ -254,11 +254,11 @@ public class IntegerArrayMath {
             final int[] array2) {
         int length = _commonLength(array1, array2,
                 "IntegerArrayMath.bitwiseOr");
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] | array2[i];
+            returnValue[i] = array1[i] | array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the formed by bitwise XORing z with
@@ -267,11 +267,11 @@ public class IntegerArrayMath {
      */
     public static final int[] bitwiseXor(final int[] array, final int z) {
         int length = array.length;
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array[i] ^ z;
+            returnValue[i] = array[i] ^ z;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element bitwise XOR
@@ -284,11 +284,11 @@ public class IntegerArrayMath {
             final int[] array2) {
         int length = _commonLength(array1, array2,
                 "IntegerArrayMath.bitwiseXor");
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] ^ array2[i];
+            returnValue[i] = array1[i] ^ array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the formed by dividing each element
@@ -297,11 +297,11 @@ public class IntegerArrayMath {
      */
     public static final int[] divide(final int[] array, final int z) {
         int length = array.length;
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array[i] / z;
+            returnValue[i] = array[i] / z;
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -317,11 +317,11 @@ public class IntegerArrayMath {
     public static final int[] divide(final int[] array1,
             final int[] array2) {
         int length = _commonLength(array1, array2, "IntegerArrayMath.divide");
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] / array2[i];
+            returnValue[i] = array1[i] / array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -358,24 +358,24 @@ public class IntegerArrayMath {
      */
     public static final int[] limit(final int[] array,
             final int bottom, final int top) {
-        int[] retval = new int[array.length];
+        int[] returnValue = new int[array.length];
         for (int i = 0; i < array.length; i++) {
             if ((array[i] > top) ||
 
                     (array[i] == Integer.MAX_VALUE)) {
 
-                retval[i] = top;
+                returnValue[i] = top;
             } else if ((array[i] < bottom) ||
 
                     (array[i] == Integer.MIN_VALUE)) {
 
-                retval[i] = bottom;
+                returnValue[i] = bottom;
 
             } else {
-                retval[i] = array[i];
+                returnValue[i] = array[i];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the formed by the modulo of each element
@@ -383,11 +383,11 @@ public class IntegerArrayMath {
      */
     public static final int[] modulo(final int[] array, final int z) {
         int length = array.length;
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array[i] % z;
+            returnValue[i] = array[i] % z;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element modulo of the two
@@ -399,11 +399,11 @@ public class IntegerArrayMath {
     public static final int[] modulo(final int[] array1,
             final int[] array2) {
         int length = _commonLength(array1, array2, "IntegerArrayMath.modulo");
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] % array2[i];
+            returnValue[i] = array1[i] % array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -417,11 +417,11 @@ public class IntegerArrayMath {
             final int[] array2) {
         int length = _commonLength(array1, array2,
                 "IntegerArrayMath.multiply");
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] * array2[i];
+            returnValue[i] = array1[i] * array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the formed by the additive inverse of each
@@ -429,11 +429,11 @@ public class IntegerArrayMath {
      */
     public static final int[] negative(final int[] array) {
         int length = array.length;
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = -array[i];
+            returnValue[i] = -array[i];
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -465,15 +465,15 @@ public class IntegerArrayMath {
         double halfLength   = length * 0.5;
         int halfLengthFloor = (int) Math.floor(halfLength);
         int halfLengthCeil  = (int) Math.ceil(halfLength);
-        int[] retval = new int[newLength];
+        int[] returnValue = new int[newLength];
 
-        System.arraycopy(array, 0, retval, 0, halfLengthCeil);
+        System.arraycopy(array, 0, returnValue, 0, halfLengthCeil);
 
-        System.arraycopy(array,  halfLengthFloor, retval,
+        System.arraycopy(array,  halfLengthFloor, returnValue,
                 newLength - halfLengthCeil, halfLengthCeil);
 
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of length newLength that is formed by
@@ -508,7 +508,7 @@ public class IntegerArrayMath {
     public static final int[] resize(int[] array,
             final int newLength, final int startIdx) {
 
-        int[] retval = new int[newLength];
+        int[] returnValue = new int[newLength];
         int copySize = Math.min(newLength, array.length - startIdx);
         if ((startIdx >= array.length) && (copySize > 0)) {
             throw new IllegalArgumentException(
@@ -517,10 +517,10 @@ public class IntegerArrayMath {
         }
 
         if (copySize > 0) {
-            System.arraycopy(array, startIdx, retval, 0, copySize);
+            System.arraycopy(array, startIdx, returnValue, 0, copySize);
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of ints produced by scaling the input
@@ -528,11 +528,11 @@ public class IntegerArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final int[] scale(int[] array, int scaleFactor) {
-        int[] retval = new int[array.length];
+        int[] returnValue = new int[array.length];
         for (int i = 0; i < array.length; i++) {
-            retval[i] = scaleFactor * array[i];
+            returnValue[i] = scaleFactor * array[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is constructed from the argument by
@@ -550,19 +550,19 @@ public class IntegerArrayMath {
      *  @return A new array of ints.
      */
     public static final int[] shiftArithmetic(int[] array, int shiftAmount) {
-        int[] retval = new int[array.length];
+        int[] returnValue = new int[array.length];
 
         if (shiftAmount >= 0) {
             for (int i = 0; i < array.length; i++) {
-                retval[i] = array[i] << shiftAmount;
+                returnValue[i] = array[i] << shiftAmount;
             }
         } else if (shiftAmount < 0) {
             for (int i = 0; i < array.length; i++) {
-                retval[i] = array[i] >>> -shiftAmount;
+                returnValue[i] = array[i] >>> -shiftAmount;
             }
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is constructed from the argument by
@@ -580,19 +580,19 @@ public class IntegerArrayMath {
      *  @return A new array of ints.
      */
     public static final int[] shiftLogical(int[] array, int shiftAmount) {
-        int[] retval = new int[array.length];
+        int[] returnValue = new int[array.length];
 
         if (shiftAmount >= 0) {
             for (int i = 0; i < array.length; i++) {
-                retval[i] = array[i] << shiftAmount;
+                returnValue[i] = array[i] << shiftAmount;
             }
         } else if (shiftAmount < 0) {
             for (int i = 0; i < array.length; i++) {
-                retval[i] = array[i] >> -shiftAmount;
+                returnValue[i] = array[i] >> -shiftAmount;
             }
         }
 
-        return retval;
+        return returnValue;
     }
 
 
@@ -605,12 +605,12 @@ public class IntegerArrayMath {
             final int[] array2) {
         int length = _commonLength(array1, array2,
                 "IntegerArrayMath.subtract");
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] - array2[i];
+            returnValue[i] = array1[i] - array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return the sum of the squares of all of the elements in the array.
@@ -635,12 +635,12 @@ public class IntegerArrayMath {
      */
     public static final double[] toDoubleArray(final int[] array) {
         int length = array.length;
-        double[] retval = new double[length];
+        double[] returnValue = new double[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = (double) array[i];
+            returnValue[i] = (double) array[i];
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -653,12 +653,12 @@ public class IntegerArrayMath {
      */
     public static final float[] toFloatArray(final int[] array) {
         int length = array.length;
-        float[] retval = new float[length];
+        float[] returnValue = new float[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = (float) array[i];
+            returnValue[i] = (float) array[i];
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -670,12 +670,12 @@ public class IntegerArrayMath {
      */
     public static final long[] toLongArray(final int[] array) {
         int length = array.length;
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = (long) array[i];
+            returnValue[i] = (long) array[i];
         }
-        return retval;
+        return returnValue;
     }
 
 

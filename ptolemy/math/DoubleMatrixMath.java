@@ -65,13 +65,13 @@ public class DoubleMatrixMath {
      *  @return A new matrix of doubles.
      */
     public static final double[][] add(double[][] matrix, double z) {
-        double[][] retval = new double[_rows(matrix)][_columns(matrix)];
+        double[][] returnValue = new double[_rows(matrix)][_columns(matrix)];
         for (int i = 0; i < _rows(matrix); i++) {
             for (int j = 0; j < _columns(matrix); j++) {
-                retval[i][j] = matrix[i][j] + z;
+                returnValue[i][j] = matrix[i][j] + z;
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed from the argument by
@@ -87,13 +87,13 @@ public class DoubleMatrixMath {
             final double[][] matrix2) {
         _checkSameDimension("add", matrix1, matrix2);
 
-        double[][] retval = new double[_rows(matrix1)][_columns(matrix1)];
+        double[][] returnValue = new double[_rows(matrix1)][_columns(matrix1)];
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < _columns(matrix1); j++) {
-                retval[i][j] = matrix1[i][j] + matrix2[i][j];
+                returnValue[i][j] = matrix1[i][j] + matrix2[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is a copy of the matrix argument.
@@ -114,13 +114,13 @@ public class DoubleMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        double[][] retval = new double[rows][columns];
+        double[][] returnValue = new double[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = op.operate(z, matrix[i][j]);
+                returnValue[i][j] = op.operate(z, matrix[i][j]);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -133,13 +133,13 @@ public class DoubleMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        double[][] retval = new double[rows][columns];
+        double[][] returnValue = new double[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = op.operate(matrix[i][j], z);
+                returnValue[i][j] = op.operate(matrix[i][j], z);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -157,13 +157,13 @@ public class DoubleMatrixMath {
 
         _checkSameDimension("applyBinaryOperation", matrix1, matrix2);
 
-        double[][] retval = new double[rows][columns];
+        double[][] returnValue = new double[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = op.operate(matrix1[i][j], matrix2[i][j]);
+                returnValue[i][j] = op.operate(matrix1[i][j], matrix2[i][j]);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -175,13 +175,13 @@ public class DoubleMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        double[][] retval = new double[rows][columns];
+        double[][] returnValue = new double[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; i < columns; j++) {
-                retval[i][j] = op.operate(matrix[i][j]);
+                returnValue[i][j] = op.operate(matrix[i][j]);
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -198,12 +198,12 @@ public class DoubleMatrixMath {
     public static final double[][] crop(final double[][] matrix,
             final int rowStart, final int colStart,
             final int rowSpan, final int colSpan) {
-        double[][] retval = new double[rowSpan][colSpan];
+        double[][] returnValue = new double[rowSpan][colSpan];
         for (int i = 0; i < rowSpan; i++) {
             System.arraycopy(matrix[rowStart + i], colStart,
-                    retval[i], 0, colSpan);
+                    returnValue[i], 0, colSpan);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return the determinate of a square matrix.
@@ -279,15 +279,15 @@ public class DoubleMatrixMath {
     public static final double[][] diag(final double[] array) {
         int n = array.length;
 
-        double[][] retval = new double[n][n];
+        double[][] returnValue = new double[n][n];
 
         // assume the matrix is zero-filled
 
         for (int i = 0; i < n; i++) {
-            retval[i][i] = array[i];
+            returnValue[i][i] = array[i];
         }
 
-        return retval;
+        return returnValue;
     }
 
 
@@ -304,13 +304,13 @@ public class DoubleMatrixMath {
 
         _checkSameDimension("divideElements", matrix1, matrix2);
 
-        double[][] retval = new double[rows][columns];
+        double[][] returnValue = new double[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix1[i][j] / matrix2[i][j];
+                returnValue[i][j] = matrix1[i][j] / matrix2[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is filled with the contents of the matrix.
@@ -340,11 +340,11 @@ public class DoubleMatrixMath {
      */
     public static final double[] fromMatrixToArray(final double[][] matrix,
             int maxRow, int maxCol) {
-        double[] retval = new double[maxRow * maxCol];
+        double[] returnValue = new double[maxRow * maxCol];
         for (int i = 0; i < maxRow; i++) {
-            System.arraycopy(matrix[i], 0, retval, i * maxCol, maxCol);
+            System.arraycopy(matrix[i], 0, returnValue, i * maxCol, maxCol);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix, which is defined by Aij = 1/(i+j+1),
@@ -353,13 +353,13 @@ public class DoubleMatrixMath {
      *  has an inverse.
      */
     public static final double[][] hilbert(final int dim) {
-        double[][] retval = new double[dim][dim];
+        double[][] returnValue = new double[dim][dim];
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-                retval[i][j] = 1.0 / (double) (i + j + 1);
+                returnValue[i][j] = 1.0 / (double) (i + j + 1);
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -367,12 +367,12 @@ public class DoubleMatrixMath {
      *  matrix is square, so only one dimension specifier is needed.
      */
     public static final double[][] identity(final int dim) {
-        double[][] retval = new double[dim][dim];
+        double[][] returnValue = new double[dim][dim];
         // we rely on the fact Java fills the allocated matrix with 0's
         for (int i = 0; i < dim; i++) {
-            retval[i][i] = 1.0;
+            returnValue[i][i] = 1.0;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed by inverting the input
@@ -513,13 +513,13 @@ public class DoubleMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        double[][] retval = new double[rows][columns];
+        double[][] returnValue = new double[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix[i][j] * scaleFactor;
+                returnValue[i][j] = matrix[i][j] * scaleFactor;
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is constructed from the argument by
@@ -541,15 +541,15 @@ public class DoubleMatrixMath {
                     "of the matrix (" + rows + ")");
         }
 
-        double[] retval = new double[columns];
+        double[] returnValue = new double[columns];
         for (int i = 0; i < columns; i++) {
             double sum = 0.0;
             for (int j = 0; j < rows; j++) {
                 sum += matrix[j][i] * array[j];
             }
-            retval[i] = sum;
+            returnValue[i] = sum;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is constructed from the argument by
@@ -570,15 +570,15 @@ public class DoubleMatrixMath {
                     "columns of the matrix (" + columns + ")");
         }
 
-        double[] retval = new double[rows];
+        double[] returnValue = new double[rows];
         for (int i = 0; i < rows; i++) {
             double sum = 0.0;
             for (int j = 0; j < columns; j++) {
                 sum += matrix[i][j] * array[j];
             }
-            retval[i] = sum;
+            returnValue[i] = sum;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed from the argument by
@@ -595,17 +595,17 @@ public class DoubleMatrixMath {
      */
     public static final double[][] multiply(double[][] matrix1,
             double[][] matrix2) {
-        double[][] retval = new double[_rows(matrix1)][matrix2[0].length];
+        double[][] returnValue = new double[_rows(matrix1)][matrix2[0].length];
         for (int i = 0; i < _rows(matrix1); i++) {
             for (int j = 0; j < matrix2[0].length; j++) {
                 double sum = 0.0;
                 for (int k = 0; k < matrix2.length; k++) {
                     sum += matrix1[i][k] * matrix2[k][j];
                 }
-                retval[i][j] = sum;
+                returnValue[i][j] = sum;
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is constructed by element by element
@@ -620,13 +620,13 @@ public class DoubleMatrixMath {
 
         _checkSameDimension("multiplyElements", matrix1, matrix2);
 
-        double[][] retval = new double[rows][columns];
+        double[][] returnValue = new double[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix1[i][j] * matrix2[i][j];
+                returnValue[i][j] = matrix1[i][j] * matrix2[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is the additive inverse of the
@@ -636,13 +636,13 @@ public class DoubleMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        double[][] retval = new double[rows][columns];
+        double[][] returnValue = new double[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = -matrix[i][j];
+                returnValue[i][j] = -matrix[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is formed by orthogonalizing the
@@ -773,13 +773,13 @@ public class DoubleMatrixMath {
         int rows = _rows(matrix1);
         int columns = _columns(matrix1);
 
-        double[][] retval = new double[rows][columns];
+        double[][] returnValue = new double[rows][columns];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = matrix1[i][j] - matrix2[i][j];
+                returnValue[i][j] = matrix1[i][j] - matrix2[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is formed by converting the doubles
@@ -794,14 +794,14 @@ public class DoubleMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        Complex[][] retval = new Complex[rows][columns];
+        Complex[][] returnValue = new Complex[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = new Complex(matrix[i][j], 0.0);
+                returnValue[i][j] = new Complex(matrix[i][j], 0.0);
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new matrix that is formed by converting the doubles in
@@ -813,14 +813,14 @@ public class DoubleMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        float[][] retval = new float[rows][columns];
+        float[][] returnValue = new float[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = (float) matrix[i][j];
+                returnValue[i][j] = (float) matrix[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -833,14 +833,14 @@ public class DoubleMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        int[][] retval = new int[rows][columns];
+        int[][] returnValue = new int[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = (int) matrix[i][j];
+                returnValue[i][j] = (int) matrix[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -853,14 +853,14 @@ public class DoubleMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        long[][] retval = new long[rows][columns];
+        long[][] returnValue = new long[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[i][j] = (long) matrix[i][j];
+                returnValue[i][j] = (long) matrix[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -877,11 +877,11 @@ public class DoubleMatrixMath {
      */
     public static final double[][] toMatrixFromArray(double[] array, int rows,
             int cols) {
-        double[][] retval = new double[rows][cols];
+        double[][] returnValue = new double[rows][cols];
         for (int i = 0; i < rows; i++) {
-            System.arraycopy(array, i * cols, retval[i], 0, cols);
+            System.arraycopy(array, i * cols, returnValue[i], 0, cols);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new String representing the matrix, formatted as
@@ -949,13 +949,13 @@ public class DoubleMatrixMath {
         int rows = _rows(matrix);
         int columns = _columns(matrix);
 
-        double[][] retval = new double[columns][rows];
+        double[][] returnValue = new double[columns][rows];
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                retval[j][i] = matrix[i][j];
+                returnValue[j][i] = matrix[i][j];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Returns true iff the differences of all corresponding elements of
@@ -1078,21 +1078,21 @@ public class DoubleMatrixMath {
      *  vector rowArray[i] is a linear combination of the last 0 .. i
      *  - 1 row vectors, set array[i] to an array of 0's (array[i]
      *  being the 0 vector is a special case of this). Put the result
-     *  in retval[0].<br>
+     *  in returnValue[0].<br>
      *
      * <li> An n x n matrix containing the dot products of the input
      *     row vectors and the output row vectors,
      *     dotProductMatrix[j][i] = <rowArray[i], outArray[j]>.  Put
-     *     the result in retval[1].<br>
+     *     the result in returnValue[1].<br>
      *
      * <li> An array containing 1 / (norm(outArray[i])<sup>2</sup>),
-     *     with n entries.  Put the result in retval[2].<br>
+     *     with n entries.  Put the result in returnValue[2].<br>
      *
      * <li> A count of the number of rows that were found to be linear
      *     combinations of previous rows. Replace those rows with rows
      *     of zeros. The count is equal to the nullity of the
      *     transpose of the input matrix. Wrap the count with an
-     *     Integer, and put it in retval[3].
+     *     Integer, and put it in returnValue[3].
      * </ol>
      *  Orthogonalization is done with the Gram-Schmidt process.
      */

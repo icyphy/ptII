@@ -57,11 +57,11 @@ public class LongArrayMath {
      */
     public static final long[] add(final long[] array, final long z) {
         int length = array.length;
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array[i] + z;
+            returnValue[i] = array[i] + z;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element sum of the two
@@ -73,11 +73,11 @@ public class LongArrayMath {
     public static final long[] add(final long[] array1,
             final long[] array2) {
         int length = _commonLength(array1, array2, "LongArrayMath.add");
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] + array2[i];
+            returnValue[i] = array1[i] + array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the result of appending array2 to the end
@@ -107,17 +107,17 @@ public class LongArrayMath {
     public static final long[] append(
             final long[] array1, final int idx1, final int length1,
             final long[] array2, final int idx2, final int length2) {
-        long[] retval = new long[length1 + length2];
+        long[] returnValue = new long[length1 + length2];
 
         if (length1 > 0) {
-            System.arraycopy(array1, idx1, retval, 0, length1);
+            System.arraycopy(array1, idx1, returnValue, 0, length1);
         }
 
         if (length2 > 0) {
-            System.arraycopy(array2, idx2, retval, length1, length2);
+            System.arraycopy(array2, idx2, returnValue, length1, length2);
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -129,11 +129,11 @@ public class LongArrayMath {
     public static final long[] applyBinaryOperation(
             LongBinaryOperation op, final long[] array, final long z) {
         int length = array.length;
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = op.operate(array[i], z);
+            returnValue[i] = op.operate(array[i], z);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -145,11 +145,11 @@ public class LongArrayMath {
     public static final long[] applyBinaryOperation(
             LongBinaryOperation op, final long z, final long[] array) {
         int length = array.length;
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = op.operate(array[i], z);
+            returnValue[i] = op.operate(array[i], z);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -165,11 +165,11 @@ public class LongArrayMath {
             LongBinaryOperation op, final long[] array1, final long[] array2) {
         int length = _commonLength(array1, array2,
                 "LongArrayMath.applyBinaryOperation");
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = op.operate(array1[i], array2[i]);
+            returnValue[i] = op.operate(array1[i], array2[i]);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -180,11 +180,11 @@ public class LongArrayMath {
     public static final long[] applyUnaryOperation(
             final LongUnaryOperation op, final long[] array) {
         int length = array.length;
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = op.operate(array[i]);
+            returnValue[i] = op.operate(array[i]);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the formed by bitwise ANDing z with
@@ -193,11 +193,11 @@ public class LongArrayMath {
      */
     public static final long[] bitwiseAnd(final long[] array, final long z) {
         int length = array.length;
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array[i] & z;
+            returnValue[i] = array[i] & z;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element bitwise AND
@@ -209,11 +209,11 @@ public class LongArrayMath {
     public static final long[] bitwiseAnd(final long[] array1,
             final long[] array2) {
         int length = _commonLength(array1, array2, "LongArrayMath.bitwiseAnd");
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] & array2[i];
+            returnValue[i] = array1[i] & array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element bitwise
@@ -222,11 +222,11 @@ public class LongArrayMath {
      */
     public static final long[] bitwiseComplement(final long[] array) {
         int length = array.length;
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = ~array[i];
+            returnValue[i] = ~array[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the formed by bitwise ORing z with
@@ -235,11 +235,11 @@ public class LongArrayMath {
      */
     public static final long[] bitwiseOr(final long[] array, final long z) {
         int length = array.length;
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array[i] | z;
+            returnValue[i] = array[i] | z;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element bitwise OR of the two
@@ -251,11 +251,11 @@ public class LongArrayMath {
     public static final long[] bitwiseOr(final long[] array1,
             final long[] array2) {
         int length = _commonLength(array1, array2, "LongArrayMath.bitwiseOr");
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] | array2[i];
+            returnValue[i] = array1[i] | array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the formed by bitwise XORing z with
@@ -264,11 +264,11 @@ public class LongArrayMath {
      */
     public static final long[] bitwiseXor(final long[] array, final long z) {
         int length = array.length;
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array[i] ^ z;
+            returnValue[i] = array[i] ^ z;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element bitwise XOR
@@ -280,11 +280,11 @@ public class LongArrayMath {
     public static final long[] bitwiseXor(final long[] array1,
             final long[] array2) {
         int length = _commonLength(array1, array2, "LongArrayMath.bitwiseXor");
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] ^ array2[i];
+            returnValue[i] = array1[i] ^ array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the formed by dividing each element
@@ -293,11 +293,11 @@ public class LongArrayMath {
      */
     public static final long[] divide(final long[] array, final long z) {
         int length = array.length;
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array[i] / z;
+            returnValue[i] = array[i] / z;
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -313,11 +313,11 @@ public class LongArrayMath {
     public static final long[] divide(final long[] array1,
             final long[] array2) {
         int length = _commonLength(array1, array2, "LongArrayMath.divide");
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] / array2[i];
+            returnValue[i] = array1[i] / array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return the dot product of the two arrays.
@@ -353,24 +353,24 @@ public class LongArrayMath {
      */
     public static final long[] limit(final long[] array,
             final long bottom, final long top) {
-        long[] retval = new long[array.length];
+        long[] returnValue = new long[array.length];
         for (int i = 0; i < array.length; i++) {
             if ((array[i] > top) ||
 
                     (array[i] == Long.MAX_VALUE)) {
 
-                retval[i] = top;
+                returnValue[i] = top;
             } else if ((array[i] < bottom) ||
 
                     (array[i] == Long.MIN_VALUE)) {
 
-                retval[i] = bottom;
+                returnValue[i] = bottom;
 
             } else {
-                retval[i] = array[i];
+                returnValue[i] = array[i];
             }
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the formed by the modulo of each element
@@ -378,11 +378,11 @@ public class LongArrayMath {
      */
     public static final long[] modulo(final long[] array, final long z) {
         int length = array.length;
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array[i] % z;
+            returnValue[i] = array[i] % z;
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the element-by-element modulo of the two
@@ -394,11 +394,11 @@ public class LongArrayMath {
     public static final long[] modulo(final long[] array1,
             final long[] array2) {
         int length = _commonLength(array1, array2, "LongArrayMath.modulo");
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] % array2[i];
+            returnValue[i] = array1[i] % array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -411,11 +411,11 @@ public class LongArrayMath {
     public static final long[] multiply(final long[] array1,
             final long[] array2) {
         int length = _commonLength(array1, array2, "LongArrayMath.multiply");
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] * array2[i];
+            returnValue[i] = array1[i] * array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the formed by the additive inverse of each
@@ -423,11 +423,11 @@ public class LongArrayMath {
      */
     public static final long[] negative(final long[] array) {
         int length = array.length;
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = -array[i];
+            returnValue[i] = -array[i];
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -459,15 +459,15 @@ public class LongArrayMath {
         double halfLength   = length * 0.5;
         int halfLengthFloor = (int) Math.floor(halfLength);
         int halfLengthCeil  = (int) Math.ceil(halfLength);
-        long[] retval = new long[newLength];
+        long[] returnValue = new long[newLength];
 
-        System.arraycopy(array, 0, retval, 0, halfLengthCeil);
+        System.arraycopy(array, 0, returnValue, 0, halfLengthCeil);
 
-        System.arraycopy(array,  halfLengthFloor, retval,
+        System.arraycopy(array,  halfLengthFloor, returnValue,
                 newLength - halfLengthCeil, halfLengthCeil);
 
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of length newLength that is formed by
@@ -502,7 +502,7 @@ public class LongArrayMath {
     public static final long[] resize(long[] array,
             final int newLength, final int startIdx) {
 
-        long[] retval = new long[newLength];
+        long[] returnValue = new long[newLength];
         int copySize = Math.min(newLength, array.length - startIdx);
         if ((startIdx >= array.length) && (copySize > 0)) {
             throw new IllegalArgumentException(
@@ -511,10 +511,10 @@ public class LongArrayMath {
         }
 
         if (copySize > 0) {
-            System.arraycopy(array, startIdx, retval, 0, copySize);
+            System.arraycopy(array, startIdx, returnValue, 0, copySize);
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of longs produced by scaling the input
@@ -522,11 +522,11 @@ public class LongArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final long[] scale(long[] array, long scaleFactor) {
-        long[] retval = new long[array.length];
+        long[] returnValue = new long[array.length];
         for (int i = 0; i < array.length; i++) {
-            retval[i] = scaleFactor * array[i];
+            returnValue[i] = scaleFactor * array[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is constructed from the argument by
@@ -544,19 +544,19 @@ public class LongArrayMath {
      *  @return A new array of longs.
      */
     public static final long[] shiftArithmetic(long[] array, int shiftAmount) {
-        long[] retval = new long[array.length];
+        long[] returnValue = new long[array.length];
 
         if (shiftAmount >= 0) {
             for (int i = 0; i < array.length; i++) {
-                retval[i] = array[i] << shiftAmount;
+                returnValue[i] = array[i] << shiftAmount;
             }
         } else if (shiftAmount < 0) {
             for (int i = 0; i < array.length; i++) {
-                retval[i] = array[i] >>> -shiftAmount;
+                returnValue[i] = array[i] >>> -shiftAmount;
             }
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is constructed from the argument by
@@ -574,19 +574,19 @@ public class LongArrayMath {
      *  @return A new array of longs.
      */
     public static final long[] shiftLogical(long[] array, int shiftAmount) {
-        long[] retval = new long[array.length];
+        long[] returnValue = new long[array.length];
 
         if (shiftAmount >= 0) {
             for (int i = 0; i < array.length; i++) {
-                retval[i] = array[i] << shiftAmount;
+                returnValue[i] = array[i] << shiftAmount;
             }
         } else if (shiftAmount < 0) {
             for (int i = 0; i < array.length; i++) {
-                retval[i] = array[i] >> -shiftAmount;
+                returnValue[i] = array[i] >> -shiftAmount;
             }
         }
 
-        return retval;
+        return returnValue;
     }
 
 
@@ -598,12 +598,12 @@ public class LongArrayMath {
     public static final long[] subtract(final long[] array1,
             final long[] array2) {
         int length = _commonLength(array1, array2, "LongArrayMath.subtract");
-        long[] retval = new long[length];
+        long[] returnValue = new long[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i] - array2[i];
+            returnValue[i] = array1[i] - array2[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return the sum of the squares of all of the elements in the array.
@@ -629,12 +629,12 @@ public class LongArrayMath {
      */
     public static final double[] toDoubleArray(final long[] array) {
         int length = array.length;
-        double[] retval = new double[length];
+        double[] returnValue = new double[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = (double) array[i];
+            returnValue[i] = (double) array[i];
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -647,12 +647,12 @@ public class LongArrayMath {
      */
     public static final float[] toFloatArray(final long[] array) {
         int length = array.length;
-        float[] retval = new float[length];
+        float[] returnValue = new float[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = (float) array[i];
+            returnValue[i] = (float) array[i];
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -665,12 +665,12 @@ public class LongArrayMath {
      */
     public static final int[] toIntegerArray(final long[] array) {
         int length = array.length;
-        int[] retval = new int[length];
+        int[] returnValue = new int[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = (int) array[i];
+            returnValue[i] = (int) array[i];
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new String representing the array, formatted as

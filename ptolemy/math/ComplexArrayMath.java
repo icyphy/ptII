@@ -70,11 +70,11 @@ public class ComplexArrayMath {
     public static final Complex[] add(Complex[] array1, Complex[] array2) {
         int length = _commonLength(array1, array2,
                 "ComplexArrayMath.add");
-        Complex[] retval = new Complex[length];
+        Complex[] returnValue = new Complex[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i].add(array2[i]);
+            returnValue[i] = array1[i].add(array2[i]);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -87,11 +87,11 @@ public class ComplexArrayMath {
             ComplexBinaryOperation op, final Complex z,
             final Complex[] array) {
         int length = array.length;
-        Complex[] retval = new Complex[length];
+        Complex[] returnValue = new Complex[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = op.operate(array[i], z);
+            returnValue[i] = op.operate(array[i], z);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -108,11 +108,11 @@ public class ComplexArrayMath {
             final Complex[] array2) {
         int length = _commonLength(array1, array2,
                 "ComplexArrayMath.applyBinaryOperation");
-        Complex[] retval = new Complex[length];
+        Complex[] returnValue = new Complex[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = op.operate(array1[i], array2[i]);
+            returnValue[i] = op.operate(array1[i], array2[i]);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is formed by applying an instance of a
@@ -123,11 +123,11 @@ public class ComplexArrayMath {
     public static final Complex[] applyUnaryOperation(
             final ComplexUnaryOperation op, final Complex[] array) {
         int length = array.length;
-        Complex[] retval = new Complex[length];
+        Complex[] returnValue = new Complex[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = op.operate(array[i]);
+            returnValue[i] = op.operate(array[i]);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is the result of appending array2 to the end
@@ -155,17 +155,17 @@ public class ComplexArrayMath {
      */
     public static final Complex[] append(Complex[] array1, int idx1,
             int length1, Complex[] array2, int idx2, int length2) {
-        Complex[] retval = new Complex[length1 + length2];
+        Complex[] returnValue = new Complex[length1 + length2];
 
         if (length1 > 0) {
-            System.arraycopy(array1, idx1, retval, 0, length1);
+            System.arraycopy(array1, idx1, returnValue, 0, length1);
         }
 
         if (length2 > 0) {
-            System.arraycopy(array2, idx2, retval, length1, length2);
+            System.arraycopy(array2, idx2, returnValue, length1, length2);
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return true if all the magnitudes of the differences between
@@ -236,11 +236,11 @@ public class ComplexArrayMath {
     public static final Complex[] divide(Complex[] array1, Complex[] array2) {
         int length = _commonLength(array1, array2,
                 "ComplexArrayMath.divide");
-        Complex[] retval = new Complex[length];
+        Complex[] returnValue = new Complex[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i].divide(array2[i]);
+            returnValue[i] = array1[i].divide(array2[i]);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a Complex number that is the dot product of the two argument
@@ -255,12 +255,12 @@ public class ComplexArrayMath {
             final Complex[] array2) {
         int length = _commonLength(array1, array2,
                 "ComplexArrayMath.dotProduct");
-        Complex retval = Complex.ZERO;
+        Complex returnValue = Complex.ZERO;
 
         for (int i = 0; i < length; i++) {
-            retval = retval.add(array1[i].multiply(array2[i].conjugate()));
+            returnValue = returnValue.add(array1[i].multiply(array2[i].conjugate()));
         }
-        return retval;
+        return returnValue;
     }
 
 
@@ -270,13 +270,13 @@ public class ComplexArrayMath {
     public static final double[] imagParts(final Complex[] x) {
         int size = x.length;
 
-        double[] retval = new double[size];
+        double[] returnValue = new double[size];
 
         for (int i = 0; i < size; i++) {
-            retval[i] = x[i].imag;
+            returnValue[i] = x[i].imag;
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of Complex numbers using two arrays for the
@@ -296,38 +296,38 @@ public class ComplexArrayMath {
      */
     public static final Complex[] formComplexArray(final double[] realPart,
             final double[] imagPart) {
-        Complex[] retval;
+        Complex[] returnValue;
         int size;
 
         if ((realPart != null) && (imagPart != null)) {
             size = DoubleArrayMath._commonLength(realPart, imagPart,
                     "ComplexArrayMath.formComplexArray");
-            retval = new Complex[size];
+            returnValue = new Complex[size];
 
             for (int i = 0; i < size; i++) {
-                retval[i] = new Complex(realPart[i], imagPart[i]);
+                returnValue[i] = new Complex(realPart[i], imagPart[i]);
             }
         } else if (realPart == null) {
             // NullPointerException will be thrown here if both
             // arrays are null.
             size = imagPart.length;
 
-            retval = new Complex[size];
+            returnValue = new Complex[size];
 
             for (int i = 0; i < size; i++) {
-                retval[i] = new Complex(0.0, imagPart[i]);
+                returnValue[i] = new Complex(0.0, imagPart[i]);
             }
         } else { // imagPart == null
             size = realPart.length;
 
-            retval = new Complex[size];
+            returnValue = new Complex[size];
 
             for (int i = 0; i < size; i++) {
-                retval[i] = new Complex(realPart[i], 0.0);
+                returnValue[i] = new Complex(realPart[i], 0.0);
             }
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of doubles containing the magnitudes of the elements
@@ -351,11 +351,11 @@ public class ComplexArrayMath {
             Complex[] array2) {
         int length = _commonLength(array1, array2,
                 "ComplexArrayMath.multiply");
-        Complex[] retval = new Complex[length];
+        Complex[] returnValue = new Complex[length];
         for (int i = 0; i < length; i++) {
-            retval[i] = array1[i].multiply(array2[i]);
+            returnValue[i] = array1[i].multiply(array2[i]);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is constructed from the argument by
@@ -368,13 +368,13 @@ public class ComplexArrayMath {
      */
     public static final Complex[] multiply(Complex[] array, Complex factor) {
         int length = array.length;
-        Complex[] retval = new Complex[length];
+        Complex[] returnValue = new Complex[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = array[i].multiply(factor);
+            returnValue[i] = array[i].multiply(factor);
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a double that is the L2-norm of the array.If the
@@ -394,13 +394,13 @@ public class ComplexArrayMath {
 
         if (length <= 0) return 0.0;
 
-        double retval = 0.0;
+        double returnValue = 0.0;
 
         for (int i = 0; i < length; i++) {
-            retval += array[i].magnitudeSquared();
+            returnValue += array[i].magnitudeSquared();
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of Complex numbers that is formed by padding the
@@ -431,18 +431,18 @@ public class ComplexArrayMath {
         double halfLength   = ((double) length) * 0.5;
         int halfLengthFloor = (int) Math.floor(halfLength);
         int halfLengthCeil  = (int) Math.ceil(halfLength);
-        Complex[] retval = new Complex[newLength];
+        Complex[] returnValue = new Complex[newLength];
 
-        System.arraycopy(array, 0, retval, 0, halfLengthCeil);
+        System.arraycopy(array, 0, returnValue, 0, halfLengthCeil);
 
-        System.arraycopy(array,  halfLengthFloor, retval,
+        System.arraycopy(array,  halfLengthFloor, returnValue,
                 newLength - halfLengthCeil, halfLengthCeil);
 
         for (int i = halfLengthCeil; i < newLength - halfLengthCeil; i++) {
-            retval[i] = Complex.ZERO;
+            returnValue[i] = Complex.ZERO;
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array containing the angles of the elements of the
@@ -506,12 +506,12 @@ public class ComplexArrayMath {
     public static final Complex[] pow(final Complex[] array,
             final double exponent) {
         int length = array.length;
-        Complex[] retval = new Complex[length];
+        Complex[] returnValue = new Complex[length];
 
         for (int i = 0; i < length; i++) {
-            retval[i] = array[i].pow(exponent);
+            returnValue[i] = array[i].pow(exponent);
         }
-        return retval;
+        return returnValue;
     }
 
     /** Return the product of the elements in the array.
@@ -538,13 +538,13 @@ public class ComplexArrayMath {
     public static final double[] realParts(final Complex[] x) {
         int size = x.length;
 
-        double[] retval = new double[size];
+        double[] returnValue = new double[size];
 
         for (int i = 0; i < size; i++) {
-            retval[i] = x[i].real;
+            returnValue[i] = x[i].real;
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array of length newLength that is formed by
@@ -580,7 +580,7 @@ public class ComplexArrayMath {
     public static final Complex[] resize(final Complex[] array,
             final int newLength, final int startIdx) {
 
-        Complex[] retval = new Complex[newLength];
+        Complex[] returnValue = new Complex[newLength];
         int copySize = Math.min(newLength, array.length - startIdx);
 
         if ((startIdx >= array.length) && (copySize >= 0)) {
@@ -590,14 +590,14 @@ public class ComplexArrayMath {
         }
 
         if (copySize > 0) {
-            System.arraycopy(array, startIdx, retval, 0, copySize);
+            System.arraycopy(array, startIdx, returnValue, 0, copySize);
         }
 
         for (int i = copySize; i < newLength; i++) {
-            retval[i] = Complex.ZERO;
+            returnValue[i] = Complex.ZERO;
         }
 
-        return retval;
+        return returnValue;
     }
 
 
@@ -609,13 +609,13 @@ public class ComplexArrayMath {
     public static final Complex[] scale(
             final Complex[] array, final double factor) {
         int len = array.length;
-        Complex[] retval = new Complex[len];
+        Complex[] returnValue = new Complex[len];
 
         for (int i = 0; i < len; i++) {
-            retval[i] = array[i].scale(factor);
+            returnValue[i] = array[i].scale(factor);
         }
 
-        return retval;
+        return returnValue;
     }
 
     /** Return a new array that is constructed by subtracting the complex
