@@ -32,18 +32,18 @@
 # Root of the Java directory
 ROOT =		../../../../..
 
-ME =		java/pt/domains/pn/demo
+ME =		java/ptolemy/domains/pn/demo
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
-#JAVAHOME =      /opt/jdk1.2latest
+#JAVAHOME =      /optolemy/jdk1.2latest
 
 DIRS = 		# demo test doc
 
 # Used to build zip files
-JPACKAGE = 	pt.domains.pn.demo
-JPACKAGE_DIR = 	pt/domains/pn/demo
+JPACKAGE = 	ptolemy.domains.pn.demo
+JPACKAGE_DIR = 	ptolemy/domains/pn/demo
 JVERSION =	1.0
 JDIST =		$(JPACKAGE)$(JVERSION)
 JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip

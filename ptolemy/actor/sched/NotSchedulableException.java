@@ -27,8 +27,8 @@
 @ProposedRating Red (liuj@eecs.berkeley.edu)
 */
 
-package pt.actor;
-import pt.kernel.util.*;
+package ptolemy.actor;
+import ptolemy.kernel.util.*;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////

@@ -35,22 +35,22 @@
 #
 
 # Create the top level Composite Actor
-set sys [java::new pt.actor.CompositeActor]
+set sys [java::new ptolemy.actor.CompositeActor]
 $sys setName DESystem
 
 # Create directors and associate them with the top level composite actor.
-set dir [java::new pt.domains.de.kernel.DECQDirector DELocalDirector]
+set dir [java::new ptolemy.domains.de.kernel.DECQDirector DELocalDirector]
 $sys setDirector $dir
-set exec [java::new pt.actor.Director]
+set exec [java::new ptolemy.actor.Director]
 $sys setExecutiveDirector $exec
 
 # Set the stop time
 $dir setStopTime 10.0
 
 # Build the system
-set clock [java::new pt.domains.de.lib.DEClock 1.0 $sys Clock]
-set ramp [java::new pt.domains.de.lib.DERamp 0.0 1.0 $sys Ramp]
-set plot [java::new pt.domains.de.lib.DEPlot $sys Plot]
+set clock [java::new ptolemy.domains.de.lib.DEClock 1.0 $sys Clock]
+set ramp [java::new ptolemy.domains.de.lib.DERamp 0.0 1.0 $sys Ramp]
+set plot [java::new ptolemy.domains.de.lib.DEPlot $sys Plot]
 
 # Identify the ports
 set clockOutEnum [$clock outputPorts]

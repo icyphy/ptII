@@ -25,12 +25,12 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.domains.pn.demo;
-import pt.domains.pn.kernel.*;
-import pt.domains.pn.actors.*;
-import pt.actors.*;
-import pt.data.*;
-import pt.kernel.*;
+package ptolemy.domains.pn.demo;
+import ptolemy.domains.pn.kernel.*;
+import ptolemy.domains.pn.actors.*;
+import ptolemy.actors.*;
+import ptolemy.data.*;
+import ptolemy.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNInterleavingExample

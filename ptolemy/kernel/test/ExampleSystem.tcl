@@ -34,20 +34,20 @@
 # This structure is the example in the kernel design document.
 
     # Create composite entities
-    set e0 [java::new pt.kernel.CompositeEntity]
+    set e0 [java::new ptolemy.kernel.CompositeEntity]
     $e0 setName E0
-    set e3 [java::new pt.kernel.CompositeEntity $e0 E3]
-    set e4 [java::new pt.kernel.CompositeEntity $e3 E4]
-    set e7 [java::new pt.kernel.CompositeEntity $e0 E7]
-    set e10 [java::new pt.kernel.CompositeEntity $e0 E10]
+    set e3 [java::new ptolemy.kernel.CompositeEntity $e0 E3]
+    set e4 [java::new ptolemy.kernel.CompositeEntity $e3 E4]
+    set e7 [java::new ptolemy.kernel.CompositeEntity $e0 E7]
+    set e10 [java::new ptolemy.kernel.CompositeEntity $e0 E10]
 
     # Create component entities.
-    set e1 [java::new pt.kernel.ComponentEntity $e4 E1]
-    set e2 [java::new pt.kernel.ComponentEntity $e4 E2]
-    set e5 [java::new pt.kernel.ComponentEntity $e3 E5]
-    set e6 [java::new pt.kernel.ComponentEntity $e3 E6]
-    set e8 [java::new pt.kernel.ComponentEntity $e7 E8]
-    set e9 [java::new pt.kernel.ComponentEntity $e10 E9]
+    set e1 [java::new ptolemy.kernel.ComponentEntity $e4 E1]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e4 E2]
+    set e5 [java::new ptolemy.kernel.ComponentEntity $e3 E5]
+    set e6 [java::new ptolemy.kernel.ComponentEntity $e3 E6]
+    set e8 [java::new ptolemy.kernel.ComponentEntity $e7 E8]
+    set e9 [java::new ptolemy.kernel.ComponentEntity $e10 E9]
 
     # Create ports.
     set p0 [$e4 newPort P0]

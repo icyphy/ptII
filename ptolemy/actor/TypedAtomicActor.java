@@ -26,12 +26,12 @@
 
 */
 
-package pt.actor;
+package ptolemy.actor;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
-import pt.graph.*;
+import ptolemy.graph.*;
 
 import java.util.Enumeration;
 import collections.LinkedList;
@@ -54,9 +54,9 @@ subclass.
 
 @author Yuhong Xiong
 $Id$
-@see pt.actors.AtomicActor
-@see pt.actors.TypedCompositeActor
-@see pt.actors.TypedIOPort
+@see ptolemy.actors.AtomicActor
+@see ptolemy.actors.TypedCompositeActor
+@see ptolemy.actors.TypedIOPort
 */
 public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
@@ -156,7 +156,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  enumeration is returned.
      *  This method is read-synchronized on the workspace.
      *  @return an Enumeration of Inequality.
-     *  @see pt.graph.Inequality
+     *  @see ptolemy.graph.Inequality
      */
     public Enumeration typeConstraints()  {
 	try {

@@ -45,13 +45,13 @@ Created : May 1998
  * 
  * @author Neil Smyth
  * @version$Id$
- * @see pt.data.expr.ASTPTRootNode
- * @see pt.data.expr.PtParser 
- * @see pt.data..Token 
+ * @see ptolemy.data.expr.ASTPTRootNode
+ * @see ptolemy.data.expr.PtParser 
+ * @see ptolemy.data..Token 
 */
 
 
-package pt.data.expr;
+package ptolemy.data.expr;
 
 import collections.LinkedList;
 
@@ -65,7 +65,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
      *  parameter changes, by reevaluating the parse tree we get the 
      *  correct result.
      */
-   protected pt.data.expr.Parameter _param;  
+   protected ptolemy.data.expr.Parameter _param;  
 
     /** If this leaf node represents a reference to a parameter, return the
      *  PtToken contained in that parameter. Otherwise return the PtToken
@@ -75,7 +75,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
      *  trying to evaluate the PtToken type and/or value to be stored in 
      *  node in the tree.
      */
-    public pt.data.Token evaluateParseTree() throws IllegalArgumentException {
+    public ptolemy.data.Token evaluateParseTree() throws IllegalArgumentException {
         if (_param != null) {
             _ptToken = _param.getToken();
         } else if (_ptToken == null) {

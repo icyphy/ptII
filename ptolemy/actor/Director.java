@@ -27,13 +27,13 @@
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 */
 
-package pt.actor;
+package ptolemy.actor;
 
-import pt.graph.*;
-import pt.kernel.*;
-import pt.kernel.util.*;
-import pt.kernel.mutation.*;
-import pt.data.*;
+import ptolemy.graph.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.kernel.mutation.*;
+import ptolemy.data.*;
 
 import collections.LinkedList;
 import java.util.Enumeration;

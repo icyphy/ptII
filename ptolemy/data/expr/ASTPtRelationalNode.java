@@ -45,16 +45,16 @@ Created : May 1998
  * 
  * @author Neil Smyth
  * @version $Id$
- * @see pt.data.expr.ASTPtRootNode
- * @see pt.data.expr.PtParser 
- * @see pt.data.Token 
+ * @see ptolemy.data.expr.ASTPtRootNode
+ * @see ptolemy.data.expr.PtParser 
+ * @see ptolemy.data.Token 
 */
 
-package pt.data.expr;
+package ptolemy.data.expr;
 
 public class ASTPtRelationalNode extends ASTPtRootNode {
     
-    protected pt.data.Token  _resolveNode() throws IllegalArgumentException {
+    protected ptolemy.data.Token  _resolveNode() throws IllegalArgumentException {
         int num =  jjtGetNumChildren();
         if (num ==1) {
             return childTokens[0];
@@ -63,7 +63,7 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
             String str = "need an operator if have two children ";
             throw new IllegalArgumentException(str + "of a relational node");
         }
-        pt.data.Token result = childTokens[0];
+        ptolemy.data.Token result = childTokens[0];
         Token x = (Token)_tokenList.take();
         // need to insert at end if want to reparse tree
         _tokenList.insertLast(x);  
@@ -73,12 +73,12 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
                 return result;
             } else  if (x.image.compareTo("!=") == 0) {
                 result = result.equality(childTokens[1]);
-                ((pt.data.BooleanToken)result).negate();
+                ((ptolemy.data.BooleanToken)result).negate();
                 return result;
             } else  {
                 // relational operators only make sense on types below double
-                double a = ((pt.data.ScalarToken)childTokens[0]).doubleValue();
-                double b = ((pt.data.ScalarToken)childTokens[1]).doubleValue();
+                double a = ((ptolemy.data.ScalarToken)childTokens[0]).doubleValue();
+                double b = ((ptolemy.data.ScalarToken)childTokens[1]).doubleValue();
                 boolean res = false;
                 if (x.image.compareTo(">=") == 0) {
                     if (a>=b) res = true;
@@ -92,7 +92,7 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
                     String str = "invalid operator " + x.image + " in relational";
                     throw new IllegalArgumentException(str + "node");
                 }
-                return new pt.data.BooleanToken(res);
+                return new ptolemy.data.BooleanToken(res);
             }
         } catch (Exception ex) {
             String str = "Invalid operation " + x.image + " between ";

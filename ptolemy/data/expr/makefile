@@ -37,7 +37,7 @@
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-ME =		pt/data/expr
+ME =		ptolemy/data/expr
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -48,9 +48,9 @@ DIRS = 		test # doc
 CLASSPATH = ../../..:$(JAVACCDIR)/JavaCC.zip
 
 # Used to build zip files
-TYPACKAGE = 	pt.data.expr
+TYPACKAGE = 	ptolemy.data.expr
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = pt/data/expr
+TYPACKAGE_DIR = ptolemy/data/expr
 TYVERSION =	1.0
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip

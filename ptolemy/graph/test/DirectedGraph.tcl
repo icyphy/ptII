@@ -52,7 +52,7 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # 
 test DirectedGraph-2.1 {Create an empty instance} {
-    set p [java::new pt.graph.DirectedGraph]
+    set p [java::new ptolemy.graph.DirectedGraph]
     $p contains null
 } {0}
 
@@ -60,7 +60,7 @@ test DirectedGraph-2.1 {Create an empty instance} {
 ####
 # 
 test DirectedGraph-2.2 {Create a cyclic graph with 2 nodes} {
-    set p [java::new pt.graph.DirectedGraph]
+    set p [java::new ptolemy.graph.DirectedGraph]
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
     $p add $n1
@@ -74,7 +74,7 @@ test DirectedGraph-2.2 {Create a cyclic graph with 2 nodes} {
 ####
 # 
 test DirectedGraph-2.3 {an acyclic graph with 4 nodes forming a diamond} {
-    set p [java::new pt.graph.DirectedGraph]
+    set p [java::new ptolemy.graph.DirectedGraph]
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]

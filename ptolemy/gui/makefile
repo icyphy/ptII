@@ -35,7 +35,7 @@
 # Root of the Java directory
 ROOT =		../..
 
-ME =		pt/gui
+ME =		ptolemy/gui
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -46,9 +46,9 @@ DIRS = 		#test doc demo
 CLASSPATH =     ../..
 
 # Used to build zip files
-TYPACKAGE = 	pt.gui
+TYPACKAGE = 	ptolemy.gui
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = pt/gui
+TYPACKAGE_DIR = ptolemy/gui
 TYVERSION =	1.0
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip

@@ -28,11 +28,11 @@
 
 */
 
-package pt.actor;
+package ptolemy.actor;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
-import pt.data.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.data.*;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -217,7 +217,7 @@ public class IOPort extends ComponentPort {
      *  input ports among them.
      *  It is read-synchronized on the workspace.
      *
-     *  @see pt.kernel.ComponentPort#deepConnectedPorts
+     *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts
      *  @return An enumeration of input IOPort objects.
      */
     public Enumeration deepConnectedInPorts() {
@@ -244,7 +244,7 @@ public class IOPort extends ComponentPort {
      *  output ports among them.
      *  It is read-synchronized on the workspace.
      *
-     *  @see pt.kernel.ComponentPort#deepConnectedPorts
+     *  @see ptolemy.kernel.ComponentPort#deepConnectedPorts
      *  @return An enumeration of output IOPort objects.
      */
     public Enumeration deepConnectedOutPorts() {

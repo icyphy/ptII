@@ -32,7 +32,7 @@
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-ME =		pt/kernel/demo
+ME =		ptolemy/kernel/demo
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -41,9 +41,9 @@ include $(CONFIG)
 CLASSPATH = ../../..
 
 # Used to build zip files
-TYPACKAGE = 	pt.kernel.demo
+TYPACKAGE = 	ptolemy.kernel.demo
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = pt/kernel/demo
+TYPACKAGE_DIR = ptolemy/kernel/demo
 TYVERSION =	1.0
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
@@ -78,10 +78,10 @@ docs: javadocs
 
 tests:: $(EXTRA_SRCS) test_example test_serializable
 test_example:
-	CLASSPATH=$(CLASSPATH) $(JAVA) pt.kernel.demo.ExampleSystem
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.kernel.demo.ExampleSystem
 test_serializable:
-	CLASSPATH=$(CLASSPATH) $(JAVA) pt.kernel.demo.ExampleSerializable write
-	CLASSPATH=$(CLASSPATH) $(JAVA) pt.kernel.demo.ExampleSerializable
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.kernel.demo.ExampleSerializable write
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.kernel.demo.ExampleSerializable
 
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk

@@ -41,16 +41,16 @@ Created : May 1998
  * 
  * @author Neil Smyth
  * @version $Id$
- * @see pt.data.expr.ASTPtRootNode
- * @see pt.data.expr.PtParser 
- * @see pt.data.Token 
+ * @see ptolemy.data.expr.ASTPtRootNode
+ * @see ptolemy.data.expr.PtParser 
+ * @see ptolemy.data.Token 
 */
 
-package pt.data.expr;
+package ptolemy.data.expr;
 
 public class ASTPtLogicalNode extends ASTPtRootNode {
     
-    protected pt.data.Token _resolveNode() throws IllegalArgumentException {
+    protected ptolemy.data.Token _resolveNode() throws IllegalArgumentException {
         int num = jjtGetNumChildren();
         if (num ==1) {
             return childTokens[0];
@@ -63,7 +63,7 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
         int i = 0;
         try {
              for ( i=0; i<num; i++ ) {
-                 values[i] = ((pt.data.BooleanToken)childTokens[i]).getValue();
+                 values[i] = ((ptolemy.data.BooleanToken)childTokens[i]).getValue();
              }
         } catch (Exception ex) {
             String str = "Could not convert " + childTokens[i].toString();
@@ -83,7 +83,7 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
                 throw new IllegalArgumentException(str + ", check parse tree");
             }
         }
-        return new pt.data.BooleanToken(result);
+        return new ptolemy.data.BooleanToken(result);
     }
 
     public ASTPtLogicalNode(int id) {

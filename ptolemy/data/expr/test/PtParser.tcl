@@ -51,23 +51,23 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # 
 test PtParser-2.1 {Construct Parse objects using different constructors} {
-    set p1 [java::new pt.data.expr.PtParser]
-    set e [java::new {pt.kernel.Entity String} parent]
-    set tok1 [java::new  {pt.data.DoubleToken double} 4.5]
-    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id1 $tok1]
-    set p2 [java::new {pt.data.expr.PtParser java.util.Observer} $param1]
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set e [java::new {ptolemy.kernel.Entity String} parent]
+    set tok1 [java::new  {ptolemy.data.DoubleToken double} 4.5]
+    set param1 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id1 $tok1]
+    set p2 [java::new {ptolemy.data.expr.PtParser java.util.Observer} $param1]
 
     set c1 [$p1 getClass]
     set c2 [$p2 getClass]
 
     list [ $c1 getName ] [$c2 getName] 
-} {pt.data.expr.PtParser pt.data.expr.PtParser}
+} {ptolemy.data.expr.PtParser ptolemy.data.expr.PtParser}
 
 ######################################################################
 ####
 # 
 test PtParser-2.2 {Construct a Parser, try simple integer expressions} {
-    set p1 [java::new pt.data.expr.PtParser]
+    set p1 [java::new ptolemy.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "2 + 3 + 4"]
     set res  [ $root evaluateParseTree ]
 
@@ -84,25 +84,25 @@ test PtParser-2.2 {Construct a Parser, try simple integer expressions} {
     set res4  [ $root evaluateParseTree ]
 
     list [$res toString] [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {pt.data.IntToken(9) pt.data.IntToken(-5) pt.data.IntToken(24) pt.data.IntToken(2) pt.data.IntToken(2)}
+} {ptolemy.data.IntToken(9) ptolemy.data.IntToken(-5) ptolemy.data.IntToken(24) ptolemy.data.IntToken(2) ptolemy.data.IntToken(2)}
 
 ######################################################################
 ####
 # 
 test PtParser-2.3 {Construct a Parser, try complex integer expressions} {
-    set p1 [java::new pt.data.expr.PtParser]
+    set p1 [java::new ptolemy.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "-(2 + (3) + 4*(3- 4 % 3)*(12/12))\n"]
     # Note that dividing an Int by an Int can give a Double, here I want 
     # all nodes the parse tree to have IntTokens
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {pt.data.IntToken(-13)}
+} {ptolemy.data.IntToken(-13)}
 ######################################################################
 ####
 # 
 test PtParser-2.4 {Construct a Parser, try simple double expressions} {
-    set p1 [java::new pt.data.expr.PtParser]
+    set p1 [java::new ptolemy.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "2.0 + 3.5 + 4.2"]
     set res  [ $root evaluateParseTree ]
 
@@ -119,34 +119,34 @@ test PtParser-2.4 {Construct a Parser, try simple double expressions} {
     set res4  [ $root evaluateParseTree ]
 
     list [$res toString] [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {pt.data.DoubleToken(9.7) pt.data.DoubleToken(-5.6) pt.data.DoubleToken(29.400) pt.data.DoubleToken(1.6) pt.data.DoubleToken(2)}
+} {ptolemy.data.DoubleToken(9.7) ptolemy.data.DoubleToken(-5.6) ptolemy.data.DoubleToken(29.400) ptolemy.data.DoubleToken(1.6) ptolemy.data.DoubleToken(2)}
 ######################################################################
 ####
 # 
 test PtParser-2.5 {Construct a Parser, try complex double expressions} {
-    set p [java::new pt.data.expr.PtParser]
+    set p [java::new ptolemy.data.expr.PtParser]
     set root [ $p {generateParseTree String} "-(2.2 + (3.7%1.5) + 4.0*(3.2- 4.2 % 3.0)*(12.0/2.4/2.5/2.0))" ]
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {pt.data.DoubleToken(-10.9)}
+} {ptolemy.data.DoubleToken(-10.9)}
 ######################################################################
 ####
 # 
 test PtParser-3.0 {Construct a Parser,mixing doubles, strings and integers using arithmetic} {
-    set p [java::new pt.data.expr.PtParser]
+    set p [java::new ptolemy.data.expr.PtParser]
     set root [ $p {generateParseTree String} "-(2*9.5 + (3.5/7) + 4/.5) +  \" hello \" + (3*5 -4)\n"]
     set res  [ $root evaluateParseTree ]
 
     list [$res toString]
     # for some reason TclBlend puts brackets around the result, it seems 
     # because there are spaces within the paranthesis???
-} {{pt.data.StringToken(-27.5 hello 11)}}
+} {{ptolemy.data.StringToken(-27.5 hello 11)}}
 ######################################################################
 ####
 # 
 test PtParser-4.0 {Construct a Parser, try basic relational operators} {
-    set p [java::new pt.data.expr.PtParser]
+    set p [java::new ptolemy.data.expr.PtParser]
     set root1 [ $p {generateParseTree String} "2<4"]
     set root2 [ $p {generateParseTree String} "4<=4"]
     set root3 [ $p {generateParseTree String} "4>=4"]
@@ -162,12 +162,12 @@ test PtParser-4.0 {Construct a Parser, try basic relational operators} {
     set res6  [ $root6 evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] [$res5 toString] [$res6 toString] 
-} {pt.data.BooleanToken(true) pt.data.BooleanToken(true) pt.data.BooleanToken(true) pt.data.BooleanToken(false) pt.data.BooleanToken(false) pt.data.BooleanToken(true)}
+} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(true)}
 ######################################################################
 ####
 # 
 test PtParser-4.1 {Construct a Parser, try  relational operators with arithetic operators} {
-    set p [java::new pt.data.expr.PtParser]
+    set p [java::new ptolemy.data.expr.PtParser]
     set root1 [ $p {generateParseTree String} "(2)<(4*5 -9)"]
     set root2 [ $p {generateParseTree String} "4<=4*7"]
     set root3 [ $p {generateParseTree String} "4-7>=4"]
@@ -177,12 +177,12 @@ test PtParser-4.1 {Construct a Parser, try  relational operators with arithetic 
     set res3  [ $root3 evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]  
-} {pt.data.BooleanToken(true) pt.data.BooleanToken(true) pt.data.BooleanToken(false)}
+} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
 ######################################################################
 ####
 # 
 test PtParser-4.2 {Construct a Parser,test use of equality operator on strings} {
-    set p [java::new pt.data.expr.PtParser]
+    set p [java::new ptolemy.data.expr.PtParser]
     set root1 [ $p {generateParseTree String} "\"hello\" == \"hello\""]
     set root2 [ $p {generateParseTree String} "\"hello\" != \"hello\""]
 
@@ -190,12 +190,12 @@ test PtParser-4.2 {Construct a Parser,test use of equality operator on strings} 
     set res2  [ $root2 evaluateParseTree ]
    
     list [$res1 toString] [$res2 toString]  
-} {pt.data.BooleanToken(true) pt.data.BooleanToken(false)}
+} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
 ######################################################################
 ####
 # 
 test PtParser-5.0 {Construct a Parser, test use of logical operators} {
-    set p [java::new pt.data.expr.PtParser]
+    set p [java::new ptolemy.data.expr.PtParser]
     set root1 [ $p {generateParseTree String} "\"hello\" == \"hello\" && 5>=5"]
     set root2 [ $p {generateParseTree String} "\"hello\" != \"hello\" || 3<3"]
     set root3 [ $p {generateParseTree String} "(3<=5) && (56 == 56) || (\"foo\" != \"foo\")"]
@@ -204,12 +204,12 @@ test PtParser-5.0 {Construct a Parser, test use of logical operators} {
     set res3  [ $root3 evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]  
-} {pt.data.BooleanToken(true) pt.data.BooleanToken(false) pt.data.BooleanToken(true)}
+} {ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false) ptolemy.data.BooleanToken(true)}
 ######################################################################
 ####
 # 
 test PtParser-5.1 {Construct a Parser, unary minus & unary logical not} {
-    set p [java::new pt.data.expr.PtParser]
+    set p [java::new ptolemy.data.expr.PtParser]
     set root1 [ $p {generateParseTree String} "!true"]
     set root2 [ $p {generateParseTree String} "-7"]
 
@@ -217,23 +217,23 @@ test PtParser-5.1 {Construct a Parser, unary minus & unary logical not} {
     set res2  [ $root2 evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString] 
-} {pt.data.BooleanToken(false) pt.data.IntToken(-7)}
+} {ptolemy.data.BooleanToken(false) ptolemy.data.IntToken(-7)}
 ######################################################################
 ####
 # 
 test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist} {
     
-    set e [java::new {pt.kernel.Entity String} parent]
-    set tok1 [java::new  {pt.data.DoubleToken double} 4.5]
-    set tok2 [java::new  {pt.data.DoubleToken double} 2.45]
-    set tok3 [java::new  {pt.data.IntToken int} 9]
-    set tok4 [java::new  {pt.data.StringToken String} { hello world}]
-    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id1 $tok1]
-    set param2 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id2 $tok2]
-    set param3 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id3 $tok3]
-    set param4 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id4 $tok4]
+    set e [java::new {ptolemy.kernel.Entity String} parent]
+    set tok1 [java::new  {ptolemy.data.DoubleToken double} 4.5]
+    set tok2 [java::new  {ptolemy.data.DoubleToken double} 2.45]
+    set tok3 [java::new  {ptolemy.data.IntToken int} 9]
+    set tok4 [java::new  {ptolemy.data.StringToken String} { hello world}]
+    set param1 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id1 $tok1]
+    set param2 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id2 $tok2]
+    set param3 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id3 $tok3]
+    set param4 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id4 $tok4]
 
-    set parser [java::new {pt.data.expr.PtParser java.util.Observer} $param1]
+    set parser [java::new {ptolemy.data.expr.PtParser java.util.Observer} $param1]
     $param1 setContainer $e
     $param2 setContainer $e
     $param3 setContainer $e
@@ -241,108 +241,108 @@ test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist}
 
     set nl [$param1 getScope]
 
-    set root1 [ $parser {generateParseTree String pt.kernel.util.NamedList} "id2 + id3 + id4\n" $nl]
+    set root1 [ $parser {generateParseTree String ptolemy.kernel.util.NamedList} "id2 + id3 + id4\n" $nl]
     set res1  [ $root1 evaluateParseTree ]
    
     list [$res1 toString] 
-} {{pt.data.StringToken(11.45 hello world)}}
+} {{ptolemy.data.StringToken(11.45 hello world)}}
 ######################################################################
 ####
 # 
 test PtParser-6.1 {Test reEvaluation of parse Tree} {
     
-    set e [java::new {pt.kernel.Entity String} parent]
-    set tok1 [java::new  {pt.data.DoubleToken double} 4.5]
-    set tok2 [java::new  {pt.data.DoubleToken double} 2.45]
-    set tok3 [java::new  {pt.data.IntToken int} 9]
-    set tok4 [java::new  {pt.data.StringToken String} { hello world}]
-    set param1 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id1 $tok1]
-    set param2 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id2 $tok2]
-    set param3 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id3 $tok3]
-    set param4 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id4 $tok4]
+    set e [java::new {ptolemy.kernel.Entity String} parent]
+    set tok1 [java::new  {ptolemy.data.DoubleToken double} 4.5]
+    set tok2 [java::new  {ptolemy.data.DoubleToken double} 2.45]
+    set tok3 [java::new  {ptolemy.data.IntToken int} 9]
+    set tok4 [java::new  {ptolemy.data.StringToken String} { hello world}]
+    set param1 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id1 $tok1]
+    set param2 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id2 $tok2]
+    set param3 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id3 $tok3]
+    set param4 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id4 $tok4]
 
    
-    set parser [java::new pt.data.expr.PtParser]
+    set parser [java::new ptolemy.data.expr.PtParser]
     $param1 setContainer $e
     $param2 setContainer $e
     $param3 setContainer $e
     $param4 setContainer $e
     set nl [$param1 getScope]
 
-    set root1 [ $parser {generateParseTree String pt.kernel.util.NamedList} "id2 + id3 + id4\n" $nl]
+    set root1 [ $parser {generateParseTree String ptolemy.kernel.util.NamedList} "id2 + id3 + id4\n" $nl]
     set res1  [ $root1 evaluateParseTree ]
 
     $tok2 {setValue double} 102.45
     set res2  [ $root1 {evaluateParseTree} ]
     
     list [$res1 toString] [$res2 toString] 
-} {{pt.data.StringToken(11.45 hello world)} {pt.data.StringToken(111.45 hello world)}}
+} {{ptolemy.data.StringToken(11.45 hello world)} {ptolemy.data.StringToken(111.45 hello world)}}
 ######################################################################
 ####
 # 
 test PtParser-7.0 {Construct a Parser, try simple functional if then else} {
-    set p1 [java::new pt.data.expr.PtParser]
+    set p1 [java::new ptolemy.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "(true)?(7):(6)\n"]
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {pt.data.IntToken(7)}
+} {ptolemy.data.IntToken(7)}
 
 ######################################################################
 ####
 # 
 test PtParser-7.1 {Construct a Parser, try harder if then else} {
-    set p1 [java::new pt.data.expr.PtParser]
+    set p1 [java::new ptolemy.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "(false) ? (3/.5*4) : (\"hello\")"]
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {pt.data.StringToken(hello)}
+} {ptolemy.data.StringToken(hello)}
 ######################################################################
 ####
 # 
 test PtParser-7.2 {Test complicated expression within boolean test condition} {
-    set p1 [java::new pt.data.expr.PtParser]
+    set p1 [java::new ptolemy.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "((3<5) && (\"test\" == \"test\")) ? (3/.5*4) : (\"hello\")"]
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {pt.data.DoubleToken(24)}
+} {ptolemy.data.DoubleToken(24)}
 ######################################################################
 ####
 # 
 test PtParser-7.3 {Test nested if then elses} {
-    set p1 [java::new pt.data.expr.PtParser]
+    set p1 [java::new ptolemy.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "(true ? false: true ) ? (3/.5*4) : (\"hello\")"]
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {pt.data.StringToken(hello)}
+} {ptolemy.data.StringToken(hello)}
 ######################################################################
 ####
 # 
 test PtParser-7.4 {Test many levels of parenthesis nesting} {
-    set p1 [java::new pt.data.expr.PtParser]
+    set p1 [java::new ptolemy.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} "(true ? false: true ) ? (((((3/.5*4))))) : ((((((\"hello\"))))))"]
     set res  [ $root evaluateParseTree ]
 
     list  [$res toString] 
-} {pt.data.StringToken(hello)}
+} {ptolemy.data.StringToken(hello)}
 ######################################################################
 ####
 # 
 test PtParser-8.0 {Test method calls on PtTokens} {
-    set p1 [java::new pt.data.expr.PtParser]
+    set p1 [java::new ptolemy.data.expr.PtParser]
     set root1 [ $p1 {generateParseTree String} "(4.0).add(3.0)"]
     set res1  [ $root1 evaluateParseTree ]
 
     list [$res1 toString] 
-} {pt.data.DoubleToken(7)}
+} {ptolemy.data.DoubleToken(7)}
 ######################################################################
 ####
 # 
 test PtParser-8.1 {Test bitwise operators} {
-    set p1 [java::new pt.data.expr.PtParser]
+    set p1 [java::new ptolemy.data.expr.PtParser]
     set root1 [ $p1 {generateParseTree String} "5 & 2"]
     set root2 [ $p1 {generateParseTree String} "5 | 2"]
     set root3 [ $p1 {generateParseTree String} "5 ^ 4"]
@@ -354,12 +354,12 @@ test PtParser-8.1 {Test bitwise operators} {
     set res4  [ $root4 evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {pt.data.IntToken(0) pt.data.IntToken(7) pt.data.IntToken(1) pt.data.IntToken(-6)}
+} {ptolemy.data.IntToken(0) ptolemy.data.IntToken(7) ptolemy.data.IntToken(1) ptolemy.data.IntToken(-6)}
 ######################################################################
 ####
 # 
 test PtParser-8.2 {Test more complicated bitwise operations, and bitwise ops on booleans} {
-    set p1 [java::new pt.data.expr.PtParser]
+    set p1 [java::new ptolemy.data.expr.PtParser]
     set root1 [ $p1 {generateParseTree String} "~(5 & 2 | 4)"]
     set root2 [ $p1 {generateParseTree String} "(5>4) & (2==2)"]
     set root3 [ $p1 {generateParseTree String} "(false) | (2!=2)"]
@@ -369,13 +369,13 @@ test PtParser-8.2 {Test more complicated bitwise operations, and bitwise ops on 
     set res3  [ $root3 evaluateParseTree ]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {pt.data.IntToken(-5) pt.data.BooleanToken(true) pt.data.BooleanToken(false)}
+} {ptolemy.data.IntToken(-5) ptolemy.data.BooleanToken(true) ptolemy.data.BooleanToken(false)}
 
 ######################################################################
 ####
 # Need to test that the tree can be reevaluated an arbitrary number of times
 test PtParser-9.0 {Check that evaluation of the parse tree does not change the parse tree} {
-    set p1 [java::new pt.data.expr.PtParser]
+    set p1 [java::new ptolemy.data.expr.PtParser]
     set root1 [ $p1 {generateParseTree String} "2+3"]
     set root2 [ $p1 {generateParseTree String} "2-3"]
     set root3 [ $p1 {generateParseTree String} "2*3"]

@@ -35,7 +35,7 @@
 # Root of the Java directory
 ROOT =		../../../..
 
-ME =		pt/actor/util/test
+ME =		ptolemy/actor/util/test
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk

@@ -25,10 +25,10 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.data;
+package ptolemy.data;
 
-import pt.kernel.util.IllegalActionException;
-import pt.graph.CPO;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.graph.CPO;
 
 //////////////////////////////////////////////////////////////////////////
 //// LongToken
@@ -64,7 +64,7 @@ public class LongToken extends ScalarToken {
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      */
-    public Token add(pt.data.Token tok) throws IllegalActionException {
+    public Token add(ptolemy.data.Token tok) throws IllegalActionException {
         long typeInfo = TypeCPO.compare(this, tok);
         try {
             if (typeInfo == CPO.STRICT_LESS) {
@@ -95,7 +95,7 @@ public class LongToken extends ScalarToken {
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      */
-    public Token addR(pt.data.Token tok) throws IllegalActionException {
+    public Token addR(ptolemy.data.Token tok) throws IllegalActionException {
         LongToken tmp = this.convert(tok);
         long result = tmp.getValue() + _value;
         return new LongToken(result);
@@ -221,7 +221,7 @@ public class LongToken extends ScalarToken {
      *   is not of a type that can apply modulo by this Tokens value in
      *   a lossless fashion.
      */
-    public Token moduloR(pt.data.Token tok) throws IllegalActionException {
+    public Token moduloR(ptolemy.data.Token tok) throws IllegalActionException {
         LongToken tmp = this.convert(tok);
         long result = tmp.getValue() %  _value;
         return new LongToken(result);
@@ -267,7 +267,7 @@ public class LongToken extends ScalarToken {
      *   is not of a type that can be multiplied by this Tokens value in
      *   a lossless fashion.
      */
-    public Token multiplyR(pt.data.Token tok) throws IllegalActionException {
+    public Token multiplyR(ptolemy.data.Token tok) throws IllegalActionException {
         LongToken tmp = this.convert(tok);
         long result = tmp.getValue() * _value;
         return new LongToken(result);
@@ -300,7 +300,7 @@ public class LongToken extends ScalarToken {
      *   not of a type that can be subtracted from this Tokens value in
      *   a lossless fashion.
      */
-    public Token subtract(pt.data.Token tok) throws IllegalActionException {
+    public Token subtract(ptolemy.data.Token tok) throws IllegalActionException {
         long typeInfo = TypeCPO.compare(this, tok);
         try {
             if (typeInfo == CPO.STRICT_LESS) {
@@ -331,7 +331,7 @@ public class LongToken extends ScalarToken {
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      */
-    public Token subtractR(pt.data.Token tok) throws IllegalActionException {
+    public Token subtractR(ptolemy.data.Token tok) throws IllegalActionException {
         LongToken tmp = this.convert(tok);
         long result = _value - tmp.getValue();
         return new LongToken(result);

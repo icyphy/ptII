@@ -49,67 +49,67 @@ if {[string compare test [info procs test]] == 1} then {
 
 # NOTE:  All of the following tests use this director,
 # pretty much as a dummy.
-set director [java::new pt.actor.Director]
+set director [java::new ptolemy.actor.Director]
 
 ######################################################################
 ####
 #
 test TypedIOPort-2.1 {Construct Ports} {
-    set e0 [java::new pt.actor.TypedCompositeActor]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setExecutiveDirector $director
-    set e1 [java::new pt.actor.TypedAtomicActor $e0 E1]
-    set p1 [java::new pt.actor.TypedIOPort]
-    set p2 [java::new pt.actor.TypedIOPort $e1 P2]
+    set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
+    set p1 [java::new ptolemy.actor.TypedIOPort]
+    set p2 [java::new ptolemy.actor.TypedIOPort $e1 P2]
     list [$p1 getFullName] [$p2 getFullName]
 } {. ..E1.P2}
 
 test TypedIOPort-2.2 {Construct Ports} {
-    set e0 [java::new pt.actor.TypedCompositeActor]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setExecutiveDirector $director
-    set e1 [java::new pt.actor.TypedAtomicActor $e0 E1]
-    set p1 [java::new pt.actor.TypedIOPort $e1 P1]
-    set p2 [java::new pt.actor.TypedIOPort $e1 P2]
+    set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
+    set p2 [java::new ptolemy.actor.TypedIOPort $e1 P2]
     list [$p1 getFullName] [$p2 getFullName]
 } {..E1.P1 ..E1.P2}
 
 test TypedIOPort-2.3 {Attempt to set erroneous container} {
-    set e0 [java::new pt.actor.CompositeActor]
+    set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setExecutiveDirector $director
-    set e1 [java::new pt.actor.CompositeActor]
-    set p1 [java::new pt.actor.TypedIOPort]
+    set e1 [java::new ptolemy.actor.CompositeActor]
+    set p1 [java::new ptolemy.actor.TypedIOPort]
     catch {$p1 setContainer $e1} msg
     list $msg
-} {{pt.kernel.util.IllegalActionException: . and .: TypedIOPort can only be contained by objects implementing the TypedActor interface.}}
+} {{ptolemy.kernel.util.IllegalActionException: . and .: TypedIOPort can only be contained by objects implementing the TypedActor interface.}}
 
 ######################################################################
 ####
 #
 test TypedIOPort-3.1 {set declared/resolved types} {
-    set e0 [java::new pt.actor.TypedCompositeActor]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setExecutiveDirector $director
-    set e1 [java::new pt.actor.TypedAtomicActor $e0 E1]
-    set p1 [java::new pt.actor.TypedIOPort $e1 P2]
-    set tDouble [java::new pt.data.DoubleToken]
+    set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $e1 P2]
+    set tDouble [java::new ptolemy.data.DoubleToken]
     $p1 setDeclaredType $tDouble
 
     set dt1 [[[$p1 declaredType] getClass] getName]
     set rt1 [[[$p1 resolvedType] getClass] getName]
 
     list $dt1 $rt1
-} {pt.data.DoubleToken pt.data.DoubleToken}
+} {ptolemy.data.DoubleToken ptolemy.data.DoubleToken}
 
 test TypedIOPort-3.2 {set resolved types} {
-    set e0 [java::new pt.actor.TypedCompositeActor]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setExecutiveDirector $director
-    set e1 [java::new pt.actor.TypedAtomicActor $e0 E1]
-    set p1 [java::new pt.actor.TypedIOPort $e1 P1]
-    set tDouble [java::new pt.data.DoubleToken]
+    set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
+    set tDouble [java::new ptolemy.data.DoubleToken]
     $p1 set [$tDouble getClass]
 
     set rt1 [[[$p1 resolvedType] getClass] getName]
 
     list [expr {[$p1 declaredType] == [java::null]}] $rt1
-} {1 pt.data.DoubleToken}
+} {1 ptolemy.data.DoubleToken}
 
 
 ######################################################################
@@ -117,23 +117,23 @@ test TypedIOPort-3.2 {set resolved types} {
 #   TEST description().
 
 # Set bits to give class, name, receivers, and remotereceivers only
-set detail [expr [java::field pt.kernel.util.NamedObj CLASSNAME]|[java::field pt.kernel.util.NamedObj FULLNAME]|[java::field pt.actor.TypedIOPort TYPE]]
+set detail [expr [java::field ptolemy.kernel.util.NamedObj CLASSNAME]|[java::field ptolemy.kernel.util.NamedObj FULLNAME]|[java::field ptolemy.actor.TypedIOPort TYPE]]
 
 test TypedIOPort-4.1 {Check description on a new TypedIOPort} {
-    set p0 [java::new pt.actor.TypedIOPort]
+    set p0 [java::new ptolemy.actor.TypedIOPort]
 
     list [expr {$p0 == [java::null]}]
     $p0 description $detail
-} {pt.actor.TypedIOPort {.} type {declared null resolved null}}
+} {ptolemy.actor.TypedIOPort {.} type {declared null resolved null}}
 
 test TypedIOPort-4.2 {test description} {
-    set e0 [java::new pt.actor.TypedCompositeActor]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setExecutiveDirector $director
-    set e1 [java::new pt.actor.TypedAtomicActor $e0 E1]
-    set p1 [java::new pt.actor.TypedIOPort $e1 P1]
-    set tDouble [java::new pt.data.DoubleToken]
+    set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
+    set tDouble [java::new ptolemy.data.DoubleToken]
     $p1 setDeclaredType $tDouble
 
     $p1 description $detail
-} {pt.actor.TypedIOPort {..E1.P1} type {declared pt.data.DoubleToken resolved pt.data.DoubleToken}}
+} {ptolemy.actor.TypedIOPort {..E1.P1} type {declared ptolemy.data.DoubleToken resolved ptolemy.data.DoubleToken}}
 

@@ -52,19 +52,19 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 #test CalendarQueue-1.1 {Get class information} {
 #    # If anything changes, we want to know about it so we can write tests.
-#    set n [java::new pt.actor.util.CalendarQueue]
+#    set n [java::new ptolemy.actor.util.CalendarQueue]
 #    list [getJavaInfo $n]
 #} {{
-#  class:         pt.actor.util.CalendarQueue
+#  class:         ptolemy.actor.util.CalendarQueue
 #  fields:        
 #  methods:       {equals java.lang.Object} getClass getNextKey getP
 #    reviousPriority hashCode {includes java.lang.Objec
-#    t pt.actor.util.Sortable} notify notifyAll {put java.lang.Ob
-#    ject pt.actor.util.Sortable} {remove java.lang.Object 
-#    pt.actor.util.Sortable} size take toString wait {wait long} 
+#    t ptolemy.actor.util.Sortable} notify notifyAll {put java.lang.Ob
+#    ject ptolemy.actor.util.Sortable} {remove java.lang.Object 
+#    ptolemy.actor.util.Sortable} size take toString wait {wait long} 
 #    {wait long int}
 #    
-#  constructors:  pt.actor.util.CalendarQueue
+#  constructors:  ptolemy.actor.util.CalendarQueue
 #    
 #  properties:    class nextPriority previousPriority
 #    
@@ -74,13 +74,13 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-set comparator [java::new pt.actor.util.DoubleCQComparator] 
+set comparator [java::new ptolemy.actor.util.DoubleCQComparator] 
 
 ######################################################################
 ####
 # 
 test CalendarQueue-2.1 {Construct an empty queue and check defaults} {
-    set queue [java::new pt.actor.util.CalendarQueue $comparator]
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     list [$queue size] 
 } {0}
 
@@ -88,7 +88,7 @@ test CalendarQueue-2.1 {Construct an empty queue and check defaults} {
 ####
 # 
 test CalendarQueue-2.2 {Construct an empty queue and attempt a take} {
-    set queue [java::new pt.actor.util.CalendarQueue $comparator]
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     catch {[$queue take]} msg1
     list $msg1
 } {{java.lang.IllegalAccessException: Invoking take() on empty queue is not allowed.}}
@@ -96,22 +96,22 @@ test CalendarQueue-2.2 {Construct an empty queue and attempt a take} {
 ######################################################################
 ######################################################################
 # The following named objects are used throughout the rest of the tests.
-set n1 [java::new pt.kernel.util.NamedObj "n1"]
-set n2 [java::new pt.kernel.util.NamedObj "n2"]
-set n3 [java::new pt.kernel.util.NamedObj "n3"]
-set n4 [java::new pt.kernel.util.NamedObj "n4"]
-set n5 [java::new pt.kernel.util.NamedObj "n5"]
-set n6 [java::new pt.kernel.util.NamedObj "n6"]
-set n7 [java::new pt.kernel.util.NamedObj "n7"]
-set n8 [java::new pt.kernel.util.NamedObj "n8"]
-set n9 [java::new pt.kernel.util.NamedObj "n9"]
-set n10 [java::new pt.kernel.util.NamedObj "n10"]
-set n11 [java::new pt.kernel.util.NamedObj "n11"]
-set n12 [java::new pt.kernel.util.NamedObj "n12"]
-set n13 [java::new pt.kernel.util.NamedObj "n13"]
-set n14 [java::new pt.kernel.util.NamedObj "n14"]
-set n15 [java::new pt.kernel.util.NamedObj "n15"]
-set n16 [java::new pt.kernel.util.NamedObj "n16"]
+set n1 [java::new ptolemy.kernel.util.NamedObj "n1"]
+set n2 [java::new ptolemy.kernel.util.NamedObj "n2"]
+set n3 [java::new ptolemy.kernel.util.NamedObj "n3"]
+set n4 [java::new ptolemy.kernel.util.NamedObj "n4"]
+set n5 [java::new ptolemy.kernel.util.NamedObj "n5"]
+set n6 [java::new ptolemy.kernel.util.NamedObj "n6"]
+set n7 [java::new ptolemy.kernel.util.NamedObj "n7"]
+set n8 [java::new ptolemy.kernel.util.NamedObj "n8"]
+set n9 [java::new ptolemy.kernel.util.NamedObj "n9"]
+set n10 [java::new ptolemy.kernel.util.NamedObj "n10"]
+set n11 [java::new ptolemy.kernel.util.NamedObj "n11"]
+set n12 [java::new ptolemy.kernel.util.NamedObj "n12"]
+set n13 [java::new ptolemy.kernel.util.NamedObj "n13"]
+set n14 [java::new ptolemy.kernel.util.NamedObj "n14"]
+set n15 [java::new ptolemy.kernel.util.NamedObj "n15"]
+set n16 [java::new ptolemy.kernel.util.NamedObj "n16"]
 set p1 [java::new {Double double} 0.0 ]
 set p2 [java::new {Double double} 0.1 ]
 set p3 [java::new {Double double} 0.2 ]
@@ -134,7 +134,7 @@ set p1again [java::new {Double double} 0.0 ]
 ####
 # 
 test CalendarQueue-3.0 {Put 4 datas in the queue and do a single take} {
-    set queue [java::new pt.actor.util.CalendarQueue $comparator]
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     $queue put $p4 $n1
     $queue put $p2 $n2
     $queue put $p3 $n3
@@ -148,7 +148,7 @@ test CalendarQueue-3.0 {Put 4 datas in the queue and do a single take} {
 ####
 # 
 test CalendarQueue-3.1 {Put 4 datas in the queue and take one by one} {
-    set queue [java::new pt.actor.util.CalendarQueue $comparator]
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     $queue put $p4 $n1
     $queue put $p2 $n2
     $queue put $p3 $n3
@@ -167,7 +167,7 @@ test CalendarQueue-3.1 {Put 4 datas in the queue and take one by one} {
 ####
 # 
 test CalendarQueue-3.2 {Put 5 datas in the queue and take one by one} {
-    set queue [java::new pt.actor.util.CalendarQueue $comparator]
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     $queue put $p5 $n1
     $queue put $p3 $n2
     $queue put $p4 $n3
@@ -189,7 +189,7 @@ test CalendarQueue-3.2 {Put 5 datas in the queue and take one by one} {
 ####
 #
 test CalendarQueue-3.3 {Tests the resize method and the direct search } {
-    set queue [java::new pt.actor.util.CalendarQueue $comparator]
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     $queue put $p9 $n1
     $queue put $p5 $n2
     $queue put $p7 $n3
@@ -267,7 +267,7 @@ test CalendarQueue-3.4 {Again tests the direct search and more complicated put, 
 ####
 #
 test CalendarQueue-3.5 {Tests interleaved put and take} {
-    set queue [java::new pt.actor.util.CalendarQueue $comparator]
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
 
     $queue put $p1 $n5
     # queue size should get doubled here, becomes 4
@@ -315,7 +315,7 @@ test CalendarQueue-3.5 {Tests interleaved put and take} {
 ####
 #
 test CalendarQueue-4.1 {Tests the getNextKey method} {
-    set queue [java::new pt.actor.util.CalendarQueue $comparator]
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     catch {[$queue getNextKey]} msg1
     set mylist $msg1
 
@@ -376,7 +376,7 @@ test CalendarQueue-4.1 {Tests the getNextKey method} {
 ####
 #
 test CalendarQueue-5.1 {Tests remove and includes method} {
-    set queue [java::new pt.actor.util.CalendarQueue $comparator]
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     $queue put $p1 $n5
     $queue put $p2 $n4
     set mylist [list [$queue getNextKey] \
@@ -409,7 +409,7 @@ test CalendarQueue-5.1 {Tests remove and includes method} {
 ####
 #
 test CalendarQueue-5.2 {Comprehensive tests of everything} {
-    set queue [java::new pt.actor.util.CalendarQueue $comparator]
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     catch {[$queue getNextKey]} msg1
     catch {[$queue take]} msg2
     catch {[$queue getPreviousKey]} msg3
@@ -481,7 +481,7 @@ test CalendarQueue-5.2 {Comprehensive tests of everything} {
 ####
 #
 test CalendarQueue-6.1 {Tests identical entry} {
-    set queue [java::new pt.actor.util.CalendarQueue $comparator]
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
     $queue put $p1 $n5
     $queue put $p1 $n5
 

@@ -42,7 +42,7 @@
 # Root of the Java directory
 ROOT =		../../..
 
-ME =		pt/actor/util
+ME =		ptolemy/actor/util
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -53,9 +53,9 @@ DIRS = 		test #doc
 CLASSPATH = ../../..
 
 # Used to build zip files
-TYPACKAGE = 	pt.actor.util
+TYPACKAGE = 	ptolemy.actor.util
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = pt/actor/util
+TYPACKAGE_DIR = ptolemy/actor/util
 TYVERSION =	1.0
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip

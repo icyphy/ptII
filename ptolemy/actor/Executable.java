@@ -26,10 +26,10 @@
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 */
 
-package pt.actor;
+package ptolemy.actor;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Executable

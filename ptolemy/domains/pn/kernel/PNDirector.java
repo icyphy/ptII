@@ -25,10 +25,10 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.domains.pn.kernel;
-import pt.kernel.*;
-import pt.actors.*;
-import pt.data.*;
+package ptolemy.domains.pn.kernel;
+import ptolemy.kernel.*;
+import ptolemy.actors.*;
+import ptolemy.data.*;
 import java.util.Enumeration;
 import collections.LinkedList;
 

@@ -27,12 +27,12 @@
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 */
 
-package pt.actor.test;
+package ptolemy.actor.test;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
-import pt.kernel.mutation.*;
-import pt.actor.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.kernel.mutation.*;
+import ptolemy.actor.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// TestActor

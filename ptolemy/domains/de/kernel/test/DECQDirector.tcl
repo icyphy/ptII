@@ -51,10 +51,10 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # 
 test DEToken-2.1 {Test the constructors} {
-    set dir1 [java::new pt.domains.de.kernel.DECQDirector]
-    set dir2 [java::new pt.domains.de.kernel.DECQDirector MyDirectorName]
-    set ws [java::new pt.kernel.util.Workspace]
-    set dir3 [java::new pt.domains.de.kernel.DECQDirector $ws AnotherName]
+    set dir1 [java::new ptolemy.domains.de.kernel.DECQDirector]
+    set dir2 [java::new ptolemy.domains.de.kernel.DECQDirector MyDirectorName]
+    set ws [java::new ptolemy.kernel.util.Workspace]
+    set dir3 [java::new ptolemy.domains.de.kernel.DECQDirector $ws AnotherName]
     set receiver [$dir3 newReceiver]
     list
 } {}

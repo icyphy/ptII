@@ -25,10 +25,10 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.data;
+package ptolemy.data;
 
-import pt.kernel.util.IllegalActionException;
-import pt.graph.CPO;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.graph.CPO;
 import java.text.NumberFormat;
 
 //////////////////////////////////////////////////////////////////////////
@@ -37,7 +37,7 @@ import java.text.NumberFormat;
  * A token that contains a double precision number.
  *
  * @author Yuhong Xiong, Neil Smyth
- * @see pt.data.Token
+ * @see ptolemy.data.Token
  * @see java.text.NumberFormat
  * @version $Id$
  */
@@ -68,7 +68,7 @@ public class DoubleToken extends ScalarToken {
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      */
-    public Token add(pt.data.Token tok) throws IllegalActionException {
+    public Token add(ptolemy.data.Token tok) throws IllegalActionException {
         int typeInfo = TypeCPO.compare(this, tok);
         try {
             if (typeInfo == CPO.STRICT_LESS) {
@@ -99,7 +99,7 @@ public class DoubleToken extends ScalarToken {
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      */
-    public Token addR(pt.data.Token tok) throws IllegalActionException {
+    public Token addR(ptolemy.data.Token tok) throws IllegalActionException {
         DoubleToken tmp = this.convert(tok);
         double result = tmp.getValue() + _value;
         return new DoubleToken(result);
@@ -173,7 +173,7 @@ public class DoubleToken extends ScalarToken {
      *   is not of a type that can be divided by this Tokens value in
      *   a lossless fashion.
      */
-    public Token divideR(pt.data.Token tok) throws IllegalActionException {
+    public Token divideR(ptolemy.data.Token tok) throws IllegalActionException {
         DoubleToken tmp = this.convert(tok);
         double result = tmp.getValue() / _value;
         return new DoubleToken(result);
@@ -276,7 +276,7 @@ public class DoubleToken extends ScalarToken {
      *   is not of a type that can apply modulo by this Tokens value in
      *   a lossless fashion.
      */
-    public Token moduloR(pt.data.Token tok) throws IllegalActionException {
+    public Token moduloR(ptolemy.data.Token tok) throws IllegalActionException {
         DoubleToken tmp = this.convert(tok);
         double result = tmp.getValue() %  _value;
         return new DoubleToken(result);
@@ -322,7 +322,7 @@ public class DoubleToken extends ScalarToken {
      *   is not of a type that can be multiplied by this Tokens value in
      *   a lossless fashion.
      */
-    public Token multiplyR(pt.data.Token tok) throws IllegalActionException {
+    public Token multiplyR(ptolemy.data.Token tok) throws IllegalActionException {
         DoubleToken tmp = this.convert(tok);
         double result = tmp.getValue() * _value;
         return new DoubleToken(result);
@@ -357,7 +357,7 @@ public class DoubleToken extends ScalarToken {
      *   not of a type that can be subtracted from this Tokens value in
      *   a lossless fashion.
      */
-    public Token subtract(pt.data.Token tok) throws IllegalActionException {
+    public Token subtract(ptolemy.data.Token tok) throws IllegalActionException {
         int typeInfo = TypeCPO.compare(this, tok);
         try {
             if (typeInfo == CPO.STRICT_LESS) {
@@ -388,7 +388,7 @@ public class DoubleToken extends ScalarToken {
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      */
-    public Token subtractR(pt.data.Token tok) throws IllegalActionException {
+    public Token subtractR(ptolemy.data.Token tok) throws IllegalActionException {
         DoubleToken tmp = this.convert(tok);
         double result = _value - tmp.getValue();
         return new DoubleToken(result);

@@ -32,7 +32,7 @@
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
-ME =		pt/data/parser/test
+ME =		ptolemy/data/parser/test
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk

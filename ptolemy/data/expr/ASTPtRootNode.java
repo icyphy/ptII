@@ -47,12 +47,12 @@ Created : May 1998
  * 
  * @author Neil Smyth
  * @version $Id$
- * @see pt.data.expr.PtParser 
- * @see pt.data.Token 
+ * @see ptolemy.data.expr.PtParser 
+ * @see ptolemy.data.Token 
 */
 
 
-package pt.data.expr;
+package ptolemy.data.expr;
 
 import collections.LinkedList;
 
@@ -67,7 +67,7 @@ public class ASTPtRootNode implements Node {
 
     /** Each node stores its type and state information in this variable.
      */
-    protected pt.data.Token _ptToken;
+    protected ptolemy.data.Token _ptToken;
 
     /** In nodes with more than one child, the operators are stored in this
      *  LinkedList. Note that here token refers to tokens returned by the 
@@ -75,12 +75,12 @@ public class ASTPtRootNode implements Node {
      */
     protected LinkedList _tokenList = new LinkedList();
 
-    /** Stores the pt.data.Tokens of each of the children nodes */
-   protected pt.data.Token[] childTokens;
+    /** Stores the ptolemy.data.Tokens of each of the children nodes */
+   protected ptolemy.data.Token[] childTokens;
      
     /** Called to recursively evaluate the parse tree 
      *  of nodes returned from the parser. Starting at the top, it resolves 
-     *  the pt.data.Token stored in each Node in a depth first manner. When all
+     *  the ptolemy.data.Token stored in each Node in a depth first manner. When all
      *  the children of a node have returned (type & value resolved), the
      *  type & value of the current node may be resolved by a call to 
      *  _resolveNode() method.
@@ -90,7 +90,7 @@ public class ASTPtRootNode implements Node {
      *  node in the tree.
      *  @return The token contained by the root node for the parse tree.
      */
-    public pt.data.Token evaluateParseTree() throws IllegalArgumentException {
+    public ptolemy.data.Token evaluateParseTree() throws IllegalArgumentException {
         int numChildren = jjtGetNumChildren();
         if (numChildren == 0) {
             // leaf node, should not be here
@@ -98,7 +98,7 @@ public class ASTPtRootNode implements Node {
             str += "not a leaf node";
             throw new IllegalArgumentException(str);
         } else {
-            childTokens = new pt.data.Token[numChildren];
+            childTokens = new ptolemy.data.Token[numChildren];
             for (int i=0; i<numChildren; i++) {
                 childTokens[i] =((ASTPtRootNode)jjtGetChild(i)).evaluateParseTree();
             }
@@ -119,9 +119,9 @@ public class ASTPtRootNode implements Node {
      *  @exception IllegalArgumentException Thrown when an error occurs 
      *   rying to evaluate the PtToken type and/or value to be stored in
      *   the current node.
-     *  @return The pt.data.Token stored in this node.
+     *  @return The ptolemy.data.Token stored in this node.
      */
-    protected pt.data.Token _resolveNode() throws IllegalArgumentException {  
+    protected ptolemy.data.Token _resolveNode() throws IllegalArgumentException {  
         int num = jjtGetNumChildren();
         if (num > 1) {
             String str = "Node has several children, this method ";

@@ -27,13 +27,13 @@
 @ProposedRating red (lmuliadi@eecs.berkeley.edu)
 */
 
-package pt.domains.de.kernel;
+package ptolemy.domains.de.kernel;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
-import pt.actor.*;
-import pt.actor.util.*;
-import pt.data.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.actor.*;
+import ptolemy.actor.util.*;
+import ptolemy.data.*;
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -115,7 +115,7 @@ public class DECQDirector extends Director {
             }
             _currentActor.fire();
         } else {
-            // FIXME: Is this needed ? Cuz, the pt.actor.Director.java
+            // FIXME: Is this needed ? Cuz, the ptolemy.actor.Director.java
             // doesn't do this.
             throw new IllegalActionException("No container. Invalid topology");
         }

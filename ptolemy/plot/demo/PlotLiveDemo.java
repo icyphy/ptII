@@ -25,9 +25,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 */
-package pt.plot.demo;
+package ptolemy.plot.demo;
 
-import pt.plot.*;
+import ptolemy.plot.*;
 import java.awt.*;
 import java.applet.Applet;
 
@@ -100,7 +100,7 @@ public class PlotLiveDemo extends PlotLive {
    /**
     * Run as an application for testing.  Run with:
     * <pre>
-java -classpath ../../..:/opt/jdk1.1.4/lib/classes.zip pt.plot.demo.PlotLiveDemo
+java -classpath ../../..:/optolemy/jdk1.1.4/lib/classes.zip ptolemy.plot.demo.PlotLiveDemo
     * </pre>
     */
     public static void main(String args[]) {

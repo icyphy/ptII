@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.data;
+package ptolemy.data;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixToken

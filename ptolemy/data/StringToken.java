@@ -25,11 +25,11 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.data;
+package ptolemy.data;
 
-import pt.kernel.*;
-import pt.kernel.util.IllegalActionException;
-import pt.graph.CPO;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.graph.CPO;
 
 //////////////////////////////////////////////////////////////////////////
 //// StringToken
@@ -109,7 +109,7 @@ public class StringToken extends ObjectToken {
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      */
-    public Token addR(pt.data.Token tok) throws IllegalActionException {
+    public Token addR(ptolemy.data.Token tok) throws IllegalActionException {
         StringToken tmp = this.convert(tok);
         String result = tmp.getValue() + _value;
         return new StringToken(result);

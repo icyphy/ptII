@@ -38,9 +38,9 @@ include $(CONFIG)
 
 CLASSPATH =	../../..
 
-TYPACKAGE = 	pt.plot.demo
+TYPACKAGE = 	ptolemy.plot.demo
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR =	pt/plot/demo
+TYPACKAGE_DIR =	ptolemy/plot/demo
 TYVERSION =	2.0
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip

@@ -29,10 +29,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 */
-package pt.domains.pn.kernel.demo;
+package ptolemy.domains.pn.kernel.demo;
 
-import pt.kernel.*;
-import pt.domains.pn.kernel.*;
+import ptolemy.kernel.*;
+import ptolemy.domains.pn.kernel.*;
 import java.applet.Applet;
 import java.awt.*;
 
@@ -64,7 +64,7 @@ public class PNExampleApplet extends Applet {
     }
 
     /** For use as an application.  Use the following command to run:
-     * java -classpath $PTOLEMY/tycho/java:/opt/jdk1.1.4/lib/classes.zip pt.domains.pn.kernel.demo.PNExampleApplet 0 1
+     * java -classpath $PTOLEMY/tycho/java:/optolemy/jdk1.1.4/lib/classes.zip ptolemy.domains.pn.kernel.demo.PNExampleApplet 0 1
      */
     public static void main(String args[])
     {

@@ -26,13 +26,13 @@
 
 */
 
-package pt.actor;
+package ptolemy.actor;
 
-import pt.data.*;
-import pt.graph.*;
+import ptolemy.data.*;
+import ptolemy.graph.*;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
 import java.util.Enumeration;
 import collections.LinkedList;
@@ -52,11 +52,11 @@ Derived classes may impose further constraints by overriding setContainer().
 
 @author Yuhong Xiong
 $Id$
-@see pt.actors.TypedIOPort
-@see pt.actors.IORelation
-@see pt.actors.TypedActor
-@see pt.actors.CompositeActor
-@see pt.kernel.ComponentEntity
+@see ptolemy.actors.TypedIOPort
+@see ptolemy.actors.IORelation
+@see ptolemy.actors.TypedActor
+@see ptolemy.actors.CompositeActor
+@see ptolemy.kernel.ComponentEntity
 */
 public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
@@ -169,7 +169,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  collect the constraints from all of them.
      *  This method is read-synchronized on the workspace.
      *  @return an Enumerations of Inequality.
-     *  @see pt.graph.Inequality
+     *  @see ptolemy.graph.Inequality
      */
     public Enumeration typeConstraints()  {
 	try {

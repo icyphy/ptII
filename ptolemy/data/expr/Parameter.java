@@ -28,15 +28,15 @@
 
 */
 
-package pt.data.expr;
+package ptolemy.data.expr;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
-import pt.data.Token;
-import pt.data.TokenPublisher;
-import pt.data.TypeCPO;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.data.Token;
+import ptolemy.data.TokenPublisher;
+import ptolemy.data.TypeCPO;
 import java.util.*;
-import pt.graph.CPO;
+import ptolemy.graph.CPO;
 
 //////////////////////////////////////////////////////////////////////////
 //// Parameter
@@ -62,11 +62,11 @@ import pt.graph.CPO;
  * 
  * @author Neil Smyth
  * @version $Id$
- * @see pt.kernel.util.Attribute
- * @see pt.data.expr.PtParser 
- * @see pt.data.Token 
+ * @see ptolemy.kernel.util.Attribute
+ * @see ptolemy.data.expr.PtParser 
+ * @see ptolemy.data.Token 
 */
-public class Parameter extends pt.kernel.util.Attribute implements Observer {
+public class Parameter extends ptolemy.kernel.util.Attribute implements Observer {
 
     /** Construct a parameter in the default workspace with an empty string
      *  as its name.
@@ -126,12 +126,12 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
      *  @exception NameDuplicationException If the name coincides with
      *   an parameter already in the container.
      */
-     public Parameter(NamedObj container, String name, pt.data.Token token)
+     public Parameter(NamedObj container, String name, ptolemy.data.Token token)
             throws IllegalActionException, NameDuplicationException {
          super(container, name);
          if (token != null) {
              try {
-                 _origToken = (pt.data.Token)token.clone();
+                 _origToken = (ptolemy.data.Token)token.clone();
                  _noTokenYet = false;
                  _paramType = token.getClass();
              } catch (CloneNotSupportedException c) {
@@ -159,10 +159,10 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
       Parameter result = (Parameter)super.clone(ws);
       if (_token != null) {
-          result._token = (pt.data.Token)_token.clone();
+          result._token = (ptolemy.data.Token)_token.clone();
       }
       if (_origToken != null) {
-          result._origToken = (pt.data.Token)_origToken.clone();
+          result._origToken = (ptolemy.data.Token)_origToken.clone();
       }
       if (_paramType != null) {
           try {
@@ -243,7 +243,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
      /** Get the Token this Parameter contains. It may be null.
       *  @return The token contained by this parameter.
      */
-    public pt.data.Token getToken() {
+    public ptolemy.data.Token getToken() {
         return _token;
     }
    
@@ -264,7 +264,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
             _currentValue = null;
             _parseTreeRoot = null;
         } else  { //must have an _initialValue
-            pt.data.Token oldToken = _token;
+            ptolemy.data.Token oldToken = _token;
             if (_parser == null) {
                 _parser = new PtParser(this);
             }
@@ -285,7 +285,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
      *  @param token The new Token to be stored in this Parameter.
      * FIXME: synchronization needs to be looked at.
      */
-    public void setToken(pt.data.Token token) {
+    public void setToken(ptolemy.data.Token token) {
         if (_noTokenYet && (token !=null)) {
             _origToken = token;
             _noTokenYet = false;
@@ -293,7 +293,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
         }
         _parseTreeRoot = null;
         _currentValue = null;
-        pt.data.Token oldToken = _token;
+        ptolemy.data.Token oldToken = _token;
         _token = token;
         _checkType(_token);
         // Now transfer the TokenPublisher between the old & new tokens
@@ -321,7 +321,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
             _parser = new PtParser(this);
         }
         _currentValue = str;
-        pt.data.Token prevToken = _token;
+        ptolemy.data.Token prevToken = _token;
         synchronized(workspace()) {
             _parseTreeRoot = _parser.generateParseTree(str, getScope());
             _token = _parseTreeRoot.evaluateParseTree();
@@ -395,7 +395,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
         _dependencyLoop = true;
         try {
             if ( _parseTreeRoot != null) {
-                pt.data.Token oldToken = _token;
+                ptolemy.data.Token oldToken = _token;
                 _token = _parseTreeRoot.evaluateParseTree();
                 _checkType(_token.getClass());
                 TokenPublisher publisher = oldToken.getPublisher();
@@ -443,7 +443,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
      *  @param tok The token that is trying to be placed in the Parameter.
      *  @exception IllegalArgumentException thrown if incompatible types
      */
-    protected void _checkType(pt.data.Token tok) 
+    protected void _checkType(ptolemy.data.Token tok) 
             throws IllegalArgumentException {
         if (tok == null) return; 
         else {
@@ -482,7 +482,7 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
 
     // Stores the first Token placed in this parameter. It is null if the
     // first token contained by the parameter was parsed from an expression.
-    private pt.data.Token _origToken;
+    private ptolemy.data.Token _origToken;
 
     // Stores the type information for this parameter.
     private Class _paramType;
@@ -498,5 +498,5 @@ public class Parameter extends pt.kernel.util.Attribute implements Observer {
     private NamedList _scope;
 
     // The token contained by this parameter.
-    private pt.data.Token _token;   
+    private ptolemy.data.Token _token;   
 }

@@ -38,13 +38,13 @@ include $(CONFIG)
 
 CLASSPATH =	../..
 
-# Note that this package has the the name 'pt.plot', not
-# tycho.java.pt.plot.  The Itcl and java package have different root
+# Note that this package has the the name 'ptolemy.plot', not
+# tycho.java.ptolemy.plot.  The Itcl and java package have different root
 # directories.
 
-TYPACKAGE = 	pt.plot
+TYPACKAGE = 	ptolemy.plot
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = pt/plot
+TYPACKAGE_DIR = ptolemy/plot
 # If you change JVERSION, modify the version numbers in:
 #    Pxgraph.java, index.html, doc/internals/changes.html
 TYVERSION =	2.0
@@ -52,7 +52,7 @@ TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 # Classes that are included in the jar file as Java Beand.
-JBEANCLASSES =	pt/plot/Plot.class pt/plot/PlotLive.class
+JBEANCLASSES =	ptolemy/plot/Plot.class ptolemy/plot/PlotLive.class
 
 SRCDIRS = 	demo apps
 DIRS = 		$(SRCDIRS) doc #test
@@ -86,11 +86,11 @@ MISC_FILES = demo doc #bean #test \
 OPTIONAL_FILES = \
 	adm \
 	manifest.tmp \
-	pt.plot.jar \
-	pt.plot.zip \
-	pt.plot$(JVERSION).tar.gz \
-	pt.plot$(JVERSION).zip \
-	pt.plotapplet.jar
+	ptolemy.plot.jar \
+	ptolemy.plot.zip \
+	ptolemy.plot$(JVERSION).tar.gz \
+	ptolemy.plot$(JVERSION).zip \
+	ptolemy.plotapplet.jar
 
 # Files to be removed by 'make realclean'
 REALCLEAN_STUFF = 
@@ -100,15 +100,15 @@ JCLASS1_1 = $(JSRCS1_1:%.java=%.class)
 
 JCLASS = $(JCLASS1_0) $(JCLASS1_1)
 
-all: sources jclass suball $(TYZIP) $(JARFILE) pt.plotapplet.jar
+all: sources jclass suball $(TYZIP) $(JARFILE) ptolemy.plotapplet.jar
 	-chmod a+x pxgraph testpxgraph
-install: sources jclass javadocs subinstall $(JARFILE) $(TYZIP) pt.plotapplet.jar
+install: sources jclass javadocs subinstall $(JARFILE) $(TYZIP) ptolemy.plotapplet.jar
 	-chmod a+x pxgraph testpxgraph
 
 # Jar file consisting of classes used by an applet.  Basically,
 # everything but Message and Pxgraph.
-pt.plotapplet.jar:
-	(cd $(CLASSPATH); $(JAR) cfm $(TYPACKAGE_DIR)/pt.plotapplet.jar \
+ptolemy.plotapplet.jar:
+	(cd $(CLASSPATH); $(JAR) cfm $(TYPACKAGE_DIR)/ptolemy.plotapplet.jar \
 		$(TYPACKAGE_DIR)/CmdLineArgException.class \
 		$(TYPACKAGE_DIR)/Plot.class \
 		$(TYPACKAGE_DIR)/PlotApplet.class \

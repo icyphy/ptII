@@ -27,10 +27,10 @@
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 */
 
-package pt.actor;
+package ptolemy.actor;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
 import java.util.Enumeration;
 import collections.LinkedList;
@@ -90,9 +90,9 @@ Derived classes may impose further constraints by overriding setContainer().
 
 @author Mudit Goel, Edward A. Lee
 @version $Id$
-@see pt.actors.IOPort
-@see pt.actors.IORelation
-@see pt.kernel.ComponentEntity
+@see ptolemy.actors.IOPort
+@see ptolemy.actors.IORelation
+@see ptolemy.kernel.ComponentEntity
 */
 public class CompositeActor extends CompositeEntity implements Actor {
 

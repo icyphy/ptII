@@ -28,10 +28,10 @@
 
 */
 
-package pt.actor;
+package ptolemy.actor;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
 import java.util.Enumeration;
 import collections.*;
@@ -224,7 +224,7 @@ public class IORelation extends ComponentRelation {
      *  I.e., enumerate the ports through or to which we could send data.
      *  This method read-synchronizes on the workspace.
      *
-     *  @see pt.kernel.Relation#linkedPorts
+     *  @see ptolemy.kernel.Relation#linkedPorts
      *  @return An enumeration of IOPort objects.
      */
     public Enumeration linkedDestinationPorts() {
@@ -239,7 +239,7 @@ public class IORelation extends ComponentRelation {
      *  then enumerate all the input ports.
      *  This method read-synchronizes on the workspace.
      *
-     *  @see pt.kernel.Relation#linkedPorts(pt.kernel.Port)
+     *  @see ptolemy.kernel.Relation#linkedPorts(ptolemy.kernel.Port)
      *  @param except The port not included in the returned Enumeration.
      *  @return An enumeration of IOPort objects.
      */
@@ -273,7 +273,7 @@ public class IORelation extends ComponentRelation {
      *  I.e. enumerate the ports from or through which we might receive
      *  data. This method read-synchronizes on the workspace.
      *
-     *  @see pt.kernel.Relation#linkedPorts
+     *  @see ptolemy.kernel.Relation#linkedPorts
      *  @return An enumeration of IOPort objects.
      */
     public Enumeration linkedSourcePorts() {
@@ -286,7 +286,7 @@ public class IORelation extends ComponentRelation {
      *  If the given port is null or is not linked to this relation,
      *  then enumerate all the output ports.
      *  This method read-synchronizes on the workspace.
-     *  @see pt.kernel.Relation#linkedPorts(pt.kernel.Port)
+     *  @see ptolemy.kernel.Relation#linkedPorts(ptolemy.kernel.Port)
      *  @param except The port not included in the returned Enumeration.
      *  @return An enumeration of IOPort objects.
      */

@@ -1,4 +1,4 @@
-/* ExampleSystem.java constructs a test hierachical graph using the pt.kernel classes.
+/* ExampleSystem.java constructs a test hierachical graph using the ptolemy.kernel classes.
 
  Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
@@ -25,9 +25,9 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.kernel.demo;
-import pt.kernel.*;
-import pt.kernel.util.*;
+package ptolemy.kernel.demo;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
 import java.util.Enumeration;
 
@@ -57,7 +57,7 @@ public class ExampleSystemApplet extends ExampleApplet
 
     /** Action when click on the button
     *  Print all results in the text area. Override ExampleApplet.buttonAction
-    *  @see pt.kernel.demo.Figure8.ExampleApplet#buttonAction()
+    *  @see ptolemy.kernel.demo.Figure8.ExampleApplet#buttonAction()
     *  @see java.awt.buttton
     *  @param java.awt.event
     */	

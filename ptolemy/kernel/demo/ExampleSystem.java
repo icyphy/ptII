@@ -1,4 +1,4 @@
-/* ExampleSystem.java constructs a test hierachical graph using the pt.kernel classes.
+/* ExampleSystem.java constructs a test hierachical graph using the ptolemy.kernel classes.
 
  Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
@@ -25,9 +25,9 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.kernel.demo;
-import pt.kernel.*;
-import pt.kernel.util.*;
+package ptolemy.kernel.demo;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
 import java.io.Serializable;
 import java.util.Enumeration;
@@ -107,7 +107,7 @@ public class ExampleSystem implements Serializable {
 
     /** 
     *  Return the results as a String.
-    *  @see pt.kernel.demo.Figure8.ExampleApplet#buttonAction()
+    *  @see ptolemy.kernel.demo.Figure8.ExampleApplet#buttonAction()
     *  @see java.awt.buttton
     *  @param java.awt.event
     */	
@@ -178,7 +178,7 @@ public class ExampleSystem implements Serializable {
     /**
      * Print the linked ports for a given ComponetRelation. The ports
      * are restricted in the same level of hierachy
-     * @see pt.kernel.Relation#getLinkedPorts()
+     * @see ptolemy.kernel.Relation#getLinkedPorts()
      * @param ComponentRelation
      */	
     public String printLinkedPorts(ComponentRelation r) {
@@ -196,7 +196,7 @@ public class ExampleSystem implements Serializable {
      * Print the deeply linked ports for a given
      * ComponetRelation. Look through all transparent ports and return
      * only non transparent ports (those with no inside links).
-     * @see pt.kernel.ComponentRelation#deepGetLinkedPorts()
+     * @see ptolemy.kernel.ComponentRelation#deepGetLinkedPorts()
      * @param ComponentRelation
      */	
     public String printDeepLinkedPorts(ComponentRelation r) {
@@ -213,7 +213,7 @@ public class ExampleSystem implements Serializable {
     /**
      * Print the connected ports for a given ComponetPort.  Restricted
      * to the same level of hierachy.
-     * @see pt.kernel.Port#getConnectedPorts()
+     * @see ptolemy.kernel.Port#getConnectedPorts()
      * @param ComponentPort
      */	
     public String printConnectedPorts(ComponentPort p) {
@@ -231,7 +231,7 @@ public class ExampleSystem implements Serializable {
      * Print the deeply connected ports for a given ComponetPort. Look through
      * all transparent ports and return only non transparent ports (those
      * with no inside links).
-     * @see pt.kernel.ComponentPort#deepGetConnectedPorts()
+     * @see ptolemy.kernel.ComponentPort#deepGetConnectedPorts()
      * @param ComponentPort
      */	
     public String printDeepConnectedPorts(ComponentPort p) {

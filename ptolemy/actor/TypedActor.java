@@ -26,7 +26,7 @@
 
 */
 
-package pt.actor;
+package ptolemy.actor;
 
 import java.util.Enumeration;
 
@@ -40,9 +40,9 @@ TypedActor are constrainted to be TypedIOPorts.
 
 @author Yuhong Xiong
 $Id$
-@see pt.actors.TypedCompositeActor
-@see pt.actors.TypedAtomicActor
-@see pt.actors.TypedIOPort
+@see ptolemy.actors.TypedCompositeActor
+@see ptolemy.actors.TypedAtomicActor
+@see ptolemy.actors.TypedIOPort
 */
 public interface TypedActor extends Actor {
 
@@ -52,7 +52,7 @@ public interface TypedActor extends Actor {
     /** Return the type constraints of this actor.
      *  The constraints is an enumeration of inequalities.
      *  @return an enumeration of Inequality.
-     *  @see pt.graph.Inequality
+     *  @see ptolemy.graph.Inequality
      */
     public Enumeration typeConstraints();
 }

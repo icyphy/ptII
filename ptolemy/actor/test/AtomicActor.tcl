@@ -49,19 +49,19 @@ if {[string compare test [info procs test]] == 1} then {
 
 # NOTE:  All of the following tests use this director,
 # pretty much as a dummy.
-set director [java::new pt.actor.Director]
+set director [java::new ptolemy.actor.Director]
 
 ######################################################################
 ####
 #
 test AtomicActor-2.1 {Constructor tests} {
-    set e0 [java::new pt.actor.CompositeActor]
+    set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setExecutiveDirector $director
     $e0 setName E0
-    set w [java::new pt.kernel.util.Workspace W]
-    set e1 [java::new pt.actor.AtomicActor]
-    set e2 [java::new pt.actor.AtomicActor $w]
-    set e3 [java::new pt.actor.AtomicActor $e0 E3]
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set e1 [java::new ptolemy.actor.AtomicActor]
+    set e2 [java::new ptolemy.actor.AtomicActor $w]
+    set e3 [java::new ptolemy.actor.AtomicActor $e0 E3]
     list [$e1 getFullName] [$e2 getFullName] [$e3 getFullName]
 } {. W. .E0.E3}
 
@@ -80,10 +80,10 @@ test AtomicActor-3.1 {Test getDirector} {
 #
 test AtomicActor-4.1 {Test input/output lists} {
     # NOTE: Uses the setup above
-    set p1 [java::new pt.actor.IOPort $e3 P1]
-    set p2 [java::new pt.actor.IOPort $e3 P2 true true]
-    set p3 [java::new pt.actor.IOPort $e3 P3 false true]
-    set p4 [java::new pt.actor.IOPort $e3 P4 true false]
+    set p1 [java::new ptolemy.actor.IOPort $e3 P1]
+    set p2 [java::new ptolemy.actor.IOPort $e3 P2 true true]
+    set p3 [java::new ptolemy.actor.IOPort $e3 P3 false true]
+    set p4 [java::new ptolemy.actor.IOPort $e3 P4 true false]
     list [enumToFullNames [$e3 inputPorts]] [enumToFullNames [$e3 outputPorts]]
 } {{.E0.E3.P2 .E0.E3.P4} {.E0.E3.P2 .E0.E3.P3}}
 
@@ -115,33 +115,33 @@ test AtomicActor-7.1 {Test clone and description} {
     # NOTE: Uses the setup above
     set e4 [$e3 clone $w]
     $e4 description
-} {pt.actor.AtomicActor {W.E3} attributes {
+} {ptolemy.actor.AtomicActor {W.E3} attributes {
 } ports {
-    {pt.actor.IOPort {W.E3.P1} attributes {
+    {ptolemy.actor.IOPort {W.E3.P1} attributes {
     } links {
     } insidelinks {
     } configuration {opaque {width 0}} receivers {
     } remotereceivers {
     }}
-    {pt.actor.IOPort {W.E3.P2} attributes {
+    {ptolemy.actor.IOPort {W.E3.P2} attributes {
     } links {
     } insidelinks {
     } configuration {input output opaque {width 0}} receivers {
     } remotereceivers {
     }}
-    {pt.actor.IOPort {W.E3.P3} attributes {
+    {ptolemy.actor.IOPort {W.E3.P3} attributes {
     } links {
     } insidelinks {
     } configuration {output opaque {width 0}} receivers {
     } remotereceivers {
     }}
-    {pt.actor.IOPort {W.E3.P4} attributes {
+    {ptolemy.actor.IOPort {W.E3.P4} attributes {
     } links {
     } insidelinks {
     } configuration {input opaque {width 0}} receivers {
     } remotereceivers {
     }}
-    {pt.actor.IOPort {W.E3.P5} attributes {
+    {ptolemy.actor.IOPort {W.E3.P5} attributes {
     } links {
     } insidelinks {
     } configuration {opaque {width 0}} receivers {
@@ -155,21 +155,21 @@ test AtomicActor-7.1 {Test clone and description} {
 test AtomicActor-8.1 {Test newReceiver} {
     # NOTE: Uses the setup above
     set r [$e3 newReceiver]
-    set token [java::new pt.data.StringToken foo]
+    set token [java::new ptolemy.data.StringToken foo]
     $r put $token
     set received [$r get]
     $received toString
-} {pt.data.StringToken(foo)}
+} {ptolemy.data.StringToken(foo)}
 
 ######################################################################
 ####
 #
 test AtomicActor-9.1 {Test setContainer error catching} {
     # NOTE: Uses the setup above
-    set entity [java::new pt.kernel.CompositeEntity]
+    set entity [java::new ptolemy.kernel.CompositeEntity]
     catch {$e1 setContainer $entity} msg
     list $msg
-} {{pt.kernel.util.IllegalActionException: . and .:\
+} {{ptolemy.kernel.util.IllegalActionException: . and .:\
 AtomicActor can only be contained by instances of CompositeActor.}}
 
 ######################################################################
@@ -177,7 +177,7 @@ AtomicActor can only be contained by instances of CompositeActor.}}
 #
 test AtomicActor-9.2 {Test remove a AtomicActor} {
     # NOTE: Uses the setup above
-    set entity [java::new pt.actor.AtomicActor $e0 ENTITY]
+    set entity [java::new ptolemy.actor.AtomicActor $e0 ENTITY]
     $entity setContainer [java::null]
     list [$e0 deepContains $entity]
 } {0}

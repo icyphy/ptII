@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.plot;
+package ptolemy.plot;
 
 import java.awt.*;
 import java.util.*;

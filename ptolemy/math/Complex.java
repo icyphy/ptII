@@ -1,5 +1,5 @@
 // package  ORG.netlib.math.complex;
-package pt.math;
+package ptolemy.math;
 
 
 import  java.io.Serializable;
@@ -2076,7 +2076,7 @@ Complex implements Cloneable, Serializable {
                      ---------------------------
                      email: pidge@eece.maine.edu
 
-             Dept.  of Electrical & Computer Engineering
+             Deptolemy.  of Electrical & Computer Engineering
                      University of Maine,  Orono
 
 

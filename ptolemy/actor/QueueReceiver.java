@@ -28,12 +28,12 @@
 
 */
 
-package pt.actor;
+package ptolemy.actor;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
-import pt.data.*;
-import pt.actor.util.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.data.*;
+import ptolemy.actor.util.*;
 
 import collections.LinkedList;
 import java.util.NoSuchElementException;

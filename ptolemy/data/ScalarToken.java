@@ -25,10 +25,10 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.data;
+package ptolemy.data;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ScalarToken

@@ -52,11 +52,11 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test Director-2.1 {Constructor tests} {
-    set d1 [java::new pt.actor.Director]
+    set d1 [java::new ptolemy.actor.Director]
     $d1 setName D1
-    set d2 [java::new pt.actor.Director D2]
-    set w [java::new pt.kernel.util.Workspace W]
-    set d3 [java::new pt.actor.Director $w D3]
+    set d2 [java::new ptolemy.actor.Director D2]
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set d3 [java::new ptolemy.actor.Director $w D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
 } {.D1 .D2 W.D3}
 
@@ -75,7 +75,7 @@ test Director-3.1 {Test clone} {
 #
 test Director-4.1 {Test _makeDirectorOf and _makeExecDirectorOf} {
     # NOTE: Uses the setup above
-    set e0 [java::new pt.actor.CompositeActor $w]
+    set e0 [java::new ptolemy.actor.CompositeActor $w]
     $e0 setName E0
     $e0 setDirector $d3
     $e0 setExecutiveDirector $d4
@@ -87,8 +87,8 @@ test Director-4.1 {Test _makeDirectorOf and _makeExecDirectorOf} {
 #
 test Director-5.1 {Test action methods} {
     # NOTE: Uses the setup above
-    set a1 [java::new pt.actor.test.TestActor $e0 A1]
-    set a2 [java::new pt.actor.test.TestActor $e0 A2]
+    set a1 [java::new ptolemy.actor.test.TestActor $e0 A1]
+    set a2 [java::new ptolemy.actor.test.TestActor $e0 A2]
     $a1 clear
     $d4 run 3
     $a1 getRecord
@@ -120,8 +120,8 @@ W.E0.A2.wrapup
 ####
 #
 test Director-6.1 {Test wormhole activation} {
-    set e1 [java::new pt.actor.CompositeActor $e0 E1]
-    set d5 [java::new pt.actor.Director $w D5]
+    set e1 [java::new ptolemy.actor.CompositeActor $e0 E1]
+    set d5 [java::new ptolemy.actor.Director $w D5]
     $e1 setDirector $d5
     $a2 setContainer $e1
     $a1 clear
@@ -189,27 +189,27 @@ W.E0.E1.A3.wrapup
 ####
 #
 test Director-8.1 {Test type checking} {
-    set director [java::new pt.actor.Director]
-    set e0 [java::new pt.actor.TypedCompositeActor]
+    set director [java::new ptolemy.actor.Director]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setExecutiveDirector $director
     $e0 setName E0
 
     #create e1
-    set e1 [java::new pt.actor.TypedAtomicActor $e0 E1]
-    set p1 [java::new pt.actor.TypedIOPort $e1 P1]
+    set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
     $p1 makeOutput true
-    set t1 [java::new pt.data.IntToken]
+    set t1 [java::new ptolemy.data.IntToken]
     $p1 setDeclaredType $t1
 
     #create e2
-    set e2 [java::new pt.actor.TypedAtomicActor $e0 E2]
-    set p2 [java::new pt.actor.TypedIOPort $e2 P2]
+    set e2 [java::new ptolemy.actor.TypedAtomicActor $e0 E2]
+    set p2 [java::new ptolemy.actor.TypedIOPort $e2 P2]
     $p2 makeInput true
-    set t2 [java::new pt.data.DoubleToken]
+    set t2 [java::new ptolemy.data.DoubleToken]
     $p2 setDeclaredType $t2
 
     #link up p1, p2
-    set r1 [java::new pt.actor.IORelation $e0 R1]
+    set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     $p1 link $r1
     $p2 link $r1
 
@@ -217,7 +217,7 @@ test Director-8.1 {Test type checking} {
     set rt1 [[[$p1 resolvedType] getClass] getName]
     set rt2 [[[$p2 resolvedType] getClass] getName]
     list $rt1 $rt2
-} {pt.data.IntToken pt.data.DoubleToken}
+} {ptolemy.data.IntToken ptolemy.data.DoubleToken}
 
 ######################################################################
 ####
@@ -230,7 +230,7 @@ test Director-8.2 {Test type resolution} {
     set rt1 [[[$p1 resolvedType] getClass] getName]
     set rt2 [[[$p2 resolvedType] getClass] getName]
     list $rt1 $rt2
-} {pt.data.DoubleToken pt.data.DoubleToken}
+} {ptolemy.data.DoubleToken ptolemy.data.DoubleToken}
 
 ######################################################################
 ####
@@ -244,54 +244,54 @@ test Director-8.3 {Test type resolution} {
     set rt1 [[[$p1 resolvedType] getClass] getName]
     set rt2 [[[$p2 resolvedType] getClass] getName]
     list $rt1 $rt2
-} {pt.data.IntToken pt.data.StringToken}
+} {ptolemy.data.IntToken ptolemy.data.StringToken}
 
 ######################################################################
 ####
 #
 test Director-8.4 {Test type resolution} {
-    set director [java::new pt.actor.Director]
-    set e0 [java::new pt.actor.TypedCompositeActor]
+    set director [java::new ptolemy.actor.Director]
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setExecutiveDirector $director
     $e0 setName E0
 
     #create e1, a source actor
-    set e1 [java::new pt.actor.TypedAtomicActor $e0 E1]
-    set p1 [java::new pt.actor.TypedIOPort $e1 P1]
+    set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
     $p1 makeOutput true
-    set tDouble [java::new pt.data.DoubleToken]
+    set tDouble [java::new ptolemy.data.DoubleToken]
     $p1 setDeclaredType $tDouble
 
     #create e2, a fork
-    set e2 [java::new pt.actor.TypedAtomicActor $e0 E2]
-    set p21 [java::new pt.actor.TypedIOPort $e2 P21]
-    set p22 [java::new pt.actor.TypedIOPort $e2 P22]
-    set p23 [java::new pt.actor.TypedIOPort $e2 P23]
+    set e2 [java::new ptolemy.actor.TypedAtomicActor $e0 E2]
+    set p21 [java::new ptolemy.actor.TypedIOPort $e2 P21]
+    set p22 [java::new ptolemy.actor.TypedIOPort $e2 P22]
+    set p23 [java::new ptolemy.actor.TypedIOPort $e2 P23]
     $p21 makeInput true
     $p22 makeOutput true
     $p23 makeOutput true
 
     #create e3, a sink actor
-    set e3 [java::new pt.actor.TypedAtomicActor $e0 E3]
-    set p3 [java::new pt.actor.TypedIOPort $e3 P3]
+    set e3 [java::new ptolemy.actor.TypedAtomicActor $e0 E3]
+    set p3 [java::new ptolemy.actor.TypedIOPort $e3 P3]
     $p3 makeInput true
 
     #create e4, a sink actor
-    set e4 [java::new pt.actor.TypedAtomicActor $e0 E4]
-    set p4 [java::new pt.actor.TypedIOPort $e4 P4]
+    set e4 [java::new ptolemy.actor.TypedAtomicActor $e0 E4]
+    set p4 [java::new ptolemy.actor.TypedIOPort $e4 P4]
     $p4 makeInput true
     $p4 setDeclaredType $tDouble
 
     #link up p1-p21, p22-p3, p23-p4
-    set r12 [java::new pt.actor.IORelation $e0 R12]
+    set r12 [java::new ptolemy.actor.IORelation $e0 R12]
     $p1 link $r12
     $p21 link $r12
 
-    set r23 [java::new pt.actor.IORelation $e0 R23]
+    set r23 [java::new ptolemy.actor.IORelation $e0 R23]
     $p22 link $r23
     $p3 link $r23
 
-    set r24 [java::new pt.actor.IORelation $e0 R24]
+    set r24 [java::new ptolemy.actor.IORelation $e0 R24]
     $p23 link $r24
     $p4 link $r24
 
@@ -304,19 +304,19 @@ test Director-8.4 {Test type resolution} {
     set rt4 [[[$p4 resolvedType] getClass] getName]
 
     list $rt1 $rt21 $rt22 $rt23 $rt3 $rt4
-} {pt.data.DoubleToken pt.data.DoubleToken pt.data.StringToken\
-pt.data.DoubleToken pt.data.StringToken pt.data.DoubleToken}
+} {ptolemy.data.DoubleToken ptolemy.data.DoubleToken ptolemy.data.StringToken\
+ptolemy.data.DoubleToken ptolemy.data.StringToken ptolemy.data.DoubleToken}
 
 ######################################################################
 ####
 #
 test Director-8.5 {Test type resolution} {
     # use the setup above
-    set tInt [java::new pt.data.IntToken]
+    set tInt [java::new ptolemy.data.IntToken]
     $p1 setDeclaredType $tDouble
     $p4 setDeclaredType $tInt
 
     catch {$director resolveTypes} msg
     list $msg
-} {{pt.kernel.util.InvalidStateException: Type Conflict.}}
+} {{ptolemy.kernel.util.InvalidStateException: Type Conflict.}}
 

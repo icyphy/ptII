@@ -26,8 +26,8 @@
 
 */
 
-package pt.graph;
-import pt.kernel.util.IllegalActionException;
+package ptolemy.graph;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// InequalityTerm

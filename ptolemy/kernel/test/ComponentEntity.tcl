@@ -51,13 +51,13 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test ComponentEntity-2.1 {Construct entities} {
-    set e1 [java::new pt.kernel.ComponentEntity]
-    set e2 [java::new pt.kernel.ComponentEntity]
+    set e1 [java::new ptolemy.kernel.ComponentEntity]
+    set e2 [java::new ptolemy.kernel.ComponentEntity]
     $e2 setName A
-    set w [java::new pt.kernel.util.Workspace]
-    set e3 [java::new pt.kernel.CompositeEntity $w]
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e3 [java::new ptolemy.kernel.CompositeEntity $w]
     $e3 setName B
-    set e4 [java::new pt.kernel.ComponentEntity $e3 B]
+    set e4 [java::new ptolemy.kernel.ComponentEntity $e3 B]
     list [$e1 getFullName] [$e2 getFullName] [$e3 getFullName] [$e4 getFullName]
 } {. .A .B .B.B}
 
@@ -65,10 +65,10 @@ test ComponentEntity-2.1 {Construct entities} {
 ####
 #
 test ComponentEntity-3.1 {add ports} {
-    set e1 [java::new pt.kernel.ComponentEntity]
+    set e1 [java::new ptolemy.kernel.ComponentEntity]
     $e1 setName X
-    set p1 [java::new pt.kernel.ComponentPort $e1 A]
-    set p2 [java::new pt.kernel.ComponentPort $e1 B]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 A]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e1 B]
     list [$p1 getFullName] [$p2 getFullName] [_testEntityGetPorts $e1]
 } {.X.A .X.B {{A B}}}
 
@@ -76,7 +76,7 @@ test ComponentEntity-3.1 {add ports} {
 ####
 #
 test ComponentEntity-4.1 {is atomic test} {
-    set e1 [java::new pt.kernel.ComponentEntity]
+    set e1 [java::new ptolemy.kernel.ComponentEntity]
     list [$e1 isAtomic]
 } {1}
 
@@ -84,8 +84,8 @@ test ComponentEntity-4.1 {is atomic test} {
 ####
 #
 test ComponentEntity-5.1 {Create new ports} {
-    set w [java::new pt.kernel.util.Workspace X]
-    set e1 [java::new pt.kernel.ComponentEntity $w]
+    set w [java::new ptolemy.kernel.util.Workspace X]
+    set e1 [java::new ptolemy.kernel.ComponentEntity $w]
     $e1 setName Y
     set p1 [$e1 newPort A]
     set p2 [$e1 newPort B]
@@ -95,11 +95,11 @@ test ComponentEntity-5.1 {Create new ports} {
 test ComponentEntity-5.2 {Test clone} {
     set e2 [$e1 clone]
     $e2 description 31
-} {pt.kernel.ComponentEntity {X.Y} ports {
-    {pt.kernel.ComponentPort {X.Y.A} links {
+} {ptolemy.kernel.ComponentEntity {X.Y} ports {
+    {ptolemy.kernel.ComponentPort {X.Y.A} links {
     } insidelinks {
     }}
-    {pt.kernel.ComponentPort {X.Y.B} links {
+    {ptolemy.kernel.ComponentPort {X.Y.B} links {
     } insidelinks {
     }}
 }}
@@ -108,11 +108,11 @@ test ComponentEntity-5.2 {Test clone} {
 ####
 #
 test ComponentEntity-6.1 {Reparent entities} {
-    set e1 [java::new pt.kernel.util.Workspace A]
-    set e2 [java::new pt.kernel.CompositeEntity $e1]
+    set e1 [java::new ptolemy.kernel.util.Workspace A]
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e1]
     $e2 setName B
-    set e3 [java::new pt.kernel.CompositeEntity $e2 C]
-    set e4 [java::new pt.kernel.ComponentEntity $e3 D]
+    set e3 [java::new ptolemy.kernel.CompositeEntity $e2 C]
+    set e4 [java::new ptolemy.kernel.ComponentEntity $e3 D]
     set result1 [list [$e1 getFullName] [$e2 getFullName] \
             [$e3 getFullName] [$e4 getFullName]]
     $e4 setContainer $e2
@@ -128,10 +128,10 @@ test ComponentEntity-6.1 {Reparent entities} {
 ####
 #
 test ComponentEntity-7.1 {Reparent entities, attempting a circular structure} {
-    set e1 [java::new pt.kernel.util.Workspace A]
-    set e2 [java::new pt.kernel.CompositeEntity $e1]
+    set e1 [java::new ptolemy.kernel.util.Workspace A]
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e1]
     $e2 setName B
-    set e3 [java::new pt.kernel.CompositeEntity $e2 C]
+    set e3 [java::new ptolemy.kernel.CompositeEntity $e2 C]
     catch {$e2 setContainer $e3} msg
     list $msg
-} {{pt.kernel.util.IllegalActionException: A.B and A.B.C: Attempt to construct recursive containment.}}
+} {{ptolemy.kernel.util.IllegalActionException: A.B and A.B.C: Attempt to construct recursive containment.}}

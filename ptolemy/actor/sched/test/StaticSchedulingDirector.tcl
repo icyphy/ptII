@@ -52,11 +52,11 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test StaticSchedulingDirector-2.1 {Constructor tests} {
-    set d1 [java::new pt.actor.StaticSchedulingDirector]
+    set d1 [java::new ptolemy.actor.StaticSchedulingDirector]
     $d1 setName D1
-    set d2 [java::new pt.actor.StaticSchedulingDirector D2]
-    set w [java::new pt.kernel.util.Workspace W]
-    set d3 [java::new pt.actor.StaticSchedulingDirector $w D3]
+    set d2 [java::new ptolemy.actor.StaticSchedulingDirector D2]
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set d3 [java::new ptolemy.actor.StaticSchedulingDirector $w D3]
     list [$d1 getFullName] [$d2 getFullName] [$d3 getFullName]
 } {.D1 .D2 W.D3}
 
@@ -75,7 +75,7 @@ test StaticSchedulingDirector-3.1 {Test clone} {
 #
 test StaticSchedulingDirector-4.1 {Test setScheduler and getScheduler} {
     # NOTE: Uses the setup above
-    set s0 [java::new pt.actor.Scheduler]
+    set s0 [java::new ptolemy.actor.Scheduler]
     $d1 setScheduler $s0
     set s1 [$d1 getScheduler]
     list [$s0 getFullName] [$s1 getFullName]

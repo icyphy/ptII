@@ -25,9 +25,9 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.data;
+package ptolemy.data;
 
-import pt.kernel.*;
+import ptolemy.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// MatrixToken

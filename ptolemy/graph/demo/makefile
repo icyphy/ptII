@@ -32,7 +32,7 @@
 # Root of the Java directory
 ROOT =		../../..
 
-ME =		pt/graph/demo
+ME =		ptolemy/graph/demo
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -41,9 +41,9 @@ include $(CONFIG)
 CLASSPATH = ../../..
 
 # Used to build zip files
-#TYPACKAGE = 	pt.graph.demo
+#TYPACKAGE = 	ptolemy.graph.demo
 #TYPACKAGE_ROOTDIR = $(CLASSPATH)
-#TYPACKAGE_DIR = pt/graph/demo
+#TYPACKAGE_DIR = ptolemy/graph/demo
 #TYVERSION =	1.0
 #TYDIST =	$(TYPACKAGE)$(TYVERSION)
 #TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip

@@ -27,10 +27,10 @@
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 */
 
-package pt.actor;
+package ptolemy.actor;
 
 import java.util.Enumeration;
-import pt.kernel.util.*;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Actor
@@ -40,8 +40,8 @@ functionality in AtomicActor and CompositeActor.
 
 @author Edward A. Lee
 @version $Id$
-@see pt.actors.CompositeActor
-@see pt.actors.AtomicActor
+@see ptolemy.actors.CompositeActor
+@see ptolemy.actors.AtomicActor
 */
 public interface Actor extends Executable {
 

@@ -26,9 +26,9 @@
 
 */
 
-package pt.graph;
+package ptolemy.graph;
 
-import pt.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.InvalidStateException;
 
 import java.util.*;
 

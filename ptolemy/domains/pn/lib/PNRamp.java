@@ -25,11 +25,11 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.domains.pn.actors;
-import pt.domains.pn.kernel.*;
-import pt.kernel.*;
-import pt.data.*;
-import pt.actors.*;
+package ptolemy.domains.pn.actors;
+import ptolemy.domains.pn.kernel.*;
+import ptolemy.kernel.*;
+import ptolemy.data.*;
+import ptolemy.actors.*;
 //import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////

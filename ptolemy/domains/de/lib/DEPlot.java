@@ -25,14 +25,14 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.domains.de.lib;
+package ptolemy.domains.de.lib;
 
-import pt.actor.*;
-import pt.domains.de.kernel.*;
-import pt.kernel.*;
-import pt.kernel.util.*;
-import pt.data.*;
-import pt.plot.*;
+import ptolemy.actor.*;
+import ptolemy.domains.de.kernel.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.data.*;
+import ptolemy.plot.*;
 import java.awt.*;
 
 //////////////////////////////////////////////////////////////////////////

@@ -25,10 +25,10 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.kernel.demo;
+package ptolemy.kernel.demo;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
 import java.io.*;
 

@@ -26,11 +26,11 @@
 
 */
 
-package pt.graph;
+package ptolemy.graph;
 import collections.LinkedList;
 import java.util.*;
-import pt.kernel.util.IllegalActionException;
-import pt.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
 //// InequalitySolver

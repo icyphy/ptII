@@ -43,20 +43,20 @@ Created : May 1998
  * 
  * @author Neil Smyth
  * @version $Id$
- * @see pt.data.expr.ASTPtRootNode
- * @see pt.data.expr.PtParser 
- * @see pt.data.Token 
+ * @see ptolemy.data.expr.ASTPtRootNode
+ * @see ptolemy.data.expr.PtParser 
+ * @see ptolemy.data.Token 
 */
 
-package pt.data.expr;
+package ptolemy.data.expr;
 
-import pt.data.*;
+import ptolemy.data.*;
 import java.lang.reflect.*;
 
 public class ASTPtFunctionNode extends ASTPtRootNode {
     protected String funcName;
 
-    protected pt.data.Token _resolveNode() throws IllegalArgumentException {
+    protected ptolemy.data.Token _resolveNode() throws IllegalArgumentException {
         int args = jjtGetNumChildren();
         Class[] argTypes = new Class[args];
         Object[] argValues = new Object[args];
@@ -89,7 +89,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             } else if (result instanceof Integer) {
                 return new IntToken(((Integer)result).intValue());
                 /*  } else if (result instanceof Float) {
-                return new pt.data.FloatToken(((Float)result).floatValue()); */
+                return new ptolemy.data.FloatToken(((Float)result).floatValue()); */
             } else if (result instanceof Long) { 
                 return new LongToken(((Long)result).longValue());
             } else  {

@@ -28,9 +28,9 @@
 
 */
 
-package pt.actor;
-import pt.data.*;
-import pt.kernel.util.*;
+package ptolemy.actor;
+import ptolemy.data.*;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Receiver

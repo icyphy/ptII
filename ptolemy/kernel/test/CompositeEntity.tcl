@@ -52,8 +52,8 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test CompositeEntity-2.0 {Construct CompositeEntities, call a few methods} {
-    set e1 [java::new pt.kernel.CompositeEntity]
-    set e2 [java::new pt.kernel.CompositeEntity]
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.CompositeEntity]
     $e2 setName A
     set e1contents [$e1 getEntities]
     list [$e1 getName] [$e2 getName] \
@@ -67,11 +67,11 @@ test CompositeEntity-2.0 {Construct CompositeEntities, call a few methods} {
 ####
 #
 test CompositeEntity-2.1 {Create a 3 level deep tree using constructors} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set b [java::new pt.kernel.CompositeEntity $a B]
-    set c [java::new pt.kernel.CompositeEntity $a C]
-    set d [java::new pt.kernel.ComponentEntity $c D]
+    set b [java::new ptolemy.kernel.CompositeEntity $a B]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set d [java::new ptolemy.kernel.ComponentEntity $c D]
     list [enumToNames [$a getEntities]] \
             [enumToNames [$b getEntities]] \
             [enumToNames [$c getEntities]]
@@ -82,11 +82,11 @@ test CompositeEntity-2.1 {Create a 3 level deep tree using constructors} {
 #
 test CompositeEntity-2.2 {Create a 3 level deep tree after construction} {
     # entity serving as a workspace
-    set w [java::new pt.kernel.CompositeEntity]
-    set a [java::new pt.kernel.CompositeEntity $w A]
-    set b [java::new pt.kernel.CompositeEntity $w B]
-    set c [java::new pt.kernel.CompositeEntity $w C]
-    set d [java::new pt.kernel.ComponentEntity $w D]
+    set w [java::new ptolemy.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity $w A]
+    set b [java::new ptolemy.kernel.CompositeEntity $w B]
+    set c [java::new ptolemy.kernel.CompositeEntity $w C]
+    set d [java::new ptolemy.kernel.ComponentEntity $w D]
     $d setContainer $c
     $b setContainer $a
     $c setContainer $b
@@ -99,11 +99,11 @@ test CompositeEntity-2.2 {Create a 3 level deep tree after construction} {
 ####
 #
 test CompositeEntity-3.1 {Test deepGetEntities} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set b [java::new pt.kernel.ComponentEntity $a B]
-    set c [java::new pt.kernel.CompositeEntity $a C]
-    set d [java::new pt.kernel.ComponentEntity $c D]
+    set b [java::new ptolemy.kernel.ComponentEntity $a B]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set d [java::new ptolemy.kernel.ComponentEntity $c D]
     list [enumToNames [$a deepGetEntities]] \
             [enumToNames [$c deepGetEntities]] \
 } {{B D} D}
@@ -112,11 +112,11 @@ test CompositeEntity-3.1 {Test deepGetEntities} {
 ####
 #
 test CompositeEntity-3.2 {Test numEntities} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set b [java::new pt.kernel.CompositeEntity $a B]
-    set c [java::new pt.kernel.CompositeEntity $a C]
-    set d [java::new pt.kernel.ComponentEntity $c D]
+    set b [java::new ptolemy.kernel.CompositeEntity $a B]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set d [java::new ptolemy.kernel.ComponentEntity $c D]
     list [$a numEntities] [$b numEntities] [$c numEntities]
 } {2 0 1}
 
@@ -124,11 +124,11 @@ test CompositeEntity-3.2 {Test numEntities} {
 ####
 #
 test CompositeEntity-3.3 {Test getEntity by name} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set b [java::new pt.kernel.CompositeEntity $a B]
-    set c [java::new pt.kernel.CompositeEntity $b C]
-    set d [java::new pt.kernel.ComponentEntity $c D]
+    set b [java::new ptolemy.kernel.CompositeEntity $a B]
+    set c [java::new ptolemy.kernel.CompositeEntity $b C]
+    set d [java::new ptolemy.kernel.ComponentEntity $c D]
     set e [$c getEntity D]
     $e getFullName
 } {.A.B.C.D}
@@ -137,11 +137,11 @@ test CompositeEntity-3.3 {Test getEntity by name} {
 ####
 #
 test CompositeEntity-4.1 {Test deepContains} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set b [java::new pt.kernel.CompositeEntity $a B]
-    set c [java::new pt.kernel.CompositeEntity $a C]
-    set d [java::new pt.kernel.ComponentEntity $c D]
+    set b [java::new ptolemy.kernel.CompositeEntity $a B]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set d [java::new ptolemy.kernel.ComponentEntity $c D]
     list [$a deepContains $d] [$a deepContains $a] [$c deepContains $a] \
             [$c deepContains $d] [$b deepContains $d]
 } {1 0 0 1 0}
@@ -150,11 +150,11 @@ test CompositeEntity-4.1 {Test deepContains} {
 ####
 #
 test CompositeEntity-5.1 {Test reparenting} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set b [java::new pt.kernel.CompositeEntity $a B]
-    set c [java::new pt.kernel.CompositeEntity $a C]
-    set d [java::new pt.kernel.ComponentEntity $c D]
+    set b [java::new ptolemy.kernel.CompositeEntity $a B]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set d [java::new ptolemy.kernel.ComponentEntity $c D]
     $c setContainer $b
     list [enumToNames [$a getEntities]] \
             [enumToNames [$b getEntities]] \
@@ -165,24 +165,24 @@ test CompositeEntity-5.1 {Test reparenting} {
 ####
 #
 test CompositeEntity-5.2 {Test reparenting with an error} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set b [java::new pt.kernel.CompositeEntity $a B]
-    set c [java::new pt.kernel.CompositeEntity $a C]
-    set d [java::new pt.kernel.CompositeEntity $c D]
+    set b [java::new ptolemy.kernel.CompositeEntity $a B]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set d [java::new ptolemy.kernel.CompositeEntity $c D]
     catch {$c setContainer $d} msg
     list $msg
-} {{pt.kernel.util.IllegalActionException: .A.C and .A.C.D: Attempt to construct recursive containment.}}
+} {{ptolemy.kernel.util.IllegalActionException: .A.C and .A.C.D: Attempt to construct recursive containment.}}
 
 ######################################################################
 ####
 #
 test CompositeEntity-6.1 {Test removing entities} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set b [java::new pt.kernel.CompositeEntity $a B]
-    set c [java::new pt.kernel.CompositeEntity $b C]
-    set d [java::new pt.kernel.CompositeEntity $c D]
+    set b [java::new ptolemy.kernel.CompositeEntity $a B]
+    set c [java::new ptolemy.kernel.CompositeEntity $b C]
+    set d [java::new ptolemy.kernel.CompositeEntity $c D]
     $b setContainer [java::null]
     $d setContainer [java::null]
     $c setContainer [java::null]
@@ -193,11 +193,11 @@ test CompositeEntity-6.1 {Test removing entities} {
 ####
 #
 test CompositeEntity-6.3 {Test removing entities by name} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set b [java::new pt.kernel.CompositeEntity $a B]
-    set c [java::new pt.kernel.CompositeEntity $b C]
-    set d [java::new pt.kernel.CompositeEntity $c D]
+    set b [java::new ptolemy.kernel.CompositeEntity $a B]
+    set c [java::new ptolemy.kernel.CompositeEntity $b C]
+    set d [java::new ptolemy.kernel.CompositeEntity $c D]
     [$a getEntity B] setContainer [java::null]
     enumMethodToNames getEntities $a $b $c $d
 } {{} C D {}}
@@ -206,10 +206,10 @@ test CompositeEntity-6.3 {Test removing entities by name} {
 ####
 #
 test CompositeEntity-7.1 {Add relations} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set r1 [java::new pt.kernel.ComponentRelation $a R1]
-    set r2 [java::new pt.kernel.ComponentRelation $a R2]
+    set r1 [java::new ptolemy.kernel.ComponentRelation $a R1]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $a R2]
     enumToNames [$a getRelations]
 } {R1 R2}
 
@@ -218,10 +218,10 @@ test CompositeEntity-7.1 {Add relations} {
 #
 test CompositeEntity-7.2 {Add relations after creation} {
     # Workspace entity
-    set w [java::new pt.kernel.CompositeEntity]
-    set a [java::new pt.kernel.CompositeEntity $w A]
-    set r1 [java::new pt.kernel.ComponentRelation $w R1]
-    set r2 [java::new pt.kernel.ComponentRelation $w R2]
+    set w [java::new ptolemy.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity $w A]
+    set r1 [java::new ptolemy.kernel.ComponentRelation $w R1]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $w R2]
     $r1 setContainer $a
     $r2 setContainer $a
     enumToNames [$a getRelations]
@@ -231,10 +231,10 @@ test CompositeEntity-7.2 {Add relations after creation} {
 ####
 #
 test CompositeEntity-7.3 {Get relations by name} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set r1 [java::new pt.kernel.ComponentRelation $a R1]
-    set r2 [java::new pt.kernel.ComponentRelation $a R2]
+    set r1 [java::new ptolemy.kernel.ComponentRelation $a R1]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $a R2]
     set r [$a getRelation R1]
     $r getFullName
 } {.A.R1}
@@ -243,7 +243,7 @@ test CompositeEntity-7.3 {Get relations by name} {
 ####
 #
 test CompositeEntity-7.4 {Add relations using newRelation} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
     set r1 [$a newRelation R1]
     set r2 [$a newRelation R2]
@@ -254,10 +254,10 @@ test CompositeEntity-7.4 {Add relations using newRelation} {
 ####
 #
 test CompositeEntity-8.1 {Remove relations} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set r1 [java::new pt.kernel.ComponentRelation $a R1]
-    set r2 [java::new pt.kernel.ComponentRelation $a R2]
+    set r1 [java::new ptolemy.kernel.ComponentRelation $a R1]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $a R2]
     $r1 setContainer [java::null]
     enumToNames [$a getRelations]
 } {R2}
@@ -266,10 +266,10 @@ test CompositeEntity-8.1 {Remove relations} {
 ####
 #
 test CompositeEntity-8.3 {Remove relations by name} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set r1 [java::new pt.kernel.ComponentRelation $a R1]
-    set r2 [java::new pt.kernel.ComponentRelation $a R2]
+    set r1 [java::new ptolemy.kernel.ComponentRelation $a R1]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $a R2]
     [$a getRelation R2] setContainer [java::null]
     enumToNames [$a getRelations]
 } {R1}
@@ -278,11 +278,11 @@ test CompositeEntity-8.3 {Remove relations by name} {
 ####
 #
 test CompositeEntity-8.5 {Test removing all entities} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set b [java::new pt.kernel.CompositeEntity $a B]
-    set c [java::new pt.kernel.CompositeEntity $a C]
-    set d [java::new pt.kernel.CompositeEntity $a D]
+    set b [java::new ptolemy.kernel.CompositeEntity $a B]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set d [java::new ptolemy.kernel.CompositeEntity $a D]
     $a removeAllEntities
     enumToNames [$a getEntities]
 } {}
@@ -291,10 +291,10 @@ test CompositeEntity-8.5 {Test removing all entities} {
 ####
 #
 test CompositeEntity-8.6 {Remove all relations} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set r1 [java::new pt.kernel.ComponentRelation $a R1]
-    set r2 [java::new pt.kernel.ComponentRelation $a R2]
+    set r1 [java::new ptolemy.kernel.ComponentRelation $a R1]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $a R2]
     $a removeAllRelations
     enumToNames [$a getRelations]
 } {}
@@ -303,11 +303,11 @@ test CompositeEntity-8.6 {Remove all relations} {
 ####
 #
 test CompositeEntity-9.1 {Test transparent port} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set b [java::new pt.kernel.CompositeEntity $a B]
-    set p1 [java::new pt.kernel.ComponentPort $a P1]
-    set p2 [java::new pt.kernel.ComponentPort $b P2]
+    set b [java::new ptolemy.kernel.CompositeEntity $a B]
+    set p1 [java::new ptolemy.kernel.ComponentPort $a P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $b P2]
     $a connect $p2 $p1
     set result {}
     foreach ar [enumToObjects [$p1 insideRelations]] {
@@ -320,14 +320,14 @@ test CompositeEntity-9.1 {Test transparent port} {
 ####
 #
 test CompositeEntity-10.1 {Test multiple relation naming} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set b [java::new pt.kernel.ComponentEntity $a B]
-    set c [java::new pt.kernel.ComponentEntity $a C]
-    set p1 [java::new pt.kernel.ComponentPort $a P1]
-    set p2 [java::new pt.kernel.ComponentPort $b P2]
-    set p3 [java::new pt.kernel.ComponentPort $c P3]
-    set p4 [java::new pt.kernel.ComponentPort $a P4]
+    set b [java::new ptolemy.kernel.ComponentEntity $a B]
+    set c [java::new ptolemy.kernel.ComponentEntity $a C]
+    set p1 [java::new ptolemy.kernel.ComponentPort $a P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $b P2]
+    set p3 [java::new ptolemy.kernel.ComponentPort $c P3]
+    set p4 [java::new ptolemy.kernel.ComponentPort $a P4]
     set ar1 [$a connect $p2 $p1]
     set ar2 [$a connect $p3 $p4]
     list [$ar1 getFullName] [$ar2 getFullName]
@@ -337,14 +337,14 @@ test CompositeEntity-10.1 {Test multiple relation naming} {
 ####
 #
 test CompositeEntity-10.3 {Create and then remove a transparent port} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set b [java::new pt.kernel.ComponentEntity $a B]
-    set c [java::new pt.kernel.ComponentEntity $a C]
-    set p1 [java::new pt.kernel.ComponentPort $a P1]
-    set p2 [java::new pt.kernel.ComponentPort $b P2]
-    set p3 [java::new pt.kernel.ComponentPort $c P3]
-    set p4 [java::new pt.kernel.ComponentPort $a P4]
+    set b [java::new ptolemy.kernel.ComponentEntity $a B]
+    set c [java::new ptolemy.kernel.ComponentEntity $a C]
+    set p1 [java::new ptolemy.kernel.ComponentPort $a P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $b P2]
+    set p3 [java::new ptolemy.kernel.ComponentPort $c P3]
+    set p4 [java::new ptolemy.kernel.ComponentPort $a P4]
     set ar1 [$a connect $p2 $p1]
     set ar2 [$a connect $p3 $p4]
     set result {}
@@ -357,14 +357,14 @@ test CompositeEntity-10.3 {Create and then remove a transparent port} {
 ####
 #
 test CompositeEntity-10.4 {Create and then remove ports with given names} {
-    set a [java::new pt.kernel.CompositeEntity]
+    set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
-    set b [java::new pt.kernel.ComponentEntity $a B]
-    set c [java::new pt.kernel.ComponentEntity $a C]
-    set p1 [java::new pt.kernel.ComponentPort $a P1]
-    set p2 [java::new pt.kernel.ComponentPort $b P2]
-    set p3 [java::new pt.kernel.ComponentPort $c P3]
-    set p4 [java::new pt.kernel.ComponentPort $a P4]
+    set b [java::new ptolemy.kernel.ComponentEntity $a B]
+    set c [java::new ptolemy.kernel.ComponentEntity $a C]
+    set p1 [java::new ptolemy.kernel.ComponentPort $a P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $b P2]
+    set p3 [java::new ptolemy.kernel.ComponentPort $c P3]
+    set p4 [java::new ptolemy.kernel.ComponentPort $a P4]
     set ar1 [$a connect $p2 $p1 AR1]
     set ar2 [$a connect $p3 $p4 AR2]
     set result {}
@@ -383,20 +383,20 @@ test CompositeEntity-11.1 {Test deepLinkedEntities on component relations} {
     # See ExampleSystem.tcl for a standalone file containing these commands
 
     # Create composite entities
-    set e0 [java::new pt.kernel.CompositeEntity]
+    set e0 [java::new ptolemy.kernel.CompositeEntity]
     $e0 setName E0
-    set e3 [java::new pt.kernel.CompositeEntity $e0 E3]
-    set e4 [java::new pt.kernel.CompositeEntity $e3 E4]
-    set e7 [java::new pt.kernel.CompositeEntity $e0 E7]
-    set e10 [java::new pt.kernel.CompositeEntity $e0 E10]
+    set e3 [java::new ptolemy.kernel.CompositeEntity $e0 E3]
+    set e4 [java::new ptolemy.kernel.CompositeEntity $e3 E4]
+    set e7 [java::new ptolemy.kernel.CompositeEntity $e0 E7]
+    set e10 [java::new ptolemy.kernel.CompositeEntity $e0 E10]
 
     # Create component entities.
-    set e1 [java::new pt.kernel.ComponentEntity $e4 E1]
-    set e2 [java::new pt.kernel.ComponentEntity $e4 E2]
-    set e5 [java::new pt.kernel.ComponentEntity $e3 E5]
-    set e6 [java::new pt.kernel.ComponentEntity $e3 E6]
-    set e8 [java::new pt.kernel.ComponentEntity $e7 E8]
-    set e9 [java::new pt.kernel.ComponentEntity $e10 E9]
+    set e1 [java::new ptolemy.kernel.ComponentEntity $e4 E1]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e4 E2]
+    set e5 [java::new ptolemy.kernel.ComponentEntity $e3 E5]
+    set e6 [java::new ptolemy.kernel.ComponentEntity $e3 E6]
+    set e8 [java::new ptolemy.kernel.ComponentEntity $e7 E8]
+    set e9 [java::new ptolemy.kernel.ComponentEntity $e10 E9]
 
     # Create ports.
     set p0 [$e4 newPort P0]
@@ -465,253 +465,253 @@ test CompositeEntity-11.4 {Test connectedPorts on ports} {
 # NOTE:  Uses the setup constructed in 11.1.
 test CompositeEntity-11.5 {Test NAME and CLASS description} {
     $e0 description 3
-} {pt.kernel.CompositeEntity {.E0}}
+} {ptolemy.kernel.CompositeEntity {.E0}}
 
 ######################################################################
 ####
 # NOTE:  Uses the setup constructed in 11.1.
 test CompositeEntity-11.6 {Test full description} {
-    $e0 description [java::field pt.kernel.util.NamedObj COMPLETE]
-} {pt.kernel.CompositeEntity {.E0} attributes {
+    $e0 description [java::field ptolemy.kernel.util.NamedObj COMPLETE]
+} {ptolemy.kernel.CompositeEntity {.E0} attributes {
 } ports {
 } entities {
-    {pt.kernel.CompositeEntity {.E0.E3} attributes {
+    {ptolemy.kernel.CompositeEntity {.E0.E3} attributes {
     } ports {
-        {pt.kernel.ComponentPort {.E0.E3.P7} attributes {
+        {ptolemy.kernel.ComponentPort {.E0.E3.P7} attributes {
         } links {
-            {pt.kernel.ComponentRelation {.E0.R7} attributes {
+            {ptolemy.kernel.ComponentRelation {.E0.R7} attributes {
             }}
         } insidelinks {
-            {pt.kernel.ComponentRelation {.E0.E3.R4} attributes {
+            {ptolemy.kernel.ComponentRelation {.E0.E3.R4} attributes {
             }}
         }}
     } entities {
-        {pt.kernel.CompositeEntity {.E0.E3.E4} attributes {
+        {ptolemy.kernel.CompositeEntity {.E0.E3.E4} attributes {
         } ports {
-            {pt.kernel.ComponentPort {.E0.E3.E4.P0} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E3.E4.P0} attributes {
             } links {
             } insidelinks {
-                {pt.kernel.ComponentRelation {.E0.E3.E4.R1} attributes {
+                {ptolemy.kernel.ComponentRelation {.E0.E3.E4.R1} attributes {
                 }}
             }}
-            {pt.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
             } links {
-                {pt.kernel.ComponentRelation {.E0.E3.R4} attributes {
+                {ptolemy.kernel.ComponentRelation {.E0.E3.R4} attributes {
                 }}
-                {pt.kernel.ComponentRelation {.E0.E3.R5} attributes {
+                {ptolemy.kernel.ComponentRelation {.E0.E3.R5} attributes {
                 }}
             } insidelinks {
-                {pt.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
+                {ptolemy.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
                 }}
             }}
         } entities {
-            {pt.kernel.ComponentEntity {.E0.E3.E4.E1} attributes {
+            {ptolemy.kernel.ComponentEntity {.E0.E3.E4.E1} attributes {
             } ports {
-                {pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
+                {ptolemy.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
                 } links {
-                    {pt.kernel.ComponentRelation {.E0.E3.E4.R1} attributes {
+                    {ptolemy.kernel.ComponentRelation {.E0.E3.E4.R1} attributes {
                     }}
-                    {pt.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
+                    {ptolemy.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
                     }}
-                    {pt.kernel.ComponentRelation {.E0.E3.E4.R3} attributes {
+                    {ptolemy.kernel.ComponentRelation {.E0.E3.E4.R3} attributes {
                     }}
                 } insidelinks {
                 }}
             }}
-            {pt.kernel.ComponentEntity {.E0.E3.E4.E2} attributes {
+            {ptolemy.kernel.ComponentEntity {.E0.E3.E4.E2} attributes {
             } ports {
-                {pt.kernel.ComponentPort {.E0.E3.E4.E2.P2} attributes {
+                {ptolemy.kernel.ComponentPort {.E0.E3.E4.E2.P2} attributes {
                 } links {
-                    {pt.kernel.ComponentRelation {.E0.E3.E4.R3} attributes {
+                    {ptolemy.kernel.ComponentRelation {.E0.E3.E4.R3} attributes {
                     }}
                 } insidelinks {
                 }}
-                {pt.kernel.ComponentPort {.E0.E3.E4.E2.P3} attributes {
+                {ptolemy.kernel.ComponentPort {.E0.E3.E4.E2.P3} attributes {
                 } links {
-                    {pt.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
+                    {ptolemy.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
                     }}
-                    {pt.kernel.ComponentRelation {.E0.E3.R6} attributes {
+                    {ptolemy.kernel.ComponentRelation {.E0.E3.R6} attributes {
                     }}
                 } insidelinks {
                 }}
             }}
         } relations {
-            {pt.kernel.ComponentRelation {.E0.E3.E4.R1} attributes {
+            {ptolemy.kernel.ComponentRelation {.E0.E3.E4.R1} attributes {
             } links {
-                {pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
+                {ptolemy.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
                 }}
-                {pt.kernel.ComponentPort {.E0.E3.E4.P0} attributes {
+                {ptolemy.kernel.ComponentPort {.E0.E3.E4.P0} attributes {
                 }}
             }}
-            {pt.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
+            {ptolemy.kernel.ComponentRelation {.E0.E3.E4.R2} attributes {
             } links {
-                {pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
+                {ptolemy.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
                 }}
-                {pt.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
+                {ptolemy.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
                 }}
-                {pt.kernel.ComponentPort {.E0.E3.E4.E2.P3} attributes {
+                {ptolemy.kernel.ComponentPort {.E0.E3.E4.E2.P3} attributes {
                 }}
             }}
-            {pt.kernel.ComponentRelation {.E0.E3.E4.R3} attributes {
+            {ptolemy.kernel.ComponentRelation {.E0.E3.E4.R3} attributes {
             } links {
-                {pt.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
+                {ptolemy.kernel.ComponentPort {.E0.E3.E4.E1.P1} attributes {
                 }}
-                {pt.kernel.ComponentPort {.E0.E3.E4.E2.P2} attributes {
+                {ptolemy.kernel.ComponentPort {.E0.E3.E4.E2.P2} attributes {
                 }}
             }}
         }}
-        {pt.kernel.ComponentEntity {.E0.E3.E5} attributes {
+        {ptolemy.kernel.ComponentEntity {.E0.E3.E5} attributes {
         } ports {
-            {pt.kernel.ComponentPort {.E0.E3.E5.P5} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E3.E5.P5} attributes {
             } links {
-                {pt.kernel.ComponentRelation {.E0.E3.R5} attributes {
+                {ptolemy.kernel.ComponentRelation {.E0.E3.R5} attributes {
                 }}
             } insidelinks {
             }}
         }}
-        {pt.kernel.ComponentEntity {.E0.E3.E6} attributes {
+        {ptolemy.kernel.ComponentEntity {.E0.E3.E6} attributes {
         } ports {
-            {pt.kernel.ComponentPort {.E0.E3.E6.P6} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E3.E6.P6} attributes {
             } links {
-                {pt.kernel.ComponentRelation {.E0.E3.R6} attributes {
+                {ptolemy.kernel.ComponentRelation {.E0.E3.R6} attributes {
                 }}
             } insidelinks {
             }}
         }}
     } relations {
-        {pt.kernel.ComponentRelation {.E0.E3.R4} attributes {
+        {ptolemy.kernel.ComponentRelation {.E0.E3.R4} attributes {
         } links {
-            {pt.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
             }}
-            {pt.kernel.ComponentPort {.E0.E3.P7} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E3.P7} attributes {
             }}
         }}
-        {pt.kernel.ComponentRelation {.E0.E3.R5} attributes {
+        {ptolemy.kernel.ComponentRelation {.E0.E3.R5} attributes {
         } links {
-            {pt.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E3.E4.P4} attributes {
             }}
-            {pt.kernel.ComponentPort {.E0.E3.E5.P5} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E3.E5.P5} attributes {
             }}
         }}
-        {pt.kernel.ComponentRelation {.E0.E3.R6} attributes {
+        {ptolemy.kernel.ComponentRelation {.E0.E3.R6} attributes {
         } links {
-            {pt.kernel.ComponentPort {.E0.E3.E4.E2.P3} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E3.E4.E2.P3} attributes {
             }}
-            {pt.kernel.ComponentPort {.E0.E3.E6.P6} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E3.E6.P6} attributes {
             }}
         }}
     }}
-    {pt.kernel.CompositeEntity {.E0.E7} attributes {
+    {ptolemy.kernel.CompositeEntity {.E0.E7} attributes {
     } ports {
-        {pt.kernel.ComponentPort {.E0.E7.P8} attributes {
+        {ptolemy.kernel.ComponentPort {.E0.E7.P8} attributes {
         } links {
-            {pt.kernel.ComponentRelation {.E0.R10} attributes {
+            {ptolemy.kernel.ComponentRelation {.E0.R10} attributes {
             }}
         } insidelinks {
-            {pt.kernel.ComponentRelation {.E0.E7.R8} attributes {
+            {ptolemy.kernel.ComponentRelation {.E0.E7.R8} attributes {
             }}
         }}
-        {pt.kernel.ComponentPort {.E0.E7.P11} attributes {
+        {ptolemy.kernel.ComponentPort {.E0.E7.P11} attributes {
         } links {
-            {pt.kernel.ComponentRelation {.E0.R7} attributes {
+            {ptolemy.kernel.ComponentRelation {.E0.R7} attributes {
             }}
         } insidelinks {
-            {pt.kernel.ComponentRelation {.E0.E7.R9} attributes {
+            {ptolemy.kernel.ComponentRelation {.E0.E7.R9} attributes {
             }}
         }}
     } entities {
-        {pt.kernel.ComponentEntity {.E0.E7.E8} attributes {
+        {ptolemy.kernel.ComponentEntity {.E0.E7.E8} attributes {
         } ports {
-            {pt.kernel.ComponentPort {.E0.E7.E8.P9} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E7.E8.P9} attributes {
             } links {
-                {pt.kernel.ComponentRelation {.E0.E7.R8} attributes {
+                {ptolemy.kernel.ComponentRelation {.E0.E7.R8} attributes {
                 }}
             } insidelinks {
             }}
-            {pt.kernel.ComponentPort {.E0.E7.E8.P10} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E7.E8.P10} attributes {
             } links {
-                {pt.kernel.ComponentRelation {.E0.E7.R9} attributes {
+                {ptolemy.kernel.ComponentRelation {.E0.E7.R9} attributes {
                 }}
             } insidelinks {
             }}
         }}
     } relations {
-        {pt.kernel.ComponentRelation {.E0.E7.R8} attributes {
+        {ptolemy.kernel.ComponentRelation {.E0.E7.R8} attributes {
         } links {
-            {pt.kernel.ComponentPort {.E0.E7.E8.P9} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E7.E8.P9} attributes {
             }}
-            {pt.kernel.ComponentPort {.E0.E7.P8} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E7.P8} attributes {
             }}
         }}
-        {pt.kernel.ComponentRelation {.E0.E7.R9} attributes {
+        {ptolemy.kernel.ComponentRelation {.E0.E7.R9} attributes {
         } links {
-            {pt.kernel.ComponentPort {.E0.E7.E8.P10} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E7.E8.P10} attributes {
             }}
-            {pt.kernel.ComponentPort {.E0.E7.P11} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E7.P11} attributes {
             }}
         }}
     }}
-    {pt.kernel.CompositeEntity {.E0.E10} attributes {
+    {ptolemy.kernel.CompositeEntity {.E0.E10} attributes {
     } ports {
-        {pt.kernel.ComponentPort {.E0.E10.P12} attributes {
+        {ptolemy.kernel.ComponentPort {.E0.E10.P12} attributes {
         } links {
-            {pt.kernel.ComponentRelation {.E0.R10} attributes {
+            {ptolemy.kernel.ComponentRelation {.E0.R10} attributes {
             }}
         } insidelinks {
-            {pt.kernel.ComponentRelation {.E0.E10.R11} attributes {
+            {ptolemy.kernel.ComponentRelation {.E0.E10.R11} attributes {
             }}
         }}
-        {pt.kernel.ComponentPort {.E0.E10.P13} attributes {
+        {ptolemy.kernel.ComponentPort {.E0.E10.P13} attributes {
         } links {
-            {pt.kernel.ComponentRelation {.E0.R7} attributes {
+            {ptolemy.kernel.ComponentRelation {.E0.R7} attributes {
             }}
         } insidelinks {
-            {pt.kernel.ComponentRelation {.E0.E10.R11} attributes {
+            {ptolemy.kernel.ComponentRelation {.E0.E10.R11} attributes {
             }}
-            {pt.kernel.ComponentRelation {.E0.E10.R12} attributes {
+            {ptolemy.kernel.ComponentRelation {.E0.E10.R12} attributes {
             }}
         }}
     } entities {
-        {pt.kernel.ComponentEntity {.E0.E10.E9} attributes {
+        {ptolemy.kernel.ComponentEntity {.E0.E10.E9} attributes {
         } ports {
-            {pt.kernel.ComponentPort {.E0.E10.E9.P14} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E10.E9.P14} attributes {
             } links {
-                {pt.kernel.ComponentRelation {.E0.E10.R12} attributes {
+                {ptolemy.kernel.ComponentRelation {.E0.E10.R12} attributes {
                 }}
             } insidelinks {
             }}
         }}
     } relations {
-        {pt.kernel.ComponentRelation {.E0.E10.R11} attributes {
+        {ptolemy.kernel.ComponentRelation {.E0.E10.R11} attributes {
         } links {
-            {pt.kernel.ComponentPort {.E0.E10.P12} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E10.P12} attributes {
             }}
-            {pt.kernel.ComponentPort {.E0.E10.P13} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E10.P13} attributes {
             }}
         }}
-        {pt.kernel.ComponentRelation {.E0.E10.R12} attributes {
+        {ptolemy.kernel.ComponentRelation {.E0.E10.R12} attributes {
         } links {
-            {pt.kernel.ComponentPort {.E0.E10.E9.P14} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E10.E9.P14} attributes {
             }}
-            {pt.kernel.ComponentPort {.E0.E10.P13} attributes {
+            {ptolemy.kernel.ComponentPort {.E0.E10.P13} attributes {
             }}
         }}
     }}
 } relations {
-    {pt.kernel.ComponentRelation {.E0.R7} attributes {
+    {ptolemy.kernel.ComponentRelation {.E0.R7} attributes {
     } links {
-        {pt.kernel.ComponentPort {.E0.E3.P7} attributes {
+        {ptolemy.kernel.ComponentPort {.E0.E3.P7} attributes {
         }}
-        {pt.kernel.ComponentPort {.E0.E10.P13} attributes {
+        {ptolemy.kernel.ComponentPort {.E0.E10.P13} attributes {
         }}
-        {pt.kernel.ComponentPort {.E0.E7.P11} attributes {
+        {ptolemy.kernel.ComponentPort {.E0.E7.P11} attributes {
         }}
     }}
-    {pt.kernel.ComponentRelation {.E0.R10} attributes {
+    {ptolemy.kernel.ComponentRelation {.E0.R10} attributes {
     } links {
-        {pt.kernel.ComponentPort {.E0.E7.P8} attributes {
+        {ptolemy.kernel.ComponentPort {.E0.E7.P8} attributes {
         }}
-        {pt.kernel.ComponentPort {.E0.E10.P12} attributes {
+        {ptolemy.kernel.ComponentPort {.E0.E10.P12} attributes {
         }}
     }}
 }}
@@ -722,13 +722,13 @@ test CompositeEntity-11.6 {Test full description} {
 # FIXME: description2TclBlend needs fixing.
 # test CompositeEntity-11.7 {Generate a description, then regenerate it} {
 #     set desc0 [description2TclBlend [$e0 description \
-# 	    [java::field pt.kernel.Nameable PRETTYPRINT]]]
+# 	    [java::field ptolemy.kernel.Nameable PRETTYPRINT]]]
 #     eval $desc0
 #
 #     # Note that description2TclBlend uses the names of entities
 #     # as variables, so what was $e0 in 11.1 is $E0
 #     set desc1 [description2TclBlend [$E0 description \
-# 	    [java::field pt.kernel.Nameable PRETTYPRINT]]]
+# 	    [java::field ptolemy.kernel.Nameable PRETTYPRINT]]]
 #     list [expr {"$desc0" != ""}] [expr {"$desc0" == "$desc1"}]
 # } {1 1}
 
@@ -746,30 +746,30 @@ test CompositeEntity-11.8 {Test that clone fails with level-cross xsitions} {
 test CompositeEntity-11.9 {Test clone} {
     set ne7 [$e7 clone]
     $ne7 description 31
-} {pt.kernel.CompositeEntity {.E7} ports {
-    {pt.kernel.ComponentPort {.E7.P8} links {
+} {ptolemy.kernel.CompositeEntity {.E7} ports {
+    {ptolemy.kernel.ComponentPort {.E7.P8} links {
     } insidelinks {
     }}
-    {pt.kernel.ComponentPort {.E7.P11} links {
+    {ptolemy.kernel.ComponentPort {.E7.P11} links {
     } insidelinks {
     }}
 } entities {
-    {pt.kernel.ComponentEntity {.E7.E8} ports {
-        {pt.kernel.ComponentPort {.E7.E8.P9} links {
-            {pt.kernel.ComponentRelation {.E7.R8}}
+    {ptolemy.kernel.ComponentEntity {.E7.E8} ports {
+        {ptolemy.kernel.ComponentPort {.E7.E8.P9} links {
+            {ptolemy.kernel.ComponentRelation {.E7.R8}}
         } insidelinks {
         }}
-        {pt.kernel.ComponentPort {.E7.E8.P10} links {
-            {pt.kernel.ComponentRelation {.E7.R9}}
+        {ptolemy.kernel.ComponentPort {.E7.E8.P10} links {
+            {ptolemy.kernel.ComponentRelation {.E7.R9}}
         } insidelinks {
         }}
     }}
 } relations {
-    {pt.kernel.ComponentRelation {.E7.R8} links {
-        {pt.kernel.ComponentPort {.E7.E8.P9}}
+    {ptolemy.kernel.ComponentRelation {.E7.R8} links {
+        {ptolemy.kernel.ComponentPort {.E7.E8.P9}}
     }}
-    {pt.kernel.ComponentRelation {.E7.R9} links {
-        {pt.kernel.ComponentPort {.E7.E8.P10}}
+    {ptolemy.kernel.ComponentRelation {.E7.R9} links {
+        {ptolemy.kernel.ComponentPort {.E7.E8.P10}}
     }}
 }}
 
@@ -777,12 +777,12 @@ test CompositeEntity-11.9 {Test clone} {
 ####
 # Test connections.
 test CompositeEntity-12.1 {Test connect} {
-    set e0 [java::new pt.kernel.CompositeEntity]
+    set e0 [java::new ptolemy.kernel.CompositeEntity]
     $e0 setName E0
-    set e1 [java::new pt.kernel.ComponentEntity $e0 E1]
-    set e2 [java::new pt.kernel.ComponentEntity $e0 E2]
-    set p1 [java::new pt.kernel.ComponentPort $e1 P1]
-    set p2 [java::new pt.kernel.ComponentPort $e2 P2]
+    set e1 [java::new ptolemy.kernel.ComponentEntity $e0 E1]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e0 E2]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
     set r1 [$e0 connect $p1 $p2]
     enumToNames [$r1 linkedPorts]
 } {P1 P2}
@@ -791,12 +791,12 @@ test CompositeEntity-12.1 {Test connect} {
 ####
 # Test connections.
 test CompositeEntity-12.2 {Test connect} {
-    set e0 [java::new pt.kernel.CompositeEntity]
+    set e0 [java::new ptolemy.kernel.CompositeEntity]
     $e0 setName E0
-    set e1 [java::new pt.kernel.ComponentEntity $e0 E1]
-    set e2 [java::new pt.kernel.ComponentEntity $e0 E2]
-    set p1 [java::new pt.kernel.ComponentPort $e1 P1]
-    set p2 [java::new pt.kernel.ComponentPort $e2 P2]
+    set e1 [java::new ptolemy.kernel.ComponentEntity $e0 E1]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e0 E2]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
     set r1 [$e0 connect $p1 $p2 R1]
     enumToNames [[$e0 getRelation R1] linkedPorts ]
 } {P1 P2}

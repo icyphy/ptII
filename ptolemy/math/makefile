@@ -35,7 +35,7 @@
 # Root of the Java directory
 ROOT =		../..
 
-ME =		pt/math
+ME =		ptolemy/math
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -46,9 +46,9 @@ DIRS = 		test #doc demo
 CLASSPATH = ../..
 
 # Used to build zip files
-TYPACKAGE = 	pt.math
+TYPACKAGE = 	ptolemy.math
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = pt/math
+TYPACKAGE_DIR = ptolemy/math
 TYVERSION =	1.0
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip

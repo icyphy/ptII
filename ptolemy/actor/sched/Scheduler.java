@@ -27,11 +27,11 @@
 @ProposedRating Red (liuj@eecs.berkeley.edu)
 */
 
-package pt.actor;
+package ptolemy.actor;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
-import pt.kernel.mutation.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.kernel.mutation.*;
 
 import java.util.Enumeration;
 import collections.LinkedList;
@@ -70,7 +70,7 @@ public class Scheduler extends NamedObj implements MutationListener{
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
      *  "Basic Scheduler".
-     * @see pt.kernel.util.NamedObj
+     * @see ptolemy.kernel.util.NamedObj
      * @return The scheduler
      */	
     public Scheduler() {
@@ -304,7 +304,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  will call it when the schedule is not valid. So it is not
      *  synchronized on the workspace.
      * 
-     * @see pt.kernel.CompositeEntity#deepGetEntities()
+     * @see ptolemy.kernel.CompositeEntity#deepGetEntities()
      * @return An Enumeration of the deeply contained opaque entities
      *  in the firing order.
      * @exception NotSchedulableException If the CompositeActor is not

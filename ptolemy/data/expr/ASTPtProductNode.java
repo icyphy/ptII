@@ -41,16 +41,16 @@ Created : May 1998
  * 
  * @author Neil Smyth
  * @version $Id$
- * @see pt.data.expr.ASTPtRootNode
- * @see pt.data.expr.PtParser 
- * @see pt.data.Token 
+ * @see ptolemy.data.expr.ASTPtRootNode
+ * @see ptolemy.data.expr.PtParser 
+ * @see ptolemy.data.Token 
 */
 
-package pt.data.expr;
+package ptolemy.data.expr;
 
 public class ASTPtProductNode extends ASTPtRootNode {
     
-    protected pt.data.Token _resolveNode() throws IllegalArgumentException {
+    protected ptolemy.data.Token _resolveNode() throws IllegalArgumentException {
         int num =  jjtGetNumChildren();
         if (num ==1) {
             return childTokens[0];
@@ -60,7 +60,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
             str = str + " not equal to number of operators +1";
             throw new IllegalArgumentException(str);
         }
-        pt.data.Token result = childTokens[0];
+        ptolemy.data.Token result = childTokens[0];
         String op = "";
         int i = 1;
         try {

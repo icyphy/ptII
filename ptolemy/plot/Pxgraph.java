@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.plot;
+package ptolemy.plot;
 
 import java.awt.*;
 
@@ -394,7 +394,7 @@ the <CODE>Print</CODE> and <CODE>About</CODE> buttons will not work.
 untar the tar file:
 <PRE>
 cd $PTOLEMY/tycho/java
-gzcat /tmp/pt.plot2.0.tar.gz | tar -xf
+gzcat /tmp/ptolemy.plot2.0.tar.gz | tar -xf
 </PRE>
 
 <LI> The <CODE>pxgraph</CODE>shell script reads
@@ -404,10 +404,10 @@ the location of the Ptplot <CODE>.class</CODE> files.
 <MENU>
 <LI> If the <CODE>JAVAHOME</CODE> environment variable is set, then
 it is read and <CODE>$JAVAHOME/lib/classes.zip</CODE> is used in the
-classpath.  For example, if your JDK was at <CODE>/opt/jdk1.1.4</CODE>,
+classpath.  For example, if your JDK was at <CODE>/optolemy/jdk1.1.4</CODE>,
 then you would add the following to your <CODE>.cshrc</CODE>:
 <PRE>
-setenv JAVAHOME /opt/jdk1.1.4
+setenv JAVAHOME /optolemy/jdk1.1.4
 </PRE>
  <BR>If <CODE>JAVAHOME</CODE> is not set, then the script searches
 the path and looks for the <CODE>java</CODE> binary.  If the
@@ -419,13 +419,13 @@ the file to point to your JDK.
 </MENU>
 To find the Ptplot <CODE>.class</CODE> files, the script reads the
 <CODE>TYCHO</CODE> and <CODE>PTOLEMY</CODE> variables and looks in
-<CODE>PTOLEMY/tycho/java/pt.plot</CODE>.  If you do not have Ptolemy
+<CODE>PTOLEMY/tycho/java/ptolemy.plot</CODE>.  If you do not have Ptolemy
 or Tycho installed, you can edit the <CODE>pxgraph</CODE> script
 and change <CODE>TYDEFAULT</CODE> so that the <CODE>Pxgraph.class</CODE>
-file will be found at <CODE>$TYDEFAULT/java/pt.plot/Pxgraph.class</CODE>
+file will be found at <CODE>$TYDEFAULT/java/ptolemy.plot/Pxgraph.class</CODE>
 
 <LI> Move the old <CODE>pxgraph</CODE> binary to a safe place and
-create a link to the Java Ptplot <CODE>pxgraph</CODE> script.
+create a link to the Java Ptplot <CODE>pxgraph</CODE> scriptolemy.
 <PRE>
 cd $PTOLEMY/bin.$PTARCH
 mv pxgraph pxgraph.x11

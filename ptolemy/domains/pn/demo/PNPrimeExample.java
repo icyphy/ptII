@@ -25,12 +25,12 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.domains.pn.demo;
-import pt.kernel.*;
-import pt.data.*;
-import pt.actors.*;
-import pt.domains.pn.kernel.*;
-import pt.domains.pn.actors.*;
+package ptolemy.domains.pn.demo;
+import ptolemy.kernel.*;
+import ptolemy.data.*;
+import ptolemy.actors.*;
+import ptolemy.domains.pn.kernel.*;
+import ptolemy.domains.pn.actors.*;
 import java.util.Enumeration;
 
 import gui.DynamicGraphView;
@@ -65,7 +65,7 @@ public class PNPrimeExample {
         myUniverse.connect(portin, portout, "plot_queue");
         //portin.getQueue(portout).setCapacity(1);
 
-        //System.out.println(myUniverse.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
+        //System.out.println(myUniverse.description(ptolemy.kernel.Nameable.LIST_PRETTYPRINT));
 
         DynamicGraphView view = DynamicGraphView.makeView(
                 "Sieve of Eratosthenes", 800, 600);

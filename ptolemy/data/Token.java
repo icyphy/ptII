@@ -49,10 +49,10 @@ so the default implementation here triggers an exception.
 @see java.util.Observable
 */
 
-package pt.data;
+package ptolemy.data;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
 import java.util.Observable;
 

@@ -51,7 +51,7 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # 
 test Graph-2.1 {Create an empty instance} {
-    set p [java::new pt.graph.Graph]
+    set p [java::new ptolemy.graph.Graph]
     $p contains null
 } {0}
 
@@ -59,7 +59,7 @@ test Graph-2.1 {Create an empty instance} {
 ####
 # 
 test Graph-2.2 {Create a graph with 2 nodes} {
-    set p [java::new pt.graph.Graph]
+    set p [java::new ptolemy.graph.Graph]
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
     $p add $n1
@@ -73,7 +73,7 @@ test Graph-2.2 {Create a graph with 2 nodes} {
 ####
 # 
 test Graph-2.3 {Create a graph with 4 nodes forming a diamond} {
-    set p [java::new pt.graph.Graph]
+    set p [java::new ptolemy.graph.Graph]
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
     set n3 [java::new {java.lang.String String} node3]
@@ -103,7 +103,7 @@ test Graph-2.3 {Create a graph with 4 nodes forming a diamond} {
 test Graph-3.1 {Test description} {
     # use the graph built in 2.3
     list [$p description]
-} {{{pt.graph.Graph
+} {{{ptolemy.graph.Graph
   {node1 node2 node3}
   {node2 node4}
   {node3 node4}

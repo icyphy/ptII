@@ -51,9 +51,9 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test Port-2.1 {Construct Ports} {
-    set e1 [java::new pt.kernel.Entity]
-    set p1 [java::new pt.kernel.Port]
-    set p2 [java::new pt.kernel.Port $e1 "My Port"]
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.kernel.Port]
+    set p2 [java::new ptolemy.kernel.Port $e1 "My Port"]
     list [$p1 getName] [$p2 getName] \
 	    [$p1 numLinks] [$p2 numLinks]
 } {{} {My Port} 0 0}
@@ -62,11 +62,11 @@ test Port-2.1 {Construct Ports} {
 ####
 #
 test Port-3.1 {Test link with one port, one relation} {
-    set e1 [java::new pt.kernel.Entity]
-    set p1 [java::new pt.kernel.Port]
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.kernel.Port]
     $p1 setContainer $e1
     $p1 setName P1
-    set r1 [java::new pt.kernel.Relation R1]
+    set r1 [java::new ptolemy.kernel.Relation R1]
     $p1 link $r1
     list [enumToNames [$p1 linkedRelations]] \
             [enumToNames [$p1 connectedPorts]]
@@ -76,10 +76,10 @@ test Port-3.1 {Test link with one port, one relation} {
 ####
 #
 test Port-3.1.1 {Test link with one port, one relation twice} {
-    set e1 [java::new pt.kernel.Entity]
-    set p1 [java::new pt.kernel.Port]
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.kernel.Port]
     $p1 setContainer $e1
-    set r1 [java::new pt.kernel.Relation R1]
+    set r1 [java::new ptolemy.kernel.Relation R1]
     $p1 link $r1
     $p1 link $r1
     list [enumToNames [$p1 linkedRelations]] \
@@ -90,7 +90,7 @@ test Port-3.1.1 {Test link with one port, one relation twice} {
 ####
 #
 test Port-3.1.2 {Test link with one port to a null relation} {
-    set p1 [java::new pt.kernel.Port]
+    set p1 [java::new ptolemy.kernel.Port]
     $p1 link [java::null]
     list [enumToNames [$p1 linkedRelations]] \
             [enumToNames [$p1 connectedPorts]]
@@ -100,11 +100,11 @@ test Port-3.1.2 {Test link with one port to a null relation} {
 ####
 #
 test Port-3.2 {Test link with one port, two relations} {
-    set e1 [java::new pt.kernel.Entity]
-    set p1 [java::new pt.kernel.Port]
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.kernel.Port]
     $p1 setContainer $e1
-    set r1 [java::new pt.kernel.Relation R1]
-    set r2 [java::new pt.kernel.Relation R2]
+    set r1 [java::new ptolemy.kernel.Relation R1]
+    set r2 [java::new ptolemy.kernel.Relation R2]
     $p1 link $r1
     $p1 link $r2
     list [enumToNames [$p1 linkedRelations]] \
@@ -115,10 +115,10 @@ test Port-3.2 {Test link with one port, two relations} {
 ####
 #
 test Port-3.3 {Test link with two ports, one relation} {
-    set e1 [java::new pt.kernel.Entity]
-    set p1 [java::new pt.kernel.Port $e1 P1]
-    set p2 [java::new pt.kernel.Port $e1 P2]
-    set r1 [java::new pt.kernel.Relation R1]
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.kernel.Port $e1 P1]
+    set p2 [java::new ptolemy.kernel.Port $e1 P2]
+    set r1 [java::new ptolemy.kernel.Relation R1]
     $p1 link $r1
     $p2 link $r1
     list [enumToNames [$p1 linkedRelations]] \
@@ -129,11 +129,11 @@ test Port-3.3 {Test link with two ports, one relation} {
 ####
 #
 test Port-3.4 {Test link with two ports, two relations} {
-    set e1 [java::new pt.kernel.Entity]
-    set p1 [java::new pt.kernel.Port $e1 P1]
-    set p2 [java::new pt.kernel.Port $e1 P2]
-    set r1 [java::new pt.kernel.Relation R1]
-    set r2 [java::new pt.kernel.Relation R2]
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.kernel.Port $e1 P1]
+    set p2 [java::new ptolemy.kernel.Port $e1 P2]
+    set r1 [java::new ptolemy.kernel.Relation R1]
+    set r2 [java::new ptolemy.kernel.Relation R2]
     $p1 link $r1
     $p2 link $r1
     $p1 link $r2
@@ -150,12 +150,12 @@ test Port-3.4 {Test link with two ports, two relations} {
 ####
 #
 test Port-4.1 {Test unlinkAll} {
-    set e1 [java::new pt.kernel.Entity]
-    set p1 [java::new pt.kernel.Port]
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.kernel.Port]
     $p1 setContainer $e1
-    set p2 [java::new pt.kernel.Port $e1 P2]
-    set r1 [java::new pt.kernel.Relation "relation1"]
-    set r2 [java::new pt.kernel.Relation "relation2"]
+    set p2 [java::new ptolemy.kernel.Port $e1 P2]
+    set r1 [java::new ptolemy.kernel.Relation "relation1"]
+    set r2 [java::new ptolemy.kernel.Relation "relation2"]
     $p1 link $r1
     $p2 link $r1
     $p1 link $r2
@@ -177,17 +177,17 @@ test Port-4.1 {Test unlinkAll} {
 ####
 #
 test Port-5.1 {Test unlink} {
-    set p3 [java::new pt.kernel.Port]
-    set e1 [java::new pt.kernel.Entity]
-    set p1 [java::new pt.kernel.Port $e1 P1]
+    set p3 [java::new ptolemy.kernel.Port]
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.kernel.Port $e1 P1]
     # FIXME: Bug in TclBlend: If p3 is set below instead of above,
     # TclBlend gives an error on Unix machines, but not on NT.
     # The error is:
-    # wrong # args for calling constructor "pt.kernel.Port"
-    # set p3 [java::new pt.kernel.Port]
+    # wrong # args for calling constructor "ptolemy.kernel.Port"
+    # set p3 [java::new ptolemy.kernel.Port]
     $p3 setContainer $e1
-    set r1 [java::new pt.kernel.Relation "relation1"]
-    set r2 [java::new pt.kernel.Relation "relation2"]
+    set r1 [java::new ptolemy.kernel.Relation "relation1"]
+    set r2 [java::new ptolemy.kernel.Relation "relation2"]
     $p1 link $r1
     $p3 link $r1
     $p1 link $r2
@@ -217,11 +217,11 @@ relation2 {}
 ####
 #
 test Port-5.2 {Test unlink on a relation we are not connected to} {
-    set e1 [java::new pt.kernel.Entity]
-    set p1 [java::new pt.kernel.Port]
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.kernel.Port]
     $p1 setContainer $e1
-    set r1 [java::new pt.kernel.Relation "relation1"]
-    set r2 [java::new pt.kernel.Relation "relation2"]
+    set r1 [java::new ptolemy.kernel.Relation "relation1"]
+    set r2 [java::new ptolemy.kernel.Relation "relation2"]
     $p1 link $r1
     $p1 unlink $r2
     list [_testPortLinkedRelations $p1]
@@ -231,7 +231,7 @@ test Port-5.2 {Test unlink on a relation we are not connected to} {
 ####
 #
 test Port-6.1 {Test linkedRelations} {
-    set p1 [java::new pt.kernel.Port]
+    set p1 [java::new ptolemy.kernel.Port]
     set enum [$p1 linkedRelations]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
@@ -241,7 +241,7 @@ test Port-6.1 {Test linkedRelations} {
 ####
 #
 test Port-7.1 {Test getContainer on a Port that has no container } {
-    set p1 [java::new pt.kernel.Port]
+    set p1 [java::new ptolemy.kernel.Port]
     list [expr { [java::null] == [$p1 getContainer] } ]
 } {1}
 
@@ -249,8 +249,8 @@ test Port-7.1 {Test getContainer on a Port that has no container } {
 ####
 #
 test Port-7.2 {Test getContainer on a Port that has a container } {
-    set p1 [java::new pt.kernel.Port]
-    set e1 [java::new pt.kernel.Entity "entity1"]
+    set p1 [java::new ptolemy.kernel.Port]
+    set e1 [java::new ptolemy.kernel.Entity "entity1"]
     $p1 setContainer $e1
     list [expr { $e1 == [$p1 getContainer] } ]
 } {1}
@@ -260,11 +260,11 @@ test Port-7.2 {Test getContainer on a Port that has a container } {
 #
 test Port-8.1 {Build a topology consiting of a Ramp and a Print Entity} {
     # Create objects
-    set ramp [java::new pt.kernel.Entity "Ramp"]
-    set print [java::new pt.kernel.Entity "Print"]
-    set out [java::new pt.kernel.Port $ramp "Ramp out"]
-    set in [java::new pt.kernel.Port $print "Print in"]
-    set arc [java::new pt.kernel.Relation "Arc"]
+    set ramp [java::new ptolemy.kernel.Entity "Ramp"]
+    set print [java::new ptolemy.kernel.Entity "Print"]
+    set out [java::new ptolemy.kernel.Port $ramp "Ramp out"]
+    set in [java::new ptolemy.kernel.Port $print "Print in"]
+    set arc [java::new ptolemy.kernel.Relation "Arc"]
 
     # Connect
     $out link $arc
@@ -281,11 +281,11 @@ test Port-8.1 {Build a topology consiting of a Ramp and a Print Entity} {
 #
 test Port-9.1 {Remove a port from its container} {
     # Create objects
-    set ramp [java::new pt.kernel.Entity "Ramp"]
-    set print [java::new pt.kernel.Entity "Print"]
-    set out [java::new pt.kernel.Port $ramp "Ramp out"]
-    set in [java::new pt.kernel.Port $print "Print in"]
-    set arc [java::new pt.kernel.Relation "Arc"]
+    set ramp [java::new ptolemy.kernel.Entity "Ramp"]
+    set print [java::new ptolemy.kernel.Entity "Print"]
+    set out [java::new ptolemy.kernel.Port $ramp "Ramp out"]
+    set in [java::new ptolemy.kernel.Port $print "Print in"]
+    set arc [java::new ptolemy.kernel.Relation "Arc"]
 
     # Connect
     $out link $arc
@@ -304,11 +304,11 @@ test Port-9.1 {Remove a port from its container} {
 #
 test Port-10.1 {Reassign a port to a new container} {
     # Create objects
-    set ramp [java::new pt.kernel.Entity "Ramp"]
-    set print [java::new pt.kernel.Entity "Print"]
-    set out [java::new pt.kernel.Port $ramp "Ramp out"]
-    set in [java::new pt.kernel.Port $print "Print in"]
-    set arc [java::new pt.kernel.Relation "Arc"]
+    set ramp [java::new ptolemy.kernel.Entity "Ramp"]
+    set print [java::new ptolemy.kernel.Entity "Print"]
+    set out [java::new ptolemy.kernel.Port $ramp "Ramp out"]
+    set in [java::new ptolemy.kernel.Port $print "Print in"]
+    set arc [java::new ptolemy.kernel.Relation "Arc"]
 
     # Connect
     $out link $arc
@@ -326,12 +326,12 @@ test Port-10.1 {Reassign a port to a new container} {
 ####
 #
 test Port-11.1 {Move Port in and out of the workspace} {
-    set w [java::new pt.kernel.util.Workspace]
-    set e1 [java::new pt.kernel.Entity $w E1]
-    set p1 [java::new pt.kernel.Port $w]
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e1 [java::new ptolemy.kernel.Entity $w E1]
+    set p1 [java::new ptolemy.kernel.Port $w]
     $p1 setName P1
-    set p2 [java::new pt.kernel.Port $e1 P2]
-    set p3 [java::new pt.kernel.Port $e1 P3]
+    set p2 [java::new ptolemy.kernel.Port $e1 P2]
+    set p3 [java::new ptolemy.kernel.Port $e1 P3]
     set r1 [enumToFullNames [$w directory]]
     set r2 [enumToFullNames [$e1 getPorts]]
     $p2 setContainer [java::null]
@@ -345,13 +345,13 @@ test Port-11.1 {Move Port in and out of the workspace} {
 ####
 #
 test Port-12.1 {Test description} {
-    set w [java::new pt.kernel.util.Workspace]
-    set e1 [java::new pt.kernel.Entity $w E1]
-    set p1 [java::new pt.kernel.Port $e1 P1]
-    set r1 [java::new pt.kernel.Relation $w R1]
-    set r2 [java::new pt.kernel.Relation $w R2]
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e1 [java::new ptolemy.kernel.Entity $w E1]
+    set p1 [java::new ptolemy.kernel.Port $e1 P1]
+    set r1 [java::new ptolemy.kernel.Relation $w R1]
+    set r2 [java::new ptolemy.kernel.Relation $w R2]
     $p1 description 7
-} {pt.kernel.Port {.E1.P1} links {
+} {ptolemy.kernel.Port {.E1.P1} links {
 }}
 
 test Port-12.2 {Test description} {
@@ -359,9 +359,9 @@ test Port-12.2 {Test description} {
     $p1 link $r1
     $p1 link $r2
     $p1 description 7
-} {pt.kernel.Port {.E1.P1} links {
-    {pt.kernel.Relation {.R1}}
-    {pt.kernel.Relation {.R2}}
+} {ptolemy.kernel.Port {.E1.P1} links {
+    {ptolemy.kernel.Relation {.R1}}
+    {ptolemy.kernel.Relation {.R2}}
 }}
 
 test Port-12.3 {Test description} {
@@ -376,18 +376,18 @@ test Port-12.4 {Test description on workspace} {
     # NOTE: Builds on previous example.
     # Test that links show inside an entity.
     $w description 15
-} {pt.kernel.util.Workspace {} directory {
-    {pt.kernel.Entity {.E1} ports {
-        {pt.kernel.Port {.E1.P1} links {
-            {pt.kernel.Relation {.R1}}
-            {pt.kernel.Relation {.R2}}
+} {ptolemy.kernel.util.Workspace {} directory {
+    {ptolemy.kernel.Entity {.E1} ports {
+        {ptolemy.kernel.Port {.E1.P1} links {
+            {ptolemy.kernel.Relation {.R1}}
+            {ptolemy.kernel.Relation {.R2}}
         }}
     }}
-    {pt.kernel.Relation {.R1} links {
-        {pt.kernel.Port {.E1.P1}}
+    {ptolemy.kernel.Relation {.R1} links {
+        {ptolemy.kernel.Port {.E1.P1}}
     }}
-    {pt.kernel.Relation {.R2} links {
-        {pt.kernel.Port {.E1.P1}}
+    {ptolemy.kernel.Relation {.R2} links {
+        {ptolemy.kernel.Port {.E1.P1}}
     }}
 }}
 
@@ -395,34 +395,34 @@ test Port-12.4 {Test description on workspace} {
 ####
 #
 test Port-13.1 {Test clone} {
-    set w [java::new pt.kernel.util.Workspace]
-    set e1 [java::new pt.kernel.Entity $w E1]
-    set p1 [java::new pt.kernel.Port $e1 P1]
-    set r1 [java::new pt.kernel.Relation $w R1]
+    set w [java::new ptolemy.kernel.util.Workspace]
+    set e1 [java::new ptolemy.kernel.Entity $w E1]
+    set p1 [java::new ptolemy.kernel.Port $e1 P1]
+    set r1 [java::new ptolemy.kernel.Relation $w R1]
     $p1 link $r1
     set p2 [$p1 clone]
     $p2 description 7
-} {pt.kernel.Port {.P1} links {
+} {ptolemy.kernel.Port {.P1} links {
 }}
 
 ######################################################################
 ####
 #
 test Port-14.1 {Test double link with one port, one relations} {
-    set e1 [java::new pt.kernel.Entity]
-    set p1 [java::new pt.kernel.Port]
+    set e1 [java::new ptolemy.kernel.Entity]
+    set p1 [java::new ptolemy.kernel.Port]
     $p1 setContainer $e1
-    set r1 [java::new pt.kernel.Relation R1]
+    set r1 [java::new ptolemy.kernel.Relation R1]
     $p1 link $r1
     $p1 link $r1
-    $e1 description [java::field pt.kernel.util.NamedObj COMPLETE]
-} {pt.kernel.Entity {.} attributes {
+    $e1 description [java::field ptolemy.kernel.util.NamedObj COMPLETE]
+} {ptolemy.kernel.Entity {.} attributes {
 } ports {
-    {pt.kernel.Port {..} attributes {
+    {ptolemy.kernel.Port {..} attributes {
     } links {
-        {pt.kernel.Relation {.R1} attributes {
+        {ptolemy.kernel.Relation {.R1} attributes {
         }}
-        {pt.kernel.Relation {.R1} attributes {
+        {ptolemy.kernel.Relation {.R1} attributes {
         }}
     }}
 }}

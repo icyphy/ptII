@@ -51,15 +51,15 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # 
 test IntToken-2.1 {Create an empty instance} {
-    set p [java::new pt.data.IntToken]
+    set p [java::new ptolemy.data.IntToken]
     $p toString
-} {pt.data.IntToken(0)}
+} {ptolemy.data.IntToken(0)}
 
 ######################################################################
 ####
 # 
 test IntToken-2.2 {Create an empty instance and query its value as int} {
-    set p [java::new pt.data.IntToken]
+    set p [java::new ptolemy.data.IntToken]
     $p intValue
 } {0}
 
@@ -67,7 +67,7 @@ test IntToken-2.2 {Create an empty instance and query its value as int} {
 ####
 # 
 test IntToken-2.3 {Create a non-empty instance and query its value as int} {
-    set p [java::new {pt.data.IntToken int} 12]
+    set p [java::new {ptolemy.data.IntToken int} 12]
     $p intValue
 } {12}
 
@@ -75,7 +75,7 @@ test IntToken-2.3 {Create a non-empty instance and query its value as int} {
 ####
 # 
 test IntToken-3.1 {Create an non-empty instance and read it as double} {
-    set p [java::new {pt.data.IntToken int} 12]
+    set p [java::new {ptolemy.data.IntToken int} 12]
     list [$p doubleValue]
 } {12.0}
 
@@ -83,7 +83,7 @@ test IntToken-3.1 {Create an non-empty instance and read it as double} {
 ####
 # 
 test IntToken-3.2 {Create an non-empty instance and read it as long} {
-    set p [java::new {pt.data.IntToken int} 12]
+    set p [java::new {ptolemy.data.IntToken int} 12]
     list [$p longValue]
 } {12}
 
@@ -92,7 +92,7 @@ test IntToken-3.2 {Create an non-empty instance and read it as long} {
 ####
 # 
 test IntToken-4.1 {Create an empty instance and clone} {
-    set p [java::new pt.data.IntToken]
+    set p [java::new ptolemy.data.IntToken]
     set q [$p clone]
     list [$q intValue]
 } {0}
@@ -101,7 +101,7 @@ test IntToken-4.1 {Create an empty instance and clone} {
 ####
 # 
 test IntToken-4.2 {Create a non empty instance and clone} {
-    set p [java::new {pt.data.IntToken int} 10]
+    set p [java::new {ptolemy.data.IntToken int} 10]
     set q [$p clone]
     list [$p intValue] [$q intValue]
 } {10 10}

@@ -26,7 +26,7 @@
 
 */
 
-package pt.graph;
+package ptolemy.graph;
 import java.util.*;
 
 

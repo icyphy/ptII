@@ -29,9 +29,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 */
-package pt.plot.demo;
+package ptolemy.plot.demo;
 
-import pt.plot.*;
+import ptolemy.plot.*;
 import java.applet.Applet;
 import java.awt.*;
 

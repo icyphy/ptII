@@ -26,11 +26,11 @@
 
 */
 
-package pt.actor;
-import pt.kernel.*;
-import pt.kernel.util.*;
-import pt.data.*;
-import pt.graph.*;
+package ptolemy.actor;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.data.*;
+import ptolemy.graph.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypedIOPort

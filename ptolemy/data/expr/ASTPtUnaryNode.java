@@ -41,31 +41,31 @@ Created : May 1998
  * 
  * @author Neil Smyth
  * @version $Id$
- * @see pt.data.expr.ASTPtRootNode
- * @see pt.data.expr.PtParser 
- * @see pt.data.Token 
+ * @see ptolemy.data.expr.ASTPtRootNode
+ * @see ptolemy.data.expr.PtParser 
+ * @see ptolemy.data.Token 
 */
 
-package pt.data.expr;
+package ptolemy.data.expr;
 
-import pt.data.*;
+import ptolemy.data.*;
 
 public class ASTPtUnaryNode extends ASTPtRootNode {
     protected boolean isMinus = false;
     protected boolean isNot = false;
     protected boolean isBitwiseNot = false;
        
-     protected pt.data.Token  _resolveNode() throws IllegalArgumentException {
+     protected ptolemy.data.Token  _resolveNode() throws IllegalArgumentException {
          if (jjtGetNumChildren() != 1) {
              String str = "More than one child of a Unary node";
              throw new IllegalArgumentException(str); 
          }
-         pt.data.Token result = childTokens[0];
+         ptolemy.data.Token result = childTokens[0];
          try {
              if (isMinus == true) {
                  // Need to chose the type at the bottom of the hierarch
                  // so as to not do any upcasting. For now IntToken will do.
-                 result = result.multiply(new pt.data.IntToken(-1));
+                 result = result.multiply(new ptolemy.data.IntToken(-1));
              } else if (isNot == true) {
                  if (!(result instanceof BooleanToken)) {
                      String str = "Cannot negate a nonBoolean type: ";

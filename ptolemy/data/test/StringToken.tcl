@@ -51,15 +51,15 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # 
 test StringToken-2.1 {Create an empty instance} {
-    set p [java::new pt.data.StringToken]
+    set p [java::new ptolemy.data.StringToken]
     $p toString
-} {pt.data.StringToken()}
+} {ptolemy.data.StringToken()}
 
 ######################################################################
 ####
 # 
 test StringToken-2.2 {Create an empty instance and query its value} {
-    set p [java::new pt.data.StringToken]
+    set p [java::new ptolemy.data.StringToken]
     $p getValue
 } {}
 
@@ -67,16 +67,16 @@ test StringToken-2.2 {Create an empty instance and query its value} {
 ####
 # 
 test StringToken-3.1 {Create an empty instance and attempt to init from string} {
-    set p [java::new pt.data.StringToken]
+    set p [java::new ptolemy.data.StringToken]
     $p fromString foo
     $p toString
-} {pt.data.StringToken(foo)}
+} {ptolemy.data.StringToken(foo)}
 
 ######################################################################
 ####
 # 
 test StringToken-4.1 {Create an empty instance and clone} {
-    set p [java::new pt.data.StringToken]
+    set p [java::new ptolemy.data.StringToken]
     set q [$p clone]
     $q getValue
 } {}
@@ -86,8 +86,8 @@ test StringToken-4.1 {Create an empty instance and clone} {
 # 
 test StringToken-4.2 {Create a non empty instance and clone} {
     set n [java::new {java.lang.String String} foo]
-    set p [java::new pt.data.StringToken $n]
+    set p [java::new ptolemy.data.StringToken $n]
     set q [$p clone]
     list [$p toString] [$q toString]
-} {pt.data.StringToken(foo) pt.data.StringToken(foo)}
+} {ptolemy.data.StringToken(foo) ptolemy.data.StringToken(foo)}
 

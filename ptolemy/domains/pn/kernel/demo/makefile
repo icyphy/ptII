@@ -32,7 +32,7 @@
 # Root of the Java directory
 ROOT =		../../../../../..
 
-ME =		java/pt/domains/pn/kernel/demo
+ME =		java/ptolemy/domains/pn/kernel/demo
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -41,8 +41,8 @@ include $(CONFIG)
 DIRS = 		#test doc
 
 # Used to build zip files
-JPACKAGE = 	pt.domains.pn.kernel.demo
-JPACKAGE_DIR = 	pt/domains/pn/kernel/demo
+JPACKAGE = 	ptolemy.domains.pn.kernel.demo
+JPACKAGE_DIR = 	ptolemy/domains/pn/kernel/demo
 JVERSION =	1.0
 JDIST =		$(JPACKAGE)$(JVERSION)
 JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip
@@ -82,7 +82,7 @@ test_prime: test_prime_java test_prime_tclblend
 
 # Use java
 test_prime_java:
-	CLASSPATH=$(CLASSPATH) $(JAVA) pt.domains.pn.kernel.PNPrimeExample 50
+	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.pn.kernel.PNPrimeExample 50
 
 # Use Tcl Blend
 test_prime_tclblend:

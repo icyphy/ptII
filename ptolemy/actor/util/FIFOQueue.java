@@ -28,10 +28,10 @@
 
 */
 
-package pt.actor.util;
+package ptolemy.actor.util;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
 import collections.LinkedList;
 import collections.CollectionEnumeration;

@@ -34,7 +34,7 @@ DIRS = kernel lib demo
 # Root of Tycho directory
 ROOT =		../../..
 
-ME = 		pt/domains/ct
+ME = 		ptolemy/domains/ct
 # True source directory
 VPATH =		$(ROOT)/$(ME)
 

@@ -53,9 +53,9 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test ComponentPort-2.1 {Construct Ports} {
-    set e1 [java::new pt.kernel.ComponentEntity]
-    set p1 [java::new pt.kernel.ComponentPort]
-    set p2 [java::new pt.kernel.ComponentPort $e1 P2]
+    set e1 [java::new ptolemy.kernel.ComponentEntity]
+    set p1 [java::new ptolemy.kernel.ComponentPort]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e1 P2]
     list [$p1 getFullName] [$p2 getFullName]
 } {. ..P2}
 
@@ -63,10 +63,10 @@ test ComponentPort-2.1 {Construct Ports} {
 ####
 #
 test ComponentPort-2.2 {Construct Ports} {
-    set e1 [java::new pt.kernel.ComponentEntity]
+    set e1 [java::new ptolemy.kernel.ComponentEntity]
     $e1 setName E1
-    set p1 [java::new pt.kernel.ComponentPort $e1 P1]
-    set p2 [java::new pt.kernel.ComponentPort $e1 P2]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e1 P2]
     list [$p1 getFullName] [$p2 getFullName]
 } {.E1.P1 .E1.P2}
 
@@ -74,9 +74,9 @@ test ComponentPort-2.2 {Construct Ports} {
 ####
 #
 test ComponentPort-2.3 {Check getInsidePorts on opaque ports} {
-    set e1 [java::new pt.kernel.ComponentEntity]
+    set e1 [java::new ptolemy.kernel.ComponentEntity]
     $e1 setName E1
-    set p1 [java::new pt.kernel.ComponentPort $e1 P1]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 P1]
     enumToFullNames [$p1 insidePorts]
 } {}
 
@@ -84,9 +84,9 @@ test ComponentPort-2.3 {Check getInsidePorts on opaque ports} {
 ####
 #
 test ComponentPort-2.3 {Check deepInsidePorts on opaque ports} {
-    set e1 [java::new pt.kernel.ComponentEntity]
+    set e1 [java::new ptolemy.kernel.ComponentEntity]
     $e1 setName E1
-    set p1 [java::new pt.kernel.ComponentPort $e1 P1]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 P1]
     enumToFullNames [$p1 deepInsidePorts]
 } {.E1.P1}
 
@@ -94,12 +94,12 @@ test ComponentPort-2.3 {Check deepInsidePorts on opaque ports} {
 ####
 #
 test ComponentPort-3.1 {Make transparent port} {
-    set e1 [java::new pt.kernel.CompositeEntity]
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
     $e1 setName E1
-    set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
-    set p1 [java::new pt.kernel.ComponentPort $e1 P1]
-    set p2 [java::new pt.kernel.ComponentPort $e2 P2]
-    set a1 [java::new pt.kernel.ComponentRelation $e1 A1]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 E2]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
+    set a1 [java::new ptolemy.kernel.ComponentRelation $e1 A1]
     $p2 link $a1
     $p1 link $a1
     enumToFullNames [$a1 linkedPorts]
@@ -109,13 +109,13 @@ test ComponentPort-3.1 {Make transparent port} {
 ####
 #
 test ComponentPort-3.2 {Make multiple aliases and test deepInsidePorts} {
-    set e1 [java::new pt.kernel.CompositeEntity]
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
     $e1 setName E1
-    set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
-    set p1 [java::new pt.kernel.ComponentPort $e2 P1]
-    set p2 [java::new pt.kernel.ComponentPort $e2 P2]
-    set p3 [java::new pt.kernel.ComponentPort $e1 P3]
-    set a1 [java::new pt.kernel.ComponentRelation $e1 A1]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 E2]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e2 P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
+    set p3 [java::new ptolemy.kernel.ComponentPort $e1 P3]
+    set a1 [java::new ptolemy.kernel.ComponentRelation $e1 A1]
     $p1 link $a1
     $p2 link $a1
     $p3 link $a1
@@ -127,13 +127,13 @@ test ComponentPort-3.2 {Make multiple aliases and test deepInsidePorts} {
 ####
 #
 test ComponentPort-3.3 {test connectedPorts} {
-    set e1 [java::new pt.kernel.CompositeEntity]
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
     $e1 setName E1
-    set e2 [java::new pt.kernel.ComponentEntity $e1 E2]
-    set p1 [java::new pt.kernel.ComponentPort $e2 P1]
-    set p2 [java::new pt.kernel.ComponentPort $e2 P2]
-    set p3 [java::new pt.kernel.ComponentPort $e1 P3]
-    set a1 [java::new pt.kernel.ComponentRelation $e1 A1]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 E2]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e2 P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
+    set p3 [java::new ptolemy.kernel.ComponentPort $e1 P3]
+    set a1 [java::new ptolemy.kernel.ComponentRelation $e1 A1]
     $p1 link $a1
     $p2 link $a1
     $p3 link $a1
@@ -146,26 +146,26 @@ test ComponentPort-3.3 {test connectedPorts} {
 ####
 #
 test ComponentPort-3.4 {Level-crossing link error} {
-    set e1 [java::new pt.kernel.CompositeEntity]
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
     $e1 setName E1
-    set e2 [java::new pt.kernel.CompositeEntity $e1 E2]
-    set p1 [java::new pt.kernel.ComponentPort $e1 P1]
-    set p2 [java::new pt.kernel.ComponentPort $e2 P2]
-    set a1 [java::new pt.kernel.ComponentRelation $e2 A1]
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e1 E2]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
+    set a1 [java::new ptolemy.kernel.ComponentRelation $e2 A1]
     catch {$p1 link $a1} msg
     list $msg
-} {{pt.kernel.util.IllegalActionException: .E1.P1 and .E1.E2.A1: Link crosses levels of the hierarchy}}
+} {{ptolemy.kernel.util.IllegalActionException: .E1.P1 and .E1.E2.A1: Link crosses levels of the hierarchy}}
 
 ######################################################################
 ####
 #
 test ComponentPort-3.5 {Level-crossing link} {
-    set e1 [java::new pt.kernel.CompositeEntity]
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
     $e1 setName E1
-    set e2 [java::new pt.kernel.CompositeEntity $e1 E2]
-    set p1 [java::new pt.kernel.ComponentPort $e1 P1]
-    set p2 [java::new pt.kernel.ComponentPort $e2 P2]
-    set a1 [java::new pt.kernel.ComponentRelation $e2 A1]
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e1 E2]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
+    set a1 [java::new ptolemy.kernel.ComponentRelation $e2 A1]
     $p1 liberalLink $a1
     enumToNames [$a1 linkedPorts]
 } {P1}
@@ -174,18 +174,18 @@ test ComponentPort-3.5 {Level-crossing link} {
 ####
 #
 test ComponentPort-3.6 {Construct transparent ports, then modify them} {
-    set e0 [java::new pt.kernel.CompositeEntity]
+    set e0 [java::new ptolemy.kernel.CompositeEntity]
     $e0 setName E0
-    set e2 [java::new pt.kernel.ComponentEntity $e0 E2]
-    set e4 [java::new pt.kernel.ComponentEntity $e0 E4]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e0 E2]
+    set e4 [java::new ptolemy.kernel.ComponentEntity $e0 E4]
 
-    set p1 [java::new pt.kernel.ComponentPort $e0 P1]
-    set p2 [java::new pt.kernel.ComponentPort $e2 P2]
-    set p3 [java::new pt.kernel.ComponentPort $e0 P3]
-    set p4 [java::new pt.kernel.ComponentPort $e4 P4]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e0 P1]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 P2]
+    set p3 [java::new ptolemy.kernel.ComponentPort $e0 P3]
+    set p4 [java::new ptolemy.kernel.ComponentPort $e4 P4]
 
-    set a1 [java::new pt.kernel.ComponentRelation $e0 A1]
-    set a2 [java::new pt.kernel.ComponentRelation $e0 A2]
+    set a1 [java::new ptolemy.kernel.ComponentRelation $e0 A1]
+    set a2 [java::new ptolemy.kernel.ComponentRelation $e0 A2]
 
     $p2 link $a1
     $p4 link $a2
@@ -219,14 +219,14 @@ test ComponentPort-3.6 {Construct transparent ports, then modify them} {
 #
 test ComponentPort-4.1 {Cross Level Link} {
     # Create objects
-    set e0 [java::new pt.kernel.CompositeEntity]
+    set e0 [java::new ptolemy.kernel.CompositeEntity]
     $e1 setName E0
-    set e1 [java::new pt.kernel.CompositeEntity $e0 "E1"]
-    set e2 [java::new pt.kernel.ComponentEntity $e1 "E2"]
-    set e3 [java::new pt.kernel.ComponentEntity $e0 "E3"]
-    set p1 [java::new pt.kernel.ComponentPort $e2 "P1"]
-    set p2 [java::new pt.kernel.ComponentPort $e3 "P2"]
-    set r1 [java::new pt.kernel.ComponentRelation $e0 "R1"]
+    set e1 [java::new ptolemy.kernel.CompositeEntity $e0 "E1"]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "E2"]
+    set e3 [java::new ptolemy.kernel.ComponentEntity $e0 "E3"]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e2 "P1"]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e3 "P2"]
+    set r1 [java::new ptolemy.kernel.ComponentRelation $e0 "R1"]
 
     # Connect
     $p1 liberalLink $r1
@@ -241,20 +241,20 @@ test ComponentPort-4.1 {Cross Level Link} {
 # Example from figure of design document.
 test ComponentPort-5.1 {Transparent entity} {
     # Create objects
-    set e0 [java::new pt.kernel.CompositeEntity]
+    set e0 [java::new ptolemy.kernel.CompositeEntity]
     $e0 setName E0
-    set e1 [java::new pt.kernel.ComponentEntity $e0 "E1"]
-    set e2 [java::new pt.kernel.CompositeEntity $e0 "E2"]
-    set e3 [java::new pt.kernel.ComponentEntity $e2 "E3"]
-    set e4 [java::new pt.kernel.ComponentEntity $e0 "E4"]
-    set p1 [java::new pt.kernel.ComponentPort $e1 "P1"]
-    set p2 [java::new pt.kernel.ComponentPort $e2 "P2"]
-    set p3 [java::new pt.kernel.ComponentPort $e3 "P3"]
-    set p4 [java::new pt.kernel.ComponentPort $e2 "P4"]
-    set p5 [java::new pt.kernel.ComponentPort $e4 "P5"]
-    set r1 [java::new pt.kernel.ComponentRelation $e0 "R1"]
-    set r2 [java::new pt.kernel.ComponentRelation $e2 "R2"]
-    set r3 [java::new pt.kernel.ComponentRelation $e0 "R3"]
+    set e1 [java::new ptolemy.kernel.ComponentEntity $e0 "E1"]
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e0 "E2"]
+    set e3 [java::new ptolemy.kernel.ComponentEntity $e2 "E3"]
+    set e4 [java::new ptolemy.kernel.ComponentEntity $e0 "E4"]
+    set p1 [java::new ptolemy.kernel.ComponentPort $e1 "P1"]
+    set p2 [java::new ptolemy.kernel.ComponentPort $e2 "P2"]
+    set p3 [java::new ptolemy.kernel.ComponentPort $e3 "P3"]
+    set p4 [java::new ptolemy.kernel.ComponentPort $e2 "P4"]
+    set p5 [java::new ptolemy.kernel.ComponentPort $e4 "P5"]
+    set r1 [java::new ptolemy.kernel.ComponentRelation $e0 "R1"]
+    set r2 [java::new ptolemy.kernel.ComponentRelation $e2 "R2"]
+    set r3 [java::new ptolemy.kernel.ComponentRelation $e0 "R3"]
 
     # Connect
     $p1 link $r1
@@ -284,22 +284,22 @@ test ComponentPort-5.2 {numInsideLinks} {
 # NOTE: Uses topology built in 5.1
 test ComponentPort-5.3 {test description} {
     $p2 description 31
-} {pt.kernel.ComponentPort {.E0.E2.P2} links {
-    {pt.kernel.ComponentRelation {.E0.R1}}
+} {ptolemy.kernel.ComponentPort {.E0.E2.P2} links {
+    {ptolemy.kernel.ComponentRelation {.E0.R1}}
 } insidelinks {
-    {pt.kernel.ComponentRelation {.E0.E2.R2}}
+    {ptolemy.kernel.ComponentRelation {.E0.E2.R2}}
 }}
 
 # NOTE: Uses topology built in 5.1
 test ComponentPort-5.4 {test description} {
     $p2 description 3
-} {pt.kernel.ComponentPort {.E0.E2.P2}}
+} {ptolemy.kernel.ComponentPort {.E0.E2.P2}}
 
 # NOTE: Uses topology built in 5.1
 test ComponentPort-5.5 {test clone} {
     set pn [$p2 clone]
     $pn description 31
-} {pt.kernel.ComponentPort {.P2} links {
+} {ptolemy.kernel.ComponentPort {.P2} links {
 } insidelinks {
 }}
 

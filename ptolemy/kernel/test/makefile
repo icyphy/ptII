@@ -35,7 +35,7 @@
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-ME =		pt/kernel/test
+ME =		ptolemy/kernel/test
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk

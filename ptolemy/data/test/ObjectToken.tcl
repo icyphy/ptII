@@ -51,15 +51,15 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # 
 test ObjectToken-2.1 {Create an empty instance} {
-    set p [java::new pt.data.ObjectToken]
+    set p [java::new ptolemy.data.ObjectToken]
     $p toString
-} {pt.data.ObjectToken}
+} {ptolemy.data.ObjectToken}
 
 ######################################################################
 ####
 # 
 test ObjectToken-2.2 {Create an empty instance and query its value} {
-    set p [java::new pt.data.ObjectToken]
+    set p [java::new ptolemy.data.ObjectToken]
     expr { [$p getObject] == [java::null] }
 } {1}
 
@@ -67,16 +67,16 @@ test ObjectToken-2.2 {Create an empty instance and query its value} {
 ####
 # 
 test ObjectToken-3.1 {Create an empty instance and attempt to init from string} {
-    set p [java::new pt.data.ObjectToken]
+    set p [java::new ptolemy.data.ObjectToken]
     catch {$p fromString foo} msg
     list $msg
-} {{pt.kernel.util.IllegalActionException: Tokens of class pt.data.ObjectToken cannot be initialized from a string.}}
+} {{ptolemy.kernel.util.IllegalActionException: Tokens of class ptolemy.data.ObjectToken cannot be initialized from a string.}}
 
 ######################################################################
 ####
 # 
 test ObjectToken-4.1 {Create an empty instance and clone} {
-    set p [java::new pt.data.ObjectToken]
+    set p [java::new ptolemy.data.ObjectToken]
     set q [$p clone]
     expr { [$q getObject] == [java::null] }
 } {1}
@@ -86,7 +86,7 @@ test ObjectToken-4.1 {Create an empty instance and clone} {
 # 
 test ObjectToken-4.2 {Create a non empty instance and clone} {
     set n [java::new {java.lang.StringBuffer String} foo]
-    set p [java::new pt.data.ObjectToken $n]
+    set p [java::new ptolemy.data.ObjectToken $n]
     set q [$p clone]
     list [$p toString] [$q toString]
 } {foo foo}
@@ -96,7 +96,7 @@ test ObjectToken-4.2 {Create a non empty instance and clone} {
 # 
 test ObjectToken-4.3 {Create a non empty instance, modify object, and clone} {
     set n [java::new {java.lang.StringBuffer String} foo]
-    set p [java::new pt.data.ObjectToken $n]
+    set p [java::new ptolemy.data.ObjectToken $n]
     set q [$p clone]
     $n {append String} " bar"
     list [$p toString] [$q toString]

@@ -27,10 +27,10 @@
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
 */
 
-package pt.actor;
+package ptolemy.actor;
 
-import pt.kernel.*;
-import pt.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 
 import java.util.Enumeration;
 import collections.LinkedList;
@@ -50,8 +50,8 @@ actor does nothing in the action methods (prefire, fire, ...).
 
 @author Mudit Goel, Edward A. Lee
 @version $Id$
-@see pt.actors.CompositeActor
-@see pt.actors.IOPort
+@see ptolemy.actors.CompositeActor
+@see ptolemy.actors.IOPort
 */
 public class AtomicActor extends ComponentEntity implements Actor {
 

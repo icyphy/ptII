@@ -26,7 +26,7 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.actor.util;
+package ptolemy.actor.util;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleCQComparator

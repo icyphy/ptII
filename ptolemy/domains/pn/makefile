@@ -34,7 +34,7 @@ DIRS = kernel actors demo
 # Root of Tycho directory
 ROOT =		../../../..
 
-ME = 		java/pt/domains/pn
+ME = 		java/ptolemy/domains/pn
 # True source directory
 VPATH =		$(ROOT)/$(ME)
 

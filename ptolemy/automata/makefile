@@ -35,7 +35,7 @@
 # Root of the Java directory
 ROOT =		../..
 
-ME =		pt/automata
+ME =		ptolemy/automata
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -46,9 +46,9 @@ DIRS = 		#test doc demo
 CLASSPATH = 	../..
 
 # Used to build zip files
-TYPACKAGE = 	pt.automata
+TYPACKAGE = 	ptolemy.automata
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = pt/automata
+TYPACKAGE_DIR = ptolemy/automata
 TYVERSION =	1.0
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
