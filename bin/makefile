@@ -45,6 +45,7 @@ include $(CONFIG)
 # Bourne Shell scripts for Unix and Cygwin
 SHELL_FILES = \
 	histogram \
+	ptinvoke \
 	ptjacl \
 	ptjaclapp \
 	ptplot \
@@ -62,6 +63,7 @@ BAT_FILES = \
 
 EXTRA_SRCS = \
 	ptinvoke.in \
+	ptjacl.in \
 	$(BAT_FILES)
 
 # Sources that may or may not be present, but if they are present, we don't
