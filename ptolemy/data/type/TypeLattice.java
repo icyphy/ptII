@@ -63,7 +63,8 @@ public class TypeLattice {
     public static int compare(Token token1, Token token2) {
         if (token1==null || token2==null) {
 	    throw new IllegalArgumentException("TypeLattice.compare: " +
-                    "one or both of the argument tokens is null.");
+                    "one or both of the argument tokens is null: "
+                    + " token1 = " + token1 + ", token2 = " + token2);
 	}
 	return compare(token1.getType(), token2.getType());
     }
@@ -81,7 +82,8 @@ public class TypeLattice {
     public static int compare(Type type1, Type type2) {
         if (type1==null || type2==null) {
 	    throw new IllegalArgumentException("TypeLattice.compare: " +
-                    "one or both of the argument types is null.");
+                    "one or both of the argument types is null: "
+                    + " type1 = " + type1 + ", type2 = " + type2);
 	}
 	return _lattice.compare(type1, type2);
     }
@@ -123,7 +125,8 @@ public class TypeLattice {
         public int compare(Object t1, Object t2) {
 	    if ( !(t1 instanceof Type) || !(t2 instanceof Type)) {
 	        throw new IllegalArgumentException("TheTypeLattice.compare: "
-			+ "Arguments are not instances of Type.");
+			+ "Arguments are not instances of Type: "
+                        + " type1 = " + t1 + ", type2 = " + t2);
 	    }
 
 	    Type ct1 = (Type)t1;
