@@ -140,7 +140,7 @@ public class Query extends JPanel {
         _entries.put(name, entryBox);
         // Add the listener last so that there is no notification
         // of the first value.
-        entryBox.addActionListener(new LineListener(name));
+        entryBox.addActionListener(new QueryActionListener(name));
     }
 
     /** Add a listener.  The changed() method of the listener will be
@@ -169,7 +169,7 @@ public class Query extends JPanel {
         flow.setAlignment(FlowLayout.LEFT);
         Panel buttonPanel = new Panel(flow);
         ButtonGroup group = new ButtonGroup();
-        QueryItemListener listener = new QueryItemListener(name);
+        QueryActionListener listener = new QueryActionListener(name);
 
         // Regrettably, ButtonGroup provides no method to find out
         // which button is selected, so we have to go through a
@@ -189,7 +189,7 @@ public class Query extends JPanel {
             buttonPanel.add(checkbox);
             // Add the listener last so that there is no notification
             // of the first value.
-            checkbox.addItemListener(listener);
+            checkbox.addActionListener(listener);
         }
         _addPair(lbl, buttonPanel);
         _entries.put(name, buttons);
@@ -550,10 +550,10 @@ public class Query extends JPanel {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** Listener for "line" entries.
+    /** Listener for "line" and radio button entries.
      */
-    class LineListener implements ActionListener {
-        public LineListener(String name) {
+    class QueryActionListener implements ActionListener {
+        public QueryActionListener(String name) {
             _name = name;
         }
         /** Call all registered QueryListeners. */
