@@ -34,6 +34,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.MatrixToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.MonotonicFunction;
@@ -164,27 +165,10 @@ public class SequenceToMatrix extends SDFTransformer {
         int length = rowsValue * columnsValue;
         Token[] valueArray = input.get(0, length);
 
-        // Use reflection, to avoid having to have a case statement
-        // on the type.
-        Class outputTokenClass
-            = ((UnsizedMatrixType)output.getType()).getTokenClass();
-        Class[] argumentTypes = new Class[3];
-        argumentTypes[0] = Token[].class;
-        argumentTypes[1] = int.class;
-        argumentTypes[2] = int.class;
-        try {
-            Constructor constructor
-                = outputTokenClass.getConstructor(argumentTypes);
-            Object[] arguments = new Object[3];
-            arguments[0] = valueArray;
-            arguments[1] = new Integer(rowsValue);
-            arguments[2] = new Integer(columnsValue);
-            Token outputToken = (Token)constructor.newInstance(arguments);
-            output.send(0, outputToken);
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Cannot find a suitable output matrix type.");
-        }
+        Token outputToken = 
+            MatrixToken.arrayToMatrix(
+                    input.getType(), valueArray, rowsValue, columnsValue);
+         output.send(0, outputToken);
     }
 
     /** Return true if the input port has enough tokens for this actor to

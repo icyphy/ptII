@@ -2,10 +2,14 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="VariableFIR" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="SDF4" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -17,6 +21,8 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[94, 242]">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 563}}">
     </property>
     <entity name="VariableFIR0" class="ptolemy.domains.sdf.lib.VariableFIR">
         <property name="decimation" class="ptolemy.data.expr.Parameter" value="1">
@@ -31,23 +37,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="276.0, 152.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="5">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
         </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="5">
-            </property>
         </port>
         <port name="newTaps" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -75,13 +69,13 @@
     <entity name="Pulse2" class="ptolemy.actor.lib.Pulse">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1}">
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1,2,3,4,5}">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{{0.5, 1.0, 0.5}, {-0.5, -1.0, -0.5}}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{0.5, 1.0, 0.5,-0.5, -1.0, -0.5}">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="121.0, 228.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 235.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -96,23 +90,47 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="400.0, 157.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="180.0, 245.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="arrayLength" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="VariableFIR0.input" relation="relation5"/>
     <link port="VariableFIR0.output" relation="relation"/>
     <link port="VariableFIR0.newTaps" relation="relation2"/>
     <link port="Pulse1.output" relation="relation5"/>
-    <link port="Pulse2.output" relation="relation2"/>
+    <link port="Pulse2.output" relation="relation3"/>
     <link port="Test.input" relation="relation"/>
+    <link port="SequenceToArray.input" relation="relation3"/>
+    <link port="SequenceToArray.output" relation="relation2"/>
 </entity>

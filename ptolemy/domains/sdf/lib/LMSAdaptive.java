@@ -216,7 +216,7 @@ public class LMSAdaptive extends FIR {
         for (int i = 0; i < _taps.length; i++) {
             // The data item to use here should be "index" in the past,
             // where an index of zero would be the current input.
-            Token datum = _data[(_mostRecent + index - 1)%_data.length];
+            Token datum = _data[(_mostRecent + index - 1) % _data.length];
             _taps[i] = _taps[i].add(factor.multiply(datum));
             index++;
         }
