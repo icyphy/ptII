@@ -206,6 +206,7 @@ public abstract class KernelMain {
         // Applet codegen works with all directors, not just SDF.
         Director topLevelDirector = toplevel.getDirector();
 
+        // FIXME: nearly duplicate code in java/TestApplication.java
         if (topLevelDirector != null
                 && topLevelDirector instanceof SDFDirector) {
             SDFDirector director = (SDFDirector) topLevelDirector;
