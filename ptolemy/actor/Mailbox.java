@@ -30,6 +30,7 @@
 package pt.actors;
 import pt.data.*;
 import pt.kernel.Nameable;
+import pt.kernel.NoSuchItemException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Mailbox
@@ -58,11 +59,11 @@ public class Mailbox implements Receptionist {
      * FIXME: synchronized on workspace?
      * @see put
      * @return token
-     * @exception NoTokenAvaliableException if the Mailbox is empty.
+     * @exception NoSuchItemException if the Mailbox is empty.
      */	
-    public Token get() throws NoTokenAvailableException {
+    public Token get() throws NoSuchItemException {
         if(_isEmpty) {
-            throw new NoTokenAvailableException();
+            throw new NoSuchItemException("");
         }
         _isEmpty = true;
         return _token;
