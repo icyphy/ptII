@@ -225,6 +225,23 @@ public class Effigy extends CompositeEntity {
         return topEffigy()._modified;
     }
 
+    /** Return the total number of open tableau for this effigy
+     *  effigy and all effigies it contains.
+     *  @return A non-negative integer giving the number of open tableaux.
+     */
+    public int numberOfOpenTableaux() {
+        int result = 0;
+        List tableaux = entityList(Tableau.class);
+        result += tableaux.size();
+
+        List containedEffigies = entityList(Effigy.class);
+        Iterator effigies = containedEffigies.iterator();
+        while(effigies.hasNext()) {
+            result += ((Effigy)effigies.next()).numberOfOpenTableaux();
+        }
+        return result;
+    }
+
     /** Override the base class so that tableaux contained by this object
      *  are removed before this effigy is removed from the ModelDirectory.
      *  This causes the frames associated with those tableaux to be
@@ -364,13 +381,14 @@ public class Effigy extends CompositeEntity {
 	}
     }
 
-    /** Remove the specified entity, and if there are no more tableaux
-     *  contained, then remove this object from its container.
+    /** Remove the specified entity, and if there are no remaining tableaux
+     *  contained by this effigy or any effigy it contains, then remove
+     *  this object from its container.
      *  @param entity The tableau to remove.
      */
     protected void _removeEntity(ComponentEntity entity) {
 	super._removeEntity(entity);
-       	if(entityList(Tableau.class).size() == 0) {
+       	if(numberOfOpenTableaux() == 0) {
 	    try {
 		setContainer(null);
 	    } catch (Exception ex) {
