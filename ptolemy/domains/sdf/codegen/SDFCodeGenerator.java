@@ -161,9 +161,12 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
         Iterator actorItr = _actorSet.iterator();
 
+        System.out.println("SDFCodeGenerator: Starting to accumulate " +
+                "class info");
         ActorCodeGenerator actorCodeGen =
             new ActorCodeGenerator(_codeGenClassFactory, _outputDirectoryName,
                     _outputPackageName);
+        System.out.println("SDFCodeGenerator: Done accumulating class info");
 
         LinkedList renamedSourceList = new LinkedList();
 

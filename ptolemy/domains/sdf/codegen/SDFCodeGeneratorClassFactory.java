@@ -57,7 +57,11 @@ public class SDFCodeGeneratorClassFactory extends CodeGeneratorClassFactory {
 
     public static CodeGeneratorClassFactory getInstance() {
         if (_instance == null) {
+            System.out.println("SDFCodeGeneratorClassFactory: " +
+                    "Creating new SDFCodeGeneratorClassFactory");
             _instance = new SDFCodeGeneratorClassFactory();
+            System.out.println("SDFCodeGeneratorClassFactory: " +
+                    "Done creating new SDFCodeGeneratorClassFactory");
         }
         return _instance;
     }

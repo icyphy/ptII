@@ -462,7 +462,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     protected static final TypeNode[] _TOKEN_CONTAINED_TYPES;
 
     static {
-
+        System.out.println("PtolemyTypeIdentifier<static>: start");
         CompileUnitNode typedAtomicActorUnit = StaticResolution.load(
                 SearchPath.NAMED_PATH.openSource("ptolemy.actor.TypedAtomicActor", true), 1);
 
@@ -471,6 +471,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         TYPED_ATOMIC_ACTOR_TYPE = TYPED_ATOMIC_ACTOR_DECL.getDefType();
 
+
+        System.out.println("PtolemyTypeIdentifier<static>: load Complex");
         CompileUnitNode complexUnit = StaticResolution.load(
                 SearchPath.NAMED_PATH.openSource("ptolemy.math.Complex", true), 1);
 
@@ -479,6 +481,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
         COMPLEX_TYPE = COMPLEX_DECL.getDefType();
 
+        System.out.println("PtolemyTypeIdentifier<static>: load FixPoint");
         CompileUnitNode fixPointUnit = StaticResolution.load(
                 SearchPath.NAMED_PATH.openSource("ptolemy.math.FixPoint", true), 1);
 
@@ -810,6 +813,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 TypeUtility.makeArrayType(FIX_POINT_TYPE, 2),
                 IntTypeNode.instance // hack for DummyToken
                 };
+        System.out.println("PtolemyTypeIdentifier<static>: done");
     }
 }
 
