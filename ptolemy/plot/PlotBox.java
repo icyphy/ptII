@@ -348,7 +348,7 @@ public class PlotBox extends Panel {
         if (_yticks == null) {
             Vector ygrid = null;
             if (_ylog) {
-                ygrid = _initGrid(yStart, yStep);
+                ygrid = _gridInit(yStart, yStep);
             }
 
             // automatic ticks
@@ -381,10 +381,10 @@ public class PlotBox extends Panel {
             
             double yTmpStart = yStart;
             if (_ylog)
-                yTmpStart = _gridStep(ygrid, ind, yStart, yStep, _ylog);
+                yTmpStart = _gridStep(ygrid,yStart, yStep, _ylog);
 
-            for (double ypos=yTmpStart; ypos <= _ytickMax;
-                 ypos = _gridStep(ygrid, ind, ypos, yStep, _ylog)) {
+            for (double ypos = yTmpStart; ypos <= _ytickMax;
+                 ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
                 String yticklabel;
@@ -449,15 +449,15 @@ public class PlotBox extends Panel {
             Vector ygrid = null;
             double yTmpStart = yStart;
             if (_ylog) {
-                ygrid = _initGrid(yStart, yStep);
-                yTmpStart = _gridStep(ygrid, ind, yStart, yStep, _ylog);
+                ygrid = _gridInit(yStart, yStep);
+                yTmpStart = _gridStep(ygrid, yStart, yStep, _ylog);
                 if (_debug == 5) 
                     System.out.println("PlotBox: drawPlot: YAXIS ind="+ind+
                             " yStart="+yStart+" yStep="+yStep+
                             " yTmpStart="+yTmpStart);
             }
             for (double ypos=yTmpStart; ypos <= _ytickMax;
-                 ypos = _gridStep(ygrid, ind, ypos, yStep, _ylog)) {
+                 ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
                 int yCoord1 = _lry - (int)((ypos-_ytickMin)*_ytickscale);
@@ -529,32 +529,31 @@ public class PlotBox extends Panel {
             int numfracdigits = 0;
             int charwidth = _labelFontMetrics.stringWidth("8");
             if (_xlog) {
-                // -1E-02
+                // X axes log labels will be at most 6 chars: -1E-02
                 nx = 2 + width/((charwidth * 6) + 10);
             } else {
-
-            // Limit to 10 iterations
-            int count = 0;
-            while (count++ <= 10) {
-                xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
-                // Compute the width of a label for this xStep
-                numfracdigits = _numFracDigits(xStep);
-                // Number of integer digits is the maximum of the two endpoints
-                int intdigits = _numIntDigits(_xtickMax);
-                int inttemp = _numIntDigits(_xtickMin);
-                if (intdigits < inttemp) {
-                    intdigits = inttemp;
+                // Limit to 10 iterations
+                int count = 0;
+                while (count++ <= 10) {
+                    xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
+                    // Compute the width of a label for this xStep
+                    numfracdigits = _numFracDigits(xStep);
+                    // Number of integer digits is the maximum of two endpoints
+                    int intdigits = _numIntDigits(_xtickMax);
+                    int inttemp = _numIntDigits(_xtickMin);
+                    if (intdigits < inttemp) {
+                        intdigits = inttemp;
+                    }
+                    // Allow two extra digits (decimal point and sign).
+                    int maxlabelwidth = charwidth *
+                        (numfracdigits + 2 + intdigits);
+                    // Compute new estimate of number of ticks.
+                    int savenx = nx;
+                    // NOTE: 10 additional pixels between labels.
+                    // NOTE: Try to ensure at least two tick marks.
+                    nx = 2 + width/(maxlabelwidth+10);
+                    if (nx - savenx <= 1 || savenx - nx <= 1) break;
                 }
-                // Allow two extra digits (decimal point and sign).
-                int maxlabelwidth = charwidth *
-                    (numfracdigits + 2 + intdigits);
-                // Compute new estimate of number of ticks.
-                int savenx = nx;
-                // NOTE: 10 additional pixels between labels.
-                // NOTE: Try to ensure at least two tick marks.
-                nx = 2 + width/(maxlabelwidth+10);
-                if (nx - savenx <= 1 || savenx - nx <= 1) break;
-            }
             }
             xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
             numfracdigits = _numFracDigits(xStep);
@@ -568,17 +567,17 @@ public class PlotBox extends Panel {
             Vector xgrid = null;
             double xTmpStart = xStart;
             if (_xlog) {
-                xgrid = _initGrid(xStart, xStep);
-                xTmpStart = _gridStep(xgrid, ind, xStart, xStep, _xlog);
+                xgrid = _gridInit(xStart, xStep);
+                xTmpStart = _gridStep(xgrid, xStart, xStep, _xlog);
                 if (_debug == 5) 
-                    System.out.println("PlotBox: drawPlot: XAXIS ind="+ind+
+                    System.out.println("PlotBox: drawPlot: XAXIS "+
                             " xStart="+xStart+" nx="+nx+" xStep="+xStep+
                             " xTmpStart="+xTmpStart);
             }
             // Label the x axis.  The labels are quantized so that
             // they don't have excess resolution.
             for (double xpos=xTmpStart; xpos <= _xtickMax;
-                 xpos = _gridStep(xgrid, ind, xpos, xStep, _xlog)) {
+                 xpos = _gridStep(xgrid, xpos, xStep, _xlog)) {
                 String xticklabel;
                 if (_xlog) {
                     xticklabel = _formatLogNum(xpos, numfracdigits);
@@ -1463,7 +1462,7 @@ public class PlotBox extends Panel {
     ////                           protected variables                    ////
     
     // If non-zero, print out debugging messages.  Use setDebug() to set this.
-    protected int _debug = 5;
+    protected int _debug = 0;
     
     // The graphics context to operate in.  Note that printing will call
     // paint with a different graphics object, so we have to pass this
@@ -1488,6 +1487,9 @@ public class PlotBox extends Panel {
     // Whether to draw the axes using a logarithmic scale.
     protected boolean _xlog = false, _ylog = false;
 
+    // For use in calculating log base 10.  A log times this is a log base 10.
+    protected static final double _LOG10SCALE = 1/Math.log(10);
+    
     // Whether to draw a background grid.
     protected boolean _grid = true;
     
@@ -1667,147 +1669,138 @@ public class PlotBox extends Panel {
         }
     }
  
-    private double _gridBase = 0.0;
-    // FIXME: ind is unused.
-    private double _gridStep(Vector grid, int ind, double pos, double step, boolean logflag) {
+    /*
+     * Determine what values to use for log axes.
+     * Based on initGrid() from xgraph.c by David Harrison.
+     */
+    private Vector _gridInit(double low, double step) {
+        double ratio = Math.pow(10.0, step);
+        double x = 0;
+        // Vector containing axes tick values that we return.
+        Vector grid = new Vector(101); // 101 comes from xgraph.c
+
+        // How log axes work:
+        // _gridInit() creates a vector with the values to use for the
+        // log axes.  For example, the vector might contain
+        // {0.0 0.301 0.698}, which could correspond to
+        // axis labels {1 1.2 1.5 10 12 15 100 120 150}
+        //
+        // _gridStep() gets the proper value.  _gridInit is cycled through
+        // for each integer log value.
+        //
+        // To turn on debugging messages for the log axes, set _debug to 5.
+        //
+        // Bugs in log axes:
+        // * Zooming in to a region that does not have a power of 10
+        // as grid line means that the numbers displayed will not have
+        // an exponent, so they will be less than useful
+        // * Sometimes not enough grid lines are displayed because the
+        // region is small.  This bug is present in the original xgraph
+        // binary, which is the basis of this code.  The problem is that
+        // as ratio gets closer to 1.0, we need to add more and more
+        // grid marks.
+        // * Sometimes it would be nice if the first grid mark was printed.
+        // If there are only a few grids, then the code often decides not
+        // to print the first grid mark.  The fix for this would be to
+        // have code that determines if there enough space for the first
+        // grid mark or not.  If we just blindly place the first grid
+        // mark, then we can end up with labels overlapping.
+
+        _gridCurJuke = 0;
+        grid.addElement(new Double(0.0));
+
+	_gridBase = Math.floor(low);
+	
+	if (ratio <= 3.0) {
+	    if (ratio > 2.0) {
+                grid.addElement(new Double(_LOG10SCALE*Math.log(3.0)));
+	    } else if (ratio > 1.333) {
+                grid.addElement(new Double(_LOG10SCALE*Math.log(2.0)));
+                grid.addElement(new Double(_LOG10SCALE*Math.log(5.0)));
+	    } else if (ratio > 1.25) {
+                grid.addElement(new Double(_LOG10SCALE*Math.log(1.5)));
+                grid.addElement(new Double(_LOG10SCALE*Math.log(2.0)));
+                grid.addElement(new Double(_LOG10SCALE*Math.log(3.0)));
+                grid.addElement(new Double(_LOG10SCALE*Math.log(5.0)));
+                grid.addElement(new Double(_LOG10SCALE*Math.log(7.0)));
+	    } else {
+                // FIXME: If ratio is close to 1.0, then these values are wrong
+		for (x = 1.0; x < 10.0 && (x+.5)/(x+.4) >= ratio; x += .5) {
+                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + .1)));
+                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + .2)));
+                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + .3)));
+                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + .4)));
+                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + .5)));
+		}
+		if (Math.floor(x) != x) {
+                    grid.addElement(new Double(_LOG10SCALE*Math.log(x += .5)));
+                }
+		for ( ; x < 10.0 && (x+1.0)/(x+.5) >= ratio; x += 1.0) {
+                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + .5)));
+                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + 1.0)));
+		}
+		for ( ; x < 10.0 && (x+1.0)/x >= ratio; x += 1.0) {
+                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + 1.0)));
+		}
+		if (x == 7.0) {
+		    x = 6.0;
+                    grid.removeElement(grid.lastElement());
+		}
+		if (x < 7.0) {
+                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + 2.0)));
+		}
+		if (x == 10.0) {
+                    grid.removeElement(grid.lastElement());
+                }
+	    }
+	    x = low - _gridBase;
+            // Set gridCurJuke so that the value in grid is greater than
+            // or equal to x.  This sets us up to process the first point.
+            for (_gridCurJuke = -1;
+                 (_gridCurJuke+1) < grid.size() && x >= 
+                     ((Double)grid.elementAt(_gridCurJuke+1)).doubleValue();
+                 _gridCurJuke++){
+            }
+	}
+        if (_debug == 5 )
+            System.out.println("PlotBox: _gridInit("+low+","+step+
+                    ": ratio = "+ratio+" _gridCurJuke = "+_gridCurJuke+
+                    " grid.size()"+grid.size()+grid.toString());
+        return grid;
+    }
+
+    /*
+     * Used to find the next value for the axis label.
+     * For non-log axes, we just return pos + step.
+     * For log axes, we read the appropriate value in the grid Vector,
+     * add it to _gridBase and return the sum.  We also take care
+     * to reset _gridCurJuke if necessary.
+     * Note that for log axes, _gridInit() must be called before
+     * calling _gridStep().
+     * Based on stepGrid() from xgraph.c by David Harrison.
+     */
+    private double _gridStep(Vector grid, double pos, double step,
+            boolean logflag) {
         if (logflag) {
-            if (++gridCurJuke >= grid.size()) {
-                gridCurJuke = 0;
+            if (++_gridCurJuke >= grid.size()) {
+                _gridCurJuke = 0;
                 _gridBase+=Math.ceil(step);
-                //gridBase += gridStep;
-                //pos += _roundUp(step);
                 if (_debug == 5)
                     System.out.println("PlotBox: _gridStep: pos = "+pos+
                             " _roundUp("+step+") = "+_roundUp(step));
             }
-            //return(gridBase + gridJuke[gridCurJuke]);
-
             if (_debug == 5)
                     System.out.println("PlotBox: _gridStep: pos="+pos+
-                            " ind="+ind+" step="+step+" "+" gridCurJuke="+
-                            gridCurJuke+" results="+_gridBase+"+"+
-                            ((Double)grid.elementAt(gridCurJuke)).doubleValue());
-            return _gridBase + ((Double)grid.elementAt(gridCurJuke)).doubleValue();
+                            " step="+step+" "+" _gridCurJuke="+
+                            _gridCurJuke+" results="+_gridBase+"+"+
+                          ((Double)grid.elementAt(_gridCurJuke)).doubleValue());
+            return _gridBase +
+                ((Double)grid.elementAt(_gridCurJuke)).doubleValue();
         } else {
             return pos + step;
         }
     }
 
-    private int gridNJuke = 0, gridCurJuke = 0;
-    private double log10(double v) { return Math.log(v)*_log10scale;}
-
-    /*
-     * Determine what values to use for log axes.
-     * based on initGrid() from xgraph.c by David Harrison.
-     */
-    private Vector _initGrid(double low, double step) {
-        double ratio, x;
-        Vector grid = new Vector(101); // 101 comes from xgraph.c
-
-        // How log axes work:
-        // _initGrid() creates a vector with the values to use for the
-        // log axes.  For example, the vector might contain
-        // {0.0 0.301 0.698}, which could correspond to
-        // axis labels {1 1.2 1.5 10 12 15 100 120 150}
-        //
-        // _gridStep() gets the proper value.  _initGrid is cycled through
-        // for each integer log value.
-
-        gridNJuke = 0;
-        gridCurJuke = 0;
-        grid.addElement(new Double(0.0));
-
-	_gridBase = Math.floor(low);
-	//gridStep = ceil(step);
-	ratio = Math.pow(10.0, step);
-	if (ratio <= 3.0) {
-	    if (ratio > 2.0) {
-                gridNJuke++;
-		//gridJuke[gridNJuke++] = log10(3.0);
-                grid.addElement(new Double(log10(3.0)));
-	    } else if (ratio > 1.333) {
-                gridNJuke++;                 gridNJuke++;
-		//gridJuke[gridNJuke++] = log10(2.0);	gridJuke[gridNJuke++] = log10(5.0);
-                grid.addElement(new Double(log10(2.0)));
-                grid.addElement(new Double(log10(5.0)));
-	    } else if (ratio > 1.25) {
-                gridNJuke++;                 gridNJuke++;
-                gridNJuke++;                 gridNJuke++;
-                gridNJuke++;  
-		//gridJuke[gridNJuke++] = log10(1.5);	gridJuke[gridNJuke++] = log10(2.0);	gridJuke[gridNJuke++] = log10(3.0);
-		//gridJuke[gridNJuke++] = log10(5.0);	gridJuke[gridNJuke++] = log10(7.0);
-                grid.addElement(new Double(log10(1.5)));
-                grid.addElement(new Double(log10(2.0)));
-                grid.addElement(new Double(log10(3.0)));
-                grid.addElement(new Double(log10(5.0)));
-                grid.addElement(new Double(log10(7.0)));
-	    } else {
-		for (x = 1.0; x < 10.0 && (x+.5)/(x+.4) >= ratio; x += .5) {
-		    //gridJuke[gridNJuke++] = log10(x + .1);	gridJuke[gridNJuke++] = log10(x + .2);
-                gridNJuke++;                 gridNJuke++;
-                    grid.addElement(new Double(log10(x + .1)));
-                    grid.addElement(new Double(log10(x + .2)));
-		    //gridJuke[gridNJuke++] = log10(x + .3);	gridJuke[gridNJuke++] = log10(x + .4);
-		    //gridJuke[gridNJuke++] = log10(x + .5);
-                gridNJuke++;                 gridNJuke++;
-                gridNJuke++;
-                    grid.addElement(new Double(log10(x + .3)));
-                    grid.addElement(new Double(log10(x + .4)));
-                    grid.addElement(new Double(log10(x + .5)));
-		}
-		if (Math.floor(x) != x) {
-                 gridNJuke++;
-                    //gridJuke[gridNJuke++] = log10(x += .5);
-                    grid.addElement(new Double(log10(x += .5)));
-                }
-		for ( ; x < 10.0 && (x+1.0)/(x+.5) >= ratio; x += 1.0) {
-                 gridNJuke++;
-		    //gridJuke[gridNJuke++] = log10(x + .5);
-                    grid.addElement(new Double(log10(x + .5)));
-                 gridNJuke++;
-                    //gridJuke[gridNJuke++] = log10(x + 1.0);
-                    grid.addElement(new Double(log10(x + 1.0)));
-		}
-		for ( ; x < 10.0 && (x+1.0)/x >= ratio; x += 1.0) {
-                 gridNJuke++;
-		    //gridJuke[gridNJuke++] = log10(x + 1.0);
-                    grid.addElement(new Double(log10(x + 1.0)));
-		}
-		if (x == 7.0) {
-                 gridNJuke--;
-		    //gridNJuke--;
-		    x = 6.0;
-                    grid.removeElement(grid.lastElement());
-		}
-		if (x < 7.0) {
-                 gridNJuke++;
-		    //gridJuke[gridNJuke++] = log10(x + 2.0);
-                    grid.addElement(new Double(log10(x + 2.0)));
-		}
-		if (x == 10.0) {
-                 gridNJuke--;
-                    //gridNJuke--;
-                    grid.removeElement(grid.lastElement());
-                }
-	    }
-	    x = low - _gridBase;
-            //x = low - Math.floor(low);
-            //for (gridCurJuke = -1; x >= gridJuke[gridCurJuke+1]; gridCurJuke++){
-            for (gridCurJuke = -1; (gridCurJuke+1) < grid.size() && x >= ((Double)grid.elementAt(gridCurJuke+1)).doubleValue(); gridCurJuke++){
-            }
-	}
-        if ((gridNJuke + 1 )!= grid.size()) {
-            System.out.println("Internal Error: _initGrid: gridNJuke+1 != "+
-                    "grid.size() ("+gridNJuke+"+1 != "+grid.size()+")" );
-        }
-        //gridNJuke = grid.size();
-        if (_debug == 5 )
-            System.out.println("PlotBox: _initGrid("+low+","+step+
-                    ": ratio = "+ratio+
-                    "gridNJuke = "+gridNJuke+" gridCurJuke = "+gridCurJuke+
-                    " grid.size()"+grid.size()+grid.toString());
-        return grid;
-    }
 
     /*
      * Measure the various fonts.  
@@ -1905,7 +1898,7 @@ public class PlotBox extends Panel {
      * Note: The argument must be strictly positive.
      */
     private double _roundUp(double val) {
-        int exponent = (int) Math.floor(Math.log(val)*_log10scale);
+        int exponent = (int) Math.floor(Math.log(val)*_LOG10SCALE);
         val *= Math.pow(10, -exponent);
         if (val > 5.0) val = 10.0;
         else if (val > 2.0) val = 5.0;
@@ -1939,7 +1932,7 @@ public class PlotBox extends Panel {
 
         // Find the exponent.
         double largest = Math.max(Math.abs(_xMin),Math.abs(_xMax));
-        _xExp = (int) Math.floor(Math.log(largest)*_log10scale);
+        _xExp = (int) Math.floor(Math.log(largest)*_LOG10SCALE);
         // Use the exponent only if it's larger than 1 in magnitude.
         if (_xExp > 1 || _xExp < -1) {
             double xs = 1.0/Math.pow(10.0,(double)_xExp);
@@ -1977,7 +1970,7 @@ public class PlotBox extends Panel {
 
         // Find the exponent.
         double largest = Math.max(Math.abs(_yMin),Math.abs(_yMax));
-        _yExp = (int) Math.floor(Math.log(largest)*_log10scale);
+        _yExp = (int) Math.floor(Math.log(largest)*_LOG10SCALE);
         // Use the exponent only if it's larger than 1 in magnitude.
         if (_yExp > 1 || _yExp < -1) {
             double ys = 1.0/Math.pow(10.0,(double)_yExp);
@@ -2018,9 +2011,12 @@ public class PlotBox extends Panel {
         _superscriptFontMetrics = null,
         _titleFontMetrics = null;
 
-    // For use in calculating log base 10.  A log times this is a log base 10.
-    private static final double _log10scale = 1/Math.log(10);
-    
+    // Used for log axes. Index into vector of axis labels.
+    private int _gridCurJuke = 0;
+
+    // Used for log axes.  Base of the grid.
+    private double _gridBase = 0.0;
+
     // An array of strings for reporting errors.
     private String _errorMsg[];
     
