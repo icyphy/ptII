@@ -4622,14 +4622,8 @@
                     </property>
                     <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                     </property>
-                    <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-                    </property>
-                    <property name="act3" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-                        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in - 1">
-                        </property>
-                        <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="out">
-                        </property>
-                    </property>
+		    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = in - 1">
+		    </property>
                 </relation>
                 <link port="checkZero.incomingPort" relation="t3"/>
                 <link port="checkZero.outgoingPort" relation="t3"/>
