@@ -84,8 +84,15 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'Configurer$$1.class' \
+	'MatrixViewer$$MatrixAsTable.class' \
+	'ModelFrame$$FileMenuListener.class' \
+	'ModelFrame$$HelpMenuListener.class' \
+	'ModelPane$$1.class' \
+	'ModelPane$$2.class' \
 	'PtolemyApplet$$GoButtonListener.class' \
-	'PtolemyApplet$$StopButtonListener.class'
+	'PtolemyApplet$$StopButtonListener.class' \
+	'PtolemyApplication$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -76,11 +76,12 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	'CalendarQueue$$CQCell.class' \
 	'CalendarQueue$$CQEntry.class' \
 	'CalendarQueue$$CQLinkedList.class' \
 	'CalendarQueue$$EntryComparator.class' \
 	'CalendarQueue$$SortedLinkedList.class' \
-	#codeDoc
+	'TimedEvent$$TimeComparator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
