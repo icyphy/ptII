@@ -82,26 +82,27 @@ import ptolemy.kernel.util.Workspace;
    Select and Switch, which consume or produce tokens on different channels
    based on the token received from the control port.
    <p>
-   The dynamic scheduler implemented in this director fires all enabled and 
-   non-deferrable actors once in a basic iteration. A deferrable actor is 
-   one which will not help one of the downstream actors become enabled 
-   because that actor either already has enough data on the channel connecting 
-   those two actors or is waiting for data on another channel. If no actor 
-   fires, then among all deferrable actors, fire those which have the smallest 
-   maximum number of tokens on their output channels which satisfy the 
-   demand of destination actors. A user can treat several such basic 
-   iterations as a single iteration by adding a parameter with name 
-   <i>requiredFiringsPerIteration</i> to an actor (which is often a sink
-   actor or an actor directly connected to output port of the composite actor) 
-   and specifying the number of times this actor must be fired in a single 
-   iteration. If the value of the parameter <i>runUntilDeadlockInOneIteration</i>
-   is a BooleanToken with value true, one single iteration consists of repeating 
-   the basic iteration until deadlock is reached, which is the status of 
-   the model where all active actors under the control of this director are 
-   unable to fire because their firing rules are not satisfied. However, 
-   they may be able to fire again during next iteration when tokens are 
-   transferred in from outside domain. Note <i>runUntilDeadlockInOneIteration</i>
-   can be set to true only when this director is not on the top level.
+   The dynamic scheduler implemented in this director fires all enabled 
+   and non-deferrable actors once in a basic iteration. A deferrable 
+   actor is one which will not help one of the downstream actors become 
+   enabled because that actor either already has enough data on the channel 
+   connecting those two actors or is waiting for data on another channel. 
+   If no actor fires, then among all deferrable actors, fire those which 
+   have the smallest maximum number of tokens on their output channels 
+   which satisfy the demand of destination actors. A user can treat several
+   such basic iterations as a single iteration by adding a parameter with 
+   name <i>requiredFiringsPerIteration</i> to an actor (which is often a 
+   sink actor or an actor directly connected to output port of the composite 
+   actor) and specifying the number of times this actor must be fired in 
+   a single iteration. If the value of the parameter 
+   <i>runUntilDeadlockInOneIteration</i> is a BooleanToken with value true, 
+   one single iteration consists of repeating the basic iteration until 
+   deadlock is reached, which is the status of the model where all active 
+   actors under the control of this director are unable to fire because 
+   their firing rules are not satisfied. However, they may be able to fire 
+   again during next iteration when tokens are transferred in from outside 
+   domain. Note <i>runUntilDeadlockInOneIteration</i> can be set to true 
+   only when this director is not on the top level.
    <p> 
    The algorithm implementing one basic iteration goes like this:
    <pre>
@@ -130,7 +131,7 @@ import ptolemy.kernel.util.Workspace;
    <p>
    In DDF domain, the firing rule of any actor is specified by the token
    consumption rates of its input ports. A general DDF actor could change 
-   the consumption rates of its input ports after each firing. For multiports, 
+   the consumption rates of its input ports after each firing. For multiports,
    an array token could be used to specify different rates for different 
    channels connected to the same multiport. Note that in SDF, all channels 
    connected to the same multiport have the same rate.  
@@ -142,7 +143,7 @@ import ptolemy.kernel.util.Workspace;
    @author Gang Zhou
    @version $Id$
    @since Ptolemy II 4.1
-   @Pt.ProposedRating Red (cxh)
+   @Pt.ProposedRating yellow (zgang)
    @Pt.AcceptedRating Red (cxh)
 */
 public class DDFDirector extends Director {
@@ -286,7 +287,7 @@ public class DDFDirector extends Director {
             List toBeFiredActors = new LinkedList();
 
             Iterator actors = ((TypedCompositeActor) getContainer())
-                .deepEntityList().iterator();
+                    .deepEntityList().iterator();
 
             while (actors.hasNext()) {
                 // Scan all actors to find all enabled and not
@@ -356,7 +357,8 @@ public class DDFDirector extends Director {
                     }
                         
                     int[] flags = (int[]) _actorsFlags.get(actor);
-                    int requiredFirings = flags[_REQUIRED_FIRINGS_PER_ITERATION];
+                    int requiredFirings 
+                            = flags[_REQUIRED_FIRINGS_PER_ITERATION];
                     int firingsDone = flags[_NUMBER_OF_FIRINGS];
 
                     if (firingsDone < requiredFirings) {
@@ -430,7 +432,7 @@ public class DDFDirector extends Director {
         // The reason to check capacity here is that the actor may 
         // emit tokens during initialization.
         int maximumCapacity = ((IntToken) maximumReceiverCapacity.getToken())
-            .intValue();
+                .intValue();
         if (maximumCapacity > 0) {           
             _checkDownstreamReceiversCapacity(actor, maximumCapacity);
         }
@@ -443,7 +445,7 @@ public class DDFDirector extends Director {
         flags[_REQUIRED_FIRINGS_PER_ITERATION] = 0;
 
         Variable requiredFiringsPerIteration = (Variable) ((Entity) actor)
-            .getAttribute("requiredFiringsPerIteration");
+                .getAttribute("requiredFiringsPerIteration");
 
         if (requiredFiringsPerIteration != null) {
             Token token = requiredFiringsPerIteration.getToken();
@@ -624,10 +626,14 @@ public class DDFDirector extends Director {
      */
     public String[] suggestedModalModelDirectors() {
         String[] defaultSuggestions = new String[4];
-        defaultSuggestions[0] = "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
-        defaultSuggestions[1] = "ptolemy.domains.hdf.kernel.HDFFSMDirector";
-        defaultSuggestions[2] = "ptolemy.domains.fsm.kernel.FSMDirector";
-        defaultSuggestions[3] = "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
+        defaultSuggestions[0] 
+                = "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
+        defaultSuggestions[1] 
+                = "ptolemy.domains.hdf.kernel.HDFFSMDirector";
+        defaultSuggestions[2] 
+                = "ptolemy.domains.fsm.kernel.FSMDirector";
+        defaultSuggestions[3] 
+                = "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
         return defaultSuggestions;
     }
 
@@ -760,9 +766,9 @@ public class DDFDirector extends Director {
                             wasTransferred = true;
                         } else {
                             throw new IllegalActionException(this, port,
-                                    "Channel " + i + " should produce " + rate[i]
-                                    + " tokens, but there were only " + k
-                                    + " tokens available.");
+                                    "Channel " + i + " should produce " 
+                                    + rate[i] + " tokens, but there were only "
+                                    + k + " tokens available.");
                         }
                     }         
                 } else {
@@ -790,25 +796,6 @@ public class DDFDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Determine actor enabling status. It must be one of the three:
-     *  _NOT_ENABLED, _ENABLED_DEFERRABLE, _ENABLED_NOT_DEFERRABLE.
-     *  @param actor The actor to be checked.
-     *  @return An int indicating actor enabling status.
-     *  @exception IllegalActionException If any called method throws
-     *   IllegalActionException.
-     */
-    protected int _getActorStatus(Actor actor) throws IllegalActionException {
-        if (!_isEnabled(actor)) {
-            return _NOT_ENABLED;
-        }
-
-        if (_isDeferrable(actor)) {
-            return _ENABLED_DEFERRABLE;
-        }
-
-        return _ENABLED_NOT_DEFERRABLE;
-    }
 
     /** Check the number of tokens queued in each downstream receiver
      *  connected to the actor in the argument and throw
@@ -867,7 +854,7 @@ public class DDFDirector extends Director {
         }
         
         int maximumCapacity = ((IntToken) maximumReceiverCapacity.getToken())
-            .intValue();
+                .intValue();
         if (maximumCapacity > 0) {
             _checkDownstreamReceiversCapacity(actor, maximumCapacity);
         }
@@ -890,7 +877,7 @@ public class DDFDirector extends Director {
         // and calls its prefire() method to check if it is ready.
         // On the other hand, it should not throw exception when the actor is
         // not ready due to mutation during execution. For example, a connection
-        // change request could result in creating new receivers and losing all 
+        // change request could result in creating new receivers and losing all
         // tokens contained in the old receivers.  
         //} else if (returnValue == NOT_READY) {
             // Should not reach here if the scheduler and actors are 
@@ -912,6 +899,26 @@ public class DDFDirector extends Director {
             
         return returnValue;
     }
+    
+    /** Determine actor enabling status. It must be one of the three:
+     *  _NOT_ENABLED, _ENABLED_DEFERRABLE, _ENABLED_NOT_DEFERRABLE.
+     *  @param actor The actor to be checked.
+     *  @return An int indicating actor enabling status.
+     *  @exception IllegalActionException If any called method throws
+     *   IllegalActionException.
+     */
+    protected int _getActorStatus(Actor actor) throws IllegalActionException {
+        if (!_isEnabled(actor)) {
+            return _NOT_ENABLED;
+        }
+
+        if (_isDeferrable(actor)) {
+            return _ENABLED_DEFERRABLE;
+        }
+
+        return _ENABLED_NOT_DEFERRABLE;
+    }
+
 
     /** Check each remote receiver to see whether the number of tokens in 
      *  the receiver is greater than or equal to the tokenConsumptionRate 
@@ -1009,7 +1016,7 @@ public class DDFDirector extends Director {
      *  connected to this actor. This method gets called after the given
      *  actor gets initialized or fired. 
      * @param actor The actor to te checked.
-     * @throws IllegalActionException If _getActorStatus(Actor) throws 
+     * @exception IllegalActionException If _getActorStatus(Actor) throws 
      *  IllegalActionException. 
      */
     protected void _updateConnectedActorsStatus(Actor actor)
@@ -1020,7 +1027,8 @@ public class DDFDirector extends Director {
 
         while (ports.hasNext()) {
             ComponentPort port = (ComponentPort) ports.next();
-            Iterator deepConnectedPorts = port.deepConnectedPortList().iterator();
+            Iterator deepConnectedPorts 
+                    = port.deepConnectedPortList().iterator();
 
             while (deepConnectedPorts.hasNext()) {
                 Port deepConnectedPort = (Port) deepConnectedPorts.next();
@@ -1112,7 +1120,7 @@ public class DDFDirector extends Director {
      *  case, it actually returns the production rate for that receiver.
      *  @param receiver The receiver to get token consumption rate.
      *  @return The token consumption rate of the given receiver.
-     *  @throws IllegalActionException If any called method throws
+     *  @exception IllegalActionException If any called method throws
      *   IllegalActionException. 
      */
     private int _getTokenConsumptionRate(Receiver receiver) 
