@@ -116,35 +116,36 @@ public class GiottoCodeGenerator extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Generate Giotto code for the given model.
+    /** Generate Giotto code for the given Giotto model.
+     *  @param model The given Giotto model.
      *  @return The Giotto code.
+     *  @throws IllegalActionException If code can not be generated. 
      */
     public String generateGiottoCode(TypedCompositeActor model)
             throws IllegalActionException {
         String generatedCode = "";
 
         try {
-            _initialize(model);
-
-            String containerName = model.getName();
-
-            generatedCode += _sensorCode(model);
-            generatedCode += _actuatorCode(model);
-            generatedCode += _outputCode(model);
-            generatedCode += _tasksCode(model);
-            generatedCode += _driversCode(model);
-
-            generatedCode += "start "
-                + containerName
-                + " {"
-                + _endLine;
-
-            generatedCode += _modeCode(model);
-
-            generatedCode +=  "}"
-                + _endLine;
+            if (_initialize(model)) {
+                String containerName = model.getName();
+                
+                generatedCode += _sensorCode(model);
+                generatedCode += _actuatorCode(model);
+                generatedCode += _outputCode(model);
+                generatedCode += _tasksCode(model);
+                generatedCode += _driversCode(model);
+                
+                generatedCode += "start "
+                    + containerName
+                    + " {"
+                    + _endLine;
+                
+                generatedCode += _modeCode(model);
+                
+                generatedCode +=  "}"
+                    + _endLine;
+            }
             model.wrapup();
-
         } catch (KernelException ex) {
             System.out.println(ex.getMessage());
             throw new IllegalActionException(ex.getMessage());
@@ -159,19 +160,25 @@ public class GiottoCodeGenerator extends Attribute {
     /** Method to instantiate the Editor Factory class called from the
      *  constructor. The reason for having this is that it can be
      *  overridden by subclasses
+     *  @throws IllegalActionException If the editor factory can not be 
+     *  created. 
+     *  @throws NameDuplicationException If there is already anothter editor 
+     *  factory with the same name. 
      */
     protected void _instantiateEditorFactoryClass()
         throws IllegalActionException, NameDuplicationException {
         new GiottoEditorFactory(this, "_editorFactory");
     }
     
-     /** Throw an exception if the given string is a valid giotto
+    /** Throw an exception if the given string is a valid giotto
      *  reserved word, which prevents it from being used as an identifier.
+     *  @param string A string to be used in Giotto program.
+     *  @throws IllegalActionException If the string can not be used. 
      */
     protected void _checkGiottoID(String string)
             throws IllegalActionException {
         if (string.equals("output")) {
-            throw new RuntimeException("The identifier " + string +
+            throw new IllegalActionException("The identifier " + string +
                     " cannot be used in a Giotto program.  " +
                     "Please change your model and attempt to " +
                     "generate code again.");
@@ -179,25 +186,21 @@ public class GiottoCodeGenerator extends Attribute {
     }
 
     /** Return the correct Giotto type string for the given port.
+     *  @param port An IO port.
+     *  @return A string containing the type of the port.
      */
     protected String _getTypeString(TypedIOPort port) {
         return "Token_port";//ort.getType().toString();
     }
 
-    /** Topology analysis and initialization.
-     *
-     * @return True if in giotto domain, False if in other domains.
+    /** Initialize the code geenration process by checking whether the
+     *  given model is a Giotto model. Return false if it is not. 
+     *  @param model A model to generate Giotto code from.
+     *  @return True if in the given model is a giotto model.
      */
-    protected boolean _initialize(TypedCompositeActor model)
-            throws IllegalActionException {
+    protected boolean _initialize(TypedCompositeActor model) {
         Director director = model.getDirector();
-
-        if (!(director instanceof GiottoDirector)) {
-            throw new IllegalActionException(model, director,
-                    "Director of model is not a GiottoDirector.");
-        }
-
-        return true;
+        return (director instanceof GiottoDirector);
     }
 
     /** Generate code for the sensors.
@@ -730,13 +733,28 @@ public class GiottoCodeGenerator extends Attribute {
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
     }
-    protected String _endLine = "\n";
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+
+    private String _endLine = "\n";
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    /** An attribute that can create an Giotto code editor for a Giotto model.
+     */
     protected class GiottoEditorFactory extends EditorFactory {
 
+        /** Constructs a Giotto EditorFactory object for a Giotto model.
+         *
+         *  @param container The container, which is a Giotto model.
+         *  @param name The name for this attribute.
+         *  @throws IllegalActionException If the factory is not of an 
+         *  acceptable attribute for the container.
+         *  @throws NameDuplicationException If the name coincides with 
+         *  an attribute already in the container.
+         */
         public GiottoEditorFactory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);

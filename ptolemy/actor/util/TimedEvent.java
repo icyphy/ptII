@@ -79,6 +79,9 @@ public class TimedEvent {
      */
     public static class TimeComparator implements CQComparator {
         
+        /** Construct a TimeComparator object for the given director.
+         *  @param director The director this comparator is associated with.
+         */
         public TimeComparator(Director director) {
             _director = director;
             _binWidth = new TimedEvent(new Time(_director, 1.0), null);

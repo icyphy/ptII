@@ -103,6 +103,7 @@ public class GiottoReceiver extends AbstractReceiver
     }
 
     /** Return true, since writing to this receiver is always allowed.
+     *  @param numberOfTokens The size of tokens to be written to the receiver.
      *  @return True.
      */
     public final boolean hasRoom(int numberOfTokens) {
@@ -118,8 +119,10 @@ public class GiottoReceiver extends AbstractReceiver
         return (_token != null);
     }
 
-    /** Return true if there is a token available. Any number of calls
-     *  to get() is allowed and will return the same available token.
+    /** Return true if the receiver has at least one token available. 
+     *  Any number of calls to get() is allowed and will return the same 
+     *  available token.
+     *  @param numberOfTokens The number of tokens available in this receiver. 
      *  @return True if there is a token available.
      */
     public final boolean hasToken(int numberOfTokens) {

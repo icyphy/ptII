@@ -285,14 +285,13 @@ public class GiottoDirector extends StaticSchedulingDirector
         }
     }
 
-    /** Get the period of the giotto director in ms
-     *
+    /** Get the period of the giotto director in ms.
      *  @return int value of period in ms.
      */
-    public int getIntPeriod() throws IllegalActionException {
-        //In ptolemy model, for simulation, time is double with unit Second
+    public int getIntPeriod() {
+        // In ptolemy model, for simulation, time is double with unit Second
         // however, for giotto code, we need integer and its unit is microSecond
-        return (new Double (_periodValue * 1000)).intValue();
+        return (new Double(_periodValue * 1000)).intValue();
     }
 
     /** Return the next time that this director expects activity.
@@ -309,7 +308,7 @@ public class GiottoDirector extends StaticSchedulingDirector
         return getModelNextIterationTime().getDoubleValue();
     }
 
-    /** Get the period of the giotto director in ms
+    /** Get the period of the giotto director in ms.
      *
      *  @return double value of period in ms.
      */
@@ -459,6 +458,7 @@ public class GiottoDirector extends StaticSchedulingDirector
      *  methods are forced to do nothing. 
      *  
      *  @return True if the director is ready to run for one iteration.
+     *  @throws IllegalActionException If time is set backwards.
      */
 
     public boolean prefire() throws IllegalActionException{
@@ -474,7 +474,9 @@ public class GiottoDirector extends StaticSchedulingDirector
                 .compareTo(_expectedNextIterationTime) > 0) {
                 // catch up with the outside time.
                 setModelTime(outsideCurrentTime);
-                _debug("Set current time as: " + getModelTime());
+                if (_debugging) {
+                    _debug("Set current time as: " + getModelTime());
+                }
                 _readyToFire = true;       
             }
             // guaranteed to be synchronized to outside.
@@ -565,9 +567,9 @@ public class GiottoDirector extends StaticSchedulingDirector
      *  channel of this port has no data, then that channel is
      *  ignored. This method will transfer exactly one token on
      *  each output channel that has at least one token available.
-     *
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
+     *  @param port The port to transfer tokens from.
      *  @return True if at least one data token is transferred.
      */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {

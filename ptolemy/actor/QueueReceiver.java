@@ -300,8 +300,10 @@ public class QueueReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** Used to indicate that the size of this queue receiver is infinite.
+     */
     public static final int INFINITE_CAPACITY =
-    FIFOQueue.INFINITE_CAPACITY;
+        FIFOQueue.INFINITE_CAPACITY;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
