@@ -47,7 +47,9 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.math.ExtendedMath;
 import ptolemy.moml.SharedParameter;
+import ptolemy.util.MessageHandler;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -194,10 +196,31 @@ public class Director extends Attribute implements Executable {
                                 "Cannot change timePrecision during a run.");
                     }
                 }
-                if (newResolution <= 0.0) {
+                if (newResolution <= ExtendedMath.
+                        DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE) {
                 	throw new IllegalActionException(this,
-                            "Invalid timeResolution (which must be positive): "
-                            + newResolution);
+                            "Invalid timeResolution: "
+                            + newResolution + "\n The value must be " 
+                            + "greater than the smallest, normalized, " 
+                            + "positive, double value with a double " 
+                            + "precision: " + ExtendedMath.
+                            DOUBLE_PRECISION_SMALLEST_NORMALIZED_POSITIVE_DOUBLE
+                            );
+                }
+                // If the time resolution is reduced, give a warning.
+                if (newResolution < _timeResolution) {
+                    int minimumNumberOfBits = 
+                        (int)Math.floor(-1*ExtendedMath.log2(newResolution));
+                    int maximumGain = 52 - minimumNumberOfBits;
+                    double lub = ExtendedMath.DOUBLE_PRECISION_SIGNIFICAND_ONLY 
+                        * Math.pow(2.0, maximumGain);
+                    String warningMessage = "The time resolution is reduced to "
+                        + newResolution + ". The maximum double value can " 
+                        + "have this time resolution is also reduced to " + lub 
+                        + ".\n If this model contains some time value bigger " 
+                        + "than that, executiing this model will throw an " 
+                        + "exception.";
+                    MessageHandler.message(warningMessage);
                 }
                 _timeResolution = ((DoubleToken)timeResolution.getToken()).doubleValue();                
             }
