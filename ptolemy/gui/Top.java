@@ -146,6 +146,9 @@ public abstract class Top extends JFrame {
      *  If the string is longer than 80 characters, truncate it by
      *  displaying the first 37 chars, then ". . .", then the last 38
      *  characters.
+     *  If the <i>longName</i> argument is null, then the string
+     *  "<Unnamed>" is returned.
+     *  @see split
      *  @return The name.
      */
     public static String abbreviate(String longName) {
@@ -162,6 +165,7 @@ public abstract class Top extends JFrame {
 	return longName.substring(0,37) + ". . ."
 	    + longName.substring(longName.length() - 38);
     }
+
 
     /** Center the window on the screen.  This must be called after the
      *  window is populated with its contents, since it depends on the size
@@ -248,6 +252,37 @@ public abstract class Top extends JFrame {
      */
     public void setModified(boolean modified) {
         _modified = modified;
+    }
+
+    /**  If the string is longer than 80 characters, split it up by
+     *  displaying adding newlines every 80 characters.
+     *  If the <i>longName</i> argument is null, then the string
+     *  "<Unnamed>" is returned.
+     *  @see abbreviate
+     *  @param longName The string to optionally split up
+     *  @return Either the original string, or the string with newlines
+     *  inserted
+     */
+    public static String split(String longName) {
+	// In theory, this method should be in
+	// ptolemy.kernel.util.StringUtilities, but ptolemy.gui gets shipped
+	// without StringUtilities, so we include it here
+
+        if (longName == null) {
+            return "<Unnamed>";
+        }
+	if (longName.length() < 80) {
+	    return longName;
+	}
+	
+	StringBuffer results = new StringBuffer();
+	int i;
+	for(i = 0; i < longName.length() - 80; i+=80) {
+	    results.append(longName.substring(i, i+79) + "\n");
+	}								   
+	results.append(longName.substring(i));
+
+	return results.toString();
     }
 
     /** Size this window to its preferred size and make it
@@ -691,7 +726,9 @@ public abstract class Top extends JFrame {
     private boolean _queryForSave() {
         Object[] options = {"Save", "Discard changes", "Cancel"};
 
-        String query = "Save changes to " + _getName() + "?";
+
+        String query = "Save changes to " + split(_getName()) + "?";
+
 
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(
