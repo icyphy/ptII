@@ -30,7 +30,10 @@
 
 package ptolemy.actor.gui;
 
-// Java imports
+import ptolemy.actor.*;
+import ptolemy.gui.BasicJApplet;
+import ptolemy.kernel.util.*;
+
 import java.lang.System;
 import java.awt.event.*;
 import java.awt.Color;
@@ -40,11 +43,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JApplet;
-
-// Ptolemy imports
-import ptolemy.actor.*;
-import ptolemy.gui.BasicJApplet;
-import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyApplet
@@ -91,6 +89,17 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      */
     public void executionFinished(Manager manager) {
         report("execution finished.");
+    }
+
+    /** Return a string describing this applet.
+     *  @return A string describing the applet.
+     */
+    public String getAppletInfo() {
+        return "Ptolemy applet for Ptolemy II "
+	    + PtolemyApplication.RELEASE_VERSION
+            + "\nPtolemy II comes from UC Berkeley, Department of EECS.\n"
+            + "See http://ptolemy.eecs.berkeley.edu/ptolemyII"
+	    + "\n(Build: $Id$)";
     }
 
     /** Initialize the applet. This method is called by the browser
