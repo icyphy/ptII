@@ -209,65 +209,78 @@ public class TypeTest extends Discard {
                     + "' is in training mode, set the trainingMode "
                     + "parameter to false before checking in");
             }
-            portTypes.setToken(actualPortTypes);
-            parameterTypes.setToken(actualParameterTypes);
+            if (actualPortTypes.length() > 0) {
+                portTypes.setToken(actualPortTypes);
+            } else {
+                portTypes.setToken(null);
+            }
+            if (actualParameterTypes.length() > 0) {
+                parameterTypes.setToken(actualParameterTypes);
+            } else {
+                parameterTypes.setToken(null);
+            }
         } else {
             RecordToken correctPortTypes = 
-                (RecordToken)portTypes.getToken();
+                    (RecordToken)portTypes.getToken();
             RecordToken correctParameterTypes =
-                (RecordToken)parameterTypes.getToken();
-            for(Iterator actorNames = correctPortTypes.labelSet().iterator();
-                actorNames.hasNext();) {
-                String actorName = (String)actorNames.next();
-                RecordToken assignment = 
-                    (RecordToken)correctPortTypes.get(actorName);
-                for(Iterator names = assignment.labelSet().iterator();
-                    names.hasNext();) {
-                    String name = (String)names.next();
-                    StringToken value = (StringToken)assignment.get(name);
-                    if (actualPortTypes == null) {
-                        throw new IllegalActionException(this,
-                                "actualPortTypes is null!");
-                    }
-                    if (actualPortTypes.get(actorName) == null) {
-                        throw new IllegalActionException(this,
-                                "actualPortTypes.get(" + actorName
-                                + ") returned null.  Perhaps there is no "
-                                + "actor by that name?");
-                    }
-                    StringToken actualValue = 
-                        (StringToken)((RecordToken)actualPortTypes.get(
-                                              actorName)).get(name);
-                    if(!value.equals(actualValue)) {
-                        throw new IllegalActionException(this,
-                                "Type of port " + 
-                                ((CompositeEntity) getContainer()).getEntity(
-                                        actorName).getFullName() + 
-                                "." + name + " should have been " +
-                                value + " but was " + actualValue + ".");
-                    }
-                } 
-            }
-            for(Iterator actorNames =
-                    correctParameterTypes.labelSet().iterator();
-                actorNames.hasNext();) {
-                String actorName = (String)actorNames.next();
-                RecordToken assignment = 
-                    (RecordToken)correctParameterTypes.get(actorName);
-                for(Iterator names = assignment.labelSet().iterator();
-                    names.hasNext();) {
-                    String name = (String)names.next();
-                    StringToken value = (StringToken)assignment.get(name);
-                    StringToken actualValue =
-                        (StringToken)((RecordToken)actualParameterTypes.get(
+                    (RecordToken)parameterTypes.getToken();
+            if (correctPortTypes != null) {
+                for(Iterator actorNames
+                       = correctPortTypes.labelSet().iterator();
+                       actorNames.hasNext();) {
+                    String actorName = (String)actorNames.next();
+                    RecordToken assignment = 
+                            (RecordToken)correctPortTypes.get(actorName);
+                    for(Iterator names = assignment.labelSet().iterator();
+                            names.hasNext();) {
+                        String name = (String)names.next();
+                        StringToken value = (StringToken)assignment.get(name);
+                        if (actualPortTypes == null) {
+                            throw new IllegalActionException(this,
+                            "actualPortTypes is null!");
+                        }
+                        if (actualPortTypes.get(actorName) == null) {
+                            throw new IllegalActionException(this,
+                            "actualPortTypes.get(" + actorName
+                            + ") returned null.  Perhaps there is no "
+                            + "actor by that name?");
+                        }
+                        StringToken actualValue = 
+                                (StringToken)((RecordToken)actualPortTypes.get(
                                 actorName)).get(name);
-                    if(!value.equals(actualValue)) {
-                        throw new IllegalActionException(this,
-                                "Type of parameter " + 
-                                ((CompositeEntity) getContainer()).getEntity(
-                                        actorName).getFullName() + 
-                                "." + name + " should have been " +
-                                value + " but was " + actualValue + ".");
+                        if(!value.equals(actualValue)) {
+                            throw new IllegalActionException(this,
+                                    "Type of port " + 
+                                    ((CompositeEntity) getContainer())
+                                    .getEntity(actorName).getFullName() + 
+                                    "." + name + " should have been " +
+                                    value + " but was " + actualValue + ".");
+                        }
+                    }
+                }
+            }
+            if (correctParameterTypes != null) {
+                for(Iterator actorNames =
+                        correctParameterTypes.labelSet().iterator();
+                        actorNames.hasNext();) {
+                    String actorName = (String)actorNames.next();
+                    RecordToken assignment = 
+                            (RecordToken)correctParameterTypes.get(actorName);
+                    for(Iterator names = assignment.labelSet().iterator();
+                            names.hasNext();) {
+                        String name = (String)names.next();
+                        StringToken value = (StringToken)assignment.get(name);
+                        StringToken actualValue = (StringToken)
+                                ((RecordToken)actualParameterTypes.get(
+                                actorName)).get(name);
+                        if(!value.equals(actualValue)) {
+                            throw new IllegalActionException(this,
+                                    "Type of parameter " + 
+                                    ((CompositeEntity) getContainer())
+                                    .getEntity(actorName).getFullName() + 
+                                    "." + name + " should have been " +
+                                    value + " but was " + actualValue + ".");
+                        }
                     }
                 } 
             } 
