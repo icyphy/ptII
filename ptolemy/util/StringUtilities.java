@@ -380,6 +380,19 @@ public class StringUtilities {
         return preferencesDirectoryName;
     }
 
+    /** Return the name of the properties file.
+     *  The properties file is a file of a format suitable for 
+     *  java.util.properties.load(InputStream).
+     *  The file is named "ptII.properties" and is found in the
+     *  {@link #PREFERENCES_DIRECTORY} directory that is returned
+     *  by {@link #preferencesDirectory()}.
+     *  @return The name of the properties file.
+     *  @exception IOException If {@link #preferencesDirectory()} throws it.
+     */
+    public static String propertiesFileName() throws IOException {
+        return preferencesDirectory() + "ptII.properties";
+    }
+
     /** Sanitize a String so that it can be used as a Java identifier.
      *  Section 3.8 of the Java language spec says:
      *  <blockquote>
