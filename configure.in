@@ -2117,7 +2117,7 @@ fi
 #--------------------------------------------------------------------
 
 # PTPSDF_DIR is set to PSDF and used in
-# $PTII/ptolemy/domains/makefile if synthesis.jar was found.
+# $PTII/ptolemy/domains/makefile if mapss.jar was found.
 PTPSDF_DIR=
 
 # Directory that contains the mapss.jar file

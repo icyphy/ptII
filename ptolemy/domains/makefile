@@ -39,7 +39,7 @@ EXPERIMENTAL_DOMAINS = \
 # PTCLASSALLJARS below
 # DT has to come after SDF, sorry.
 # PTPSDF_DIR is set by configure in $PTII/mk/ptII.mk to psdf if
-#   $PTII/lib/synthesis.jar was found
+#   $PTII/lib/mapss.jar was found
 # PTJAVA3D_DIR is set by configure in $PTII/mk/ptII.mk to gr if
 #   Java 3D was found
 # The tm domain uses java.util.Timer, so it requires JDK 1.3
