@@ -68,7 +68,7 @@ MISC_FILES =	alljtests.tcl \
 		badRateChanges.xml \
 		badRateChanges2.xml \
 		partiallyConnected.xml \
-		rateConsistency.xml
+		rateConsistency.xml \
 		auto
 
 # make checkjunk will not report OPTIONAL_FILES as trash
