@@ -82,7 +82,7 @@ public class ImportAttribute extends Attribute {
         String moml = "<import source=\""
             + _source
             + "\"/>";
-            output.write(_getIndentPrefix(depth) + moml + "\n");
+        output.write(_getIndentPrefix(depth) + moml + "\n");
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -64,7 +64,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
             String attributeName, String attributeValue) {
 
         _debug("filterAttributeValue: " + container + "\t"
-	       +  attributeName + "\t" + attributeValue);
+                +  attributeName + "\t" + attributeValue);
 
         if (attributeValue == null) {
 	    // attributeValue == null is fairly common, so we check for
@@ -97,9 +97,9 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		    + "." + _lastNameSeen;
 		_portMap = (HashMap) _actorsWithPortNameChanges.get(attributeValue);
 		_debug("filterAttributeValue: not return saw1 "
-		       + _currentActorFullName);
+                        + _currentActorFullName);
 	    } else if (_actorsWithPropertyClassChanges
-		       .containsKey(attributeValue)) {
+                    .containsKey(attributeValue)) {
 		// We found a class with a property class change.
 		_currentlyProcessingActorWithPropertyClassChanges = true;
 		_doneProcessingActorWithPortNameChanges  = false;
@@ -109,14 +109,14 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		    (HashMap) _actorsWithPropertyClassChanges
 		    .get(attributeValue);
 		_debug("filterAttributeValue: not return saw2 "
-		       + _currentActorFullName);
+                        + _currentActorFullName);
 
 	    } else if (_currentlyProcessingActorWithPropertyClassChanges
-		       && _newClass != null) {
+                    && _newClass != null) {
 		// We found a property class to change, and now we found the
 		// class itself that needs changing.
 		_debug("filterAttributeValue: return0 "
-		       + _newClass);
+                        + _newClass);
 		// Only return the new class once, but we might
 		// have other properties that need changing
 		//_currentlyProcessingActorWithPropertyClassChanges = false;
@@ -125,12 +125,12 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		_newClass = null;
 		return temporaryNewClass;
 	    } else if ( (_currentlyProcessingActorWithPortNameChanges
-			 || _currentlyProcessingActorWithPropertyClassChanges)
-		       && container != null
-		       && !container.getFullName()
-		       .equals(_currentActorFullName)
-			&& !container.getFullName()
-			.startsWith(_currentActorFullName)) {
+                    || _currentlyProcessingActorWithPropertyClassChanges)
+                    && container != null
+                    && !container.getFullName()
+                    .equals(_currentActorFullName)
+                    && !container.getFullName()
+                    .startsWith(_currentActorFullName)) {
 
 		// We found another class in a different container
 		// while handling a class with port name changes, so
@@ -138,8 +138,8 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		// can handle any port changes later.
 
 		_debug("filterAttributeValue: return3 saw class, resetting: "
-		       + container.getFullName() + " "
-		       + _currentActorFullName);
+                        + container.getFullName() + " "
+                        + _currentActorFullName);
 		_currentlyProcessingActorWithPortNameChanges = false;
 		_currentlyProcessingActorWithPropertyClassChanges = false;
 		_doneProcessingActorWithPortNameChanges  = true;
@@ -147,9 +147,9 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		_portMap = null;
 	    }
 	} else if (_currentlyProcessingActorWithPortNameChanges
-		   && attributeName.equals("name")
-		   && _portMap != null
-		   && _portMap.containsKey(attributeValue)) {
+                && attributeName.equals("name")
+                && _portMap != null
+                && _portMap.containsKey(attributeValue)) {
 	    // We will do the above checks only if we found a
 	    // class that had port name changes, but have not
 	    // yet found the next class.
@@ -164,12 +164,12 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 
 	    // Save the container.newPort name for later use.
 	    _containerPortMap.put(containerName + "." + attributeValue,
-				  containerName + "." + newPort
+                    containerName + "." + newPort
 				  );
 	    _debug("filterAttributeValue: return1 ("
-	    		       + containerName + "." + attributeValue + ", "
-	    		       +  containerName + "." + newPort + ") "
-	    		       + newPort);
+                    + containerName + "." + attributeValue + ", "
+                    +  containerName + "." + newPort + ") "
+                    + newPort);
 	    return newPort;
 	} else if (_currentlyProcessingActorWithPropertyClassChanges) {
 	    if (attributeName.equals("name")) {
@@ -178,10 +178,10 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		    // class that had property class changes.
 		    _newClass = (String)_propertyMap.get(attributeValue);
 		    _debug("filterAttributeValue: not return _newClass = "
-			   + _newClass);
+                            + _newClass);
 		} else {
 		    _debug("filterAttributeValue: not return '"
-			   + attributeValue + "' did not match");
+                            + attributeValue + "' did not match");
 		    // Saw a name that did not match.
 		    // However, we might have other names that
 		    // did match, so keep looking
@@ -190,9 +190,9 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		}
 	    }
 	} else if (_doneProcessingActorWithPortNameChanges
-		   && attributeName.equals("port")
-		   && _containerPortMap.containsKey(container.getFullName()
-						 + "." + attributeValue)) {
+                && attributeName.equals("port")
+                && _containerPortMap.containsKey(container.getFullName()
+                        + "." + attributeValue)) {
 	    // We are processing actors that have port names.
 	    // Now map the old port to the new port.
 	    String newPort = (String)_containerPortMap
@@ -209,7 +209,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		newPort.substring(container.getFullName().length() + 1);
 
 	    _debug("filterAttributeValue: return2 "
-		   + newPort);
+                    + newPort);
 	    return newPort;
 	}
         return attributeValue;
@@ -224,7 +224,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
      *  MoMLParser.endElement() should immediately return.
      */
     public String filterEndElement(NamedObj container, String elementName)
-	throws Exception {
+            throws Exception {
 	return elementName;
     }
 
@@ -252,12 +252,12 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     // Set to true if we are currently processing an actor with parameter
     // class changes, set to false when we are done.
     private static boolean
-	_currentlyProcessingActorWithPropertyClassChanges = false;
+    _currentlyProcessingActorWithPropertyClassChanges = false;
 
     // Set to true if we are currently processing an actor with port name
     // changes, set to false when we are done.
     private static boolean
-	_currentlyProcessingActorWithPortNameChanges = false;
+    _currentlyProcessingActorWithPortNameChanges = false;
 
     // Set to true if we are done processing an actor.
     private static boolean _doneProcessingActorWithPortNameChanges = false;
@@ -288,12 +288,12 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	cartesianPorts.put("imag", "y");
 	_actorsWithPortNameChanges
 	    .put("ptolemy.actor.lib.conversions.ComplexToCartesian",
-		 cartesianPorts);
+                    cartesianPorts);
 
 	// CartesianToComplex has the same ports as ComplexToCartesian.
 	_actorsWithPortNameChanges
 	    .put("ptolemy.actor.lib.conversions.CartesianToComplex",
-		 cartesianPorts);
+                    cartesianPorts);
 
         // Sleep
 	HashMap sleepPorts = new HashMap();
@@ -312,33 +312,33 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 
 	_actorsWithPropertyClassChanges
 	    .put("ptolemy.actor.lib.javasound.AudioReader",
-		 sourceURLClassChanges);
+                    sourceURLClassChanges);
 
 	// ImagePartition
 	HashMap inputOutputTypedIOPortClassChanges = new HashMap();
 	inputOutputTypedIOPortClassChanges.put("input",
-					       "ptolemy.actor.TypedIOPort");
+                "ptolemy.actor.TypedIOPort");
 	inputOutputTypedIOPortClassChanges.put("output",
-					       "ptolemy.actor.TypedIOPort");
+                "ptolemy.actor.TypedIOPort");
 
 	_actorsWithPropertyClassChanges
    	    .put("ptolemy.domains.sdf.lib.vq.ImagePartition",
-		 inputOutputTypedIOPortClassChanges);
+                    inputOutputTypedIOPortClassChanges);
 
 
 	// ImageUnpartition
 	_actorsWithPropertyClassChanges
    	    .put("ptolemy.domains.sdf.lib.vq.ImageUnpartition",
-		 inputOutputTypedIOPortClassChanges);
+                    inputOutputTypedIOPortClassChanges);
 
 	// HTVQEncode
 	_actorsWithPropertyClassChanges
    	    .put("ptolemy.domains.sdf.lib.vq.HTVQEncode",
-		 inputOutputTypedIOPortClassChanges);
+                    inputOutputTypedIOPortClassChanges);
 
 	// VQDecode
 	_actorsWithPropertyClassChanges
    	    .put("ptolemy.domains.sdf.lib.vq.VQDecode",
-		 inputOutputTypedIOPortClassChanges);
+                    inputOutputTypedIOPortClassChanges);
     }
 }

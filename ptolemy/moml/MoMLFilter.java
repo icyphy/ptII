@@ -70,5 +70,5 @@ public interface MoMLFilter {
      *  MoMLParser.endElement() should immediately return.
      */
     public String filterEndElement(NamedObj container, String elementName)
-    throws Exception;
+            throws Exception;
 }

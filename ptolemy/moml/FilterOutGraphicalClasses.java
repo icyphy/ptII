@@ -92,7 +92,7 @@ public class FilterOutGraphicalClasses implements MoMLFilter {
      *  MoMLParser.endElement() should immediately return.
      */
     public String filterEndElement(NamedObj container, String elementName)
-	throws Exception {
+            throws Exception {
 	return elementName;
     }
 
@@ -109,15 +109,15 @@ public class FilterOutGraphicalClasses implements MoMLFilter {
 	_graphicalClasses = new HashMap();
 	// Alphabetical by key class
 	_graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
-			      "ptolemy.kernel.util.Attribute");
+                "ptolemy.kernel.util.Attribute");
 	_graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon",
-			      null);
+                null);
 	_graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon",
-			      null);
+                null);
 	_graphicalClasses.put("ptolemy.vergil.icon.ValueIcon",
-			      "ptolemy.kernel.util.Attribute");
+                "ptolemy.kernel.util.Attribute");
 	_graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
-			      "ptolemy.kernel.util.Attribute");
+                "ptolemy.kernel.util.Attribute");
 
     }
 }

@@ -127,7 +127,7 @@ public class LibraryAttribute extends ConfigurableAttribute {
         if (_librarySet) return _library;
         NamedObj toplevel = toplevel();
         ParserAttribute parserAttribute = (ParserAttribute)
-                toplevel.getAttribute("_parser", ParserAttribute.class);
+            toplevel.getAttribute("_parser", ParserAttribute.class);
         MoMLParser parser;
         if (parserAttribute != null) {
             parser = parserAttribute.getParser();
@@ -138,9 +138,9 @@ public class LibraryAttribute extends ConfigurableAttribute {
         NamedObj library = parser.parse(value());
         if (!(library instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
-            "Expected library to be in an instance of CompositeEntity,"
-            + " but it is:"
-            + library.getClass().getName());
+                    "Expected library to be in an instance of CompositeEntity,"
+                    + " but it is:"
+                    + library.getClass().getName());
         }
         // Ensure that the library is marked as a library.
         Attribute marker = library.getAttribute("_libraryMarker");

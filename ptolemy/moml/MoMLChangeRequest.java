@@ -191,11 +191,11 @@ public class MoMLChangeRequest extends ChangeRequest {
         }
         // NOTE: To see what is being parsed, uncomment the following:
         /*
-        System.out.println("****** Executing MoML change:");
-        System.out.println(getDescription());
-        if (_context != null) {
-            System.out.println("------ in context " + _context.getFullName());
-        }
+          System.out.println("****** Executing MoML change:");
+          System.out.println(getDescription());
+          if (_context != null) {
+          System.out.println("------ in context " + _context.getFullName());
+          }
         */
 
         try {
