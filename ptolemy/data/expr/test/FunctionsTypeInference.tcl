@@ -256,9 +256,8 @@ test Function-ceil {Test ceil on scalars} {
     list [matchTypes {ceil(-1.1)}] \
          [matchTypes {ceil(-1)}] \
          [matchTypes {ceil(1ub)}] \
-# FIXME
-#          [matchTypes {ceil({1.1, 2.1})}] \
-#          [matchTypes {ceil([1.1, 2.1])}] \
+         [matchTypes {ceil({1.1, 2.1})}] \
+         [matchTypes {ceil([1.1, 2.1])}] \
      } {1 1 1 1 1}
 
 ####################################################################
@@ -268,9 +267,8 @@ test Function-ceil {Test ceil on scalars} {
     list [matchTypes {compare(1.0, 2.0)}] \
          [matchTypes {compare(1, 2)}] \
          [matchTypes {compare(1ub, 2ub)}] \
-# FIXME
-#          [matchTypes {compare({1, 2}, {3, 4})}] \
-#          [matchTypes {compare([1, 2], [3, 4])}] \
+         [matchTypes {compare({1, 2}, {3, 4})}] \
+         [matchTypes {compare([1, 2], [3, 4])}] \
      } {1 1 1 1 1}
 
 ####################################################################
@@ -278,11 +276,9 @@ test Function-ceil {Test ceil on scalars} {
 
  test Function-conjugate {Test conjugate} {
     list [matchTypes {conjugate(1+i)}] \
-# FIXME
-#          [matchTypes {conjugate({1+i, 1-i})}] \
-#          [matchTypes {conjugate([1+i, 1-i])}] \
+         [matchTypes {conjugate({1+i, 1-i})}] \
+         [matchTypes {conjugate([1+i, 1-i])}] \
      } {1 1 1}
-
 
 # FIXME: Much missing
 

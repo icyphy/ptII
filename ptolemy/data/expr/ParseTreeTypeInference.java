@@ -166,9 +166,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     childTypes, CachedMethod.FUNCTION);
 
         if(!cachedMethod.isMissing()) {
-            Class returnType = cachedMethod.getMethod().getReturnType();
-            Type type =
-                ASTPtFunctionNode.convertJavaTypeToTokenType(returnType);
+            Type type = cachedMethod.getReturnType();
             _setType(node, type);
         } else {
             // If we reach this point it means the function was not found on

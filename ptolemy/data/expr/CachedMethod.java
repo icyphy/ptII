@@ -832,6 +832,9 @@ public class CachedMethod {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    ///////////////////////////////////////////////////////////////////
+    //// ArgumentConversion
+
     /** Class representing an argument conversion.
      *  Instances of this class are returned by getConversions().
      */
@@ -861,10 +864,16 @@ public class CachedMethod {
         private int _type;
     }
 
-    // A cached method that converts the base as well.  This allows us to
-    // invoke methods on, e.g. The ptolemy.math.Complex class and the
-    // ptolemy.math.FixPoint class that are inside the corresponding tokens.
+    //////////////////////////////////////////////////////////////////
+    //// BaseConvertCachedMethod
+
+    /** A cached method that converts the object on which the method
+     *  is invoked as well as the arguments.  This allows us to, for
+     *  example, invoke instance methods of ptolemy.math.Complex on
+     *  tokens of type ComplexToken.
+     */
     public static class BaseConvertCachedMethod extends CachedMethod {
+
         public BaseConvertCachedMethod(
                 String methodName, Type[] argTypes,
                 Method method, ArgumentConversion baseConversion,
@@ -884,9 +893,14 @@ public class CachedMethod {
         private ArgumentConversion _baseConversion;
     }
 
-    // A cached method that implements a simple array map for
-    // some elements.
+    //////////////////////////////////////////////////////////////////
+    //// ArrayMapCachedMethod
+
+    /** A class representing the invocation of a scalar method on
+     *  an array of elements.
+     */
     public static class ArrayMapCachedMethod extends CachedMethod {
+
         public ArrayMapCachedMethod(
                 String methodName, Type[] argTypes, int type,
                 CachedMethod cachedMethod, boolean[] reducedArgs) {
@@ -895,15 +909,15 @@ public class CachedMethod {
             _reducedArgs = reducedArgs;
         }
 
-        /** Run method represented by this cachedMethod.  This
-         *  includes any conversions necessary to turn token arguments
+        /** Invoke the method represented by this CachedMethod.  This
+         *  implements any conversions necessary to turn token arguments
          *  into other arguments, and to convert the result back into
          *  a token.
          *  @param argValues An array of token objects that will be used
-         *  as the arguments.
+         *   as the arguments.
          *  @return The token result of the method invocation.
          *  @exception IllegalActionException If the invoked method
-         *  throws it.
+         *   throws it.
          */
         public ptolemy.data.Token invoke(Object[] argValues)
             throws IllegalActionException {
@@ -948,6 +962,11 @@ public class CachedMethod {
             return new ArrayToken(tokenArray);
         }
 
+        /** Override the base class to return an array type with the
+         *  element type being the return type of the underlying scalar
+         *  method.
+         *  @return An ArrayType with an appropriate element type.
+         */
         public Type getReturnType() throws IllegalActionException {
             if(isMissing()) {
                 throw new IllegalActionException(
@@ -963,8 +982,12 @@ public class CachedMethod {
         private boolean[] _reducedArgs;
     }
 
-    // A cached method that implements a simple matrix map for
-    // some elements.
+    //////////////////////////////////////////////////////////////////
+    //// MatrixMapCachedMethod
+
+    /** A class representing the invocation of a scalar method on
+     *  a matrix of elements.
+     */
     public static class MatrixMapCachedMethod extends CachedMethod {
         public MatrixMapCachedMethod(
                 String methodName, Type[] argTypes, int type,
