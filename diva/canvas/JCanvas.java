@@ -341,7 +341,11 @@ public class JCanvas extends JComponent implements Printable {
      */
     protected void processMouseEvent(MouseEvent e) {
         internalProcessMouseEvent(e);
-        super.processMouseEvent(e);
+        // The below call *should* be extranneous, but at least on the
+        // Macintosh, it prevents popup menus from being created...
+        if(!e.isConsumed()) {
+            super.processMouseEvent(e);
+        }
     }
 
     /** Process a mouse motion event. This method overrides the
@@ -352,7 +356,11 @@ public class JCanvas extends JComponent implements Printable {
      */
     protected void processMouseMotionEvent(MouseEvent e) {
         internalProcessMouseEvent(e);
-        super.processMouseMotionEvent(e);
+        // The below call *should* be extranneous, but at least on the
+        // Macintosh, it is probably necessary (see above).
+        if(!e.isConsumed()) {
+            super.processMouseMotionEvent(e);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////
