@@ -1,4 +1,4 @@
-/* Applet demonstrating the Query class.
+/* Standalon Application demonstrating the Query class.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -23,62 +23,44 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
-
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.gui.demo;
 
-import javax.swing.JApplet;
-import javax.swing.UIManager;
-import java.awt.Color;
-import ptolemy.gui.*;
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
+import javax.swing.*;
+import javax.swing.text.*;
+import javax.swing.text.html.*;
+import java.awt.*;              //for layout managers
+import java.awt.event.*;        //for action and window events
+import java.net.URL;
+import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
-//// QueryApplet
+//// FileChooserQuery
 /**
-Applet demonstrating the Query class.
+Demonstration of the addFileChooser() method in Query.
+This can't be in an applet because applets cannot read from the local files.
 
-@author  Edward A. Lee, Manda Sutijono
+@author  Christopher Hylands
 @version $Id$
 @see ptolemy.gui.Query
 */
-public class QueryApplet extends BasicJApplet implements QueryListener {
+public class FileChooserQuery extends JFrame
+    implements QueryListener {
 
     /** Constructor.
      */
-    public QueryApplet() {
-        super();
+    public FileChooserQuery() {
+        super("FileChooserQuery");
 
-        // The Java look & feel is pretty lame, so we use the native
-        // look and feel of the platform we are running on.
-        // NOTE: This creates the only dependence on Swing in this
-        // class.  Should this be left to derived classes?
-        try {
-            UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            // Ignore exceptions, which only result in the wrong look and feel.
-        }
-    }
+        JPanel contentPane = new JPanel();
+	_query = new Query();
+        contentPane.add(_query);
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Called to notify that one of the entries has changed.
-     *  The name of the entry is passed as an argument.
-     *  @param name The name of the entry.
-     */
-    public void changed(String name) {
-        showStatus("Changed " + name + " to: " + _query.stringValue(name));
-    }
-
-    /** Create a Query object and configure it.
-     */
-    public void init() {
-        super.init();
-        _query = new Query();
         _query.addCheckBox("check", "Check box", true);
         _query.setTextWidth(20);
         _query.addLine("line", "Entry box", "default entry");
@@ -92,14 +74,39 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
         String[] options = {"mayonnaise", "mustard", "both", "none"};
         _query.addRadioButtons("radio", "Radio buttons", options, "none");
 
-	try {
         _query.addFileChooser("fileChooser", "FileChooser", "/");
-	} catch ( SecurityException security) {
-	    System.out.println("addFileChooser failed: " + security);
-	}
+
         _query.addQueryListener(this);
         _query.setBackground(getBackground());
-        getContentPane().add(_query);
+        setContentPane(contentPane);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Called to notify that one of the entries has changed.
+     *  The name of the entry is passed as an argument.
+     *  @param name The name of the entry.
+     */
+    public void changed(String name) {
+        System.out.println("Changed " + name + " to: "
+			   + _query.stringValue(name));
+    }
+
+    /** Create a FileChooserQuery and configure it
+     */	
+    public static void main(String[] args) {
+        JFrame frame = new FileChooserQuery();
+
+	frame.addWindowListener(new WindowAdapter() {
+		public void windowClosing(WindowEvent e) {
+		    System.exit(0);
+		}
+	    });
+
+        frame.pack();
+        frame.setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////

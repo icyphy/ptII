@@ -72,7 +72,7 @@ install: all
 demos: demo
 demo:	all
 	CLASSPATH=$(CLASSPATH) appletviewer QueryApplet.htm
-
+	CLASSPATH=$(CLASSPATH) java ptolemy.gui.demo.FileChooserQuery
 
 depend:
 	@echo "no dependencies in this directory"
