@@ -210,7 +210,7 @@ public class LocalZenoApplication implements ActionListener {
 	    _rcvr2 = new ListenSink( _topLevel, "rcvr2" );
             
 	    _fBack1.setDelay(4.5);
-	    _fBack2.setDelay(4.5);
+	    _fBack2.setDelay(0.5);
 
 	    // Set up ports, relation 
 	    TypedIOPort clockOut = (TypedIOPort)_clock.getPort("output"); 
@@ -266,22 +266,6 @@ public class LocalZenoApplication implements ActionListener {
 	_window.setSize(500, 600); 
 	_window.setLocation(100, 100); 
 	_window.setVisible(true);
-	/*
-	if( _appletPanel == null ) {
-            _window = new BasicWindow("Basic Window"); 
-	    _window.getContentPane().add(controlPanel, BorderLayout.NORTH); 
-	    _window.getContentPane().add(g, BorderLayout.CENTER); 
-	    _window.setSize(500, 600); 
-	    _window.setLocation(100, 100); 
-	    _window.setVisible(true);
-	} else {
-	    _appletPanel.add(controlPanel, BorderLayout.NORTH);
-	    _appletPanel.add(g, BorderLayout.CENTER);
-	    _appletPanel.setSize(500, 600); 
-	    _appletPanel.setLocation(100, 100); 
-	    _appletPanel.setVisible(true);
-	}
-	*/
 
         // Make sure we have the right renderers and then display the graph
         GraphPane gp = (GraphPane) g.getCanvasPane();
@@ -461,11 +445,11 @@ public class LocalZenoApplication implements ActionListener {
                     public void run () {
                         switch (state) {
                         case 1:
-			    figure.setFillPaint(Color.green);
+			    figure.setFillPaint(Color.yellow);
                             break;
                         
                         case 2:
-                            figure.setFillPaint(Color.yellow);
+                            figure.setFillPaint(Color.green);
                             break;
                         
                         case 3:
