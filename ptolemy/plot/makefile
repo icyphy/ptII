@@ -107,7 +107,7 @@ EXTRA_SRCS = $(JSRCS) \
 	ptplot_ismp.xml
 
 # Non-source files such as README files and subdirectories
-MISC_FILES = test img #bean
+MISC_FILES = test img servlet #bean
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
