@@ -112,6 +112,8 @@ public class DDEIOPort extends TypedIOPort {
             boolean isinput, boolean isoutput)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, isinput, isoutput);
+        // FIXME: Why is this necessary?  Why doesn't the two arg
+        // constructor do the same check?
         if ( !container.isAtomic() ) {
             throw new IllegalActionException(container, this,
                     "A DDEIOPort can not be contained by a " +
