@@ -387,10 +387,10 @@ public abstract class TreeNode extends TrackedPropertyMap
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
 
-    // The class of this object, cached locally.
+    /** The class of this object, cached locally. */
     protected Class _myClass = null;
 
-    // The list of children.
+    /** The list of children. */
     protected ArrayList _childList;
 
     ///////////////////////////////////////////////////////////////////
