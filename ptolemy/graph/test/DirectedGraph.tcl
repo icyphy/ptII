@@ -97,7 +97,7 @@ test DirectedGraph-2.2 {Create a cyclic graph with 2 nodes} {
 ######################################################################
 ####
 # 
-test DirectedGraph-2.3 {Create an acyclic graph with 4 nodes} {
+test DirectedGraph-2.3 {an acyclic graph with 4 nodes forming a diamond} {
     set p [java::new pt.graph.DirectedGraph]
     set n1 [java::new {java.lang.String String} node1]
     set n2 [java::new {java.lang.String String} node2]
@@ -112,8 +112,9 @@ test DirectedGraph-2.3 {Create an acyclic graph with 4 nodes} {
     $p addEdge $n2 $n4
     $p addEdge $n3 $n4
     set sort [$p topSort]
-    set sn1 [$sort get 1]
-    list [$p isDirected] [$p isAcyclic] [$sort get 0]\
-         [$sort get 1] [$sort get 2] [$sort get 3]
-} {1 1 node1 node2 node3 node4}
+    set reach [$p reachableNodes $n2]
+    list [$p isDirected] [$p isAcyclic] \
+	 [$sort get 0] [$sort get 1] [$sort get 2] [$sort get 3] \
+	 [$reach get 0]
+} {1 1 node1 node2 node3 node4 node4}
 
