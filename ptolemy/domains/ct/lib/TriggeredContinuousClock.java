@@ -49,6 +49,8 @@ are received simultaneously, then the clock will be stopped.
 This <i>start</i> and <i>stop</i> ports can are declared DISCRETE, and they
 should be connected to an event generator.  Other domains ignore this
 declaration.
+<p>
+@see Clock
 
 @author Edward A. Lee, Haiyang Zheng
 @version $Id$

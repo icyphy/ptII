@@ -30,90 +30,50 @@
 
 package ptolemy.domains.ct.lib;
 
-import ptolemy.actor.lib.TimedSource;
-import ptolemy.data.ArrayToken;
+import ptolemy.actor.lib.Clock;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
 import ptolemy.domains.ct.kernel.CTDirector;
-import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousClock
 /**
 This is a clock source used in continuous time domain.
-This actor produces a periodic signal, a generalized square wave that
-sequences through <i>N</i> output values with arbitrary duty cycles
-and period.  It has various uses.  It can be used to generate a square
-wave.  It can also generate more intricate waveforms that cycle
-through a set of values.  The set of values may be finite by
-specifying a finite <i>numberOfCycles</i>.  Once the specified number
-of cycles has been completed, then this actor will output zeros with
-the same type as the values in the <i>values</i> parameter.
-<p>
-At the beginning of each time interval of length given by <i>period</i>,
-this actor initiates a sequence of output events with values given by
-<i>values</i> and offset into the period given by <i>offsets</i>.
-These parameters contain arrays, which are required to have the same length.
-The <i>offsets</i> array contains doubles, which
-must be nondecreasing and nonnegative,
-or an exception will be thrown when it is set.
-Moreover, its largest entry must be smaller than <i>period</i>
-or an exception will be thrown by the fire() method.
-<p>
-The <i>values</i> parameter by default
-contains an array of IntTokens with values 0 and 1.  The default
-<i>offsets</i> array is {0.0, 1.0}.  Thus, the default output will be
-alternating 1 and 0 with 50% duty cycle.  The default period
-is 2.0.
+It extends the clock actor in ptolemy/actor/lib directory
+but overrides the fire() method and postfire() method.
 <p>
 The actor uses the fireAt() method of the director to request
-firings at the beginning of each period plus each of the offsets.
-At each of these break points, the actor produces two outputs,
-one at t_minus phase and the other one at t_plus phase. T_minus and
-t_plus are the same as the break point, except the actor does not update
-the output until in t_plus phase. For example, with the default settings,
-at time 1.0, the actor produces 0.0 at t_minus phase and 1.0 at t_plus phase.
-Note, at the break point, we treat the output of this actor as any
-value between 0.0 and 1.0.
+firings at the beginning of each period plus each of the offsets,
+which are treated as breakpoints. At each breakpoint, 
+the actor produces two outputs, one at t_minus phase and the other
+one at t_plus phase. The time does not advance at these two phases.
+For example, with the default settings, at time 1.0, the actor 
+produces 0 at t_minus phase and 1 at t_plus phase. Note, at 
+the breakpoint, we treat the output of this actor as any
+value between 0 and 1.
 <p>
-CT directors may also fire the actor at
-other times, without requiring a trigger input.  This is because
-that CT may compute the behavior of a system at any time.
-Again, the actor simply repeats the previous output.
-Thus, the output can be viewed as samples of the clock waveform,
-where the time of each sample is the time of the firing that
-produced it.  If the actor fires before the first offset has
-been reached, then a zero token of the same type as those in
-the <i>values</i> array is produced.
+There is a defaultValue parameter which is used as output after the
+clock reachs the number of cycles. In the triggered continuous clock which
+extends this class, the defaultValue parameter is used as output before
+the clock starts. The default value is 0.
 <p>
-The clock waveform is a square wave (in the sense that transitions
-between levels are discrete and the signal is piecewise constant),
-with <i>N</i> levels, where <i>N</i> is the length of the <i>values</i>
-parameter.  Changes between levels occur at times
-<i>nP</i> + <i>o<sub>i </sub></i> where <i>n</i> is any nonnegative integer,
-<i>P</i> is the period, and <i>o<sub>i </sub></i> is an entry
-in the <i>offsets</i> array.
+The clock has a stopTime parameter and a numberOfCycles. If the
+stopTime is not set to 0.0, the whole model will stop execution when the
+stop time is reached. If the numberOfCycles is not set to -1, the
+clock will continue outputing the value of the defaultValue parameter.
 <p>
-The type of the output can be any token type. This type is inferred from the
-element type of the <i>values</i> parameter.
-<p>
-This actor is a timed source.
+@see Clock
 
 @author Edward A. Lee, Haiyang Zheng
 @version $Id$
 @since Ptolemy II 2.2
 */
 
-public class ContinuousClock extends TimedSource {
+public class ContinuousClock extends Clock {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -125,70 +85,16 @@ public class ContinuousClock extends TimedSource {
      */
     public ContinuousClock(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
-        super(container, name);
-
-        period = new Parameter(this, "period", new DoubleToken(2.0));
-        period.setTypeEquals(BaseType.DOUBLE);
-
-        offsets = new Parameter(this, "offsets");
-        offsets.setExpression("{0.0, 1.0}");
-        offsets.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        // Call this so that we don't have to copy its code here...
-        attributeChanged(offsets);
-
-        // Set the values parameter.
-        IntToken[] defaultValues = new IntToken[2];
-        defaultValues[0] = new IntToken(0);
-        defaultValues[1] = new IntToken(1);
-        ArrayToken defaultValueToken = new ArrayToken(defaultValues);
-        values = new Parameter(this, "values", defaultValueToken);
-        values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-
-        // set type constraint
-        ArrayType valuesArrayType = (ArrayType)values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        output.setTypeAtLeast(elementTerm);
-
-        // Call this so that we don't have to copy its code here...
-        attributeChanged(values);
-
-        // Set the numberOfCycles parameter.
-        numberOfCycles = new Parameter(this,"numberOfCycles");
-        numberOfCycles.setTypeEquals(BaseType.INT);
-        numberOfCycles.setExpression("-1");
-
-        // Set the defaultValue parameter.
-        defaultValue = new Parameter(this, "defaultValue", new IntToken(0));
-        defaultValue.setTypeEquals(BaseType.UNKNOWN);
+           super(container, name);
+           defaultValue = new Parameter(this, "defaultValue", new IntToken(0));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The number of cycles to produce, or -1 to specify no limit.
-     *  This is an integer with default -1.
-     */
-    public Parameter numberOfCycles;
-
-    /** The offsets at which the specified values will be produced.
-     *  This parameter must contain an array of doubles, and it defaults
-     *  to {0.0, 1.0}.
-     */
-    public Parameter offsets;
-
-    /** The period of the output waveform.
-     *  This parameter must contain a DoubleToken, and it defaults to 2.0.
-     */
-    public Parameter period;
-
-    /** The values that will be produced at the specified offsets.
-     *  This parameter must contain an ArrayToken, and it defaults to
-     *  {1, 0}
-     */
-    public Parameter values;
-
-    /** The default value used before the clock starts and after
-     *  the clock stops.
+    /** The default value used after the clock stops. In the triggered
+     *  continuous clock, which extends this class and has a start 
+     *  trigger, the default value is used as output before the clock starts. 
      *  This parameter must contain a token, and it defaults to 0.
      */
     public Parameter defaultValue;
@@ -196,70 +102,12 @@ public class ContinuousClock extends TimedSource {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the argument is the <i>offsets</i> parameter, check that the
-     *  array is nondecreasing and has the right dimension; if the
-     *  argument is <i>period</i>, check that it is positive. Other
-     *  sanity checks with <i>period</i> and <i>values</i> are done in
-     *  the fire() method.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the offsets array is not
-     *   nondecreasing and nonnegative.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == offsets) {
-            ArrayToken offsetsValue = (ArrayToken)offsets.getToken();
-            _offsets = new double[offsetsValue.length()];
-            double previous = 0.0;
-            for (int i = 0; i < offsetsValue.length(); i++) {
-                _offsets[i] = ((DoubleToken)offsetsValue.getElement(i))
-                    .doubleValue();
-                // Check nondecreasing property.
-                if (_offsets[i] < previous) {
-                    throw new IllegalActionException(this,
-                            "Value of offsets is not nondecreasing " +
-                            "and nonnegative.");
-                }
-                previous = _offsets[i];
-            }
-        } else if (attribute == period) {
-            double periodValue =
-                ((DoubleToken)period.getToken()).doubleValue();
-            if (periodValue <= 0.0) {
-                throw new IllegalActionException(this,
-                        "Period is required to be positive.  " +
-                        "Period given: " + periodValue);
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
-
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameter public members to refer
-     *  to the parameters of the new actor.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        ContinuousClock newObject = (ContinuousClock)super.clone(workspace);
-        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
-        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-        newObject.output.setTypeAtLeast(elementTerm);
-
-        return newObject;
-    }
-
     /** Output the current value of the clock.
      *  @exception IllegalActionException If
      *   the value in the offsets parameter is encountered that is greater
      *   than the period, or if there is no director.
      */
     public void fire() throws IllegalActionException {
-        super.fire();
 
         // Get the current time and period.
         double currentTime = getDirector().getCurrentTime();
@@ -290,18 +138,14 @@ public class ContinuousClock extends TimedSource {
             }
 
             // Adjust the phase if time has moved beyond the current phase.
-            // FIXME: why using while but not if?
-
-            //while (currentTime >= _tentativeCycleStartTime
-            //    + _offsets[_tentativePhase]) {
-
+            // Synchronize the _tentativePhase with the currentTime considering
+            // the time resolution.
+            
             // Note that in CTDirector, the time resolution causes troubles.
             // For example, if currentTime is slightly smaller than the
             // expected break point, it should be treated as a break point
             // as what the director does in processBreakPoints method.
 
-            // FIXME: do we need a general method to deal with time resolution
-            // for every actor/director?
             if (currentTime + ((CTDirector)getDirector()).getTimeResolution()
                     >= _tentativeCycleStartTime + _offsets[_tentativePhase]) {
                 if (_tPlus) {
@@ -385,33 +229,20 @@ public class ContinuousClock extends TimedSource {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (_debugging)_debug("Initializing " + getFullName() + ".");
-
-        double currentTime = getDirector().getCurrentTime();
-        _cycleStartTime = currentTime;
-        _startTime = currentTime;
-
-        // The clock starts with the defaultValue.
-        _currentValue = defaultValue.getToken();
-        _phase = 0;
-
         _tMinus = true;
         _tPlus = false;
+    }
 
-        // As in fire(), we use the strategy pattern so that derived classes
-        // can do something different here.
-        _initializeCycleCount();
-
-        // Subclasseses may disable starting by setting _done to true.
-        if (!_done) {
-            if (_debugging) {
-                _debug("Requesting firing at time "
-                        + (_offsets[0] + currentTime));
-            }
-            // This should be the last line, because in threaded domains,
-            // it could execute immediately.
-            getDirector().fireAt(this, _offsets[0] + currentTime);
+    /** Make sure the continuous clock runs inside a CT domain.
+     *  @exception IllegalActionException If the director is not
+     *  a CTDirector or the parent class throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+        if (!(getDirector() instanceof CTDirector)) {
+            throw new IllegalActionException("ContinuousClock can only" +
+                " be used inside CT domain.");
         }
+        super.preinitialize();
     }
 
     /** Update the state of the actor and schedule the next firing,
@@ -464,107 +295,8 @@ public class ContinuousClock extends TimedSource {
         return super.postfire();
     }
 
-    /** Check that the length of the <i>values</i> and
-     *  <i>offsets</i> parameters are the same.
-     *  @exception IllegalActionException If the <i>values</i> and
-     *   <i>offsets</i> parameters do not have the same length.
-     */
-    public boolean prefire() throws IllegalActionException {
-        ArrayToken val = (ArrayToken)(values.getToken());
-        if (_offsets.length != val.length()) {
-            throw new IllegalActionException(this,
-                    "Values and offsets vectors do not have the same length.");
-        }
-        return super.prefire();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
-
-    /** Initialize the cycle count and done flag.  These are done in a
-     *  protected method so that derived classes can do something different
-     *  here.
-     */
-    protected void _initializeCycleCount() {
-        _done = false;
-        _cycleCount = 1;
-    }
-
-    /** Copy values committed in initialize() or in the last postfire()
-     *  into the corresponding tentative variables. In effect, this loads
-     *  the last known good value for these variables, which is particularly
-     *  important if time has gone backwards. This is done in a
-     *  protected method because derived classes may want to override
-     *  it.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    protected void _updateTentativeValues()
-            throws IllegalActionException {
-        _tentativeCycleStartTime = _cycleStartTime;
-        _tentativeCurrentValue = _currentValue;
-        _tentativePhase = _phase;
-        _tentativeCycleCount = _cycleCount;
-        _tentativeStartTime = _startTime;
-        _tentativeDone = _done;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The current value of the clock output. */
-    protected transient Token _currentValue;
-
-    /** The count of cycles executed so far, or 0 before the start. */
-    protected transient int _cycleCount;
-
-    /** The most recent cycle start time. */
-    protected transient double _cycleStartTime;
-
-    /** Indicator of whether the specified number of cycles have
-     *  been completed.
-     */
-    protected transient boolean _done;
-
-    /** The phase of the next output. */
-    protected transient int _phase;
-
-    /** The time at which output starts. */
-    protected transient double _startTime;
-
-    // Following variables recall data from the fire to the postfire method.
-    protected transient Token _tentativeCurrentValue;
-    protected transient int _tentativeCycleCount;
-    protected transient double _tentativeCycleStartTime;
-    protected transient boolean _tentativeDone;
-    protected transient double _tentativeStartTime;
-    protected transient int _tentativePhase;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /* Get the specified value, checking the form of the values parameter.
-     */
-    private Token _getValue(int index) throws IllegalActionException {
-        ArrayToken val = (ArrayToken)(values.getToken());
-        if (val == null || val.length() <= index) {
-            throw new IllegalActionException(this,
-                    "Index out of range of the values parameter.");
-        }
-        return val.getElement(index);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The following are all transient because they need not be cloned.
-    // Either the clone method or the initialize() method sets them.
-
-    // Cache of offsets array value.
-    private transient double[] _offsets;
-
-    // Following variables recall data from the fire to the postfire method.
-    private transient int _tentativeCycleCountIncrement;
-    private transient double _tentativeNextFiringTime;
 
     // Boolean variables indicating the phases beside the break point.
     private boolean _tMinus;
