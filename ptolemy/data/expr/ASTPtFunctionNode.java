@@ -242,15 +242,22 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                         result = method.invoke(nextClass, _childTokens);
                         foundMethod = true;
                     }
+		} catch (SecurityException security) {
+		    // If we are running under an Applet, then we
+		    // may end up here if, for example, we try
+		    // to invoke the non-existent quantize function on
+		    // java.lang.Math.
                 } catch (InvocationTargetException exception) {
                     // get the exception produced by the invoked function
                     exception.getTargetException().printStackTrace();
                     throw new IllegalActionException(
                         "Error invoking function " + _funcName + "\n" +
                         exception.getTargetException().getMessage());
-	         } catch (Exception exception)  {
-		     throw new IllegalActionException(exception.getMessage());
-                 }
+		} catch (Exception exception)  {
+		     throw new IllegalActionException(null, exception,
+			      "Error invoking function " + _funcName
+						      + " on " + nextClass);
+		}
 
 	    } catch (InvocationTargetException ex) {
 		// get the exception produced by the invoked function
