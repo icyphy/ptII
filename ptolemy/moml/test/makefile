@@ -69,6 +69,7 @@ EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 	FilterOutGraphicalClasses.xml \
 	testClass.xml \
 	testClass2.xml \
+	testClass2DotMoml.moml \
 	 #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't

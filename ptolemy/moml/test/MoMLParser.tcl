@@ -2380,6 +2380,30 @@ test MoMLParser-8.2 {test input with a relative source } {
 </entity>
 }
 
+set body {
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
+    <!-- Note that here, we are searching relative to the cwd -->
+    <input source="testClass2DotMoml.moml"/>
+</entity>
+}
+set moml "$header $body"
+
+test MoMLParser-8.3 {test input with a relative source with a file ending in .moml} {
+    // RIM uses .moml files, so leave them in.
+    $parser reset
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.kernel.CompositeEntity">
+    <class name="testClass2" extends="ptolemy.kernel.CompositeEntity">
+        <property name="x" class="ptolemy.kernel.util.Attribute">
+        </property>
+    </class>
+</entity>
+}
+
 ######################################################################
 ####
 #
