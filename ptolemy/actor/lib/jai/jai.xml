@@ -65,6 +65,20 @@
 	<entity name="JAIBMPWriter" class="ptolemy.actor.lib.jai.JAIBMPWriter">
 	</entity>
 	<entity name="JAIConstant" class="ptolemy.actor.lib.jai.JAIConstant">
+	  <property name="dataFormat">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="byte" value="byte"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="double" value="double"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="float" value="float"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="int" value="int"
+	                    class="ptolemy.kernel.util.StringAttribute"/>
+                  <property name="short" value="short"
+	                    class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>
+	  </property>   	
 	</entity>
 	<entity name="JAIConvolve" class="ptolemy.actor.lib.jai.JAIConvolve">
 	</entity>
