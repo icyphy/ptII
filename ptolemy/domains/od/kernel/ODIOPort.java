@@ -170,12 +170,16 @@ public class ODIOPort extends IOPort {
                 return;
             }
             
-            System.out.println("\nAbout to call ODReceiver.put() within " +
-                    "ODIOPort.send()."); 
+            /*
+            // System.out.println("\nAbout to call ODReceiver.put() within " +
+                    "ODIOPort.send() for " + getName() ); 
+            */
             for (int j = 0; j < farRec[channelindex].length; j++) {
                 double currentTime = ((ODActor)getContainer()).getCurrentTime(); 
                 ((ODReceiver)farRec[channelindex][j]).put(
-                        token, currentTime + delay);
+                        // FIXME
+                        // token, currentTime + delay);
+                        token, delay);
             }
         } finally {
             workspace().doneReading();
