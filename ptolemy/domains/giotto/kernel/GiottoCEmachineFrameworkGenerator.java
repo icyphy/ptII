@@ -794,12 +794,13 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
 
         dataTypes = new HashSet(); // Creating a set of all the unique types used
         
-        FHfuncDeclString = "";  // Contains the declaration of functions defined in the C file
+        FHfuncVarDeclString = "";  // Contains the declaration of functions defined in the C file
         FCoutDriversImplString = ""; // Contains the code for the initialization of output drivers
         FCinDriversImplString = ""; // Contains functions to implement the input drivers
         THfuncDeclString = ""; // Contains the declaration of the task functions
         TCfuncImplString = ""; // Contains the skeleton code for the task functions
-
+        FCVarInitString = ""; // Contains the initialization function f_code_init
+        
         _generateCodeStrings(model);
 
         String fcodeDirectoryName =  directory.getAbsolutePath() + "/"
@@ -869,6 +870,7 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         codeString += _tabChar + "return ( (unsigned)1 );" + _endLine;
         codeString += "}" + _endLine + _endLine;
         
+        codeString += FCVarInitString;
         codeString += FCoutDriversImplString;
         codeString += FCinDriversImplString;
         
@@ -942,7 +944,7 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         codeString += _endLine;
         codeString += "inline unsigned constant_true( void );" +  _endLine;
         codeString += _endLine;
-        codeString += FHfuncDeclString;
+        codeString += FHfuncVarDeclString;
         codeString += _endLine;
         codeString += "#endif" +  _endLine;
         
@@ -1007,6 +1009,7 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         throws IllegalActionException {
             
             _outputInitializationCode(model);
+            _arrayVariablesAllocationCode(model);
             _driversImplementationCode(model);
             _taskCodeSkeleton(model);
     }
@@ -1049,7 +1052,7 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                         + _tabChar + "*p" + portID + " = " + portInitialValue + ";" + _endLine
                         + "}" + _endLine + _endLine;
 
-                    FHfuncDeclString += "inline void"
+                    FHfuncVarDeclString += "inline void"
                     + " "
                     + portInitialValueFunction
                     + "(" + portTypeID + " *p" + portID + ");"
@@ -1058,12 +1061,93 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
             }
         }
     }
+    
+    /** Generate the memory allocation code for
+     *  the output ports that are of type array.
+     *  The order of ports in model has effect
+     *  on the order of driver input parameters
+     */
+    private static void _arrayVariablesAllocationCode(TypedCompositeActor model)
+            throws IllegalActionException {
+
+        FHfuncVarDeclString += "// Allocating Memory for Array data types" + _endLine;
+        FCVarInitString += "// Initialization function containing the global and local array variables"
+                         + _endLine
+                         + "void f_code_init ( void ) {" + _endLine;
+                         
+        Iterator actors = model.entityList().iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            String actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName());
+
+            FHfuncVarDeclString += "// For Task " + actorName + _endLine;
+            FCVarInitString += _tabChar + "// For Task " + actorName + _endLine;
+
+            for (Iterator ports = actor.outputPortList().iterator();
+                 ports.hasNext();) {
+                TypedIOPort port = (TypedIOPort) ports.next();
+                String portType = _getTypeString(port);
+                if (portType.endsWith("array")) {
+                    String sanitizedPortName =
+                    StringUtilities.sanitizeName(
+                                port.getName(model));
+                    String arrayLength = _getArrayLength(port);
+                       
+                    FHfuncVarDeclString += portType.substring(0, portType.length()-5/* Length of "array" */)
+                                         + " array" + sanitizedPortName + "_1"
+                                         + "[" + arrayLength + "]" + ";" + _endLine;
+                    FHfuncVarDeclString += portType.substring(0, portType.length()-5/* Length of "array" */)
+                                         + " array" + sanitizedPortName + "_2"
+                                         + "[" + arrayLength + "]" + ";" + _endLine;
+                    FHfuncVarDeclString += _endLine;
+                     
+                    // Writng into f_code_init
+                    FCVarInitString += _tabChar + "local_" + sanitizedPortName
+                                     + " = array" + sanitizedPortName + "_1;" + _endLine;
+                    FCVarInitString += _tabChar + "global_" + sanitizedPortName
+                                     + " = array" + sanitizedPortName + "_2;" + _endLine;
+                }
+            }
+    
+            for (Iterator ports = actor.inputPortList().iterator();
+                 ports.hasNext();) {
+                TypedIOPort port = (TypedIOPort) ports.next();
+                String portType = _getTypeString(port);
+                if (portType.endsWith("array")) {
+                    String sanitizedPortName =
+                    StringUtilities.sanitizeName(
+                                port.getName(model));
+                    // Since the array size need not be declared at the input port
+                    // in the model, we resort to the following
+                    List sourcePortList = port.sourcePortList();
+                    if (sourcePortList.size() > 1) {
+                        throw new IllegalActionException(port, "Input port " +
+                                "cannot receive data from multiple sources in Giotto.");
+                    }
+                    TypedIOPort sport = (TypedIOPort)port.sourcePortList().get(0);
+                    String arrayLength = _getArrayLength(sport);
+                       
+                    FHfuncVarDeclString += portType.substring(0, portType.length()-5/* Length of "array" */)
+                                         + " array" + sanitizedPortName
+                                         + "[" + arrayLength + "]" + ";" + _endLine;
+                    FHfuncVarDeclString += _endLine;
+                     
+                    // Writng into f_code_init
+                    FCVarInitString += _tabChar + sanitizedPortName
+                                     + " = array" + sanitizedPortName + ";" + _endLine;
+                }
+            }
+        }
+        FCVarInitString += "}" + _endLine;
+    }
 
     /** Generate implementation code for the drivers.
      *  The order of ports in model has effect
      *  on the order of driver input parameters
      *  @return The drivers code.
+     * 
      */
+            
     private static void _driversImplementationCode(TypedCompositeActor model)
             throws IllegalActionException {
 
@@ -1087,21 +1171,18 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         while(dataType.hasNext()) {
             String type = (String)dataType.next();
             FCoutDriversImplString += "inline void"
-                        + " copy_"
-                        + type
-                        + " ("
-                        + type + " *src, "
-                        + type + " *dst) {"
-                        + _endLine
-                        + _tabChar + "*dst = *src;"
-                        + _endLine + "}"
-                        + _endLine + _endLine;
+                        + " copy_" + type
+                        + " (" + type + " *src, "
+                        + type + " *dst) {" + _endLine
+                        + _tabChar + type + " temp;" + _endLine + _endLine
+                        + _tabChar + "temp = *dst;" + _endLine
+                        + _tabChar + "*dst = *src;" + _endLine
+                        + _tabChar + "*src = temp;" + _endLine
+                        + "}" + _endLine + _endLine;
 
-            FHfuncDeclString += "inline void"
-                        + " copy_"
-                        + type
-                        + " ("
-                        + type + " *src, "
+            FHfuncVarDeclString += "inline void"
+                        + " copy_" + type
+                        + " (" + type + " *src, "
                         + type + " *dst);"
                         + _endLine + _endLine;
 
@@ -1111,19 +1192,12 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
     private static void _inputDriversImplementationCode(TypedCompositeActor model)
             throws IllegalActionException {
              
-        String varDeclString = "";
-        String arrayInitString = ""; // Contains the initial assignment of the input driver variables to the 
-                                     // statically allocated array variables
+        String assgtInitString = ""; // Contains the declaration of temp variables
         String assgtStmtString = "";
         Actor actor;
         String actorName;
 
-        FCinDriversImplString += "// Input Drivers for all the Tasks requiring one" + _endLine
-                   + "// These functions make an assumption in the case of arrays" + _endLine
-                   + "// - that the output array has been allocated already and" + _endLine
-                   + "//   that there are valid values present in the allocated memory" + _endLine
-                   + "// - The input array is allocated by the driver. Therefore the" + _endLine
-                   + "//   corresponding task should assume the memory present." + _endLine + _endLine;
+        FCinDriversImplString += "// Input Drivers for all the Tasks requiring one" + _endLine + _endLine;
                    
         // generate "Driver functions" for common actors.
         Iterator actors = model.entityList().iterator();
@@ -1136,16 +1210,14 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
             actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName());
             
             FCinDriversImplString += "inline void " + actorName + "_inputdriver( ";
-            FHfuncDeclString      += "inline void " + actorName + "_inputdriver( ";
+            FHfuncVarDeclString      += "inline void " + actorName + "_inputdriver( ";
 
-	    varDeclString = _tabChar + "// Counter to optimize the copying to execute only when required" + _endLine;
-	    varDeclString += _tabChar + "static int copy_counter = 0;" + _endLine;
-        arrayInitString = "";
-	    assgtStmtString = "";
-
+            assgtInitString = "";
+    	    assgtStmtString = "";
+    
             Map driverIOMap = new LinkedHashMap();
             boolean firstParameter = true;
-	    boolean firstArray = true;
+    	    boolean firstArray = true;
 
             for (Iterator inPorts = actor.inputPortList().iterator();
                  inPorts.hasNext();) {
@@ -1163,61 +1235,32 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                 TypedIOPort port = (TypedIOPort)inPort.sourcePortList().get(0);
                 String sanitizedPortName2 = StringUtilities.sanitizeName(
                         port.getName(model));
-                String portType = _getTypeString(port);
                 if (firstParameter) {
                     firstParameter = false;
                 }
                 else {
                     FCinDriversImplString += ", ";
-                    FHfuncDeclString += ", ";
+                    FHfuncVarDeclString += ", ";
                 }
-                FCinDriversImplString += portType + " *" + sanitizedPortName2
+                FCinDriversImplString += inPortType + " *" + sanitizedPortName2
                            + ", " + _getTypeString(inPort) + " *" + sanitizedPortName;
-                FHfuncDeclString += portType + " *" + sanitizedPortName2
+                FHfuncVarDeclString += inPortType + " *" + sanitizedPortName2
                            + ", " + _getTypeString(inPort) + " *" + sanitizedPortName;
                 
-		// Allocate memory for the arrays
-		if (portType.endsWith("array")) {
-		    if (firstArray) { // First time an array has been found
-			firstArray = false;
-			varDeclString += _tabChar + "int i;" + _endLine;
-		    }
-		    String arrayLength = _getArrayLength(port);
-		    varDeclString += _tabChar + "static "
-			                 + portType.substring(0, portType.length()-5/* Length of "array" */)
-			                 + " array" + sanitizedPortName2
-			                 + "[" + arrayLength + "]" + ";" + _endLine;
-                    
-		    arrayInitString += _tabChar + "*" + sanitizedPortName + " = "
-			                 + "array" + sanitizedPortName2 + ";" + _endLine;
-		    
-		    String sourceActorName = 
-			StringUtilities.sanitizeName(
-				   port.getContainer().getName());
-		    assgtStmtString += _tabChar + "// Reduction of number of copies - slightly suboptimal when" + _endLine
-                         + _tabChar + "//   " + sourceActorName + "_FREQ does not perfeclty divide " + actorName + "_FREQ" + _endLine
-                         + _tabChar + "if (!(copy_counter % "
-			             + "(" + actorName + "_FREQ/" + sourceActorName + "_FREQ) )) {" + _endLine
-                         + _tabChar + _tabChar + "// Preventing null pointer copies" + _endLine
-                         + _tabChar + _tabChar + "if (*" + sanitizedPortName2 + ") {" + _endLine
-			             + _tabChar + _tabChar + _tabChar + "for( i=0 ; i<" + arrayLength + " ; i++ ) {" + _endLine
-			             + _tabChar + _tabChar + _tabChar + _tabChar + "(*" + sanitizedPortName + ")[i] = (*" + sanitizedPortName2 + ")[i];" + _endLine
-                         + _tabChar + _tabChar + _tabChar + "}" + _endLine
-                         + _tabChar + _tabChar + "}" + _endLine
-                         + _tabChar + "}" + _endLine;
-		}
-		else {
-		    assgtStmtString += _tabChar + "*" + sanitizedPortName
-			                 + " = *" + sanitizedPortName2 + ";" + _endLine;
-		}
+                assgtInitString += _tabChar + inPortType + " temp_" + sanitizedPortName
+                                 + ";" + _endLine;
+                assgtStmtString += _tabChar + "temp_" + sanitizedPortName
+                                 + " = " + "*" + sanitizedPortName + ";" + _endLine;
+    		    assgtStmtString += _tabChar + "*" + sanitizedPortName
+    			                 + " = *" + sanitizedPortName2 + ";" + _endLine;
+                assgtStmtString += _tabChar + "*" + sanitizedPortName2
+                                 + " = " + "temp_" + sanitizedPortName + ";" + _endLine + _endLine;
             }
-	    assgtStmtString += _tabChar + "copy_counter = (copy_counter % " + actorName + "_FREQ) + 1;" + _endLine;
 
-        FCinDriversImplString += ") {" + _endLine;
-            FHfuncDeclString += ");" + _endLine + _endLine;
-            FCinDriversImplString += varDeclString + _endLine // Statically allocate space for all the arrays used
-                        + arrayInitString + _endLine // Include static variable allocations
-                        + assgtStmtString; // Copy values from the global section to the input of the task
+            FCinDriversImplString += ") {" + _endLine;
+            FHfuncVarDeclString += ");" + _endLine + _endLine;
+            FCinDriversImplString += assgtInitString + _endLine // Include temp var decls
+                                   + assgtStmtString; // Copy values from the global section to the input of the task
             FCinDriversImplString += "}" + _endLine;
         }
         // TODO : Generate driver code for the actuators.
@@ -1309,8 +1352,9 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
     private static Set dataTypes;
     private static String _endLine = "\n";
     private static String _tabChar = "\t";
-    private static String FHfuncDeclString;  // Contains the declaration of the driver functions
+    private static String FHfuncVarDeclString;  // Contains the declaration of the driver functions & array variables
     private static String FCoutDriversImplString; // Contains the code for the initialization of output drivers
+    private static String FCVarInitString; // Contains the code for the initialization of the array variables
     private static String FCinDriversImplString; // Contains functions to implement the input drivers
     private static String THfuncDeclString; // Contains the declaration of the task functions
     private static String TCfuncImplString; // Contains the skeleton code for the task functions
