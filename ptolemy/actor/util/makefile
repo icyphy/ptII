@@ -89,6 +89,7 @@ OPTIONAL_FILES = \
 	'CalendarQueue$$CQLinkedList.class' \
 	'CalendarQueue$$EntryComparator.class' \
 	'CalendarQueue$$SortedLinkedList.class' \
+	'DFUtilities$$NamedObjComparator.class' \
 	'TimedEvent$$TimeComparator.class'
 
 JCLASS = $(JSRCS:%.java=%.class)

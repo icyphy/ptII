@@ -197,11 +197,15 @@ OPTIONAL_FILES = \
 	'ModelPane$$ClickListener.class' \
 	'ModelPane$$CommandListener.class' \
 	'MoMLApplication$$ConfigurationFilenameFilter.class' \
+	'MoMLApplication$$1.class' \
 	'PlotEffigy$$Factory.class' \
 	'PlotTableau$$Factory.class' \
 	'PlotTableauFrame$$EPSFileFilter.class' \
 	'PlotTableauFrame$$FormatAction.class' \
 	'PlotTableauFrame$$SpecialMenuListener.class' \
+	'PortConfigurerDialog$$7.class' \
+	'PortConfigurerDialog$$ColumnNames.class' \
+	'PtolemyQuery$$5.class' \
 	'PortConfigurerDialog$$1.class' \
 	'PortConfigurerDialog$$2.class' \
 	'PortConfigurerDialog$$3.class' \
