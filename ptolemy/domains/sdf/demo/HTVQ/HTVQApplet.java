@@ -133,31 +133,26 @@ public class HTVQApplet extends SDFApplet {
 
 	    TypedIORelation r;
             r = (TypedIORelation) _toplevel.connect(
-                    (TypedIOPort)source.getPort("image"),
-                    (TypedIOPort)part.getPort("image"), "R1");
-            ((TypedIOPort)original.getPort("image")).link(r);
+                    source.output, part.input, "R1");
+            original.input.link(r);
             ((TypedIOPort)ratio.getPort("inoriginal")).link(r);
 
             r = (TypedIORelation) _toplevel.connect(
-                    (TypedIOPort)part.getPort("partition"),
-                    (TypedIOPort)encode.getPort("imagepart"), "R2");
+                    part.output, encode.input, "R2");
 
             r = (TypedIORelation) _toplevel.connect(
-                    (TypedIOPort)encode.getPort("index"),
-                    (TypedIOPort)decode.getPort("index"), "R3");
+                    encode.output, decode.input, "R3");
 
             r = (TypedIORelation) _toplevel.connect(
-                    (TypedIOPort)decode.getPort("imagepart"),
-                    (TypedIOPort)unPartition.getPort("partition"), "R4");
+                    decode.output, unPartition.input, "R4");
 
             r = (TypedIORelation) _toplevel.connect(
-                    (TypedIOPort)unPartition.getPort("image"),
-                    (TypedIOPort)consumer.getPort("image"), "R5");
+                    unPartition.output, consumer.input, "R5");
             ((TypedIOPort)ratio.getPort("inmodified")).link(r);
 
             r = (TypedIORelation) _toplevel.connect(
                     (TypedIOPort)ratio.getPort("SNRvalue"),
-                    (TypedIOPort)prn.getPort("input"), "R6");
+                    prn.input, "R6");
 
 
         } catch (Exception ex) {
