@@ -88,22 +88,17 @@ quantization errors.
 In designing the FixPoint class, the main assumption is that all
 operators work lossless, i.e. the precision of the result is changed
 such that no rounding is done. Rounding errors are only possible when
-one casts a Fixpoint result into a Fixpoint with less precision.
-
-<p>
-
-The rounding of a Fixpoint can happen in different ways as defined by
-the <I>Quantize mode</I>. The following quantization modes can be
-selected.
+one casts a fix point result into another fix point with less
+precision. In that case, the rounding can occur and is resolved using
+different Overflow mechanisms.
 
 <ul> 
 
-<li> <B>Saturate</B>: // FIXME
+<li> <B>Saturate</B>: The new fix point is set to the maximum or
+minimum value possible, depending on its sign, possible with the new
+given precision.
 
-<li> <B>Rounding</B>: // FIXME
-
-<li> <B>Truncate</B>: The value of the Fixpoint is truncated by
-removing bits to fit the Fixpoint into it's new precision.
+<li> <B>Zero Saturate</B>: The new fix point is set to zero.
 
 </ul>
 
@@ -331,7 +326,7 @@ public final class FixPoint implements Cloneable, Serializable {
   	return "" + doubleValue();
     }
 
-   /** Return a new Fixpoint number scaled to the give precision. To
+   /**  Return a new Fixpoint number scaled to the give precision. To
      *  fit the new precision, a rounding error can occur. In that
      *  case the value of the Fixpoint is determined, depending on the
      *  quanitzation mode selected.
@@ -342,9 +337,6 @@ public final class FixPoint implements Cloneable, Serializable {
      *  with the new given precision.
      *  <li> mode = 1, <b>Zero Saturate</b>: The fix point value is
      *  set equal to zero.
-     *  <li> mode = 2, <b>Truncate</b>: bits are simply removed from
-     *  the integer and fractional part in order to fit into the new
-     *  precision.     
      *  </ul>
 
      *  @param newprecision The new precision of the Fixpoint.  
@@ -352,9 +344,42 @@ public final class FixPoint implements Cloneable, Serializable {
      *  @return A new Fixpoint with the given precision.  
      */
     public FixPoint scaleToPrecision(Precision newprecision, int mode ) {
-	Fixvalue newvalue = 
-            _scaleBits(_value, _precision, newprecision, mode );
-	return new FixPoint(newprecision, newvalue);
+  
+        double maxValue = newprecision.findMax();
+        double minValue = newprecision.findMin();
+
+        double value = this.doubleValue();
+
+        if ( minValue < value && value < maxValue ) {
+            Fixvalue newvalue = 
+                _scaleBits(_value, _precision, newprecision, mode );
+            return = new FixPoint(newprecision, newvalue);
+        } else {
+
+            FixPoint result;
+
+	    // Check how to resolve the rounding of the fractional part
+	    switch( mode ) {
+	    case 0: //SATURATE                
+                
+                if ( _value.fixvalue.signum() >= 0 ) {
+                    result = Quantizer.round( maxValue, newprecision);
+                } else {
+                    result = Quantizer.round( minValue, newprecision);
+                }
+                result.setError( OVERFLOW );
+                return result;
+
+	    case 1: //ZERO_SATURATE:
+                result = new FixPoint( newprecision, BigInteger.ZERO );
+                result.setError( OVERFLOW );
+                return result;
+
+            default:
+                throw new IllegalArgumentException("Illegal Mode of " +
+                        "Rounding Selected");                
+            }
+        }
     }
 
     /** Set the Error of the FixPoint
@@ -394,6 +419,12 @@ public final class FixPoint implements Cloneable, Serializable {
 	System.out.println (" scale Value (10) " + doubleValue() 
 			    + " Precision: " + _precision.toString() );
 	System.out.println (" Errors:     " + _value.getErrorDescription());
+	System.out.println (" BitCount:   " + _value.fixvalue.bitCount());
+	System.out.println (" BitLength   " + _value.fixvalue.bitLength());
+        BigInteger j = _value.fixvalue.abs();
+	System.out.println (" ABS value   " + j.toString(2) );
+	System.out.println (" ABS bit count:  " + j.bitCount());
+	System.out.println (" ABD bitLength:  " + j.bitLength());
         System.out.println (" Max value:  " + _precision.findMax());	
 	System.out.println (" Min value:  " + _precision.findMin());
     }
@@ -452,110 +483,50 @@ public final class FixPoint implements Cloneable, Serializable {
 	@return Fixvalue with the desired new precision 
     */
     private Fixvalue _scaleBits(Fixvalue x, Precision oldprecision, 
-				Precision newprecision, int mode ) {
+            Precision newprecision, int mode ) {
 
 	int delta, a, b = 0;
 
 	Fixvalue intResult;
 	Fixvalue fractionResult;
 
-	Fixvalue integerPart  = x.getIntegerBits( oldprecision );
-	Fixvalue fractionPart = x.getFractionBits( oldprecision );
+        // Get the absolute value of the FixPoint. In this case
+        // The rounding of the fractional part always goes toward
+        // zero.
+        // Remember the sign.
+        int sign = x.fixvalue.signum();
+        Fixvalue absValue = x.abs();
 
-	// If the new precision is larger, we pad the current value
-	// with zeros. If it is smaller, we have to remove bits
-	// resulting in rounding/truncation.
+	Fixvalue integerPart  = absValue.getIntegerBits( oldprecision );
+	Fixvalue fractionPart = absValue.getFractionBits( oldprecision );
 
-	// The handling of the scaling of the integer and fractional
-	// part is different. We first handle the integer part,
-	// followed by the fractional part.
-	a = oldprecision.getIntegerBitLength();
-	b = newprecision.getIntegerBitLength();
-	if (a > b ) {
-	    if ( integerPart.fixvalue.bitLength() <= b ) {
-		delta = 0; 
-	    }
-	    else {
-		delta = a-b;
-		// Because the real bitLength of x can be different
-		// from the bit length given by the precision, we need
-		// to correct the number of bits that really need to
-		// be shifted
-		int correction = a - integerPart.fixvalue.bitLength();
-		delta = delta - correction;
-	    }
-	} else {
-	    // b >= a
-	    delta = 0;
-	}
-	intResult = integerPart.scaleRight(delta);
-	        
-        // Check if a Quantize took place
-        if ( intResult.getError().equals(OVERFLOW) ) {
+        // The FixPoint should fit between the min/max of the
+        // new supplied precision. Only the fractional part can
+        // become smaller. This is checked here.
 
-	    // Create a new fractionpart
-	    fractionResult = new Fixvalue();
-	    fractionResult.setError( intResult.getError() );
-            
-	    // Check how to resolve the rounding of the fractional part
-	    switch( mode ) {
-	    case 0: //SATURATE
-                BigDecimal dec;
-                BigDecimal multiplier;
-
-                int number = newprecision.getFractionBitLength();        
-                double resolution = Math.pow(2,-(number+1));       
-                
-                
-                if ( integerPart.fixvalue.signum() >= 0 ) {
-                    dec = new BigDecimal( newprecision.findMax() + 
-                            resolution );
-                } else {
-                    dec = new BigDecimal( newprecision.findMin() - 
-                            resolution );
-                }
-
-                BigDecimal kl = _twoRaisedTo[number].multiply( dec );
-                BigInteger tmp = 
-                    new BigInteger( kl.toBigInteger().toByteArray() );
-                return new Fixvalue( tmp, OVERFLOW); 
-
-	    case 1: //ZERO_SATURATE:
-                return new Fixvalue( BigInteger.ZERO, OVERFLOW); 
-		//intResult.fixvalue = BigInteger.ZERO;
-		//fractionResult.fixvalue = BigInteger.ZERO;
-		// break;
-
-	    case 2: // TRUNCATE:
-		a = oldprecision.getFractionBitLength();
-		b = newprecision.getFractionBitLength();    
-		delta = b-a;
-		
-		// truncate the fractional part by shifting it delta positions
-		fractionResult.fixvalue = 
-		    fractionPart.fixvalue.shiftLeft(delta);
-		break;
-	    }
-            
-	} else {
-   
-	    // No Quantize took place, so know check Fractional Part
-	    a = oldprecision.getFractionBitLength();
-	    b = newprecision.getFractionBitLength();    
-	    delta = b-a;
-
-	    // scale the fractional part
-	    fractionResult = fractionPart.scaleLeft(delta);   
-	}
-
+        // Check Fractional Part
+        a = oldprecision.getFractionBitLength();
+        b = newprecision.getFractionBitLength();    
+        delta = b-a;
+        
+        // scale the fractional part
+        fractionResult = fractionPart.scaleLeft(delta);   
+       
 	// Reconstruct a single Fixpoint from the separate integer and
 	// fractional part
 	BigInteger total = 
-	    intResult.fixvalue.shiftLeft(newprecision.getFractionBitLength());
+	    integerPart.fixvalue.shiftLeft(
+                    newprecision.getFractionBitLength());
 	total = total.add( fractionResult.fixvalue ); 
 
 	// Return the Fixvalue cast to the new precision
-	return new Fixvalue( total, fractionResult.getError());
+        if ( sign >= 0 ) { 
+            //System.out.println(" -- RETURN a positive Fixvalue -- ");
+            return new Fixvalue( total, fractionResult.getError());
+        } else {
+            //System.out.println(" -- RETURN a negative Fixvalue -- ");
+            return new Fixvalue( total.negate(), fractionResult.getError());
+        }
     }
    
     
@@ -639,6 +610,14 @@ public final class FixPoint implements Cloneable, Serializable {
  	    return new Fixvalue(result, _error);
 	}
 
+	/** Return the absoluate value of this Fixvalue. Uses the absolute
+	 *  method of BigInteger.  
+	 *  @return A new Fixvalue. 
+	 */
+ 	public Fixvalue abs() {
+ 	    BigInteger result = fixvalue.abs();
+ 	    return new Fixvalue(result, _error);
+	}
 
 	/** Get the Error condition from the Fixvalue 
 	    @return The error condition of the Fixvalue

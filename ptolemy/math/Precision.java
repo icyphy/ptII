@@ -224,7 +224,7 @@ public class Precision {
     public double findMax() {
         int ln = getNumberOfBits();
         int ib = getIntegerBitLength();
-        double tmp = Math.pow(2,ib-1) - 1.0 / Math.pow(2, (ln - ib));
+        double tmp = Math.pow(2,ib-1) - ( 1.0 / Math.pow(2, (ln - ib)) );
         return tmp;
     }
 
