@@ -53,8 +53,6 @@ import java.lang.*;
  * A title, X and Y axis labels, tick marks, and a legend are all supported.
  * Zooming in and out is supported.  To zoom in, drag the mouse
  * downwards to draw a box.  To zoom out, drag the mouse upward.
- * Zooming out stops automatically at the point where the data fills
- * the drawing rectangle.
  * <p>
  * The box can be configured either through a file with commands or
  * through direct invocation of the public methods of the class.
