@@ -1607,7 +1607,7 @@ public class Query extends JPanel {
             Color newColor =
                 JColorChooser.showDialog(
                     Query.this,
-                    "Choose Background Color",
+                    "Choose Color",
                     new Color(red, green, blue, alpha));
             if (newColor != null) {
                 float[] components = newColor.getRGBComponents(null);
