@@ -231,13 +231,22 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 
 
     if { ${codeGenType} == "Applet" } {
-          set args [java::new {String[]} 5 \
-  	    [list \
-  	    $modelPath \
-		 "-codeGenerator" "applet" \
-		 "-run" "false"] ]
-	java::new ptolemy.copernicus.kernel.Copernicus $args
-	return "Times Interp/Deep ms $modelPath 1 \
+          #set args [java::new {String[]} 5 \
+  	  #  [list \
+  	  #  $modelPath \
+	  #	 "-codeGenerator" "applet" \
+	  #	 "-run" "false"] ]
+	  #java::new ptolemy.copernicus.kernel.Copernicus $args	
+   	  set args [list $modelPath \
+		  "-codeGenerator" "applet" \
+		      "-run" "false" \
+		      "-compile" "true"]
+	  set javaCommand [list sh $PTII/bin/copernicus]
+   	  set execCommand [concat $javaCommand $args]
+          puts "Running Copernicus: $execCommand"
+	  set results [eval exec $execCommand]
+	  puts $results
+ 	  return "Times Interp/Deep ms $modelPath 1 \
 	    builtin: 0/0 \
 	    0 % \
 	    exec: 0/0 \
