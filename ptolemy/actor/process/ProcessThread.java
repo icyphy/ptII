@@ -99,7 +99,11 @@ public class ProcessThread extends PtolemyThread {
         } catch (NameDuplicationException e) {
             ((CompositeActor)_director.getContainer()).getManager().fireExecutionError(e);
         } finally {
-	    _actor.wrapup();
+            try {
+                _actor.wrapup();
+            } catch (IllegalActionException e) {
+                // FIXME:
+            }
             _director.decreaseActiveCount();
             System.out.println(getName() + ": DDYYYYYEEEEIIINNNGGGGG....");
 	}
