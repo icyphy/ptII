@@ -523,12 +523,10 @@ public class ModelTransformer extends SceneTransformer
      *  to be associated with the given context.
      *  @param context The named object corresponding to the class in which
      *  code is being generated.
-     *  @param contextLocal A local in the given body that points to
-     *  an instance of the given class.
      *  @param namedObj The named object that contains attributes.
-     *  @param namedObjLocal A local in the given body.  Attributes will be
-     *  created using this local as the container.
      *  @param theClass The soot class being modified.
+     *  @param constAnalysis Analysis that is used to determine parameter
+     *  dependencies.
      */
     public static void createAttributeComputationFunctions(
             NamedObj context, NamedObj namedObj, SootClass theClass,
