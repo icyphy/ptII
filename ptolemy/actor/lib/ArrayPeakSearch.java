@@ -54,9 +54,11 @@ The <i>dip</i> and <i>squelch</i> parameters control the sensitivity
 to noise.  These are given either as a fraction or in decibels,
 depending on the value of the <i>scale</i> parameter. For example,
 if <i>dip</i> is given as 2.0 and <i>scale</i> has value "linear",
-then a dip must drop to half the peak value to be considered a dip.
+then a dip must drop to half of a local peak value to be considered a dip.
 If <i>squelch</i> is given as 10.0 and <i>scale</i> has value "linear",
-then any peaks that lie below 1/10 of the peak are ignored.
+then any peaks that lie below 1/10 of the global peak are ignored.
+Note that <i>dip</i> is relative to the most recently seen peak,
+whereas <i>squelch</i> is relative to the global peak in the array.
 If <i>scale</i> has value "amplitude decibels", then a value of
 6.0 is equivalent to the linear value 2.0.
 If <i>scale</i> has value "power decibels", then a value of
@@ -131,8 +133,8 @@ public class ArrayPeakSearch extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The fraction below a peak that the signal must drop before a peak
-     *  is detected. This is a double that can be interpreted on
+    /** The fraction below a local peak that the signal must drop before a
+     *  peak is detected. This is a double that can be interpreted on
      *  a linear or decibel scale, depending on the <i>scale</i>
      *  parameter. It defaults to 3.0.
      */
@@ -256,9 +258,9 @@ public class ArrayPeakSearch extends TypedAtomicActor {
             double localMax = ((DoubleToken)inputArray.getElement(start)).doubleValue();
             double localMin = localMax;
             
-            // Search for the maximum value so squelch works properly.
+            // Search for the global maximum value so squelch works properly.
             double maxValue = localMax;
-            for (int i = start; i <= end; i = i + increment) {
+            for (int i = 0; i <= inputSize - 1; i = i + increment) {
                 double indata = ((DoubleToken)inputArray.getElement(i)).doubleValue();
                 if (indata > maxValue) {
                     maxValue = indata;
