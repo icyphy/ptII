@@ -48,7 +48,8 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	ReflectTest.java
+	ReflectTest.java \
+	ReflectTestInterface.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
@@ -77,11 +78,16 @@ JCLASS = $(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) jclass test_jsimple
+tests:: $(EXTRA_SRCS) jclass test_jsimple \
+		ASTReflect PrintTree RegenerateCode codegen
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
+
+ASTReflect:
+	CLASSPATH=$(CLASSPATH) $(JAVA) \
+		ptolemy.lang.java.RegenerateCode ../nodetypes/IntLitNode.java
 
 PrintTree:
 	CLASSPATH=$(CLASSPATH) $(JAVA) \
@@ -90,6 +96,7 @@ PrintTree:
 RegenerateCode:
 	CLASSPATH=$(CLASSPATH) $(JAVA) \
 		ptolemy.lang.java.RegenerateCode ../nodetypes/IntLitNode.java
+
 
 # FIXME: we can't ship these
 JAVASRC_STUBS=$(PTII)/vendors/sun/src

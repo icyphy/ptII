@@ -58,162 +58,6 @@ if {[info procs jdkCapture] == "" } then {
 ######################################################################
 ####
 #
-test ASTReflect-1.1 {} {
-    set class [ java::call Class forName "ptolemy.lang.java.Skeleton"]
-    set ast [java::call ptolemy.lang.java.ASTReflect ASTCompileUnitNode $class]
-    list [$ast toString]
-} {{CompileUnitNode
- DefTypes: list
-  ClassDeclNode
-   Interfaces: <empty list>
-   Members: list
-    ConstructorDeclNode
-     Modifiers: 1
-     Name: NameNode
-            Ident: Skeleton
-            Qualifier: AbsentTreeNode (leaf)
-           END NameNode
-     Params: <empty list>
-     ThrowsList: <empty list>
-     Body: BlockNode
-            Stmts: <empty list>
-           END BlockNode
-     ConstructorCall: SuperConstructorCallNode
-                       Args: <empty list>
-                      END SuperConstructorCallNode
-    END ConstructorDeclNode
-    MethodDeclNode
-     Modifiers: 514
-     Name: NameNode
-            Ident: _parseArg
-            Qualifier: AbsentTreeNode (leaf)
-           END NameNode
-     Params: list
-      ParameterNode
-       DefType: TypeNameNode
-                 Name: NameNode
-                        Ident: String
-                        Qualifier: AbsentTreeNode (leaf)
-                       END NameNode
-                END TypeNameNode
-       Modifiers: 17
-       Name: NameNode
-              Ident: 
-              Qualifier: AbsentTreeNode (leaf)
-             END NameNode
-      END ParameterNode
-     END list
-     ThrowsList: <empty list>
-     Body: AbsentTreeNode (leaf)
-     ReturnType: BoolTypeNode (leaf)
-    END MethodDeclNode
-    MethodDeclNode
-     Modifiers: 514
-     Name: NameNode
-            Ident: _parseArgs
-            Qualifier: AbsentTreeNode (leaf)
-           END NameNode
-     Params: list
-      ParameterNode
-       DefType: ArrayTypeNode
-                 BaseType: TypeNameNode
-                            Name: NameNode
-                                   Ident: String
-                                   Qualifier: AbsentTreeNode (leaf)
-                                  END NameNode
-                           END TypeNameNode
-                END ArrayTypeNode
-       Modifiers: 25
-       Name: NameNode
-              Ident: 
-              Qualifier: AbsentTreeNode (leaf)
-             END NameNode
-      END ParameterNode
-     END list
-     ThrowsList: <empty list>
-     Body: AbsentTreeNode (leaf)
-     ReturnType: VoidTypeNode (leaf)
-    END MethodDeclNode
-    MethodDeclNode
-     Modifiers: 513
-     Name: NameNode
-            Ident: main
-            Qualifier: AbsentTreeNode (leaf)
-           END NameNode
-     Params: list
-      ParameterNode
-       DefType: ArrayTypeNode
-                 BaseType: TypeNameNode
-                            Name: NameNode
-                                   Ident: String
-                                   Qualifier: AbsentTreeNode (leaf)
-                                  END NameNode
-                           END TypeNameNode
-                END ArrayTypeNode
-       Modifiers: 25
-       Name: NameNode
-              Ident: 
-              Qualifier: AbsentTreeNode (leaf)
-             END NameNode
-      END ParameterNode
-     END list
-     ThrowsList: <empty list>
-     Body: AbsentTreeNode (leaf)
-     ReturnType: VoidTypeNode (leaf)
-    END MethodDeclNode
-    FieldDeclNode
-     DefType: IntTypeNode (leaf)
-     Modifiers: 514
-     Name: NameNode
-            Ident: _fileStart
-            Qualifier: AbsentTreeNode (leaf)
-           END NameNode
-     InitExpr: AbsentTreeNode (leaf)
-    END FieldDeclNode
-    FieldDeclNode
-     DefType: BoolTypeNode (leaf)
-     Modifiers: 514
-     Name: NameNode
-            Ident: _debug
-            Qualifier: AbsentTreeNode (leaf)
-           END NameNode
-     InitExpr: AbsentTreeNode (leaf)
-    END FieldDeclNode
-    FieldDeclNode
-     DefType: BoolTypeNode (leaf)
-     Modifiers: 514
-     Name: NameNode
-            Ident: _eliminateImports
-            Qualifier: AbsentTreeNode (leaf)
-           END NameNode
-     InitExpr: AbsentTreeNode (leaf)
-    END FieldDeclNode
-   END list
-   Modifiers: 1
-   Name: NameNode
-          Ident: Skeleton
-          Qualifier: AbsentTreeNode (leaf)
-         END NameNode
-   SuperClass: NameNode
-                Ident: Object
-                Qualifier: NameNode
-                            Ident: lang
-                            Qualifier: NameNode
-                                        Ident: java
-                                        Qualifier: AbsentTreeNode (leaf)
-                                       END NameNode
-                           END NameNode
-               END NameNode
-  END ClassDeclNode
- END list
- Imports: <empty list>
- Pkg: NameNode
-       Ident: 
-       Qualifier: AbsentTreeNode (leaf)
-      END NameNode
-END CompileUnitNode
-}}
-
 test ASTReflect-2.1 {check out constructor in Object} {
     set class [ java::call Class forName "java.lang.Object"]
     set astList [java::call ptolemy.lang.java.ASTReflect constructorsASTList $class]
@@ -529,3 +373,168 @@ END MethodDeclNode
  ReturnType: VoidTypeNode (leaf)
 END MethodDeclNode
 }}}
+
+test ASTReflect-5.1 {Check out CompileUnitNode after we try out the methods that CompileUnitNode calls} {
+    set class [ java::call Class forName "ptolemy.lang.java.test.ReflectTestInterface"]
+    set ast [java::call ptolemy.lang.java.ASTReflect ASTCompileUnitNode $class]
+    list [$ast toString]
+} {}
+
+
+
+test ASTReflect-5.2 {ASTCompileUnitNode on a complete class} {
+    set class [ java::call Class forName "ptolemy.lang.java.Skeleton"]
+    set ast [java::call ptolemy.lang.java.ASTReflect ASTCompileUnitNode $class]
+    list [$ast toString]
+} {{CompileUnitNode
+ DefTypes: list
+  ClassDeclNode
+   Interfaces: <empty list>
+   Members: list
+    ConstructorDeclNode
+     Modifiers: 1
+     Name: NameNode
+            Ident: Skeleton
+            Qualifier: AbsentTreeNode (leaf)
+           END NameNode
+     Params: <empty list>
+     ThrowsList: <empty list>
+     Body: BlockNode
+            Stmts: <empty list>
+           END BlockNode
+     ConstructorCall: SuperConstructorCallNode
+                       Args: <empty list>
+                      END SuperConstructorCallNode
+    END ConstructorDeclNode
+    MethodDeclNode
+     Modifiers: 514
+     Name: NameNode
+            Ident: _parseArg
+            Qualifier: AbsentTreeNode (leaf)
+           END NameNode
+     Params: list
+      ParameterNode
+       DefType: TypeNameNode
+                 Name: NameNode
+                        Ident: String
+                        Qualifier: AbsentTreeNode (leaf)
+                       END NameNode
+                END TypeNameNode
+       Modifiers: 17
+       Name: NameNode
+              Ident: 
+              Qualifier: AbsentTreeNode (leaf)
+             END NameNode
+      END ParameterNode
+     END list
+     ThrowsList: <empty list>
+     Body: AbsentTreeNode (leaf)
+     ReturnType: BoolTypeNode (leaf)
+    END MethodDeclNode
+    MethodDeclNode
+     Modifiers: 514
+     Name: NameNode
+            Ident: _parseArgs
+            Qualifier: AbsentTreeNode (leaf)
+           END NameNode
+     Params: list
+      ParameterNode
+       DefType: ArrayTypeNode
+                 BaseType: TypeNameNode
+                            Name: NameNode
+                                   Ident: String
+                                   Qualifier: AbsentTreeNode (leaf)
+                                  END NameNode
+                           END TypeNameNode
+                END ArrayTypeNode
+       Modifiers: 25
+       Name: NameNode
+              Ident: 
+              Qualifier: AbsentTreeNode (leaf)
+             END NameNode
+      END ParameterNode
+     END list
+     ThrowsList: <empty list>
+     Body: AbsentTreeNode (leaf)
+     ReturnType: VoidTypeNode (leaf)
+    END MethodDeclNode
+    MethodDeclNode
+     Modifiers: 513
+     Name: NameNode
+            Ident: main
+            Qualifier: AbsentTreeNode (leaf)
+           END NameNode
+     Params: list
+      ParameterNode
+       DefType: ArrayTypeNode
+                 BaseType: TypeNameNode
+                            Name: NameNode
+                                   Ident: String
+                                   Qualifier: AbsentTreeNode (leaf)
+                                  END NameNode
+                           END TypeNameNode
+                END ArrayTypeNode
+       Modifiers: 25
+       Name: NameNode
+              Ident: 
+              Qualifier: AbsentTreeNode (leaf)
+             END NameNode
+      END ParameterNode
+     END list
+     ThrowsList: <empty list>
+     Body: AbsentTreeNode (leaf)
+     ReturnType: VoidTypeNode (leaf)
+    END MethodDeclNode
+    FieldDeclNode
+     DefType: IntTypeNode (leaf)
+     Modifiers: 514
+     Name: NameNode
+            Ident: _fileStart
+            Qualifier: AbsentTreeNode (leaf)
+           END NameNode
+     InitExpr: AbsentTreeNode (leaf)
+    END FieldDeclNode
+    FieldDeclNode
+     DefType: BoolTypeNode (leaf)
+     Modifiers: 514
+     Name: NameNode
+            Ident: _debug
+            Qualifier: AbsentTreeNode (leaf)
+           END NameNode
+     InitExpr: AbsentTreeNode (leaf)
+    END FieldDeclNode
+    FieldDeclNode
+     DefType: BoolTypeNode (leaf)
+     Modifiers: 514
+     Name: NameNode
+            Ident: _eliminateImports
+            Qualifier: AbsentTreeNode (leaf)
+           END NameNode
+     InitExpr: AbsentTreeNode (leaf)
+    END FieldDeclNode
+   END list
+   Modifiers: 1
+   Name: NameNode
+          Ident: Skeleton
+          Qualifier: AbsentTreeNode (leaf)
+         END NameNode
+   SuperClass: NameNode
+                Ident: Object
+                Qualifier: NameNode
+                            Ident: lang
+                            Qualifier: NameNode
+                                        Ident: java
+                                        Qualifier: AbsentTreeNode (leaf)
+                                       END NameNode
+                           END NameNode
+               END NameNode
+  END ClassDeclNode
+ END list
+ Imports: <empty list>
+ Pkg: NameNode
+       Ident: 
+       Qualifier: AbsentTreeNode (leaf)
+      END NameNode
+END CompileUnitNode
+}}
+
