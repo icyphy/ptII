@@ -22,19 +22,96 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="155.0, 55.0">
+        <property name="_location" class="ptolemy.moml.Location" value="175.0, 625.0">
         </property>
     </property>
-    <entity name="TriggeredClock" class="ptolemy.actor.lib.TriggeredClock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
+    <entity name="1:TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="c">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
+        <property name="_location" class="ptolemy.moml.Location" value="590.0, 505.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="305.0, 175.0">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xRange min="0.0" max="52.0"/>
+<yRange min="0.0" max="1.0"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="1:4:1:BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="350.0, 640.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="1:10:TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="t">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="550.0, 425.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="1.0"/>
+<yRange min="0.0" max="1.0"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="1:11:1:BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="300.0, 420.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="1:TriggeredClock" class="ptolemy.actor.lib.TriggeredClock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="52">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="52">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 25.0,51.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true,false,true}">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="350.0, 495.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -46,40 +123,17 @@
             </property>
         </port>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+    <entity name="1:6:1:Clock" class="ptolemy.actor.lib.Clock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0,1.0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="500.0, 230.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xRange min="1.0" max="3.0"/>
-<yRange min="0.0" max="1.0"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="Clock" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
-        </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="3.0">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{true, false}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true,false}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="135.0, 165.0">
+        <property name="_location" class="ptolemy.moml.Location" value="135.0, 445.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -89,71 +143,25 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="1:TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="425.0, 315.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xRange min="1.0" max="2.0"/>
-<yRange min="0.0" max="1.0"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="285.0, 280.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1,0,1}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="545.0, 115.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="435.0, 155.0">
+    <relation name="1:relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="1:relation14" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="150.0, 510.0">
         </vertex>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="220.0, 165.0">
+    <relation name="1:1:relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="415.0, 480.0">
         </vertex>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="1:relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="TriggeredClock.output" relation="relation3"/>
-    <link port="TriggeredClock.trigger" relation="relation"/>
-    <link port="TimedPlotter.input" relation="relation3"/>
-    <link port="Clock.output" relation="relation"/>
-    <link port="1:TimedPlotter.input" relation="relation2"/>
-    <link port="BooleanToAnything.input" relation="relation"/>
-    <link port="BooleanToAnything.output" relation="relation2"/>
-    <link port="Test.input" relation="relation3"/>
+    <link port="1:TimedPlotter.input" relation="1:relation7"/>
+    <link port="1:4:1:BooleanToAnything.input" relation="1:1:relation6"/>
+    <link port="1:4:1:BooleanToAnything.output" relation="1:relation7"/>
+    <link port="1:10:TimedPlotter.input" relation="1:relation15"/>
+    <link port="1:11:1:BooleanToAnything.input" relation="1:relation14"/>
+    <link port="1:11:1:BooleanToAnything.output" relation="1:relation15"/>
+    <link port="1:TriggeredClock.output" relation="1:1:relation6"/>
+    <link port="1:TriggeredClock.trigger" relation="1:relation14"/>
+    <link port="1:6:1:Clock.output" relation="1:relation14"/>
 </entity>
