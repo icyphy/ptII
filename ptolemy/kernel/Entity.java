@@ -38,7 +38,7 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// Entity
 /** 
-An Entity is a vertex in a generalized graphs. It is an aggregation
+An Entity is a vertex in a generalized graph. It is an aggregation
 of ports. The ports can be linked to relations. The
 relations thus represent connections between ports, and hence,
 connections between entities. To add a port to an entity, simply
@@ -108,14 +108,13 @@ public class Entity extends NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object and register the clone in the workspace.
-     *  The result is an entity with clones of the ports of the original
-     *  entity.  The ports are not connected to anything, and the entity
-     *  is registered with the workspace.
+    /** Clone the object and register the clone in the specified workspace.
+     *  The result is a new entity with clones of the ports of the original
+     *  entity.  The ports are not connected to anything.
      *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
      *   as their container the cloned entity (this should not occur).
-     *  @return The cloned entity.
+     *  @return The new Entity.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Entity newentity = (Entity)super.clone(ws);
@@ -125,12 +124,13 @@ public class Entity extends NamedObj {
             Port port = (Port)ports.nextElement();
             Port newport = (Port)port.clone(ws);
             // Assume that since we are dealing with clones,
-            // exceptions won't occur normally.  If they do, throw a
-            // CloneNotSupportedException.
+            // exceptions won't occur normally (the original was successfully
+            // incorporated, so this one should be too).  If they do, throw a
+            // InvalidStateException.
             try {
                 newport.setContainer(newentity);
             } catch (KernelException ex) {
-                throw new CloneNotSupportedException(
+                throw new InvalidStateException(this,
                         "Failed to clone an Entity: " + ex.getMessage());
             }
         }
@@ -165,32 +165,6 @@ public class Entity extends NamedObj {
                 _connectedportsversion = workspace().getVersion();
             }
             return _connectedports.elements();
-        }
-    }
-
-    /** Return a description of the object.  The level of detail depends
-     *  on the argument, which is an or-ing of the static final constants
-     *  defined in the Nameable interface.
-     *  This method is synchronized on the workspace.
-     *  @param verbosity The level of detail.
-     *  @return A description of the object.
-     */
-    public String description(int verbosity){
-        synchronized(workspace()) {
-            String result = super.description(verbosity);
-            if ((verbosity & CONTENTS) != 0) {
-                if (result.length() > 0) {
-                    result += " ";
-                }
-                result += "ports {";
-                Enumeration enum = getPorts();
-                while (enum.hasMoreElements()) {
-                    Port port = (Port)enum.nextElement();
-                    result = result + "\n" + port.description(verbosity);
-                }
-                result += "\n}";
-            }
-            return result;
         }
     }
 
@@ -264,7 +238,7 @@ public class Entity extends NamedObj {
         }
     }
 
-    /** Remove all ports.
+    /** Remove all ports by setting their container to null.
      *  As a side effect, the ports will be unlinked from all relations.
      *  This method is synchronized on the workspace, and increments
      *  its version number.
@@ -311,6 +285,7 @@ public class Entity extends NamedObj {
             throws IllegalActionException, NameDuplicationException {
         synchronized(workspace()) {
             _portList.append(port);
+            // NOTE: this is probably not necessary, but just in case...
             workspace().incrVersion();
         }
     }
@@ -322,9 +297,37 @@ public class Entity extends NamedObj {
      *  _portList.
      *  @param ws The workspace the cloned object is to be placed in.
      */
-    protected void _clear(Workspace ws) {
-        super._clear(ws);
+    protected void _clearAndSetWorkspace(Workspace ws) {
+        super._clearAndSetWorkspace(ws);
         _portList = new NamedList(this);
+    }
+
+    /** Return a description of the object.  The level of detail depends
+     *  on the argument, which is an or-ing of the static final constants
+     *  defined in the Nameable interface.  Lines are indented according to
+     *  to the level argument using the protected method _indent().
+     *  This method is synchronized on the workspace.
+     *  @param detail The level of detail.
+     *  @return A description of the object.
+     */
+    protected String _description(int detail, int indent) {
+        synchronized(workspace()) {
+            String result = super._description(detail, indent);
+            if ((detail & CONTENTS) != 0 || (detail & LINKS) != 0) {
+                if (result.length() > 0) {
+                    result += " ";
+                }
+                result += "ports {\n";
+                Enumeration enum = getPorts();
+                while (enum.hasMoreElements()) {
+                    Port port = (Port)enum.nextElement();
+                    result = result +
+                            port._description(detail, indent+1) + "\n";
+                }
+                result = result + _indent(indent) + "}";
+            }
+            return result;
+        }
     }
 
     /** Remove the specified port. This method should not be used
@@ -339,6 +342,7 @@ public class Entity extends NamedObj {
     protected void _removePort(Port port) {
         synchronized(workspace()) {
             _portList.remove(port);
+            // NOTE: this is probably not necessary, but just in case...
             workspace().incrVersion();
         }
     }

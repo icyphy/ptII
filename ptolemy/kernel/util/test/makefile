@@ -52,6 +52,7 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	Attribute.tcl \
 	CrossRefList.tcl \
 	IllegalActionException.tcl \
 	InvalidStateException.tcl \

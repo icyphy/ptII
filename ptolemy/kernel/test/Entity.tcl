@@ -34,7 +34,7 @@
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
-    source testDefs.tcl
+    source ../util/test/testDefs.tcl
 } {}
 
 # Load up Tcl procs to print out enums
@@ -67,21 +67,20 @@ test Entity-1.1 {Get information about an instance of Entity} {
 } {{
   class:         pt.kernel.Entity
   fields:        
-  methods:       {addParameter pt.kernel.util.Nameable} clone {clone pt.
-    kernel.util.Workspace} connectedPorts {description int}
-     {equals java.lang.Object} getClass getContainer getFul
-    lName getName {getParameter java.lang.String} getParame
-    ters {getPort java.lang.String} getPorts hashCode linke
-    dRelations {newPort java.lang.String} notify notifyAll 
-    removeAllPorts {removeParameter java.lang.String} {setN
-    ame java.lang.String} toString wait {wait long} {wait l
-    ong int} workspace
+  methods:       clone {clone pt.kernel.util.Workspace} connectedPorts {
+    deepContains pt.kernel.util.NamedObj} description {desc
+    ription int} {equals java.lang.Object} {getAttribute ja
+    va.lang.String} getAttributes getClass getContainer get
+    FullName getName {getPort java.lang.String} getPorts ha
+    shCode linkedRelations {newPort java.lang.String} notif
+    y notifyAll removeAllPorts {setName java.lang.String} t
+    oString wait {wait long} {wait long int} workspace
     
   constructors:  pt.kernel.Entity {pt.kernel.Entity java.lang.String} {p
     t.kernel.Entity pt.kernel.util.Workspace java.lang.Stri
     ng}
     
-  properties:    class container fullName name parameters ports
+  properties:    attributes class container fullName name ports
     
   superclass:    pt.kernel.util.NamedObj
     
@@ -197,8 +196,8 @@ test Entity-6.2 {remove port by reference} {
             [expr { [$a getContainer] == [java::null] }] \
             [[$b getContainer] getName]
 } {{pt.kernel.Entity {.Ramp} ports {
-pt.kernel.Port {.Ramp.b} links {
-}
+    pt.kernel.Port {.Ramp.b} links {
+    }
 }} 1 Ramp}
 
 ######################################################################
@@ -304,18 +303,18 @@ test Entity-9.0 {Test description} {
     $p2 link $r1
     $w description 31
 } {pt.kernel.util.Workspace {W} elements {
-pt.kernel.Entity {W.E1} ports {
-pt.kernel.Port {W.E1.P1} links {
-pt.kernel.Relation {W.R1}
-}
-pt.kernel.Port {W.E1.P2} links {
-pt.kernel.Relation {W.R1}
-}
-}
-pt.kernel.Relation {W.R1} links {
-pt.kernel.Port {W.E1.P1}
-pt.kernel.Port {W.E1.P2}
-}
+    pt.kernel.Entity {W.E1} ports {
+        pt.kernel.Port {W.E1.P1} links {
+            pt.kernel.Relation {W.R1}
+        }
+        pt.kernel.Port {W.E1.P2} links {
+            pt.kernel.Relation {W.R1}
+        }
+    }
+    pt.kernel.Relation {W.R1} links {
+        pt.kernel.Port {W.E1.P1}
+        pt.kernel.Port {W.E1.P2}
+    }
 }}
 
 test Entity-9.1 {Test cloning} {
@@ -323,8 +322,8 @@ test Entity-9.1 {Test cloning} {
     set e2 [$e1 clone]
     $e2 description 15
 } {pt.kernel.Entity {W.E1} ports {
-pt.kernel.Port {W.E1.P1} links {
-}
-pt.kernel.Port {W.E1.P2} links {
-}
+    pt.kernel.Port {W.E1.P1} links {
+    }
+    pt.kernel.Port {W.E1.P2} links {
+    }
 }}

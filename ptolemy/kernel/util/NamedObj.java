@@ -43,7 +43,8 @@ which is a concatenation of the container's full name and the simple
 name, separating by a period. Obviously, if the simple name contains
 a period then there may be some confusion resolving the full name,
 so periods are discouraged (but not disallowed). If there is no
-container, then the full name is the same as the simple name. The
+container, then the full name is a concatenation of the workspace
+name with the simple name. The
 full name is used for error reporting throughout the package, which
 is why it is supported at this low level of the class hierarchy.
 <p>
@@ -51,27 +52,35 @@ Instances of this class are associated with a workspace, specified
 as a constructor argument.  The workspace is immutable.  It cannot
 be changed during the lifetime of the object.  It is used for
 synchronization of methods that depend on or modify the state of
-objects within it.  It is also used for version tracking.
+objects within it.  It is also used for tracking the version of any
+topology within the workspace.
 Any method in this class or derived classes that changes visible
 state of any object within the workspace should call the
 incrVersion() method of the workspace.  If no workspace is
 specified, then the default workspace is used.
+Note that the workspace should not be confused with the container.
+The workspace never serves as a container.
 <p>
-The container for instances of this class is always null, although
-derived classes that support hierarchy may report a non-null container.
-If they do, then they are not explicitly listed in the workspace, although
-they will still use it for synchronization.  I.e., the workspace
-keeps track only of top-level objects in the containment hierarchy.
+In this base class, the container is null by default, and no method is
+provided to change it. Derived classes that support hierarchy provide one
+or more methods that set the container.
+<p>
+By convention, if the container of
+a NamedObj is set, ir then should be removed from the workspace.
+The workspace is expected to list only top-level objects in a hierarchy.
+The NamedObj can still use the workspace for synchronization.
 Any object contained by another uses the workspace of its container
 as its own workspace by default.
 <p>
-Any object that implements the Nameable interface can be attached
-to this object as a parameter using addParameter().  Derived classes
-may constrain the parameter class further.  To do that, they should
-override the addParameter() method to throw an exception if the
+Instances of Attribute can be attached by calling their setContainer()
+method and passing this object as an argument. These instances will then
+be reported by the getAttribute() and getAttributes() methods.
+Classes derived from NamedObj may constrain attributes to be a subclass
+of Attribute.  To do that, they should override the protected
+_addAttribute() method to throw an exception if the
 object provided is not of the right class.
 
-@author Mudit Goel, Edward A. Lee
+@author Mudit Goel, Edward A. Lee, Neil Smyth
 @version $Id$
 */
 
@@ -82,12 +91,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  the workspace. Increment the version number of the workspace.
      */
     public NamedObj() {
-        _workspace = _defaultworkspace;
-        // Ignore exception that can't occur.
-        try {
-            _workspace.add(this);
-            setName("");
-        } catch (IllegalActionException ex) {}
+        this(_defaultworkspace, "");
     }
 
     /** Construct an object in the default workspace with the given name.
@@ -113,133 +117,133 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
             workspace = _defaultworkspace;
         }
         _workspace = workspace;
-        // Exception cannot occur, so we ignore.
+        // Exception cannot occur, so we ignore. The object does not
+        // have a container, and is not already on the workspace list.
         try {
             workspace.add(this);
-        } catch (IllegalActionException ex) {}
+        } catch (IllegalActionException ex) {
+            // Ignore
+        }
         setName(name);
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Add a parameter.  A parameter is any instance of NamedObj that
-     *  has this object set as its container.
-     *  WARNING: This method should only be called by methods which guarantee 
-     *  the above condition. Otherwise inconsistant states may result.
-     *  Derived classes may further constrain the class of the parameter.
-     *  To do this, they should override this method to throw an exception
-     *  when the argument is not an instance of the expected class.
-     *  This method is synchronized on the workspace and increments its
-     *  version number.
-     *  @param p The parameter to be added.
-     *  @exception NameDuplicationException If this object already
-     *   has a parameter with the same name.
-     *  @exception IllegalActionException If the parameter is not an
-     *   an instance of the expect class (in derived classes, or if
-     *   the parameter does not have this object as its container.
-     */
-    public void addParameter(NamedObj p)
-            throws NameDuplicationException, IllegalActionException {
-        // NOTE: The argument is a NamedObj rather than Nameable because
-        // we need a public clone() method.
-        synchronized(workspace()) {
-            if (p.getContainer() != this) {
-                throw new IllegalActionException(this, p,
-                        "Attempt to add a parameter to a NamedObj " +
-                        "that is not its container");
-            }
-            try {
-                if (_params == null) {
-                    _params = new NamedList();
-                }
-                _params.append(p);
-            } catch (IllegalActionException ex) {   
-                // a Param cannot be constructed without a name, so we can
-                // ignore the exception.
-            }
-            workspace().incrVersion();
-        }
-    }
- 
-
     /** Clone the object and register the cloned object in the 
      *  workspace in which the original object resides.
-     *  This overrides the protected <code>clone()</code> method of
+     *  This overrides the protected clone() method of
      *  java.lang.Object, which makes a field-by-field copy, to
-     *  clone the parameter list and to call the protected method
-     *  _clear(), which is defined in derived classes to remove
-     *  references that should not be in the clone.
-     *  @exception CloneNotSupportedException Thrown only in derived classes.
+     *  clone the attribute list and to call the protected method
+     *  _clearAndSetWorkspace(), which is defined in derived classes to remove
+     *  references that should not be in the clone.  The _clearAndSetWorkspace()
+     *  method serves the function of a constructor, which is not
+     *  called, making the state of the cloned object like
+     *  one that has just been constructed.
+     *  This method synchronizes on the workspace.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
      */
     public Object clone() throws CloneNotSupportedException {
         return clone(workspace());
     }
 
-    /** Clone the object and register the cloned object in the specified 
-     *  workspace. This uses the <code>clone()</code> method of
+    /** Clone the object and register the clone in the specified 
+     *  workspace. This uses the clone() method of
      *  java.lang.Object, which makes a field-by-field copy, and then
-     *  calls the protected method _clear(), which is expected to remove
-     *  references that should not be in the clone. It then clones the
-     *  parameter list, if there is one.
-     *  @param ws The workspace in which to place the cloned object.
-     *  @exception CloneNotSupportedException If any of the parameters
+     *  calls the protected method _clearAndSetWorkspace(), which is
+     *  expected to remove references that should not be in the clone.
+     *  The _clearAndSetWorkspace()
+     *  method serves the function of a constructor, which is not
+     *  called, making the state of the cloned object like
+     *  one that has just been constructed.  It then clones the
+     *  attributes on the attribute list, if there is one.
+     *  This method synchronizes on the workspace.
+     *  @param ws The workspace in which to place the new object.
+     *  @return A new NamedObj.
+     *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
-        // NOTE: It is safe to clone an object into a different workspace.
-        // It is not safe to move an object to a new workspace, by contrast.
-        // The reason this is safe is that after the _clear() method has been
-        // run, there are no references in the clone to objects in the old
-        // workspace.  Moreover, no object in the old workspace can have
-        // a reference to the cloned object because we have only just created
-        // it and have not returned the reference.
-        NamedObj result = (NamedObj)super.clone();
-        result._clear(ws);
-        try {
-            ws.add(result);
-        } catch (IllegalActionException ex) {
-            // Ignore.  Can't occur.
-        }
-        Enumeration params = getParameters();
-        while (params.hasMoreElements()) {
-            NamedObj p = (NamedObj)params.nextElement();
-            NamedObj np = (NamedObj)p.clone(ws);
+        // NOTE: It is safe to clone an object into a different
+        // workspace. It is not safe to move an object to a new
+        // workspace, by contrast. The reason this is safe is that
+        // after the _clearAndSetWorkspace() method has been run, there
+        // are no references in the clone to objects in the old
+        // workspace. Moreover, no object in the old workspace can have
+        // a reference to the cloned object because we have only just
+        // created it and have not returned the reference.
+        synchronized(workspace()) {
+            NamedObj result = (NamedObj)super.clone();
+            result._clearAndSetWorkspace(ws);
             try {
-                np.setContainer(result);         
-            } catch (KernelException ex) {
-                throw new CloneNotSupportedException(
-                        "Failed to clone a Parameter: " + ex.getMessage());
+                ws.add(result);
+            } catch (IllegalActionException ex) {
+                // Ignore.  Can't occur.
             }
+            Enumeration params = getAttributes();
+            while (params.hasMoreElements()) {
+                Attribute p = (Attribute)params.nextElement();
+                Attribute np = (Attribute)p.clone(ws);
+                try {
+                    np.setContainer(result);         
+                } catch (KernelException ex) {
+                    throw new CloneNotSupportedException(
+                    "Failed to clone an Attribute of " +
+                    getFullName() + ": " + ex.getMessage());
+                }
+            }
+            return result;
         }
-        return result;
+    }
+
+    /** Return true if this object contains the specified object,
+     *  directly or indirectly.  That is, return true if the specified
+     *  object is contained by an object that this contains, or by an
+     *  object contained by an object contained by this, etc.
+     *  This method ignores whether the entities report that they are
+     *  atomic (see CompositeEntity), and always returns false if the entities
+     *  are not in the same workspace.
+     *  This method is synchronized on the workspace.
+     *  @see CompositeEntity.isAtomic
+     *  @return True if this contains the argument, directly or indirectly.
+     */	
+    public boolean deepContains(NamedObj inside) {
+        if (workspace() != inside.workspace()) return false;
+        synchronized(workspace()) {
+            // Start with the inside and check its containers in sequence.
+            if (inside != null) {
+                Nameable container = inside.getContainer();
+                while (container != null) {
+                    if (container == this) {
+                        return true;
+                    }
+                    container = container.getContainer();
+                }
+            }
+            return false;
+        }
+    }
+
+    /** Return a full description of the object. This is accomplished
+     *  by calling the description method with an argument for full detail.
+     *  @return A description of the object.
+     */
+    public String description() {
+        return description(ALL);
     }
 
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
-     *  defined in the Nameable interface.  This method returns an empty
+     *  defined in this class (NamedObj).  This method returns an empty
      *  string (not null) if there is nothing to report.
-     *  This method is synchronized on the workspace.
-     *  @param verbosity The level of detail.
+     *  It is synchronized on the workspace.
+     *  @param detail The level of detail.
      *  @return A description of the object.
      */
-    public String description(int verbosity) {
-        synchronized (workspace()) {
-            String result = new String("");
-            if((verbosity & CLASS) != 0) {
-                result = getClass().getName();
-                if((verbosity & NAME) != 0) {
-                    result += " ";
-                }
-            }
-            if((verbosity & NAME) != 0) {
-                result = result + "{" + getFullName() + "}";
-            }
-            if((verbosity & PARAMS) != 0) {
-                // FIXME -- implement.
-            }
-            return result;
-        }
+    public String description(int detail) {
+        return _description(detail, 0);
     }
 
     /** Get the container.  Always return null in this base class.
@@ -267,23 +271,26 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     public String getFullName() {
         synchronized (workspace()) {
-            String fullname = new String(getName());
+            // NOTE: For improved performance, the full name could be cached.
+            String fullname = getName();
             // Use a linked list to keep track of what we've seen already.
             LinkedList visited = new LinkedList();
             visited.insertFirst(this);
-            Nameable parent = getContainer();
+            Nameable container = getContainer();
 
-            while (parent != null) {
-                if (visited.firstIndexOf(parent) >= 0) {
-                    // Cannot use this pointer or we'll get stuck infinitely
-                    // calling this method, since it's used to report
-                    // exceptions.  This is a runtime exception.
+            while (container != null) {
+                if (visited.firstIndexOf(container) >= 0) {
+                    // Cannot use "this" as a constructor argument to the
+                    // exception or we'll get stuck infinitely
+                    // calling this method, since this method is used to report
+                    // exceptions.  InvalidStateException is a runtime
+                    // exception, so it need not be declared.
                     throw new InvalidStateException(
                             "Container contains itself!");
                 }
-                fullname = parent.getName() + "." + fullname;
-                visited.insertFirst(parent);
-                parent = parent.getContainer();
+                fullname = container.getName() + "." + fullname;
+                visited.insertFirst(container);
+                container = container.getContainer();
             }
             return workspace().getName() + "." + fullname;
         }
@@ -297,57 +304,30 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         return _name; 
     }
 
-    /** Get the parameter with the given name.
+    /** Get the attribute with the given name.
      *  This method is synchronized on the workspace.
-     *  @param name The name of the desired parameter.
-     *  @return The requested parameter if it is found, null otherwise
+     *  @param name The name of the desired attribute.
+     *  @return The requested attribute if it is found, null otherwise.
      */
-    public NamedObj getParameter(String name) {
+    public Attribute getAttribute(String name) {
         synchronized(workspace()) {
-            return (NamedObj) _params.get(name);
+            return (Attribute) _attributes.get(name);
         }
     }
 
-    /** Return an enumeration of the parameters attached to this object.
+    /** Return an enumeration of the attributes attached to this object.
      *  This method is synchronized on the workspace.
-     *  @return An enumeration of instances of NamedObj.
+     *  @return An enumeration of instances of Attribute.
      */
-    public Enumeration getParameters() {
+    public Enumeration getAttributes() {
         synchronized(workspace()) {
-            if  (_params == null) {
+            if  (_attributes == null) {
                 return (new NamedList()).getElements();
             } else {
-                return _params.getElements();
+                return _attributes.getElements();
             }
         }
     }
-    
-    /** Remove the given parameter.
-     *  If there is no such parameter, do nothing.
-     *  This method is synchronized on the workspace and increments its
-     *  version. It should only be called by setContainer() in Parameter.
-     *  @param param The parameter to be removed.
-     */
-    public void removeParameter(NamedObj param) {
-        synchronized(workspace()) {
-            _params.remove((Nameable)param);
-            workspace().incrVersion();
-        }
-    }
-    
-
-    /** Set the container. In this base class throw an exception as it 
-     *  cannot have a container. This method should be overridden in 
-     *  derived classes to check the argument is a valid type.
-     *  @param namedObj The container of this object.
-     *  @exception IllegalException This method should be overridden.
-     *  @exception NameDuplicationException Thrown in derived classes.
-     */
-     public void setContainer(NamedObj namedobj) 
-             throws IllegalActionException, NameDuplicationException {
-         String str = "setContainer method in NamedObj should be overridden";
-         throw new IllegalActionException(this, namedobj, str);
-     }
     
     /** Set or change the name.  If a null argument is given the
      *  name is set to an empty string.
@@ -380,9 +360,83 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         return _workspace; 
     }
 
+    /////////////////////////////////////////////////////////////////////////
+    ////                         public variables                        ////
+
+    /** Indicate that the description(int) method should include everything.
+     */ 
+    public static final int ALL = ~0;
+
+    /** Indicate that the description(int) method should include the class name.
+     */ 
+    public static final int CLASSNAME = 1;
+
+    /** Indicate that the description(int) method should include the full name.
+     *  The full name is surrounded by braces "{name}" in case it has spaces.
+     */ 
+    public static final int FULLNAME = 2;
+
+    /** Indicate that the description(int) method should include the links
+     *  (if any) that the object has.  This has the form "links {...}"
+     *  where the list is a list of descriptions of the linked objects.
+     *  This may force some of the contents to be listed.  For example,
+     *  a description of an entity will include the ports if this is set,
+     *  irrespective of whether the CONTENTS bit is set.
+     */ 
+    public static final int LINKS = 4;
+
+    /** Indicate that the description(int) method should include the contained
+     *  objects (if any) that the object has.  This has the form
+     *  "keyword {{class {name}} {class {name}} ... }" where the keyword
+     *  can be ports, entities, relations, or anything else that might
+     *  indicate what the object contains.
+     */ 
+    public static final int CONTENTS = 8;
+
+    /** Indicate that the description(int) method should include the contained
+     *  objects (if any) that the contained objects have.  This has no effect
+     *  if CONTENTS is not also specified.  The returned string has the form
+     *  "keyword {{class {name} keyword {...}} ... }".
+     */ 
+    public static final int DEEP = 16;
+
+    /** Indicate that the description(int) method should include attributes
+     *  (if any).
+     */ 
+    public static final int ATTRIBUTES = 32;
+
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
+    /** Add an attribute.  This method should not be used directly.
+     *  Instead, call setContainer() on the attribute.
+     *  Derived classes may further constrain the class of the attribute.
+     *  To do this, they should override this method to throw an exception
+     *  when the argument is not an instance of the expected class.
+     *  This method is synchronized on the workspace and increments its
+     *  version number.
+     *  @param p The attribute to be added.
+     *  @exception NameDuplicationException If this object already
+     *   has an attribute with the same name.
+     *  @exception IllegalActionException If the attribute is not an
+     *   an instance of the expect class (in derived classes).
+     */
+    protected void _addAttribute(Attribute p)
+            throws NameDuplicationException, IllegalActionException {
+        synchronized(workspace()) {
+            try {
+                if (_attributes == null) {
+                    _attributes = new NamedList();
+                }
+                _attributes.append(p);
+            } catch (IllegalActionException ex) {   
+                // a Attribute cannot be constructed without a name, so we can
+                // ignore the exception.
+            }
+            workspace().incrVersion();
+        }
+    }
+ 
     /** Clear references that are not valid in a cloned object.  The clone()
      *  method makes a field-by-field copy, which in derived classes results
      *  in invalid references to objects.  For example, Port has a private
@@ -391,30 +445,94 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  having a reference to exactly the same CrossRefList.   But the
      *  CrossRefList has not back reference to the cloned object.  Thus,
      *  the Port class should override this method to set that member to null.
-     *  In this base class, this method sets the private _params member,
-     *  which refers to a list of parameters, to null.
-     *  @param ws The workspace the cloned object is to be placed in.
+     *  In this base class, this method sets the private _attributes member,
+     *  which refers to a list of attributes, to null.
+     *  @param ws The workspace that the cloned object is to be placed in.
      */
-    protected void _clear(Workspace ws) {
-        _params = null;
-        _workspace = ws; //is this correct?
+    protected void _clearAndSetWorkspace(Workspace ws) {
+        _attributes = null;
+        _workspace = ws;
     }
 
+    /** Return a description of the object.  The level of detail depends
+     *  on the argument, which is an or-ing of the static final constants
+     *  defined in this class (NamedObj).  Lines are indented according to
+     *  to the level argument using the protected method _indent().
+     *  It is synchronized on the workspace.
+     *  @param detail The level of detail.
+     *  @param indent The amount of indenting.
+     *  @return A description of the object.
+     */
+    protected String _description(int detail, int indent) {
+        synchronized (workspace()) {
+            String result = _indent(indent);
+            if((detail & CLASSNAME) != 0) {
+                result += getClass().getName();
+                if((detail & CLASSNAME) != 0) {
+                    result += " ";
+                }
+            }
+            if((detail & FULLNAME) != 0) {
+                result = result + "{" + getFullName() + "}";
+            }
+            if((detail & ATTRIBUTES) != 0) {
+                if ((detail & (CLASSNAME | FULLNAME)) != 0) {
+                    result += " ";
+                }
+                result += "attributes {\n";
+                // Do not recursively list attributes unless the DEEP
+                // bit is set.
+                if ((detail & DEEP) == 0) {
+                    detail &= ~ATTRIBUTES;
+                }
+                Enumeration params = getAttributes();
+                while (params.hasMoreElements()) {
+                    Attribute p = (Attribute)params.nextElement();
+                    result = result + p._description(detail, indent+1) + "\n";
+                }
+                result = result + _indent(indent) + "}";
+            }
+            return result;
+        }
+    }
+
+    /** Return a number of spaces that is proportional to the argument.
+     *  If the argument is negative or zero, return an empty string.
+     *  @param level The level of indenting represented by the spaces.
+     *  @return A string with zero or more spaces.
+     */
+    protected static String _indent(int level) {
+        String result = "";
+        for (int i=0; i < level; i++) {
+            result += "    ";
+        }
+        return result;
+    }
+
+    /** Remove the given attribute.
+     *  If there is no such attribute, do nothing.
+     *  This method is synchronized on the workspace and increments its
+     *  version. It should only be called by setContainer() in Attribute.
+     *  @param param The attribute to be removed.
+     */
+    protected void _removeAttribute(NamedObj param) {
+        synchronized(workspace()) {
+            _attributes.remove((Nameable)param);
+            workspace().incrVersion();
+        }
+    }
     
     //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
+    ////                         private variables                        ////
 
     // Instance of a workspace that can be used if no other is specified.
-    protected static Workspace _defaultworkspace = new Workspace();
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    private static Workspace _defaultworkspace = new Workspace();
 
     // The name
     private String _name;
 
-    // The Parameters attached to this object.
-    private NamedList _params;
+    // The Attributes attached to this object.
+    private NamedList _attributes;
 
     // The workspace for this object.
     // This should be set by the constructor and never changed.

@@ -119,12 +119,11 @@ public class Port extends NamedObj {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object and register the clone in the workspace.
-     *  The result is a port with no connections and no container that
-     *  is registered with the workspace.
+    /** Clone the object and register the clone in the specified workspace.
+     *  The result is a new port with no connections and no container.
      *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
-     *  @return The cloned Port.
+     *  @return A new Port.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         // NOTE: It is not actually necessary to override the base class
@@ -133,7 +132,8 @@ public class Port extends NamedObj {
         return super.clone(ws);
     }
 
-    /** Enumerate the connected ports.
+    /** Enumerate the connected ports.  Note that a port may be listed
+     *  more than once if more than one connection to it has been established.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of Port objects. 
      */
@@ -146,35 +146,6 @@ public class Port extends NamedObj {
                 result.appendElements(relation.linkedPorts(this));
             }
             return result.elements();
-        }
-    }
-
-    /** Return a description of the object.  The level of detail depends
-     *  on the argument, which is an or-ing of the static final constants
-     *  defined in the Nameable interface.
-     *  This method is synchronized on the workspace.
-     *  @param verbosity The level of detail.
-     *  @return A description of the object.
-     */
-    public String description(int verbosity){
-        synchronized(workspace()) {
-            String result = super.description(verbosity);
-            if ((verbosity & LINKS) != 0) {
-                if (result.length() > 0) {
-                    result += " ";
-                }
-                // To avoid infinite loop, turn off the LINKS flag
-                // when querying the Ports.
-                verbosity &= ~LINKS;
-                result += "links {";
-                Enumeration enum = linkedRelations();
-                while (enum.hasMoreElements()) {
-                    Relation rel = (Relation)enum.nextElement();
-                    result = result + "\n" + rel.description(verbosity);
-                }
-                result += "\n}";
-            }
-            return result;
         }
     }
 
@@ -197,6 +168,7 @@ public class Port extends NamedObj {
 
     /** Return true if the given Relation is linked to this port.
      *  This method is synchronized on the workspace.
+     *  @return True if the given relation is linked to this port.
      */
     public boolean isLinked(Relation r) {
         synchronized(workspace()) {
@@ -204,7 +176,8 @@ public class Port extends NamedObj {
         }
     }
     
-    /** Enumerate the linked relations.
+    /** Enumerate the linked relations.  Note that a relation may appear
+     *  more than once if more than one link to it has been established.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of Relation objects. 
      */
@@ -218,8 +191,10 @@ public class Port extends NamedObj {
      *  at the same level of the hierarchy as the entity that contains
      *  this port, meaning that the container of the relation
      *  is the same as the container of the container of the port.
-     *  If the argument is null, do nothing.
-     *  In derived classes, the relation may be required to be an
+     *  If the argument is null, do nothing.  Note that a port may
+     *  be linked to the same relation more than once, in which case
+     *  the link will be reported more than once by the linkedRelations()
+     *  method. In derived classes, the relation may be required to be an
      *  instance of a particular subclass of Relation (this is checked
      *  by the _link() protected method).
      *  This method is synchronized on the workspace and increments
@@ -249,7 +224,7 @@ public class Port extends NamedObj {
         }
     }
 
-    /** Return the number of linked relations.
+    /** Return the number of links to relations.
      *  This method is synchronized on the workspace.
      *  @return The number of links, a non-negative integer.
      */
@@ -264,12 +239,14 @@ public class Port extends NamedObj {
      *  a port with the same name, then throw an exception and do not make
      *  any changes.  Similarly, if the container is not in the same
      *  workspace as this port, throw an exception.
+     *  If the port is already contained by the entity, do nothing.
      *  If the port already has a container, remove
      *  this port from its port list first.  Otherwise, remove it from
-     *  the list of objects in the workspace. If the argument is null, then
-     *  unlink the port from any relations, remove it from its container,
-     *  and add it to the list of objects in the workspace.
-     *  If the port is already contained by the entity, do nothing.
+     *  the list of objects in the workspace, if it is present.
+     *  If the argument is null, then
+     *  unlink the port from any relations and remove it from its container.
+     *  It is not added to the workspace, so this could result in
+     *  this port being garbage collected.
      *  This method is synchronized on the
      *  workspace and increments its version number.
      *  @param entity The container.
@@ -296,14 +273,6 @@ public class Port extends NamedObj {
                 }
             }
             _container = entity;
-            if (entity == null) {
-                // Ignore exceptions, which mean the object is already
-                // on the workspace list.
-                try {
-                    workspace().add(this);
-                } catch (IllegalActionException ex) {}
-            }
-
             if (prevcontainer != null) {
                 prevcontainer._removePort(this);
             }
@@ -348,13 +317,44 @@ public class Port extends NamedObj {
      *  and _container.
      *  @param ws The workspace the cloned object is to be placed in.
      */
-    protected void _clear(Workspace ws) {
-        super._clear(ws);
+    protected void _clearAndSetWorkspace(Workspace ws) {
+        super._clearAndSetWorkspace(ws);
         // Ignore exception because "this" cannot be null.
         try {
             _relationsList = new CrossRefList(this);
         } catch (IllegalActionException ex) {}
         _container = null;
+    }
+
+    /** Return a description of the object.  The level of detail depends
+     *  on the argument, which is an or-ing of the static final constants
+     *  defined in the Nameable interface.  Lines are indented according to
+     *  to the level argument using the protected method _indent().
+     *  This method is synchronized on the workspace.
+     *  @param detail The level of detail.
+     *  @return A description of the object.
+     */
+    protected String _description(int detail, int indent) {
+        synchronized(workspace()) {
+            String result = super._description(detail, indent);
+            if ((detail & LINKS) != 0) {
+                if (result.length() > 0) {
+                    result += " ";
+                }
+                // To avoid infinite loop, turn off the LINKS flag
+                // when querying the Ports.
+                detail &= ~LINKS;
+                result += "links {\n";
+                Enumeration enum = linkedRelations();
+                while (enum.hasMoreElements()) {
+                    Relation rel = (Relation)enum.nextElement();
+                    result = result +
+                            rel._description(detail, indent+1) + "\n";
+                }
+                result = result + _indent(indent) + "}";
+            }
+            return result;
+        }
     }
 
     /** Link this port with a relation. This method should not be used

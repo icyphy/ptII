@@ -48,7 +48,7 @@ subclass of Port, or if the relation cannot support any more links.
 Such derived classes should override the protected method _checkPort()
 to throw an exception.
 
-@author Neil Smyth, Edward A. Lee
+@author Edward A. Lee, Neil Smyth
 @version $Id$
 @see Port
 @see Entity
@@ -97,12 +97,11 @@ public class Relation extends NamedObj {
     /////////////////////////////////////////////////////////////////////////
     ////                         public methods                          ////
 
-    /** Clone the object and register the clone in the workspace.
-     *  The result is a relation with no links and no container that
-     *  is registered with the workspace.
+    /** Clone the object and register the clone in the specified workspace.
+     *  The result is a new relation with no links and no container.
      *  @param ws The workspace in which to place the cloned object. 
      *  @exception CloneNotSupportedException Thrown only in derived classes.
-     *  @return The cloned Relation.
+     *  @return A new Relation.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         // NOTE: It is not actually necessary to override the base class
@@ -111,36 +110,8 @@ public class Relation extends NamedObj {
         return super.clone(ws);
     }
 
-    /** Return a description of the object.  The level of detail depends
-     *  on the argument, which is an or-ing of the static final constants
-     *  defined in the Nameable interface.
-     *  This method is synchronized on the workspace.
-     *  @param verbosity The level of detail.
-     *  @return A description of the object.
-     */
-    public String description(int verbosity){
-        synchronized(workspace()) {
-            String result = super.description(verbosity);
-            if ((verbosity & LINKS) != 0) {
-                if (result.length() > 0) {
-                    result += " ";
-                }
-                // To avoid infinite loop, turn off the LINKS flag
-                // when querying the Ports.
-                verbosity &= ~LINKS;
-                result += "links {";
-                Enumeration enum = linkedPorts();
-                while (enum.hasMoreElements()) {
-                    Port port = (Port)enum.nextElement();
-                    result = result + "\n" + port.description(verbosity);
-                }
-                result += "\n}";
-            }
-            return result;
-        }
-    }
-
-    /** Enumerate the linked ports.
+    /** Enumerate the linked ports.  Note that a port may appear more than
+     *  once if more than on link to it has been established.
      *  This method is synchronized on the workspace.
      *  @return An Enumeration of Port objects.
      */	
@@ -151,6 +122,8 @@ public class Relation extends NamedObj {
     }
 
     /** Enumerate the linked ports except the specified port.
+     *  Note that a port may appear more than
+     *  once if more than on link to it has been established.
      *  This method is synchronized on the workspace.
      *  @param except Port to exclude from the enumeration.
      *  @return An Enumeration of Port objects.
@@ -172,6 +145,7 @@ public class Relation extends NamedObj {
 
     /** Return the number of links to ports.
      *  This method is synchronized on the workspace.
+     *  @return The number of links.
      */	
     public int numLinks() {
         synchronized(workspace()) {
@@ -211,18 +185,50 @@ public class Relation extends NamedObj {
      *  _portList.
      *  @param ws The workspace the cloned object is to be placed in.
      */
-    protected void _clear(Workspace ws) {
-        super._clear(ws);
+    protected void _clearAndSetWorkspace(Workspace ws) {
+        super._clearAndSetWorkspace(ws);
         // Ignore exception because "this" cannot be null.
         try {
             _portList = new CrossRefList(this);
         } catch (IllegalActionException ex) {}
     }
 
+    /** Return a description of the object.  The level of detail depends
+     *  on the argument, which is an or-ing of the static final constants
+     *  defined in the Nameable interface.  Lines are indented according to
+     *  to the level argument using the protected method _indent().
+     *  This method is synchronized on the workspace.
+     *  @param detail The level of detail.
+     *  @return A description of the object.
+     */
+    protected String _description(int detail, int indent){
+        synchronized(workspace()) {
+            String result = super._description(detail, indent);
+            if ((detail & LINKS) != 0) {
+                if (result.length() > 0) {
+                    result += " ";
+                }
+                // To avoid infinite loop, turn off the LINKS flag
+                // when querying the Ports.
+                detail &= ~LINKS;
+                result += "links {\n";
+                Enumeration enum = linkedPorts();
+                while (enum.hasMoreElements()) {
+                    Port port = (Port)enum.nextElement();
+                    result = result +
+                            port._description(detail, indent+1) + "\n";
+                }
+                result = result + _indent(indent) + "}";
+            }
+            return result;
+        }
+    }
+
     /** Return a reference to the local port list.
      *  NOTE : This method has been made protected only for the purpose
      *  of connecting Ports to Relations (see Port.link(Relation)).
      *  @see Port
+     *  @return The link list.
      */
     protected CrossRefList _getPortList () {
         return _portList;

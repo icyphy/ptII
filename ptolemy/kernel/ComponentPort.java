@@ -1,4 +1,4 @@
-/* A port supporting hierarchy.
+/* A port supporting clustered graphs.
 
  Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
@@ -132,12 +132,11 @@ public class ComponentPort extends Port {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object and register the clone in the workspace.
-     *  The result is a port with no connections and no container that
-     *  is registered with the workspace.
+    /** Clone the object and register the clone in the specified workspace.
+     *  The result is a new port with no connections and no container.
      *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
-     *  @return The cloned ComponentPort.
+     *  @return A new ComponentPort.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         // NOTE: It is not actually necessary to override the base class
@@ -150,7 +149,8 @@ public class ComponentPort extends Port {
      *  Begin by enumerating the ports that are connected to this port.
      *  If any of those are transparent ports that we are connected to
      *  from the inside, then enumerate all the ports deeply connected
-     *  on the outside to that transparent port.
+     *  on the outside to that transparent port.  Note that a port may
+     *  be listed more than once.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
      */	
@@ -205,6 +205,8 @@ public class ComponentPort extends Port {
      *  just this port. All ports enumerated are opaque. Note that
      *  the returned enumeration could conceivably be empty, for
      *  example if this port is transparent but has no inside links.
+     *  Also, a port may be listed more than once if more than one
+     *  inside connection to it has been established.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
      */	
@@ -255,36 +257,9 @@ public class ComponentPort extends Port {
         }
     }
 
-    /** Return a description of the object.  The level of detail depends
-     *  on the argument, which is an or-ing of the static final constants
-     *  defined in the Nameable interface.
-     *  This method is synchronized on the workspace.
-     *  @param verbosity The level of detail.
-     *  @return A description of the object.
-     */
-    public String description(int verbosity){
-        synchronized(workspace()) {
-            String result = super.description(verbosity);
-            if ((verbosity & LINKS) != 0) {
-                if (result.length() > 0) {
-                    result += " ";
-                }
-                // To avoid infinite loop, turn off the LINKS flag
-                // when querying the Ports.
-                verbosity &= ~LINKS;
-                result += "insidelinks {";
-                Enumeration enum = insideRelations();
-                while (enum.hasMoreElements()) {
-                    Relation rel = (Relation)enum.nextElement();
-                    result = result + "\n" + rel.description(verbosity);
-                }
-                result += "\n}";
-            }
-            return result;
-        }
-    }
-
-    /** Enumerate the ports connected on the inside to this port.
+    /** Enumerate the ports connected on the inside to this port. Note that
+     *  a port may be listed more than once if more than one inside connection
+     *  has been established to it.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
      */	
@@ -301,6 +276,8 @@ public class ComponentPort extends Port {
     }
 
     /** Enumerate the relations linked on the inside to this port.
+     *  Note that a relation may be listed more than once if more than link
+     *  to it has been established.
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentRelation objects.
      */	
@@ -343,7 +320,18 @@ public class ComponentPort extends Port {
      *  that the relation be of a compatible type (ComponentRelation).
      *  They are not required to be at the same level of the hierarchy.
      *  To prohibit links across levels of the hierarchy, use link().
+     *  Note that generally it is a bad idea to allow level-crossing
+     *  links, since it breaks modularity.  This loss of modularity
+     *  means, among other things, that the composite within which this
+     *  port exists cannot be cloned.
+     *  Nonetheless, this capability is provided for the benefit of users
+     *  that feel they just must have it, and who are willing to sacrifice
+     *  clonability and modularity.
      *  Both inside and outside links are supported.
+     *  Note that a port may
+     *  be linked to the same relation more than once, in which case
+     *  the link will be reported more than once by the linkedRelations()
+     *  method.
      *  If the relation argument is null, do nothing.
      *  This method is synchronized on the workspace
      *  and increments its version number.
@@ -372,7 +360,10 @@ public class ComponentPort extends Port {
     /** Link this port with a relation.  This method calls liberalLink()
      *  if the proposed link does not cross levels of the hierarchy and
      *  the proposed relation is of class ComponentRelation, and
-     *  otherwise throws an exception. If the argument is null, do nothing.
+     *  otherwise throws an exception.  Note that a port may
+     *  be linked to the same relation more than once, in which case
+     *  the link will be reported more than once by the linkedRelations()
+     *  method.  If the argument is null, do nothing.
      *  This method is synchronized on the workspace
      *  and increments its version number.
      *  @param relation The relation to link to. 
@@ -470,12 +461,43 @@ public class ComponentPort extends Port {
      *  In this class, this method resets the private member _insideLinks.
      *  @param ws The workspace the cloned object is to be placed in.
      */
-    protected void _clear(Workspace ws) {
-        super._clear(ws);
+    protected void _clearAndSetWorkspace(Workspace ws) {
+        super._clearAndSetWorkspace(ws);
         // Ignore exception because "this" cannot be null.
         try {
             _insideLinks = new CrossRefList(this);
         } catch (IllegalActionException ex) {}
+    }
+
+    /** Return a description of the object.  The level of detail depends
+     *  on the argument, which is an or-ing of the static final constants
+     *  defined in the Nameable interface.  Lines are indented according to
+     *  to the level argument using the protected method _indent().
+     *  This method is synchronized on the workspace.
+     *  @param detail The level of detail.
+     *  @return A description of the object.
+     */
+    protected String _description(int detail, int indent){
+        synchronized(workspace()) {
+            String result = super._description(detail, indent);
+            if ((detail & LINKS) != 0) {
+                if (result.length() > 0) {
+                    result += " ";
+                }
+                // To avoid infinite loop, turn off the LINKS flag
+                // when querying the Ports.
+                detail &= ~LINKS;
+                result += "insidelinks {\n";
+                Enumeration enum = insideRelations();
+                while (enum.hasMoreElements()) {
+                    Relation rel = (Relation)enum.nextElement();
+                    result = result +
+                            rel._description(detail, indent+1) + "\n";
+                }
+                result = result + _indent(indent) + "}";
+            }
+            return result;
+        }
     }
 
     /** Override the base class to throw an exception if the relation is
@@ -533,6 +555,7 @@ public class ComponentPort extends Port {
      *  or a port of an entity that contains the specified entity.
      *  This method is synchronized on the workspace.
      *  @param entity A possible container.
+     *  @return True if this port is outside the entity.
      */	
     protected boolean _outside(Nameable entity) {
         synchronized(workspace()) {

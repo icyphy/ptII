@@ -94,42 +94,25 @@ public class Workspace implements Nameable, Serializable {
         incrVersion();
     }
 
-    /** Return a description of the object.  The level of detail depends
-     *  on the argument, which is an or-ing of the static final constants
-     *  defined in the Nameable interface.
-     *  This method is synchronized on the workspace.
-     *  @param verbosity The level of detail.
+    /** Return a full description of the workspace and everything in it.
+     *  This is accomplished
+     *  by calling the description method with an argument for full detail.
      *  @return A description of the object.
      */
-    public synchronized String description(int verbosity){
-        String result = new String("");
-        if((verbosity & CLASS) != 0) {
-            result = getClass().getName();
-            if((verbosity & NAME) != 0) {
-                result += " ";
-            }
-        }
-        if((verbosity & NAME) != 0) {
-            result = result + "{" + getFullName() + "}";
-        }
-        if ((verbosity & CONTENTS) != 0) {
-            if (result.length() > 0) {
-                result += " ";
-            }
-            result += "elements {";
-            CollectionEnumeration enum = elements();
-            while (enum.hasMoreElements()) {
-                NamedObj obj = (NamedObj)enum.nextElement();
-                // If deep is not set, the zero-out the contents flag
-                // for the next round.
-                if ((verbosity & DEEP) == 0) {
-                    verbosity &= ~CONTENTS;
-                }
-                result = result + "\n" + obj.description(verbosity);
-            }
-            result += "\n}";
-        }
-        return result;
+    public String description() {
+        return description(NamedObj.ALL);
+    }
+
+    /** Return a description of the object.  The level of detail depends
+     *  on the argument, which is an or-ing of the static final constants
+     *  defined in the NamedObj class.  This method returns an empty
+     *  string (not null) if there is nothing to report.
+     *  It is synchronized on the workspace.
+     *  @param detail The level of detail.
+     *  @return A description of the workspace.
+     */
+    public String description(int detail) {
+        return _description(detail, 0);
     }
 
     /** Enumerate the elements in the contents list, in the order in which
@@ -211,6 +194,49 @@ public class Workspace implements Nameable, Serializable {
     /** Return a concise description of the object. */ 
     public String toString() {
         return "pt.kernel.Workspace {" + getFullName()+ "}";
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                        ////
+
+    /** Return a description of the object.  The level of detail depends
+     *  on the argument, which is an or-ing of the static final constants
+     *  defined in the NamedObj class.
+     *  This method is synchronized to prevent the workspace from changing
+     *  while the description is being generated.
+     *  @param detail The level of detail.
+     *  @param indent The amount of indenting.
+     *  @return A description of the object.
+     */
+    public synchronized String _description(int detail, int indent) {
+        String result = NamedObj._indent(indent);
+        if((detail & NamedObj.CLASSNAME) != 0) {
+            result += getClass().getName();
+            if((detail & NamedObj.FULLNAME) != 0) {
+                result += " ";
+            }
+        }
+        if((detail & NamedObj.FULLNAME) != 0) {
+            result = result + "{" + getFullName() + "}";
+        }
+        if ((detail & NamedObj.CONTENTS) != 0) {
+            if ((detail & (NamedObj.CLASSNAME | NamedObj.FULLNAME)) != 0) {
+                result += " ";
+            }
+            result += "elements {\n";
+            CollectionEnumeration enum = elements();
+            while (enum.hasMoreElements()) {
+                NamedObj obj = (NamedObj)enum.nextElement();
+                // If deep is not set, the zero-out the contents flag
+                // for the next round.
+                if ((detail & NamedObj.DEEP) == 0) {
+                    detail &= ~NamedObj.CONTENTS;
+                }
+                result = result + obj._description(detail, indent+1) + "\n";
+            }
+            result += "}";
+        }
+        return result;
     }
 
     //////////////////////////////////////////////////////////////////////////

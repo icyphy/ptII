@@ -1,4 +1,4 @@
-/* Relation supporting hierarchy.
+/* A relation supporting clustered graphs.
 
  Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
@@ -108,12 +108,11 @@ public class ComponentRelation extends Relation {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object and register the clone in the workspace.
-     *  The result is a relation with no connections and no container that
-     *  is registered with the workspace.
+    /** Clone the object and register the clone in the specified workspace.
+     *  The result is a new relation with no links and no container.
      *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
-     *  @return The cloned ComponentRelation.
+     *  @return A new ComponentRelation.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         // NOTE: It is not actually necessary to override the base class
@@ -173,12 +172,14 @@ public class ComponentRelation extends Relation {
      *  a relation with the same name, then throw an exception and do not make
      *  any changes.  Similarly, if the container is not in the same
      *  workspace as this relation, throw an exception.
+     *  If the relation is already contained by the container, do nothing.
      *  If this relation already has a container, remove it
      *  from that container first.  Otherwise, remove it from
-     *  the list of objects in the workspace. If the argument is null, then
-     *  unlink the ports from the relation, remove it from
-     *  its container, and add it to the list of objects in the workspace.
-     *  If the relation is already contained by the container, do nothing.
+     *  the list of objects in the workspace, if it is present.
+     *  If the argument is null, then unlink the ports from the relation and
+     *  remove it from its container.
+     *  It is not added to the workspace, so this could result in
+     *  this relation being garbage collected.
      *  Derived classes may further constrain the class of the container
      *  to a subclass of CompositeEntity. This method is synchronized on the
      *  workspace and increments its version number.
@@ -205,14 +206,6 @@ public class ComponentRelation extends Relation {
                 }
             }
             _container = container;
-            if (container == null) {
-                // Ignore exceptions, which mean the object is already
-                // on the workspace list.
-                try {
-                    workspace().add(this);
-                } catch (IllegalActionException ex) {}
-            }
-
             if (prevcontainer != null) {
                 prevcontainer._removeRelation(this);
             }
@@ -242,11 +235,11 @@ public class ComponentRelation extends Relation {
      *  method makes a field-by-field copy, which results
      *  in invalid references to objects. 
      *  In this class, this method reinitializes the private member
-     *  _portList.
+     *  _container.
      *  @param ws The workspace the cloned object is to be placed in.
      */
-    protected void _clear(Workspace ws) {
-        super._clear(ws);
+    protected void _clearAndSetWorkspace(Workspace ws) {
+        super._clearAndSetWorkspace(ws);
         _container = null;
     }
 

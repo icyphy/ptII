@@ -34,7 +34,7 @@
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
-    source testDefs.tcl
+    source ../util/test/testDefs.tcl
 } {}
 
 # Load up Tcl procs to print out enums
@@ -66,26 +66,25 @@ test ComponentPort-1.1 {Get information about an instance of ComponentPort} {
 } {{
   class:         pt.kernel.ComponentPort
   fields:        
-  methods:       {addParameter pt.kernel.util.Nameable} clone {clone pt.
-    kernel.util.Workspace} connectedPorts deepConnectedPort
-    s deepInsidePorts {description int} {equals java.lang.O
-    bject} getClass getContainer getFullName getName {getPa
-    rameter java.lang.String} getParameters hashCode inside
-    Ports insideRelations {isDeeplyConnected pt.kernel.Comp
-    onentPort} {isInsideLinked pt.kernel.Relation} {isLinke
-    d pt.kernel.Relation} isOpaque {liberalLink pt.kernel.C
-    omponentRelation} {link pt.kernel.Relation} linkedRelat
-    ions notify notifyAll numInsideLinks numLinks {removePa
-    rameter java.lang.String} {setContainer pt.kernel.Entit
-    y} {setName java.lang.String} toString {unlink pt.kerne
-    l.Relation} unlinkAll wait {wait long} {wait long int} 
-    workspace
+  methods:       clone {clone pt.kernel.util.Workspace} connectedPorts d
+    eepConnectedPorts {deepContains pt.kernel.util.NamedObj
+    } deepInsidePorts description {description int} {equals
+     java.lang.Object} {getAttribute java.lang.String} getA
+    ttributes getClass getContainer getFullName getName has
+    hCode insidePorts insideRelations {isDeeplyConnected pt
+    .kernel.ComponentPort} {isInsideLinked pt.kernel.Relati
+    on} {isLinked pt.kernel.Relation} isOpaque {liberalLink
+     pt.kernel.ComponentRelation} {link pt.kernel.Relation}
+     linkedRelations notify notifyAll numInsideLinks numLin
+    ks {setContainer pt.kernel.Entity} {setName java.lang.S
+    tring} toString {unlink pt.kernel.Relation} unlinkAll w
+    ait {wait long} {wait long int} workspace
     
   constructors:  pt.kernel.ComponentPort {pt.kernel.ComponentPort pt.ker
     nel.ComponentEntity java.lang.String} {pt.kernel.Compon
     entPort pt.kernel.util.Workspace}
     
-  properties:    class container fullName name opaque parameters
+  properties:    attributes class container fullName name opaque
     
   superclass:    pt.kernel.Port
     
@@ -327,9 +326,9 @@ test ComponentPort-5.2 {numInsideLinks} {
 test ComponentPort-5.3 {test description} {
     $p2 description 31
 } {pt.kernel.ComponentPort {.E0.E2.P2} links {
-pt.kernel.ComponentRelation {.E0.R1}
+    pt.kernel.ComponentRelation {.E0.R1}
 } insidelinks {
-pt.kernel.ComponentRelation {.E0.E2.R2}
+    pt.kernel.ComponentRelation {.E0.E2.R2}
 }}
 
 # NOTE: Uses topology built in 5.1

@@ -62,22 +62,21 @@ test ComponentEntity-1.1 {Get information about an instance of ComponentEntity} 
 } {{
   class:         pt.kernel.ComponentEntity
   fields:        
-  methods:       {addParameter pt.kernel.util.Nameable} clone {clone pt.
-    kernel.util.Workspace} connectedPorts {description int}
-     {equals java.lang.Object} getClass getContainer getFul
-    lName getName {getParameter java.lang.String} getParame
-    ters {getPort java.lang.String} getPorts hashCode isAto
-    mic linkedRelations {newPort java.lang.String} notify n
-    otifyAll removeAllPorts {removeParameter java.lang.Stri
-    ng} {setContainer pt.kernel.CompositeEntity} {setName j
-    ava.lang.String} toString wait {wait long} {wait long i
-    nt} workspace
+  methods:       clone {clone pt.kernel.util.Workspace} connectedPorts {
+    deepContains pt.kernel.util.NamedObj} description {desc
+    ription int} {equals java.lang.Object} {getAttribute ja
+    va.lang.String} getAttributes getClass getContainer get
+    FullName getName {getPort java.lang.String} getPorts ha
+    shCode isAtomic linkedRelations {newPort java.lang.Stri
+    ng} notify notifyAll removeAllPorts {setContainer pt.ke
+    rnel.CompositeEntity} {setName java.lang.String} toStri
+    ng wait {wait long} {wait long int} workspace
     
   constructors:  pt.kernel.ComponentEntity {pt.kernel.ComponentEntity pt
     .kernel.CompositeEntity java.lang.String} {pt.kernel.Co
     mponentEntity pt.kernel.util.Workspace}
     
-  properties:    atomic class container fullName name parameters ports
+  properties:    atomic attributes class container fullName name ports
     
   superclass:    pt.kernel.Entity
     
@@ -132,12 +131,12 @@ test ComponentEntity-5.2 {Test clone} {
     set e2 [$e1 clone]
     $e2 description 31
 } {pt.kernel.ComponentEntity {X.Y} ports {
-pt.kernel.ComponentPort {X.Y.A} links {
-} insidelinks {
-}
-pt.kernel.ComponentPort {X.Y.B} links {
-} insidelinks {
-}
+    pt.kernel.ComponentPort {X.Y.A} links {
+    } insidelinks {
+    }
+    pt.kernel.ComponentPort {X.Y.B} links {
+    } insidelinks {
+    }
 }}
 
 ######################################################################

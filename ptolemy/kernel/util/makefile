@@ -58,6 +58,7 @@ TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
 JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
+	Attribute.java \
 	CrossRefList.java \
 	KernelException.java \
 	IllegalActionException.java \

@@ -61,19 +61,18 @@ test NamedObj-1.1 {Get information about an instance of NamedObj} {
 } {{
   class:         pt.kernel.util.NamedObj
   fields:        
-  methods:       {addParameter pt.kernel.util.Nameable} clone {clone pt.
-    kernel.util.Workspace} {description int} {equals java.l
-    ang.Object} getClass getContainer getFullName getName {
-    getParameter java.lang.String} getParameters hashCode n
-    otify notifyAll {removeParameter java.lang.String} {set
-    Name java.lang.String} toString wait {wait long} {wait 
-    long int} workspace
+  methods:       clone {clone pt.kernel.util.Workspace} {deepContains pt
+    .kernel.util.NamedObj} description {description int} {e
+    quals java.lang.Object} {getAttribute java.lang.String}
+     getAttributes getClass getContainer getFullName getNam
+    e hashCode notify notifyAll {setName java.lang.String} 
+    toString wait {wait long} {wait long int} workspace
     
   constructors:  pt.kernel.util.NamedObj {pt.kernel.util.NamedObj java.l
     ang.String} {pt.kernel.util.NamedObj pt.kernel.util.Wor
     kspace java.lang.String}
     
-  properties:    class container fullName name parameters
+  properties:    attributes class container fullName name
     
   superclass:    java.lang.Object
     
@@ -176,28 +175,22 @@ test NamedObj-6.2 {Test description} {
     set a [java::new pt.kernel.util.NamedObj]
     set b [java::new pt.kernel.util.NamedObj $n ""]
     set c [java::new pt.kernel.util.NamedObj $n "car" ]
-    list "[$a description [java::field pt.kernel.util.Nameable NAME]]\n\
-	    [$b description [java::field pt.kernel.util.Nameable NAME]]\n\
-	    [$c description [java::field pt.kernel.util.Nameable NAME]]\n\
-	    [$n description [java::field pt.kernel.util.Nameable NAME]]"
-} {{{.}
- {foo.}
- {foo.car}
- {foo}}}
-
-test NamedObj-6.3 {Test description} {
-    set n [java::new pt.kernel.util.Workspace "foo"]
-    set a [java::new pt.kernel.util.NamedObj]
-    set b [java::new pt.kernel.util.NamedObj $n ""]
-    set c [java::new pt.kernel.util.NamedObj $n "car" ]
-    list "[$a description 3]\n\
-	    [$b description 3]\n\
-	    [$c description 3]\n\
-	    [$n description 3]"
-} {{pt.kernel.util.NamedObj {.}
- pt.kernel.util.NamedObj {foo.}
- pt.kernel.util.NamedObj {foo.car}
- pt.kernel.util.Workspace {foo}}}
+    list "[$a description [java::field pt.kernel.util.NamedObj ALL]]\n\
+	    [$b description [java::field pt.kernel.util.NamedObj ALL]]\n\
+	    [$c description [java::field pt.kernel.util.NamedObj ALL]]\n\
+	    [$n description [java::field pt.kernel.util.NamedObj ALL]]"
+} {{pt.kernel.util.NamedObj {.} attributes {
+}
+ pt.kernel.util.NamedObj {foo.} attributes {
+}
+ pt.kernel.util.NamedObj {foo.car} attributes {
+}
+ pt.kernel.util.Workspace {foo} elements {
+    pt.kernel.util.NamedObj {foo.} attributes {
+    }
+    pt.kernel.util.NamedObj {foo.car} attributes {
+    }
+}}}
 
 ######################################################################
 ####
@@ -206,5 +199,6 @@ test NamedObj-7.1 {Test clone} {
     set n [java::new pt.kernel.util.Workspace "N"]
     set a [java::new pt.kernel.util.NamedObj $n "A" ]
     set b [$a clone]
-    $b description 3
-} {pt.kernel.util.NamedObj {N.A}}
+    $b description [java::field pt.kernel.util.NamedObj ALL]
+} {pt.kernel.util.NamedObj {N.A} attributes {
+}}

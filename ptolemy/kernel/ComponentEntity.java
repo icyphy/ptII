@@ -80,33 +80,36 @@ public class ComponentEntity extends Entity {
      *  workspace of the container for synchronization and version counts.
      *  If the name argument is null, then the name is set to the empty string.
      *  Increment the version of the workspace.
+     *  This constructor synchronizes on the workspace.
      *  @param container The container entity.
      *  @param name The name of the entity.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
-     *  @exception NameDuplicationException Name coincides with
+     *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */	
     public ComponentEntity(CompositeEntity container, String name) 
             throws IllegalActionException, NameDuplicationException {
         super(container.workspace(), name);
-        container._addEntity(this);
-        // "super" call above puts this on the workspace list. Remove it.
-        workspace().remove(this);
-        _container = container;
-        workspace().incrVersion();
+        synchronized(workspace()) {
+            container._addEntity(this);
+            // "super" call above puts this on the workspace list. Remove it.
+            workspace().remove(this);
+            _container = container;
+            workspace().incrVersion();
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Clone the object and register the clone in the workspace.
-     *  The result is an entity with the same ports as the original, but
-     *  no connections, that is registered with the workspace.
+    /** Clone the object and register the clone in the specified workspace.
+     *  The result is a new entity with the same ports as the original, but
+     *  no connections.
      *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException If cloned ports cannot have
      *   as their container the cloned entity (this should not occur).
-     *  @return The cloned ComponentEntity.
+     *  @return A new ComponentEntity.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         // NOTE: It is not actually necessary to override the base class
@@ -116,20 +119,20 @@ public class ComponentEntity extends Entity {
     }
 
     /** Get the container entity.
-     *  This method is synchronized on the workspace.
-     *  @return An instance of CompositeEntity.
+     *  @return The container, which is an instance of CompositeEntity.
      */
     public Nameable getContainer() {
-        synchronized(workspace()) {
-            return _container;
-        }
+        return _container;
     }
 
-    /** An atomic entity cannot contain components.
-     *  Instances of this base class are atomic, so return true.
-     *  Derived classes that return false are expected to be instances of
-     *  CompositeEntity.
-     *  @return False if this is not a CompositeEntity.
+    /** Return true if the entity is atomic.
+     *  An atomic entity is one that either has no components or hides
+     *  its components behind opaque ports.
+     *  Instances of this base class are always atomic, so return true.
+     *  Derived classes that return false are assumed to be instances of
+     *  CompositeEntity or a class derived from that, although some
+     *  classes derived from CompositeEntity may also return true.
+     *  @return True if the entity is atomic.
      *  @see pt.kernel.CompositeEntity
      */	
     public boolean isAtomic() {
@@ -156,17 +159,19 @@ public class ComponentEntity extends Entity {
         }
     }
 
-    /** Specify the container entity, adding the entity to the list 
+    /** Specify the container, adding the entity to the list 
      *  of entities in the container.  If the container already contains
      *  an entity with the same name, then throw an exception and do not make
      *  any changes.  Similarly, if the container is not in the same
      *  workspace as this entity, throw an exception.
+     *  If the entity is already contained by the container, do nothing.
      *  If this entity already has a container, remove it
      *  from that container first.  Otherwise, remove it from
-     *  the list of objects in the workspace. If the argument is null, then
-     *  unlink the ports of the entity from any relations, remove it from
-     *  its container, and add it to the list of objects in the workspace.
-     *  If the entity is already contained by the container, do nothing.
+     *  the list of objects in the workspace, if it is present.
+     *  If the argument is null, then unlink the ports of the entity
+     *  from any relations and remove it from its container.
+     *  It is not added to the workspace, so this could result in
+     *  this entity being garbage collected.
      *  Derived classes may override this method to constrain the container
      *  to subclasses of CompositeEntity. This method is synchronized on the
      *  workspace and increments its version number.
@@ -184,10 +189,14 @@ public class ComponentEntity extends Entity {
                     "Cannot set container because workspaces are different.");
         }
         synchronized(workspace()) {
+            // NOTE: The following code is quite tricky.  It is very careful
+            // to leave a consistent state even in the face of unexpected
+            // exceptions.  Be very careful if modifying it.
             CompositeEntity prevcontainer = (CompositeEntity)getContainer();
             if (prevcontainer == container) return;
 
-            // Do this first, because it may throw an exception.
+            // Do this first, because it may throw an exception, and we have
+            // not yet changed any state.
             if (container != null) {
                 container._addEntity(this);
                 if (prevcontainer == null) {
@@ -196,15 +205,8 @@ public class ComponentEntity extends Entity {
             }
             _container = container;
             workspace().incrVersion();
-            if (container == null) {
-                // Ignore exceptions, which mean the object is already
-                // on the workspace list.
-                try {
-                    workspace().add(this);
-                } catch (IllegalActionException ex) {}
-            }
-
             if (prevcontainer != null) {
+                // This is safe now because it does not throw an exception.
                 prevcontainer._removeEntity(this);
             }
             if (container == null) {
@@ -253,8 +255,8 @@ public class ComponentEntity extends Entity {
      *  In this class, this method resets the private member _container.
      *  @param ws The workspace the cloned object is to be placed in.
      */
-    protected void _clear(Workspace ws) {
-        super._clear(ws);
+    protected void _clearAndSetWorkspace(Workspace ws) {
+        super._clearAndSetWorkspace(ws);
         _container = null;
     }
 

@@ -62,20 +62,20 @@ test Relation-1.1 {Get information about an instance of Relation} {
 } {{
   class:         pt.kernel.Relation
   fields:        
-  methods:       {addParameter pt.kernel.util.Nameable} clone {clone pt.
-    kernel.util.Workspace} {description int} {equals java.l
-    ang.Object} getClass getContainer getFullName getName {
-    getParameter java.lang.String} getParameters hashCode l
-    inkedPorts {linkedPorts pt.kernel.Port} notify notifyAl
-    l numLinks {removeParameter java.lang.String} {setName 
-    java.lang.String} toString unlinkAll wait {wait long} {
-    wait long int} workspace
+  methods:       clone {clone pt.kernel.util.Workspace} {deepContains pt
+    .kernel.util.NamedObj} description {description int} {e
+    quals java.lang.Object} {getAttribute java.lang.String}
+     getAttributes getClass getContainer getFullName getNam
+    e hashCode linkedPorts {linkedPorts pt.kernel.Port} not
+    ify notifyAll numLinks {setName java.lang.String} toStr
+    ing unlinkAll wait {wait long} {wait long int} workspac
+    e
     
   constructors:  pt.kernel.Relation {pt.kernel.Relation java.lang.String
     } {pt.kernel.Relation pt.kernel.util.Workspace java.lan
     g.String}
     
-  properties:    class container fullName name parameters
+  properties:    attributes class container fullName name
     
   superclass:    pt.kernel.util.NamedObj
     
@@ -184,7 +184,7 @@ test Relation-12.1 {unlinkAll ports} {
 ######################################################################
 ####
 # 
-test Port-13.1 {Test description} {
+test Relation-13.1 {Test description} {
     set w [java::new pt.kernel.util.Workspace]
     set e1 [java::new pt.kernel.Entity $w E1]
     set p1 [java::new pt.kernel.Port $e1 P1]
@@ -194,40 +194,44 @@ test Port-13.1 {Test description} {
 } {pt.kernel.Relation {.R1} links {
 }}
 
-test Port-13.2 {Test description} {
+test Relation-13.2 {Test description} {
     # NOTE: Builds on previous example.
     $p1 link $r1
     $p1 link $r2
     $r1 description 7
 } {pt.kernel.Relation {.R1} links {
-pt.kernel.Port {.E1.P1}
+    pt.kernel.Port {.E1.P1}
 }}
 
-test Port-13.3 {Test description} {
+test Relation-13.3 {Test description} {
     # NOTE: Builds on previous example.
     $p1 description 6
 } {{.E1.P1} links {
-{.R1}
-{.R2}
+    {.R1}
+    {.R2}
 }}
 
-test Port-13.3 {Test description on workspace} {
+test Relation-13.3 {Test description on workspace} {
     # NOTE: Builds on previous example.
     $w description 15
 } {pt.kernel.util.Workspace {} elements {
-pt.kernel.Entity {.E1}
-pt.kernel.Relation {.R1} links {
-pt.kernel.Port {.E1.P1}
-}
-pt.kernel.Relation {.R2} links {
-pt.kernel.Port {.E1.P1}
-}
+    pt.kernel.Entity {.E1} ports {
+        pt.kernel.Port {.E1.P1} links {
+            pt.kernel.Relation {.R1}
+            pt.kernel.Relation {.R2}
+        }
+    }
+    pt.kernel.Relation {.R1} links {
+        pt.kernel.Port {.E1.P1}
+    }
+    pt.kernel.Relation {.R2} links {
+        pt.kernel.Port {.E1.P1}
+    }
 }}
-
 ######################################################################
 ####
 # 
-test Port-14.1 {Test clone} {
+test Relation-14.1 {Test clone} {
     set w [java::new pt.kernel.util.Workspace]
     set e1 [java::new pt.kernel.Entity $w E1]
     set p1 [java::new pt.kernel.Port $e1 P1]
@@ -236,6 +240,24 @@ test Port-14.1 {Test clone} {
     set r2 [$r1 clone]
     list [$r1 description 7] [$r2 description 7]
 } {{pt.kernel.Relation {.R1} links {
-pt.kernel.Port {.E1.P1}
+    pt.kernel.Port {.E1.P1}
 }} {pt.kernel.Relation {.R1} links {
 }}}
+
+######################################################################
+####
+# 
+test Relation-15.1 {Test a Relation linked twice to the same port} {
+    set r1 [java::new pt.kernel.Relation "my relation"]
+    set e1 [java::new pt.kernel.Entity "my entity"]
+    set p1 [java::new pt.kernel.Port $e1 "my port"]
+    $p1 link $r1
+    $p1 link $r1
+    $r1 description [java::field pt.kernel.util.NamedObj ALL]
+} {pt.kernel.Relation {.my relation} attributes {
+} links {
+    pt.kernel.Port {.my entity.my port} attributes {
+    }
+    pt.kernel.Port {.my entity.my port} attributes {
+    }
+}}

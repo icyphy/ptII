@@ -34,7 +34,7 @@
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
-    source testDefs.tcl
+    source ../util/test/testDefs.tcl
 } {}
 
 # Load up Tcl procs to print out enums
@@ -67,21 +67,21 @@ test Port-1.1 {Get information about an instance of Port} {
 } {{
   class:         pt.kernel.Port
   fields:        
-  methods:       {addParameter pt.kernel.util.Nameable} clone {clone pt.
-    kernel.util.Workspace} connectedPorts {description int}
-     {equals java.lang.Object} getClass getContainer getFul
-    lName getName {getParameter java.lang.String} getParame
-    ters hashCode {isLinked pt.kernel.Relation} isOpaque {l
-    ink pt.kernel.Relation} linkedRelations notify notifyAl
-    l numLinks {removeParameter java.lang.String} {setConta
-    iner pt.kernel.Entity} {setName java.lang.String} toStr
-    ing {unlink pt.kernel.Relation} unlinkAll wait {wait lo
-    ng} {wait long int} workspace
+  methods:       clone {clone pt.kernel.util.Workspace} connectedPorts {
+    deepContains pt.kernel.util.NamedObj} description {desc
+    ription int} {equals java.lang.Object} {getAttribute ja
+    va.lang.String} getAttributes getClass getContainer get
+    FullName getName hashCode {isLinked pt.kernel.Relation}
+     isOpaque {link pt.kernel.Relation} linkedRelations not
+    ify notifyAll numLinks {setContainer pt.kernel.Entity} 
+    {setName java.lang.String} toString {unlink pt.kernel.R
+    elation} unlinkAll wait {wait long} {wait long int} wor
+    kspace
     
   constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.la
     ng.String} {pt.kernel.Port pt.kernel.util.Workspace}
     
-  properties:    class container fullName name opaque parameters
+  properties:    attributes class container fullName name opaque
     
   superclass:    pt.kernel.util.NamedObj
     
@@ -379,7 +379,7 @@ test Port-11.1 {Move Port in and out of the workspace} {
     set r3 [enumToFullNames [$w elements]]
     set r4 [enumToFullNames [$e1 getPorts]]
     list $r1 $r2 $r3 $r4
-} {{.E1 .P1} {.E1.P2 .E1.P3} {.E1 .P1 .P2 .P3} {}}
+} {{.E1 .P1} {.E1.P2 .E1.P3} {.E1 .P1} {}}
 
 ######################################################################
 ####
@@ -400,29 +400,35 @@ test Port-12.2 {Test description} {
     $p1 link $r2
     $p1 description 7
 } {pt.kernel.Port {.E1.P1} links {
-pt.kernel.Relation {.R1}
-pt.kernel.Relation {.R2}
+    pt.kernel.Relation {.R1}
+    pt.kernel.Relation {.R2}
 }}
 
 test Port-12.3 {Test description} {
     # NOTE: Builds on previous example.
     $p1 description 6
 } {{.E1.P1} links {
-{.R1}
-{.R2}
+    {.R1}
+    {.R2}
 }}
 
 test Port-12.4 {Test description on workspace} {
     # NOTE: Builds on previous example.
+    # Test that links show inside an entity.
     $w description 15
 } {pt.kernel.util.Workspace {} elements {
-pt.kernel.Entity {.E1}
-pt.kernel.Relation {.R1} links {
-pt.kernel.Port {.E1.P1}
-}
-pt.kernel.Relation {.R2} links {
-pt.kernel.Port {.E1.P1}
-}
+    pt.kernel.Entity {.E1} ports {
+        pt.kernel.Port {.E1.P1} links {
+            pt.kernel.Relation {.R1}
+            pt.kernel.Relation {.R2}
+        }
+    }
+    pt.kernel.Relation {.R1} links {
+        pt.kernel.Port {.E1.P1}
+    }
+    pt.kernel.Relation {.R2} links {
+        pt.kernel.Port {.E1.P1}
+    }
 }}
 
 ######################################################################
@@ -438,3 +444,26 @@ test Port-13.1 {Test clone} {
     $p2 description 7
 } {pt.kernel.Port {.P1} links {
 }}
+
+######################################################################
+####
+# 
+test Port-14.1 {Test double link with one port, one relations} {
+    set e1 [java::new pt.kernel.Entity]
+    set p1 [java::new pt.kernel.Port]
+    $p1 setContainer $e1
+    set r1 [java::new pt.kernel.Relation R1]
+    $p1 link $r1
+    $p1 link $r1
+    $e1 description [java::field pt.kernel.util.NamedObj ALL]
+} {pt.kernel.Entity {.} attributes {
+} ports {
+    pt.kernel.Port {..} attributes {
+    } links {
+        pt.kernel.Relation {.R1} attributes {
+        }
+        pt.kernel.Relation {.R1} attributes {
+        }
+    }
+}}
+

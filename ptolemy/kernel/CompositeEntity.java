@@ -47,8 +47,8 @@ see right through transparent ports.
 In addition, deepGetEntities() returns the atomic entities
 directly or indirectly contained by this entity.
 <p>
-To add an entity or relation to this composite, call its setContainer method
-with this composite as an argument.  To remove it, call its setContainer
+To add an entity or relation to this composite, call its setContainer() method
+with this composite as an argument.  To remove it, call its setContainer()
 method with a null argument (or another container). The entity must be
 an instance of ComponentEntity and the relation of ComponentRelation or
 an exception is thrown.  Derived classes may further constrain these
@@ -84,8 +84,6 @@ public class CompositeEntity extends ComponentEntity {
      */
     public CompositeEntity() {
         super();
-        _containedEntities = new NamedList();
-        _containedRelations = new NamedList();
     }
 
     /** Construct an entity in the specified workspace with an empty
@@ -96,8 +94,6 @@ public class CompositeEntity extends ComponentEntity {
      */
     public CompositeEntity(Workspace workspace) {
 	super(workspace);
-        _containedEntities = new NamedList();
-        _containedRelations = new NamedList();
     }
 
     /** Create an object with a name and a container. 
@@ -116,36 +112,37 @@ public class CompositeEntity extends ComponentEntity {
     public CompositeEntity(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _containedEntities = new NamedList();
-        _containedRelations = new NamedList();
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** If the argument is true, allow the connect() method to create
-     *  level-crossing connections.  Otherwise, disallow this (the
-     *  default behavior). This method is synchronized on the workspace.
+    /** Allow or disallow connections that are created using the connect()
+     *  method to cross levels of the hierarchy.
+     *  The default is that such connections are disallowed.
+     *  Generally it is a bad idea to allow level-crossing
+     *  connections, since it breaks modularity.  This loss of modularity
+     *  means, among other things, that this composite cannot be cloned.
+     *  Nonetheless, this capability is provided for the benefit of users
+     *  that feel they just must have it, and who are willing to sacrifice
+     *  clonability and modularity.
      *  @param boole True to allow level-crossing connections.
      */	
     public void allowLevelCrossingConnect(boolean boole) {
-        synchronized(workspace()) {
-            _levelCrossingConnectAllowed = boole;
-        }
+        _levelCrossingConnectAllowed = boole;
     }
 
-    /** Clone the object and register the clone in the workspace.
+    /** Clone the object and register the clone in the specified workspace.
      *  NOTE: This will not work if there are level-crossing transitions.
      *  The result is an entity with clones of the ports of the original
      *  entity, the contained entities, and the contained relations.
      *  The ports of the returned entity are not connected to anything.
      *  The connections of the relations are duplicated in the new entity,
      *  unless they cross levels, in which case an exception is thrown.
-     *  The entity is registered with the workspace.
      *  @param ws The workspace in which to place the cloned object.
      *  @exception CloneNotSupportedException If the entity contains
      *   level crossing transitions so that its connections cannot be cloned.
-     *  @return The cloned CompositeEntity.
+     *  @return A new CompositeEntity.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         CompositeEntity newentity = (CompositeEntity)super.clone(ws);
@@ -221,10 +218,12 @@ public class CompositeEntity extends ComponentEntity {
      *  The order of the ports determines the order in which the
      *  links to the relation are established, but otherwise has no
      *  importance.
-     *  The name is of the form _"E<i>i</i>" where <i>i</i> is an integer.
+     *  The name is of the form "_R<i>i</i>" where <i>i</i> is an integer.
      *  Level-crossing connections are not permitted unless
      *  allowLevelCrossingConnect() has been called with a <i>true</i>
-     *  argument. A reference to the newly created alias relation is returned.
+     *  argument.  Note that is rarely a good idea to permit level crossing
+     *  connections, since they break modularity and cloning.
+     *  A reference to the newly created relation is returned.
      *  To remove the relation, call its setContainer() method with a null
      *  argument. This method is synchronized on the workspace
      *  and increments its version number.
@@ -246,7 +245,9 @@ public class CompositeEntity extends ComponentEntity {
     /** Create a new relation with the specified name and use it to
      *  connect two ports. Level-crossing connections are not permitted
      *  unless allowLevelCrossingConnect() has been called with a true
-     *  argument. A reference to the newly created alias relation is returned.
+     *  argument.   Note that is rarely a good idea to permit level crossing
+     *  connections, since they break modularity and cloning.
+     *  A reference to the newly created alias relation is returned.
      *  To remove the relation, call its setContainer() method with a null
      *  argument. This method is synchronized on the workspace
      *  and increments its version number.
@@ -254,7 +255,8 @@ public class CompositeEntity extends ComponentEntity {
      *  @param port2 The second port to connect.
      *  @param relationname The name of the new relation.
      *  @exception IllegalActionException If one of the arguments is null, or
-     *   if a disallowed level-crossing connection would result.
+     *   if a disallowed level-crossing connection would result, or if the two
+     *   ports are not in the same workspace as this entity.
      *  @exception NameDuplicationException If there is already a relation with
      *   the specified name in this entity.
      */	
@@ -265,7 +267,8 @@ public class CompositeEntity extends ComponentEntity {
             throw new IllegalActionException(this,
                     "Attempt to connect null port.");
         }
-        if (port1.workspace() != port2.workspace()) {
+        if (port1.workspace() != port2.workspace() ||
+                port1.workspace() != workspace()) {
             throw new IllegalActionException(port1, port2,
                     "Cannot connect ports because workspaces are different.");
         }
@@ -288,28 +291,6 @@ public class CompositeEntity extends ComponentEntity {
                 throw ex;
             }
             return ar;
-        }
-    }
-
-    /** Return true if this object contains the specified entity,
-     *  directly or indirectly.  That is, return true if the specified
-     *  entity is contained by an object that this contains, or by an
-     *  object contained by an object contained by this, etc.
-     *  This method is synchronized on the workspace.
-     */	
-    public boolean deepContains(ComponentEntity entity) {
-        synchronized(workspace()) {
-            // Start with the entity and check its containers in sequence.
-            if (entity != null) {
-                Nameable parent = entity.getContainer();
-                while (parent != null) {
-                    if (parent == this) {
-                        return true;
-                    }
-                    parent = parent.getContainer();
-                }
-            }
-            return false;
         }
     }
 
@@ -338,43 +319,9 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
-    /** Return a description of the object.  The level of detail depends
-     *  on the argument, which is an or-ing of the static final constants
-     *  defined in the Nameable interface.
-     *  This method is synchronized on the workspace.
-     *  @param verbosity The level of detail.
-     *  @return A description of the object.
-     */
-    public String description(int verbosity){
-        synchronized(workspace()) {
-            String result = super.description(verbosity);
-            if ((verbosity & CONTENTS) != 0) {
-                if (result.length() > 0) {
-                    result += " ";
-                }
-                result += "entities {";
-                Enumeration enume = getEntities();
-                while (enume.hasMoreElements()) {
-                    ComponentEntity entity =
-                        (ComponentEntity)enume.nextElement();
-                    result = result + "\n" + entity.description(verbosity);
-                }
-                result += "\n} ";
-                result += "relations {";
-                Enumeration enum = getRelations();
-                while (enum.hasMoreElements()) {
-                    Relation relation = (Relation)enum.nextElement();
-                    result = result + "\n" + relation.description(verbosity);
-                }
-                result += "\n} ";
-            }
-            return result;
-        }
-    }
-
     /** Get a contained entity by name.
      *  This method is synchronized on the workspace.
-     *  @param name The name of the desired relation.
+     *  @param name The name of the desired entity.
      *  @return An entity with the specified name, or null if none exists.
      */	
     public ComponentEntity getEntity(String name) {
@@ -383,7 +330,8 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
-    /** Enumerate the contained entities in the order they were added.
+    /** Enumerate the contained entities in the order they were added
+     *  (using their setContainer() method).
      *  The returned enumeration is static in the sense
      *  that it is not affected by any subsequent additions or removals
      *  of entities.
@@ -422,7 +370,6 @@ public class CompositeEntity extends ComponentEntity {
             // Copy the list so we can create a static enumeration.
             NamedList relationsCopy = new NamedList(_containedRelations);
             Enumeration relations = relationsCopy.getElements();
-            //return _containedRelations.getElements();
             return relations;
         }
     }
@@ -475,6 +422,7 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     /** Remove all contained entities and unlink them from all relations.
+     *  This is done by setting their containers to null.
      *  This method is synchronized on the workspace
      *  and increments its version number.
      */	
@@ -499,6 +447,7 @@ public class CompositeEntity extends ComponentEntity {
     }
 
     /** Remove all contained relations and unlink them from everything.
+     *  This is done by setting their containers to null.
      *  This method is synchronized on the workspace
      *  and increments its version number.
      */	
@@ -519,27 +468,6 @@ public class CompositeEntity extends ComponentEntity {
                     // Ignore exceptions that can't occur.
                 }
             }
-        }
-    }
-
-    /** Override the base class to throw an exception if this object directly
-     *  or indirectly contains the proposed container, which would
-     *  result in a recursive containment structure.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this entity and the proposed container are not in the same workspace.
-     *  @exception NameDuplicationException If the name collides with a name 
-     *   already in the container.
-     */	
-    public void setContainer(CompositeEntity container) 
-            throws IllegalActionException, NameDuplicationException {
-        synchronized(workspace()) {
-            if (deepContains(container)) {
-                throw new IllegalActionException(this, container,
-                        "Attempt to construct recursive containment.");
-            }
-            super.setContainer(container);
         }
     }
 
@@ -564,14 +492,12 @@ public class CompositeEntity extends ComponentEntity {
     protected void _addEntity(ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException {
         synchronized(workspace()) {
-            if (!entity.isAtomic()) {
-                if (((CompositeEntity)entity).deepContains(this)) {
-                    throw new IllegalActionException(entity, this,
-                            "Attempt to construct recursive containment.");
-                }
+            if (entity.deepContains(this)) {
+                throw new IllegalActionException(entity, this,
+                "Attempt to construct recursive containment.");
             }
-            _containedEntities.append(entity);
         }
+        _containedEntities.append(entity);
     }
 
     /** Add a relation to this container. This method should not be used
@@ -598,10 +524,46 @@ public class CompositeEntity extends ComponentEntity {
      *  _containedEntities and _containedRelations.
      *  @param ws The workspace the cloned object is to be placed in.
      */
-    protected void _clear(Workspace ws) {
-        super._clear(ws);
+    protected void _clearAndSetWorkspace(Workspace ws) {
+        super._clearAndSetWorkspace(ws);
         _containedEntities = new NamedList();
         _containedRelations = new NamedList();
+    }
+
+    /** Return a description of the object.  The level of detail depends
+     *  on the argument, which is an or-ing of the static final constants
+     *  defined in the Nameable interface.  Lines are indented according to
+     *  to the level argument using the protected method _indent().
+     *  This method is synchronized on the workspace.
+     *  @param detail The level of detail.
+     *  @return A description of the object.
+     */
+    protected String _description(int detail, int indent){
+        synchronized(workspace()) {
+            String result = super._description(detail, indent);
+            if ((detail & CONTENTS) != 0) {
+                if (result.length() > 0) {
+                    result += " ";
+                }
+                result += "entities {\n";
+                Enumeration enume = getEntities();
+                while (enume.hasMoreElements()) {
+                    ComponentEntity entity =
+                        (ComponentEntity)enume.nextElement();
+                    result = result +
+                            entity._description(detail, indent+1) + "\n";
+                }
+                result = result + _indent(indent) + "} relations {\n";
+                Enumeration enum = getRelations();
+                while (enum.hasMoreElements()) {
+                    Relation relation = (Relation)enum.nextElement();
+                    result = result +
+                            relation._description(detail, indent+1) + "\n";
+                }
+                result = result + _indent(indent) + "}";
+            }
+            return result;
+        }
     }
 
     /** Remove the specified entity. This method should not be used
@@ -645,6 +607,7 @@ public class CompositeEntity extends ComponentEntity {
             _entitynamecount += 1;
             name = "_E" + _entitynamecount;
         }
+        _entitynamecount += 1;
         return name;
     }
 
@@ -658,6 +621,7 @@ public class CompositeEntity extends ComponentEntity {
             _relationnamecount += 1;
             name = "_R" + _relationnamecount;
         }
+        _relationnamecount += 1;
         return name;
     }
 
@@ -665,10 +629,10 @@ public class CompositeEntity extends ComponentEntity {
     ////                         private variables                        ////
 
     // List of contained entities.
-    private NamedList _containedEntities;
+    private NamedList _containedEntities = new NamedList();
 
     // List of contained ports.
-    private NamedList _containedRelations;
+    private NamedList _containedRelations = new NamedList();
 
     // Count of automatic names generated for entities and relations.
     private int _entitynamecount = 0;
