@@ -36,14 +36,14 @@ ROOT =		../..
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-JPACKAGE = 	ptplot
-JPACKAGE_DIR = 	ptplot
+TYPACKAGE = 	ptplot
+TYPACKAGE_DIR = tycho/java/ptplot
 # If you change JVERSION, modify the version numbers in:
 #    Pxgraph.java, index.html, doc/internals/changes.html
-JVERSION =	1.3
-JDIST =		$(JPACKAGE)$(JVERSION)
-JZIP =		$(JPACKAGE_DIR)/$(JPACKAGE).zip
-JARFILE = 	$(JPACKAGE).jar
+TYVERSION =	1.3
+TYDIST =	$(TYPACKAGE)$(TYVERSION)
+TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip
+JARFILE = 	$(TYPACKAGE).jar
 # Classes that are included in the jar file as Java Beand.
 JBEANCLASSES =	ptplot/Plot.class ptplot/PlotLive.class
 
