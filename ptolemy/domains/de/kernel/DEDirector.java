@@ -864,9 +864,16 @@ public class DEDirector extends Director implements TimedDirector {
         // Set the model timestamp to the outside timestamp,
         // if this director is not at the top level.
         boolean result = super.prefire();
+        
+        if (_debugging) {
+            _debug("Current time is: " + getModelTime());
+        }
 
         // A top-level DE director is always ready to fire.
         if (_isTopLevel()) {
+            if (_debugging) {
+            	_debug("Prefire returns: " + result);
+            }
             return result;
         }
 
@@ -922,6 +929,9 @@ public class DEDirector extends Director implements TimedDirector {
                 // For example, a DE model in a Giotto model.
                 result = result &&  false;
             }
+        }
+        if (_debugging) {
+            _debug("Prefire returns: " + result);
         }
         return result;
     }
