@@ -186,30 +186,6 @@ public class PNApplet extends PtolemyApplet {
         super._go();
     }
 
-    /** Pause the simulation */
-    protected void _pause() {
-        if (!_isSimulationRunning) {
-            System.out.println("Simulation not running.. cannot pause..");
-            return;
-        }
-        try {
-            _director.pause();
-        } catch (Exception ex) {
-            report("Unable to pause the simulation:\n", ex);
-        }
-        return;
-    }
-
-    /** Resume the simulation */
-    protected void _resume() {
-        if (!_isSimulationRunning) {
-            System.out.println("Simulation not running.. cannot resume..");
-            return;
-        }
-        _director.resume();
-        return;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -217,7 +193,8 @@ public class PNApplet extends PtolemyApplet {
     // protected CompositeActor _toplevel;
 
     /** The director for the top-level composite actor, created in the
-     *  init() method. */
+     *  init() method. 
+     */
     protected BasePNDirector _director;
 
     /** True if the initial queue capacity has been given via an applet
@@ -229,9 +206,6 @@ public class PNApplet extends PtolemyApplet {
      *  there is none.
      */
     protected TextField _queuesizebox;
-
-    /** True if the current simulation is running */
-    protected boolean _isSimulationRunning = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -258,23 +232,4 @@ public class PNApplet extends PtolemyApplet {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //// PauseListener
-
-
-    public class PauseListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            _pause();
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    //// ResumeListener
-
-
-    public class ResumeListener implements ActionListener {
-        public void actionPerformed(ActionEvent evt) {
-            _resume();
-        }
-    }
 }
