@@ -70,12 +70,23 @@ awk '
     $0 ~ /<\/Stateflow/ { sawStateFlow = 0 }
 ' < $tmpfile1 > $tmpfile2
 
+# Get rid of the HardwareModels section.  FIXME: eventually, deal with this
+awk '
+    $0 ~ /<HardwareModels/ { sawHardwareModels = 1 }
+    sawHardwareModels == 0 { print $0}
+    $0 ~ /<\/HardwareModels/ { sawHardwareModels = 0 }
+' < $tmpfile2 > $tmpfile1
+
+# Get rid of the enclosing <ComponentModels..> </ComponentModels>
+grep -v "<ComponentModels" $tmpfile1 | grep -v "</ComponentModels" > $tmpfile2
+
+
 # Get rid of the enclosing <Dataflow..> </Dataflow>
 grep -v "<Dataflow" $tmpfile2 | grep -v "</Dataflow" > $tmpfile1
 
-# Convert <System ... to <entity
+# Convert <System ... or <ComponentSheet to <entity
 awk ' {
-    if ($0 ~ /<System/) {
+    if ($0 ~ /<System/ || $0 ~ /<ComponentSheet/) {
        # Get the value of the name field
        nf = split($0, f, "\"")   
        for (i = 1; i <= nf; i++) {
@@ -163,7 +174,7 @@ awk ' {
            print indent "    </property>"
         }
 
-    } else if ($0 ~ /<\/System>/) {
+    } else if ($0 ~ /<\/System>/ || $0 ~ /<\/ComponentSheet>/) {
        # FIXME: If we have <System ... />, then the indent might be wrong?
        print indent "</entity>"
     } else {
