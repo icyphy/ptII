@@ -1598,7 +1598,7 @@ test ASTReflect-14.1 {check out } {
     set class [ java::call Class forName "ptolemy.lang.java.test.InnerIFace"]
     set ast [java::call ptolemy.lang.java.ASTReflect ASTCompileUnitNode $class]
     lcompare [$ast toString] \
-{ {CompileUnitNode { 
+{{CompileUnitNode { 
   {DefTypes { 
    {ClassDeclNode { 
     {Interfaces  {}} 
@@ -1680,14 +1680,8 @@ test ASTReflect-14.1 {check out } {
            }}} 
       {SuperClass {TypeNameNode { 
                    {Name {NameNode { 
-                          {Ident Object} 
-                          {Qualifier {NameNode { 
-                                      {Ident lang} 
-                                      {Qualifier {NameNode { 
-                                                  {Ident java} 
-                                                  {Qualifier {AbsentTreeNode {leaf}}} 
-                                                }}} 
-                                    }}} 
+                          {Ident } 
+                          {Qualifier {AbsentTreeNode {leaf}}} 
                         }}} 
                  }}} 
     }}}} 
