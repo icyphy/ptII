@@ -112,6 +112,7 @@ EXTRA_SRCS = $(JSRCS) \
 	copyright.txt \
 	index.htm \
 	ptplot.jnlp.in \
+	ptplot.iap_xml \
 	ptplot_ismp.xml
 
 # Non-source files such as README files and subdirectories
@@ -565,3 +566,4 @@ update_ftp:
 	rm -rf $(DIST_DIR)
 	cat $(PTDIST).tar.gz | (cd $(DIST_BASE); tar -zxf -)
 	cp -r $(DIST_BASE)/$(PTDIST)_tmp/* $(DIST_DIR)/ptolemy/plot/doc/download
+	cp doc/download/index.htm $(DIST_DIR)/ptolemy/plot/doc/download
