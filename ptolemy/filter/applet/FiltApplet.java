@@ -71,7 +71,7 @@ public class FiltApplet extends Applet implements Runnable {
      */
     public void init() {
         if (_debug > 8) System.out.println("IIRApplet: init");
-//        int width,height;
+        //        int width,height;
         String type;
         setLayout(new FlowLayout(5,5,5));
 
@@ -87,51 +87,51 @@ public class FiltApplet extends Applet implements Runnable {
             type = "IIR";
         }
 
-//        try {
-//            width = Integer.valueOf(getParameter("width")).intValue();
-//        } catch (NullPointerException e) {
-//            width = 400;
-//        }
+        //        try {
+        //            width = Integer.valueOf(getParameter("width")).intValue();
+        //        } catch (NullPointerException e) {
+        //            width = 400;
+        //        }
 
-//        try {
-//            height = Integer.valueOf(getParameter("height")).intValue();
-//        } catch (NullPointerException e) {
-//            height = 400;
-//        }
+        //        try {
+        //            height = Integer.valueOf(getParameter("height")).intValue();
+        //        } catch (NullPointerException e) {
+        //            height = 400;
+        //        }
 
-//        plot().resize(width,height);
+        //        plot().resize(width,height);
 
         // Process the background parameter.
-//        try {
-//            Color background = Color.white;
-//            background = PlotBox.getColorByName(getParameter("background"));
-//            setBackground(background);
-//            plot().setBackground(background);
-//       } catch (NullPointerException e) {}
+        //        try {
+        //            Color background = Color.white;
+        //            background = PlotBox.getColorByName(getParameter("background"));
+        //            setBackground(background);
+        //            plot().setBackground(background);
+        //       } catch (NullPointerException e) {}
 
         // Process the foreground parameter.
-//        try {
-//            Color foreground = Color.white;
-//            foreground = PlotBox.getColorByName(getParameter("foreground"));
-//            setForeground(foreground);
-//            plot().setForeground(foreground);
-//        } catch (NullPointerException e) {}
+        //        try {
+        //            Color foreground = Color.white;
+        //            foreground = PlotBox.getColorByName(getParameter("foreground"));
+        //            setForeground(foreground);
+        //            plot().setForeground(foreground);
+        //        } catch (NullPointerException e) {}
 
         // Process the dataurl parameter.
-//        String dataurl = null;
-//        try {
-//            dataurl = getParameter("dataurl");
-//            plot().setDataurl(dataurl);
-//        } catch (NullPointerException e) {}
+        //        String dataurl = null;
+        //        try {
+        //            dataurl = getParameter("dataurl");
+        //            plot().setDataurl(dataurl);
+        //        } catch (NullPointerException e) {}
 
         
         
         if (type.equals("IIR")) { // IIR filter
-             manager().newFilter(FilterView.APPLETMODE, "Filter Applet");
-             IIRsetPanel = manager().getView("IIRFilterParameterView").getPanel();
-             this.add(IIRsetPanel);
+            manager().newFilter(FilterView.APPLETMODE, "Filter Applet");
+            IIRsetPanel = manager().getView("IIRFilterParameterView").getPanel();
+            this.add(IIRsetPanel);
         } else if (type.equals("Blank")) { // Blank filter
-             manager().newFilter(0, "Filter Applet");
+            manager().newFilter(0, "Filter Applet");
         }   
 
         freqPanel = manager().getView("FreqView").getPanel();
@@ -140,8 +140,8 @@ public class FiltApplet extends Applet implements Runnable {
         transferPanel = manager().getView("TransferFunctionView").getPanel();
 
          
-//        _quit = new Button("quit");
-//        this.add(_quit);
+        //        _quit = new Button("quit");
+        //        this.add(_quit);
         
         this.add(polezeroPanel);
         this.add(freqPanel);
@@ -152,7 +152,7 @@ public class FiltApplet extends Applet implements Runnable {
         ((PlotView) manager().getView("ImpulseView")).initPlots();
         ((PlotView) manager().getView("PoleZeroView")).initPlots();
 
-System.out.println("before show");
+        System.out.println("before show");
 
         freqPanel.setVisible(true);
         impulsPanel.setVisible(true);
@@ -227,13 +227,13 @@ System.out.println("before show");
     private Button _quit;
 
     public static void main(String[] args){
-          Frame f = new Frame("Filter Applet");
-          f.setSize(1000, 800);
-          FiltApplet fa = new FiltApplet(); 
-          f.add(fa);
-          f.setVisible(true); 
-          fa.setVisible(true);
-          fa.init();
-          fa.start(); 
+        Frame f = new Frame("Filter Applet");
+        f.setSize(1000, 800);
+        FiltApplet fa = new FiltApplet(); 
+        f.add(fa);
+        f.setVisible(true); 
+        fa.setVisible(true);
+        fa.init();
+        fa.start(); 
     }
 }
