@@ -476,6 +476,17 @@ public class AtomicActor extends ComponentEntity implements Actor {
         super._addPort(port);
     }
 
+    /*  Create receivers for each input port.
+     *  @exception IllegalActionException If any port throws it.
+     */
+    protected void _createReceivers() throws IllegalActionException {
+        Iterator inputPorts = inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort inputPort = (IOPort)inputPorts.next();
+            inputPort.createReceivers();
+        }
+    }
+
     // NOTE: There is nothing new to report in the _description() method,
     // so we do not override it.
 
@@ -484,20 +495,6 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /*  Create receivers for each input port.
-     *  @exception IllegalActionException If any port throws it.
-     */
-    private void _createReceivers() throws IllegalActionException {
-        Iterator inputPorts = inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort)inputPorts.next();
-            inputPort.createReceivers();
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
