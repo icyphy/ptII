@@ -117,6 +117,11 @@ that Matlab be installed on your local machine.
 
 <li> <a href="codeDoc/ptolemy/data/expr/package-summary.html">Expression improvements</a>
 (Zoltan Kemenczy and Sean Simmons of Research In Motion, Ltd.)
+Functions with scalar arguments applied to arrays and matrices
+element-by-element (recursive argument dimension reduction); widened search
+for static function (and method) signatures that includes most ptolemy.math
+classes; peformance improvements by caching search results; widened token to
+java-type conversions for function arguments and results.
 
 <li> <a href="../ptolemy/domains/fsm/demo/MultipleRuns/MultipleRuns.xml">Multiple Runs</a>
 (Xiaojun Liu, Edward A. Lee) - The FSM domain as been extended
@@ -243,7 +248,7 @@ An actor that wraps (an instance of) a Java class.
 <dd> (Xiaojun Liu)
 
 <dt> <a href="codeDoc/ptolemy/actor/lib/Counter.html"><code>Counter</code></a> 
-A constant source.
+An up-down counter.
 <dd> (Steve Neuendorffer)
 
 <dt> <a href="codeDoc/ptolemy/actor/lib/Differential.html"><code>Differential</code></a> 
