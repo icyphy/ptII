@@ -35,7 +35,8 @@ ME =		ptolemy/moml/test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+# MoMLWriterTiming needs to include diva because we are looking at the configs
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
