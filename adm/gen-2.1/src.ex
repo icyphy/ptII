@@ -46,6 +46,8 @@ ptolemy/PtolemyII.ptml
 ptolemy/actor/lib/Broadcast.java
 ptolemy/actor/lib/javasound/test/pitchshift
 ptolemy/actor/lib/javasound/test/outfile.wav
+ptolemy/actor/lib/joystick
+ptolemy/actor/lib/jspaces
 ptolemy/actor/lib/net/test_auto
 ptolemy/actor/lib/test/auto/FileWriter1Output.txt
 ptolemy/actor/xslt
