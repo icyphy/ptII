@@ -34,6 +34,7 @@ import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.TableauFrame;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Sink;
+import ptolemy.data.ImageToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -140,13 +141,16 @@ public class ImageDisplay extends Sink implements Placeable {
             _debug("ImageDisplay actor firing");
         }
         if (input.hasToken(0)) {
-            ObjectToken objectToken = (ObjectToken) input.get(0);
+            //ObjectToken objectToken = (ObjectToken) input.get(0);
+            ImageToken imageToken = (ImageToken) input.get(0);
 
             // If there is no place to display, we can return after
             // consuming the input token.
             if (_container == null) return;
 
-            Image image = (Image) objectToken.getValue();
+            //Image image = (Image) objectToken.getValue();
+            Image image = imageToken.asAWTImage();
+            
             if (image == null) {
                 throw new IllegalActionException(this,
                 "ImageDisplay: input image was null!");
@@ -205,7 +209,7 @@ public class ImageDisplay extends Sink implements Placeable {
         }
     }
 
-    /** Set the background */
+    /** Get the background */
     public Color getBackground() {
         return _container.getBackground();
     }
@@ -228,6 +232,8 @@ public class ImageDisplay extends Sink implements Placeable {
             _frame.setVisible(true);
         }
     }
+
+
 
     /** Set the container that this actor should display data in.  If place
      * is not called, then the actor will create its own frame for display.
