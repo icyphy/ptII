@@ -30,10 +30,14 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.data.ArrayToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
 
 import java.awt.Color;
 
@@ -41,8 +45,7 @@ import java.awt.Color;
 //// ColorAttribute
 /**
 This is an attribute that specifies a color.  The value of this
-attribute, accessed by getExpression(), is a string that represents
-a color as an array of four floating point numbers in the form
+attribute is an array of four doubles in the form
 {red, green, blue, alpha}, where each number is the range of 0.0
 to 1.0.  The 'alpha' term represents opacity, where 1.0 is opaque,
 and 0.0 is fully transparent (invisible).
@@ -50,7 +53,7 @@ and 0.0 is fully transparent (invisible).
 @author Edward A. Lee
 @version $Id$
 */
-public class ColorAttribute extends StringAttribute {
+public class ColorAttribute extends Parameter {
 
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -68,6 +71,7 @@ public class ColorAttribute extends StringAttribute {
     public ColorAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        setTypeEquals(new ArrayType(BaseType.DOUBLE));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -77,42 +81,33 @@ public class ColorAttribute extends StringAttribute {
      *  @return The color as a Color object.
      */
     public Color asColor() {
-        // NOTE: This same code is in Query.java.
-        String spec = getExpression().trim();
-        String[] specArray = spec.split("[{},]");
-        float red = 0f;
-        float green = 0f;
-        float blue = 0f;
-        float alpha = 1.0f;
-        int i = 0;
-        // Ignore any blank strings that this simple parsing produces.
-        while (specArray[i].trim().equals("")) {
-            i++;
+        // NOTE: This also has to be handled by Query.java.
+        try {
+            ArrayToken spec = (ArrayToken) getToken();
+            int length = spec.length();
+    
+            // Default values allow us to tolerate incomplement specs.
+            float red = 0f;
+            float green = 0f;
+            float blue = 0f;
+            float alpha = 1.0f;
+    
+            if (length > 0) {
+                red = (float) ((DoubleToken) spec.getElement(0)).doubleValue();
+            }
+            if (length > 1) {
+                green = (float) ((DoubleToken) spec.getElement(1)).doubleValue();
+            }
+            if (length > 2) {
+                blue = (float) ((DoubleToken) spec.getElement(2)).doubleValue();
+            }
+            if (length > 3) {
+                alpha = (float) ((DoubleToken) spec.getElement(3)).doubleValue();
+            }
+            return new Color(red, green, blue, alpha);
+        } catch (IllegalActionException ex) {
+            // getToken() failed for some reason.
+            return Color.black;
         }
-        if (specArray.length > i) {
-            red = Float.parseFloat(specArray[i]);
-        }
-        i++;
-        while (specArray[i].trim().equals("")) {
-            i++;
-        }
-        if (specArray.length > i) {
-            green = Float.parseFloat(specArray[i]);
-        }
-        i++;
-        while (specArray[i].trim().equals("")) {
-            i++;
-        }
-        if (specArray.length > i) {
-            blue = Float.parseFloat(specArray[i]);
-        }
-        i++;
-        while (specArray[i].trim().equals("")) {
-            i++;
-        }
-        if (specArray.length > i) {
-            alpha = Float.parseFloat(specArray[i]);
-        }
-        return new Color(red, green, blue, alpha);
     }
 }

@@ -179,6 +179,12 @@ public class PtolemyQuery extends Query
                     addSlider(name, name, current, min, max);
                     attachParameter(attribute, name);
                     foundStyle = true;
+                } else if (attribute instanceof ColorAttribute) {
+                    addColorChooser(name,
+                            name,
+                            attribute.getExpression());
+                    attachParameter(attribute, name);
+                    foundStyle = true;
                 } else if (attribute instanceof Variable) {
                     Type declaredType = ((Variable)attribute).getDeclaredType();
                     Token current = ((Variable)attribute).getToken();
@@ -221,12 +227,6 @@ public class PtolemyQuery extends Query
                             attribute.getExpression(),
                             base,
                             directory);
-                    attachParameter(attribute, name);
-                    foundStyle = true;
-                } else if (attribute instanceof ColorAttribute) {
-                    addColorChooser(name,
-                            name,
-                            attribute.getExpression());
                     attachParameter(attribute, name);
                     foundStyle = true;
                 }
