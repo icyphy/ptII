@@ -37,6 +37,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.UnsizedMatrixType;
 import ptolemy.graph.InequalityTerm;
@@ -212,7 +213,7 @@ public class MatrixToSequence extends SDFTransformer {
     // NOTE: This is largely copied from AbsoluteValue.  Should
     // there be a common base class?  It is also essentially identical
     // the inner class in SequenceToMatrix.
-    private class FunctionTerm implements InequalityTerm {
+    private class FunctionTerm extends MonotonicFunction {
 
         // The constructor takes a port argument so that the clone()
         // method can construct an instance of this class for the
@@ -223,13 +224,6 @@ public class MatrixToSequence extends SDFTransformer {
 
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
-
-        /** Return null.
-         *  @return null.
-         */
-        public Object getAssociatedObject() {
-            return null;
-        }
 
         /** Return the function result.
          *  @return A Type.
@@ -256,48 +250,6 @@ public class MatrixToSequence extends SDFTransformer {
             } else {
                 return new InequalityTerm[0];
             }
-        }
-
-        /** Throw an Exception.
-         *  @exception IllegalActionException If we call initialize on
-         *  a function term.  Always thrown in this class.
-         */
-        public void initialize(Object e)
-                throws IllegalActionException {
-            throw new IllegalActionException("MatrixToSequence$FunctionTerm." +
-                    "initialize: Cannot initialize a function term.");
-        }
-
-        /** Return false.
-         *  @return false.
-         */
-        public boolean isSettable() {
-            return false;
-        }
-
-        /** Return true.
-         *  @return True.
-         */
-        public boolean isValueAcceptable() {
-            return true;
-        }
-
-        /** Throw an Exception.
-         *  @exception IllegalActionException If the type is not settable.
-         *  Always thrown in this class.
-         */
-        public void setValue(Object e)
-                throws IllegalActionException {
-            throw new IllegalActionException(
-                    "MatrixToSequence$FunctionTerm.setValue: The type is not " +
-                    "settable.");
-        }
-
-        /** Override the base class to give a description of this term.
-         *  @return A description of this term.
-         */
-        public String toString() {
-            return "(MatrixToSequence$FunctionTerm, " + getValue() + ")";
         }
 
         ///////////////////////////////////////////////////////////////

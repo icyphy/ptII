@@ -38,6 +38,7 @@ import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.TypeLattice;
 import ptolemy.data.type.UnsizedMatrixType;
@@ -260,7 +261,7 @@ public class DotProduct extends TypedAtomicActor {
      *  This function's value determinese the output port type.
      */
 
-    private class PortFunction implements InequalityTerm {
+    private class PortFunction extends MonotonicFunction {
 
         private PortFunction(TypedIOPort port1, TypedIOPort port2) {
             _port1 = port1;
@@ -269,14 +270,6 @@ public class DotProduct extends TypedAtomicActor {
 
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
-
-        /** Return null.  This method is only used because the class
-         *  implements InequalityTerm, which requires this method.
-         *  @return null.
-         */
-        public Object getAssociatedObject() {
-            return null;
-        }
 
         /** Return the function result.
          *  @return A Type.
@@ -334,46 +327,6 @@ public class DotProduct extends TypedAtomicActor {
                 return array;
             }
             return (new InequalityTerm[0]);
-        }
-
-        /** Throw an Exception. This method cannot be called on a function
-         *  term.
-         *  @exception IllegalActionException Always thrown.
-         */
-        public void initialize(Object e)
-                throws IllegalActionException {
-            throw new IllegalActionException(getClass().getName()
-                    + ": Cannot initialize a function term.");
-        }
-
-        /** Return false, because this is a function.
-         *  @return false.
-         */
-        public boolean isSettable() {
-            return false;
-        }
-
-        /** Return true.
-         *  @return True.
-         */
-        public boolean isValueAcceptable() {
-            return true;
-        }
-
-
-        /** Throw an Exception. The value of a function term cannot be set.
-         *  @exception IllegalActionException Always thrown.
-         */
-        public void setValue(Object e) throws IllegalActionException {
-            throw new IllegalActionException(getClass().getName()
-                    + ": The type is not settable.");
-        }
-
-        /** Override the base class to give a description of this term.
-         *  @return A description of this term.
-         */
-        public String toString() {
-            return "(" + getClass().getName() + ", " + getValue() + ")";
         }
 
         ///////////////////////////////////////////////////////////////

@@ -44,6 +44,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.MonotonicFunction;
 import ptolemy.graph.Inequality;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
@@ -347,7 +348,7 @@ public class Autocorrelation extends SDFTransformer {
     // type. The result of the function is the same as the input type
     // if is not Int or IntMatrix; otherwise, the result is Double
     // or DoubleMatrix, respectively.
-    private class FunctionTerm implements InequalityTerm {
+    private class FunctionTerm extends MonotonicFunction {
 
         // The constructor takes a port argument so that the clone()
         // method can construct an instance of this class for the
@@ -358,13 +359,6 @@ public class Autocorrelation extends SDFTransformer {
 
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
-
-        /** Return null.
-         *  @return null.
-         */
-        public Object getAssociatedObject() {
-            return null;
-        }
 
         /** Return the function result.
          *  @return A Type.
@@ -388,49 +382,6 @@ public class Autocorrelation extends SDFTransformer {
             InequalityTerm[] variable = new InequalityTerm[1];
             variable[0] = _port.getTypeTerm();
             return variable;
-        }
-
-        /** Throw an Exception.
-         *  @exception IllegalActionException If we call initialize on
-         *  a function term.  Always thrown in this class.
-         */
-        public void initialize(Object e) throws IllegalActionException {
-            throw new IllegalActionException(
-                Autocorrelation.this,
-                "Autocorrelation$FunctionTerm."
-                    + "initialize: Cannot initialize a function term.");
-        }
-
-        /** Return false.
-         *  @return false.
-         */
-        public boolean isSettable() {
-            return false;
-        }
-
-        /** Return true.
-         *  @return True.
-         */
-        public boolean isValueAcceptable() {
-            return true;
-        }
-
-        /** Throw an Exception.
-         *  @exception IllegalActionException If the type is not settable.
-         *  Always thrown in this class.
-         */
-        public void setValue(Object e) throws IllegalActionException {
-            throw new IllegalActionException(
-                Autocorrelation.this,
-                "Autocorrelation$FunctionTerm.setValue: The type is not "
-                    + "settable.");
-        }
-
-        /** Override the base class to give a description of this term.
-         *  @return A description of this term.
-         */
-        public String toString() {
-            return "(Autocorrelation$FunctionTerm, " + getValue() + ")";
         }
 
         ///////////////////////////////////////////////////////////////
