@@ -66,12 +66,13 @@ EXTRA_SRCS =	$(TCL_SRCS) #$(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 # want make checkjunk to barf on them.
 MISC_FILES = \
 	auto \
-	pitchshift \
 	voice.au
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
+# pitchshift is in OPTIONAL_FILES because we do not ship pitchshift
+OPTIONAL_FILES = \
+	pitchshift
 
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
