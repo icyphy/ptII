@@ -30,6 +30,7 @@
 package ptolemy.copernicus.applet;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.kernel.util.IllegalActionException;
@@ -62,13 +63,37 @@ public class Main extends KernelMain {
 
         // Generate the makefile files in outDir
         addTransform(pack, "wjtp.makefileWriter",
-                MakefileWriter.v(_toplevel));
+                MakefileWriter.v(_toplevel),
+                "_generatorAttributeFileName:" + _generatorAttributeFileName +
+                " targetPackage:" + _targetPackage + 
+                " templateDirectory:" + _templateDirectory +
+                " outDir:" + _outputDirectory);
 
         // Generate the applet files in outDir
         addTransform(pack, "wjtp.appletWriter",
-                AppletWriter.v(_toplevel));
-
+                AppletWriter.v(_toplevel),
+                " outDir:" + _outputDirectory);
     }
+
+    /** Parse any code generator specific arguments.
+     */ 
+    protected String[] _parseArgs(GeneratorAttribute attribute) 
+            throws Exception {
+        _targetPackage = attribute.getParameter("targetPackage");
+        _templateDirectory = attribute.getParameter("templateDirectory");
+        _watchDogTimeout = attribute.getParameter("watchDogTimeout");
+        _outputDirectory = attribute.getParameter("outputDirectory");
+        _generatorAttributeFileName = 
+            attribute.getParameter("generatorAttributeFileName");
+        //String sootArgs = attribute.getParameter("sootArgs");
+        return new String[1];
+    }
+
+    private static String _generatorAttributeFileName = "unsetParameter";
+    private static String _watchDogTimeout = "unsetParameter";
+    private static String _targetPackage = "unsetParameter";
+    private static String _templateDirectory = "ptolemy/copernicus/java";
+    private static String _outputDirectory = "unsetParameter";
 }
 
 
