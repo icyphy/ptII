@@ -835,3 +835,21 @@ test CompositeEntity-13.1 {test set name to itself} {
     $b setName B
     $b getFullName
 } {.A.B}
+
+
+######################################################################
+####
+#
+test CompositeEntity-14.1 {Test _uniqueEntityName} {
+    # _uniqueEntityName is a protected method used in FSM
+    # The class ptolemy.kernel.test.TestCompositeEntity defines a 
+    # public method named uniqueEntityName that calls the protected
+    # method in CompositeEntity for us
+    set a [java::new ptolemy.kernel.test.TestCompositeEntity]
+    $a setName A
+    list \
+	    [$a getFullName] \
+	    [$a uniqueEntityName] \
+	    [$a uniqueEntityName] \
+	    [$a getFullName]
+} {.A _E0 _E1 .A}
