@@ -296,5 +296,6 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
 
     // Set to true to enable debuging.
     private boolean _debug_info = false;
+    //private boolean _debug_info = true;
 
 }
