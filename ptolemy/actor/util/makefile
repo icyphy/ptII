@@ -66,7 +66,8 @@ JSRCS = \
 	FIFOQueue.java \
 	PtolemyApplet.java \
 	Query.java \
-	QueryListener.java
+	QueryListener.java \
+	Table.java
 
 EXTRA_SRCS =	$(JSRCS)
 

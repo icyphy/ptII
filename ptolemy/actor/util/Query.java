@@ -137,7 +137,8 @@ public class Query extends Panel {
 
     /** Create a single-line entry box with the specified name, label, and
      *  default value.  The width will be the default width.
-     *  @param name The name used to identify the entry (when calling get).
+     *  @param name The name used to identify the entry (when accessing
+     *   the entry).
      *  @param label The label to attach to the entry.
      *  @param defvalue Default value to appear in the entry box.
      */
@@ -147,7 +148,8 @@ public class Query extends Panel {
 
     /** Create a single-line entry box with the specified name, label,
      *  default value, and width.
-     *  @param name The name used to identify the entry (when calling get).
+     *  @param name The name used to identify the entry (when accessing
+     *   the entry).
      *  @param label The label to attach to the entry.
      *  @param defvalue Default value to appear in the entry box.
      *  @param width The width of the entry box in characters.
