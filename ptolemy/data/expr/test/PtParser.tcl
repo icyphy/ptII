@@ -37,12 +37,6 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-# Load up Tcl procs to print out enums
-#if {[info procs _testEntityLinkedRelations] == "" } then { 
-#    source testEnums.tcl
-#}
-
-
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -155,7 +149,7 @@ test PtParser-3.1 {Construct a Parser,mixing doubles, strings and integers using
 ######################################################################
 ####
 # 
-test PtParser-4.0 {Construct a Parser, try relational operators} {
+test PtParser-4.0 {Construct a Parser, try basic relational operators} {
     set p [java::new pt.data.parser.PtParser]
     set r1 [ $p {parseExpression String} "2<4"]
     set r2 [ $p {parseExpression String} "4<=4"]
@@ -170,4 +164,66 @@ test PtParser-4.0 {Construct a Parser, try relational operators} {
     set c5 [$r5 getClass]
     set c6 [$r6 getClass]
     list  [$c1 getName ] [$r1 toString] [$c2 getName ] [$r2 toString] [$c3 getName ] [$r3 toString]  [$c4 getName ] [$r4 toString] [$c5 getName ] [$r5 toString] [$c6 getName ] [$r6 toString] 
-} {pt.data.BooleanToken true pt.data.BooleanToken true pt.data.BooleanToken true pt.data.BooleanToken false pt.data.BooleanToken false pt.data.BooleanToken true }
+} {pt.data.BooleanToken true pt.data.BooleanToken true pt.data.BooleanToken true pt.data.BooleanToken false pt.data.BooleanToken false pt.data.BooleanToken true}
+######################################################################
+####
+# 
+test PtParser-4.1 {Construct a Parser, try  relational operators with arithetic operators} {
+    set p [java::new pt.data.parser.PtParser]
+    set r1 [ $p {parseExpression String} "(2)<(4*5 -9)"]
+    set r2 [ $p {parseExpression String} "4<=4*7"]
+    set r3 [ $p {parseExpression String} "4-7>=4"]
+    set c1 [$r1 getClass]
+    set c2 [$r2 getClass]
+    set c3 [$r3 getClass]
+    list  [$c1 getName ] [$r1 toString] [$c2 getName ] [$r2 toString] [$c3 getName ] [$r3 toString]  
+} {pt.data.BooleanToken true pt.data.BooleanToken true pt.data.BooleanToken false}
+######################################################################
+####
+# 
+test PtParser-4.2 {Construct a Parser,test use of equality operator on strings} {
+    set p [java::new pt.data.parser.PtParser]
+    set r1 [ $p {parseExpression String} "\"hello\" == \"hello\""]
+    set r2 [ $p {parseExpression String} "\"hello\" != \"hello\""]
+    #set r3 [ $p {parseExpression String} "\"4\" == 2*(9-7)"] do we want this???
+    set c1 [$r1 getClass]
+    set c2 [$r2 getClass]
+    #set c3 [$r3 getClass]
+    list  [$c1 getName ] [$r1 toString] [$c2 getName ] [$r2 toString]  
+} {pt.data.BooleanToken true pt.data.BooleanToken false}
+######################################################################
+####
+# 
+test PtParser-5.0 {Construct a Parser, test use of logical operators} {
+    set p [java::new pt.data.parser.PtParser]
+    set r1 [ $p {parseExpression String} "\"hello\" == \"hello\" && 5>=5"]
+    set r2 [ $p {parseExpression String} "\"hello\" != \"hello\" || 3<3"]
+    set r3 [ $p {parseExpression String} "(3<=5) && (56 == 56) || (\"foo\" != \"foo\")"]
+    set c1 [$r1 getClass]
+    set c2 [$r2 getClass]
+    set c3 [$r3 getClass]
+    list  [$c1 getName ] [$r1 toString] [$c2 getName ] [$r2 toString] [$c3 getName ] [$r3 toString]  
+} {pt.data.BooleanToken true pt.data.BooleanToken false pt.data.BooleanToken true}
+######################################################################
+####
+# 
+test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist} {
+    set parser [java::new pt.data.parser.PtParser]
+    set e [java::new {pt.kernel.Entity String} parent]
+    set tok1 [java::new  {pt.data.DoubleToken double} 4.5]
+    set tok2 [java::new  {pt.data.IntToken int} 7]
+    set tok3 [java::new  {pt.data.StringToken String} { hello world }]
+    set param1 [java::new {pt.data.Param NamedObj String Token} $e id1 $tok1]
+    set param2 [java::new {pt.data.Param NamedObj String Token} $e id1 $tok2]
+    set param3 [java::new {pt.data.Param NamedObj String Token} $e id1 $tok3]
+
+    $e {addParam Param} $param1
+    $e {addParam Param} $param2
+    $e {addParam Param} $param3
+
+    set nl [$param1 getScope]
+
+    set r1 [ $parser {parseExpression String NamedList Param} "id1 + id2 + id3" $nl $param1]
+    set c1 [$r getClass]
+    list  [$c1 getName ] [$r1 toString] 
+} {pt.data.StringToken  {11.5 hello world }}
