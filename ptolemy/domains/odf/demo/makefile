@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/odf/demo
 
-DIRS = 		test #doc
+DIRS = 		helloWorld test #doc
 
 # Root of the Java directory
 ROOT =		../../../..
@@ -50,8 +50,7 @@ PTPACKAGE = 	demo
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
-        ODFStringDemo.java
+JSRCS = 
 
 # Non-graphical Java demos written in Tcl
 # Since there are no demos, we use a dummy file so that the script that builds
@@ -81,8 +80,8 @@ install: jclass javadocs $(PTCLASSJAR)
 
 docs: javadocs
 
-demo:
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.odf.demo.ODFStringDemo
+#demo:
+#	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.odf.demo.ODFStringDemo
 
 depend:
 	@echo "no dependencies in this directory"
