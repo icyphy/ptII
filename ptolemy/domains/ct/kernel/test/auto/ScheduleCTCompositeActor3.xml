@@ -4,8 +4,6 @@
 <entity name="ScheduleCTCompositeActor3" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="IODependence" class="ptolemy.actor.IODependence">
-    </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -51,8 +49,6 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 55.0">
         </property>
     </property>
@@ -84,8 +80,6 @@ This test is inspired by the ct/demo/Switch/Switch.xml.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 180.0">
         </property>
     </property>
@@ -106,8 +100,6 @@ This test is inspired by the ct/demo/Switch/Switch.xml.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 350.0">
         </property>
     </property>
@@ -117,8 +109,6 @@ This test is inspired by the ct/demo/Switch/Switch.xml.</text></svg></configure>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 145.0">
         </property>
@@ -134,8 +124,6 @@ This test is inspired by the ct/demo/Switch/Switch.xml.</text></svg></configure>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <doc>Output the current time.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 145.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -155,8 +143,6 @@ This test is inspired by the ct/demo/Switch/Switch.xml.</text></svg></configure>
         </port>
     </entity>
     <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
-        <property name="IODependence" class="ptolemy.actor.IODependence">
-        </property>
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -172,8 +158,6 @@ This test is inspired by the ct/demo/Switch/Switch.xml.</text></svg></configure>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 145.0">
         </property>
@@ -222,8 +206,6 @@ This test is inspired by the ct/demo/Switch/Switch.xml.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 200.0">
                 </property>
                 <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
@@ -237,8 +219,6 @@ This test is inspired by the ct/demo/Switch/Switch.xml.</text></svg></configure>
                 <property name="_centerName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 200.0">
                 </property>
@@ -297,8 +277,6 @@ This test is inspired by the ct/demo/Switch/Switch.xml.</text></svg></configure>
             <link port="state2.outgoingPort" relation="relation2"/>
         </entity>
         <entity name="discreteSystem" class="ptolemy.vergil.fsm.modal.Refinement">
-            <property name="IODependence" class="ptolemy.actor.IODependence">
-            </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
@@ -342,8 +320,6 @@ This test is inspired by the ct/demo/Switch/Switch.xml.</text></svg></configure>
                 </property>
                 <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                 </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 60.0">
                 </property>
             </property>
@@ -381,8 +357,6 @@ This test is inspired by the ct/demo/Switch/Switch.xml.</text></svg></configure>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 145.0">
         </property>

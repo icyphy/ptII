@@ -85,8 +85,6 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
         </property>
     </property>
     <entity name="Case" class="ptolemy.actor.lib.hoc.Case">
-        <property name="IODependence" class="ptolemy.actor.IODependence">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="207.0, 146.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
@@ -94,8 +92,6 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
         <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-            <property name="IODependence" class="ptolemy.actor.IODependence">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="163.0, 141.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
@@ -152,8 +148,6 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
             <link port="FileWriter.input" relation="relation"/>
         </entity>
         <entity name="Copy1:typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-            <property name="IODependence" class="ptolemy.actor.IODependence">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="347.0, 144.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">

@@ -4,8 +4,6 @@
 <entity name="ScheduleCTCompositeActor2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="IODependence" class="ptolemy.actor.IODependence">
-    </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -51,8 +49,6 @@
         </property>
         <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 55.0">
         </property>
     </property>
@@ -82,8 +78,6 @@ event generator.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 225.0">
         </property>
     </property>
@@ -104,14 +98,10 @@ event generator.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 350.0">
         </property>
     </property>
     <property name="criticalValue" class="ptolemy.data.expr.Parameter" value="2.14">
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-        </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
       <svg>
@@ -128,12 +118,6 @@ event generator.</text></svg></configure>
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a constant sequence</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 175.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -153,10 +137,6 @@ event generator.</text></svg></configure>
         </port>
     </entity>
     <entity name="CTCompositeActor" class="ptolemy.domains.ct.kernel.CTCompositeActor">
-        <property name="IODependence" class="ptolemy.actor.IODependence">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 175.0">
         </property>
         <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
@@ -202,8 +182,6 @@ event generator.</text></svg></configure>
             </property>
             <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
             </property>
-            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 60.0">
             </property>
         </property>
@@ -229,10 +207,6 @@ event generator.</text></svg></configure>
         </port>
         <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
-            </property>
-            <property name="IODependence" class="ptolemy.actor.IODependence">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="157.0, 200.0">
             </property>
@@ -263,8 +237,6 @@ event generator.</text></svg></configure>
             <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 190.0">
             </property>
@@ -318,8 +290,6 @@ event generator.</text></svg></configure>
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 175.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -334,8 +304,6 @@ event generator.</text></svg></configure>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <doc>Output the current time.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 175.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
