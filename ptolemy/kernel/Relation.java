@@ -39,7 +39,7 @@ direction does not hold.
 @author Neil Smyth
 @version $Id$
 */
-public abstract class Relation extends NamedObj {
+public class Relation extends NamedObj {
     /** 
      */	
     public Relation() {
