@@ -182,7 +182,7 @@ public class TypeLattice {
 	    Type t2Rep = _toRepresentative(ct2);
 
 	    if ( !_basicLattice.containsNodeWeight(t1Rep) ||
-	         !_basicLattice.containsNodeWeight(t2Rep)) {
+                    !_basicLattice.containsNodeWeight(t2Rep)) {
                 // one or both arguments are user defined
 		if (t1Rep == t2Rep) {
 		    return SAME;
@@ -237,7 +237,7 @@ public class TypeLattice {
 	    Type t2Rep = _toRepresentative(ct2);
 
 	    if ( !_basicLattice.containsNodeWeight(t1Rep) ||
-	         !_basicLattice.containsNodeWeight(t2Rep)) {
+                    !_basicLattice.containsNodeWeight(t2Rep)) {
                 // one or both arguments are user defined
 		if (t1Rep == t2Rep) {
 		    return ct1;
@@ -369,7 +369,7 @@ public class TypeLattice {
 	    Type t2Rep = _toRepresentative(ct2);
 
 	    if ( !_basicLattice.containsNodeWeight(t1Rep) ||
-	         !_basicLattice.containsNodeWeight(t2Rep)) {
+                    !_basicLattice.containsNodeWeight(t2Rep)) {
                 // one or both arguments are user defined
 		if (t1Rep == t2Rep) {
                     return ct1;
@@ -483,13 +483,13 @@ public class TypeLattice {
 
 	    _basicLattice.addEdge(BaseType.NUMERICAL, BaseType.MATRIX);
 	    _basicLattice.addEdge(BaseType.FIX_MATRIX,
-	                          BaseType.NUMERICAL);
+                    BaseType.NUMERICAL);
 	    _basicLattice.addEdge(BaseType.SCALAR, BaseType.NUMERICAL);
 	    _basicLattice.addEdge(BaseType.LONG_MATRIX, BaseType.NUMERICAL);
 	    _basicLattice.addEdge(BaseType.COMPLEX_MATRIX, BaseType.NUMERICAL);
 
 	    _basicLattice.addEdge(BaseType.FIX,
-	                          BaseType.FIX_MATRIX);
+                    BaseType.FIX_MATRIX);
 	    _basicLattice.addEdge(BaseType.FIX, BaseType.SCALAR);
 	    _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.FIX);
 	    _basicLattice.addEdge(BaseType.LONG, BaseType.SCALAR);

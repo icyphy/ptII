@@ -616,17 +616,17 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
         // Validate the attributes of this actor.
         for (Iterator attributes = attributeList(Settable.class).iterator();
-            attributes.hasNext();) {
+             attributes.hasNext();) {
             Settable attribute = (Settable)attributes.next();
             attribute.validate();
         }
         // Validate the attributes of the ports of this actor.
         for (Iterator ports = portList().iterator();
-            ports.hasNext();) {
+             ports.hasNext();) {
             IOPort port = (IOPort)ports.next();
             for (Iterator attributes =
-                    port.attributeList(Settable.class).iterator();
-                attributes.hasNext();) {
+                     port.attributeList(Settable.class).iterator();
+                 attributes.hasNext();) {
                 Settable attribute = (Settable)attributes.next();
                 attribute.validate();
             }

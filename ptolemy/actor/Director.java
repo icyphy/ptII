@@ -486,7 +486,7 @@ public class Director extends Attribute implements Executable {
         Nameable container = getContainer();
         if (container instanceof Actor) {
             Director executiveDirector =
-                   ((Actor)container).getExecutiveDirector();
+                ((Actor)container).getExecutiveDirector();
             if (executiveDirector != null) {
                 double outTime = executiveDirector.getCurrentTime();
                 if (getCurrentTime() < outTime) {

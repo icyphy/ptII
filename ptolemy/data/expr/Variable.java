@@ -1102,12 +1102,12 @@ public class Variable extends Attribute implements Typeable, Settable {
             _parser = new PtParser(this);
         }
         if (_parser.getUndefinedList(_currentExpression).size() == 0) {
-           // System.out.println("Compiled with no scope.");
+            // System.out.println("Compiled with no scope.");
             _parseTree = _parser.generateParseTree(_currentExpression);
         } else {
-           // System.out.println("Compiled but needed scope.");
+            // System.out.println("Compiled but needed scope.");
             _parseTree = _parser.generateParseTree(_currentExpression,
-                                                   getScope());
+                    getScope());
         }
         return;
     }
