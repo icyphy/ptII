@@ -72,9 +72,6 @@ current simulation time. Thus time is centralised in that it is
 controlled by the director controlling this actor, and that 
 each actor can only deal with delta (as opposed to absolute) time.
 <p>
-FIXME: should a bunch of the methods in this class be protected? In
-Particular, actorBlocked, actor Stopped etc?
-
 @author Neil Smyth
 @version $Id$
 */
@@ -210,8 +207,9 @@ public class CSPActor extends AtomicActor {
         }
     }
 
-    /** Defauly implementation for actors inheriting from this 
-     *class. It simply prints out a message that the actor is wrapping up.
+    /** Defaul implementation for actors inheriting from this 
+     *  class. It simply prints out a message that the actor is 
+     *  wrapping up.
      */
      public void wrapup() {
          System.out.println("CSPActor: " + getName() + " wrapping up.");
@@ -419,11 +417,8 @@ public class CSPActor extends AtomicActor {
                 }
             }
             // Now wake up all the receivers.
-            NotifyThread obj = new NotifyThread(tmp);
-            synchronized(obj) {
-                obj.start();
-                obj.wait();
-            }
+            (new NotifyThread(tmp)).start();
+            
             // when there are no more active branches, branchFailed
             // should issue a notifyAll on the internalLock
             synchronized(_getInternalLock()) {
