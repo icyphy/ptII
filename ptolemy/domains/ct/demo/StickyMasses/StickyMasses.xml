@@ -196,11 +196,11 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Together.p = P1; Together.v = (V1+V2)/2.0; Together.stickiness = 10.0">
-                </property>
-                <property name="reset1" class="ptolemy.domains.fsm.kernel.ResetRefinement">
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Together.p = P1; Together.v = (V1+V2)/2.0; Together.stickiness = 10.0">
                 </property>
             </relation>
             <relation name="Tr2" class="ptolemy.domains.fsm.kernel.Transition">
@@ -210,9 +210,9 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = P1; Separate.p2 = P1; Separate.v1 = V1;Separate.v2 = V1">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="reset2" class="ptolemy.domains.fsm.kernel.ResetRefinement">
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = P1; Separate.p2 = P1; Separate.v1 = V1; Separate.v2 = V1">
                 </property>
             </relation>
             <relation name="initTransition" class="ptolemy.domains.fsm.kernel.Transition">
@@ -220,11 +220,11 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Separate.p1 = p1; Separate.p2 = p2; Separate.v1 = v1; Separate.v2 = v2">
-                </property>
-                <property name="reset3" class="ptolemy.domains.fsm.kernel.ResetRefinement">
                 </property>
             </relation>
             <link port="init.outgoingPort" relation="initTransition"/>

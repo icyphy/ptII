@@ -131,31 +131,23 @@
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+		<property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+		</property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="act0" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="state">
-                    </property>
-                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Integrator.initialState">
-                    </property>
-                </property>
-                <property name="act1" class="ptolemy.domains.fsm.kernel.ResetRefinement">
-                </property>
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Decreasing.Integrator.initialState = state">
+		</property>
             </relation>
             <relation name="ctrlTr2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="output_isPresent">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+		<property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+		</property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
-                <property name="act2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="state">
-                    </property>
-                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Integrator.initialState">
-                    </property>
-                </property>
-                <property name="act3" class="ptolemy.domains.fsm.kernel.ResetRefinement">
+                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Increasing.Integrator.initialState = state">
                 </property>
             </relation>
             <link port="Increasing.incomingPort" relation="ctrlTr2"/>

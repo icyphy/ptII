@@ -146,90 +146,38 @@ public class StickyMasses extends TypedCompositeActor {
         ctrlTr0.preemptive.setExpression("true");
 
         // Actions on Tr0, setting integrator initial states.
-        SetRefinementVariable act0 =
-            new SetRefinementVariable(ctrlTr0, "act0");
-        act0.variableName.setExpression("P1.initialState");
-        act0.expression.setExpression("0.0");
-
-        SetRefinementVariable act1 =
-            new SetRefinementVariable(ctrlTr0, "act1");
-        act1.variableName.setExpression("V1.initialState");
-        act1.expression.setExpression("0.0");
-
-        SetRefinementVariable act2 =
-            new SetRefinementVariable(ctrlTr0, "act2");
-        act2.variableName.setExpression("P2.initialState");
-        act2.expression.setExpression("3.0");
-
-        SetRefinementVariable act3 =
-            new SetRefinementVariable(ctrlTr0, "act3");
-        act3.variableName.setExpression("V2.initialState");
-        act3.expression.setExpression("0.0");
-
-        ResetRefinement act4 =
-            new ResetRefinement(ctrlTr0, "act4");
+	ctrlTr0.setActions.setExpression(
+	        "Separate.P1.initialState = 0.0; "
+		+ "Separate.V1.initialState = 0.0; "
+		+ "Separate.P2.initialState = 3.0; "
+		+ "Separate.V2.initialState = 0.0");
+	ctrlTr0.reset.setExpression("true");
 
         Transition ctrlTr1 = new Transition(ctrl, "Tr1");
         ctrlInc.outgoingPort.link(ctrlTr1);
         ctrlDec.incomingPort.link(ctrlTr1);
         ctrlTr1.setGuardExpression("touched_isPresent");
-        // ctrlTr1.setInitEntry(true);
-        // HSInit hsinit1 = new HSInit(ctrlTr1, "P1", "P1");
-        SetRefinementVariable hsinit1 =
-            new SetRefinementVariable(ctrlTr1, "act1");
-        hsinit1.variableName.setExpression("P1.initialState");
-        hsinit1.expression.setExpression("P1");
-        // HSInit hsinit4 = new HSInit(ctrlTr1, "V1", "(V1*1.0+V2*1.0)/2.0");
-        SetRefinementVariable hsinit4 =
-            new SetRefinementVariable(ctrlTr1, "act4");
-        hsinit4.variableName.setExpression("V1.initialState");
-        hsinit4.expression.setExpression("(V1*1.0+V2*1.0)/2.0");
-        // HSInit hsinit0 = new HSInit(ctrlTr1, "STI", "10.0");
-        SetRefinementVariable hsinit0 =
-            new SetRefinementVariable(ctrlTr1, "act0");
-        hsinit0.variableName.setExpression("STI.initialState");
-        hsinit0.expression.setExpression("10.0");
-        ResetRefinement reset1 = new ResetRefinement(ctrlTr1, "reset1");
+	ctrlTr1.setActions.setExpression(
+                "Together.P1.initialState = P1; "
+		+ "Together.V1.initialState = (V1+V2)/2.0; "
+		+ "Together.STI.initialState = 10.0");
+	ctrlTr1.reset.setExpression("true");
 
         Transition ctrlTr2 = new Transition(ctrl, "Tr2");
         ctrlDec.outgoingPort.link(ctrlTr2);
         ctrlInc.incomingPort.link(ctrlTr2);
         ctrlTr2.setGuardExpression("F > STI || F < -STI");
-        //ctrlTr2.setInitEntry(true);
-        // HSInit hsinit2 = new HSInit(ctrlTr2, "P1", "P1");
-        SetRefinementVariable hsinit2 =
-            new SetRefinementVariable(ctrlTr2, "act2");
-        hsinit2.variableName.setExpression("P1.initialState");
-        hsinit2.expression.setExpression("P1");
-        // HSInit hsinit3 = new HSInit(ctrlTr2, "P2", "P1");
-        SetRefinementVariable hsinit3 =
-            new SetRefinementVariable(ctrlTr2, "act3");
-        hsinit3.variableName.setExpression("P2.initialState");
-        hsinit3.expression.setExpression("P1");
-        // HSInit hsinit5 = new HSInit(ctrlTr2, "V1", "V1");
-        SetRefinementVariable hsinit5 =
-            new SetRefinementVariable(ctrlTr2, "act5");
-        hsinit5.variableName.setExpression("V1.initialState");
-        hsinit5.expression.setExpression("V1");
-        // HSInit hsinit6 = new HSInit(ctrlTr2, "V2", "V1");
-        SetRefinementVariable hsinit6 =
-            new SetRefinementVariable(ctrlTr2, "act6");
-        hsinit6.variableName.setExpression("V2.initialState");
-        hsinit6.expression.setExpression("V1");
-        ResetRefinement reset2 = new ResetRefinement(ctrlTr2, "reset2");
+	ctrlTr2.setActions.setExpression(
+		"Separate.P1.initialState = P1; "
+		+ "Separate.P2.initialState = P1; "
+		+ "Separate.V1.initialState = V1; "
+		+ "Separate.V2.initialState = V1");
+	ctrlTr2.reset.setExpression("true");
 
         // the hybrid system director
         HSDirector hsdir = new HSDirector(hs, "HSDirector");
-        //hs.setDirector(hsdir);
-        //hsdir.setController(ctrl);
         hsdir.controllerName.setExpression("Controller");
 
-        //StreamListener dbl = new StreamListener();
-        //hsdir.addDebugListener(dbl);
-        //ctrl.addDebugListener(dbl);
-
-        //System.out.println("Building the dynamics of "
-        //        + "two separate balls.");
         CTCompositeActor ctInc = new CTCompositeActor(hs, "Separate");
 
         //ZeroOrderHold ctIncH1 = new ZeroOrderHold(ctInc, "Hold1");

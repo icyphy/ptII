@@ -126,25 +126,17 @@ public class Thermostat extends TypedCompositeActor{
         ctrlInc.outgoingPort.link(ctrlTr1);
         ctrlDec.incomingPort.link(ctrlTr1);
         ctrlTr1.setGuardExpression("output_isPresent");
-        // ctrlTr1.setInitEntry(true);
-        SetRefinementVariable act0 =
-            new SetRefinementVariable(ctrlTr1, "act0");
-        act0.expression.setExpression("state");
-        act0.variableName.setExpression("Integrator.initialState");
-        ResetRefinement act1 =
-            new ResetRefinement(ctrlTr1, "act1");
+	ctrlTr1.setActions.setExpression(
+		 "Decreasing.Integrator.initialState = state");
+	ctrlTr1.reset.setExpression("true");
 
         Transition ctrlTr2 = new Transition(ctrl, "ctrlTr2");
         ctrlDec.outgoingPort.link(ctrlTr2);
         ctrlInc.incomingPort.link(ctrlTr2);
         ctrlTr2.setGuardExpression("output_isPresent");
-        //ctrlTr2.setInitEntry(true);
-        SetRefinementVariable act2 =
-            new SetRefinementVariable(ctrlTr2, "act2");
-        act2.expression.setExpression("state");
-        act2.variableName.setExpression("Integrator.initialState");
-        ResetRefinement act3 =
-            new ResetRefinement(ctrlTr2, "act3");
+	ctrlTr2.setActions.setExpression(
+		 "Increasing.Integrator.initialState = state");
+	ctrlTr2.reset.setExpression("true");
 
         IOPort ctrlIn = new TypedIOPort(ctrl, "output");
         ctrlIn.setInput(true);
