@@ -132,9 +132,14 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                     (value == PtolemyTypeIdentifier.TOKEN_DECL) ||
                     (value == PtolemyTypeIdentifier.SCALAR_TOKEN_DECL) ||
                     (value == PtolemyTypeIdentifier.MATRIX_TOKEN_DECL)) {
-                System.err.println("Warning: could not solve for specific" +
-                        " token type for declaration " + typedDecl.getName() +
-                        " in " + actorInfo.actor.getName());
+                System.err.println("ptolemy/codegen/SpecializeTokenVisitor: " 
+				   + "Warning: could not solve for specific"
+				   + " token type for declaration '"
+				   + typedDecl.getName()
+				   + "' in "
+				   + actorInfo.actor.getName()
+				   + ". term = " + value 
+				   + " which is unsupported.");
 
                 // Replace the declaration type with "Token" as an indication
                 // for later passes.
