@@ -546,7 +546,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         LinkedList matches = new LinkedList();
 
 
-	// FIXME: remove debugMatches when we are done debugging
+	    // FIXME: remove debugMatches when we are done debugging
         StringBuffer debugMatches = new StringBuffer();
 
         while (methods.hasNext()) {
@@ -566,7 +566,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         }
 
         if (matches.size() == 0) {
-            throw new RuntimeException("no matching method" + aMethod.getName() +
+            throw new RuntimeException("no matching method " + aMethod.getName() +
                     "(" + TNLManip.toString(argTypes) + ")" + debugMatches);
         }
 
