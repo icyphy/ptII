@@ -430,14 +430,14 @@ public class RecordToken extends AbstractNotConvertibleToken {
         return new RecordToken(newLabels, newValues);
     }
 
-    /** Test whether the value of this token is close to the first argument,
-     *  where "close" means that the distance between them is less than
-     *  or equal to the second argument.  This method only makes sense
-     *  for tokens where the distance between them is reasonably
-     *  represented as a double. It is assumed that the argument is
-     *         an RecordToken, and the isCloseTo() method of the fields is
-     *         is used.  If the fields do not match, then the return value is
-     *         false.
+    /** Test whether the value of this token is close to the first
+     *  argument, where "close" means that the distance between them
+     *  is less than or equal to the second argument.  This method
+     *  only makes sense for tokens where the distance between them is
+     *  reasonably represented as a double. It is assumed that the
+     *  argument is an RecordToken, and the isCloseTo() method of the
+     *  fields is is used.  If the fields do not match, then the
+     *  return value is false.
      *  @param rightArgument The token to compare to this token.
      *  @param epsilon The value that we use to determine whether two
      *   tokens are close.
@@ -502,8 +502,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
     }
 
     /** Return a new token whose value is the field-wise modulo of
-     *  this token and the argument. It is assumed
-     *  that the class of the argument is RecordToken.
+     *  this token and the argument. It is assumed that the class of
+     *  the argument is RecordToken.
      *  @param rightArgument The token to modulo this token by.
      *  @return A new RecordToken.
      *  @exception IllegalActionException If calling the modulo method on
