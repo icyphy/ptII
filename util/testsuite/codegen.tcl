@@ -108,11 +108,15 @@ proc speedComparison  {xmlFile \
 	    puts "Setting watchdog for $timeout milliseconds"
 	    set watchDog [java::new util.testsuite.WatchDog $timeout]
 
-	    set codegenElapsed \
+	    if [catch {	set codegenElapsed \
 		    [time {java::call \
 		    ptolemy.actor.gui.CompositeActorApplication \
-		    main $args} $repeat]
-	    $watchDog cancel
+		    main $args} $repeat]} errMsg] {
+		$watchDog cancel
+		error $errMsg
+	    } else {
+		$watchDog cancel
+	    }
 
 	    cd $startDirectory
 
@@ -431,7 +435,6 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	set watchDog [java::new util.testsuite.WatchDog $timeout]
 
 	if [catch {set results [eval exec $execCommand]} errMsg] {
-	    puts "[date]: error in $execCommand"
 	    $watchDog cancel
 	    error $errMsg
 	} else {
