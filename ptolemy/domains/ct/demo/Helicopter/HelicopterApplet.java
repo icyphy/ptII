@@ -668,33 +668,33 @@ public class HelicopterApplet extends CTApplet {
         switch (code) {
         case 1: // accel state
             mon1.input.link(rInPz);
-            p = (Parameter)mon1.getAttribute("ThresholdWidth");
+            p = (Parameter)mon1.getAttribute("thresholdWidth");
             p.setToken(new DoubleToken(0.1));
-            p = (Parameter)mon1.getAttribute("ThresholdCenter");
+            p = (Parameter)mon1.getAttribute("thresholdCenter");
             p.setToken(new DoubleToken(-2.0));
             break;
         case 2: // first cruise state
             mon1.input.link(rV);
-            p = (Parameter)mon1.getAttribute("ThresholdWidth");
+            p = (Parameter)mon1.getAttribute("thresholdWidth");
             p.setToken(new DoubleToken(0.2));
-            p = (Parameter)mon1.getAttribute("ThresholdCenter");
+            p = (Parameter)mon1.getAttribute("thresholdCenter");
             p.setToken(new DoubleToken(5.0));
             mon2.input.link(rR);
-            p = (Parameter)mon2.getAttribute("ThresholdWidth");
+            p = (Parameter)mon2.getAttribute("thresholdWidth");
             p.setToken(new DoubleToken(0.02));
-            p = (Parameter)mon2.getAttribute("ThresholdCenter");
+            p = (Parameter)mon2.getAttribute("thresholdCenter");
             p.setToken(new DoubleToken(0.0));
             break;
         case 3: // climb state
             mon1.input.link(rInPz);
-            p = (Parameter)mon1.getAttribute("ThresholdWidth");
+            p = (Parameter)mon1.getAttribute("thresholdWidth");
             p.setToken(new DoubleToken(0.1));
-            p = (Parameter)mon1.getAttribute("ThresholdCenter");
+            p = (Parameter)mon1.getAttribute("thresholdCenter");
             p.setToken(new DoubleToken(-10.0));
             mon2.input.link(rV);
-            p = (Parameter)mon2.getAttribute("ThresholdWidth");
+            p = (Parameter)mon2.getAttribute("thresholdWidth");
             p.setToken(new DoubleToken(0.2));
-            p = (Parameter)mon2.getAttribute("ThresholdCenter");
+            p = (Parameter)mon2.getAttribute("thresholdCenter");
             p.setToken(new DoubleToken(5.0));
             break;
         default:

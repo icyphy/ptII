@@ -46,7 +46,7 @@ This is an event detector that monitors the signal coming in from the
 the "input." port.
 This actor controls the integration step size to accurately resolve
 the time that the zero crossing happens.
-It has a parameter "ErrorTolerance," which controls how accurate the
+It has a parameter "errorTolerance," which controls how accurate the
 zero crossing is defined.
 @author Jie Liu
 @version $Id$
@@ -88,7 +88,7 @@ public class ZeroCrossingDetector extends CTActor
         output.setOutput(true);
         output.setTypeEquals(BaseType.DOUBLE);
         _errorTolerance = (double)1e-4;
-        ErrorTolerance = new Parameter(this, "ErrorTolerance",
+        errorTolerance = new Parameter(this, "errorTolerance",
                 new DoubleToken(_errorTolerance));
 
     }
@@ -111,7 +111,7 @@ public class ZeroCrossingDetector extends CTActor
 
     /** The parameter of error tolerance
      */
-    public Parameter ErrorTolerance;
+    public Parameter errorTolerance;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
@@ -245,7 +245,7 @@ public class ZeroCrossingDetector extends CTActor
      *  The new parameter will be used only after this method is called.
      */
     public void updateParameters() throws IllegalActionException{
-        double p = ((DoubleToken)ErrorTolerance.getToken()
+        double p = ((DoubleToken)errorTolerance.getToken()
                     ).doubleValue();
         if(p <= 0) {
             throw new IllegalActionException(this,

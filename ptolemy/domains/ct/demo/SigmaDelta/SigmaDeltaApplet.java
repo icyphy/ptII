@@ -264,7 +264,7 @@ public class SigmaDeltaApplet extends CTApplet {
                 _gain3.factor.setToken(new DoubleToken(
                         _query.doubleValue("feedback")));
                 //System.out.println("feedback gain set");
-                _sampler.SamplePeriod.setToken(new DoubleToken(
+                _sampler.samplePeriod.setToken(new DoubleToken(
                         _query.doubleValue("sample")));
                 //System.out.println("sampler set");
 

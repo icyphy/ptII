@@ -43,7 +43,7 @@ import ptolemy.actor.*;
 /**
 This actor periodically sample the input signal and generate events
 which has the value of the input signal. The sampling rate is given by
-parameter "SamplePeriod", which has default value 0.1.
+parameter "samplePeriod", which has default value 0.1.
 @author Jie Liu
 @version $Id$
 */
@@ -80,8 +80,8 @@ public class CTPeriodicSampler extends CTActor
         output.setTypeEquals(BaseType.DOUBLE);
 
         _samplePeriod = (double)0.1;
-        SamplePeriod = new Parameter(this,
-                "SamplePeriod", new DoubleToken(_samplePeriod));
+        samplePeriod = new Parameter(this,
+                "samplePeriod", new DoubleToken(_samplePeriod));
     }
 
 
@@ -99,7 +99,7 @@ public class CTPeriodicSampler extends CTActor
     /** The parameter for the sampling period; the type is double; the
      *  default value is 1.0.
      */
-    public Parameter SamplePeriod;
+    public Parameter samplePeriod;
 
 
     ////////////////////////////////////////////////////////////////////////
@@ -188,7 +188,7 @@ public class CTPeriodicSampler extends CTActor
      *  less than or equal to 0.
      */
     public void updateParameters() throws IllegalActionException{
-        double p = ((DoubleToken)SamplePeriod.getToken()).doubleValue();
+        double p = ((DoubleToken)samplePeriod.getToken()).doubleValue();
         if(p <= 0) {
             throw new IllegalActionException(this,
                     " Sample period must be greater than 0.");

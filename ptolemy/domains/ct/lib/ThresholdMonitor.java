@@ -43,7 +43,7 @@ import ptolemy.actor.*;
 Monitor integration steps so that the threshold is not crossed in one step.
 This actor has one input port, but no output port. If functionality is
 solely devoted to controlling the integration step size. It has two
-parameters "ThresholdWidth" and "ThresholdCenter", which have default
+parameters "thresholdWidth" and "thresholdCenter", which have default
 value 1e-2 and 0, respectively.
 @author  Jie Liu
 @version $Id$
@@ -74,11 +74,11 @@ public class ThresholdMonitor extends CTActor
         input.setTypeEquals(BaseType.DOUBLE);
 
         _thWidth = (double)1e-2;
-        ThresholdWidth = new Parameter(this, "ThresholdWidth",
+        thresholdWidth = new Parameter(this, "thresholdWidth",
                 new DoubleToken(_thWidth));
 
         _thCenter = (double)0.0;
-        ThresholdCenter = new Parameter(this, "ThresholdCenter",
+        thresholdCenter = new Parameter(this, "thresholdCenter",
                 new DoubleToken(_thCenter));
 
         _lowerBound = -5e-3;
@@ -94,11 +94,11 @@ public class ThresholdMonitor extends CTActor
 
     /** The parameter for the width of the threshold.
      */
-    public Parameter ThresholdWidth;
+    public Parameter thresholdWidth;
 
     /** The parameter for the center of the threshold.
      */
-    public  Parameter ThresholdCenter;
+    public  Parameter thresholdCenter;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -173,9 +173,9 @@ public class ThresholdMonitor extends CTActor
      *  parameter.
      */
     public void updateParameters() throws IllegalActionException {
-        _thCenter = ((DoubleToken)ThresholdCenter.getToken()).doubleValue();
+        _thCenter = ((DoubleToken)thresholdCenter.getToken()).doubleValue();
         _thWidth = Math.abs(
-                ((DoubleToken)ThresholdWidth.getToken()).doubleValue());
+                ((DoubleToken)thresholdWidth.getToken()).doubleValue());
 
         _lowerBound = _thCenter - _thWidth/(double)2.0;
         _upperBound = _thCenter + _thWidth/(double)2.0;
