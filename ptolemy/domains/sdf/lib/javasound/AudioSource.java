@@ -62,7 +62,7 @@ to prevent overflow of the internal audio buffer.
 The output is of type DoubleToken, and semantically, one output
 token is produced on each channel, on each firing, corresponding
 to the number of audio channels. In the actual implementation,
-serveral tokens may be produced on each channel, on each 
+serveral tokens may be produced on each channel, on each
 firing, in order to
 improve performance. The number of tokens produced on each
 channel on each firing is set by parameter <i>tokenProductionRate</i>.
@@ -77,18 +77,18 @@ a mic or line-in, and should be set accordingly:
 <ul>
 <li><i>source</i> should be set to "mic".
 <li><i>sampleRate</i> should be set to desired sample rate.
-<li><i>sampleSizeInBits</i> should be set to desired bit 
+<li><i>sampleSizeInBits</i> should be set to desired bit
 resolution.
-<li><i>channels</i> should be set to desired number of audio 
+<li><i>channels</i> should be set to desired number of audio
 channels.
-<li><i>bufferSize</i> may be set to optimize latency. 
+<li><i>bufferSize</i> may be set to optimize latency.
 This controls the delay from the time audio sample are read by this
-actor until the audio is acutally heard at the speaker. A lower 
-bound on the latency is given by 
+actor until the audio is acutally heard at the speaker. A lower
+bound on the latency is given by
 (<i>bufferSize</i> / <i>sampleRate</i>) seconds.
 Ideally, the smallest value that gives acceptable performance (no unerflow)
-should be used. 
-<li><i>tokenProductionRate</i> may be set to optimize 
+should be used.
+<li><i>tokenProductionRate</i> may be set to optimize
 performance.
 </ul>
 <p>(2) Capture from a sound file (local or URL).
@@ -98,17 +98,17 @@ a sound file, and should be set accordingly:
 <ul>
 <li><i>source</i> should be set to "URL" or "file".
 <li><i>pathName</i> should be set to the name of the file.
-<li><i>tokenProductionRate</i> may be set to optimize 
+<li><i>tokenProductionRate</i> may be set to optimize
 performance. The default value should result in reasonable
 performance.
 </ul>
-<p>The sound file is not periodically repeated by this actor. 
+<p>The sound file is not periodically repeated by this actor.
 postfire()
 will therefore return false when the end of the sound file is reached.
 <p>There are security issues involed with accessing files.
 Applications have no restrictions. Applets, however, are
 only allowed access to files specified by a URL and located
-on the machine from which the applet is loaded. The 
+on the machine from which the applet is loaded. The
 .java.policy file may be modified to grant applets more
 privleges, if desired.
 <p>
@@ -147,7 +147,7 @@ public class AudioSource extends SDFAtomicActor {
 
 	sampleRate = new Parameter(this, "sampleRate", new IntToken(44100));
 	sampleRate.setTypeEquals(BaseType.INT);
-	
+
 	sampleSizeInBits = new Parameter(this, "sampleSizeInBits",
 					 new IntToken(16));
 	sampleSizeInBits.setTypeEquals(BaseType.INT);
@@ -283,11 +283,11 @@ public class AudioSource extends SDFAtomicActor {
     public Object clone(Workspace ws) {
         try {
             AudioSource newobj = (AudioSource)super.clone(ws);
-            newobj.source = 
+            newobj.source =
 		(Parameter)newobj.getAttribute("source");
-            newobj.pathName = 
+            newobj.pathName =
 		(Parameter)newobj.getAttribute("pathName");
-	    newobj.pathName = 
+	    newobj.pathName =
 		(Parameter)newobj.getAttribute("sampleRate");
 	    newobj.pathName =
 		(Parameter)newobj.getAttribute("sampleSizeInBits");
@@ -297,7 +297,7 @@ public class AudioSource extends SDFAtomicActor {
 		(Parameter)newobj.getAttribute("bufferSize");
 	    newobj.pathName =
 		(Parameter)newobj.getAttribute("tokenProductionRate");
-            newobj.output = 
+            newobj.output =
 		(SDFIOPort)newobj.getPort("output");
             // set the type constraints.
             return newobj;
@@ -324,10 +324,10 @@ public class AudioSource extends SDFAtomicActor {
 	_audioInDoubleArray =_soundCapture.getSamples();
 	//System.out.println("AudioSource: postfire(): after getSamples");
 	// Check that the read was successful
-	
+
 	if (_audioInDoubleArray != null) {
 	    // For each channel (in both the audio and Ptolemy II sense):
-	    
+
 	    for (int j = 0; j < _channels; j++) {
 
 		//_audioTokenArray = new DoubleToken[_productionRate];
@@ -346,7 +346,7 @@ public class AudioSource extends SDFAtomicActor {
 	} else {
 	    // Read was unsuccessfull.
 	    // Ouput array of zeros and return false.
-	    
+
 	    // This generally means
 	    // that the end of the sound file has been reached.
 	    // Output productionRate many zeros.
@@ -376,7 +376,7 @@ public class AudioSource extends SDFAtomicActor {
 	    ((IntToken)channels.getToken()).intValue();
 
 	output.setTokenProductionRate(_productionRate);
-	
+
     }
 
     /** Check parameters and begin the sound capture process. If the
@@ -390,7 +390,7 @@ public class AudioSource extends SDFAtomicActor {
 	//System.out.println("AudioSource: initialize(): invoked");
 	    if (((StringToken)source.getToken()).toString() == "URL") {
 		// Load audio from a URL.
-		String theURL = 
+		String theURL =
 		    ((StringToken)pathName.getToken()).toString();
 		_soundCapture = new SoundCapture(true,
 						  theURL,
@@ -402,11 +402,11 @@ public class AudioSource extends SDFAtomicActor {
 		// parameter accordingly.
 		_channels = _soundCapture.getChannels();
 		channels.setToken(new IntToken(_channels));
-		
-	    } else if (((StringToken)source.getToken()).toString() == 
+
+	    } else if (((StringToken)source.getToken()).toString() ==
 		       "file") {
 		// Load audio from a file.
-		String theFileName = 
+		String theFileName =
 		    ((StringToken)pathName.getToken()).toString();
 		_soundCapture = new SoundCapture(false,
 						  theFileName,
@@ -418,7 +418,7 @@ public class AudioSource extends SDFAtomicActor {
 		// parameter accordingly.
 		_channels = _soundCapture.getChannels();
 		channels.setToken(new IntToken(_channels));
-	    } else if (((StringToken)source.getToken()).toString() == 
+	    } else if (((StringToken)source.getToken()).toString() ==
 		       "mic") {
 
 		int sampleRateInt =
@@ -444,7 +444,7 @@ public class AudioSource extends SDFAtomicActor {
 			          " is not set to a valid string.");
 	    }
 
-	   
+
 
 	    // Allocate array for postfire()
 	    _audioTokenArray = new DoubleToken[_productionRate];
@@ -459,7 +459,7 @@ public class AudioSource extends SDFAtomicActor {
 	if (_soundCapture != null) {
 	    _soundCapture.stopCapture();
 	}
-	
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -468,7 +468,7 @@ public class AudioSource extends SDFAtomicActor {
     private SoundCapture _soundCapture;
 
     private int _productionRate;
-    
+
     private int _channels;
 
     private double[][] _audioInDoubleArray;

@@ -60,10 +60,10 @@ of the audio data and should be in the range [-1,1]. Single channel
 audio, tokens are read from channel 0 of the input port. For multichannel
 (stereo) audio, tokens are read from channel 0 (left) and channel 1
 (right) of the input port. Semantically, one
-token is read on each channel of the input port, on each firing, 
+token is read on each channel of the input port, on each firing,
 corresponding
 to the number of audio channels. In the actual implementation,
-serveral tokens may be consumed on each channel, on each 
+serveral tokens may be consumed on each channel, on each
 firing, in order to
 improve performance. The number of tokens consumed on each
 channel on each firing is set by parameter <i>tokenConsimptionRate</i>.
@@ -79,18 +79,18 @@ be set manually.
 <li><i>sampleRate</i> should be set to desired sample rate, in Hz. The
 DoubleTokens read in by this actor will be interpreted as having
 this sample rate.
-<li><i>sampleSizeInBits</i> should be set to desired bit 
+<li><i>sampleSizeInBits</i> should be set to desired bit
 resolution.
-<li><i>channels</i> should be set to desired number of audio 
+<li><i>channels</i> should be set to desired number of audio
 channels.
-<li><i>bufferSize</i> may be set to optimize latency. 
+<li><i>bufferSize</i> may be set to optimize latency.
 This controls the delay from the time audio sample are read by this
-actor until the audio is acutally heard at the speaker. A lower 
-bound on the latency is given by 
+actor until the audio is acutally heard at the speaker. A lower
+bound on the latency is given by
 (<i>bufferSize</i> / <i>sampleRate</i>) seconds.
 Ideally, the smallest value that gives acceptable performance (no unerflow)
 should be used.
-<li><i>tokenProductionRate</i> may be set to optimize 
+<li><i>tokenProductionRate</i> may be set to optimize
 performance.
 </ul>
 <p>(2) Write to a sound file on the native file sytem.
@@ -99,14 +99,14 @@ The following parameters are relavent to writing to a sound
 file.
 <ul>
 <li><i>sink</i> should be set to "file".
-<li><i>channels</i> should be set to desired number of audio 
+<li><i>channels</i> should be set to desired number of audio
 channels.
 <li><i>sampleRate</i> should be set to desired sample rate, in Hz. The
 DoubleTokens read in by this actor will be interpreted as having
 this sample rate.
-<li><i>sampleSizeInBits</i> should be set to desired bit 
+<li><i>sampleSizeInBits</i> should be set to desired bit
 resolution.
-<li><i>tokenProductionRate</i> may be set to optimize 
+<li><i>tokenProductionRate</i> may be set to optimize
 performance. The default value should result in reasonable
 performance.
 </ul>
@@ -269,7 +269,7 @@ public class AudioSink extends SDFAtomicActor {
 	for (int j = 0; j < _channels; j++) {
 
 	    input.getArray(j, _audioTokenArray);
-       
+
 	    // For each samples in the current channel:
 	    for (int i = 0; i < _consumptionRate; i++) {
 		// Convert to double[].
@@ -292,7 +292,7 @@ public class AudioSink extends SDFAtomicActor {
 	if (((StringToken)sink.getToken()).toString() == "file") {
 	    // Write audio data to a file.
 	    System.out.println("AudioSink: initialize(): playback to file");
-	    String pathNameString = 
+	    String pathNameString =
 		((StringToken)pathName.getToken()).toString();
 	    int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
 	    int sampleSizeInBitsInt = ((IntToken)sampleSizeInBits.getToken()).intValue();
@@ -300,9 +300,9 @@ public class AudioSink extends SDFAtomicActor {
 	    int bufferSizeInt = ((IntToken)bufferSize.getToken()).intValue();
 
 	    _soundPlayback = new SoundPlayback(pathNameString,
-					       sampleRateInt, 
+					       sampleRateInt,
 					       sampleSizeInBitsInt,
-					       channelsInt, 
+					       channelsInt,
 					       bufferSizeInt,
 					       _consumptionRate);
 	} else if (((StringToken)sink.getToken()).toString() == "speaker") {
@@ -313,9 +313,9 @@ public class AudioSink extends SDFAtomicActor {
 	     int channelsInt = ((IntToken)channels.getToken()).intValue();
 	     int bufferSizeInt = ((IntToken)bufferSize.getToken()).intValue();
 
-	     _soundPlayback = new SoundPlayback(sampleRateInt, 
+	     _soundPlayback = new SoundPlayback(sampleRateInt,
 						sampleSizeInBitsInt,
-						channelsInt, 
+						channelsInt,
 						bufferSizeInt,
 						_consumptionRate);
 	     System.out.println("AudioSink: initialize(): SoundPlayback created");
@@ -332,7 +332,7 @@ public class AudioSink extends SDFAtomicActor {
 				  " Valid choices are \"speaker\", " +
 				  "\"file\", and \"both\"");
 	}
-	
+
 	// Start audio playback.
 	_soundPlayback.startPlayback();
 	System.out.println("AudioSink: initialize(): return");
@@ -342,7 +342,7 @@ public class AudioSink extends SDFAtomicActor {
 
     }
 
-    /** Set up the input port's consumption rate. For optimization, 
+    /** Set up the input port's consumption rate. For optimization,
      *  allocate variables
      *  for use in the postfire() method.
      *  @exception IllegalActionException If the parent class throws it.
@@ -357,7 +357,7 @@ public class AudioSink extends SDFAtomicActor {
 	_audioInDoubleArray = new double[_channels][_consumptionRate];
 
 	input.setTokenConsumptionRate(_consumptionRate);
-	
+
     }
 
     /** Close the specified file, if any.
