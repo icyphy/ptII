@@ -86,14 +86,39 @@ test ArrayMath-2.2 {addR} {
 } {}
 
 ####################################################################
-test ArrayMath-3.1 {convolve Complex} {
+test ArrayMath-3.1 {conjugate} {
+    set ca2 [java::call ptolemy.math.ArrayMath conjugate $ca0]
+    javaPrintArray $ca2
+} {}
+
+####################################################################
+test ArrayMath-3.2 {conjugate} {
+    set ca2 [java::call ptolemy.math.ArrayMath conjugate $ca1]
+    epsilonDiff [javaPrintArray $ca2] {{1.0 - 2.0i} {3.0 + 4.0i} {-4.9 + 6.0i} {-7.0 - 8.0i}}
+} {}
+
+####################################################################
+test ArrayMath-4.1 {conjugateR} {
+    set ca2 [java::call ptolemy.math.ArrayMath conjugateR $ca0]
+    javaPrintArray $ca2
+} {}
+
+####################################################################
+test ArrayMath-4.2 {conjugateR} {
+    set ca2 [java::call ptolemy.math.ArrayMath add $ca1 $c5]
+    java::call ptolemy.math.ArrayMath conjugateR $ca2
+    epsilonDiff [javaPrintArray $ca2] {{0.75 - 2.4i} {2.75 + 3.6i} {-5.15 + 5.6i} {-7.25 - 8.4i}}
+} {}
+
+####################################################################
+test ArrayMath-5.1 {convolve Complex} {
     set ca2 [java::call ptolemy.math.ArrayMath \
 	    {convolve ptolemy.math.Complex[] ptolemy.math.Complex[]} $ca0 $ca0]
     javaPrintArray $ca2
 } {}
 
 ####################################################################
-test ArrayMath-3.2 {convolve Complex} {
+test ArrayMath-5.2 {convolve Complex} {
     set ca2 [java::call ptolemy.math.ArrayMath \
 	    {convolve ptolemy.math.Complex[] ptolemy.math.Complex[]} $ca1 $ca1]
     epsilonDiff [javaPrintArray $ca2] \
@@ -102,18 +127,79 @@ test ArrayMath-3.2 {convolve Complex} {
 } {}
 
 ####################################################################
-test ArrayMath-4.1 {convolve double} {
+test ArrayMath-6.1 {convolve double} {
      set da0 [java::new {double[]} 0]
-    set $da2 [java::call ptolemy.math.ArrayMath \
+    set da2 [java::call ptolemy.math.ArrayMath \
 	    {convolve double[] double[]} $da0 $da0]
     $da2 getrange 0
 } {}
 
 ####################################################################
-test ArrayMath-4.2 {convolve double} {
+test ArrayMath-6.2 {convolve double} {
     set da1 [java::new {double[]} 4 {1 2 -3 4.1}]
     set da2 [java::call ptolemy.math.ArrayMath \
 	    {convolve double[] double[]} $da1 $da1]
     epsilonDiff [$da2 getrange 0] {1.0 4.0 -2.0 -3.8 25.4 -24.6 16.81}
 } {}
 
+####################################################################
+test ArrayMath-7.1 {limit: empty array} {
+    set da0 [java::new {double[]} 0]
+    set da2 [java::call ptolemy.math.ArrayMath limit $da0 0 0]
+    $da2 getrange 0
+} {}
+
+####################################################################
+test ArrayMath-7.2 {limit} {
+    set l [list 1 2 -3 4.1 0.0 -0.0 +0.0 \
+	    [java::field java.lang.Double POSITIVE_INFINITY] \
+	    [java::field java.lang.Double NEGATIVE_INFINITY] \
+	    [java::field java.lang.Double NaN] \
+	    [java::field java.lang.Double MIN_VALUE] \
+	    [java::field java.lang.Double MAX_VALUE] \
+	    ]
+    set da3 [java::new {double[]} [llength $l] $l]
+
+    set da2 [java::call ptolemy.math.ArrayMath limit $da3 -0.5 1.25]
+    $da2 getrange 0
+} {1.0 1.25 -0.5 1.25 0.0 -0.0 0.0 1.25 -0.5 NaN 4.94065645841e-324 1.25}
+
+####################################################################
+test ArrayMath-7.3 {limit: no bottom} {
+    set da2 [java::call ptolemy.math.ArrayMath limit \
+	    $da3 \
+	    [java::field java.lang.Double MIN_VALUE] \
+	    1.25]
+    $da2 getrange 0
+} {1.0 1.25 4.94065645841e-324 1.25 4.94065645841e-324 4.94065645841e-324 4.94065645841e-324 1.25 4.94065645841e-324 NaN 4.94065645841e-324 1.25}
+
+
+####################################################################
+test ArrayMath-7.4 {limit: no top} {
+    set da2 [java::call ptolemy.math.ArrayMath limit \
+	    $da3 \
+	    -0.5 \
+	    [java::field java.lang.Double MAX_VALUE] \
+	    ]
+    $da2 getrange 0
+} {1.0 2.0 -0.5 4.1 0.0 -0.0 0.0 1.79769313486e+308 -0.5 NaN 4.94065645841e-324 1.79769313486e+308}
+
+####################################################################
+test ArrayMath-7.5 {limit: bottom greater than top} {
+    set da2 [java::call ptolemy.math.ArrayMath limit \
+	    $da3 \
+	    1.25 \
+            -0.5 \
+	    ]
+    $da2 getrange 0
+} {-0.5 -0.5 1.25 -0.5 -0.5 -0.5 -0.5 -0.5 1.25 NaN -0.5 -0.5}
+
+####################################################################
+test ArrayMath-7.6 {limit: Infinity top} {
+    set da2 [java::call ptolemy.math.ArrayMath limit \
+	    $da3 \
+	    -0.5 \
+	    [java::field java.lang.Double POSITIVE_INFINITY] \
+	    ]
+    $da2 getrange 0
+} {1.0 2.0 -0.5 4.1 0.0 -0.0 0.0 Infinity -0.5 NaN 4.94065645841e-324 1.79769313486e+308}
