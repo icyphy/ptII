@@ -80,7 +80,10 @@ test PNDirector-7.1 {Test a mutation} {
 
     set sieve [java::new ptolemy.domains.pn.lib.PNSieve $b1 "2_sieve"]
     set param [$sieve getAttribute "prime"]
-    $param setToken [java::new {ptolemy.data.IntToken int} 2]
+
+    # _testSetToken is defined in $PTII/util/testsuite/testParams.tcl
+    _testSetToken $param [java::new {ptolemy.data.IntToken int} 2]
+
     set portin [$sieve getPort "input"]
     set portout [$r1 getPort "output"]
     $b1 connect $portin $portout 
