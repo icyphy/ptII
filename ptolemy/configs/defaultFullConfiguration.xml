@@ -41,11 +41,13 @@
     <input source="ptolemy/configs/iaTableauFactory.xml"/>
     <input source="ptolemy/configs/fsmTableauFactory.xml"/>
     <input source="ptolemy/configs/graphTableauFactory.xml"/>
-    <!-- Add the code generator to the full configuration. -->
-    <property name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory">
-       <property name="Code Generator"
-             class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/>
-    </property>
+
+    <!-- code generator UI does not work, use $PTII/bin/copernicus. -->
+    <!-- property name="factory2" class="ptolemy.actor.gui.PtolemyTableauFactory" -->
+       <!-- property name="Code Generator"
+             class="ptolemy.copernicus.gui.GeneratorTableau$Factory"/-->
+    <!--/property-->
+
     <input source="ptolemy/configs/extendedTableauFactories.xml"/>
   </property>
 
