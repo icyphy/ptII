@@ -35,7 +35,10 @@ import diva.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.gui.style.EditableChoiceStyle;
 import ptolemy.actor.*;
+import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import ptolemy.vergil.*;
 import ptolemy.vergil.toolbox.*;
 
@@ -75,6 +78,7 @@ public class DirectorService extends AbstractService {
 
 	_directorModel = new DefaultComboBoxModel();
 	try {
+	    // FIXME MoMLize
 	    Director dir;
 	    dir = new SDFDirector();
 	    dir.setName("SDF");
@@ -97,8 +101,29 @@ public class DirectorService extends AbstractService {
 	    dir = new FSMDirector();
 	    dir.setName("FSM");
 	    addDirector(dir);
+
 	    dir = new CTMixedSignalDirector();	    
 	    dir.setName("CT");
+	    Parameter solver;
+	    solver = (Parameter)dir.getAttribute("ODESolver");
+	    EditableChoiceStyle style;
+	    style = new EditableChoiceStyle(solver, "style");
+	    new Parameter(style, "choice0", new StringToken(
+		"ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver"));
+	    new Parameter(style, "choice1", new StringToken(
+                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
+	    new Parameter(style, "choice2", new StringToken(
+	        "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver"));
+
+	    solver = (Parameter)dir.getAttribute("breakpointODESolver");
+	    style = new EditableChoiceStyle(solver, "style");
+	    new Parameter(style, "choice0", new StringToken(
+                "ptolemy.domains.ct.kernel.solver.DerivativeResolver"));
+	    new Parameter(style, "choice1", new StringToken(
+		"ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
+	    new Parameter(style, "choice2", new StringToken(
+		"ptolemy.domains.ct.kernel.solver.ImpulseBESolver"));
+
 	    addDirector(dir);
 	    dir = new GiottoDirector();
 	    dir.setName("Giotto");
