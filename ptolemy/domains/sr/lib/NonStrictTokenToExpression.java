@@ -45,7 +45,7 @@ When its input is unknown, it ouptuts "unknown". When its input is
 known but has no token, it outputs "absent". Otherwise, it
 does the same thing as TokenToExpression actor does.
 
-@author  Haiyang Zheng
+@author Haiyang Zheng
 @version $Id$
 @since Ptolemy II 3.1
 @see ptolemy.actor.lib.conversions.TokenToExpression
