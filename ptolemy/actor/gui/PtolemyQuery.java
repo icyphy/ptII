@@ -44,6 +44,7 @@ import ptolemy.gui.QueryListener;
 import ptolemy.actor.gui.style.ParameterEditorStyle;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
+import ptolemy.actor.parameters.SliderParameter;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.Documentation;
 import ptolemy.moml.ErrorHandler;
@@ -107,6 +108,9 @@ public class PtolemyQuery extends Query
 	_handler = handler;
 
         if (_handler != null) {
+            // NOTE: Since we register as a listener to the handler,
+            // there is no need to also register as a listner with
+            // each change request.  EAL 9/15/02.
             _handler.addChangeListener(this);
         }
         _varToListOfEntries = new HashMap();
@@ -162,7 +166,16 @@ public class PtolemyQuery extends Query
             // have write access to the workspace.
             String name = attribute.getName();
             try{
-                if (attribute instanceof Variable) {
+                if (attribute instanceof SliderParameter) {
+                    int current = ((SliderParameter)attribute)
+                           .getCurrentValue();
+                    int min = ((SliderParameter)attribute).getMinValue();
+                    int max = ((SliderParameter)attribute).getMaxValue();
+
+                    addSlider(name, name, current, min, max);
+                    attachParameter(attribute, name);
+                    foundStyle = true;
+                } else if (attribute instanceof Variable) {
                     Type declaredType = ((Variable)attribute).getDeclaredType();
                     Token current = ((Variable)attribute).getToken();
                     if (declaredType == BaseType.BOOLEAN) {
@@ -271,7 +284,6 @@ public class PtolemyQuery extends Query
      *  @param name The name of the entry that has changed.
      */
     public void changed(final String name) {
-
 	// Check if the entry that changed is in the mapping.
 	if (_attributes.containsKey(name)) {
 	    final Settable attribute
@@ -298,16 +310,47 @@ public class PtolemyQuery extends Query
                 if (parent == null) {
                     parent = (NamedObj)castAttribute.getContainer();
                 }
-		String moml = "<property name=\""
-		    + castAttribute.getName(parent)
-                    + "\" value=\""
-                    + StringUtilities.escapeForXML(getStringValue(name))
-                    + "\"/>";
+		String moml;
+                if (attribute instanceof SliderParameter) {
+                    SliderParameter slider = (SliderParameter)attribute;
+                    try {
+                        moml = "<property name=\""
+                                + castAttribute.getName(parent)
+                                + "\" value=\"{min="
+                                + slider.getMinValue()
+                                + ", max="
+                                + slider.getMaxValue()
+                                + ", current="
+                                + getStringValue(name)
+                                + "}\"/>";
+                    } catch (IllegalActionException ex) {
+                        // Should not occur.
+                        throw new InternalErrorException(slider, ex,
+                        "Malformed SliderParameter!");
+                    }
+                } else {
+                    moml = "<property name=\""
+                            + castAttribute.getName(parent)
+                            + "\" value=\""
+                            + StringUtilities.escapeForXML(getStringValue(name))
+                            + "\"/>";
+                }
                 request = new MoMLChangeRequest(
                         this,         // originator
                         parent,       // context
                         moml,         // MoML code
-                        null);        // base
+                        null) {       // base
+                   protected void _execute() throws Exception {
+                       synchronized (PtolemyQuery.this) {
+                           try {
+                               _ignoreChangeNotifications = true;
+                               super._execute();
+                           } finally {
+                               _ignoreChangeNotifications = false;
+                           }
+                       }
+                   }
+               };
 	    } else {
 		// If the attribute is not a NamedObj, then we
 		// set its value directly.
@@ -343,8 +386,13 @@ public class PtolemyQuery extends Query
             // completely clear that it releases resources when windows
             // are closed.  It would be better if this listener were
             // a weak reference.
-            request.addChangeListener(this);
-	    if (_handler != null) {
+            // NOTE: This appears to be unnecessary, since we register
+            // as a change listener on the handler.  This results in
+            // two notifications.  EAL 9/15/02.
+            if (_handler == null) {
+                request.addChangeListener(this);
+                request.execute();
+            } else {
                 // Remove the error handler so that this class handles
                 // the error through the notification.  Save the previous
                 // error handler to restore after this request has been
@@ -352,8 +400,6 @@ public class PtolemyQuery extends Query
                 _savedErrorHandler = MoMLParser.getErrorHandler();
                 MoMLParser.setErrorHandler(null);
 		_handler.requestChange(request);
-	    } else {
-		request.execute();
 	    }
 	}
     }
@@ -511,6 +557,10 @@ public class PtolemyQuery extends Query
      *  @param attribute The attribute whose value has changed.
      */
     public void valueChanged(final Settable attribute) {
+        // If our own change request is the cause of this notification,
+        // then ignore it.
+        if (_ignoreChangeNotifications) return;
+
         // Do this in the event thread, since it depends on interacting
         // with the UI.  In particular, there is no assurance that
         // getStringValue() will return the correct value if it is called
@@ -534,12 +584,23 @@ public class PtolemyQuery extends Query
 
                         while (entryNames.hasNext()) {
                             String name = (String)entryNames.next();
-                            String newValue = attribute.getExpression();
+                            String newValue;
+                            if (attribute instanceof SliderParameter) {
+                                try {
+                                    newValue = "" + ((SliderParameter)attribute)
+                                           .getCurrentValue();
+                                } catch (IllegalActionException ex) {
+                                    throw new InternalErrorException(attribute,
+                                            ex, "Malformed SliderParameter!");
+                                }
+                            } else {
+                                newValue = attribute.getExpression();
+                            }
 
                             // Compare value against what is in
                             // already to avoid changing it again.
                             if (!getStringValue(name).equals(newValue)) {
-                                set(name, attribute.getExpression());
+                                set(name, newValue);
                             }
                         }
                     }
@@ -584,6 +645,10 @@ public class PtolemyQuery extends Query
 
     // The handler that was specified in the constructors.
     private NamedObj _handler;
+
+    // Indicator that we are executing a change request, so we can safely
+    // ignore change notifications.
+    private boolean _ignoreChangeNotifications = false;
 
     // Indicator that this is an open dialog reporting an erroneous entry.
     private boolean _isOpenErrorWindow = false;
