@@ -107,8 +107,10 @@ awk ' {
            }
        }
        split(position, p, ",")
-       x = substr(p[1], 2, length(p[1])) / 4
-       y = substr(p[2], 1, length(p[2]) - 1) / 4
+       #scale = 4
+       scale = 1
+       x = substr(p[1], 2, length(p[1])) / scale
+       y = substr(p[2], 1, length(p[2]) - 1) / scale
 
        indent = substr($0, 0, index($0,"<") - 1)  
        # Sometimes we have <System ... />
@@ -206,8 +208,10 @@ awk ' {
            }
        }
        split(position, p, ",")
-       x = substr(p[1], 2, length(p[1])) / 4
-       y = substr(p[2], 1, length(p[2]) - 1) / 4
+       #scale = 4
+       scale = 1
+       x = substr(p[1], 2, length(p[1])) / scale
+       y = substr(p[2], 1, length(p[2]) - 1) / scale
 
        if (length(text) > 0) {
            indent = substr($0, 0, index($0,"<") - 1)  
@@ -363,8 +367,10 @@ awk 'BEGIN {
            }
        }
        split(position, p, ",")
-       x = substr(p[1], 2, length(p[1])) / 2.4
-       y = substr(p[2], 1, length(p[2]) - 1) / 2.4
+       #scale = 2.4 
+       scale = 1
+       x = substr(p[1], 2, length(p[1])) / scale
+       y = substr(p[2], 1, length(p[2]) - 1) / scale
 
        # Get the value of the BlockType field
        blockType=""
@@ -519,7 +525,7 @@ $0 ~ /<entity/ {
 
 
        print indent "<port name=\"" name "\" class=\"ptolemy.actor.TypedIOPort\">"
-       if ($1 ~ /<OutputPort/) {
+       if ($1 ~ /<OutputPort/ || $1 ~ /<CInPort/ ) {
            if (name == "output") {
                # If we have 2 or more output ports, then declare it a multiport
                # we need this for composite actors in sbw.
@@ -529,7 +535,7 @@ $0 ~ /<entity/ {
                }
           }
            print indent "    <property name=\"output\"/>"
-       } else if ($1 ~ /<InputPort/) {
+       } else if ($1 ~ /<InputPort/ || $1 ~ /<COutPort/ ) {
            if (name == "input") {
                # If we have 2 or more input ports, then declare it a multiport
                # we need this for composite actors in sbw.
