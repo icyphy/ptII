@@ -181,9 +181,8 @@ public class Pulse extends SequenceSource {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameter public members to refer
-     *  to the parameters of the new actor.
+    /** Clone the actor into the specified workspace. This overrides the
+     *  base class to handle type constraints.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
