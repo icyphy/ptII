@@ -35,7 +35,8 @@ DIRS =
 # Root of Ptolemy II directory
 ROOT =		../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(CHIC_JAR)
+# CHIC_DIR is set in $PTII/mk/ptII.mk by $PTII/configure
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(CHIC_DIR)/chic.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
