@@ -70,7 +70,7 @@ public interface Actor extends Executable {
     /** Return an enumeration of the input ports of this actor.
      *  Note that implementations should return ports directly
      *  contained by this actor, whether they are transparent or not.
-     *  @return An enumeration of IOPort objects.
+     *  @return An enumeration of input IOPort objects.
      */
     public Enumeration inputPorts();
 
@@ -84,7 +84,7 @@ public interface Actor extends Executable {
     /** Return an enumeration of the output ports of this actor.
      *  Note that implementations should return ports directly
      *  contained by this actor, whether they are transparent or not.
-     *  @return An enumeration of IOPort objects.
+     *  @return An enumeration of output IOPort objects.
      */
     public Enumeration outputPorts();
 }

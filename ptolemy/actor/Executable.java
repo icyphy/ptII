@@ -23,7 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -40,11 +40,13 @@ and directors. In an execution of an application,
 the initialize() method should be
 invoked exactly once, followed by any number of iterations, followed
 by exactly one invocation of the wrapup() method. An <i>iteration</i>
-is defined to be one firing of the prefire() method, any number of
-firings of the fire() method, and one firing of the postfire() method.
-The prefire() method returns a boolean that indicates whether firing
-can occur.  The initialize(), fire() and postfire() methods may produce
-output data (FIXME: which no longer result in a CloneNotSupported exception).
+is defined to be one firing of the prefire() method, followed by
+any number of firings of the fire() method, followed by one firing
+of the postfire() method.
+The prefire() method returns true to indicate that firing
+can occur.  The postfire() method returns false if no further firings
+should occur. The initialize(), fire() and postfire() methods may produce
+output data.
 Since the Token class is immutable, the output data is not cloned
 when there are multiple receivers.
 
@@ -61,8 +63,7 @@ public interface Executable {
      *  data. Typically, the fire() method performs the computation associated
      *  with an actor.
      *
-     *  @exception IllegalActionException If the fire() method of the
-     *   container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If firing is not permitted.
      */
     public void fire() throws IllegalActionException;
 
@@ -71,8 +72,7 @@ public interface Executable {
      *  It may produce output data.  This method typically initializes
      *  internal members of an actor and produces initial output data.
      *
-     *  @exception IllegalActionException If the initialize() method of the
-     *   container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If initializing is not permitted.
      */
     public void initialize() throws IllegalActionException;
 
@@ -84,8 +84,7 @@ public interface Executable {
      *  transfer output data.
      *
      *  @return True if the execution can continue.
-     *  @exception IllegalActionException If the postfire() method of the
-     *   container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If postfiring is not permitted.
      */
     public boolean postfire() throws IllegalActionException;
 
@@ -97,8 +96,7 @@ public interface Executable {
      *  it may move data into an inner subsystem.
      *
      *  @return True if the iteration can proceed.
-     *  @exception IllegalActionException If the prefire() method of the
-     *   container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If prefiring is not permitted.
      */
     public boolean prefire() throws IllegalActionException;
             
@@ -112,8 +110,7 @@ public interface Executable {
      *  be invoked afer it.  It finalizes an execution, typically closing
      *  files, displaying final results, etc.
      *
-     *  @exception IllegalActionException If the wrapup() method of the
-     *   container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If wrapup is not permitted.
      */
     public void wrapup() throws IllegalActionException;
 }
