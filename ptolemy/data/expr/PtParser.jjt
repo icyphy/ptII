@@ -124,8 +124,8 @@ invalid.
 @author Neil Smyth, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
-@ProposedRating Yellow (nsmyth)
-@AcceptedRating Yellow (yuhong)
+@Pt.ProposedRating Yellow (nsmyth)
+@Pt.AcceptedRating Yellow (yuhong)
 @see ptolemy.data.expr.ASTPtBitwiseNode
 @see ptolemy.data.expr.ASTPtFunctionApplicationNode
 @see ptolemy.data.expr.ASTPtFunctionDefinitionNode
