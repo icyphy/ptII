@@ -59,16 +59,17 @@ DIRS = 		$(SRCDIRS) doc #test
 
 # Sources that compile under JDK1.0.2 and later
 JSRCS1_0 = \
+
+
+# Sources that require JDK1.1 and later.
+JSRCS1_1 = \
 	CmdLineArgException.java \
 	PlotBox.java \
 	Plot.java \
 	PlotApplet.java \
 	PlotDataException.java \
 	PlotLive.java \
-	PlotPoint.java
-
-# Sources that require JDK1.1 and later.
-JSRCS1_1 = \
+	PlotPoint.java \
 	Message.java \
 	Pxgraph.java
 
