@@ -68,6 +68,7 @@ JSRCS = \
 	SchematicParameter.java \
 	SchematicPort.java \
 	SchematicRelation.java \
+	XMLDocument.java \
 	XMLElement.java
 
 EXTRA_SRCS =	$(JSRCS)
