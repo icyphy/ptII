@@ -125,7 +125,7 @@ public class Relation extends NamedObj {
      *  @exception IllegalActionException If the name has a period.
      */
     public Relation(Workspace workspace, String name)
-           throws IllegalActionException {
+            throws IllegalActionException {
 	super(workspace, name);
         setMoMLElementName("relation");
         try {

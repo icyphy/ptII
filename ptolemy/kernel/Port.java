@@ -490,7 +490,7 @@ public class Port extends NamedObj {
             Entity container = (Entity)getContainer();
             if (container == null) {
                 throw new IllegalActionException(this, relation,
-                "Port must have a container to establish a link.");
+                        "Port must have a container to establish a link.");
             }
             // Throw an exception if this port is not of an acceptable
             // class for the relation.
