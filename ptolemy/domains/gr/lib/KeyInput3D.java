@@ -27,7 +27,7 @@
 @ProposedRating Red (chf@eecs.berkeley.edu)
 @AcceptedRating Red (chf@eecs.berkeley.edu)
 */
-package ptolemy.domains.gr.lib.experimental;
+package ptolemy.domains.gr.lib;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
