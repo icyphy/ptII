@@ -21,9 +21,9 @@
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This wire carries no data.  It is used 
-to insure that DatagramReceiver blocks 
+to insure that DatagramReader blocks 
 on receive only after the datagram has 
-been sent by DatagramSender.</text></svg></configure>
+been sent by DatagramWriter.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -55,7 +55,7 @@ been sent by DatagramSender.</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="DatagramReceiver" class="ptolemy.actor.lib.net.DatagramReceiver">
+    <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReceiver">
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
         </property>
         <property name="bufferLength" class="ptolemy.data.expr.Parameter" value="440">
@@ -82,7 +82,7 @@ been sent by DatagramSender.</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="DatagramSender1" class="ptolemy.actor.lib.net.DatagramSender">
+    <entity name="DatagramWriter1" class="ptolemy.actor.lib.net.DatagramSender">
         <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
         </property>
         <property name="defaultRemoteSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
@@ -135,9 +135,9 @@ been sent by DatagramSender.</text></svg></configure>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Display.input" relation="relation"/>
-    <link port="DatagramReceiver.output" relation="relation"/>
-    <link port="DatagramReceiver.trigger" relation="relation3"/>
-    <link port="DatagramSender1.data" relation="relation2"/>
-    <link port="DatagramSender1.triggerOutput" relation="relation3"/>
+    <link port="DatagramReader.output" relation="relation"/>
+    <link port="DatagramReader.trigger" relation="relation3"/>
+    <link port="DatagramWriter1.data" relation="relation2"/>
+    <link port="DatagramWriter1.triggerOutput" relation="relation3"/>
     <link port="Ramp.output" relation="relation2"/>
 </entity>

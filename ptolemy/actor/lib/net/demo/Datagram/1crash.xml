@@ -69,7 +69,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="DatagramSender" class="ptolemy.actor.lib.net.DatagramSender">
+    <entity name="DatagramWriter" class="ptolemy.actor.lib.net.DatagramSender">
         <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
         </property>
         <property name="defaultRemotePort" class="ptolemy.data.expr.Parameter" value="4096">
@@ -90,7 +90,7 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="DatagramSender3" class="ptolemy.actor.lib.net.DatagramSender">
+    <entity name="DatagramWriter3" class="ptolemy.actor.lib.net.DatagramSender">
         <property name="defaultRemoteAddress" class="ptolemy.kernel.util.StringAttribute" value="localhost">
         </property>
         <property name="defaultRemotePort" class="ptolemy.data.expr.Parameter" value="4096">
@@ -111,7 +111,7 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="DatagramReceiver" class="ptolemy.actor.lib.net.DatagramReceiver">
+    <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReceiver">
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
         </property>
         <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
@@ -154,9 +154,9 @@
     </relation>
     <link port="Display.input" relation="relation"/>
     <link port="SingleEvent.output" relation="relation5"/>
-    <link port="DatagramSender.data" relation="relation6"/>
-    <link port="DatagramSender3.data" relation="relation"/>
-    <link port="DatagramReceiver.output" relation="relation"/>
+    <link port="DatagramWriter.data" relation="relation6"/>
+    <link port="DatagramWriter3.data" relation="relation"/>
+    <link port="DatagramReader.output" relation="relation"/>
     <link port="Const.output" relation="relation6"/>
     <link port="Const.trigger" relation="relation5"/>
 </entity>

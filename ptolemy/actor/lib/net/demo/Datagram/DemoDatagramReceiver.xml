@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="DemoDatagramReceiver" class="ptolemy.actor.TypedCompositeActor">
+<entity name="DemoDatagramReader" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="170.0, 79.5">
         </property>
     </property>
-    <entity name="DatagramReceiver" class="ptolemy.actor.lib.net.DatagramReceiver">
+    <entity name="DatagramReader" class="ptolemy.actor.lib.net.DatagramReceiver">
         <property name="localSocketNumber" class="ptolemy.data.expr.Parameter" value="4096">
         </property>
         <property name="overwrite" class="ptolemy.data.expr.Parameter" value="true">
@@ -55,6 +55,6 @@
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="DatagramReceiver.output" relation="relation"/>
+    <link port="DatagramReader.output" relation="relation"/>
     <link port="Display.input" relation="relation"/>
 </entity>
