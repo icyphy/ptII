@@ -52,12 +52,8 @@ JSRCS = \
 	TimedDisplay.java
 
 # Non-graphical Java tests written in Tcl
-# If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JSIMPLE_TESTS) to EXTRA_SRCS
 JSIMPLE_TESTS = \
-	DTDirector.tcl \
-	dummy.tcl
+	DTDirector.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -66,7 +62,7 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) dtTestEntities.xml
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) dtTestEntities.xml $(JSIMPLE_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -84,7 +80,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) jclass test_java test_auto #test_jsimple
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple test_auto 
 
 test_java: jclass
 
