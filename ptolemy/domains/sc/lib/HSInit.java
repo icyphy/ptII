@@ -102,13 +102,10 @@ public class HSInit extends NamedObj implements TransitionAction {
         _valueVar.evaluate();
         SCState dest = _container.destinationState();
         CompositeActor nref = (CompositeActor)dest.getRefinement();
-        try {
-            Director exec = nref.getExecutiveDirector();
-            Director dir = nref.getDirector();
-            dir.setCurrentTime(exec.getCurrentTime());
-        } catch (IllegalActionException ex) {
-            throw new InvalidStateException(this, ex.getMessage());
-        }
+
+        Director exec = nref.getExecutiveDirector();
+        Director dir = nref.getDirector();
+
         CTBaseIntegrator intgr = (CTBaseIntegrator)nref.getEntity(_integratorName);
 
         
@@ -141,6 +138,10 @@ public class HSInit extends NamedObj implements TransitionAction {
             }
         }
         nref.initialize();
+        dir.setCurrentTime(exec.getCurrentTime());
+
+System.out.println("transition action set " + dir.getFullName() + " current time " + exec.getCurrentTime());
+
     }
 
     public Nameable getContainer() {

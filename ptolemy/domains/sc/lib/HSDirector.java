@@ -129,6 +129,20 @@ System.out.println("HSDirector: get step status from subsys " + ((ComponentEntit
         return dir.getCurrentStepSize();
       }
     }
+
+    public boolean postfire() throws IllegalActionException {
+        // elaborate
+        Actor refine = currentRefinement();
+        if (refine != null) {
+            refine.postfire();
+            Enumeration outports = refine.outputPorts();
+            while(outports.hasMoreElements()) {
+                IOPort p = (IOPort)outports.nextElement();
+                transferOutputs(p);
+            }
+        }
+        return _controller.postfire();
+    }
 }
 
 
