@@ -44,6 +44,7 @@ import ptolemy.vergil.graph.EditorDropTarget;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.actor.gui.PtolemyTop;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 
@@ -120,9 +121,6 @@ public class KernelGraphTableau extends Tableau {
 	throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	// FIXME this attribute is not used.
-	library = new StringAttribute(this, "library");
-
         NamedObj model = container.getModel();
         if (!(model instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
@@ -133,16 +131,28 @@ public class KernelGraphTableau extends Tableau {
 	KernelGraphFrame frame = new KernelGraphFrame(entity, this);
 	setFrame(frame);
 	frame.setBackground(BACKGROUND_COLOR);
-	frame.pack(); 
-	frame.centerOnScreen();
-	frame.setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public parameters                 ////
+    ////                         public methods                    ////
 
-    /** The class to display. */
-    public StringAttribute library;
+    /** Make this tableau visible by raising or deiconifying its window, or
+     *  making it visible if it has not been previously made visible.
+     *  This overrides the base class to center the Tableau on the screen.
+     *  If no frame has been set, then do nothing.
+     */
+    public void show() {
+        PtolemyTop frame = (PtolemyTop)getFrame();
+        // Have to pack before centering.
+        frame.pack();
+        frame.centerOnScreen();
+        super.show();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    // The background color.
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 
     ///////////////////////////////////////////////////////////////////

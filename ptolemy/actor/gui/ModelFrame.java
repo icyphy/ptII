@@ -58,10 +58,11 @@ import javax.swing.JMenuItem;
 //////////////////////////////////////////////////////////////////////////
 //// ModelFrame
 /**
-ModelFrame is a top-level window containing a Ptolemy II model.
-If contains a ModelPane, and has a menu bar and a status bar for
+ModelFrame is a top-level window containing a Ptolemy II model control panel.
+It contains a ModelPane, and has a menu bar and a status bar for
 message reporting.
 
+@see ModelPane
 @author Edward A. Lee
 @version $Id$
 */
@@ -70,6 +71,8 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
     /** Construct a frame to control the specified Ptolemy II model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
+     *  This creates an instance of ModelPane and puts it in a top-level window.
+     *  @see ModelPane
      *  @param model The model to put in this frame, or null if none.
      */
     public ModelFrame(CompositeActor model) {
@@ -79,8 +82,12 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
     /** Construct a frame to control the specified Ptolemy II model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
+     *  This creates an instance of ModelPane and puts it in a top-level window.
+     *  This is typically done by calling show() on the controlling tableau.
+     *  @see ModelPane
+     *  @see Tableau#show()
      *  @param model The model to put in this frame, or null if none.
-     *  @param tableau The tableau responsible for this frame.
+     *  @param tableau The tableau responsible for this frame, or null if none.
      */
     public ModelFrame(CompositeActor model, Tableau tableau) {
         super(tableau);

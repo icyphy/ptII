@@ -119,23 +119,15 @@ public abstract class PtolemyTop extends Top {
     }
 
     /** Get the effigy for the specified Ptolemy model.
+     *  This searches all instances of PtolemyEffigy deeply contained by
+     *  the directory, and returns the first one it encounters
+     *  that is an effigy for the specified model.
      *  @return The effigy for the model, or null if none exists.
      */
     public PtolemyEffigy getEffigy(NamedObj model) {
         CompositeEntity directory = getDirectory();
-        if (directory != null) {
-            Iterator effigies = 
-                   directory.entityList(PtolemyEffigy.class).iterator();
-            while (effigies.hasNext()) {
-                PtolemyEffigy effigy = (PtolemyEffigy)effigies.next();
-                if (effigy.getModel() == model) {
-                    return effigy;
-                }
-            }
-        }
-        return null;
+        return _findEffigyForModel(directory, model);
     }
-
 
     /** Get the tableau that created this frame.
      *  @return The tableau.
@@ -279,6 +271,32 @@ public abstract class PtolemyTop extends Top {
         }
         // Action was cancelled.
         return false;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Recursively search the specified composite for an instance of
+    // PtolemyEffigy that matches the specified model.
+    private PtolemyEffigy _findEffigyForModel(
+            CompositeEntity composite, NamedObj model) {
+        if (composite != null) {
+            Iterator effigies = 
+                   composite.entityList(PtolemyEffigy.class).iterator();
+            while (effigies.hasNext()) {
+                PtolemyEffigy effigy = (PtolemyEffigy)effigies.next();
+                // First see whether this effigy matches.
+                if (effigy.getModel() == model) {
+                    return effigy;
+                }
+                // Then see whether any effigy inside this one matches.
+                PtolemyEffigy inside = _findEffigyForModel(effigy, model);
+                if (inside != null) {
+                    return inside;
+                }
+            }
+        }
+        return null;
     }
 
     ///////////////////////////////////////////////////////////////////

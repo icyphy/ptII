@@ -61,7 +61,6 @@ JSRCS = \
 	PtolemyListCellRenderer.java \
 	PtolemyMenuFactory.java \
 	PtolemyTransferable.java \
-	TestIcon.java \
 	XMLIcon.java
 
 

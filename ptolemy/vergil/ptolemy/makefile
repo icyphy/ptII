@@ -55,13 +55,8 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = ptolemy.jar
 
 JSRCS = \
-	CompaanNotation.java \
-	CompaanPerformance.java \
 	FrameAttribute.java \
-	GraphFrame.java \
-	PtolemyDocument.java \
-	PtolemyGraphView.java \
-	PtolemyNotation.java \
+	GraphFrame.java
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -33,11 +33,7 @@ import ptolemy.gui.MessageHandler;
 import ptolemy.gui.CancelException;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
+import ptolemy.kernel.util.*;
 
 import java.util.Iterator;
 import java.util.List;
@@ -55,6 +51,9 @@ window itself is specified by the setFrame() method, and accessed by
 the getFrame() method.  An instance of this class will be contained
 by the instance of Effigy that represents the model that is depicted
 in the top-level window.
+<p>
+By convention, the constructor for a tableau does not (necessarily)
+make the associated frame visible.  To do that, call show().
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
@@ -73,10 +72,38 @@ public class Tableau extends ComponentEntity {
     public Tableau(Effigy container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
+
+        size = new StringAttribute(this, "size");
+        size.setExpression("");
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public parameters                 ////
+
+    /** A specification for the size of the frame.  The syntax for this
+     *  is "<i>w</i>x</i>h</i>", where <i>w</i> is the width in pixels
+     *  and <i>h</i> is the height in pixels.  An empty string (the
+     *  default value) indicates that there is no preference as to size.
+     */
+    public StringAttribute size;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the argument is the <i>size</i> parameter, and a frame has
+     *  been specified with setFrame(), then set the size of the frame.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the size specification is
+     *   not correctly formatted, or if the base class throws it.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == size) {
+            _setSize();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Return the top-level window that implements the display of
      *  this tableau.
@@ -156,6 +183,7 @@ public class Tableau extends ComponentEntity {
     public void setFrame(JFrame frame) {
         _frame = frame;
 
+        _setSize();
 	frame.setTitle(getTitle());
 
         // Set up a listener for window closing events.
@@ -186,10 +214,35 @@ public class Tableau extends ComponentEntity {
         _master = flag;
     }
 
-    /** Make this tableau visible by raising or deiconifying its window.
+    /** Make this tableau visible by calling setVisible(true), and
+     *  raising or deiconifying its window.
+     *  If no frame has been set, then do nothing.
      */
     public void show() {
-        getFrame().toFront();
+        JFrame frame = getFrame();
+        if (frame != null) {
+            if (!frame.isVisible()) {
+                frame.pack();
+                frame.setVisible(true);
+            }
+            frame.toFront();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Set the size of the associated frame according to the
+     *  specification in the size attribute.
+     *  If no frame has been specified, or if the
+     *  size spec consists only of white space, then do nothing.
+     */
+    private void _setSize() {
+        String sizeSpec = size.getExpression();
+        if (_frame != null && !sizeSpec.trim().equals("")) {
+            // FIXME: As usual with Swing, the following has no effect :-(
+            _frame.getContentPane().setSize(500,300);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

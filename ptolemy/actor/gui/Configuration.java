@@ -105,6 +105,7 @@ public class Configuration extends CompositeEntity {
             }
             // The first tableau is a master.
             tableau.setMaster(true);
+            tableau.show();
         }
     }
 
@@ -114,8 +115,7 @@ public class Configuration extends CompositeEntity {
     public void newModel() {
 	final ModelDirectory directory = 
 	    (ModelDirectory)getEntity("directory");
-	if(directory == null) 
-	    return;
+	if(directory == null) return;
 	List factoryList = entityList(EffigyFactory.class);
 	Box panel = new Box(BoxLayout.Y_AXIS);
 	final JFrame frame = new JFrame();
@@ -222,7 +222,17 @@ public class Configuration extends CompositeEntity {
             throw new IllegalActionException(this,
             "Configuration can only be at the top level of a hierarchy.");
         }
-    }    
+    }
+
+    /** Find all instance of Tableau deeply contained in the directory
+     *  and call show() on them.  If there is no directory, then do nothing.
+     */
+    public void showAll() {
+	final ModelDirectory directory = 
+	    (ModelDirectory)getEntity("directory");
+	if(directory == null) return;
+        _showTableaux(directory);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -241,6 +251,23 @@ public class Configuration extends CompositeEntity {
 	super._removeEntity(entity);
 	if (entity.getName().equals("directory")) {
             System.exit(0);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Call show() on all instances of Tableaux contained by the specified
+    // container.
+    private void _showTableaux(CompositeEntity container) {
+        Iterator entities = container.entityList().iterator();
+        while (entities.hasNext()) {
+            Object entity = entities.next();
+            if (entity instanceof Tableau) {
+                ((Tableau)entity).show();
+            } else if (entity instanceof CompositeEntity) {
+                _showTableaux((CompositeEntity)entity);
+            }
         }
     }
 }

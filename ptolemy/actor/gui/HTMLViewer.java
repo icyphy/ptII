@@ -68,9 +68,10 @@ public class HTMLViewer extends PtolemyTop implements Printable {
     public HTMLViewer() {
 	getContentPane().setLayout(new BorderLayout(0, 0));
         pane.setEditable(false);
-        JScrollPane scroller = new JScrollPane(pane);
-        scroller.setPreferredSize(new Dimension(800, 600));
-        getContentPane().add(scroller);
+        _scroller = new JScrollPane(pane);
+        // Default, which can be overriden by calling setSize().
+        _scroller.setPreferredSize(new Dimension(800, 600));
+        getContentPane().add(_scroller);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -123,6 +124,19 @@ public class HTMLViewer extends PtolemyTop implements Printable {
         pane.setPage(page);
     }
 
+    /** Override the base class to set the size of the scroll pane.
+     *  Regrettably, this is necessary because swing packers ignore
+     *  the specified size of a container.
+     *  @param width The width of the scroll pane.
+     *  @param height The height of the scroll pane.
+     */
+    public void setSize(int width, int height) {
+        // FIXME: As usual with Swing, the following has no effect :-(
+        _scroller.setPreferredSize(new Dimension(width, height));
+        _scroller.setSize(new Dimension(width, height));
+        super.setSize(width, height);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                 ////
 
@@ -141,4 +155,10 @@ public class HTMLViewer extends PtolemyTop implements Printable {
         fout.write(pane.getText());
         fout.close();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The scroll pane.
+    private JScrollPane _scroller;
 }

@@ -94,9 +94,6 @@ public class DocumentationViewerTableau extends Tableau {
         HTMLViewer frame = new HTMLViewer();
 	setFrame(frame);
 	frame.setTableau(this);
-	frame.pack();
-        frame.centerOnScreen();
-	frame.setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -151,5 +148,18 @@ public class DocumentationViewerTableau extends Tableau {
         newobj.dottedClass = 
 	    (StringAttribute)newobj.getAttribute("dottedClass");
         return newobj;
+    }
+
+    /** Make this tableau visible by raising or deiconifying its window, or
+     *  making it visible if it has not been previously made visible.
+     *  This overrides the base class to center the Tableau on the screen.
+     *  If no frame has been set, then do nothing.
+     */
+    public void show() {
+        PtolemyTop frame = (PtolemyTop)getFrame();
+        // Have to pack before centering.
+        frame.pack();
+        frame.centerOnScreen();
+        super.show();
     }
 }

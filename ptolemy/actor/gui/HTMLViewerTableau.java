@@ -1,4 +1,4 @@
-/* A tableau representing a documentation window.
+/* A tableau representing an HTML window.
 
  Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
@@ -57,9 +57,10 @@ The URL that is viewed is given by the <i>url</i> parameter, and
 can be either an absolute URL, a system fileName, or a resource that
 can be loaded relative to the classpath.  For more information about how
 the URL is specified, see MoMLApplication.specToURL().
-<p>The constructor of thixs
+<p>
+The constructor of this
 class creates the window. The text window itself is an instance
-of TextEditor, and can be accessed using the getFrame() method.
+of HTMLViewer, and can be accessed using the getFrame() method.
 As with other tableaux, this is an entity that is contained by
 an effigy of a model.
 There can be any number of instances of this class in an effigy.
@@ -67,10 +68,14 @@ There can be any number of instances of this class in an effigy.
 @author  Steve Neuendorffer and Edward A. Lee
 @version $Id$
 @see Effigy
+@see HTMLViewer
+@see MoMLApplication#specToURL()
 */
 public class HTMLViewerTableau extends Tableau {
 
     /** Construct a new tableau for the model represented by the given effigy.
+     *  This creates an instance of HTMLViewer.  It does not make the frame
+     *  visible.  To do that, call show().
      *  @param container The container.
      *  @param name The name.
      *  @exception IllegalActionException If the container does not accept
@@ -87,9 +92,6 @@ public class HTMLViewerTableau extends Tableau {
         HTMLViewer frame = new HTMLViewer();
 	setFrame(frame);
 	frame.setTableau(this);
-	frame.pack();
-        frame.centerOnScreen();
-	frame.setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -126,18 +128,21 @@ public class HTMLViewerTableau extends Tableau {
         }
     }
 
-    /** Clone the object into the specified workspace. This calls the
-     *  base class and then sets the <code>url</code>
-     *  public members to the parameters of the new object.
-     *  @param ws The workspace for the new object.
-     *  @return A new object.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
+    /** Make this tableau visible by raising or deiconifying its window, or
+     *  making it visible if it has not been previously made visible.
+     *  This overrides the base class to center the Tableau on the screen.
+     *  If no frame has been set, then do nothing.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        HTMLViewerTableau newobj =
-                 (HTMLViewerTableau)super.clone(ws);
-        newobj.url = (StringAttribute)newobj.getAttribute("url");
-        return newobj;
+    public void show() {
+        PtolemyTop frame = (PtolemyTop)getFrame();
+        // Have to pack before centering.
+        frame.pack();
+        frame.centerOnScreen();
+        super.show();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    // FIXME: Define a factory, as in RunTableau.
 }

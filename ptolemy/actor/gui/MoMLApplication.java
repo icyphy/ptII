@@ -412,6 +412,11 @@ public class MoMLApplication {
                         + "-" + name);
             }
         }
+        // If the default configuration contains any Tableaux,
+        // then we show them now.  This is deferred until now because
+        // how they are shown may depend on command-line arguments
+        // and/or parameters in some MoML file that is read.
+        _config.showAll();
     }
 
     /** Read a Configuration from the URL given by the specified string.

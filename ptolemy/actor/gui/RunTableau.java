@@ -54,17 +54,27 @@ import javax.swing.JPanel;
 //////////////////////////////////////////////////////////////////////////
 //// RunTableau
 /**
-A tableau that creates a new run control panel for a ptolemy model, including
-placing placeable actors such as plots and toplevel windows.
+A tableau that creates a new run control panel for a ptolemy model.
+This panel has controls for parameters of the top-level entity
+and its director, if any, a set of buttons to control execution
+of the model, and a panel displaying the placeable entities within
+the model.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
 public class RunTableau extends Tableau {
 
-    /** Create a new run control panel for the given model with the given 
-     *  name and make it visible.  This tableau is managed by the given model
-     *  directory.
+    /** Create a new run control panel for the model with the given
+     *  effigy.  The tableau is itself an entity contained by the effigy
+     *  and having the specified name.  The frame is not made visible
+     *  automatically.  You must call show() to make it visible.
+     *  @param container The containing effigy.
+     *  @param name The name of this tableau within the specified effigy.
+     *  @exception IllegalActionException If the tableau is not acceptable
+     *   to the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
      */
     public RunTableau(PtolemyEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -86,26 +96,29 @@ public class RunTableau extends Tableau {
 	ModelFrame frame = new RunFrame(actor, this);
 	setFrame(frame);
 	frame.setBackground(BACKGROUND_COLOR);
-	frame.setVisible(true);
-	frame.pack();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** The frame that is created by this tableau.
+    /** The frame that is created by an instance of RunTableau.
      */
     public class RunFrame extends ModelFrame {
 
 	/** Construct a frame to control the specified Ptolemy II model.
 	 *  After constructing this, it is necessary
 	 *  to call setVisible(true) to make the frame appear.
+         *  This is typically accomplished by calling show() on
+         *  enclosing tableau.
 	 *  @param model The model to put in this frame, or null if none.
-         *  @param tableau The tableau responsible for this.
+         *  @param tableau The tableau responsible for this frame.
 	 */
 	public RunFrame(CompositeActor model, Tableau tableau) {
 	    super(model, tableau);
 	}
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         protected methods                 ////
 
         /** Add a Debug menu.
         */
@@ -194,6 +207,9 @@ public class RunTableau extends Tableau {
 	    super(container, name);
 	}
 
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
 	/** Create a tableau in the default workspace with no name for the 
 	 *  given effigy.  The tableau will created with the name "runTableau"
 	 *  in the given effigy.  If there is already a tableau with this
@@ -210,14 +226,14 @@ public class RunTableau extends Tableau {
 	public Tableau createTableau(Effigy effigy) throws Exception {
 	    if(effigy instanceof PtolemyEffigy) {
                 // First see whether the effigy already contains a RunTableau.
-                RunTableau previous =
+                RunTableau tableau =
                         (RunTableau)effigy.getEntity("runTableau");
-                if (previous != null) {
-                    previous.show();
-                    return previous;
-                } else {
-                    return new RunTableau((PtolemyEffigy)effigy, "runTableau");
+                if (tableau == null) {
+                    tableau = new RunTableau(
+                            (PtolemyEffigy)effigy, "runTableau");
                 }
+                tableau.show();
+                return tableau;
 	    } else {
 		return null;
 	    }

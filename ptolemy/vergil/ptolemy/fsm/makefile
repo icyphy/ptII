@@ -56,8 +56,10 @@ JSRCS = \
 	FSMGraphTableau.java \
 	FSMStateController.java \
 	FSMTransitionController.java \
-	FSMViewerController.java \
-	PtolemyFSMNotation.java
+	FSMViewerController.java
+
+# FIXME: Needs to be converted to a tableau?
+#	PtolemyFSMNotation.java
 
 EXTRA_SRCS =	$(JSRCS)
 
