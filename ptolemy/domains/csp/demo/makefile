@@ -43,6 +43,7 @@ include $(CONFIG)
 JSRCS = \
 	BasicDemo.java \
 	BusContentionDemo.java \
+	BusContentionGraphic.java \
 	Coordinate.java \
 	DiningApplet.java \
 	DiningPhilosophers.java \
@@ -79,6 +80,9 @@ demo:
 	
 bus:	
 	CLASSPATH=$(CLASSPATH) $(PTJAVA_DIR)/bin/java ptolemy.domains.csp.demo.BusContentionDemo
+
+busGraphic:	
+	CLASSPATH=$(CLASSPATH) $(PTJAVA_DIR)/bin/java ptolemy.domains.csp.demo.BusContentionGraphic
 
 
 docs: javadocs
