@@ -77,15 +77,11 @@ public class Pxgraph extends Frame {
 
     /** Constructor
      */	
-    public Pxgraph(int maxdatasets) {
+    public Pxgraph() {
 	//        setLayout(new FlowLayout(FlowLayout.RIGHT));
 	//	_exitButton = new Button();
 	//	_exitButton.setLabel("Exit");
 	//	add(_exitButton);
-	// Initialize the array that contains the dataset descriptors.
-	_datasets = new String[maxdatasets];
-
-
     }
 
     //    public boolean action(Event e, Object arg) {
@@ -128,7 +124,7 @@ public class Pxgraph extends Frame {
     public static void main(String arg[]) {
         int argsread = 0, i;
 	Plot plotApplet = new Plot();
-	Pxgraph pxgraph = new Pxgraph(plotApplet.getMaxDataSets());
+	Pxgraph pxgraph = new Pxgraph();
 
 	pxgraph.pack();
 	pxgraph.add(plotApplet);
@@ -143,11 +139,11 @@ public class Pxgraph extends Frame {
 
         pxgraph.show();
 	plotApplet.init();
+
         for(i = argsread+1; i < arg.length; i++) {
             if (_debug) System.out.println(arg[i]);
-            //plotApplet.parseFile(arg[i]);
+            plotApplet.parseFile(arg[i]);
         }
-
         
 	plotApplet.start();
 
@@ -170,6 +166,7 @@ public class Pxgraph extends Frame {
     /* help - print out help
      */	
     private void _help () {
+	// FIXME: we should bring up a dialog box or something.
 	// We use a table here to keep things neat.
 	// If we have:
 	//  {"-bd",  "<color>", "Border",  "White", "(Unsupported)"},
@@ -217,6 +214,9 @@ public class Pxgraph extends Frame {
 	    // -test is not in the original X11 pxgraph.  We use it for testing
 	    {"-test", "Test",  ""},
 	    {"-tk", "Ticks",  ""},
+	    // -v is not in the original X11 pxgraph.
+	    {"-v", "Version",  ""},
+	    {"-version", "Version",  ""},
 	};
 	int i;
 	System.out.println("Usage: pxgraph [ options ] [=WxH+X+Y] [file ...]");
@@ -234,7 +234,6 @@ public class Pxgraph extends Frame {
 	System.out.println("The following pxgraph features are not supported:");
 	System.out.println(" * Directives in pxgraph input files");
 	System.out.println(" * Xresources");
-	System.out.println(" * -<digit> dataset_description");
 	System.out.println(" * More than one input file");
 	System.exit(1);
     }
@@ -369,6 +368,12 @@ public class Pxgraph extends Frame {
 		} else if (arg.equals("-tk")) {
 		    plotApplet.setGrid(false);
 		    continue;
+		} else if (arg.equals("-v") || arg.equals("-version")) {
+		    // -version is not in the original X11 pxgraph.
+		    _version();
+		    continue;
+		} else if (arg.equals("-m")) {
+
 		} if (arg.length() > 1  && arg.charAt(0) == '-') {
 		    // Process '-<digit> <datasetname>'
 		    try {
@@ -377,13 +382,10 @@ public class Pxgraph extends Frame {
 			int datasetnumber = datasetnumberint.intValue();
 			if (datasetnumber >= 0 &&
 			    datasetnumber <= plotApplet.getMaxDataSets()) {
-			    // Save the next arg in the dataset array
-			    _datasets[datasetnumber] = args[i++];
-			    if (_debug)
-				System.out.println("dataset " + datasetnumber
-						 + " = " +
-						 _datasets[datasetnumber]);
-			    continue;
+                                if (_debug) System.out.println("addLegend "
+                                                +datasetnumber + " " + args[i]);
+                                plotApplet.addLegend(datasetnumber, args[i++]);
+                                continue;
 			}
 		    } catch (NumberFormatException e) {
 		    }
@@ -435,6 +437,17 @@ public class Pxgraph extends Frame {
         return argsread;
     }
 
+    /* version - print out version info
+     */	
+    private void _version () {
+	// FIXME: we should bring up a dialog box or something.
+	System.out.println("Pxgraph - (Java implementation) by\n" +
+			   "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
+			   "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
+			   "($Id$)");
+	System.exit(0);
+    }
+
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
@@ -445,6 +458,4 @@ public class Pxgraph extends Frame {
 
     // If true, then auto exit after a few seconds.
     private static boolean _test = false;
-
-    private String _datasets[];
 }
