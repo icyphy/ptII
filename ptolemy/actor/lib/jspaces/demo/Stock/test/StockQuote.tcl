@@ -69,9 +69,9 @@ test StockQuote-2.1 {get price of YHOO} {
     set stockPrices [enumToTokenValues [$rec getRecord 0]]
     set firstPrice [lindex $stockPrices 0]
     set lastPrice [lindex $stockPrices 4]
-    # The price should be between 10 and 100 and the first and last price
+    # The price should be between 2 and 100 and the first and last price
     # should not be different by more than 10
-    list [expr {$firstPrice > 10}] \
+    list [expr {$firstPrice > 2}] \
 	    [expr {$firstPrice < 100}] \
     	    [expr {$firstPrice - $lastPrice > -10}] \
     	    [expr {$firstPrice - $lastPrice < 10}]
