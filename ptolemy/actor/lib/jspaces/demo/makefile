@@ -47,16 +47,6 @@ CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JINI_JAR)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Used to build jar files
-PTPACKAGE = 	jspaces
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
 # Keep this list alphabetized.
 JSRCS = 
 

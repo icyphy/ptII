@@ -50,10 +50,11 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	jspaces
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR =	
 
 # Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
+PTCLASSALLJARS = \
+	util/util.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
