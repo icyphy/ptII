@@ -155,7 +155,7 @@ import java.util.Enumeration;
  */
 // FIXME:
 // The topological depth of the receivers are static and computed once
-// in the initialization() method. This means that mutations are not
+// in the initialize() method. This means that mutations are not
 // currently supported.
 public class DEDirector extends Director {
 
@@ -383,10 +383,11 @@ public class DEDirector extends Director {
      */
     public void fireAfterDelay(Actor actor, double delay)
             throws IllegalActionException {
-        // FIXME: Check if the actor is in the composite actor containing this
+        // NOTE: This does not check whether the actor is in the
+        // composite actor containing this
         // director. I.e. the specified actor is under this director
-        // responsibility. This could however be an expensive operation. So,
-        // leave it out for now, and see if this will turn out to be an issue.
+        // responsibility. This error would be fairly hard to make,
+        // so we don't check for it here.
 
         // Check the special case, when the delay is equal to zero
         if (delay == 0 && _isInitialized) {
@@ -405,10 +406,11 @@ public class DEDirector extends Director {
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
 
-        // FIXME: Check if the actor is in the composite actor containing this
+        // NOTE: This does not check whether the actor is in the
+        // composite actor containing this
         // director. I.e. the specified actor is under this director
-        // responsibility. This could however be an expensive operation. So,
-        // leave it out for now, and see if this will turn out to be an issue.
+        // responsibility. This error would be fairly hard to make,
+        // so we don't check for it here.
 
         _debug("Requesting firing of " + ((Nameable)actor).getFullName()
                  + " at time " + time);
