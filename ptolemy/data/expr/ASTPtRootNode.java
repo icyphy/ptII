@@ -97,7 +97,8 @@ public class ASTPtRootNode implements Node {
      *  node in the tree.
      *  @return The token contained by the root node for the parse tree.
      */
-    public ptolemy.data.Token evaluateParseTree() throws IllegalArgumentException {
+    public ptolemy.data.Token evaluateParseTree() 
+            throws IllegalArgumentException {
         int numChildren = jjtGetNumChildren();
         if (numChildren == 0) {
             // leaf node, should not be here
@@ -114,7 +115,9 @@ public class ASTPtRootNode implements Node {
                 _ptToken = _resolveNode();
             } catch (Exception ex) {
                 throw new IllegalArgumentException("Could not resolve node: " +
-                      getClass().getName() + ", " + ex.getMessage());
+                      getClass().getName() + ", " + ex.getMessage() + ", " +
+                      "exception thrown was of type: " + 
+                      ex.getClass().getName() + ".");
             }
             return _ptToken;
         }
