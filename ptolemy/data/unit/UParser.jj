@@ -50,7 +50,7 @@ This file implements a Unit parser for Ptolemy II using the
 JavaCC parser generator.
 
 @author Rowland R Johnson
-@version $Id: UParser.jj,v 1.8 2004-04-13 15:41:49 cxh Exp $
+@version $Id: UParser.jj,v 1.9 2004-04-14 14:18:38 rowland Exp $
 @since Ptolemy II 4.0
 @Pt.ProposedRating Red (rowland)
 @Pt.AcceptedRating Red (rowland)
@@ -71,6 +71,9 @@ public class UParser {
     public UnitExpr parseUnitExpr(String expression)
 	throws ParseException {
 
+	if (expression.equals("")) {
+	    return null;
+	}
         Reader reader = new StringReader(expression);
         this.ReInit(reader);
 	// Parse the expression to obtain the parse tree
@@ -86,6 +89,9 @@ public class UParser {
     public Vector parseEquations(String expression)
 	throws ParseException {
 
+	if (expression.equals("")) {
+	    return null;
+	}
 	Reader reader = new StringReader(expression);
 	this.ReInit(reader);
 	// Parse the expression to obtain the parse tree
@@ -202,12 +208,17 @@ UnitTerm uTerm()                :
 		Unit unit = UnitLibrary.getUnitByName(unitLabel);
 		if (unit != null) {
 		    unitTerm.setUnit(unit);
+		} else {
+		    throw new ParseException(
+					     unitLabel
+					     + " is a not variable and is not grounded in the Units Library");
 		}
 	    } else {
 		throw new ParseException(
 					 unitLabel
-					 + " is a not variable and is not grounded in the Units Library");
+					 + " is a not variable and is not a Unit");
 	    }
+
 	    unitTerm.setExponent(exponent);
 	}
      |
@@ -220,11 +231,15 @@ UnitTerm uTerm()                :
 		Unit unit = UnitLibrary.getUnitByName(unitLabel);
 		if (unit != null) {
 		    unitTerm.setUnit(unit);
+		} else {
+		    throw new ParseException(
+					     unitLabel
+					     + " is a not variable and is not grounded in the Units Library");
 		}
 	    } else {
 		throw new ParseException(
 					 unitLabel
-					 + " is a not variable and is not grounded in the Units Library");
+					 + " is a not variable and is not a Unit");
 	    }
 	}
      | 

@@ -60,6 +60,9 @@ public class UParser implements UParserConstants {
     public UnitExpr parseUnitExpr(String expression)
         throws ParseException {
 
+        if (expression.equals("")) {
+            return null;
+        }
         Reader reader = new StringReader(expression);
         this.ReInit(reader);
         // Parse the expression to obtain the parse tree
@@ -75,6 +78,9 @@ public class UParser implements UParserConstants {
     public Vector parseEquations(String expression)
         throws ParseException {
 
+        if (expression.equals("")) {
+            return null;
+        }
         Reader reader = new StringReader(expression);
         this.ReInit(reader);
         // Parse the expression to obtain the parse tree
@@ -151,12 +157,17 @@ public class UParser implements UParserConstants {
                 Unit unit = UnitLibrary.getUnitByName(unitLabel);
                 if (unit != null) {
                     unitTerm.setUnit(unit);
+                } else {
+                    {if (true) throw new ParseException(
+                                             unitLabel
+                                             + " is a not variable and is not grounded in the Units Library");}
                 }
             } else {
                 {if (true) throw new ParseException(
                                          unitLabel
-                                         + " is a not variable and is not grounded in the Units Library");}
+                                         + " is a not variable and is not a Unit");}
             }
+
             unitTerm.setExponent(exponent);
     } else {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -170,11 +181,15 @@ public class UParser implements UParserConstants {
                 Unit unit = UnitLibrary.getUnitByName(unitLabel);
                 if (unit != null) {
                     unitTerm.setUnit(unit);
+                } else {
+                    {if (true) throw new ParseException(
+                                             unitLabel
+                                             + " is a not variable and is not grounded in the Units Library");}
                 }
             } else {
                 {if (true) throw new ParseException(
                                          unitLabel
-                                         + " is a not variable and is not grounded in the Units Library");}
+                                         + " is a not variable and is not a Unit");}
             }
         break;
       case INTEGER:
@@ -385,15 +400,8 @@ String tidied, x;
     finally { jj_save(1, xla); }
   }
 
-  final private boolean jj_3_2() {
-    if (jj_scan_token(SEMICOLON)) return true;
-    if (jj_3R_4()) return true;
-    return false;
-  }
-
-  final private boolean jj_3_1() {
-    if (jj_3R_3()) return true;
-    if (jj_scan_token(POWER)) return true;
+  final private boolean jj_3R_9() {
+    if (jj_3R_11()) return true;
     return false;
   }
 
@@ -413,26 +421,6 @@ String tidied, x;
     return false;
   }
 
-  final private boolean jj_3R_10() {
-    if (jj_scan_token(LPAREN)) return true;
-    return false;
-  }
-
-  final private boolean jj_3R_5() {
-    if (jj_3R_6()) return true;
-    return false;
-  }
-
-  final private boolean jj_3R_8() {
-    if (jj_3R_3()) return true;
-    return false;
-  }
-
-  final private boolean jj_3R_9() {
-    if (jj_3R_11()) return true;
-    return false;
-  }
-
   final private boolean jj_3R_13() {
     if (jj_scan_token(INTEGER)) return true;
     return false;
@@ -445,11 +433,6 @@ String tidied, x;
     jj_scanpos = xsp;
     if (jj_scan_token(19)) return true;
     }
-    return false;
-  }
-
-  final private boolean jj_3R_6() {
-    if (jj_3R_7()) return true;
     return false;
   }
 
@@ -470,6 +453,38 @@ String tidied, x;
 
   final private boolean jj_3R_4() {
     if (jj_3R_5()) return true;
+    return false;
+  }
+
+  final private boolean jj_3_2() {
+    if (jj_scan_token(SEMICOLON)) return true;
+    if (jj_3R_4()) return true;
+    return false;
+  }
+
+  final private boolean jj_3R_6() {
+    if (jj_3R_7()) return true;
+    return false;
+  }
+
+  final private boolean jj_3R_10() {
+    if (jj_scan_token(LPAREN)) return true;
+    return false;
+  }
+
+  final private boolean jj_3R_5() {
+    if (jj_3R_6()) return true;
+    return false;
+  }
+
+  final private boolean jj_3R_8() {
+    if (jj_3R_3()) return true;
+    return false;
+  }
+
+  final private boolean jj_3_1() {
+    if (jj_3R_3()) return true;
+    if (jj_scan_token(POWER)) return true;
     return false;
   }
 
