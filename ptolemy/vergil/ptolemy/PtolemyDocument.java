@@ -32,24 +32,24 @@ package ptolemy.vergil.ptolemy;
 
 import ptolemy.vergil.*;
 import ptolemy.vergil.graph.*;
+import ptolemy.vergil.toolbox.*;
 import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.moml.*;
 
-import diva.graph.*;
-import diva.graph.model.*;
-import diva.graph.toolbox.GraphParser;
-import diva.graph.toolbox.GraphWriter;
-
-import diva.canvas.interactor.SelectionModel;
-import diva.canvas.Figure;
 import diva.graph.*;
 import diva.graph.editor.*;
 import diva.graph.layout.*;
 import diva.graph.model.*;
 import diva.graph.toolbox.*;
+import diva.graph.toolbox.GraphParser;
+import diva.graph.toolbox.GraphWriter;
+import diva.canvas.interactor.SelectionModel;
+import diva.canvas.Figure;
 import diva.gui.*;
 import diva.gui.toolbox.*;
+import diva.util.*;
 
 import java.awt.Color;
 import java.awt.datatransfer.*;
@@ -62,9 +62,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.DataOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.KeyStroke;
 
 /**
  * A Vergil document that contains a Ptolemy model.
@@ -78,7 +80,7 @@ import javax.swing.*;
  * @version $Id$
  */
 public class PtolemyDocument extends AbstractDocument
-    implements VergilDocument {
+    implements VergilDocument, ClipboardOwner {
 
     /** Construct a Ptolemy document that is owned by the given
      *  application.
@@ -110,13 +112,34 @@ public class PtolemyDocument extends AbstractDocument
 	GraphImpl impl = controller.getGraphImpl();
 	SelectionModel model = controller.getSelectionModel();
 	Object selection[] = model.getSelectionAsArray();
+	PtolemyTransferable transferable = new PtolemyTransferable();
 	for(int i = 0; i < selection.length; i++) {
 	    if(selection[i] instanceof Figure) {
-		Object userObject =
+		SemanticObjectContainer userObject = (SemanticObjectContainer)
 		    ((Figure)selection[i]).getUserObject();
-		System.out.println(userObject);
+		NamedObj object = (NamedObj)userObject.getSemanticObject();
+		if(object instanceof Icon) {
+		    NamedObj actual = (NamedObj)object.getContainer();
+		    try {
+			NamedObj clone = (NamedObj)actual.clone();
+			System.out.println("adding " + actual);
+			transferable.add(clone);
+		    } catch (CloneNotSupportedException ex) {
+			throw new GraphException(ex.getMessage());
+		    }		
+		} else if(object instanceof Vertex) {
+		    NamedObj actual = (NamedObj)object.getContainer();
+		    try {
+			NamedObj clone = (NamedObj)actual.clone();
+			System.out.println("adding " + actual);
+			transferable.add(actual);
+		    } catch (CloneNotSupportedException ex) {
+			throw new GraphException(ex.getMessage());
+		    }
+		}  
 	    }
 	}
+	c.setContents(transferable, this);
     }
  
     /** Remove the currently selected objects from this document, if any,
@@ -125,6 +148,7 @@ public class PtolemyDocument extends AbstractDocument
      */
     public void cut (Clipboard c) {
 	System.out.println("cut");
+	/*
 	VergilApplication app = (VergilApplication)getApplication();
 	JGraph jgraph = (JGraph)app.getView(this);
 	GraphPane graphPane = jgraph.getGraphPane();
@@ -133,7 +157,7 @@ public class PtolemyDocument extends AbstractDocument
 	GraphImpl impl = controller.getGraphImpl();
 	SelectionModel model = controller.getSelectionModel();
 	Object selection[] = model.getSelectionAsArray();
-	
+	*/
     }
 
     /** Construct a view on this document.  In this class, return a 
@@ -177,6 +201,11 @@ public class PtolemyDocument extends AbstractDocument
 	return _model;
     }
 
+    /** Do nothing.
+     */
+    public void lostOwnership(Clipboard clipboard, Transferable transferable) {
+    }
+
     /** Open the document from its current file.
      *
      * @exception Exception If there is no file, 
@@ -203,6 +232,62 @@ public class PtolemyDocument extends AbstractDocument
      */
     public void paste (Clipboard c) {
 	System.out.println("paste");
+	Transferable transferable = c.getContents(this);
+	JGraph jgraph = (JGraph)VergilApplication.getInstance().getView(this);
+	GraphPane graphPane = jgraph.getGraphPane();
+	GraphController controller =
+	    (GraphController)graphPane.getGraphController();
+	GraphImpl impl = controller.getGraphImpl();
+	if(transferable == null) 
+	    return;
+	try {
+	    Iterator objects = (Iterator)
+		transferable.getTransferData(PtolemyTransferable.namedObjFlavor);
+	    System.out.println("pasting");
+	    while(objects.hasNext()) {
+		NamedObj object = (NamedObj)objects.next();
+		System.out.println("object = " + object.toString());
+	        if(object instanceof ComponentEntity) {
+		    try {
+			ComponentEntity clone = 
+			    (ComponentEntity)object.clone();
+			System.out.println("clone = " + clone);
+			clone.setContainer(_model);
+			Icon icon = (Icon)clone.getAttribute("_icon");
+			Node node = impl.createCompositeNode(icon);
+			impl.addNode(node, controller.getGraph());
+			controller.drawNode(node);
+		    } catch (CloneNotSupportedException ex) {
+			throw new GraphException(ex.getMessage());
+		    } catch (IllegalActionException ex) {
+			throw new GraphException(ex.getMessage());
+		    } catch (NameDuplicationException ex) {
+			throw new GraphException(ex.getMessage());
+		    }
+		} /*else if(object instanceof ComponentRelation) {
+		    try {
+			ComponentRelation clone = 
+			    (ComponentRelation)object.clone();
+			System.out.println("clone = " + clone);
+			clone.setContainer(_model);
+			Icon icon = (Icon)clone.getAttribute("_icon");
+			Node node = impl.createCompositeNode(icon);
+			impl.addNode(node, controller.getGraph());
+			controller.drawNode(node);
+		    } catch (CloneNotSupportedException ex) {
+			throw new GraphException(ex.getMessage());
+		    } catch (IllegalActionException ex) {
+			throw new GraphException(ex.getMessage());
+		    } catch (NameDuplicationException ex) {
+ 			throw new GraphException(ex.getMessage());
+		    }
+		    }*/
+	    }
+	} catch (UnsupportedFlavorException ex) {
+	    System.out.println("no flavor");
+	} catch (IOException ex) {
+	    System.out.println("io error");
+	}
     }
 
     /** Save the document to the current file.
