@@ -32,8 +32,6 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="170.0, 261.0">
@@ -51,8 +49,6 @@ Press 'r' or 'f' to rotate over wrist</text></svg></configure>
         <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
       </svg>
     </configure>
-        </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>

@@ -29,8 +29,6 @@
       </svg>
     </configure>
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-        </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="538.0, 26.0">
