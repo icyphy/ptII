@@ -87,20 +87,20 @@ public class DDFBooleanSelect extends TypedAtomicActor {
         output.setTypeAtLeast(trueInput);
         output.setTypeAtLeast(falseInput);
 
-        trueInputTokenConsumptionRate =
+        trueInput_tokenConsumptionRate =
             new Parameter(trueInput, "tokenConsumptionRate");
-        trueInputTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
-        trueInputTokenConsumptionRate.setTypeEquals(BaseType.INT);
+        trueInput_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        trueInput_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
-        falseInputTokenConsumptionRate =
+        falseInput_tokenConsumptionRate =
             new Parameter(falseInput, "tokenConsumptionRate");
-        falseInputTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
-        falseInputTokenConsumptionRate.setTypeEquals(BaseType.INT);
+        falseInput_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        falseInput_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
-        controlTokenConsumptionRate =
+        control_tokenConsumptionRate =
             new Parameter(control, "tokenConsumptionRate");
-        controlTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
-        controlTokenConsumptionRate.setTypeEquals(BaseType.INT);
+        control_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        control_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
         // Put the control input on the bottom of the actor.
         StringAttribute controlCardinal
@@ -127,13 +127,13 @@ public class DDFBooleanSelect extends TypedAtomicActor {
     public TypedIOPort output;
     /** This parameter provides token consumption rate for true input.
      */
-    public Parameter trueInputTokenConsumptionRate;
+    public Parameter trueInput_tokenConsumptionRate;
     /** This parameter provides token consumption rate for false input.
      */
-    public Parameter falseInputTokenConsumptionRate;
+    public Parameter falseInput_tokenConsumptionRate;
     /** This parameter provides token consumption rate for control.
      */
-    public Parameter controlTokenConsumptionRate;
+    public Parameter control_tokenConsumptionRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -186,9 +186,9 @@ public class DDFBooleanSelect extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _isControlRead = false;
-        trueInputTokenConsumptionRate.setToken(new IntToken(0));
-        falseInputTokenConsumptionRate.setToken(new IntToken(0));
-        controlTokenConsumptionRate.setToken(new IntToken(1));
+        trueInput_tokenConsumptionRate.setToken(new IntToken(0));
+        falseInput_tokenConsumptionRate.setToken(new IntToken(0));
+        control_tokenConsumptionRate.setToken(new IntToken(1));
     }
 
     /** Update rate parameters for the next iteration.
@@ -199,18 +199,18 @@ public class DDFBooleanSelect extends TypedAtomicActor {
     public boolean postfire() throws IllegalActionException {
         if (_isControlRead) {
             if (_control) {
-                trueInputTokenConsumptionRate.setToken(new IntToken(1));
-                falseInputTokenConsumptionRate.setToken(new IntToken(0));
-                controlTokenConsumptionRate.setToken(new IntToken(0));
+                trueInput_tokenConsumptionRate.setToken(new IntToken(1));
+                falseInput_tokenConsumptionRate.setToken(new IntToken(0));
+                control_tokenConsumptionRate.setToken(new IntToken(0));
             } else {
-                trueInputTokenConsumptionRate.setToken(new IntToken(0));
-                falseInputTokenConsumptionRate.setToken(new IntToken(1));
-                controlTokenConsumptionRate.setToken(new IntToken(0));
+                trueInput_tokenConsumptionRate.setToken(new IntToken(0));
+                falseInput_tokenConsumptionRate.setToken(new IntToken(1));
+                control_tokenConsumptionRate.setToken(new IntToken(0));
             }
         } else {
-            trueInputTokenConsumptionRate.setToken(new IntToken(0));
-            falseInputTokenConsumptionRate.setToken(new IntToken(0));
-            controlTokenConsumptionRate.setToken(new IntToken(1));
+            trueInput_tokenConsumptionRate.setToken(new IntToken(0));
+            falseInput_tokenConsumptionRate.setToken(new IntToken(0));
+            control_tokenConsumptionRate.setToken(new IntToken(1));
         }
         return super.postfire();
     }

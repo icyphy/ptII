@@ -73,10 +73,10 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        inputTokenConsumptionRate =
+        input_tokenConsumptionRate =
             new Parameter(input, "tokenConsumptionRate");
-        inputTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
-        inputTokenConsumptionRate.setTypeEquals(new ArrayType(BaseType.INT));
+        input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        input_tokenConsumptionRate.setTypeEquals(new ArrayType(BaseType.INT));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -85,7 +85,7 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
     /** This parameter provides token consumption rate for each input
      *  channel.
      */
-    public Parameter inputTokenConsumptionRate;
+    public Parameter input_tokenConsumptionRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -102,7 +102,7 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
         for (int i = 1; i < input.getWidth(); i++) {
             rates[i] = new IntToken(0);
         }
-        inputTokenConsumptionRate.setToken(new ArrayToken(rates));
+        input_tokenConsumptionRate.setToken(new ArrayToken(rates));
     }
 
     /** Update rate parameter indicating the next input channel.
@@ -122,7 +122,7 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
             if ( i != currentInputPosition)
                 rates[i] = new IntToken(0);
         }
-        inputTokenConsumptionRate.setToken(new ArrayToken(rates));
+        input_tokenConsumptionRate.setToken(new ArrayToken(rates));
 
         return postfireReturn;
     }

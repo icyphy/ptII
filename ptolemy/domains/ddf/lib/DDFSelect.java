@@ -86,15 +86,15 @@ public class DDFSelect extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeAtLeast(input);
 
-        inputTokenConsumptionRate =
+        input_tokenConsumptionRate =
             new Parameter(input, "tokenConsumptionRate");
-        inputTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
-        inputTokenConsumptionRate.setTypeEquals(new ArrayType(BaseType.INT));
+        input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        input_tokenConsumptionRate.setTypeEquals(new ArrayType(BaseType.INT));
 
-        controlTokenConsumptionRate =
+        control_tokenConsumptionRate =
             new Parameter(control, "tokenConsumptionRate");
-        controlTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
-        controlTokenConsumptionRate.setTypeEquals(BaseType.INT);
+        control_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        control_tokenConsumptionRate.setTypeEquals(BaseType.INT);
 
         // Put the control input on the bottom of the actor.
         StringAttribute controlCardinal
@@ -117,10 +117,10 @@ public class DDFSelect extends TypedAtomicActor {
     public TypedIOPort output;
     /** This parameter provides token consumption rate for input.
      */
-    public Parameter inputTokenConsumptionRate;
+    public Parameter input_tokenConsumptionRate;
     /** This parameter provides token consumption rate for control.
      */
-    public Parameter controlTokenConsumptionRate;
+    public Parameter control_tokenConsumptionRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -176,8 +176,8 @@ public class DDFSelect extends TypedAtomicActor {
         for (int i = 0; i < input.getWidth(); i++) {
             rates[i] = new IntToken(0);
         }
-        inputTokenConsumptionRate.setToken(new ArrayToken(rates));
-        controlTokenConsumptionRate.setToken(new IntToken(1));
+        input_tokenConsumptionRate.setToken(new ArrayToken(rates));
+        control_tokenConsumptionRate.setToken(new IntToken(1));
     }
 
     /** Update rate parameters for the next iteration.
@@ -192,15 +192,15 @@ public class DDFSelect extends TypedAtomicActor {
                 rates[i] = new IntToken(0);
             }
             rates[_control] = new IntToken(1);
-            inputTokenConsumptionRate.setToken(new ArrayToken(rates));
-            controlTokenConsumptionRate.setToken(new IntToken(0));
+            input_tokenConsumptionRate.setToken(new ArrayToken(rates));
+            control_tokenConsumptionRate.setToken(new IntToken(0));
         } else {
             Token[] rates = new IntToken[input.getWidth()];
             for (int i = 0; i < input.getWidth(); i++) {
                 rates[i] = new IntToken(0);
             }
-            inputTokenConsumptionRate.setToken(new ArrayToken(rates));
-            controlTokenConsumptionRate.setToken(new IntToken(1));
+            input_tokenConsumptionRate.setToken(new ArrayToken(rates));
+            control_tokenConsumptionRate.setToken(new IntToken(1));
         }
         return super.postfire();
     }
