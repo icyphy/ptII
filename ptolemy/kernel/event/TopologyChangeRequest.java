@@ -26,7 +26,6 @@
 
 @ProposedRating Red (johnr@eecs.berkeley.edu)
 @AcceptedRating Red
-@AcceptedRating Red
 */
 
 package ptolemy.kernel.event;
