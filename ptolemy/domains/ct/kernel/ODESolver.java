@@ -44,25 +44,27 @@ director, but solvers may provide support for it.
 How the states are resolved and how the errors are controlled are
 solver dependent.  Derived classes
 may implement these methods according to individual ODE
-solving algorithm.
+solving algorithms.
 <P>
 The behavior of integrators also changes
 when changing ODE solver, so this class provides some methods
 for the integrators too, including the fire() method and the step size
-control related methods. CTBaseIntegrator delegated its corresponding
-methods to this class.
+control related methods. Here we use the strategy and delegation design 
+patterns. CTBaseIntegrator delegated its corresponding
+methods to this class. And subclasses of this class provide concrete
+implementations of these methods.
 <P>
 An integer called "round" is used to indicate the number of firing rounds
-within one iteration. For some integration method, (i.e. the so called
+within one iteration. For some integration methods, (i.e. the so called
 explicit methods) the round of firings are fixed.
 For some others (i.e. implicit methods), the round could be an arbitrary
 possitive integer.
 <P>
 A round counter is a counter
 for the number of fire() rounds in one iteration to help the actors that
-may behaves differently under different rounds. The round can be get by
-the getRound() method. The incrRound() method will increase the counter by one,
-and resetRound() will always reset the counter to 0.
+may behave differently under different rounds. The round can be got by
+the getRound() method. The incrementRound() method will increase the 
+counter by one, and resetRound() will always reset the counter to 0.
 <P>
 Conceptually, ODE solvers do not maintain simulation parameters,
 like step sizes and error tolerance.
@@ -79,17 +81,6 @@ public abstract class ODESolver extends NamedObj {
      */
     public ODESolver() {
         super();
-    }
-
-    /** Construct a solver in the default workspace with the given name.
-     *  If the name argument is null, then the name is set to the empty
-     *  string. The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  @param name Name of this solver.
-     *  @exception IllegalActionException If the name has a period.
-     */
-    public ODESolver(String name) throws IllegalActionException {
-        super(name);
     }
 
     /** Construct a solver in the given workspace with a null string name.
@@ -144,20 +135,20 @@ public abstract class ODESolver extends NamedObj {
         _round ++ ;
     }
 
-    /** Abstract method returns the number of auxiliary variable number
+    /** Return the number of auxiliary variable number
      *  needed by the
      *  integrators when solving the ODE.
      *  @return The number of auxiliary variables
      */
     public abstract int getIntegratorAuxVariableCount();
 
-    /** Abstract method returns the number of history information needed
+    /** Return the number of history information needed
      *  by this solver.
      *  @return The number of history information needed.
      */
     public abstract int getHistoryCapacityRequirement();
 
-    /** The fire method of the integrator is delegated to this method.
+    /** The fire method of integrators is delegated to this method.
      *
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -166,7 +157,7 @@ public abstract class ODESolver extends NamedObj {
     public abstract void integratorFire(CTBaseIntegrator integrator)
             throws  IllegalActionException;
 
-    /** The isThisStepAccurate() method of the integrator is delegated to
+    /** The isThisStepAccurate() method of integrators is delegated to
      *  this method. It returns true if the current integration step 
      *  is accurate from the argument integrator's point of view.
      *  @param integrator The integrator of that calls this method.
@@ -192,8 +183,9 @@ public abstract class ODESolver extends NamedObj {
     /** Return true if the state of the system is resolved successfully.
      *  Different solvers may implement it differently.
      *
-     * @exception IllegalActionException Not thrown in this base class.
-     * May be needed by the derived class.
+     * @exception IllegalActionException 
+     * May be thrown by derived classes if the exception is thrown by
+     * one of the execution methods of some actors.
      */
     public abstract boolean resolveStates() throws IllegalActionException;
 

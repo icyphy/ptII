@@ -73,13 +73,7 @@ public class BackwardEulerSolver extends FixedStepSolver
      *  the workspace. Increment the version number of the workspace.
      */
     public BackwardEulerSolver() {
-        super();
-        try {
-            setName(_DEFAULT_NAME);
-        } catch (KernelException e) {
-            // this should never happen.
-            throw new InternalErrorException(e.toString());
-        }
+        this(null);
     }
 
     /** Construct a solver in the given workspace with the name 
@@ -96,7 +90,7 @@ public class BackwardEulerSolver extends FixedStepSolver
             setName(_DEFAULT_NAME);
         } catch (KernelException e) {
             // this should never happen.
-            throw new InternalErrorException(e.toString());
+            throw new InternalErrorException(e.getMessage());
         }
     }
 
