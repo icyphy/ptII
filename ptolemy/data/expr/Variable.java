@@ -1232,7 +1232,7 @@ public class Variable extends Attribute implements Typeable {
 	}
 
 	///////////////////////////////////////////////////////////////
-	////                       public methods                  ////
+	////                       public inner methods            ////
 
 	/** Return this Variable.
 	 *  @return A Variable.
@@ -1302,7 +1302,7 @@ public class Variable extends Attribute implements Typeable {
         }
 
         ///////////////////////////////////////////////////////////////
-        ////                       private variable                ////
+        ////                       private inner variable          ////
 
         private Variable _variable = null;
     }
