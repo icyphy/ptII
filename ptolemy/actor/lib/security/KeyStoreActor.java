@@ -71,8 +71,11 @@ a public key signed with a self signed certificate, run:
 cd $PTII
 make ptKeystore
 </pre>
-which will create a keystore store password and key password is
-<code>this.is.not.secure,it.is.for.testing.only</code>
+which will create a keystore with a store password 
+of <code>this.is.the.storePassword,change.it</code>
+and key password of
+of <code>this.is.the.keyPassword,change.it</code>.
+
 <br>The alias of the certificate will be <code>claudius</code>
 
 <p>A keystore may have at most one type, which describes the format
@@ -106,7 +109,7 @@ the KeyStoreActor.
 <li>Generate keys using keytool, which is included
 in the JDK
 <pre>
-keytool -genkey -alias claudius -keystore $PTII/ptKeystore -keypass this.is.not.secure,it.is.for.testing.only -storepass this.is.not.secure,it.is.for.testing.only
+keytool -genkey -alias claudius -keystore $PTII/ptKeystore -keypass myKeyPassword -storepass myStorePassword
 </pre>
 You will be prompted for information about yourself.
 <li>Optional: Generate a Certificate Signing Request (CSR), send
@@ -114,7 +117,7 @@ it to your vendor and import the response.  Since we
 are using a self signed certificate, this step is option.
 <li> Export the certificate
 <pre>
-keytool -alias claudius -export -keystore $PTII/ptKeystore -keypass this.is.not.secure,it.is.for.testing.only -storepass this.is.not.secure,it.is.for.testing.only -file claudius.cer -rfc
+keytool -alias claudius -export -keystore $PTII/ptKeystore -keypass myKeyPassword -storepass myStorePassword -file claudius.cer -rfc
 </pre>
 <li> Send the output file (claudius.cer) to the recipient
 <li>Create a Ptolemy model that uses the
@@ -206,7 +209,7 @@ public class KeyStoreActor extends TypedAtomicActor {
                 keyPassword.setTypeEquals(BaseType.STRING);
                 keyPassword.setStringMode(true);
                 keyPassword.setExpression(
-                        "this.is.not.secure,it.is.for.testing.only");
+                        "this.is.the.keyPassword,change.it".);
 
                 // Add the possible keystore types.
                 keyStoreType = new StringParameter(this, "keyStoreType");
@@ -229,7 +232,8 @@ public class KeyStoreActor extends TypedAtomicActor {
                 storePassword = new PortParameter(this, "storePassword");
                 storePassword.setTypeEquals(BaseType.STRING);
                 storePassword.setStringMode(true);
-                storePassword.setExpression("this.is.not.secure,it.is.for.testing.only");
+                storePassword.setExpression(
+                        "this.is.the.storePassword,change.it".);
                 _storePassword = storePassword.getExpression();
             }
 
@@ -263,7 +267,7 @@ public class KeyStoreActor extends TypedAtomicActor {
     public StringParameter keyStoreType;
 
     /** The password to the Key.
-     *  The default password is "this.is.not.secure,it.is.for.testing.only".
+     *  The default password is "this.is.the.keyPassword,change.it".
      *  If the port is left unconnected, then the parameter value will be used.
      */
     public PortParameter keyPassword;
@@ -275,7 +279,7 @@ public class KeyStoreActor extends TypedAtomicActor {
     public StringParameter provider;
 
     /** The password to the KeyStore.
-     *  The default password is "this.is.not.secure,it.is.for.testing.only".
+     *  The default password is "this.is.the.storePassword,change.it".
      *  If the port is left unconnected, then the parameter value will be used.
      */
     public PortParameter storePassword;
@@ -311,7 +315,8 @@ public class KeyStoreActor extends TypedAtomicActor {
         }
     }
 
-    /**
+    /** Load the keystore for use by derived classes.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
         super.fire(); // Print debugging messages etc.
