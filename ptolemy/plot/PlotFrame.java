@@ -446,13 +446,29 @@ public class PlotFrame extends JFrame {
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
-            if (actionCommand.equals("Open")) _open();
-            else if (actionCommand.equals("Save")) _save();
-            else if (actionCommand.equals("SaveAs")) _saveAs();
-            else if (actionCommand.equals("Export")) _export();
-            else if (actionCommand.equals("Print")) _print();
-            else if (actionCommand.equals("Close")) _close();
+	    try {
+		if (actionCommand.equals("Open")) {
+		    _open();
+		} else if (actionCommand.equals("Save")) {
+		    _save();
+		} else if (actionCommand.equals("SaveAs")) {
+		    _saveAs();
+		} else if (actionCommand.equals("Export")) {
+		    _export();
+		} else if (actionCommand.equals("Print")) {
+		    _print();
+		} else if (actionCommand.equals("Close")) {
+		    _close();
+		}
+	    } catch (Exception exception) {
+		// If we do not catch exceptions here, then they
+		// disappear to stdout, which is bad if we launched
+		// where there is no stdout visible.
+                JOptionPane.showMessageDialog(null,
+                        "File Menu Exception:\n" + exception.toString(),
+                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
 
+	    }
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
@@ -462,8 +478,16 @@ public class PlotFrame extends JFrame {
 
     class FormatListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            _editFormat();
-
+	    try {
+		_editFormat();
+	    } catch (Exception exception) {
+		// If we do not catch exceptions here, then they
+		// disappear to stdout, which is bad if we launched
+		// where there is no stdout visible.
+                JOptionPane.showMessageDialog(null,
+                        "Format Exception:\n" + exception.toString(),
+                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+	    }
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
@@ -475,22 +499,30 @@ public class PlotFrame extends JFrame {
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
-            if (actionCommand.equals("About")) {
-                _about();
-            } else if (actionCommand.equals("Help")) {
-                _help();
-            } else if (actionCommand.equals("Fill")) {
-                plot.fillPlot();
-            } else if (actionCommand.equals("Reset axes")) {
-                plot.resetAxes();
-            } else if (actionCommand.equals("Clear")) {
-                plot.clear(false);
-                plot.repaint();
-            } else if (actionCommand.equals("Sample plot")) {
-                plot.clear(true);
-                samplePlot();
-            }
-
+	    try {
+		if (actionCommand.equals("About")) {
+		    _about();
+		} else if (actionCommand.equals("Help")) {
+		    _help();
+		} else if (actionCommand.equals("Fill")) {
+		    plot.fillPlot();
+		} else if (actionCommand.equals("Reset axes")) {
+		    plot.resetAxes();
+		} else if (actionCommand.equals("Clear")) {
+		    plot.clear(false);
+		    plot.repaint();
+		} else if (actionCommand.equals("Sample plot")) {
+		    plot.clear(true);
+		    samplePlot();
+		}
+	    } catch (Exception exception) {
+		// If we do not catch exceptions here, then they
+		// disappear to stdout, which is bad if we launched
+		// where there is no stdout visible.
+                JOptionPane.showMessageDialog(null,
+                        "Special Menu Exception:\n" + exception.toString(),
+                        "Ptolemy Plot Error", JOptionPane.WARNING_MESSAGE);
+	    }
             // NOTE: The following should not be needed, but there jdk1.3beta
             // appears to have a bug in swing where repainting doesn't
             // properly occur.
