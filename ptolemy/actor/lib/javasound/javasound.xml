@@ -7,10 +7,76 @@
       <group>
   <doc>Audio actors</doc>
 
-<entity name="AudioSource" class="ptolemy.actor.lib.javasound.AudioSource">
+<entity name="AudioCapture" class="ptolemy.actor.lib.javasound.AudioCapture">
+     <property name="sampleRate">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="8000" value="8000"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="11025" value="11025"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="22050" value="22050"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="44100" value="44100"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="48000" value="48000"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
+     <property name="bitsPerSample">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="8" value="8"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="16" value="16"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
+     <property name="channels">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="1" value="1"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="2" value="2"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
 </entity>
 
-<entity name="AudioSink" class="ptolemy.actor.lib.javasound.AudioSink">
+<entity name="AudioReader" class="ptolemy.actor.lib.javasound.AudioReader">
+</entity>
+
+<entity name="AudioPlayer" class="ptolemy.actor.lib.javasound.AudioPlayer">
+     <property name="sampleRate">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="8000" value="8000"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="11025" value="11025"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="22050" value="22050"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="44100" value="44100"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="48000" value="48000"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
+     <property name="bitsPerSample">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="8" value="8"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="16" value="16"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
+     <property name="channels">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="1" value="1"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="2" value="2"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
+</entity>
+
+<entity name="AudioWriter" class="ptolemy.actor.lib.javasound.AudioWriter">
 </entity>
 
       </group>

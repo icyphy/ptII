@@ -1,5 +1,4 @@
-/* An actor that writes input audio data to a sound file or plays
-the audio data.
+/* An actor that reads in audio samples and plays the audio data.
 
 @Copyright (c) 2000-2001 The Regents of the University of California.
 All rights reserved.
@@ -49,62 +48,43 @@ import java.util.Enumeration;
 
 import ptolemy.media.javasound.*;
 
-//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
 //// AudioPlayer
 /**
-Read audio samples from the input port and send the data to an
-appropriate sink (speaker or sound file). This actor can operate in
-two distinct modes: live playback, and record to a sound file. The
-input port is of type
-DoubleToken. Each DoubleToken read from the input represents one sample
-of the audio data and should be in the range [-1, 1]. Single channel
-(mono) and two channel (stereo) audio are supported. For single channel
-audio, tokens are read from channel 0 of the input port. For stereo
-, tokens are read from channel 0 (left) and channel 1
-(right) of the input port.
+This actor reads audio samples and plays them. Specifically, 
+the input stream that this actor reads is interpreted as 
+consisting of audio samples. This actor writes this stream 
+of audio samples to the audio output port of the computer, 
+which typically consists of the computer speaker of the 
+headphones output. The audio samples that are supplied to 
+this actor should be doubles in the range [-1.0, 1.0]. Thus, 
+the input port of this actor is of type DoubleToken. Any input 
+tokens that are outside of the valid range will be hard-clipped 
+to fall within the range [-1.0, 1.0] before they are written
+ to the audio output port of the computer.
 <p>
-<h2>Notes on audio sinks and required parameters</h2>
-<p>(1) Using live playback mode.
-<p>
-When this actor is in "live playback mode", this actor should
-be fired often enough (by invoking postfire() or iterate()) to
+This actor should
+be fired often enough to
 prevent underflow of the internal audio playback buffer.
 Underflow should be avoided, since it will result in audio
 discontinuities (heard as clicks) in the output.
 <p>
-The following parameters are relevant to live playback mode, and
+The following parameters
 should be set accordingly. In all cases, an exception is thrown if
-an illegal parameter value is used:
-<ul>
-<li><i>sampleRate</i> should be set to desired sample rate, in Hz. The
-DoubleTokens read in by this actor will be interpreted as having
-this sample rate. The default value is 8000.
-<li><i>sampleSizeInBits</i> should be set to desired bit
-resolution. The default value is 16.
-<li><i>channels</i> should be set to desired number of audio
-channels. Allowable values are 1 and 2. The default value is 1.
-<li><i>bufferSize</i> may be set to optimize latency. A particular
-Java implementation may choose to ignore this parameter, however.
-This controls the delay from the time audio sample are read by this
-actor until the audio is actually heard at the speaker. A lower
-bound on the latency is given by
-(<i>bufferSize</i> / <i>sampleRate</i>) seconds.
-Ideally, the smallest value that gives acceptable performance (no underflow)
-should be used.
-</ul>
-<p>(2) Write to a sound file on the native file system.
+an illegal parameter value is used. Note that these parameters may 
+not be changed while audio capture is active. A future version 
+of this actor may support parameter changes while audio capture
+is active.
 <p>
-The following parameters are relevant to writing to a sound
-file. In all cases, an
-exception is thrown if an illegal parameter value is used:
 <ul>
+<li><i>sampleRate</i> should be set to desired sample rate, in Hz.
+The default value is 8000. Allowable values are 8000, 11025, 
+22050, 44100, and 48000 Hz.
+<li><i>bitsPerSample</i> should be set to desired bit
+resolution. The default value is 16. Allowable values are 8 and 16.
 <li><i>channels</i> should be set to desired number of audio
-channels. Allowable values are 1 and 2. The default value is 1.
-<li><i>sampleRate</i> should be set to desired sample rate, in Hz. The
-DoubleTokens read in by this actor will be interpreted as having
-this sample rate. The default value is 8000.
-<li><i>sampleSizeInBits</i> should be set to desired bit
-resolution. The default value is 16.
+channels. Allowable values are 1 (for mono) and 2 (for stereo). 
+The default value is 1.
 </ul>
 <p>
 Note: Requires Java 2 v1.3.0 or later.
@@ -159,64 +139,40 @@ public class AudioPlayer extends Sink {
     ////                     ports and parameters                  ////
 
     /** The desired sample rate to use, in Hz. Valid values
-     *  are determined by the hardware, but typically at
-     *  least include : 8000, 11025, 22050, 44100, and 48000.
-     *  The default value of the sample rate is 8000 Hz.
+     *  are dependent on the audio hardware (sound card), but typically
+     *  include at least 8000, 11025, 22050, 44100, and 48000. The
+     *  default value of the sample rate is 8000 Hz.
      *  <p>
-     *  It is safe to change this parameter during execution.
-     *  However, doing so in file writing mode will cause all data
-     *  saved up until the change to be lost. If this
-     *  actor is used simultaneously with an AudioPlayer actor, it is
-     *  recommended that the same sample rate be used for both actors,
+     *  If this
+     *  actor is used simultaneously with an AudioCapture actor,
+     *  the same sample rate must be used for both actors,
      *  since most sound cards require the capture and playback rates
      *  to be the same.
      *  <p>
-     *  An exception will be thrown if an illegal value is used.
+     *  An exception will be occur if this parameter is set to an
+     *  unsupported sample rate.
      */
     public Parameter sampleRate;
 
-    /** The desired number of bits per sample.
-     *  The default value is 16. Allowed values are determined
-     *  by the hardware and Java implementation, but typically at
-     *  least include 8 and 16 bits.
+    /** The number desired number of bits per sample.
+     *  Allowed values are dependent
+     *  on the audio hardware, but typically at least include
+     *  8 and 16. The default value is 16.
      *  <p>
-     *  It is safe to change this parameter during execution.
-     *  However, doing so in file writing mode will cause all data
-     *  saved up until the change to be lost.
-     *  <p>
-     *  An exception will be thrown if an illegal value is
-     *  used.
+     *  An exception will occur if this parameter is set to an
+     *  unsupported sample size.
      */
     public Parameter bitsPerSample;
 
-    /** The number of audio channels to use. This value must
-     *  a positive integer. Allowed values are dependent on hardware
-     *  and the Java implementation, but typically at least include
-     *  1 (single channel) and 2 (stereo). The default value is 1.
+    /** The number of audio channels to use. . Valid values
+     *  are dependent on the audio hardware (sound card), but typically
+     *  at least include 1 (for mono) and 2 (for stereo). The
+     *  default value is 1.
      *  <p>
-     *  It is safe to change this parameter during execution.
-     *  However, doing so in file writing mode will cause all data
-     *  saved up until the sample rate change to be lost.
-     *  <p>
-     *  An exception will be thrown if an illegal value is used.
+     *  An exception will occur if this parameter is set to an
+     *  an unsupported channel number.
      */
     public Parameter channels;
-
-    /** Requested size of the internal audio playback buffer, in samples.
-     *  This parameter controls the output latency. Ideally, the
-     *  smallest value that gives acceptable performance (no overflow)
-     *  should be used. The default value is 4096.
-     *  This parameter is taken as a hint and a Java implementation may
-     *  choose to ignore it.
-     *  <p>
-     *  This parameter has no effect when the audio data is only
-     *  saved to a file.
-     *  <p>
-     *  It is safe to change this parameter during execution.
-     *  However, doing so in file writing mode will cause all data
-     *  saved up until the change to be lost.
-     */
-    public Parameter bufferSize;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -256,9 +212,9 @@ public class AudioPlayer extends Sink {
 		_audioPutArray[i] = new double[_putSampleSize];
 	    }
 	}  else if (attribute == sampleRate) {
-	    // Nothing for now...
+	    // _initializePlayback will handel this.
 	} else if (attribute == bitsPerSample) {
-	    // Nothing for now...
+	    // _initializePlayback will handel this.
 	} else {
 	    super.attributeChanged(attribute);
 	    return;
@@ -455,11 +411,21 @@ public class AudioPlayer extends Sink {
 	int bitsPerSampleInt =
 	    ((IntToken)bitsPerSample.getToken()).intValue();
 	int channelsInt = ((IntToken)channels.getToken()).intValue();
-	LiveSound.setSampleRate(sampleRateInt);
-	LiveSound.setBitsPerSample(bitsPerSampleInt);
-	LiveSound.setChannels(channelsInt);
-	LiveSound.setBufferSize(4096);
-	LiveSound.setTransferSize(_putSampleSize);
+	if (LiveSound.getSampleRate() != sampleRateInt) {
+	    LiveSound.setSampleRate(sampleRateInt);
+	}
+	if (LiveSound.getBitsPerSample() != bitsPerSampleInt) {
+	    LiveSound.setBitsPerSample(bitsPerSampleInt);
+	}
+	if (LiveSound.getChannels() != channelsInt) {
+	    LiveSound.setChannels(channelsInt);
+	}
+	if (LiveSound.getBufferSize() != 4096) {
+	    LiveSound.setBufferSize(4096);
+	}
+	if (LiveSound.getTransferSize() != _putSampleSize) {
+	    LiveSound.setTransferSize(_putSampleSize);
+	}
 	try {
 	    // Start audio playback.
 	    LiveSound.startPlayback(this);
@@ -486,5 +452,6 @@ public class AudioPlayer extends Sink {
     // at a time = 1/putFactor.
     private int _putFactor;
     private boolean _safeToInitialize = false;
+    //private boolean _debugInfo = true;
     private boolean _debugInfo = false;
 }

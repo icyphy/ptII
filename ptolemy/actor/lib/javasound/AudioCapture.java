@@ -66,15 +66,14 @@ is DoubleToken.
 The following parameters
 should be set accordingly. In all cases, an exception is thrown if
 an illegal parameter value is used. Note that these parameters may 
-be changed while audio playback is active. This will be the case 
-if this actor is used with an AudioPlayer actor. A future version 
+not be changed while audio playback is active. A future version 
 of this actor may support parameter changes while audio playback 
 is active.
 <ul>
 <li><i>sampleRate</i> should be set to desired sample rate, in Hz.
 The default value is 8000. Allowable values are 8000, 11025, 
 22050, 44100, and 48000 Hz.
-<li><i>sampleSizeInBits</i> should be set to desired bit
+<li><i>bitsPerSample</i> should be set to desired bit
 resolution. The default value is 16. Allowable values are 8 and 16.
 <li><i>channels</i> should be set to desired number of audio
 channels. The default value is 1 (for mono audio). Allowable 
@@ -132,7 +131,7 @@ public class AudioCapture extends Source {
      *  default value of the sample rate is 8000 Hz.
      *  <p>
      *  If this
-     *  actor is used simultaneously with an AudioSink actor, it is
+     *  actor is used simultaneously with an AudioPlayer actor,
      *  the same sample rate must be used for both actors,
      *  since most sound cards require the capture and playback rates
      *  to be the same.
@@ -172,10 +171,10 @@ public class AudioCapture extends Source {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	if(_debugging) _debug("AudioCapture: attributeChanged() invoked on: " +
-                attribute.getName());
-	//System.out.println("AudioCapture: attributeChanged() invoked on: " +
-	//	      attribute.getName());
+	if (_debugInfo) {
+	    System.out.println("AudioCapture: attributeChanged() invoked on: " +
+			       attribute.getName());
+	}
 	if (attribute == channels) {
 	    _channels =
                 ((IntToken)channels.getToken()).intValue();
@@ -186,9 +185,9 @@ public class AudioCapture extends Source {
                         "positive integer.");
 	    }
 	}  else if (attribute == sampleRate) {
-	    // Nothing for now...
+	    // _initializeCapture() will handle this.
 	} else if (attribute == bitsPerSample) {
-	    // Nothing for now...
+	    // _initializeCapture() will handle this.
 	} else {
 	    super.attributeChanged(attribute);
 	    return;
@@ -204,8 +203,9 @@ public class AudioCapture extends Source {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	if(_debugging) _debug("AudioCapture: initialize(): invoked");
-	//System.out.println("AudioCapture: initialize(): invoked");
+	if (_debugInfo) {
+	    System.out.println("AudioCapture: initialize(): invoked");
+	}
 	_initializeCapture();
 	_safeToInitialize = true;
 	_haveASample = false;
@@ -238,8 +238,10 @@ public class AudioCapture extends Source {
     public int iterate(int count) throws IllegalActionException {
 	// Note: If audio is read from file and file channels < parameter
 	// channels => exception thrown.
-	//System.out.println("AudioCapture: iterate(): invoked with count = " +
-	//		   count);
+	if (_debugInfo) {
+	    System.out.println("AudioCapture: iterate(): invoked with count = " +
+			       count);
+	}
 	// Check if we need to reallocate the output token array.
 	if (count > _audioSendArray.length) {
 	    _audioSendArray = new DoubleToken[count];
@@ -334,8 +336,9 @@ public class AudioCapture extends Source {
      *  in the capturing process.
      */
     public void wrapup() throws IllegalActionException {
-	if(_debugging) _debug("AudioCapture: wrapup(): invoked");
-	//System.out.println("AudioCapture: wrapup(): invoked");
+	if (_debugInfo) {
+	    System.out.println("AudioCapture: wrapup(): invoked");
+	}
 	// Stop capturing audio.
 	if (LiveSound.isCaptureActive()) {
 	    try {
@@ -363,7 +366,9 @@ public class AudioCapture extends Source {
     private synchronized void _initializeCapture() throws IllegalActionException {
 	// Stop playback, if necessary. If we were writing to a sound
 	// file, this will save it.
-	//System.out.println("AudioCapture: _initializeCapture() invoked.");
+	if (_debugInfo) {
+	    System.out.println("AudioCapture: _initializeCapture() invoked.");
+	}
 	if (LiveSound.isCaptureActive()) {
 	    try {
 		LiveSound.stopCapture(this);
@@ -383,19 +388,27 @@ public class AudioCapture extends Source {
 	int channelsInt =
 	    ((IntToken)channels.getToken()).intValue();
 	
-	
-	LiveSound.setSampleRate((float)sampleRateInt);
-	LiveSound.setBitsPerSample(bitsPerSampleInt);
-	LiveSound.setChannels(channelsInt);
+	if (LiveSound.getSampleRate() != sampleRateInt) {
+	    LiveSound.setSampleRate(sampleRateInt);
+	}
+	if (LiveSound.getBitsPerSample() != bitsPerSampleInt) {
+	    LiveSound.setBitsPerSample(bitsPerSampleInt);
+	}
+	if (LiveSound.getChannels() != channelsInt) {
+	    LiveSound.setChannels(channelsInt);
+	}
 	// Set the buffer size to 4096 samples per channel.
 	// This affects the latency. We hide this from the
 	// user for simplicity, and because low-latency
 	// operation is not possible under Java anyway.
-	LiveSound.setBufferSize(4096);
+	if (LiveSound.getBufferSize() != 4096) {
+	    LiveSound.setBufferSize(4096);
+	}
 	// Set the size of the array that is returned by
 	// LiveSound.getSamples().
-	LiveSound.setTransferSize(64);
-	    
+	if (LiveSound.getTransferSize() != 128) {
+	LiveSound.setTransferSize(128);
+	}
 	    
 	try {
 	    // Start capturing audio.
@@ -419,4 +432,6 @@ public class AudioCapture extends Source {
     // at a time = 1/getFactor.
     private int _getFactor;
     private boolean _safeToInitialize = false;
+    //private boolean _debugInfo = true;
+    private boolean _debugInfo = false;
 }
