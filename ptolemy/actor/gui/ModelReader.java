@@ -1,4 +1,4 @@
-/* Interface for objects that can read models from an input stream.
+/* An object that can read models from a URL.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -31,6 +31,13 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLParser;
+
 import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -38,33 +45,51 @@ import java.net.URL;
 //////////////////////////////////////////////////////////////////////////
 //// ModelReader
 /**
-Interface for objects that can read models from an input stream.
-An application will typically have one object that implements this
-interface, and will register that object with the ModelDirectory.
-Then whenever the occasion arises to create a model by reading a file
-or a URL, the actual reading is delegated to the ModelDirectory, which
-will delegate to the registered object that implements this interface.
-Typically, the application class itself will implement this interface.
-For example, MoMLApplication and PtolemyApplication implement this
-interface.
+An object that can read models from a URL.
+An application contains one instance of this class, and delegates
+reading URLs to that instance.  The application is responsible for
+registering the model with the ModelDirectory.
 
 @author Edward A. Lee
 @version $Id$
+@see Application
 @see ModelDirectory
-@see MoMLApplicatoin
-@see PtolemyApplication
 */
-public interface ModelReader {
+public class ModelReader extends CompositeEntity {
+
+    /** Create a new reader in the specified container with the specified
+     *  name.
+     *  @param container The container.
+     *  @param name The name of this reader within the container.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
+    public ModelReader(Application container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read the specified input URL.
+    /** Read the specified input URL, and return an instance of ModelProxy
+     *  for the data at that URL.  The instance of ModelProxy is created
+     *  in the same workspace as this model reader, but it is not given
+     *  a name.
      *  @param base The base for relative file references, or null if
      *   there are no relative file references.
-     *  @param in The input.
+     *  @param in The input URL.
      *  @param key The key to use to uniquely identify the model.
-     *  @exception IOException If the stream cannot be read.
+     *  @exception Exception If the stream cannot be read.
      */
-    public void read(URL base, URL in, String key) throws IOException;
+    public ModelProxy read(URL base, URL in, String key) throws Exception {
+        MoMLParser parser = new MoMLParser(new Workspace(), null);
+        NamedObj toplevel = parser.parse(base, in.openStream());
+        // Create a proxy for the model.
+        PtolemyModelProxy proxy = new PtolemyModelProxy(workspace());
+        proxy.setModel(toplevel);
+        return proxy;
+    }
 }

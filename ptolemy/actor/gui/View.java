@@ -172,6 +172,12 @@ public class View extends ComponentEntity {
         _master = flag;
     }
 
+    /** Make this view visible by raising or deiconifying it.
+     */
+    public void show() {
+        getFrame().toFront();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

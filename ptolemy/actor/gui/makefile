@@ -51,7 +51,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	CompositeActorApplication.java \
 	Configurer.java \
 	DebugListenerView.java \
 	Documentation.java \
@@ -63,7 +62,6 @@ JSRCS = \
 	ModelProxy.java \
 	ModelReader.java \
 	MoMLApplet.java \
-	MoMLApplication.java \
 	Placeable.java \
 	PtolemyApplet.java \
 	PtolemyApplication.java \

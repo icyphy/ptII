@@ -33,6 +33,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.actor.CompositeActor;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
@@ -67,7 +68,12 @@ public class RunView extends View {
 		   String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
-	ModelFrame frame = new RunFrame(container.getModel());
+        NamedObj model = container.getModel();
+        if (!(model instanceof CompositeActor)) {
+            throw new IllegalActionException(this,
+            "Cannot run a model that is not a CompositeActor.");
+        }
+	ModelFrame frame = new RunFrame((CompositeActor)model);
 	frame.setBackground(BACKGROUND_COLOR);
 	setFrame(frame);
 	frame.setVisible(true);

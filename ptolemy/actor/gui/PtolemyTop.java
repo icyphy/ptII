@@ -95,13 +95,14 @@ public abstract class PtolemyTop extends Top {
      *  to ensure that the preferred view of the model is opened, and
      *  that a model is not opened more than once.
      *  @param url The URL to read.
-     *  @exception IOException If the URL cannot be read.
+     *  @exception Exception If the URL cannot be read.
      */
-    protected void _read(URL url) throws IOException {
+    protected void _read(URL url) throws Exception {
         // NOTE: Used to use for the first argument the following, but
         // it seems to not work for relative file references:
         // new URL("file", null, _directory.getAbsolutePath()
-        ModelDirectory.openModel(url, url, url.toExternalForm());
+        Application application = (Application)_view.toplevel();
+        application.openModel(url, url, url.toExternalForm());
     }
 
     /** Query the user for a filename and save the model to that file.
@@ -132,7 +133,7 @@ public abstract class PtolemyTop extends Top {
             try {
 		String newKey = file.toURL().toExternalForm();
 		ModelProxy proxy = (ModelProxy)getView().getContainer();
-	        Parameter id = (Parameter)proxy.getAttribute("ID");
+	        Parameter id = (Parameter)proxy.getAttribute("identifier");
 		id.setToken(new StringToken(newKey));
 	    } catch (MalformedURLException ex) {
                 try {

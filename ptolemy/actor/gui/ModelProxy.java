@@ -35,6 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import javax.swing.JFrame;
@@ -55,6 +56,14 @@ This is intended to be used in a user interface model.
 */
 public class ModelProxy extends CompositeEntity {
 
+    /** Create a new proxy in the specified workspace with an empty string
+     *  for its name.
+     *  @param workspace The workspace for this proxy.
+     */
+    public ModelProxy(Workspace workspace) {
+	super(workspace);
+    }
+
     /** Construct a view with the given name contained by the specified
      *  ModelDirectory. The view will act on the given model.  
      *  The container argument must not be null, or a
@@ -70,11 +79,13 @@ public class ModelProxy extends CompositeEntity {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public ModelProxy(ModelDirectory container,
-		String name)
+    public ModelProxy(ModelDirectory container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Override the base class so that views contained within this object
      *  are removed before the model is removed from the ModelDirectory.
@@ -109,6 +120,20 @@ public class ModelProxy extends CompositeEntity {
 		"instance of ModelDirectory");
 	}
     }
+
+    /** Make all views associated with this model visible by raising
+     *  or deiconifying them.
+     */
+    public void showViews() {
+        Iterator views = entityList(View.class).iterator();
+        while(views.hasNext()) {
+            View view = (View)views.next();
+            view.show();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Remove the specified entity. This method should not be used
      *  directly.  Call the setContainer() method of the entity instead with

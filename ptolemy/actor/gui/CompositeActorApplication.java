@@ -1,4 +1,4 @@
-/* A Ptolemy application specified as an instance of CompositeActor.
+/* A Ptolemy application that instantiates classnames given on the command line.
 
  Copyright (c) 1999-2000 The Regents of the University of California.
  All rights reserved.
@@ -95,7 +95,8 @@ This currently does not happen.
 @author Edward A. Lee, Brian K. Vogel, and Steve Neuendorffer
 @version $Id$
 */
-public class CompositeActorApplication implements ExecutionListener {
+public class CompositeActorApplication extends Application
+        implements ExecutionListener {
 
     /** Parse the command-line arguments, creating models as specified.
      *  Then execute each model that contains a manager.
@@ -133,22 +134,21 @@ public class CompositeActorApplication implements ExecutionListener {
     /** Create a new PtolemyModelProxy for the given model and add it
      *  model directory with the given name.  If the model has no manager,
      *  then create one.  Then register this object and a state reporter
-     *  as execution listeners.
-     *  A parameter with the name "ID" will get created in the proxy containing
-     *  a string token with the value given by id.
-     *  @param id The ID for the model.
+     *  as execution listeners. A parameter with the name "identifier"
+     *  will get created in the proxy containing a string token with 
+     *  the value given by id.
+     *  @param id The identifier for the model.
      *  @param model The model to add.
      *  @return The proxy for the model
      */
     public PtolemyModelProxy add(String id, CompositeActor model) 
 	throws IllegalActionException, NameDuplicationException {
 	// Create a proxy for the model.
-	// FIXME what to do with the damn name, which has a period in it?
 	PtolemyModelProxy proxy = 
 	    new PtolemyModelProxy(ModelDirectory.getInstance(), 
 	       ModelDirectory.getInstance().uniqueName("model"), model);
 
-	Parameter parameter = new Parameter(proxy, "ID");
+	Parameter parameter = new Parameter(proxy, "identifier");
 	parameter.setToken(new StringToken(id));
 	        
 	// Create a manager.
@@ -157,9 +157,8 @@ public class CompositeActorApplication implements ExecutionListener {
             try {
                 model.setManager(new Manager(model.workspace(), "manager"));
             } catch (IllegalActionException ex) {
-		// FIXME: rethrow a runtime exception?  This would seem to
-		// be an invariant failure.
-                // Ignore... can't attach a manager.
+                throw new InternalErrorException("Can't attach a manager! "
+                + ex.toString());
             }
             manager = model.getManager();
         }
@@ -224,23 +223,6 @@ public class CompositeActorApplication implements ExecutionListener {
      *  @param manager The manager calling this method.
      */
     public void managerStateChanged(Manager manager) {
-    }
-
-    /** Remove a model from this application.  If the model has a manager,
-     *  then deregister as an execution listener.  If there are no more
-     *  models, then exit the application.  If the model is not associated
-     *  with this application, then do nothing.
-     *  @param model The model to remove.
-     
-    public void remove(CompositeActor model) {
-        ModelDirectory.remove(model.getClass().getName());
-        Manager manager = model.getManager();
-        if (manager != null) {
-            manager.removeExecutionListener(this);
-        }
-        if (ModelDirectory.keySet().size() == 0) {
-            System.exit(0);
-        }
     }
 
     /** Report an exception.  This prints a message to the standard error
@@ -315,6 +297,9 @@ public class CompositeActorApplication implements ExecutionListener {
             }
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         inner classes                          ////
 
     public class StateReporter implements ExecutionListener {
 	/** Report that an execution error has occurred.  This method

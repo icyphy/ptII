@@ -29,11 +29,17 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.ComponentEntity;
 import ptolemy.actor.CompositeActor;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -59,88 +65,51 @@ for a MoML file that describes the model.
 */
 public class ModelDirectory extends CompositeEntity {
 
-    /** Construct a model directory
-     *  in the default workspace with an empty string
-     *  as its name. Add the entity to the workspace directory.
-     *  Increment the version number of the workspace.
+    /** Construct a model directory with the specified container and name.
+     *  @param container The application that contains this directory.
+     *  @param name The name of the directory.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.  This should not be thrown.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
      */
-    public ModelDirectory() {
-        super();
-    }
-
-    /** Construct a model directory in the specified workspace with an empty
-     *  string as a name. You can then change the name with setName().
-     *  If the workspace argument is null, then use the default workspace.
-     *  Add the entity to the workspace directory.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the entity.
-     */
-    public ModelDirectory(Workspace workspace) {
-	super(workspace);
+    public ModelDirectory(Application container, String name)
+            throws IllegalActionException, NameDuplicationException {
+	super(container, name);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the singleton instance of this class.
+    /** Get the model that corresponds to the specified identifier.
+     *  @param identifier The identifier for the model, such as a URL.
+     *  @return The model, or null if there is no such model in the directory.
      */
-    // FIXME this probably shouldn't be a singleton, but how else do we 
-    // get it?
-    public static ModelDirectory getInstance() {
-	return _instance;
-    }
-
-    /** If a view on a model with the specified name is present in this 
-     *  object, then find all the views of that model and make them 
-     *  visible; otherwise, read a model from the specified stream
-     *  and create a default view for the model and add the view 
-     *  to this directory.
-     *  If no model reader has been registered, then do nothing.
-     *  @param base The base for relative file references, or null if
-     *   there are no relative file references.
-     *  @param in The input stream.
-     *  @param name The name to use to uniquely identify the new model.
-     *  @exception IOException If the stream cannot be read.
-     */
-    // FIXME: consider adding policy for what the names are.
-    public static void openModel(URL base, URL in, String name)
-            throws IOException {
-        ModelProxy model = (ModelProxy)getInstance().getEntity(name);
-        if (model == null) {
-            if (_modelReader != null) {
-                _modelReader.read(base, in, name);
-            }
-        } else {
-	    // FIXME this logic should be abstracted.
-            // Model already exists.
-            Iterator entities =
-                   model.entityList().iterator();
-            while(entities.hasNext()) {
-		ModelProxy proxy = (ModelProxy)entities.next();
-		Iterator views = 
-		    model.entityList().iterator();
-		while(views.hasNext()) {
-		    View view = (View)views.next();
-		    // FIXME: Is this the right thing to do?
-		    view.getFrame().toFront();
-		}
+    public ModelProxy getModel(String identifier) {
+        Iterator entities = entityList(ModelProxy.class).iterator();
+        while (entities.hasNext()) {
+            ModelProxy entity = (ModelProxy)entities.next();
+            Parameter idParam = (Parameter)entity.getAttribute("identifier");
+            if (idParam != null) {
+                try {
+                    String id = ((StringToken)idParam.getToken()).stringValue();
+                    if (id.equals(identifier)) return entity;
+                } catch (IllegalActionException ex) {
+                    throw new InternalErrorException(
+                    "Can't get string value of identifier! " + ex.toString());
+                }
             }
         }
-    }
-
-    /** Specify the object to which reading of a model will be delegated.
-     *  @param reader The object that will handle reading a model.
-     */
-     public static void setModelReader(ModelReader reader) {
-        _modelReader = reader;
+        return null;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Remove the specified entity. This method should not be used
-     *  directly.  Call the setContainer() method of the entity instead with
-     *  a null argument.
+    /** Remove the specified entity, and if there are no more models
+     *  in the directory, then remove this directory from its container.
+     *  This method should not be used directly.  Call the setContainer()
+     *  method of the entity instead with a null argument.
      *  The entity is assumed to be contained by this composite (otherwise,
      *  nothing happens). This does not alter the entity in any way.
      *  This method is <i>not</i> synchronized on the workspace, so the
@@ -151,15 +120,12 @@ public class ModelDirectory extends CompositeEntity {
      */
     protected void _removeEntity(ComponentEntity entity) {
 	super._removeEntity(entity);
-	System.exit(0);
+        if (entityList().size() == 0) {
+            try {
+                setContainer(null);
+            } catch (KernelException ex) {
+                throw new InternalErrorException("Cannot remove directory!");
+            }
+        }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The model reader, if one has been registered.
-    private static ModelReader _modelReader = null;
-
-    // The singleton model directory
-    private static ModelDirectory _instance = new ModelDirectory();
 }

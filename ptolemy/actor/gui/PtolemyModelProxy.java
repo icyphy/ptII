@@ -29,9 +29,12 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.actor.CompositeActor;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
+
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -46,26 +49,44 @@ A proxy for a Ptolemy model in a ptolemy model of an application.
 */
 public class PtolemyModelProxy extends ModelProxy {
 
-    /** Create a new proxy for the given model with the given 
-     *  name.
+    /** Create a new proxy in the specified workspace with an empty string
+     *  for its name.
+     *  @param workspace The workspace for this proxy.
      */
-    public PtolemyModelProxy(ModelDirectory container,
-		   String name,
-		   CompositeActor model) 
+    public PtolemyModelProxy(Workspace workspace) {
+	super(workspace);
+    }
+
+    /** Create a new proxy for the given model with the given name.
+     *  @param container The directory that contains this proxy.
+     *  @param name The name of this proxy.
+     */
+    public PtolemyModelProxy(ModelDirectory container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
-	_model = model;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
     /** Return the ptolemy model proxied by this object.
+     *  @return The model, or null if none has been set.
      */
-    public CompositeActor getModel() {
+    public NamedObj getModel() {
 	return _model;
     }
 
-    private CompositeActor _model;
+    /** Set the ptolemy model proxied by this object.
+     *  @param model The model.
+     */
+    public void setModel(NamedObj model) {
+        _model = model;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    // The model associated with this proxy.
+    private NamedObj _model;
 }
 
