@@ -1,4 +1,4 @@
-# Makefile for Java plot program
+# Makefile for Java ptplot program
 #
 # @Authors: Christopher Hylands
 #
@@ -36,10 +36,10 @@ ROOT =		../..
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-JPACKAGE = 	plot
+JPACKAGE = 	ptplot
 JVERSION =	1.0
 JDIST =		$(JPACKAGE)$(JVERSION)
-JZIP =		plot/$(JPACKAGE).zip
+JZIP =		ptplot/$(JPACKAGE).zip
 
 DIRS = 	demo #test
 
