@@ -93,22 +93,17 @@ one casts a Fixpoint result into a Fixpoint with less precision.
 <p>
 
 The rounding of a Fixpoint can happen in different ways as defined by
-the <I>Overflow mode</I>. The following overflow modes can be
-selected.  
+the <I>Quantize mode</I>. The following quantization modes can be
+selected.
 
 <ul> 
 
-<li> <B>Saturate</B>: The value of the Fixpoint is set to either the
-maximum value or minimum value that can be expressed by the Fixpoint
-given it's precision.
+<li> <B>Saturate</B>: // FIXME
 
-<li> <B>Zero Saturate</B>:
-The value of the Fixpoint is set to zero on an overflow. 
+<li> <B>Rounding</B>: // FIXME
 
-<li> <B>Truncation</B>:
-
-The value of the Fixpoint is truncated by removing bits to fit the
-Fixpoint into it's new precision.
+<li> <B>Truncate</B>: The value of the Fixpoint is truncated by
+removing bits to fit the Fixpoint into it's new precision.
 
 </ul>
 
@@ -127,7 +122,7 @@ used to represents a value.
 The Fixpoint uses three innerclasses. It uses the <i>Fixvalue</i>
 innerclass to keep the BigInteger value and the state of the value
 together. The <i>Error</i> innerclass is used to get a type safe
-enumerations of the state a <i>Fixpoint</i> resides. The Overflow
+enumerations of the state a <i>Fixpoint</i> resides. The Quantize
 innerclass is used to get a type safe enumeration of the different
 modes of rounding.
 
@@ -164,11 +159,12 @@ public final class FixPoint implements Cloneable, Serializable {
      *  @param precision The precision of this Fixpoint.  
      *  @param value The value that will be represented by
      *  the fixpoint given the finite precision.  */
-    public FixPoint(String precision, String value) {
+    public FixPoint(String precision, String value, Quantize mode ) {
  	double tmpValue = (Double.valueOf(value)).doubleValue();
  	_initialize();
+        _mode = mode;
 	try {
-	    _precision = new Precision(precision);
+	    _precision = new Precision(precision);          
 	    _value     = _makeBits( tmpValue, _precision );
 	} catch (IllegalArgumentException e ) {
 	    throw new IllegalArgumentException(e.getMessage());
@@ -185,8 +181,9 @@ public final class FixPoint implements Cloneable, Serializable {
      *  @param precision The precision of the fixpoint.
      *  @param value The value that will be represented by the fixpoint 
      *  given the finite precision.  */
-    public FixPoint(String precision, double value) {
+    public FixPoint(String precision, double value, Quantize mode ) {
  	_initialize();
+        _mode = mode;
 	try {
 	    _precision = new Precision(precision);
 	    _value     = _makeBits( value, _precision );
@@ -254,7 +251,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	// Create a Fixvalue with the additional bits set
 	Fixvalue result = _makeBits( dz.doubleValue(), cp );
 	result.setError( _value.getError() );
-	result.setOverflow( _value.getOverflow() );
+	result.setQuantize( _value.getQuantize() );
 
 	// return the FixPoint with the correct precision and result
 	return new FixPoint(cp, result);
@@ -280,11 +277,12 @@ public final class FixPoint implements Cloneable, Serializable {
 	return _value.getErrorDescription();
     }
 
-    /** Get a description of the overflow mode of the Fixpoint 
-	@return The description of the overflow mode of the Fixpoint
+    /** Get a description of the quantization mode of the Fixpoint
+	@return The description of the quantization mode of the
+	Fixpoint
     */
-    public String getOverflowDescription() {
-	return _value.getOverflowDescription();
+    public String getQuantizeDescription() {
+	return _value.getQuantizeDescription();
     }
 
     /** Returns the precision of the Fixpoint.  
@@ -294,11 +292,11 @@ public final class FixPoint implements Cloneable, Serializable {
 	return _precision;
     }
 
-    /** Returns the overflow mode of the Fixpoint.  
-     *  @return the overflow mode of the Fixpoint.
+    /** Returns the quantization mode of the Fixpoint.  
+     *  @return the quantization mode of the Fixpoint.
      */
-    public Overflow getRoundingMode() {
-	return _value.getOverflow();
+    public Quantize getQuantizeMode() {
+	return _value.getQuantize();
     }
 
     /** Return a new Fixpoint number with value equal to the multiplication
@@ -352,7 +350,7 @@ public final class FixPoint implements Cloneable, Serializable {
     /** Return a new Fixpoint number scaled to the give precision. To
      *  fit the new precision, a rounding error can occur. In that
      *  case the value of the Fixpoint is determined, depending on the
-     *  overflow mode selected.  
+     *  quanitzation mode selected.  // FIXME Still correct?
      *  @param newprecision The new precision of the Fixpoint.  
      *  @return A new Fixpoint with the given precision.  
      */
@@ -364,10 +362,11 @@ public final class FixPoint implements Cloneable, Serializable {
     /** Return a new Fixpoint number scaled to the give precision
      *  given as a String. To fit the new precision, a rounding error
      *  can occur. In that case the value of the Fixpoint is
-     *  determined, depending on the overflow mode selected.  
-     @param precisionString String that gives the new precision of the 
-     Fixpoint.
-     @return A new Fixpoint with the given precision.  
+     *  determined, depending on the quantization mode selected.
+     *  @param precisionString String that gives the new precision of
+     *  the Fixpoint.  
+     *  @return A new Fixpoint with the given precision.
+     * // FIXME still correct
     */
     public FixPoint scaleToPrecision(String precisionString ) {
 	Precision newprecision = new Precision( precisionString );
@@ -376,27 +375,27 @@ public final class FixPoint implements Cloneable, Serializable {
     }
 
 
-    /** Set the overflow mode of the Fixpoint.  
-     *  @param overflow The overflow mode
+    /** Set the quantization mode of the Fixpoint.  
+     *  @param mode The quantization mode
      */
-    public void setRoundingMode(Overflow overflow) {
-	_value.setOverflow( overflow );
+    public void setQuantizationMode(Quantize mode ) {
+	_value.setQuantize( mode );
     }
 
     /** Set the overflow mode of the Fixpoint using a string. Added to
-     *  make testing easier 
+     *  make testing easier // FIXME still needed?
      @param name String describing the overflow mode */
     public void setRounding(String name) {
 	if ( name.compareTo("SATURATE")==0) {
-	    _value.setOverflow( SATURATE );
+	    _value.setQuantize( SATURATE );
 	    //System.out.println(" -- SATURATE --");
 	}
 	if ( name.compareTo("ZERO_SATURATE")==0) {
-	    _value.setOverflow( ZERO_SATURATE );
+	    _value.setQuantize( ROUND );
 	    //System.out.println(" -- ZERO SATURATE --");
 	}
 	if ( name.compareTo("TRUNCATE")==0) {
-	    _value.setOverflow( TRUNCATE );
+	    _value.setQuantize( TRUNCATE );
 	    //System.out.println(" -- TRUNCATE --");
 	}
     }
@@ -407,24 +406,23 @@ public final class FixPoint implements Cloneable, Serializable {
 
 
     /** Indicator that no overflow has occurred */
-    public final Error OVERFLOW   = new Error("Overflow Occurred");   
+    public static final Error OVERFLOW   = new Error("Quantize Occurred");   
 
     /** Indicator that an overflow has occurred */
-    public final Error NOOVERFLOW = new Error("No Overflow Occurred");
+    public static final Error NOOVERFLOW = new Error("No Quantize Occurred");
 
     /** Indicator that a rounding error has occurred */
-    public final Error ROUNDING   = new Error("Rounding Occurred");
+    public static final Error ROUNDING   = new Error("Rounding Occurred");
 
     /** Indicator to saturate the fixvalue, when an overflow occurs */
-    public final Overflow SATURATE = new Overflow("Saturate",0);
+    public static final Quantize SATURATE = new Quantize("Saturate",0);
 
+    /** Indicator to saturate the fixvalue to zero, when an overflow occurs */
+    public static final Quantize ROUND    = new Quantize("Round",1);
 
     /** Indicator to truncate the fixvalue, when an overflow occurs */
-    public final Overflow TRUNCATE = new Overflow("Truncated",2);
-    /** Indicator to saturate the fixvalue to zero, when an overflow occurs */
-    public final Overflow ZERO_SATURATE = new Overflow("Zero Saturate",1);
+    public static final Quantize TRUNCATE = new Quantize("Truncate",2);
     
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -459,7 +457,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	System.out.println (" scale Value (10) " + doubleValue() 
 			    + " Precision: " + _precision.toString() );
 	System.out.println (" Errors:     " + _value.getErrorDescription());
-	System.out.println (" Round Mode: " + _value.getOverflowDescription());
+	System.out.println (" Round Mode: " + _value.getQuantizeDescription());
 	System.out.println (" Max value:  " + _findMax( _precision ) );	
 	System.out.println (" Min value:  " + _findMin( _precision ) );
     }
@@ -480,7 +478,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	BigInteger arg = (_value.fixvalue).shiftLeft(delta);
 	
 	// return the Fixvalue with aligned value
-	return new Fixvalue( arg, _value.getError(), _value.getOverflow() );
+	return new Fixvalue( arg, _value.getError(), _value.getQuantize() );
     }
 
     /** Initialize the Fixpoint */
@@ -549,17 +547,37 @@ public final class FixPoint implements Cloneable, Serializable {
 
 	// Rounding is x - RESOLUTION ( x = negative  -0.9 - 0.25 > 1)
 	// double resolution = Math.pow(2,-(precision.getFractionBitLength()+1));// 
+
+	double resolution = 0;
 	int number = precision.getFractionBitLength();
-	double resolution = Math.pow(2,-(number+1));
-	double tmp = 1/(Math.pow(2,number) + 1.0 / Math.pow(2,number));
 
-	// Saturate
-	//double resolution = 0;
-	resolution = tmp;
+        switch( _mode.getInteger() ) {
+        case 0: //SATURATE
+            resolution = 0;
+            break;
 
-	System.out.println(" Resolution: " + resolution );
-	System.out.println(" tmp:        " + tmp );
-	BigDecimal multiplier;
+        case 1: //ROUND
+            resolution = Math.pow(2,-(number+1));
+            break;
+
+        case 2: //TRUNCATE
+            double tmp;
+            resolution = Math.pow(2,-(number+1));
+            tmp = 1/(Math.pow(2,number) + 1.0 / Math.pow(2,number));
+            if ( x >= 0 ) {
+                resolution = 0;
+            } else {
+                resolution = tmp;
+            }
+            break;
+
+        default: // ERROR
+            // throw new Error(" Unknown Quantizer! ");
+            break;
+
+        }
+        
+        BigDecimal multiplier;
 	if ( x >= 0 ) {
 	    multiplier = new BigDecimal( x + resolution );
 	} else {
@@ -567,8 +585,6 @@ public final class FixPoint implements Cloneable, Serializable {
 	}
 	BigDecimal kl = 
 		_twoRaisedTo[precision.getFractionBitLength()].multiply( multiplier );
-	// BigDecimal rounding = ( new BigDecimal( 0.25 ) ).multiply( multiplier );
-	// kl.subtract( rounding  );
 
 	// By going from BigDecimal to BigInteger, remove the fraction
 	// part introducing a quantization error.
@@ -576,11 +592,13 @@ public final class FixPoint implements Cloneable, Serializable {
 
 	return fxv;
     }
+
     /** Returns a Fixvalue which is a copy of the supplied Fixvalue,
-	but with it's precision scaled from the old precision to the new
-	precision. If the new Fixvalue cannot be contained by the new
-	precision, a rounding error occurs and depending on the overflow mode
-	selected, the appropriate Fixvalue is determined.
+	but with it's precision scaled from the old precision to the
+	new precision. If the new Fixvalue cannot be contained by the
+	new precision, a rounding error occurs and depending on the
+	quantization mode selected, the appropriate Fixvalue is
+	determined.
 	@param x Fixvalue that needs to be scaled 
 	@param oldprecision The old precision of the Fixvalue 
 	@param newprecision The new precision of the Fixvalue 
@@ -625,14 +643,14 @@ public final class FixPoint implements Cloneable, Serializable {
 	}
 	intResult = integerPart.scaleRight(delta);
 	
-	// Check if a Overflow took place
-	if ( intResult.getErrorDescription().compareTo("Overflow Occurred")==0 ) {
+	// Check if a Quantize took place
+	if ( intResult.getErrorDescription().compareTo("Quantize Occurred")==0 ) {
 	    // Create a new fractionpart
 	    fractionResult = new Fixvalue();
 	    fractionResult.setError( intResult.getError() );
 
 	    // Check how to resolve the rounding of the fractional part
-	    switch( intResult.getOverflow().getInteger() ) {
+	    switch( intResult.getQuantize().getInteger() ) {
 	    case 0: //SATURATE
 		BigInteger tmp = (_twoRaisedTo[newprecision.getFractionBitLength()]).toBigInteger();
 		fractionResult.fixvalue = tmp.subtract( BigInteger.ONE );
@@ -652,7 +670,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	    }
 	} else {
    
-	    // No Overflow took place, so know check Fractional Part
+	    // No Quantize took place, so know check Fractional Part
 	    a = oldprecision.getFractionBitLength();
 	    b = newprecision.getFractionBitLength();    
 	    delta = b-a;
@@ -668,7 +686,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	total = total.add( fractionResult.fixvalue );
 
 	// Return the Fixvalue cast to the new precision
-	return new Fixvalue( total, fractionResult.getError(), intResult.getOverflow());
+	return new Fixvalue( total, fractionResult.getError(), intResult.getQuantize());
     }
    
 
@@ -680,6 +698,8 @@ public final class FixPoint implements Cloneable, Serializable {
 
     /** The Fixvalue containing the BigInteger bit string */
     private Fixvalue  _value;
+    
+    private Quantize _mode;
 
     //////////////////////////////////////////////////////////////
     /////////                 Innerclass                  ////////
@@ -692,34 +712,34 @@ public final class FixPoint implements Cloneable, Serializable {
     public final class Fixvalue {
 
 	/** Create a Fixvalue with value Zero and set the error field
-            to Nooverflow and the overflow mode to Saturate 
+            to NOOVERFLOW and the quanitzation mode to Saturate.
 	*/
 	public Fixvalue() {
 	    fixvalue     = BigInteger.ZERO;
 	    _error       = NOOVERFLOW;
-	    _overflow    = SATURATE;
+	    _quantize    = SATURATE;
 	}
 
 	/** Create a Fixvalue with value Zero and set the error field
-            to Nooverflow and the overflow mode to Saturate 
+            to NOOVERFLOW and the overflow mode to SATURATE. 
 	    @param value Set the BigInteger of this Fixvale to value
 	*/
 	public Fixvalue(BigInteger value) {
 	    fixvalue     = value;
 	    _error       = NOOVERFLOW;
-	    _overflow    = SATURATE;
+	    _quantize    = SATURATE;
 	}
 
 	/** Create a Fixvalue with value Zero and set the error field
-            to Nooverflow and the overflow mode to Saturate 
+            to NOOVERFLOW and the overflow mode to SATURATE.
 	    @param value Set the BigInteger of this Fixvale to value
 	    @param err   The error of this Fixvalue
 	    @param of    The overflow mode of this Fixvalue
 	*/
-	public Fixvalue(BigInteger value, Error err, Overflow of) {
+	public Fixvalue(BigInteger value, Error err, Quantize of) {
 	    fixvalue     = value;
 	    _error       = err;
-	    _overflow    = of;
+	    _quantize    = of;
 	}
 
 	/** Return a new Fixvalue with value equal to the sum of this
@@ -731,7 +751,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	 */
         public Fixvalue add(Fixvalue aValue ) {
 	    BigInteger result = fixvalue.add( aValue.fixvalue );
-	    return new Fixvalue(result, _error, _overflow);
+	    return new Fixvalue(result, _error, _quantize);
 	}
 
 	/** Return a new Fixvalue with value equal to the
@@ -744,7 +764,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	 */
 	public Fixvalue multiply(Fixvalue aValue ) {
 	    BigInteger result = fixvalue.multiply( aValue.fixvalue );
-	    return new Fixvalue(result, _error, _overflow);
+	    return new Fixvalue(result, _error, _quantize);
 	}
 
 	/** Return the negated value of this Fixvalue. Uses the negate
@@ -753,7 +773,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	 */
  	public Fixvalue negate() {
  	    BigInteger result = fixvalue.negate();
- 	    return new Fixvalue(result, _error, _overflow);
+ 	    return new Fixvalue(result, _error, _quantize);
 	}
 
 	/** Return a scaled Fixvalue by scaling this fixvalue. Scale
@@ -765,10 +785,10 @@ public final class FixPoint implements Cloneable, Serializable {
 	 *  @return A scaled Fixvalue.
 	 */
  	public Fixvalue scaleRight(int delta) {
-	    Fixvalue result = new Fixvalue(fixvalue, _error, _overflow);
+	    Fixvalue result = new Fixvalue(fixvalue, _error, _quantize);
 	    if (delta>0) {
 		result.setError(OVERFLOW);
-		switch( _overflow.getInteger() ) {
+		switch( _quantize.getInteger() ) {
 		case 0: //SATURATE
 		    // return all bits to one's
 		    // Determine the new length of BigInteger fixvalue
@@ -801,7 +821,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	 */
  	public Fixvalue scaleLeft(int delta) {
 	    // copy the previous fixvalue
-	    Fixvalue work = new Fixvalue(fixvalue, _error, _overflow);
+	    Fixvalue work = new Fixvalue(fixvalue, _error, _quantize);
 	    Fixvalue result = new Fixvalue();
 
 	    // Delta >0, shift Left
@@ -820,7 +840,7 @@ public final class FixPoint implements Cloneable, Serializable {
 		result.fixvalue = work.fixvalue.shiftLeft( delta );
 	    }
 	    result.setError( work.getError() );
-	    result.setOverflow( work.getOverflow() );
+	    result.setQuantize( work.getQuantize() );
 	    return result;
 	}
 
@@ -834,7 +854,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	    BigInteger tmp = (_twoRaisedTo[precision.getFractionBitLength()]).toBigInteger();
 	    BigInteger mask = tmp.subtract( BigInteger.ONE );
 	    BigInteger result = fixvalue.and(mask);
-	    return new Fixvalue(result, _error, _overflow);
+	    return new Fixvalue(result, _error, _quantize);
 	}
 
 	/** Return only the integer part of the Fixvalue. Because
@@ -846,7 +866,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	 */
     	public Fixvalue getIntegerBits(Precision precision) {
 	    BigInteger result = fixvalue.shiftRight(precision.getFractionBitLength());
-	    return new Fixvalue(result, _error, _overflow);
+	    return new Fixvalue(result, _error, _quantize);
 	}
 
 	/** Return a bit string representation of the Fixvalue. The
@@ -861,10 +881,10 @@ public final class FixPoint implements Cloneable, Serializable {
 	*/
 	public void setError(Error error) { _error = error; }
 
-	/** Set the Overflow mode of the Fixvalue 
+	/** Set the Quantize mode of the Fixvalue 
 	    @param overflow The overflow mode of the Fixvalue
 	*/
-	public void setOverflow(Overflow overflow) { _overflow = overflow; }
+	public void setQuantize(Quantize overflow) { _quantize = overflow; }
 
 	/** Get the Error condition from the Fixvalue 
 	    @return The error condition of the Fixvalue
@@ -872,10 +892,10 @@ public final class FixPoint implements Cloneable, Serializable {
 	public Error getError() { return _error; }
 
 
-	/** Get the Overflow mode from the Fixvalue 
-	    @return The Overflow mode of the Fixvalue
+	/** Get the Quantize mode from the Fixvalue 
+	    @return The Quantize mode of the Fixvalue
 	*/
-	public Overflow getOverflow() { return _overflow; }
+	public Quantize getQuantize() { return _quantize; }
 
 
 	/** Get a description of the error condition of the Fixvalue 
@@ -886,7 +906,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	/** Get a description of the overflow mode of the Fixvalue 
 	    @return The description of the overflow mode of the Fixvalue
 	*/
-	public String getOverflowDescription() { return _overflow.getDescription(); }
+	public String getQuantizeDescription() { return _quantize.getDescription(); }
 
 	/////////////////////////////////////////////////////////////////////
 	////                      private variables                      ////
@@ -897,14 +917,14 @@ public final class FixPoint implements Cloneable, Serializable {
 	/** The error condition of the Fixvalue */
 	private Error      _error;
 	
-	/** The Overflow mode of the Fixvalue */
-	private Overflow   _overflow;
+	/** The Quantize mode of the Fixvalue */
+	private Quantize   _quantize;
     }
 
 
     /** Instances of this class represent error conditions of the Fixvalue.
      */
-    public final class Error {
+    public static class Error {
 	// Constructor is private because only Manager instantiates this class.
 	private Error(String description) {
 	    _description = description;
@@ -922,22 +942,22 @@ public final class FixPoint implements Cloneable, Serializable {
 
     /** Instances of this class represent overflow modes of the Fixvalue.
      */
-    public final class Overflow {
+    public static class Quantize {
 	// Constructor is private because only Manager instantiates this class.
-	private Overflow(String description, int value) {
+	private Quantize(String description, int value) {
 	    _description = description;
 	    _value = value;
 	}
 
-	/** Get a description of the Overflow.
-	 *  @return A description of the Overflow.
+	/** Get a description of the Quantize.
+	 *  @return A description of the Quantize.
 	 */
 	public int getInteger() {
 	    return _value;
 	}
 	
-	/** Get a description of the Overflow.
-	 *  @return A description of the Overflow.
+	/** Get a description of the Quantize.
+	 *  @return A description of the Quantize.
 	 */
 	public String getDescription() {
 	    return _description;
