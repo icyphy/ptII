@@ -1518,8 +1518,9 @@ public class Variable extends Attribute implements Typeable, Settable {
         }
 
         /** Set the type of this variable.
+	 *  @param e a Type.
          *  @exception IllegalActionException If this type is not settable,
-	 *   or the argument is not a substitution instance of this type.
+	 *   or this type cannot be updated to the new type.
          */
         public void setValue(Object e) throws IllegalActionException {
 	    if ( !isSettable()) {
@@ -1528,9 +1529,12 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    }
 
 	    if ( !_declaredType.isSubstitutionInstance((Type)e)) {
-	    	throw new IllegalActionException("TypeTerm.setValue: The " +
-                        "argument is not a substitution instance of the type " +
-                        "of this variable.");
+	    	throw new IllegalActionException("Variable$TypeTerm.setValue: "
+		        + "The type of this variable cannot be updated to "
+			+ "the new type. "
+			+ "variable: " + _variable.getName()
+			+ " variable type: " + _declaredType.toString()
+			+ " new type: " + e.toString());
 	    }
 
 	    if (_declaredType == BaseType.NAT) {
