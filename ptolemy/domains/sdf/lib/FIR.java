@@ -154,8 +154,8 @@ public class FIR extends SDFTransformer {
     public Parameter interpolation;
 
     /** The taps of the filter. This is a row vector embedded in a
-     *  token of type MatrixToken. By default, it contains a single zero,
-     *  meaning that the output of the filter is zero.
+     *  token of type MatrixToken. By default, it contains a single one,
+     *  meaning that the output of the filter is the same as the input.
      */
     public Parameter taps;
 
@@ -215,8 +215,8 @@ public class FIR extends SDFTransformer {
         }
     }
 
-    /** Set the type constraints on the input and output port.
-     * @exception IllegalActionException by derived classes.
+    /** Override the base class to allow type changes in the taps.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
