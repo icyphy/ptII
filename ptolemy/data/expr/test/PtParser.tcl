@@ -882,6 +882,10 @@ test PtParser-16.2 {Test record indexing} {
     list [$res1 toString] [$res2 toString]
 } {2 3}
 
+######################################################################
+####
+# 
+
 test PtParser-17.1 {Test correct scoping in function definitions.} {
     set e [java::new ptolemy.kernel.Entity]
     $e setName "e"
@@ -910,3 +914,13 @@ test PtParser-17.2 {Test nested function definitions.} {
     list [[$p4 getToken] toString]
 } {15}
 
+######################################################################
+####
+# 
+#  Test assignment lists
+test PtParser-17.2 {Test assignment lists.} {
+    set p [java::new ptolemy.data.expr.PtParser]
+    set ra [ $p generateAssignmentMap "a=1;b=2+3;c=function(x) 4+5" ]
+    set names [ra.keySet()]
+    listToStrings $names
+} {}

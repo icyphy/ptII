@@ -39,8 +39,11 @@ import ptolemy.data.*;
 import ptolemy.math.Complex;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Collections;
 import java.util.StringTokenizer;
@@ -153,8 +156,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
     }
 
     /** Generates a parse tree from the given String. The root node is
-     *  returned. To evaluate the parse tree, the method evaluateParseTree()
-     *  should be called on the rootNode
+    * returned. To evaluate the parse tree, use a ParseTreeEvaluator.
      *  @param stringIn The expression to be parsed.
      *  @exception IllegalActionException If the parse fails.
      *  @return The root node of the parse tree.
@@ -200,6 +202,55 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         ASTPtRootNode primary = (ASTPtRootNode)rootNode.jjtGetChild(0);
         primary.jjtSetParent(null);
         return primary;
+    }
+
+    /** Generates a parse tree from the given String.  
+     *  The string will be parsed according to rules for assignment lists. 
+     *  The returned node is a RootNode containing one assignment
+     *  node for each assignment in the expression.
+     *
+     *  @param stringIn The expression to be parsed.
+     *  @exception IllegalActionException If the parse fails.
+     *  @return The root node of the parse tree.
+     */
+    public Map generateAssignmentMap(String stringIn)
+            throws IllegalActionException {
+
+        String str;
+        // Most of the time?, we do not have a newline so
+        // skip the \r \n checking?
+        if (stringIn.indexOf('\n') == -1) {
+            str = stringIn;
+        } else {
+            String strTmp = stringIn.replace('\n', ' ');
+            if (strTmp.indexOf('\r') == -1) {
+                str = strTmp;
+            } else {
+                // Remove all the \r characters
+                // readFile() needs this under Windows, see
+                // actor/lib/test/Const.tcl
+                int last = 0;
+                int found = 0;
+                StringBuffer buffer = new StringBuffer();
+                while ((found = strTmp.indexOf('\r', last)) != -1) {
+                    buffer.append( strTmp.substring(last, found));
+                    last = found + 1;
+                }
+                str = buffer.toString();
+            }
+        }
+
+        Reader reader = new StringReader(str);
+        this.ReInit(reader);
+        Map map;
+        try {
+            // Parse the expression to obtain the parse tree
+            map = startAssignmentList();
+        } catch (ParseException x) {
+            throw new IllegalActionException("Error parsing expression \""
+                    + stringIn + "\":\n" + x.getMessage());
+        }
+        return map;
     }
 
     /** Return the list of classes the parser searches 
@@ -327,13 +378,18 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
      */
     private static List _classesSearched;
 
-  final public ASTPtRootNode startAssignmentList(List IDList) throws ParseException {
+  final public Map startAssignmentList() throws ParseException {
  /*@bgen(jjtree) PtRootNode */
-  ASTPtRootNode jjtn000 = new ASTPtRootNode(JJTPTROOTNODE);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
+    ASTPtRootNode jjtn000 = new ASTPtRootNode(JJTPTROOTNODE);
+    boolean jjtc000 = true;
+    jjtree.openNodeScope(jjtn000);Map map = new LinkedHashMap();
     try {
       assignment();
+        Object node =
+            (Object) jjtree.popNode();
+        System.out.println("node = " + node);
+        //   map.put(node.getIdentifier(), node);
+
       label_1:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -346,11 +402,14 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants, PtParser
         }
         jj_consume_token(SEPARATOR);
         assignment();
+        ASTPtAssignmentNode node2 =
+            (ASTPtAssignmentNode) jjtree.popNode();
+        map.put(node2.getIdentifier(), node2);
       }
       jj_consume_token(0);
-          jjtree.closeNodeScope(jjtn000, true);
-          jjtc000 = false;
-          {if (true) return jjtn000;}
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+      {if (true) return map;}
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -1965,6 +2024,24 @@ String tidied, x;
     return retval;
   }
 
+  final private boolean jj_3_7() {
+    if (jj_scan_token(FUNCTION)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    if (jj_scan_token(47)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
+  final private boolean jj_3_4() {
+    if (jj_scan_token(54)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    if (jj_scan_token(ID)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    if (jj_scan_token(SETEQUALS)) return true;
+    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
+    return false;
+  }
+
   final private boolean jj_3_3() {
     if (jj_scan_token(53)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
@@ -1999,24 +2076,6 @@ String tidied, x;
     if (jj_scan_token(FUNCTION)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     if (jj_scan_token(47)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
-  final private boolean jj_3_7() {
-    if (jj_scan_token(FUNCTION)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(47)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    return false;
-  }
-
-  final private boolean jj_3_4() {
-    if (jj_scan_token(54)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(ID)) return true;
-    if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
-    if (jj_scan_token(SETEQUALS)) return true;
     if (jj_la == 0 && jj_scanpos == jj_lastpos) return false;
     return false;
   }

@@ -30,6 +30,7 @@
 
 package ptolemy.data.type;
 
+import ptolemy.data.expr.GeneralToken;
 import java.lang.reflect.Modifier;
 import java.util.Hashtable;
 import java.util.HashMap;

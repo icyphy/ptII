@@ -48,8 +48,11 @@ import ptolemy.data.*;
 import ptolemy.math.Complex;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Collections;
 import java.util.StringTokenizer;
@@ -165,8 +168,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
     }
                 
     /** Generates a parse tree from the given String. The root node is
-     *  returned. To evaluate the parse tree, the method evaluateParseTree()
-     *  should be called on the rootNode
+    * returned. To evaluate the parse tree, use a ParseTreeEvaluator.
      *  @param stringIn The expression to be parsed.
      *  @exception IllegalActionException If the parse fails.
      *  @return The root node of the parse tree.
@@ -213,7 +215,56 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
         primary.jjtSetParent(null);
         return primary;
     }
-               
+          
+    /** Generates a parse tree from the given String.  
+     *  The string will be parsed according to rules for assignment lists. 
+     *  The returned node is a RootNode containing one assignment
+     *  node for each assignment in the expression.
+     *
+     *  @param stringIn The expression to be parsed.
+     *  @exception IllegalActionException If the parse fails.
+     *  @return The root node of the parse tree.
+     */
+    public Map generateAssignmentMap(String stringIn)
+            throws IllegalActionException {
+
+        String str;
+        // Most of the time?, we do not have a newline so
+        // skip the \r \n checking?
+        if (stringIn.indexOf('\n') == -1) {
+            str = stringIn;
+        } else {
+            String strTmp = stringIn.replace('\n', ' ');
+            if (strTmp.indexOf('\r') == -1) {
+                str = strTmp;
+            } else {
+                // Remove all the \r characters
+                // readFile() needs this under Windows, see
+                // actor/lib/test/Const.tcl
+                int last = 0;
+                int found = 0;
+                StringBuffer buffer = new StringBuffer();
+                while ((found = strTmp.indexOf('\r', last)) != -1) {
+                    buffer.append( strTmp.substring(last, found));
+                    last = found + 1;
+                }
+                str = buffer.toString();
+            }
+        }
+
+        Reader reader = new StringReader(str);
+        this.ReInit(reader);
+        Map map;
+        try {
+            // Parse the expression to obtain the parse tree
+            map = startAssignmentList();
+        } catch (ParseException x) {
+            throw new IllegalActionException("Error parsing expression \""
+                    + stringIn + "\":\n" + x.getMessage());
+        }
+        return map;
+    }
+          
     /** Return the list of classes the parser searches 
      *  when a function call is encountered.  The 
      *  classes are searched in the same order that they were registered 
@@ -509,22 +560,34 @@ TOKEN : /* Assignment */
 	< SEPARATOR: ";" >
 }
 
-ASTPtRootNode startAssignmentList(List IDList)             :
+Map startAssignmentList()             :
 {/*@bgen(jjtree) PtRootNode */
-  ASTPtRootNode jjtn000 = new ASTPtRootNode(JJTPTROOTNODE);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
+    ASTPtRootNode jjtn000 = new ASTPtRootNode(JJTPTROOTNODE);
+    boolean jjtc000 = true;
+    jjtree.openNodeScope(jjtn000);
+/*@egen*/
+    Map map = new LinkedHashMap();
+}
 {/*@bgen(jjtree) PtRootNode */
     try {
 /*@egen*/
-    assignment() (<SEPARATOR> assignment())* <EOF>/*@bgen(jjtree)*/
-        {
-          jjtree.closeNodeScope(jjtn000, true);
-          jjtc000 = false;
-        }
+    assignment() {
+        Object node = 
+            (Object) jjtree.popNode();
+        System.out.println("node = " + node);
+        //   map.put(node.getIdentifier(), node);
+    } 
+    ( <SEPARATOR> assignment() {
+        ASTPtAssignmentNode node2 = 
+            (ASTPtAssignmentNode) jjtree.popNode();
+        map.put(node2.getIdentifier(), node2);
+    })* <EOF>/*@bgen(jjtree)*/
+    {
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+    }
 /*@egen*/
-        { return jjtn000; }/*@bgen(jjtree)*/
+    { return map; }/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);

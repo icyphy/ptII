@@ -50,7 +50,7 @@ expression language.
 @see ptolemy.data.expr.ASTPtRootNode
 */
 
-public class ParseTreeDumper implements ParseTreeVisitor {
+public class ParseTreeDumper extends AbstractParseTreeVisitor {
 
     public void displayParseTree(ASTPtRootNode root) {
         _prefix = "";
