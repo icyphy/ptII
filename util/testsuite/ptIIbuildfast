@@ -8,15 +8,18 @@ fi
 cd $PTII
 ./configure
 
-ptIIdirs=`/users/ptII/util/testsuite/ptIIdirs`
+ptIIdirs=`sh $PTII/util/testsuite/ptIIdirs`
 for dir in $ptIIdirs
 do
 	echo "---------------:> $dir"
-	cd $PTII/$dir
+	if [ -d $PTII/$dir ]; then
+		cd $PTII/$dir
 
-	if [ "`ls *.java" != "" ]; then
-		echo "javac *.java"
-		CLASSPATH=$PTII javac *.java
+		if [ "`ls *.java" != "" ]; then
+			echo "javac *.java"
+			CLASSPATH=$PTII javac *.java
+		fi
+	else
+		echo "$PTII/dir does not exist"
 	fi
-
 done
