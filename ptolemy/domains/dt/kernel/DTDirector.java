@@ -327,7 +327,7 @@ public class DTDirector extends SDFDirector {
                 _DTActor dtActor = (_DTActor) 
                                    _allActorsTable.get(_currentActiveActor);
                 timeValue = dtActor._localTime;
-                if (timeValue < _currentTime) {
+                if (timeValue == 0.0 ) {
                     timeValue = _currentTime;
                 }
             }
