@@ -167,7 +167,10 @@ public class AddEditorFactory implements MoMLFilter {
 		+ "VisibleParameterEditorFactory\">"
 		+ "</property>";
 	    try {
-		NamedObj icon = _parser.parse(moml);
+		// Do not call parse(moml) here, since that method
+		// will fail if we are in an applet because it tries
+		// to read user.dir
+		NamedObj icon = _parser.parse(null, moml);
 		MoMLParser.setModified(true);
 	    } catch (Exception ex) {
 		throw new IllegalActionException(null, ex, "Failed to parse\n"

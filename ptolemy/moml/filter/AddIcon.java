@@ -149,7 +149,10 @@ public class AddIcon implements MoMLFilter {
 	    // setContext calls parser.reset()
 	    _parser.setContext(container);
 	    try {
-		NamedObj icon = _parser.parse(_iconMoML);
+		// Do not call parse(_iconMoML) here, since that method
+		// will fail if we are in an applet because it tries
+		// to read user.dir
+		NamedObj icon = _parser.parse(null, _iconMoML);
 		MoMLParser.setModified(true);
 	    } catch (Exception ex) {
 		throw new IllegalActionException(null, ex, "Failed to parse\n"

@@ -122,9 +122,7 @@ public class HideAnnotationNames implements MoMLFilter {
                 && container.getFullName()
                 .equals(_currentAnnotationFullName)) {
 	    _currentlyProcessingAnnotation = false;
-
 	    Parameter hideName = new Parameter(container, "_hideName");
-
 	    MoMLParser.setModified(true);
 	}
 	return elementName;
