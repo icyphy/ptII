@@ -222,7 +222,7 @@ runTreeShakeWithoutCodegen:
 
 treeShakeAndRunSnapshots:
 	@echo "Treeshake $(MODEL) and then run snapshots with treeshake.jar"
-	@for snapshot in $(SNAPSHOTS); \
+	for snapshot in $(SNAPSHOTS); \
 	do \
 		echo "Running the code from $(TARGETPATH)/$${snapshot}"; \
 		echo "Treeshake $$snapshot"; \
@@ -289,24 +289,45 @@ runStaticDemo:
 	$(TARGETPACKAGE).StaticMain 
 # -iterations 50
 
-
+JODE=$(ROOT)/bin/jode
 # Class to disassemble
-JADTARGETCLASS =		Main
+DECOMPILERTARGETCLASS =		Main
 
 # Generate a .java file from a class file and recompile it
-recompileDemo:
+jodeDecompile: jodeDecompileDemo jodeRecompileDemo jodeRunRecompiledDemo
+jodeDecompileDemo:
 	@echo "Convert .class file back to .java file, compile it, run it"
-	$(JAD) -o -d $(JADTARGETPATH) $(JADTARGET)/$(JADTARGETCLASS)
-	sed 's/$(TARGETPACKAGE)/$(JADTARGETPACKAGE)/' \
-		$(JADTARGETPATH)/$(JADTARGETCLASS).jad > \
-		$(JADTARGETPATH)/$(JADTARGETCLASS).jad2
-	sh ../shallow/test/jad2java $(JADTARGETPATH)/$(JADTARGETCLASS).jad2 \
-		> $(JADTARGETPATH)/$(JADTARGETCLASS).java
-	$(JAVAC) -classpath $(ROOT) $(JADTARGETPATH)/$(JADTARGETCLASS).java
-	$(JAVA) -Xfuture -classpath "$(ROOT)" \
-		ptolemy.actor.gui.CompositeActorApplication \
-		-class $(JADTARGETPACKAGE).$(JADTARGETCLASS)
+	classes=`cd $(DECOMPILERTARGETPATH); ls -1 *.class | sed 's/.class//g'`; \
+	for class in $$classes; \
+	do \
+		echo "--- Decompiling $(DECOMPILERTARGETPACKAGE).$$class"; \
+		$(JODE) -d $(DECOMPILERTARGETPATH) $(DECOMPILERTARGETPACKAGE).$$class; \
+	done
 
+jodeRecompileDemo:
+	$(JAVAC) -classpath \
+		"$(DECOMPILERTARGETPATH)$(CLASSPATHSEPARATOR)$(ROOT)" \
+		-d $(DECOMPILERTARGETPATH)/$(TARGETPATH) \
+		$(DECOMPILERTARGETPATH)/$(TARGETPATH)/$(DECOMPILERTARGETCLASS).java
+
+jodeRunRecompiledDemo:
+	$(JAVA) -Xfuture -classpath "$(DECOMPILERTARGETPATH)" \
+		$(TARGETPACKAGE).$(DECOMPILERTARGETCLASS)
+
+
+JAD=jad
+jadDecompile:
+	$(JAD) -r -o -d $(ROOT)/$(TARGETPATH)/jad $(ROOT)/$(TARGETPATH)/*.class; \
+	for file in $(ROOT)/$(TARGETPATH)/jad/$(TARGETPATH)/*.jad; \
+	do \
+		echo "Fixing $$file"; \
+		javafile=`dirname $$file`/`basename $$file .jad`.java;\
+		sh ../shallow/test/jad2java $$file \
+				> $$javafile; \
+		echo "Compiling $$javafile"; \
+		$(JAVAC) -classpath "$(ROOT)/$(TARGETPATH)/jad$(CLASSPATHSEPARATOR)$(ROOT)" \
+			$$javafile; \
+	done; \
 
 # Generate .java files from the snapshots
 recompileSnapshots:
