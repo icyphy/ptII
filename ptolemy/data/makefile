@@ -57,6 +57,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AbstractConvertibleToken.java \
 	AbstractNotConvertibleToken.java \
+	ActorToken.java \
 	ArrayToken.java \
 	AWTImageToken.java \
 	BitwiseOperationToken.java \
