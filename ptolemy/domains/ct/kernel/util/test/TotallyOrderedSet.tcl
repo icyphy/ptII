@@ -78,7 +78,7 @@ test TotallyOrderedSet-2.2 {get the comparator} {
     set comp [java::cast ptolemy.domains.ct.kernel.util.FuzzyDoubleComparator \
 	    [$toset getComparator]]
     list [$comp getThreshold]
-} {1e-10}
+} {0.0}
 
 ######################################################################
 ####  set up some Double objects
@@ -196,11 +196,10 @@ test TotallyOrderedSet-6.3 { take the first element } {
     list [$toset size] $f [$toset at 0] \
             [$toset at 1]
 } {2 0.2 3.0 999.3}
-
 ######################################################################
-####  remove all less than
+####  To String
 #
-test TotallyOrderedSet-6.4 { remove all less than } {
+test TotallyOrderedSet-6.3a { toString } {
     $toset insert $p7
     $toset insert $p8
     $toset insert $p9
@@ -210,6 +209,15 @@ test TotallyOrderedSet-6.4 { remove all less than } {
     $toset insert $p13
     $toset insert $p14
     $toset insert $p15
+    list [$toset toString]
+} {{3.0 8.9 50.0 999.1 999.3 999.8 1001.0 1002.1 1002.2 1002.3 }}
+
+
+######################################################################
+####  remove all less than
+#
+test TotallyOrderedSet-6.4 { remove all less than } {
+    
     #now we have: 3.0 8.9 50.0 999.1 999.3 999.8 1001.0 1002.1 1002.2 
     # 1002.3 
     set l1 [java::new {Double double} 1000.0 ]
@@ -218,7 +226,7 @@ test TotallyOrderedSet-6.4 { remove all less than } {
             [$toset at 1]
 } {4 1001.0 1002.1}
 
-test TotallyOrderedSet-6.4 { remove all (strictly) less than } {
+test TotallyOrderedSet-6.5 { remove all (strictly) less than } {
     #now we have:  1001.0 1002.1 1002.2 1002.3 
     set l2 [java::new {Double double} 1002.1 ]
     $toset removeAllLessThan $l2
