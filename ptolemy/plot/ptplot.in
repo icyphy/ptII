@@ -128,10 +128,10 @@ elif [ "$PTARCH" = "alpha4" ]; then
     java $javastartupclass ${1+"$@"}
 else
     if [ -f $PTII/ptolemy/plot/plotapplication.jar ]; then
-	CLASSPATH="${PTII}/ptolemy/plot/plotapplication.jar:$(PTII)"
+	CLASSPATH="${PTII}/ptolemy/plot/plotapplication.jar:${PTII}"
     else
 	CLASSPATH=$PTII
     fi	
     export CLASSPATH
-    $JAVAHOME/bin/java -verbose:class $javastartupclass ${1+"$@"}
+    $JAVAHOME/bin/java $javastartupclass ${1+"$@"}
 fi
