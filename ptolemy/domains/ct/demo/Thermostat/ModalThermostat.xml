@@ -2,6 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ModalThermostat" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
@@ -96,17 +97,6 @@ modes in the state machine are the same model.</text></svg></configure>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
-            </property>
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states. Each refinement needs a director.
-For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
-                </property>
-                <property name="_location" class="ptolemy.moml.Location" value="250.0, 40.0">
-                </property>
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -275,7 +265,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="CTScheduler" class="ptolemy.domains.ct.kernel.CTScheduler">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="90.0, 30.0">
+                <property name="_location" class="ptolemy.moml.Location" value="70.0, 40.0">
                 </property>
             </property>
             <port name="output" class="ptolemy.vergil.fsm.modal.RefinementPort">
@@ -285,25 +275,11 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </port>
             <port name="event" class="ptolemy.vergil.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="582.5, 275.0">
+                <property name="_location" class="ptolemy.moml.Location" value="555.0, 225.0">
                 </property>
             </port>
-            <entity name="HeatSource" class="ptolemy.actor.lib.Const">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <doc>Create a constant sequence</doc>
-                <property name="_location" class="ptolemy.moml.Location" value="60.0, 104.5">
-                </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                </port>
-                <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-            </entity>
             <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-                <property name="_location" class="ptolemy.moml.Location" value="162.0, 114.5">
+                <property name="_location" class="ptolemy.moml.Location" value="160.0, 115.0">
                 </property>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -320,7 +296,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
                 <property name="initialState" class="ptolemy.data.expr.Parameter" value="65.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="245.0, 113.5">
+                <property name="_location" class="ptolemy.moml.Location" value="245.0, 115.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -340,7 +316,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="395.0, 265.0">
+                <property name="_location" class="ptolemy.moml.Location" value="400.0, 225.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -363,7 +339,13 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                 </property>
                 <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="380.0, 114.5">
+                <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="380.0, 115.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -372,24 +354,43 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
                     <property name="output"/>
                 </port>
             </entity>
+            <entity name="HeatSource" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <doc>Create a constant sequence</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.moml.Location" value="55.0, 105.0">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+            </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="310.0, 120.0">
+                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="295.0, 115.0">
                 </vertex>
-            </relation>
-            <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="100.0, 165.0">
+                <vertex name="vertex1" class="ptolemy.moml.Vertex" value="115.0, 165.0">
                 </vertex>
+            </relation>
+            <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
             <link port="output" relation="relation"/>
             <link port="event" relation="relation6"/>
-            <link port="HeatSource.output" relation="relation2"/>
-            <link port="AddSubtract.plus" relation="relation2"/>
+            <link port="AddSubtract.plus" relation="relation4"/>
             <link port="AddSubtract.minus" relation="relation8"/>
             <link port="AddSubtract.output" relation="relation3"/>
             <link port="Integrator.input" relation="relation3"/>
@@ -398,6 +399,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             <link port="LevelCrossingDetector.trigger" relation="relation"/>
             <link port="Scale.input" relation="relation"/>
             <link port="Scale.output" relation="relation8"/>
+            <link port="HeatSource.output" relation="relation4"/>
         </entity>
         <relation name="outputRelation" class="ptolemy.actor.TypedIORelation">
         </relation>
