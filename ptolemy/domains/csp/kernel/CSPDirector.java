@@ -231,7 +231,6 @@ public class CSPDirector extends CompositeProcessDirector {
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void wrapup() throws IllegalActionException {
-        super.wrapup();
         Iterator actors =
             ((CompositeActor)getContainer()).deepEntityList().iterator();
         while ( _delayedActorList.size() > 0 ) {
@@ -241,6 +240,7 @@ public class CSPDirector extends CompositeProcessDirector {
             _delayedActorList.remove(0);
             _actorsDelayed--;
         }
+        super.wrapup();
     }
 
     ///////////////////////////////////////////////////////////////////
