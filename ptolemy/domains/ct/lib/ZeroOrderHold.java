@@ -50,8 +50,6 @@ event until the next discrete event arrives.
 @version $Id$
 */
 
-//FIXME: Consider make it type polymorphic.
-
 public class ZeroOrderHold extends Transformer
     implements CTWaveformGenerator{
 
