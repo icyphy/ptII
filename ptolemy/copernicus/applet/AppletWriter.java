@@ -471,28 +471,28 @@ public class AppletWriter extends SceneTransformer {
         jarFilesThatHaveBeenRequired.remove("ptolemy/actor/actor.jar");
         jarFilesThatHaveBeenRequired.remove("ptolemy/actor/lib/lib.jar");
 
+        File potentialDomainJarFile =
+            new File(_ptIIDirectory, _domainJar);
+        if (!potentialDomainJarFile.exists()) {
+            // If we are running under the Windows installer, then
+            // the domain specific jar files might not be present
+            // so we add ptolemy/domains/domains.jar
+            // We don't always require domains.jar because if
+            // the domain specific jar file is present, then the
+            // domain specific jar file will be much smaller.
+            System.out.println("AppletWriter: Warning: could not find '"
+                    + _domainJar + "', '"
+                    + potentialDomainJarFile + "' does not exist, "
+                    + "adding domains.jar to jarfiles");
+            jarFilesThatHaveBeenRequired.add("ptolemy/domains/domains.jar");
+        }
+
 	if (fixJarFiles) {
 	    // If the code generator was run but codeBase != . and
 	    // make install was not run, then we will not have figured
 	    // out very many jar files.  So, we fix up the list
 	    // 
 	    jarFilesThatHaveBeenRequired.add("ptolemy/ptsupport.jar");
-
-            File potentialDomainJarFile =
-                new File(_ptIIDirectory, _domainJar);
-            if (!potentialDomainJarFile.exists()) {
-                // If we are running under the Windows installer, then
-                // the domain specific jar files might not be present
-                // so we add ptolemy/domains/domains.jar
-                // We don't always require domains.jar because if
-                // the domain specific jar file is present, then the
-                // domain specific jar file will be much smaller.
-                System.out.println("AppletWriter: Warning: could not find '"
-                        + _domainJar + "', '"
-                        + potentialDomainJarFile + "' does not exist, "
-                        + "adding domains.jar to jarfiles");
-                jarFilesThatHaveBeenRequired.add("ptolemy/domains/domains.jar");
-            }
             jarFilesThatHaveBeenRequired.add(_domainJar);
 
 	}
