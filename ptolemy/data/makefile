@@ -55,6 +55,8 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	AbstractConvertibleToken.java \
+	AbstractNotConvertibleToken.java \
 	ArrayToken.java \
 	BooleanMatrixToken.java \
 	BooleanToken.java \

@@ -75,14 +75,14 @@ public abstract class BaseType implements Type, Serializable {
 
     /** Determine if the argument represents the same BaseType as this
      *  object.
-     *  @param t A Type.
+     *  @param object Another object.
      *  @return True if the argument represents the same BaseType as
      *   this object; false otherwise.
      */
-    public boolean equals(Type t) {
+    public boolean equals(Object object) {
 	// since BaseType is a type safe enumeration, can use == to
 	// test equality.
-	return this == t;
+	return this == object;
     }
 
     /** Return an instance of this class that corresponds to tokens
@@ -180,7 +180,8 @@ public abstract class BaseType implements Type, Serializable {
     // NOTE: It may seem strange that these inner classes are built this
     // way instead of as anonymous classes...  As anonymous classes, the
     // fields cannot be appropriately typed, which makes type inference
-    // much more complex to find the same information.
+    // much more complex to find the same information.  This is important
+    // to the code generator.
 
     /** The bottom element of the data type lattice. It represents a
      *  type variable.
@@ -208,6 +209,9 @@ public abstract class BaseType implements Type, Serializable {
     }
     public static final BooleanType BOOLEAN = new BooleanType();
 
+    public static final UnsizedMatrixType.BooleanMatrixType BOOLEAN_MATRIX =
+    new UnsizedMatrixType.BooleanMatrixType();
+
     /** The byte data type */
     public static class ByteType extends BaseType {
 	private ByteType() {
@@ -218,17 +222,6 @@ public abstract class BaseType implements Type, Serializable {
 	}
     }
     public static final ByteType BYTE = new ByteType();
-
-    /** The boolean matrix data type */
-    public static class BooleanMatrixType extends BaseType {
-        private BooleanMatrixType() {
-            super(BooleanMatrixToken.class, "[boolean]");
-        }
-        public Token convert(Token t) throws IllegalActionException {
-            return BooleanMatrixToken.convert(t);
-        }
-    }
-    public static final BooleanMatrixType BOOLEAN_MATRIX = new BooleanMatrixType();
 
     /** The complex data type */
     public static class ComplexType extends BaseType {
@@ -241,16 +234,8 @@ public abstract class BaseType implements Type, Serializable {
     }
     public static final ComplexType COMPLEX = new ComplexType();
 
-    /** The complex matrix data type */
-    public static class ComplexMatrixType extends BaseType {
-        private ComplexMatrixType() {
-            super(ComplexMatrixToken.class, "[complex]");
-        }
-        public Token convert(Token t) throws IllegalActionException {
-            return ComplexMatrixToken.convert(t);
-        }
-    }
-    public static final ComplexMatrixType COMPLEX_MATRIX = new ComplexMatrixType();
+    public static final UnsizedMatrixType.ComplexMatrixType COMPLEX_MATRIX =
+    new UnsizedMatrixType.ComplexMatrixType();
 
     /** The double data type */
     public static class DoubleType extends BaseType {
@@ -263,16 +248,8 @@ public abstract class BaseType implements Type, Serializable {
     }
     public static final DoubleType DOUBLE = new DoubleType();
 
-    /** The double matrix data type */
-    public static class DoubleMatrixType extends BaseType {
-        private DoubleMatrixType() {
-            super(DoubleMatrixToken.class, "[double]");
-        }
-        public Token convert(Token t) throws IllegalActionException {
-            return DoubleMatrixToken.convert(t);
-        }
-    }
-    public static final DoubleMatrixType DOUBLE_MATRIX = new DoubleMatrixType();
+    public static final UnsizedMatrixType.DoubleMatrixType DOUBLE_MATRIX =
+    new UnsizedMatrixType.DoubleMatrixType();
 
     /** The fix data type */
     public static class FixType extends BaseType {
@@ -285,16 +262,8 @@ public abstract class BaseType implements Type, Serializable {
     }
     public static final FixType FIX = new FixType();
 
-    /** The fix matrix data type */
-    public static class FixMatrixType extends BaseType {
-        private FixMatrixType() {
-            super(FixMatrixToken.class, "[fixedpoint]");
-        }
-        public Token convert(Token t) throws IllegalActionException {
-            return FixMatrixToken.convert(t);
-        }
-    }
-    public static final FixMatrixType FIX_MATRIX = new FixMatrixType();
+    public static final UnsizedMatrixType.FixMatrixType FIX_MATRIX =
+    new UnsizedMatrixType.FixMatrixType();
 
     /** The integer data type */
     public static class IntType extends BaseType {
@@ -307,16 +276,8 @@ public abstract class BaseType implements Type, Serializable {
     }
     public static final IntType INT = new IntType();
 
-    /** The integer matrix data type */
-    public static class IntMatrixType extends BaseType {
-        private IntMatrixType() {
-            super(IntMatrixToken.class, "[int]");
-        }
-        public Token convert(Token t) throws IllegalActionException {
-            return IntMatrixToken.convert(t);
-        }
-    }
-    public static final IntMatrixType INT_MATRIX = new IntMatrixType();
+    public static final UnsizedMatrixType.IntMatrixType INT_MATRIX =
+    new UnsizedMatrixType.IntMatrixType();
 
     /** The long integer data type */
     public static class LongType extends BaseType {
@@ -329,27 +290,11 @@ public abstract class BaseType implements Type, Serializable {
     }
     public static final LongType LONG = new LongType();
 
-    /** The long matrix data type */
-    public static class LongMatrixType extends BaseType {
-        private LongMatrixType() {
-            super(LongMatrixToken.class, "[long]");
-        }
-        public Token convert(Token t) throws IllegalActionException {
-            return LongMatrixToken.convert(t);
-        }
-    }
-    public static final LongMatrixType LONG_MATRIX = new LongMatrixType();
+    public static final UnsizedMatrixType.LongMatrixType LONG_MATRIX = 
+    new UnsizedMatrixType.LongMatrixType();
 
-    /** The matrix data type */
-    public static class MatrixType extends BaseType {
-        private MatrixType() {
-            super(MatrixToken.class, "[]");
-        }
-        public Token convert(Token t) throws IllegalActionException {
-            return MatrixToken.convert(t);
-        }
-    }
-    public static final MatrixType MATRIX = new MatrixType();
+    /** The matrix data type: The least upper bound of all the matrix types. */
+    public static final TopMatrixType MATRIX = TopMatrixType.getInstance();
 
     /** The numerical data type */
     public static class NumericalType extends BaseType {
@@ -357,8 +302,8 @@ public abstract class BaseType implements Type, Serializable {
             super(Numerical.class, "numerical");
         }
         public Token convert(Token t) throws IllegalActionException {
-            throw new IllegalActionException("Cannot convert to " +
-                    "numerical.");
+            throw new IllegalActionException("Cannot convert token " + t + 
+              " to type numerical, because numerical is not a concrete type.");
         }
     }
     public static final NumericalType NUMERICAL = new NumericalType();
@@ -374,13 +319,14 @@ public abstract class BaseType implements Type, Serializable {
     }
     public static final ObjectType OBJECT = new ObjectType();
 
-    /** The scalar data type */
+    /** The scalar data type: The least upper bound of all the scalar types. */
     public static class ScalarType extends BaseType {
         private ScalarType() {
             super(ScalarToken.class, "scalar");
         }
         public Token convert(Token t) throws IllegalActionException {
-            return ScalarToken.convert(t);
+            throw new IllegalActionException("Cannot convert token " + t + 
+                 " to type scalar, because scalar is not a concrete type.");
         }
     }
     public static final ScalarType SCALAR = new ScalarType();
@@ -396,13 +342,16 @@ public abstract class BaseType implements Type, Serializable {
     }
     public static final StringType STRING = new StringType();
 
-    /** The general data type */
+    /** The general data type: The top of the lattice.  */
     public static class GeneralType extends BaseType {
         private GeneralType() {
             super(Token.class, "general");
         }
         public Token convert(Token t) throws IllegalActionException {
-            return Token.convert(t);
+            // FIXME: what does converting to general MEAN?
+            return t;
+            //     throw new IllegalActionException("Cannot convert token " + t + 
+            //         " to type general, because general is not a concrete type.");
         }
     }
     public static final GeneralType GENERAL = new GeneralType();

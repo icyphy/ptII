@@ -378,7 +378,7 @@ test ComplexToken-6.0 {Test modulo} {
     catch {res [$p1 modulo $p1]} msg
 
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Modulo operation not supported: ptolemy.data.ComplexToken modulo ptolemy.data.ComplexToken.}}
+} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.ComplexToken '-10.0 + 0.0i' and ptolemy.data.ComplexToken '-10.0 + 0.0i'}}
 
 ######################################################################
 ####
@@ -463,7 +463,7 @@ test ComplexToken-9.0 {test isLessThan} {
     catch {$c67 isLessThan $c34} msg
 
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: The isLessThan() method is not supported in ComplexToken since complex numbers cannot be compared.}}
+} {{ptolemy.kernel.util.IllegalActionException: isLessThan operation not supported between ptolemy.data.ComplexToken '6.0 + 7.0i' and ptolemy.data.ComplexToken '3.0 + 4.0i' because complex numbers cannot be compared.}}
 
 ######################################################################
 ####
@@ -491,3 +491,71 @@ test ComplexToken-11.0 {Test hashCode} {
     list [$t1 hashCode] [$t2 hashCode] [$f hashCode]
 } {9 9 2}
 
+######################################################################
+####
+# 
+test ComplexToken-13.0 {Test convert from BooleanToken} {
+    set t [java::new {ptolemy.data.BooleanToken boolean} false]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.ComplexToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.BooleanToken 'false' to the type complex because the type of the token is higher or incomparable with the given type.}}
+
+test ComplexToken-13.1 {Test convert from ByteToken} {
+    set t [java::new {ptolemy.data.ByteToken byte} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.ComplexToken convert $t] toString]} msg
+    list $msg
+} {{1.0 + 0.0i}}
+
+test ComplexToken-13.2 {Test convert from ComplexToken} {
+    set o [java::new {ptolemy.math.Complex} 1.0 1.0]
+    set t [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $o]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.ComplexToken convert $t] toString]} msg
+    list $msg
+} {{1.0 + 1.0i}}
+
+test ComplexToken-13.3 {Test convert from DoubleToken} {
+    set t [java::new {ptolemy.data.DoubleToken double} 1.0]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.ComplexToken convert $t] toString]} msg
+    list $msg
+} {{1.0 + 0.0i}}
+
+test ComplexToken-13.4 {Test convert from FixToken} {
+    set t [java::new {ptolemy.data.FixToken java.lang.String} "fix(1.0,8,4)"]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.ComplexToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FixToken 'fix(1.0,8,4)' to the type complex because the type of the token is higher or incomparable with the given type.}}
+
+test ComplexToken-13.5 {Test convert from IntToken} {
+    set t [java::new {ptolemy.data.IntToken int} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.ComplexToken convert $t] toString]} msg
+    list $msg
+} {{1.0 + 0.0i}}
+
+test ComplexToken-13.6 {Test convert from LongToken} {
+    set t [java::new {ptolemy.data.LongToken long} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.ComplexToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '1' to the type complex because the type of the token is higher or incomparable with the given type.}}
+
+test ComplexToken-13.7 {Test convert from StringToken} {
+    set t [java::new {ptolemy.data.StringToken java.lang.String} "One"]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.ComplexToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type complex because the type of the token is higher or incomparable with the given type.}}
+    

@@ -24,12 +24,17 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
 
 */
 
 package ptolemy.data;
+
+import ptolemy.data.type.Type;
+import ptolemy.data.type.UnsizedMatrixType;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.graph.CPO;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -44,7 +49,7 @@ tokens. The implementation in this base class just throws an exception.
 Derived classes should override those methods where the corresponding
 conversion can be achieved without loss of information.
 
-@author Yuhong Xiong
+@author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 0.2
 */
@@ -52,6 +57,138 @@ public abstract class MatrixToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return a new token whose value is the sum of this token and
+     *  the argument. Type conversion also occurs here, so that the
+     *  operation is performed at the least type necessary to ensure
+     *  precision.  The returned type is the same as the type chosen
+     *  for the operation.  Generally, this is higher of the type of
+     *  this token and the argument type.  Subclasses should not
+     *  generally override this method, but override the protected
+     *  _add() method to ensure that type conversion is performed
+     *  consistently.
+     *  @param rightArgument The token to add to this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   and this token are of incomparable types, or the operation
+     *   does not make sense for the given types.
+     */
+    public Token add(Token rightArgument) throws IllegalActionException {
+        UnsizedMatrixType type = (UnsizedMatrixType)getType();
+        // Get the corresponding element type for this matrix type,
+        // and try a scalar operation.
+        Type elementType = getElementType();
+        int typeInfo = TypeLattice.compare(elementType, rightArgument);
+        
+        if (typeInfo == CPO.SAME) {
+            Token result = _addElement(rightArgument);
+            return result;
+        } else if (typeInfo == CPO.HIGHER) {
+            Token convertedArgument = elementType.convert(rightArgument);
+            try {
+                Token result = _addElement(convertedArgument);
+                return result;
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a better
+                // error message that has the types of the arguments that were
+                // passed in.
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("add", this, rightArgument));
+            }        
+        } 
+
+        // Must be a matrix...
+        typeInfo = TypeLattice.compare(getType(), rightArgument);
+        if (typeInfo == CPO.SAME) {
+            Token result = _doAdd(rightArgument);
+            return result;
+        } else if (typeInfo == CPO.HIGHER) {
+            MatrixToken convertedArgument = (MatrixToken)
+                getType().convert(rightArgument);
+            try {
+                Token result = _doAdd(convertedArgument);
+                return result;
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a
+                // better error message that has the types of the
+                // arguments that were passed in.
+               throw new IllegalActionException(null, ex,
+                        notSupportedMessage("add", this, rightArgument));
+            }        
+        } else if (typeInfo == CPO.LOWER) {
+            Token result = rightArgument.addReverse(this);
+            return result;
+        } else {
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("add", 
+                            this, rightArgument));
+        }
+    }
+
+    /** Return a new token whose value is the sum of this token
+     *  and the argument. Type resolution also occurs here, with
+     *  the returned token type chosen to achieve
+     *  a lossless conversion.
+     *  @param leftArgument The token to add this token to.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be added to this token, or
+     *   the units of this token and the argument token are not the same.
+     */
+    public Token addReverse(ptolemy.data.Token leftArgument)
+            throws IllegalActionException {
+        // Get the corresponding element type for this matrix type,
+        // and try a scalar operation.
+        Type elementType = getElementType();
+        int typeInfo = TypeLattice.compare(leftArgument, elementType);
+     
+        if (typeInfo == CPO.LOWER) {
+            Token convertedArgument = elementType.convert(leftArgument);
+            try {
+                Token result = _addElement(convertedArgument);
+                return result;
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a
+                // better error message that has the types of the
+                // arguments that were passed in.
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("add", this, leftArgument));
+            }
+        } else if (typeInfo == CPO.SAME) {
+            Token result = _addElement(leftArgument);
+            return result;
+        } 
+
+        // Must be a matrix...
+        typeInfo = TypeLattice.compare(leftArgument, getType());
+        // We would normally expect this to be LOWER, since this will almost
+        // always be called by subtract, so put that case first.
+        if (typeInfo == CPO.LOWER) {
+            MatrixToken convertedArgument = (MatrixToken)
+                getType().convert(leftArgument);
+            try {
+                Token result = convertedArgument._doAdd(this);
+                return result;
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a
+                // better error message that has the types of the
+                // arguments that were passed in.
+                throw new IllegalActionException(null, ex,
+                    notSupportedMessage("addReverse", 
+                            this, leftArgument));
+            }
+        } else if (typeInfo == CPO.SAME) {
+            Token result = ((MatrixToken)leftArgument)._doAdd(this);
+            return result;
+        } else if (typeInfo == CPO.HIGHER) {
+            Token result = leftArgument.add(this);
+            return result;
+        } else {
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("addReverse", 
+                            this, leftArgument));
+        }            
+    }
 
     /** Return a copy of the content of this token as a 2-D Complex matrix.
      *  In this base class, just throw an exception.
@@ -64,20 +201,33 @@ public abstract class MatrixToken extends Token {
                 " cannot be converted to a complex matrix.");
     }
 
-    /** Return the argument token if it is an instance of MatrixToken,
-     *  otherwise, throw an exception.
-     *  @param token A Token to be converted.
-     *  @return A MatrixToken.
-     *  @exception IllegalActionException If the argument is not an instance
-     *   of MatrixToken.
+    /** Return a new token whose value is the value of this token
+     *  divided by the value of the argument token.  Division is not
+     *  supported for matrices, so this always throws an exception.
+     *  @param rightArgument The token to divide into this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the operation
+     *   does not make sense for the given types.
      */
-    public static Token convert(Token token) throws IllegalActionException {
-	if (token instanceof MatrixToken) {
-	    return token;
-	}
-
-        throw new IllegalActionException(token.getClass().getName() +
-                " cannot convert to a MatrixToken.");
+    public final Token divide(Token rightArgument) 
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("divide", this, rightArgument));
+    }
+    
+    /** Return a new token whose value is the value of the argument
+     *  token divided by the value of this token.  Division is not
+     *  supported for matrices, so this always throws an exception.
+     *  @param leftArgument The token to be divided by the value of this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are of incomparable types, or the operation does
+     *  not make sense for the given types.
+     */
+    public Token divideReverse(Token leftArgument) 
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("divideReverse", this, leftArgument));
     }
 
     /** Return the content of this token as a 2-D double matrix.
@@ -107,6 +257,11 @@ public abstract class MatrixToken extends Token {
     public abstract Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException;
 
+    /** Return the Type of the tokens contained in this matrix token.
+     *  @return A Type.
+     */
+    public abstract Type getElementType();
+
     /** Return the number of rows of the matrix.
      *  @return The number of rows of the matrix.
      */
@@ -123,6 +278,100 @@ public abstract class MatrixToken extends Token {
                 " cannot be converted to an integer matrix.");
     }
 
+    /** Test that the value of this Token is close to the argument
+     *  Token.  In this base class, we call isEqualTo() and the
+     *  epsilon argument is ignored.  This method should be overridden
+     *  in derived classes such as DoubleToken and ComplexToken to
+     *  provide type specific actions for equality testing using the
+     *  epsilon argument
+     *
+     *  @see #isEqualTo
+     *  @param rightArgument The token to test closeness of this token with.
+     *  @param epsilon The value that we use to determine whether two
+     *  tokens are close.  In this base class, the epsilon argument is
+     *  ignored.
+     *  @return a boolean token that contains the value true if the
+     *   value and units of this token are close to those of the argument
+     *   token.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be compared with this token.
+     */
+    public final BooleanToken isCloseTo(Token rightArgument, double epsilon)
+            throws IllegalActionException {
+        // Note that if we had absolute(), subtraction() and islessThan()
+        // we could perhaps define this method for all tokens.  However,
+        // Precise classes like IntToken not bother doing the absolute(),
+        // subtraction(), and isLessThan() method calls and should go
+        // straight to isEqualTo().  Also, these methods might introduce
+        // exceptions because of type conversion issues.
+        int typeInfo = TypeLattice.compare(getType(), rightArgument);
+        if(typeInfo == CPO.SAME) {
+            return _doIsCloseTo(rightArgument, epsilon);
+        } else if (typeInfo == CPO.HIGHER) {
+            MatrixToken convertedArgument = (MatrixToken)
+                getType().convert(rightArgument);
+            try {
+                return _doIsCloseTo(convertedArgument, epsilon);
+            } catch (IllegalActionException ex) {
+                // Catch any errors and rethrow them with a message
+                // that includes the "closeness" instead of equality.
+                // For example, if we see if a String and Double are close
+                // then if we don't catch and rethrow the exception, the
+                // message will say something about "equality"
+                // instead of "closeness".
+                throw new IllegalActionException(null, null, ex,
+                        notSupportedMessage("closeness", this, rightArgument));
+            }
+        } else if (typeInfo == CPO.LOWER) {
+             return rightArgument.isCloseTo(this, epsilon);
+        } else {
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("closeness",
+                            this, rightArgument));
+        }
+    }
+
+    /** Test for equality of the values of this Token and the argument
+     *  Token.  The argument and this token are converted to
+     *  equivalent types, and then compared.  Generally, this is the
+     *  higher of the type of this token and the argument type.  This
+     *  method defers to the _isEqualTo method to perform a
+     *  type-specific equality check.  Derived classes should override
+     *  that method to provide type specific actions for equality
+     *  testing.
+     *
+     *  @see #isCloseTo
+     *  @param rightArgument The token with which to test equality.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken which contains the result of the test.
+     */
+    public final BooleanToken isEqualTo(Token rightArgument)
+            throws IllegalActionException {
+        int typeInfo = TypeLattice.compare(getType(), rightArgument);
+        if(typeInfo == CPO.SAME) {
+            return _doIsEqualTo(rightArgument);
+        } else if (typeInfo == CPO.HIGHER) {
+            MatrixToken convertedArgument = (MatrixToken)
+                getType().convert(rightArgument);
+            try {
+                return _doIsEqualTo(convertedArgument);
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a better
+                // error message that has the types of the arguments that were
+                // passed in.
+                throw new IllegalActionException(null, ex,
+                    notSupportedMessage("equality", this, rightArgument));
+            }
+        } else if (typeInfo == CPO.LOWER) {
+             return rightArgument.isEqualTo(this);
+        } else {
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("equality",
+                            this, rightArgument));
+        }
+    }
+
     /** Return the content of this matrix as a 2-D long matrix.
      *  In this base class, just throw an exception.
      *  @return A 2-D long matrix.
@@ -133,6 +382,173 @@ public abstract class MatrixToken extends Token {
         throw new IllegalActionException(this.getClass().getName() +
                 " cannot be converted to a long matrix.");
     }
+
+    /** Return a new token whose value is the value of this token
+     *  modulo the value of the argument token.  Since modulo is not
+     *  supported for matrices, this always throws an exception.
+     *  @param rightArgument The token to divide into this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the operation
+     *   does not make sense for the given types.
+     */
+    public final Token modulo(Token rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("modulo",
+                        this, rightArgument));
+    }
+
+    /** Return a new token whose value is the value of the argument token
+     *  modulo the value of this token.  Since modulo is not
+     *  supported for matrices, this always throws an exception.
+     *  @param leftArgument The token to apply modulo to by the value
+     *  of this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the the operation does
+     *  not make sense for the given types.
+     */
+    public final Token moduloReverse(Token leftArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("moduloReverse",
+                        this, leftArgument));
+    } 
+
+    /** Return a new token whose value is the value of this token
+     *  multiplied by the value of the argument token.  Type
+     *  conversion also occurs here, so that the operation is
+     *  performed at the least type necessary to ensure precision.
+     *  The returned type is the same as the type chosen for the
+     *  operation.  Generally, this is higher of the type of this
+     *  token and the argument type.  This class overrides the base
+     *  class to perform conversion from scalars to matrices
+     *  appropriately for matrix multiplication.  Subclasses should
+     *  not generally override this method, but override the protected
+     *  _multiply() method to ensure that type conversion is performed
+     *  consistently.
+     *  @param rightArgument The token to multiply this token by.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   and this token are of incomparable types, or the operation
+     *   does not make sense for the given types.
+     */
+    public final Token multiply(Token rightArgument) 
+            throws IllegalActionException {
+        UnsizedMatrixType type = (UnsizedMatrixType)getType();
+        // Get the corresponding element type for this matrix type,
+        // and try a scalar operation.
+        Type elementType = getElementType();
+        int typeInfo = TypeLattice.compare(elementType, rightArgument);
+        
+        if (typeInfo == CPO.SAME) {
+            Token result = _multiplyElement(rightArgument);
+            return result;
+        } else if (typeInfo == CPO.HIGHER) {
+            Token convertedArgument = elementType.convert(rightArgument);
+            try {
+                Token result = _multiplyElement(convertedArgument);
+                return result;
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a better
+                // error message that has the types of the arguments that were
+                // passed in.
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("multiply", this, rightArgument));
+            }        
+        } 
+
+        // Must be a matrix...
+        typeInfo = TypeLattice.compare(getType(), rightArgument);
+        if (typeInfo == CPO.SAME) {
+            Token result = _doMultiply(rightArgument);
+            return result;
+        } else if (typeInfo == CPO.HIGHER) {
+            MatrixToken convertedArgument = (MatrixToken)
+                getType().convert(rightArgument);
+            try {
+                Token result = _doMultiply(convertedArgument);
+                return result;
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a
+                // better error message that has the types of the
+                // arguments that were passed in.
+               throw new IllegalActionException(null, ex,
+                        notSupportedMessage("multiply", this, rightArgument));
+            }        
+        } else if (typeInfo == CPO.LOWER) {
+            Token result = rightArgument.multiplyReverse(this);
+            return result;
+        } else {
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("multiply", 
+                            this, rightArgument));
+        }
+    }
+
+    /** Return a new token whose value is the value of the argument token
+     *  multiplied by the value of this token.
+     *  Type resolution also occurs here, with the returned token
+     *  type chosen to achieve a lossless conversion.
+     *  @param leftArgument The token to be multiplied by the value of
+     *   this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   is not of a type that can be multiplied by this token.
+     */
+    public final Token multiplyReverse(Token leftArgument)
+            throws IllegalActionException {
+        // Get the corresponding element type for this matrix type,
+        // and try a scalar operation.
+        Type elementType = getElementType();
+        int typeInfo = TypeLattice.compare(leftArgument, elementType);
+     
+        if (typeInfo == CPO.LOWER) {
+            Token convertedArgument = elementType.convert(leftArgument);
+            try {
+                Token result = _multiplyElement(convertedArgument);
+                return result;
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a
+                // better error message that has the types of the
+                // arguments that were passed in.
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("multiply", this, leftArgument));
+            }
+        } else if (typeInfo == CPO.SAME) {
+            Token result = _multiplyElement(leftArgument);
+            return result;
+        } 
+
+        // Must be a matrix...
+        typeInfo = TypeLattice.compare(leftArgument, getType());
+        // We would normally expect this to be LOWER, since this will almost
+        // always be called by subtract, so put that case first.
+        if (typeInfo == CPO.LOWER) {
+            MatrixToken convertedArgument = (MatrixToken)
+                getType().convert(leftArgument);
+            try {
+                Token result = convertedArgument._doMultiply(this);
+                return result;
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a
+                // better error message that has the types of the
+                // arguments that were passed in.
+                throw new IllegalActionException(null, ex,
+                    notSupportedMessage("multiplyReverse", 
+                            this, leftArgument));
+            }
+        } else if (typeInfo == CPO.SAME) {
+            Token result = ((MatrixToken)leftArgument)._doMultiply(this);
+            return result;
+        } else if (typeInfo == CPO.HIGHER) {
+            Token result = leftArgument.multiply(this);
+            return result;
+        } else {
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("multiplyReverse", 
+                            this, leftArgument));
+        }            
+   }
 
     /** Return a new Token representing the right multiplicative
      *  identity. The returned token contains an identity matrix
@@ -150,6 +566,139 @@ public abstract class MatrixToken extends Token {
 	    throws IllegalActionException {
         throw new IllegalActionException("Right multiplicative identity " +
                 "not supported on " + getClass().getName() + " objects.");
+    }
+
+    /** Return a new token whose value is the value of the argument token
+     *  subtracted from the value of this token.   Type conversion
+     *  also occurs here, so that the operation is performed at the
+     *  least type necessary to ensure precision.  The returned type
+     *  is the same as the type chosen for the operation.  Generally,
+     *  this is higher of the type of this token and the argument
+     *  type.  Subclasses should not override this method,
+     *  but override the protected _subtract() method to ensure that type
+     *  conversion is performed consistently.
+     *  @param rightArgument The token to dubtract from this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token
+     *   and this token are of incomparable types, or the operation
+     *   does not make sense for the given types.
+     */
+    public final Token subtract(Token rightArgument) 
+            throws IllegalActionException {
+        UnsizedMatrixType type = (UnsizedMatrixType)getType();
+        // Get the corresponding element type for this matrix type,
+        // and try a scalar operation.
+        Type elementType = getElementType();
+        int typeInfo = TypeLattice.compare(elementType, rightArgument);
+        
+        if (typeInfo == CPO.SAME) {
+            Token result = _subtractElement(rightArgument);
+            return result;
+        } else if (typeInfo == CPO.HIGHER) {
+            Token convertedArgument = elementType.convert(rightArgument);
+            try {
+                Token result = _subtractElement(convertedArgument);
+                return result;
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a better
+                // error message that has the types of the arguments that were
+                // passed in.
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("subtract", this, rightArgument));
+            }        
+        } 
+
+        // Must be a matrix...
+        typeInfo = TypeLattice.compare(getType(), rightArgument);
+        if (typeInfo == CPO.SAME) {
+            Token result = _doSubtract(rightArgument);
+            return result;
+        } else if (typeInfo == CPO.HIGHER) {
+            MatrixToken convertedArgument = (MatrixToken)
+                getType().convert(rightArgument);
+            try {
+                Token result = _doSubtract(convertedArgument);
+                return result;
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a
+                // better error message that has the types of the
+                // arguments that were passed in.
+               throw new IllegalActionException(null, ex,
+                        notSupportedMessage("subtract", this, rightArgument));
+            }        
+        } else if (typeInfo == CPO.LOWER) {
+            Token result = rightArgument.subtractReverse(this);
+            return result;
+        } else {
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("subtract", 
+                            this, rightArgument));
+        }
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  subtracted from the value of the argument token.
+     *  Type resolution also occurs here, with the returned token type
+     *  chosen to achieve a lossless conversion.
+     *  @param leftArgument The token to subtract this token from.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is not
+     *  of a type that can be subtracted to this token, or the units
+     *  of this token and the argument token are not the same.
+     */
+    public final Token subtractReverse(Token leftArgument)
+            throws IllegalActionException {
+        // Get the corresponding element type for this matrix type,
+        // and try a scalar operation.
+        Type elementType = getElementType();
+        int typeInfo = TypeLattice.compare(leftArgument, elementType);
+     
+        if (typeInfo == CPO.LOWER) {
+            Token convertedArgument = elementType.convert(leftArgument);
+            try {
+                Token result = _subtractElementReverse(convertedArgument);
+                return result;
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a
+                // better error message that has the types of the
+                // arguments that were passed in.
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("subtract", this, leftArgument));
+            }
+        } else if (typeInfo == CPO.SAME) {
+            Token result = _subtractElementReverse(leftArgument);
+            return result;
+        } 
+
+        // Must be a matrix...
+        typeInfo = TypeLattice.compare(leftArgument, getType());
+        // We would normally expect this to be LOWER, since this will almost
+        // always be called by subtract, so put that case first.
+        if (typeInfo == CPO.LOWER) {
+            MatrixToken convertedArgument = (MatrixToken)
+                getType().convert(leftArgument);
+            try {
+                Token result = convertedArgument._doSubtract(this);
+                return result;
+            } catch (IllegalActionException ex) {
+                // If the type-specific operation fails, then create a
+                // better error message that has the types of the
+                // arguments that were passed in.
+                throw new IllegalActionException(null, ex,
+                    notSupportedMessage("subtractReverse", 
+                            this, leftArgument));
+            }
+        } else if (typeInfo == CPO.SAME) {
+            Token result = ((MatrixToken)leftArgument)._doSubtract(this);
+            return result;
+        } else if (typeInfo == CPO.HIGHER) {
+            Token result = leftArgument.subtract(this);
+            return result;
+        } else {
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("subtractReverse", 
+                            this, leftArgument));
+        }            
     }
 
     /** Return an ArrayToken containing the all the values of this
@@ -224,4 +773,288 @@ public abstract class MatrixToken extends Token {
      *  to be preserved.
      */
     public static final int DO_NOT_COPY = 1;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return a new token whose value is the value of the argument
+     *  Token added to the value of this Token.  It is assumed that
+     *  the type of the argument is the same as the type of this
+     *  class, and that the matrices have appropriate dimensions.
+     *  This method should be overridden in derived classes to provide
+     *  type-specific operation and return a token of the appropriate
+     *  subclass.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    protected MatrixToken _add(MatrixToken rightArgument) 
+            throws IllegalActionException {
+         throw new IllegalActionException(
+                 notSupportedMessage("add", this, rightArgument));
+    }   
+
+    /** Return a new token whose value is the value of the argument
+     *  Token added to the value of each element of this Token. It is
+     *  assumed that the type of the argument is the same as the type
+     *  of each element of this class. 
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    protected MatrixToken _addElement(Token rightArgument) 
+            throws IllegalActionException {
+         throw new IllegalActionException(
+                 notSupportedMessage("add", this, rightArgument));
+    }
+
+    /** Test for closeness of the values of this Token and the argument
+     *  Token.  It is assumed that the type and dimensions of the
+     *  argument is the same as the type of this class.  This method
+     *  should be overridden in derived classes to provide
+     *  type-specific operation and return a token of the appropriate
+     *  subclass.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    protected BooleanToken _isCloseTo(
+            MatrixToken rightArgument, double epsilon) 
+            throws IllegalActionException {
+         throw new IllegalActionException(
+                 notSupportedMessage("isCloseTo", this, rightArgument));
+    }   
+
+    /** Test for equality of the values of this Token and the argument
+     *  Token.  It is assumed that the type and dimensions of the
+     *  argument is the same as the type of this class.  This method
+     *  should be overridden in derived classes to provide
+     *  type-specific operation and return a token of the appropriate
+     *  subclass.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    protected BooleanToken _isEqualTo(MatrixToken rightArgument) 
+            throws IllegalActionException {
+         throw new IllegalActionException(
+                 notSupportedMessage("isEqualTo", this, rightArgument));
+    }   
+
+    /** Return a new token whose value is the value of this token
+     *  multiplied by the value of the argument token.  It is assumed
+     *  that the type of the argument is the same as the type of this
+     *  class, and that the matrices have appropriate dimensions.
+     *  This method should be overridden in derived classes to provide
+     *  type-specific operation and return a token of the appropriate
+     *  subclass.
+     *  @param rightArgument The token to multiply this token by.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    protected MatrixToken _multiply(MatrixToken rightArgument) 
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("multiply", this, rightArgument));
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  multiplied by the value of the argument scalar token. 
+     *  This method should be overridden in derived
+     *  classes to provide type specific actions for multiply.
+     *  @param rightArgument The token to multiply this token by.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
+     *  @return A new Token containing the result that is of the same class
+     *  as this token.
+     */
+    protected MatrixToken _multiplyElement(Token rightArgument) 
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("multiply", this, rightArgument));
+    }
+
+    /** Return a new token whose value is the value of the argument
+     *  token subtracted from the value of this token.  It is assumed
+     *  that the type of the argument is the same as the type of this
+     *  class, and that the matrices have appropriate dimensions.
+     *  This method should be overridden in derived classes to provide
+     *  type-specific operation and return a token of the appropriate
+     *  subclass.
+     *  @param rightArgument The token to subtract from this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    protected MatrixToken _subtract(MatrixToken rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("subtract", this, rightArgument));
+    }
+
+    /** Return a new token whose value is the value of the argument
+     *  Token subtracted from the value of each element of this Token. It is
+     *  assumed that the type of the argument is the same as the type
+     *  of each element of this class. 
+     *  @param rightArgument The token to subtract from this token.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    protected MatrixToken _subtractElement(Token rightArgument) 
+            throws IllegalActionException {
+         throw new IllegalActionException(
+                 notSupportedMessage("subtract", this, rightArgument));
+    }
+
+    /** Return a new token whose value is the value of each element of
+     *  this Token subtracted from the value the argument Token. It is
+     *  assumed that the type of the argument is the same as the type
+     *  of each element of this class.
+     *  @param rightArgument The token to subtract this token from.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    protected MatrixToken _subtractElementReverse(Token rightArgument) 
+            throws IllegalActionException {
+         throw new IllegalActionException(
+                 notSupportedMessage("subtract", this, rightArgument));
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Return a new token whose value is the value of the argument
+     *  Token added to the value of this Token. It is assumed that the
+     *  type of the argument is the same as the type of this class.
+     *  This method defers to the _add method that takes a
+     *  MatrixToken.  Derived classes should override that method
+     *  instead to provide type-specific operation.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If the matrix dimensions are
+     *  not compatible, or this operation is not supported by the
+     *  derived class.
+     *  @return A new Token containing the result.
+     */
+    private Token _doAdd(Token rightArgument) 
+            throws IllegalActionException {
+        MatrixToken convertedArgument = (MatrixToken)rightArgument;
+        if (convertedArgument.getRowCount() != getRowCount() ||
+                convertedArgument.getColumnCount() != getColumnCount()) {
+            throw new IllegalActionException(
+                    Token.notSupportedMessage("add", this, rightArgument)
+                    + " because the matrices have different dimensions.");
+        }
+        MatrixToken result = _add(convertedArgument);
+        return result;
+    }
+
+    /** Test for closeness of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is the
+     *  same as the type of this class.  This class overrides the base
+     *  class to return BooleanToken.FALSE if the dimensions of this
+     *  token and the given token are not identical.  This method may
+     *  defer to the _isEqualTo method that takes a MatrixToken.
+     *  Derived classes should override that method instead to provide
+     *  type-specific operation.
+     *  @param rightArgument The token with which to test equality.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken which contains the result of the test.
+     */
+    private BooleanToken _doIsCloseTo(
+            Token rightArgument, double epsilon) 
+            throws IllegalActionException {
+        MatrixToken convertedArgument = (MatrixToken)rightArgument;
+        if (convertedArgument.getRowCount() != getRowCount() ||
+                convertedArgument.getColumnCount() != getColumnCount()) {
+            return BooleanToken.FALSE;
+        }
+
+        return _isCloseTo(convertedArgument, epsilon);
+    }
+
+    /** Test for equality of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is the
+     *  same as the type of this class.  This class overrides the base
+     *  class to return BooleanToken.FALSE if the dimensions of this
+     *  token and the given token are not identical.  This method may
+     *  defer to the _isEqualTo method that takes a MatrixToken.
+     *  Derived classes should override that method instead to provide
+     *  type-specific operation.
+     *  @param rightArgument The token with which to test equality.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken which contains the result of the test.
+     */
+    private BooleanToken _doIsEqualTo(Token rightArgument) 
+            throws IllegalActionException {
+        MatrixToken convertedArgument = (MatrixToken)rightArgument;
+        if (convertedArgument.getRowCount() != getRowCount() ||
+                convertedArgument.getColumnCount() != getColumnCount()) {
+            return BooleanToken.FALSE;
+        }
+
+        return _isEqualTo(convertedArgument);
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  multiplied by the value of the argument token.  It is assumed
+     *  that the type of the argument is the same as the type of this
+     *  class.  This method defers to the _multiply method that takes
+     *  a MatrixToken.  Derived classes should override that method
+     *  instead to provide type-specific operation.
+     *  @param rightArgument The token to multiply this token by.
+     *  @exception IllegalActionException If the matrix dimensions are
+     *  not compatible, or this operation is not supported by the
+     *  derived class.
+     *  @return A new Token containing the result.
+     */
+    private Token _doMultiply(Token rightArgument) 
+            throws IllegalActionException {
+        MatrixToken convertedArgument = (MatrixToken)rightArgument;
+        if (convertedArgument.getRowCount() != getColumnCount()) {
+            throw new IllegalActionException(
+                    Token.notSupportedMessage("multiply", this, rightArgument)
+                    + " because the matrices have incompatible dimensions.");
+                   
+        }
+        MatrixToken result = _multiply(convertedArgument);
+        return result;
+    }
+
+    /** Return a new token whose value is the value of the argument
+     *  token subtracted from the value of this token.  It is assumed
+     *  that the type of the argument is the same as the type of this
+     *  class and has the same units as this token.  This method
+     *  defers to the _subtract method that takes a MatrixToken.  Derived
+     *  classes should override that method instead to provide
+     *  type-specific operation.
+     *  @param rightArgument The token to subtract from this token.
+     *  @exception IllegalActionException If the matrix dimensions are
+     *  not compatible, or this operation is not supported by the
+     *  derived class.
+     *  @return A new Token containing the result.
+     */
+    private Token _doSubtract(Token rightArgument)
+            throws IllegalActionException {
+        MatrixToken convertedArgument = (MatrixToken)rightArgument;
+        if (convertedArgument.getRowCount() != getRowCount() ||
+                convertedArgument.getColumnCount() != getColumnCount()) {
+            throw new IllegalActionException(
+                    Token.notSupportedMessage("subtract", this, rightArgument)
+                    + " because the matrices have different dimensions.");
+        }
+        
+        MatrixToken result = _subtract(convertedArgument);
+        return result;
+    }
+
+
 }

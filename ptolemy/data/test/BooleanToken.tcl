@@ -207,10 +207,78 @@ test BooleanToken-12.0 {Test equals} {
 ######################################################################
 ####
 # 
-test BooleanToken-13.0 {Test hashCode} {
+test BooleanToken-12.1 {Test hashCode} {
     set t1 [java::new {ptolemy.data.BooleanToken boolean} true]
     set t2 [java::new {ptolemy.data.BooleanToken boolean} true]
     set f [java::new {ptolemy.data.BooleanToken boolean} false]
     list [$t1 hashCode] [$t2 hashCode] [$f hashCode]
 } {1 1 0}
 
+######################################################################
+####
+# 
+test BooleanToken-13.0 {Test convert from BooleanToken} {
+    set t [java::new {ptolemy.data.BooleanToken boolean} false]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.BooleanToken convert $t] toString]} msg
+    list $msg
+} {false}
+
+test BooleanToken-13.1 {Test convert from ByteToken} {
+    set t [java::new {ptolemy.data.ByteToken byte} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.BooleanToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ByteToken '1' to the type boolean because the type of the token is higher or incomparable with the given type.}}
+
+test BooleanToken-13.2 {Test convert from ComplexToken} {
+    set o [java::new {ptolemy.math.Complex} 1.0 1.0]
+    set t [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $o]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.BooleanToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ComplexToken '1.0 + 1.0i' to the type boolean because the type of the token is higher or incomparable with the given type.}}
+
+test BooleanToken-13.3 {Test convert from DoubleToken} {
+    set t [java::new {ptolemy.data.DoubleToken double} 1.0]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.BooleanToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.DoubleToken '1.0' to the type boolean because the type of the token is higher or incomparable with the given type.}}
+
+test BooleanToken-13.4 {Test convert from FixToken} {
+    set t [java::new {ptolemy.data.FixToken java.lang.String} "fix(1.0,8,4)"]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.BooleanToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FixToken 'fix(1.0,8,4)' to the type boolean because the type of the token is higher or incomparable with the given type.}}
+
+test BooleanToken-13.5 {Test convert from IntToken} {
+    set t [java::new {ptolemy.data.IntToken int} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.BooleanToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.IntToken '1' to the type boolean because the type of the token is higher or incomparable with the given type.}}
+
+test BooleanToken-13.6 {Test convert from LongToken} {
+    set t [java::new {ptolemy.data.LongToken long} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.BooleanToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '1' to the type boolean because the type of the token is higher or incomparable with the given type.}}
+
+test BooleanToken-13.7 {Test convert from StringToken} {
+    set t [java::new {ptolemy.data.StringToken java.lang.String} "One"]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.BooleanToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type boolean because the type of the token is higher or incomparable with the given type.}}
+    

@@ -377,8 +377,8 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 
     // Convert a token to its underlying java type and return its value
     // (Object) and type (Class).
-    protected static Object[] convertTokenToJavaType
-        (ptolemy.data.Token token) {
+    protected static Object[] convertTokenToJavaType(ptolemy.data.Token token) 
+            throws ptolemy.kernel.util.IllegalActionException {
         Object[] retval = new Object[2];
         if (token instanceof DoubleToken) {
             // Note: Java makes a distinction between the class objects
@@ -487,9 +487,13 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                                 .getElement(j)).booleanValue();
                 }
                 retval[0] = array;
+            } else {
+                // Bailout if we don't recognize the argument.
+                retval[0] = token;
             }
             retval[1] = retval[0].getClass();
         } else {
+            // Bailout if we don't recognize the argument.
             retval[0] = token;
             retval[1] = retval[0].getClass();
         }

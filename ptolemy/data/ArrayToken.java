@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
@@ -39,14 +39,16 @@ import ptolemy.data.type.ArrayType;
 //////////////////////////////////////////////////////////////////////////
 //// ArrayToken
 /**
-A token that contains an array of tokens.
+A token that contains an array of tokens.  The operations between arrays
+are defined pointwise, and require that the lengths of arrays are of 
+similar lengths.
 
-@author Yuhong Xiong
+@author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 0.4
 */
 
-public class ArrayToken extends Token {
+public class ArrayToken extends AbstractNotConvertibleToken {
 
     /** Construct an ArrayToken with the specified token array. All the
      *  tokens in the array must have the same type, otherwise an
@@ -93,30 +95,6 @@ public class ArrayToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new token whose value is the point-wise addition of the
-     *  argument Token with this Token. The argument token must be an
-     *  ArrayToken having the same length as this Token. The field types of
-     *  the argument must be comparable with the corresponding field types
-     *  of this token, and the field types of the returned token is the
-     *  higher type of the two.
-     *  @param token The token to add with this token.
-     *  @return A new ArrayToken.
-     *  @exception IllegalActionException If the argument is not an
-     *   ArrayToken, or is an ArrayToken of different length, or calling
-     *   the add method of the element token throws it.
-     */
-    public Token add(Token token)
-	    throws IllegalActionException {
-	_checkArgument(token);
-	Token[] argArray = ((ArrayToken)token).arrayValue();
-	Token[] result = new Token[_value.length];
-	for (int i = 0; i < _value.length; i++) {
-	    result[i] = _value[i].add(argArray[i]);
-	}
-
-	return new ArrayToken(result);
-    }
-
     /** Return the token array contained by this token.
      *  The returned array is a copy so the caller is free to modify
      *  it.
@@ -126,19 +104,6 @@ public class ArrayToken extends Token {
 	Token[] result = new Token[_value.length];
 	System.arraycopy(_value, 0, result, 0, _value.length);
 	return result;
-    }
-
-    /** Convert the argument token into an instance of ArrayToken. Since
-     *  this method is static, there is not an instance of ArrayToken from
-     *  which the resulting type can be obtained. So this method always
-     *  throws an exception.  Use the convert method in ArrayType instead.
-     *  @exception IllegalActionException Always thrown.
-     */
-    public static Token convert(Token token)
-	    throws IllegalActionException {
-	throw new IllegalActionException("ArrayToken.convert: " +
-                "This method cannot be used, use the convert method " +
-                "in ArrayType.");
     }
 
     /** Return true if the argument is an array token of the same length and
@@ -211,117 +176,11 @@ public class ArrayToken extends Token {
 	return code;
     }
 
-    /** Test that each element of this Token is close to the
-     *  corresponding element in the argument Token and that each
-     *  element of this Token has the same units as the corresponding
-     *  element in the argument Token.
-     *  The value of the ptolemy.math.Complex epsilon field is
-     *  used to determine whether the two Tokens are close.
-     *
-     *  @see ptolemy.math.Complex#epsilon
-     *  @see #isEqualTo
-     *  @param token The token to test closeness of this token with.
-     *  @return a boolean token that contains the value true if the
-     *   value of each element of this token is close to the
-     *   value of corresponding element in the argument token and
-     *   the units of each element of this token is equal to the units
-     *   of the corresponding element in the argument token.
-     *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be compared with this token.
-     */
-    public BooleanToken isCloseTo(Token token) throws IllegalActionException {
-	return isCloseTo(token, ptolemy.math.Complex.epsilon);
-    }
-
-    /** Test that each element of this Token is close to the
-     *  corresponding element in the argument Token and that each
-     *  element of this Token has the same units as the corresponding
-     *  element in the argument Token.
-     *  The value of the epsilon argument is used to determine whether
-     *  the two Tokens are close.
-     *
-     *  @see #isEqualTo
-     *  @param token The token to test closeness of this token with.
-     *  @param epsilon The value that we use to determine whether two
-     *  tokens are close.
-     *  @return a boolean token that contains the value true if the
-     *   value of each element of this token is close to the
-     *   value of corresponding element in the argument token and
-     *   the units of each element of this token is equal to the units
-     *   of the corresponding element in the argument token.
-     *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be compared with this token.
-     */
-    public BooleanToken isCloseTo(Token token,
-            double epsilon)
-            throws IllegalActionException {
-
-	_checkArgument(token);
-	Token[] argArray = ((ArrayToken)token).arrayValue();
-	for (int i = 0; i < _value.length; i++) {
-	    // Here is where isCloseTo() differs from isEqualTo().
-
-	    // Note that we return false the first time we hit an
-	    // element token that is not close to our current element token.
-	    BooleanToken result = _value[i].isCloseTo(argArray[i], epsilon);
-	    if (result.booleanValue() == false) {
-		return new BooleanToken(false);
-	    }
-	}
-
-	return new BooleanToken(true);
-    }
-
-    /** Test for equality of the values of this Token and the argument.
-     *  @see #isCloseTo
-     *  @param token The token with which to test equality.
-     *  @return A new BooleanToken which contains the result of the test.
-     *  @exception IllegalActionException If the argument is not an
-     *   ArrayToken, or is an ArrayToken of different length, or calling
-     *   the isEqualTo method of the element token throws it.
-     */
-    public BooleanToken isEqualTo(Token token)
-	    throws IllegalActionException {
-
-	_checkArgument(token);
-	Token[] argArray = ((ArrayToken)token).arrayValue();
-	for (int i = 0; i < _value.length; i++) {
-	    BooleanToken result = _value[i].isEqualTo(argArray[i]);
-	    if (result.booleanValue() == false) {
-		return new BooleanToken(false);
-	    }
-	}
-
-	return new BooleanToken(true);
-    }
-
     /** Return the length of the contained token array.
      *  @return The length of the contained token array.
      */
     public int length() {
 	return _value.length;
-    }
-
-    /** Return a new ArrayToken whose value is the value of this Token
-     *  multiplied by the value of the argument Token.
-     *  The argument token must be a scalar token. The operation of this
-     *  method can be viewed as scaling the elements of this token by the
-     *  argument. The resulting token will have the same dimension as this
-     *  token, with the element type being the type of the multiplication
-     *  result of the element of this token and the argument.
-     *  @param rightFactor The token to multiply this Token by.
-     *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be multiplied to the elements of this
-     *   Token.
-     *  @return A new ArrayToken.
-     */
-    public Token multiply(Token rightFactor) throws IllegalActionException {
-	Token[] result = new Token[_value.length];
-	for (int i = 0; i < _value.length; i++) {
-	    result[i] = _value[i].multiply(rightFactor);
-	}
-
-	return new ArrayToken(result);
     }
 
     /** Returns a new ArrayToken representing the multiplicative identity.
@@ -345,30 +204,6 @@ public class ArrayToken extends Token {
 	    oneValArray[i] = oneVal;
 	}
 	return new ArrayToken(oneValArray);
-    }
-
-    /** Return a new token whose value is the point-wise subtraction of the
-     *  argument Token from this Token. The argument token must be an
-     *  ArrayToken having the same length as this Token. The field types of
-     *  the argument must be comparable with the corresponding field types
-     *  of this token, and the field types of the returned token is the
-     *  higher type of the two.
-     *  @param token The token to subtract from this token.
-     *  @return A new ArrayToken.
-     *  @exception IllegalActionException If the argument is not an
-     *   ArrayToken, or is an ArrayToken of different length, or calling
-     *   the subtract method of the element token throws it.
-     */
-    public Token subtract(Token token)
-	    throws IllegalActionException {
-	_checkArgument(token);
-	Token[] argArray = ((ArrayToken)token).arrayValue();
-	Token[] result = new Token[_value.length];
-	for (int i = 0; i < _value.length; i++) {
-	    result[i] = _value[i].subtract(argArray[i]);
-	}
-
-	return new ArrayToken(result);
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -408,6 +243,169 @@ public class ArrayToken extends Token {
 	    zeroValArray[i] = zeroVal;
 	}
 	return new ArrayToken(zeroValArray);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+ 
+    /** Return a new token whose value is the value of the
+     *  argument Token added to the value of this Token.  It is assumed
+     *  that the type of the argument is the same as the type of this class.
+     *  It should be overridden in derived
+     *  classes to provide type specific actions for add.
+     *  @param rightArgument The token whose value we add to the value of
+     *   this token.
+     *  @exception IllegalActionException If the argument is not an
+     *   ArrayToken, or is an ArrayToken of different length, or calling
+     *   the add method of the element token throws it.
+     *  @return A new Token containing the result.
+     */
+    protected Token _add(Token rightArgument)
+            throws IllegalActionException {
+	_checkArgument(rightArgument);
+	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
+	Token[] result = new Token[_value.length];
+	for (int i = 0; i < _value.length; i++) {
+	    result[i] = _value[i].add(argArray[i]);
+	}
+
+	return new ArrayToken(result);
+    }            
+
+    /** Return a new token whose value is the value of this token
+     *  divided by the value of the argument token.
+     *  Type resolution also occurs here, with the returned token type
+     *  chosen to achieve a lossless conversion.
+     *  @param rightArgument The token to divide this token by
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *  not of a type that can divide the value of this token.
+     */
+    protected Token _divide(Token rightArgument) 
+            throws IllegalActionException {
+	_checkArgument(rightArgument);
+	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
+	Token[] result = new Token[_value.length];
+	for (int i = 0; i < _value.length; i++) {
+	    result[i] = _value[i].divide(argArray[i]);
+	}
+
+	return new ArrayToken(result);
+    }
+
+    /** Test for closeness of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  RecordToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken containing the result.
+     */
+    protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
+            throws IllegalActionException {
+	_checkArgument(rightArgument);
+
+	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
+	for (int i = 0; i < _value.length; i++) {
+	    // Here is where isCloseTo() differs from isEqualTo().
+
+	    // Note that we return false the first time we hit an
+	    // element token that is not close to our current element token.
+	    BooleanToken result = _value[i].isCloseTo(argArray[i], epsilon);
+	    if (result.booleanValue() == false) {
+		return BooleanToken.FALSE;
+	    }
+	}
+
+	return BooleanToken.TRUE;
+    }
+
+    /** Test for closeness of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  ArrayToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken containing the result.
+     */
+    protected BooleanToken _isEqualTo(Token rightArgument)
+            throws IllegalActionException {
+ 	_checkArgument(rightArgument);
+
+	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
+	for (int i = 0; i < _value.length; i++) {
+	    BooleanToken result = _value[i].isEqualTo(argArray[i]);
+	    if (result.booleanValue() == false) {
+		return BooleanToken.FALSE;
+	    }
+	}
+
+	return BooleanToken.TRUE;
+   }
+
+    /** Return a new token whose value is the value of this token
+     *  modulo the value of the argument token.
+     *  Type resolution also occurs here, with the returned token type
+     *  chosen to achieve a lossless conversion.
+     *  @param rightArgument The token to modulo this token by.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be  used with modulo, or the units of
+     *   this token and the argument token are not the same.
+     */
+    protected Token _modulo(Token rightArgument)
+            throws IllegalActionException {
+	_checkArgument(rightArgument);
+	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
+	Token[] result = new Token[_value.length];
+	for (int i = 0; i < _value.length; i++) {
+	    result[i] = _value[i].modulo(argArray[i]);
+	}
+
+	return new ArrayToken(result);
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  multiplied by the value of the argument token.
+     *  Type resolution also occurs here, with the returned token type
+     *  chosen to achieve a lossless conversion.
+     *  @param rightArgument The token to multiply this token by.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *  not of a type that can be multiplied to this token.
+     */
+    protected Token _multiply(Token rightArgument) 
+            throws IllegalActionException {
+	_checkArgument(rightArgument);
+	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
+	Token[] result = new Token[_value.length];
+	for (int i = 0; i < _value.length; i++) {
+	    result[i] = _value[i].multiply(argArray[i]);
+	}
+
+	return new ArrayToken(result);
+    }
+
+    /** Return a new token whose value is the value of the argument token
+     *  subtracted from the value of this token.
+     *  Type resolution also occurs here, with the returned token type
+     *  chosen to achieve a lossless conversion.
+     *  @param rightArgument The token to subtract to this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *   not of a type that can be subtracted from this token, or the units
+     *   of this token and the argument token are not the same.
+     */
+    protected Token _subtract(Token rightArgument)
+            throws IllegalActionException {
+	_checkArgument(rightArgument);
+	Token[] argArray = ((ArrayToken)rightArgument).arrayValue();
+	Token[] result = new Token[_value.length];
+	for (int i = 0; i < _value.length; i++) {
+	    result[i] = _value[i].subtract(argArray[i]);
+	}
+
+	return new ArrayToken(result);
     }
 
     ///////////////////////////////////////////////////////////////////

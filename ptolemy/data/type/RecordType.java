@@ -74,7 +74,7 @@ public class RecordType extends StructuredType {
                     "and types arrays do not have the same size.");
         }
 
-        for (int i=0; i<labels.length; i++) {
+        for (int i = 0; i < labels.length; i++) {
             FieldType fieldType = new FieldType(types[i]);
             _fields.put(labels[i], fieldType);
         }
@@ -97,7 +97,7 @@ public class RecordType extends StructuredType {
             Object[] labelsObj = _fields.keySet().toArray();
             String[] labels = new String[labelsObj.length];
             Type[] types = new Type[labelsObj.length];
-            for (int i=0; i<labels.length; i++) {
+            for (int i = 0; i < labels.length; i++) {
                 labels[i] = (String)labelsObj[i];
                 FieldType fieldType = (FieldType)_fields.get(labels[i]);
                 types[i] = fieldType._declaredType;
@@ -123,57 +123,68 @@ public class RecordType extends StructuredType {
      */
     public Token convert(Token token) throws IllegalActionException {
         if ( !isCompatible(token.getType())) {
-            throw new IllegalArgumentException("RecordType.convert: " +
-                    "Cannot convert the token " + token.toString() +
-                    " to this type " + this.toString());
+            throw new IllegalArgumentException(
+                    Token.notSupportedConversionMessage(
+                            token, this.toString()));
+        }
+        
+        RecordToken recordToken = (RecordToken)token;
+	// The converted token has the same set of labels as the argument.
+	// That is, fields not in this type are not cut off.
+	Object[] labelArray = recordToken.labelSet().toArray();
+
+        // Arrays that will be used to create the new token.
+        String[] labelStringArray = new String[labelArray.length];
+        Token[] values = new Token[labelArray.length];
+
+        for (int i = 0; i < labelArray.length; i++) {
+            String label = (String)labelArray[i];
+            
+            // Convert each field of the record.
+            Token fieldToken = recordToken.get(label);
+	    Type newFieldType = get(label);
+            
+            // If the type of the field is specified, then convert it.
+	    if (newFieldType != null) {
+	        values[i] = newFieldType.convert(fieldToken);
+	    } else {
+	        values[i] = fieldToken;
+	    }
+
+            // Store the label for each field.
+            labelStringArray[i] = label;
         }
 
-        RecordToken argRecTok = (RecordToken)token;
-	// the converted token has the same set of labels as the argument.
-	// That is, fields not in this type are not cut off.
-	Object[] labelsObj = argRecTok.labelSet().toArray();
-        String[] labels = new String[labelsObj.length];
-        Token[] values = new Token[labelsObj.length];
-        for (int i=0; i<labelsObj.length; i++) {
-            labels[i] = (String)labelsObj[i];
-            Token orgToken = argRecTok.get(labels[i]);
-	    Type toType = this.get(labels[i]);
-	    if (toType != null) {
-	        values[i] = toType.convert(orgToken);
-	    } else {
-	        values[i] = orgToken;
-	    }
-	}
-
-        return new RecordToken(labels, values);
+        return new RecordToken(labelStringArray, values);
     }
 
     /** Determine if the argument represents the same RecordType as this
-     *  object.
-     *  @param type A Type.
+     *  object.  Two record types are equal if they have the same field names
+     *  and the type of each field is the same.
+     *  @param object Another object.
      *  @return True if the argument represents the same RecordType as
-     *   this object; false otherwise.
+     *  this object.
      */
-    public boolean equals(Type type) {
-        if ( !(type instanceof RecordType)) {
+    public boolean equals(Object object) {
+        if (!(object instanceof RecordType)) {
             return false;
         }
 
-        RecordType argRecType = (RecordType)type;
+        RecordType recordType = (RecordType)object;
 
-        // check my label set is the same as that of the argument
+        // Check that the label sets are equal
         Set myLabelSet = _fields.keySet();
-        Set argLabelSet = argRecType._fields.keySet();
-        if ( !myLabelSet.equals(argLabelSet)) {
+        Set argLabelSet = recordType._fields.keySet();
+        if (!myLabelSet.equals(argLabelSet)) {
             return false;
         }
 
-        Iterator iter = myLabelSet.iterator();
-        while (iter.hasNext()) {
-            String label = (String)iter.next();
+        Iterator fieldNames = myLabelSet.iterator();
+        while (fieldNames.hasNext()) {
+            String label = (String)fieldNames.next();
             Type myType = this.get(label);
-            Type argType = argRecType.get(label);
-            if ( !myType.equals(argType)) {
+            Type argType = recordType.get(label);
+            if (!myType.equals(argType)) {
                 return false;
             }
         }
@@ -208,30 +219,41 @@ public class RecordType extends StructuredType {
         return _fields.keySet().hashCode() + 2917;
     }
 
-    /** Test if the argument type is compatible with this type.
-     *  If this type is a constant, the argument is compatible if it is less
-     *  than or equal to this type in the type lattice; If this type is a
-     *  variable, the argument is compatible if it is a substitution
-     *  instance of this type.
+    /** Test if the argument type is compatible with this type.  The
+     *  given type will be compatible with this type if it is
+     *  BaseType.UNKNOWN, or a RecordType that contains at least as
+     *  many fields.
      *  @param type An instance of Type.
      *  @return True if the argument is compatible with this type.
      */
     public boolean isCompatible(Type type) {
+        if (type.equals(BaseType.UNKNOWN)) {
+            return true;
+        }
+
         if ( !(type instanceof RecordType)) {
             return false;
         }
 
         RecordType argumentRecordType = (RecordType)type;
+
+        // Loop through all of the fields of this type...
         Iterator iterator = _fields.keySet().iterator();
         while (iterator.hasNext()) {
             String label = (String)iterator.next();
+            
+            // The given type cannot be losslessly converted to this type
+            // if it does not contain one of the fields of this type.
 	    Type argumentFieldType = argumentRecordType.get(label);
             if (argumentFieldType == null) {
                 // argument token does not contain this label
                 return false;
             }
+   
+            // The given type cannot be losslessly converted to this type
+            // if the individual fields are not compatible.
             Type thisFieldType = this.get(label);
-            if ( !thisFieldType.isCompatible(argumentFieldType)) {
+            if (!thisFieldType.isCompatible(argumentFieldType)) {
                 return false;
             }
         }
@@ -240,40 +262,46 @@ public class RecordType extends StructuredType {
     }
 
     /** Test if this RecordType is a constant. A RecordType is a constant if
-     *  it does not contain BaseType.UNKNOWN in any level.
+     *  the declared type of all of its fields are constant.
      *  @return True if this type is a constant.
      */
     public boolean isConstant() {
-        Iterator iter = _fields.values().iterator();
-        while (iter.hasNext()) {
-            FieldType fieldType = (FieldType)iter.next();
+        // Loop through all of the fields.
+        Iterator fieldTypes = _fields.values().iterator();
+        while (fieldTypes.hasNext()) {
+            FieldType fieldType = (FieldType)fieldTypes.next();
             Type type = fieldType._declaredType;
-            if ( !type.isConstant()) {
+            // Return false if the field is not constant.
+            if(!type.isConstant()) {
                 return false;
             }
         }
         return true;
     }
 
-    /** Determine if this type corresponds to an instantiable token
-     *  class. A RecordType is instantiable if its element types are
+    /** Test if this type corresponds to an instantiable token
+     *  class. A RecordType is instantiable if all of its fields are
      *  instantiable.
      *  @return True if this type is instantiable.
      */
     public boolean isInstantiable() {
-        Iterator iter = _fields.keySet().iterator();
-	while (iter.hasNext()) {
-	    String label = (String)iter.next();
+        // Loop through all of the fields.
+        Iterator fieldNames = _fields.keySet().iterator();
+	while (fieldNames.hasNext()) {
+	    String label = (String)fieldNames.next();
 	    Type type = this.get(label);
-            if ( !type.isInstantiable()) {
+            // Return false if the field is not instantiable.
+            if (!type.isInstantiable()) {
                 return false;
             }
         }
         return true;
     }
 
-    /** Return true if the specified type is a substitution instance of this
-     *  type.
+    /** Test if the specified type is a substitution instance of this
+     *  type.  One record is a substitution instance of another if they
+     *  have fields with the same names and each field of the given type is 
+     *  a substitution instance of the correpsonding field in this type.
      *  @param type A Type.
      *  @return True if the argument is a substitution instance of this type.
      *  @see Type#isSubstitutionInstance
@@ -283,26 +311,29 @@ public class RecordType extends StructuredType {
             return false;
         }
 
-        RecordType argRecType = (RecordType)type;
+        RecordType recordType = (RecordType)type;
 
-        // check if this record type and the argument have the same label set
+        // Check if this record type and the argument have the same
+        // label set.
         Set myLabelSet = _fields.keySet();
-        Set argLabelSet = argRecType._fields.keySet();
-        if ( !myLabelSet.equals(argLabelSet)) {
+        Set argLabelSet = recordType._fields.keySet();
+        if (!myLabelSet.equals(argLabelSet)) {
             return false;
         }
 
-        Iterator iter = myLabelSet.iterator();
-        while (iter.hasNext()) {
-            String label = (String)iter.next();
+        // Loop over all the labels.
+        Iterator fieldNames = myLabelSet.iterator();
+        while (fieldNames.hasNext()) {
+            String label = (String)fieldNames.next();
+
             FieldType fieldType = (FieldType)_fields.get(label);
-            Type myDecType = fieldType._declaredType;
-            Type argType = argRecType.get(label);
-            if ( !myDecType.isSubstitutionInstance(argType)) {
+            Type myDeclaredType = fieldType._declaredType;
+            Type argType = recordType.get(label);
+            
+            if (!myDeclaredType.isSubstitutionInstance(argType)) {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -313,25 +344,25 @@ public class RecordType extends StructuredType {
      *  @return A String.
      */
     public String toString() {
-        Object[] labelsObj = _fields.keySet().toArray();
-        // order the labels
-        int size = labelsObj.length;
-        for (int i=0; i<size-1; i++) {
-            for (int j=i+1; j<size; j++) {
-                String labeli = (String)labelsObj[i];
-                String labelj = (String)labelsObj[j];
+        Object[] labelArray = _fields.keySet().toArray();
+        // Order the labels
+        int size = labelArray.length;
+        for (int i = 0; i < size-1; i++) {
+            for (int j = i + 1; j < size; j++) {
+                String labeli = (String)labelArray[i];
+                String labelj = (String)labelArray[j];
                 if (labeli.compareTo(labelj) >= 0) {
-                    Object temp = labelsObj[i];
-                    labelsObj[i] = labelsObj[j];
-                    labelsObj[j] = temp;
+                    Object temp = labelArray[i];
+                    labelArray[i] = labelArray[j];
+                    labelArray[j] = temp;
                 }
             }
         }
 
         // construct the string representation of this token.
         String s = "{";
-        for (int i=0; i<size; i++) {
-            String label = (String)labelsObj[i];
+        for (int i = 0; i < size; i++) {
+            String label = (String)labelArray[i];
             String type = this.get(label).toString();
             if (i != 0) {
                 s += ", ";
@@ -347,9 +378,9 @@ public class RecordType extends StructuredType {
      */
     public void initialize(Type type) {
         try {
-            Iterator iter = _fields.keySet().iterator();
-            while (iter.hasNext()) {
-                String label = (String)iter.next();
+            Iterator fieldNames = _fields.keySet().iterator();
+            while (fieldNames.hasNext()) {
+                String label = (String)fieldNames.next();
                 FieldType fieldType = (FieldType)_fields.get(label);
                 if (fieldType.isSettable()) {
                     fieldType.initialize(type);
@@ -385,8 +416,8 @@ public class RecordType extends StructuredType {
 	        return;
 	    } else {
 	        throw new IllegalActionException("RecordType.updateType: " +
-                        "This type is a constant and the argument is not the " +
-                        "same as this type. This type: " + this.toString() +
+                        "This type is a constant and the argument is not the" +
+                        " same as this type. This type: " + this.toString() +
                         " argument: " + newType.toString());
             }
 	}
@@ -397,9 +428,9 @@ public class RecordType extends StructuredType {
                     + "Cannot update this type to the new type.");
         }
 
-        Iterator iter = _fields.keySet().iterator();
-        while (iter.hasNext()) {
-            String label = (String)iter.next();
+        Iterator fieldNames = _fields.keySet().iterator();
+        while (fieldNames.hasNext()) {
+            String label = (String)fieldNames.next();
             FieldType fieldType = (FieldType)_fields.get(label);
             if (fieldType.isSettable()) {
                 Type newFieldType = ((RecordType)newType).get(label);
@@ -467,26 +498,26 @@ public class RecordType extends StructuredType {
                     "RecordType.");
         }
 
-        RecordType argRecType = (RecordType)type;
+        RecordType recordType = (RecordType)type;
 
         // the label set of the GLB is the union of the two label sets.
         Set unionSet = new HashSet();
         Set myLabelSet = _fields.keySet();
-        Set argLabelSet = argRecType._fields.keySet();
+        Set argLabelSet = recordType._fields.keySet();
 
         unionSet.addAll(myLabelSet);
         unionSet.addAll(argLabelSet);
 
         // construct the GLB RecordToken
-        Object[] labelsObj = unionSet.toArray();
-	int size = labelsObj.length;
+        Object[] labelArray = unionSet.toArray();
+	int size = labelArray.length;
         String[] labels = new String[size];
         Type[] types = new Type[size];
 
         for (int i=0; i<size; i++) {
-	    labels[i] = (String)labelsObj[i];
+	    labels[i] = (String)labelArray[i];
             Type type1 = this.get(labels[i]);
-            Type type2 = argRecType.get(labels[i]);
+            Type type2 = recordType.get(labels[i]);
             if (type1 == null) {
                 types[i] = type2;
             } else if (type2 == null) {
@@ -514,25 +545,25 @@ public class RecordType extends StructuredType {
                     + "The argument is not a RecordType.");
         }
 
-        RecordType argRecType = (RecordType)type;
+        RecordType recordType = (RecordType)type;
 
         // the label set of the LUB is the intersection of the two label sets.
         Set intersectionSet = new HashSet();
         Set myLabelSet = _fields.keySet();
-        Set argLabelSet = argRecType._fields.keySet();
+        Set argLabelSet = recordType._fields.keySet();
 
         intersectionSet.addAll(myLabelSet);
         intersectionSet.retainAll(argLabelSet);
 
         // construct the GLB RecordToken
-        Object[] labelsObj = intersectionSet.toArray();
-	int size = labelsObj.length;
+        Object[] labelArray = intersectionSet.toArray();
+	int size = labelArray.length;
         String[] labels = new String[size];
         Type[] types = new Type[size];
-        for (int i=0; i<size; i++) {
-            labels[i] = (String)labelsObj[i];
+        for (int i = 0; i < size; i++) {
+            labels[i] = (String)labelArray[i];
             Type type1 = this.get(labels[i]);
-            Type type2 = argRecType.get(labels[i]);
+            Type type2 = recordType.get(labels[i]);
             types[i] = (Type)TypeLattice.lattice().leastUpperBound(
                     type1, type2);
         }
@@ -547,7 +578,7 @@ public class RecordType extends StructuredType {
     private boolean _isLessThanOrEqualTo(RecordType t1, RecordType t2) {
         Set labelSet1 = t1._fields.keySet();
         Set labelSet2 = t2._fields.keySet();
-        if ( !labelSet1.containsAll(labelSet2)) {
+        if (!labelSet1.containsAll(labelSet2)) {
             return false;
         }
 
@@ -631,12 +662,12 @@ public class RecordType extends StructuredType {
          *   or the argument is not a Type.
          */
         public void initialize(Object e) throws IllegalActionException {
-            if ( !isSettable()) {
+            if (!isSettable()) {
                 throw new IllegalActionException("RecordType$FieldType." +
                         "initialize: The type is not settable.");
             }
 
-            if ( !(e instanceof Type)) {
+            if (!(e instanceof Type)) {
                 throw new IllegalActionException("FieldType.initialize: "
                         + "The argument is not a Type.");
             }

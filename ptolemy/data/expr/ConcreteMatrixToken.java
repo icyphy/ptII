@@ -70,6 +70,13 @@ public class ConcreteMatrixToken extends MatrixToken {
         throw new ArrayIndexOutOfBoundsException("Empty matrix.");
     }
 
+    /** Return the Type of the tokens contained in this matrix token.
+     *  @return A Type.
+     */
+    public Type getElementType() {
+        throw new ArrayIndexOutOfBoundsException("Empty matrix.");
+    }
+
     /** Return the type of this token.
      *  @return BaseType.MATRIX.
      */

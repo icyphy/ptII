@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
 
 */
@@ -46,11 +46,11 @@ the same String object.  However, a String object in Java is immutable,
 so there is no risk when two tokens refer to the same string that
 one of the strings will be changed.
 
-@author Edward A. Lee, Neil Smyth
+@author Edward A. Lee, Neil Smyth, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 0.2
 */
-public class StringToken extends Token {
+public class StringToken extends AbstractConvertibleToken {
 
     /** Construct a token with an empty string.
      */
@@ -72,52 +72,6 @@ public class StringToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new StringToken whose value is the string value
-     *  of the argument token appended to the String contained in
-     *  this Token.
-     *  @param token The token to add to this Token
-     *  @exception IllegalActionException If the passed token is
-     *   not of a type that can be added to this Tokens value.
-     *  @return A new StringToken containing the result.
-     */
-    public Token add(Token token) throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, token);
-        try {
-            if (token instanceof StringToken) {
-                String result =
-                    _value + ((StringToken)token).stringValue();
-                return new StringToken(result);
-            } else if (typeInfo == CPO.HIGHER) {
-                StringToken tmp = (StringToken)this.convert(token);
-                String result = _value + tmp.stringValue();
-                return new StringToken(result);
-            } else if (typeInfo == CPO.LOWER) {
-                return token.addReverse(this);
-            } else {
-                throw new Exception();
-            }
-        } catch (Exception ex) {
-            throw new IllegalActionException("StringToken: add method not " +
-                    "supported between " + getClass().getName() + " and " +
-                    token.getClass().getName() + ": " + ex.getMessage());
-        }
-    }
-
-    /** Return a new StringToken whose value is the string value
-     *  of the argument token prepended to the String contained in
-     *  this Token.
-     *  @param token The token to concatenate this Token to.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be added to this Tokens value.
-     *  @return A new StringToken containing the result.
-     */
-    public Token addReverse(ptolemy.data.Token token)
-	    throws IllegalActionException {
-        StringToken tmp = (StringToken)this.convert(token);
-        String result = tmp.stringValue() + _value;
-        return new StringToken(result);
-    }
-
     /** Convert the specified token into an instance of StringToken.
      *  This method does lossless conversion.
      *  If the argument is already an instance of StringToken,
@@ -131,19 +85,17 @@ public class StringToken extends Token {
      *  @exception IllegalActionException If the conversion cannot
      *   be carried out.
      */
-    public static Token convert(Token token)
+    public static StringToken convert(Token token)
 	    throws IllegalActionException {
+	if (token instanceof StringToken) {
+	    return (StringToken) token;
+	}
 
 	int compare = TypeLattice.compare(BaseType.STRING, token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-	    throw new IllegalActionException("StringToken.convert: " +
-                    "type of argument: " + token.getClass().getName() +
-                    "is higher or incomparable with StringToken in the " +
-                    "type hierarchy.");
-	}
-
-	if (token instanceof StringToken) {
-	    return token;
+	    throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(
+                            token, "string"));
 	}
 
 	if (token instanceof MatrixToken || token instanceof ScalarToken ||
@@ -151,9 +103,11 @@ public class StringToken extends Token {
 	    String str = token.toString();
 	    return new StringToken(str);
 	}
-        throw new IllegalActionException("cannot convert from token " +
-                "type: " + token.getClass().getName() + " to a " +
-		"StringToken.");
+
+ 	// The argument is below StringToken in the type hierarchy,
+        // but I don't recognize it.
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "string"));
     }
 
     /** Return true if the argument is an instance of StringToken with the
@@ -189,28 +143,6 @@ public class StringToken extends Token {
 	return _value.hashCode();
     }
 
-    /** Lexicographically test the values of this Token and the
-     *  argument Token for equality. Return a new BooleanToken containing
-     *  the result.
-     *  @param token The token to lexicographically compare the value this
-     *  Token with.
-     *  @return BooleanToken indicating result of comparison.
-     *  @exception IllegalActionException If the passed token
-     *  is not of a type that can be compared this Tokens value.
-     */
-    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
-        if (token instanceof StringToken) {
-            if ( toString().compareTo(token.toString()) == 0) {
-                return new BooleanToken(true);
-            } else {
-                return new BooleanToken(false);
-            }
-        } else {
-            throw new IllegalActionException(
-                    _notSupportedMessage("equality", this, token));
-        }
-    }
-
     /** Return the string that this token contains.  Note that this is
      *  different than the toString method, which returns a string expression
      *  that has double quotes around it.
@@ -238,7 +170,116 @@ public class StringToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return a new token whose value is the value of the
+     *  argument Token added to the value of this Token.   It is assumed
+     *  that the type of the argument is StringToken.
+     *  @param rightArgument The token whose value we add to the value of
+     *   this token.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    protected Token _add(Token rightArgument)
+            throws IllegalActionException {
+        String result = _value + ((StringToken)rightArgument).stringValue();
+        return new StringToken(result);
+    }            
+
+    /** Return a new token whose value is the value of this token
+     *  divided by the value of the argument token. It is assumed
+     *  that the type of the argument is StringToken.
+     *  @param rightArgument The token to divide this token by.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
+     *  @return A new Token containing the result that is of the same class
+     *  as this token.
+     */
+    protected Token _divide(Token rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("divide", this, rightArgument));
+    }
+
+    /** Test for closeness of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  StringToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken containing the result.
+     */
+    protected BooleanToken _isCloseTo(
+            Token rightArgument, double epsilon) 
+            throws IllegalActionException {
+        return _isEqualTo(rightArgument);
+    }   
+    
+    /** Test for equality of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  StringToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken containing the result.
+     */
+    protected BooleanToken _isEqualTo(Token rightArgument) 
+            throws IllegalActionException {
+        StringToken convertedArgument = (StringToken)rightArgument;
+        return BooleanToken.getInstance(
+                toString().compareTo(convertedArgument.toString()) == 0);
+    }   
+    
+    /** Return a new token whose value is the value of this token
+     *  modulo the value of the argument token.  It is assumed
+     *  that the type of the argument is StringToken.
+     *  @param rightArgument The token to modulo this token by.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result that is of the same
+     *  class as this token.
+     */
+    protected Token _modulo(Token rightArgument) 
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("modulo", this, rightArgument));
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  multiplied by the value of the argument token.  It is assumed
+     *  that the type of the argument is StringToken.
+     *  classes to provide type specific actions for multiply.
+     *  @param rightArgument The token to multiply this token by.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
+     *  @return A new Token containing the result that is of the same class
+     *  as this token.
+     */
+    protected Token _multiply(Token rightArgument) 
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("multiply", this, rightArgument));
+    }
+                
+    /** Return a new token whose value is the value of the argument token
+     *  subtracted from the value of this token.  It is assumed
+     *  that the type of the argument is StringToken.
+     *  @param rightArgument The token to subtract from this token.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
+     *  @return A new Token containing the result that is of the same class
+     *  as this token.
+     */
+    protected Token _subtract(Token rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("subtract", this, rightArgument));
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     // The string contained in this token.
     private String _value;
     // The string contained in this token, with double quotes on either side.

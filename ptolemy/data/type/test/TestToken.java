@@ -61,21 +61,6 @@ public class TestToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Convert the specified token to an instance of this class, if it
-     *  is not already such an instance.
-     *  @param token A Token to be converted.
-     *  @return The argument, if it is a TestToken.
-     *  @exception IllegalActionException If the token is not a TestToken.
-     */
-    public static Token convert(Token token) throws IllegalActionException {
-        if (token instanceof TestToken) {
-            return token;
-        } else {
-            throw new IllegalActionException("Attempt to convert token " 
-                    + token + " into a figure token, which is not possible.");
-        }
-    }
-
     /** Return the object contained by this token.
      */
     public Object getObject() {
@@ -137,9 +122,15 @@ public class TestToken extends Token {
          *  @exception IllegalActionException If lossless conversion cannot
          *   be done.
          */
-        public Token convert(Token t)
+        public Token convert(Token token)
                 throws IllegalActionException {
-            return TestToken.convert(t);
+            if (token instanceof TestToken) {
+                return token;
+            } else {
+                throw new IllegalActionException("Attempt to convert token " 
+                        + token + 
+                        " into a test token, which is not possible.");
+            }
         }
  
         /** Test if the argument type is compatible with this type.

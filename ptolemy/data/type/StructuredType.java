@@ -58,7 +58,7 @@ public abstract class StructuredType implements Type {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a deep copy this StructuredType.
+    /** Return a deep copy of this StructuredType.
      *  @return A StructuredType.
      *  @exception CloneNotSupportedException Not thrown.
      */

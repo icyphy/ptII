@@ -202,7 +202,7 @@ test FixToken-5.1 {Test equality between FixToken and IntToken} {
         catch { [$r1 {isEqualTo ptolemy.data.Token} $i1] } msg
 	list $msg
 
-} {{ptolemy.kernel.util.IllegalActionException: FixToken.isEqualTo: type of argument: ptolemy.data.IntToken is incomparable with FixToken in the type  hierarchy.}}
+} {{ptolemy.kernel.util.IllegalActionException: equality method not supported between ptolemy.data.FixToken 'fix(5.375,32,4)' and ptolemy.data.IntToken '8' because the types are incomparable.}}
 
 
 # Helper proc: given a FixPoint, print out a string like
@@ -479,7 +479,7 @@ test FixToken-8.0 {Test equals} {
 ######################################################################
 ####
 # 
-test ByteToken-5.0 {Test hashCode} {
+test FixToken-5.0 {Test hashCode} {
     set p0 [java::new ptolemy.math.Precision "(16/4)" ]
     set c1 [java::call ptolemy.math.Quantizer \
 	    {round double ptolemy.math.Precision } \
@@ -500,4 +500,73 @@ test ByteToken-5.0 {Test hashCode} {
 
     list [$p1 hashCode] [$p2 hashCode] [$p3 hashCode]
 } {1 1 4}
+
+######################################################################
+####
+# 
+test FixToken-13.0 {Test convert from BooleanToken} {
+    set t [java::new {ptolemy.data.BooleanToken boolean} false]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.FixToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.BooleanToken 'false' to the type fix because the type of the token is higher or incomparable with the given type.}}
+
+test FixToken-13.1 {Test convert from ByteToken} {
+    set t [java::new {ptolemy.data.ByteToken byte} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.FixToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ByteToken '1' to the type fix because the type of the token is higher or incomparable with the given type.}}
+
+test FixToken-13.2 {Test convert from ComplexToken} {
+    set o [java::new {ptolemy.math.Complex} 1.0 1.0]
+    set t [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $o]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.FixToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ComplexToken '1.0 + 1.0i' to the type fix because the type of the token is higher or incomparable with the given type.}}
+
+test FixToken-13.3 {Test convert from DoubleToken} {
+    set t [java::new {ptolemy.data.DoubleToken double} 1.0]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.FixToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.DoubleToken '1.0' to the type fix because the type of the token is higher or incomparable with the given type.}}
+
+test FixToken-13.4 {Test convert from FixToken} {
+    set t [java::new {ptolemy.data.FixToken java.lang.String} "fix(1.0,8,4)"]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.FixToken convert $t] toString]} msg
+    list $msg
+} {fix(1.0,8,4)}
+
+test FixToken-13.5 {Test convert from IntToken} {
+    set t [java::new {ptolemy.data.IntToken int} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.FixToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.IntToken '1' to the type fix because the type of the token is higher or incomparable with the given type.}}
+
+test FixToken-13.6 {Test convert from LongToken} {
+    set t [java::new {ptolemy.data.LongToken long} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.FixToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '1' to the type fix because the type of the token is higher or incomparable with the given type.}}
+
+test FixToken-13.7 {Test convert from StringToken} {
+    set t [java::new {ptolemy.data.StringToken java.lang.String} "One"]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.FixToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type fix because the type of the token is higher or incomparable with the given type.}}
+    
 

@@ -65,7 +65,7 @@ public interface Type {
      *  @return True if the argument represents the same type as this
      *   object; false otherwise.
      */
-    public boolean equals(Type type);
+    public boolean equals(Object object);
 
     /** Test if the argument type is compatible with this type.
      *  Compatible is defined as follows: If this type is a constant, the

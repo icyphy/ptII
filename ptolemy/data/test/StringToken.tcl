@@ -157,6 +157,29 @@ test StringToken-3.5 {Test adding String and double} {
 ######################################################################
 ####
 # 
+test StringToken-3.6 {Test subtracting Strings} {
+    set p1 [java::new ptolemy.data.StringToken foo]
+    set p2 [java::new ptolemy.data.StringToken bar]
+    
+    catch {[$p1 subtract $p2] toString} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.StringToken '"foo"' and ptolemy.data.StringToken '"bar"'}}
+
+######################################################################
+####
+# 
+test StringToken-3.7 {Test subtracting String and boolean} {
+    set tok1 [java::new {ptolemy.data.StringToken} foo]
+    set tok2 [java::new {ptolemy.data.BooleanToken boolean} true]
+    catch {[$tok1 subtract $tok2] toString} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.StringToken '"foo"' and ptolemy.data.BooleanToken 'true'
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.StringToken '"foo"' and ptolemy.data.StringToken '"true"'}}
+
+######################################################################
+####
+# 
 test StringToken-4.0 {Test isEqualTo} {
     set tok1 [java::new {ptolemy.data.StringToken} foo]
     set tok2 [java::new {ptolemy.data.StringToken} foo]
@@ -174,9 +197,8 @@ test StringToken-4.0 {Test isEqualTo} {
     set tok1 [java::new {ptolemy.data.StringToken} 33]
     set tok2 [java::new {ptolemy.data.IntToken int} 33]
 
-    catch {[$tok1 {isEqualTo ptolemy.data.Token} $tok2]} msg
-    list $msg
-} {{ptolemy.kernel.util.IllegalActionException: equality method not supported between ptolemy.data.StringToken '"33"' and ptolemy.data.IntToken '33'}}
+    [$tok1 {isEqualTo ptolemy.data.Token} $tok2] toString
+} {true}
 
 ######################################################################
 ####
@@ -198,3 +220,71 @@ test StringToken-5.0 {Test hashCode} {
     list [$t1 hashCode] [$t2 hashCode] [$t3 hashCode]
 } {51 51 53}
 
+######################################################################
+####
+# 
+test StringToken-13.0 {Test convert from BooleanToken} {
+    set t [java::new {ptolemy.data.BooleanToken boolean} false]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
+    list $msg
+} {{"false"}}
+
+test StringToken-13.1 {Test convert from ByteToken} {
+    set t [java::new {ptolemy.data.ByteToken byte} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
+    list $msg
+} {{"1"}}
+
+test StringToken-13.2 {Test convert from ComplexToken} {
+    set o [java::new {ptolemy.math.Complex} 1.0 1.0]
+    set t [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $o]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
+    list $msg
+} {{"1.0 + 1.0i"}}
+
+test StringToken-13.3 {Test convert from DoubleToken} {
+    set t [java::new {ptolemy.data.DoubleToken double} 1.0]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
+    list $msg
+} {{"1.0"}}
+
+test StringToken-13.4 {Test convert from FixToken} {
+    set t [java::new {ptolemy.data.FixToken java.lang.String} "fix(1.0,8,4)"]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
+    list $msg
+} {{"fix(1.0,8,4)"}}
+
+test StringToken-13.5 {Test convert from IntToken} {
+    set t [java::new {ptolemy.data.IntToken int} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
+    list $msg
+} {{"1"}}
+
+test StringToken-13.6 {Test convert from LongToken} {
+    set t [java::new {ptolemy.data.LongToken long} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
+    list $msg
+} {{"1"}}
+
+test StringToken-13.7 {Test convert from StringToken} {
+    set t [java::new {ptolemy.data.StringToken java.lang.String} "One"]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
+    list $msg
+} {{"One"}}
+    

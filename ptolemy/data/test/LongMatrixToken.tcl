@@ -140,16 +140,28 @@ test LongMatrixToken-3.0 {Test adding longs.} {
     list [$res1 toString] 
 } {{[7, 5; 6, 3]}}
 
+test LongMatrixToken-3.4 {Test adding LongMatrixToken to LongToken.} {
+    set r [java::new {ptolemy.data.LongToken long} 2]
+    set res1 [$p add $r]
+    set res2 [$p addReverse $r]
+    set res3 [$r add $p]
+    set res4 [$r addReverse $p]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
+} {{[7, 6; 5, 4]} {[7, 6; 5, 4]} {[7, 6; 5, 4]} {[7, 6; 5, 4]}}
+
 ######################################################################
 ####
 # Test division of longs with Token types below it in the lossless 
 # type hierarchy, and with other longs. Note that dividing longs could 
 # give a double.
 test LongMatrixToken-4.0 {Test dividing longs.} {
+    set b [java::new {long[][]} {2 2} {{2 1} {3 1}}]
+    set q [java::new {ptolemy.data.LongMatrixToken long[][]} $b]
     catch {[set res1 [$p divide $q]]} e1
 
     list $e1
-} {{ptolemy.kernel.util.IllegalActionException: Division not supported for ptolemy.data.LongMatrixToken divided by ptolemy.data.LongMatrixToken.}}
+} {{ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.LongMatrixToken '[5, 4; 3, 2]' and ptolemy.data.LongMatrixToken '[2, 1; 3, 1]'}}
 
 ######################################################################
 ####
@@ -170,7 +182,7 @@ test LongMatrixToken-6.0 {Test modulo between longs.} {
     catch {[set res1 [$p modulo $q]]} e1
 
     list $e1
-} {{ptolemy.kernel.util.IllegalActionException: Modulo operation not supported: ptolemy.data.LongMatrixToken modulo ptolemy.data.LongMatrixToken.}}
+} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.LongMatrixToken '[5, 4; 3, 2]' and ptolemy.data.LongMatrixToken '[2, 1; 3, 1]'}}
 
 ######################################################################
 ####
@@ -183,7 +195,18 @@ test LongMatrixToken-7.0 {Test multiply operator between longs.} {
     catch {$q3 multiply $p} res3
 
     list [$res1 toString] [$res2 toString] $res3
-} {{[22, 9; 12, 5]} {[22, 9, 39; 12, 5, 21]} {ptolemy.kernel.util.IllegalActionException: Cannot multiply matrix with 3 columns by a matrix with 2 rows.}}
+} {{[22, 9; 12, 5]} {[22, 9, 39; 12, 5, 21]} {ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.LongMatrixToken '[2, 1, 3; 3, 1, 6]' and ptolemy.data.LongMatrixToken '[5, 4; 3, 2]' because the matrices have incompatible dimensions.}}
+
+test LongMatrixToken-7.4 {Test multiplying LongMatrixToken to LongToken.} {
+    set r [java::new {ptolemy.data.LongToken long} 2]
+    set res1 [$p multiply $r]
+    set res2 [$p multiplyReverse $r]
+    set res3 [$r multiply $p]
+    set res4 [$r multiplyReverse $p]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
+} {{[10, 8; 6, 4]} {[10, 8; 6, 4]} {[10, 8; 6, 4]} {[10, 8; 6, 4]}}
+
 
 ######################################################################
 ####
@@ -195,6 +218,16 @@ test LongMatrixToken-8.0 {Test subtract operator between longs.} {
 
     list [$res1 toString] 
 } {{[3, 3; 0, 1]}}
+
+test LongMatrixToken-8.4 {Test subtracting LongMatrixToken to LongToken.} {
+    set r [java::new {ptolemy.data.LongToken long} 2]
+    set res1 [$p subtract $r]
+    set res2 [$p subtractReverse $r]
+    set res3 [$r subtract $p]
+    set res4 [$r subtractReverse $p]
+
+    list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
+} {{[3, 2; 1, 0]} {[-3, -2; -1, 0]} {[-3, -2; -1, 0]} {[3, 2; 1, 0]}}
 
 ######################################################################
 ####

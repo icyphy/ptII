@@ -278,14 +278,15 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
             ptolemy.data.Token incr) {
         int[] result = new int[_nColumns];
         try {
-            int lbv = ((IntToken)IntToken.convert(lb)).intValue();
-            int incrv = ((IntToken)IntToken.convert(incr)).intValue();
+            int lbv = IntToken.convert(lb).intValue();
+            int incrv = IntToken.convert(incr).intValue();
 
             for (int i = 0; i < _nColumns; ++i) {
                 result[i] = lbv + i*incrv;
             }
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException("The caller should guarantee that "
+            throw new InternalErrorException(
+                    "The caller should guarantee that "
                     + "arguments can be converted losslessly to IntToken: "
                     + ex.getMessage());
         }
@@ -299,14 +300,15 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
             ptolemy.data.Token incr) {
         long[] result = new long[_nColumns];
         try {
-            long lbv = ((LongToken)LongToken.convert(lb)).longValue();
-            long incrv = ((LongToken)LongToken.convert(incr)).longValue();
+            long lbv = LongToken.convert(lb).longValue();
+            long incrv = LongToken.convert(incr).longValue();
 
             for (int i = 0; i < _nColumns; ++i) {
                 result[i] = lbv + i*incrv;
             }
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException("The caller should guarantee that "
+            throw new InternalErrorException(
+                    "The caller should guarantee that "
                     + "arguments can be converted losslessly to LongToken: "
                     + ex.getMessage());
         }
@@ -320,15 +322,15 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
             ptolemy.data.Token incr) {
         double[] result = new double[_nColumns];
         try {
-            double lbv = ((DoubleToken)DoubleToken.convert(lb)).doubleValue();
-            double incrv =
-                ((DoubleToken)DoubleToken.convert(incr)).doubleValue();
+            double lbv = DoubleToken.convert(lb).doubleValue();
+            double incrv = DoubleToken.convert(incr).doubleValue();
 
             for (int i = 0; i < _nColumns; ++i) {
                 result[i] = lbv + i*incrv;
             }
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException("The caller should guarantee that "
+            throw new InternalErrorException(
+                    "The caller should guarantee that "
                     + "arguments can be converted losslessly to IntToken: "
                     + ex.getMessage());
         }
@@ -364,9 +366,9 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
             ptolemy.data.Token ub) {
         int result = 0;
         try {
-            int lbv = ((IntToken)IntToken.convert(lb)).intValue();
-            int incrv = ((IntToken)IntToken.convert(incr)).intValue();
-            int ubv = ((IntToken)IntToken.convert(ub)).intValue();
+            int lbv = IntToken.convert(lb).intValue();
+            int incrv = IntToken.convert(incr).intValue();
+            int ubv = IntToken.convert(ub).intValue();
             if (incrv == 0) {
                 result = 0;
             } else if (incrv > 0 && lbv > ubv) {
@@ -377,7 +379,8 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                 result = (ubv - lbv)/incrv + 1;
             }
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException("The caller should guarantee that "
+            throw new InternalErrorException(
+                    "The caller should guarantee that "
                     + "arguments can be converted losslessly to IntToken: "
                     + ex.getMessage());
         }
@@ -392,9 +395,9 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
             ptolemy.data.Token ub) {
         int result = 0;
         try {
-            long lbv = ((LongToken)LongToken.convert(lb)).longValue();
-            long incrv = ((LongToken)LongToken.convert(incr)).longValue();
-            long ubv = ((LongToken)LongToken.convert(ub)).longValue();
+            long lbv = LongToken.convert(lb).longValue();
+            long incrv = LongToken.convert(incr).longValue();
+            long ubv = LongToken.convert(ub).longValue();
             if (incrv == 0) {
                 result = 0;
             } else if (incrv > 0 && lbv > ubv) {
@@ -405,7 +408,8 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                 result = (int)((ubv - lbv)/incrv + 1);
             }
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException("The caller should guarantee that "
+            throw new InternalErrorException(
+                    "The caller should guarantee that "
                     + "arguments can be converted losslessly to LongToken: "
                     + ex.getMessage());
         }
@@ -420,10 +424,9 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
             ptolemy.data.Token incr, ptolemy.data.Token ub) {
         int result = 0;
         try {
-            double lbv = ((DoubleToken)DoubleToken.convert(lb)).doubleValue();
-            double incrv =
-                ((DoubleToken)DoubleToken.convert(incr)).doubleValue();
-            double ubv = ((DoubleToken)DoubleToken.convert(ub)).doubleValue();
+            double lbv = DoubleToken.convert(lb).doubleValue();
+            double incrv = DoubleToken.convert(incr).doubleValue();
+            double ubv = DoubleToken.convert(ub).doubleValue();
             if (incrv == 0) {
                 result = 0;
             } else if (incrv > 0 && lbv > ubv) {
@@ -434,7 +437,8 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                 result = (int)((ubv - lbv)/incrv + 1);
             }
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException("The caller should guarantee that "
+            throw new InternalErrorException(
+                    "The caller should guarantee that "
                     + "arguments can be converted losslessly to IntToken: "
                     + ex.getMessage());
         }

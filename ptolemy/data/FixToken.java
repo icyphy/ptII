@@ -45,8 +45,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 /**
 A token that contains an instance of FixPoint.
 
-@author Bart Kienhuis
-@contributor Edward A. Lee
+@author Bart Kienhuis, Edward A. Lee, Steve Neuendorffer
 @see ptolemy.data.Token
 @see ptolemy.math.FixPoint
 @see ptolemy.math.Precision
@@ -124,63 +123,35 @@ public class FixToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new FixToken containing the absolute value of this token.
-     *  @return A new instance of FixToken.
+    /** Convert the specified token into an instance of FixToken.
+     *  This method does lossless conversion.
+     *  If the argument is already an instance of FixToken,
+     *  it is returned without any change. Otherwise, if the argument
+     *  is below FixToken in the type hierarchy, it is converted to
+     *  an instance of FixToken or one of the subclasses of
+     *  FixToken and returned. If none of the above conditions are
+     *  met, an exception is thrown.
+     *  @param token The token to be converted to a FixToken.
+     *  @return A FixToken.
+     *  @exception IllegalActionException If the conversion
+     *  cannot be carried out.
      */
-    public ScalarToken absolute() {
-	return new FixToken(_value.abs());
-    }
-
-    /** Return a new token whose value is the sum of this token
-     *  and the argument. The type of the specified token must
-     *  be lower than FixToken in the type lattice, meaning that
-     *  it can be losslessly converted to an instance of FixToken.
-     *  @param token The token to add to this one.
-     *  @return A new token representing the sum.
-     *  @exception IllegalActionException If the specified token
-     *   is not of a type that can be added to this token.
-     */
-    public Token add(Token token)
+    public static FixToken convert(Token token)
 	    throws IllegalActionException {
-
-        int compare = TypeLattice.compare(this, token);
-	if (compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(
-                    _notSupportedMessage("add", this, token));
-        } else if (compare == CPO.LOWER) {
-            return token.addReverse(this);
-        } else {
-	    // type of the specified token <= FixToken
-	    FixToken tem = (FixToken)convert(token);
-	    FixPoint result = _value.add(tem.fixValue());
-	    return new FixToken(result);
+	if (token instanceof FixToken) {
+	    return (FixToken)token;
 	}
-    }
-
-    /** Return a new token whose value is the sum of this token
-     *  and the argument. The type of the specified token must
-     *  be lower than FixToken in the type lattice, meaning that
-     *  it can be losslessly converted to an instance of FixToken.
-     *  @param token The token to add this Token to.
-     *  @return A new Token containing the result.
-     *  @exception IllegalActionException If the specified token
-     *   is not of a type that can be added to this token.
-     */
-    public Token addReverse(Token token)
-	    throws IllegalActionException {
-
-	int compare = TypeLattice.compare(this, token);
-        if (! (compare == CPO.HIGHER)) {
-            throw new IllegalActionException("The type of the specified "
-                    + "token " + token.getClass().getName()
-                    + " is not lower than "
-                    + getClass().getName());
+        
+        int compare = TypeLattice.compare(BaseType.FIX, token);
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
+            throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(
+                            token, "fix"));
         }
 
-	// add is commutative on FixPoint.
-        return add(token);
+	throw new IllegalActionException(
+                notSupportedConversionMessage(token, "fix"));
     }
-    // FIXME: convert????
 
     /** Return the fixed point value of this token as a double. The
      *  conversion from a fixed point to a double is not lossless, so
@@ -190,61 +161,6 @@ public class FixToken extends ScalarToken {
      */
     public double convertToDouble() {
         return _value.doubleValue();
-    }
-
-    /** Return a new Token whose value is the value of this token
-     *  divided by the value of the argument token. The type of the
-     *  specified token must be such that either it can be converted
-     *  to the type of this token, or the type of this token can be
-     *  converted to the type of the specified token, without loss of
-     *  information. The type of the returned token is one of the
-     *  above two types that allows lossless conversion from the other.
-     *
-     *  @param divisor A FixToken.
-     *  @return A new FixToken.
-     *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be divide this Tokens value by.
-     */
-    public Token divide(Token divisor)
-	    throws IllegalActionException {
-        int compare = TypeLattice.compare(this, divisor);
-	if (compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException("FixToken.divide: " +
-                    "type of argument: " + divisor.getClass().getName() +
-                    "is incomparable with FixToken in the type " +
-                    "hierarchy.");
-        }
-
-        if (compare == CPO.LOWER) {
-            return divisor.divideReverse(this);
-        } else {
-	    // argument type is lower or the same as FixPoint.
-	    FixToken convertedToken = (FixToken)convert(divisor);
-            FixPoint result = _value.divide(convertedToken.fixValue());
-            return new FixToken(result);
-        }
-    }
-
-    /** Return a new token whose value is the value of the argument token
-     *  divided by the value of this token. The type of the specified
-     *  token must be lower than FixToken.
-     *  @param dividend The token to be divided by the value of this Token.
-     *  @return A new token containing the result.
-     *  @exception IllegalActionException If the type of the specified
-     *   token is not lower than FixToken.
-     */
-    public Token divideReverse(Token dividend)
-	    throws IllegalActionException {
-	int compare = TypeLattice.compare(this, dividend);
-        if (! (compare == CPO.HIGHER)) {
-            throw new IllegalActionException("The type of the dividend "
-                    + dividend.getClass().getName() + " is not lower than "
-                    + getClass().getName());
-        }
-
-        FixToken tem = (FixToken)this.convert(dividend);
-        FixPoint result = tem.fixValue().divide(_value);
-        return new FixToken(result);
     }
 
     /** Return true if the argument is an instance of FixToken with the
@@ -289,193 +205,12 @@ public class FixToken extends ScalarToken {
 	return (int)code;
     }
 
-    /** Test the values of this Token and the argument Token for equality.
-     *  The type of the specified token must be such that either it can be
-     *  converted to the type of this token, or the type of this token can
-     *  be converted to the type of the specified token, without loss of
-     *  information.
-     *  @param token The token to test equality of this token with.
-     *  @return BooleanToken indicating whether the values are equal.
-     *  @exception IllegalActionException If the specified token is
-     *  not of a type that can be compared with this Token.
-     */
-    public BooleanToken isEqualTo(Token token)
-            throws IllegalActionException {
-        int compare = TypeLattice.compare(this, token);
-	if (compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException("FixToken.isEqualTo: " +
-                    "type of argument: " + token.getClass().getName() +
-                    " is incomparable with FixToken in the type " +
-                    " hierarchy.");
-        }
-
-        if (compare == CPO.LOWER) {
-            return token.isEqualTo(this);
-        } else {
-	    // argument type is lower or the same as FixPoint.
-	    FixToken convertedToken = (FixToken)convert(token);
-            FixPoint tem = convertedToken.fixValue();
-	    if (_value.equals(tem)) {
-                return new BooleanToken(true);
-	    }
-	    return new BooleanToken(false);
-        }
-    }
-
-    /** Check whether the value of this token is strictly less than
-     *  that of the argument token.
-     *
-     *  @param arg A ScalarToken.
-     *  @return A BooleanToken with value true if this token is strictly
-     *   less than the argument.
-     *  @exception IllegalActionException If the type of the argument token
-     *   is incomparable with the type of this token.
-     */
-    public BooleanToken isLessThan(ScalarToken arg)
-	    throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, arg);
-        if (typeInfo == CPO.INCOMPARABLE) {
-            throw new IllegalActionException("FixToken.isLessThan: The type" +
-                    " of the argument token is incomparable with the type" +
-                    " of this token. argType: " + arg.getType());
-	}
-
-	if (typeInfo == CPO.LOWER) {
-	    if (arg.isEqualTo(this).booleanValue()) {
-	        return new BooleanToken(false);
-	    } else {
-	        return arg.isLessThan(this).not();
-	    }
-	}
-
-	// Argument type is lower or equal to this token.
-	ScalarToken fixArg = arg;
-	if (typeInfo == CPO.HIGHER) {
-	    fixArg = (ScalarToken)convert(arg);
-	}
-
-        // Use double value of the fix point.
-	if (_value.doubleValue() < fixArg.fixValue().doubleValue()) {
-            return new BooleanToken(true);
-        }
-	return new BooleanToken(false);
-    }
-
-    /** Return a new token whose value is the product of this token
-     *  and the argument. The type of the specified token
-     *  must be such that either it can be converted to the type
-     *  of this token, or the type of this token can be converted
-     *  to the type of the specified token, without loss of
-     *  information. The type of the returned token is one of the
-     *  above two types that allows lossless conversion from the other.
-     *
-     *  @param arg A FixToken.
-     *  @return A new FixToken.
-     *  @exception IllegalActionException If the specified token
-     *  is not of a type that can be multiplied to this Token.
-     */
-    public Token multiply(Token token)
-            throws IllegalActionException {
-        int compare = TypeLattice.compare(this, token);
-	if (compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(
-                    _notSupportedMessage("multiply", this, token));
-        } else if (compare == CPO.LOWER) {
-            return token.multiplyReverse(this);
-        } else {
-	    // type of the specified token <= FixToken
-	    FixToken tem = (FixToken)convert(token);
-	    FixPoint result = _value.multiply(tem.fixValue());
-	    return new FixToken(result);
-        }
-    }
-
-    /** Return a new token whose value is the product of this token
-     *  and the argument. The type of the specified token must
-     *  be lower than FixToken.
-     *
-     *  @param token The token with which to multiply this Token.
-     *  @return A new Token containing the result.
-     *  @exception IllegalActionException If the type of the specified
-     *   token is not lower than FixToken.
-     */
-    public Token multiplyReverse(Token token)
-	    throws IllegalActionException {
-
-	int compare = TypeLattice.compare(this, token);
-        if (! (compare == CPO.HIGHER)) {
-            throw new IllegalActionException("FixToken.multiplyReverse: "
-                    + "The type of the specified token "
-                    + token.getClass().getName()
-                    + " is not lower than " + getClass().getName());
-        }
-
-	// multiply is commutative on FixToken.
-        return multiply(token);
-    }
-
     /** Returns a new Token representing the multiplicative identity
      *  with the same precision as this FixToken.
      *  @return A new FixToken with value 1.0.
      */
     public Token one() {
         return new FixToken( 1.0, _value.getPrecision() );
-    }
-
-    /** Return a new Token whose value is the value of the argument
-     *  token subtracted from the value of this token. The type of the
-     *  specified token must be such that either it can be converted
-     *  to the type of this token, or the type of this token can be
-     *  converted to the type of the specified token, without loss of
-     *  information. The type of the returned token is one of the
-     *  above two types that allows lossless conversion from the
-     *  other.
-     *
-     *  @param token A FixToken.
-     *  @return A new FixToken.
-     *  @exception IllegalActionException If the specified token is
-     *   not of a type that can be subtracted from this Token.
-     */
-    public Token subtract(Token rightArgument)
-	    throws IllegalActionException {
-        int compare = TypeLattice.compare(this, rightArgument);
-	if (compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException("FixToken.subtract: " +
-                    "type of argument: " + rightArgument.getClass().getName() +
-                    "is incomparable with FixToken in the type " +
-                    "hierarchy.");
-        }
-
-        if (compare == CPO.LOWER) {
-            return rightArgument.subtractReverse(this);
-        } else {
-	    // argument type is lower or the same as FixPoint.
-	    FixToken convertedToken = (FixToken)convert(rightArgument);
-            FixPoint result = _value.subtract(convertedToken.fixValue());
-            return new FixToken(result);
-        }
-    }
-
-    /** Return a new token whose value is the value of this token
-     *  subtracted from the value of the argument token. The type of
-     *  the specified token must be lower than FixToken.
-     *  @param leftArgument The token to subtract this token from.
-     *  @return A new token containing the result.
-     *  @exception IllegalActionException If the type of the specified
-     *   token is not lower than FixToken;
-     */
-    public Token subtractReverse(Token leftArgument)
-	    throws IllegalActionException {
-	int compare = TypeLattice.compare(this, leftArgument);
-        if (! (compare == CPO.HIGHER)) {
-            throw new IllegalActionException("The type of the specified "
-                    + "token " + leftArgument.getClass().getName() + " is not "
-                    + "lower than " + getClass().getName());
-        }
-
-        FixToken tem = (FixToken)this.convert(leftArgument);
-        FixPoint result = tem.fixValue().subtract(_value);
-        return new FixToken(result);
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -509,6 +244,126 @@ public class FixToken extends ScalarToken {
     public void print() {
         _value.printFix();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+  
+    /** Return a ScalarToken containing the absolute value of the
+     *  value of this token. If this token contains a non-negative
+     *  number, it is returned directly; otherwise, a new token is is
+     *  return.  Note that it is explicitly allowable to return this
+     *  token, since the units are the same. 
+     *  @return A FixToken.
+     */
+    protected ScalarToken _absolute() {
+        FixToken result = new FixToken(_value.abs());
+        return result;
+    }   
+    
+    /** Return a new token whose value is the value of the
+     *  argument Token added to the value of this Token.  It is assumed
+     *  that the type of the argument is an FixToken.
+     *  @param rightArgument The token to add to this token.
+     *  @return A new FixToken containing the result.
+     */
+    protected ScalarToken _add(ScalarToken rightArgument) {
+        FixPoint result = _value.add(((FixToken)rightArgument).fixValue());
+        return new FixToken(result);
+    }            
+
+    /** Return a new token whose value is the value of this token
+     *  divided by the value of the argument token. It is assumed that
+     *  the type of the argument is an FixToken
+     *  @param rightArgument The token to divide this token by.
+     *  @return A new FixToken containing the result.
+     */
+    protected ScalarToken _divide(ScalarToken rightArgument) {
+        FixPoint result = _value.divide(((FixToken)rightArgument).fixValue());
+        return new FixToken(result);
+    }
+
+    /** Test for closeness of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  FixToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken containing the result.
+     */
+    protected BooleanToken _isCloseTo(
+            ScalarToken rightArgument, double epsilon) 
+            throws IllegalActionException {
+        return _isEqualTo(rightArgument);
+    }   
+    
+    /** Test for equality of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  FixToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken containing the result.
+     */
+    protected BooleanToken _isEqualTo(ScalarToken rightArgument) 
+            throws IllegalActionException {
+        FixToken convertedArgument = (FixToken)rightArgument;
+        FixPoint fixValue = convertedArgument.fixValue();
+        return BooleanToken.getInstance(_value.equals(fixValue));
+    }   
+    
+    /** Test for ordering of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is FixToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    protected BooleanToken _isLessThan(ScalarToken rightArgument) 
+            throws IllegalActionException {
+        FixToken convertedArgument = (FixToken)rightArgument;
+        return BooleanToken.getInstance(
+                 _value.doubleValue() < convertedArgument.fixValue().doubleValue());
+
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  modulo the value of the argument token.  It is assumed
+     *  that the type of the argument is the same as the type of this class.
+     *  @param rightArgument The token to modulo this token by.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
+     *  @return A new Token containing the result that is of the same class
+     *  as this token.
+     */
+    protected ScalarToken _modulo(ScalarToken rightArgument) 
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("modulo", this, rightArgument));
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  multiplied by the value of the argument token.  It is assumed that
+     *  the type of the argument is an FixToken.
+     *  @param rightArgument The token to multiply this token by.
+     *  @return A new FixToken containing the result.
+     */
+    protected ScalarToken _multiply(ScalarToken rightArgument) {
+        FixPoint result =
+            _value.multiply(((FixToken)rightArgument).fixValue());
+        return new FixToken(result);
+    }
+
+    /** Return a new token whose value is the value of the argument token
+     *  subtracted from the value of this token.  It is assumed that
+     *  the type of the argument is an FixToken.
+     *  @param rightArgument The token to subtract from this token.
+     *  @return A new FixToken containing the result.
+     */
+    protected ScalarToken _subtract(ScalarToken rightArgument) {
+        FixPoint result = 
+            _value.subtract(((FixToken)rightArgument).fixValue());
+        return new FixToken(result);
+     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

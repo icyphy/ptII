@@ -95,6 +95,20 @@ test ArrayToken-2.1 {test subtract} {
     $tadd toString
 } {{0.5, 0.5, -3.0}}
 
+test ArrayToken-2.2 {test multiply} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{1, 2, 3}"]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
+    set tadd [$t1 multiply $t2]
+    $tadd toString
+} {{0.5, 3.0, 18.0}}
+
+test ArrayToken-2.3 {test divide} {
+    set t1 [java::new {ptolemy.data.ArrayToken String} "{1, 3, 3}"]
+    set t2 [java::new {ptolemy.data.ArrayToken String} "{0.5, 1.5, 6.0}"]
+    set tadd [$t1 divide $t2]
+    $tadd toString
+} {{2.0, 2.0, 0.5}}
+
 
 ######################################################################
 ####

@@ -51,11 +51,14 @@ JSRCS = \
 	ArrayType.java \
 	BaseType.java \
 	RecordType.java \
+	SizedMatrixType.java \
 	StructuredType.java \
+	TopMatrixType.java \
 	Type.java \
 	Typeable.java \
 	TypeConstant.java \
-	TypeLattice.java
+	TypeLattice.java \
+	UnsizedMatrixType.java
 
 EXTRA_SRCS =	$(JSRCS)
 

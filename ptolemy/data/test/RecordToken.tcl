@@ -247,7 +247,7 @@ test RecordToken-5.5 {Test isCloseTo} {
 
     java::field ptolemy.math.Complex epsilon $oldEpsilon
     list $res1 $res2 $res3 $res4
-} {false true false true}
+} {false true true true}
 
 ######################################################################
 ####
@@ -332,7 +332,9 @@ test RecordToken-8.1 {Test subtract} {
 
     catch {[$r1 subtract $r2] toString} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Subtraction not supported on ptolemy.data.StringToken minus ptolemy.data.StringToken.}}
+} {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.RecordToken '{extra1=2, name="foo", value=1}' and ptolemy.data.RecordToken '{extra2=8.5, name="bar", value=5.5}'
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.StringToken '"foo"' and ptolemy.data.StringToken '"bar"'}}
 
 ######################################################################
 ####

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
@@ -46,7 +46,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 A token that contains a 2-D Complex matrix.
 
 @see ptolemy.math.Complex
-@author Yuhong Xiong, Christopher Hylands
+@author Yuhong Xiong, Christopher Hylands, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 0.2
 */
@@ -118,71 +118,6 @@ public class ComplexMatrixToken extends MatrixToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new token whose value is the sum of this token
-     *  and the argument. The type of the specified token
-     *  must be such that either it can be converted to the type
-     *  of this token, or the type of this token can be converted
-     *  to the type of the specified token, without loss of
-     *  information. The type of the returned token is one of the
-     *  above two types that allows lossless conversion from the other.
-     *  If the specified token is a matrix, its dimension must be the
-     *  same as this token.
-     *  @param token The token to add to this token.
-     *  @return A new token containing the result.
-     *  @exception IllegalActionException If the specified token is
-     *   not of a type that can be added to this token.
-     */
-    public Token add(Token token) throws IllegalActionException {
-        int compare = TypeLattice.compare(this, token);
-        if (compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(
-                    _notSupportedMessage("add", this, token));
-        } else if (compare == CPO.LOWER) {
-            return token.addReverse(this);
-        } else {
-            // type of the specified token <= ComplexMatrixToken
-            Complex[][] result = null;
-
-            if (token instanceof ScalarToken) {
-                Complex scalar = ((ScalarToken)token).complexValue();
-                result = ComplexMatrixMath.add(_value, scalar);
-            } else {
-                // the specified token is not a scalar.
-                ComplexMatrixToken tem = (ComplexMatrixToken)convert(token);
-
-                if (tem.getRowCount() != _rowCount ||
-                        tem.getColumnCount() != _columnCount) {
-                    throw new IllegalActionException("Cannot add two " +
-                            "matrices with different dimension.");
-                }
-
-                result = ComplexMatrixMath.add(tem._getInternalComplexMatrix(),
-                        _value);
-            }
-            return new ComplexMatrixToken(result, DO_NOT_COPY);
-        }
-    }
-
-    /** Return a new token whose value is the sum of this token
-     *  and the argument. The type of the specified token must
-     *  be lower than ComplexMatrixToken.
-     *  @param token The token to add this Token to.
-     *  @return A new token containing the result.
-     *  @exception IllegalActionException If the type of the specified
-     *   token is not lower than ComplexMatrixToken.
-     */
-    public Token addReverse(Token token) throws IllegalActionException {
-        int compare = TypeLattice.compare(this, token);
-        if (! (compare == CPO.HIGHER)) {
-            throw new IllegalActionException("The type of the specified "
-                    + "token " + token.getClass().getName()
-		    + " is not lower than "
-                    + getClass().getName());
-        }
-        // add is commutative on Complex matrix.
-        return add(token);
-    }
-
     /** Return the content of this token as a new 2-D Complex matrix.
      *  @return A 2-D Complex matrix
      */
@@ -203,44 +138,40 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the conversion cannot
      *   be carried out.
      */
-    public static Token convert(Token token)
+    public static ComplexMatrixToken convert(Token token)
             throws IllegalActionException {
+        if (token instanceof ComplexMatrixToken) {
+            return (ComplexMatrixToken)token;
+        }
 
         int compare = TypeLattice.compare(BaseType.COMPLEX_MATRIX,
                 token);
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException("ComplexMatrixToken.convert: " +
-                    "type of argument: " + token.getClass().getName() +
-                    "is higher or incomparable with ComplexMatrixToken " +
-                    "in the type hierarchy.");
-        }
-
-        if (token instanceof ComplexMatrixToken) {
-            return token;
+            throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(
+                            token, "[complex]"));
         }
 
         // try Complex
-        compare = TypeLattice.compare(BaseType.COMPLEX, token);
-        if (compare == CPO.SAME || compare == CPO.HIGHER) {
-            Complex[][] result = new Complex[1][1];
-            ComplexToken tem = (ComplexToken)ComplexToken.convert(token);
-            result[0][0] = tem.complexValue();
-            return new ComplexMatrixToken(result);
-        }
+       //  compare = TypeLattice.compare(BaseType.COMPLEX, token);
+//         if (compare == CPO.SAME || compare == CPO.HIGHER) {
+//             Complex[][] result = new Complex[1][1];
+//             ComplexToken tem = ComplexToken.convert(token);
+//             result[0][0] = tem.complexValue();
+//             return new ComplexMatrixToken(result);
+//         }
 
         // try DoubleMatrix
-        compare = TypeLattice.compare(BaseType.COMPLEX_MATRIX, token);
+        compare = TypeLattice.compare(BaseType.DOUBLE_MATRIX, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
-            DoubleMatrixToken tem =
-                (DoubleMatrixToken)DoubleMatrixToken.convert(token);
+            DoubleMatrixToken tem = DoubleMatrixToken.convert(token);
             return new ComplexMatrixToken(tem.complexMatrix());
         }
-
+        
         // The argument is below ComplexMatrixToken in the type hierarchy,
         // but I don't recognize it.
-        throw new IllegalActionException("cannot convert from token " +
-                "type: " + token.getClass().getName() + " to a " +
-                "ComplexMatrixToken.");
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "[complex]"));
     }
 
     /** Return true if the argument is an instance of ComplexMatrixToken
@@ -309,6 +240,14 @@ public class ComplexMatrixToken extends MatrixToken {
         return _value[row][column];
     }
 
+    /** Return the Type of the tokens contained in this matrix token.
+     *  This must be a type representing a scalar token.
+     *  @return BaseType.COMPLEX.
+     */
+    public Type getElementType() {
+        return BaseType.COMPLEX;
+    }
+
     /** Return the number of rows in the matrix.
      *  @return The number of rows in the matrix.
      */
@@ -336,226 +275,6 @@ public class ComplexMatrixToken extends MatrixToken {
 	}
 
 	return (int)sum.magnitude();
-    }
-
-    /** Test that each element of this Token is close to the
-     *  corresponding element in the argument Token and that each
-     *  element of this Token has the same units as the corresponding
-     *  element in the argument Token.
-     *  The value of the ptolemy.math.Complex epsilon field is
-     *  used to determine whether the two Tokens are close.
-     *
-     *  <p> Two tokens are considered close only if the specified token
-     *  is also a matrix token with the same dimension, and all the
-     *  corresponding elements of the matrices are close, and lossless
-     *  conversion is possible from either this token to the specified
-     *  one, or vice versa and the units of each of the corresponding
-     *  elements are equal.
-     *
-     *  <p>If A and B are the values of the tokens, and if
-     *  the following is true:
-     *  <pre>
-     *  abs(A-B) < epsilon
-     *  </pre>
-     *  and the units of A and B are equal, then A and B are considered close.
-     *
-     *  @see ptolemy.math.Complex#epsilon
-     *  @see #isEqualTo
-     *  @param token The token to test closeness of this token with.
-     *  @return a boolean token that contains the value true if the
-     *   value of each element of this token is close to the
-     *   value of corresponding element in the argument token and
-     *   the units of each element of this token is the same as the units
-     *   of the corresponding element in the argument token.
-     *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be compared with this token.
-     */
-    public BooleanToken isCloseTo(Token token) throws IllegalActionException{
-        return isCloseTo(token, ptolemy.math.Complex.epsilon);
-    }
-
-    /** Test that each element of this Token is close to the
-     *  corresponding element in the argument Token and that each
-     *  element of this Token has the same units as the corresponding
-     *  element in the argument Token.
-     *  The value of the epsilon argument is used to determine whether
-     *  the two Tokens are close.
-     *
-     *  <p> Two tokens are considered close only if the specified token
-     *  is also a matrix token with the same dimension, and all the
-     *  corresponding elements of the matrices are close, and lossless
-     *  conversion is possible from either this token to the specified
-     *  one, or vice versa and the units of each of the corresponding
-     *  elements are equal.
-     *
-     *  <p>If A and B are the values of elements of the tokens, and if
-     *  the following is true:
-     *  <pre>
-     *  abs(A-B) < epsilon
-     *  </pre>
-     *  and the units of A and B are equal, then A and B are considered close.
-     *
-     *  @see #isEqualTo
-     *  @param token The token to test closeness of this token with.
-     *  @param epsilon The value that we use to determine whether two
-     *  tokens are close.
-     *  @return a boolean token that contains the value true if the
-     *   value and units of this token are close to those of the argument
-     *   token.
-     *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be compared with this token.
-     */
-    public BooleanToken isCloseTo(Token token,
-            double epsilon)
-            throws IllegalActionException {
-        int compare = TypeLattice.compare(this, token);
-        if ( !(token instanceof MatrixToken) ||
-                compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException("Cannot check closeness " +
-                    "between " + this.getClass().getName() + " and " +
-                    token.getClass().getName());
-        }
-
-        if ( ((MatrixToken)token).getRowCount() != _rowCount ||
-                ((MatrixToken)token).getColumnCount() != _columnCount) {
-            return new BooleanToken(false);
-        }
-
-        if (compare == CPO.LOWER) {
-            return token.isCloseTo(this, epsilon);
-        } else {
-            // type of specified token <= ComplexMatrixToken
-            ComplexMatrixToken tem = (ComplexMatrixToken)convert(token);
-            return new BooleanToken(
-                    ComplexMatrixMath.arePartsWithin(_value,
-                            tem._getInternalComplexMatrix(), epsilon));
-        }
-    }
-
-    /** Test if the content of this token is equal to that of the specified
-     *  token. These two tokens are equal only if the specified token
-     *  is also a matrix token with the same dimension, and all the
-     *  corresponding elements of the matrices are equal, and lossless
-     *  conversion is possible from either this token to the specified
-     *  one, or vice versa.
-     *  @param token The token with which to test equality.
-     *  @return A BooleanToken containing the result.
-     *  @exception IllegalActionException If the specified token is
-     *   not a matrix token, or lossless conversion is not possible.
-     */
-    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
-        int compare = TypeLattice.compare(this, token);
-        if ( !(token instanceof MatrixToken) ||
-                compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException("Cannot check equality " +
-                    "between " + this.getClass().getName() + " and " +
-                    token.getClass().getName());
-        }
-
-        if ( ((MatrixToken)token).getRowCount() != _rowCount ||
-                ((MatrixToken)token).getColumnCount() != _columnCount) {
-            return new BooleanToken(false);
-        }
-
-        if (compare == CPO.LOWER) {
-            return token.isEqualTo(this);
-        } else {
-            // type of specified token <= ComplexMatrixToken
-            ComplexMatrixToken tem = (ComplexMatrixToken)convert(token);
-            return new BooleanToken(
-                    ComplexMatrixMath.arePartsWithin(_value,
-                            tem._getInternalComplexMatrix(), 0.0));
-        }
-    }
-
-    /** Return a new token whose value is the product of this token
-     *  and the argument. The type of the specified token
-     *  must be such that either it can be converted to the type
-     *  of this token, or the type of this token can be converted
-     *  to the type of the specified token, without loss of
-     *  information. The type of the returned token is one of the
-     *  above two types that allows lossless conversion from the other.
-     *  If the specified token is a matrix, its number of rows should
-     *  be the same as this token's number of columns.
-     *  @param token The token to add to this token.
-     *  @return A new token containing the result.
-     *  @exception IllegalActionException If the specified token is
-     *   not of a type that can be added to this token.
-     */
-    public final Token multiply(final Token token)
-            throws IllegalActionException {
-
-        int compare = TypeLattice.compare(this, token);
-        if (compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(
-                    _notSupportedMessage("multiply", this, token));
-        } else if (compare == CPO.LOWER) {
-            return token.multiplyReverse(this);
-        } else {
-            // type of the specified token <= ComplexMatrixToken
-            Complex[][] result = null;
-
-            if (token.getType() == BaseType.COMPLEX) {
-                // multiply by a complex number
-                Complex c = ((ComplexToken)token).complexValue();
-                result = ComplexMatrixMath.multiply(_value, c);
-            } else if (token instanceof ScalarToken) {
-                // multiply by a double
-                double scalar = ((ScalarToken)token).doubleValue();
-                result = ComplexMatrixMath.multiply(_value, scalar);
-            } else {
-                // the specified token is not a scalar.
-                ComplexMatrixToken tem = (ComplexMatrixToken)convert(token);
-                if (tem.getRowCount() != _columnCount) {
-                    throw new IllegalActionException("Cannot multiply " +
-                            "matrix with " + _columnCount +
-                            " columns by a matrix with " +
-                            tem.getRowCount() + " rows.");
-                }
-
-                result = ComplexMatrixMath.multiply(
-                        _value, tem._getInternalComplexMatrix());
-            }
-            return new ComplexMatrixToken(result, DO_NOT_COPY);
-        }
-    }
-
-    /** Return a new token whose value is the product of this token
-     *  and the argument. The type of the specified token must
-     *  be lower than ComplexMatrixToken.
-     *  @param token The token to multiply this Token by.
-     *  @return A new token containing the result.
-     *  @exception IllegalActionException If the type of the specified
-     *   token is not lower than ComplexMatrixToken.
-     */
-    public final Token multiplyReverse(final Token token)
-            throws IllegalActionException {
-        int compare = TypeLattice.compare(this, token);
-        if (! (compare == CPO.HIGHER)) {
-            throw new IllegalActionException("The type of the specified "
-                    + "token " + token.getClass().getName()
-		    + " is not lower than "
-                    + getClass().getName());
-        }
-
-        // Check if t is matrix. In that case we must convert t into a
-        // ComplexMatrixToken because matrix multiplication is not
-        // commutative.
-        if (token instanceof ScalarToken) {
-            // multiply is commutative on complex matrices, for scalar types.
-            return multiply(token);
-        } else {
-            // the specified token is not a scalar
-            ComplexMatrixToken tem = (ComplexMatrixToken)convert(token);
-            if (tem.getColumnCount() != _rowCount) {
-                throw new IllegalActionException("Cannot multiply " +
-                        "matrix with " + tem.getColumnCount() +
-                        " columns by a matrix with " +
-                        _rowCount + " rows.");
-            }
-            return new ComplexMatrixToken(ComplexMatrixMath.multiply(
-                    tem._getInternalComplexMatrix(), _value), DO_NOT_COPY);
-        }
     }
 
     /** Return a new Token representing the left multiplicative
@@ -594,77 +313,6 @@ public class ComplexMatrixToken extends MatrixToken {
 	}
     }
 
-    /** Return a new Token whose value is the value of the argument Token
-     *  subtracted from the value of this Token. The type of the specified token
-     *  must be such that either it can be converted to the type
-     *  of this token, or the type of this token can be converted
-     *  to the type of the specified token, without loss of
-     *  information. The type of the returned token is one of the
-     *  above two types that allows lossless conversion from the other.
-     *  If the specified token is a matrix, its dimension must be the
-     *  same as this token.
-     *  @param token The token to subtract from this token.
-     *  @return A new token containing the result.
-     *  @exception IllegalActionException If the specified token is
-     *   not of a type that can be subtracted from this token.
-     */
-    public final Token subtract(final Token token)
-            throws IllegalActionException {
-
-        int compare = TypeLattice.compare(this, token);
-        if (compare == CPO.INCOMPARABLE) {
-            throw new IllegalActionException(
-                    _notSupportedMessage("subtract", this, token));
-        } else if (compare == CPO.LOWER) {
-            Token me = token.convert(this);
-            return me.subtract(token);
-        } else {
-            // type of the specified token <= ComplexMatrixToken
-            Complex[][] result = null;
-
-            if (token instanceof ScalarToken) {
-                Complex scalar = ((ScalarToken)token).complexValue();
-                result = ComplexMatrixMath.add(_value, scalar.negate());
-            } else {
-                // the specified token is not a scalar.
-                ComplexMatrixToken tem = (ComplexMatrixToken)convert(token);
-                if (tem.getRowCount() != _rowCount ||
-                        tem.getColumnCount() != _columnCount) {
-                    throw new IllegalActionException("Cannot subtract two " +
-                            "matrices with different dimensions.");
-                }
-
-                result = ComplexMatrixMath.subtract(_value,
-                        tem._getInternalComplexMatrix());
-            }
-            return new ComplexMatrixToken(result, DO_NOT_COPY);
-        }
-    }
-
-    /** Return a new Token whose value is the value of this Token
-     *  subtracted from the value of the argument Token.
-     *  The type of the specified token must be lower than ComplexMatrixToken.
-     *  @param token The token to add this Token to.
-     *  @return A new token containing the result.
-     *  @exception IllegalActionException If the type of the specified
-     *   token is not lower than ComplexMatrixToken.
-     */
-    public final Token subtractReverse(final Token token)
-            throws IllegalActionException {
-        int compare = TypeLattice.compare(this, token);
-        if (! (compare == CPO.HIGHER)) {
-            throw new IllegalActionException("The type of the specified "
-                    + "token " + token.getClass().getName()
-		    + " is not lower than "
-                    + getClass().getName());
-        }
-        // add the argument Token to the negative of this Token
-        ComplexMatrixToken negativeToken =
-            new ComplexMatrixToken(
-                    ComplexMatrixMath.negative(_value), DO_NOT_COPY);
-        return negativeToken.add(token);
-    }
-
     /** Return a new Token representing the additive identity.
      *  The returned token contains a matrix whose elements are
      *  all zero, and the size of the matrix is the same as the
@@ -674,7 +322,8 @@ public class ComplexMatrixToken extends MatrixToken {
     public Token zero() {
 	try {
             return new ComplexMatrixToken(
-                    ComplexMatrixMath.zero(_rowCount, _columnCount), DO_NOT_COPY);
+                    ComplexMatrixMath.zero(_rowCount, _columnCount),
+                    DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
 	    // should not happen
 	    throw new InternalErrorException("ComplexMatrixToken.zero: "
@@ -684,14 +333,166 @@ public class ComplexMatrixToken extends MatrixToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+ 
+    /** Return a new token whose value is the value of the argument
+     *  Token added to the value of this Token.  It is assumed that
+     *  the type of the argument is ComplexMatrixToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If the units are not
+     *  compatible, or this operation is not supported by the derived
+     *  class.
+     *  @return A new ComplexMatrixToken containing the result.
+     */
+    protected MatrixToken _add(MatrixToken rightArgument) 
+            throws IllegalActionException {
+        ComplexMatrixToken convertedArgument =
+            (ComplexMatrixToken)rightArgument;
+    	Complex[][] result = ComplexMatrixMath.add(_value,
+                convertedArgument._getInternalComplexMatrix());
+        return new ComplexMatrixToken(result);   
+    }
 
-    /** Return a reference to the internal 2-D matrix of complex numbers that
-     *  represents this Token. Because no copying is done, the contents must
-     *  NOT be modified to preserve the immutability of Token.
+    /** Return a new token whose value is the value of the argument
+     *  Token added to the value of each element of this Token. It is
+     *  assumed that the type of the argument is the same as the type
+     *  of each element of this class. 
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
+     *  @return A new ComplexMatrixToken containing the result.
+     */
+    protected MatrixToken _addElement(Token rightArgument) 
+            throws IllegalActionException {
+        Complex scalar = ((ComplexToken)rightArgument).complexValue();
+        Complex[][] result = ComplexMatrixMath.add(_value, scalar);
+        return new ComplexMatrixToken(result);   
+    }
+
+    /** Return a reference to the internal 2-D matrix of complex
+     *  numbers that represents this Token. Because no copying is
+     *  done, the contents must NOT be modified to preserve the
+     *  immutability of Token.
      *  @return A 2-D complex Java matrix.
      */
     protected Complex[][] _getInternalComplexMatrix() {
         return _value;
+    }
+
+    /** Test for equality of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  ComplexMatrixToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken containing the result.
+     */
+    protected BooleanToken _isCloseTo(
+            MatrixToken rightArgument, double epsilon) 
+            throws IllegalActionException {
+        ComplexMatrixToken convertedArgument = 
+            (ComplexMatrixToken)rightArgument;
+        return BooleanToken.getInstance(
+                ComplexMatrixMath.arePartsWithin(_value,
+                        convertedArgument._getInternalComplexMatrix(),
+                        epsilon));
+    }   
+    
+    /** Test for equality of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  ComplexMatrixToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken containing the result.
+     */
+    protected BooleanToken _isEqualTo(MatrixToken rightArgument) 
+            throws IllegalActionException {
+        return _isCloseTo(rightArgument, 0.0);
+    }   
+    
+    /** Return a new token whose value is the value of the argument
+     *  Token multiplied to the value of this Token.  It is assumed that
+     *  the type of the argument is ComplexMatrixToken.
+     *  @param rightArgument The token to multiply this token by.
+     *  @exception IllegalActionException If the units are not
+     *  compatible, or this operation is not supported by the derived
+     *  class.
+     *  @return A new ComplexMatrixToken containing the result.
+     */
+    protected MatrixToken _multiply(MatrixToken rightArgument) 
+            throws IllegalActionException {
+        ComplexMatrixToken convertedArgument =
+            (ComplexMatrixToken)rightArgument;
+    	Complex[][] result = ComplexMatrixMath.multiply(_value,
+                convertedArgument._getInternalComplexMatrix());
+        return new ComplexMatrixToken(result);   
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  multiplied by the value of the argument token. 
+     *  This method should be overridden in derived
+     *  classes to provide type specific actions for multiply.
+     *  @param rightArgument The token to multiply this token by.
+     *  @exception IllegalActionException If this method is not
+     *   supported by the derived class.
+     *  @return A new ComplexMatrixToken containing the result.
+     */
+    protected MatrixToken _multiplyElement(Token rightArgument) 
+            throws IllegalActionException {
+        Complex scalar = ((ComplexToken)rightArgument).complexValue();
+        Complex[][] result = ComplexMatrixMath.multiply(_value, scalar);
+        return new ComplexMatrixToken(result);          
+    }
+
+    /** Return a new token whose value is the value of the argument
+     *  Token subtracted to the value of this Token.  It is assumed that
+     *  the type of the argument is ComplexMatrixToken.
+     *  @param rightArgument The token to subtract to this token.
+     *  @exception IllegalActionException If the units are not
+     *  compatible, or this operation is not supported by the derived
+     *  class.
+     *  @return A new ComplexMatrixToken containing the result.
+     */
+    protected MatrixToken _subtract(MatrixToken rightArgument) 
+            throws IllegalActionException {
+        ComplexMatrixToken convertedArgument =
+            (ComplexMatrixToken)rightArgument;
+    	Complex[][] result = ComplexMatrixMath.subtract(_value,
+                convertedArgument._getInternalComplexMatrix());
+        return new ComplexMatrixToken(result);   
+    }
+
+    /** Return a new token whose value is the value of the argument
+     *  Token subtracted from the value of each element of this Token. It is
+     *  assumed that the type of the argument is the same as the type
+     *  of each element of this class. 
+     *  @param rightArgument The token to subtract from this token.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    protected MatrixToken _subtractElement(Token rightArgument) 
+            throws IllegalActionException {
+        Complex scalar = ((ComplexToken)rightArgument).complexValue();
+        Complex[][] result = ComplexMatrixMath.add(_value, scalar.negate());
+        return new ComplexMatrixToken(result);   
+    }
+
+    /** Return a new token whose value is the value of the argument
+     *  Token subtracted from the value of each element of this Token. It is
+     *  assumed that the type of the argument is the same as the type
+     *  of each element of this class. 
+     *  @param rightArgument The token to subtract from this token.
+     *  @exception IllegalActionException If this operation is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    protected MatrixToken _subtractElementReverse(Token rightArgument) 
+            throws IllegalActionException {
+        Complex scalar = ((ComplexToken)rightArgument).complexValue();
+        Complex[][] result = ComplexMatrixMath.negative(
+                ComplexMatrixMath.add(_value, scalar.negate()));
+        return new ComplexMatrixToken(result);   
     }
 
     ///////////////////////////////////////////////////////////////////

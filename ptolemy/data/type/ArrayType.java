@@ -129,15 +129,15 @@ public class ArrayType extends StructuredType {
 
     /** Determine if the argument represents the same ArrayType as this
      *  object.
-     *  @param t A Type.
+     *  @param object Another object.
      *  @return True if the argument represents the same ArrayType as
      *   this object; false otherwise.
      */
-    public boolean equals(Type type) {
-        if ( !(type instanceof ArrayType)) {
+    public boolean equals(Object object) {
+        if ( !(object instanceof ArrayType)) {
             return false;
         }
-        return _elementType.equals(((ArrayType)type).getElementType());
+        return _elementType.equals(((ArrayType)object).getElementType());
     }
 
     /** Return the type of the array elements.

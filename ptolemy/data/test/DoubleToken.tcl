@@ -326,10 +326,27 @@ test DoubleToken-5.8 {Test closeness between doubles around 0} {
 test DoubleToken-5.9 {Test closeness between a double and a String} {
     set doubleToken [java::new {ptolemy.data.DoubleToken double} 12.0]
     set stringToken [java::new ptolemy.data.StringToken "12.0"]
-    catch {[$doubleToken {isCloseTo ptolemy.data.Token} $stringToken]} errMsg1
-    catch {[$stringToken {isCloseTo ptolemy.data.Token} $doubleToken]} errMsg2
+    catch {[$doubleToken {isCloseTo ptolemy.data.Token} $stringToken] toString} errMsg1
+    catch {[$stringToken {isCloseTo ptolemy.data.Token} $doubleToken] toString} errMsg2
     list [lrange $errMsg2 0 10] [lrange $errMsg2 0 10]
-} {{ptolemy.kernel.util.IllegalActionException: closeness method not supported between ptolemy.data.StringToken '\"12.0\"' and ptolemy.data.DoubleToken '12.0'} {ptolemy.kernel.util.IllegalActionException: closeness method not supported between ptolemy.data.StringToken '\"12.0\"' and ptolemy.data.DoubleToken '12.0'}}
+} {true true}
+
+test DoubleToken-5.10 {Test closeness between doubles and ints.} {
+    set epsilon 0.001
+    set oldEpsilon [java::field ptolemy.math.Complex epsilon]
+    java::field ptolemy.math.Complex epsilon $epsilon
+
+    set tok1 [java::new {ptolemy.data.DoubleToken double} \
+	      [expr {12.0 + 0.5 * $epsilon} ]]
+    set tok2 [java::new {ptolemy.data.IntToken int} 12]
+
+    set res1 [$tok1 {isCloseTo ptolemy.data.Token} $tok2]
+    set res2 [$tok2 {isCloseTo ptolemy.data.Token} $tok1]
+
+    java::field ptolemy.math.Complex epsilon $oldEpsilon
+
+    list [$res1 toString] [$res2 toString]
+} {true true}
 
 
 ######################################################################
@@ -434,3 +451,71 @@ test DoubleToken-10.0 {Test hashCode} {
     list [$t1 hashCode] [$t2 hashCode] [$t3 hashCode]
 } {3 3 -8}
 
+######################################################################
+####
+# 
+test DoubleToken-13.0 {Test convert from BooleanToken} {
+    set t [java::new {ptolemy.data.BooleanToken boolean} false]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.DoubleToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.BooleanToken 'false' to the type double because the type of the token is higher or incomparable with the given type.}}
+
+test DoubleToken-13.1 {Test convert from ByteToken} {
+    set t [java::new {ptolemy.data.ByteToken byte} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.DoubleToken convert $t] toString]} msg
+    list $msg
+} {1.0}
+
+test DoubleToken-13.2 {Test convert from ComplexToken} {
+    set o [java::new {ptolemy.math.Complex} 1.0 1.0]
+    set t [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $o]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.DoubleToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.ComplexToken '1.0 + 1.0i' to the type double because the type of the token is higher or incomparable with the given type.}}
+
+test DoubleToken-13.3 {Test convert from DoubleToken} {
+    set t [java::new {ptolemy.data.DoubleToken double} 1.0]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.DoubleToken convert $t] toString]} msg
+    list $msg
+} {1.0}
+
+test DoubleToken-13.4 {Test convert from FixToken} {
+    set t [java::new {ptolemy.data.FixToken java.lang.String} "fix(1.0,8,4)"]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.DoubleToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.FixToken 'fix(1.0,8,4)' to the type double because the type of the token is higher or incomparable with the given type.}}
+
+test DoubleToken-13.5 {Test convert from IntToken} {
+    set t [java::new {ptolemy.data.IntToken int} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.DoubleToken convert $t] toString]} msg
+    list $msg
+} {1.0}
+
+test DoubleToken-13.6 {Test convert from LongToken} {
+    set t [java::new {ptolemy.data.LongToken long} 1]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.DoubleToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.LongToken '1' to the type double because the type of the token is higher or incomparable with the given type.}}
+
+test DoubleToken-13.7 {Test convert from StringToken} {
+    set t [java::new {ptolemy.data.StringToken java.lang.String} "One"]
+    set msg {}
+    set result {}
+    catch {set result [[java::call ptolemy.data.DoubleToken convert $t] toString]} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.StringToken '"One"' to the type double because the type of the token is higher or incomparable with the given type.}}
+    

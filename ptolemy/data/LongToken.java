@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu, nsmyth@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
 
 */
@@ -40,7 +40,7 @@ import ptolemy.data.type.*;
 /**
  * A token that contains an long integer.
  *
- * @author Neil Smyth, Yuhong Xiong
+ * @author Neil Smyth, Yuhong Xiong, Steve Neuendorffer
  * @version $Id$
  * @since Ptolemy II 0.2
  */
@@ -73,59 +73,6 @@ public class LongToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a LongToken containing the absolute value of the
-     *  value of this token.
-     *  @return A LongToken.
-     */
-    public ScalarToken absolute() {
-	return _value >= 0 ? this : new LongToken(-_value);
-    }
-
-    /** Return a new token whose value is the sum of this token
-     *  and the argument. Type resolution also occurs here, with
-     *  the returned Token type chosen to achieve a lossless conversion.
-     *  @param token The token to add to this Token.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be added to this Tokens value.
-     *  @return A new Token containing the result.
-     */
-    public Token add(Token token) throws IllegalActionException {
-        long typeInfo = TypeLattice.compare(this, token);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return token.addReverse(this);
-            } else if (token instanceof LongToken) {
-                long result = _value + ((LongToken)token).longValue();
-                return new LongToken(result);
-            } else if (typeInfo == CPO.HIGHER) {
-                LongToken tmp = (LongToken)this.convert(token);
-                long result = _value + tmp.longValue();
-                return new LongToken(result);
-            } else {
-                throw new Exception();
-            }
-        } catch (Exception ex) {
-            throw new IllegalActionException("LongToken: add method not " +
-                    "supported between " + getClass().getName() + " and "
-                    + token.getClass().getName());
-        }
-    }
-
-    /** Return a new token whose value is the sum of this token
-     *  and the argument. Type resolution also occurs here, with
-     *  the returned Token type chosen to achieve
-     *  a lossless conversion.
-     *  @param token The token to add this Token to.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be added to this Tokens value.
-     *  @return A new Token containing the result.
-     */
-    public Token addReverse(Token token) throws IllegalActionException {
-        LongToken tmp = (LongToken)this.convert(token);
-        long result = tmp.longValue() + _value;
-        return new LongToken(result);
-    }
-
     /** Convert the specified token into an instance of LongToken.
      *  This method does lossless conversion.
      *  If the argument is already an instance of LongToken,
@@ -139,75 +86,27 @@ public class LongToken extends ScalarToken {
      *  @exception IllegalActionException If the conversion
      *   cannot be carried out.
      */
-    public static Token convert(Token token)
+    public static LongToken convert(Token token)
 	    throws IllegalActionException {
+	if (token instanceof LongToken) {
+	    return (LongToken)token;
+	}
 
 	int compare = TypeLattice.compare(BaseType.LONG, token);
 	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-	    throw new IllegalActionException("LongToken.convert: " +
-                    "type of argument: " + token.getClass().getName() +
-                    "is higher or incomparable with LongToken in the type " +
-                    "hierarchy.");
-	}
-
-	if (token instanceof LongToken) {
-	    return token;
+	    throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(
+                            token, "long"));
 	}
 
 	compare = TypeLattice.compare(BaseType.INT, token);
 	if (compare == CPO.SAME || compare == CPO.HIGHER) {
-	    IntToken inttoken = (IntToken)IntToken.convert(token);
+	    IntToken inttoken = IntToken.convert(token);
 	    return new LongToken(inttoken.longValue());
 	}
 
-	throw new IllegalActionException("cannot convert from token " +
-		"type: " + token.getClass().getName() + " to a LongToken");
-    }
-
-    /** Return a new Token whose value is the value of this token
-     *  divided by the value of the argument token.
-     *  Type resolution also occurs here, with the returned Token type
-     *  chosen to achieve a lossless conversion. If two integers are divided,
-     *  the result will be an integer which is the quotient.
-     *  @param divisor The token to divide this Token by
-     *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be divide this Tokens value by.
-     *  @return A new Token containing the result.
-     */
-    public Token divide(Token divisor)
-	    throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, divisor);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return divisor.divideReverse(this);
-            } else if (divisor instanceof LongToken) {
-		return new LongToken(_value / ((LongToken)divisor).longValue());
-            } else if (typeInfo == CPO.HIGHER) {
-                LongToken tmp = (LongToken)this.convert(divisor);
-		return new LongToken(_value / (tmp.longValue()));
-            } else {
-                throw new Exception();
-            }
-        } catch (Exception ex) {
-            throw new IllegalActionException(
-                    _notSupportedMessage("divide", this, divisor)
-                    + ": " + ex.getMessage());
-        }
-    }
-
-    /** Return a new Token whose value is the value of the argument token
-     *  divided by the value of this token. Type resolution
-     *  also occurs here, with the returned Token type chosen to achieve
-     *  a lossless conversion.
-     *  @param dividend The token to be divided by the value of this Token.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be divided by this Tokens value.
-     *  @return A new Token containing the result.
-     */
-    public Token divideReverse(Token dividend)
-	    throws IllegalActionException {
-        LongToken tmp = (LongToken)this.convert(dividend);
-	return new LongToken(tmp.longValue() / _value);
+	throw new IllegalActionException(
+                notSupportedConversionMessage(token, "long"));
     }
 
     /** Return true if the argument is an instance of LongToken with the
@@ -243,176 +142,10 @@ public class LongToken extends ScalarToken {
 	return (int)_value;
     }
 
-    /** Test the values of this Token and the argument Token for equality.
-     *  Type resolution also occurs here, with the returned Token type
-     *  chosen to achieve a lossless conversion.
-     *  @param token The token to test equality of this token with.
-     *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be compared with this Tokens value.
-     *  @return BooleanToken indicating whether the values are equal.
-     */
-    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
-        long typeInfo = TypeLattice.compare(this, token);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return token.isEqualTo(this);
-            } else if (token instanceof LongToken) {
-                if ( _value == ((LongToken)token).longValue()) {
-                    return new BooleanToken(true);
-                }
-                return new BooleanToken(false);
-            } else if (typeInfo == CPO.HIGHER) {
-                LongToken tmp = (LongToken)this.convert(token);
-                if ( _value == tmp.longValue()) {
-                    return new BooleanToken(true);
-                }
-                return new BooleanToken(false);
-            } else {
-                throw new Exception();
-            }
-        } catch (Exception ex) {
-            throw new IllegalActionException(
-                    _notSupportedMessage("equality", this, token)
-                    + ": " + ex.getMessage());
-        }
-    }
-
-    /** Check if the value of this token is strictly less than that of the
-     *  argument token.
-     *  @param arg A ScalarToken.
-     *  @return A BooleanToken with value true if this token is strictly
-     *   less than the argument.
-     *  @exception IllegalActionException If the type of the argument token
-     *   is incomparable with the type of this token.
-     */
-    public BooleanToken isLessThan(ScalarToken arg)
-	    throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, arg);
-        if (typeInfo == CPO.INCOMPARABLE) {
-            throw new IllegalActionException("LongToken.isLessThan: The type" +
-                    " of the argument token is incomparable with the type of " +
-                    "this token. argType: " + arg.getType());
-	}
-
-	if (typeInfo == CPO.LOWER) {
-	    if (arg.isEqualTo(this).booleanValue()) {
-	        return new BooleanToken(false);
-	    } else {
-	        return arg.isLessThan(this).not();
-	    }
-	}
-
-	// Argument type is lower or equal to this token.
-	ScalarToken longArg = arg;
-	if (typeInfo == CPO.HIGHER) {
-	    longArg = (ScalarToken)convert(arg);
-	}
-
-	if (_value < longArg.longValue()) {
-	    return new BooleanToken(true);
-	}
-	return new BooleanToken(false);
-    }
-
     /** Return the value in the token as a long.
      */
     public long longValue() {
 	return (long)_value;
-    }
-
-    /** Return a new Token whose value is the value of this token
-     *  modulo the value of the argument token.
-     *  Type resolution also occurs here, with the returned Token type
-     *  chosen to achieve a lossless conversion.
-     *  @param token The token to modulo this Token by.
-     *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be  used with modulo.
-     *  @return A new Token containing the result.
-     */
-    public Token modulo(Token token) throws IllegalActionException {
-        long typeInfo = TypeLattice.compare(this, token);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return token.moduloReverse(this);
-            } else if (token instanceof LongToken) {
-                long result = _value % ((LongToken)token).longValue();
-                return new LongToken(result);
-            } else if (typeInfo == CPO.HIGHER) {
-                LongToken tmp = (LongToken)this.convert(token);
-                long result = _value % tmp.longValue();
-                return new LongToken(result);
-            } else {
-                throw new Exception();
-            }
-        } catch (Exception ex) {
-            throw new IllegalActionException(
-                    _notSupportedMessage("modulo", this, token)
-                    + ": " + ex.getMessage());
-        }
-    }
-
-    /** Return a new Token whose value is the value of the argument token
-     *  modulo the value of this token.
-     *  Type resolution also occurs here, with the returned Token
-     *  type chosen to achieve a lossless conversion.
-     *  @param token The token to apply modulo to by the value of this Token.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can apply modulo by this Tokens value.
-     *  @return A new Token containing the result.
-     */
-    public Token moduloReverse(Token token) throws IllegalActionException {
-        LongToken tmp = (LongToken)this.convert(token);
-        long result = tmp.longValue() %  _value;
-        return new LongToken(result);
-    }
-
-
-    /** Return a new Token whose value is the value of this Token
-     *  multiplied by the value of the argument Token.
-     *  Type resolution also occurs here, with the returned Token type
-     *  chosen to achieve a lossless conversion.
-     *  @param rightFactor The token to multiply this Token by.
-     *  @exception IllegalActionException If the passed token is
-     *  not of a type that can be multiplied to this Tokens value.
-     *  @return A new Token containing the result.
-     */
-    public Token multiply(Token rightFactor) throws IllegalActionException {
-        long typeInfo = TypeLattice.compare(this, rightFactor);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return rightFactor.multiplyReverse(this);
-            } else if (rightFactor instanceof LongToken) {
-                long result = _value * ((LongToken)rightFactor).longValue();
-                return new LongToken(result);
-            } else if (typeInfo == CPO.HIGHER){
-                LongToken tmp = (LongToken)this.convert(rightFactor);
-                long result = _value * tmp.longValue();
-                return new LongToken(result);
-            } else {
-                throw new Exception();
-            }
-        } catch (Exception ex) {
-            throw new IllegalActionException(
-                    _notSupportedMessage("multiply", this, rightFactor)
-                    + ": " + ex.getMessage());
-        }
-    }
-
-    /** Return a new Token whose value is the value of the argument Token
-     *  multiplied by the value of this Token.
-     *  Type resolution also occurs here, with the returned Token
-     *  type chosen to achieve a lossless conversion.
-     *  @param leftFactor The token to be multiplied by the value of
-     *   this Token.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be multiplied by this Tokens value.
-     *  @return A new Token containing the result.
-     */
-    public Token multiplyReverse(Token leftFactor)
-	    throws IllegalActionException {
-        LongToken tmp = (LongToken)this.convert(leftFactor);
-        long result = tmp.longValue() * _value;
-        return new LongToken(result);
     }
 
     /** Returns a new LongToken with value 1.
@@ -420,53 +153,6 @@ public class LongToken extends ScalarToken {
      */
     public Token one() {
         return new LongToken(1);
-    }
-
-    /** Return a new Token whose value is the value of the argument Token
-     *  subtracted from the value of this Token.
-     *  Type resolution also occurs here, with the returned Token type
-     *  chosen to achieve a lossless conversion.
-     *  @param rightArgument The token to subtract to this Token.
-     *  @exception IllegalActionException If the passed token is
-     *   not of a type that can be subtracted from this Tokens value.
-     *  @return A new Token containing the result.
-     */
-    public Token subtract(Token rightArgument) throws IllegalActionException {
-        long typeInfo = TypeLattice.compare(this, rightArgument);
-        try {
-            if (typeInfo == CPO.LOWER) {
-                return rightArgument.subtractReverse(this);
-            } else if (rightArgument instanceof LongToken) {
-                long result = _value -  ((LongToken)rightArgument).longValue();
-                return new LongToken(result);
-            } else if (typeInfo == CPO.HIGHER){
-                LongToken tmp = (LongToken)this.convert(rightArgument);
-                long result = _value - tmp.longValue();
-                return new LongToken(result);
-            } else {
-                throw new Exception();
-            }
-        } catch (Exception ex) {
-            throw new IllegalActionException(
-                    _notSupportedMessage("subtract", this, rightArgument)
-                    + ": " + ex.getMessage());
-        }
-    }
-
-    /** Return a new Token whose value is the value of this Token
-     *  subtracted from the value of the argument Token.
-     *  Type resolution also occurs here, with the returned Token type
-     *  chosen to achieve a lossless conversion.
-     *  @param leftArgument The token to add this Token to.
-     *  @exception IllegalActionException If the passed token
-     *   is not of a type that can be added to this Tokens value.
-     *  @return A new Token containing the result.
-     */
-    public Token subtractReverse(Token leftArgument)
-            throws IllegalActionException {
-        LongToken tmp = (LongToken)this.convert(leftArgument);
-        long result = tmp.longValue() - _value;
-        return new LongToken(result);
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -484,6 +170,123 @@ public class LongToken extends ScalarToken {
         return new LongToken(0);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+ 
+    /** Return a ScalarToken containing the absolute value of the
+     *  value of this token. If this token contains a non-negative
+     *  number, it is returned directly; otherwise, a new token is is
+     *  return.  Note that it is explicitly allowable to return this
+     *  token, since the units are the same. 
+     *  @return An LongToken.
+     */
+    protected ScalarToken _absolute() {
+        LongToken result;
+        if (_value >= 0) {
+            result = this;
+        } else {
+            result = new LongToken(-_value);
+        }
+        return result;
+    }
+    
+    /** Return a new token whose value is the value of the
+     *  argument Token added to the value of this Token.  It is assumed
+     *  that the type of the argument is an LongToken.
+     *  @param rightArgument The token to add to this token.
+     *  @return A new LongToken containing the result.
+     */
+    protected ScalarToken _add(ScalarToken rightArgument) {
+        long sum = _value + ((LongToken)rightArgument).longValue();
+        return new LongToken(sum);
+    }            
+
+    /** Return a new token whose value is the value of this token
+     *  divided by the value of the argument token. It is assumed that
+     *  the type of the argument is an LongToken
+     *  @param rightArgument The token to divide this token by.
+     *  @return A new LongToken containing the result.
+     */
+    protected ScalarToken _divide(ScalarToken rightArgument) {
+        long quotient = _value / ((LongToken)rightArgument).longValue();
+        return new LongToken(quotient);
+    }
+
+    /** Test for closeness of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  LongToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken containing the result.
+     */
+    protected BooleanToken _isCloseTo(
+            ScalarToken rightArgument, double epsilon) 
+            throws IllegalActionException {
+        return _isEqualTo(rightArgument);
+    }   
+    
+    /** Test for equality of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  LongToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken containing the result.
+     */
+    protected BooleanToken _isEqualTo(ScalarToken rightArgument) 
+            throws IllegalActionException {
+        LongToken convertedArgument = (LongToken)rightArgument;
+        return BooleanToken.getInstance(
+                _value == convertedArgument.longValue());
+    }   
+    
+    /** Test for ordering of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is LongToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result.
+     */
+    protected BooleanToken _isLessThan(ScalarToken rightArgument) 
+            throws IllegalActionException {
+        LongToken convertedArgument = (LongToken)rightArgument;
+        return BooleanToken.getInstance(
+                _value < convertedArgument.longValue());
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  modulo the value of the argument token.  It is assumed that
+     *  the type of the argument is an LongToken.
+     *  @param rightArgument The token to modulo this token by.
+     *  @return A new LongToken containing the result.
+     */
+    protected ScalarToken _modulo(ScalarToken rightArgument) {
+        long remainder = _value % ((LongToken)rightArgument).longValue();
+        return new LongToken(remainder);
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  multiplied by the value of the argument token.  It is assumed that
+     *  the type of the argument is an LongToken.
+     *  @param rightArgument The token to multiply this token by.
+     *  @return A new LongToken containing the result.
+     */
+    protected ScalarToken _multiply(ScalarToken rightArgument) {
+        long product = _value * ((LongToken)rightArgument).longValue();
+        return new LongToken(product);
+    }
+
+    /** Return a new token whose value is the value of the argument token
+     *  subtracted from the value of this token.  It is assumed that
+     *  the type of the argument is an LongToken.
+     *  @param rightArgument The token to subtract from this token.
+     *  @return A new LongToken containing the result.
+     */
+    protected ScalarToken _subtract(ScalarToken rightArgument) {
+        long difference = _value - ((LongToken)rightArgument).longValue();
+        return new LongToken(difference);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

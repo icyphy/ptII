@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu, nsmyth@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
@@ -33,6 +33,8 @@ package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.graph.CPO;
 
 import java.io.Serializable;
 
@@ -42,16 +44,23 @@ import java.io.Serializable;
 Token is the base class for data capsules.  Tokens are immutable,
 meaning that their value cannot change after construction.  They have
 a set of polymorphic methods providing a set of basic arithmetic and
-logical operations.  Not all derived classes are required to implement
-these methods, so the default implementation in this base class throws
-an exception.
+logical operations.  This base class implements these polymorphic
+methods so that lossless type conversion is performed to convert the
+tokens to the same type.  After performing type conversion, the actual
+operations are performed by a set of protected methods.  This ensures
+that type conversions are performed consistently across all data
+types.  Generally, derived classes should override the protected
+method to implement type specific operations that make sense for a
+given type.  For operations that are non-sensical for a given type,
+such as division of matrices, the implementation of this base class
+can be used, which simply throws an exception.
 
 <p> Instances of this base class can be used to represent pure events,
 i.e., to indicate that an event is present. To support this use, the
 toString() method returns the String "present".
 
-
-@author Neil Smyth, Yuhong Xiong, Edward A. Lee, Christopher Hylands
+@author Neil Smyth, Yuhong Xiong, Edward A. Lee, Christopher Hylands,
+Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 0.2
 
@@ -61,89 +70,59 @@ public class Token implements Serializable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a new token whose value is the value of the
-     *  argument Token added to the value of this Token.
-     *  It should be overridden in derived
-     *  classes to provide type specific actions for add.
-     *  @param rightArgument The token whose value we add to the value of
-     *   this token.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
-     *  @return A new Token containing the result.
+    /** Return a new token whose value is the sum of this token and
+     *  the argument. 
+     *  @param rightArgument The token to add to this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are of incomparable types, or the operation does
+     *  not make sense for the given types.
      */
     public Token add(Token rightArgument) throws IllegalActionException {
-        throw new IllegalActionException("Addition not supported between "
-                + this.getClass().getName() + " and "
-                + rightArgument.getClass().getName() + ".");
+        throw new IllegalActionException(
+                notSupportedMessage("add", this, rightArgument));
     }
 
-    /** Return a new token whose value is the value of this
-     *  Token added to the value of the argument Token.
-     *  It should be overridden in derived classes
-     *  to provide type specific actions for add.
-     *  @param leftArgument The token containing the value to which we add the
-     *   value of this token to get the value of the new token.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
-     *  @return A new Token containing the result.
+    /** Return a new token whose value is the sum of this token
+     *  and the argument. 
+     *  @param leftArgument The token to add this token to.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are of incomparable types, or the operation does
+     *  not make sense for the given types.
      */
-    public Token addReverse(Token leftArgument) throws IllegalActionException {
-        throw new IllegalActionException("Addition not supported between "
-                + leftArgument.getClass().getName() + " and "
-                + this.getClass().getName() + ".");
+    public Token addReverse(Token leftArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("addReverse", this, leftArgument));
     }
 
-    /** Convert the specified token to an instance of this class, if it
-     *  is not already such an instance.
-     *  Since any token is an instance of this class, no conversion is
-     *  necessary, so this base class method simply returns the argument.
-     *  Derived classes <i>must</i> override this method, or very subtle
-     *  errors will result.  Notice that since this is a static method,
-     *  Java does not do late binding.  That means that to convert a
-     *  token <code>t</code> to an IntToken, say, you call
-     *  <code>x.convert(t)</code>, where <code>x</code> is a reference
-     *  of type IntToken.  It cannot be a reference of type
-     *  Token, or this implementation of the method, not the one in
-     *  IntToken will be called.
-     *  @param token A Token to be converted.
-     *  @return The argument.
-     *  @exception IllegalActionException Not thrown in this base class.
+    /** Return a new token whose value is the value of this token
+     *  divided by the value of the argument token. 
+     *  @param rightArgument The token to divide into this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are of incomparable types, or the operation does
+     *  not make sense for the given types.
      */
-    public static Token convert(Token token) throws IllegalActionException {
-        return token;
+    public Token divide(Token rightArgument) throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("divide", this, rightArgument));
     }
 
-    /** Return a new Token whose value is the value of this token
-     *  divided by the value of the argument token.
-     *  It should be overridden in derived classes to provide type specific
-     *  actions for divide.
-     *  @param divisor The Token whose value we divide the value of this
-     *   Token by.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
-     *  @return A new Token containing the result.
+    /** Return a new token whose value is the value of the argument
+     *  token divided by the value of this token.
+     *  @param leftArgument The token to be divided by the value of
+     *  this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are of incomparable types, or the operation does
+     *  not make sense for the given types.
      */
-    public Token divide(Token divisor) throws  IllegalActionException {
-        throw new IllegalActionException("Division not supported for "
-                + this.getClass().getName() + " divided by "
-                + divisor.getClass().getName() + ".");
-    }
-
-    /** Return a new Token whose value is the value of the argument token
-     *  divided by the value of this token.
-     *  It  should be overridden in derived classes to provide type specific
-     *  actions for divide.
-     *  @param dividend The Token whose value we divide by the value of
-     *   this Token.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
-     *  @return A new Token containing the result.
-     */
-    public Token divideReverse(Token dividend)
-            throws  IllegalActionException {
-        throw new IllegalActionException("Division not supported for "
-                + dividend.getClass().getName() + " divided by "
-                + this.getClass().getName() + ".");
+    public Token divideReverse(Token leftArgument) 
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("divideReverse", this, leftArgument));
     }
 
     /** Override the base class method to check whether the value of this
@@ -188,133 +167,176 @@ public class Token implements Serializable {
      *  @see #isEqualTo
      *  @param token The token to test closeness of this token with.
      *  @return a boolean token that contains the value true if the
-     *   value and units of this token are close to those of the argument
-     *   token.
-     *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be compared with this token.
+     *  value and units of this token are close to those of the
+     *  argument token.
+     *  @exception IllegalActionException If the argument token is not
+     *  of a type that can be compared with this token.
      */
-    public BooleanToken isCloseTo(Token token) throws IllegalActionException{
-	return isCloseTo(token, 0.0);
+    public final BooleanToken isCloseTo(Token token) 
+            throws IllegalActionException{
+	return isCloseTo(token, ptolemy.math.Complex.epsilon);
     }
 
     /** Test that the value of this Token is close to the argument
-     *  Token.  In this base class, we call isEqualTo() and the
-     *  epsilon argument is ignored.  This method should be overridden
-     *  in derived classes such as DoubleToken and ComplexToken to
-     *  provide type specific actions for equality testing using the
-     *  epsilon argument
+     *  Token. 
      *
-     *  @see #isEqualTo
-     *  @param token The token to test closeness of this token with.
+     *  @param rightArgument The token to test closeness of this token with.
      *  @param epsilon The value that we use to determine whether two
-     *  tokens are close.  In this base class, the epsilon argument is
-     *  ignored.
-     *  @return a boolean token that contains the value true if the
-     *   value and units of this token are close to those of the argument
-     *   token.
-     *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be compared with this token.
+     *  tokens are close.  
+     *  @return A boolean token that contains the value true if the
+     *  value of this token are close to those of the
+     *  argument token.
+     *  @exception IllegalActionException If the argument token is not
+     *  of a type that can be compared with this token.
      */
-    public BooleanToken isCloseTo(Token token, double epsilon)
+    public BooleanToken isCloseTo(Token rightArgument, double epsilon)
             throws IllegalActionException {
-        // Note that if we had absolute(), subtraction() and islessThan()
-        // we could perhaps define this method for all tokens.  However,
-        // Precise classes like IntToken not bother doing the absolute(),
-        // subtraction(), and isLessThan() method calls and should go
-        // straight to isEqualTo().  Also, these methods might introduce
-        // exceptions because of type conversion issues.
-        try {
-            return isEqualTo(token);
-        } catch (IllegalActionException ex) {
-            // Catch any errors and rethrow them with a message
-            // that includes the "closeness" instead of equality.
-            // For example, if we see if a String and Double are close
-            // then if we don't catch and rethrow the exception, the
-            // message will say something about "equality"
-            // instead of "closeness".
-            throw new IllegalActionException(null, null, ex,
-                    _notSupportedMessage("closeness", this, token));
-        }
+        throw new IllegalActionException(
+                notSupportedMessage("closeness", this, rightArgument));
     }
 
-    /** Test for equality of the values of this Token and the argument Token.
-     *  It should be overridden in derived classes to provide type specific
-     *  actions for equality testing.
+    /** Test for equality of the values of this Token and the argument
+     *  Token.  
      *
-     *  @see #isCloseTo
-     *  @param token The token with which to test equality.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
+     *  @param rightArgument The token with which to test equality.
      *  @return A BooleanToken which contains the result of the test.
+     *  @exception IllegalActionException If the argument token is not
+     *  of a type that can be compared with this token.
      */
-    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
-        throw new IllegalActionException("Equality test not supported between "
-                + this.getClass().getName() + " and "
-                + token.getClass().getName() + ".");
+    public BooleanToken isEqualTo(Token rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("equality", this, rightArgument));
     }
 
-    /** Return a new Token whose value is the value of this token
-     *  modulo the value of the argument token.
-     *  It should be overridden in derived classes to provide type specific
-     *  actions for modulo.
-     *  @param rightArgument The token whose value we do modulo with.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
-     *  @return A new Token containing the result.
+    /** Return a new token whose value is the value of this token
+     *  modulo the value of the argument token. 
+     *  @param rightArgument The token to divide into this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are of incomparable types, or the operation does
+     *  not make sense for the given types.
      */
-    public Token modulo(Token rightArgument) throws  IllegalActionException {
-        throw new IllegalActionException("Modulo operation not supported: "
-                + this.getClass().getName() + " modulo "
-                + rightArgument.getClass().getName() + ".");
+    public Token modulo(Token rightArgument) throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("modulo", this, rightArgument));
     }
-
-    /** Return a new Token whose value is the value of the argument token
-     *  modulo the value of this token.
-     *  This should be overridden in derived classes to provide type specific
-     *  actions for modulo.
-     *  @param leftArgument The token whose value we modulo on.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
-     *  @return A new Token containing the result.
+  
+    /** Return a new token whose value is the value of the argument token
+     *  modulo the value of this token. 
+     *  @param leftArgument The token to apply modulo to by the value
+     *  of this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are of incomparable types, or the operation does
+     *  not make sense for the given types.
      */
     public Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
-        throw new IllegalActionException("Modulo operation not supported on "
-                + leftArgument.getClass().getName() + " objects modulo "
-                + this.getClass().getName() + " objects.");
+        throw new IllegalActionException(
+                notSupportedMessage("moduloReverse", this, leftArgument));
     }
 
-    /** Return a new Token whose value is the value of this Token
-     *  multiplied by the value of the argument Token.
-     *  This should be overridden in derived classes to provide type specific
-     *  actions for multiply.
-     *  @param rightFactor The token whose value we multiply the value of this
-     *   Token with.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
-     *  @return A new Token containing the result.
+    /** Return a new token whose value is the value of this token
+     *  multiplied by the value of the argument token. 
+     *  @param rightArgument The token to multiply this token by.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are of incomparable types, or the operation does
+     *  not make sense for the given types.
      */
-    public Token multiply(Token rightFactor) throws  IllegalActionException {
-        throw new IllegalActionException("Multiplication not supported on "
-                + this.getClass().getName() + " by "
-                + rightFactor.getClass().getName() + ".");
+    public Token multiply(Token rightArgument) throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("multiply", this, rightArgument));
     }
 
-    /** Return a new Token whose value is the value of the argument Token
-     *  multiplied by the value of this Token.
-     *  It  should be overridden in derived classes to provide type specific
-     *  actions for multiply.
-     *  @param leftFactor The token whose value we multiply the value of this
-     *   Token with.
-     *  @exception IllegalActionException If this method is not
-     *   supported by the derived class.
-     *  @return A new Token containing the result.
+    /** Return a new token whose value is the value of the argument
+     *  token multiplied by the value of this token.
+     *  @param leftArgument The token to be multiplied by the value of
+     *  this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are of incomparable types, or the operation does
+     *  not make sense for the given types.
      */
-    public Token multiplyReverse(Token leftFactor)
-            throws  IllegalActionException {
-        throw new IllegalActionException("Multiplication not supported on "
-                + leftFactor.getClass().getName() + " by "
-                + this.getClass().getName() + ".");
+    public Token multiplyReverse(Token leftArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("multiplyReverse", this, leftArgument));
+    }
+
+    /** Return a string with an error message that states that
+     *  operation is not supported between two tokens.
+     *  @param operation A string naming the unsupported token
+     *  @param firstToken The first token in the message.
+     *  @param secondToken The first token in the message.
+     *  @return A string error message.
+     */
+    public static String notSupportedMessage(String operation,
+            Token firstToken, Token secondToken) {
+        // We use this method to factor out a very common message
+        return (operation + " operation not supported between "
+                + firstToken.getClass().getName()
+                + " '" + firstToken.toString()
+                + "' and "
+                + secondToken.getClass().getName()
+                + " '" + secondToken.toString() + "'");
+    }
+
+
+    /** Return a string with an error message that states that
+     *  the given token cannot be converted to the given token type.
+     *  @param token The token being converted.
+     *  @param typeString A string representing the type that is being
+     *  converted to.
+     *  @return A string error message.
+     */
+    public static String notSupportedConversionMessage(
+            Token token, String typeString) {
+        // We use this method to factor out a very common message
+        return ("Conversion is not supported from "
+                + token.getClass().getName()
+                + " '" + token.toString()
+                + "' to the type "
+                + typeString + ".");
+    }
+                
+    /** Return a string with an error message that states that
+     *  operation is not supported between two tokens, because they
+     *  have incomparable types and cannot be converted to the same type.
+     *  @param operation A string naming the unsupported token
+     *  @param firstToken The first token in the message.
+     *  @param secondToken The first token in the message.
+     *  @return A string error message.
+     */
+    public static String notSupportedIncomparableMessage(String operation,
+            Token firstToken, Token secondToken) {
+        // We use this method to factor out a very common message
+        return (operation + " method not supported between "
+                + firstToken.getClass().getName()
+                + " '" + firstToken.toString()
+                + "' and "
+                + secondToken.getClass().getName()
+                + " '" + secondToken.toString() 
+                + "' because the types are incomparable.");
+    }
+
+    /** Return a string with an error message that states that
+     *  the given token cannot be converted a given token type.
+     *  @param token The token being converted.
+     *  @param typeString A string representing the type that is being
+     *  converted to.
+     *  @return A string error message.
+     */
+    public static String notSupportedIncomparableConversionMessage(
+            Token token, String typeString) {
+        // We use this method to factor out a very common message
+        return ("Conversion is not supported from "
+                + token.getClass().getName()
+                + " '" + token.toString()
+                + "' to the type " + typeString
+                + " because the type of the token is higher "
+                + "or incomparable with the given type.");
     }
 
     /** Returns a new Token representing the multiplicative identity.
@@ -329,35 +351,32 @@ public class Token implements Serializable {
                 + this.getClass().getName() + ".");
     }
 
-    /** Return a new Token whose value is the value of the argument Token
-     *  subtracted from the value of this Token.
-     *  It should be overridden in derived classes to provide type specific
-     *  actions for subtract.
-     *  @param rightArgument The token whose value we subtract from this Token.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A new Token containing the result.
+    /** Return a new token whose value is the value of the argument token
+     *  subtracted from the value of this token.
+     *  @param rightArgument The token to subtract from this token.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are of incomparable types, or the operation does
+     *  not make sense for the given types.
      */
-    public Token subtract(Token rightArgument) throws  IllegalActionException {
-        throw new IllegalActionException("Subtraction not supported on "
-                + this.getClass().getName() + " minus "
-                + rightArgument.getClass().getName() + ".");
+    public Token subtract(Token rightArgument) 
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("subtract", this, rightArgument));
     }
 
-    /** Return a new Token whose value is the value of this Token
-     *  subtracted from the value of the argument Token.
-     *  It should be overridden in derived classes to provide type specific
-     *  actions for subtract.
-     *  @param leftArgument The token to subtract the value of this Token from.
-     *  @exception IllegalActionException If this method is not
-     *  supported by the derived class.
-     *  @return A new Token containing the result.
+    /** Return a new token whose value is the value of this token
+     *  subtracted from the value of the argument token.
+     *  @param leftArgument The token to subtract this token from.
+     *  @return A new token containing the result.
+     *  @exception IllegalActionException If the argument token and
+     *  this token are of incomparable types, or the operation does
+     *  not make sense for the given types.
      */
     public Token subtractReverse(Token leftArgument)
-            throws  IllegalActionException {
-        throw new IllegalActionException("Subtraction not supported on "
-                + leftArgument.getClass().getName() + " minus "
-                + this.getClass().getName() + ".");
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("subtractReverse", this, leftArgument));
     }
 
     /** Return the value of this token as a string that can be parsed
@@ -381,26 +400,5 @@ public class Token implements Serializable {
         throw new IllegalActionException(
                 "Token.zero: Additive identity not supported on "
                 + this.getClass().getName() + ".");
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Return a string with an error message that states that
-     *  operation is not supported between two tokens.
-     *  @param operation A string naming the unsupported token
-     *  @param firstToken The first token in the message.
-     *  @param secondToken The first token in the message.
-     *  @return A string error message.
-     */
-    protected String _notSupportedMessage(String operation,
-            Token firstToken, Token secondToken) {
-        // We use this method to factor out a very common message
-        return (operation + " method not supported between "
-                + firstToken.getClass().getName()
-                + " '" + firstToken.toString()
-                + "' and "
-                + secondToken.getClass().getName()
-                + " '" + secondToken.toString() + "'");
     }
 }

@@ -82,25 +82,14 @@ public class ObjectToken extends Token {
      *  @exception IllegalActionException If the conversion
      *   cannot be carried out.
      */
-    public static Token convert(Token token)
+    public static ObjectToken convert(Token token)
 	    throws IllegalActionException {
-
-	int compare = TypeLattice.compare(BaseType.OBJECT, token);
-	if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
-	    throw new IllegalActionException("ObjectToken.convert: " +
-                    "type of argument: " + token.getClass().getName() +
-                    "is higher or incomparable with ObjectToken in the type " +
-                    "hierarchy.");
-	}
-
 	if (token instanceof ObjectToken) {
-	    return token;
+	    return (ObjectToken)token;
 	}
 
-	// Argument type is lower, but don't know how to convert it
-	// to ObjectToken.
-	throw new IllegalActionException("cannot convert from token " +
-		"type: " + token.getClass().getName() + " to a ObjectToken");
+	throw new IllegalActionException(
+                notSupportedConversionMessage(token, "object"));
     }
 
     /** Return true if the argument is an instance of ObjectToken and its

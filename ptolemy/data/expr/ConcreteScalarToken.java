@@ -31,6 +31,8 @@
 
 package ptolemy.data.expr;
 
+import ptolemy.kernel.util.IllegalActionException;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
@@ -52,25 +54,84 @@ public class ConcreteScalarToken extends ScalarToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return this token.
-     *  @return This token.
-     */
-    public ScalarToken absolute() {
-        return this;
-    }
-
-    /** Return false.
-     *  @param arg A token to compare against.
-     *  @return A BooleanToken with value false.
-     */
-    public BooleanToken isLessThan(ScalarToken arg) {
-        return BooleanToken.FALSE;
-    }
-
     /** Return the type of this token.
      *  @return BaseType.SCALAR.
      */
     public Type getType() {
         return BaseType.SCALAR;
     }
+
+    /** Return this token.
+     *  @return This token.
+     */
+    protected ScalarToken _absolute() {
+        return this;
+    }
+
+    /** Throw an exception.
+     */
+    protected ScalarToken _add(ScalarToken rightArgument) 
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("add", this, rightArgument));
+    }
+
+    /** Throw an exception.
+     */
+    protected ScalarToken _divide(ScalarToken rightArgument) 
+            throws IllegalActionException  {
+        throw new IllegalActionException(
+                notSupportedMessage("divide", this, rightArgument));
+    }
+
+    /** Throw an exception.
+     */
+    protected BooleanToken _isCloseTo(
+            ScalarToken rightArgument, double epsilon)  
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("isCloseTo", this, rightArgument));
+    }
+
+    /** Throw an exception.
+     */
+    protected BooleanToken _isEqualTo(ScalarToken rightArgument)  
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("isEqualTo", this, rightArgument));
+    }
+
+     /** Throw an exception.
+     */
+    protected BooleanToken _isLessThan(ScalarToken rightArgument)  
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("isLessThan", this, rightArgument));
+    }
+
+    /** Throw an exception.
+     */
+    protected ScalarToken _modulo(ScalarToken rightArgument) 
+            throws IllegalActionException  {
+        throw new IllegalActionException(
+                notSupportedMessage("modulo", this, rightArgument));
+    }
+
+    /** Throw an exception.
+     */
+    protected ScalarToken _multiply(ScalarToken rightArgument)  
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("multiply", this, rightArgument));
+    }
+
+    /** Throw an exception.
+     */
+    protected ScalarToken _subtract(ScalarToken rightArgument)  
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("subtract", this, rightArgument));
+    }
+
+
 }

@@ -63,7 +63,7 @@ test Token-2.0 {Test add} {
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 add $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Addition not supported between ptolemy.data.Token and ptolemy.data.Token.}}
+} {{ptolemy.kernel.util.IllegalActionException: add operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
 
 ######################################################################
 ####
@@ -73,7 +73,7 @@ test Token-2.1 {Test addReverse} {
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 addReverse $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Addition not supported between ptolemy.data.Token and ptolemy.data.Token.}}
+} {{ptolemy.kernel.util.IllegalActionException: addReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
 
 ######################################################################
 ####
@@ -83,7 +83,7 @@ test Token-2.2 {Test divide} {
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 divide $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Division not supported for ptolemy.data.Token divided by ptolemy.data.Token.}}
+} {{ptolemy.kernel.util.IllegalActionException: divide operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
 
 ######################################################################
 ####
@@ -93,7 +93,7 @@ test Token-2.3 {Test divideReverse} {
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 divideReverse $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Division not supported for ptolemy.data.Token divided by ptolemy.data.Token.}}
+} {{ptolemy.kernel.util.IllegalActionException: divideReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
 
 ######################################################################
 ####
@@ -121,7 +121,7 @@ test Token-2.6 {Test isEqualTo} {
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 {isEqualTo ptolemy.data.Token} $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Equality test not supported between ptolemy.data.Token and ptolemy.data.Token.}}
+} {{ptolemy.kernel.util.IllegalActionException: equality operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
 
 ######################################################################
 ####
@@ -131,7 +131,7 @@ test Token-2.7 {Test modulo} {
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 modulo $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Modulo operation not supported: ptolemy.data.Token modulo ptolemy.data.Token.}}
+} {{ptolemy.kernel.util.IllegalActionException: modulo operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
 
 ######################################################################
 ####
@@ -141,7 +141,7 @@ test Token-2.8 {Test moduloReverse} {
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 moduloReverse $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Modulo operation not supported on ptolemy.data.Token objects modulo ptolemy.data.Token objects.}}
+} {{ptolemy.kernel.util.IllegalActionException: moduloReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
 
 ######################################################################
 ####
@@ -151,7 +151,7 @@ test Token-2.9 {Test multiply} {
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 multiply $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Multiplication not supported on ptolemy.data.Token by ptolemy.data.Token.}}
+} {{ptolemy.kernel.util.IllegalActionException: multiply operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
 
 ######################################################################
 ####
@@ -161,7 +161,7 @@ test Token-2.10 {Test multiplyReverse} {
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 multiplyReverse $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Multiplication not supported on ptolemy.data.Token by ptolemy.data.Token.}}
+} {{ptolemy.kernel.util.IllegalActionException: multiplyReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
 
 ######################################################################
 ####
@@ -171,7 +171,7 @@ test Token-2.11 {Test subtract} {
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 subtract $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Subtraction not supported on ptolemy.data.Token minus ptolemy.data.Token.}}
+} {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
 
 ######################################################################
 ####
@@ -181,7 +181,7 @@ test Token-2.12 {Test subtractReverse} {
     set p2 [java::new ptolemy.data.Token]
     catch {$p1 subtractReverse $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Subtraction not supported on ptolemy.data.Token minus ptolemy.data.Token.}}
+} {{ptolemy.kernel.util.IllegalActionException: subtractReverse operation not supported between ptolemy.data.Token 'present' and ptolemy.data.Token 'present'}}
 
 ######################################################################
 ####
@@ -207,14 +207,4 @@ test Token-3.1 {Test zero} {
 test Token-4.0 {Test toString} {
     set p [java::new ptolemy.data.Token]
     list [$p toString]
-} {present}
-
-######################################################################
-####
-# 
-test Token-5.0 {Test convert} {
-    set p1 [java::new ptolemy.data.Token]
-    set p2 [java::new ptolemy.data.Token]
-    set p3 [$p1 convert $p2]
-    $p3 toString
 } {present}

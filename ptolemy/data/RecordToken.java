@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 
 */
@@ -48,12 +48,12 @@ import java.util.Set;
 /**
 A token that contains a set of label/token pairs.
 
-@author Yuhong Xiong
+@author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
 */
 
-public class RecordToken extends Token {
+public class RecordToken extends AbstractNotConvertibleToken {
 
     /** Construct a RecordToken with the specified labels and values.
      *  The labels and values arrays must have the same length, and have one
@@ -93,62 +93,6 @@ public class RecordToken extends Token {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Return a new token whose value is the field-wise addition of
-     *  this token and the argument. The argument must be a RecordToken.
-     *  The result is a RecordToken whose label set is the union
-     *  of the label sets of this token and the argument.
-     *  @param token The token to add to this token.
-     *  @return A new RecordToken.
-     *  @exception IllegalActionException If the argument is not a
-     *   RecordToken, or calling the add method of the element token
-     *   throws it.
-     */
-    public Token add(Token token) throws IllegalActionException {
-        if ( !(token instanceof RecordToken)) {
-            throw new IllegalActionException("RecordToken.add: The argument "
-                    + "is not a RecordToken.");
-        }
-
-        RecordToken recordToken = (RecordToken)token;
-
-        Set unionSet = new HashSet();
-        Set myLabelSet = _fields.keySet();
-        Set argLabelSet = recordToken._fields.keySet();
-        unionSet.addAll(myLabelSet);
-        unionSet.addAll(argLabelSet);
-
-        Object[] labelsObjects = unionSet.toArray();
-        int size = labelsObjects.length;
-        String[] labels = new String[size];
-        Token[] values = new Token[size];
-        for (int i = 0; i < size; i++) {
-            labels[i] = (String)labelsObjects[i];
-            Token value1 = this.get(labels[i]);
-            Token value2 = recordToken.get(labels[i]);
-	    if (value1 == null) {
-	        values[i] = value2;
-	    } else if (value2 == null) {
-	        values[i] = value1;
-	    } else {
-                values[i] = value1.add(value2);
-	    }
-        }
-
-        return new RecordToken(labels, values);
-    }
-
-    /** Convert the argument token into an instance of RecordToken. Since
-     *  this method is static, there is not an instance of RecordToken from
-     *  which the resulting type can be obtained. So this method always
-     *  throws an exception.  Use the convert method in RecordType instead.
-     *  @exception IllegalActionException Always thrown.
-     */
-    public static Token convert(Token token) throws IllegalActionException {
-        throw new IllegalActionException("RecordToken.convert: " +
-                "This method cannot be used, use the convert method " +
-                "in RecordType.");
-    }
 
     /** Return true if the argument is an instance of RecordToken with the
      *  same set of labels and the corresponding fields are equal.
@@ -226,116 +170,6 @@ public class RecordToken extends Token {
 	return code;
     }
 
-    /** Test that the value of this Token is close to the argument
-     *  Token.  The value of the ptolemy.math.Complex epsilon field is
-     *  used to determine whether the two Tokens are close.
-     *
-     *  <p>If A and B are the values of elements of the tokens, and if
-     *  the following is true:
-     *  <pre>
-     *  abs(A-B) < epsilon
-     *  </pre>
-     *  then A and B are considered close.
-     *
-     *  @see ptolemy.math.Complex#epsilon
-     *  @see #isEqualTo
-     *  @param token The token to test closeness of this token with.
-     *  @return a boolean token that contains the value true if the
-     *   value and units of this token are close to those of the argument
-     *   token.
-     *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be compared with this token.
-     */
-    public BooleanToken isCloseTo(Token token) throws IllegalActionException{
-        return isCloseTo(token, ptolemy.math.Complex.epsilon);
-    }
-
-    /** Test that the value of this Token is close to the argument
-     *  Token.  The value of the ptolemy.math.Complex epsilon field is
-     *  used to determine whether the two Tokens are close.
-     *
-     *  <p>If A and B are the values of elements of the tokens, and if
-     *  the following is true:
-     *  <pre>
-     *  abs(A-B) < epsilon
-     *  </pre>
-     *  then A and B are considered close.
-     *
-     *  @see #isEqualTo
-     *  @param token The token to test closeness of this token with.
-     *  @param epsilon The value that we use to determine whether two
-     *  tokens are close.
-     *  @return a boolean token that contains the value true if the
-     *   value and units of this token are close to those of the argument
-     *   token.
-     *  @exception IllegalActionException If the argument token is
-     *   not of a type that can be compared with this token.
-     */
-    public BooleanToken isCloseTo(Token token,
-            double epsilon)
-            throws IllegalActionException {
-        if ( !(token instanceof RecordToken)) {
-            throw new IllegalActionException("RecordToken.isEqualTo: The " +
-                    "argument is not a RecordToken.");
-        }
-
-        RecordToken recordToken = (RecordToken)token;
-
-        Set myLabelSet = _fields.keySet();
-        Set argLabelSet = recordToken._fields.keySet();
-        if ( !myLabelSet.equals(argLabelSet)) {
-            return new BooleanToken(false);
-        }
-
-        Iterator iterator = myLabelSet.iterator();
-        while (iterator.hasNext()) {
-            String label = (String)iterator.next();
-            Token token1 = this.get(label);
-            Token token2 = recordToken.get(label);
-            BooleanToken result = token1.isCloseTo(token2, epsilon);
-            if (result.booleanValue() == false) {
-                return new BooleanToken(false);
-            }
-        }
-
-        return new BooleanToken(true);
-    }
-
-    /** Test for equality of the values of this Token and the argument.
-     *  @param token The token with which to test equality.
-     *  @return A new BooleanToken which contains the result of the test.
-     *  @exception IllegalActionException If the argument is not an
-     *   RecordToken, or calling the isEqualTo method of the element token
-     *   throws it.
-     */
-    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
-        if ( !(token instanceof RecordToken)) {
-            throw new IllegalActionException("RecordToken.isEqualTo: The " +
-                    "argument is not a RecordToken.");
-        }
-
-        RecordToken recordToken = (RecordToken)token;
-
-        Set myLabelSet = _fields.keySet();
-        Set argLabelSet = recordToken._fields.keySet();
-        if ( !myLabelSet.equals(argLabelSet)) {
-            return new BooleanToken(false);
-        }
-
-        Iterator iterator = myLabelSet.iterator();
-        while (iterator.hasNext()) {
-            String label = (String)iterator.next();
-            Token token1 = this.get(label);
-            Token token2 = recordToken.get(label);
-            BooleanToken result = token1.isEqualTo(token2);
-            if (result.booleanValue() == false) {
-                return new BooleanToken(false);
-            }
-        }
-
-        return new BooleanToken(true);
-    }
-
     /** Return the labels of this token as a Set.
      *  @return A Set containing labels.
      */
@@ -361,46 +195,6 @@ public class RecordToken extends Token {
             labels[i] = (String)labelsObjects[i];
             values[i] = this.get(labels[i]).one();
         }
-        return new RecordToken(labels, values);
-    }
-
-    /** Return a new token whose value is the field-wise subtraction of
-     *  this token and the argument. The argument must be a RecordToken.
-     *  The result is a RecordToken whose label set is the intersection
-     *  of the label sets of this token and the argument. The type of
-     *  the result token is greater than or equal to the types of this
-     *  token and the argument.
-     *  @param token The token to subtract from this token.
-     *  @return A new RecordToken.
-     *  @exception IllegalActionException If the argument is not a
-     *   RecordToken, or calling the subtract method of the element token
-     *   throws it.
-     */
-    public Token subtract(Token token) throws IllegalActionException {
-        if ( !(token instanceof RecordToken)) {
-            throw new IllegalActionException("RecordToken.subtract: The "
-	            + "argument is not a RecordToken.");
-        }
-
-        RecordToken recordToken = (RecordToken)token;
-
-        Set intersectionSet = new HashSet();
-        Set myLabelSet = _fields.keySet();
-        Set argLabelSet = recordToken._fields.keySet();
-        intersectionSet.addAll(myLabelSet);
-        intersectionSet.retainAll(argLabelSet);
-
-        Object[] labelsObjects = intersectionSet.toArray();
-        int size = labelsObjects.length;
-        String[] labels = new String[size];
-        Token[] values = new Token[size];
-        for (int i = 0; i < size; i++) {
-            labels[i] = (String)labelsObjects[i];
-            Token value1 = this.get(labels[i]);
-            Token value2 = recordToken.get(labels[i]);
-            values[i] = value1.subtract(value2);
-        }
-
         return new RecordToken(labels, values);
     }
 
@@ -463,7 +257,310 @@ public class RecordToken extends Token {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected methods                 ////
+
+    /** Return a new token whose value is the field-wise addition of
+     *  this token and the argument. It is assumed
+     *  that the type of the argument is an RecordToken.
+     *  @param rightArgument The token to add to this token.
+     *  @return A new RecordToken.
+     *  @exception IllegalActionException If calling the add method on
+     *  one of the record fields throws it.
+     */
+    protected Token _add(Token rightArgument) 
+            throws IllegalActionException {
+        RecordToken recordToken = (RecordToken)rightArgument;
+
+        Set unionSet = new HashSet();
+        Set myLabelSet = _fields.keySet();
+        Set argLabelSet = recordToken._fields.keySet();
+        unionSet.addAll(myLabelSet);
+        unionSet.addAll(argLabelSet);
+
+        Object[] labelsObjects = unionSet.toArray();
+        int size = labelsObjects.length;
+        String[] labels = new String[size];
+        Token[] values = new Token[size];
+        try {
+            for (int i = 0; i < size; i++) {
+                labels[i] = (String)labelsObjects[i];
+                Token value1 = this.get(labels[i]);
+                Token value2 = recordToken.get(labels[i]);
+                if (value1 == null) {
+                    values[i] = value2;
+                } else if (value2 == null) {
+                    values[i] = value1;
+                } else {
+                    values[i] = value1.add(value2);
+                }
+            }
+        } catch (IllegalActionException ex) {
+            // If the field operation fails, then create a
+            // better error message that has the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("add", this, rightArgument));
+        }     
+        
+        return new RecordToken(labels, values);
+    }
+
+    /** Return a new token whose value is the field-wise division of
+     *  this token and the argument. It is assumed
+     *  that the type of the argument is an RecordToken.
+     *  @param rightArgument The token to divide this token by.
+     *  @return A new RecordToken.
+     *  @exception IllegalActionException If calling the divide method on
+     *  one of the record fields throws it.
+     */
+    protected Token _divide(Token rightArgument)
+            throws IllegalActionException {
+        RecordToken recordToken = (RecordToken)rightArgument;
+
+        Set unionSet = new HashSet();
+        Set myLabelSet = _fields.keySet();
+        Set argLabelSet = recordToken._fields.keySet();
+        unionSet.addAll(myLabelSet);
+        unionSet.addAll(argLabelSet);
+
+        Object[] labelsObjects = unionSet.toArray();
+        int size = labelsObjects.length;
+        String[] labels = new String[size];
+        Token[] values = new Token[size];
+        try {
+            for (int i = 0; i < size; i++) {
+                labels[i] = (String)labelsObjects[i];
+                Token value1 = this.get(labels[i]);
+                Token value2 = recordToken.get(labels[i]);
+                if (value1 == null) {
+                    values[i] = value2;
+                } else if (value2 == null) {
+                    values[i] = value1;
+                } else {
+                    values[i] = value1.divide(value2);
+                }
+            }
+        } catch (IllegalActionException ex) {
+            // If the field operation fails, then create a
+            // better error message that has the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("divide", this, rightArgument));
+        } 
+        return new RecordToken(labels, values);
+    }
+
+    /** Test for closeness of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  RecordToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken containing the result.
+     */
+    protected BooleanToken _isCloseTo(Token rightArgument, double epsilon)
+            throws IllegalActionException {
+        RecordToken recordToken = (RecordToken)rightArgument;
+
+        Set myLabelSet = _fields.keySet();
+        Set argLabelSet = recordToken._fields.keySet();
+        if ( !myLabelSet.equals(argLabelSet)) {
+            return BooleanToken.FALSE;
+        }
+        try {
+            // Loop through all of the fields, checking each one for closeness.
+            Iterator iterator = myLabelSet.iterator();
+            while (iterator.hasNext()) {
+                String label = (String)iterator.next();
+                Token token1 = this.get(label);
+                Token token2 = recordToken.get(label);
+                BooleanToken result = token1.isCloseTo(token2, epsilon);
+                if (result.booleanValue() == false) {
+                    return BooleanToken.FALSE;
+                }
+            }            
+        } catch (IllegalActionException ex) {
+            // If the field operation fails, then create a
+            // better error message that has the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("isCloseTo", this, rightArgument));
+        } 
+        return BooleanToken.TRUE;
+    }
+
+    /** Test for closeness of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  RecordToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken containing the result.
+     */
+    protected BooleanToken _isEqualTo(Token rightArgument)
+            throws IllegalActionException {
+        RecordToken recordToken = (RecordToken)rightArgument;
+
+        Set myLabelSet = _fields.keySet();
+        Set argLabelSet = recordToken._fields.keySet();
+        if ( !myLabelSet.equals(argLabelSet)) {
+            return BooleanToken.FALSE;
+        }
+
+        try {
+            Iterator iterator = myLabelSet.iterator();
+            while (iterator.hasNext()) {
+                String label = (String)iterator.next();
+                Token token1 = this.get(label);
+                Token token2 = recordToken.get(label);
+                BooleanToken result = token1.isEqualTo(token2);
+                if (result.booleanValue() == false) {
+                    return BooleanToken.FALSE;
+                }
+            }
+        } catch (IllegalActionException ex) {
+            // If the field operation fails, then create a
+            // better error message that has the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("isEqualTo", this, rightArgument));
+        } 
+        return BooleanToken.TRUE;
+    }
+
+    /** Return a new token whose value is the field-wise multiplication of
+     *  this token and the argument. It is assumed
+     *  that the type of the argument is an RecordToken.
+     *  @param rightArgument The token to multiply this token by.
+     *  @return A new RecordToken.
+     *  @exception IllegalActionException If calling the multiply method on
+     *  one of the record fields throws it.
+     */
+    protected Token _modulo(Token rightArgument) 
+            throws IllegalActionException {
+        RecordToken recordToken = (RecordToken)rightArgument;
+
+        Set unionSet = new HashSet();
+        Set myLabelSet = _fields.keySet();
+        Set argLabelSet = recordToken._fields.keySet();
+        unionSet.addAll(myLabelSet);
+        unionSet.addAll(argLabelSet);
+
+        Object[] labelsObjects = unionSet.toArray();
+        int size = labelsObjects.length;
+        String[] labels = new String[size];
+        Token[] values = new Token[size];
+        try {
+            for (int i = 0; i < size; i++) {
+                labels[i] = (String)labelsObjects[i];
+                Token value1 = this.get(labels[i]);
+                Token value2 = recordToken.get(labels[i]);
+                if (value1 == null) {
+                    values[i] = value2;
+                } else if (value2 == null) {
+                    values[i] = value1;
+                } else {
+                    values[i] = value1.modulo(value2);
+                }
+            }
+        } catch (IllegalActionException ex) {
+            // If the field operation fails, then create a
+            // better error message that has the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("modulo", this, rightArgument));
+        } 
+        return new RecordToken(labels, values);
+    }
+
+    /** Return a new token whose value is the field-wise modulo of
+     *  this token and the argument. It is assumed
+     *  that the type of the argument is an RecordToken.
+     *  @param rightArgument The token to modulo this token by.
+     *  @return A new RecordToken.
+     *  @exception IllegalActionException If calling the modulo method on
+     *  one of the record fields throws it.
+     */
+    protected Token _multiply(Token rightArgument)
+            throws IllegalActionException {
+        RecordToken recordToken = (RecordToken)rightArgument;
+
+        Set unionSet = new HashSet();
+        Set myLabelSet = _fields.keySet();
+        Set argLabelSet = recordToken._fields.keySet();
+        unionSet.addAll(myLabelSet);
+        unionSet.addAll(argLabelSet);
+
+        Object[] labelsObjects = unionSet.toArray();
+        int size = labelsObjects.length;
+        String[] labels = new String[size];
+        Token[] values = new Token[size];
+        try {
+            for (int i = 0; i < size; i++) {
+                labels[i] = (String)labelsObjects[i];
+                Token value1 = this.get(labels[i]);
+                Token value2 = recordToken.get(labels[i]);
+                if (value1 == null) {
+                    values[i] = value2;
+                } else if (value2 == null) {
+                    values[i] = value1;
+                } else {
+                    values[i] = value1.multiply(value2);
+                }
+            }
+        } catch (IllegalActionException ex) {
+            // If the field operation fails, then create a
+            // better error message that has the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("multiply", this, rightArgument));
+        } 
+        return new RecordToken(labels, values);
+    }
+
+    /** Return a new token whose value is the field-wise subtraction of
+     *  this token and the argument. It is assumed
+     *  that the type of the argument is an RecordToken.
+     *  @param rightArgument The token to subtract from this token.
+     *  @return A new RecordToken.
+     *  @exception IllegalActionException If calling the add method on
+     *  one of the record fields throws it.
+     */
+    protected Token _subtract(Token rightArgument)
+            throws IllegalActionException {
+        RecordToken recordToken = (RecordToken)rightArgument;
+
+        Set intersectionSet = new HashSet();
+        Set myLabelSet = _fields.keySet();
+        Set argLabelSet = recordToken._fields.keySet();
+        intersectionSet.addAll(myLabelSet);
+        intersectionSet.retainAll(argLabelSet);
+
+        Object[] labelsObjects = intersectionSet.toArray();
+        int size = labelsObjects.length;
+        String[] labels = new String[size];
+        Token[] values = new Token[size];
+        try {
+            for (int i = 0; i < size; i++) {
+                labels[i] = (String)labelsObjects[i];
+                Token value1 = this.get(labels[i]);
+                Token value2 = recordToken.get(labels[i]);
+                values[i] = value1.subtract(value2);
+            }
+        } catch (IllegalActionException ex) {
+            // If the field operation fails, then create a
+            // better error message that has the
+            // arguments that were passed in.
+            throw new IllegalActionException(null, ex,
+                    notSupportedMessage("subtract", this, rightArgument));
+        }     
+        
+        return new RecordToken(labels, values);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     // initialize this token using the specified labels and values.
     // This method is called by the constructor.
@@ -485,7 +582,8 @@ public class RecordToken extends Token {
                 _fields.put(labels[i], values[i]);
             } else {
                 throw new IllegalActionException("RecordToken: The " +
-                        "labels array contain duplicate element: " + labels[i]);
+                        "labels array contain duplicate element: " + 
+                        labels[i]);
             }
         }
     }

@@ -23,7 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu, nsmyth@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
 @AcceptedRating Yellow (wbwu@eecs.berkeley.edu)
 */
 
@@ -35,18 +35,22 @@ import ptolemy.data.type.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// BooleanToken
-/**
- * A token that contains a boolean variable. Arithmetic on
- * booleans is that of a two-element Galois field (modulo two
- * arithmetic). Thus, add() is logical xor, multiply() is logical
- * and, zero() is false, one() is true.
- *
- * @author Neil Smyth, Yuhong Xiong, Edward A. Lee
- * @version $Id$
- * @since Ptolemy II 0.2
+/*
+A token that contains a boolean variable. Arithmetic on booleans is
+that of a two-element Galois field (modulo two arithmetic). Thus,
+add() is logical xor, multiply() is logical and, zero() is false,
+one() is true.  
+<p>
+In order to reduce the number of instances of this object that are created,
+it is highly recommended that the getInstance() method be used, instead of
+the constructor that takes a boolean argument.
+
+@author Neil Smyth, Yuhong Xiong, Edward A. Lee, Steve Neuendorffer
+@version $Id$
+@since Ptolemy II 0.2
 */
 
-public class BooleanToken extends Token {
+public class BooleanToken extends AbstractConvertibleToken {
 
     /** Construct a token with value false
      */
@@ -80,50 +84,6 @@ public class BooleanToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return this token plus the argument.
-     *  A BooleanToken can be added to another
-     *  BooleanToken or to a StringToken. For booleans, addition
-     *  is logical exclusive or.
-     *  @param rightArgument The token to add to.
-     *  @exception IllegalActionException If the passed token
-     *   is not a StringToken or a BooleanToken.
-     *  @return A BooleanToken containing the logical exclusive or.
-     */
-    public Token add(ptolemy.data.Token rightArgument)
-            throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, rightArgument);
-        if (typeInfo == CPO.LOWER) {
-            return rightArgument.addReverse(this);
-        } else if (rightArgument instanceof BooleanToken) {
-            boolean rightValue = ((BooleanToken)rightArgument).booleanValue();
-            if ((_value || rightValue) && !(_value && rightValue)) {
-                return TRUE;
-            } else {
-                return FALSE;
-            }
-        } else {
-            return super.add(rightArgument);
-        }
-    }
-
-    /** Return the argument plus this token.  The argument is assumed
-     *  to be convertible to a BooleanToken.  For booleans, addition
-     *  is logical exclusive or.
-     *  @param leftArgument The token to add to this token.
-     *  @exception IllegalActionException If the argument cannot be
-     *   converted to a BooleanToken.
-     *  @return A BooleanToken containing the logical exclusive or.
-     */
-    public Token addReverse(Token leftArgument) throws IllegalActionException {
-        BooleanToken converted = (BooleanToken)this.convert(leftArgument);
-        boolean leftValue = converted.booleanValue();
-        if ((_value || leftValue) && !(_value && leftValue)) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-    }
-
     /** Return the value as a boolean.
      *  @return The value.
      */
@@ -140,70 +100,21 @@ public class BooleanToken extends Token {
      *  @exception IllegalActionException If the argument is not
      *   a BooleanToken.
      */
-    public static Token convert(Token token)
+    public static BooleanToken convert(Token token)
 	    throws IllegalActionException {
 	if (token instanceof BooleanToken) {
-	    return token;
-	} else {
-            throw new IllegalActionException("cannot convert from token type: "
-		    + token.getClass().getName() + " to a BooleanToken");
-        }
-    }
+	    return (BooleanToken)token;
+	} 
 
-    /** Return this token divided by the argument.  For booleans, division
-     *  is defined by multiplication (which is logical and).  Thus, if
-     *  <i>c</i> = <i>a</i>/<i>b</i> then <i>c</i> is defined so that
-     *  <i>c</i><i>b</i> = <i>a</i>.  If <i>b</i> is <i>false</i> then
-     *  this result is not well defined, so this method will throw
-     *  an exception.  Specifically, if the argument is <i>true</i>,
-     *  then this method returns this token.  Otherwise it throws an
-     *  exception.
-     *  @param rightFactor The token to divide by.
-     *  @exception IllegalActionException If the argument token is
-     *   not a BooleanToken, or the argument has value <i>false</i>.
-     *  @return The result of division.
-     */
-    public Token divide(Token denominator) throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, denominator);
-        if (typeInfo == CPO.LOWER) {
-            return denominator.divideReverse(this);
-        } else if (denominator instanceof BooleanToken) {
-            boolean denomValue = ((BooleanToken)denominator).booleanValue();
-            if (denomValue) {
-                return this;
-            } else {
-                throw new IllegalActionException("BooleanToken: division "
-                        + "by false-valued token (analogous to division by "
-			+ "zero).");
-            }
-        } else {
-            return super.multiply(denominator);
+        int compare = TypeLattice.compare(BaseType.BOOLEAN, token);
+        if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
+            throw new IllegalActionException(
+                    notSupportedIncomparableConversionMessage(
+                            token, "boolean"));
         }
-    }
 
-    /** Return the argument divided by this token.  For booleans, division
-     *  is defined by multiplication (which is logical and).  Thus, if
-     *  <i>c</i> = <i>a</i>/<i>b</i> then <i>c</i> is defined so that
-     *  <i>c</i><i>b</i> = <i>a</i>.  If <i>b</i> is <i>false</i> then
-     *  this result is not well defined, so this method will throw
-     *  an exception. Specifically, if this token is <i>true</i>,
-     *  then this method returns the argument.  Otherwise it throws an
-     *  exception.
-     *  The argument is assumed to be convertible to a BooleanToken.
-     *  @param rightFactor The token to divide into.
-     *  @exception IllegalActionException If the passed token is
-     *   not convertible to a BooleanToken, or this token has value
-     *   <i>false</i>.
-     *  @return A new token containing the result.
-     */
-    public Token divideReverse(Token numerator) throws IllegalActionException {
-        BooleanToken converted = (BooleanToken)this.convert(numerator);
-        if (_value) {
-            return converted;
-        } else {
-            throw new IllegalActionException("BooleanToken: division "
-                    + "by false-valued token (analogous to division by zero).");
-        }
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "boolean"));
     }
 
     /** Return true if the argument is an instance of BooleanToken with the
@@ -224,6 +135,19 @@ public class BooleanToken extends Token {
 	return false;
     }
 
+    /** Return the instance of this class corresponding to the given 
+     *  boolean value.
+     *  @return BooleanToken.TRUE if the argument is true, or
+     *  BooleanToken.FALSE otherwise.
+     */
+    public static BooleanToken getInstance(boolean value) {
+        if(value) {
+            return BooleanToken.TRUE;
+        } else {
+            return BooleanToken.FALSE;
+        }
+    }
+
     /** Return the type of this token.
      *  @return BaseType.BOOLEAN
      */
@@ -240,68 +164,6 @@ public class BooleanToken extends Token {
 	    return 1;
 	}
 	return 0;
-    }
-
-    /** Return TRUE if the argument has the same boolean value as this token.
-     *  Otherwise, return FALSE;
-     *  @param token The token to compare.
-     *  @exception IllegalActionException If the argument
-     *   is not a BooleanToken.
-     *  @return A BooleanToken indicating whether this token has the same
-     *   value as the argument.
-     */
-    public BooleanToken isEqualTo(Token token) throws IllegalActionException {
-        if ( !(token instanceof BooleanToken)) {
-            throw new IllegalActionException("Cannot compare a BooleanToken"
-                    + " with a non-BooleanToken");
-        }
-        boolean arg = ((BooleanToken)token).booleanValue();
-        if ((_value && arg) || !(_value || arg)) {
-            return TRUE;
-        }
-        return FALSE;
-    }
-
-    /** Return the product of this token and the argument.
-     *  For booleans, multiplication is logical and.
-     *  @param rightFactor The token to multiply by this token.
-     *  @exception IllegalActionException If the argument is
-     *   not a BooleanToken.
-     *  @return A BooleanToken with the product.
-     */
-    public Token multiply(Token rightFactor) throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, rightFactor);
-        if (typeInfo == CPO.LOWER) {
-            return rightFactor.multiplyReverse(this);
-        } else if (rightFactor instanceof BooleanToken) {
-            boolean rightValue = ((BooleanToken)rightFactor).booleanValue();
-            if (rightValue && _value) {
-                return TRUE;
-            } else {
-                return FALSE;
-            }
-        } else {
-            return super.multiply(rightFactor);
-        }
-    }
-
-    /** Return the product of this token and the argument.
-     *  For booleans, multiplication is logical and.
-     *  The argument is assumed to be convertible to a BooleanToken.
-     *  @param leftFactor The token to multiply by this token.
-     *  @exception IllegalActionException If the argument is not
-     *   convertible to a BooleanToken.
-     *  @return A BooleanToken containing the product.
-     */
-    public Token multiplyReverse(Token leftArgument)
-            throws IllegalActionException {
-        BooleanToken converted = (BooleanToken)this.convert(leftArgument);
-        boolean leftValue = converted.booleanValue();
-        if (leftValue && _value) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
     }
 
     /** Return a new BooleanToken with the logical not of the value
@@ -323,50 +185,17 @@ public class BooleanToken extends Token {
         return TRUE;
     }
 
-    /** Return this token minus the argument.  For booleans, subtraction
-     *  is defined by addition (which is logical exclusive or).  Thus, if
-     *  <i>c</i> = <i>a</i> - <i>b</i> then <i>c</i> is defined so that
-     *  <i>c</i> + <i>b</i> = <i>a</i>. Adding <i>b</i> to both sides
-     *  and observing that <i>b</i> + <i>b</i> = <i>false</i> and
-     *  <i>c</i> + <i>false</i> = <i>c</i>, we note that subtraction
-     *  is identical to addition.
-     *  @param rightArgument The token to subtract from this token.
-     *  @exception IllegalActionException If the passed token is
-     *   not a boolean.
-     *  @return A new BooleanToken containing the difference.
-     */
-    public Token subtract(Token rightArgument) throws IllegalActionException {
-        int typeInfo = TypeLattice.compare(this, rightArgument);
-        if (typeInfo == CPO.LOWER) {
-            return rightArgument.subtractReverse(this);
-        } else if (rightArgument instanceof BooleanToken) {
-            return add(rightArgument);
-        } else if (typeInfo == CPO.HIGHER){
-            BooleanToken converted = (BooleanToken)this.convert(rightArgument);
-            return add(converted);
-        } else {
-            return super.subtract(rightArgument);
-        }
-    }
-
-    /** Return the argument minus this token.  The argument is assumed
-     *  to be convertible to a BooleanToken.
-     *  @param leftArgument The token to subtract this token from.
-     *  @exception IllegalActionException If the argument cannot be
-     *   converted to a BooleanToken.
-     *  @return A new BooleanToken containing the difference.
-     */
-    public Token subtractReverse(Token leftArgument)
-            throws IllegalActionException {
-        return addReverse(leftArgument);
-    }
-
     /** Return the value of this token as a string that can be parsed
      *  by the expression language to recover a token with the same value.
-     *  @return A String formed using java.lang.Boolean.toString().
+     *  @return The string "true" if this token represents true, or the 
+     *  string "false" if it represents false.
      */
     public String toString() {
-        return (new Boolean(_value)).toString();
+        if(booleanValue()) {
+            return "true";
+        } else {
+            return "false";
+        }
     }
 
     /** Returns a token representing the additive identity.
@@ -374,6 +203,131 @@ public class BooleanToken extends Token {
      */
     public Token zero() {
         return FALSE;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+ 
+    /** Return a new token whose value is the value of the
+     *  argument Token added to the value of this Token.  It is assumed
+     *  that the type of the argument is an BooleanToken.
+     *  @param rightArgument The token to add to this token.
+     *  @return A new BooleanToken containing the result.
+     */
+    protected Token _add(Token rightArgument) {
+        boolean rightValue = ((BooleanToken)rightArgument).booleanValue();
+        if ((_value || rightValue) && !(_value && rightValue)) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }            
+    
+    /** Return a new token whose value is the value of the argument
+     *  Token added to the value of this Token.  It is assumed that
+     *  the type of the argument is an BooleanToken.  For booleans,
+     *  division is defined by multiplication (which is logical and).
+     *  Thus, if <i>c</i> = <i>a</i>/<i>b</i> then <i>c</i> is defined
+     *  so that <i>c</i><i>b</i> = <i>a</i>.  If <i>b</i> is
+     *  <i>false</i> then this result is not well defined, so this
+     *  method will throw an exception.  Specifically, if the argument
+     *  is <i>true</i>, then this method returns this token.
+     *  Otherwise it throws an exception.
+     *  @param rightArgument The token to divide this token by
+     *  @return A new Booleanoken containing the result.
+     *  @exception IllegalActionException If the argument token is
+     *  FALSE.
+     */
+    protected Token _divide(Token rightArgument) 
+        throws IllegalActionException {
+        boolean denomValue = ((BooleanToken)rightArgument).booleanValue();
+        if (denomValue) {
+            return this;
+        } else {
+            throw new IllegalActionException("BooleanToken: division "
+                    + "by false-valued token (analogous to division by "
+                    + "zero).");
+        }
+    }
+
+    /** Test for closeness of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  BooleanToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken containing the result.
+     */
+    protected BooleanToken _isCloseTo(Token rightArgument, double epsilon) 
+            throws IllegalActionException {
+        return _isEqualTo(rightArgument);
+    }   
+    
+    /** Test for equality of the values of this Token and the argument
+     *  Token.  It is assumed that the type of the argument is
+     *  BooleanToken.
+     *  @param rightArgument The token to add to this token.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A BooleanToken containing the result.
+     */
+    protected BooleanToken _isEqualTo(Token rightArgument) 
+            throws IllegalActionException {
+        boolean argumentValue = ((BooleanToken)rightArgument).booleanValue();
+        if (_value == argumentValue) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }   
+    
+    /** Return a new token whose value is the value of this token
+     *  modulo the value of the argument token.  It is assumed
+     *  that the type of the argument is BooleanToken.
+     *  @param rightArgument The token to modulo this token by.
+     *  @exception IllegalActionException If this method is not
+     *  supported by the derived class.
+     *  @return A new Token containing the result that is of the same
+     *  class as this token.
+     */
+    protected Token _modulo(Token rightArgument) 
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("modulo", this, rightArgument));
+    }
+
+    /** Return a new token whose value is the value of this token
+     *  multiplied by the value of the argument token.  It is assumed
+     *  that the type of the argument is an BooleanToken.  For booleans,
+     *  this corresponds to the logical AND.
+     *  @param rightArgument The token to multiply this token by.
+     *  @return A new BooleanToken containing the result.
+     */
+    protected Token _multiply(Token rightArgument) 
+            throws IllegalActionException {
+        boolean rightValue = ((BooleanToken)rightArgument).booleanValue();
+        if (rightValue && _value) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /** Return a new token whose value is the value of the argument token
+     *  subtracted from the value of this token.  It is assumed that
+     *  the type of the argument is an BooleanToken.
+     *  For booleans, subtraction
+     *  is defined by addition (which is logical exclusive or).  Thus, if
+     *  <i>c</i> = <i>a</i> - <i>b</i> then <i>c</i> is defined so that
+     *  <i>c</i> + <i>b</i> = <i>a</i>. Adding <i>b</i> to both sides
+     *  and observing that <i>b</i> + <i>b</i> = <i>false</i> and
+     *  <i>c</i> + <i>false</i> = <i>c</i>, we note that subtraction
+     *  is identical to addition.
+     *  @param rightArgument The token to subtract from this token.
+     *  @return A new BooleanToken containing the result.
+     */
+    protected Token _subtract(Token rightArgument) {
+        return _add(rightArgument);
     }
 
     ///////////////////////////////////////////////////////////////////
