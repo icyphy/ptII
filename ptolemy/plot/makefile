@@ -60,10 +60,11 @@ JCLASS = \
 	PlotLiveDemo.class \
 	PlotPoint.class
 
+JZIP = plot.zip
 
 all: jclass
 
-install: jclass javadocs
+install: jclass javadocs $(JZIP)
 docs: javadocs
 
 depend:
