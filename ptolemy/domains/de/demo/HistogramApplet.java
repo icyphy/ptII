@@ -174,8 +174,9 @@ public class HistogramApplet extends Applet implements Runnable {
             _poisson = new DEPoisson(topLevel, "Poisson Bus", 1.0, 1.0);
             _localDirector = new DECQDirector("DE Director");
             topLevel.setDirector(_localDirector);
-            _executiveDirector = new Manager("Executive Director");
-            topLevel.setManager(_executiveDirector);
+            _manager = new Manager("Executive Director");
+            _manager.addExecutionListener(new MyExecutionListener());
+            topLevel.setManager(_manager);
 
             // Create the actors.
             // The connections are created after appropriate source is chosen.
@@ -242,6 +243,7 @@ public class HistogramApplet extends Applet implements Runnable {
 
                 // Start the CurrentTimeThread.
                 Thread ctt = new CurrentTimeThread();
+                _isSimulationRunning = true;
                 ctt.start();
 
                 // Update the mean inter arrival time.
@@ -254,7 +256,7 @@ public class HistogramApplet extends Applet implements Runnable {
 
 
                 // Start the simulation.
-                _executiveDirector.run();
+                _manager.run();
 
                 double average = _stat.getAverage();
                 _averageWaitTimeLabel.setText("Mean wait time = "+average);
@@ -289,7 +291,7 @@ public class HistogramApplet extends Applet implements Runnable {
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
     /*private*/ DECQDirector _localDirector;
-    /*private*/ Manager _executiveDirector;
+    /*private*/ Manager _manager;
 
     /*private*/ TextField _stopTimeBox;
     /*private*/ double _stopTime = 100.0;
@@ -306,6 +308,8 @@ public class HistogramApplet extends Applet implements Runnable {
     /*private*/ Scrollbar _meanIntervalScrollbar;
     /*private*/ Label _meanIntervalLabel;
 
+    /*private*/ boolean _isSimulationRunning = false;
+
     // END FIXME
 
     //////////////////////////////////////////////////////////////////////////
@@ -315,7 +319,7 @@ public class HistogramApplet extends Applet implements Runnable {
     // FIXME: due to an applet bug, I changed these inner class to public.
     public class CurrentTimeThread extends Thread {
         public void run() {
-            while (simulationThread.isAlive()) {
+            while (_isSimulationRunning) {
                 // get the current time from director.
                 double currenttime = _localDirector.getCurrentTime();
                 _currentTimeLabel.setText("Current time = "+currenttime);
@@ -328,6 +332,12 @@ public class HistogramApplet extends Applet implements Runnable {
 
     public class GoButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent evt) {
+            
+            if (_isSimulationRunning) {
+                System.out.println("Simulation still running.. hold on..");
+                return;
+            }
+
             try {
                 if (simulationThread == null) {
                     simulationThread = new Thread(HistogramApplet.this);
@@ -346,7 +356,6 @@ public class HistogramApplet extends Applet implements Runnable {
         }
     }
 
-
     public class IntervalSbListener implements AdjustmentListener {
         public void adjustmentValueChanged(AdjustmentEvent e) {
             int value = e.getValue();
@@ -357,7 +366,13 @@ public class HistogramApplet extends Applet implements Runnable {
         }
     }
 
+    private class MyExecutionListener extends DefaultExecutionListener {
+        public void executionFinished(ExecutionEvent e) {
+            super.executionFinished(e);
+            _isSimulationRunning = false;
+        }
 
+    }
 }
 
 
