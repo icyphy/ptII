@@ -106,6 +106,7 @@ public class DomainLibrary extends XMLElement{
      */
     public void addDomain(Domain domain) {
         String name=domain.getName();
+        System.out.println(name + ": " + domain);
         _domains.putAt(name,domain);
     }
 
@@ -204,7 +205,7 @@ public class DomainLibrary extends XMLElement{
      * Set the global instance of this object.   This should be set once,
      * and once only!!!!
      */
-    public void setInstance(DomainLibrary d) {
+    public static void setInstance(DomainLibrary d) {
         if(_instance==null) _instance = d;
         else throw new RuntimeException("Instance of DomainLibrary class has" +
                 " already been set.");
@@ -238,9 +239,14 @@ public class DomainLibrary extends XMLElement{
     void applySemanticsToChild(XMLElement e) {
         if(e instanceof Domain) {
             // if it's a Domain, then just add it to the list of domains.
-            _domains.putAt(
-                    ((Domain) e).getName(), e);
+            addDomain((Domain) e);
+            //_domains.putAt(
+            //       ((Domain) e).getName(), e);
         }
+    }
+
+    public String toString () {
+        return "Super: " + super.toString() + "\n\nDomain keys:\n" + _domains.toString();
     }
 
     ////////////////////////////////////////////////////////////////////////
