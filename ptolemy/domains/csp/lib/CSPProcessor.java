@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (nsmyth@eecs.berkeley.edu)
+@ProposedRating Red (davisj@eecs.berkeley.edu)
 
 */
 
@@ -37,7 +37,6 @@ import ptolemy.data.StringToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import java.util.Random;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -72,8 +71,8 @@ public class CSPProcessor extends CSPActor {
     public void accessMemory(boolean read) throws IllegalActionException {
         
         // State 1 
-        Random rand = new Random(); 
-        double delayTime = rand.nextDouble() * 10 ; 
+        double delayTime = java.lang.Math.random() * 10.0;
+        System.out.println(getName()+" delaying for "+delayTime+" seconds.");
         delay( delayTime ); 
         
         // State 2 
@@ -112,8 +111,7 @@ public class CSPProcessor extends CSPActor {
     /**
      */
     public boolean performReadNext() {
-        Random rand = new Random();
-        if( rand.nextDouble() < 0.5 ) {
+        if( java.lang.Math.random() < 0.5 ) {
             return true;
         }
         return false;
