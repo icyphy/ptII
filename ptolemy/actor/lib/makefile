@@ -80,6 +80,7 @@ JSRCS = \
 	Const.java \
 	Counter.java \
 	CurrentTime.java \
+	DoubleReader.java \
 	DB.java \
 	Discard.java \
 	DiscreteRandomSource.java \
@@ -132,6 +133,7 @@ JSRCS = \
 	Transformer.java \
 	TrigFunction.java \
 	Uniform.java \
+	URLReader.java \
 	VariableClock.java \
 	WallClockTime.java \
 	Writer.java

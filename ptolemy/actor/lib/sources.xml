@@ -26,6 +26,10 @@
         class="ptolemy.actor.lib.DiscreteRandomSource">
 </entity>
 
+<entity name="DoubleReader" class="ptolemy.actor.lib.DoubleReader">
+<doc>Read in doubles from either stdin or a URL</doc>
+</entity>
+
 <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
 <doc>Create a sequence of gaussian random variables</doc>
 </entity>
@@ -37,10 +41,6 @@
 </entity>
 
 <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
-</entity>
-
-<entity name="Reader" class="ptolemy.actor.lib.Reader">
-<doc>Read in doubles from either stdin or a URL</doc>
 </entity>
 
 <entity name="Ramp" class="ptolemy.actor.lib.Ramp">

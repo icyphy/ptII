@@ -1,4 +1,4 @@
-/* An actor that outputs data read from a URL.
+/* Abstract base class for actors that read in data from a URL
 
 @Copyright (c) 1998-2001 The Regents of the University of California.
 All rights reserved.
@@ -47,7 +47,7 @@ import java.net.URL;
 import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
-//// Reader
+//// URLReader
 /**
 This actor reads tokens from an URL, and output them. Each entry in
 the file corresponds to one iteration. If there are multiple fires in
@@ -76,13 +76,13 @@ called "test.txt", then <i>sourceURL</i> should be set to
 <p>FIXME: The type of the output ports is set to Double for now.
        It should read a line in the prefire() and refer the type
        from there.
-<p>FIXME: Reader should read in expressions and serialized tokens
+<p>FIXME: URLReader should read in expressions and serialized tokens
 
-@see ptolemy.actor.lib.javasound.AudioReader
+@see ptolemy.actor.lib.javasound.AudioURLReader
 @author  Jie Liu
 @version $Id$
  */
-public class Reader extends Source {
+public abstract class URLReader extends Source {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -92,7 +92,7 @@ public class Reader extends Source {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Reader(CompositeEntity container, String name)
+    public URLReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -108,7 +108,7 @@ public class Reader extends Source {
         if (_stdIn == null) {
             _stdIn = new BufferedReader(new InputStreamReader(System.in));
         }
-        setReader(_stdIn);
+        setURLReader(_stdIn);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -143,16 +143,16 @@ public class Reader extends Source {
                 StringToken URLToken = (StringToken)sourceURL.getToken();
                 if (URLToken == null) {
                     _source = null;
-                    setReader(null);
+                    setURLReader(null);
                 } else {
                     _source = URLToken.stringValue();
                     if (_source.equals("")) {
-                        setReader(null);
+                        setURLReader(null);
                     } else {
                         URL url = new URL(_source);
                         java.io.BufferedReader reader = new BufferedReader(
                                 new InputStreamReader(url.openStream()));
-                        setReader(reader);
+                        setURLReader(reader);
                     }
                 }
             } catch (IOException ex) {
@@ -171,56 +171,15 @@ public class Reader extends Source {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        Reader newObject = (Reader)super.clone(workspace);
+        URLReader newObject = (URLReader)super.clone(workspace);
         newObject.output.setMultiport(true);
         return newObject;
-    }
-
-    /** Read one row from the input and prepare for output them.
-     *  @exception IllegalActionException If an IO error occurs.
-     */
-    public boolean prefire() throws IllegalActionException {
-        try {
-            _dataSize = output.getWidth();
-            if (_data.length != _dataSize) {
-                _data = new double[_dataSize];
-            }
-            String oneRow = _reader.readLine();
-            if (oneRow == null) {
-                return false;
-            }
-            StringTokenizer tokenizer = new StringTokenizer(oneRow);
-            int columnCount = tokenizer.countTokens();
-            if (_dataSize > columnCount) {
-                _dataSize = columnCount;
-            }
-            for (int i = 0; i < _dataSize; i++) {
-                _data[i] = Double.valueOf(tokenizer.nextToken()).doubleValue();
-            }
-            return super.prefire();
-        } catch (IOException ex) {
-            throw new IllegalActionException(this, ex.getMessage());
-        }
-    }
-
-    /** Output the data read in the prefire.
-     *  @exception IllegalActionException If there's no director.
-     */
-    public void fire() throws IllegalActionException {
-        super.fire();
-        for (int i = 0; i < _dataSize; i++) {
-            output.send(i, new DoubleToken(_data[i]));
-        }
     }
 
     /** Open the file at the URL, and set the width of the output.
      *  @exception IllegalActionException Not thrown in this base class
      */
     public void initialize() throws IllegalActionException {
-	System.out.println("actor.lib.Reader is obsolete, "
-			   + "use actor.lib.DoubleReader instead");
-        _dataSize = output.getWidth();
-        _data = new double[_dataSize];
         attributeChanged(sourceURL);
     }
 
@@ -229,7 +188,7 @@ public class Reader extends Source {
      *  @param reader The reader to read to.
      *  @exception IllegalActionException If an IO error occurs.
      */
-    public void setReader(java.io.BufferedReader reader)
+    public void setURLReader(java.io.BufferedReader reader)
             throws IllegalActionException {
         try {
             if (_reader != null && _reader != _stdIn) _reader.close();
@@ -255,20 +214,14 @@ public class Reader extends Source {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
+    ////                         protected members                 ////
 
     // The writer to write to.
-    private java.io.BufferedReader _reader = null;
+    protected java.io.BufferedReader _reader = null;
 
     // Standard out as a writer.
-    private static java.io.BufferedReader _stdIn = null;
+    protected static java.io.BufferedReader _stdIn = null;
 
     // String for the URL.
-    private String _source;
-
-    // Cache of one row.
-    private double[] _data;
-
-    // Valid enties in the data array.
-    private int _dataSize;
+    protected String _source;
 }
