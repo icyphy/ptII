@@ -443,7 +443,7 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 	# Fix up actor/lib/test/makefile
 	egrep -v OrderedMerge.tcl \
 		src_jar/hyvisual$(VERSION)/actor/lib/test/makefile \
-		> src_jar/hyvisual$(VERSION)/actor/lib/test/makefile.tmp \
+		> src_jar/hyvisual$(VERSION)/actor/lib/test/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/actor/lib/test/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/actor/lib/test/makefile
 	# Fix up makefile
