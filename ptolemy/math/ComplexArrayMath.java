@@ -230,6 +230,7 @@ public class ComplexArrayMath {
         return true;
     }
 
+
     /** Return true if the first argument is greater than the second argument 
      *  (both complex numbers):
      *  (a+ib) > (c+id) provided either a > c or a=c and b > d. 
@@ -817,6 +818,33 @@ public class ComplexArrayMath {
         sb.append(format.vectorEndString());
 
         return sb.toString();
+    }
+
+  
+    /** Return true if all the absolute differences between corresponding
+     *  elements of array1 and array2, for both the real and imaginary parts,
+     *  are all less than or equal to maxError. Otherwise, return false.
+     *  Throw an IllegalArgument exception if the arrays are not of the same
+     *  length. If both arrays are empty, return true.
+     *  This is computationally less expensive than isSquaredErrorWithin().
+     */
+    public static final boolean within(Complex[] array1,
+            Complex[] array2, Complex maxError) {
+        int length = _commonLength(array1, array2,
+                "ComplexArrayMath.within");
+
+	Complex temp = new Complex();
+
+	for (int i = 0; i < length; i++) {
+	    temp = array1[i].subtract(array2[i]);
+	    
+	    // ifgreater returns true if temp > maxError.
+            if (ifgreater(temp,maxError)) {
+		return false;
+            }
+        }
+        
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
