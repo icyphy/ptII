@@ -346,7 +346,11 @@ test SDFReceiver-5.3 {Check setCapacity errors} {
     catch {$receiver setCapacity -2} result2
 
     list $result1 $result2
-} {{ptolemy.kernel.util.IllegalActionException: Queue contains more elements than the proposed capacity.} {ptolemy.kernel.util.IllegalActionException: Queue Capacity cannot be negative}}
+} {{ptolemy.kernel.util.IllegalActionException: Failed to set capacity to 1
+Because:
+Queue contains more elements than the proposed capacity.} {ptolemy.kernel.util.IllegalActionException: Failed to set capacity to -2
+Because:
+Queue Capacity cannot be negative}}
 
 test SDFReceiver-6.0 {Check the *History methods} {
     set receiver [java::new ptolemy.domains.sdf.kernel.SDFReceiver]
