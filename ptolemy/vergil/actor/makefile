@@ -54,7 +54,6 @@ JSRCS = \
 	ActorGraphFrame.java \
 	ActorGraphModel.java \
 	ActorGraphTableau.java \
-	ActorEditorGraphController.java \
 	ActorViewerGraphController.java \
 	ExternalIOPortController.java \
 	IOPortController.java \
