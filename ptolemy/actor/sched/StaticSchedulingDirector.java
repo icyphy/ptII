@@ -1,4 +1,4 @@
-/* A director that uses static shceduling.
+/* A director that uses static scheduling.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
