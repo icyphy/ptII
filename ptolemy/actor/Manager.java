@@ -466,13 +466,24 @@ public final class Manager extends NamedObj implements Runnable {
         futureRunningThread.start();
     }
 
-    /** Terminate any currently executing simulation with extreme prejudice.
-     *  Kill the main simulation thread and call terminate on the toplevel
-     *  container.   This should cause any actors to free up any resources
-     *  they have allocated and Directors should kill any threads they have
-     *  created.   However, a consistent state is not guaranteed.   The
+    /** Terminate any currently executing model with extreme prejudice.
+     *  This method is not intended to be used as a normal route of 
+     *  stopping execution. To normally stop exceution, call the finish() 
+     *  method instead. This method should be called only 
+     *  when execution fails to terminate by normal means due to certain
+     *  kinds of programming errors (infinite loops, threading errors, etc.).
+     *  <p>
+     *  After this method completes, all resources in use should be
+     *  released and any sub-threads should be killed.
+     *  However, a consistent state is not guaranteed.   The
      *  topology should probably be recreated before attempting any
-     *  further operations.   This is not synchronized because we want it to
+     *  further operations.
+     *  <p>
+     *  In this class, we kill the main execution thread and call 
+     *  terminate on the toplevel compositeActor. Execution listeners are 
+     *  also notified that execution was terminated.
+     *  <p>
+     *  This method is not synchronized because we want it to
      *  happen as soon as possible, no matter what.
      */
     public void terminate() {
@@ -612,14 +623,14 @@ public final class Manager extends NamedObj implements Runnable {
         }
     }
 
-    /** Check whether write access will be needed in the workspace during an
+    /** Check whether write access of the workspace is required during an
      *  iteration. An iteration consists of invocations of the prefire(),
      *  fire(), and postfire() methods of the top level composite actor in
      *  that order.
      *  <p>
-     *  This method recursively calls the needWriteAccess() method of all lower
-     *  level directors. Intuitively, the workspace will only be made
-     *  read-only, if all the directors permit it.
+     *  This method recursively calls the needWriteAccess() method of 
+     *  the top level director. Intuitively, the workspace will only be made
+     *  read-only if all the directors permit it.
      */
     private boolean _needWriteAccess() {
         // Get the top level composite actor.

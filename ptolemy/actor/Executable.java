@@ -48,8 +48,6 @@ The prefire() method returns true to indicate that firing
 can occur.  The postfire() method returns false if no further firings
 should occur. The initialize(), fire() and postfire() methods may produce
 output data.
-Since the Token class is immutable, the output data is not cloned
-when there are multiple receivers.
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
 @version $Id$
@@ -62,14 +60,16 @@ public interface Executable {
     /** This fires an actor and may be invoked several times between
      *  invocations of prefire() and postfire(). It may produce output
      *  data. Typically, the fire() method performs the computation associated
-     *  with an actor.
+     *  with an actor. In general, the fire method should avoid updating the 
+     *  internal state of the actor (which should be done in postfire,
+     *  instead).
      *
      *  @exception IllegalActionException If firing is not permitted.
      */
     public void fire() throws IllegalActionException;
 
     /** This method should be invoked exactly once per execution
-     *  of an application, before any of these other methods are invoked.
+     *  of a model, before any of these other methods are invoked.
      *  It may produce output data.  This method typically initializes
      *  internal members of an actor and produces initial output data.
      *
@@ -101,8 +101,20 @@ public interface Executable {
      */
     public boolean prefire() throws IllegalActionException;
 
-    /** This method is invoked to immediately terminate any execution
-     *  within an actor.
+    /** Terminate any currently executing model with extreme prejudice.
+     *  This method is not intended to be used as a normal route of 
+     *  stopping execution. To normally stop exceution, call the finish() 
+     *  method instead. This method should be called only 
+     *  when execution fails to terminate by normal means due to certain
+     *  kinds of programming errors (infinite loops, threading errors, etc.).
+     *  <p>
+     *  After this method completes, all resources in use should be
+     *  released and any sub-threads should be killed.
+     *  However, a consistent state is not guaranteed.   The
+     *  topology should probably be recreated before attempting any
+     *  further operations.
+     *  This method should not be synchronized because it must
+     *  happen as soon as possible, no matter what.
      */
     public void terminate();
 

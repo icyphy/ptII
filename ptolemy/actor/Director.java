@@ -43,13 +43,15 @@ import java.util.Enumeration;
 //// Director
 /**
 A Director governs the execution within a CompositeActor.  A composite actor
-that contains a director is considered opaque, and the execution model
-within the composite actor is determined by the contained Director.   This
-director is called the local director of a composite actor.   A composite
+that contains a director is said to be <i>opaque</i>, and the execution model
+within the composite actor is determined by the contained director.   This
+director is called the <i>local director</i> of a composite actor.  
+A composite
 actor is also aware of the director of its container, which is referred to
-as its executive director.
+as its <i>executive director</i>.
 <p>
-A top-level composite actor is generally associated with a Manager as well as
+A top-level composite actor is generally associated with a <i>manager</i>
+as well as
 a local director.  The Manager has overall responsibility for
 executing the application, and is often associated with a GUI.   Top-level
 composite actors have no executive director and getExecutiveDirector() will
@@ -72,7 +74,8 @@ respective methods in all contained actors.
 <p>
 A director also provides services for cleanly handling mutations of the
 topology.  Mutations include such changes as adding or removing an entity,
-port, or relation, and creating or destroying a link.  Usually,
+port, or relation, creating or destroying a link, and changing the value
+or type of a parameter.  Usually,
 mutations cannot safely occur at arbitrary points in the execution of
 an application.  Applications can queue mutations with the director,
 and the director will then perform the mutations at the first opportunity,
@@ -81,8 +84,7 @@ at the beginning of each iteration by the prefire() method.
 <p>
 A service is also provided whereby an object can be registered with the
 director as a mutation listener.  A mutation listener is informed of
-mutations that occur when they occur (in this base class, at the beginning
-of the iterate() method).
+mutations that occur when they occur.
 <p>
 One particular mutation listener, called an ActorListener, is added
 to a director the first time a mutation is performed.  This listener
@@ -90,17 +92,16 @@ ignores all mutations except those that add or remove an actor.
 For those mutations, it records the addition or deletion.
 After all the mutations have been completed in the prefire() method,
 any actors that are new to the composite have their initialize() methods
-invoked.
+invoked. An initialize() method may queue further mutations with the director.
 <p>
-An initialize() method may queue further mutations with the director.
-<p>
-The director also provides methods to optimize the iteration portion of a
-simulation. This is done by letting the workspace to be read-only during
-an iteration. In this base class, the default implementation prevent the
-workspace to be read-only. Derived classes (e.g. domain specific
-directors) should override the _writeAccessRequired() method to let
-the workspace to be read-only. (Note that the workspace might still be
-writable, it all depends on other directors in the simulation).
+The director also provides methods to optimize the iteration portion of an
+execution. This is done by setting the workspace to be read-only during
+an iteration. In this base class, the default implementation results in
+a read/write workspace. Derived classes (e.g. domain specific
+directors) should override the _writeAccessRequired() method to report
+that write access is not required. If none of the directors in a simulation
+require write access, then it is safe to set the workspace to be read-only, 
+which will result in faster execution.
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
 @version $Id$
@@ -144,7 +145,7 @@ public class Director extends NamedObj implements Executable {
 
     /** Add a topology change listener to this director. The listener
      * will be notified of each change in the topology that
-     * happens when the Director decide it is safe to make
+     * happens when the director decides it is safe to make
      * topology changes. Change requests are queued by using
      * the queueToplogyChangeRequest() method.
      *
@@ -166,7 +167,7 @@ public class Director extends NamedObj implements Executable {
      *  @param ws The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
      *   cannot be cloned.
-     *  @return The new Director.
+     *  @return The new director.
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Director newobj = (Director)super.clone(ws);
@@ -176,9 +177,19 @@ public class Director extends NamedObj implements Executable {
         return newobj;
     }
 
+    /** Initiate the end of execution of the model controlled by this
+     *  director. In this base class, do nothing.
+     *  Domains may override this method and in particular, process 
+     *  domains should use this method to gracefully end the execution 
+     *  of threads that are operating in this model. This method is not
+     *  synchronized.
+     */
+    public void finish() {
+    }
+
     /** Invoke an iteration on all of the deeply contained actors of the
-     *  container of this Director.  In general, this may be called more
-     *  than once in the same iteration of the Director's container.
+     *  container of this director.  In general, this may be called more
+     *  than once in the same iteration of the director's container.
      *  An iteration is defined as multiple invocations of prefire(), until
      *  it returns true, any number of invocations of fire(),
      *  followed by one invocation of postfire().
@@ -211,10 +222,11 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Schedule a firing of the given actor at the given time. It does
-     *  nothing in this base class. Derived class should override this method.
+     *  nothing in this base class. Derived classes
+     *  should override this method.
      *  <p>
      *  Note that this method is not made abstract to facilitate the use
-     *  of test suite.
+     *  of the test suite.
      *  @param actor The actor scheduled to be fired.
      *  @param time The scheduled time.
      *  @exception IllegalActionException If the operation is not
@@ -239,23 +251,21 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Return the current time of the model being executed by this director.
-     *  In this base class,
-     *  it returns 0. The derived class should override this method
-     *  and return the current time.
-     *  <p>
-     *  Note that this method is not made abstract to facilitate the use
-     *  of test suite.
+     *  This time can be set with the setCurrentTime method. In this base 
+     *  class, time never passes, and there are no restrictions on valid
+     *  times.  
+     *
      *  @return The current time.
      */
     public double getCurrentTime() {
-        return 0.0;
+        return _currentTime;
     }
 
     /** Get the next iteration time. It returns 0.0 in this base class;
      *  derived class should override this method.
      *  <p>
      *  Note that this method is not made abstract to facilitate the use
-     *  of test suite.
+     *  of the test suite.
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
@@ -264,6 +274,7 @@ public class Director extends NamedObj implements Executable {
 
     /** Create receivers and then invoke the initialize()
      *  methods of all its deeply contained actors.
+     *  Set the current time to be 0.0.
      *  <p>
      *  This method should be invoked once per execution, before any
      *  iteration. It may produce output data.
@@ -274,6 +285,7 @@ public class Director extends NamedObj implements Executable {
      *  one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
+        setCurrentTime(0.0);
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             Enumeration allactors = container.deepGetEntities();
@@ -301,13 +313,22 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Return true if this director, or any of its contained directors 
-     *  requires write access on the workspace. If this Director requires 
-     *  write access (_writeAccessRequired returns true), then 
-     *  This method returns true.   Otherwise, needWriteAccess is called
+     *  requires write access on the workspace during execution. 
+     *  If this director requires write access during execution 
+     *  (i.e. _writeAccessRequired() returns true), then 
+     *  this method returns true.   Otherwise, needWriteAccess() is called
      *  recursively on all the local directors of all deeply 
      *  contained entities that are opaque composite actors.
      *  If any of those lower level directors requires write access, then 
      *  this method will return true.  Otherwise, this method returns false.
+     *  <p>
+     *  This method is called on the top level director by the manager 
+     *  at the start of an execution.
+     *  If it returns false (indicating that none of the directors in
+     *  the model need write access on the workspace), then the manager
+     *  will set the workspace to be read only during each toplevel iteration
+     *  of the model.  Note that mutations can still occur, but they can
+     *  only be performed by the manager.
      * 
      *  @return true If this director, or any of its contained directors,
      *  needs write access to the workspace.
@@ -354,15 +375,17 @@ public class Director extends NamedObj implements Executable {
         return new Mailbox();
     }
 
-    /** Return false.   The default director will only get fired once, and will
-     *  terminate execution afterwards.   Domain Directors will probably want
-     *  to override this method.   Note that this is called by the container of
-     *  this Director to see if the Director wishes to execute anymore, and
-     *  should *NOT*, in general, just take the logical AND of calling
+    /** Return true if the director wishes to be scheduled for another
+     *  iteration.  This method is called by the container of
+     *  this director to see if the director wishes to execute anymore, and
+     *  should <i>not</i>, in general, just take the logical AND of calling
      *  postfire on all the contained actors.
-     *
-     *  @return True if the Director wishes to be scheduled for another
-     *  iteration
+     *  <p>
+     *  In this base class, assume that the director only wants to get 
+     *  fired once, so return false. Domain directors will probably want
+     *  to override this method.   
+     *  
+     *  @return false
      *  @exception IllegalActionException *Deprecate* If the postfire()
      *  method of one of the associated actors throws it.
      */
@@ -370,15 +393,17 @@ public class Director extends NamedObj implements Executable {
         return false;
     }
 
-    /** return True, indicating that the Director is ready to fire.
-     *  Domain Directors will probably want
-     *  to override this method.   Note that this is called by the container of
-     *  this Director to see if the Director is ready to execute, and
-     *  should *NOT*, in general, just take the logical AND of calling
+    /** Return true if the director is ready to fire. This method is 
+     *  called but the container of this director to determine if the 
+     *  director is ready to execute, and 
+     *  should <i>not</i>, in general, just take the logical AND of calling
      *  prefire on all the contained actors.
+     *  <p>
+     *  In this base class, assume that the director is always ready to 
+     *  be fired, so return true. Domain directors should probably
+     *  override this method.   
      *
-     *  @return True if the Director wishes to be scheduled for another
-     *  iteration
+     *  @return true
      *  @exception IllegalActionException *Deprecate* If the postfire()
      *  method of one of the associated actors throws it.
      */
@@ -416,32 +441,36 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Set the current time of the simulation under this director.
-     *  Do nothing in this base class. Derived class should override this
-     *  method.
-     *  Note that this method is not made abstract to facilitate the use
-     *  of test suites.
-     *  @exception IllegalActionException If time cannot be changed
-     *   due to the state of the simulation. Only thrown in derived
-     *   classes.
-     *  @param newTime The new current simulation time.
+     *  Derived classes will likely override this method to ensure that
+     *  the time is valid.
      *
+     *  @exception IllegalActionException If time cannot be changed
+     *   due to the state of the simulation. Not thrown in this base class.
+     *  @param newTime The new current simulation time.
      */
-    public void setCurrentTime(double newTime) throws IllegalActionException {
-
+    public void setCurrentTime(double newTime) 
+            throws IllegalActionException {
+        _currentTime = newTime;
     }
 
-    /** Initiate the end of execution of the model controlled by this
-     *  Director. The default implementation of this method is a no op.
-     *  Domains may override this method and in particular, process 
-     *  domains should use this method to gracefully end the execution 
-     *  of threads that are operating in this model. This method is not
-     *  synchronized.
-     */
-    public void finish() {
-    }
-
-    /** Recursively terminate all of our actors.   Domains may need to
-     *  override this to properly deal with any threads they've created.
+    /** Terminate any currently executing model with extreme prejudice.
+     *  This method is not intended to be used as a normal route of 
+     *  stopping execution. To normally stop exceution, call the finish() 
+     *  method instead. This method should be called only 
+     *  when execution fails to terminate by normal means due to certain
+     *  kinds of programming errors (infinite loops, threading errors, etc.).
+     *  <p>
+     *  After this method completes, all resources in use should be
+     *  released and any sub-threads should be killed.
+     *  However, a consistent state is not guaranteed.   The
+     *  topology should probably be recreated before attempting any
+     *  further operations.
+     *  This method should not be synchronized because it must
+     *  happen as soon as possible, no matter what.
+     *  <p>
+     *  This base class recursively calls terminate on all associated actors.
+     *  Some domain directors may need override this method to additionally
+     *  kill any sub-threads that were created during execution.
      */
     public void terminate() {
         CompositeActor container = ((CompositeActor)getContainer());
@@ -461,6 +490,7 @@ public class Director extends NamedObj implements Executable {
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
+     *  @param port The port to transfer tokens from.
      */
     public void transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
@@ -495,6 +525,7 @@ public class Director extends NamedObj implements Executable {
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
+     *  @param port The port to transfer tokens from.
      */
     public void transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
@@ -525,7 +556,7 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Invoke the wrapup() method of all the actors contained in the
-     *  Director's container.   In this base class wrapup() is called on the
+     *  director's container.   In this base class wrapup() is called on the
      *  associated actors in the order of their creation.
      *  <p>
      *  This method should be invoked once per execution.  None of the other
@@ -606,7 +637,8 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
-    /** Return an enumeration over the actors added to the topology in
+    /** 
+     * Return an enumeration over the actors added to the topology in
      * the most recent call to _processTopologyRequests(). This is intended
      * so that directors can then initialize any new actors. The enumeration
      * is over a copy of the list, so it is safe for actors to perform
@@ -619,7 +651,8 @@ public class Director extends NamedObj implements Executable {
     }
 
 
-    /** Process the queued topology change requests. Registered topology
+    /** 
+     * Process the queued topology change requests. Registered topology
      * listeners are informed of each change in a series of calls
      * after successful completion of each request. If any queued
      * request fails, the request is undone, snd no further requests
@@ -685,11 +718,15 @@ public class Director extends NamedObj implements Executable {
         _queuedTopologyRequests = null;
     }
 
-    /** Indicate whether this director would requires write access
-     *  on the workspace during execution. 
+    /** Return true if this director requires write access
+     *  on the workspace during execution. Most director functions 
+     *  during execution do not need write access on the workpace.
+     *  A director will generally only need write access on the workspace if 
+     *  it performs mutations locally, instead of queueing them with the 
+     *  manager.
      *  <p>
      *  In this base class, we assume 
-     *  that write access is required and return true.  The method 
+     *  that write access is required and always return true.  This method 
      *  should probably be overridden by derived classes.
      *
      *  @return true
@@ -704,6 +741,8 @@ public class Director extends NamedObj implements Executable {
 
     // The composite of which this is the local director.
     private CompositeActor _container = null;
+    
+    private double _currentTime = 0.0;
 
     // Support for mutations.
     private LinkedList _queuedTopologyRequests = null;
