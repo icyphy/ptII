@@ -249,6 +249,13 @@ public class MoMLApplication {
                     if (inURL == null) {
                         throw new Exception();
                     } else {
+			// If we have a jar URL, convert spaces to %20
+			// so as to avoid multiple windows with the
+			// same file.  Web Start needs this if the Web
+			// Start cache is in a directory that has
+			// spaces in the path, which is the default
+			// under Windows.
+			inURL = JNLPUtilities.canonicalizeJarURL(inURL);
                         return inURL;
                     }
                 } catch (Exception exception) {
