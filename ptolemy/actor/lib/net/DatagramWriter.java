@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (winthrop@eecs.berkeley.edu)
-@AcceptedRating Red (winthrop@eecs.berkeley.edu)
+@ProposedRating Yellow (winthrop@eecs.berkeley.edu)
+@AcceptedRating Yellow (winthrop@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.net;
