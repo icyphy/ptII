@@ -30,7 +30,6 @@ package ptolemy.domains.pn.kernel;
 
 // Ptolemy imports.
 import java.awt.Frame;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -71,8 +70,8 @@ import ptolemy.kernel.util.Workspace;
    @author Haiyang Zheng, Rachel Zhou
    @version $Id$
    @since Ptolemy II 2.0
-   @Pt.ProposedRating Red (eal)
-   @Pt.AcceptedRating Red (johnr)
+   @Pt.ProposedRating Red (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 
 public class ModelCompiler extends Attribute {
