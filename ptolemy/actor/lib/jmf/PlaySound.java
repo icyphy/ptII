@@ -36,6 +36,7 @@ import java.io.IOException;
 import javax.media.Controller;
 import javax.media.ControllerEvent;
 import javax.media.ControllerListener;
+import javax.media.GainControl;
 import javax.media.Manager;
 import javax.media.NoPlayerException;
 import javax.media.Player;
@@ -48,6 +49,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
+import ptolemy.actor.parameters.SliderParameter;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -86,6 +88,8 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
 
     	onOff = new TypedIOPort(this, "onOff", true, false);
         onOff.setTypeEquals(BaseType.BOOLEAN);
+
+        percentGain = new SliderParameter(this, "percentGain");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,6 +103,11 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
      *  to be stopped.
      */
     public TypedIOPort onOff;
+
+    /** The gain (in percent).  This has as its value a record of the form
+     *  {min = m, max = M, current = c}, where min <= c <= max.
+     */
+    public SliderParameter percentGain;
 
     /** Indicator to play to the end before returning from fire().
      *  This is a boolean, and defaults to true.
@@ -121,17 +130,26 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
                     if (_player != null) {
                         _player.removeControllerListener(this);
                     }
-                    _player = Manager.createPlayer(fileNameOrURL.asURL());
+                    _player = Manager.createRealizedPlayer(fileNameOrURL.asURL());
                     _player.addControllerListener(this);
                     // Initiate as much preprocessing as possible.
-                    _player.realize();
+                    // _player.realize();
                     _player.prefetch();
+                    _gainControl = _player.getGainControl();
+                    if (percentGain != null) {
+                        _gainControl.setLevel(
+                                0.01f * percentGain.getCurrentValue());
+                    }
                 }
             } catch (Exception ex) {
                 throw new IllegalActionException(this,
                 "Cannot open file: " + ex.toString());
             }
-        } else super.attributeChanged(attribute);
+        } else if (attribute == percentGain && _gainControl != null) {
+            _gainControl.setLevel(0.01f * percentGain.getCurrentValue());
+        } else {
+            super.attributeChanged(attribute);
+        }
     }
 
     /** React to notification of a change in controller status.
@@ -205,6 +223,9 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** The gain control associated with the player. */
+    private GainControl _gainControl;
 
     /** The player. */
     private Player _player;
