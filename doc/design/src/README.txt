@@ -1,3 +1,5 @@
+TOC
+---
 To regenerate TOC and Index:
 
  1) Open the book file.
@@ -10,6 +12,8 @@ To regenerate TOC and Index:
 (5) is not essential.
 
 
+Distiller
+---------
 Acrobat distiller has an option that by default "downsamples
 images to 72 dpi."  This seems dumb.  Turning this off fixes
 the printing problems with chapter 3, with no noticable increase
@@ -20,3 +24,10 @@ The pdf file in ~eal/TMP is the latest version.
 BTW, in Distiller,
 If you also turn off compression of images, the file size increases
 from about 3.7M to about 8M.  So don't do that!
+
+Figures
+-------
+Having the figures at the bottom of the page is right.
+If you put them below the point where they are referred to,
+Frame leaves orphaned lines below or above them.  The layout
+ends up being far worse.
