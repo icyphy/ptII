@@ -58,10 +58,11 @@ MISC_FILES =	JNIActorHelp.doc \
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 
-all: 
-	echo "Nothing to be done in this directory"
-
-install: jars
+#See  mk/ptno-compile.mk
+#all: 
+#	echo "Nothing to be done in this directory"
+#
+#install: jars
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/ptno-compile.mk
