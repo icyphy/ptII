@@ -122,12 +122,17 @@ public class ActorController extends AttributeController {
             _menuFactory.addMenuItemFactory(_portDialogFactory);
         }
 
-	// NOTE: The following requires that the configuration be
-	// non-null, or it will report an error.
+	if (_configuration != null) {
+	  // NOTE: The following requires that the configuration be
+	  // non-null, or it will report an error.
 
-	// "Look Inside"
-	_menuFactory.addMenuItemFactory(
+	  // "Look Inside"
+	  _menuFactory.addMenuItemFactory(
 		new MenuActionFactory(new LookInsideAction()));
+	  _addedLookInsideAction = true;
+	} else {
+	  _addedLookInsideAction = false;
+	}
 
         // "Listen to Actor"
         _menuFactory.addMenuItemFactory(
@@ -172,8 +177,18 @@ public class ActorController extends AttributeController {
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
         if (_portDialogFactory != null) {
-            _portDialogFactory.setConfiguration(configuration);
+	    _portDialogFactory.setConfiguration(configuration);
         }
+
+	if (_configuration != null && !_addedLookInsideAction ) {
+	    // NOTE: The following requires that the configuration be
+	    // non-null, or it will report an error.
+
+	    // "Look Inside"
+	    _menuFactory.addMenuItemFactory(
+ 	      new MenuActionFactory(new LookInsideAction()));
+	    _addedLookInsideAction = true;
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -327,6 +342,12 @@ public class ActorController extends AttributeController {
         }
     }
 
+    ///////////////////////////////////////////////////////////////
+    ////                     private variables                 ////
+
+    // Set to true if we add the LookInsideAction
+    private boolean _addedLookInsideAction = false;
+
     // An action to look inside a composite.
     // NOTE: This requires that the configuration be non null, or it
     // will report an error with a fairly cryptic message.
@@ -373,6 +394,8 @@ public class ActorController extends AttributeController {
         }
     }
 
+
+
     // An action to listen to debug messages in the actor.
     // NOTE: This requires that the configuration be non null, or it
     // will report an error with a fairly cryptic message.
@@ -416,4 +439,5 @@ public class ActorController extends AttributeController {
             }
         }
     }
+
 }
