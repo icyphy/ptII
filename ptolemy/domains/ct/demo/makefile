@@ -62,7 +62,8 @@ TCL_SRCS = \
 
 
 JSRCS = \
-	WaveBERK23.java
+	WaveBERK23.java \
+	SigmaDeltaApplet.java
 
 # Non-graphical Java demos written in Tcl
 # Since there are no demos, we use a dummy file so that the script that builds
