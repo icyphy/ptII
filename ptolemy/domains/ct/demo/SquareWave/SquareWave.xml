@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SquareWave" class="ptolemy.actor.TypedCompositeActor">
-    <property name="CT0" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+<entity name="ContinuousFransferFunction1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="6.0">
@@ -43,8 +43,25 @@
         </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="116.0, 29.0">
+        <property name="_location" class="ptolemy.moml.Location" value="114.0, 38.0">
         </property>
+    </property>
+    <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="286.0, 120.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows the squrewave response of generic transfer functions.
+The transfer function is specified by the transfer function actor,
+which takes the parameters and construct a Ptolemy model for you.</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <entity name="ContinuousFransferFunction1" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
         <property name="numerator" class="ptolemy.data.expr.Parameter" value="{500.0}">
@@ -53,11 +70,19 @@
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="295.0, 223.0">
         </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+        </property>
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="300.0, 135.0">
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="_location" class="ptolemy.moml.Location" value="300.0, 315.0">
+            </property>
         </port>
     </entity>
     <entity name="Clock2" class="ptolemy.actor.lib.Clock">
@@ -70,7 +95,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2.0, -2.0}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="84.0, 217.0">
+        <property name="_location" class="ptolemy.moml.Location" value="83.0, 221.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -93,16 +118,14 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
 <xRange min="0.0" max="6.0"/>
 <yRange min="-2.20116729694037" max="2.1987177099956607"/>
 </plot>?>
-        </configure>
-    </entity>
+                                </configure>    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
