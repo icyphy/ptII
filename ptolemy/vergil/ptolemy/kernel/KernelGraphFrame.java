@@ -200,7 +200,7 @@ public class KernelGraphFrame extends GraphFrame {
     private class AttributeContextMenuFactory extends PtolemyMenuFactory {
 	public AttributeContextMenuFactory(GraphController controller) {
 	    super(controller);
-	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new EditParametersFactory("Configure"));
 	    addMenuItemFactory(new RenameDialogFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	    //addMenuItemFactory(new MenuActionFactory(_editIconAction));
