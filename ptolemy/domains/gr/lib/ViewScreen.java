@@ -229,7 +229,7 @@ public class ViewScreen extends GRActor implements Placeable {
         bounds = new BoundingSphere(new Point3d(0.0,0.0,0.0), 100.0);
 
         if (_isRotatable()) {
-            mouseRotate = new _MouseRotateView(this);
+            mouseRotate = new MouseRotateView(this);
             mouseRotate.setTransformGroup(_userTransformation);
             mouseRotate.setSchedulingBounds(bounds);
             branchRoot.addChild(mouseRotate);
@@ -385,8 +385,8 @@ public class ViewScreen extends GRActor implements Placeable {
         return ((BooleanToken) showAxes.getToken()).booleanValue();
     }
 
-    private class _MouseRotateView extends MouseRotate {
-        public _MouseRotateView(ViewScreen viewContainer) {
+    private class MouseRotateView extends MouseRotate {
+        public MouseRotateView(ViewScreen viewContainer) {
             super();
             _viewContainer = viewContainer;
         }
@@ -413,7 +413,7 @@ public class ViewScreen extends GRActor implements Placeable {
         ViewScreen _viewContainer;
     }
 ;
-    private _MouseRotateView mouseRotate;
+    private MouseRotateView mouseRotate;
     private Canvas3D _canvas;
     private SimpleUniverse simpleU;
     private boolean _iterationSynchronized = false;
