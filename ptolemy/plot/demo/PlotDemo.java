@@ -62,13 +62,13 @@ public class PlotDemo extends PlotApplet {
         super.init();
 
         plot().setTitle("Line Plot Demo");
-        plot().setYRange(-4,4);
-        plot().setXRange(0,100);
+        plot().setYRange(-4, 4);
+        plot().setXRange(0, 100);
         plot().setXLabel("time");
         plot().setYLabel("value");
         plot().addYTick("-PI", -Math.PI);
         plot().addYTick("-PI/2", -Math.PI/2);
-        plot().addYTick("0",0);
+        plot().addYTick("0", 0);
         plot().addYTick("PI/2", Math.PI/2);
         plot().addYTick("PI", Math.PI);
         plot().setNumSets(10);
@@ -77,25 +77,25 @@ public class PlotDemo extends PlotApplet {
 
         boolean first = true;
         for (int i=0; i <= 100; i++) {
-            plot().addPoint(0,(double)i,
+            plot().addPoint(0, (double)i,
                     5 * Math.cos(Math.PI * i/20), !first);
-            plot().addPoint(1,(double)i,
+            plot().addPoint(1, (double)i,
                     4.5 * Math.cos(Math.PI * i/25), !first);
-            plot().addPoint(2,(double)i,
+            plot().addPoint(2, (double)i,
                     4 * Math.cos(Math.PI * i/30), !first);
-            plot().addPoint(3,(double)i,
+            plot().addPoint(3, (double)i,
                     3.5* Math.cos(Math.PI * i/35), !first);
-            plot().addPoint(4,(double)i,
+            plot().addPoint(4, (double)i,
                     3 * Math.cos(Math.PI * i/40), !first);
-            plot().addPoint(5,(double)i,
+            plot().addPoint(5, (double)i,
                     2.5 * Math.cos(Math.PI * i/45), !first);
-            plot().addPoint(6,(double)i,
+            plot().addPoint(6, (double)i,
                     2 * Math.cos(Math.PI * i/50), !first);
-            plot().addPoint(7,(double)i,
+            plot().addPoint(7, (double)i,
                     1.5 * Math.cos(Math.PI * i/55), !first);
-            plot().addPoint(8,(double)i,
+            plot().addPoint(8, (double)i,
                     1 * Math.cos(Math.PI * i/60), !first);
-            plot().addPoint(9,(double)i,
+            plot().addPoint(9, (double)i,
                     0.5 * Math.cos(Math.PI * i/65), !first);
             first = false;
         }

@@ -62,7 +62,7 @@ public class PlotFourierSeries extends PlotApplet {
         super.init();
 
         plot().setTitle("Fourier Series Approximation to a Square Wave");
-        plot().setXRange(0,400);
+        plot().setXRange(0, 400);
         plot().setNumSets(11);
         plot().setMarksStyle("none");
         plot().addLegend(0, "ideal");
@@ -79,14 +79,14 @@ public class PlotFourierSeries extends PlotApplet {
                 double sig = 4.0*Math.sin(i*2.0*Math.PI*(2*j-1)/400.0)/
                        (Math.PI*(2*j-1));
                 approximation += sig;
-                plot().addPoint(j,(double)i, approximation, !first);
+                plot().addPoint(j, (double)i, approximation, !first);
             }
             first = false;
             if (i <= 200) {
-                plot().addPoint(0,(double)i, 1.0, true);
+                plot().addPoint(0, (double)i, 1.0, true);
             }
             if (i >= 200) {
-                plot().addPoint(0,(double)i, -1.0, true);
+                plot().addPoint(0, (double)i, -1.0, true);
             }
         }
         plot().addPoint(0, 400.0, 0.0, true);

@@ -60,7 +60,7 @@ public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
      */
     public void init() {
         if (_debug > 8) System.out.println("PlotLiveDemoApplet: init");
-        int width,height;
+        int width, height;
         setLayout(new BorderLayout());
 
         newPlot();              // Create a PlotLive to operate on.
@@ -97,7 +97,7 @@ public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
     public void resize(int width, int height) {
         if (_debug > 8)
             System.out.println("PlotLiveDemoApplet: resize "+width+" "+height);
-        super.resize(width,height); // FIXME: resize() is deprecated.
+        super.resize(width, height); // FIXME: resize() is deprecated.
     }
 
     /**
