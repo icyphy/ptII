@@ -240,14 +240,14 @@ public class EditablePlot extends Plot {
 
         // Erase the guide
         // I don't think we need to do this, since we call repaint().
-//         graphics.setXORMode(_editColor);
-//         for (int i = 0; i < _editSpecX.length; i++) {
-//             if (_editSpecSet[i]) {
-//                 graphics.drawLine(_editSpecX[i], _editSpecY[i]-1,
-//                         _editSpecX[i], _editSpecY[i]+1);
-//             }
-//         }
-//         graphics.setPaintMode();
+        //         graphics.setXORMode(_editColor);
+        //         for (int i = 0; i < _editSpecX.length; i++) {
+        //             if (_editSpecSet[i]) {
+        //                 graphics.drawLine(_editSpecX[i], _editSpecY[i]-1,
+        //                         _editSpecX[i], _editSpecY[i]+1);
+        //             }
+        //         }
+        //         graphics.setPaintMode();
 
         _notifyListeners(_dataset);
     }
