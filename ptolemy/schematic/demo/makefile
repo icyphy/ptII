@@ -36,15 +36,11 @@ DIRS = 		#test #lib doc demo
 # Root of the Java directory
 ROOT =		../../..
 
-# FIXME FIXME
-CLASSPATH =	$(ROOT)/diva/diva.jar$(CLASSPATHSEPARATOR)$(ROOT)
-
-# FIXME
-JFLAGS =
-
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
+
+CLASSPATH =	$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
 
 # Used to build jar files
 PTPACKAGE = 	demo
