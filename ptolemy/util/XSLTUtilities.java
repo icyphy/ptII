@@ -34,31 +34,42 @@ package ptolemy.util;
 // other ptolemy packages.
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.FileWriter;
 import java.io.OutputStream;
-import java.io.StreamTokenizer;
-import java.io.StringReader;
+
 import java.net.URL;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
+
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.transform.stream.StreamResult;
 
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import org.apache.xalan.serialize.DOMSerializer;
 import org.apache.xalan.serialize.Serializer;
 import org.apache.xalan.serialize.SerializerFactory;
-import org.xml.sax.InputSource;
+
+import org.apache.xalan.templates.OutputProperties;
+
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+
+import org.xml.sax.InputSource;
 
 //////////////////////////////////////////////////////////////////////////
 //// XSLTUtilities
