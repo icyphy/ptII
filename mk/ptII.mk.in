@@ -217,7 +217,7 @@ RMIC =		$(PTJAVA_DIR)/bin/rmic
 
 # Jar files for Java Advanced Imaging (JAI) used by
 # ptolemy/actor/lib/jai/makefile
-JAI_JARS =	@JAI_JARS
+JAI_JARS =	@JAI_JARS@
 
 # Jar file that contains JDHL, see http://www.jhdl.org.
 JHDL_JAR =	@JHDL_JAR@
