@@ -54,7 +54,7 @@ test Expression-1.1 {test clone} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set expr [java::new ptolemy.actor.lib.Expression $e0 Expr]
 
-    set newobj [$expr clone]
+    set newobj [test_clone $expr]
     $newobj description 1
 } {ptolemy.actor.lib.Expression}
 
