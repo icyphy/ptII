@@ -720,7 +720,7 @@ remote1ChangeLog:
 	@echo "#"
 	@echo "$@ `date`"
 	(cd $(REMOTE1PTIIDIST);	PTII=$(REMOTE1PTIIDIST) \
-		$(MAKE) -k ChangeLog)
+		$(MAKE) -k ChangeLog; ln -s ChangeLog ChangeLog.txt)
 
 # Build jnlp installers
 remote1jnlp:
