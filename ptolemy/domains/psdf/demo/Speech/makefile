@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II SDF BlindCommunication demo
+# Makefile for Ptolemy II SDF Speech demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/psdf/demo/BlindCommunication
+ME =		ptolemy/domains/psdf/demo/Speech
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,19 +41,17 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	BlindCommunication
+PTPACKAGE = 	Speech
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	BlindCommunication.xml \
-	PSK_l2_b1000_s8000_c7800_n40_pnormal_r0.5_v20030505T112338F41.wav
+	Speech.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED) \
-	BlindCommunication.htm
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -73,15 +71,15 @@ all: jclass
 
 install: all $(PTCLASSJAR)
 
-demo: demo_applet demo_ptolemy demo_vergil
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer BlindCommunication.htm
+demo: demo_ptolemy demo_vergil
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer Speech.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" BlindCommunication.xml
+	"$(PTII)/bin/ptolemy" Speech.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" BlindCommunication.xml
+	"$(PTII)/bin/vergil" Speech.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
