@@ -68,7 +68,6 @@ import ptolemy.kernel.undo.UndoStackAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -164,27 +163,16 @@ MoML, it references the class from which it was cloned
 and exports only differences from that class.  I.e., if further changes are
 made to the component, it is important that when the component
 exports MoML, that those changes are represented in the exported MoML.
-This parser ensures that they are by creating an instance of
-MoMLAttribute for each change that is made to the clone after cloning,
-if necessary, or by marking the modified elements as not class elements.
-The MoMLAttribute class exports a MoML description of a change.
 This effectively implements an inheritance mechanism, where
 a component inherits all the features of the master from which it
 is cloned, but then extends the model with its own changes.
 <p>
-Note that this mechanism requires that MoML commands be processed
-in a reasonable order, irrespective of the order in which they appear
-in the MoML text.  In particular, MoML exported by MoMLAttribute is
-exported with other attributes, at the start of the MoML.  However,
-it could contain, for example, link or unlink commands that refer
-to ports and entities that are defined later in the MoML text.
-Thus, this class always processes MoML commands in the following
+This class always processes MoML commands in the following
 order within a "class" or "entity" element, irrespective of the order
 in which they appear:
 <ol>
-<li> Create properties, entities, ports and relations;
-<li> Create and remove links; and
-<li> Remove properties, entities, ports and relations.
+<li> Create properties, entities, ports and relations; and
+<li> Create links.
 </ol>
 Within each category, the order of actions depends on the order in
 which the commands appear in the MoML text.
@@ -198,7 +186,6 @@ MoML is exported by the clone, because they will be exported when the
 master exports MoML.
 
 @see MoMLChangeRequest
-@see MoMLAttribute
 @author Edward A. Lee, Steve Neuendorffer, John Reekie, Contributor: Christopher Hylands
 @version $Id$
 @since Ptolemy II 0.4
@@ -715,20 +702,25 @@ public class MoMLParser extends HandlerBase {
                         try {
                             request.execute();
                         } catch (Exception ex) {
-                            int reply = _handler.handleError(
-                                    request.toString(), _current, ex);
-                            if (reply == ErrorHandler.CONTINUE) {
-                                continue;
-                            } else if (reply == ErrorHandler.CANCEL) {
-                                // NOTE: Since we have to throw an XmlException for
-                                // the exception to be properly handled, we communicate
-                                // that it is a user cancellation with the special
-                                // string pattern "*** Canceled." in the message.
-                                throw new XmlException(
-                                        "*** Canceled.",
-                                        _currentExternalEntity(),
-                                        _parser.getLineNumber(),
-                                        _parser.getColumnNumber());
+                            if (_handler != null) {
+                                int reply = _handler.handleError(
+                                        request.toString(), _current, ex);
+                                if (reply == ErrorHandler.CONTINUE) {
+                                    continue;
+                                } else if (reply == ErrorHandler.CANCEL) {
+                                    // NOTE: Since we have to throw an XmlException for
+                                    // the exception to be properly handled, we communicate
+                                    // that it is a user cancellation with the special
+                                    // string pattern "*** Canceled." in the message.
+                                    throw new XmlException(
+                                            "*** Canceled.",
+                                            _currentExternalEntity(),
+                                            _parser.getLineNumber(),
+                                            _parser.getColumnNumber());
+                                }
+                            } else {
+                                // No handler.  Throw the original exception.
+                                throw ex;
                             }
                         }
                     }
@@ -3475,19 +3467,21 @@ public class MoMLParser extends HandlerBase {
      *  class definition if either the port and relation are at the
      *  same level of hierarchy and are both class elements, or if
      *  the relation and the container of the port are both class
-     *  elements.
+     *  elements. If the relation is null, then this return true
+     *  if the port and its container are class elements.
      *  NOTE: This is not perfect, since a link could have been
      *  created between these elements in a subclass.
+     *  @param context The context containing the link.
      *  @param port The port.
      *  @param relation The relation.
      *  @return True if the link is part of the class definition.
      */
-    private boolean _isLinkInClass(Port port, Relation relation) {
+    private boolean _isLinkInClass(NamedObj context, Port port, Relation relation) {
         boolean portIsInClass = (port.getContainer()
-                == relation.getContainer())
+                == context)
                 ? (port.isClassElement() )
                 : (((NamedObj)port.getContainer()).isClassElement());
-        return (portIsInClass && relation.isClassElement());
+        return (portIsInClass && (relation == null || relation.isClassElement()));
     }
 
     /**
@@ -3811,6 +3805,16 @@ public class MoMLParser extends HandlerBase {
             relation = (ComponentRelation)tmpRelation;
         }
         
+        // NOTE: Added to ensure that class elements aren't changed.
+        // EAL 1/04. We have to prohit adding links between class
+        // elements because this operation cannot be undone, and
+        // it will not be persistent.
+        if (!_propagating && _isLinkInClass(context, port, relation)) {
+            throw new IllegalActionException(port,
+                    "Cannot link a port to a relation when both" +
+                    " are part of the class definition.");
+        }
+        
         // Get the index if given
         int insertAt = -1;
         if (insertAtSpec != null) {
@@ -3824,11 +3828,9 @@ public class MoMLParser extends HandlerBase {
         
         if (insertAtSpec != null) {
             port.insertLink(insertAt, relation);
-        }
-        else if (insertInsideAtSpec != null) {
+        } else if (insertInsideAtSpec != null) {
             port.insertInsideLink(insertInsideAt, relation);
-        }
-        else {
+        } else {
             port.link(relation);
         }
         
@@ -3882,11 +3884,6 @@ public class MoMLParser extends HandlerBase {
                 }
             }
         }
-        
-        // If the container is cloned from something, then
-        // add to it a MoML description of the new link, so that
-        // this new link will be persistent.
-        _recordLink(context, portName, relationName, insertAtSpec);
     }
 
     /** Process an unlink request.
@@ -3943,7 +3940,7 @@ public class MoMLParser extends HandlerBase {
             
             // NOTE: Added to ensure that class elements aren't changed.
             // EAL 1/04.
-            if (!_propagating && _isLinkInClass(port, relation)) {
+            if (!_propagating && _isLinkInClass(context, port, relation)) {
                 throw new IllegalActionException(port,
                         "Cannot unlink a port from a relation when both" +
                         " are part of the class definition.");
@@ -3982,7 +3979,7 @@ public class MoMLParser extends HandlerBase {
             // expensive.
             List relationList = port.linkedRelationList();
             Relation relation = (Relation)relationList.get(index);
-            if (!_propagating && _isLinkInClass(port, relation)) {
+            if (!_propagating && _isLinkInClass(context, port, relation)) {
                 throw new IllegalActionException(port,
                         "Cannot unlink a port from a relation when both" +
                         " are part of the class definition.");
@@ -4016,7 +4013,7 @@ public class MoMLParser extends HandlerBase {
             // expensive.
             List relationList = port.insideRelationList();
             Relation relation = (Relation)relationList.get(index);
-            if (!_propagating && _isLinkInClass(port, relation)) {
+            if (!_propagating && _isLinkInClass(context, port, relation)) {
                 throw new IllegalActionException(port,
                         "Cannot unlink a port from a relation when both" +
                         " are part of the class definition.");
@@ -4047,12 +4044,6 @@ public class MoMLParser extends HandlerBase {
         if (_undoEnabled && _undoContext.isUndoable()) {
             _undoContext.setChildrenUndoable(false);
         }
-        
-        // If the container is cloned from something, then
-        // add to it a MoML description of the unlink, so that
-        // this new entity will be persistent.
-        _recordUnlink(context, portName, relationName,
-                indexSpec, insideIndexSpec);
     }
 
     // Push the current context.
@@ -4060,85 +4051,6 @@ public class MoMLParser extends HandlerBase {
         _containers.push(_current);
         _namespaces.push(_namespace);
         _namespaceTranslations.push(_namespaceTranslationTable);
-    }
-
-    // If a new link is added to a container, and this is not the
-    // result of a propagating change from a master, then we need
-    // to record the change so that it will be exported in any exported MoML.
-    private void _recordLink(
-            NamedObj container,
-            String port,
-            String relation,
-            String insertAtSpec) {
-
-        if (container.getMoMLInfo().deferTo != null && !_propagating) {
-            try {
-                MoMLAttribute attr = new MoMLAttribute(container,
-                        container.uniqueName("_extension"));
-                if (insertAtSpec == null) {
-                    attr.appendMoMLDescription("<link port=\""
-                            + port
-                            + "\" relation=\""
-                            + relation
-                            + "\"/>");
-                } else {
-                    attr.appendMoMLDescription("<link port=\""
-                            + port
-                            + "\" relation=\""
-                            + relation
-                            + "\" insertAt=\""
-                            + insertAtSpec
-                            + "\"/>");
-                }
-            } catch (KernelException ex) {
-                throw new InternalErrorException(container, ex,
-                        "Unable to record extension to class!");
-            }
-        }
-
-    }
-
-    // If a link is deleted from a container, and this is not the
-    // result of a propagating change from a master, then we need
-    // to record the change so that it will be exported in any exported MoML.
-    private void _recordUnlink(
-            NamedObj container,
-            String port,
-            String relation,
-            String indexSpec,
-            String insideIndexSpec) {
-        // NOTE: We permit unlinking of links defined in the class only because we have
-        // no way to distinguish links defined by the class from links that were
-        // added later, and clearly, links that were added later have to be able
-        // to be deleted.  EAL 12/03
-        if (container.getMoMLInfo().deferTo != null && !_propagating) {
-            try {
-                MoMLAttribute attr = new MoMLAttribute(container,
-                        container.uniqueName("_extension"));
-                if (relation != null) {
-                    attr.appendMoMLDescription("<unlink port=\""
-                            + port
-                            + "\" relation=\""
-                            + relation
-                            + "\"/>");
-                } else if (indexSpec != null) {
-                    attr.appendMoMLDescription("<unlink port=\""
-                            + port
-                            + "\" index=\""
-                            + indexSpec
-                            + "\"/>");
-                } else {
-                    attr.appendMoMLDescription("<unlink port=\""
-                            + port
-                            + "\" insideIndex=\""
-                            + insideIndexSpec
-                            + "\"/>");
-                }
-            } catch (KernelException ex) {
-                throw new InternalErrorException(container, ex,
-                        "Unable to record extension to class!");
-            }
-        }
     }
 
     //  Reset the undo information to give a fresh setup for the next

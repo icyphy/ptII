@@ -955,7 +955,7 @@ set body {
 
 set moml "$header $body"
 
-test MoMLParser-1.18.6 {test deletion persistence in instatiation of a class} {
+test MoMLParser-1.18.6 {test illegal deletion in instatiation of a class} {
     $parser reset
     catch {set toplevel [$parser parse $moml]} msg
     string range $msg 0 52
@@ -968,17 +968,17 @@ set body {
 <entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort"/>
-        <relation name="r" class="ptolemy.actor.IORelation"/>
     </class>
-    <entity name="derived" class=".top.master">
+    <class name="derived" extends=".top.master">
+        <relation name="r" class="ptolemy.actor.IORelation"/>
         <link port="p" relation="r"/>
-    </entity>
+    </class>
 </entity>
 }
 
 set moml "$header $body"
 
-test MoMLParser-1.18.7 {test link persistence in instatiation of a class} {
+test MoMLParser-1.18.7 {test link persistence in a subclass} {
     $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
@@ -989,12 +989,12 @@ test MoMLParser-1.18.7 {test link persistence in instatiation of a class} {
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort">
         </port>
+    </class>
+    <class name="derived" extends=".top.master">
         <relation name="r" class="ptolemy.actor.IORelation">
         </relation>
-    </class>
-    <entity name="derived" class=".top.master">
         <link port="p" relation="r"/>
-    </entity>
+    </class>
 </entity>
 }
 
@@ -1005,17 +1005,17 @@ set body {
 <entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort"/>
-        <relation name="r" class="ptolemy.actor.IORelation"/>
     </class>
     <entity name="derived" class=".top.master">
-        <link port="p" relation="r" insertAt="0"/>
+        <relation name="r" class="ptolemy.actor.IORelation"/>
+        <link port="p" relation="r"/>
     </entity>
 </entity>
 }
 
 set moml "$header $body"
 
-test MoMLParser-1.18.8 {test link persistence in instatiation of a class} {
+test MoMLParser-1.18.8 {test link persistence in a an instance of a class} {
     $parser reset
     set toplevel [$parser parse $moml]
     $toplevel exportMoML
@@ -1026,11 +1026,11 @@ test MoMLParser-1.18.8 {test link persistence in instatiation of a class} {
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort">
         </port>
-        <relation name="r" class="ptolemy.actor.IORelation">
-        </relation>
     </class>
     <entity name="derived" class=".top.master">
-        <link port="p" relation="r" insertAt="0"/>
+        <relation name="r" class="ptolemy.actor.IORelation">
+        </relation>
+        <link port="p" relation="r"/>
     </entity>
 </entity>
 }
@@ -1053,26 +1053,11 @@ set body {
 
 set moml "$header $body"
 
-test MoMLParser-1.18.9 {test unlink persistence in instatiation of a class} {
+test MoMLParser-1.18.9 {test illegal unlink in instatiation of a class} {
     $parser reset
-    set toplevel [$parser parse $moml]
-    $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.actor.CompositeActor">
-    <class name="master" extends="ptolemy.actor.CompositeActor">
-        <port name="p" class="ptolemy.actor.IOPort">
-        </port>
-        <relation name="r" class="ptolemy.actor.IORelation">
-        </relation>
-        <link port="p" relation="r"/>
-    </class>
-    <entity name="derived" class=".top.master">
-        <unlink port="p" relation="r"/>
-    </entity>
-</entity>
-}
+    catch {set toplevel [$parser parse $moml]} msg
+    string range $msg 0 52
+} {ptolemy.kernel.util.IllegalActionException: Cannot un}
 
 ######################################################################
 ####
@@ -1117,7 +1102,32 @@ set body {
         <relation name="r" class="ptolemy.actor.IORelation"/>
         <link port="p" relation="r"/>        
     </class>
+    <class name="derived" extends=".top.master">
+        <unlink port="p" relation="r"/>
+    </class>
+</entity>
+}
+
+set moml "$header $body"
+
+test MoMLParser-1.18.9.2 {test illegal unlink in subclass} {
+    $parser reset
+    catch {set toplevel [$parser parse $moml]} msg
+    string range $msg 0 52
+} {ptolemy.kernel.util.IllegalActionException: Cannot un}
+
+
+######################################################################
+####
+#
+set body {
+<entity name="top" class="ptolemy.actor.CompositeActor">
+    <class name="master" extends="ptolemy.actor.CompositeActor">
+        <port name="p" class="ptolemy.actor.IOPort"/>
+    </class>
     <entity name="derived" class=".top.master">
+        <relation name="r" class="ptolemy.actor.IORelation"/>
+        <link port="p" relation="r"/>        
         <unlink port="p" insideIndex="0"/>
     </entity>
 </entity>
@@ -1136,12 +1146,10 @@ test MoMLParser-1.18.10 {test unlink persistence in instatiation of a class} {
     <class name="master" extends="ptolemy.actor.CompositeActor">
         <port name="p" class="ptolemy.actor.IOPort">
         </port>
-        <relation name="r" class="ptolemy.actor.IORelation">
-        </relation>
-        <link port="p" relation="r"/>
     </class>
     <entity name="derived" class=".top.master">
-        <unlink port="p" insideIndex="0"/>
+        <relation name="r" class="ptolemy.actor.IORelation">
+        </relation>
     </entity>
 </entity>
 }
@@ -1155,10 +1163,10 @@ set body {
         <entity name="e" class="ptolemy.actor.AtomicActor">
             <port name="p" class="ptolemy.actor.IOPort"/>
         </entity>
-        <relation name="r" class="ptolemy.actor.IORelation"/>
-        <link port="e.p" relation="r"/>        
     </class>
     <entity name="derived" class=".top.master">
+        <relation name="r" class="ptolemy.actor.IORelation"/>
+        <link port="e.p" relation="r"/>        
         <unlink port="e.p" index="0"/>
     </entity>
 </entity>
@@ -1179,12 +1187,10 @@ test MoMLParser-1.18.11 {test unlink persistence in instatiation of a class} {
             <port name="p" class="ptolemy.actor.IOPort">
             </port>
         </entity>
-        <relation name="r" class="ptolemy.actor.IORelation">
-        </relation>
-        <link port="e.p" relation="r"/>
     </class>
     <entity name="derived" class=".top.master">
-        <unlink port="e.p" index="0"/>
+        <relation name="r" class="ptolemy.actor.IORelation">
+        </relation>
     </entity>
 </entity>
 }
@@ -1797,32 +1803,6 @@ test MoMLParser-2.16 {Test unlink with index} {
 ####
 #
 test MoMLParser-2.17 {Test unlink with index} {
-   $parser parse {
-<entity name=".top">
-   <unlink port="p" insideIndex="1"/>
-</entity>
-}
-    $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="top" class="ptolemy.kernel.CompositeEntity">
-    <port name="p" class="ptolemy.kernel.ComponentPort">
-    </port>
-    <entity name="a" class="ptolemy.kernel.CompositeEntity">
-        <port name="p" class="ptolemy.kernel.ComponentPort">
-        </port>
-    </entity>
-    <relation name="r" class="ptolemy.kernel.ComponentRelation">
-    </relation>
-    <link port="p" relation="r"/>
-</entity>
-}
-
-######################################################################
-####
-#
-test MoMLParser-2.18 {Test unlink with index} {
    $parser parse {
 <entity name=".top">
    <unlink port="p" insideIndex="0"/>
