@@ -33,7 +33,7 @@ ME =		ptolemy/domains/sdf/demo
 # Keep these alphabetical please.
 DIRS = 		Butterfly Expression Eye FixFIR FixPoint \
 		HTVQ LMSAdaptive MaximumEntropySpectrum \
-		OrthogonalCom Sketch Spectrum Type
+		OrthogonalCom Spectrum Type
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -56,7 +56,6 @@ PTCLASSALLJARS = \
 	HTVQ/HTVQ.jar \
 	LMSAdaptive/LMSAdaptive.jar \
 	MaximumEntropySpectrum/MaximumEntropySpectrum.jar \
-	Sketch/Sketch.jar \
 	Spectrum/Spectrum.jar \
 	Type/Type.jar
 
