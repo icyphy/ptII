@@ -379,38 +379,7 @@ public class PlotFrame extends Frame {
         PanelDialog dialog =
             new PanelDialog(this, "Set plot format", panel, buttons);
 
-        if (dialog.buttonPressed().equals("Cancel")) {
-            // Restore original values.
-            plot.setTitle(originalTitle);
-            plot.setXLabel(originalXLabel);
-            plot.setYLabel(originalYLabel);
-            plot.setXRange(originalXRange[0], originalXRange[1]);
-            plot.setYRange(originalYRange[0], originalYRange[1]);
-            plot.setGrid(originalGrid);
-            plot.setColor(originalColor);
-            plot.setXLog(originalXLog);
-            plot.setYLog(originalYLog);
-            if (plot instanceof Plot) {
-                Plot cplot = (Plot)plot;
-                cplot.setMarksStyle(originalMarks);
-                cplot.setImpulses(originalStems);
-                _restoreConnected(originalConnected);
-            }
-            plot.read("XTicks: " + originalXTicksSpec);
-            if(originalXTicksSpec.equals("")) {
-                narrowQuery.setEnabled("xlog", true);
-            } else {
-                narrowQuery.setBoolean("xlog", false);
-                narrowQuery.setEnabled("xlog", false);
-            }
-            plot.read("YTicks: " + originalYTicksSpec);
-            if(originalYTicksSpec.equals("")) {
-                narrowQuery.setEnabled("ylog", true);
-            } else {
-                narrowQuery.setBoolean("ylog", false);
-                narrowQuery.setEnabled("ylog", false);
-            }
-        } else {
+        if (dialog.buttonPressed().equals("Apply")) {
             // Apply current values.
             plot.setTitle(wideQuery.stringValue("title"));
             plot.setXLabel(wideQuery.stringValue("xlabel"));
@@ -438,6 +407,37 @@ public class PlotFrame extends Frame {
             spec = wideQuery.stringValue("yticks").trim();
             plot.read("YTicks: " + spec);
             if(spec.equals("")) {
+                narrowQuery.setEnabled("ylog", true);
+            } else {
+                narrowQuery.setBoolean("ylog", false);
+                narrowQuery.setEnabled("ylog", false);
+            }
+        } else {
+            // Restore original values.
+            plot.setTitle(originalTitle);
+            plot.setXLabel(originalXLabel);
+            plot.setYLabel(originalYLabel);
+            plot.setXRange(originalXRange[0], originalXRange[1]);
+            plot.setYRange(originalYRange[0], originalYRange[1]);
+            plot.setGrid(originalGrid);
+            plot.setColor(originalColor);
+            plot.setXLog(originalXLog);
+            plot.setYLog(originalYLog);
+            if (plot instanceof Plot) {
+                Plot cplot = (Plot)plot;
+                cplot.setMarksStyle(originalMarks);
+                cplot.setImpulses(originalStems);
+                _restoreConnected(originalConnected);
+            }
+            plot.read("XTicks: " + originalXTicksSpec);
+            if(originalXTicksSpec.equals("")) {
+                narrowQuery.setEnabled("xlog", true);
+            } else {
+                narrowQuery.setBoolean("xlog", false);
+                narrowQuery.setEnabled("xlog", false);
+            }
+            plot.read("YTicks: " + originalYTicksSpec);
+            if(originalYTicksSpec.equals("")) {
                 narrowQuery.setEnabled("ylog", true);
             } else {
                 narrowQuery.setBoolean("ylog", false);

@@ -47,19 +47,13 @@ import java.awt.event.ActionEvent;
 An application that can plot data in PlotML format from a URL or
 from files specified on the command line, and can then permit the
 user to edit the plot.
-To compile and run this application, do the following (in Unix):
+To compile and run this application, do the following:
 <pre>
-    setenv CLASSPATH ../..
-    javac EditablePlotMLApplication.java
-    java ptolemy.plot.plotml.EditablePlotMLApplication
+    javac -classpath ../../.. EditablePlotMLApplication.java
+    java -classpath ../../.. ptolemy.plot.plotml.EditablePlotMLApplication
 </pre>
-or in a bash shell in Windows NT:
-<pre>
-    CLASSPATH=../..
-    export CLASSPATH
-    javac EditablePlotMLApplication.java
-    java ptolemy.plot.plotml.EditablePlotMLApplication
-</pre>
+Initially, none of the data sets is editable. Use the Edit menu's
+Edit Dataset item to make a data set editable.
 
 @author Edward A. Lee
 @version $Id$
@@ -93,6 +87,9 @@ public class EditablePlotMLApplication extends PlotMLApplication {
     public EditablePlotMLApplication(EditablePlot plot, String args[])
             throws Exception {
         super(plot, args);
+
+        // The default is that no set is editable.
+        ((EditablePlot)plot).setEditable(-1);
 
         // Edit menu
         MenuItem select = new MenuItem("Edit Dataset");
@@ -167,19 +164,22 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         int numSets = ((EditablePlot)plot).getNumDataSets();
         String[] choices = new String[numSets + 1];
         for (int i = 0; i < numSets; i++) {
-            choices[i] = plot.getLegend(i);
-            if (choices[i] == null) {
-                choices[i] = "" + i;
+            choices[i + 1] = plot.getLegend(i);
+            if (choices[i + 1] == null) {
+                choices[i + 1] = "" + i;
             }
         }
-        choices[numSets] = "none";
-        query.addChoice("choice", "Choice", choices, choices[0]);
+        choices[0] = "none";
+        query.setTextWidth(20);
+        query.addChoice("choice",
+                "Choose a data set, then drag the right mouse button",
+                choices, choices[0]);
         PanelDialog dialog = new PanelDialog(this, "Select dataset", query);
         String buttonPressed = dialog.buttonPressed();
         if (buttonPressed.equals("OK")) {
             int result = query.intValue("choice");
-            if (result < numSets) {
-                ((EditablePlot)plot).setEditable(result);
+            if (result > 0) {
+                ((EditablePlot)plot).setEditable(result - 1);
             } else {
                 // none...
                 ((EditablePlot)plot).setEditable(-1);
