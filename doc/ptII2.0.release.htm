@@ -28,14 +28,50 @@ that will generate .class files for non-hierarchical SDF models
 
 </menu>
 
-<h2>Other Features in Ptolemy II</h2>
+<h2>Other Features that are new in Ptolemy II</h2>
 
 <ul>
-<li> SR Domain
+
+<li> Multiple runs
+
+<li> ClassWrapper actor
+
+<li> I/O actors
+
+<li> customizing interaction
+	<menu>
+	<li> annotations
+	<li> parameters
+	</menu>
+
+<li> visuals
+	<menu>
+	<li>  snap to grid
+	<li> panner
+	<li> improved FSM editor
+	<li> animation
+	<li> better icons
+	</menu>
+
+<li> set data types of ports
+
+<li> giotto domain
+
+<li> Code generation
+<li> Applet generator
+
+<li> unit system (still preliminary)
+
+<li> Web Start distribution
+
+ <!-- Tcl shell is not shipping in 2.0, it makes the download larger.-->
+
+
+<li> TM domain
+<li> Synchronous Reactive domain
 
  <!-- petrinet ?-->
 
-<li> Units
 <li> FIXME: Zoltan's changes to data.expr
 
 <li> The actor classes are more robust and have been reviewed.
@@ -110,7 +146,7 @@ platform that has JDK1.3
 
  <p>We developed Ptolemy II 2.0 under Solaris 8 and Windows 2000 sr2
 and with JDK1.3.1 and JDK1.4beta.  Note that code generation 
-only works under JDK1.3.0 or 1.3.1 because of limitations in soot.
+only works under JDK1.3.0 or 1.3.1 because of limitations in Soot.
 
 Ptolemy II 2.0 will not compile under JDK1.2.2.
 
@@ -292,10 +328,41 @@ ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
 </menu>
 
 
+<li> Webstart issues:
+	<menu>
+	<li> applet generation still does not work in the Web Edition
+	</menu>
+
+
+<li> JDK1.4 issues:
+	<menu>
+		<pre>
+
+
+	(3/27/02)
+
+        <li>JDK1.4: Ball demo does not display any graphics?
+	In fact, none of the GR demos displayed graphics for me under
+	Web Start
+
+	</menu>
+
+<li> Other bugs:
+	<menu>
+
+
+
+
+	<li> Potential bug with Unit systems because Unit systems
+	are global not local.
+
+	</menu>
+
+
+
 <h3>Limitations in the Actor Libraries</h3>
 <menu>
 <li>The actor library is far from complete.
-
 <li>The Expression actor does not properly propagate type constraints in
 an expression-dependent fashion. It works correctly for double-valued
 expressions of double-valued inputs.
@@ -318,11 +385,6 @@ will only work under Windows.
 
 </menu>
 
-<h3>Limitations in the FSM Domain</h3>
-
-<h3>Limitations in the GR Domain</h3>
-Some of the demos do not work.
-
 <h3>Limitations in the PN Domain</h3>
 The PN domain documents that it locally handles mutations.  However, this
 is currently not true in the implementation.  For the basic PN model, this
@@ -333,19 +395,19 @@ lost, since timed PN models can locally execute mutations deterministically.
 
 
 <h3>Limitations in the User Interface</h3>
-Version 2.0 of Ptolemy II includes the Vergil, a graphical user
-interface for Ptolemy II.  This UI is still preliminary, and is made
-up mostly of code that is rated "red", meaning that both the APIs
-and the implementations are likely to change.
-There are quite a few limitations.
+
+Below are some of the limitations of Vergil, the Ptolemy II Graphical
+User Interface.
+
 <menu>
+<li> You should not change the names of built in ports - The port
+mechanism should disallow port name changes on ports that are
+named in Java.  The UI could recognize this.  The UI should
+not allow the user to remove built in Java defined ports.
+	<li> Query needs to be put into a scroll pane
 
-<li> Under JDK1.4, the icon titles may be rendered in the middle
-of the icons instead of on the top.  The workaround is to use JDK1.3.1
-instead of JDK1.4 
-
-<li> If I right click on a port and select Customize Name and then select
-Show Name, the name appears twice.
+<li> Manually setting of the types of actors like ArrayToSequence that
+have constraints on their element types can cause problems.
 <li>No undo mechanism.
 <li>Weak support for multiports in the graph editor.
 <li>It is difficult to control wire routing.
@@ -359,12 +421,8 @@ Show Name, the name appears twice.
 </menu>
 
 <h3>Code Generation Limitations</h3>
-<menu>
-<li> This release includes a limited prototype of our code generation facility
-that will generate .class files for non-hierarchical SDF models
-
-<li> The code generator uses Soot, which requires JDK1.3.x.
-Soot will not work with JDK1.4
+Code Generation limitations are covered on the
+<a href="codegen.htm#limitations">Code Generation</a> page. 
 
 </menu>
 
