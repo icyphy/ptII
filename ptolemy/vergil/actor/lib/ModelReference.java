@@ -715,8 +715,9 @@ public class ModelReference
             _manager.waitForCompletion();
         }
         _manager = null;
-        if ((_postfireActionValue | _CLOSE_VERGIL_GRAPH) != 0
-            && _tableau != null) {
+        if (((_postfireActionValue == _CLOSE_VERGIL_GRAPH)
+                || (_postfireActionValue == _STOP_EXECUTING_AND_CLOSE_VERGIL_GRAPH))
+                && _tableau != null) {
             if (_debugging) {
                 _debug("** Closing Vergil graph.");
             }
