@@ -49,6 +49,9 @@ import java.lang.reflect.*;
 
 public class ExtendedMath {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Return the inverse hyperbolic cosine of the argument.
      *  The argument is required to be greater than one, or an
      *  IllegalArgumentException is thrown (this is a runtime
@@ -116,8 +119,8 @@ public class ExtendedMath {
         else return 1;
     }
 
-    private static final double _ONEOVERLN2  = 1.0 / Math.log(2.0);
-    private static final double _ONEOVERLN10 = 1.0 / Math.log(10.0);
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** sqrt(2) */
     public static final double SQRT_2 = Math.sqrt(2.0);
@@ -130,4 +133,10 @@ public class ExtendedMath {
 
     /** PI / 4 */
     public static final double PI_OVER_4 = Math.PI * 0.25;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private static final double _ONEOVERLN2  = 1.0 / Math.log(2.0);
+    private static final double _ONEOVERLN10 = 1.0 / Math.log(10.0);
 }
