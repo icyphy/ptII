@@ -349,6 +349,7 @@ bldmastrcoverage:
 		remote1distjsall \
 		remote1distjsrestore \
 		remote1build \
+		remote1distnonjsall \
 		remote1jnlp
 
 # Remove the remote dist
@@ -456,7 +457,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/lang/java \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/c \
-	$(REMOTE1PTIIDIST)/ptolemy/copernicus/java \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/jhdl \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/codegen/saveasjava \
@@ -478,6 +478,11 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/configs
+
+
+# Directories to run tests in outside of JavaScope
+NONJSALLDIRS = \
+	$(REMOTE1PTIIDIST)/ptolemy/copernicus/java
 
 # Run JavaScope Code Coverage tool in the distribution tree
 # For command line options, see
@@ -564,6 +569,28 @@ remote1build:
 	@echo `date`
 	(cd $(REMOTE1PTIIDIST);	PTII=$(REMOTE1PTIIDIST) $(MAKE) -k install)
 
+# Run tests outside of Javascope
+remote1distnonjsall:
+	@echo "#"
+	@echo "# Now running make non Javascope tests in $(REMOTE1PTIIDIST)"
+	@echo "# on  `hostname`"
+	@echo "# To add to the list of directories, edit "
+	@echo "# ~ptII/adm/gen-latest/makefile"
+	@echo "#"
+	@echo `date`
+
+	@-if [ "x$(NONJSALLDIRS)" != "x" ]; then \
+		set $(NONJSALLDIRS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making tests  in $$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) \
+				tests
+			);  \
+		    fi ; \
+		done ; \
+	fi
 
 # Build jnlp installers
 remote1jnlp:
