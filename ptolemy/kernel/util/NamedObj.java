@@ -55,7 +55,7 @@ public class NamedObj {
     ////                         public methods                           ////
 
     /** 
-     * @returns the name of the object. 
+     * @return the name of the object. 
      */	
     public String getName() { 
         return _name; 
@@ -68,9 +68,8 @@ public class NamedObj {
         _name = name;
     }
 
-
     /** 
-     * @returns a reference to the list of parameters.  
+     * @return a reference to the list of parameters.  
      */
     public ParamList getParam(){
         if( _paramList == null){
@@ -78,16 +77,6 @@ public class NamedObj {
         }
         return _paramList;
     }
-
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
