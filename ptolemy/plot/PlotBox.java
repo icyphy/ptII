@@ -208,7 +208,9 @@ public class PlotBox extends JPanel implements Printable {
     public PlotBox() {
         // If we make this transparent, the background shows through.
         // However, we assume that the user will set the background.
+        // NOTE: A component is transparent by default (?).
         // setOpaque(false);
+        setOpaque(true);
 
         setLayout(new FlowLayout(FlowLayout.RIGHT));
         addMouseListener(new ZoomListener());
@@ -2499,8 +2501,11 @@ public class PlotBox extends JPanel implements Printable {
                 if ((Math.abs(_zoomx-x) > 5) && (Math.abs(_zoomy-y) > 5)) {
                     double a = _xMin + (_zoomx - _ulx)/_xscale;
                     double b = _xMin + (x - _ulx)/_xscale;
-                    if (a < b) setXRange(a, b);
-                    else setXRange(b, a);
+                    // NOTE: Changed to call _setXRange() instead of
+                    // setXRange so that wrapping and zooming can work
+                    // together.  EAL 5/31/00.
+                    if (a < b) _setXRange(a, b);
+                    else _setXRange(b, a);
                     a = _yMax - (_zoomy - _uly)/_yscale;
                     b = _yMax - (y - _uly)/_yscale;
                     if (a < b) setYRange(a, b);

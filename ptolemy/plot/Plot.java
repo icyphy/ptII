@@ -44,10 +44,13 @@ package ptolemy.plot;
 // given, unfortunately, in pixels.  This means that as resolutions
 // get better, this program may need to be adjusted.
 
+import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.EventQueue;
 import java.io.*;
 import java.util.*;
 import java.net.*;
+import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.RepaintManager;
 
@@ -83,12 +86,16 @@ import javax.swing.RepaintManager;
  * Marks: points
  * Marks: dots
  * Marks: various
+ * Marks: pixels
  * </pre>
  * Here, "points" are small dots, while "dots" are larger.  If "various"
  * is specified, then unique marks are used for the first ten data sets,
- * and then recycled.
+ * and then recycled. If "pixels" are specified, then each point is
+ * drawn as one pixel.
  * Using no marks is useful when lines connect the points in a plot,
- * which is done by default.
+ * which is done by default.  However, if persistence is set, then you
+ * may want to choose "pixels" because the lines may overlap, resulting
+ * in annoying gaps in the drawn line.
  * If the above directive appears before any DataSet directive, then it
  * specifies the default for all data sets.  If it appears after a DataSet
  * directive, then it applies only to that data set.
@@ -184,22 +191,6 @@ import javax.swing.RepaintManager;
  */
 public class Plot extends PlotBox {
 
-    /** Construct a plot.
-     */
-    public Plot() {
-        // NOTE: Swing double buffering has a bug... the graphics
-        // object returned by getGraphics() is not the same as
-        // the one passed to paintComponent, and it draws lines
-        // differently (one pixel off?). This means that XOR drawing
-        // doesn't work...  Turning off double buffering helps.
-        // Originally:
-	// RepaintManager repaintManager = RepaintManager.currentManager(this);
-        // repaintManager.setDoubleBufferingEnabled(false);
-	// But the following seems to work without turning off 
-	// double buffering for all the other frames.
-	setDoubleBuffered(false);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -233,33 +224,43 @@ public class Plot extends PlotBox {
     public synchronized void addPoint(int dataset, double x, double y,
             boolean connected) {
 
-        // NOTE: jdk 1.3beta has a bug exhibited here.
+        // NOTE: jdk 1.3beta has a bug exhibited here, fixed later.
         // The value of the second argument is corrupted the second
         // time that samplePlot() calls this.  The print statement
         // in samplePlot() shows that the value is correct before the call.
         // System.out.println("x value in addPoint: " + x);
 
-        if (_xlog) {
-            if (x <= 0.0) {
-                System.err.println("Can't plot non-positive X values "+
-                        "when the logarithmic X axis value is specified: " +
-                        x);
-                return;
+        // In swing, updates to showing graphics must be done in the
+        // event thread.  If we are in the event thread, then proceed.
+        // Otherwise, queue a request.
+        if(EventQueue.isDispatchThread()) {
+            // This point is not an error bar so we set yLowEB
+            // and yHighEB to 0
+            _addPoint(dataset, x, y, 0, 0, connected, false);
+        } else {
+            final int pendingDataset = dataset;
+            final double pendingX = x;
+            final double pendingY = y;
+            final boolean pendingConnected = connected;
+            
+            Runnable doAddPoint = new Runnable() {
+                public void run() {
+                    _addPoint(pendingDataset, pendingX, pendingY,
+                            0, 0, pendingConnected, false);
+                }
+            };
+            try {
+                // NOTE: Using invokeAndWait() here rather than
+                // invokeLater() causes a deadlock...
+                // If the fill button has been
+                // pushed, then the event thread is stalled, and won't
+                // deal with this request.  Thus, this call never returns.
+                SwingUtilities.invokeLater(doAddPoint);
+            } catch (Exception ex) {
+                // Ignore InterruptedException.
+                // Other exceptions should not occur.
             }
-            x = Math.log(x)*_LOG10SCALE;
         }
-        if (_ylog) {
-            if (y <= 0.0) {
-                System.err.println("Can't plot non-positive Y values "+
-                        "when the logarithmic Y axis value is specified: " +
-                        y);
-                return;
-            }
-            y = Math.log(y)*_LOG10SCALE;
-        }
-        // This point is not an error bar so we set yLowEB
-        // and yHighEB to 0
-        _addPoint(dataset, x, y, 0, 0, connected, false);
     }
 
     /** In the specified data set, add the specified x, y point to the
@@ -285,26 +286,7 @@ public class Plot extends PlotBox {
     public synchronized void addPointWithErrorBars(int dataset,
             double x, double y, double yLowEB, double yHighEB,
             boolean connected) {
-        if (_xlog) {
-            if (x <= 0.0) {
-                System.err.println("Can't plot non-positive X values "+
-                        "when the logarithmic X axis value is specified: " +
-                        x);
-                return;
-            }
-            x = Math.log(x)*_LOG10SCALE;
-        }
-        if (_ylog) {
-            if (y <= 0.0 || yLowEB <= 0.0 || yHighEB <= 0.0) {
-                System.err.println("Can't plot non-positive Y values "+
-                        "when the logarithmic Y axis value is specified: " +
-                        y);
-                return;
-            }
-            y = Math.log(y)*_LOG10SCALE;
-            yLowEB = Math.log(yLowEB)*_LOG10SCALE;
-            yHighEB = Math.log(yHighEB)*_LOG10SCALE;
-        }
+// FIXME: Need to do swing song and dance as above.
         _addPoint(dataset, x, y,
                 yLowEB, yHighEB, connected, true);
     }
@@ -375,26 +357,34 @@ public class Plot extends PlotBox {
         _checkDatasetIndex(dataset);
         if (_showing) {
             // In swing, updates to showing graphics must be done in the
-            // event thread, not here.  Thus, we have to queue the request.
-            final int pendingDataset = dataset;
-            final int pendingIndex = index;
-            Runnable doPlotPoint = new Runnable() {
-                public void run() {
-                    _erasePoint(getGraphics(), pendingDataset, pendingIndex);
+            // event thread.  If we are in the event thread, then proceed.
+            // Otherwise, queue a request.
+            if(EventQueue.isDispatchThread()) {
+                _erasePoint(getGraphics(), dataset, index);
+            } else {
+                final int pendingDataset = dataset;
+                final int pendingIndex = index;
+                final Graphics graphics = getGraphics();
+
+                Runnable doPlotPoint = new Runnable() {
+                    public void run() {
+                        _erasePoint(graphics, pendingDataset, pendingIndex);
+                    }
+                };
+                try {
+                    // NOTE: Using invokeAndWait() here rather than
+                    // invokeLater() seems to help LivePlot somewhat
+                    // to leave less cruft on the screen, for reasons
+                    // that are not clear.  However, this causes a
+                    // deadlock...  If the fill button has been
+                    // pushed, then the event thread is stalled, and won't
+                    // deal with this request.  Thus, this call never returns.
+                    // SwingUtilities.invokeAndWait(doPlotPoint);
+                    SwingUtilities.invokeLater(doPlotPoint);
+                } catch (Exception ex) {
+                    // Ignore InterruptedException.
+                    // Other exceptions should not occur.
                 }
-            };
-            try {
-                // NOTE: Using invokeAndWait() here rather than invokeLater()
-                // seems to help LivePlot somewhat to leave less cruft on
-                // the screen, for reasons that are not clear.  However,
-                // this causes a deadlock...  If the fill button has
-                // been pushed, then the event thread is stalled, and won't
-                // deal with this request.  Thus, this call never returns.
-                // SwingUtilities.invokeAndWait(doPlotPoint);
-                SwingUtilities.invokeLater(doPlotPoint);
-            } catch (Exception ex) {
-                // Ignore InterruptedException.
-                // Other exceptions should not occur.
             }
         }
 
@@ -482,8 +472,10 @@ public class Plot extends PlotBox {
             return "points";
         } else if (_marks == 2) {
             return "dots";
-        } else {
+        } else if (_marks == 3) {
             return "various";
+        } else {
+            return "pixels";
         }
     }
 
@@ -665,11 +657,13 @@ public class Plot extends PlotBox {
             _marks = 2;
         } else if (style.equalsIgnoreCase("various")) {
             _marks = 3;
+        } else if (style.equalsIgnoreCase("pixels")) {
+            _marks = 4;
         }
     }
 
-    /** Set the marks style to "none", "points", "dots", or "various"
-     *  for the specified dataset.
+    /** Set the marks style to "none", "points", "dots", "various",
+     *  or "pixels" for the specified dataset.
      *  In the last case, unique marks are used for the first ten data
      *  sets, then recycled.
      *  @param style A string specifying the style for points.
@@ -686,6 +680,8 @@ public class Plot extends PlotBox {
             fmt.marks = 2;
         } else if (style.equalsIgnoreCase("various")) {
             fmt.marks = 3;
+        } else if (style.equalsIgnoreCase("pixels")) {
+            fmt.marks = 4;
         }
         fmt.marksUseDefault = false;
     }
@@ -725,6 +721,15 @@ public class Plot extends PlotBox {
      *  infinite memory (unless sweeps persistence is set).  If both
      *  sweeps and points persistence are set then sweeps take
      *  precedence.
+     *  <p>
+     *  Setting the persistence greater than zero forces the plot to
+     *  be drawn in XOR mode, which allows points to be quickly and
+     *  efficiently erased.  However, there is a bug in Java (as of
+     *  version 1.3), where XOR mode does not work correctly with
+     *  double buffering.  Thus, if you call this with an argument
+     *  greater than zero, then we turn off double buffering for this
+     *  panel <i>and all of its parents</i>.  This actually happens
+     *  on the next call to addPoint().
      */
     public void setPointsPersistence(int persistence) {
         //   FIXME: No file format yet.
@@ -1054,7 +1059,7 @@ public class Plot extends PlotBox {
                             _diameter, _diameter);
                     break;
                 case 3:
-                    // marks
+                    // various
                     int xpoints[], ypoints[];
                     // Points are only distinguished up to _MAX_MARKS data sets.
                     int mark = dataset % _MAX_MARKS;
@@ -1136,6 +1141,10 @@ public class Plot extends PlotBox {
                         graphics.fillPolygon(xpoints, ypoints, 5);
                         break;
                     }
+                    break;
+                case 4:
+                    // If the mark style is pixels, draw a filled rectangle.
+                    graphics.fillRect(xposi, yposi, 1, 1);
                     break;
                 default:
                     // none
@@ -1391,6 +1400,9 @@ public class Plot extends PlotBox {
         case 3:
             defaults.append(" marks=\"various\"");
             break;
+        case 4:
+            defaults.append(" marks=\"pixels\"");
+            break;
         }
 
         // Write the defaults for formats that can be controlled by dataset
@@ -1433,6 +1445,8 @@ public class Plot extends PlotBox {
                     options.append(" marks=\"dots\"");
                 case 3:
                     options.append(" marks=\"various\"");
+                case 4:
+                    options.append(" marks=\"pixels\"");
                 }
             }
 
@@ -1490,6 +1504,8 @@ public class Plot extends PlotBox {
             output.println("Marks: dots");
         case 3:
             output.println("Marks: various");
+        case 4:
+            output.println("Marks: pixels");
         }
 
         for (int dataset = 0; dataset < _points.size(); dataset++) {
@@ -1516,6 +1532,8 @@ public class Plot extends PlotBox {
                     output.println("Marks: dots");
                 case 3:
                     output.println("Marks: various");
+                case 4:
+                    output.println("Marks: pixels");
                 }
             }
             // Write the data
@@ -1594,6 +1612,35 @@ public class Plot extends PlotBox {
             boolean connected, boolean errorBar) {
         _checkDatasetIndex(dataset);
 
+        if (_xlog) {
+            if (x <= 0.0) {
+                System.err.println("Can't plot non-positive X values "+
+                        "when the logarithmic X axis value is specified: " +
+                        x);
+                return;
+            }
+            x = Math.log(x)*_LOG10SCALE;
+        }
+        if (_ylog) {
+            if (y <= 0.0) {
+                System.err.println("Can't plot non-positive Y values "+
+                        "when the logarithmic Y axis value is specified: " +
+                        y);
+                return;
+            }
+            y = Math.log(y)*_LOG10SCALE;
+            if (errorBar) {
+                if (yLowEB <= 0.0 || yHighEB <= 0.0) {
+                    System.err.println("Can't plot non-positive Y values "+
+                        "when the logarithmic Y axis value is specified: " +
+                        y);
+                    return;
+                }
+                yLowEB = Math.log(yLowEB)*_LOG10SCALE;
+                yHighEB = Math.log(yHighEB)*_LOG10SCALE;
+            }
+        }
+
         if(_wrap && _xRangeGiven) {
             double width = _xhighgiven - _xlowgiven;
             if (x < _xlowgiven) {
@@ -1639,32 +1686,84 @@ public class Plot extends PlotBox {
         }
         pts.addElement(pt);
         if (_pointsPersistence > 0) {
-            if (size > _pointsPersistence)
-                erasePoint(dataset, 0);
+            if (size > _pointsPersistence) erasePoint(dataset, 0);
         }
         // Draw the point on the screen only if the plot is showing.
         if (_showing) {
-            // In swing, updates to showing graphics must be done in the
-            // event thread, not here.  Thus, we have to queue the request.
-            final int pendingDataset = dataset;
-            final int pendingPoint = pts.size() - 1;
-            Runnable doPlotPoint = new Runnable() {
-                public void run() {
-                    _drawPlotPoint(getGraphics(), pendingDataset, pendingPoint);
+
+            if (_pointsPersistence > 0 && isDoubleBuffered()) {
+                // NOTE: Double buffering has a bug in Java (in at least
+                // version 1.3) where there is a one pixel alignment problem
+                // that prevents XOR drawing from working correctly.
+                // XOR drawing is used for live plots, and if double buffering
+                // is turned on, then cruft is left on the screen whenever the
+                // fill or zoom functions are used.
+                // Here, if it hasn't been done already, we turn off double
+                // buffering on this panel and all its parents for which this
+                // is possible.  Note that we could do this globally using
+                //
+                // RepaintManager repaintManager
+                //        = RepaintManager.currentManager(this);
+                // repaintManager.setDoubleBufferingEnabled(false);
+                //
+                // However, that turns off double buffering in all windows
+                // of the application, which means that other windows that only
+                // work properly with double buffering (such as vergil windows)
+                // will not work.
+                //
+                // NOTE: This fix creates another problem...
+                // If there are other widgets besides the plotter in the
+                // same top-level window, and they implement double
+                // buffering (which they will by default), then they
+                // need to be opaque or drawing artifacts will appear
+                // upon exposure events.  The workaround is simple:
+                // Make these other objects opaque, and set their
+                // background color appropriately.
+                //
+                // See:
+                // <pre>
+                // http://developer.java.sun.com/developer/bugParade/bugs/
+                //     4188795.html
+                //     4204551.html
+                //     4295712.htm
+                // </pre>
+                setDoubleBuffered(false);
+                Component parent = getParent();
+                while (parent != null) {
+                    if (parent instanceof JComponent) {
+                        ((JComponent)parent).setDoubleBuffered(false);
+                    }
+                    parent = parent.getParent();
                 }
-            };
-            try {
-                // NOTE: Using invokeAndWait() here rather than invokeLater()
-                // seems to help LivePlot somewhat to leave less cruft on
-                // the screen, for reasons that are not clear.  However,
-                // this causes a deadlock...  If the fill button has
-                // been pushed, then the event thread is stalled, and won't
-                // deal with this request.  Thus, this call never returns.
-                // SwingUtilities.invokeAndWait(doPlotPoint);
-                SwingUtilities.invokeLater(doPlotPoint);
-            } catch (Exception ex) {
-                // Ignore InterruptedException.
-                // Other exceptions should not occur.
+            }
+
+            // In swing, updates to showing graphics must be done in the
+            // event thread.  If we are in the event thread, then proceed.
+            // Otherwise, queue a request.
+            if(EventQueue.isDispatchThread()) {
+                _drawPlotPoint(getGraphics(), dataset, pts.size() - 1);
+            } else {
+                final int pendingDataset = dataset;
+                final int pendingPoint = pts.size() - 1;
+                final Graphics graphics = getGraphics();
+
+                Runnable doPlotPoint = new Runnable() {
+                    public void run() {
+                        _drawPlotPoint(graphics, pendingDataset,
+                                pendingPoint);
+                    }
+                };
+                try {
+                    // NOTE: Using invokeAndWait() here rather than
+                    // invokeLater() causes a deadlock...
+                    // If the fill button has been
+                    // pushed, then the event thread is stalled, and won't
+                    // deal with this request.  Thus, this call never returns.
+                    SwingUtilities.invokeLater(doPlotPoint);
+                } catch (Exception ex) {
+                    // Ignore InterruptedException.
+                    // Other exceptions should not occur.
+                }
             }
         }
 
@@ -1687,11 +1786,11 @@ public class Plot extends PlotBox {
      */
     private void _drawPlotPoint(Graphics graphics,
             int dataset, int index) {
-        // Set the color
         if (_pointsPersistence > 0) {
             // To allow erasing to work by just redrawing the points.
             graphics.setXORMode(_background);
         }
+        // Set the color
         if (_usecolor) {
             int color = dataset % _colors.length;
             graphics.setColor(_colors[color]);
