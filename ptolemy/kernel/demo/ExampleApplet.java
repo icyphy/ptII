@@ -1,6 +1,6 @@
 /* ExampleApplet.java is a applet class which cotains a run button and a text area
 
- Copyright (c) 1997 The Regents of the University of California.
+ Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -45,7 +45,7 @@ It's for the general perpose of convert the command line application
 into AWT compatible applet. This applet is also contained in a frame
 to make it run as an application
 @author Jie Liu
-@version @(#)ExampleApplet.java	1.1    01/27/98
+@version $Id$
 @see java.lang.applet
 @see ExampleFrame
 */
