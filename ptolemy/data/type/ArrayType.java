@@ -162,6 +162,24 @@ public class ArrayType extends StructuredType {
         return _elemTypeTerm;
     }
 
+
+    /** Set the elements that have declared type BaseType.ANY (the leaf
+     *  type variable) to the specified type.
+     *  This method is called at the beginning of type resolution.
+     *  @param t the type to set the leaf type variable to.
+     */
+    public void initialize(Type t) {
+        try {
+            if (!isConstant()) {
+                getElementTypeTerm().initialize(t);
+            }
+        } catch (IllegalActionException iae) {
+            throw new InternalErrorException("ArrayType.initialize: Cannot " +
+                "initialize the element type to " + t + " " +
+                iae.getMessage());
+        }
+    }
+
     /** Test if the argument token is compatible with this type.
      *  If this type is a constant, the argument is compatible if it can be
      *  converted losslessly to a token of this type; If this type is a
@@ -260,23 +278,6 @@ public class ArrayType extends StructuredType {
      */
     public String toString() {
         return "(" + _elementType.toString() + ")array";
-    }
-
-    /** Set the elements that have declared type BaseType.ANY (the leaf
-     *  type variable) to the specified type.
-     *  This method is called at the beginning of type resolution.
-     *  @param t the type to set the leaf type variable to.
-     */
-    public void initialize(Type t) {
-        try {
-            if (!isConstant()) {
-                getElementTypeTerm().initialize(t);
-            }
-        } catch (IllegalActionException iae) {
-            throw new InternalErrorException("ArrayType.initialize: Cannot " +
-                "initialize the element type to " + t + " " +
-                iae.getMessage());
-        }
     }
 
     /** Update this Type to the specified ArrayType.
