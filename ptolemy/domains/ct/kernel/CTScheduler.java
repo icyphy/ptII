@@ -133,7 +133,7 @@ import ptolemy.kernel.util.Workspace;
    then the (sub)system are not schedulable, and a NotSchedulableException
    will be thrown if schedules are requested.
    <p>
-   This CTSCheduler does not support mutation.
+   This CTScheduler does not support mutation.
 
    @author Jie Liu, Haiyang Zheng, Rachel Zhou
    @version $Id$
