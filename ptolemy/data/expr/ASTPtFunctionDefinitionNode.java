@@ -129,9 +129,9 @@ public class ASTPtFunctionDefinitionNode extends ASTPtRootNode {
         if(!(node instanceof ASTPtFunctionDefinitionNode)) {
             return false;
         }
-        ASTPtFunctionDefinitionNode functionNode = 
+        ASTPtFunctionDefinitionNode functionNode =
             (ASTPtFunctionDefinitionNode)node;
-        
+
         // The number of arguments must be the same.
         if(getArgumentNameList().size() !=
                 functionNode.getArgumentNameList().size()) {

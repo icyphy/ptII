@@ -83,7 +83,7 @@ public class Constants {
     public static RecordToken constants() {
         // This should be called toString(), but we cannot have a static
         // toString() because Object.toString() is not static.
-        
+
         // NOTE: Construct these arrays rather than using keySet()
         // and values() because we have no assurance that those will
         // return the contents in the same order.

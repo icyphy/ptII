@@ -69,7 +69,7 @@ public class ASTPtRecordConstructNode extends ASTPtRootNode {
         super(p, id);
     }
 
-    /** Return the list of field names for this record construct.  
+    /** Return the list of field names for this record construct.
      *  The order of the list is not meaningful.
      */
     public List getFieldNames() {
@@ -110,7 +110,7 @@ public class ASTPtRecordConstructNode extends ASTPtRootNode {
         // Not use set for unordered comparison.
         // Note that field names are not renamed!
         Set nameSet = new HashSet(_fieldNames);
-        Set nodeNameSet = 
+        Set nodeNameSet =
             new HashSet(((ASTPtRecordConstructNode)node)._fieldNames);
         if(!nameSet.equals(nodeNameSet)) {
             return false;
@@ -122,15 +122,15 @@ public class ASTPtRecordConstructNode extends ASTPtRootNode {
             String fieldName = (String)fieldNames.next();
             ASTPtRootNode child = (ASTPtRootNode)children.next();
             int nodeIndex = recordNode._fieldNames.indexOf(fieldName);
-            ASTPtRootNode nodeChild = 
+            ASTPtRootNode nodeChild =
                 (ASTPtRootNode)recordNode._children.get(nodeIndex);
-            
+
             if(!child.isCongruent(nodeChild, renaming)) {
                 return false;
             }
         }
-    
-       
+
+
         return true;
     }
 

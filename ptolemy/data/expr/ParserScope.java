@@ -76,7 +76,7 @@ public interface ParserScope {
      *  identifier.  Note that generally speaking, this list is
      *  extremely expensive to compute, and users should avoid calling
      *  it.  It is primarily used for debugging purposes.
-     *  @exception IllegalActionException If constructing the list causes 
+     *  @exception IllegalActionException If constructing the list causes
      *  it.
      */
     public Set identifierSet()

@@ -68,7 +68,7 @@ public class ExpressionFunction implements FunctionToken.Function {
         _argumentTypes = argumentTypes;
         _exprRoot = exprRoot;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -94,14 +94,14 @@ public class ExpressionFunction implements FunctionToken.Function {
         return parseTreeEvaluator.evaluateParseTree(
                 _exprRoot, argumentsScope);
     }
-    
+
     /** Return the number of arguments of the function.
      *  @return The number of arguments of the function.
      */
     public int getNumberOfArguments() {
         return _argumentNames.size();
     }
-    
+
     /** Return true if this function is congruent to the given
      *  function.  Classes should implement this method so that
      *  two functions are congruent under any renaming of the
@@ -138,10 +138,10 @@ public class ExpressionFunction implements FunctionToken.Function {
            renaming.put(name, argName);
            }
            return _exprRoot.isCongruent(expressionFunction._exprRoot,
-           renaming); 
+           renaming);
         */
     }
-   
+
     /** Return a string representation of this function.
      */
     public String toString() {
@@ -165,7 +165,7 @@ public class ExpressionFunction implements FunctionToken.Function {
         buffer.append(")");
         return buffer.toString();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 

@@ -187,7 +187,7 @@ public class CachedMethod {
             _conversions = null;
         }
         _type = type;
-        
+
         _returnType = null;
 
         // Compute the hashcode, based on the method name and argument
@@ -225,7 +225,7 @@ public class CachedMethod {
                 } catch (InvocationTargetException ex) {
                     throw new RuntimeException(ex); // TODO
                 }
-            } 
+            }
             catch (NoSuchMethodException ex) {
                 // Ignore.  Just use the default return type above.
             }
@@ -241,7 +241,7 @@ public class CachedMethod {
     public static void clear() {
         _cachedMethods.clear();
     }
-    
+
     /** Return a verbose description of the cached method being invoked
      */
     public String methodDescription() {
@@ -251,7 +251,7 @@ public class CachedMethod {
             return "INVALID METHOD!!!";
         }
     }
-    
+
     /** Return true if the argument is an instance of CachedMethod
      *  that represents the same method or function as this instance.
      *  Note that if this returns true, then both this instance and
@@ -689,7 +689,7 @@ public class CachedMethod {
         for (int j = 0; j < conversions1.length; j++) {
             //  System.out.println("comparing " + conversions1[j]);
             //  System.out.println("to        " + conversions2[j]);
-   
+
             if (conversions2[j].isPreferableTo(conversions1[j])) {
                 // Found one conversion where the second argument is
                 // preferable.  That is enough to return false.
@@ -995,7 +995,7 @@ public class CachedMethod {
      *  argumentTypes if it had been cached previously.
      */
     private static CachedMethod _getCachedMethod(
-            String methodName, Type[] argumentTypes, int type) 
+            String methodName, Type[] argumentTypes, int type)
             throws IllegalActionException {
         CachedMethod key = new CachedMethod(
                 methodName, argumentTypes, null, null, type);
@@ -1088,12 +1088,12 @@ public class CachedMethod {
     ///////////////////////////////////////////////////////////////////
     //// TypeArgumentConversion
 
-    /** Class representing an argument conversion to another ptolemy type, 
+    /** Class representing an argument conversion to another ptolemy type,
      *  Followed by the given conversion.
      *  This conversion always has preference two.
      */
     public static class TypeArgumentConversion extends ArgumentConversion {
-        private TypeArgumentConversion(Type type, 
+        private TypeArgumentConversion(Type type,
                 ArgumentConversion conversion) {
             super(2);
             _conversionType = type;
@@ -1119,7 +1119,7 @@ public class CachedMethod {
                 return true;
             } else if(_preference == conversion.getPreference()) {
                 // Assume it is a TypeArgumentConversion.
-                TypeArgumentConversion argumentConversion = 
+                TypeArgumentConversion argumentConversion =
                     (TypeArgumentConversion)conversion;
                 // FIXME: compare types.
                 if(TypeLattice.compare(_conversionType, argumentConversion._conversionType) == ptolemy.graph.CPO.LOWER) {
@@ -1155,7 +1155,7 @@ public class CachedMethod {
         private BaseConvertCachedMethod(
                 String methodName, Type[] argumentTypes,
                 Method method, ArgumentConversion baseConversion,
-                ArgumentConversion[] conversions) 
+                ArgumentConversion[] conversions)
                 throws IllegalActionException {
             super(methodName, argumentTypes, method, conversions, METHOD);
             _baseConversion = baseConversion;

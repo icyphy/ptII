@@ -57,7 +57,7 @@ somewhat nasty from an Object-oriented point of view.  The nastiness
 is fairly well encapsulated in this class.  The mapping is summarized
 in the following table:
 
-<p> 
+<p>
 <pre>
      Token type               Java type
      ---------------------------------------------------

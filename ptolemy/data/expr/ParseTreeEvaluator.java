@@ -222,7 +222,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             throws IllegalActionException {
 
         ASTPtRootNode cloneTree;
-       
+
         ParseTreeSpecializer specializer = new ParseTreeSpecializer();
         cloneTree = specializer.specialize(node.getExpressionTree(),
                 node.getArgumentNameList(), _scope);
@@ -270,7 +270,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  A third case is the matlab() function, which is also handled
      *  specially in this method, allowing the evaluation of
      *  expressions in matlab if matlab is installed.  The format
-     *  of the function is covered in 
+     *  of the function is covered in
      *  {@link ptolemy.data.expr.MatlabUtilities#evaluate(String, Set, ParserScope)}
      *  .
      *  @param node The specified node.
@@ -1131,7 +1131,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             ptolemy.data.Token result = method.invoke(argValues);
             return result;
         } else {
-            throw new IllegalActionException("No function found matching " + 
+            throw new IllegalActionException("No function found matching " +
                     method.toString());
         }
     }
@@ -1156,7 +1156,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             ptolemy.data.Token result = method.invoke(argValues);
             return result;
         } else {
-            throw new IllegalActionException("No method found matching " + 
+            throw new IllegalActionException("No method found matching " +
                     method.toString());
         }
     }
@@ -1189,7 +1189,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     " evaluated to " + _evaluatedChildToken + "\n");
         }
     }
-    
+
     /** Add a record to the current trace corresponding to the given message.
      *  If the trace is null, do nothing.
      */
@@ -1209,7 +1209,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
     // Temporary storage for the result of evaluating a child node.
     // This is protected so that derived classes can access it.
     protected ptolemy.data.Token _evaluatedChildToken = null;
-    
+
     private ParserScope _scope = null;
     private ParseTreeTypeInference _typeInference = null;
     private StringBuffer _trace = null;

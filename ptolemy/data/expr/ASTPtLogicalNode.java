@@ -86,7 +86,7 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
         }
         return true;
     }
- 
+
     /** Return true if the node represents the logical AND of its
      *  children.
      */

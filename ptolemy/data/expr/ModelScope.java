@@ -63,7 +63,7 @@ public abstract class ModelScope implements ParserScope {
         List variableList = container.attributeList(Variable.class);
         variableList.remove(exclude);
         Set nameSet = new HashSet();
-        for(Iterator variables = variableList.iterator(); 
+        for(Iterator variables = variableList.iterator();
             variables.hasNext();) {
             Variable variable = (Variable)variables.next();
             nameSet.add(variable.getName());
@@ -82,7 +82,7 @@ public abstract class ModelScope implements ParserScope {
             container.attributeList(ScopeExtender.class).iterator();
         while (extenders.hasNext()) {
             ScopeExtender extender = (ScopeExtender)extenders.next();
-            // It would be nice if ScopeExtender and NamedObj were common in 
+            // It would be nice if ScopeExtender and NamedObj were common in
             // some way to avoid this cast.
             nameSet.addAll(getAllScopedVariableNames(exclude,
                     (NamedObj)extender));

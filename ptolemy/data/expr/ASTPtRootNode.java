@@ -125,7 +125,7 @@ public class ASTPtRootNode implements Node, Cloneable {
                 }
             }
         }
-    } 
+    }
 
     /** Evaluate the parse tree.
      *  @exception IllegalActionException If an error occurs

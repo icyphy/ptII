@@ -108,9 +108,9 @@ public class MatlabUtilities {
             // Opening the matlab engine each time is very slow
             _engine = (long []) _engineOpen
                 .invoke(matlabEngine, new Object[0]);
-        
+
             try {
-            
+
                 synchronized (
                         //matlabEngine.getSemaphore();
                         _engine ) {
@@ -148,7 +148,7 @@ public class MatlabUtilities {
                                         .findFile(dirs.nextToken()) + "'");
                         }
                         cellFormat.append("}");
-                    
+
                         if (cellFormat.length() > 2) {
                             addPathCommand = "addedPath_=" +
                                 cellFormat.toString()
@@ -312,7 +312,7 @@ public class MatlabUtilities {
     ////                       private variables                   ////
 
     // The matlab engine pointer that is returned by matlab.Engine.open
-    // We cache this value so that each time we evaluate a Matlab 
+    // We cache this value so that each time we evaluate a Matlab
     // expression, we need not necessarily reopen the Engine.
     private static long [] _engine;
 

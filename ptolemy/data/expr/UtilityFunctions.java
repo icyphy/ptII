@@ -364,7 +364,7 @@ public class UtilityFunctions {
      *  load it using System.load().  If the library is not found
      *  by findFile() and the pathname contains a /
      *  then we call System.loadLibrary() the filename after the last
-     *  /.  This step is necessary to support native methods under 
+     *  /.  This step is necessary to support native methods under
      *  Webstart, which looks for libraries at the top level.
      *  If all of the above fails, we throw the initial exception.
      *
@@ -396,7 +396,7 @@ public class UtilityFunctions {
                 // we find the last /, and if the next chars are not "lib"
                 // then we insert "lib".
                 int index = library.lastIndexOf("/");
-                
+
                 if (index == -1) {
                     if (!library.startsWith("lib")) {
                         library = "lib" + library;
@@ -412,10 +412,10 @@ public class UtilityFunctions {
                 }
             } else {
                 // Windows
-                int index = library.lastIndexOf("/");                
+                int index = library.lastIndexOf("/");
                 if (index != -1) {
                     // Everything after the trailing /
-                    shortLibraryName = library.substring(index + 1); 
+                    shortLibraryName = library.substring(index + 1);
                 }
             }
 
@@ -425,7 +425,7 @@ public class UtilityFunctions {
             String libraryPath = UtilityFunctions.findFile(libraryWithSuffix);
 
             if (libraryPath.equals(libraryWithSuffix)) {
-                
+
                 try {
                     // findFile did not find the library, so we try using
                     // just the short library name.  This is necessary
@@ -454,7 +454,7 @@ public class UtilityFunctions {
                     } catch (Throwable throwable) {
                         // Ignore.
                     }
-                    
+
                     String classpath = "<<classpath unknown>>";
                     try {
                         classpath = System.getProperty("java.class.path");
@@ -1117,7 +1117,7 @@ public class UtilityFunctions {
     public static DoubleMatrixToken zeroMatrix(int rows, int columns) {
         return zeroMatrixDouble(rows, columns);
     }
-    
+
     /** Return a complex zero matrix with the given number of rows and
      *  columns.
      *  @return The zero matrix with the given number of rows and
@@ -1132,7 +1132,7 @@ public class UtilityFunctions {
                     + ex.getMessage());
         }
     }
-    
+
     /** Return a double zero matrix with the given number of rows and
      *  columns.
      *  @return The zero matrix with the given number of rows and
@@ -1150,7 +1150,7 @@ public class UtilityFunctions {
         }
         return result;
     }
-    
+
     /** Return a int zero matrix with the given number of rows and
      *  columns.
      *  @return The zero matrix with the given number of rows and
@@ -1168,7 +1168,7 @@ public class UtilityFunctions {
         }
         return result;
     }
-    
+
     /** Return a long zero matrix with the given number of rows and
      *  columns.
      *  @return The zero matrix with the given number of rows and

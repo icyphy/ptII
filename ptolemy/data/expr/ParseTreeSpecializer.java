@@ -73,7 +73,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
             _result = (ASTPtRootNode) node.clone();
             _result._parent = null;
         } catch(CloneNotSupportedException ex) {
-            throw new IllegalActionException(null, ex, 
+            throw new IllegalActionException(null, ex,
                     "Failed to clone node for specialization");
         }
         _result.visit(this);
@@ -88,7 +88,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
             throws IllegalActionException {
         _defaultVisit(node);
-       
+
     }
 
     public void visitBitwiseNode(ASTPtBitwiseNode node)
@@ -123,13 +123,13 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
         excludedNames.addAll(node.getArgumentNameList());
         List oldExcludedNames = _excludedNames;
         _excludedNames = excludedNames;
-        
+
         // Recurse, with the new set of bound identifiers.
         node.getExpressionTree().visit(this);
-           
+
         _excludedNames = oldExcludedNames;
     }
-    
+
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         _defaultVisit(node);
@@ -211,7 +211,7 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
         return true;
     }
 
-    protected void _defaultVisit(ASTPtRootNode node) 
+    protected void _defaultVisit(ASTPtRootNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
         boolean isConstant = _childrenAreConstant(node);
@@ -219,18 +219,18 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
             _replaceConstantNode(node);
         }
     }
-    
+
     protected void _replaceConstantNode(ASTPtRootNode node)
             throws IllegalActionException {
         // Create the replacement
-        ASTPtLeafNode newNode = 
+        ASTPtLeafNode newNode =
             new ASTPtLeafNode(PtParserTreeConstants.JJTPTLEAFNODE);
         ptolemy.data.Token token =
             _evaluator.evaluateParseTree(node, _scope);
         newNode.setToken(token);
         newNode.setType(token.getType());
         newNode.setConstant(true);
-        
+
         ASTPtRootNode parent = (ASTPtRootNode)node._parent;
         if(parent == null) {
             _result = newNode;
@@ -239,9 +239,9 @@ public class ParseTreeSpecializer extends AbstractParseTreeVisitor {
             newNode._parent = parent;
             int index = parent._children.indexOf(node);
             parent._children.set(index, newNode);
-        }                    
+        }
     }
-    
+
     protected List _excludedNames;
     protected ASTPtRootNode _result;
     protected ParserScope _scope;
