@@ -279,3 +279,25 @@ test Workspace-7.1 {Test isReadOnly, setReadOnly} {
     list $readOnly1 $readOnly2 $errMsg $readOnly3 \
 	    [enumToFullNames [$w directory]]
 } {0 1 {ptolemy.kernel.util.InvalidStateException: W: Trying to relinquish write access on a write-protected workspace.} 0 {W.N1 W.null W.N2 W.N3}}
+
+######################################################################
+#### The following assumptions are made for this test to work. 
+#### 1. When a thread gets a write access, no other thread has a read access
+####    on the workspace.
+#
+test Workspace-8.1 {Test wait(obj) and corresponding methods} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set tr [java::new ptolemy.kernel.util.test.TestWorkspace2 TR $w]
+    $tr start
+    # Give the threads a chance to start up.
+    sleep 1
+    list [$tr profile] 
+} {{TR.getReadAccess()
+TR.getReadAccess()
+TR.getReadAccess()
+TR.notif.getWriteAccess()
+TR.notif.doneWriting()
+TR.doneReading()
+TR.doneReading()
+TR.doneReading()
+}}
