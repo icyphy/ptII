@@ -11,7 +11,7 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -36,7 +36,7 @@
         <property name="PSDFDirector" class="ptolemy.domains.psdf.kernel.PSDFDirector">
             <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
             </property>
