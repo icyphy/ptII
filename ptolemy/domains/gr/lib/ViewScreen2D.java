@@ -121,6 +121,8 @@ public class ViewScreen2D extends GRActor2D
         backgroundColor = new Parameter(this, "backgroundColor",
                 new DoubleMatrixToken(new double[][] {{ 1.0, 1.0, 1.0}} ));
         backgroundColor.setTypeEquals(BaseType.DOUBLE_MATRIX);
+        
+        _originRelocation = false;
     }
 
 
@@ -324,7 +326,7 @@ public class ViewScreen2D extends GRActor2D
         _crosshairY = new BasicFigure(new Line2D.Double(2,0,-2,0));
         
         _eventHandler = new ViewScreen2DListener(
-            _crosshairX.getBounds(), _crosshairY.getBounds(), _origin, _canvas);
+            _crosshairX.getBounds(), _crosshairY.getBounds(), _origin, _canvas, this);
         _eventLayer  = new EventLayer();
         _eventLayer.addLayerListener(_eventHandler);
         _eventLayer.addLayerMotionListener(_eventHandler);
@@ -335,6 +337,7 @@ public class ViewScreen2D extends GRActor2D
         _frame.addKeyListener(_eventHandler);
         Graphics2D graphics = (Graphics2D)_container.getGraphics();
         graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+        _frame.addKeyListener(_eventHandler);
     }
 
     /** Setup the scene graph connections of this actor.  
@@ -371,6 +374,15 @@ public class ViewScreen2D extends GRActor2D
         return ((BooleanToken) translatable.getToken()).booleanValue();
     }
     
+    public void enableOriginRelocation(boolean enable)
+    {
+        _originRelocation = enable;
+    }
+    
+    public boolean getOriginRelocation()
+    {
+        return _originRelocation;
+    }
     
     // The diva canvas component.
     private JCanvas _canvas;
@@ -397,5 +409,7 @@ public class ViewScreen2D extends GRActor2D
     private BasicFigure _crosshairY;
     
     private ViewScreen2DListener _eventHandler;
+    
+    boolean _originRelocation;
 }
 

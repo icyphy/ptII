@@ -122,7 +122,7 @@ abstract public class GRShape2D extends GRActor2D {
         super.initialize();
         _figure = _createFigure();
         _setAppearance(_figure);
-        interactor = new FigureInteractor();
+        interactor = new FigureInteractor(_figure);
         _figure.setInteractor(interactor);
     }
 

@@ -174,11 +174,9 @@ public class Translate2D extends GRTransform2D {
      */
     protected void _applyInitialTransform(Figure figure)
             throws IllegalActionException {
-        double initialX = ((DoubleToken)
-                initialXTranslation.getToken()).doubleValue();
-        double initialY = ((DoubleToken)
-                initialYTranslation.getToken()).doubleValue();
+                
         // Translate to?
-        figure.translate(initialX, initialY);
+        figure.translate(((DoubleToken) initialXTranslation.getToken()).doubleValue(),
+                         ((DoubleToken) initialYTranslation.getToken()).doubleValue());
     }
 }
