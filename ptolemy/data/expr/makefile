@@ -79,6 +79,7 @@ JSRCS = \
 	ConcreteScalarToken.java \
 	Constants.java \
 	ConversionUtilities.java \
+	CParseTreeCodeGenerator.java \
 	ExplicitScope.java \
 	ExpressionFunction.java \
 	FixPointFunctions.java \
