@@ -330,6 +330,10 @@ PTLEJOS_DIR =	@PTLEJOS_DIR@
 # matlab was found.
 PTMATLAB_DIR =	@PTMATLAB_DIR@
 
+# Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if
+# QuickTime for Java was found.
+PTQUICKTIME_DIR =	@PTQUICKTIME_DIR@
+
 # Set to tini and used in $PTII/ptolemy/apps/makefile if the Dallas Semi
 # TINI was found
 PTTINI_DIR =	@PTINI_DIR@
