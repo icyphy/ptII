@@ -92,11 +92,12 @@ then controls for the director parameters are also included.
 <i>modelURL</i>: The name of a URI (or URL) containing the
 MoML file that defines the model.
 <li>
-<i>orientation</i>: This can have value "horizontal"
-or "vertical" (case insensitive).  If it is "vertical", then the
+<i>orientation</i>: This can have value "horizontal", "vertical", or
+"controls_only" (case insensitive).  If it is "vertical", then the
 controls are placed above the visual elements of the Placeable actors.
 This is the default.  If it is "horizontal", then the controls
-are placed to the left of the visual elements.
+are placed to the left of the visual elements.  If it is "controls_only"
+then no visual elements are placed.
 </ul>
 <p>
 To create a model in a different way, say without a <i>modelClass</i>
@@ -152,7 +153,7 @@ public class MoMLApplet extends PtolemyApplet {
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 
-    /** Read the model from the <i>model</i> applet parameter.
+    /** Read the model from the <i>modelURL</i> applet parameter.
      *  @param workspace The workspace in which to create the model.
      *  @return A model.
      *  @throws Exception If something goes wrong.

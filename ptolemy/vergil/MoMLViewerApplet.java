@@ -100,12 +100,12 @@ schematic.  The value must be "true" or no run panel will be displayed.
 <i>modelURL</i>: The name of a URI (or URL) containing the
 MoML file that defines the model.
 <li>
-<i>orientation</i>: This can have value "horizontal"
-or "vertical" (case insensitive).  If it is "vertical", then the
+<i>orientation</i>: This can have value "horizontal", "vertical", or
+"controls_only" (case insensitive).  If it is "vertical", then the
 controls are placed above the visual elements of the Placeable actors.
 This is the default.  If it is "horizontal", then the controls
-are placed to the left of the visual elements.
-This parameter is ignored unless <i>includeRunPanel</i> is given as "true".
+are placed to the left of the visual elements.  If it is "controls_only"
+then no visual elements are placed.
 </ul>
 
 @author  Steve Neuendorffer and Edward A. Lee
