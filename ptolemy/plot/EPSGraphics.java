@@ -311,6 +311,7 @@ public class EPSGraphics extends Graphics {
     }
 
     public void setFont(Font font) {
+        if (font == null) return;
         int size = font.getSize();
         boolean bold = font.isBold();
         if (bold) {

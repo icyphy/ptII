@@ -83,6 +83,8 @@ import javax.swing.*;
  * <li> Cntr-D or Q: quit
  * </ul>
  * These commands are provided in a menu by the PlotFrame class.
+ * Note that exporting to the clipboard is not allowed in applets
+ * (it used to be), so this will result in an error message.
  * <p>
  * At this time, the two export commands produce encapsulated postscript
  * tuned for black-and-white printers.  In the future, more formats may
@@ -221,7 +223,8 @@ public class PlotBox extends JPanel implements Printable {
         // This is something we want to do only once...
         _measureFonts();
         // Request the focus so that key events are heard.
-        requestFocus();
+        // NOTE: no longer needed?
+        // requestFocus();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -331,9 +334,19 @@ public class PlotBox extends JPanel implements Printable {
      *  @param file A file writer to which to send the description.
      */
     public synchronized void export(OutputStream out) {
-        EPSGraphics g = new EPSGraphics(out, _width, _height);
-        _drawPlot(g, false);
-        g.showpage();
+        try {
+            EPSGraphics g = new EPSGraphics(out, _width, _height);
+            _drawPlot(g, false);
+            g.showpage();
+        } catch (RuntimeException ex) {
+            String message = "Export failed: " + ex.getMessage();
+            JOptionPane.showMessageDialog(this, message,
+                    "Ptolemy Plot Message",
+                    JOptionPane.ERROR_MESSAGE);
+            // Rethrow the exception so that we don't report success,
+            // and so the stack trace is displayed on standard out.
+            throw (RuntimeException)ex.fillInStackTrace();
+        }
     }
 
     /** Rescale so that the data that is currently plotted just fits.
@@ -352,7 +365,8 @@ public class PlotBox extends JPanel implements Printable {
         setYRange(_yBottom, _yTop);
         repaint();
         // Reacquire the focus so that key bindings work.
-        requestFocus();
+        // NOTE: no longer needed?
+        // requestFocus();
     }
 
     /** Return whether the plot uses color.
@@ -590,7 +604,8 @@ public class PlotBox extends JPanel implements Printable {
         super.paintComponent(graphics);
         _drawPlot(graphics, true);
         // Acquire the focus so that key bindings work.
-        requestFocus();
+        // NOTE: no longer needed?
+        // requestFocus();
     }
 
     /** Syntactic sugar for parseFile(filespec, documentBase).
@@ -897,7 +912,8 @@ public class PlotBox extends JPanel implements Printable {
         }
         _fillButton.setVisible(visible);
         // Request the focus so that key events are heard.
-        requestFocus();
+        // NOTE: no longer needed?
+        // requestFocus();
     }
 
     /** If the argument is false, draw the plot without using color
@@ -1890,7 +1906,7 @@ public class PlotBox extends JPanel implements Printable {
             "Version " + PTPLOT_RELEASE +
             ", Build: $Id$\n\n" +
             "Key bindings:\n" +
-            "   Cntr-c:  copy plot to clipboard (EPS format)\n" +
+            "   Cntr-c:  copy plot to clipboard (EPS format), if permitted\n" +
             "   D: dump plot data to standard out\n" +
             "   E: export plot to standard out (EPS format)\n" +
             "   F: fill plot\n" +
@@ -3120,6 +3136,7 @@ public class PlotBox extends JPanel implements Printable {
 
     public class ZoomListener implements MouseListener {
         public void mouseClicked(MouseEvent event) {
+            requestFocus();
         }
         public void mouseEntered(MouseEvent event) {
         }
