@@ -37,7 +37,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.TimedActor;
 import java.util.LinkedList;
-
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTBaseIntegrator
@@ -198,6 +198,14 @@ public class CTBaseIntegrator extends TypedAtomicActor
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clean the history information.
+     */
+    public void clearHistory() {
+        if (_history != null) {
+            _history.clear();
+        }
+    }
 
     /** This method delegates to the integratorFire() of the 
      *  current ODE solver. The existance of director and ODE solver
@@ -458,6 +466,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _tentativeDerivative = value;
     }
 
+    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     /** Push the state and derivative into the history storage.
@@ -523,6 +533,12 @@ public class CTBaseIntegrator extends TypedAtomicActor
         ///////////////////////////////////////////////////////////////
         ////                         public methods                ////
 
+        /** Remove all history informaion.
+         */
+        public void clear() {
+            _entries.clear();
+        }
+
         /** Return the maximum capacity.
          *  @return The capacity.
          */
@@ -556,19 +572,49 @@ public class CTBaseIntegrator extends TypedAtomicActor
                     _entries.removeLast();
                 }
                 _entries.addFirst(entry);
+                _stepsize = 
+                   ((CTDirector)_container.getDirector()).getCurrentStepSize();
             }
         }
 
         /**
          *  Rebalances the history information 
-         *  with repect to the next step size, such that the information
+         *  with repect to the current step size, such that the information
          *  in the history list are equaly distanced, and the the 
-         *  distance is the next step size. 
+         *  distance is the current step size. 
+         *  If the current step size is less than the history step size
+         *  used in the history list, then a 4-th order Hermite 
+         *  interpolation is used for every two consecutive points.
+         *  If the current step size is larger than the history step size,
+         *  then a linear extrapolation is used.
          *  @param currentStepSize The current step size.
          */
         public void rebalance(double currentStepSize) {
-            if (currentStepSize != _stepsize) {
-                // do the rebalancing.
+            double timeresolution = 
+                ((CTDirector) _container.getDirector()).getTimeResolution();
+            if(Math.abs(currentStepSize - _stepsize)>timeresolution) {
+                double[][] history = toArray();
+                int size = _entries.size();
+                for (int i = 0; i < size-1; i++) {
+                    _entries.removeLast();
+                }
+                double ratio = currentStepSize/_stepsize; 
+                System.out.println("ratio="+ratio);
+                for (int i = 1; i < size; i++) {
+                    double[] newentry;
+                    int bin = (int)Math.floor(i*ratio);
+                    if (bin < size) {
+                        // interpolation as much as possible.
+                        double rem = i*ratio - (double)bin;
+                        newentry = _Hermite(history[bin+1], history[bin], 1-rem);
+                    } else {
+                        // extrapolation
+                        newentry = _extrapolation(history[size-2], 
+                                history[size-1], i*ratio-size+1);
+                    }
+                    _entries.addLast(new DoubleDouble
+                            (newentry[0], newentry[1]));
+                } 
                 _stepsize = currentStepSize;
             }
         }
@@ -584,7 +630,60 @@ public class CTBaseIntegrator extends TypedAtomicActor
                 _entries.removeLast();
             }
         }
+
+        /** Return the history information in an array format. The 
+         *  entries are ordered in their backward chronological order.
+         */
+        public double[][] toArray() {
+            double[][] array = new double[_entries.size()][2];
+            Iterator objs = _entries.iterator();
+            int i =0;
+            while(objs.hasNext()) {
+                DoubleDouble entry = (DoubleDouble) objs.next();
+                array[i++] = entry.toArray();
+            }  
+            return array;
+        }
         
+        ///////////////////////////////////////////////////////////////
+        ////                        private variables               ////
+        
+        // Hermite interpolation.
+        // @param p1 Point1, state and derivative.
+        // @param p2 Point2, state and derivative.
+        // @param s The interpolation point.
+        private double[] _Hermite(double[] p1, double[] p2, double s) {
+            
+            double s3 = s*s*s;
+            double s2 = s*s;
+            double h1 = 2*s3 - 3*s2 + 1;
+            double h2 = -2*s3 + 3*s2;
+            double h3 = s3- 2*s2 + s;
+            double h4 = s3 - s2;
+            double g1 = 6*s2 - 6*s;
+            double g2 = -6*s2 + 6*s;
+            double g3 = 3*s2 -4*s +1;
+            double g4 = 3*s2 -2*s;
+            double[] result = new double[2];
+            result[0] = h1*p1[0] + h2*p2[0] + h3*p1[1] + h4*p2[1];
+            result[1] = g1*p1[0] + g2*p2[0] + g3*p1[1] + g4*p2[1];
+            return result;
+        }
+
+        // Linear extrapolation.
+        // @param p1 Point1, state and derivative.
+        // @param p2 Point2, state and derivative.
+        // @param s The extrapolation ration.
+        private double[] _extrapolation(double[] p1, double[] p2, double s) {
+            System.out.println("p1=" + p1[0] + " " + p1[1]);
+            System.out.println("p2=" + p2[0] + " " + p2[1]);
+            System.out.println("s=" + s);
+            double[] result = new double[2];
+            result[0] = p2[0] - (p1[0] - p2[0])*s;
+            result[1] = p2[1] - (p1[1] - p2[1])*s;
+            return result;
+        }
+
         ///////////////////////////////////////////////////////////////
         ////                        private variables               ////
         

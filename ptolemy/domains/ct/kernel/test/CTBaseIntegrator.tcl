@@ -57,6 +57,8 @@ if {[string compare test [info procs test]] == 1} then {
 set ca [java::new ptolemy.actor.TypedCompositeActor]
 set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector \
 	$ca CTDirector]
+$dir setCurrentStepSize 1.0
+
 
 ######################################################################
 ####  Test constructors.
@@ -129,6 +131,53 @@ test CTBaseIntegrator-4.6 {access out of bounds} {
     catch {$integ getHistory 3} msg
     list $msg
 } {{java.lang.IndexOutOfBoundsException: Index: 3, Size: 2}}
+
+test CTBaseIntegrator-4.7 {rebalance} {  
+    $integ setHistoryCapacity 1
+    $integ prefire
+    $integ setHistoryCapacity 2
+    $integ setTentativeState -2.0
+    $integ setTentativeDerivative 1.0
+    $integ postfire
+    $dir setCurrentStepSize [expr {[$dir getCurrentStepSize] * 0.5}]
+    $integ prefire
+    list [$integ getHistoryCapacity] [arrayToStrings [$integ getHistory 0]] \
+	    [arrayToStrings [$integ getHistory 1]]
+} {2 {-2.0 1.0} {-2.625 1.25}}
+
+test CTBaseIntegrator-4.8 {rebalance: extrapolation} {  
+    $integ setHistoryCapacity 1
+    $integ prefire
+    $integ setHistoryCapacity 2
+    $integ setTentativeState -3.0
+    $integ setTentativeDerivative 0.0
+    $integ postfire
+    $dir setCurrentStepSize [expr {[$dir getCurrentStepSize] * 2.1}]
+    $integ prefire
+    list [$integ getHistoryCapacity] [arrayToStrings [$integ getHistory 0]] \
+	    [arrayToStrings [$integ getHistory 1]]
+} {2 {-3.0 0.0} {-0.9 2.1}}
+
+test CTBaseIntegrator-4.9 {rebalance: interpolation and extrapolation} {  
+    $integ setHistoryCapacity 0
+    $dir setCurrentStepSize 1.0
+    $integ prefire
+    $integ setHistoryCapacity 3
+    $integ setTentativeState 1.0
+    $integ setTentativeDerivative 0.0
+    $integ postfire
+    $integ setTentativeState 2.0
+    $integ setTentativeDerivative 1.0
+    $integ postfire
+    $integ setTentativeState 3.0
+    $integ setTentativeDerivative 1.5
+    $integ postfire
+    $dir setCurrentStepSize [expr {[$dir getCurrentStepSize] * 1.5}]
+    $integ prefire
+    list [$integ getHistoryCapacity] [arrayToStrings [$integ getHistory 0]] \
+	    [arrayToStrings [$integ getHistory 1]] \
+	    [arrayToStrings [$integ getHistory 2]]
+} {3 {3.0 1.5} {1.375 1.25} {0.0 -1.0}}
 
 ######################################################################
 #### test auxVariables
