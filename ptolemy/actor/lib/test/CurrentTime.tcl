@@ -46,7 +46,8 @@ test CurrentTime-1.0 {test constructor and initial value} {
     set currentTimeMaster \
 	    [java::new ptolemy.actor.lib.CurrentTime $e0 currentTime]
     [$currentTimeMaster getAttribute stopTime] toString
-} {ptolemy.data.expr.Parameter {.top.currentTime.stopTime} 0.0}
+} {ptolemy.data.expr.Parameter {.top.currentTime.stopTime}\
+ 1.7976931348623E308}
 
 test CurrentTime-1.1 {test clone and initial value} {
     set currentTime [java::cast ptolemy.actor.lib.CurrentTime \
@@ -61,7 +62,8 @@ test CurrentTime-1.1 {test clone and initial value} {
     set outputType [$output getType]
     list [$outputType toString] \
 	    [[$currentTime getAttribute stopTime] toString]
-} {double {ptolemy.data.expr.Parameter {.top.currentTime.stopTime} 0.0}}
+} {double {ptolemy.data.expr.Parameter {.top.currentTime.stopTime}\
+ 1.7976931348623E308}}
 
 ######################################################################
 #### Test CurrentTime in a DE model
