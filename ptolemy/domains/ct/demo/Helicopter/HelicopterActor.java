@@ -72,7 +72,7 @@ public class HelicopterActor extends TypedAtomicActor
      * this name
      * @exception IllegalActionException If there is an internal error.
      */
-    public HelicopterActor(TypedCompositeActor container, String name)
+    public HelicopterActor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         inputTm = new TypedIOPort(this, "inputTm");

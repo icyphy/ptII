@@ -52,6 +52,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
+import javax.swing.SwingUtilities;
 
 /**
 A histogram plotter.  This plotter contains an instance of the Histogram
@@ -185,6 +186,7 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
         HistogramPlotter newObject = (HistogramPlotter)super.clone(workspace);
         newObject.histogram = null;
         newObject._container = null;
+        newObject._frame = null;
         return newObject;
     }
 
@@ -249,11 +251,14 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (histogram == null) {
+        if (histogram == null || !_placeCalled) {
             place(_container);
         } else {
             // Clear the histogram without clearing the axes.
             histogram.clear(false);
+        }
+        if (_frame != null) {
+	    _frame.setVisible(true);
         }
         histogram.repaint();
     }
@@ -276,10 +281,12 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
      */
     public void place(Container container) {
         _container = container;
+        _placeCalled = true;
         if (_container == null) {
             // Place the histogram in its own frame.
             histogram = new Histogram();
-            PlotFrame frame = new PlotFrame(getFullName(), histogram);
+            _frame = new PlotFrame(getFullName(), histogram);
+	    _frame.setVisible(true);
         } else {
             if (_container instanceof Histogram) {
                 histogram = (Histogram)_container;
@@ -342,6 +349,20 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
             }
         }
         return super.postfire();
+    }
+
+    /** Override the base class to remove the plot from its graphical
+     *  container if the argument is null.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException If the base class throws it.
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+        if (container == null) {
+            _remove();
+        }
     }
 
     /** If the <i>fillOnWrapup</i> parameter is true, rescale the
@@ -408,13 +429,40 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Remove the histogram from the current container, if there is one.
+     */
+    private void _remove() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if (histogram != null) {
+                    if (_container != null) {
+                        _container.remove(histogram);
+                        _container.invalidate();
+                        _container.repaint();
+                    } else if (_frame != null) {
+                        _frame.dispose();
+                    }
+                }
+            }
+        });
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
     /** Container into which this histogram should be placed */
     private transient Container _container;
 
+    // Frame into which plot is placed, if any.
+    private transient PlotFrame _frame;
+
     // The bases and input streams given to the configure() method.
     private List _configureBases = null;
     private List _configureSources = null;
     private List _configureTexts = null;
+
+    // Flag indicating that the place() method has been called at least once.
+    private boolean _placeCalled = false;
 }

@@ -43,6 +43,7 @@ import java.awt.Dimension;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.SwingUtilities;
 
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
@@ -214,13 +215,48 @@ public class MatrixViewer extends Sink implements Placeable {
         }
     }
 
+    /** Override the base class to remove the display from its graphical
+     *  container if the argument is null.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException If the base class throws it.
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+        if (container == null) {
+            _remove();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Remove the display from the current container, if there is one.
+     */
+    private void _remove() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if (_scrollPane != null) {
+                    if (_container != null) {
+                        _container.remove(_scrollPane);
+                        _container.invalidate();
+                        _container.repaint();
+                    } else if (_frame != null) {
+                        _frame.dispose();
+                    }
+                }
+            }
+        });
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Container into which this plot should be placed */
+    /** Container into which this display should be placed */
     private Container _container = null;
 
-    /** Frame into which plot is placed, if any. */
+    /** Frame into which display is placed, if any. */
     private JFrame _frame = null;
 
     /** The Abstract Table Model of a Matrix. */

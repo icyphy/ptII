@@ -30,6 +30,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.gui;
 
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.data.*;
+import ptolemy.data.expr.*;
+import ptolemy.data.type.BaseType;
+import ptolemy.actor.*;
+import ptolemy.actor.gui.Placeable;
+import ptolemy.plot.*;
+import ptolemy.plot.plotml.PlotMLParser;
+
 import java.awt.Container;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
@@ -42,16 +52,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.actor.*;
-import ptolemy.actor.gui.Placeable;
-import ptolemy.plot.*;
-import ptolemy.plot.plotml.PlotMLParser;
+import javax.swing.SwingUtilities;
 
 /**
 Base class for plotters.  This class contains an instance of the
@@ -163,6 +164,7 @@ public class Plotter extends TypedAtomicActor
             throws CloneNotSupportedException {
         Plotter newObject = (Plotter)super.clone(workspace);
         newObject.plot = null;
+        newObject._container = null;
         newObject._frame = null;
         return newObject;
     }
@@ -227,7 +229,7 @@ public class Plotter extends TypedAtomicActor
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (plot == null) {
+        if (plot == null || !_placeCalled) {
             place(_container);
         }
         if (_frame != null) {
@@ -261,8 +263,9 @@ public class Plotter extends TypedAtomicActor
      */
     public void place(Container container) {
         _container = container;
+        _placeCalled = true;
         if (_container == null) {
-            // place the plot in its own frame.
+            // Create a new plot and frame.
             plot = new Plot();
             _frame = new PlotFrame(getFullName(), plot);
 	    _frame.setVisible(true);
@@ -307,6 +310,20 @@ public class Plotter extends TypedAtomicActor
         } catch (IllegalActionException ex) {
             // Safe to ignore because user would
             // have already been alerted.
+        }
+    }
+
+    /** Override the base class to remove the plot from its graphical
+     *  container if the argument is null.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException If the base class throws it.
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+        if (container == null) {
+            _remove();
         }
     }
 
@@ -384,6 +401,27 @@ public class Plotter extends TypedAtomicActor
     protected Container _container;
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Remove the plot from the current container, if there is one.
+     */
+    private void _remove() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if (plot != null) {
+                    if (_container != null) {
+                        _container.remove(plot);
+                        _container.invalidate();
+                        _container.repaint();
+                    } else if (_frame != null) {
+                        _frame.dispose();
+                    }
+                }
+            }
+        });
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
     // Frame into which plot is placed, if any.
@@ -393,4 +431,7 @@ public class Plotter extends TypedAtomicActor
     private List _configureBases = null;
     private List _configureSources = null;
     private List _configureTexts = null;
+
+    // Flag indicating that the place() method has been called at least once.
+    private boolean _placeCalled = false;
 }

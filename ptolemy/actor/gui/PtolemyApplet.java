@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 
@@ -34,11 +34,14 @@ import ptolemy.actor.*;
 import ptolemy.gui.BasicJApplet;
 import ptolemy.kernel.util.*;
 
-import java.lang.System;
 import java.awt.event.*;
 import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
+import java.lang.System;
+import java.lang.reflect.Constructor;
+import java.util.Iterator;
+import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JButton;
@@ -47,19 +50,69 @@ import javax.swing.JApplet;
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyApplet
 /**
-A base class for Ptolemy applets.  This is provided for convenience,
-in order to promote certain common elements among applets.  It is by
-no means required in order to create an applet that uses Ptolemy II.
-In particular, it creates a manager and optionally creates on-screen
-controls for model execution; it provides a top-level composite
-actor; it provides a mechanism for reporting
+This class provides a convenient way to make applets out of Ptolemy II
+models.  It assumes that the model is defined as a Java class that
+extends CompositeActor, with the classname given by the
+<i>modelClass</i> applet parameter. If that model does not contain
+a manager, then this class will create one for it.
+<p>
+This class offers a number of alternatives that control the visual
+appearance of the applet. By default, the applet places on the screen
+a set of control buttons that can be used to start, stop, pause, and
+resume the model.  Below those buttons, it places the visual elements
+of any actors in the model that implement the Placeable interface,
+such as plotters or textual output.
+<p>
+The applet parameters are:
+<ul>
+<li>
+<i>background</i>: The background color, typically given as a hex
+number of the form "#<i>rrggbb</i>" where <i>rr</i> gives the red
+component, <i>gg</i> gives the green component, and <i>bb</i> gives
+the blue component.
+<li>
+<i>controls</i>:
+This gives a comma-separated list
+of any subset of the words "buttons", "topParameters", and
+"directorParameters" (case insensitive), or the word "none".
+If this parameter is not given, then it is equivalent to
+giving "buttons", and only the control buttons mentioned above
+will be displayed.  If the parameter is given, and its value is "none",
+then no controls are placed on the screen.  If the word "topParameters"
+is included in the comma-separated list, then controls for the
+top-level parameters of the model are placed on the screen, below
+the buttons.  If the word "directorParameters" is included,
+then controls for the director parameters are also included.
+<i>modelClass</i>: The fully qualified class name of a Java class
+that extends CompositeActor.  This class defines the model.
+<li>
+<i>orientation</i>: This can have value "horizontal"
+or "vertical" (case insensitive).  If it is "vertical", then the
+controls are placed above the visual elements of the Placeable actors.
+This is the default.  If it is "horizontal", then the controls
+are placed to the left of the visual elements.
+</ul>
+<p>
+To create a model in a different way, say without a <i>modelClass</i>
+applet parameter, you may extend this class and override the
+protected method _createModel().  If you wish to alter the way
+that the model is represented on the screen, you can extend this
+class an override the _createView() method.  The rendition in this class
+is an instance of ModelPane.
+<p>
+This class provides a number of methods that might be useful even
+if its init() or _createModel() methods are not appropriate for a
+given applet.  Specifically, it provides a mechanism for reporting
 errors and exceptions; and it provide an applet parameter for
 controlling the background color.
 
+@see ModelPane
+@see Placeable
 @author Edward A. Lee
 @version $Id$
 */
-public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
+public class PtolemyApplet extends BasicJApplet
+        implements ExecutionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -107,32 +160,21 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
      *  loaded into the system. It is always called before
      *  the first time that the start() method is called.
      *  In this base class, this method creates a new workspace,
-     *  and creates a manager and a top-level composite actor
-     *  in the workspace, both of which are accessible
-     *  to derived classes via protected members.
-     *  It also processes a background color parameter.
-     *  If the background color parameter has not been set, then the
-     *  background color is set to white.
+     *  and instantiates in it the model whose class name is given
+     *  by the <i>modelClass</i> applet parameter.  If that model
+     *  does not contain a manager, then this method creates one for it.
      */
     public void init() {
-        // The superclass processes the background parameter.
         super.init();
-        getRootPane().setBackground(_background);
-        setBackground(_background);
-        getContentPane().setBackground(_background);
         _setupOK = true;
-
         _workspace = new Workspace(getClass().getName());
         try {
-            _manager = new Manager(_workspace, "manager");
-            _manager.addExecutionListener(this);
-            _toplevel = new TypedCompositeActor(_workspace);
-            _toplevel.setName("topLevel");
-            _toplevel.setManager(_manager);
+            _toplevel = _createModel();
         } catch (Exception ex) {
             _setupOK = false;
-            report("Setup of manager and top level actor failed:\n", ex);
+            report("Creation of model failed:\n", ex);
         }
+        _createView();
     }
 
     /** Report that the manager state has changed.  This is
@@ -182,29 +224,73 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Create a model.  In this base class, we check to see whether
+     *  the applet has a parameter <i>modelClass</i>, and if so, then we
+     *  instantiate the class specified in that parameter.  If not,
+     *  then we create an empty instance of CompositeActor.
+     *  It is required that the class specified in the modelClass
+     *  parameter have a constructor that takes one argument, an instance
+     *  of Workspace.
+     *  In either case, if the resulting model does not have a manager,
+     *  then we give it a manager.
+     *  @throws Exception If something goes wrong.
+     */
+    protected CompositeActor _createModel() throws Exception {
+        CompositeActor result = null;
+        // Look for modelClass applet parameter.
+        String modelSpecification = getParameter("modelClass");
+        if (modelSpecification != null) {
+            Object[] arguments = new Object[1];
+            arguments[0] = _workspace;
+            Class modelClass = Class.forName(modelSpecification);
+            Constructor[] constructors = modelClass.getConstructors();
+            boolean foundConstructor = false;
+            for (int i = 0; i < constructors.length; i++) {
+                Constructor constructor = constructors[i];
+                Class[] parameterTypes = constructor.getParameterTypes();
+                if (parameterTypes.length != arguments.length) continue;
+                boolean match = true;
+                for (int j = 0; j < parameterTypes.length; j++) {
+                    if (!(parameterTypes[j].isInstance(arguments[j]))) {
+                        match = false;
+                        break;
+                    }
+                }
+                if (match) {
+                    result = (CompositeActor)constructor
+                             .newInstance(arguments);
+                    foundConstructor = true;
+                }
+            }
+            if(!foundConstructor) {
+                throw new IllegalActionException(
+                        "Cannot find a suitable constructor for "
+                        + modelSpecification);
+            }            
+        }
+        // If result is still null, then there was no modelClass given.
+        if (result == null) {
+            throw new Exception("Applet does not specify a modelClass.");
+        }
+        if (result.getManager() == null) {
+            _manager = new Manager(_workspace, "manager");
+            _manager.addExecutionListener(this);
+            result.setManager(_manager);
+        }
+        return result;
+    }
+
     /** Create run controls in a panel and return that panel.
      *  The argument controls how many buttons are
      *  created.  If its value is greater than zero, then a "Go" button
      *  created.  If its value is greater than one, then a "Stop" button
      *  is also created.  Derived classes may override this method to add
      *  additional controls, or to create a panel with a different layout.
-     *  Note that init() should be called before this so that the
-     *  background color of the panel is set correctly from the applet
-     *  parameters.  Otherwise, the background is likely to be WWW gray.
      *  @param numberOfButtons How many buttons to create.
+     *  @deprecated Use the <i>control</i> applet parameter.
      */
     protected JPanel _createRunControls(int numberOfButtons) {
         JPanel panel = new JPanel();
-        // Despite Sun's documentation, the default is that a panel
-        // is opaque, so the background doesn't come through. We could do
-        //   panel.setOpaque(false);
-        // but this has the side effect that the panel does not repaint
-        // properly if double buffering has been turned off for the parent
-        // window.  So instead, we set the background.  Note that this means
-        // that init() should be called before this is called.
-        if (_background != null) {
-            panel.setBackground(_background);
-        }
         if (numberOfButtons > 0) {
             _goButton = new JButton("Go");
             panel.add(_goButton);
@@ -216,6 +302,53 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
             _stopButton.addActionListener(new StopButtonListener());
         }
         return panel;
+    }
+
+    /** Create a ModelPane to control execution of the model and display
+     *  its results.  Derived classes may override this to do something
+     *  different.
+     */
+    protected void _createView() {
+
+        // Parse applet parameters that determine visual appearance.
+
+        // Start with orientation.
+        String orientationSpec = getParameter("orientation");
+        // Default is vertical
+        int orientation = ModelPane.VERTICAL;
+        if (orientationSpec != null) {
+            if (orientationSpec.trim().toLowerCase().equals("horizontal")) {
+                orientation = ModelPane.HORIZONTAL;
+            }
+        }
+
+        // Next do controls.
+        String controlsSpec = getParameter("controls");
+        // Default has only the buttons.
+        int controls = ModelPane.BUTTONS;
+        if (controlsSpec != null) {
+            // If controls are given, then buttons need to be explicit.
+            controls = 0;
+            StringTokenizer tokenizer = new StringTokenizer(controlsSpec, ",");
+            while (tokenizer.hasMoreTokens()) {
+                String controlSpec = tokenizer.nextToken().trim().toLowerCase();
+                if (controlSpec.equals("buttons")) {
+                    controls = controls | ModelPane.BUTTONS;
+                } else if (controlSpec.equals("topparameters")) {
+                    controls = controls | ModelPane.TOP_PARAMETERS;
+                } else if (controlSpec.equals("directorparameters")) {
+                    controls = controls | ModelPane.DIRECTOR_PARAMETERS;
+                } else if (controlSpec.equals("none")) {
+                    controls = 0;
+                } else {
+                    report("Warning: unrecognized controls: " + controlSpec);
+                }
+            }
+        }
+
+        ModelPane pane = new ModelPane(_toplevel, orientation, controls);
+        pane.setBackground(null);
+        getContentPane().add(pane);
     }
 
     /** Execute the model, if the manager is not currently executing.
@@ -250,7 +383,7 @@ public class PtolemyApplet extends BasicJApplet implements ExecutionListener {
     protected boolean _setupOK = true;
 
     /** The top-level composite actor, created in the init() method. */
-    protected TypedCompositeActor _toplevel;
+    protected CompositeActor _toplevel;
 
     /** The workspace that the applet is built in. Each applet has
      *  it own workspace.

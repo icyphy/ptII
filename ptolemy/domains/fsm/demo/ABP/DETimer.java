@@ -53,7 +53,7 @@ public class DETimer extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DETimer(TypedCompositeActor container, String name)
+    public DETimer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         expired = new DEIOPort(this, "expired", false, true);

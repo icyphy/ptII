@@ -34,6 +34,7 @@ package ptolemy.domains.pn.demo.QR;
 import ptolemy.actor.lib.Transformer;
 
 import ptolemy.domains.pn.kernel.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
@@ -66,7 +67,7 @@ public class StreamToMatrix extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public StreamToMatrix(TypedCompositeActor container, String name)
+    public StreamToMatrix(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException
         {
             super(container, name);

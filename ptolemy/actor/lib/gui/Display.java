@@ -52,6 +52,7 @@ import javax.swing.JScrollBar;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.text.BadLocationException;
+import javax.swing.SwingUtilities;
 
 
 /**
@@ -303,10 +304,45 @@ public class Display extends Sink implements Placeable, SequenceActor {
 	_scrollPane.setBackground(background);
     }
 
+    /** Override the base class to remove the display from its graphical
+     *  container if the argument is null.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException If the base class throws it.
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+        if (container == null) {
+            _remove();
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected members                   ////
 
     protected JScrollPane _scrollPane;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Remove the display from the current container, if there is one.
+     */
+    private void _remove() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if (textArea != null) {
+                    if (_container != null) {
+                        _container.remove(textArea);
+                        _container.invalidate();
+                        _container.repaint();
+                    } else if (_frame != null) {
+                        _frame.dispose();
+                    }
+                }
+            }
+        });
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
@@ -315,4 +351,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
 
     // The frame into which to put the text widget, if any.
     private JFrame _frame;
+
+    // Flag indicating that the place() method has been called at least once.
+    private boolean _placeCalled = false;
 }

@@ -36,6 +36,7 @@ import ptolemy.actor.gui.*;
 import ptolemy.actor.process.*;
 import ptolemy.domains.csp.lib.*;
 import ptolemy.domains.csp.kernel.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
@@ -89,7 +90,7 @@ public class Controller extends CSPActor {
      * @exception NameDuplicationException If the container
      *  already has an actor with this name.
      */
-    public Controller(TypedCompositeActor cont, String name)
+    public Controller(CompositeEntity cont, String name)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 

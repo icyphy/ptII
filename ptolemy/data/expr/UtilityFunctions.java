@@ -1,4 +1,4 @@
-/* Class providing additional functions to ptolemyII expression language.
+/* Class providing additional functions in the Ptolemy II expression language.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -23,34 +23,43 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red
+
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
 package ptolemy.data.expr;
-import ptolemy.data.StringToken;
-import java.io.*;
 
-import java.util.*;
+import ptolemy.data.StringToken;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.Token;
-import ptolemy.data.MatrixToken;
 import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.MatrixToken;
+import ptolemy.data.Token;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.Random;
+import java.util.Vector;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// UtilityFunctions
 /**
-Class providing additional functions to ptolemyII expression language.
-<p>
-Currently this class only contains two methods, property() and readFile(),
-and even for these there are only trivial implementations.
-<p>
-FIXME: finish this class.
-@author  Neil Smyth, Christopher Hyland, Bart Kienhuis
+This class providess additional functions for use in the Ptolemy II
+expression language.  All of the methods in this class are static
+and return an instance of Token.  The expression language identifies
+the appropriate method to use by using reflection, matching the
+types of the arguments.
+
+@author  Neil Smyth, Christopher Hyland, Bart Kienhuis, Edward A. Lee
 @version $Id$
-@see PtParser
 */
 public class UtilityFunctions {
 
@@ -58,16 +67,14 @@ public class UtilityFunctions {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the referred property from the environment. An empty string
+    /** Get the specified property from the environment. An empty string
      *  is returned if the argument environment variable does not exist.
      *  See the javadoc page for java.util.System.getProperties() for
      *  a list of system properties.  An example property is 
      *  "java.version", which returns the version of the JDK.
      *
-     *  @param propertyName String representing the name of property
-     *  variable we want to obtain.
-     *  @return StringToken containing the string referred to by the
-     *  environment variable.
+     *  @param propertyName The name of property.
+     *  @return A token containing the string value of the property.
      */
     public static StringToken property(String envName) {
         return new StringToken(System.getProperty(envName));
@@ -128,95 +135,132 @@ public class UtilityFunctions {
         return new StringToken(result);
     }
 
-    /** Read a file that contains a Matrix in Matlab notation. The
-     *  file matrix is return by the Matrix parser as a vector of
-     *  vectors. On the basis of these vectors, a new double array
-     *  element is created and filled with the entries of the
-     *  Matrix. The matrix is returned as a DoubleMatrixToken.
+    /** Read a file that contains a matrix of reals in Matlab notation.
      *
      *  @param filename The filename.
-     *  @return A Token contained the matrix as a DoubleMatrixToken.
-     *  @exception IllegalActionException If for the given filename
-     *   a file cannot be opened.
+     *  @return The matrix defined in the file.
+     *  @exception IllegalActionException If the file cannot be opened.
      */
-    public static MatrixToken readMatrix(String filename)
-            throws IllegalActionException
-        {
+    public static DoubleMatrixToken readMatrix(String filename)
+            throws IllegalActionException {
 
-            DoubleMatrixToken returnMatrix = null;
+        DoubleMatrixToken returnMatrix = null;
 
-            File fileT = new File(filename);
-            FileReader fin = null;
+        File fileT = new File(filename);
+        FileReader fin = null;
 
-            // Vector containing the matrix
-            Vector k = null;
+        // Vector containing the matrix
+        Vector k = null;
 
-            // Parameters for the Matrix
-            int row = -1;
-            int column = -1;
+        // Parameters for the Matrix
+        int row = -1;
+        int column = -1;
 
-            // Matlab Matrices always start at 1 instead of 0.
-            int posRow = 1;
-            int posColumn = 1;
-            double[][] mtr = null;
+        // Matlab Matrices always start at 1 instead of 0.
+        int posRow = 1;
+        int posColumn = 1;
+        double[][] mtr = null;
 
-            if (fileT.exists()) {
+        if (fileT.exists()) {
 
-                try {
-                    // Open the matrix file
-                    fin = new FileReader(fileT);
-                } catch (FileNotFoundException e) {
-                    throw new IllegalActionException("FIle Not FOUND");
-                }
-
-
-                // Read the file and convert it into a matrix
-                mp.ReInit( fin );
-                k = mp.readMatrix( );
-
-                if ( column == -1 ) {
-                    // The column size of the matrix
-                    column = k.size();
-                }
-
-                Iterator i = k.iterator();
-                while( i.hasNext() ) {
-                    Vector l = (Vector) i.next();
-                    if ( row == -1 ) {
-                                // the row size.
-                        row = l.size();
-                                // create a new matrix definition
-                        mtr = new double[column+1][row+1];
-                    } else {
-                        if ( row != l.size() ) {
-                            throw new  IllegalActionException(" The Row" +
-                                    " size needs to be the same for all" +
-                                    " rows");
-                        }
-                    }
-                    Iterator j = l.iterator();
-                    while( j.hasNext() ) {
-                        Double s = (Double) j.next();
-                        mtr[posColumn][posRow++] = s.doubleValue();
-                    }
-                    posRow=1;
-                    posColumn++;
-                }
-
-                // Vectors have now become obsolete, data is stored
-                // in double[][].
-                k.removeAll(k);
-                returnMatrix =  new DoubleMatrixToken(mtr);
-            } else {
-                throw new IllegalActionException("ReadMatrix: File " +
-                        filename + " not Found");
+            try {
+                // Open the matrix file
+                fin = new FileReader(fileT);
+            } catch (FileNotFoundException e) {
+                throw new IllegalActionException("FIle Not FOUND");
             }
 
-            return returnMatrix;
+
+            // Read the file and convert it into a matrix
+            if(_matrixParser == null) {
+                _matrixParser = new MatrixParser( System.in );
+            }
+
+            _matrixParser.ReInit( fin );
+            k = _matrixParser.readMatrix( );
+            
+            if ( column == -1 ) {
+                // The column size of the matrix
+                column = k.size();
+            }
+
+            Iterator i = k.iterator();
+            while( i.hasNext() ) {
+                Vector l = (Vector) i.next();
+                if ( row == -1 ) {
+                    // the row size.
+                    row = l.size();
+                    // create a new matrix definition
+                    mtr = new double[column+1][row+1];
+                } else {
+                    if ( row != l.size() ) {
+                        throw new  IllegalActionException(" The Row" +
+                        " size needs to be the same for all" +
+                        " rows");
+                    }
+                }
+                Iterator j = l.iterator();
+                while( j.hasNext() ) {
+                    Double s = (Double) j.next();
+                    mtr[posColumn][posRow++] = s.doubleValue();
+                }
+                posRow=1;
+                posColumn++;
+            }
+            
+            // Vectors have now become obsolete, data is stored
+            // in double[][].
+            k.removeAll(k);
+            returnMatrix =  new DoubleMatrixToken(mtr);
+        } else {
+            throw new IllegalActionException("ReadMatrix: File " +
+            filename + " not Found");
         }
+
+        return returnMatrix;
+    }
+
+    /** Return a Gaussian random number.
+     *  @param mean The mean.
+     *  @param standardDeviation The standard deviation.
+     *  @return An observation of a Gaussian random variable.
+     */
+    public static DoubleToken gaussian(double mean, double standardDeviation) {
+        if(_random == null) _random = new Random();
+        double raw = _random.nextGaussian();
+        double result = (raw*standardDeviation) + mean;
+        return new DoubleToken(result);
+    }
+
+    /** Return a matrix of Gaussian random numbers.
+     *  @param mean The mean.
+     *  @param standardDeviation The standard deviation.
+     *  @param rows The number of rows.
+     *  @param columns The number of columns.
+     *  @return A matrix of observations of a Gaussian random variable.
+     */
+    public static DoubleMatrixToken gaussian(
+            double mean, double standardDeviation, int rows, int columns) {
+        if(_random == null) _random = new Random();
+        double[][] result = new double[rows][columns];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                double raw = _random.nextGaussian();
+                result[i][j] = (raw*standardDeviation) + mean;
+            }
+        }
+        return new DoubleMatrixToken(result);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** The Matrix Parser. The Matrix parser is recreated for the standard
      *  in. However, we use ReInit for the specific matrix files.
      */
-    static MatrixParser mp = new MatrixParser( System.in );
+    private static MatrixParser _matrixParser;
+
+    /** The random number generator.
+     */
+    private static Random _random;
 }

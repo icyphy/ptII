@@ -331,7 +331,6 @@ public class MatrixVisualizer extends TypedAtomicActor implements Placeable {
     /** Frame into which plot is placed, if any. */
     private transient PlotFrame _frame;
 
-
-
-
+    // Flag indicating that the place() method has been called at least once.
+    private boolean _placeCalled = false;
 }

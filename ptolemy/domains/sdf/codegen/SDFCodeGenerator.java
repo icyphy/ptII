@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
@@ -63,11 +64,7 @@ import ptolemy.domains.sdf.kernel.*;
 @version $Id$
  */
 public class SDFCodeGenerator extends CompositeActorApplication
-    implements JavaStaticSemanticConstants {
-
-    public SDFCodeGenerator(String[] args) throws Exception {
-        super(args, false);
-    }
+        implements JavaStaticSemanticConstants {
 
     public void generateCode() throws IllegalActionException {
         // We print elapsed time statistics during code generation
@@ -249,11 +246,10 @@ public class SDFCodeGenerator extends CompositeActorApplication
      *  and generate code for the system.
      */
     public static void main(String[] args) {
-        SDFCodeGenerator codeGen = null;
+        SDFCodeGenerator codeGen = new SDFCodeGenerator();
 
         try {
-            codeGen = new SDFCodeGenerator(args);
-
+            codeGen.processArgs(args);
             codeGen.generateCode();
         } catch (Exception ex) {
             System.err.println(ex.toString());
@@ -267,6 +263,15 @@ public class SDFCodeGenerator extends CompositeActorApplication
     public void setGenerateStatistics(boolean generateStatistics) {
 	_generateStatistics = generateStatistics;
     }
+
+    /** Override the base class to not run the model.
+     *  @param model The model to not execute.
+     */
+    public synchronized void startRun(CompositeActor model) {
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                      ////
 
     /** Generate the main class. */
     protected void _generateMainClass() throws IllegalActionException {
@@ -928,6 +933,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
         return result;
     }
 
+    ////////////////////////////////////////////////////////////////////////
+    ////                         protected variables                    ////
+
     /** The TypedCompositeActor containing the system for which to generate
      *  code.
      */
@@ -954,7 +962,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
     protected HashMap _bufferInfoMap = new HashMap();
 
     protected CodeGeneratorClassFactory _codeGenClassFactory =
-    SDFCodeGeneratorClassFactory.getInstance();
+            SDFCodeGeneratorClassFactory.getInstance();
 
     /** A non-decreasing number used for globally unique labeling. */
     protected int labelNum = 0;

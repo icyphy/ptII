@@ -69,7 +69,7 @@ public class XZHigherDerivatives extends TypedAtomicActor
      * this name.
      * @exception IllegalActionException If there is an internal error.
      */
-    public XZHigherDerivatives(TypedCompositeActor container, String name)
+    public XZHigherDerivatives(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         inputTm = new TypedIOPort(this, "inputTm");

@@ -65,9 +65,9 @@ test SDFCodeGenerator-2.1 {Constructor tests} {
 	    ]]
     puts [$args getrange]
     set sdfCodeGenerator \
-	    [java::new ptolemy.domains.sdf.codegen.SDFCodeGenerator $args]
+	    [java::new ptolemy.domains.sdf.codegen.SDFCodeGenerator]
+    $sdfCodeGenerator processArgs $args
     $sdfCodeGenerator generateCode
-
 } {}
 
 ######################################################################

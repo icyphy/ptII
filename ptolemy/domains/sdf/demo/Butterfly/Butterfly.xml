@@ -1,119 +1,48 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Butterfly" class="ptolemy.domains.sdf.demo.Butterfly.Butterfly">
-    <property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+<entity name="Butterfly" class="ptolemy.actor.TypedCompositeActor">
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2400">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="61.0, 21.75">
+        <property name="_location" class="ptolemy.moml.Location" value="65.0, 32.0">
         </property>
     </property>
-    <entity name="scale1" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="4.0">
+    <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="251.0, 238.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="72.00000095367432, 72.75">
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The expression in the Expression actor is
+-2.0*cos(4.0*ramp) + exp(cos(ramp)) + (sin(ramp/12.0) * (sin(ramp/12.0))^4).</text>
+           </svg>
+           </configure>
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="scale2" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="0.0833333">
+    </property>
+    <property name="13:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="370.0, 57.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="122.00000095367432, 308.75">
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model traces an elaborate curve
+called the butterfly curve. It was described by T. Fay,
+American Mathematical Monthly, 96(5), May, 1989.</text>
+           </svg>
+           </configure>
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="scale3" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="-2.0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="271.0000009536743, 72.75">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="add1" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.moml.Location" value="392.0000009536743, 79.75">
-        </property>
-        <port name="plus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="minus" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="multiplyDivide1" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.moml.Location" value="305.82888889312744, 316.25">
-        </property>
-        <port name="multiply" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="divide" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="multiplyDivide2" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.moml.Location" value="394.8288879394531, 324.25">
-        </property>
-        <port name="multiply" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="divide" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="multiplyDivide3" class="ptolemy.actor.lib.MultiplyDivide">
-        <property name="_location" class="ptolemy.moml.Location" value="299.8288879394531, 213.25">
-        </property>
-        <port name="multiply" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="divide" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="ramp" class="ptolemy.actor.lib.Ramp">
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="0.0314159">
+        <property name="step" class="ptolemy.data.expr.Parameter" value="PI/100.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="39.000000953674316, 383.75">
+        <property name="_location" class="ptolemy.moml.Location" value="73.0, 167.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -123,8 +52,8 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="polarToRect1" class="ptolemy.actor.lib.conversions.PolarToRectangular">
-        <property name="_location" class="ptolemy.moml.Location" value="479.32888889312744, 374.25">
+    <entity name="Polar to Rectangular" class="ptolemy.actor.lib.conversions.PolarToRectangular">
+        <property name="_location" class="ptolemy.moml.Location" value="332.99998474121094, 176.0">
         </property>
         <port name="magnitude" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -139,50 +68,14 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="sin1" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sin">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="210.0, 308.75">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="cos1" class="ptolemy.actor.lib.TrigFunction">
-        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="cos">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="176.0, 72.25">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="cos2" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="exp(cos(cos2Input))">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="258.0000009536743, 144.25">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="cos2Input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
-    <entity name="xyPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
+    <entity name="XY Plotter" class="ptolemy.actor.lib.gui.XYPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="565.5788888931274, 375.25">
+        <property name="_location" class="ptolemy.moml.Location" value="452.99998474121094, 177.0">
         </property>
         <port name="inputX" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -196,158 +89,42 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<xRange min="-3.0" max="4.0"/>
-<yRange min="-4.0" max="4.0"/>
+<title></title>
+<xRange min="-2.4845557281711192" max="3.9293144658408363"/>
+<yRange min="-3.650536945760166" max="3.6505369457601127"/>
 <noGrid/>
 </plot>?>
         </configure>
     </entity>
-    <relation name="_R0" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="166.0, 314.0">
-        </vertex>
-    </relation>
-    <relation name="_R1" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="122.0, 78.0">
-        </vertex>
-    </relation>
-    <relation name="_R2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="224.0, 78.0">
-        </vertex>
-    </relation>
-    <relation name="node4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="340.0, 324.0">
-        </vertex>
-    </relation>
-    <relation name="_R3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="240.0, 274.0">
-        </vertex>
-    </relation>
-    <relation name="node6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="252.0, 314.0">
-        </vertex>
-    </relation>
-    <relation name="_R4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="323.0, 78.0">
-        </vertex>
-    </relation>
-    <relation name="_R5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="334.0, 146.0">
-        </vertex>
-    </relation>
-    <relation name="_R6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="315.0, 118.99999976158142">
-        </vertex>
-    </relation>
-    <relation name="_R7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="439.0, 203.0">
-        </vertex>
-    </relation>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.data.expr.Parameter" value="-2.0*cos(4.0*ramp) + exp(cos(ramp)) + (sin(ramp/12.0) * (sin(ramp/12.0))^4)">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="212.0, 141.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="ramp" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
     <relation name="node9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="78.0, 388.0">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="146.0, 190.0">
         </vertex>
     </relation>
     <relation name="_R8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="517.9999998211861, 373.9999997615814">
-        </vertex>
     </relation>
     <relation name="_R9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="525.0, 388.0">
-        </vertex>
     </relation>
-    <link port="scale1.input" relation="node9"/>
-    <link port="scale1.input" relation="node9"/>
-    <link port="scale1.input" relation="node9"/>
-    <link port="scale1.output" relation="_R1"/>
-    <link port="scale1.output" relation="_R1"/>
-    <link port="scale1.output" relation="_R1"/>
-    <link port="scale2.input" relation="node9"/>
-    <link port="scale2.input" relation="node9"/>
-    <link port="scale2.input" relation="node9"/>
-    <link port="scale2.output" relation="_R0"/>
-    <link port="scale2.output" relation="_R0"/>
-    <link port="scale2.output" relation="_R0"/>
-    <link port="scale3.input" relation="_R2"/>
-    <link port="scale3.input" relation="_R2"/>
-    <link port="scale3.input" relation="_R2"/>
-    <link port="scale3.output" relation="_R4"/>
-    <link port="scale3.output" relation="_R4"/>
-    <link port="scale3.output" relation="_R4"/>
-    <link port="add1.plus" relation="_R4"/>
-    <link port="add1.plus" relation="_R5"/>
-    <link port="add1.plus" relation="_R6"/>
-    <link port="add1.plus" relation="_R4"/>
-    <link port="add1.plus" relation="_R5"/>
-    <link port="add1.plus" relation="_R6"/>
-    <link port="add1.plus" relation="_R4"/>
-    <link port="add1.plus" relation="_R5"/>
-    <link port="add1.plus" relation="_R6"/>
-    <link port="add1.output" relation="_R7"/>
-    <link port="add1.output" relation="_R7"/>
-    <link port="add1.output" relation="_R7"/>
-    <link port="multiplyDivide1.multiply" relation="node6"/>
-    <link port="multiplyDivide1.multiply" relation="node6"/>
-    <link port="multiplyDivide1.multiply" relation="node6"/>
-    <link port="multiplyDivide1.multiply" relation="node6"/>
-    <link port="multiplyDivide1.multiply" relation="node6"/>
-    <link port="multiplyDivide1.multiply" relation="node6"/>
-    <link port="multiplyDivide1.output" relation="node4"/>
-    <link port="multiplyDivide1.output" relation="node4"/>
-    <link port="multiplyDivide1.output" relation="node4"/>
-    <link port="multiplyDivide2.multiply" relation="node4"/>
-    <link port="multiplyDivide2.multiply" relation="node4"/>
-    <link port="multiplyDivide2.multiply" relation="node4"/>
-    <link port="multiplyDivide2.multiply" relation="node4"/>
-    <link port="multiplyDivide2.multiply" relation="node4"/>
-    <link port="multiplyDivide2.multiply" relation="node4"/>
-    <link port="multiplyDivide2.output" relation="_R3"/>
-    <link port="multiplyDivide2.output" relation="_R3"/>
-    <link port="multiplyDivide2.output" relation="_R3"/>
-    <link port="multiplyDivide3.multiply" relation="_R3"/>
-    <link port="multiplyDivide3.multiply" relation="node6"/>
-    <link port="multiplyDivide3.multiply" relation="_R3"/>
-    <link port="multiplyDivide3.multiply" relation="node6"/>
-    <link port="multiplyDivide3.multiply" relation="_R3"/>
-    <link port="multiplyDivide3.multiply" relation="node6"/>
-    <link port="multiplyDivide3.output" relation="_R5"/>
-    <link port="multiplyDivide3.output" relation="_R5"/>
-    <link port="multiplyDivide3.output" relation="_R5"/>
-    <link port="ramp.output" relation="node9"/>
-    <link port="ramp.output" relation="node9"/>
-    <link port="ramp.output" relation="node9"/>
-    <link port="polarToRect1.magnitude" relation="_R7"/>
-    <link port="polarToRect1.magnitude" relation="_R7"/>
-    <link port="polarToRect1.magnitude" relation="_R7"/>
-    <link port="polarToRect1.angle" relation="node9"/>
-    <link port="polarToRect1.angle" relation="node9"/>
-    <link port="polarToRect1.angle" relation="node9"/>
-    <link port="polarToRect1.x" relation="_R8"/>
-    <link port="polarToRect1.x" relation="_R8"/>
-    <link port="polarToRect1.x" relation="_R8"/>
-    <link port="polarToRect1.y" relation="_R9"/>
-    <link port="polarToRect1.y" relation="_R9"/>
-    <link port="polarToRect1.y" relation="_R9"/>
-    <link port="sin1.input" relation="_R0"/>
-    <link port="sin1.input" relation="_R0"/>
-    <link port="sin1.input" relation="_R0"/>
-    <link port="sin1.output" relation="node6"/>
-    <link port="sin1.output" relation="node6"/>
-    <link port="sin1.output" relation="node6"/>
-    <link port="cos1.input" relation="_R1"/>
-    <link port="cos1.input" relation="_R1"/>
-    <link port="cos1.input" relation="_R1"/>
-    <link port="cos1.output" relation="_R2"/>
-    <link port="cos1.output" relation="_R2"/>
-    <link port="cos1.output" relation="_R2"/>
-    <link port="cos2.output" relation="_R6"/>
-    <link port="cos2.output" relation="_R6"/>
-    <link port="cos2.output" relation="_R6"/>
-    <link port="cos2.cos2Input" relation="node9"/>
-    <link port="cos2.cos2Input" relation="node9"/>
-    <link port="cos2.cos2Input" relation="node9"/>
-    <link port="xyPlotter.inputX" relation="_R8"/>
-    <link port="xyPlotter.inputX" relation="_R8"/>
-    <link port="xyPlotter.inputX" relation="_R8"/>
-    <link port="xyPlotter.inputY" relation="_R9"/>
-    <link port="xyPlotter.inputY" relation="_R9"/>
-    <link port="xyPlotter.inputY" relation="_R9"/>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="node9"/>
+    <link port="Polar to Rectangular.magnitude" relation="relation12"/>
+    <link port="Polar to Rectangular.angle" relation="node9"/>
+    <link port="Polar to Rectangular.x" relation="_R8"/>
+    <link port="Polar to Rectangular.y" relation="_R9"/>
+    <link port="XY Plotter.inputX" relation="_R8"/>
+    <link port="XY Plotter.inputY" relation="_R9"/>
+    <link port="Expression.output" relation="relation12"/>
+    <link port="Expression.ramp" relation="node9"/>
 </entity>

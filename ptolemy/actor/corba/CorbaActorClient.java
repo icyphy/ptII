@@ -31,6 +31,7 @@
 package ptolemy.actor.corba;
 
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.Port;
 import ptolemy.data.*;
@@ -94,7 +95,7 @@ public class CorbaActorClient extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public CorbaActorClient(TypedCompositeActor container, String name)
+    public CorbaActorClient(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 

@@ -32,6 +32,7 @@ package ptolemy.domains.dde.lib;
 
 import ptolemy.domains.dde.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
@@ -63,7 +64,7 @@ public class DoubleFork extends TypedAtomicActor {
      * @exception IllegalActionException If there are errors in
      *  instantiating and specifying the type of this actor's ports.
      */
-    public DoubleFork(TypedCompositeActor cont, String name)
+    public DoubleFork(CompositeEntity cont, String name)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 

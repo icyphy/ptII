@@ -33,6 +33,7 @@ package ptolemy.domains.pn.demo.QR;
 import java.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
@@ -64,7 +65,7 @@ public class ND_4 extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ND_4(TypedCompositeActor aContainer, String aName)
+    public ND_4(CompositeEntity aContainer, String aName)
             throws IllegalActionException, NameDuplicationException   {
 
         super(aContainer, aName);

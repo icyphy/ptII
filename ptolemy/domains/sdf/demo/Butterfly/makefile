@@ -45,9 +45,7 @@ PTPACKAGE = 	Butterfly
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	Butterfly.java \
-	ButterflyApplet.java \
-	ButterflyApplication.java
+	Butterfly.java
 
 EXTRA_SRCS = \
 	Butterfly.htm \
@@ -60,8 +58,7 @@ MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	'ButterflyApplication$$1.class'
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -76,17 +73,12 @@ install: all
 
 # Run the demo in all its different formats
 # Run demo_application first so that we generate Butterfly.xml
-demo: demo_application demo_applet demo_CompositeActorApplication \
-	demo_ptolemy demo_vergil
+demo: demo_applet demo_application demo_ptolemy demo_vergil
 
 demo_applet: $(PTCLASSJAR)
 	CLASSPATH="$(CLASSPATH)" appletviewer Butterfly.htm
 
 demo_application: $(PTCLASSJAR)
-	CLASSPATH="$(CLASSPATH)" \
-	 "$(JAVA)" ptolemy.domains.sdf.demo.Butterfly.ButterflyApplication
-
-demo_CompositeActorApplication: $(PTCLASSJAR)
 	CLASSPATH="$(CLASSPATH)" \
 	 "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication \
 		-class ptolemy.domains.sdf.demo.Butterfly.Butterfly 

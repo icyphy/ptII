@@ -35,6 +35,7 @@ import ptolemy.domains.dde.lib.*;
 import ptolemy.domains.dde.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.*;
@@ -68,7 +69,7 @@ public class ListenSink extends DDESink {
      * @params cont The container of this actor.
      * @params name The name of this actor.
      */
-    public ListenSink(TypedCompositeActor cont, String name)
+    public ListenSink(CompositeEntity cont, String name)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
     }

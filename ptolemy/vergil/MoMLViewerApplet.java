@@ -1,4 +1,4 @@
-/* Basic applet that constructs a Ptolemy II model from a MoML file.
+/* Applet that displays a vergil block diagram.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -69,21 +69,40 @@ import diva.graph.*;
 //////////////////////////////////////////////////////////////////////////
 //// MoMLViewerApplet
 /**
-A moml applet with visualization of the hierarchy.  In addition to the
-features of MoMLApplet, this class adds a JModelViewer to the applet which
-is a view of the toplevel structure of the model.
+This applet displays a graph view of a specified MoML file.
 
-@see MoMLApplet
 @author  Steve Neuendorffer
 @version $Id$
 */
 public class MoMLViewerApplet extends MoMLApplet {
+
     // FIXME: this is a total hack as a placeholder for a general 
     // implementation going through configurations.
-    /** Create a MoML parser and parse a file.
+
+    // FIXME: This does not show a run control panel... although
+    // the same MoML can be shown in another applet, it will be
+    // a different instance of the model.  Perhaps the context menu
+    // should have a run-model option?
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Override the base class to not start
+     *  execution of the model. This method is called by the
+     *  browser or applet viewer to inform this applet that it should
+     *  start its execution. It is called after the init method
+     *  and each time the applet is revisited in a Web page.
      */
-    public void init() {
-        super.init();
+    public void start() {
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Override the base class to create a schematic view instead of
+     *  a ModelPane.
+     */
+    protected void _createView() {
         ViewerGraphController controller = new ViewerGraphController();
         GraphModel model = new PtolemyGraphModel(_toplevel);
 
@@ -107,7 +126,18 @@ public class MoMLViewerApplet extends MoMLApplet {
         modelViewer.setPreferredSize(new Dimension(400, 300));
         getContentPane().add(new JScrollPane(modelViewer), 
                 BorderLayout.NORTH);
+
+        // NOTE: Call the superclass here to get a control panel
+        // below the schematic.
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    private Action _getDocumentationAction;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     public class GetDocumentationAction extends FigureAction {
 	public GetDocumentationAction() {
@@ -204,8 +234,6 @@ public class MoMLViewerApplet extends MoMLApplet {
 	    }
 	}
     }
-
-    private Action _getDocumentationAction;
 }
 
 

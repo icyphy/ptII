@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
@@ -33,140 +33,80 @@ package ptolemy.domains.sdf.demo.Butterfly;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
-import ptolemy.actor.lib.AddSubtract;
 import ptolemy.actor.lib.Expression;
-import ptolemy.actor.lib.MultiplyDivide;
 import ptolemy.actor.lib.Ramp;
-import ptolemy.actor.lib.Scale;
-import ptolemy.actor.lib.TrigFunction;
 import ptolemy.actor.lib.conversions.PolarToRectangular;
 import ptolemy.actor.lib.gui.XYPlotter;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.plot.Plot;
 import ptolemy.plot.PlotFrame;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Butterfly
 /**
-This class implements the Butterfly demo that is also present in Ptolemy
-Classic.
-Most models are written using MoML.  This demo is a example of
-how to write a demo using Java.
+This class defines a Ptolemy II model that traces an elaborate curve
+called the butterfly curve.
+It was described by T. Fay, <i>American Mathematical Monthly</i>, 96(5),
+May, 1989.  Although users will usually prefer to define models using
+MoML, this class illustrates how to define a model in Java.
 
-@author Christopher Hylands
+@author Christopher Hylands and Edward A. Lee
 @version $Id$
 */
 public class Butterfly extends TypedCompositeActor {
 
     public Butterfly(Workspace workspace)
-	throws IllegalActionException, NameDuplicationException {
-	this(workspace, "butterfly");
-    }
-
-    public Butterfly(TypedCompositeActor container, String name) 
-	throws IllegalActionException, NameDuplicationException {
-	// If we exportMoML while running as an applet, then
-	// MoMLParser  will call this constructor because the butterfly
-	// is contained by the _toplevel in ButterflyApplet
-	this(container.workspace(), name);
-	setContainer(container);
-    }
-
-    public Butterfly(Workspace workspace, String name)
-	throws IllegalActionException, NameDuplicationException {
+	    throws IllegalActionException, NameDuplicationException {
 	super(workspace);
-
 	setName("Butterfly");
-	setDirector(new SDFDirector(this, "director"));
 
-	Scale scale1 = new Scale(this,"scale1");
-	scale1.factor.setToken(new DoubleToken(4.0));
-	Scale scale2 = new Scale(this,"scale2");
-	scale2.factor.setToken(new DoubleToken(1.0/12.0));
-	Scale scale3 = new Scale(this,"scale3");
-	scale3.factor.setToken(new DoubleToken(-2.0));
+        // Create the director, and set the number of iterations to execute.
+	SDFDirector director = new SDFDirector(this, "director");
+        director.iterations.setExpression("2400");
+	setDirector(director);
 
-	AddSubtract add1 = new AddSubtract(this,"add1");
-	MultiplyDivide multiplyDivide1 =
-	    new MultiplyDivide(this,"multiplyDivide1");
-	MultiplyDivide multiplyDivide2 =
-	    new MultiplyDivide(this,"multiplyDivide2");
-	MultiplyDivide multiplyDivide3 =
-	    new MultiplyDivide(this,"multiplyDivide3");
+        // Create the actors, and set their parameters.
+        // First, the source, which counts up from 0.0 in steps of pi/100.
+	Ramp ramp = new Ramp(this, "Ramp");
+	ramp.step.setExpression("PI/100.0");
 
-	Ramp ramp = new Ramp(this, "ramp");
-	ramp.step.setToken(new DoubleToken(Math.PI/100.0));
+        // Next, the expression, for which we have to create an input port.
+	Expression expression = new Expression(this, "Expression");
+	TypedIOPort expInput = new TypedIOPort(expression, "ramp");
+        expInput.setInput(true);
+	expression.expression.setExpression("-2.0*cos(4.0*ramp) + "
+               + "exp(cos(ramp)) + (sin(ramp/12.0) * (sin(ramp/12.0))^4)");
 
-	PolarToRectangular polarToRect1 =
-	    new PolarToRectangular(this, "polarToRect1");
+        // Next, a conversion to use the ramp as an angle specifier,
+        // and the output of the expression as the vector length.
+	PolarToRectangular polarToRect =
+	        new PolarToRectangular(this, "Polar to Rectangular");
 
-	TrigFunction sin1 = new TrigFunction(this, "sin1");
-	sin1.function.setExpression("sin");
-
-	TrigFunction cos1 = new TrigFunction(this, "cos1");
-	cos1.function.setExpression("cos");
-
-	// Here, we collapse two actors into one expression actor.
-	Expression cos2 = new Expression(this, "cos2");
-	TypedIOPort cos2Input = new TypedIOPort(cos2, "cos2Input",
-                true, false);
-	cos2.expression.setExpression("exp(cos(cos2Input))");
-	cos2.output.setTypeEquals(BaseType.DOUBLE);
-
+        // Finally, the plotter.
 	XYPlotter xyPlotter = new XYPlotter(this, "xyPlotter");
 	xyPlotter.plot = new Plot();
-	PlotFrame frame = new PlotFrame(getFullName(), xyPlotter.plot);
-
         // Make the plot transparent so that the background shows through.
-	xyPlotter.plot.setOpaque(false);
         xyPlotter.plot.setGrid(false);
 	xyPlotter.plot.setXRange(-3, 4);
 	xyPlotter.plot.setYRange(-4, 4);
 
-	this.connect(scale2.output, sin1.input);
-	this.connect(scale1.output, cos1.input);
-	this.connect(cos1.output, scale3.input);
+        // Make the connections.
+        // The ports are public members of these classes.
+        // The first connection is a three way connection, so we have
+        // to create a relation and then link to it.
+	TypedIORelation node = (TypedIORelation) newRelation("node");
+        ramp.output.link(node);
+        expInput.link(node);
+        polarToRect.angle.link(node);
 
-	TypedIORelation node4 = (TypedIORelation) newRelation("node4");
-
-	multiplyDivide1.output.link(node4);
-	multiplyDivide2.multiply.link(node4);
-	multiplyDivide2.multiply.link(node4);
-	this.connect(multiplyDivide2.output, multiplyDivide3.multiply);
-
-	TypedIORelation node6 = (TypedIORelation) newRelation("node6");
-	sin1.output.link(node6);
-	multiplyDivide1.multiply.link(node6);
-	multiplyDivide1.multiply.link(node6);
-	multiplyDivide3.multiply.link(node6);
-
-	connect(scale3.output, add1.plus);
-	connect(multiplyDivide3.output, add1.plus);
-	connect(cos2.output, add1.plus);
-
-	connect(add1.output, polarToRect1.magnitude);
-
-	TypedIORelation node9 = (TypedIORelation) newRelation("node9");
-	ramp.output.link(node9);
-	scale1.input.link(node9);
-	scale2.input.link(node9);
-	polarToRect1.angle.link(node9);
-	cos2Input.link(node9);
-
-	connect(polarToRect1.x, xyPlotter.inputX);
-	connect(polarToRect1.y, xyPlotter.inputY);
-	
-	// Export a MoML version of this model to standard output.
-	// System.out.println(exportMoML());
+        // The rest of the connections are point-to-point, so we can use
+        // the connect() method.
+	connect(expression.output, polarToRect.magnitude);
+	connect(polarToRect.x, xyPlotter.inputX);
+	connect(polarToRect.y, xyPlotter.inputY);
     }
 }

@@ -191,7 +191,8 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     }
 
     /** Close the window.  Override the base class to remove the
-     *  execution listener from the manager.
+     *  execution listener from the manager, and to notify the contained
+     *  ModelPane.
      *  @return False if the user cancels on a save query.
      */
     protected boolean _close() {
@@ -206,6 +207,9 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
         if (_pane != null) {
             _pane.stopRun();
         }
+        // The second argument is supposed to be a button name, but there
+        // is no button that would have triggered this.
+        _pane.windowClosed(this, "");
         return result;
     }
 

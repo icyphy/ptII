@@ -143,7 +143,7 @@ public class CSPActor extends TypedAtomicActor
      * @exception NameDuplicationException If the name argument coincides
      *  with an entity already in the container.
      */
-    public CSPActor(TypedCompositeActor container, String name)
+    public CSPActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	_conditionalBranchController =

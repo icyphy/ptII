@@ -95,7 +95,7 @@ public class TypedIORelation extends IORelation {
      *  @exception NameDuplicationException If the name coincides with
      *   a relation already in the container.
      */
-    public TypedIORelation(TypedCompositeActor container, String name)
+    public TypedIORelation(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

@@ -41,6 +41,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -97,7 +98,7 @@ public class Processor extends CSPActor {
      * @exception NameDuplicationException If the container
      *  already has an actor with this name.
      */
-    public Processor(TypedCompositeActor cont, String name, int code)
+    public Processor(CompositeEntity cont, String name, int code)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 

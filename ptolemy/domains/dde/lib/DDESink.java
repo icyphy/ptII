@@ -32,6 +32,7 @@ package ptolemy.domains.dde.lib;
 
 import ptolemy.domains.dde.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.*;
@@ -60,7 +61,7 @@ public class DDESink extends TypedAtomicActor {
      * @params cont The container of this actor.
      * @params name The name of this actor.
      */
-    public DDESink(TypedCompositeActor cont, String name)
+    public DDESink(CompositeEntity cont, String name)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 

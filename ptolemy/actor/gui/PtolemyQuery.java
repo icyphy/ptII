@@ -446,8 +446,7 @@ public class PtolemyQuery extends Query
         });
     }
 
-    /** Notify all listeners of any updated values, and then
-     *  unsubscribe as a listener to all objects that we have subscribed to.
+    /** Unsubscribe as a listener to all objects that we have subscribed to.
      *  @param window The window that closed.
      *  @param button The name of the button that was used to close the window.
      */

@@ -45,7 +45,7 @@ import com.microstar.xml.XmlException;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
-import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.CompositeActor;
 import ptolemy.gui.*;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
@@ -57,31 +57,53 @@ import ptolemy.moml.MoMLParser;
 //// MoMLApplet
 /**
 This is an applet that constructs a Ptolemy II model from a MoML file.
-"MoML" stands for "Modeling Markup Language." It is an XML language for
+"MoML" stands for "Modeling Markup Language." It is an XML schema for
 constructing Ptolemy II models.
+<p>
+This class offers a number of alternatives that control the visual
+appearance of the applet. By default, the applet places on the screen
+a set of control buttons that can be used to start, stop, pause, and
+resume the model.  Below those buttons, it places the visual elements
+of any actors in the model that implement the Placeable interface,
+such as plotters or textual output.
+<p>
 The applet parameters are:
 <ul>
-<li><i>background</i>: The background color, typically given as a hex
+<li>
+<i>background</i>: The background color, typically given as a hex
 number of the form "#<i>rrggbb</i>" where <i>rr</i> gives the red
 component, <i>gg</i> gives the green component, and <i>bb</i> gives
 the blue component.
-<li><i>model</i>: The name of a URI (or URL) containing the
+<li>
+<i>controls</i>:
+This gives a comma-separated list
+of any subset of the words "buttons", "topParameters", and
+"directorParameters" (case insensitive), or the word "none".
+If this parameter is not given, then it is equivalent to
+giving "buttons", and only the control buttons mentioned above
+will be displayed.  If the parameter is given, and its value is "none",
+then no controls are placed on the screen.  If the word "topParameters"
+is included in the comma-separated list, then controls for the
+top-level parameters of the model are placed on the screen, below
+the buttons.  If the word "directorParameters" is included,
+then controls for the director parameters are also included.
+<li>
+<i>model</i>: The name of a URI (or URL) containing the
 MoML file that defines the model.
-<li><i>runControls</i>: The number of run controls to put on the screen.
-The value must be an integer.
-If the value is greater than zero, then a "Go" button
-created.  If the value is greater than one, then a "Stop" button
-is also created.
+<li>
+<i>orientation</i>: This can have value "horizontal"
+or "vertical" (case insensitive).  If it is "vertical", then the
+controls are placed above the visual elements of the Placeable actors.
+This is the default.  If it is "horizontal", then the controls
+are placed to the left of the visual elements.
 </ul>
-Any entity that is created in parsing the MoML file that implements
-the Placeable interface is placed in the applet.  Thus, entities
-with visual displays automatically have their visual displays
-appearing in the applet.
 <p>
-If the top-level object in the MoML file is an instance of
-TypedCompositeActor, then the _toplevel protected member is set
-to refer to it, and an instance of Manager is created for it.
-Otherwise, the _toplevel member will be null.
+To create a model in a different way, say without a <i>modelClass</i>
+applet parameter, you may extend this class and override the
+protected method _createModel().  If you wish to alter the way
+that the model is represented on the screen, you can extend this
+class an override the _createView() method.  The rendition in this class
+is an instance of ModelPane.
 
 @author  Edward A. Lee
 @version $Id$
@@ -129,64 +151,33 @@ public class MoMLApplet extends PtolemyApplet {
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 
-    /** Create a MoML parser and parse a file.
+    /** Read the model from the <i>model</i> applet parameter.
+     *  @return A model.
+     *  @throws Exception If something goes wrong.
      */
-    public void init() {
-
-        // Do not call super.init() because it creates a toplevel
-        // manager.  Since we don't call it, we have to process the
-        // background parameter.
-
-        // Process the background parameter.
-        _background = Color.white;
-        try {
-            String colorSpecification = getParameter("background");
-            if (colorSpecification != null) {
-                _background = Color.decode(colorSpecification);
-            }
-        } catch (Exception ex) {
-            report("Warning: background parameter failed: ", ex);
+    protected CompositeActor _createModel() throws Exception {
+        String modelURL = getParameter("model");
+        if (modelURL == null) {
+            throw new Exception("Applet does not not specify a model.");
         }
-        getContentPane().setBackground(_background);
-        setBackground(_background);
-        try {
-            String modelURL = getParameter("model");
-            if (modelURL == null) {
-                throw new Exception(
-                        "MoML applet does not not specify a model parameter!");
-            }
-            // Specify that all Placeable entities be placed in the applet.
-            MoMLParser parser = new MoMLParser();
-            URL docBase = getDocumentBase();
-            URL xmlFile = new URL(docBase, modelURL);
-            _toplevel = null;
-            _manager = null;
-            NamedObj toplevel = parser.parse(docBase, xmlFile);
-            _workspace = toplevel.workspace();
-            if (toplevel instanceof TypedCompositeActor) {
-                _toplevel = (TypedCompositeActor)toplevel;
+        MoMLParser parser = new MoMLParser();
+        URL docBase = getDocumentBase();
+        URL xmlFile = new URL(docBase, modelURL);
+        _manager = null;
+        CompositeActor result = null;
+        NamedObj toplevel = parser.parse(docBase, xmlFile);
+        _workspace = toplevel.workspace();
+        if (toplevel instanceof CompositeActor) {
+            result = (CompositeActor)toplevel;
+            _manager = result.getManager();
+            if (_manager == null) {
                 _manager = new Manager(_workspace, "manager");
-                _toplevel.setManager(_manager);
-                _manager.addExecutionListener(this);
-                ModelPane pane = new ModelPane(_toplevel);
-                pane.setBackground(_background);
-
-                getContentPane().add(pane);
-                pane.setDefaultButton();
-                validate();
-                repaint();
+                result.setManager(_manager);
             }
-        } catch (Exception ex) {
-            if (ex instanceof XmlException) {
-                XmlException xmlEx = (XmlException)ex;
-                // FIXME: The file reported below is wrong... Why?
-                report("MoML exception on line " + xmlEx.getLine()
-                        + ", column " + xmlEx.getColumn() + ", in entity:\n"
-                        + xmlEx.getSystemId(), ex);
-            } else {
-                report("MoML applet failed:\n", ex);
-            }
-            _setupOK = false;
+            _manager.addExecutionListener(this);
+        } else {
+            throw new Exception("Model is not an instance of CompositeActor");
         }
+        return result;
     }
 }

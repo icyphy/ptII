@@ -34,6 +34,7 @@ package ptolemy.domains.dde.demo.LocalZeno;
 import ptolemy.domains.dde.lib.*;
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -71,7 +72,7 @@ public class ListenWire extends Wire {
      * @exception IllegalActionException If there are errors in
      *  instantiating and specifying the type of this actor's ports.
      */
-    public ListenWire(TypedCompositeActor cont, String name)
+    public ListenWire(CompositeEntity cont, String name)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
     }

@@ -60,7 +60,7 @@ public class DEChannel extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEChannel(TypedCompositeActor container, String name)
+    public DEChannel(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new DEIOPort(this, "output", false, true);

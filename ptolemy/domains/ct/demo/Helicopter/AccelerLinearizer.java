@@ -54,7 +54,7 @@ public class AccelerLinearizer extends TypedAtomicActor
     implements TimedActor{
     /** Constructor
      */
-    public AccelerLinearizer(TypedCompositeActor container, String name)
+    public AccelerLinearizer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         inputPx = new TypedIOPort(this, "inputPx");

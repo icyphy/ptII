@@ -31,6 +31,7 @@
 
 package ptolemy.domains.dde.kernel;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
@@ -111,7 +112,7 @@ public class FeedBackDelay extends DDEActor {
      * @exception NameDuplicationException If the constructor of the
      *  superclass throws a NameDuplicationException .
      */
-    public FeedBackDelay(TypedCompositeActor container, String name)
+    public FeedBackDelay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _setVariables();

@@ -31,6 +31,7 @@
 
 package ptolemy.domains.dde.kernel;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
@@ -89,7 +90,7 @@ public class DDEActor extends TypedAtomicActor {
      * @exception NameDuplicationException If the constructor of the
      *  superclass throws a NameDuplicationException .
      */
-    public DDEActor(TypedCompositeActor container, String name)
+    public DDEActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

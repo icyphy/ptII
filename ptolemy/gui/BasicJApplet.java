@@ -44,6 +44,15 @@ Base class for swing applets.  This class provides basic management
 for background colors, a standardized mechanism for reporting errors
 and exceptions, and a minimal amount of information about the
 applet.
+<p>
+The applet parameter is:
+<ul>
+<li>
+<i>background</i>: The background color, typically given as a hex
+number of the form "#<i>rrggbb</i>" where <i>rr</i> gives the red
+component, <i>gg</i> gives the green component, and <i>bb</i> gives
+the blue component.
+</ul>
 
 @author  Edward A. Lee
 @version $Id$
@@ -88,7 +97,7 @@ public class BasicJApplet extends JApplet {
         MessageHandler.setMessageHandler(new GraphicalMessageHandler());
 
         // Process the background parameter.
-        _background = Color.white;
+        _background = null;
         try {
             String colorSpecification = getParameter("background");
             if (colorSpecification != null) {
@@ -98,6 +107,8 @@ public class BasicJApplet extends JApplet {
             report("Warning: background parameter failed: ", ex);
         }
         setBackground(_background);
+        getRootPane().setBackground(_background);
+        getContentPane().setBackground(_background);
     }
 
     /** Report an exception.  This prints a message to the standard error

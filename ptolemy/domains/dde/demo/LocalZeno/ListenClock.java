@@ -33,8 +33,10 @@ package ptolemy.domains.dde.demo.LocalZeno;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Iterator;
@@ -67,7 +69,7 @@ public class ListenClock extends Clock {
      *  @exception NameDuplicationException If the container
      *   already has an actor with this name.
      */
-    public ListenClock(TypedCompositeActor container, String name)
+    public ListenClock(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
     }

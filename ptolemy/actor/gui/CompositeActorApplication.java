@@ -31,16 +31,6 @@
 
 package ptolemy.actor.gui;
 
-// Java imports
-import java.lang.System;
-import java.lang.reflect.Constructor;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.HashSet;
-import java.util.Set;
-
 // Ptolemy imports
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -54,122 +44,71 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
+// Java imports
+import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.lang.System;
+import java.lang.reflect.Constructor;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+
 /////////////////////////////////////////////////////////////////
 //// CompositeActorApplication
 /**
 This application creates one or more Ptolemy II models given a
 classname on the command line, and then executes those models, each in
 its own thread.  Each specified class should be derived from
-CompositeActor.  Each will be created in its own workspace.  No way of
-controlling the model after its creation (such as run control panel)
-is provided by this class, other than automatically executing the
-model after it is instantiated.  Derived classes (such as
-PtolemyApplication) are instead responsible for providing such an
-interface.
+CompositeActor, and should have a constructor that takes a single
+argument, an instance of Workspace.  If the model does not contain
+a manager, then one will be created for it. The model is displayed using
+an instance of ModelFrame, which provides controls for executing
+the model and setting its top-level and director parameters.
 <p>
-
 The command-line arguments can also set parameter values for any
 parameter in the models, with the name given relative to the top-level
 entity.  For example, to specify the iteration count in an SDF model,
 you can invoke this on the command line as follows:
-
 <pre>
-    CLASSPATH=$PTII  java ptolemy.actor.gui.CompositeActorApplication -director.iterations 2 model.xml
+    CLASSPATH=$PTII
+    export CLASSPATH
+    java ptolemy.actor.gui.CompositeActorApplication \
+        -director.iterations 1000 \
+        -class ptolemy.domains.sdf.demo.Butterfly.Butterfly
 </pre>
-This assumes that the model given in file "model.xml" has a director
+This assumes that the model given by the specified class name has a director
 named "director" with a parameter named "iterations".  If more than
 one model is given on the command line, then the parameter values will
 be set for all models that have such a parameter.
- (In reality, "-iterations 2" will also work.)
 <p>
+This class keeps count the number of open windows.  The waitForFinish
+method can then be used to determine when all of the windows opened by
+this class have been closed.  The main() method exits the application
+when all windows have been closed.
 
-This class implements the ExecutionListener interface so that it can
-count the number of actively executing models.  The waitForFinish
-method can then be used to determine when all of the models created by
-this application have finished.  It also contains a separate instance
-of ExecutionListener as an inner class that is used to report the
-state of execution.  Subclasses may choose not to use this inner class
-for execution reporting if they report the state of executing models
-in a different way.
-<p>
-NOTE: This application does not exit when the specified models finish
-executing.  This is because if it did, then the any displays created
-by the models would disappear immediately.  However, it would be
-better if the application were to exit when all displays have been
-closed.  This currently does not happen.
-<p>
-This class is used by the codegen facility.
-
+@see ModelFrame
 @author Edward A. Lee, Brian K. Vogel, and Steve Neuendorffer
 @version $Id$
 */
-public class CompositeActorApplication
-    implements ExecutionListener {
-
-    /** Parse the command-line arguments, creating models as specified.
-     *  Then execute each model that contains a manager.
-     *  @param args The command-line arguments.
-     *  @exception Exception If command line arguments have problems.
-     */
-    public CompositeActorApplication(String args[]) throws Exception {
-        this(args, true);
-    }
-
-    /** Parse the command-line arguments, creating models as specified.
-     *  Then, if start is true, execute each model that contains a manager.
-     *  @param args The command-line arguments.
-     *  @exception Exception If command line arguments have problems.
-     */
-    public CompositeActorApplication(String args[], boolean start)
-            throws Exception {
-        if (args != null) {
-            _parseArgs(args);
-
-            // start the models.
-            if (start) {
-                Iterator models = _models.iterator();
-                while(models.hasNext()) {
-                    startRun((CompositeActor)models.next());
-                }
-            }
-        }
-    }
+public class CompositeActorApplication {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Reduce the count of executing models by one.  If the number of
-     *  executing models drops ot zero, then notify threads that might
-     *  be waiting for this event.
-     *  @param manager The manager calling this method.
-     *  @param ex The exception being reported.
-     */
-    public void executionError(Manager manager, Exception ex) {
-        _runningCount--;
-        if (_runningCount == 0) {
-            notifyAll();
-        }
-    }
-
-    /**  Reduce the count of executing models by one.  If the number of
-     *  executing models drops ot zero, then notify threads that might
-     *  be waiting for this event.
-     *  @param manager The manager calling this method.
-     */
-    public synchronized void executionFinished(Manager manager) {
-        _runningCount--;
-        if (_runningCount == 0) {
-            notifyAll();
-        }
-    }
 
     /** Create a new application with the specified command-line arguments.
      *  @param args The command-line arguments.
      */
     public static void main(String args[]) {
+        CompositeActorApplication app = new CompositeActorApplication();
         try {
-            CompositeActorApplication plot =
-                new CompositeActorApplication(args);
+            app.processArgs(args);
+            app.waitForFinish();
+            System.exit(0);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();
@@ -189,6 +128,22 @@ public class CompositeActorApplication
      *  @param manager The manager calling this method.
      */
     public void managerStateChanged(Manager manager) {
+    }
+
+    /** Parse the command-line arguments, creating models as specified.
+     *  @param args The command-line arguments.
+     *  @exception If something goes wrong.
+     */
+    public void processArgs(String args[]) throws Exception {
+        if (args != null) {
+            _parseArgs(args);
+
+            // start the models.
+            Iterator models = _models.iterator();
+            while(models.hasNext()) {
+                startRun((CompositeActor)models.next());
+            }
+        }
     }
 
     /** Report an exception.  This prints a message to the standard error
@@ -222,16 +177,32 @@ public class CompositeActorApplication
 
     /** If the specified model has a manager and is not already running,
      *  then execute the model in a new thread.  Otherwise, do nothing.
+     *  To execute the model, we create an instance of ModelFrame,
+     *  and then start the model running.
      *  @param model The model to execute.
      */
     public synchronized void startRun(CompositeActor model) {
         // This method is synchronized so that it can atomically modify
         // the count of executing processes.
+        ModelFrame frame = new ModelFrame(model);
+        _openCount++;
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosed(WindowEvent event) {
+                synchronized(CompositeActorApplication.this) {
+                    _openCount--;
+                    CompositeActorApplication.this.notifyAll();
+                }
+            }
+        });
+        frame.setBackground(new Color(0xe5e5e5));
+        frame.pack();
+        frame.centerOnScreen();
+        frame.setVisible(true);
+        // FIXME: Use a JFrame listener to determine when all windows are closed.
         Manager manager = model.getManager();
         if (manager != null) {
             try {
                 manager.startRun();
-                _runningCount++;
             } catch (IllegalActionException ex) {
                 // Model is already running.  Ignore.
             }
@@ -252,10 +223,10 @@ public class CompositeActorApplication
         }
     }
 
-    /** Wait for all executing runs to finish, then return.
+    /** Wait for all windows to close.
      */
     public synchronized void waitForFinish() {
-        while (_runningCount > 0) {
+        while (_openCount > 0) {
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -265,53 +236,15 @@ public class CompositeActorApplication
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         inner classes                          ////
-
-    public class StateReporter implements ExecutionListener {
-        /** Report that an execution error has occurred.  This method
-         *  is called by the specified manager.
-         *  @param manager The manager calling this method.
-         *  @param ex The exception being reported.
-         */
-        public void executionError(Manager manager, Exception ex) {
-            report(ex);
-        }
-
-        /** Report that execution of the model has finished by printing a
-         *  message to stdout.
-         *  This is method is called by the specified manager.
-         *  @param manager The manager calling this method.
-         */
-        public synchronized void executionFinished(Manager manager) {
-            report("Execution finished.");
-        }
-
-        /** Report that a manager state has changed.
-         *  This is method is called by the specified manager.
-         *  @param manager The manager calling this method.
-         */
-        public void managerStateChanged(Manager manager) {
-            Manager.State newstate = manager.getState();
-            if (newstate != _previousState) {
-                report(manager.getState().getDescription());
-                _previousState = newstate;
-            }
-        }
-    }
-
-    ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
     /** Parse a command-line argument.  The recognized arguments, which
-     *  result in this method returning true are summarized below:
+     *  result in this method returning true, are summarized below:
      *  <ul>
      *  <li>If the argument is "-class", then attempt to interpret
      *  the next argument as the fully qualified classname of a class
      *  to instantiate as a ptolemy model.  The model will be created,
      *  added to the directory of models, and then executed.
-     *  In this base class, the fully qualified classname is used as a
-     *  name for the model.  In derived classes, a canonical URL or file
-     *  name might be used.
      *  <li>If the argument is "-help", then print a help message.
      *  <li>If the argument is "-test", then set a flag that will
      *  abort execution of any created models after two seconds.
@@ -363,13 +296,6 @@ public class CompositeActorApplication
                     model.setManager(new Manager(model.workspace(), "manager"));
                     manager = model.getManager();
                 }
-                if (manager != null) {
-                    manager.addExecutionListener(this);
-                    if(_stateReporter == null) {
-                        _stateReporter = new StateReporter();
-                    }
-                    manager.addExecutionListener(_stateReporter);
-                }
             } else {
                 // Argument not recognized.
                 return false;
@@ -386,8 +312,6 @@ public class CompositeActorApplication
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
             if (_parseArg(arg) == false) {
-                // FIXME: parameters are handled differently from classes
-                // for no apparent reason.
                 if (arg.startsWith("-") && i < args.length - 1) {
                     // Save in case this is a parameter name and value.
                     _parameterNames.add(arg.substring(1));
@@ -413,8 +337,7 @@ public class CompositeActorApplication
             boolean match = false;
             Iterator models = _models.iterator();
             while(models.hasNext()) {
-                CompositeActor model =
-                    (CompositeActor) models.next();
+                CompositeActor model = (CompositeActor) models.next();
                 Attribute attribute = model.getAttribute(name);
                 if (attribute instanceof Variable) {
                     match = true;
@@ -482,8 +405,8 @@ public class CompositeActorApplication
     /** The list of all the models */
     protected List _models = new LinkedList();
 
-    /** The count of currently executing runs. */
-    protected int _runningCount = 0;
+    /** The count of currently open windows. */
+    protected int _openCount = 0;
 
     /** If true, then auto exit after a few seconds. */
     protected static boolean _test = false;
@@ -503,7 +426,4 @@ public class CompositeActorApplication
     // The previous state of the manager, to avoid reporting it if it hasn't
     // changed.
     private Manager.State _previousState;
-
-    // The listener that reports state changes.
-    private ExecutionListener _stateReporter;
 }

@@ -35,11 +35,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
+import ptolemy.actor.Director;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.PtolemyApplet;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.domains.sdf.kernel.SDFDirector;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFApplet
@@ -62,6 +64,13 @@ box.
 @version $Id$
 */
 public class SDFApplet extends PtolemyApplet {
+
+    /** Construct an applet with no specified top-level.  The init()
+     *  method will construct an empty instance of TypedCompositeActor.
+     */
+    public SDFApplet() {
+        super();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -101,13 +110,13 @@ public class SDFApplet extends PtolemyApplet {
 
         try {
             // Initialization
-            _director = new SDFDirector(_toplevel, "SDFDirector");
+            Director candidate = _toplevel.getDirector();
+            if (!(candidate instanceof SDFDirector)) {
+                candidate = new SDFDirector(_toplevel, "SDFDirector");
+            }
+            _director = (SDFDirector)candidate;
             Parameter iterparam = _director.iterations;
             iterparam.setToken(new IntToken(iterations));
-            SDFScheduler scheduler = new SDFScheduler(_workspace);
-
-            _director.setScheduler(scheduler);
-            _director.setScheduleValid(false);
         } catch (Exception ex) {
             report("Failed to setup director and scheduler:\n", ex);
             _setupOK = false;

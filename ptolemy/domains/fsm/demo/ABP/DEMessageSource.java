@@ -58,7 +58,7 @@ public class DEMessageSource extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public DEMessageSource(TypedCompositeActor container, String name)
+    public DEMessageSource(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output = new DEIOPort(this, "output", false, true);

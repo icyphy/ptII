@@ -35,6 +35,7 @@ import ptolemy.domains.dde.lib.*;
 import ptolemy.domains.dde.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
@@ -73,7 +74,7 @@ public class ListenFork extends DoubleFork {
      * @exception IllegalActionException If there are errors in
      *  instantiating and specifying the type of this actor's ports.
      */
-    public ListenFork(TypedCompositeActor cont, String name)
+    public ListenFork(CompositeEntity cont, String name)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
     }

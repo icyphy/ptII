@@ -33,6 +33,7 @@ getDelay() method that approximates a Zeno condition.
 package ptolemy.domains.dde.demo.LocalZeno;
 
 import ptolemy.domains.dde.kernel.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
@@ -76,7 +77,7 @@ public class ZenoDelay extends ListenFeedBackDelay {
      * @exception NameDuplicationException If the constructor of the
      *  superclass throws a NameDuplicationException .
      */
-    public ZenoDelay(TypedCompositeActor container, String name)
+    public ZenoDelay(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

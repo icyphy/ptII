@@ -42,6 +42,7 @@ import ptolemy.actor.lib.Source;
 import ptolemy.plot.*;
 
 import java.awt.Container;
+import javax.swing.SwingUtilities;
 
 /** This actor produces as its output a signal that has been sketched by the
  *  user on the screen.  The <i>length</i> parameter specifies the
@@ -140,10 +141,25 @@ public class SketchedSource extends Source
                 throw new IllegalActionException(this,
                         "dataset: negative value is not allowed.");
             }
-            setInitialTrace();
+            _setInitialTrace();
         } else if (attribute == length) {
-            setInitialTrace();
+            _setInitialTrace();
         }
+    }
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has an
+     *   attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        SketchedSource newObject = (SketchedSource)super.clone(workspace);
+        newObject.plot = null;
+        newObject._frame = null;
+        return newObject;
     }
 
     /** Produce one data sample from the sketched signal on the output
@@ -180,8 +196,11 @@ public class SketchedSource extends Source
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (plot == null) {
+        if (plot == null || !_placeCalled) {
             place(_container);
+        }
+        if (_frame != null) {
+	    _frame.setVisible(true);
         }
         // NOTE: Do not clear the plot here, as that will erase
         // user-entered data!
@@ -204,10 +223,12 @@ public class SketchedSource extends Source
      */
     public void place(Container container) {
         _container = container;
+        _placeCalled = true;
         if (_container == null) {
             // place the plot in its own frame.
             plot = new EditablePlot();
-            PlotFrame frame = new PlotFrame(getFullName(), plot);
+            _frame = new PlotFrame(getFullName(), plot);
+	    _frame.setVisible(true);
         } else {
             if (_container instanceof EditablePlot) {
                 plot = (EditablePlot)_container;
@@ -220,9 +241,23 @@ public class SketchedSource extends Source
         }
         // Set the default signal value in the plot.
         try {
-            setInitialTrace();
+            _setInitialTrace();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
+        }
+    }
+
+    /** Override the base class to remove the plot from its graphical
+     *  container if the argument is null.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the base class throws it.
+     *  @exception NameDuplicationException If the base class throws it.
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+        if (container == null) {
+            _remove();
         }
     }
 
@@ -241,9 +276,27 @@ public class SketchedSource extends Source
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Remove the plot from the current container, if there is one.
+     */
+    private void _remove() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                if (plot != null) {
+                    if (_container != null) {
+                        _container.remove(plot);
+                        _container.invalidate();
+                        _container.repaint();
+                    } else if (_frame != null) {
+                        _frame.dispose();
+                    }
+                }
+            }
+        });
+    }
+
     // Set the initial value of the plot and fill the plot.
     // If the plot is null, return without doing anything.
-    private void setInitialTrace() throws IllegalActionException {
+    private void _setInitialTrace() throws IllegalActionException {
         if (plot == null) return;
         int set = ((IntToken)dataset.getToken()).intValue();
         plot.clear(set);
@@ -266,6 +319,12 @@ public class SketchedSource extends Source
     /** Sketched data. */
     private double[][] _data;
 
+    // Frame into which plot is placed, if any.
+    private transient PlotFrame _frame;
+
     /** Zero token. */
     private DoubleToken _zero = new DoubleToken(0.0);
+
+    // Flag indicating that the place() method has been called at least once.
+    private boolean _placeCalled = false;
 }

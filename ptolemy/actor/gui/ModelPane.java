@@ -35,6 +35,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.style.*;
 import ptolemy.data.expr.Parameter;
+import ptolemy.gui.CloseListener;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -44,6 +45,7 @@ import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Event;
+import java.awt.Window;
 import java.awt.event.*;
 import java.util.Iterator;
 import java.util.List;
@@ -54,83 +56,121 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
-import javax.swing.KeyStroke;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModelPane
 /**
 
 ModelPane is a panel for interacting with an executing Ptolemy II model.
-It has controls for setting top-level and director parameters, a set of
-buttons for controlling the execution, and a panel for displaying
-results of the execution.
+It has optional controls for setting top-level and director parameters,
+a set of buttons for controlling the execution, and a panel for displaying
+results of the execution.  Any entity in the model that implements
+the Placeable interface is placed in the display region.
 
+@see Placeable
 @author Edward A. Lee
 @version $Id$
 */
-public class ModelPane extends JPanel {
+public class ModelPane extends JPanel implements CloseListener {
 
     /** Construct a panel for interacting with the specified Ptolemy II model.
+     *  This uses the default layout, which is horizontal, and shows
+     *  control buttons, top-level parameters, and director parameters.
      *  @param model The model to control.
      */
     public ModelPane(CompositeActor model) {
+        this(model, HORIZONTAL, BUTTONS | TOP_PARAMETERS | DIRECTOR_PARAMETERS);
+    }
 
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+    /** Construct a panel for interacting with the specified Ptolemy II model.
+     *  The layout argument should be one of HORIZONTAL or VERTICAL; it
+     *  determines whether the controls are put to the left of, or above
+     *  the placeable displays.  The show argument should be a bitwise
+     *  or of any of BUTTONS, TOP_PARAMETERS, or DIRECTOR_PARAMETERS.
+     *  Or it can be 0, in which case, no controls are shown.
+     *  If BUTTONS is included, then a panel of buttons, go, pause,
+     *  resume, and stop, are shown.  If TOP_PARAMETERS is included,
+     *  then the top-level parameters of the model are included.
+     *  If DIRECTOR_PARAMETERS is included, then the paramters of
+     *  the director are included.
+     *  @param model The model to control.
+     *  @param layout HORIZONTAL or VERTICAL layout.
+     *  @param show Indicator of which controls to show.
+     */
+    public ModelPane(final CompositeActor model, int layout, int show) {
 
-        // Add run controls.
-        _controlPanel = new JPanel();
-        _controlPanel.setLayout(new BoxLayout(_controlPanel, BoxLayout.Y_AXIS));
-        _controlPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        if(layout == HORIZONTAL) {
+            setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        } else {
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        }
+        _layout = layout;
 
-        _buttonPanel = new JPanel();
-        _buttonPanel.setLayout(new BoxLayout(_buttonPanel, BoxLayout.X_AXIS));
-        // Padding top and bottom...
-        _buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-        _buttonPanel.setAlignmentX(LEFT_ALIGNMENT);
+        if (show != 0) {
+            // Add run controls.
+            _controlPanel = new JPanel();
+            _controlPanel.setLayout(new BoxLayout(
+                    _controlPanel, BoxLayout.Y_AXIS));
+            _controlPanel.setBorder(
+                    BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        _goButton = new JButton("Go");
-        _goButton.setToolTipText("Execute the model");
-        _goButton.setAlignmentX(LEFT_ALIGNMENT);
-        _buttonPanel.add(_goButton);
-        _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
-        _goButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                startRun();
+            if ((show & BUTTONS) != 0) {
+                _buttonPanel = new JPanel();
+                _buttonPanel.setLayout(new BoxLayout(
+                        _buttonPanel, BoxLayout.X_AXIS));
+                // Padding top and bottom...
+                _buttonPanel.setBorder(
+                        BorderFactory.createEmptyBorder(10, 0, 10, 0));
+                _buttonPanel.setAlignmentX(LEFT_ALIGNMENT);
+
+                _goButton = new JButton("Go");
+                _goButton.setToolTipText("Execute the model");
+                _goButton.setAlignmentX(LEFT_ALIGNMENT);
+                _buttonPanel.add(_goButton);
+                _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+                _goButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        startRun();
+                    }
+                });
+
+                _pauseButton = new JButton("Pause");
+                _pauseButton.setToolTipText("Pause execution of the model");
+                _buttonPanel.add(_pauseButton);
+                _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+                _pauseButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        pauseRun();
+                    }
+                });
+
+                _resumeButton = new JButton("Resume");
+                _resumeButton.setToolTipText("Resume executing the model");
+                _buttonPanel.add(_resumeButton);
+                _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+                _resumeButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        resumeRun();
+                    }
+                });
+                
+                _stopButton = new JButton("Stop");
+                _stopButton.setToolTipText("Stop executing the model");
+                _buttonPanel.add(_stopButton);
+                _stopButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        stopRun();
+                    }
+                });
+                _controlPanel.add(_buttonPanel);
+                _buttonPanel.setBackground(null);
             }
-        });
+            add(_controlPanel);
+            _controlPanel.setBackground(null);
+        }
 
-        _pauseButton = new JButton("Pause");
-        _pauseButton.setToolTipText("Pause execution of the model");
-        _buttonPanel.add(_pauseButton);
-        _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
-        _pauseButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                pauseRun();
-            }
-        });
-
-        _resumeButton = new JButton("Resume");
-        _resumeButton.setToolTipText("Resume executing the model");
-        _buttonPanel.add(_resumeButton);
-        _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
-        _resumeButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                resumeRun();
-            }
-        });
-
-        _stopButton = new JButton("Stop");
-        _stopButton.setToolTipText("Stop executing the model");
-        _buttonPanel.add(_stopButton);
-        _stopButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                stopRun();
-            }
-        });
-        _controlPanel.add(_buttonPanel);
-        add(_controlPanel);
+        _show = show;
 
         // Do this last so that the display pane for placeable objects
         // goes on the right.
@@ -146,7 +186,7 @@ public class ModelPane extends JPanel {
     public Container getDisplayPane() {
         if (_displays == null) {
             _displays = new JPanel();
-            _displays.setBackground(getBackground());
+            _displays.setBackground(null);
             add(_displays);
         }
         return _displays;
@@ -157,36 +197,6 @@ public class ModelPane extends JPanel {
      */
     public CompositeActor getModel() {
         return _model;
-    }
-
-    /** Set background color.  This overrides the base class to set the
-     *  background of contained objects.
-     *  @param background The background color.
-     */
-    public void setBackground(Color background) {
-        super.setBackground(background);
-        // This seems to be called in a base class constructor, before
-        // these variables have been set.
-        if (_controlPanel != null) _controlPanel.setBackground(background);
-        if (_buttonPanel != null) _buttonPanel.setBackground(background);
-        if (_paramQuery != null) _paramQuery.setBackground(background);
-        if (_directorQuery != null) _directorQuery.setBackground(background);
-
-        // FIXME: Setting the background of this JPanel has no effect!
-        if (_displays != null) _displays.setBackground(background);
-        /* FIXME: Attempting to do the job that Java fails to do here
-         * yields truly bizzare behavior, where the constructor returns null!
-         *
-         java.awt.Component[] children = _displays.getComponents();
-         if (children != null) {
-         for (int i = 0; i < children.length; i++) {
-         children[i].setBackground(background);
-         }
-         }
-        */
-
-        if (_paramQuery != null) _paramQuery.setBackground(background);
-        if (_directorQuery != null) _directorQuery.setBackground(background);
     }
 
     /** Make the Go button the default button for the root pane.
@@ -212,8 +222,8 @@ public class ModelPane extends JPanel {
             remove(_displays);
         }
         _displays = pane;
-        _displays.setBackground(getBackground());
         add(_displays);
+        _displays.setBackground(null);
     }
 
     /** Set the associated model and add a query box with its top-level
@@ -238,87 +248,81 @@ public class ModelPane extends JPanel {
 	if (model != null) {
             _manager = _model.getManager();
 
-            List paramList = _model.attributeList(Parameter.class);
-            if (paramList.size() > 0) {
-                JLabel pTitle = new JLabel("Model parameters:");
-                // Use a dark blue for the text color.
-                pTitle.setForeground(new Color(0, 0, 128));
-                _controlPanel.add(pTitle);
-                _controlPanel.add(Box.createRigidArea(new Dimension(0, 8)));
-		// FIXME: use a configurer.
-		_paramQuery = new PtolemyQuery(model);
-                _paramQuery.setAlignmentX(LEFT_ALIGNMENT);
-                _paramQuery.setBackground(getBackground());
-                Iterator params = paramList.iterator();
-                while (params.hasNext()) {
-                    Parameter param = (Parameter)params.next();
-                    _paramQuery.addStyledEntry(param);
-                }
-                _controlPanel.add(_paramQuery);
-                _controlPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-            }
-
-            // Director parameters.
-            Director director = _model.getDirector();
-            if (director != null) {
-                List dirParamList = director.attributeList(Parameter.class);
-                if (dirParamList.size() > 0) {
-                    JLabel pTitle = new JLabel("Director parameters:");
+            if ((_show & TOP_PARAMETERS) != 0) {
+                List paramList = _model.attributeList(Parameter.class);
+                if (paramList.size() > 0) {
+                    JLabel pTitle = new JLabel("Model parameters:");
                     // Use a dark blue for the text color.
                     pTitle.setForeground(new Color(0, 0, 128));
                     _controlPanel.add(pTitle);
-                    _controlPanel.add(
-                            Box.createRigidArea(new Dimension(0, 8)));
-		    // FIXME: use a configurer.
-		    _directorQuery = new PtolemyQuery(model);
-                    _directorQuery.setAlignmentX(LEFT_ALIGNMENT);
-                    _directorQuery.setBackground(getBackground());
-                    Iterator params = dirParamList.iterator();
-                    while (params.hasNext()) {
-                        Parameter param = (Parameter)params.next();
-			_directorQuery.addStyledEntry(param);
-		    }
-                    _controlPanel.add(_directorQuery);
-
-                    // If there are two queries, make them the same width.
-                    if (_paramQuery != null) {
-                        Dimension modelSize
-                            = _paramQuery.getPreferredSize();
-                        Dimension directorSize
-                            = _directorQuery.getPreferredSize();
-                        if (directorSize.width > modelSize.width) {
-                            _paramQuery.setPreferredSize(new Dimension(
-                                    directorSize.width,
-                                    modelSize.height));
-                        } else {
-                            _directorQuery.setPreferredSize(new Dimension(
-                                    modelSize.width,
-                                    directorSize.height));
-                        }
+                    _controlPanel.add(Box.createRigidArea(new Dimension(0, 8)));
+                    _paramQuery = new Configurer(model);
+                    _paramQuery.setAlignmentX(LEFT_ALIGNMENT);
+                    _paramQuery.setBackground(null);
+                    _controlPanel.add(_paramQuery);
+                    if ((_show & DIRECTOR_PARAMETERS) != 0) {
+                        _controlPanel.add(Box.createRigidArea(
+                                new Dimension(0, 15)));
                     }
+                }
+            }
+
+            if ((_show & DIRECTOR_PARAMETERS) != 0) {
+                // Director parameters.
+                Director director = _model.getDirector();
+                if (director != null) {
+                    List dirParamList = director.attributeList(Parameter.class);
+                    if (dirParamList.size() > 0) {
+                        JLabel pTitle = new JLabel("Director parameters:");
+                        // Use a dark blue for the text color.
+                        pTitle.setForeground(new Color(0, 0, 128));
+                        _controlPanel.add(pTitle);
+                        _controlPanel.add(
+                                Box.createRigidArea(new Dimension(0, 8)));
+                        _directorQuery = new Configurer(model);
+                        _directorQuery.setAlignmentX(LEFT_ALIGNMENT);
+                        _directorQuery.setBackground(null);
+                        _controlPanel.add(_directorQuery);
+                    }
+                }
+            }
+
+            if(_controlPanel != null && _layout == HORIZONTAL) {
+                // Why they call this glue is beyond me, but what it does
+                // is make extra space to fill in the bottom.
+                _controlPanel.add(Box.createVerticalGlue());
+            }
+  
+            // If there are two queries, make them the same width.
+            if (_paramQuery != null && _directorQuery != null) {
+                Dimension modelSize = _paramQuery.getPreferredSize();
+                Dimension directorSize = _directorQuery.getPreferredSize();
+                if (directorSize.width > modelSize.width) {
+                    _paramQuery.setPreferredSize(new Dimension(
+                            directorSize.width,
+                            modelSize.height));
+                } else {
+                    _directorQuery.setPreferredSize(new Dimension(
+                            modelSize.width,
+                            directorSize.height));
                 }
             }
 
 	    // place the placeable objects in the model
 	    _displays = new JPanel();
-	    _displays.setBackground(getBackground());
+	    _displays.setBackground(null);
 
 	    add(_displays);
 	    _displays.setLayout(new BoxLayout(_displays, BoxLayout.Y_AXIS));
-	    _displays.setBackground(getBackground());
+	    _displays.setBackground(null);
 
 	    // Put placeable objects in a reasonable place
-	    for(Iterator i = _model.deepEntityList().iterator();
-		i.hasNext();) {
+	    for(Iterator i = _model.deepEntityList().iterator(); i.hasNext();) {
 		Object o = i.next();
 		if(o instanceof Placeable) {
 		    ((Placeable) o).place(_displays);
-		}
-	    }
-
-            // Why they call this glue is beyond me, but what it does
-            // is make extra space to fill in the bottom.
-            _controlPanel.add(Box.createVerticalGlue());
+                }
+            }
         }
     }
 
@@ -365,6 +369,39 @@ public class ModelPane extends JPanel {
         }
     }
 
+    /** Notify the contained instances of PtolemyQuery that the window
+     *  has been closed.  This method is called if this pane is contained
+     *  within a container that supports such notification.
+     *  @param window The window that closed.
+     *  @param button The name of the button that was used to close the window.
+     */
+    public void windowClosed(Window window, String button) {
+        if(_directorQuery != null) {
+            _directorQuery.windowClosed(window, button);
+        }
+        if(_paramQuery != null) {
+            _paramQuery.windowClosed(window, button);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** Indicator to use a horizontal layout. */
+    public static int HORIZONTAL = 0;
+
+    /** Indicator to use a verticla layout. */
+    public static int VERTICAL = 1;
+
+    /** Indicator to include control buttons. */
+    public static int BUTTONS = 1;
+
+    /** Indicator to include top-level parameters in the controls. */
+    public static int TOP_PARAMETERS = 2;
+
+    /** Indicator to include director parameters in the controls. */
+    public static int DIRECTOR_PARAMETERS = 4;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -375,10 +412,16 @@ public class ModelPane extends JPanel {
     private JPanel _controlPanel;
 
     // The query box for the director parameters.
-    private PtolemyQuery _directorQuery;
+    private Configurer _directorQuery;
+
+    // A panel into which to place model displays.
+    private Container _displays;
 
     // The go button.
     private JButton _goButton;
+
+    // The layout specified in the constructor.
+    private int _layout;
 
     // The manager of the associated model.
     private Manager _manager;
@@ -387,7 +430,7 @@ public class ModelPane extends JPanel {
     private CompositeActor _model;
 
     // The query box for the top-level parameters.
-    private PtolemyQuery _paramQuery;
+    private Configurer _paramQuery;
 
     // The stop button.
     private JButton _stopButton;
@@ -398,6 +441,6 @@ public class ModelPane extends JPanel {
     // The resume button.
     private JButton _resumeButton;
 
-    // A panel into which to place model displays.
-    private Container _displays;
+    // Indicator given to the constructor of how much to show.
+    private int _show;
 }

@@ -38,6 +38,7 @@ import ptolemy.actor.gui.*;
 import ptolemy.actor.process.*;
 import ptolemy.domains.csp.lib.*;
 import ptolemy.domains.csp.kernel.*;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
@@ -98,7 +99,7 @@ public class ContentionAlarm extends CSPActor {
      * @exception NameDuplicationException If the container
      *  already has an actor with this name.
      */
-    public ContentionAlarm(TypedCompositeActor cont, String name)
+    public ContentionAlarm(CompositeEntity cont, String name)
             throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
