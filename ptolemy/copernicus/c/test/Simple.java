@@ -1,7 +1,7 @@
-/* A simple class that is useful for testing C code generation under 
+/* A simple class that is useful for testing C code generation under
 single class mode.
 
-Copyright (c) 2001-2002 The University of Maryland   
+Copyright (c) 2001-2002 The University of Maryland
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (ssb@eng.umd.edu) 
+@ProposedRating Red (ssb@eng.umd.edu)
 @AcceptedRating Red (ssb@eng.umd.edu)
 */
 
@@ -36,12 +36,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 //////////////////////////////////////////////////////////////////////////
 //// Simple
 /**
-/* A simple class that is useful for testing C code generation under 
+/* A simple class that is useful for testing C code generation under
 single class mode. C code generated for this class, when created
 under single class mode, can be compiled independently of any other
 generated code.
 
-@author Shuvra S. Bhattacharyya 
+@author Shuvra S. Bhattacharyya
 @version $Id$
 @since Ptolemy II 2.0
 
@@ -50,8 +50,8 @@ generated code.
 public class Simple {
 
     // Constructor with no arguments.
-    public Simple() { 
-        publicField1 = publicField2 = privateField = 0; 
+    public Simple() {
+        publicField1 = publicField2 = privateField = 0;
     }
 
     // Constructor with arguments.
