@@ -49,7 +49,6 @@ if {[info procs enumToObjects] == "" } then {
 #
 test TMDirector-2.1 {Constructor tests} {
     set w [java::new ptolemy.kernel.util.Workspace W]
-    set manager [java::new ptolemy.actor.Manager $w Manager]
     set d1 [java::new ptolemy.domains.tm.kernel.TMDirector]
     $d1 setName D1
     set d2 [java::new ptolemy.domains.tm.kernel.TMDirector $w]
