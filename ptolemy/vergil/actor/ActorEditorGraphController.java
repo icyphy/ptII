@@ -58,7 +58,6 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.basic.BasicGraphFrame;

@@ -60,7 +60,6 @@ import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.Location;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.kernel.Link;
 import ptolemy.vergil.toolbox.EditParametersFactory;
@@ -184,8 +183,8 @@ public class LinkController extends BasicEdgeController {
             Object object = f.getUserObject();
 	    if (object instanceof Port) return super.acceptHead(c, f);
 	    if (object instanceof Vertex) return super.acceptHead(c, f);
-	    if (object instanceof Location &&
-                    ((Location)object).getContainer() instanceof Port)
+	    if (object instanceof Locatable &&
+                    ((Locatable)object).getContainer() instanceof Port)
 		return super.acceptHead(c, f);
 	    return false;
         }
@@ -194,8 +193,8 @@ public class LinkController extends BasicEdgeController {
             Object object = f.getUserObject();
 	    if (object instanceof Port) return super.acceptTail(c, f);
 	    if (object instanceof Vertex) return super.acceptTail(c, f);
-	    if (object instanceof Location &&
-                    ((Location)object).getContainer() instanceof Port)
+	    if (object instanceof Locatable &&
+                    ((Locatable)object).getContainer() instanceof Port)
 		return super.acceptHead(c, f);
 	    return false;
         }

@@ -41,7 +41,6 @@ import diva.graph.BasicNodeController;
 import diva.graph.GraphController;
 import diva.graph.NodeInteractor;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.Location;
 import ptolemy.vergil.toolbox.SnapConstraint;
 
 import java.awt.geom.Point2D;
@@ -57,7 +56,7 @@ is associated with.  This class provides the connection between the
 figure's notion of location and the node's concept of location.
 <p>
 When nodes are drawn, they are automatically placed at the
-coordinate given by the Location.  A LocatableNodeDragInteractor
+coordinate given by the location.  A LocatableNodeDragInteractor
 is used to update the location of the node as the figure moves.
 
 @author Steve Neuendorffer
@@ -92,18 +91,18 @@ public class LocatableNodeController extends BasicNodeController {
      */
     public double[] getLocation(Object node) {
         if (hasLocation(node)) {
-            return ((Location) node).getLocation();
+            return ((Locatable) node).getLocation();
         } else throw new RuntimeException("The node " + node +
                 "does not have a desired location");
     }
 
     /** Return true if the node is associated with a desired location.
      *  In this base class, return true if the the node's semantic object is
-     *  an instance of Location.
+     *  an instance of Locatable.
      */
     public boolean hasLocation(Object node) {
-        if (node instanceof Location) {
-            Location object = (Location) node;
+        if (node instanceof Locatable) {
+            Locatable object = (Locatable) node;
             double[] location = object.getLocation();
             if (location != null) return true;
         }
@@ -111,7 +110,7 @@ public class LocatableNodeController extends BasicNodeController {
     }
 
     /** Move the node's figure to the location specified in the node's
-     *  semantic object, if that object is an instance of Location.
+     *  semantic object, if that object is an instance of Locatable.
      *  If the semantic object is not a location, then do nothing.
      *  If the figure associated with the semantic object is an instance
      *  of TerminalFigure, then modify the location to ensure that the
@@ -132,8 +131,8 @@ public class LocatableNodeController extends BasicNodeController {
      */
     public void setLocation(Object node, double[] location)
             throws IllegalActionException {
-	if (node instanceof Location) {
-            ((Location)node).setLocation(location);
+	if (node instanceof Locatable) {
+            ((Locatable)node).setLocation(location);
         } else throw new RuntimeException("The node " + node +
                 "cannot have a desired location");
     }
@@ -174,8 +173,8 @@ public class LocatableNodeController extends BasicNodeController {
      *  display.
      */
     protected boolean _hide(java.lang.Object node) {
-        if (node instanceof Location) {
-            if (((NamedObj)((Location)node)
+        if (node instanceof Locatable) {
+            if (((NamedObj)((Locatable)node)
                     .getContainer()).getAttribute("_hide") != null) {
                 return true;
             }

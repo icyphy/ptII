@@ -41,7 +41,6 @@ import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.kernel.AttributeNodeModel;
 import ptolemy.vergil.kernel.CompositeEntityModel;
@@ -110,12 +109,12 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      *  attribute, then return an attribute model. Otherwise, return null.
      *  @param node An object which is assumed to be in this graph model.
      *  @return An instance of the inner class AttributeNodeModel if the object
-     *   is an instance of Location whose container is an instance
+     *   is an instance of Locatable whose container is an instance
      *   of Attribute, and otherwise, null.
      */
     public NodeModel getNodeModel(Object node) {
-	if (node instanceof Location
-                && ((Location)node).getContainer() instanceof Attribute) {
+	if (node instanceof Locatable
+                && ((Locatable)node).getContainer() instanceof Attribute) {
             return _attributeModel;
 	}
         return null;
@@ -159,7 +158,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      *  or composite.  A "semantic object" is an object associated with
      *  a node in the graph.  In this base class, if the argument is an
      *  instance of Port, then return the port.  If the argument is an
-     *  instance of Location, then return the container of the location. 
+     *  instance of Locatable, then return the container of the Locatable. 
      *  @param element A graph element.
      *  @return The semantic object associated with this element, or null
      *   if the object is not recognized.
@@ -167,8 +166,8 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
     public Object getSemanticObject(Object element) {
 	if (element instanceof Port) {
 	    return element;
-	} else if (element instanceof Location) {
-            return ((Location)element).getContainer();
+	} else if (element instanceof Locatable) {
+            return ((Locatable)element).getContainer();
         }
         return null;
     }
@@ -247,13 +246,13 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
      *  @param object The object for which a location is needed.
      *  @return The location of the object, or a new location if none.
      */
-    protected Location _getLocation(NamedObj object) {
-	List locations = object.attributeList(Location.class);
+    protected Locatable _getLocation(NamedObj object) {
+	List locations = object.attributeList(Locatable.class);
 	if (locations.size() > 0) {
-	    return (Location)locations.get(0);
+	    return (Locatable)locations.get(0);
 	} else {
 	    try {
-		Location location = new Location(object, "_location");
+		Locatable location = new Location(object, "_location");
 		return location;
 	    }
 	    catch (Exception e) {

@@ -31,7 +31,6 @@ package ptolemy.vergil.kernel;
 
 import diva.util.NullIterator;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.basic.NamedObjNodeModel;
 
@@ -50,12 +49,12 @@ This is used for visible attributes.
 public class AttributeNodeModel extends NamedObjNodeModel {
 
     /** Return the graph parent of the given node.
-     *  @param node The node, which is assumed to be an instance of Location.
+     *  @param node The node, which is assumed to be an instance of Locatable.
      *  @return The container of the location's container, which should be
      *   the root of the graph.
      */
     public Object getParent(Object node) {
-        return ((Location)node).getContainer().getContainer();
+        return ((Locatable)node).getContainer().getContainer();
     }
     
     /** Return an iterator over the edges coming into the given node.
@@ -75,7 +74,7 @@ public class AttributeNodeModel extends NamedObjNodeModel {
     }
 
     /** Remove the given node from the model.  The node is assumed
-     *  to be an instance of Location belonging to an attribute.
+     *  to be an instance of Locatable belonging to an attribute.
      *  The removal is accomplished by queueing a change request
      *  with the container.
      *  @param eventSource The source of the remove event (ignored).
@@ -83,7 +82,7 @@ public class AttributeNodeModel extends NamedObjNodeModel {
      */
     public void removeNode(final Object eventSource, final Object node) {
         final Object prevParent = getParent(node);
-        NamedObj attribute = (NamedObj)((Location)node).getContainer();
+        NamedObj attribute = (NamedObj)((Locatable)node).getContainer();
         
         NamedObj container = _getChangeRequestParent(attribute);
         

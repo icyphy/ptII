@@ -47,7 +47,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.actor.ActorGraphModel.LinkModel.LinkChangeListener;
@@ -152,8 +151,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     public CompositeModel getCompositeModel(Object composite) {
         CompositeModel result = super.getCompositeModel(composite);
         if (result == null
-                && composite instanceof Location
-                && ((Location)composite).getContainer() instanceof Entity) {
+                && composite instanceof Locatable
+                && ((Locatable)composite).getContainer() instanceof Entity) {
 	    return _iconModel;
 	}
         return result;
@@ -187,7 +186,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 
     /** Return the node model for the given object.  If the object is not
      *  a node, then return null.  The argument should be either an instance
-     *  of Port, Vertex, or Location.
+     *  of Port or Vertex, or it implements Locatable.
      *  @param node An object which is assumed to be in this graph model.
      *  @return The node model for the specified node, or null if there
      *   is none.
@@ -197,8 +196,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	    return _portModel;
 	} else if (node instanceof Vertex) {
 	    return _vertexModel;
-	} else if (node instanceof Location) {
-	    Object container = ((Location)node).getContainer();
+	} else if (node instanceof Locatable) {
+	    Object container = ((Locatable)node).getContainer();
 	    if (container instanceof Port) {
 		return _externalPortModel;
 	    } else if (container instanceof Entity) {
@@ -481,7 +480,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          * @return The root of this graph model.
          */
         public Object getParent(Object node) {
-	    return ((Location)node).getContainer().getContainer();
+	    return ((Locatable)node).getContainer().getContainer();
         }
 
         /**
@@ -496,7 +495,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	 * the given node as their head.
 	 */
        	public Iterator inEdges(Object node) {
-	    Location location = (Location)node;
+	    Locatable location = (Locatable)node;
 	    ComponentPort port = (ComponentPort)location.getContainer();
 	    // make sure that the links to relations that we are connected to
 	    // are up to date.
@@ -528,7 +527,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	 * tail as the given node.
 	 */
 	public Iterator outEdges(Object node) {
-	    Location location = (Location)node;
+	    Locatable location = (Locatable)node;
 	    ComponentPort port = (ComponentPort)location.getContainer();
 	    // make sure that the links to relations that we are connected to
 	    // are up to date.
@@ -551,7 +550,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	/** Remove the given edge from the model
 	 */
 	public void removeNode(final Object eventSource, Object node) {
-	    Location location = (Location)node;
+	    Locatable location = (Locatable)node;
 	    ComponentPort port = (ComponentPort)location.getContainer();
 
             NamedObj container = _getChangeRequestParent(port);
@@ -583,7 +582,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	 * @return The number of ports contained in the container of the icon.
 	 */
         public int getNodeCount(Object composite) {
-            Location location = (Location) composite;
+            Locatable location = (Locatable) composite;
             return ((ComponentEntity)location.getContainer()).portList().size();
         }
 
@@ -594,7 +593,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	 * the root of the graph.
 	 */
 	public Object getParent(Object node) {
-	    return ((Location)node).getContainer().getContainer();
+	    return ((Locatable)node).getContainer().getContainer();
 	}
 
 	/**
@@ -617,7 +616,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	 * of the icon.
 	 */
 	public Iterator nodes(Object composite) {
-	    Location location = (Location) composite;
+	    Locatable location = (Locatable) composite;
             Nameable container = location.getContainer();
             if (container instanceof ComponentEntity) {
                 ComponentEntity entity = (ComponentEntity)container;
@@ -640,7 +639,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	 *  to be an icon.
 	 */
 	public void removeNode(final Object eventSource, Object node) {
-	    NamedObj deleteObj = (NamedObj)((Location)node).getContainer();
+	    NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
             String elementName = null;
             if (deleteObj instanceof ComponentEntity) {
                 // Object is an entity.
@@ -681,8 +680,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	public boolean acceptHead(Object edge, Object node) {
 	    if (node instanceof Port ||
 		node instanceof Vertex ||
-		(node instanceof Location &&
-		 ((Location)node).getContainer() instanceof Port)) {
+		(node instanceof Locatable &&
+		 ((Locatable)node).getContainer() instanceof Port)) {
 		return true;
 	    } else
 		return false;
@@ -698,8 +697,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         public boolean acceptTail(Object edge, Object node) {
             if (node instanceof Port ||
                     node instanceof Vertex ||
-                    (node instanceof Location &&
-                            ((Location)node).getContainer() instanceof Port)) {
+                    (node instanceof Locatable &&
+                            ((Locatable)node).getContainer() instanceof Port)) {
                 return true;
             } else
                 return false;
@@ -1132,7 +1131,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	    ComponentPort port = (ComponentPort)node;
 	    Entity entity = (Entity)port.getContainer();
 	    if (entity == null) return null;
-	    List locationList = entity.attributeList(Location.class);
+	    List locationList = entity.attributeList(Locatable.class);
 	    if (locationList.size() > 0) {
 		return locationList.get(0);
 	    } else {

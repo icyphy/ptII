@@ -43,7 +43,6 @@ import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.util.NamedObj.*;
 import ptolemy.moml.ImportAttribute;
-import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
 import ptolemy.vergil.toolbox.SnapConstraint;
@@ -310,7 +309,7 @@ public class EditorDropTarget extends DropTarget {
             // Constrain point to snap to grid.
             Point2D newPoint = SnapConstraint.constrainPoint(point);
 
-            Location location = (Location) newObject.getAttribute("_location");
+            Locatable location = (Locatable)newObject.getAttribute("_location");
             // If there is no location, then manufacture one.
             if (location == null) {
                 location = new Location(newObject, "_location");

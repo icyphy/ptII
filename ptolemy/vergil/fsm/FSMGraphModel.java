@@ -46,7 +46,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.NamedObjNodeModel;
@@ -128,8 +127,8 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
      *   is none.
      */
     public NodeModel getNodeModel(Object node) {
-	if (node instanceof Location) {
-            Object container = ((Location)node).getContainer();
+	if (node instanceof Locatable) {
+            Object container = ((Locatable)node).getContainer();
             if (container instanceof ComponentEntity) {
                 return _stateModel;
             } else if (container instanceof ComponentPort) {
@@ -265,9 +264,9 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
             return;
 	}
 	Port port1 = (Port)linkedPortList.get(0);
-	Location location1 = _getLocation((NamedObj)port1.getContainer());
+	Locatable location1 = _getLocation((NamedObj)port1.getContainer());
 	Port port2 = (Port)linkedPortList.get(1);
-	Location location2 = _getLocation((NamedObj)port2.getContainer());
+	Locatable location2 = _getLocation((NamedObj)port2.getContainer());
 
 	Arc link;
 	try {
@@ -316,7 +315,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 	 *  @return True if the node is an icon.
 	 */
 	public boolean acceptHead(Object edge, Object node) {
-	    if (node instanceof Location) {
+	    if (node instanceof Locatable) {
 		return true;
 	    } else
 		return false;
@@ -329,7 +328,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 	 *  @return True if the node is an icon.
 	 */
 	public boolean acceptTail(Object edge, Object node) {
-	    if (node instanceof Location) {
+	    if (node instanceof Locatable) {
 		return true;
 	    } else
 		return false;
@@ -867,7 +866,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 	 * be the root of this graph model.
 	 */
 	public Object getParent(Object node) {
-	    return ((Location)node).getContainer().getContainer();
+	    return ((Locatable)node).getContainer().getContainer();
 	}
 
 	/**
@@ -904,7 +903,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 	 *  to be an icon.
 	 */
 	public void removeNode(final Object eventSource, Object node) {
-            NamedObj deleteObj = (NamedObj)((Location)node).getContainer();
+            NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
             String elementName = null;
             if (deleteObj instanceof ComponentPort) {
                 // Object is an entity.
@@ -955,7 +954,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 	 *   be the root of this graph model.
 	 */
 	public Object getParent(Object node) {
-	    return ((Location)node).getContainer().getContainer();
+	    return ((Locatable)node).getContainer().getContainer();
 	}
 
 	/** Return an iterator over the edges coming into the given node.
@@ -967,7 +966,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 	 *   the given node as their head.
 	 */
 	public Iterator inEdges(Object node) {
-	    Location icon = (Location)node;
+	    Locatable icon = (Locatable)node;
 	    Entity entity = (Entity)icon.getContainer();
 
 	    // Go through all the links, creating a list of
@@ -994,7 +993,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 	 *   the given node as their tail.
 	 */
 	public Iterator outEdges(Object node) {
-	    Location icon = (Location)node;
+	    Locatable icon = (Locatable)node;
 	    Entity entity = (Entity)icon.getContainer();
 
 	    // Go through all the links, creating a list of
@@ -1013,10 +1012,10 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
 	}
 
 	/** Remove the given node from the model.  The node is assumed
-	 *  to be a Location belonging to an entity.
+	 *  to be a Locatable belonging to an entity.
 	 */
 	public void removeNode(final Object eventSource, Object node) {
-            NamedObj deleteObj = (NamedObj)((Location)node).getContainer();
+            NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
 
             // First remove all the in and out edges.
             // This isn't done automatically by the Ptolemy kernel, because

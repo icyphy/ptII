@@ -35,7 +35,6 @@ import diva.canvas.Figure;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.Location;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 
@@ -75,7 +74,7 @@ public class IconController extends ParameterizedNodeController {
     /** An icon renderer. */
     public static class IconRenderer implements NodeRenderer {
 	public Figure render(Object n) {
-	    Location location = (Location)n;
+	    Locatable location = (Locatable)n;
 	    NamedObj object = (NamedObj) location.getContainer();
 
 	    // NOTE: this code is similar to that in PtolemyTreeCellRenderer

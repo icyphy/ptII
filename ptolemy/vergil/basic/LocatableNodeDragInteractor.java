@@ -141,7 +141,9 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             snapTranslation[1] = snapLocation[1] - originalUpperLeft[1];
         }
 
-        super.translate(e, snapTranslation[0], snapTranslation[1]);
+        // NOTE: The following is no longer necessary, since the translation
+        // occurs as a consequence of setting the location attribute.
+        // super.translate(e, snapTranslation[0], snapTranslation[1]);
 
         // Set the location attribute of each item that is translated.
         // NOTE: this works only because all the nodes that allow

@@ -67,7 +67,6 @@ import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.tree.EntityTreeModel;
 import ptolemy.vergil.tree.PTree;
@@ -1295,9 +1294,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	 */
 	public void translate(Object node, double dx, double dy) {
 	    super.translate(node, dx, dy);
-	    // NOTE: this is not the best way to handle locatables.
-	    if (node instanceof Location) {
-		double location[] = ((Location)node).getLocation();
+	    if (node instanceof Locatable) {
+		double location[] = ((Locatable)node).getLocation();
 		if (location == null) {
 		    location = new double[2];
 		    Figure figure = getController().getFigure(node);
@@ -1308,7 +1306,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 		    location[1] += dy;
 		}
                 try {
-                    ((Location)node).setLocation(location);
+                    ((Locatable)node).setLocation(location);
                 } catch (IllegalActionException ex) {
                     throw new InternalErrorException(ex.getMessage());
                 }

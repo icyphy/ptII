@@ -37,7 +37,6 @@ import ptolemy.actor.TypedActor;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.Location;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 import ptolemy.vergil.kernel.AttributeController;
@@ -129,7 +128,7 @@ public class StateController extends AttributeController {
      */
     public static class StateRenderer implements NodeRenderer {
 	public Figure render(Object n) {
-	    Location location = (Location)n;
+	    Locatable location = (Locatable)n;
 	    NamedObj object = (NamedObj) location.getContainer();
 	    EditorIcon icon;
             try {

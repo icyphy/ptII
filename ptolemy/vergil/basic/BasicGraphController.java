@@ -32,6 +32,7 @@ package ptolemy.vergil.basic;
 
 import diva.canvas.Figure;
 import diva.canvas.TransformContext;
+import diva.canvas.connector.Connector;
 import diva.canvas.event.EventLayer;
 import diva.canvas.interactor.Interactor;
 import diva.canvas.interactor.SelectionRenderer;
@@ -40,6 +41,7 @@ import diva.graph.GraphController;
 import diva.graph.GraphException;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
+import diva.graph.GraphUtilities;
 import diva.graph.NodeController;
 import diva.graph.NodeRenderer;
 import diva.gui.toolbox.FigureIcon;
@@ -50,7 +52,6 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.actor.ExternalIOPortController;
 import ptolemy.vergil.kernel.AttributeController;
@@ -68,6 +69,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
@@ -148,14 +150,14 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     /** Return the node controller appropriate for the given object.
      *  In this base class, the method checks to see whether the object
-     *  is an instance of Location and contains a NodeControllerFactory
+     *  is an instance of Locatable and contains a NodeControllerFactory
      *  (which is an attribute).  If it does, then it invokes that factory
      *  to create a node controller. Otherwise, it returns null.
      *  @param object The object to get a controller for.
      *  @return A custom node controller if there is one, and null otherwise.
      */
     public NodeController getNodeController(Object object) {
-        if (object instanceof Location) {
+        if (object instanceof Locatable) {
             Object semanticObject = getGraphModel().getSemanticObject(object);
             // Check to see whether
             // this is a NamedObj that contains a NodeControllerFactory.
@@ -205,17 +207,19 @@ public abstract class BasicGraphController extends AbstractGraphController
     }
 
     /** Set the figure associated with the given semantic object, and if
-     *  that semantic object is Location, then set up a value listener
-     *  so that if its value changes, then the figure is repainted.
-     *  The semantic object is normally an instance of Location, which
-     *  is an instance of Location.
+     *  that semantic object is Settable, then set up a value listener
+     *  so that if its value changes, then the valueChanged() method
+     *  is invoked.
+     *  The semantic object is normally an attribute that implements
+     *  the Locatable interface, and the value indicates the location
+     *  of the object.
      *  A null figure clears the association.
-     *  @param semanticObject The semantic object (normally a Location).
+     *  @param semanticObject The semantic object (normally a Locatable).
      */
     public void setFigure(Object semanticObject, Figure figure) {
         super.setFigure(semanticObject, figure);
-        if (semanticObject instanceof Location) {
-            ((Location)semanticObject).addValueListener(this);
+        if (semanticObject instanceof Settable) {
+            ((Settable)semanticObject).addValueListener(this);
         }
     }
 
@@ -227,27 +231,55 @@ public abstract class BasicGraphController extends AbstractGraphController
         _frame = frame;
     }
 
-    /** React to the fact that the specified Location has changed.
-     *  If the argument is the semantic object for a figure, then
-     *  repaint the figure.
-     *  @param location The object that has changed value.
+    /** React to the fact that the specified Settable has changed.
+     *  If the specified Settable implements the Locatable interface,
+     *  then this method will move the figure and reroute any connections
+     *  to it.
+     *  @param settable The object that has changed value.
      */
-    public void valueChanged(Settable location) {
-/* FIXME: Extremely frustratingly, it is impossible in diva to set
-   the location of a figure.  I give up. EAL 7/25/02.
-   Probably don't have to implement the ValueListener interface
-   when this goes away.
-        Figure figure = getFigure(location);
-        TransformContext context = figure.getTransformContext();
-        AffineTransform transform = context.getTransform();
-        double[] newLocation = ((Location)location).getLocation();
-        Point2D newPoint = new Point2D.Double(newLocation[0], newLocation[1]);
-        // transform.deltaTransform(newPoint, newPoint);
-        transform = new AffineTransform();
-        transform.setToTranslation(newPoint.getX(), newPoint.getY());
-        // FIXME: Have to give a delta, not an absolute.
-        figure.transform(transform);
-*/
+    public void valueChanged(Settable settable) {
+        if (settable instanceof Locatable) {
+            Locatable location = (Locatable)settable;
+            Figure figure = getFigure(location);
+            double originalUpperLeftX = figure.getOrigin().getX();
+            double originalUpperLeftY = figure.getOrigin().getY();
+
+            double[] newLocation = location.getLocation();
+
+            double translationX = newLocation[0] - originalUpperLeftX;
+            double translationY = newLocation[1] - originalUpperLeftY;
+
+            figure.translate(translationX, translationY);
+
+            // Reroute edges linked to this figure.
+            GraphModel model = getGraphModel();
+            Iterator inEdges = model.inEdges(figure.getUserObject());
+            while(inEdges.hasNext()) {
+                Figure connector = getFigure(inEdges.next());
+                if (connector instanceof Connector) {
+                    ((Connector)connector).reroute();
+                }
+            }
+            Iterator outEdges = model.outEdges(figure.getUserObject());
+            while(outEdges.hasNext()) {
+                Figure connector = getFigure(outEdges.next());
+                if (connector instanceof Connector) {
+                    ((Connector)connector).reroute();
+                }
+            }
+            if(model.isComposite(figure.getUserObject())) {
+                Iterator edges = GraphUtilities.partiallyContainedEdges(
+                        figure.getUserObject(), model);
+                while(edges.hasNext()) {
+                    Figure connector = getFigure(edges.next());
+                    if (connector instanceof Connector) {
+                        ((Connector)connector).reroute();
+                    }
+                }
+            }
+            // FIXME: Apparently, we need to repaint.
+            getFrame()._jgraph.repaint();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -446,7 +478,7 @@ public abstract class BasicGraphController extends AbstractGraphController
             }
 	    moml.append("<port name=\"" + portName + "\">\n");
 	    moml.append("<property name=\"" + locationName +
-                    "\" class=\"ptolemy.moml.Location\"/>\n");
+                    "\" class=\"ptolemy.kernel.util.Location\"/>\n");
             if (_prototype != null) {
                 if (_prototype.isInput()) {
                     moml.append("<property name=\"input\"/>");

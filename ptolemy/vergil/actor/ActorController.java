@@ -51,9 +51,9 @@ import ptolemy.actor.gui.TextEffigy;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.moml.Location;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.debugger.BreakpointDialogFactory;
@@ -143,12 +143,12 @@ public class ActorController extends AttributeController {
 
         // The filter for the layout algorithm of the ports within this
         // entity. This returns true only if the argument is a Port
-        // and the parent is an instance of Location.
+        // and the parent implements Locatable.
         Filter portFilter = new Filter() {
             public boolean accept(Object candidate) {
                 GraphModel model = getController().getGraphModel();
                 if (candidate instanceof Port &&
-                        model.getParent(candidate) instanceof Location) {
+                        model.getParent(candidate) instanceof Locatable) {
                     return true;
                 } else {
                     return false;

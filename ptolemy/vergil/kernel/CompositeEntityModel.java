@@ -39,7 +39,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.Location;
 import ptolemy.moml.Vertex;
 
 import java.util.Iterator;
@@ -50,9 +49,9 @@ import java.util.List;
 //// CompositeEntityModel
 /**
 A diva node model for a Ptolemy II composite entity. Each element of
-the graph model is represented by an instance of Location, which is
+the graph model is represented by an instance of Locatable, which is
 an attribute contained by a Ptolemy II object.  If a Ptolemy II object
-is found that does not contain a Location, then one is created if needed.
+is found that does not contain a Locatable, then one is created if needed.
 The graph model consists of locations for various elements in the composite.
 In particular, one location will be included for each contained entity, port,
 director, and visible attribute.  In each case except visible attributes,
@@ -65,7 +64,7 @@ create a Vertex.
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 @since Ptolemy II 2.0
-@see ptolemy.moml.Location
+@see ptolemy.kernel.util.Location
  */
 public class CompositeEntityModel implements CompositeModel {
 
@@ -124,13 +123,13 @@ public class CompositeEntityModel implements CompositeModel {
      *  @param object The object for which a location is needed.
      *  @return The location of the object, or a new location if none.
      */
-    protected Location _getLocation(NamedObj object) {
-	List locations = object.attributeList(Location.class);
+    protected Locatable _getLocation(NamedObj object) {
+	List locations = object.attributeList(Locatable.class);
 	if (locations.size() > 0) {
-	    return (Location)locations.get(0);
+	    return (Locatable)locations.get(0);
 	} else {
 	    try {
-		Location location = new Location(object, "_location");
+		Locatable location = new Location(object, "_location");
 		return location;
 	    }
 	    catch (Exception e) {
@@ -219,7 +218,7 @@ public class CompositeEntityModel implements CompositeModel {
             } else {
                 // The object is not a director, so only give a location
                 // if one exists already.
-                List locations = attribute.attributeList(Location.class);
+                List locations = attribute.attributeList(Locatable.class);
                 if (locations.size() > 0) {
                     nodes.add(locations.get(0));
                 }

@@ -46,7 +46,6 @@ import ptolemy.actor.gui.Configuration;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.Location;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphController;
@@ -152,12 +151,12 @@ public class ActorViewerGraphController extends BasicGraphController {
 
     /** Return the node controller appropriate for the given object.
      *  If the object is an instance of Vertex, then return the
-     *  local relation controller.  If it is an instance of Location,
+     *  local relation controller.  If it implements Locatable,
      *  then determine whether it is an Entity, Attribute, or Port,
      *  and return the appropriate default controller.
      *  If the argument is an instance of Port, then return the
      *  local port controller.
-     *  @param object A Vertex, Location, or Port.
+     *  @param object A Vertex, Locatable, or Port.
      */
     public NodeController getNodeController(Object object) {
         // Defer to the superclass if it can provide a controller.
@@ -177,7 +176,7 @@ public class ActorViewerGraphController extends BasicGraphController {
         // Superclass cannot provide a controller. Use defaults.
 	if (object instanceof Vertex) {
             return _relationController;
-        } else if (object instanceof Location) {
+        } else if (object instanceof Locatable) {
             Object semanticObject = getGraphModel().getSemanticObject(object);
             if (semanticObject instanceof Entity) {
                 return _entityController;

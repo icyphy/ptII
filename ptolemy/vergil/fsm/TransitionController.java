@@ -65,7 +65,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.domains.fsm.kernel.Transition;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.EditParametersFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
@@ -302,8 +301,8 @@ public class TransitionController extends BasicEdgeController {
     public class LinkTarget extends PerimeterTarget {
         public boolean acceptHead(Connector c, Figure f) {
             Object object = f.getUserObject();
-   	    if (object instanceof Location) {
-                Location location = (Location)object;
+   	    if (object instanceof Locatable) {
+                Locatable location = (Locatable)object;
                 if (location.getContainer() instanceof Entity)
                     return true;
                 else

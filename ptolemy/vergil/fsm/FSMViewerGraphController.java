@@ -45,7 +45,6 @@ import ptolemy.domains.fsm.kernel.StateEvent;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.Location;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.kernel.AnimationRenderer;
@@ -131,7 +130,7 @@ public class FSMViewerGraphController extends BasicGraphController {
         }
 
         // Superclass cannot provide a controller. Use defaults.
-        if (object instanceof Location) {
+        if (object instanceof Locatable) {
             Object semanticObject = getGraphModel().getSemanticObject(object);
             if (semanticObject instanceof Entity) {
                 return _stateController;

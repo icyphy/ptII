@@ -47,7 +47,6 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
-import ptolemy.moml.Location;
 import ptolemy.vergil.kernel.AttributeController;
 
 import javax.swing.SwingConstants;
@@ -162,13 +161,13 @@ public class ExternalIOPortController extends AttributeController {
      */
     public class PortRenderer implements NodeRenderer {
 
-        /** Render a port.  If the argument is an instance of Location,
-         *  then render the port that is the container of that location.
+        /** Render a port.  If the argument implements Locatable,
+         *  then render the port that is the container of that locatable.
          *  If the argument is an instance of _GENERIC_INPUT,
          *  _GENERIC_OUTPUT, or _GENERIC_INOUT, then render an input,
          *  output, or inout port with no name.  If the argument is null,
          *  then render a port that is neither an input nor an output.
-         *  @param n An instance of LOCATION or one of the objects
+         *  @param n An instance of Locatable or one of the objects
          *   _GENERIC_INPUT, _GENERIC_OUTPUT, or _GENERIC_INOUT.
          */
 	public Figure render(Object n) {
@@ -180,7 +179,7 @@ public class ExternalIOPortController extends AttributeController {
 	    // OPPOSITE direction that is used to layout the port in the
 	    // Entity Controller.
 	    int direction;
-	    Location location = (Location)n;
+	    Locatable location = (Location)n;
 	    if (location != null) {
 		final Port port = (Port)location.getContainer();
 

@@ -59,7 +59,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.LibraryAttribute;
-import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.actor.ExternalIOPortController;
 import ptolemy.vergil.basic.BasicGraphFrame;
@@ -423,7 +422,7 @@ public class FSMGraphController extends FSMViewerGraphController {
                         + "\" class=\"ptolemy.domains.fsm.kernel.State\">\n"
                         + "<property name=\""
                         + locationName
-                        + "\" class=\"ptolemy.moml.Location\"/>\n"
+                        + "\" class=\"ptolemy.kernel.util.Location\"/>\n"
                         + "<property name=\"_centerName\""
                         + " class=\"ptolemy.kernel.util.SingletonAttribute\""
                         + "/>\n"
