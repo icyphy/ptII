@@ -48,6 +48,14 @@ public interface Actor extends Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Create any neccessary receivers. This method should iterate 
+     *  over the input ports of the actor and call createReceivers() 
+     *  on each one.
+     *  @exception IllegalActionException thrown if the receivers 
+     *   could not be created.
+     */
+    public void createReceivers() throws IllegalActionException;
+    
     /** Return the local director, if there is one, otherwise the executive
      *  director, if there is one, otherwise null.
      *  @return The director.

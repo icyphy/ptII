@@ -211,6 +211,76 @@ public class IOPort extends ComponentPort {
         return newobj;
     }
 
+    /** Create receivers for this port. This method should only be 
+     *  called on input ports. It should also normally only be called 
+     *  in the prefire method.
+     *  It is <i>not</i> synchronized on the workspace, so the
+     *  caller should be. This is because obaining write access 
+     *  increases the version number of the workspace, which 
+     *  invalidates any previous cached information in the workspace.
+     *  @exception IllegalActionException Thrown if this port is not 
+     *   an opaque input port or if there is no director.
+     *  FIXME: perhaps we need to use writeAccess?
+     */
+    public void createReceivers() throws IllegalActionException {
+        if (!(isInput() && isOpaque())) {
+            String message =  "createReceivers: Can only create receivers";
+            message += " on opaque input ports.";
+            throw new IllegalActionException(this, message);
+        }
+
+        int portWidth = getWidth();
+        if (portWidth <= 0) return;
+
+        boolean changed = false;
+
+        // Do this here so that derived classes do not need to have the
+        // hash table if they are not using it.
+        if (_localReceiversTable == null) {
+            _localReceiversTable = new Hashtable();
+        }
+
+        Enumeration relations = linkedRelations();
+        while (relations.hasMoreElements()) {
+            IORelation relation = (IORelation) relations.nextElement();
+            boolean insideLink = isInsideLinked(relation);
+            int width = relation.getWidth();
+
+            // There is a list of receivers for this relation.
+            // Check to see that the width is valid, since it's
+            // possible that the width of the port has changed since
+            // this list was constructed.
+            Receiver[][] result =
+                (Receiver[][])_localReceiversTable.get(relation);
+            if (result.length != width){
+                changed = true;
+                if (insideLink) {
+                    // Inside links need to have receivers compatible
+                    // with the local director.  We need to create those
+                    // receivers here.
+                    for (int i = 0; i< width; i++) {
+                        // This throws an exception if there is no director.
+                        result[i][0] = _newInsideReceiver();
+                    }
+                } else {
+                    // We have an outside link, but no table entry in 
+                    // the cache.
+                    // Create a new set of receivers compatible with the
+                    // executive director.
+                    for (int i = 0; i< width; i++) {
+                        // This throws an exception if there is no director.
+                        result[i][0] = _newReceiver();
+                    }
+                }
+                // Save it, possibly replacing a previous version.
+                // NOTE: if a previous version is replaced, then any data
+                // in the receivers is lost.
+                _localReceiversTable.put(relation, result);
+            }
+        }
+    } 
+       
+
     /** Deeply enumerate the input ports connected to this port on the
      *  outside.  This method calls deepConnectedPorts() of the super
      *  class to get all the deeply connected ports and returns only the
@@ -517,12 +587,12 @@ public class IOPort extends ComponentPort {
             workspace().getReadAccess();
             // Allow inside relations also to support opaque,
             // non-atomic entities.
-            if (!isLinked(relation) && !isInsideLinked(relation)) {
+            boolean insidelink = isInsideLinked(relation);
+            if (!isLinked(relation) && !insidelink) {
                 throw new IllegalActionException(this, relation,
                         "getReceivers: Relation argument is not " +
                         "linked to me.");
             }
-            boolean insidelink = isInsideLinked(relation);
             boolean opaque = isOpaque();
             if (!isInput() && !(opaque && insidelink && isOutput())) {
                 return null;
@@ -531,46 +601,16 @@ public class IOPort extends ComponentPort {
             int width = relation.getWidth();
             if (width <= 0) return null;
 
+            Receiver[][] result;
             // If the port is opaque, return the local Receivers for the
             // relation.
             if(opaque) {
-                // Do this here so that derived classes do not need to have the
-                // hash table if they are not using it.
-                if (_localReceiversTable == null) {
-                    _localReceiversTable = new Hashtable();
+                // Get the list of receivers for this relation.
+                result = (Receiver[][])_localReceiversTable.get(relation);
+                if ((result == null) || (result.length !=width))  {
+                    throw new InvalidStateException(this, 
+                            "getReceivers(IORelation): cache has changed.");
                 }
-
-                if(_localReceiversTable.containsKey(relation) ) {
-                    // There is a list of receivers for this relation.
-                    // Check to see that the width is valid, since it's
-                    // possible that the width of the port has changed since
-                    // this list was constructed.
-                    Receiver[][] result =
-                        (Receiver[][])_localReceiversTable.get(relation);
-                    if (result.length == width) return result;
-                }
-                Receiver[][] result = new Receiver[width][1];
-                if (insidelink) {
-                    // Inside links need to have receivers compatible
-                    // with the local director.  We need to create those
-                    // receivers here.
-                    for (int i = 0; i< width; i++) {
-                        // This throws an exception if there is no director.
-                        result[i][0] = _newInsideReceiver();
-                    }
-                } else {
-                    // We have an outside link, but no table entry in the cache.
-                    // Create a new set of receivers compatible with the
-                    // executive director.
-                    for (int i = 0; i< width; i++) {
-                        // This throws an exception if there is no director.
-                        result[i][0] = _newReceiver();
-                    }
-                }
-                // Save it, possibly replacing a previous version.
-                // NOTE: if a previous version is replaced, then any data
-                // in the receivers is lost.
-                _localReceiversTable.put(relation, result);
                 return result;
             } else {
                 // If a transparent port, ask its all inside receivers,
@@ -582,7 +622,7 @@ public class IOPort extends ComponentPort {
                 }
                 int insideWidth = insideRecvrs.length;
                 int index = 0;
-                Receiver[][] result = new Receiver[width][];
+                result = new Receiver[width][];
                 Enumeration outsideRels = linkedRelations();
                 while(outsideRels.hasMoreElements()) {
                     IORelation r = (IORelation) outsideRels.nextElement();

@@ -234,10 +234,12 @@ public class Director extends NamedObj implements Executable {
                 Enumeration allactors = container.deepGetEntities();
                 while (allactors.hasMoreElements()) {
                     Actor actor = (Actor)allactors.nextElement();
+                    actor.createReceivers();
                     actor.initialize();
                 }
             } else {
                 // This is the executive director.
+                container.createReceivers();
                 container.initialize();
             }
         }
@@ -351,7 +353,7 @@ public class Director extends NamedObj implements Executable {
      *   container or one of the deeply contained actors throws it.
      *  @exception IllegalActionException If the prefire() method of the
      *   container or one of the deeply contained actors throws it, or a
-     *   pending mutation throws it.
+     *   pending mutation throws it, or if all receivers could not be created.
      *  @exception NameDuplicationException If a pending mutation throws it.
      */
     public boolean prefire()
@@ -361,13 +363,22 @@ public class Director extends NamedObj implements Executable {
         if (container!= null) {
             // Perform mutations and initializations until there are no
             // more to perform.
+            boolean mutationOccured = false;
             while (_performMutations()) {
+                mutationOccured = true;
                 // NOTE: Should type resolution be done here?
                 // Initialize any new actors
                 _actorListener.initializeNewActors();
             }
             if (!_executivedirector) {
                 // This is the local director.
+                // If a mutation occured, need to create create new receivers.
+                if (mutationOccured) {
+                    Enumeration allactors = container.deepGetEntities();
+                    while (allactors.hasMoreElements()) {
+                        ((Actor)allactors.nextElement()).createReceivers();
+                    }
+                }
                 // Invoke the prefire() method of deeply contained entities.
                 Enumeration allactors = container.deepGetEntities();
                 boolean allready = true;

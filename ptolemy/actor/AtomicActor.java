@@ -114,6 +114,20 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return newobj;
     }
 
+    /** Create any neccessary receivers. This method iterates 
+     *  over the input ports of this AtomocActor and calls 
+     *  createReceivers() on each one.
+     *  @exception IllegalActionException thrown if could not create the 
+     *   receivers.
+     */
+    public void createReceivers() throws IllegalActionException {
+        Enumeration inputPorts = inputPorts();
+        while (inputPorts.hasMoreElements()) {
+            IOPort inport = (IOPort)inputPorts.nextElement();
+            inport.createReceivers();
+        }
+    }
+
     /** Return the director responsible for the execution of this actor.
      *  In this class, this is always the executive director.
      *  Return null if either there is no container or the container has no
@@ -151,7 +165,8 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  internal members of an actor and produces initial output data.
      *
      *  @exception CloneNotSupportedException Not thrown in this base class.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException Thrown if could not create the 
+     *   receivers.
      */
     public void initialize()
             throws CloneNotSupportedException, IllegalActionException {
