@@ -1548,7 +1548,7 @@ echo "configure:1546: checking for javax.sound" >&5
     startdir=`pwd`
     cd "$srcdir/config"
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if $JAVAC javasoundTest.java ; then
+    if "$JAVAC" javasoundTest.java ; then
 	echo "$ac_t""ok" 1>&6
 	PTJAVASOUND_DIR=javasound
     else
