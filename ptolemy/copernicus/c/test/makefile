@@ -1,7 +1,7 @@
 # Makefile for testing Ptolemy II C code generation
 #
-# @Authors:  (makefile) Shuvra S. Bhattacharyya, Christopher Hylands --- based 
-# on a file by Tom Parks.
+# @Authors:  (makefile) Ankush Varma, Shuvra S. Bhattacharyya, 
+# Christopher Hylands --- based on a file by Tom Parks.
 #
 # @Version: $Id$
 #
