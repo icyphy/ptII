@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -39,17 +39,18 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.plot.*;
 
-/** A sequence plotter.  This plotter contains an instance of the Plot
- *  class from the Ptolemy plot package as a public member. Data at
- *  the input, which can consist of any number of channels, is plotted
- *  on this instance.  Each channel is plotted as a separate data set.
- *  The horizontal axis represents the count of the iterations. The
- *  input is of type DoubleToken. The horizontal increment between
- *  samples can be set. Its default value is 1.0. The horizontal value
- *  of the first sample can also be set. Its default value is 0.0.
- *
- *  @author  Edward A. Lee, Bart Kienhuis
- *  @version $Id$
+/**
+A sequence plotter.  This plotter contains an instance of the Plot
+class from the Ptolemy plot package as a public member. Data at
+the input, which can consist of any number of channels, is plotted
+on this instance.  Each channel is plotted as a separate data set.
+The horizontal axis represents the count of the iterations. The
+input is of type DoubleToken. The horizontal increment between
+samples can be set. Its default value is 1.0. The horizontal value
+of the first sample can also be set. Its default value is 0.0.
+
+@author  Edward A. Lee, Bart Kienhuis
+@version $Id$
  */
 public class SequencePlotter extends Plotter implements SequenceActor {
 
@@ -65,7 +66,7 @@ public class SequencePlotter extends Plotter implements SequenceActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // create the input port and make it a multiport.
+        // Create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         input.setTypeEquals(BaseType.DOUBLE);
@@ -82,7 +83,7 @@ public class SequencePlotter extends Plotter implements SequenceActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** @serial Input port, which has type DoubleToken. */
+    /** Input port, which has type DoubleToken. */
     public TypedIOPort input;
 
     /** The increment of the X axis. */
@@ -139,10 +140,10 @@ public class SequencePlotter extends Plotter implements SequenceActor {
      *  a function of the iteration number. The iteration number
      *  starts at the value given by the <i>xInit</i> value. The
      *  increments on the iteration numbers are given by the
-     *  <i>xUnit</i> value. The plot is generated in the postfire to
-     *  ensure that data has settled.
+     *  <i>xUnit</i> value. The input data are plotted in postfire() to
+     *  ensure that the data have settled.
      *  @exception IllegalActionException If there is no director,
-     *  or if the base class throws it.  
+     *   or if the base class throws it.  
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {
@@ -162,12 +163,12 @@ public class SequencePlotter extends Plotter implements SequenceActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    /** @serial X axis counter. */
+    /** X axis counter. */
     private double _xValue;
 
-    /** @serial Start of the X axis counter. */
+    /** Start of the X axis counter. */
     private double _xInit;
 
-    /** @serial Increment of the X axis counter. */
+    /** Increment of the X axis counter. */
     private double _xUnit;
 }

@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (vogel@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -42,12 +42,13 @@ import ptolemy.plot.*;
 
 import java.awt.Container;
 
-/** This actor produces as its output a signal that is sketched by the
+/** This actor produces as its output a signal that has been sketched by the
  *  user on the screen.  The <i>length</i> parameter specifies the
  *  number of samples in the sketched signal.  The <i>period</i>
  *  parameter, if greater than zero, specifies the period with which
  *  the signal should be repeated (in samples).  If the period is longer
- *  than the length, then zeros will be inserted.
+ *  than the length, then zeros will be inserted. If the period is less
+ *  than the length, then the last few values will not be used.
  *  If this parameter is zero or
  *  negative, then the sketched signal is produced exactly once,
  *  at the beginning of the execution of the model.  If the period
@@ -69,8 +70,8 @@ import java.awt.Container;
  *  This is how you create a shared plot.  That same instance of
  *  EditablePlot can be used by another actor, such as SequencePlotter,
  *  to display data.  Be sure to set the <i>dataset</i> parameter
- *  of this actor or the <i>startingDataset</i> parameter of the
- *  other actor so that they do not use the same datasets.
+ *  of this actor or the <i>dataset</i> parameter of the
+ *  other actor so that they do not use the same dataset numbers.
  *
  *  @author  Edward A. Lee
  *  @version $Id$
@@ -95,13 +96,8 @@ public class SketchedSource extends Source
 
         // Create the parameters.
         length = new Parameter(this, "length", new IntToken(100));
-        length.setTypeEquals(BaseType.INT);
-
         period = new Parameter(this, "period", new IntToken(0));
-        period.setTypeEquals(BaseType.INT);
-
-        dataset = new Parameter(this, "dataset",
-                new IntToken(0));
+        dataset = new Parameter(this, "dataset", new IntToken(0));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -121,7 +117,7 @@ public class SketchedSource extends Source
      */
     public Parameter period;
 
-    /** @serial The starting dataset number to which data is plotted.
+    /** The starting dataset number to which data is plotted.
      *  This parameter has type IntToken, with default value 0.
      *  Its value must be non-negative.
      */
@@ -147,21 +143,21 @@ public class SketchedSource extends Source
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
      *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        SketchedSource newobj = (SketchedSource)super.clone(ws);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        SketchedSource newobj = (SketchedSource)super.clone(workspace);
         newobj.length = (Parameter)newobj.getAttribute("length");
         newobj.period = (Parameter)newobj.getAttribute("period");
         newobj.dataset = (Parameter)newobj.getAttribute("dataset");
         return newobj;
     }
 
-    /** Produce one data sample from the sketched signal.
-     *  FIXME - more details.
+    /** Produce one data sample from the sketched signal on the output
+     *  port.
      *  @exception IllegalActionException If there is no director, or
      *   if the base class throws it.
      */
@@ -187,8 +183,9 @@ public class SketchedSource extends Source
         }
     }
 
-    /** Reset the x axis counter, and call the base class.
-     *  Also, read the sketched data.
+    /** Override the base class to reset the X axis counter, ensuring
+     *  that the next output produced by fire() is the first value of the
+     *  sketch.  Also, read the sketched data.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -198,7 +195,6 @@ public class SketchedSource extends Source
         }
         // NOTE: Do not clear the plot here, as that will erase
         // user-entered data!
-
         _count = 0;
         int set = ((IntToken)dataset.getToken()).intValue();
         _data = ((EditablePlot)plot).getData(set);
@@ -208,15 +204,11 @@ public class SketchedSource extends Source
      *  This method needs to be called before the first call to initialize().
      *  Otherwise, the plot will be placed in its own frame.
      *  The plot is also placed in its own frame if this method
-     *  is called with a null argument.  The size of the plot,
-     *  unfortunately, cannot be effectively determined from the size
-     *  of the container because the container may not yet be laid out
-     *  (its size will be zero).  Thus, you will have to explicitly
-     *  set the size of the plot by calling plot.setSize().
+     *  is called with a null argument.
      *  This method can be called with an instance of EditablePlot
      *  as an argument, in which case, it will use that instance.
      *  This way, the same plot object can be shared by a SequencePlotter
-     *  actor and an instance of this actor.
+     *  actor and this actor.
      *
      *  @param container The container into which to place the plot.
      */
@@ -254,24 +246,24 @@ public class SketchedSource extends Source
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
 
-    /** @serial The editable plot object. */
+    /** The editable plot object. */
     public EditablePlot plot;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
-    /** @serial GUI Container into which this plot should be placed */
+    /** Graphical container into which this plot should be placed */
     protected Container _container;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    /** @serial Current position in the signal. */
+    /** Current position in the signal. */
     private int _count;
 
-    /** @serial Sketched data. */
+    /** Sketched data. */
     private double[][] _data;
 
-    /** @serial Zero token. */
+    /** Zero token. */
     private DoubleToken _zero = new DoubleToken(0.0);
 }

@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -44,18 +44,19 @@ import ptolemy.actor.*;
 import ptolemy.plot.*;
 import ptolemy.plot.plotml.PlotMLParser;
 
-/** Base class for plotters.  This class contains an instance of the
- *  Plot class from the Ptolemy plot package as a public member.
- *  It provides a parameter that determines whether to fill the plot
- *  when wrapup is invoked.  It also provides a parameter
- *  <i>startingDataset</i>, which specifies the starting point
- *  for the number of the dataset to use to create the plots.
- *  This defaults to zero, but will typically be set to a positive
- *  number when more than one instance of a plotter actor shares
- *  the same plot object.
- *
- *  @author  Edward A. Lee
- *  @version $Id$
+/**
+Base class for plotters.  This class contains an instance of the
+Plot class from the Ptolemy plot package as a public member.
+It provides a parameter that determines whether to fill the plot
+when wrapup is invoked.  It also provides a parameter
+<i>startingDataset</i>, which specifies the starting point
+for the number of the dataset to use to create the plots.
+This defaults to zero, but will typically be set to a positive
+number when more than one instance of a plotter actor shares
+the same plot object.
+
+@author  Edward A. Lee
+@version $Id$
  */
 public class Plotter extends TypedAtomicActor
          implements Configurable, Placeable {
@@ -80,15 +81,15 @@ public class Plotter extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** @serial The plot object. */
-    public Plot plot;
+    /** The plot object. */
+    public transient Plot plot;
 
-    /** @serial If true, fill the plot when wrapup is called.
+    /** If true, fill the plot when wrapup is called.
      *  This parameter has type BooleanToken, and default value true.
      */
     public Parameter fillOnWrapup;
 
-    /** @serial The starting dataset number to which data is plotted.
+    /** The starting dataset number to which data is plotted.
      *  This parameter has type IntToken, with default value 0.
      *  Its value must be non-negative.
      */
@@ -121,6 +122,8 @@ public class Plotter extends TypedAtomicActor
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Plotter newobj = (Plotter)super.clone(ws);
+        newobj.plot = null;
+        newobj._frame = null;
         newobj.fillOnWrapup
                 = (Parameter)newobj.getAttribute("fillOnWrapup");
         newobj.startingDataset
@@ -214,12 +217,12 @@ public class Plotter extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
-    /** @serial Container into which this plot should be placed */
+    /** Container into which this plot should be placed */
     protected Container _container;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
     // Frame into which plot is placed, if any.
-    private PlotFrame _frame;
+    private transient PlotFrame _frame;
 }

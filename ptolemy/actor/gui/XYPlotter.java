@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (liuj@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -36,26 +36,26 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
-import ptolemy.actor.lib.TimedActor;
 import ptolemy.plot.*;
 import java.awt.Panel;
 
-/** A XY plotter.  This plotter contains an instance of the Plot class
- *  from the Ptolemy plot package as a public member.
- *  Data at <i>inputX</i> and <i>inputY</i> are plotted on this instance.
- *  Both <i>inputX</i> and <i>inputY</i> are multiports with type DoubleToken.
- *  When plotted, the first channel of <i>inputX</i> and the first channel
- *  of <i>inputY</i> are together considered the first signal,
- *  then the second channel of <i>inputX</i> and the second channel
- *  of <i>inputY</i> are considered the second signal, and so on.
- *  The current implementation requires that the <i>inputX</i> and
- *  <i>inputY</i> have the same width. The actor
- *  assumes that there is at least one token available on each channel
- *  when it fires. The horizontal axis is given by the value of the
- *  input from <i>inputX</i> and vertical axis is given by <i>inputY</i>.
- *
- *  @author Jie Liu
- *  @version $Id$
+/**
+An XY plotter.  This plotter contains an instance of the Plot class
+from the Ptolemy plot package as a public member.
+Data at <i>inputX</i> and <i>inputY</i> are plotted on this instance.
+Both <i>inputX</i> and <i>inputY</i> are multiports with type DOUBLE.
+When plotted, the first channel of <i>inputX</i> and the first channel
+of <i>inputY</i> are together considered the first signal,
+then the second channel of <i>inputX</i> and the second channel
+of <i>inputY</i> are considered the second signal, and so on.
+This requires that <i>inputX</i> and
+<i>inputY</i> have the same width. The actor
+assumes that there is at least one token available on each channel
+when it fires. The horizontal axis is given by the value of the
+input from <i>inputX</i> and vertical axis is given by <i>inputY</i>.
+
+@author Jie Liu
+@version $Id$
  */
 public class XYPlotter extends Plotter {
 
@@ -84,10 +84,10 @@ public class XYPlotter extends Plotter {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input port for the horizontal axis, with type DoubleToken. */
+    /** Input port for the horizontal axis, with type DOUBLE. */
     public TypedIOPort inputX;
 
-    /** Input port for the vertical axis, with type DoubleToken. */
+    /** Input port for the vertical axis, with type DOUBLE. */
     public TypedIOPort inputY;
 
     ///////////////////////////////////////////////////////////////////
@@ -95,29 +95,26 @@ public class XYPlotter extends Plotter {
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has an
      *   attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        XYPlotter newobj = (XYPlotter)super.clone(ws);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        XYPlotter newobj = (XYPlotter)super.clone(workspace);
         newobj.inputX = (TypedIOPort)newobj.getPort("inputX");
-        newobj.inputX.setMultiport(true);
-        newobj.inputX.setTypeEquals(BaseType.DOUBLE);
         newobj.inputY = (TypedIOPort)newobj.getPort("inputY");
-        newobj.inputY.setMultiport(true);
-        newobj.inputY.setTypeEquals(BaseType.DOUBLE);
         return newobj;
     }
 
-    /** Read at most one input from each channel of each input port
+    /** Read at most one token from each channel of each input port
      *  and plot it.
      *  This is done in postfire to ensure that data has settled.
      *  The width of the inputs should be the same, otherwise a
-     *  exception will be thrown. For each matched input channel
-     *  pair, each data channel is assumed to have
-     *  at least one token. Otherwise,
+     *  exception will be thrown. The channels from the two input
+     *  ports are matched to give the X and Y position of a single
+     *  data point.  Each matched channel pair must have
+     *  at least one token, or
      *  a token will be consumed from the input channel that has
      *  a token, but nothing will be plotted.
      *  @exception IllegalActionException If there is no director,

@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -40,13 +40,14 @@ import ptolemy.plot.*;
 
 import java.awt.Container;
 
-/** A histogram plotter.  This plotter contains an instance of the Histogram
- *  class from the Ptolemy plot package as a public member.  A histogram
- *  of data at the input port, which can consist of any number of channels,
- *  is plotted on this instance.
- *
- *  @author  Edward A. Lee
- *  @version $Id$
+/**
+A histogram plotter.  This plotter contains an instance of the Histogram
+class from the Ptolemy plot package as a public member.  A histogram
+of data at the input port, which can consist of any number of channels,
+is plotted on this instance.
+
+@author  Edward A. Lee
+@version $Id$
  */
 public class HistogramPlotter extends TypedAtomicActor implements Placeable {
 
@@ -73,54 +74,36 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** @serial If true, fill the histogram when wrapup is called.
+    /** If true, fill the histogram when wrapup is called.
      *  This parameter has type BooleanToken, and default value true.
      */
     public Parameter fillOnWrapup;
 
-    /** @serial The histogram object. */
-    public Histogram histogram;
+    /** The histogram object. */
+    public transient Histogram histogram;
 
-    /** @serial Input port, which has type DoubleToken. */
+    /** Input port, which has type DoubleToken. */
     public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
+     *  base class and then sets the public variables.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has an
+     *   attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
-        try {
-            HistogramPlotter newobj =
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        HistogramPlotter newobj =
                 (HistogramPlotter)super.clone(ws);
-            newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.input.setMultiport(true);
-            newobj.input.setTypeEquals(BaseType.DOUBLE);
-            newobj.fillOnWrapup
-                = (Parameter)newobj.getAttribute("fillOnWrapup");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
-    }
-
-    /** Read all available inputs and update the histogram.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public void fire() throws IllegalActionException {
-        int width = input.getWidth();
-        for (int i = width - 1; i >= 0; i--) {
-            if (input.hasToken(i)) {
-                DoubleToken curToken = (DoubleToken)input.get(i);
-                double curValue = curToken.doubleValue();
-                histogram.addPoint(i, curValue);
-            }
-        }
+        newobj.histogram = null;
+        newobj._container = null;
+        newobj.input = (TypedIOPort)newobj.getPort("input");
+        newobj.fillOnWrapup
+                 = (Parameter)newobj.getAttribute("fillOnWrapup");
+        return newobj;
     }
 
     /** If the histogram has not already been created, create it using
@@ -132,6 +115,7 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
         if (histogram == null) {
             place(_container);
         } else {
+            // Clear the histogram without clearing the axes.
             histogram.clear(false);
         }
         histogram.repaint();
@@ -141,8 +125,7 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
      *  This method needs to be called before the first call to initialize().
      *  Otherwise, the histogram will be placed in its own frame.
      *  The histogram is also placed in its own frame if this method
-     *  is called with the argument null.
-     *  If the GUI container argument is an instance
+     *  is called with the argument null. If the argument is an instance
      *  of Histogram, then plot data to that instance.  If a container has been
      *  specified but it is not an instance of Histogram, then create a new
      *  instance of Histogram and place it in that container
@@ -152,7 +135,7 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
     public void place(Container container) {
         _container = container;
         if (_container == null) {
-            // place the histogram in its own frame.
+            // Place the histogram in its own frame.
             histogram = new Histogram();
             PlotFrame frame = new PlotFrame(getFullName(), histogram);
         } else {
@@ -164,6 +147,23 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
                 histogram.setButtons(true);
             }
         }
+    }
+
+    /** Read at most one input token from each input channel
+     *  and update the histogram.
+     *  This is done in postfire to ensure that data has settled.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean postfire() throws IllegalActionException {
+        int width = input.getWidth();
+        for (int i = width - 1; i >= 0; i--) {
+            if (input.hasToken(i)) {
+                DoubleToken curToken = (DoubleToken)input.get(i);
+                double curValue = curToken.doubleValue();
+                histogram.addPoint(i, curValue);
+            }
+        }
+        return super.postfire();
     }
 
     /** If the <i>fillOnWrapup</i> parameter is true, rescale the
@@ -181,6 +181,6 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    /** @serial Container into which this histogram should be placed */
-    private Container _container;
+    /** Container into which this histogram should be placed */
+    private transient Container _container;
 }

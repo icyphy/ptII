@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -40,14 +40,15 @@ import ptolemy.actor.lib.TimedActor;
 import ptolemy.plot.*;
 import java.awt.Panel;
 
-/** A signal plotter.  This plotter contains an instance of the Plot class
- *  from the Ptolemy plot package as a public member.  Data at the input, which
- *  can consist of any number of channels, is plotted on this instance.
- *  Each channel is plotted as a separate data set.
- *  The horizontal axis represents time.
- *
- *  @author  Edward A. Lee
- *  @version $Id$
+/**
+A signal plotter.  This plotter contains an instance of the Plot class
+from the Ptolemy plot package as a public member.  Data at the input, which
+can consist of any number of channels, is plotted on this instance.
+Each channel is plotted as a separate data set.
+The horizontal axis represents time.
+
+@author  Edward A. Lee
+@version $Id$
  */
 public class TimedPlotter extends Plotter implements TimedActor {
 
@@ -63,7 +64,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // create the input port and make it a multiport.
+        // Create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         input.setTypeEquals(BaseType.DOUBLE);
@@ -72,7 +73,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** @serial Input port, which has type DoubleToken. */
+    /** Input port, which has type DoubleToken. */
     public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
@@ -88,8 +89,6 @@ public class TimedPlotter extends Plotter implements TimedActor {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         TimedPlotter newobj = (TimedPlotter)super.clone(ws);
         newobj.input = (TypedIOPort)newobj.getPort("input");
-        newobj.input.setMultiport(true);
-        newobj.input.setTypeEquals(BaseType.DOUBLE);
         return newobj;
     }
 
