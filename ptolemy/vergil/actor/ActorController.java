@@ -51,15 +51,19 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TextEffigy;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.debugger.BreakpointDialogFactory;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogFactory;
+import ptolemy.vergil.kernel.PortLocationDialogFactory;
+import ptolemy.vergil.kernel.SetIconAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PortSite;
@@ -71,9 +75,11 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.KeyStroke;
@@ -119,7 +125,11 @@ public class ActorController extends AttributeController {
         if (access == FULL) {
             // Add to the context menu.
             _portDialogFactory = new PortDialogFactory();
+            _portLocationDialogFactory = new PortLocationDialogFactory();
             _menuFactory.addMenuItemFactory(_portDialogFactory);
+            _menuFactory.addMenuItemFactory(_portLocationDialogFactory);
+            _menuFactory.addMenuItemFactory(
+                     new MenuActionFactory(new SetIconAction()));
         }
 
 	if (_configuration != null) {
@@ -129,7 +139,11 @@ public class ActorController extends AttributeController {
                     new MenuActionFactory(_lookInsideAction));
 	}
 
-        // "Listen to Actor"
+        // NOTE: This requires that the configuration be non null, or it
+        // will report an error.
+        _menuFactory.addMenuItemFactory(
+                new MenuActionFactory(new SaveInLibraryAction()));
+
         _menuFactory.addMenuItemFactory(
                 new MenuActionFactory(new ListenToActorAction()));
 
@@ -174,6 +188,9 @@ public class ActorController extends AttributeController {
         if (_portDialogFactory != null) {
 	    _portDialogFactory.setConfiguration(configuration);
         }
+        if (_portLocationDialogFactory != null) {
+            _portLocationDialogFactory.setConfiguration(configuration);
+        }
 	if (_configuration != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
@@ -196,6 +213,7 @@ public class ActorController extends AttributeController {
     private BreakpointDialogFactory _breakpointDialogFactory;
 
     private PortDialogFactory _portDialogFactory;
+    private PortLocationDialogFactory _portLocationDialogFactory;
 
     private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 10);
 
@@ -218,51 +236,177 @@ public class ActorController extends AttributeController {
         /** Layout the ports of the specified node.
          *  @param node The node, which is assumed to be an entity.
          */
-        public void layout(Object node) {
-            GraphModel model = getController().getGraphModel();
-            Iterator nodes = model.nodes(node);
-            LinkedList inputs = new LinkedList();
-            LinkedList outputs = new LinkedList();
-            LinkedList inputOutputs = new LinkedList();
-            int inCount = 0;
-            int outCount = 0;
-            int inputOutputCount = 0;
-
-            while (nodes.hasNext()) {
-                Port port = (Port) nodes.next();
-                if (!(port instanceof IOPort)) {
-                    inputOutputCount++;
-                    inputOutputs.addLast(port);
-                } else {
-                    IOPort ioport = (IOPort) port;
-                    if (ioport.isInput() && ioport.isOutput()) {
-                        inputOutputCount++;
-                        inputOutputs.addLast(port);
-                    } else if (ioport.isInput()) {
-                        inCount++;
-                        inputs.addLast(port);
-                    } else if (ioport.isOutput()) {
-                        outCount++;
-                        outputs.addLast(port);
+	public void layout(Object node) {
+	    GraphModel model = getController().getGraphModel();
+	    Iterator nodes = model.nodes(node);
+	    Vector westPorts = new Vector ();
+	    Vector eastPorts = new Vector ();
+	    Vector southPorts = new Vector ();
+            Vector northPorts = new Vector ();
+	    int westPortCount = 0;
+	    int eastPortCount = 0;
+	    int southPortCount = 0;
+            int northPortCount = 0;
+            
+	    while(nodes.hasNext()) {
+		Port port = (Port) nodes.next();
+                StringAttribute cardinal = (StringAttribute)port.getAttribute("_cardinal");
+                StringAttribute ordinal  = (StringAttribute)port.getAttribute("_ordinal");
+                
+                if (cardinal == null) {
+                    if(!(port instanceof IOPort)) {
+                        southPortCount++;
+                        southPorts.add(port);
                     } else {
-                        inputOutputCount++;
-                        inputOutputs.addLast(port);
+                        IOPort ioport = (IOPort) port;
+                        if(ioport.isInput() && ioport.isOutput()) {
+                            southPortCount++;
+                            southPorts.add(port);
+                        } else if(ioport.isInput()) {
+                            westPortCount++;
+                            westPorts.add(port);
+                        } else if(ioport.isOutput()) {
+                            eastPortCount++;
+                            eastPorts.add(port);
+                        } else {
+                            southPortCount++;
+                            southPorts.add(port);
+                        } 
                     }
                 }
-            }
-            CompositeFigure figure =
-                (CompositeFigure)getLayoutTarget().getVisualObject(node);
+                else {
+                    if(!(port instanceof IOPort)) {
+                        southPortCount++;
+                        southPorts.add(port);
+                    } else {
+                        String value = cardinal.getExpression();
+                        IOPort ioport = (IOPort) port;
+                        if( value.equalsIgnoreCase("SOUTH") ) {
+                            southPortCount++;
+                            southPorts.add(port);
+                        } else if( value.equalsIgnoreCase("WEST") ) {
+                            westPortCount++;
+                            westPorts.add(port);
+                        } else if( value.equalsIgnoreCase("EAST") ) {
+                            eastPortCount++;
+                            eastPorts.add(port);
+                        } else if( value.equalsIgnoreCase("NORTH") ) {
+                            northPortCount++;
+                            northPorts.add( port );
+                        } else {
+                            southPortCount++;
+                            southPorts.add(port);
+                        } 
+                    }
+                }
+	    }
+	    CompositeFigure figure =
+		(CompositeFigure)getLayoutTarget().getVisualObject(node);
 
-            _placePortFigures(figure, inputs, inCount,
+            _reOrderPorts( westPorts );
+	    _placePortFigures(figure, westPorts, westPortCount,
                     SwingConstants.WEST);
-            _placePortFigures(figure, outputs, outCount,
+            _reOrderPorts( eastPorts );
+	    _placePortFigures(figure, eastPorts, eastPortCount,
                     SwingConstants.EAST);
-            _placePortFigures(figure, inputOutputs, inputOutputCount,
+            _reOrderPorts( southPorts );
+	    _placePortFigures(figure, southPorts, southPortCount,
                     SwingConstants.SOUTH);
-        }
+            _reOrderPorts( northPorts );
+	    _placePortFigures(figure, northPorts, northPortCount,
+                    SwingConstants.NORTH);
+	}
+
+        // FIXME: Old pre-cardinal direction layout
+//         public void layout(Object node) {
+//             GraphModel model = getController().getGraphModel();
+//             Iterator nodes = model.nodes(node);
+//             LinkedList inputs = new LinkedList();
+//             LinkedList outputs = new LinkedList();
+//             LinkedList inputOutputs = new LinkedList();
+//             int inCount = 0;
+//             int outCount = 0;
+//             int inputOutputCount = 0;
+
+//             while (nodes.hasNext()) {
+//                 Port port = (Port) nodes.next();
+//                 if (!(port instanceof IOPort)) {
+//                     inputOutputCount++;
+//                     inputOutputs.addLast(port);
+//                 } else {
+//                     IOPort ioport = (IOPort) port;
+//                     if (ioport.isInput() && ioport.isOutput()) {
+//                         inputOutputCount++;
+//                         inputOutputs.addLast(port);
+//                     } else if (ioport.isInput()) {
+//                         inCount++;
+//                         inputs.addLast(port);
+//                     } else if (ioport.isOutput()) {
+//                         outCount++;
+//                         outputs.addLast(port);
+//                     } else {
+//                         inputOutputCount++;
+//                         inputOutputs.addLast(port);
+//                     }
+//                 }
+//             }
+//             CompositeFigure figure =
+//                 (CompositeFigure)getLayoutTarget().getVisualObject(node);
+
+//             _placePortFigures(figure, inputs, inCount,
+//                     SwingConstants.WEST);
+//             _placePortFigures(figure, outputs, outCount,
+//                     SwingConstants.EAST);
+//             _placePortFigures(figure, inputOutputs, inputOutputCount,
+//                     SwingConstants.SOUTH);
+//        }
 
         ///////////////////////////////////////////////////////////////
         ////                     private methods                   ////
+
+        // re-order the ports according to _ordinal property
+        private 
+        void _reOrderPorts( Vector ports ) {
+            int size = ports.size();
+            Enumeration enum = ports.elements();
+            IOPort port;
+            StringAttribute ordinal = null;
+            int number = 0;
+            int index  = 0;
+
+            while ( enum.hasMoreElements() ) {
+                port = (IOPort)enum.nextElement();
+                ordinal = (StringAttribute)port.getAttribute("_ordinal");
+
+                if ( ordinal != null ) { 
+                    number = Integer.parseInt( ordinal.getExpression() ) ;
+                    if ( number >= size ) {
+                        ports.remove( index );
+                        try {
+                            ordinal.setExpression( Integer.toString( size -1 ) );
+                        } catch( Exception e ) {
+                            MessageHandler.error("Error setting ordinal property", e);
+                        }
+                        ports.add( port );
+                    }
+                    else if ( number < 0 ) {
+                        ports.remove( index );
+                        try {
+                            ordinal.setExpression( Integer.toString( 0 ) );
+                        } catch ( Exception e ) {
+                            MessageHandler.error("Error setting ordinal property", e);
+                        }
+                        ports.add( 0, port );
+                    }
+                    else if ( number != index ){
+                        ports.remove( index );
+                        ports.add( number, port );
+                    }
+                  
+                }
+                index++;
+            }
+        }
 
         // Place the ports.
         private void _placePortFigures(
@@ -431,6 +575,42 @@ public class ActorController extends AttributeController {
                 _configuration.openModel(entity);
             } catch (Exception ex) {
                 MessageHandler.error("Look inside failed.", ex);
+            }
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////////
+    //// SaveInLibraryAction
+
+    /**
+     *  An action to save this actor in the library.
+     *
+     * @author     Administrator
+     * @created    25 January 2002
+     */
+    private class SaveInLibraryAction extends FigureAction {
+
+        /**
+         *  Create a new action to save a model in a library.
+         */
+        public SaveInLibraryAction() {
+            super("Save Actor In Library");
+            putValue("tooltip", "Save Actor as a Component in Library");
+        }
+
+        /**
+         *  Create a new instance of the current model in the actor library of
+         *  the configuration.
+         *
+         * @param  e  Description of Parameter
+         */
+        public void actionPerformed(ActionEvent e) {
+            // Figure out what entity.
+	    super.actionPerformed(e);
+	    NamedObj object = getTarget();
+	    if(object instanceof Entity) {
+                Entity entity = (Entity)object;
+                BasicGraphFrame.saveComponentInLibrary(_configuration, entity);
             }
         }
     }

@@ -63,6 +63,7 @@ import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 
 import java.awt.Color;
+import java.awt.geom.AffineTransform;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingUtilities;
 
@@ -144,7 +145,117 @@ public class IOPortController extends AttributeController {
             } else {
                 fill = Color.black;
             }
-	    Figure figure = new BasicFigure(polygon, fill, lineWidth) {
+
+            ActorGraphModel model =
+                (ActorGraphModel)getController().getGraphModel();
+
+	    // Wrap the figure in a TerminalFigure to set the direction that
+	    // connectors exit the port.  Note that this direction is the
+	    // same direction that is used to layout the port in the
+	    // Entity Controller.
+            StringAttribute cardinal = (StringAttribute)port.getAttribute("_cardinal");
+
+	    int direction;
+
+// 	    if (!(port instanceof IOPort)) {
+// 		direction = SwingUtilities.SOUTH;
+// 	    } else if (((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
+// 		direction = SwingUtilities.SOUTH;
+// 	    } else if (((IOPort)port).isInput()) {
+// 		direction = SwingUtilities.WEST;
+// 	    } else if (((IOPort)port).isOutput()) {
+// 		direction = SwingUtilities.EAST;
+// 	    } else {
+// 		// should never happen
+// 		direction = SwingUtilities.SOUTH;
+// 	    }
+
+          if ( cardinal == null && port instanceof IOPort ) 
+          {
+             if(((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
+		   direction = SwingUtilities.SOUTH;
+               AffineTransform transform = new AffineTransform();
+               transform.setToRotation( Math.toRadians( -90 ));
+               polygon.transform( transform );
+	       } else if(((IOPort)port).isInput()) {
+		   direction = SwingUtilities.WEST;
+	       } else if(((IOPort)port).isOutput()) {
+		   direction = SwingUtilities.EAST;
+	       } else {
+		   // should never happen
+		   direction = SwingUtilities.SOUTH;
+               AffineTransform transform = new AffineTransform();
+               transform.setToRotation( Math.toRadians( -90 ) );
+               polygon.transform( transform );
+	       }
+          }
+          else if ( port instanceof IOPort )
+          {
+             if ( cardinal.getExpression().equalsIgnoreCase("NORTH") ) {
+                direction = SwingUtilities.NORTH;
+                if ( ((IOPort)port).isInput() && !((IOPort)port).isOutput() ) {
+                   AffineTransform transform = new AffineTransform();
+                   transform.setToRotation( Math.toRadians( 90 ) );
+                   polygon.transform( transform );
+                }
+                else {
+                   AffineTransform transform = new AffineTransform();
+                   transform.setToRotation( Math.toRadians( -90 ) );
+                   polygon.transform( transform );
+                }
+             }
+             else if ( cardinal.getExpression().equalsIgnoreCase("SOUTH") ) {
+                direction = SwingUtilities.SOUTH;
+                if ( ((IOPort)port).isInput() && !((IOPort)port).isOutput() ) {
+                   AffineTransform transform = new AffineTransform();
+                   transform.setToRotation( Math.toRadians( -90 ) );
+                   polygon.transform( transform );
+                }
+                else {
+                   AffineTransform transform = new AffineTransform();
+                   transform.setToRotation( Math.toRadians( 90 ) );
+                   polygon.transform( transform );
+                }
+             }
+             else if ( cardinal.getExpression().equalsIgnoreCase("EAST") ) {
+                direction = SwingUtilities.EAST;
+                if ( ((IOPort)port).isInput() && !((IOPort)port).isOutput() ) {
+                   AffineTransform transform = new AffineTransform();
+                   transform.setToRotation( Math.toRadians( 180 ) );
+                   polygon.transform( transform );
+                }
+             }
+             else if ( cardinal.getExpression().equalsIgnoreCase("WEST") ) {
+                direction = SwingUtilities.WEST;
+                if ( ((IOPort)port).isOutput() && !((IOPort)port).isInput() ) {
+                   AffineTransform transform = new AffineTransform();
+                   transform.setToRotation( Math.toRadians( 180 ) );
+                   polygon.transform( transform );
+                }
+             }
+             else {// this shouldn't happen either
+                direction = SwingUtilities.SOUTH;
+                if ( ((IOPort)port).isInput() && !((IOPort)port).isOutput() ) {
+                   AffineTransform transform = new AffineTransform();
+                   transform.setToRotation( Math.toRadians( -90 ) );
+                   polygon.transform( transform );
+                }
+                else {
+                   AffineTransform transform = new AffineTransform();
+                   transform.setToRotation( Math.toRadians( 90 ) );
+                   polygon.transform( transform );
+                }
+             }
+          } 
+          else 
+          {
+	   	   direction = SwingUtilities.SOUTH;
+               AffineTransform transform = new AffineTransform();
+               transform.setToRotation( Math.toRadians( 90 ) );
+               polygon.transform( transform );
+	    }
+            
+	    Figure figure = new BasicFigure(polygon, fill, (float)1.5) {
                 // Override this because we want to show the type.
                 // It doesn't work to set it once because the type
                 // has not been resolved, and anyway, it may change.
@@ -161,28 +272,8 @@ public class IOPortController extends AttributeController {
             };
             // Have to do this also, or the awt doesn't display any
             // tooltip at all.
+
             figure.setToolTipText(port.getName());
-
-            ActorGraphModel model =
-                (ActorGraphModel)getController().getGraphModel();
-
-	    // Wrap the figure in a TerminalFigure to set the direction that
-	    // connectors exit the port.  Note that this direction is the
-	    // same direction that is used to layout the port in the
-	    // Entity Controller.
-	    int direction;
-	    if (!(port instanceof IOPort)) {
-		direction = SwingUtilities.SOUTH;
-	    } else if (((IOPort)port).isInput() && ((IOPort)port).isOutput()) {
-		direction = SwingUtilities.SOUTH;
-	    } else if (((IOPort)port).isInput()) {
-		direction = SwingUtilities.WEST;
-	    } else if (((IOPort)port).isOutput()) {
-		direction = SwingUtilities.EAST;
-	    } else {
-		// should never happen
-		direction = SwingUtilities.SOUTH;
-	    }
 	    double normal = CanvasUtilities.getNormal(direction);
 	    Site tsite = new PerimeterSite(figure, 0);
 	    tsite.setNormal(normal);
