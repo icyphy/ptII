@@ -555,8 +555,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/media/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/hdf/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/hdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/moml/filter \
 	$(REMOTE1PTIIDIST)/com/JLex \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
@@ -568,6 +566,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/icon \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/tree \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/fsm/modal \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/hdf/kernel \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/hdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/parameters \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/comm \
