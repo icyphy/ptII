@@ -49,7 +49,7 @@ applet is displayed on a XGA screen-->
 	ptolemy/domains/csp/csp.jar, ptolemy/ptsupport.jar"
    code=ptolemy.domains.csp.guidemo.BusContentionApplet.class
    codebase=../../../..
-   width=500 height=500>
+   width=500 height=100>
 <param name="background" value="#faf0e6">
 <I>If you were able to run applets, you would have a demo here.</I>
 </applet>
