@@ -27,12 +27,10 @@
 
 package ptolemy.domains.pn.kernel;
 import ptolemy.kernel.*;
-import ptolemy.kernel.mutation.*;
 import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.util.*;
-//import ptolemy.domains.ct.kernel.util.TotallyOrderedSet;
 import ptolemy.data.*;
 import java.util.Enumeration;
 import collections.LinkedList;
