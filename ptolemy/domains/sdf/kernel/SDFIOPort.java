@@ -65,7 +65,7 @@ represent the queue.  ArrayFIFOQueue also optimizes insertion and removal of
 arrays of objects using the java.lang.System.arraycopy() method.
 </ol>
 
-@authors Stephen Neuendorffer
+@author Stephen Neuendorffer
 @version $Id$
 @see SDFReceiver
 @see ArrayFIFOQueue
