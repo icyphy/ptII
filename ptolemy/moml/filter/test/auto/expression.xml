@@ -2,12 +2,30 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="model" class="ptolemy.actor.TypedCompositeActor">
+    <property name="DE5" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="isCQAdaptive" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="minBinCount" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="79.0, 46.0">
+        </property>
+    </property>
 <entity class="ptolemy.actor.lib.Expression" name="invariant">
-   <property name="expression" value="!(t &lt;= P)"/>
+   <property name="expression" value="1 &lt;= 2"/>
    <port class="ptolemy.actor.TypedIOPort" name="output">
       <property name="output"/>
    </port>
-   <property name="expression" value="!(t &lt;= P)"/>
+   <property name="expression" value="1 &lt;= 2"/>
    <property class="ptolemy.data.expr.Parameter" name="parameter" value="1">
    </property>
 </entity>
