@@ -30,7 +30,6 @@
 
 package ptolemy.domains.od.kernel;
 
-import ptolemy.kernel.*; // For ComponentEntity
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.*;
@@ -39,55 +38,17 @@ import ptolemy.actor.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// TimedQueueReceiver
 /**
-A FIFO queue receiver for storing tokens with time stamps. A "time stamp"
-is a time value that is associated with a token and is used to order the
-consumption of a token with respect to other time stamped tokens. To help 
-organize the tokens contained by this queue, two flags are maintained: 
+A FIFO queue-based receiver for storing tokens with time stamps. A "time 
+stamp" is a time value that is associated with a token and is used to order 
+the consumption of a token with respect to other time stamped tokens. To 
+help organize the tokens contained by this queue, two flags are maintained: 
 "lastTime" and "rcvrTime." The lastTime flag is defined to be equivalent 
 to the time stamp of the token that was most recently placed in the queue. 
 The rcvrTime flag is defined as the time stamp of the oldest token in the 
-queue. Both of these flags must have monotonically non-decreasing values 
-with the exception that their values will be set to -1.0 at the conclusion 
-of a simulation run. 
-
-***
-Synchronization Notes:
-***
-This domain observes a hierarchy of synchronization locks. When multiple
-synchronization locks are required, they must be obtained in an order that
-is consistent with this hierarchy. Adherence to this hierarchical ordering
-ensures that deadlock can not occur due to circular lock dependencies.
- 
-The following synchronization hierarchy is utilized:
- 
-        1. read/write access on the workspace
-        2. synchronization on the receiver
-        3. synchronization on the director
-        4. synchronization on the actor
-        5. (other) synchronization on the workspace
- 
-We say that lock #1 is at the highest level in the hierarchy and lock #5
-is at the lowest level.
- 
-As an example, a method that synchronizes on a receiver can not contain
-read/write access on the workspace; such accesses must occur outside of
-the receiver synchronization. Similarly, a method which synchronizes on a
-director must not synchronize on the receiver or contain read/write
-accesses on the workspace; it can contain synchronizations on actors or
-the workspace.
- 
-The justification of the chosen ordering of this hierarchy is based on
-the access a method has to the fields of its object versus the fields of
-other objects. The more (less) a method focuses on the internal state of
-its object and non-synchronized methods of external objects, the lower
-(higher) the method is placed in the synchronization hierarchy. In the
-case of read/write access on the workspace, the corresponding methods,
-i.e, getReadAccess() and getWriteAccess(), access the current thread
-running in the JVM. This external access deems these methods as being at
-the top of the hierarchy. All other synchronizations on the workspace only
-focus on the internal state of the workspace and hence are at the bottom
-of the synchronization hierarchy.
-
+queue or the last token to be removed from the queue if the queue is empty. 
+Both of these flags must have monotonically non-decreasing values with the 
+exception that their values will be set to -1.0 at the conclusion of a 
+simulation run. 
 
 @author John S. Davis II
 @version @(#)TimedQueueReceiver.java	1.17	11/18/98
@@ -122,11 +83,7 @@ public class TimedQueueReceiver implements Receiver {
      * @see ptolemy.domains.od.kernel.RcvrTimeTriple
      */
     public Token get() {
-        // System.out.println("Call to TimedQueueReceiver.get()");
-        // System.out.println("Previous rcvrTime = " + getRcvrTime() );
-        // System.out.println("rcvrTime = " + getRcvrTime() );
         ODActor actor = (ODActor)getContainer().getContainer();
-        // System.out.println("actor time = " + actor.getCurrentTime() );
 	Token token = null;
 	synchronized( this ) {
             Event event = (Event)_queue.take(); 
@@ -136,39 +93,19 @@ public class TimedQueueReceiver implements Receiver {
             } 
 	    token = event.getToken(); 
 
-	    // Set the rcvr time based on the next token 
 	    if( getSize() > 0 ) {
-                // System.out.println("Size after get is " + getSize()); 
 	        Event nextEvent = (Event)_queue.get(0); 
 	        _rcvrTime = nextEvent.getTime(); 
-	        // System.out.println("Update via get(): _rcvrTime = " 
-                // + _rcvrTime );
             } 
 
-	    // Call update even if getSize == 0, so that triple is 
-	    // no longer in front 
-
+	    // Call updateRcvrList() even if getSize()==0, so that
+	    // the triple is no longer in front.
 	    RcvrTimeTriple triple; 
 	    triple = new RcvrTimeTriple( this, _rcvrTime, _priority ); 
-	    // triple = new RcvrTimeTriple( this, _rcvrTime, getPriority() ); 
-	    // ODActor actor = (ODActor)getContainer().getContainer(); 
 	    actor.updateRcvrList( triple );
-            
-            /* 
-	    // System.out.println(((ComponentEntity)actor).getName()
-                + " completed TimedQueueReceiver.get().");
-            */
 	}
         return token;
     }
-
-    /** Return the queue capacity of this receiver. 
-     * @return int The queue capacity.
-     * @deprecated
-    public int getCapacity() {
-        return _queue.getCapacity();
-    }
-     */
 
     /** Return the completion time of this receiver. 
      * @return double The completion time.
@@ -194,16 +131,8 @@ public class TimedQueueReceiver implements Receiver {
         return _lastTime;
     }
 
-    /** Return the priority of this receiver. 
-     * @return The priority of this receiver.
-     * @deprecated
-    public synchronized int getPriority() {
-        return _priority;
-    }
-     */
-
     /** Get the queue size. 
-     *  FIXME: Eventually remove this and access _queue.size() directly
+     * @return Return the size of the queue.
      */
     public int getSize() {
         return _queue.size();
@@ -266,7 +195,6 @@ public class TimedQueueReceiver implements Receiver {
         Event event;
         ODIOPort port = (ODIOPort)getContainer();
         ODActor actor = (ODActor)port.getContainer();
-	// String myName = ((ComponentEntity)actor).getName();
         
         synchronized(this) {
             _lastTime = time; 
@@ -290,11 +218,6 @@ public class TimedQueueReceiver implements Receiver {
                 throw new NoRoomException (getContainer(), 
                         "Queue is at capacity. Cannot insert token.");
             }
-            
-            /*
-            // System.out.println(((ComponentEntity)actor).getName()
-                + " completed TimedQueueReceiver.put().");
-            */
         }
     }
 
@@ -336,7 +259,6 @@ public class TimedQueueReceiver implements Receiver {
     private double _rcvrTime = 0.0;
 
     // The time after which this server will become defunct.
-    // FIXME: perhaps this should be package private
     private double _completionTime = -5.0;
 
     // The priority of this receiver.
