@@ -1082,18 +1082,18 @@ fi
 echo "configure:1083: checking for how to run jacl with "$JAVA" "$PTJACL_JFLAG"" >&5
 	# This command starts up Jacl
 	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell; then
-		echo "$ac_t""CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell" 1>&6
+		echo "$ac_t""ok" 1>&6
 	else
 		echo "$ac_t""CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell failed" 1>&6
 		PTJACL_JFLAG=
 		echo $ac_n "checking for how to run jacl with "$JAVA" "$PTJACL_FLAG"""... $ac_c" 1>&6
 echo "configure:1091: checking for how to run jacl with "$JAVA" "$PTJACL_FLAG"" >&5
 		if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell; then
-			echo "$ac_t""CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell" 1>&6
+			echo "$ac_t""ok" 1>&6
 		else
 			echo "$ac_t""'CLASSPATH=$PTJACL_JAR "$JAVA" $PTJACL_JFLAG tcl.lang.Shell' failed,
-	use CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell
-	ptjacl is used by the test suite, so you may be able to
+	use 'CLASSPATH=$PTJACL_JAR "$JAVA" tcl.lang.Shell'
+	instead. ptjacl is used by the test suite, so you may be able to
 	ignore this error." 1>&6
 		fi
 		JTCLSH='"$(JAVA)" tcl.lang.Shell'
