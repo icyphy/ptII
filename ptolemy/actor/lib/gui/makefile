@@ -57,6 +57,7 @@ JSRCS = \
 	MatrixViewer.java \
 	MatrixVisualizer.java \
 	Plotter.java \
+	RealTimePlotter.java \
 	SequencePlotter.java \
 	SequenceScope.java \
 	SketchedSource.java \
