@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Engine" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 628]">
     </property>
@@ -77,7 +77,7 @@
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
         </property>
         <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -113,24 +113,20 @@
                 </property>
             </property>
         </property>
-        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
-        </property>
         <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="-65.0, 70.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1018, 743}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 746}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7966072943172">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{394.7997231686545, 436.2966354344127}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{394.7997231686545, 436.2966354344126}">
     </property>
     <entity name="Cylinder_01" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-            </property>
-        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 545.0">
@@ -158,9 +154,15 @@
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[998, 793]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[806, 604]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[33, 56]">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 8, 1021, 722}, maximized=false}">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8129034971505">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{572.7538027731788, 456.4921875}">
             </property>
             <port name="torque" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -503,19 +505,25 @@
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-1">
                 </property>
+                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 210.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                     </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                </port>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
@@ -756,19 +764,25 @@
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
+                <property name="ZeroCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="725.0, 285.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                     </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                </port>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
@@ -822,7 +836,7 @@
             <link port="ZeroCrossingDetector.trigger" relation="relation11"/>
         </entity>
         <entity name="Cmp_w_Ign" class="ptolemy.domains.fsm.modal.Refinement">
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[901, 635]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[780, 451]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[82, 135]">
             </property>
@@ -870,14 +884,20 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 55.0">
                 </property>
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 82, 995, 569}, maximized=false}">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9961744762676">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{416.96875, 179.9302398989899}">
+            </property>
             <port name="torque" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="795.0, 255.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 255.0]">
                 </property>
             </port>
             <port name="trigger" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="790.0, 155.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 155.0]">
                 </property>
             </port>
             <port name="phi_c1" class="ptolemy.domains.fsm.modal.RefinementPort">
@@ -902,19 +922,25 @@
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-1">
                 </property>
+                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 155.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                     </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                </port>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
@@ -1122,19 +1148,25 @@
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
+                <property name="ZeroCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 145.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                     </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                </port>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
@@ -1257,19 +1289,25 @@
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-1">
                 </property>
+                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 155.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                     </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                </port>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
@@ -1413,19 +1451,25 @@
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-1">
                 </property>
+                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 155.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                     </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                </port>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
@@ -1569,19 +1613,25 @@
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-1">
                 </property>
+                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 155.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                     </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                </port>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
@@ -1725,19 +1775,25 @@
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-1">
                 </property>
+                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 155.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                     </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                </port>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
@@ -1879,7 +1935,7 @@
     <entity name="phi_c" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 521, 220}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 217, 521, 220}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[513, 165]">
         </property>
@@ -1894,8 +1950,8 @@
 <title>phi_c1</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="10.0"/>
-<yRange min="0.0" max="32388.112233920983"/>
+<xRange min="0.0" max="20.0"/>
+<yRange min="0.0" max="720.0896952267831"/>
 </plot>?>
         </configure>
     </entity>
@@ -1915,7 +1971,7 @@
     <entity name="Torque" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 521, 220}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-7, 212, 521, 220}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[513, 165]">
         </property>
@@ -1930,8 +1986,8 @@
 <title>Torque</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="10.0"/>
-<yRange min="-2.189821275211948" max="2.1875006471798923"/>
+<xRange min="0.0" max="20.0"/>
+<yRange min="-4.317173915150395" max="4.381210518079841"/>
 </plot>?>
         </configure>
     </entity>
@@ -1951,7 +2007,7 @@
     <entity name="Air_Manifold" class="ptolemy.domains.ct.kernel.CTCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 320.0">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1007, 833]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[743, 621]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[29, 36]">
         </property>
@@ -1968,6 +2024,12 @@
         <property name="Gamma" class="ptolemy.data.expr.Parameter" value="1.4">
         </property>
         <property name="rc" class="ptolemy.data.expr.Parameter" value="pow((2.0/(Gamma+1.0)),Gamma/(Gamma-1.0))">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 1, 958, 739}, maximized=false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.4569495694957">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{716.0, 661.2560565275909}">
         </property>
         <port name="alpha" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -2459,10 +2521,6 @@
         <link port="etav2.etav1" relation="relation33"/>
     </entity>
     <entity name="Drive_Train" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-            </property>
-        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="665.0, 540.0">
@@ -2510,21 +2568,21 @@
     <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
   </configure>
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 662]">
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[622, 434]">
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[58, 102]">
             </property>
             <property name="InitialStateVector" class="ptolemy.data.expr.Parameter" value="{0.0,0.0,0.0,0.0,0.0}">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={122, 122, 1036, 780}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 21, 837, 552}, maximized=false}">
             </property>
-            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9005316140708">
             </property>
-            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-11.8169191919192, -138.0662598272767}">
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{45.28125, -5.1156049035369}">
             </property>
             <port name="u" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="-340.0, -75.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-215.0, -70.0]">
                 </property>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
                 </property>
@@ -2586,15 +2644,17 @@
                 </property>
             </entity>
             <entity name="Init" class="ptolemy.domains.fsm.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Init">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="-225.0, -85.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 10.0]">
                 </property>
             </entity>
             <relation name="relation3" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
                 </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="omega_c = 0.0; phi_c=0.0">
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="DriveTrain.InitialStateVector=InitialStateVector">
                 </property>
@@ -2602,7 +2662,7 @@
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.24186146556880642">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
@@ -3079,19 +3139,25 @@
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-1">
                 </property>
+                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="825.0, 1005.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                     </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                </port>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
@@ -3357,9 +3423,9 @@
             <link port="1:Scale60.output" relation="1:relation17"/>
             <link port="omega_p.input" relation="1:relation12"/>
             <link port="omega_p.output" relation="1:6:relation"/>
-            <link port="LevelCrossingDetector.input" relation="1:relation36"/>
             <link port="LevelCrossingDetector.output" relation="relation"/>
             <link port="LevelCrossingDetector.trigger" relation="relation2"/>
+            <link port="LevelCrossingDetector.input" relation="1:relation36"/>
             <link port="1:Scale58.input" relation="1:relation64"/>
             <link port="1:Scale58.output" relation="1:relation20"/>
             <link port="1:Scale20.input" relation="1:relation19"/>
@@ -3940,19 +4006,25 @@
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-1">
                 </property>
+                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="885.0, 965.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                     </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                </port>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
@@ -4158,9 +4230,9 @@
             <link port="AddSubtract.minus" relation="relation3"/>
             <link port="AddSubtract.output" relation="1:relation37"/>
             <link port="Const.output" relation="relation4"/>
-            <link port="LevelCrossingDetector.input" relation="1:relation36"/>
             <link port="LevelCrossingDetector.output" relation="relation"/>
             <link port="LevelCrossingDetector.trigger" relation="relation3"/>
+            <link port="LevelCrossingDetector.input" relation="1:relation36"/>
         </entity>
         <entity name="DriveTrain" class="ptolemy.domains.fsm.modal.Refinement">
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[935, 771]">
@@ -4211,7 +4283,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="-455.0, -120.0">
                 </property>
             </property>
-            <property name="InitialStateVector" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0, 0.0, 0.0}">
+            <property name="InitialStateVector" class="ptolemy.data.expr.Parameter" value="{2.5434502171822E-4, 13.2105082023004, 6.4052661277064E-4, 1014.9047838245131, 0.0}">
             </property>
             <port name="u" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -4293,19 +4365,25 @@
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-1">
                 </property>
+                <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="825.0, 1005.0">
                 </property>
-                <port name="input" class="ptolemy.actor.TypedIOPort">
-                    <property name="input"/>
-                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-                    </property>
-                </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                     </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                </port>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
@@ -4824,9 +4902,9 @@
             <link port="Scale14.output" relation="1:1:relation25"/>
             <link port="Scale10.input" relation="1:1:6:relation"/>
             <link port="Scale10.output" relation="1:1:relation49"/>
-            <link port="Crossing_at_720.input" relation="1:1:relation36"/>
             <link port="Crossing_at_720.output" relation="1:relation"/>
             <link port="Crossing_at_720.trigger" relation="1:relation2"/>
+            <link port="Crossing_at_720.input" relation="1:1:relation36"/>
             <link port="1:phi_c.input" relation="1:1:relation36"/>
             <link port="1:phi_c.output" relation="1:relation2"/>
             <link port="alpha_e.input" relation="1:1:relation18"/>
@@ -4891,6 +4969,75 @@
             <link port="Scale21.input" relation="1:1:relation33"/>
             <link port="Scale21.output" relation="1:1:relation36"/>
         </entity>
+        <entity name="Init" class="ptolemy.domains.fsm.modal.Refinement">
+            <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{125, 55}">
+                </property>
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 724, 409}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[509, 291]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{254.5, 145.5}">
+            </property>
+            <port name="u" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <property name="input"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[384.78125, 48.02008928571429]">
+                </property>
+            </port>
+            <port name="CrossOver" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 95.0]">
+                </property>
+            </port>
+            <port name="alpha_b" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[372.40625, 141.76116071428572]">
+                </property>
+            </port>
+            <port name="omega_p" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[368.390625, 186.42857142857144]">
+                </property>
+            </port>
+            <port name="alpha_e" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[372.4140625, 233.18973214285717]">
+                </property>
+            </port>
+            <port name="omega_c" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 155.0]">
+                </property>
+            </port>
+            <port name="phi_c" class="ptolemy.domains.fsm.modal.RefinementPort">
+                <property name="output"/>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[269.953125, 203.13504464285717]">
+                </property>
+            </port>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <doc>Create a constant sequence.</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 185.0]">
+                </property>
+            </entity>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+                <vertex name="vertex1" value="[180.0, 185.0]">
+                </vertex>
+            </relation>
+            <link port="omega_c" relation="relation"/>
+            <link port="phi_c" relation="relation"/>
+            <link port="Const.output" relation="relation"/>
+        </entity>
         <relation name="uRelation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="CrossOverRelation" class="ptolemy.actor.TypedIORelation">
@@ -4940,11 +5087,18 @@
         <link port="DriveTrain.alpha_e" relation="alpha_eRelation"/>
         <link port="DriveTrain.omega_c" relation="omega_cRelation"/>
         <link port="DriveTrain.phi_c" relation="phi_cRelation"/>
+        <link port="Init.u" relation="uRelation"/>
+        <link port="Init.CrossOver" relation="CrossOverRelation"/>
+        <link port="Init.alpha_b" relation="alpha_bRelation"/>
+        <link port="Init.omega_p" relation="omega_pRelation"/>
+        <link port="Init.alpha_e" relation="alpha_eRelation"/>
+        <link port="Init.omega_c" relation="omega_cRelation"/>
+        <link port="Init.phi_c" relation="phi_cRelation"/>
     </entity>
     <entity name="ma" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 521, 220}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-3, 434, 521, 220}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[513, 165]">
         </property>
@@ -4957,17 +5111,25 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>ma</title>
-<xRange min="0.0" max="10.0"/>
-<yRange min="0.0" max="3.02107261677836E-4"/>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="20.0"/>
+<yRange min="0.0" max="3.0210727061842136E-4"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Controller" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 395.0]">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[810, 755]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[576, 380]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[127, 75]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={60, 121, 791, 498}, maximized=false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2645769906951">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{15.1953125, 59.5732964409722}">
         </property>
         <port name="omega_cs" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -5150,7 +5312,7 @@
     <entity name="Fuel_Injector" class="ptolemy.domains.ct.kernel.CTCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 395.0">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[872, 637]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[446, 292]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[96, 134]">
         </property>
@@ -5158,14 +5320,20 @@
         </property>
         <property name="Ti_off" class="ptolemy.data.expr.Parameter" value=".75e-3">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 58, 661, 410}, maximized=false}">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-167.8484848484848, -70.5449810606061}">
+        </property>
         <port name="Ti" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="-265.0, 20.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-275.0, -80.0]">
             </property>
         </port>
         <port name="mf" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="-50.0, 20.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, -80.0]">
             </property>
         </port>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -5177,7 +5345,7 @@
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="-160.0, 20.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-170.0, -80.0]">
             </property>
             <port name="Ti" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -5236,7 +5404,7 @@
     <entity name="omega_cs" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 521, 220}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={511, 436, 521, 220}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[513, 165]">
         </property>
@@ -5251,8 +5419,8 @@
 <title>omega_cs</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="10.0"/>
-<yRange min="0.0" max="853.5288101553014"/>
+<xRange min="0.0" max="20.0"/>
+<yRange min="0.0" max="1015.3841014899718"/>
 </plot>?>
         </configure>
     </entity>
