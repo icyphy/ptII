@@ -24,7 +24,7 @@ mkdir -p $PTII/vendors/ptinyos
 <li> Get the TinyOS CVS tree:
 <a href="http://sourceforge.net/cvs/?group_id=28656"><CODE>http://sourceforge.net/cvs/?group_id=28656</CODE></a>
 <pre>
-$PTII/vendors/ptinyos
+cd $PTII/vendors/ptinyos
 cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/tinyos login
 <i>Hit Enter when prompted for a password</i>
 cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/tinyos co tinyos-1.x
@@ -39,7 +39,7 @@ export TOSDIR=$TOSROOT/tos
 Under Windows with Cygwin, you can permanently set environment variables from
 the System control panel.  For details, see 
 <a href="../../../doc/install.htm#settingptII">Set the value of the PTII environment variable</a>.  While you are setting environment variables in Windows, you
-may want to set <a href="NC2MOMLLIB_NESC">NC2MOMLLIB_NESC</a>.
+may want to set <a href="#NC2MOMLLIB_NESC">NC2MOMLLIB_NESC</a>.
 
 <p>Under csh or tcsh:
 <pre>
@@ -96,7 +96,7 @@ make
 make install
 </pre>
 
-<li> <a name="NCSMOMLLIB_NESC">Set another variable</a>
+<li> <a name="NC2MOMLLIB_NESC">Set another variable</a>
 that points to the nesc installation. 
 <br>Under csh or tcsh
 <pre>
@@ -113,7 +113,7 @@ make momllib mica
 
 <li> See if the examples worked:
 <menu>
-<li> - You should see some valid MoML code in
+<li> You should see some valid MoML code in
 <CODE>$TOSROOT/contrib/momllib/build/momllib/Counters.xml</CODE>
 
 <li> It should correspond to the contents of <CODE>$TOSDIR/lib/Counters</CODE>
