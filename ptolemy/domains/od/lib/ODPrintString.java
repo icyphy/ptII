@@ -67,13 +67,14 @@ public class ODPrintString extends ODActor {
         double time;
         
         while( true ) {
-            System.out.println("\nStarting ODPrintString.getNextToken()");
+            // System.out.println("\nStarting ODPrintString.getNextToken()");
             token = (StringToken)getNextToken();
-            System.out.println("Finished ODPrintString.getNextToken()");
-            System.out.println("\tString is "+ token.stringValue() );
+            // System.out.println("Finished ODPrintString.getNextToken()");
+            // System.out.println("\t"+ token.stringValue() );
+            System.out.print( token.stringValue() );
             time = getCurrentTime();
             if( time > 4000.0 ) {
-                System.out.println(getName() + " is finished with fire()");
+                // System.out.println(getName() + " is finished with fire()");
                 return;
             }
             // System.out.println("\tTime is " + time);
