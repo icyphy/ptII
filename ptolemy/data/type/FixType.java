@@ -95,9 +95,9 @@ public class FixType extends StructuredType
      *  @return Always return true
      */
     public boolean equals(Object object) {
-        if (!(object instanceof FixType)) return false;
-        // FIXME: This sure does not look right?
-        FixType matrixType = (FixType)object;
+        if (!(object instanceof FixType)) {
+            return false;
+        } 
         return true;
     }
 
