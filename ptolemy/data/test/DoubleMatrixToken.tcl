@@ -68,9 +68,9 @@ test DoubleMatrixToken-1.1 {Create a non-empty instance from an double} {
 ####
 # 
 test DoubleMatrixToken-1.2 {Create a non-empty instance from an String} {
-    set p [java::new {ptolemy.data.DoubleMatrixToken String} "\[\[5 4\]\[3 2\]\]"]
+    set p [java::new {ptolemy.data.DoubleMatrixToken String} "\[5.0, 4.0; 3.0, 2.0\]"]
     $p toString
-} {ptolemy.data.DoubleMatrixToken([5, 4; 3, 2])} {Expression language doesn't support this yet}
+} {[5.0, 4.0; 3.0, 2.0]}
 
 ######################################################################
 ####

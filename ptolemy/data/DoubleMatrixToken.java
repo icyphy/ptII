@@ -35,6 +35,8 @@ import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
 import ptolemy.math.DoubleMatrixMath;
 import ptolemy.data.type.*;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.ASTPtRootNode;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixToken
@@ -76,25 +78,21 @@ public class DoubleMatrixToken extends MatrixToken {
      *   is null.
      */
     protected DoubleMatrixToken(final double[][] value, final int copy) {
-        _rowCount = value.length;
-        _columnCount = value[0].length;
-
-        if (copy == DO_NOT_COPY) {
-            _value = value;
-        } else {
-            _value = DoubleMatrixMath.allocCopy(value);
-        }
+        _initialize(value, copy);
     }
 
-    // FIXME: finish this method after array is added to the
-    //               expression language.
-    // Construct an DoubleMatrixToken from the specified string.
-    // @param init A string expression of a 2-D double array.
-    // @exception IllegalArgumentException If the string does
-    //  not contain a parsable 2-D int array.
-    //
-    // public DoubleMatrixToken(String init) {
-    // }
+    /** Construct an DoubleMatrixToken from the specified string.
+     *  @param init A string expression of a 2-D double matrix.
+     *  @exception IllegalActionException If the string does
+     *   not contain a parsable 2-D double matrix.
+     */
+    public DoubleMatrixToken(String init) throws IllegalActionException {
+        PtParser parser = new PtParser();
+        ASTPtRootNode tree = parser.generateParseTree(init);
+	DoubleMatrixToken token = (DoubleMatrixToken)tree.evaluateParseTree();
+        double[][] value = token.doubleMatrix();
+        _initialize(value, DO_COPY);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -511,8 +509,8 @@ public class DoubleMatrixToken extends MatrixToken {
     ////                      protected methods                    ////
 
     /** Return a reference to the internal 2-D array of doubles that represents
-     *  this Token. Because no copying is done, the contents must NOT be modified
-     *  to preserve the immutability of Token.
+     *  this Token. Because no copying is done, the contents must NOT be
+     *  modified to preserve the immutability of Token.
      *  @return A 2-D double array.
      */
     protected double[][] _getInternalDoubleMatrix() {
@@ -520,8 +518,24 @@ public class DoubleMatrixToken extends MatrixToken {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                          private methods                  ////
+
+    // initialize the row and column count and copy the specified
+    // matrix. This method is used by the constructors.
+    private void _initialize(double[][] value, int copy) {
+        _rowCount = value.length;
+        _columnCount = value[0].length;
+
+        if (copy == DO_NOT_COPY) {
+            _value = value;
+        } else {
+            _value = DoubleMatrixMath.allocCopy(value);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private final double[][] _value;
-    private final int _rowCount;
-    private final int _columnCount;
+    private double[][] _value;
+    private int _rowCount;
+    private int _columnCount;
 }
