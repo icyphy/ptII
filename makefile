@@ -53,6 +53,9 @@ EXTRA_SRCS = \
 OPTIONAL_FILES = \
 	config.log config.status config.cache
 
+all: mk/ptII.mk suball
+install: subinstall
+
 # Glimpse is a tool that prepares an index of a directory tree.
 # glimpse is not included with Tycho, see http://glimpse.cs.arizona.edu
 GLIMPSEINDEX =	/usr/sww/bin/glimpseindex
@@ -66,6 +69,9 @@ glimpse: .glimpse_exclude
 	chmod a+r .glimpse_*
 	rm -f glimpse_exclude
 
+# Generate ptII.mk by running configure
+mk/ptII.mk: configure mk/ptII.mk.in
+	configure
 
 configure: configure.in
 	autoconf
@@ -75,6 +81,7 @@ configure: configure.in
 
 distclean:
 	rm -f mk/ptII.mk config.log config.status config.cache
+	$(MAKE) realclean
 	#for dir in $(subdirs) ; do \
 	#	(cd $$dir; $(MAKE) $@) \
 	#done;
