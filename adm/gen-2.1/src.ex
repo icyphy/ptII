@@ -49,6 +49,7 @@ ptolemy/actor/lib/javasound/test/pitchshift
 ptolemy/actor/lib/javasound/test/outfile.wav
 ptolemy/actor/lib/net/test_auto
 ptolemy/actor/lib/test/auto/FileWriter1Output.txt
+ptolemy/actor/xslt
 ptolemy/apps
 ptolemy/automata
 ptolemy/build.xml
