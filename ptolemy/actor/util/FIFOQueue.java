@@ -141,22 +141,22 @@ public class FIFOQueue implements Cloneable {
      *  @exception NoSuchElementException If the offset is out of range.
      */
     public Object get(int offset) throws NoSuchElementException {
-        Object obj = null;
+        Object resultObject = null;
         try {
             if (offset >= 0) {
-                obj = _queueList.get(offset);
+                resultObject = _queueList.get(offset);
             } else {
-                obj = _historyList.get(historySize()+offset);
+                resultObject = _historyList.get(historySize()+offset);
             }
         } catch (IndexOutOfBoundsException ex) {
             String str = ".";
             if (_container != null) {
                 str = " contained by " + _container.getFullName();
             }
-            throw new NoSuchElementException("No object at offset "
+            throw new NoSuchElementException("No Object at offset "
                     + offset + " in the FIFOQueue" + str);
         }
-        return obj;
+        return resultObject;
     }
 
     /** Return the queue capacity, or INFINITE_CAPACITY if it is unbounded.
@@ -308,9 +308,9 @@ public class FIFOQueue implements Cloneable {
      *  @exception NoSuchElementException If the queue is empty.
      */
     public Object take() throws NoSuchElementException {
-        Object obj = null;
+        Object resultObject = null;
         try {
-            obj = _queueList.removeFirst();
+            resultObject = _queueList.removeFirst();
         } catch (NoSuchElementException ex) {
             String str = "";
             if (_container != null) {
@@ -324,9 +324,9 @@ public class FIFOQueue implements Cloneable {
             if (_historyCapacity == _historyList.size()) {
             	_historyList.removeFirst();
             }
-            _historyList.addLast(obj);
+            _historyList.addLast(resultObject);
         }
-        return obj;
+        return resultObject;
     }
 
     ///////////////////////////////////////////////////////////////////
