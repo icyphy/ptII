@@ -71,7 +71,7 @@ APPLICATION_JARS = \
 	PtinyApplication.jar
 
 all: jclass $(APPLICATION_JARS)
-install: jclass $(PTCLASSJAR)
+install: all
 depend:
 	@echo "no dependencies in this directory"
 
