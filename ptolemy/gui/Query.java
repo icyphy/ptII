@@ -46,8 +46,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.IOException;
 import java.io.File;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -239,14 +240,19 @@ public class Query extends JPanel {
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
      *  @param defaultName The default file name to use.
+     *  @param base The URI with respect to which to give
+     *   relative file names, or null to give absolute file name.
      *  @param startingDirectory The directory to open the file chooser in.
      */
-    public void addFileChooser(String name, String label,
-            String defaultName, String startingDirectory) {
+    public void addFileChooser(String name,
+            String label,
+            String defaultName,
+            URI base,
+            File startingDirectory) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 	QueryFileChooser fileChooser = new QueryFileChooser(
-                name, defaultName, startingDirectory);
+                name, defaultName, base, startingDirectory);
         _addPair(name, lbl, fileChooser, fileChooser);
     }
 
@@ -1228,9 +1234,11 @@ public class Query extends JPanel {
     class QueryFileChooser extends Box implements ActionListener {
         public QueryFileChooser(String name,
                 String defaultName,
-                String startingDirectory) {
+                URI base,
+                File startingDirectory) {
             super(BoxLayout.X_AXIS);
-            _directory = startingDirectory;
+            _base = base;
+            _startingDirectory = startingDirectory;
             _entryBox = new JTextField(defaultName, _width);
             JButton button = new JButton("Browse");
             button.addActionListener(this);
@@ -1256,16 +1264,30 @@ public class Query extends JPanel {
             _name = name;
         }
         public void actionPerformed(ActionEvent e) {
-            JFileChooser fileChooser 
-                    = new JFileChooser(new File(_directory));
+            // NOTE: If the last argument is null, then choose a default dir.
+            JFileChooser fileChooser
+                    = new JFileChooser(_startingDirectory);
             fileChooser.setApproveButtonText("Select");
             // FIXME: The following doesn't have any effect.
             fileChooser.setApproveButtonMnemonic('S');
             int returnValue = fileChooser.showOpenDialog(Query.this);
             if(returnValue == JFileChooser.APPROVE_OPTION) {
-                // FIXME: Not so simple... need directory info.
-                // getCurrentDirectory().  setCurrentDirectory(File).
-                _entryBox.setText(fileChooser.getSelectedFile().getName());
+                if (_base == null) {
+                    // Absolute file name.
+                    try {
+                        _entryBox.setText(fileChooser.getSelectedFile()
+                                .getCanonicalPath());
+                    } catch (IOException ex) {
+                        // If we can't get a path, then just use the name.
+                        _entryBox.setText(fileChooser.getSelectedFile()
+                                .getName());
+                    }
+                } else {
+                    // Relative file name.
+                    File selectedFile = fileChooser.getSelectedFile();
+                    URI relativeURI = _base.relativize(selectedFile.toURI());
+                    _entryBox.setText(relativeURI.toString());
+                }
                 _notifyListeners(_name);
             }
         }
@@ -1275,9 +1297,10 @@ public class Query extends JPanel {
         public void setFileName(String name) {
             _entryBox.setText(name);
         }
+        private URI _base;
         private JTextField _entryBox;
-        private String _directory;
         private String _name;
+        private File _startingDirectory;
     }
 
     /** Listener for line entries, for when they lose the focus.
@@ -1345,4 +1368,3 @@ public class Query extends JPanel {
         private String _name;
     }
 }
-
