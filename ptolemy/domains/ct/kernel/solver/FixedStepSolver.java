@@ -49,14 +49,6 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (hyzheng)
 */
 public abstract class FixedStepSolver extends ODESolver {
-    /** Construct a solver in the default workspace with an empty
-     *  string as name. The solver is added to the list of objects in
-     *  the workspace. Increment the version number of the workspace.
-     */
-    public FixedStepSolver() {
-        super();
-    }
-
     /** Construct a solver in the given workspace with a null string name.
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
