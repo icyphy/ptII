@@ -211,7 +211,9 @@ public class Plotter extends TypedAtomicActor
     public void wrapup() {
         try {
             if(((BooleanToken)fillOnWrapup.getToken()).booleanValue()) {
-                plot.fillPlot();
+                if (plot != null) {
+                    plot.fillPlot();
+                }
             }
         } catch (IllegalActionException ex) {
             // fillOnWrapup does not evaluate to a valid token,
