@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/hoc/doc
+ME =		ptolemy/actor/lib/hoc/doc
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 DIRS =
 
