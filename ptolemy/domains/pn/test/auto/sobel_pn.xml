@@ -5,12 +5,12 @@
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 635]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[157, 20]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 10]">
     </property>
     <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector">
         <property name="Initial_queue_capacity" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="-295.0, -300.0">
+        <property name="_location" class="ptolemy.moml.Location" value="20.0, -120.0">
         </property>
     </property>
     <entity name="Const13" class="ptolemy.actor.lib.Const">
@@ -23,7 +23,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="-135.0, -55.0">
+        <property name="_location" class="ptolemy.moml.Location" value="80.0, 30.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -40,7 +40,7 @@
         </property>
         <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="350.0, 380.0">
+        <property name="_location" class="ptolemy.moml.Location" value="760.0, 245.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -50,7 +50,7 @@
         </port>
     </entity>
     <entity name="se" class="ptolemy.actor.lib.Multiplexor">
-        <property name="_location" class="ptolemy.moml.Location" value="205.0, 60.0">
+        <property name="_location" class="ptolemy.moml.Location" value="270.0, 40.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -68,7 +68,7 @@
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="820.0, -260.0">
+        <property name="_location" class="ptolemy.moml.Location" value="860.0, -15.0">
         </property>
         <port name="1:s" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -377,7 +377,7 @@
         <property name="refresh" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Read in doubles from either stdin or a URL</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="-265.0, 155.0">
+        <property name="_location" class="ptolemy.moml.Location" value="-50.0, 145.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -389,7 +389,7 @@
         </port>
     </entity>
     <entity name="2:Counter" class="ptolemy.actor.lib.Counter">
-        <property name="_location" class="ptolemy.moml.Location" value="-130.0, 235.0">
+        <property name="_location" class="ptolemy.moml.Location" value="90.0, 245.0">
         </property>
         <port name="increment" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -412,7 +412,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="335.0, 945.0">
+        <property name="_location" class="ptolemy.moml.Location" value="530.0, 245.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -450,7 +450,7 @@
     <entity name="Northeast" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0,0,0,0,0,0,0,0,0,0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="500.0, -10.0">
+        <property name="_location" class="ptolemy.moml.Location" value="500.0, 10.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -474,7 +474,7 @@
     <entity name="North" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0,0,0,0,0,0,0,0,0,0,0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="505.0, -95.0">
+        <property name="_location" class="ptolemy.moml.Location" value="500.0, -65.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -498,7 +498,7 @@
     <entity name="South" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="490.0, -160.0">
+        <property name="_location" class="ptolemy.moml.Location" value="500.0, -135.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -522,7 +522,7 @@
     <entity name="Southwest" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0,0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="525.0, -255.0">
+        <property name="_location" class="ptolemy.moml.Location" value="500.0, -205.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -546,7 +546,7 @@
     <entity name="Northwest" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0,0,0,0,0,0,0,0,0,0,0,0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="520.0, -365.0">
+        <property name="_location" class="ptolemy.moml.Location" value="500.0, -330.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -570,7 +570,7 @@
     <entity name="East" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0,0,0,0,0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="520.0, -310.0">
+        <property name="_location" class="ptolemy.moml.Location" value="500.0, -270.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -594,7 +594,7 @@
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="25.0, 230.0">
+        <property name="_location" class="ptolemy.moml.Location" value="235.0, 245.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -624,7 +624,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="800.0, 865.0">
+        <property name="_location" class="ptolemy.moml.Location" value="520.0, 370.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -640,7 +640,7 @@
         </property>
         <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="995.0, 195.0">
+        <property name="_location" class="ptolemy.moml.Location" value="780.0, 370.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -659,7 +659,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="940.0, 100.0">
+        <property name="_location" class="ptolemy.moml.Location" value="830.0, 285.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -672,7 +672,7 @@
         </port>
     </entity>
     <entity name="outmux" class="ptolemy.actor.lib.Multiplexor">
-        <property name="_location" class="ptolemy.moml.Location" value="1197.0, 190.0">
+        <property name="_location" class="ptolemy.moml.Location" value="1010.0, 360.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -696,20 +696,22 @@
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="1477.0, 210.0">
+        <property name="_location" class="ptolemy.moml.Location" value="1150.0, 360.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>SequencePlotter</title>
-<xRange min="0.0" max="36.0"/>
+<xRange min="0.0" max="37.0"/>
 <yRange min="0.0" max="255.0"/>
 </plot>?>
-                        </configure>    </entity>
+        </configure>
+    </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -717,7 +719,7 @@
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="1460.0, 105.0">
+        <property name="_location" class="ptolemy.moml.Location" value="1168.0, 255.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -729,7 +731,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="1442.0, 345.0">
+        <property name="_location" class="ptolemy.moml.Location" value="1150.0, 495.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -753,11 +755,11 @@
         </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="-35.0, 315.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="315.0, 245.0">
         </vertex>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="305.0, 240.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="810.0, 145.0">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -765,13 +767,13 @@
         </vertex>
     </relation>
     <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="0.0, 145.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="35.0, 145.0">
         </vertex>
     </relation>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation27" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="1185.0, 30.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="935.0, 135.0">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -797,12 +799,13 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="1342.0, 220.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="1092.0, 360.0">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Const13.output" relation="relation26"/>
+    <link port="Const13.trigger" relation="relation25"/>
     <link port="BooleanToAnything.input" relation="relation2"/>
     <link port="BooleanToAnything.output" relation="relation19"/>
     <link port="se.input" relation="relation25"/>

@@ -44,6 +44,7 @@ import ptolemy.actor.process.ProcessReceiver;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.pn.kernel.event.PNProcessListener;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -125,19 +126,12 @@ public class BasePNDirector extends CompositeProcessDirector {
      *  value 1. This sets the initial capacities of the queues in all
      *  the receivers created in the PN domain.
      */
-    public BasePNDirector() {
+    public BasePNDirector() 
+            throws IllegalActionException, NameDuplicationException {
         super();
-        try {
-            Parameter param = new Parameter(this,"Initial_queue_capacity",
+        Initial_queue_capacity = new Parameter(this, "Initial_queue_capacity",
                     new IntToken(1));
-        } catch (IllegalActionException ex) {
-            // As parameter is a valid parameter, this exception is not thrown.
-            throw new InternalErrorException(this, ex, null);
-        } catch (NameDuplicationException ex) {
-            // As this is being called from the constructor, we cannot have
-            // a parameter by the same name already existing in the object.
-            throw new InvalidStateException(this, ex, null);
-        }
+        Initial_queue_capacity.setTypeEquals(BaseType.INT);
     }
 
     /** Construct a director in the  workspace with an empty name.
@@ -148,19 +142,12 @@ public class BasePNDirector extends CompositeProcessDirector {
      *  the receivers created in the PN domain.
      *  @param workspace The workspace of this object.
      */
-    public BasePNDirector(Workspace workspace) {
+    public BasePNDirector(Workspace workspace) 
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
-        try {
-            Parameter param = new Parameter(this,"Initial_queue_capacity",
+        Initial_queue_capacity = new Parameter(this, "Initial_queue_capacity",
                     new IntToken(1));
-        } catch (IllegalActionException ex) {
-            // As parameter is a valid parameter, this exception is not thrown.
-            throw new InternalErrorException(this, ex, null);
-        } catch (NameDuplicationException ex) {
-            // As this is being called from the constructor, we cannot have
-            // a parameter by the same name already existing in the object.
-            throw new InvalidStateException(this, ex, null);
-        }
+        Initial_queue_capacity.setTypeEquals(BaseType.INT);
     }
 
     /** Construct a director in the given container with the given name.
@@ -182,18 +169,18 @@ public class BasePNDirector extends CompositeProcessDirector {
     public BasePNDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        try {
-            Parameter param = new Parameter(this,"Initial_queue_capacity",
-                    new IntToken(1));
-        } catch (IllegalActionException ex) {
-            // As parameter is a valid parameter, this exception is not thrown.
-            throw new InternalErrorException(this, ex, null);
-        } catch (NameDuplicationException ex) {
-            // As this is being called from the constructor, we cannot have
-            // a parameter by the same name already existing in the object.
-            throw new InvalidStateException(this, ex, null);
-        }
+        Initial_queue_capacity = new Parameter(this, "Initial_queue_capacity",
+                new IntToken(1));
+        Initial_queue_capacity.setTypeEquals(BaseType.INT);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The initial size of the queues for each communication channel.  The
+     *  type must be integer
+     */
+    public Parameter Initial_queue_capacity;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -397,7 +384,7 @@ public class BasePNDirector extends CompositeProcessDirector {
      *  return true on detection of the introduced deadlocks.
      *  This method is synchronized on this object.
      *  @return true if a real or artificial deadlock is detected.
-     */
+     NOTE: same as super class
     protected synchronized boolean _areActorsDeadlocked() {
 	if (_getBlockedActorsCount() >= _getActiveActorsCount()) {
 	    return true;
@@ -428,16 +415,18 @@ public class BasePNDirector extends CompositeProcessDirector {
      */
     protected boolean _resolveInternalDeadlock() throws IllegalActionException {
         if (_writeBlockCount == 0 && _readBlockCount > 0 ) {
+            //            System.out.println("Real Deadlock");
 	    // There is a real deadlock.
 	    return false;
         } else if ( _getActiveActorsCount() == 0 ) {
 	    // There is a real deadlock as no processes are active.
+            //System.out.println("Artificial Deadlock");
 	    return false;
         } else {
             //This is an artificial deadlock. Hence find the input port with
 	    //lowest capacity queue that is blocked on a write and increment
 	    //its capacity;
-            System.out.println("_resolveDeadlock() calling increment capacity");
+            //System.out.println("_resolveDeadlock() calling increment capacity");
             _incrementLowestWriteCapacityPort();
 	    return true;
         }
