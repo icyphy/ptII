@@ -61,10 +61,8 @@ JSRCS = \
 	CompositeEntity.java \
 	CrossRefList.java \
 	Entity.java \
-	FIFOQueue.java \
 	KernelException.java \
 	IllegalActionException.java \
- 	IntParam.java \
 	InvalidStateException.java \
 	IOPort.java \
 	IORelation.java \
@@ -74,15 +72,10 @@ JSRCS = \
 	NameDuplicationException.java \
 	NoSuchItemException.java \
 	ObjectToken.java \
-	ObservableParameter.java \
- 	Param.java \
- 	Parameter.java \
 	Port.java \
 	Relation.java \
 	StringToken.java \
 	Token.java
-
-# Not building until we work out parameters
 
 EXTRA_SRCS =	$(JSRCS)
 
