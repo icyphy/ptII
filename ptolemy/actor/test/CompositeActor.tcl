@@ -134,7 +134,7 @@ test CompositeActor-4.1 {Test input/output lists} {
     set p2 [java::new ptolemy.actor.IOPort $e3 P2 true true]
     set p3 [java::new ptolemy.actor.IOPort $e3 P3 false true]
     set p4 [java::new ptolemy.actor.IOPort $e3 P4 true false]
-    list [enumToFullNames [$e3 inputPorts]] [enumToFullNames [$e3 outputPorts]]
+    list [listToFullNames [$e3 inputPortList]] [listToFullNames [$e3 outputPortList]]
 } {{.E0.E3.P2 .E0.E3.P4} {.E0.E3.P2 .E0.E3.P3}}
 
 ######################################################################
