@@ -1,6 +1,6 @@
 /* A tableau for evaluating expressions interactively.
 
- Copyright (c) 2001-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -54,6 +54,7 @@ A tableau that provides an interactive shell for evaluating expressions.
 
 @author Christopher Hylands and Edward A. Lee
 @version $Id$
+@since Ptolemy II 3.0
 */
 public class ExpressionShellTableau extends Tableau
         implements ShellInterpreter {
