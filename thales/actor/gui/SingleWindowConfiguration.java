@@ -213,7 +213,7 @@ public class SingleWindowConfiguration extends Configuration {
             //THALES MODIF
             NamedObj topLevel = entity.toplevel();
 
-            effigy = creatreEffifgy(getEffigy(topLevel));
+            effigy = createEffigy(getEffigy(topLevel));
             if (effigy == null) {
                 effigy = new PtolemyEffigy(workspace());
             }
@@ -301,7 +301,7 @@ public class SingleWindowConfiguration extends Configuration {
         }
     }
 
-    protected PtolemyEffigy creatreEffifgy(PtolemyEffigy container) {
+    protected PtolemyEffigy createEffigy(PtolemyEffigy container) {
         PtolemyEffigy answer = null;
         if (container instanceof NavigableEffigy) {
             answer = new NavigableEffigy(workspace());
