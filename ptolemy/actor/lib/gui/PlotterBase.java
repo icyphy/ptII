@@ -546,7 +546,7 @@ public class PlotterBase extends TypedAtomicActor
          *  to call setVisible(true) to make the plot appear.
          *  @param title The title to put on the window.
          *  @param plotArg the plot object to put in the frame,
-         *   or null to createan instance of Plot.
+         *   or null to create an instance of Plot.
          */
         public PlotterPlotFrame(Tableau tableau, PlotBox plotArg) {
             super(tableau, plotArg);
