@@ -59,7 +59,7 @@ set header {<?xml version="1.0" standalone="no"?>
 test ModalModel-1.1 {Create a ModalModel} {
     set moml_1 {
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
-  <entity name="modal model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel"/>
+  <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel"/>
 </entity>
 }
     set moml "$header $moml_1"
@@ -70,14 +70,14 @@ test ModalModel-1.1 {Create a ModalModel} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
-    <entity name="modal model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
+    <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel$ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
-        <entity name="_Controller" class="ptolemy.vergil.ptolemy.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -95,7 +95,7 @@ test ModalModel-1.1 {Create a ModalModel} {
 test ModalModel-1.2 {Create a port in the modal model and check controller} {
     set moml_2 {
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
-  <entity name="modal model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
+  <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
     <port name="foo"/>
   </entity>
 </entity>
@@ -137,7 +137,7 @@ test ModalModel-1.2.1 {Rename a port in the modal model and check controller} {
 test ModalModel-1.3 {Remove a port in the modal model and check controller} {
     set moml_3 {
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
-  <entity name="modal model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
+  <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
     <deletePort name="bar"/>
   </entity>
 </entity>
@@ -157,7 +157,7 @@ test ModalModel-1.3 {Remove a port in the modal model and check controller} {
 test ModalModel-1.4 {Create a port in the controller and check modal model} {
     set moml_4 {
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
-  <entity name="modal model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
+  <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
     <entity name="_Controller">
       <port name="foo"/>
     </entity>
@@ -201,7 +201,7 @@ test ModalModel-1.4.1 {Rename a port in the controller and check modal model} {
 test ModalModel-1.5 {Remove a port in the controller and check modal model} {
     set moml_5 {
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
-  <entity name="modal model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
+  <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
     <entity name="_Controller">
       <deletePort name="bar"/>
     </entity>
@@ -222,8 +222,8 @@ test ModalModel-1.5 {Remove a port in the controller and check modal model} {
 test ModalModel-1.6 {Create a refinement in the modal model} {
     set moml_2 {
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
-  <entity name="modal model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
-    <entity name="refinement" class="ptolemy.vergil.ptolemy.fsm.modal.Refinement"/>
+  <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
+    <entity name="refinement" class="ptolemy.vergil.fsm.modal.Refinement"/>
   </entity>
 </entity>
 }
@@ -235,14 +235,14 @@ test ModalModel-1.6 {Create a refinement in the modal model} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
-    <entity name="modal model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
+    <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel$ModalTableauFactory">
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
-        <entity name="_Controller" class="ptolemy.vergil.ptolemy.fsm.modal.ModalController">
+        <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
@@ -250,7 +250,7 @@ test ModalModel-1.6 {Create a refinement in the modal model} {
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
             </property>
         </entity>
-        <entity name="refinement" class="ptolemy.vergil.ptolemy.fsm.modal.Refinement">
+        <entity name="refinement" class="ptolemy.vergil.fsm.modal.Refinement">
         </entity>
     </entity>
 </entity>
@@ -262,7 +262,7 @@ test ModalModel-1.6 {Create a refinement in the modal model} {
 test ModalModel-1.7 {Create a port in the modal model and check refinement} {
     set moml_2 {
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
-  <entity name="modal model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
+  <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
     <port name="foo"/>
   </entity>
 </entity>
@@ -304,7 +304,7 @@ test ModalModel-1.8 {Rename a port in the modal model and check refinement} {
 test ModalModel-1.9 {Remove a port in the modal model and check refinement} {
     set moml_3 {
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
-  <entity name="modal model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
+  <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
     <deletePort name="bar"/>
   </entity>
 </entity>
@@ -324,7 +324,7 @@ test ModalModel-1.9 {Remove a port in the modal model and check refinement} {
 test ModalModel-1.10 {Create a port in the refinement and check modal model} {
     set moml_4 {
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
-  <entity name="modal model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
+  <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
     <entity name="refinement">
       <port name="foo"/>
     </entity>
@@ -368,7 +368,7 @@ test ModalModel-1.11 {Rename a port in the refinement and check modal model} {
 test ModalModel-1.12 {Remove a port in the refinement and check modal model} {
     set moml_5 {
 <entity name="test2" class="ptolemy.actor.TypedCompositeActor">
-  <entity name="modal model" class="ptolemy.vergil.ptolemy.fsm.modal.ModalModel">
+  <entity name="modal model" class="ptolemy.vergil.fsm.modal.ModalModel">
     <entity name="refinement">
       <deletePort name="bar"/>
     </entity>
