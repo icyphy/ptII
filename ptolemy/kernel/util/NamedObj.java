@@ -25,10 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
-added public String getName(NamedObj parent);
-added inner class MoMLInfo, and removed a bunch of methods.
-added _setIconDescription() method.
+@AcceptedRating Green (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.kernel.util;
@@ -782,7 +779,7 @@ public class NamedObj implements Nameable, Debuggable,
 
     /** Get the data structure defining the MoML description of this class.
      *  This method creates an instance of the data structure if one does
-     *  not already exist, so the method never returns null.
+     *  not already exist, so this method never returns null.
      *  @return An instance of MoMLInfo.
      *  @see NamedObj.MoMLInfo
      */
@@ -802,6 +799,15 @@ public class NamedObj implements Nameable, Debuggable,
     }
 
     /** Get the name of this object relative to the specified container.
+     *  If this object is contained directly by the specified container,
+     *  this is just its name, as returned by getName().  If it is deeply
+     *  contained by the specified container, then the relative name is
+     *  <i>x1</i>.<i>x2</i>. ... .<i>name</i>, where <i>x1</i> is directly
+     *  contained by the specified container, <i>x2</i> is contained by
+     *  <i>x1</i>, etc.  If this object is not deeply contained by the
+     *  specified container, then this method returns the full name of
+     *  this object, as returned by getFullName().
+     *  <p>
      *  A recursive structure, where this object is directly or indirectly
      *  contained by itself, may result in a runtime exception of class
      *  InvalidStateException if it is detected.  Note that it is
@@ -809,8 +815,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  since there is no container.
      *  But derived classes might erroneously permit recursive structures,
      *  so this error is caught here.
-     *  If the given container is not actually a container of this object,
-     *  or is null, then the full name of the object is returned.
+     *  <p>
      *  This method is read-synchronized on the workspace.
      *  @param parent An object that deeply contains this object.
      *  @return A string of the form "name2...nameN".
@@ -821,7 +826,7 @@ public class NamedObj implements Nameable, Debuggable,
 	}
         try {
             _workspace.getReadAccess();
-	    String name = getName();
+            StringBuffer name = new StringBuffer(getName());
             // Use a hash set to keep track of what we've seen already.
             Set visited = new HashSet();
             visited.add(this);
@@ -838,14 +843,15 @@ public class NamedObj implements Nameable, Debuggable,
                     throw new InvalidStateException(
                             "Container contains itself!");
                 }
-                name = container.getName() + "." + name;
+                name.insert(0, ".");
+                name.insert(0, container.getName());
                 visited.add(container);
                 container = container.getContainer();
             }
 	    if(container == null) {
 		return getFullName();
 	    }
-	    return name;
+	    return name.toString();
         } finally {
             _workspace.doneReading();
         }
@@ -1062,6 +1068,39 @@ public class NamedObj implements Nameable, Debuggable,
         }
     }
 
+    /** Attach the specified text as an attribute with the specified
+     *  name.  This is a convenience method (syntactic sugar) that
+     *  creates an instance of TransientSingletonConfigurableAttribute
+     *  and configures it with the specified text.  This attribute
+     *  is transient, meaning that it is not described by exported
+     *  MoML.  Moreover, it is a singleton, meaning that it will
+     *  replace any previously contained instance of SingletonAttribute
+     *  that has the same name.
+     *  <p>
+     *  Note that attribute names beginning with an underscore "_"
+     *  are reserved for system use.  This method is used in several
+     *  places to set the value of such attributes.
+     *  @param name The name of the attribute.
+     *  @param text The text with which to configure the attribute.
+     */
+    protected void _attachText(String name, String text) {
+	try {
+	    TransientSingletonConfigurableAttribute icon
+                = new TransientSingletonConfigurableAttribute(this, name);
+            // The first argument below is the base w.r.t. which to open
+            // relative references within the text, which doesn't make
+            // sense in this case, so it's null. The second argument is
+            // an external URL source for the text, which is again null.
+            icon.configure(null, null, text);
+	} catch (Exception ex) {
+	    throw new InternalErrorException(
+                    "Error creating singleton attribute named "
+                    + name
+                    + " for "
+                    + getFullName() + ":" + ex);
+	}
+    }
+
     /** Send a debug event to all debug listeners that have registered.
      *  @param event The event.
      */
@@ -1243,28 +1282,6 @@ public class NamedObj implements Nameable, Debuggable,
         }
     }
 
-    /** Set the default icon to the specified SVG description.
-     *  SVG (scalable vector graphics) is an XML schema used to describe
-     *  icons in visual renditions of Ptolemy II models.  This method
-     *  simply treats the argument as a string, and does not enforce
-     *  that it be proper SVG or XML.  Derived classes that have
-     *  default icons will call this method, typically in their
-     *  constructors, to define the icon description.
-     *  @param description The SVG description.
-     */
-    protected void _setDefaultIcon(String description) {
-	try {
-	    TransientSingletonConfigurableAttribute icon
-                = new TransientSingletonConfigurableAttribute(
-                        this, "_iconDescription");
-            icon.configure(null, null, description);
-	} catch (Exception ex) {
-	    throw new InternalErrorException(
-                    "Error creating default icon for " +
-                    getFullName() + ":" + ex);
-	}
-    }
-
     /** Split the specified name at the first period and return the
      *  two parts as a two-element array.  If there is no period, the second
      *  element is null.
@@ -1384,7 +1401,7 @@ public class NamedObj implements Nameable, Debuggable,
         /** Construct an object with default values for the fields.
          *  @param owner The object that this describes.
          */
-        public MoMLInfo(NamedObj owner) {
+        protected MoMLInfo(NamedObj owner) {
             className = owner.getClass().getName();
         }
 
@@ -1411,14 +1428,17 @@ public class NamedObj implements Nameable, Debuggable,
         /** @serial The MoML element name. This defaults to "entity".*/
         public String elementName = "entity";
 
-        /** @serial The source attribute. */
+        /** @serial The source attribute, which gives an external URL
+         *   associated with an entity (presumably from which the entity
+         *   was defined).
+         */
         public String source;
 
         ///////////////////////////////////////////////////////////////
         ////                     public methods                    ////
 
-        /** Return a list of objects that defer their MoML definitions
-         *  owner of this MoMLInfo object.  This might be an empty list,
+        /** Return a list of objects that defer their MoML definitions to
+         *  the owner of this MoMLInfo object.  This might be an empty list,
          *  but the returned value is never null.
          *  @return A list of instances of NamedObj.
          */

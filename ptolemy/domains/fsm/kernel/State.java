@@ -86,7 +86,7 @@ public class State extends ComponentEntity {
         outgoingPort = new ComponentPort(this, "outgoingPort");
         refinementName = new StringAttribute(this, "refinementName");
 
-        _setDefaultIcon("<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
 		"<circle cx=\"0\" cy=\"0\" r=\"20\" style=\"fill:white\"/>\n" +
 		"</svg>\n");
     }

@@ -1168,9 +1168,12 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         String methodName = methodDecl.getName();
 
         // eliminate the following method calls no matter what
+        // NOTE: eliminating all calls to _attachText() may be overly
+        // aggresive.  It currently eliminates the setting of the default
+        // icon description.
         if (methodName.equals("attributeTypeChanged") ||
                 methodName.equals("attributeChanged") ||
-		methodName.equals("_setDefaultIcon")
+		methodName.equals("_attachText")
 	    ) {
 	    System.out.println(
                     "ActorTransformerVisitor._actorMethodCallNode(): " +

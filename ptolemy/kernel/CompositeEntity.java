@@ -1055,13 +1055,13 @@ public class CompositeEntity extends ComponentEntity {
     ////                         private methods                   ////
 
     private void _addIcon() {
-	_setDefaultIcon("<svg>\n" +
+	_attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" width=\"60\" " +
                 "height=\"40\" style=\"fill:blue\"/>\n" +
-                "<rect x=\"5\" y=\"5\" width=\"50\" " +
-                "height=\"30\" style=\"fill:white\"/>\n" +
+                "<rect x=\"3\" y=\"3\" width=\"54\" " +
+                "height=\"34\" style=\"fill:white\"/>\n" +
                 "<polygon points=\"10,10 50,20 10,30\" " +
-                "style=\"fill:blue\"/>\n" +
+                "style=\"fill:red\"/>\n" +
                 "</svg>\n");
     }
 

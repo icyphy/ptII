@@ -317,7 +317,7 @@ public class ComponentEntity extends Entity {
     ////                         private methods                   ////
 
     private void _addIcon() {
-	_setDefaultIcon("<svg>\n" +
+	_attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" width=\"60\" " +
                 "height=\"40\" style=\"fill:white\"/>\n" +
                 "<polygon points=\"10,10 50,20 10,30\" " +

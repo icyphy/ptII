@@ -182,7 +182,9 @@ public class FSMGraphFrame extends GraphFrame {
 	GraphPane pane = new GraphPane(_controller, graphModel);
 	_newStateAction = _controller.getNewStateAction();
 
+        /** FIXME: removed temporarily until edit icon works.
 	_editIconAction = new EditIconAction();
+        */
 	_getDocumentationAction = new GetDocumentationAction();
 	_controller.getStateController().setMenuFactory(new StateContextMenuFactory(_controller));
 	_controller.getTransitionController().setMenuFactory(new TransitionContextMenuFactory(_controller));
@@ -202,7 +204,9 @@ public class FSMGraphFrame extends GraphFrame {
 	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	    //addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
+            /** FIXME: removed temporarily until edit icon works.
 	    addMenuItemFactory(new MenuActionFactory(_editIconAction));
+            */
 	}
     }
 
