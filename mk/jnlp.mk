@@ -105,6 +105,9 @@ PTINY_ONLY_JNLP_JARS = \
 PTINY_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/PtinyApplication.jar
 
+PTINY_SANDBOX_MAIN_JAR = \
+	ptolemy/actor/gui/jnlp/PtinySandboxApplication.jar
+
 PTINY_JNLP_JARS = \
 	$(PTINY_MAIN_JAR) \
 	$(CORE_JNLP_JARS) \
@@ -159,6 +162,7 @@ ALL_JNLP_JARS = \
 	$(ALL_NON_APPLICATION_JNLP_JARS) \
 	$(DSP_MAIN_JAR) \
 	$(PTINY_MAIN_JAR) \
+	$(PTINY_SANDBOX_MAIN_JAR) \
 	$(FULL_MAIN_JAR)
 
 # Script to update a *.jnlp file with the proper jar files
@@ -256,19 +260,19 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
 		$(NUMBER_OF_JARS_TO_LOAD_EAGERLY) \
-		$(PTINY_MAIN_JAR) \
+		$(PTINY_SANDBOX_MAIN_JAR) \
 		$(PTINY_JNLP_JARS)
 	@echo "# Updating JNLP-INF/APPLICATION.JNLP with $@"
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
 	cp $@ JNLP-INF/APPLICATION.JNLP
-	@echo "# $(PTINY_MAIN_JAR) contains the main class"
-	"$(JAR)" -uf $(PTINY_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
+	@echo "# $(PTINY_SANDBOX_MAIN_JAR) contains the main class"
+	"$(JAR)" -uf $(PTINY_SANDBOX_MAIN_JAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
-		$(PTINY_MAIN_JAR) $(KEYALIAS)
+		$(PTINY_SANDBOX_MAIN_JAR) $(KEYALIAS)
 
 
 # Web Start: Full Runtime version of Vergil - No sources or build env.
