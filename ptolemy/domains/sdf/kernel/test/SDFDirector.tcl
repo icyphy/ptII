@@ -285,4 +285,57 @@ test SDFDirector-6.2 {Test transparent activation} {
 5
 }}
 
+######################################################################
+####
+#
+# Tests 7.* test multirate execution with hierarchy
+test SDFScheduler-7.1 {Multirate and Hierarchy execution tests} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $w]
+    set director [java::new ptolemy.domains.sdf.kernel.SDFDirector $toplevel Director]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    $toplevel setDirector $director
+    set scheduler [java::new ptolemy.domains.sdf.kernel.SDFScheduler $w]
+    $director setScheduler $scheduler
 
+    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
+    set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
+    set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
+    $p1 setInput 1
+    set p2 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p2]
+    $p2 setOutput 1
+    set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 d5]
+    $c1 setDirector $d5
+    set s5 [$d5 getScheduler]
+    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
+    $a2 setTokenProductionRate [java::field $a2 output] 2
+    $a2 setTokenConsumptionRate [java::field $a2 input] 2
+
+
+    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
+    $toplevel connect [java::field $a1 output] $p1 R1
+    $c1 connect $p1 [java::field $a2 input] R2
+    $c1 connect [java::field $a2 output] $p2 R3
+    $toplevel connect $p2 [java::field $a3 input] R4
+
+    set iter [$director getAttribute iterations]
+    $scheduler setValid false
+    $s5 setValid false
+
+    _testSetToken $iter [java::new {ptolemy.data.IntToken int} 6]
+    $manager run
+    list [$a3 getHistory]
+} {{0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+}}
