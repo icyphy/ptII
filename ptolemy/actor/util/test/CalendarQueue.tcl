@@ -86,6 +86,8 @@ set p15 [java::new {Double double} 1002.3 ]
 set p16 [java::new {Double double} 1002.4 ]
 set p1again [java::new {Double double} 0.0 ]
 
+# DoubleCQComparator.getVirtualBinNumber returns Long.MAX_Value
+# if the input == 666.0
 set p666 [java::new {Double double} 666.0 ]
 
 
@@ -205,9 +207,8 @@ test CalendarQueue-3.7 {Test toArray} {
     $queue put $p666
     $queue put $p666
     $queue put $p7
-    catch {$queue toArray} errMsg
-    list $errMsg
-} {{ptolemy.kernel.util.InternalErrorException: Queue is empty, but size() is not zero! It is: 4}}
+    arrayToStrings [$queue toArray]
+} {8.9 999.1 666.0 666.0}
 
 ######################################################################
 ####
