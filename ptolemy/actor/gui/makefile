@@ -51,6 +51,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	ExecEvent.java \
+	ExecEventListener.java \
 	HistogramPlotter.java \
 	Placeable.java \
 	Plotter.java \
