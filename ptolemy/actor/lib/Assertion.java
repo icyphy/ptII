@@ -123,7 +123,7 @@ public class Assertion extends TypedAtomicActor {
 
         assertion = new Parameter(this, "assertion");
 
-        _errorTolerance = (double)Complex.episilon;
+        _errorTolerance = (double)Complex.epsilon;
         errorTolerance = new Parameter(this, "errorTolerance",
                 new DoubleToken(_errorTolerance));
 
@@ -175,7 +175,7 @@ public class Assertion extends TypedAtomicActor {
             throws CloneNotSupportedException {
         Assertion newObject = (Assertion)super.clone(workspace);
         newObject._tokenMap = null;
-        newObject._errorTolerance = (double)Complex.episilon;
+        newObject._errorTolerance = (double)Complex.epsilon;
         newObject._parseTree = null;
         newObject._parseTreeEvaluator = null;
         newObject._scope = null;
@@ -282,8 +282,8 @@ public class Assertion extends TypedAtomicActor {
 
         if (!result.booleanValue()) {
             throw new IllegalActionException(this,
-                    "Assertion fails! " +
-                    assertion.getExpression());
+                    "AssertionModelError "
+                    + assertion.getExpression());
         }
 
         // This actor never requests termination.
