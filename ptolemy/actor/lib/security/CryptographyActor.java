@@ -94,6 +94,12 @@ Cryptography Extension (JCE).
 <br>Information about JCE can be found at
 <a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/">.
 
+<br>The Java 1.2 security tutorial can be found at
+<a href="http://java.sun.com/docs/books/tutorial/security1.2/index.html" target="_top">http://java.sun.com/docs/books/tutorial/security1.2/index.html</a>
+
+<br>Another Java security tutorial can be found at
+<a href="http://developer.java.sun.com/developer/onlineTraining/Security/Fundamentals/index.html" target="_top">http://developer.java.sun.com/developer/onlineTraining/Security/Fundamentals/index.html</a>
+
 @author Rakesh Reddy, Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1
