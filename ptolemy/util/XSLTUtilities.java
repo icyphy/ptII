@@ -112,7 +112,7 @@ public class XSLTUtilities {
         // Make sure we can write the output first
         FileWriter fileWriter = null;
         try {
-            new FileWriter(args[args.length - 1]);
+            fileWriter = new FileWriter(args[args.length - 1]);
             Document inputDocument = parse(args[0]);
 
             List transforms = new LinkedList();
@@ -123,7 +123,9 @@ public class XSLTUtilities {
                 XSLTUtilities.transform(inputDocument, transforms);
             fileWriter.write(XSLTUtilities.toString(outputDocument));
         } finally {
-            fileWriter.close();
+            if (fileWriter != null) {
+                fileWriter.close();
+            }
         }
     }
 
@@ -183,7 +185,9 @@ public class XSLTUtilities {
             serializer.transform(new DOMSource(document), result);
             return outputStream.toString();
         } finally {
-            outputStream.close();
+            if (outputStream != null) {
+                outputStream.close();
+            }
         }
     }
 
