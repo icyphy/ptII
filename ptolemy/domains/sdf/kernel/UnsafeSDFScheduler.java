@@ -95,8 +95,7 @@ an input port and not connected to any output port.  It will never
 receive a token, but this class will return a valid schedule.
 
 
-
-A scheduler that implements basic scheduling of SDF graphs.  This
+A scheduler that does basic scheduling of SDF graphs.  This
 class calculates the SDF schedule in two phases.  First, the balance
 equations for the rates between actors are solved to determine the
 <i>firing vector</i> (also known as the repetitions vector).  The
