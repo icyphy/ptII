@@ -53,15 +53,16 @@ PTCLASSJAR =
 # Include these jars in PTAUXALLJAR
 # plotmlapplet pulls in the com/microstar/xml classes
 PTAUXALLJARS = \
-		gui/gui.jar \
-		kernel/kernel.jar \
-		plot/plotmlapplet.jar \
-		graph/graph.jar \
-		data/data.jar \
 		actor/actor.jar \
+		configs/configs.jar \
+		data/data.jar \
+		gui/gui.jar \
+		graph/graph.jar \
+		kernel/kernel.jar \
 		math/math.jar \
 		media/media.jar \
-		moml/moml.jar
+		moml/moml.jar \
+		plot/plotmlapplet.jar
 
 # All the .class files necessary to run a Ptolemy II domain applet
 PTAUXALLJAR =	ptsupport.jar
