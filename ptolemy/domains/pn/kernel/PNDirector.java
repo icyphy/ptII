@@ -95,6 +95,10 @@ process is blocked on a write. In this case the director increases the
 capacity of the receiver with the smallest capacity amongst all the
 receivers on which a process is blocked on a write.
 This breaks the deadlock and the execution can resume.
+If the increase results in a capacity that exceeds the value of
+<i>maximumQueueCapacity</i>, then instead of breaking the deadlock,
+an exception is thrown.  This can be used to detect erroneous models
+that require unbounded queues.
 
 @author Mudit Goel
 @version $Id$
@@ -112,9 +116,7 @@ public class PNDirector extends CompositeProcessDirector {
     public PNDirector()
             throws IllegalActionException, NameDuplicationException {
         super();
-        initialQueueCapacity = new Parameter(this, "initialQueueCapacity",
-                new IntToken(1));
-        initialQueueCapacity.setTypeEquals(BaseType.INT);
+        _init();
     }
 
     /** Construct a director in the  workspace with an empty name.
@@ -128,9 +130,7 @@ public class PNDirector extends CompositeProcessDirector {
     public PNDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
-        initialQueueCapacity = new Parameter(this, "initialQueueCapacity",
-                new IntToken(1));
-        initialQueueCapacity.setTypeEquals(BaseType.INT);
+        _init();
     }
 
     /** Construct a director in the given container with the given name.
@@ -152,18 +152,22 @@ public class PNDirector extends CompositeProcessDirector {
     public PNDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        initialQueueCapacity = new Parameter(this, "initialQueueCapacity",
-                new IntToken(1));
-        initialQueueCapacity.setTypeEquals(BaseType.INT);
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The initial size of the queues for each communication channel.  The
-     *  type must be integer
+    /** The initial size of the queues for each communication channel.
+     *  This is an integer that defaults to 1.
      */
     public Parameter initialQueueCapacity;
+
+    /** The maximum size of the queues for each communication channel.
+     *  This is an integer that defaults to 65536.  To specify unbounded
+     *  queues, set this to 0.
+     */
+    public Parameter maximumQueueCapacity;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -181,8 +185,6 @@ public class PNDirector extends CompositeProcessDirector {
      *  by the user if he wants it to be there).
      *  The result is a new director with no container, no pending mutations,
      *  and no topology listeners. The count of active processes is zero.
-     *  The parameter "initialQueueCapacity" has the
-     *  same value as the director being cloned.
      *
      *  @param workspace The workspace for the cloned object.
      *  @exception CloneNotSupportedException If one of the attributes
@@ -286,8 +288,11 @@ public class PNDirector extends CompositeProcessDirector {
      *  queue.
      *  Notify the thread corresponding to the blocked process to resume
      *  its execution and return.
+     *  @exception IllegalActionException If the resulting capacity would
+     *   exceed the value of <i>maximumQueueCapacity</i>.
      */
-    protected void _incrementLowestWriteCapacityPort() {
+    protected void _incrementLowestWriteCapacityPort()
+            throws IllegalActionException {
         PNQueueReceiver smallestCapacityQueue = null;
         int smallestCapacity = -1;
         Iterator receivers = _writeBlockedQueues.iterator();
@@ -304,23 +309,24 @@ public class PNDirector extends CompositeProcessDirector {
                 smallestCapacity = queue.getCapacity();
             }
         }
-        try {
-            if (smallestCapacityQueue.getCapacity() <= 0) {
-                smallestCapacityQueue.setCapacity(1);
-            } else {
-                smallestCapacityQueue.setCapacity(
-                        smallestCapacityQueue.getCapacity()*2);
+        int capacity = smallestCapacityQueue.getCapacity();
+        if (capacity <= 0) {
+            smallestCapacityQueue.setCapacity(1);
+            capacity = 1;
+        } else {
+            int maximumCapacity
+                    = ((IntToken)maximumQueueCapacity.getToken()).intValue();
+            if (maximumCapacity > 0 && capacity*2 > maximumCapacity) {
+                throw new IllegalActionException(this,
+                        "Capacity of a queue exceeds maximum capacity. "
+                        + "Perhaps you have an unbounded queue?");
             }
-            _actorUnBlocked(smallestCapacityQueue);
-            smallestCapacityQueue.setWritePending(false);
-            synchronized(smallestCapacityQueue) {
-                smallestCapacityQueue.notifyAll();
-            }
-        } catch (IllegalActionException ex) {
-            // Should not be thrown as this exception is thrown
-            // only if port is not an input port, checked above.
-            throw new InternalErrorException(this, ex, "Perhaps port was not "
-                    + "an input port");
+            smallestCapacityQueue.setCapacity(capacity*2);
+        }
+        _actorUnBlocked(smallestCapacityQueue);
+        smallestCapacityQueue.setWritePending(false);
+        synchronized(smallestCapacityQueue) {
+            smallestCapacityQueue.notifyAll();
         }
         return;
     }
@@ -377,7 +383,8 @@ public class PNDirector extends CompositeProcessDirector {
      *  alone.
      *  @return True after handling an artificial deadlock. Otherwise return
      *  false.
-     *  @exception IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException If the maximum queue capacity
+     *   is exceeded.
      *  This might be thrown by derived classes.
      */
     protected boolean _resolveInternalDeadlock() throws IllegalActionException {
@@ -417,6 +424,20 @@ public class PNDirector extends CompositeProcessDirector {
 
     /** The list of receivers blocked on a write to a receiver. */
     protected LinkedList _writeBlockedQueues = new LinkedList();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private void _init()
+           throws IllegalActionException, NameDuplicationException {
+        initialQueueCapacity = new Parameter(this, "initialQueueCapacity",
+                new IntToken(1));
+        initialQueueCapacity.setTypeEquals(BaseType.INT);
+
+        maximumQueueCapacity = new Parameter(this, "maximumQueueCapacity",
+                new IntToken(65536));
+        maximumQueueCapacity.setTypeEquals(BaseType.INT);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
