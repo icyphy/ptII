@@ -87,14 +87,14 @@ public class InequalitySolver {
      *  @param ineq An <code>Inequality</code>.
      */
     public void addInequality(Inequality ineq) {
-	// put ineq. to _Ilist
-	Integer indexWrap = new Integer(_Ilist.size());
-	Info info = new Info(ineq);
-	_Ilist.add(info);
+        // put ineq. to _Ilist
+        Integer indexWrap = new Integer(_Ilist.size());
+        Info info = new Info(ineq);
+        _Ilist.add(info);
 
         // add var->ineq to Hashtable
-	_addToClist(ineq.getLesserTerm().getVariables(), indexWrap);
-	_addToClist(ineq.getGreaterTerm().getVariables(), indexWrap);
+        _addToClist(ineq.getLesserTerm().getVariables(), indexWrap);
+        _addToClist(ineq.getGreaterTerm().getVariables(), indexWrap);
     }
 
     /** Add a group of inequalities to the set of constraints.
@@ -103,8 +103,8 @@ public class InequalitySolver {
      */
     public void addInequalities(Iterator inequalities) {
         while (inequalities.hasNext()) {
-	    addInequality((Inequality)inequalities.next());
-	}
+            addInequality((Inequality)inequalities.next());
+        }
     }
 
     /** Return an <code>Iterator</code> of the variables whose current
@@ -116,37 +116,37 @@ public class InequalitySolver {
      *   have a bottom element.
      */
     public Iterator bottomVariables() {
-	Object bottom = _cpo.bottom();
-	if (bottom == null) {
-	    throw new InvalidStateException(
+        Object bottom = _cpo.bottom();
+        if (bottom == null) {
+            throw new InvalidStateException(
                     "The underlying CPO does not have a bottom element.");
-	}
+        }
 
-	return _filterVariables(bottom);
+        return _filterVariables(bottom);
     }
 
     /** Return a description of this solver as a String */
     public String description() {
-	// This method is useful for debugging.
-	StringBuffer results =
-	    new StringBuffer("{_Ilist:\n ");
-	for (int i = 0; i < _Ilist.size(); i++) {
-	    Info info = (Info)_Ilist.get(i);
-	    results.append("{_ineq: " + info._ineq
+        // This method is useful for debugging.
+        StringBuffer results =
+            new StringBuffer("{_Ilist:\n ");
+        for (int i = 0; i < _Ilist.size(); i++) {
+            Info info = (Info)_Ilist.get(i);
+            results.append("{_ineq: " + info._ineq
                     + " _inCvar: " + info._inCvar
                     + " _inserted: " + info._inserted
                     + "}\n  ");
-	}
-	results.append("}\n{Clist:\n ");
-	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
-	    InequalityTerm variable = (InequalityTerm)e.nextElement();
-	    results.append("{"
+        }
+        results.append("}\n{Clist:\n ");
+        for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
+            InequalityTerm variable = (InequalityTerm)e.nextElement();
+            results.append("{"
                     + ((variable == null) ?
                             "variable == null" : variable.toString())
                     + "}\n ");
-	}
-	results.append("}\n");
-	return results.toString();
+        }
+        results.append("}\n");
+        return results.toString();
     }
 
     /** Solve the set of inequalities for the greatest solution.
@@ -175,7 +175,7 @@ public class InequalitySolver {
      *  false otherwise.
      */
     public boolean solveGreatest() {
-	return _solve(false);
+        return _solve(false);
     }
 
     /** Solve the set of inequalities for the least solution.
@@ -204,7 +204,7 @@ public class InequalitySolver {
      *   <code>false</code> otherwise.
      */
     public boolean solveLeast() {
-	return _solve(true);
+        return _solve(true);
     }
 
     /** Return an <code>Iterator</code> of the variables whose current
@@ -216,13 +216,13 @@ public class InequalitySolver {
      *   have a top element.
      */
     public Iterator topVariables() {
-	Object top = _cpo.top();
-	if (top == null) {
-	    throw new InvalidStateException(
+        Object top = _cpo.top();
+        if (top == null) {
+            throw new InvalidStateException(
                     "The underlying CPO does not have a top element.");
-	}
+        }
 
-	return _filterVariables(top);
+        return _filterVariables(top);
     }
 
     /** Return an <code>Iterator</code> of <code>Inequalities</code>
@@ -232,15 +232,15 @@ public class InequalitySolver {
      *  @return An Iterator of Inequalities
      */
     public Iterator unsatisfiedInequalities() {
-	LinkedList result = new LinkedList();
+        LinkedList result = new LinkedList();
 
         for (int i = 0; i < _Ilist.size(); i++) {
-	    Info info = (Info)_Ilist.get(i);
+            Info info = (Info)_Ilist.get(i);
             if ( !info._ineq.isSatisfied(_cpo)) {
                 result.addLast(info._ineq);
-	    }
+            }
         }
-	return result.iterator();
+        return result.iterator();
     }
 
     /** Return an <code>Iterator</code> of all the variables in the
@@ -248,7 +248,7 @@ public class InequalitySolver {
      *  @return An Iterator of InequalityTerms
      */
     public Iterator variables() {
-	return _filterVariables(null);
+        return _filterVariables(null);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -262,13 +262,13 @@ public class InequalitySolver {
 
         private Inequality _ineq;
 
-	// True if this ineq. is in the "Cvar" set of the Rehof paper,
-	// i.e., if looking for the least solution and the greaterTerm
-	// is settable, or looking for the greatest solution and the
-	// lesserTerm is settable.
-	private boolean _inCvar = false;
+        // True if this ineq. is in the "Cvar" set of the Rehof paper,
+        // i.e., if looking for the least solution and the greaterTerm
+        // is settable, or looking for the greatest solution and the
+        // lesserTerm is settable.
+        private boolean _inCvar = false;
 
-	// If this ineq. is in _NS
+        // If this ineq. is in _NS
         private boolean _inserted = false;
     }
 
@@ -282,18 +282,18 @@ public class InequalitySolver {
     private void _addToClist(InequalityTerm[] variables,
             Integer indexWrap) {
         for (int i = 0; i < variables.length; i++) {
-	    if ( !variables[i].isSettable()) {
-		throw new InvalidStateException(
+            if ( !variables[i].isSettable()) {
+                throw new InvalidStateException(
                         "InequalitySolver._addToClist: variable in an"
-			+ "InequalityTerm is not settable.");
-	    }
+                        + "InequalityTerm is not settable.");
+            }
 
             ArrayList entry = (ArrayList)(_Clist.get(variables[i]));
             if (entry == null) {
-		// variable not in Hashtable
+                // variable not in Hashtable
                 entry = new ArrayList();
                 _Clist.put(variables[i], entry);
-	    }
+            }
             entry.add(indexWrap);
         }
     }
@@ -306,14 +306,14 @@ public class InequalitySolver {
     // in this package return Iterators.
     private Iterator _filterVariables(Object value) {
 
-	LinkedList result = new LinkedList();
-	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
-	    InequalityTerm variable = (InequalityTerm)e.nextElement();
-	    if (value == null || variable.getValue().equals(value)) {
-		result.addLast(variable);
-	    }
-	}
-	return result.iterator();
+        LinkedList result = new LinkedList();
+        for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
+            InequalityTerm variable = (InequalityTerm)e.nextElement();
+            if (value == null || variable.getValue().equals(value)) {
+                result.addLast(variable);
+            }
+        }
+        return result.iterator();
     }
 
     // The solver used by solveLeast() and solveGreatest().
@@ -322,57 +322,57 @@ public class InequalitySolver {
     private boolean _solve(boolean least) {
 
         // initialize all variables
-	Object init = least ? _cpo.bottom() : _cpo.top();
-	if (init == null) {
-	    throw new InvalidStateException(
+        Object init = least ? _cpo.bottom() : _cpo.top();
+        if (init == null) {
+            throw new InvalidStateException(
                     "The underlying CPO is not a lattice.");
-	}
+        }
 
-	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
-	    InequalityTerm variable = (InequalityTerm)e.nextElement();
-	    try {
-	        variable.initialize(init);
-	    } catch (IllegalActionException ex) {
-		throw new InvalidStateException(null, null, ex,
+        for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
+            InequalityTerm variable = (InequalityTerm)e.nextElement();
+            try {
+                variable.initialize(init);
+            } catch (IllegalActionException ex) {
+                throw new InvalidStateException(null, null, ex,
                         "Cannot initialize variable.");
-	    }
-	}
+            }
+        }
 
-	// initialize _NS(not satisfied) list; set _inCvar and _inserted flags.
+        // initialize _NS(not satisfied) list; set _inCvar and _inserted flags.
 
         // Not Satisfied list.  Each entry is an Integer storing index to
-	// _Ilist.
-    	// Note: removal in jdk1.2 LinkedList is not an O(1) operation, but
-    	// an O(n) operation, where n is the number of elements in list.
-    	// If the size of _NS is large, writing our own linked list class
-    	// with a Cell class might be better.
-    	LinkedList _NS = new LinkedList();
+        // _Ilist.
+            // Note: removal in jdk1.2 LinkedList is not an O(1) operation, but
+            // an O(n) operation, where n is the number of elements in list.
+            // If the size of _NS is large, writing our own linked list class
+            // with a Cell class might be better.
+            LinkedList _NS = new LinkedList();
 
-	for (int i = 0; i < _Ilist.size(); i++) {
-	    Info info = (Info)_Ilist.get(i);
-	    info._inCvar = least ? info._ineq.getGreaterTerm().isSettable()
+        for (int i = 0; i < _Ilist.size(); i++) {
+            Info info = (Info)_Ilist.get(i);
+            info._inCvar = least ? info._ineq.getGreaterTerm().isSettable()
                 : info._ineq.getLesserTerm().isSettable();
 
-	    if (info._inCvar) {
-	    	if (info._ineq.isSatisfied(_cpo)) {
-		    info._inserted = false;
-		} else { 	// insert to _NS
+            if (info._inCvar) {
+                    if (info._ineq.isSatisfied(_cpo)) {
+                    info._inserted = false;
+                } else {         // insert to _NS
                     _NS.addLast(new Integer(i));
-		    info._inserted = true;
-		}
-	    }
-	}
+                    info._inserted = true;
+                }
+            }
+        }
 
-	// The outer loop is for handling the situation that some
-	// InequalityTerms do not report all the variables they depend on
-	// from the getVariables() call. This can happen, for example, in
-	// type resolution application involving structured types, where
-	// the type term for an element of a structured type does not have
-	// a reference to the term of its enclosing type.
-	boolean allSatisfied = false;
-	while ( !allSatisfied) {
+        // The outer loop is for handling the situation that some
+        // InequalityTerms do not report all the variables they depend on
+        // from the getVariables() call. This can happen, for example, in
+        // type resolution application involving structured types, where
+        // the type term for an element of a structured type does not have
+        // a reference to the term of its enclosing type.
+        boolean allSatisfied = false;
+        while ( !allSatisfied) {
 
-	    // solve the inequalities
+            // solve the inequalities
             while (_NS.size() > 0) {
 
                 int index = ((Integer)(_NS.removeFirst())).intValue();
@@ -380,36 +380,36 @@ public class InequalitySolver {
                 Info info = (Info)(_Ilist.get(index));
                 info._inserted = false;
                 Object value = null;
-	        InequalityTerm updateTerm = null;
-	        if (least) {
-		    updateTerm = info._ineq.getGreaterTerm();
-	            value = _cpo.leastUpperBound(
+                InequalityTerm updateTerm = null;
+                if (least) {
+                    updateTerm = info._ineq.getGreaterTerm();
+                    value = _cpo.leastUpperBound(
                             info._ineq.getLesserTerm().getValue(),
                             updateTerm.getValue());
-	        } else {
-		    updateTerm = info._ineq.getLesserTerm();
-	            value = _cpo.greatestLowerBound(updateTerm.getValue(),
+                } else {
+                    updateTerm = info._ineq.getLesserTerm();
+                    value = _cpo.greatestLowerBound(updateTerm.getValue(),
                             info._ineq.getGreaterTerm().getValue());
-	        }
+                }
 
                 if (value == null) {
                     throw new InvalidStateException("The CPO over which " +
                             "the inequalities are defined is not a lattice.");
                 }
 
-	        try {
-		    updateTerm.setValue(value);
-	        } catch (IllegalActionException ex) {
-		    throw new InvalidStateException(null, null, ex,
+                try {
+                    updateTerm.setValue(value);
+                } catch (IllegalActionException ex) {
+                    throw new InvalidStateException(null, null, ex,
                             "Can't update variable.\n");
-	        }
+                }
 
                 // insert or drop the inequalities affected
                 ArrayList affected = (ArrayList)_Clist.get(updateTerm);
                 for (int i = 0; i < affected.size(); i++) {
                     Integer index1Wrap = (Integer)(affected.get(i));
                     int index1 = index1Wrap.intValue();
-		    Info affectedInfo = (Info)_Ilist.get(index1);
+                    Info affectedInfo = (Info)_Ilist.get(index1);
                     if (index1 != index && affectedInfo._inCvar) {
                         if (affectedInfo._ineq.isSatisfied(_cpo)) {    // drop
                             if (affectedInfo._inserted) {
@@ -424,30 +424,30 @@ public class InequalitySolver {
                 }
             }
 
-	    allSatisfied = true;
-	    for (int i = 0; i < _Ilist.size(); i++) {
-	        Info info = (Info)_Ilist.get(i);
-	        if (info._inCvar) {
-	    	    if (info._ineq.isSatisfied(_cpo)) {
-		        info._inserted = false;
-		    } else { 	// insert to _NS
+            allSatisfied = true;
+            for (int i = 0; i < _Ilist.size(); i++) {
+                Info info = (Info)_Ilist.get(i);
+                if (info._inCvar) {
+                        if (info._ineq.isSatisfied(_cpo)) {
+                        info._inserted = false;
+                    } else {         // insert to _NS
                         _NS.addLast(new Integer(i));
-		        info._inserted = true;
-		        allSatisfied = false;
-		    }
-	        }
-	    }
-	}
+                        info._inserted = true;
+                        allSatisfied = false;
+                    }
+                }
+            }
+        }
 
         // Check the inequalities not involved in the above iteration.
-	// These inequalities are the ones in the "Ccnst" set in the
-	// Rehof paper.
+        // These inequalities are the ones in the "Ccnst" set in the
+        // Rehof paper.
         for (int i = 0; i < _Ilist.size(); i++) {
-	    Info info = (Info)_Ilist.get(i);
-	    if ( !info._inCvar) {
+            Info info = (Info)_Ilist.get(i);
+            if ( !info._inCvar) {
                 if ( !info._ineq.isSatisfied(_cpo)) {
                     return false;
-		}
+                }
             }
         }
         return true;

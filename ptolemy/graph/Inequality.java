@@ -58,14 +58,14 @@ public class Inequality {
      *   the <code>greaterTerm</code> is <code>null</code>.
      */
     public Inequality(InequalityTerm lesserTerm, InequalityTerm greaterTerm) {
-	if (lesserTerm == null) {
-	    throw new IllegalArgumentException("Inequality.Inequality: " +
+        if (lesserTerm == null) {
+            throw new IllegalArgumentException("Inequality.Inequality: " +
                     "lesserTerm is null.");
         }
         if (greaterTerm == null) {
-	    throw new IllegalArgumentException("Inequality.Inequality: " +
+            throw new IllegalArgumentException("Inequality.Inequality: " +
                     "greaterTerm is null.");
-	}
+        }
 
         _lesserTerm = lesserTerm;
         _greaterTerm = greaterTerm;
