@@ -28,6 +28,6 @@ do
              }
           }
       }' < $file | sed 's/onload="asd();"//' > /tmp/removeasd.tmp
-      cp $file /tmp/removeasd.tmp
+      cp /tmp/removeasd.tmp $file 
   fi
 done
