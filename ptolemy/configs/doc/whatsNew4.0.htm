@@ -31,6 +31,18 @@ SerialPort actor documentation</a>).
 <li> <a href="../../actor/lib/x10/demo/OnOff/OnOff.xml">
 X10 power-line network</a> (see <a href="../../../doc/codeDoc/ptolemy/actor/lib/x10/X10Interface.html">
 X10Interface actor documentation</a>).
+
+<li> The Matlab Expression actor how takes a String Parameter instead
+of a  StringAttribute
+This means
+that you can now reference parameters in scope using the $name
+or ${name} syntax.  For instance, if there is a parameter named
+foo, you can specifcy a Matlab expression like:
+<pre>
+    output = fft(in, $foo)
+</pre>
+Before, you would have to have read foo in a Const actor and
+provided it as input to the Matlab expression actor.
 </ul>
 </body>
 </html>
