@@ -48,14 +48,24 @@ import ptolemy.lang.java.nodetypes.*;
 /**
 Create declarations for fields, constructors, and methods, and add them to
 their enclosing class's environment.
+
+This is part 1 of pass 1:
+
+Adding proper class and interface members to the respective
+environments.  All source files known to the compiler must undergo
+this step before the next step.
+
+Part 2 of pass 1 happens in ResolveInheritanceVisitor.
 <p>
 Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
 and Army Research Office.
 
+@see ResolveInheritanceVisitor
+
 @author Jeff Tsay
 @version $Id$
- */
+*/
 public class ResolveClassVisitor extends ResolveVisitorBase
     implements JavaStaticSemanticConstants  {
     public ResolveClassVisitor() {

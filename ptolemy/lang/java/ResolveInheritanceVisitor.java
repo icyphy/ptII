@@ -40,11 +40,14 @@ import ptolemy.lang.java.nodetypes.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ResolveInheritanceVisitor
-/** Fills in class and interface environments with inherited members.
+/** Adds inherited class and interface members to the respective
+environments  This is part 2 of pass 1, part 1 of pass 1 happens in ResolveClassVisitor.
 <p>
 Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
 and Army Research Office.
+
+@see ResolveClassVisitor
 
 @author Jeff Tsay
 @version $Id$

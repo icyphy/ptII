@@ -39,6 +39,21 @@ import ptolemy.lang.java.nodetypes.*;
 //////////////////////////////////////////////////////////////////////////
 //// PackageResolutionVisitor
 /**  Resolve packages.
+Pass 0: Package resolution, done by PackageResolutionVisitor consists of three
+steps:
+<ol>
+<li> Creation of type environments, done by ResolvePackageVisitor. These
+environments are members of class declarations (ClassDecl), which are
+created during this step.
+<li> Resolution of imports, done by ResolveImportsVisitor.
+<li> Resolution of type names, done by ResolveTypesVisitor.
+</ol>
+Additional classes may be read in during pass 0.
+
+@see ResolvePackageVisitor
+@see ResolveImportsVisitor
+@see ResolveTypesVisitor
+
 @author Jeff Tsay
 @version $Id$
  */
