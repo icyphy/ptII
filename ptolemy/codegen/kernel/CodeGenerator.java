@@ -28,13 +28,6 @@ COPYRIGHTENDKEY
 
 package ptolemy.codegen.kernel;
 
-import java.io.Writer;
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.StringTokenizer;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -49,7 +42,21 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.MessageHandler;
+
+import java.io.File;
+import java.io.Writer;
+import java.lang.reflect.Constructor;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Iterator;
+import java.util.StringTokenizer;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CodeGenerator
@@ -132,6 +139,16 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
     public String generateBodyCode() throws IllegalActionException {
         return "";
     }
+
+    /** Generate code and write it to the file specified by the
+     *  <i>codeDirectory</i> parameter.
+     *  @exception KernelException if the target file cannot be overwritten
+     *   or write-to-file throw any exception.
+     */
+    public void generateCode() throws KernelException {
+        generateCode(new StringBuffer());
+    }
+
 
     /** Generate code and append it to the given string buffer.
      *  Write the code to the file specified by the codeDirectory parameter.
@@ -280,6 +297,76 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      */
     public NamedObj getComponent() {
         return getContainer();
+    }
+
+    /** Generate code for a model.
+     *  @param args An array of Strings, each element names a MoML file
+     *  containing a model.
+     */
+    public static void main(String [] args) throws Exception {
+        if (args.length == 0) {
+            System.err.println("Usage: java -classpath $PTII "
+                    + "ptolemy.codegen.kernel.CodeGenerator model.xml "
+                    + "[model.xml . . .]\n"
+                    + "  The arguments name MoML files containing models");
+        }
+        // See MoMLSimpleApplication for similar code
+        MoMLParser parser = new MoMLParser();
+        parser.setMoMLFilters(BackwardCompatibility.allFilters());
+        parser.addMoMLFilter(new RemoveGraphicalClasses());
+
+        for (int i = 0; i < args.length; i++) {
+            // Note: the code below uses explicit try catch blocks
+            // so we can provide very clear error messages about what
+            // failed to the end user.  The alternative is to wrap the 
+            // entire body in one try/catch block and say 
+            // "Code generation failed for foo", which is not clear. 
+            URL modelURL;
+            try {
+                modelURL = new File(args[i]).toURL();
+            } catch (Exception ex) {
+                throw new Exception("Could not open \"" + args[i] + "\"", ex);
+            }
+            CompositeActor toplevel;
+            try {
+                toplevel = (CompositeActor) parser.parse(null,
+                    modelURL);
+            } catch (Exception ex) {
+                throw new Exception("Failed to parse \"" + args[i] + "\"",
+                        ex);                
+            }
+
+            Class codeGeneratorClass;
+            try {
+                codeGeneratorClass =
+                    Class.forName("ptolemy.codegen.kernel.CodeGenerator");
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException("Could not find CodeGenerator", ex);
+            }
+
+            // Get all instances of this class contained in the model
+            List codeGenerators = toplevel.entityList(codeGeneratorClass);
+
+            CodeGenerator codeGenerator;
+            if (codeGenerators.size() == 0) {
+                // Add a codeGenerator 
+                codeGenerator = new CodeGenerator(toplevel,
+                        "CodeGenerator_AutoAdded");
+            } else {
+                // Get the last CodeGenerator in the list, maybe
+                // it was added last?
+                codeGenerator =
+                    (CodeGenerator) codeGenerators.get(
+                            codeGenerators.size()-1);
+            }
+
+            try {
+                codeGenerator.generateCode();
+            } catch (KernelException ex) {
+                throw new Exception("Failed to generate code for \""
+                        + args[i] + "\"", ex);
+            }
+        }
     }
 
     /** Set the container of this object to be the given container.
