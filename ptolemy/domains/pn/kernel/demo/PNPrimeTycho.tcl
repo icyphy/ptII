@@ -40,10 +40,11 @@ proc PNPrimeTycho { {numberOfCycles 10}} {
     global TYCHO
     global jrpc
     if ![info exists jrpc] {
-	puts "Please wait while remote Tcl Blend Process starts up"
+	puts "Please wait while the remote Tcl Blend Process starts up."
 	flush stdout
+	update
 	set jrpc [::tycho::JRPC [::tycho::autoName .jrpc]]
-	puts "Remote Tcl Blend Process started"
+	puts "Remote Tcl Blend Process started."
     }
     set initialDAGFileName [::tycho::tmpFileName initial .dag]
     set finalDAGFileName [::tycho::tmpFileName final .dag]
