@@ -34,8 +34,10 @@ import ptolemy.math.Complex;
 //// ScalarToken
 /**
 Abstract base class for tokens that contain a scalar.
-This class provides interface for type conversion among different scalar
-types.
+This class defines methods for type conversion among different scalar
+tokens. The implementation in this base class just throws an exception.
+Derived class should override the methods that the corresponding
+conversion can be achieved without loss of information.
 
 @author Yuhong Xiong, Mudit Goel
 $Id$
