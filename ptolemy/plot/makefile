@@ -69,9 +69,9 @@ JCLASS = \
 	PlotPoint.class \
 	Pxgraph.class
 
-all: jclass
+all: $(EXTRA_SRCS) jclass 
 	chmod a+x pxgraph testpxgraph
-install: jclass javadocs $(JZIP)
+install: $(EXTRA_SRCS) jclass javadocs $(JZIP) 
 	chmod a+x pxgraph testpxgraph
 docs: javadocs
 
