@@ -172,7 +172,7 @@ fi
 
 
 #--------------------------------------------------------------------
-#	Figure out whether to use javac -Xdepend or javac -depend
+#	Test the Java Compiler (javac)
 #--------------------------------------------------------------------
 AC_MSG_CHECKING([the Java compiler with a simple compile])
 # We need to run javac in the config directory so that javac from jdk1.1.6
@@ -191,31 +191,8 @@ if $JAVAC confTest.java ; then
 	grep -v "patch installation instructions."`	
     AC_MSG_RESULT($JVERSION)
 
-    JDEPENDFLAG="-Xdepend"
-    AC_MSG_CHECKING([javac $JDEPENDFLAG])
-    if $JAVAC -d $startdir $JDEPENDFLAG confTest.java ; then
-	AC_MSG_RESULT(yes)
-    else
-	AC_MSG_RESULT(no)
-	JDEPENDFLAG="-depend"
-	AC_MSG_CHECKING([javac $JDEPENDFLAG])
-	if $JAVAC -d $startdir $JDEPENDFLAG confTest.java ; then
-	    AC_MSG_RESULT(yes)
-	else
-	    AC_MSG_RESULT(no)
-	    AC_MSG_WARN(['$JAVAC -d $startdir -Xdepend confTest.java' and
-'$JAVAC -d $startdir -depend confTest.java' both failed, so we don't
-know how to build with dependencies taken into account.  This could
-cause problems later if you modify .java files that other .java
-files depend on])
-	    AC_MSG_RESULT($JDEPENDFLAG)
-	fi
-    fi
 else
-    JDEPENDFLAG="-depend"
-   AC_MSG_WARN(['$JAVAC confTest.java' failed,
-so we can't figure out whether to use -Xdepend or -depend.
-Defaulting to $JDEPENDFLAG]);
+   AC_MSG_WARN(['$JAVAC confTest.java' failed'])
 fi
 cd $startdir
 
@@ -344,6 +321,45 @@ else
     fi	 
 fi
 
+#--------------------------------------------------------------------
+#       Jini is connection technology from Sun, see http://www.sun.com/jini/
+#	See if there was a command-line option for where
+#       kvm/tools/classes.zip is;  if not,
+#       check to see if $PTII/vendors/sun/kvm exists
+#--------------------------------------------------------------------
+
+# We only need to look for kvm if $PTII/ptolemy/kvm exists
+JINI_USER_DIR="$PTII/ptolemy/domains/ct/demo/CarTracking"
+JINI_VERSION=jini1_0_1
+JINI_PRESENT=no
+if test ! -d "$JINI_USER_DIR"; then
+    AC_MSG_RESULT([$JINI_USER_DIR is not present, so we need not
+find Jini])
+    # We don't use JINI_VERSION here so that we don't expand PTII
+    # in the makefile	
+    JINI_DIR='$(PTII)/vendors/sun/jini/jini1_0_1'
+else
+    AC_MSG_CHECKING([for jini directory])
+    AC_ARG_WITH(jini, [  --with-jini=DIR       use Jini from DIR,
+                          defaults to \$PTII/vendors/sun/$JINI_VERSION],
+	JINI_DIR=$withval,
+	JINI_DIR=$PTII/vendors/sun/jini/$JINI_VERSION)
+
+    if test -d "$JINI_DIR"; then
+	AC_MSG_RESULT([$JINI_DIR])
+	JINI_PRESENT=yes
+    else    
+	JINI_DIR='$(PTII)/vendors/sun/$JINI_VERSION'
+    fi    
+    if test "$JINI_PRESENT" = "no"; then
+        AC_MSG_WARN(['Failed to find $JINI_DIR/lib/jini-core.jar
+  Perhaps Jini is not installed?
+  You need not download Jini unless you plan on use Jini and JavaSpaces
+  Jini can be downloaded from http://java.sun.com/jini'] and placed
+  in \$PTII/vendors/sun/jini/$JINI_VERSION)
+    fi	
+fi
+
 
 
 #--------------------------------------------------------------------
@@ -401,8 +417,11 @@ AC_SUBST(JAVACC)
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
 AC_SUBST(JAVACC_DIR)
 
-# Arguments to pass to javac.  Usually something like '-g -depend'
-AC_SUBST(JDEPENDFLAG)
+# Jini home directory, see http://www.sun.com/jini/
+AC_SUBST(JINI_DIR)
+
+# If Jini is present, the set to yes, otherwise, set to no
+AC_SUBST(JINI_PRESENT)
 
 # jtclsh script, used for test suites
 AC_SUBST(JTCLSH)
