@@ -64,6 +64,7 @@ import javax.swing.Action;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -111,6 +112,7 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.tree.EntityTreeModel;
 import ptolemy.vergil.tree.PTree;
@@ -1108,9 +1110,77 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             MessageHandler.error("Redo failed", ex);
         }
     }
+    
+    /** Open a file browser and save the given entity in the file specified
+     *  by the user.
+     *  @param entity The entity to save.
+     *  @exception If something goes wrong.
+     *  @since Ptolemy 4.0
+     */
+    public void saveComponentInFile(Entity entity) throws Exception {
+        // NOTE: This mirrors similar code in Top and TableauFrame, but
+        // I can't find any way to re-use that code, since the details
+        // are slightly different at each step here.
+        JFileChooser fileDialog = new JFileChooser();
+        fileDialog.setDialogTitle("Save actor as...");
+        if (_directory != null) {
+            fileDialog.setCurrentDirectory(_directory);
+        } else {
+            // The default on Windows is to open at user.home, which is
+            // typically not what we want.
+            // So we use the current directory instead.
+            // This will fail with a security exception in applets.
+            String currentWorkingDirectory
+                    = StringUtilities.getProperty("user.dir");
+            if (currentWorkingDirectory != null) {
+                fileDialog.setCurrentDirectory(
+                        new File(currentWorkingDirectory));
+            }
+        }
+        fileDialog.setSelectedFile(
+                new File(fileDialog.getCurrentDirectory(),
+                entity.getName() + ".xml"));
+
+        // Show the dialog.
+        int returnVal = fileDialog.showSaveDialog(this);
+        
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fileDialog.getSelectedFile();
+            if (!_confirmFile(entity, file)) {
+                return;
+            }
+            // Record the selected directory.
+            _directory = fileDialog.getCurrentDirectory();
+            
+            java.io.FileWriter fileWriter = new java.io.FileWriter(file);
+            
+            // Make sure the entity name saved matches the file name.
+            String name = entity.getName();
+            String filename = file.getName();
+            int period = filename.indexOf(".");
+            if (period > 0) {
+                name = filename.substring(0, period);
+            } else {
+                name = filename;
+            }
+            try {
+                // FIXME: XML header
+                fileWriter.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
+                        + "<!DOCTYPE " + entity.getElementName() + " PUBLIC "
+                        + "\"-//UC Berkeley//DTD MoML 1//EN\"\n"
+                        + "    \"http://ptolemy.eecs.berkeley.edu"
+                        + "/xml/dtd/MoML_1.dtd\">\n");
+
+                entity.exportMoML(fileWriter, 0, name);
+            } finally {
+                fileWriter.close();
+            }
+        }
+    }
 
     /** Save the given entity in the user library in the given
      *  configuration.
+     *  @param configuration The configuration.
      *  @param entity The entity to save.
      *  @since Ptolemy 2.1
      */
@@ -1131,7 +1201,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
             StringWriter buffer = new StringWriter();
 
-            // Check if there is already something existing in the
+            // Check whether there is already something existing in the
             // user library with this name.
             if (library.getEntity(entity.getName()) != null) {
                 MessageHandler.error(
@@ -1145,11 +1215,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             ChangeRequest request =
                 new MoMLChangeRequest(entity, library, buffer.toString());
             library.requestChange(request);
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             // Ignore.
-        }
-        catch (KernelException ex) {
+        } catch (KernelException ex) {
             // Ignore.
         }
     }

@@ -328,9 +328,6 @@ public abstract class PtolemyFrame extends TableauFrame {
                     effigy = effigy.topEffigy();
                 }
                 effigy.writeFile(file);
-                if (effigy instanceof PtolemyEffigy) {
-                    NamedObj model = ((PtolemyEffigy)effigy).getModel();
-                }
                 return;
             }
         }

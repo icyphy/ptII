@@ -809,11 +809,9 @@ public abstract class Top extends JFrame {
             fileDialog.setCurrentDirectory(_directory);
         } else {
             // The default on Windows is to open at user.home, which is
-            // typically an absurd directory inside the O/S installation.
+            // typically not what we want.
             // So we use the current directory instead.
             // This will fail with a security exception in applets.
-            // FIXME: we should support users under applets opening files
-            // on the server.
             String currentWorkingDirectory
                     = StringUtilities.getProperty("user.dir");
             if (currentWorkingDirectory != null) {

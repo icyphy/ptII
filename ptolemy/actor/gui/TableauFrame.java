@@ -35,6 +35,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Iterator;
@@ -50,6 +51,7 @@ import ptolemy.data.expr.FileParameter;
 import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.StatusBar;
 import ptolemy.gui.Top;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Nameable;
@@ -455,6 +457,120 @@ public class TableauFrame extends Top {
             return true;
         }
     }
+    
+    /** Confirm that writing the specified model to the specified file is OK.
+     *  In particular, if the file exists, ask the user whether it is OK
+     *  to overwrited. If there is an open model from the specified file,
+     *  determine whether it has been modified, and prompt to discard changes
+     *  if it has.  Close the previously open model. If the previously open
+     *  model on this file contains the specified model, the it is never
+     *  OK to do the write, so return false.
+     *  @param model The model to write to the file, or null specify
+     *   that this will be delegated to the effigy associated with this
+     *   tableau.
+     *  @param file The file to write to.
+     *  @return True if it is OK to write the model to the file.
+     */
+    protected boolean _confirmFile(Entity model, File file)
+            throws MalformedURLException {
+        URL newURL = file.toURL();
+        String newKey = newURL.toExternalForm();
+        Effigy previousOpen = getDirectory().getEffigy(newKey);
+        // If there is a previous open, and it's not the same,
+        // then we need to close the previous.
+        // If we do save as to the same file, then we will get
+        // the current effigy, and we don't want to close it.
+        if (previousOpen != null && previousOpen != getEffigy()) {
+            // The destination file is already open.
+
+            // NOTE: If the model being saved is a submodel of the
+            // model associated with previousOpen, then we will close
+            // it before we save it, which will result in an error
+            // like "can't find an effigy to delegate writing to."
+            // I don't have a good workaround for this, so for now,
+            // disallow this type of save.  If the model argument
+            // is specified, then check it. Otherwise check the
+            // effigies.
+            boolean containmentError = false;
+            if (model != null) {
+                if (previousOpen instanceof PtolemyEffigy) {
+                    NamedObj possibleContainer
+                            = ((PtolemyEffigy)previousOpen).getModel();
+                    if (possibleContainer != null
+                            && possibleContainer.deepContains(model)) {
+                        containmentError = true;
+                    }
+                }
+            } else {
+                if (previousOpen.deepContains(getEffigy())) {
+                    containmentError = true;
+                }
+            }
+            if (containmentError) {
+                MessageHandler.error(
+                        "Cannot replace a model with a submodel." +
+                        " Please choose a different file name.");
+                return false;
+            }
+
+            if (previousOpen.isModified()) {
+                // Bring any visible tableaux to the foreground,
+                // then ask if it's OK to discard the changes?
+                previousOpen.showTableaux();
+                String confirm =
+                    "Unsaved changes in "
+                    + file.getName()
+                    + ". OK to discard changes?";
+                // Show a MODAL dialog
+                int selected =
+                    JOptionPane.showOptionDialog(
+                            this,
+                            confirm,
+                            "Discard changes?",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            null,
+                            null);
+                if (selected == 1) {
+                    return false;
+                }
+
+                // If the model has children, then
+                // issue a warning that those children will
+                // persist.  Give the user the chance to cancel.
+                if (!_checkForDerivedObjects()) {
+                    return false;
+                }
+
+                // Mark unmodified so that we don't get another
+                // query when it is closed.
+                previousOpen.setModified(false);
+            }
+            previousOpen.closeTableaux();
+        }
+
+        if (file.exists()) {
+            // Ask for confirmation before overwriting a file.
+            String query = "Overwrite " + file.getName() + "?";
+            // Show a MODAL dialog
+            int selected =
+                JOptionPane.showOptionDialog(
+                        this,
+                        query,
+                        "Overwrite file?",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        null,
+                        null);
+
+            if (selected == 1) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /** Close all open tableaux, querying the user as necessary to save data,
      *  and then exit the application.  If the user cancels on any save,
@@ -644,85 +760,11 @@ public class TableauFrame extends Top {
             File file = fileDialog.getSelectedFile();
 
             try {
+                if (!_confirmFile(null, file)) {
+                    return false;
+                }
                 URL newURL = file.toURL();
                 String newKey = newURL.toExternalForm();
-                Effigy previousOpen = getDirectory().getEffigy(newKey);
-                // If there is a previous open, and it's not the same,
-                // then we need to close the previous.
-                // If we do save as to the same file, then we will get
-                // the current effigy, and we don't want to close it.
-                if (previousOpen != null && previousOpen != getEffigy()) {
-                    // The destination file is already open.
-
-                    // NOTE: If the model being saved is a submodel of the
-                    // model associated with previousOpen, then we will close
-                    // it before we save it, which will result in an error
-                    // like "can't find an effigy to delegate writing to."
-                    // I don't have a good workaround for this, so for now,
-                    // disallow this type of save.
-                    if (previousOpen.deepContains(getEffigy())) {
-                        MessageHandler.error(
-                                "Cannot replace a model with a submodel." +
-                                " Please choose a different file name.");
-                        return false;
-                    }
-
-                    if (previousOpen.isModified()) {
-                        // Bring any visible tableaux to the foreground,
-                        // then ask if it's OK to discard the changes?
-                        previousOpen.showTableaux();
-                        String confirm =
-                            "Unsaved changes in "
-                            + file.getName()
-                            + ". OK to discard changes?";
-                        // Show a MODAL dialog
-                        int selected =
-                            JOptionPane.showOptionDialog(
-                                    this,
-                                    confirm,
-                                    "Discard changes?",
-                                    JOptionPane.YES_NO_OPTION,
-                                    JOptionPane.QUESTION_MESSAGE,
-                                    null,
-                                    null,
-                                    null);
-                        if (selected == 1) {
-                            return false;
-                        }
-
-                        // If the model has children, then
-                        // issue a warning that those children will
-                        // persist.  Give the user the chance to cancel.
-                        if (!_checkForDerivedObjects()) {
-                            return false;
-                        }
-
-                        // Mark unmodified so that we don't get another
-                        // query when it is closed.
-                        previousOpen.setModified(false);
-                    }
-                    previousOpen.closeTableaux();
-                }
-
-                if (file.exists()) {
-                    // Ask for confirmation before overwriting a file.
-                    String query = "Overwrite " + file.getName() + "?";
-                    // Show a MODAL dialog
-                    int selected =
-                        JOptionPane.showOptionDialog(
-                                this,
-                                query,
-                                "Overwrite file?",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.QUESTION_MESSAGE,
-                                null,
-                                null,
-                                null);
-
-                    if (selected == 1) {
-                        return false;
-                    }
-                }
 
                 _directory = fileDialog.getCurrentDirectory();
                 _writeFile(file);
@@ -743,11 +785,13 @@ public class TableauFrame extends Top {
                         effigy.setContainer(null);
                     }
                 }
+                return true;
             } catch (Exception ex) {
                 report("Error in save as.", ex);
                 return false;
             }
         }
+        // FIXME: Is this right? Presumably the user hit cancel...
         return true;
     }
 
@@ -776,6 +820,7 @@ public class TableauFrame extends Top {
 
     /** The initial filename to use in the SaveAs dialog */
     protected String _initialSaveAsFileName = null;
+    
     /** The view menu. Note that this is only created if there are multiple
      *  views, so if derived classes use it, they must test to see whether
      *  it is null.

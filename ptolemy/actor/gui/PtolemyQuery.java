@@ -577,8 +577,8 @@ public class PtolemyQuery extends Query
             // NOTE: This appears to be unnecessary, since we register
             // as a change listener on the handler.  This results in
             // two notifications.  EAL 9/15/02.
+            request.addChangeListener(this);
             if (_handler == null) {
-                request.addChangeListener(this);
                 request.execute();
             } else {
                 if (request instanceof MoMLChangeRequest) {

@@ -182,8 +182,11 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
             name = filename;
         }
 
-        getModel().exportMoML(fileWriter, 0, name);
-        fileWriter.close();
+        try {
+            getModel().exportMoML(fileWriter, 0, name);
+        } finally {
+            fileWriter.close();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
