@@ -166,12 +166,12 @@ public class LevelCrossingDetector extends Transformer
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         LevelCrossingDetector newObject = (LevelCrossingDetector)
             super.clone(workspace);
-	// Set the type constraint.
-	newObject.output.setTypeAtLeast(newObject.input);
-	newObject.output.setTypeAtLeast(newObject.defaultEventValue);
+        // Set the type constraint.
+        newObject.output.setTypeAtLeast(newObject.input);
+        newObject.output.setTypeAtLeast(newObject.defaultEventValue);
         return newObject;
     }
 
@@ -227,7 +227,7 @@ public class LevelCrossingDetector extends Transformer
         _first = true;
         _eventMissed = false;
         _enabled = false;
-	_eventNow = false;
+        _eventNow = false;
         if (_levelChanged) {
             _level = ((DoubleToken)level.getToken()).doubleValue();
             _levelChanged = false;

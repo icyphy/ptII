@@ -90,7 +90,7 @@ public class CTPeriodicSampler extends Transformer
         samplePeriod = new Parameter(this,
                 "samplePeriod", new DoubleToken(_samplePeriod));
 
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-30\" y=\"-20\" "
                 + "width=\"60\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"

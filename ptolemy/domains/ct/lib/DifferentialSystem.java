@@ -125,7 +125,7 @@ public class DifferentialSystem extends TypedCompositeActor {
         getMoMLInfo().className = "ptolemy.domains.ct.lib.DifferentialSystem";
 
         // icon
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-50\" y=\"-30\" "
                 + "width=\"100\" height=\"60\" "
                 + "style=\"fill:white\"/>\n"

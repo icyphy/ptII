@@ -118,7 +118,7 @@ public class Integrator extends CTBaseIntegrator {
                 new StringToken("CONTINUOUS"));
         Parameter outputType = new Parameter(output, "signalType",
                 new StringToken("CONTINUOUS"));
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-15\" y=\"-20\" "
                 + "width=\"30\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"

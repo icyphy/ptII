@@ -76,7 +76,7 @@ public class ZeroOrderHold extends Transformer
         defaultValue = new Parameter(this, "defaultValue",
                 new IntToken(0));
         output.setTypeAtLeast(input);
-	output.setTypeAtLeast(defaultValue);
+        output.setTypeAtLeast(defaultValue);
         Parameter inputType = new Parameter(input, "signalType",
                 new StringToken("DISCRETE"));
         Parameter outputType = new Parameter(output, "signalType",
@@ -110,10 +110,10 @@ public class ZeroOrderHold extends Transformer
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         ZeroOrderHold newObject = (ZeroOrderHold)super.clone(workspace);
         newObject.output.setTypeAtLeast(input);
-	newObject.output.setTypeAtLeast(defaultValue);
+        newObject.output.setTypeAtLeast(defaultValue);
         return newObject;
     }
 

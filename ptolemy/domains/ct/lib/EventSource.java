@@ -98,18 +98,18 @@ public class EventSource extends TypedAtomicActor
         // Call this so that we don't have to copy its code here...
         attributeChanged(offsets);
 
-	// set the values parameter
-	IntToken[] defaultValues = new IntToken[2];
-	defaultValues[0] = new IntToken(1);
-	defaultValues[1] = new IntToken(0);
-	ArrayToken defaultValueToken = new ArrayToken(defaultValues);
-	values = new Parameter(this, "values", defaultValueToken);
-	values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        // set the values parameter
+        IntToken[] defaultValues = new IntToken[2];
+        defaultValues[0] = new IntToken(1);
+        defaultValues[1] = new IntToken(0);
+        ArrayToken defaultValueToken = new ArrayToken(defaultValues);
+        values = new Parameter(this, "values", defaultValueToken);
+        values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
-	// set type constraint
-	ArrayType valuesArrayType = (ArrayType)values.getType();
-	InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-	output.setTypeAtLeast(elementTerm);
+        // set type constraint
+        ArrayType valuesArrayType = (ArrayType)values.getType();
+        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+        output.setTypeAtLeast(elementTerm);
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
@@ -190,7 +190,7 @@ public class EventSource extends TypedAtomicActor
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         EventSource newObject = (EventSource)super.clone(workspace);
         ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
