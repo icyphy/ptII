@@ -202,7 +202,7 @@ public class ShallowModelTransformer extends SceneTransformer {
      */
     public static String getFieldNameForEntity(Entity entity,
             NamedObj context) {
-        return "E" + SootUtilities.sanitizeName(entity.getName(context));
+        return "E" + StringUtilities.sanitizeName(entity.getName(context));
     }
 
     /** Return the name of the field that is created for the
@@ -210,7 +210,7 @@ public class ShallowModelTransformer extends SceneTransformer {
      */
     public static String getFieldNameForPort(
             Port port, NamedObj context) {
-        return "P" + SootUtilities.sanitizeName(port.getName(context));
+        return "P" + StringUtilities.sanitizeName(port.getName(context));
     }
 
     /** Return the name of the field that is created for the
@@ -218,7 +218,7 @@ public class ShallowModelTransformer extends SceneTransformer {
      */
     public static String getFieldNameForAttribute(Attribute attribute,
             NamedObj context) {
-        return "A" + SootUtilities.sanitizeName(attribute.getName(context));
+        return "A" + StringUtilities.sanitizeName(attribute.getName(context));
     }
 
     /** Return the name of the field that is created for the
@@ -226,7 +226,7 @@ public class ShallowModelTransformer extends SceneTransformer {
      */
     public static String getFieldNameForRelation(Relation relation,
             NamedObj context) {
-        return "R" + SootUtilities.sanitizeName(relation.getName(context));
+        return "R" + StringUtilities.sanitizeName(relation.getName(context));
     }
 
     /** Return the name of the field that is created to
@@ -235,9 +235,9 @@ public class ShallowModelTransformer extends SceneTransformer {
      */
     public static String getBufferFieldName(TypedIORelation relation,
             int channel, ptolemy.data.type.Type type) {
-        return "_" + SootUtilities.sanitizeName(relation.getName())
+        return "_" + StringUtilities.sanitizeName(relation.getName())
             + "_" + channel
-            + "_" + SootUtilities.sanitizeName(type.toString());
+            + "_" + StringUtilities.sanitizeName(type.toString());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -249,7 +249,7 @@ public class ShallowModelTransformer extends SceneTransformer {
 
         // create a class for the model
         String modelClassName = Options.getString(options, "targetPackage")
-            + ".CG" + SootUtilities.sanitizeName(_model.getName());
+            + ".CG" + StringUtilities.sanitizeName(_model.getName());
 
         EntitySootClass modelClass =
             new EntitySootClass(PtolemyUtilities.compositeActorClass,
