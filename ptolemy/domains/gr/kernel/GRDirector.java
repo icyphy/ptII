@@ -537,7 +537,10 @@ public class GRDirector extends StaticSchedulingDirector {
         _debugViewReceiverTable();
     }
 
-
+    /** Build the internal cache of all the ports directed by this director
+     *
+     *  @exception IllegalActionException If methods called throw it.
+     */
     private void _buildOutputPortTable() throws IllegalActionException {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
 
@@ -547,11 +550,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
             _outputPortTable.add(new _GRIOPort(port));
         }
-
     }
-
-
-
 
     /** For debugging purposes.  Display the list of contained actors
      *  and other pertinent information about them.
@@ -678,26 +677,11 @@ public class GRDirector extends StaticSchedulingDirector {
     	    for(int j=0;j<portReceivers[i].length;j++) {
     	        debug.println("  ->"+portReceivers[i][j]);
     	        debug.println("  =>"+portReceivers[i][j].getContainer());
-    	        //((GRReceiver)portReceivers[i][j]).displayReceiverInfo();
+    	        // FIXME: remove comments when debugging
+    	        // ((GRReceiver)portReceivers[i][j]).displayReceiverInfo();
     	    }
     	}
     }
-
-    private void _issueTransferOutputs() throws IllegalActionException {
-        Director outsideDirector = _getOutsideDirector();
-
-        Iterator outputPorts = _outputPortTable.iterator();
-        while(outputPorts.hasNext()) {
-            _GRIOPort grport = (_GRIOPort) outputPorts.next();
-
-            if (grport._shouldTransferOutputs) {
-                outsideDirector.transferOutputs(grport._port);
-            }
-        }
-    }
-
-
-
 
     /** Convenience method for getting the director of the container that
      *  holds this director.  If this director is inside a toplevel
