@@ -89,6 +89,13 @@ public class TimeGap extends DETransformer {
         }
     }
 
+    /** Set the previous event time to negative infinity.
+     */
+    public void initialize() throws IllegalActionException {
+        _previousTime = Time.NEGATIVE_INFINITY;
+        super.initialize();
+    }
+
     /** Record the time when the current input arrives.
      *  @return True to continue firing.
      *  @exception IllegalActionException If there is no director or thrown
@@ -97,13 +104,6 @@ public class TimeGap extends DETransformer {
     public boolean postfire() throws IllegalActionException {
         _previousTime = getDirector().getModelTime();
         return super.postfire();
-    }
-
-    /** Set the previous event time to negative infinity.
-     */
-    public void initialize() throws IllegalActionException {
-        _previousTime = Time.NEGATIVE_INFINITY;
-        super.initialize();
     }
 
     ///////////////////////////////////////////////////////////////////

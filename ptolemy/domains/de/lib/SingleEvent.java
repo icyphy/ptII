@@ -131,6 +131,19 @@ public class SingleEvent extends TypedAtomicActor {
         return newObject;
     }
 
+    /** If the current time matches the value of the <i>time</i> parameter,
+     *  then produce an output token with value given by the <i>value</i>
+     *  parameter.
+     */
+    public void fire() throws IllegalActionException {
+        double eventTimeValue = ((DoubleToken)time.getToken()).doubleValue();
+        Time eventTime = new Time(getDirector(), eventTimeValue);
+        if (getDirector().getModelTime().equals(eventTime)) {
+            output.send(0, value.getToken());
+        }
+        super.fire();
+    }
+
     /** Request firing at the time given by the <i>time</i> parameter.
      *  If the time is negative, then do nothing.
      *  @exception IllegalActionException If there is no director.
@@ -146,18 +159,5 @@ public class SingleEvent extends TypedAtomicActor {
                 throw new IllegalActionException(this, "No director.");
             }
         }
-    }
-
-    /** If the current time matches the value of the <i>time</i> parameter,
-     *  then produce an output token with value given by the <i>value</i>
-     *  parameter.
-     */
-    public void fire() throws IllegalActionException {
-        double eventTimeValue = ((DoubleToken)time.getToken()).doubleValue();
-        Time eventTime = new Time(getDirector(), eventTimeValue);
-        if (getDirector().getModelTime().equals(eventTime)) {
-            output.send(0, value.getToken());
-        }
-        super.fire();
     }
 }
