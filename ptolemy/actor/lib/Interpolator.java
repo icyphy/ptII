@@ -254,7 +254,7 @@ public class Interpolator extends SequenceSource {
         _iterationCount = 0;
     }
 
-    /** Update the interation counter, then call the super class method.
+    /** Update the iteration counter, then call the super class method.
      *  @return A boolean returned by the super class method.
      */
     public boolean postfire() throws IllegalActionException {

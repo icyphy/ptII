@@ -47,7 +47,7 @@ then repeats the cycle one time unit later.  It outputs a ramp,
 starting at zero and incrementing by one each time.
 If there is an input, it adds the input to the ramp output.
 This actor is designed to test two features of the DE scheduler.
-First, that an interation processes all events of a given time
+First, that an iteration processes all events of a given time
 stamp.  And second, that self-scheduling events are processed
 in the proper order, with proper priorities.  To do these
 tests, connect two of these actors in cascade.
