@@ -403,44 +403,6 @@ public class Director extends NamedObj implements Executable {
         _mutationListeners.removeOneOf(listener);
     }
 
-    /** Check types on all the connections and resolve undeclared types.
-     *  If the container is not an instance of TypedCompositeActor,
-     *  do nothing.
-     *  This method is write-synchronized on the workspace.
-     */
-    // FIXME: should have a TypeConflictException?
-    public void resolveTypes() {
-	try {
-	    workspace().getWriteAccess();
-            CompositeActor container = ((CompositeActor)getContainer());
-            if ( !(container instanceof TypedCompositeActor)) {
-                return;
-            }
-            Enumeration constraints =
-                ((TypedCompositeActor)container).typeConstraints();
-
-            InequalitySolver solver = new InequalitySolver(TypeCPO.cpo());
-            solver.addInequalities(constraints);
-
-            // find the greatest solution (most general types)
-            boolean resolved = solver.solve(false);
-            if ( !resolved) {
-		Enumeration unsatisfied = solver.unsatisfiedIneq();
-                // FIXME: should have a new TypeConflictException
-                throw new InvalidStateException("Type Conflict.");
-            }
-
-	    // see if any resolved type is NaT
-	    Enumeration nats = solver.bottomVariables();
-	    if (nats.hasMoreElements()) {
-                // FIXME: also need to check if any port is resolved to NaT.
-		throw new InvalidStateException("Some resolved types are NaT.");
-	    }
-	} finally {
-	    workspace().doneWriting();
-	}
-    }
-
     /** Invoke initialize(), then invoke iterate() until it returns false,
      *  and then invoke wrapup().  This method acquires read permission
      *  on the workspace several times, releasing it between iterations
