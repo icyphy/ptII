@@ -36,6 +36,7 @@ import ptolemy.kernel.*;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Manager;
 
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -81,7 +82,13 @@ public class RemoveActor extends ChangeRequest {
     public void execute() throws ChangeFailedException {
         try {
 	    if(_entity instanceof Actor) {
-		((Actor)_entity).wrapup();
+		Actor actor = ((Actor)_entity);
+		Manager manager = actor.getManager();
+		// FIXME: This is not enough..  we need to figure out if the
+		// model is running or not.
+		if(manager != null) {
+		    ((Actor)_entity).wrapup();
+		}
 	    }
             Iterator ports = _entity.portList().iterator();
             List farPortList = new LinkedList();
@@ -89,7 +96,7 @@ public class RemoveActor extends ChangeRequest {
                 Port port = (Port)ports.next();
                 if (port instanceof IOPort) {
                     farPortList.addAll(
-                            ((IOPort)port).deepConnectedInPortList());
+			((IOPort)port).deepConnectedInPortList());
                 }
                 port.unlinkAll();
             }
@@ -102,8 +109,10 @@ public class RemoveActor extends ChangeRequest {
             }
 	    if(_entity instanceof Actor) {
 		Director director = ((Actor)_entity).getDirector();
-		director.invalidateSchedule();
-		director.invalidateResolvedTypes();
+		if(director != null) {
+		    director.invalidateSchedule();
+		    director.invalidateResolvedTypes();
+		}
 	    }
             _entity.setContainer(null);
         } catch (KernelException ex) {
