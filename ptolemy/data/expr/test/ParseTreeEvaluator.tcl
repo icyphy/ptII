@@ -199,6 +199,14 @@ test ParseTreeEvaluator-5.1 {Construct a Parser, unary minus & unary logical not
 ######################################################################
 ####
 # 
+test ParseTreeEvaluator-6.1 {Construct a Parser, check overflow} {
+    list [theTest "200ub + 200ub"]
+} {144ub}
+
+
+######################################################################
+####
+# 
 test ParseTreeEvaluator-7.0 {Construct a Parser, try simple functional if then else} {
     list [theTest "(true)?(7):(6)\n"] [theTest "(true)?(7):(6.0)\n"]
 } {7 7.0}
