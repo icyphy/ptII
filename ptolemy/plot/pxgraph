@@ -75,6 +75,11 @@ if [ -z "$TYCHO" ]; then
     export TYCHO
 fi
 
+if [ ! -f $TYCHO/java/ptplot/ptplot.zip ]; then 
+    echo "$0: Warning, $TYCHO/java/ptplot/ptplot.zip does not exist"
+    echo "  Perhaps you need to install ptplot or edit the variables in $0?"
+fi
+
 windows=no
 if [  "`uname`" =  "CYGWIN32/NT"  ]; then 
     windows=yes
