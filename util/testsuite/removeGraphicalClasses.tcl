@@ -69,6 +69,7 @@ proc removeGraphicalClasses {parser} {
     # We don't build in the demo directory, SoundSensor should not be 
     # in the .xml file
     $filter put "ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor" [java::null]
+    $filter put "ptolemy.domains.wireless.lib.GraphicalLocator" [java::null]
     $filter put "ptolemy.vergil.icon.CopyCatIcon" [java::null]
 
     $parser addMoMLFilter $filter
