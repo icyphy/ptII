@@ -790,14 +790,13 @@ public class IterateOverArray extends TypedCompositeActor
          *  of the associated actors throws it.
          */
         public void fire() throws IllegalActionException {
-            Nameable container = getContainer();
-            Iterator actors = ((CompositeActor)container)
-                    .deepEntityList().iterator();
+            CompositeActor container = (CompositeActor)getContainer();
+            Iterator actors = container.deepEntityList().iterator();
             _postfireReturns = true;
             while (actors.hasNext() && !_stopRequested) {
 
                 // Initialize all instances of IteratePortParameter.
-                Iterator parameters = attributeList(
+                Iterator parameters = container.attributeList(
                         IteratePortParameter.class).iterator();
                 while (parameters.hasNext()) {
                     IteratePortParameter parameter
@@ -839,7 +838,7 @@ public class IterateOverArray extends TypedCompositeActor
                         }
                     }
                     // Step all instances of IteratePortParameter.
-                    parameters = attributeList(
+                    parameters = container.attributeList(
                             IteratePortParameter.class).iterator();
                     while (parameters.hasNext()) {
                         IteratePortParameter parameter
@@ -1395,5 +1394,4 @@ public class IterateOverArray extends TypedCompositeActor
         // The count into the array of the next token to read.
         private int _count = 0;
     }
-
 }
