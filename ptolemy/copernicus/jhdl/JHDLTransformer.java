@@ -31,7 +31,7 @@ package ptolemy.copernicus.jhdl;
 
 import ptolemy.actor.*;
 import ptolemy.copernicus.kernel.SootUtilities;
-import ptolemy.copernicus.java.ActorTransformer;
+import ptolemy.copernicus.java.ModelTransformer;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
@@ -153,8 +153,8 @@ class JHDLTransformer extends SceneTransformer {
 	     entities.hasNext();) {
 	    Entity theEntity = (Entity) entities.next();
 	    String entityName = theEntity.getName();
-	    String newClassName = ActorTransformer.getInstanceClassName(theEntity,
-									options);
+	    String newClassName = ModelTransformer.getInstanceClassName(
+                    theEntity, options);
 	    SootClass theClass = Scene.v().loadClassAndSupport(newClassName);
 
 	    List entityPorts = theEntity.portList();

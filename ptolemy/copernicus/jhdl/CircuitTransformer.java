@@ -66,7 +66,7 @@ import ptolemy.graph.*;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.copernicus.kernel.MustAliasAnalysis;
-import ptolemy.copernicus.java.ActorTransformer;
+import ptolemy.copernicus.java.ModelTransformer;
 import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
 import ptolemy.copernicus.jhdl.soot.*;
 import ptolemy.copernicus.jhdl.util.*;
@@ -270,7 +270,7 @@ public class CircuitTransformer extends SceneTransformer {
 
 	// Get the names of the class and entity 
 	String className =
-	    ActorTransformer.getInstanceClassName(entity,options);
+	    ModelTransformer.getInstanceClassName(entity,options);
 	String entityClassName = entity.getClass().getName();
 
 	// skip some classes?
