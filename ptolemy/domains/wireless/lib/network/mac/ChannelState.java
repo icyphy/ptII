@@ -85,13 +85,13 @@ public class ChannelState extends MACActorBase {
             thisCardinal.setExpression("SOUTH");
         }*/
         
+        fromFilterMpdu = new TypedIOPort(this, "fromFilterMpdu", true, false);     
         fromValidateMpdu = new TypedIOPort(this, "fromValidateMpdu", true, false);
-        fromFilterMpdu = new TypedIOPort(this, "fromFilterMpdu", true, false);
         toTransmission = new TypedIOPort(this, "toTransmission", false, true);
 
         channelStatus.setTypeEquals(BaseType.GENERAL);
+        fromValidateMpdu.setTypeEquals(BaseType.GENERAL);       
         fromFilterMpdu.setTypeEquals(BaseType.GENERAL);
-        fromValidateMpdu.setTypeEquals(BaseType.GENERAL);
         toTransmission.setTypeEquals(BaseType.GENERAL);     
     }
     
@@ -102,16 +102,15 @@ public class ChannelState extends MACActorBase {
      *  physical layer.  This has undeclared type.
      */
     public TypedIOPort channelStatus;
-    
-
-    /** The input port for setNav message from FilterMpdu.
-     */
-    public TypedIOPort fromFilterMpdu;
-    
+      
     /** The input port for messages from ValidateMpdu process.
      *  Two types of messages: UseIfs and RtsTimeout
      */
     public TypedIOPort fromValidateMpdu;
+
+    /** The input port for setNav message from FilterMpdu.
+     */
+    public TypedIOPort fromFilterMpdu;
     
     /** The output port that produces messages that
      *  indicate the channel status.
