@@ -49,11 +49,11 @@ public interface ParameterListener {
 
     /** Called to report that the Token stored in the Parameter has
      *  changed.
-    **/
+     **/
     public void parameterChanged(ParameterEvent e);
 
     /** Called  to report that a Parameter has been removed(deleted).
-    **/
+     **/
     public void parameterRemoved(ParameterEvent e);
 
 }

@@ -169,14 +169,14 @@ public class Parameter extends Attribute implements ParameterListener {
      *  @param newListener The ParameterListener that is will be notified
      *   whenever the value of this Parameter changes.
      */
-     public void addParameterListener(ParameterListener newListener) {
-         if (_listeners == null) {
-             _listeners = new LinkedList();
-         }
-         _listeners.insertLast(newListener);
-     }
+    public void addParameterListener(ParameterListener newListener) {
+        if (_listeners == null) {
+            _listeners = new LinkedList();
+        }
+        _listeners.insertLast(newListener);
+    }
 
-     /** Clone the parameter.
+    /** Clone the parameter.
      *  The state of the cloned parameter will be identical to the original
      *  parameter, but without the ParameterListener dependencies set up.
      *  To achieve this evaluate() should be called after cloning the
@@ -418,7 +418,7 @@ public class Parameter extends Attribute implements ParameterListener {
      *    about why the referenced Parameter changed.
      */
     public void parameterChanged(ParameterEvent event) {
-         evaluate();
+        evaluate();
     }
 
     /** A Parameter which the expression stored in this Parameter
@@ -446,16 +446,16 @@ public class Parameter extends Attribute implements ParameterListener {
         Enumeration oldList = _listeners.elements();
         while(oldList.hasMoreElements()) {
             ParameterListener nextList =
-                     (ParameterListener)oldList.nextElement();
-             if (oldListener != nextList) {
-                 newList.insertFirst(nextList);
-             } else {
-                 //System.out.println("Remove dependency on " + getName());
-             }
-         }
-         _listeners = newList;
-         return;
-     }
+                (ParameterListener)oldList.nextElement();
+            if (oldListener != nextList) {
+                newList.insertFirst(nextList);
+            } else {
+                //System.out.println("Remove dependency on " + getName());
+            }
+        }
+        _listeners = newList;
+        return;
+    }
 
     /** Reset the current value of this parameter to the first seen
      *  token or expression. If the Parameter was initially given a
@@ -709,15 +709,15 @@ public class Parameter extends Attribute implements ParameterListener {
                 " or lower");
     }
 
-   /*  Clear the dependencies this Parameter has registered
-    *  with other Parameters. If this is not done a phantom web
-    *  of dependencies may exist which could lead to false
-    *  dependency loops being detected. Normally this method is
-    *  called with the root node of the parse tree and recursively
-    *  calls itself to visit the whole tree.
-    *  @param node The node in the tree below which all dependencies
-    *   are cleared.
-    */
+    /*  Clear the dependencies this Parameter has registered
+     *  with other Parameters. If this is not done a phantom web
+     *  of dependencies may exist which could lead to false
+     *  dependency loops being detected. Normally this method is
+     *  called with the root node of the parse tree and recursively
+     *  calls itself to visit the whole tree.
+     *  @param node The node in the tree below which all dependencies
+     *   are cleared.
+     */
     private void _clearDependencies(Node node) {
         int children = node.jjtGetNumChildren();
         if (children > 0) {
@@ -728,7 +728,7 @@ public class Parameter extends Attribute implements ParameterListener {
         }
         if ( !(node instanceof ASTPtLeafNode) ) {
             throw new InternalErrorException("If a node has no children, " +
-                   "it must be a leaf node.");
+                    "it must be a leaf node.");
         }
         ASTPtLeafNode leaf = (ASTPtLeafNode)node;
         if (leaf._param != null) {
