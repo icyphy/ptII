@@ -151,6 +151,8 @@ public class IOPort extends ComponentPort {
     ////                         public methods                    ////
 
     /** Send a token to all connected receivers.
+     *  Tokens are in general immutable, so each receiver is given a 
+     *  reference to the same token and no clones are made.
      *  The transfer is accomplished by calling getRemoteReceivers()
      *  to determine the number of channels with valid receivers and
      *  then calling send on the appropriate channels.  
