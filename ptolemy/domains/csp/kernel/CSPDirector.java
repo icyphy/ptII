@@ -197,6 +197,15 @@ public class CSPDirector extends ProcessDirector {
         return _currentTime;
     }
 
+    /** Reset flags to initialize values.
+     * @exception IllegalActionException if the super class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+	_actorsBlocked = 0;
+        _actorsDelayed = 0;
+	super.initialize();
+    }
+
     /** Return a new CSPReceiver compatible with this director.
      *  In the CSP domain, we use CSPReceivers.
      *  @return A new CSPReceiver.
