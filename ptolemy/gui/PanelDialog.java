@@ -55,6 +55,7 @@ what values were set by the user.
 public class PanelDialog extends JDialog {
 
     /** Construct a dialog with the specified owner, title, and panel.
+     *  An "OK" and a "Cancel" button are added to the dialog.
      *  The dialog is placed relative to the owner.
      *  @param owner The object that, per the user, appears to be
      *   generating the dialog.
@@ -62,21 +63,40 @@ public class PanelDialog extends JDialog {
      *  @param panel The panel to insert in the dialog.
      */
     public PanelDialog(Frame owner, String title, JPanel panel) {
+        this(owner, title, panel, null);
+    }
+
+    /** Construct a dialog with the specified owner, title, panel,
+     *  and buttons.  The first button is the "default" in that
+     *  it is the one activated by "Enter" or "Return" keys.
+     *  If the last argument is null, then an "OK"
+     *  and a "Cancel" button will be created.
+     *  The dialog is placed relative to the owner.
+     *  @param owner The object that, per the user, appears to be
+     *   generating the dialog.
+     *  @param title The title to put on the window.
+     *  @param panel The panel to insert in the dialog.
+     *  @param buttons An array of labels for buttons at the bottom
+     *   of the dialog. 
+     */
+    public PanelDialog(
+            Frame owner, String title, JPanel panel, String[] buttons) {
+
         super(owner, title, true);
 
         contents = panel;
         Object[] array = {panel};
 
-        final String btnString1 = "OK";
-        final String btnString2 = "Cancel";
-        Object[] options = {btnString1, btnString2};
+        if (buttons != null) {
+            _buttons = buttons;
+        }
 
         _optionPane = new JOptionPane(array, 
                 JOptionPane.QUESTION_MESSAGE,
                 JOptionPane.YES_NO_OPTION,
                 null,
-                options,
-                options[0]);
+                _buttons,
+                _buttons[0]);
         
         getContentPane().add(_optionPane);
 
@@ -108,9 +128,9 @@ public class PanelDialog extends JDialog {
                     // property change event will be fired.
                     _optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
 
-                    if (value.equals(btnString1)) {
-                        // OK button was pressed... React accordingly.
-                        _accepted = true;
+                    if (value instanceof String) {
+                        // A button was pressed...
+                        _buttonPressed = (String)value;
                     }
                     setVisible(false);
                 }
@@ -122,11 +142,11 @@ public class PanelDialog extends JDialog {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true if the dialog was closed by the OK button.
-     *  Return false otherwise.
+    /** Return the label of the button that triggered closing the
+     *  dialog, or an empty string if none.
      */
-    public boolean changesAccepted () {
-        return _accepted;
+    public String buttonPressed () {
+        return _buttonPressed;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -140,9 +160,11 @@ public class PanelDialog extends JDialog {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // A flag indicating whether the changes to the dialog have been
-    // accepted.
-    private boolean _accepted = false;
+    // The label of the button pushed to dismiss the dialog.
+    private String _buttonPressed = "";
+
+    // Button labels.
+    private String[] _buttons = {"OK", "Cancel"};
 
     // The pane with the buttons.
     private JOptionPane _optionPane;
