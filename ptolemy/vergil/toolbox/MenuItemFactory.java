@@ -37,15 +37,14 @@ import javax.swing.JMenuItem;
 
 //////////////////////////////////////////////////////////////////////////
 //// MenuItemFactory
-
 /** This is an interface for factories that create menu items.
- *  Objects that implement this interface can be used in conjunction
- *  with a MenuCreator to implement context menu items.
- *
- *  @author Steve Neuendorffer and Edward A. Lee
- *  @version $Id$
- *  @since Ptolemy II 1.0
- */
+Objects that implement this interface can be used in conjunction
+with a MenuCreator to implement context menu items.
+
+@author Steve Neuendorffer and Edward A. Lee
+@version $Id$
+@since Ptolemy II 1.0
+*/
 public interface MenuItemFactory {
 
     /** Add an item to the given context menu that will operate on
