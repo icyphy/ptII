@@ -168,7 +168,7 @@ public class DiningPhilosophers {
                     (TypedIOPort)p5.getPort("leftIn"),
                     (TypedIOPort)f4.getPort("rightOut"));
             TypedIORelation r18 = (TypedIORelation)univ.connect(
-                    (TypedIOPort)p5.getPort("leftOut"),  
+                    (TypedIOPort)p5.getPort("leftOut"),
                     (TypedIOPort)f4.getPort("rightIn"));
             TypedIORelation r19 = (TypedIORelation)univ.connect(
                     (TypedIOPort)p5.getPort("rightIn"),
