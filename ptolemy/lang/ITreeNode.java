@@ -41,7 +41,7 @@ import java.util.LinkedList;
 /**
 An interface that nodes in an abstract syntax tree implement.
 TreeNode and java/nodetypes/NamedNode both implement ITreeNode.
-@author Jeff Tsay
+@author Jeff Tsay and Shuvra S. Bhattacharyya 
 @version $Id$
  */
 public interface ITreeNode extends Cloneable {
@@ -123,7 +123,7 @@ public interface ITreeNode extends Cloneable {
     /** Set the children of this node to the specified list.
      *  @param childList The list of children.
      */
-    public void setChildren(ArrayList childList);
+    public void setChildren(List childList);
 
     /** Return a String representation of this node, prefixed by prefix,
      *  and all its children.
