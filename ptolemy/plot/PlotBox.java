@@ -1569,7 +1569,8 @@ public class PlotBox extends Panel {
     // The graphics context to operate in.  Note that printing will call
     // paint with a different graphics object, so we have to pass this
     // around properly.
-    protected Graphics _graphics = null;
+    // 'transient' means that this field with not be serialized.
+    protected transient Graphics _graphics = null;
 
     // The range of the data to be plotted.
     protected double _yMax = 0, _yMin = 0, _xMax = 0, _xMin = 0;
