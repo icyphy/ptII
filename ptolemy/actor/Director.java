@@ -42,7 +42,7 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// Director
 /**
-A Director governs the execution within a CompositeActor.  A compsite actor 
+A Director governs the execution within a CompositeActor.  A composite actor 
 that contains a director is considered opaque, and the execution model 
 within the composite actor is determined by the contained Director.   This
 director is called the local director of a composite actor.   A composite
@@ -93,8 +93,6 @@ any actors that are new to the composite have their initialize() methods
 invoked.
 <p>
 An initialize() method may queue further mutations with the director.
-Thus, the prefire() method repeatedly performs mutations and initializations
-until there are no more mutations to perform.
 
 @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
 @version: $Id$
@@ -183,6 +181,8 @@ public class Director extends NamedObj implements Executable {
      *   container or one of the deeply contained actors throws it.
      */
     public void fire() throws IllegalActionException {
+        // Somewhere in here, constrained mutations should 
+        // probably be allowed to occur.
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             Enumeration allactors = container.deepGetEntities();
@@ -197,18 +197,15 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Return the container, which is the composite actor for which this
-     *  is the local or executive director.
+     *  is the local director.
      *  @return The CompositeActor that this director is responsible for.
      */
     public Nameable getContainer() {
         return _container;
     }
 
-    /** If this is the local director of its container, first create the
-     *  receivers and then invoke the initialize()
-     *  methods of all its deeply contained actors.  If this is the executive
-     *  director of its container, first create the receivers and then
-     *  invoke the initialize() method of the container.
+    /** Create receivers and then invoke the initialize()
+     *  methods of all its deeply contained actors.  
      *  <p>
      *  This method should be invoked once per execution, before any
      *  iteration. It may produce output data.
@@ -224,9 +221,6 @@ public class Director extends NamedObj implements Executable {
             Enumeration allactors = container.deepGetEntities();
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
-                // FIXME: is the order here right??  shouldn't we initialize
-                // first and then createReceivers, or deal with CreateReceivers
-                // at the toplevel?
                 actor.createReceivers();
                 actor.initialize();
             }
@@ -241,22 +235,6 @@ public class Director extends NamedObj implements Executable {
         return new Mailbox();
     }
 
-    /* If this is the local director of its container, invoke the postfire()
-     *  methods of all its deeply contained actors, and return the logical AND
-     *  of what they return.  If this is the executive director of its
-     *  container then invoke the postfire() method of the container and return
-     *  what it returns.  Otherwise, return false.
-     *  <p>
-     *  This method should be invoked once per iteration, after the last
-     *  invocation of fire() in that iteration. It may produce output data.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *
-     *  @return True if the execution can continue into the next iteration.
-     *  @exception IllegalActionException If the postfire() method of the
-     *   container or one of the deeply contained actors throws it.
-     */
-
     /** Return false.   The default director will only get fired once, and will
      *  terminate execution afterwards.   Domain Directors will probably want
      *  to override this method.   Note that this is called by the container of
@@ -270,52 +248,10 @@ public class Director extends NamedObj implements Executable {
      *  method of the container or one of the deeply contained actors 
      *  throws it.
      */
-
     public boolean postfire() throws IllegalActionException {
-        /*        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            //           if (!_executivedirector) {
-                // This is the local director.
-                Enumeration allactors = container.deepGetEntities();
-                boolean oktocontinue = true;
-                while (allactors.hasMoreElements()) {
-                    Actor actor = (Actor)allactors.nextElement();
-                    oktocontinue = actor.postfire() && oktocontinue;
-                }
-                return oktocontinue;
-   //           } else {
-                // This is the executive director.
-                //                return container.postfire();
-                //            }
-        }*/
         return false;
     }
 
-    /* Prepare for firing and return true if firing can proceed.
-     *  If there is no container, return false immediately.  Otherwise,
-     *  the first step is to perform any pending mutations, and to initialize
-     *  any actors that are added by those mutations.  This sequence is
-     *  repeated until no more mutations are performed. This way, the
-     *  initialize() method in actors can perform mutations, and the
-     *  mutations will be fully executed before proceeding.
-     *  Then, if this is the local director of its container, first create
-     *  any new receivers if mutations occured. Then invoke the
-     *  prefire() methods of all its deeply contained actors, and return the
-     *  logical AND of what they return.  If this is the executive director
-     *  of its container, then invoke the prefire() method of the container and
-     *  return what it returns.  Otherwise, return false.
-     *  <p>
-     *  This method should be invoked once per iteration, before any
-     *  invocation of fire() in that iteration. It may produce output data.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *
-     *  @return True if the iteration can proceed.
-     *  @exception IllegalActionException If the prefire() method of the
-     *   container or one of the deeply contained actors throws it, or a
-     *   pending mutation throws it, or if all receivers could not be created.
-     *  @exception NameDuplicationException If a pending mutation throws it.
-     */
     /** return True, indicating that the Director is ready to fire.   
      *  Domain Directors will probably want
      *  to override this method.   Note that this is called by the container of
@@ -330,32 +266,6 @@ public class Director extends NamedObj implements Executable {
      *  throws it.
      */
     public boolean prefire() throws IllegalActionException {
-            /*        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            // Perform mutations and initializations until there are no
-            // more to perform.
-            boolean mutationOccured = false;
-            while (_performMutations()) {
-                mutationOccured = true;
-                // Initialize any new actors
-                _actorListener.initializeNewActors();
-            }
-                 // If a mutation occured, need to create create new receivers.
-                if (mutationOccured) {
-                    Enumeration allactors = container.deepGetEntities();
-                    while (allactors.hasMoreElements()) {
-                        ((Actor)allactors.nextElement()).createReceivers();
-                    }
-                }
-                // Invoke the prefire() method of deeply contained entities.
-                Enumeration allactors = container.deepGetEntities();
-                boolean allready = true;
-                while (allactors.hasMoreElements()) {
-                    Actor actor = (Actor)allactors.nextElement();
-                    allready = actor.prefire() && allready;
-                }
-                return allready;
-         }*/
         return true;
     }
 
@@ -469,10 +379,8 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
-    /** If this is the local director of its container, invoke the wrapup()
-     *  methods of all its deeply contained actors.  If this is the executive
-     *  director of the container, then invoke the wrapup() method of the
-     *  container.
+    /** Invoke the wrapup() method of all the actors contained in the 
+     *  Director's container.  
      *  <p>
      *  This method should be invoked once per execution.  None of the other
      *  action methods should be invoked after it in the execution.
@@ -542,7 +450,6 @@ public class Director extends NamedObj implements Executable {
      */
     protected void _makeDirectorOf (CompositeActor cast) {
         _container = cast;
-        //        _executivedirector = false;
         if (cast != null) {
             workspace().remove(this);
         }
@@ -589,13 +496,10 @@ public class Director extends NamedObj implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The composite of which this is either a local or an executive director.
+    // The composite of which this is the local director.
     private CompositeActor _container = null;
 
-    // True if this is an executive director of the container.
-    //    private boolean _executivedirector;
-
-    // Support for mutations.
+      // Support for mutations.
     private LinkedList _pendingMutations = null;
     private LinkedList _mutationListeners = null;
     private ActorListener _actorListener = null;
