@@ -107,6 +107,8 @@ public interface ProcessReceiver extends Receiver {
      *  registered with the branch. If the branch is null than the
      *  receiver is not associated with a composite actor boundary
      *  and blocks are registered with a director.
+     *  @param controllingBranch  The controlling branch.
+     *  @return The token from this receiver.   
      */
     public Token get(Branch controllingBranch);
 
@@ -221,6 +223,8 @@ public interface ProcessReceiver extends Receiver {
      *  registered with the branch. If the branch is null than the
      *  receiver is not associated with a composite actor boundary
      *  and blocks are registered with a director.
+     *  @param token The token that is put in to the receiver.  
+     *  @param controllingBranch  The controlling branch.
      */
     public void put(Token token, Branch controllingBranch);
 

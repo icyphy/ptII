@@ -109,7 +109,7 @@ public class ProcessThread extends PtolemyThread {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the actor being executed by this thread
+    /** Return the actor being executed by this thread.
      *  @return The actor being executed by this thread.
      */
     public Actor getActor() {

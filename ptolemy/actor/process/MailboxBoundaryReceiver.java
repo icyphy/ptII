@@ -86,6 +86,7 @@ public class MailboxBoundaryReceiver extends Mailbox implements ProcessReceiver 
 
     /** Construct an empty MailboxBoundaryReceiver with the specified
      *  container.
+     *  @param container The container.
      *  @exception IllegalActionException If the container cannot contain
      *   this receiver.
      */

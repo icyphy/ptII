@@ -327,6 +327,7 @@ public class CompositeProcessDirector extends ProcessDirector {
      *  This overrides the setCurrentTime() in the Director base class.
      *  The new time may be earlier than the current time.
      *  @param newTime The new current simulation time.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void setModelTime(Time newTime) throws IllegalActionException {
         if (_debugging) {

@@ -92,10 +92,12 @@ public class BoundaryDetector {
 
             while (ports.hasNext()) {
                 connectedPort = (IOPort) ports.next();
-                connectedEntity = (ComponentEntity) connectedPort.getContainer();
+                connectedEntity =
+                    (ComponentEntity) connectedPort.getContainer();
 
                 if ((connectedEntity == contEntity.getContainer())
-                        && connectedPort.isInput() && connectedPort.isOpaque()) {
+                        && connectedPort.isInput()
+                        && connectedPort.isOpaque()) {
                     // The port container of this receiver is
                     // connected to the inside of a boundary port.
                     // Now determine if this receiver's channel is
@@ -118,7 +120,8 @@ public class BoundaryDetector {
                     // connected to the outside of a boundary port.
                     // Now determine if this receiver's channel is
                     // connected to the boundary port.
-                    Receiver[][] receivers = connectedPort.getRemoteReceivers();
+                    Receiver[][] receivers =
+                        connectedPort.getRemoteReceivers();
 
                     for (int i = 0; i < receivers.length; i++) {
                         for (int j = 0; j < receivers[i].length; j++) {
@@ -167,10 +170,12 @@ public class BoundaryDetector {
 
             while (ports.hasNext()) {
                 connectedPort = (IOPort) ports.next();
-                connectedEntity = (ComponentEntity) connectedPort.getContainer();
+                connectedEntity =
+                    (ComponentEntity) connectedPort.getContainer();
 
                 if ((connectedEntity == contEntity.getContainer())
-                        && connectedPort.isInput() && connectedPort.isOpaque()) {
+                        && connectedPort.isInput()
+                        && connectedPort.isOpaque()) {
                     // The port container of this receiver is
                     // connected to the inside of a boundary port.
                     // Now determine if this receiver's channel is
@@ -221,8 +226,8 @@ public class BoundaryDetector {
 
             while (ports.hasNext()) {
                 IOPort connectedPort = (IOPort) ports.next();
-                ComponentEntity connectedEntity = (ComponentEntity) connectedPort
-                    .getContainer();
+                ComponentEntity connectedEntity =
+                    (ComponentEntity) connectedPort.getContainer();
 
                 if (connectedPort.isOpaque() && !connectedEntity.isAtomic()
                         && connectedPort.isOutput()) {

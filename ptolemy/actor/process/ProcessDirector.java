@@ -245,8 +245,8 @@ public class ProcessDirector extends Director {
      *  between a request to pause and a request to stop.
      *  @return True if stop() has been called.
      */
-    public boolean isStopRequested() {
-        return _stopRequested;
+    public boolean isStopFireRequested() {
+        return _stopFireRequested;
     }
 
     /** Return true if a stop has been requested on the director.
@@ -254,8 +254,8 @@ public class ProcessDirector extends Director {
      *  between a request to pause and a request to stop.
      *  @return True if stop() has been called.
      */
-    public boolean isStopFireRequested() {
-        return _stopFireRequested;
+    public boolean isStopRequested() {
+        return _stopRequested;
     }
 
     /** Return a new receiver of a type compatible with this director.
@@ -421,7 +421,8 @@ public class ProcessDirector extends Director {
 
     /** Do nothing.  Input transfers in process domains are handled by
      *  branches, which transfer inputs in a separate thread.
-     *  @return False, to indicate that no tokens were transfered.
+     *  @param port The port. 
+     *  @return False, to indicate that no tokens were transferred.
      */
     public boolean transferInputs(IOPort port) {
         return false;
@@ -429,7 +430,8 @@ public class ProcessDirector extends Director {
 
     /** Do nothing.  Output transfers in process domains are handled by
      *  branches, which transfer inputs in a separate thread.
-     *  @return False, to indicate that no tokens were transfered.
+     *  @param port The port. 
+     *  @return False, to indicate that no tokens were transferred.
      */
     public boolean transferOutputs(IOPort port) {
         return false;
@@ -532,18 +534,6 @@ public class ProcessDirector extends Director {
         notifyAll();
     }
 
-    /** Increase the count of stopped actors by one.  This method is
-     *  called by instances of ProcessThread in response to a call to
-     *  their stopThread() method. This method may be overridden in
-     *  derived classes to added domain specific
-     *  functionality. Implementations of this method must be
-     *  synchronized.
-     */
-    protected synchronized void _actorHasStopped() {
-        _stoppedActorCount++;
-        notifyAll();
-    }
-
     /** Decrease the count of stopped actors by one.  This method is
      *  called by instances of ProcessThread after detecting that the
      *  stopFire() flag has been cleared. This method may be
@@ -553,6 +543,18 @@ public class ProcessDirector extends Director {
      */
     protected synchronized void _actorHasRestarted() {
         _stoppedActorCount--;
+        notifyAll();
+    }
+
+    /** Increase the count of stopped actors by one.  This method is
+     *  called by instances of ProcessThread in response to a call to
+     *  their stopThread() method. This method may be overridden in
+     *  derived classes to added domain specific
+     *  functionality. Implementations of this method must be
+     *  synchronized.
+     */
+    protected synchronized void _actorHasStopped() {
+        _stoppedActorCount++;
         notifyAll();
     }
 
@@ -648,13 +650,6 @@ public class ProcessDirector extends Director {
         return _blockedActorCount;
     }
 
-    /** Return the number of actors that are currently stopped.
-     *  @return Return the number of actors that are currently stopped.
-     */
-    protected final synchronized int _getStoppedActorsCount() {
-        return _stoppedActorCount;
-    }
-
     /** Create a new ProcessThread for controlling the actor that
      *  is passed as a parameter of this method. Subclasses are
      *  encouraged to override this method as necessary for domain
@@ -665,10 +660,19 @@ public class ProcessDirector extends Director {
      *   created thread is associated with.
      *  @return Return a new ProcessThread that will control the
      *   actor passed as a parameter for this method.
+     *  @exception IllegalActionException If creating an new ProcessThread
+     *  throws it.
      */
     protected ProcessThread _getProcessThread(Actor actor,
             ProcessDirector director) throws IllegalActionException {
         return new ProcessThread(actor, director);
+    }
+
+    /** Return the number of actors that are currently stopped.
+     *  @return Return the number of actors that are currently stopped.
+     */
+    protected final synchronized int _getStoppedActorsCount() {
+        return _stoppedActorCount;
     }
 
     /** Increase the count of active actors in the composite actor

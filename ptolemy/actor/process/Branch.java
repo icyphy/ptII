@@ -75,6 +75,7 @@ public class Branch implements Runnable {
     /** Construct a branch object with a branch controller.
      *
      *  @param controller The branch controller assigned to this branch.
+     *  @exception IllegalActionException Not thrown in this base class.
      *  @deprecated Use this constructor for testing purposes only.
      */
     public Branch(BranchController controller) throws IllegalActionException {

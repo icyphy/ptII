@@ -192,7 +192,7 @@ public class BranchController implements Runnable {
         }
     }
 
-    /** Deactive the branches assigned to this branch controller.
+    /** Deactivate the branches assigned to this branch controller.
      */
     public synchronized void deactivateBranches() {
         setActive(false);
@@ -349,6 +349,8 @@ public class BranchController implements Runnable {
      *  controller was previously registered as being blocked, register
      *  this branch controller with the director as no longer being
      *  blocked.
+     *  @param receiver  The receiver to be removed from the list of
+     *  blocked receivers.   
      */
     protected void _branchUnBlocked(ProcessReceiver receiver) {
         synchronized (this) {
