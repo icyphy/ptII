@@ -108,6 +108,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'CompositeActorApplication$$1.class' \
 	'CompositeActorApplication$$StateReporter.class' \
 	'Configuration$$1.class' \
 	'Configuration$$2.class' \
@@ -122,6 +123,8 @@ OPTIONAL_FILES = \
 	'ModelPane$$2.class' \
 	'ModelPane$$3.class' \
 	'ModelPane$$4.class' \
+	'ModelPane$$ClickListener.class' \
+	'ModelPane$$CommandListener.class' \
 	'PtolemyApplet$$1.class' \
 	'PtolemyApplet$$ExportButtonListener.class' \
 	'PtolemyApplet$$GoButtonListener.class' \
