@@ -63,8 +63,9 @@ public class SaberSubsystem extends CTActor
      *  creating new port with this actor as the container.
      * @param container The TypedCompositeActor this star belongs to
      * @param name The name
-     * @exception NameDuplicationException another star already had this name
-     * @exception IllegalActionException illustrates internal problems
+     * @exception NameDuplicationException If another star already had
+     * this name
+     * @exception IllegalActionException If there is an internal error
      */
     public SaberSubsystem(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
@@ -235,7 +236,7 @@ public class SaberSubsystem extends CTActor
         _debug(getFullName() + "In fire");
 
         //  ps.println("run transient analysis with input, and init file");
-        // ps.println("tr (dfile data,pfile plot,tend 2m,tstep 10u"));
+        // ps.println("tr (dfile data, pfile plot, tend 2m, tstep 10u"));
         CTDirector dir = (CTDirector)getDirector();
         double now = dir.getCurrentTime();
         double endTime = now + dir.getCurrentStepSize();
@@ -249,9 +250,9 @@ public class SaberSubsystem extends CTActor
             _ps.println("alter /"+ ppstr +" = " + indata);
 
         }
-        //_ps.println("tr (tend "+endTime+
-        //            " ,trep "+_endpt+" ,trip "+_startpt
-        //            +" ,tripeqtrep yes,tstep "+_innerStep);
+        //_ps.println("tr (tend " + endTime +
+        //            " , trep " + _endpt + " , trip " + _startpt +
+        //            " , tripeqtrep yes, tstep " + _innerStep);
 
         if(_first) {
             _ps.println("tr (tend " + endTime + ", tstep "+ _innerStep );
@@ -487,32 +488,37 @@ public class SaberSubsystem extends CTActor
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    // IO streams
+    protected InputStream _instream = null;
+    protected InputStream _errorstream = null;
+    protected OutputStream _outstream = null;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Tool process
     private Process _tool;
 
     // IO streams
-    protected InputStream _instream = null;
-    protected InputStream _errorstream = null;
-    protected OutputStream _outstream = null;
     private  BufferedReader _reader;
     private  PrintWriter _ps;
 
     // start command
     private static final String _startCommand = "saber -c ";
-    String _startpt = new String("endpt");
-    String _endpt = new String("endpt");
+    private String _startpt = new String("endpt");
+    private String _endpt = new String("endpt");
 
-    //parameters
+    // parameters
     private String _netlist;
     private String _innerStep;
 
-    //potential output
+    // potential output
     private int _numout;
     private DoubleToken[] _outtoken;
     private double[] _outvar;
-    //hash table for output ports and their tool variables.
+    // hash table for output ports and their tool variables.
     private Hashtable _porttable;
     private Hashtable _outpvalue;
     private boolean _first;
