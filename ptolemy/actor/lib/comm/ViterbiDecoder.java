@@ -1,6 +1,6 @@
 /* Viterbi Decoder.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (bilung@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.comm;
@@ -92,8 +92,8 @@ Proakis, Digital Communications, Fourth Edition, McGraw-Hill,
 <p>
 @author Rachel Zhou
 @version $Id$
+@since Ptolemy II 3.0
 */
-
 public class ViterbiDecoder extends Transformer {
 
     /** Construct an actor with the given container and name.
@@ -252,7 +252,8 @@ public class ViterbiDecoder extends Transformer {
 
             if (_inputNumber >= _shiftRegLength) {
                 throw new IllegalActionException(this,
-                        "The highest order of all polynomials is still too low.");
+                        "The highest order of all polynomials is "
+                        + "still too low.");
             }
             _inputNumberInvalid = false;
 

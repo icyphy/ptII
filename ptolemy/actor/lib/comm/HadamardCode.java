@@ -1,6 +1,6 @@
-/* Source of Hadamard codes.
+/* Produce a Hadamard codeword by selecting a row from a Hadamard matrix.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (bilung@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.comm;
@@ -67,8 +67,8 @@ The codeword length is 2<sup><i>n</i></sup>.
 <p>
 @author Edward A. Lee and Rachel Zhou
 @version $Id$
+@since Ptolemy II 3.0
 */
-
 public class HadamardCode extends Source {
 
     /** Construct an actor with the given container and name.
@@ -138,13 +138,15 @@ public class HadamardCode extends Source {
             int log2LengthValue = ((IntToken)log2Length.getToken()).intValue();
             if (log2LengthValue <= 0) {
                 throw new IllegalActionException(this,
-                        "log2Length parameter is required to be strictly positive.");
+                        "log2Length parameter is required to be "
+                        + "strictly positive.");
             }
             // Assuming an int is 32 bits, our implementation will only
             // work if this is less than 32.
             if (log2LengthValue >= 32) {
                 throw new IllegalActionException(this,
-                        "log2Length parameter is required to be less than 32.");
+                        "log2Length parameter is required to be "
+                        + "less than 32.");
             }
             // Set a flag indicating that the private variable _row
             // is invalid, but don't recompute the value until all

@@ -1,6 +1,6 @@
-/* Source of DeScrambler Code.
+/* Descramble the input bit sequence using a feedback shift register.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (bilung@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.comm;
@@ -56,8 +56,8 @@ Kluwer Academic Publishers, 1994, pp. 595-603.
 <p>
 @author Edward A. Lee and Rachel Zhou
 @version $Id$
+@since Ptolemy II 3.0
 */
-
 public class DeScrambler extends Transformer {
 
     /** Construct an actor with the given container and name.
@@ -110,11 +110,11 @@ public class DeScrambler extends Transformer {
     ////                         public methods                    ////
 
     /** If the attribute being changed is <i>initial</i>, then verify
-        that is a non-negative interger; if it is <i>polynomial</i>, then
-        verify that is a positive interger and the lower-order bit is 1.
-        *  @exception IllegalActionException If <i>initial</i> is non-positive
-        *  or polynomial is non-positive or the lower-order bit is not 1.
-        */
+     *  that is a non-negative interger; if it is <i>polynomial</i>, then
+     *  verify that is a positive interger and the lower-order bit is 1.
+     *  @exception IllegalActionException If <i>initial</i> is non-positive
+     *  or polynomial is non-positive or the lower-order bit is not 1.
+     */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == initial) {

@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (bilung@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.comm;
@@ -90,8 +90,8 @@ Communications, Fourth Edition, McGraw-Hill, 2001, pp. 471-477.
 <p>
 @author Rachel Zhou
 @version $Id$
+@since Ptolemy II 3.0
 */
-
 public class ConvolutionalCoder extends Transformer {
 
     /** Construct an actor with the given container and name.

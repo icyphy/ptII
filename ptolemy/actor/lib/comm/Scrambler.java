@@ -1,6 +1,6 @@
 /* Given an input bit sequence, scramble it in a pseudo random way.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (bilung@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.comm;
@@ -153,8 +153,8 @@ Communication, Second Edition, Kluwer Academic Publishers, 1994, pp. 595-603.
 <p>
 @author Edward A. Lee and Rachel Zhou
 @version $Id$
+@since Ptolemy II 3.0
 */
-
 public class Scrambler extends Transformer {
 
     /** Construct an actor with the given container and name.
