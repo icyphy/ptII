@@ -115,8 +115,11 @@ public abstract class ChangeRequest {
      *  method more than once will throw an exception.
      */
     public final synchronized void execute() {
-        if (!_pending) throw new InternalErrorException("Attempted to " +
-                "execute a change request that had already been executed.");
+        if (!_pending) {
+            throw new InternalErrorException(
+                    "Attempted to execute a change request "
+                    + "that had already been executed.");
+        }
         _exception = null;
         // This flag is set if an exception is caught.  If the exception
         // is reported to any listeners set with setListeners, then
@@ -226,6 +229,13 @@ public abstract class ChangeRequest {
             _localListeners.remove(listener);
         }
     }
+    
+    /** Set the description.
+     *  @param description The description.
+     */
+    public void setDescription(String description) {
+        _description = description;
+    }
 
     /** Call with a true argument to indicate that an error has been
      *  reported to the user. This is used by listeners to avoid reporting an
@@ -332,6 +342,9 @@ public abstract class ChangeRequest {
     // A description of the change.
     private String _description;
 
+    // A flag indicating whether the error has been reported.
+    private boolean _errorReported;
+
     // The exception thrown by the most recent call to execute(), if any.
     private Exception _exception;
 
@@ -341,15 +354,12 @@ public abstract class ChangeRequest {
     // A list of listeners that are maintained locally.
     private List _localListeners;
 
-    // A flag indicating whether the error has been reported.
-    private boolean _errorReported;
-
-    // The source of the change request.
-    private Object _source;
-
     // A flag indicating that this request has not been executed yet.
     private boolean _pending = true;
 
     // A flag indicating that this change is persistent.
     private boolean _persistent = true;
+
+    // The source of the change request.
+    private Object _source;
 }
