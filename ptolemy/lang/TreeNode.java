@@ -40,6 +40,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
 
+//////////////////////////////////////////////////////////////////////////
+//// TreeNode
 /**
  *  The common base type for nodes in an abstract syntax tree.
  *
@@ -229,7 +231,10 @@ public abstract class TreeNode extends TrackedPropertyMap {
      */
     public boolean isSingleton() { return false; }
 
-
+    /** Accept a visitor at this node only. This method uses reflection and therefore
+     *  suffers a performance penalty. This method should be overridden in concrete
+     *  subclasses of TreeNode for better performance.
+     */
     protected Object _acceptHere(IVisitor v, LinkedList visitArgs) {      
         if (_myClass == null) {
            _myClass = getClass();

@@ -126,13 +126,15 @@ public class GenerateVisitor {
       LinkedList methodList = (LinkedList) methodListItr.next();
       LinkedList implList = (LinkedList) implListItr.next();
 
-      if (isConcrete && isInTree) {
-         _ofs.write(
-          "\n" +
-          "    public Object visit" + typeName + "(" + typeName +
-          " node, LinkedList args) {\n" +
-          "        return _defaultVisit(node, args);\n" +
-          "    }\n");
+      if (isConcrete) {
+         if (isInTree) {
+            _ofs.write(
+             "\n" +
+             "    public Object visit" + typeName + "(" + typeName +
+             " node, LinkedList args) {\n" +
+             "        return _defaultVisit(node, args);\n" +
+             "    }\n");
+         }
           
          _idStringList.add(typeName.toUpperCase() + "_ID");
       }
@@ -246,22 +248,29 @@ public class GenerateVisitor {
     sb.append(" {\n");
 
     if (concreteClass) {               
-       if (isInTree) {
-          String idString = typeName.toUpperCase() + "_ID";    
+        String idString = typeName.toUpperCase() + "_ID";    
         
-          // add a method to return the class id
-          methodList.add(new MethodSignature("public final", "int", "classID", 
-           new LinkedList(), new LinkedList(), "return NodeClassID." + idString + ";"));                
-       } else {
-       
-          // add a classID() method that throws an exception since the node type should not
-          // appear in the parse tree
-          methodList.add(new MethodSignature("public final", "int", "classID",
-           new LinkedList(), new LinkedList(), "throw new RuntimeException(\"classID() : " + 
-           "class should not appear in parse tree\");"));                
-       }
-    } 
+       // add a method to return the class id
+       methodList.add(new MethodSignature("public final", "int", "classID", 
+        new LinkedList(), new LinkedList(), "return NodeClassID." + idString + ";"));    
+    
+       if (isInTree) {                                                   
+          // add a method that accepts a visitor           
+          LinkedList acceptMethodArgTypes = new LinkedList(); 
+          acceptMethodArgTypes.addLast("IVisitor");
+          acceptMethodArgTypes.addLast("LinkedList");
 
+          LinkedList acceptMethodArgNames = new LinkedList(); 
+          acceptMethodArgNames.addLast("visitor");
+          acceptMethodArgNames.addLast("args");
+          
+          methodList.add(new MethodSignature("protected final", "Object", "_acceptHere",
+           acceptMethodArgTypes, acceptMethodArgNames, 
+           "return ((" + _visitorClassName + ") visitor).visit" + typeName + "(this, args);"));
+           
+       } 
+    } 
+       
     if (isSingleton) {
     
        // add the instance of the singleton

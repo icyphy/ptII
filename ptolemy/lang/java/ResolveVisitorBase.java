@@ -51,7 +51,11 @@ import ptolemy.lang.java.nodetypes.*;
 public abstract class ResolveVisitorBase extends JavaVisitor 
        implements JavaStaticSemanticConstants {
     public ResolveVisitorBase() {
-        super(TM_CUSTOM);
+        this(TM_CUSTOM);
+    }
+
+    public ResolveVisitorBase(int traversalMethod) {
+        super(traversalMethod);
     }
 
     public Object visitNameNode(NameNode node, LinkedList args) {

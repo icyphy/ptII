@@ -49,8 +49,12 @@ import ptolemy.lang.java.nodetypes.*;
 <nheader>
 package ptolemy.lang.java.nodetypes;
 
+import java.util.LinkedList;
 import java.util.List;
+
+import ptolemy.lang.IVisitor;
 import ptolemy.lang.TreeNode;
+import ptolemy.lang.java.JavaVisitor;
 
 /** A specific type of node in the AST for Java code. */
 </nheader>
@@ -131,9 +135,8 @@ DeclaratorNode CN TreeNode i NamedNode i k 0 int dims NameNode name TreeNode ini
 
 // Types that don't arise during parsing.
 
-PackageNode C TreeNode i NamedNode i k 0 NameNode name k
-NullTypeNode S TypeNode
-ArrayInitTypeNode S TypeNode
+NullTypeNode SN TypeNode
+ArrayInitTypeNode SN TypeNode
 
 // Declarations
 

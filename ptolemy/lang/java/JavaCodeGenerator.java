@@ -136,18 +136,6 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         return "void";
     }
 
-    public Object visitPackageNode(PackageNode node, LinkedList args) {
-        String nameString = (String) node.childReturnValueAt(node.CHILD_INDEX_NAME);
-
-        return "package " + nameString + ";\n";
-    }
-
-    public Object visitNullTypeNode(NullTypeNode node, LinkedList args) {
-        ApplicationUtility.error("NullTypeNode should not appear in the " +
-         "final parse tree.");
-        return null;
-    }
-
     public Object visitOuterThisAccessNode(OuterThisAccessNode node, LinkedList args) {
         return (String) node.childReturnValueAt(node.CHILD_INDEX_TYPE) + ".this";
     }
@@ -236,30 +224,11 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
     }
 
     public Object visitFieldDeclNode(FieldDeclNode node, LinkedList args) {
-
-        StringBuffer sb = new StringBuffer();
-
-        sb.append(Modifier.toString(node.getModifiers()) + 
-                  (String) node.childReturnValueAt(node.CHILD_INDEX_DEFTYPE) + ' ' + 
-                  node.getName().getIdent());
-
-        String initStr = (String) node.childReturnValueAt(node.CHILD_INDEX_INITEXPR);
-        
-        // AbsentTreeNode returns a String of length 0
-        if (initStr.length() > 0) {
-           sb.append(" = " + initStr);
-        }
-
-        sb.append(";\n");
-
-        return sb.toString();
+        return _visitVarInitDeclNode(node);        
     }
 
     public Object visitLocalVarDeclNode(LocalVarDeclNode node, LinkedList args) {
-        return Modifier.toString(node.getModifiers()) + 
-               (String) node.childReturnValueAt(node.CHILD_INDEX_DEFTYPE) +
-               ' ' + node.getName().getIdent() + " = " +
-               (String) node.childReturnValueAt(node.CHILD_INDEX_INITEXPR)  + ";\n";
+        return _visitVarInitDeclNode(node);
     }
 
     public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
@@ -558,7 +527,9 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
     }
 
     public Object visitArrayAccessNode(ArrayAccessNode node, LinkedList args) {
-        return (String) node.childReturnValueAt(node.CHILD_INDEX_ARRAY) +
+        String arrayString = (String) node.childReturnValueAt(node.CHILD_INDEX_ARRAY);
+    
+        return _parenExpr(node.getArray(), arrayString)  +
                '[' +  (String) node.childReturnValueAt(node.CHILD_INDEX_INDEX) + ']';
     }
 
@@ -567,7 +538,9 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
     }
 
     public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {
-        return (String) node.childReturnValueAt(node.CHILD_INDEX_OBJECT) + '.' +
+        String objectString = (String) node.childReturnValueAt(node.CHILD_INDEX_OBJECT);
+        
+        return _parenExpr(node.getObject(), objectString) + '.' +
                (String) node.childReturnValueAt(node.CHILD_INDEX_NAME);
     }
 
@@ -597,13 +570,18 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     public Object visitAllocateNode(AllocateNode node, LinkedList args) {
         StringBuffer sb = new StringBuffer();
+        
+        TreeNode enclosingInstance = node.getEnclosingInstance();
 
-        String enclosingInstance = (String)
-         node.childReturnValueAt(node.CHILD_INDEX_ENCLOSINGINSTANCE);
+        int enclosingID = enclosingInstance.classID();
 
-        if (!(enclosingInstance.equals("") || enclosingInstance.equals("this"))) {
-           sb.append(enclosingInstance + '.');
-        }
+        if ((enclosingID != ABSENTTREENODE_ID) && (enclosingID != THISNODE_ID)) {
+
+           String enclosingString = (String)
+            node.childReturnValueAt(node.CHILD_INDEX_ENCLOSINGINSTANCE);
+
+           sb.append(_parenExpr(enclosingInstance, enclosingString) + '.');        
+        } 
 
         List argsList = (List) node.childReturnValueAt(node.CHILD_INDEX_ARGS);
 
@@ -642,6 +620,7 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
     }
 
     public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
+        // FIXME : not supported yet
         return _defaultVisit(node, args);
     }
 
@@ -679,10 +658,9 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
 
     public Object visitCastNode(CastNode node, LinkedList args) {
         String exprString = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR);
-        ExprNode expr = (ExprNode) node.getExpr();
        
         return "(" + (String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE) +
-               ") " + _parenExpr(expr, exprString);
+               ") " + _parenExpr(node.getExpr(), exprString);
     }
 
     public Object visitMultNode(MultNode node, LinkedList args) {
@@ -734,7 +712,9 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
     }
 
     public Object visitInstanceOfNode(InstanceOfNode node, LinkedList args) {
-        return (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR) +
+        String exprString = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR);
+    
+        return _parenExpr(node.getExpr(), exprString) +
                " instanceof " +
                (String) node.childReturnValueAt(node.CHILD_INDEX_DTYPE);
     }
@@ -834,6 +814,22 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         return _visitBinaryOpAssignNode(node, "|=");
     }
 
+    protected String _visitVarInitDeclNode(VarInitDeclNode node) {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append(Modifier.toString(node.getModifiers()) + 
+                  (String) node.childReturnValueAt(node.CHILD_INDEX_DEFTYPE) + ' ' + 
+                  node.getName().getIdent());
+
+        if (node.getInitExpr() != AbsentTreeNode.instance) {
+           sb.append(" = " + (String) node.childReturnValueAt(node.CHILD_INDEX_INITEXPR));
+        }
+           
+        sb.append(";\n");
+
+        return sb.toString();
+    }
+
     protected String _visitSingleExprNode(SingleExprNode node, String opString,
      boolean post) {
         String exprString = (String) node.childReturnValueAt(node.CHILD_INDEX_EXPR);
@@ -889,16 +885,46 @@ public class JavaCodeGenerator extends JavaVisitor implements JavaStaticSemantic
         return sb.toString();
     }
         
-    protected String _parenExpr(ExprNode expr, String exprStr) {
-       if ((expr instanceof BinaryOpNode) ||
-           (expr instanceof BinaryOpAssignNode) ||
-           (expr instanceof AssignNode) ||
-           (expr instanceof InstanceOfNode) ||
-           (expr instanceof EqualityNode) ||
-           (expr instanceof IfExprNode)) {
+    protected String _parenExpr(TreeNode expr, String exprStr) {
+        int classID = expr.classID();
+    
+        switch (classID) {
+          case INTLITNODE_ID:
+          case LONGLITNODE_ID:
+          case FLOATLITNODE_ID:
+          case DOUBLELITNODE_ID:
+          case BOOLLITNODE_ID:
+          case CHARLITNODE_ID:
+          case STRINGLITNODE_ID:
+          case BOOLTYPENODE_ID:
+          case ARRAYINITNODE_ID:
+          case NULLPNTRNODE_ID:
+          case THISNODE_ID:
+          case ARRAYACCESSNODE_ID:
+          case OBJECTNODE_ID:
+          case OBJECTFIELDACCESSNODE_ID:
+          case SUPERFIELDACCESSNODE_ID:
+          case TYPEFIELDACCESSNODE_ID:
+          case THISFIELDACCESSNODE_ID:
+          case TYPECLASSACCESSNODE_ID:
+          case OUTERTHISACCESSNODE_ID:
+          case OUTERSUPERACCESSNODE_ID:
+          case METHODCALLNODE_ID:
+          case ALLOCATENODE_ID:
+          case ALLOCATEANONYMOUSCLASSNODE_ID:
+          case ALLOCATEARRAYNODE_ID:
+          case POSTINCRNODE_ID:
+          case POSTDECRNODE_ID:
+          case UNARYPLUSNODE_ID:
+          case UNARYMINUSNODE_ID:
+          case PREINCRNODE_ID:
+          case PREDECRNODE_ID:
+          case COMPLEMENTNODE_ID:
+          case NOTNODE_ID:                  
+          return exprStr;
+          
+          default:
           return "(" + exprStr + ')';
-       }
-
-       return exprStr;
+        }
     }
 }

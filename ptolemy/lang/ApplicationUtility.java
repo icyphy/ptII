@@ -33,66 +33,72 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang;
 
+//////////////////////////////////////////////////////////////////////////
+//// ApplicationUtility
+/** Miscelleneous utilities for command-line applications.
+ *
+ *  @author Jeff Tsay
+ */
 public class ApplicationUtility {
 
-  // private constructor prevent instantiation of this class
-  private ApplicationUtility() {}
+    // private constructor prevent instantiation of this class
+    private ApplicationUtility() {}
 
-  public static final void assert(boolean condition) {
-    if (enableAsserts) {
-       assert(condition, "no reason specified");
+    public static final void assert(boolean condition) {
+        if (enableAsserts) {
+           assert(condition, "no reason specified");
+        }
     }
-  }
 
-  public static final void assert(boolean condition, String errMsg) {
-    if (enableAsserts && !condition) {
-       error("Assertion failed: " + errMsg);
+    public static final void assert(boolean condition, String errMsg) {
+        if (enableAsserts && !condition) {
+           error("Assertion failed: " + errMsg);
+        }
     }
-  }
 
-  public static final void warn(String msg) {
-    if (enableWarnings) {
-       System.err.println("Warning: " + msg);
-       warnings++;
+    public static final void warn(String msg) {
+        if (enableWarnings) {
+           System.err.println("Warning: " + msg);
+           warnings++;
 
-       if (errorOnWarning) {
-          error("Error on warning");
-       }
+           if (errorOnWarning) {
+              error("Error on warning");
+           }
+        }
     }
-  }
 
-  public static final void trace(String msg, String separator) {
-    if (enableTrace) {
-       System.out.print(msg + separator);
+    public static final void trace(String msg, String separator) {
+        if (enableTrace) {
+           System.out.print(msg + separator);
+        }
     }
-  }
 
-  public static final void trace(String msg) {
-    if (enableTrace) {
-       System.out.println("Trace: " + msg);
+    public static final void trace(String msg) {
+        if (enableTrace) {
+           System.out.println("Trace: " + msg);
+        }
     }
-  }
 
-  public static final void error(String msg) {
-    errors++;
-    if (exceptionOnError) {
-       throw new RuntimeException(msg);
-    } else {
-       System.err.println("Error: " + msg);
+    public static final void error(String msg) {
+        errors++;
+        if (exceptionOnError) {
+           throw new RuntimeException(msg);
+        } else {
+           System.err.println("Error: " + msg);
        
-       if (exitOnError) {
-          System.exit(-1);
-       }
+           if (exitOnError) {
+              System.exit(-1);
+           }
+        }
     }
-  }
 
-  public static boolean enableAsserts  = false;
-  public static boolean enableWarnings = true;
-  public static boolean enableTrace  = false;
-  public static boolean exceptionOnError = true;
-  public static boolean exitOnError = false;
-  public static boolean errorOnWarning = false;
+    public static boolean enableAsserts  = true;
+    public static boolean enableWarnings = true;
+    public static boolean enableTrace  = false;
+    public static boolean exceptionOnError = true;
+    public static boolean exitOnError = false;
+    public static boolean errorOnWarning = false;
 
-  public static int errors   = 0;
-  public static int warnings = 0;
+    public static int errors   = 0;
+    public static int warnings = 0;
 }

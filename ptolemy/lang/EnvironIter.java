@@ -125,7 +125,7 @@ public class EnvironIter implements Iterator {
     /** Return true if there is more than one matching Decl that can be reached. */
     public boolean moreThanOne() {
   
-      ApplicationUtility.trace("EnvironIter: moreThanOne for " + _name);
+      // ApplicationUtility.trace("EnvironIter: moreThanOne for " + _name);
       if (_declIter == null) {
          // empty list
          return false;     
