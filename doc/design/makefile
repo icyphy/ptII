@@ -59,7 +59,9 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	design.pdf \
 	html \
-	src
+	src \
+	usingVergil \
+	usingVergil.pdf
 
 all: suball
 install: all
