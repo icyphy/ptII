@@ -591,6 +591,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/tm \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop/util \
+	$(REMOTE1PTIIDIST)/ptolemy/caltrop/actors \
+	$(REMOTE1PTIIDIST)/ptolemy/caltrop/ddi \
 	$(REMOTE1PTIIDIST)/ptolemy/caltrop \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/hsif \
