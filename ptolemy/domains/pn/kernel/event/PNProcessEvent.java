@@ -101,42 +101,47 @@ public class PNProcessEvent {
 
     public String toString() {
         String result;
-        String st = null;
-        String ca = null;
+        String state = null;
+        String cause = null;
         if (_state == PROCESS_BLOCKED) {
-            st = "PROCESS_BLOCKED";
+            state = "PROCESS_BLOCKED";
             if (_cause == BLOCKED_ON_DELAY) {
-                ca = "BLOCKED_ON_DELAY";
+                cause = "BLOCKED_ON_DELAY";
             } else if (_cause == BLOCKED_ON_MUTATION) {
-                ca = "BLOCKED_ON_MUTATION";
+                cause = "BLOCKED_ON_MUTATION";
             } else if (_cause == BLOCKED_ON_READ) {
-                ca = "BLOCKED_ON_READ";
+                cause = "BLOCKED_ON_READ";
             } else if (_cause == BLOCKED_ON_WRITE) {
-                ca = "BLOCKED_ON_WRITE";
-            } else ca = "BLOCKING_CAUSE_UNKNOWN";
-            result = "State of "+((Entity)_actor).getFullName()+" is "+st+
-                " and the cause = "+ca;
+                cause = "BLOCKED_ON_WRITE";
+            } else cause = "BLOCKING_CAUSE_UNKNOWN";
+            result = "State of " + ((Entity)_actor).getFullName() + " is "
+                + state + " and the cause = " + cause;
         } else if (_state == PROCESS_FINISHED) {
-            st = "PROCESS_FINISHED";
+            state = "PROCESS_FINISHED";
             if (_cause == FINISHED_ABRUPTLY) {
-                ca = "FINISHED_ABRUPTLY";
+                cause = "FINISHED_ABRUPTLY";
             } else if (_cause == FINISHED_PROPERLY) {
-                ca = "FINISHED_PROPERLY";
+                cause = "FINISHED_PROPERLY";
             } else if (_cause == FINISHED_WITH_EXCEPTION) {
-                ca = "FINISHED_WITH_EXCEPTION with exception "+
+                cause = "FINISHED_WITH_EXCEPTION with exception " +
                     _exception.toString();
-            } else ca = "FINISHED_CAUSE_UNKNOWN";
-            result = "State of "+((Entity)_actor).getFullName()+" is "+st+
-                " and the cause = "+ca;
+            } else {
+                cause = "FINISHED_CAUSE_UNKNOWN";
+            }
+            result = "State of " + ((Entity)_actor).getFullName() + " is "
+                + state + " and the cause = " + cause;
         } else if (_state == PROCESS_PAUSED) {
-            st = "PROCESS_PAUSED";
-            result = "State of "+((Entity)_actor).getFullName()+" is "+st;
+            state = "PROCESS_PAUSED";
+            result = "State of " + ((Entity)_actor).getFullName() + " is "
+                + state;
         } else if (_state == PROCESS_RUNNING) {
-            st = "PROCESS_RUNNING";
-            result = "State of "+((Entity)_actor).getFullName()+" is "+st;
+            state = "PROCESS_RUNNING";
+            result = "State of " + ((Entity)_actor).getFullName() + " is "
+                + state;
         } else {
-            st = "UNKNOWN_PROCESS_STATE";
-            result = "State of "+((Entity)_actor).getFullName()+" is "+st;
+            state = "UNKNOWN_PROCESS_STATE";
+            result = "State of " + ((Entity)_actor).getFullName() + " is "
+                + state;
         }
         return result;
     }

@@ -75,20 +75,20 @@ public class PNProcessMulticaster implements PNProcessListener {
      * @param event The PNProcessEvent
      */
     public void processFinished(PNProcessEvent event) {
- 	Iterator e = _listeners.iterator();
-        while( e.hasNext() ) {
-            ((PNProcessListener) e.next()).processFinished(event);
+ 	Iterator listeners = _listeners.iterator();
+        while( listeners.hasNext() ) {
+            ((PNProcessListener) listeners.next()).processFinished(event);
         }
     }
 
     /** Notify that a process has changed state.
      *
-     * @param event. The PNProcessEvent
+     * @param even The PNProcessEvent.
      */
     public void processStateChanged(PNProcessEvent event) {
-        Iterator e = _listeners.iterator();
-        while( e.hasNext() ) {
-            ((PNProcessListener)e.next()).processStateChanged(event);
+        Iterator listeners = _listeners.iterator();
+        while( listeners.hasNext() ) {
+            ((PNProcessListener)listeners.next()).processStateChanged(event);
         }
     }
 

@@ -51,11 +51,11 @@ public class ReceiverActionEvent {
 
     /** Create a new event and assign the variable corresponding to the
      *  capacity of the receiver to the current capacity of the receiver.
-     *  @param The Receiver.
+     *  @param receiver The receiver.
      */
-    public ReceiverActionEvent(PNQueueReceiver r) {
-        _receiver = r;
-	_capacity = r.getCapacity();
+    public ReceiverActionEvent(PNQueueReceiver receiver) {
+        _receiver = receiver;
+	_capacity = receiver.getCapacity();
     }
 
     /** Create a new event and set the receiver and its capacity parameters
