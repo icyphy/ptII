@@ -79,10 +79,6 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
-all: jclass
-install: jclass
-
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
