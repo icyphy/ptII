@@ -45,6 +45,7 @@ JSRCS = \
 
 EXTRA_SRCS =	$(JSRCS) \
 	HTVQ.htm \
+	HTVQ.xml \
 	HTVQModel.gif \
 	HTVQSShot.gif
 
