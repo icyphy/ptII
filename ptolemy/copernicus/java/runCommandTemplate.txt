@@ -6,5 +6,5 @@
 # @version $Id$
 #
 "@java@"
- -Xfuture -classpath "@ptIIUserDirectory@/@targetPath@"
+ -Xfuture -classpath "@ptIIUserDirectory@@classPathSeparator@@ptIIUserDirectory@/@targetPath@"
  @targetPackage@.Main 
