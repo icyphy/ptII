@@ -365,9 +365,6 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		ptolemy/actor/lib/test/auto/MathFunction.xml \
 		ptolemy/actor/lib/x10 \
 		ptolemy/actor/lib/xslt \
-		ptolemy/backtrack/util \
-		ptolemy/backtrack/xmlparser \
-		ptolemy/backtrack/ast \
 		ptolemy/caltrop \
 		ptolemy/configs/dsp \
 		ptolemy/configs/full \
@@ -816,6 +813,9 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/security \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/string \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/xslt \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/util \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/xmlparser \
+	$(REMOTE1PTIIDIST)/ptolemy/backtrack/ast \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ddf \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/de \
