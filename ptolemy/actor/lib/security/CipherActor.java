@@ -125,7 +125,7 @@ public class CipherActor extends CryptographyActor {
      *
      * @exception IllegalActionException If the algoritm cannot be found,
      * the padding scheme is illegal for the the given algorithm or
-     * if the specified provider does not exist. 
+     * if the specified provider does not exist.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -143,7 +143,7 @@ public class CipherActor extends CryptographyActor {
         } catch(Exception ex) {
             throw new IllegalActionException(ex, this,
                     "Failed to initialize Cipher with algorithm: '"
-                    + _algorithm + "', padding: '" 
+                    + _algorithm + "', padding: '"
                     + _padding + "', provider: '"
                     + _provider + "'");
         }
