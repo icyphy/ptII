@@ -31,8 +31,11 @@ Definitions of Names of Objects, and limits of variables
 
 /* NAMES OF OBJECTS */
 #define _STRING_INSTANCE_STRUCT i1195259493_String
+#define _STRING_CLASS_STRUCT Vi1195259493_String
 #define _INIT_STRING_WITH_CHAR_ARRAY f1692611266__init_
+
 #define _OBJECT_INSTANCE i1063877011_Object
+#define _INITIALIZE_SYSTEM_CLASS f1659169041_initializeSystemClass
 
 /* LIMITS */
 #define _MAX_FLOAT 1E+37

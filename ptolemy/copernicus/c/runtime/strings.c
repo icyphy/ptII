@@ -30,26 +30,41 @@ Strings
 @author Ankush Varma 
 @version $Id$
 */
+#include <string.h>
+#include <stdlib.h>
+
 #include "strings.h"
+
 
 #ifndef A_DEF_iA1_char
 #define A_DEF_iA1_char
 typedef PCCG_ARRAY_INSTANCE_PTR iA1_char;
 #endif
 
-// convert a character array to a string Structure so that it can be used by
+// Convert a character array to a string Structure so that it can be used by
 // string constants.
 _STRING_INSTANCE_STRUCT charArrayToString(char *charArray)
 {
     _STRING_INSTANCE_STRUCT s; //dummy string structure
     iA1_char charArrayStruct;
-
-    charArrayStruct->array_data = charArray;
+    int sizeOfArray;
+  
+    s = (_STRING_INSTANCE_STRUCT)malloc(sizeof(struct _STRING_INSTANCE_STRUCT));
+    // Initialize charArrayStruct.
+    // FIXME: "class" not initialized in charArrayStruct.
+    charArrayStruct = malloc(sizeof(PCCG_ARRAY_INSTANCE));
+    sizeOfArray = strlen(charArray) * sizeof(char);
+    charArrayStruct->array_data = charArray ; 
+    // FIXME: array_length should be a COPY of charArray. memcpy may be
+    // needed.
+    charArrayStruct->array_length = strlen(charArray);
+   
+   
+    // Set the fields of the string structure.
+    s->class = &_STRING_CLASS_STRUCT;
+    s->f1860107401_value = charArrayStruct;
+    // FIXME: Other fields of String are unitialized.
     
-    _INIT_STRING_WITH_CHAR_ARRAY(s, charArrayStruct); //initialize this string structure
-    
-    //FIXME: None of these structures is fully initialised.
-
     return s;
     
 }
