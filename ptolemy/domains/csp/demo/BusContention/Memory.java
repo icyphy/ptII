@@ -100,8 +100,8 @@ public class Memory extends CSPActor {
         while(true) {
             token = new StringToken( _strValue );
 
-            int numBrchs = _numInChannels + _numOutChannels;
-            ConditionalBranch[] branches = new ConditionalBranch[numBrchs];
+            int numBranches = _numInChannels + _numOutChannels;
+            ConditionalBranch[] branches = new ConditionalBranch[numBranches];
 
             // Receive Branches
             for( int i=0; i < _numInChannels; i++ ) {
