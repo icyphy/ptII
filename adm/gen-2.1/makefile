@@ -979,7 +979,7 @@ remote4javatest:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test;	PTII=$(REMOTE4PTIIDIST) $(MAKE))
+	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test;	PTII=$(REMOTE4PTIIDIST) $(MAKE) test_long)
 
 
 ##########################################################################
@@ -1055,7 +1055,7 @@ remote5shallowtest:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow/test; PTII=$(REMOTE5PTIIDIST) $(MAKE))
+	(cd $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow/test; PTII=$(REMOTE5PTIIDIST) $(MAKE) test_long)
 
 
 
