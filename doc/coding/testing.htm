@@ -65,7 +65,7 @@ the example situation.</i>
  <LI> Use the command <CODE>touch dummy.tcl</CODE> to create a zero length
 file named dummy.tcl.
  <LI> Use the <CODE>make</CODE> command to generate the alljtests.tcl file.
- <LI> Okay!  Now go up one directory.  There needs to be a makefile here
+ <LI> Now go up one directory (cd ..).  There needs to be a makefile here
 too.  It needs to name the test/ directory you created.  If there already
 is a makefile, edit it.  Look for a line like <CODE>DIRS =</CODE> between
 the <CODE>ME =</CODE> and <CODE>ROOT =</CODE> lines.  Edit this
@@ -74,6 +74,15 @@ line to include the new test directory.  The result might look like:
  <LI> If no makefile exists in the directory above test/, you will need
 to create one and repeat this procedure in the next directory up until
 you find an existing makefile.
+ <LI> Finally, add the name of your new test directory to the
+list of directories to be tested.  Do this by editing the value of
+JSALLDIRS in the file $PTII/adm/gen-2.1/makefile.
+ <LI> The order in which tests appear in adm/gen-2.1/makefile
+is important.  Incorrect ordering causes tests to fail because
+the necessary classes will not yet have been compiled.
+Follow the ordering suggestions given in this file, which appears
+as a comment just before the list of directories.  The ordering
+suggested by these comments will work in most cases.
  </MENU>
  <p>When you have done all this, the tests in your new test/auto directory ought to run in the nightly build.
  <p>The test passes if it does not throw an exception
@@ -85,7 +94,7 @@ then the test fails.
  <p>If a test is in the optional <CODE>test/auto/knownFailedTests</CODE> 
 directory, then it will be marked as a known failure if it fails.
 
- <p>Do not use annotations, since these will require vergil to
+ <p>Do not use annotations, since these will require Vergil to
 be present at test time
  <p>Do not use composite actors such as actor/lib/Sinewave.xml that
 have annotations.  Instead use
