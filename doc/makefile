@@ -197,7 +197,6 @@ EXPERIMENTALPACKAGES = \
 			ptolemy.domains.hdf.lib \
 			ptolemy.domains.nc.kernel \
 			ptolemy.domains.nc.lib \
-			ptolemy.domains.psdf.kernel \
 			ptolemy.domains.rtp.kernel \
 			ptolemy.domains.rtp.lib
 
@@ -306,6 +305,7 @@ ALLPACKAGES =		$(COMPACKAGES) \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.pn.kernel.event \
 			ptolemy.domains.petrinet.kernel \
+			ptolemy.domains.psdf.kernel \
 			ptolemy.domains.sr.kernel \
 			ptolemy.domains.sr.lib \
 			ptolemy.domains.tm.kernel \
