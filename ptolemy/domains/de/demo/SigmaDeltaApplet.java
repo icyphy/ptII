@@ -299,7 +299,7 @@ public class SigmaDeltaApplet extends Applet {
             // CT Director parameters
             Parameter initstep = 
                 (Parameter)ctdir.getAttribute("InitialStepSize");
-            initstep.setExpression("0.000001");
+            initstep.setExpression("0.001");
             initstep.parameterChanged(null);
             Parameter minstep =
                 (Parameter)ctdir.getAttribute("MinimumStepSize");
@@ -348,7 +348,6 @@ public class SigmaDeltaApplet extends Applet {
             _minimumServiceTime = (Parameter)processor.getAttribute("MST");
             _interruptServiceTime = (Parameter)processor.getAttribute("IST");
             _lambda = (Parameter)processor.getAttribute("lambda");
-
 
         } catch (Exception ex) {
             System.err.println("Setup failed: " + ex.getMessage());
