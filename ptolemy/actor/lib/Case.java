@@ -59,12 +59,11 @@ public class Case extends AbstractCase {
         super(container, name);
     }
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    // FIXME: doc
     public void initialize() throws IllegalActionException {
-
         super.initialize();
         _entityIterator = this.deepEntityList().iterator();
     }
@@ -79,9 +78,11 @@ public class Case extends AbstractCase {
      */
     protected Actor _choose() {
         if (!_entityIterator.hasNext()) {
-            return null;
+            _entityIterator = deepEntityList().iterator();
+            if (!_entityIterator.hasNext()) {
+                return null;
+            }
         }
-
         return (Actor)_entityIterator.next();
     }
 

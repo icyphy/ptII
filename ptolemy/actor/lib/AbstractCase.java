@@ -34,6 +34,12 @@ import ptolemy.actor.Director;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.Port;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// AbstractCase
@@ -57,7 +63,11 @@ public abstract class AbstractCase extends TypedCompositeActor {
     public AbstractCase(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        setDirector(new CaseDirector(this, "CaseDirector"));
+        _director = new CaseDirector(this, "CaseDirector");
+
+        // The base class forces the class name to be TypedCompositeActor.
+        // Override that to get the current class name.
+        getMoMLInfo().className = getClass().getName();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -69,6 +79,43 @@ public abstract class AbstractCase extends TypedCompositeActor {
      *   that none should be executed.
      */
     protected abstract Actor _choose();
+
+    /** Override the base class so that the description includes
+     *  only ports and contained entities, plus all attributes
+     *  except the director.
+     *  @param output The output to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @exception IOException If an I/O error occurs.
+     */
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+
+        Iterator attributes = attributeList().iterator();
+        while (attributes.hasNext()) {
+            Attribute attribute = (Attribute)attributes.next();
+            if (attribute != _director) {
+                attribute.exportMoML(output, depth);
+            }
+        }
+
+        Iterator ports = portList().iterator();
+        while (ports.hasNext()) {
+            Port port = (Port)ports.next();
+            port.exportMoML(output, depth);
+        }
+
+        Iterator entities = entityList().iterator();
+        while (entities.hasNext()) {
+            ComponentEntity entity = (ComponentEntity)entities.next();
+            entity.exportMoML(output, depth);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** My director. */
+    private Director _director;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
