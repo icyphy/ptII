@@ -2,42 +2,47 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Brownian" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.2">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 693, 670}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 742}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[478, 552]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 624]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{239.0, 276.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 312.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ye (Rachel) Zhou">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ye Zhou">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 485.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: what is this model about?">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: CT has multiple firings. Fix it.(Haiyang)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 475.0]">
         </property>
     </property>
     <entity name="Gaussian" class="ptolemy.actor.lib.Gaussian">
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 150.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
     </entity>
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
         <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
@@ -46,36 +51,17 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 155.0]">
-        </property>
-    </entity>
-    <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
-        <property name="upperBound" class="ptolemy.data.expr.Parameter" value="2*PI">
-        </property>
-        <doc>Create a sequence of uniformly distributed random numbers</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 205.0]">
-        </property>
-    </entity>
-    <entity name="Accumulator" class="ptolemy.actor.lib.Accumulator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 300.0]">
-        </property>
-    </entity>
-    <entity name="PolarToComplex" class="ptolemy.actor.lib.conversions.PolarToComplex">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 165.0}">
-        </property>
-    </entity>
-    <entity name="ComplexToCartesian" class="ptolemy.actor.lib.conversions.ComplexToCartesian">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 150.0]">
         </property>
     </entity>
     <entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={549, 272, 468, 463}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={300, 133, 508, 492}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[460, 408]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 435]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 190.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -84,18 +70,137 @@
 <title>XYPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-30.0" max="30.0"/>
-<yRange min="-30.0" max="30.0"/>
+<xRange min="-0.029194945878097362" max="0.01985025176336757"/>
+<yRange min="-0.04547215832237118" max="0.023901834760077234"/>
 </plot>?>
         </configure>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[210.0, 155.0]">
-        </vertex>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <entity name="Gaussian2" class="ptolemy.actor.lib.Gaussian">
+        <doc>Create a sequence of gaussian random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 235.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+        </port>
+    </entity>
+    <entity name="Integrator2" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="Rician" class="ptolemy.actor.lib.Rician">
+        <doc>Create an array of rician random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
+        <property name="upperBound" class="ptolemy.data.expr.Parameter" value="2*PI">
+        </property>
+        <doc>Create a sequence of uniformly distributed random numbers</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 400.0]">
+        </property>
+    </entity>
+    <entity name="PolarToCartesian" class="ptolemy.actor.lib.conversions.PolarToCartesian">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 365.0]">
+        </property>
+    </entity>
+    <entity name="Integrator3" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 330.0]">
+        </property>
+    </entity>
+    <entity name="Integrator4" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="IntegratorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 410.0]">
+        </property>
+    </entity>
+    <entity name="XYPlotter2" class="ptolemy.actor.lib.gui.XYPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={215, 170, 508, 492}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 435]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 380.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>XYPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="-0.04992294924619181" max="0.0"/>
+<yRange min="-0.03613869765693696" max="0.023935415493489046"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={133, 290, 508, 357}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 100.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="0.2"/>
+<yRange min="-0.029194945878097362" max="0.01985025176336757"/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={370, 288, 508, 357}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 75.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter2</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="0.2"/>
+<yRange min="-2.286959637531013" max="3.3968323976075703"/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="ZeroOrderHold2" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 235.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -104,22 +209,49 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[35.0, 245.0]">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[550.0, 150.0]">
         </vertex>
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[355.0, 150.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Gaussian.output" relation="relation"/>
-    <link port="Integrator.input" relation="relation"/>
-    <link port="Integrator.output" relation="relation3"/>
-    <link port="Uniform.output" relation="relation2"/>
-    <link port="Uniform.trigger" relation="relation3"/>
-    <link port="Accumulator.input" relation="relation8"/>
-    <link port="Accumulator.output" relation="relation5"/>
-    <link port="PolarToComplex.magnitude" relation="relation3"/>
-    <link port="PolarToComplex.angle" relation="relation2"/>
-    <link port="PolarToComplex.output" relation="relation8"/>
-    <link port="ComplexToCartesian.input" relation="relation5"/>
-    <link port="ComplexToCartesian.x" relation="relation6"/>
-    <link port="ComplexToCartesian.y" relation="relation7"/>
-    <link port="XYPlotter.inputX" relation="relation6"/>
-    <link port="XYPlotter.inputY" relation="relation7"/>
+    <link port="Integrator.input" relation="relation3"/>
+    <link port="Integrator.output" relation="relation11"/>
+    <link port="XYPlotter.inputX" relation="relation11"/>
+    <link port="XYPlotter.inputY" relation="relation4"/>
+    <link port="Gaussian2.output" relation="relation2"/>
+    <link port="Integrator2.input" relation="relation12"/>
+    <link port="Integrator2.output" relation="relation4"/>
+    <link port="Rician.output" relation="relation5"/>
+    <link port="Uniform.output" relation="relation6"/>
+    <link port="PolarToCartesian.magnitude" relation="relation5"/>
+    <link port="PolarToCartesian.angle" relation="relation6"/>
+    <link port="PolarToCartesian.x" relation="relation7"/>
+    <link port="PolarToCartesian.y" relation="relation8"/>
+    <link port="Integrator3.input" relation="relation7"/>
+    <link port="Integrator3.output" relation="relation9"/>
+    <link port="Integrator4.input" relation="relation8"/>
+    <link port="Integrator4.output" relation="relation10"/>
+    <link port="XYPlotter2.inputX" relation="relation9"/>
+    <link port="XYPlotter2.inputY" relation="relation10"/>
+    <link port="TimedPlotter.input" relation="relation11"/>
+    <link port="TimedPlotter2.input" relation="relation3"/>
+    <link port="ZeroOrderHold.input" relation="relation"/>
+    <link port="ZeroOrderHold.output" relation="relation3"/>
+    <link port="ZeroOrderHold2.input" relation="relation2"/>
+    <link port="ZeroOrderHold2.output" relation="relation12"/>
 </entity>
