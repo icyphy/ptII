@@ -266,7 +266,8 @@ public final class Manager extends NamedObj implements Runnable {
 
 	    if (conflicts.size() > 0) {
 		throw new TypeConflictException(conflicts.elements(),
-                        "Type conflicts occurred in " + toplevel.getFullName());
+                        "Type conflicts occurred in " + toplevel.getFullName()
+			+ " on the following ports:");
 	    }
 	} catch (IllegalActionException iae) {
 	    // this should not happen.
