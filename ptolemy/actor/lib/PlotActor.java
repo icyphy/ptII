@@ -112,16 +112,16 @@ public class PlotActor extends TypedAtomicActor implements Placeable {
      */
     public void fire() throws IllegalActionException {
         if (_useCurrentTime) {
-            _xvalue = ((Director)getDirector()).getCurrentTime();
+            _xValue = ((Director)getDirector()).getCurrentTime();
         } else {
-            _xvalue += 1.0;
+            _xValue += 1.0;
         }
         int width = input.getWidth();
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
                 DoubleToken curToken = (DoubleToken)input.get(i);
                 double curValue = curToken.doubleValue();
-                plot.addPoint(i, _xvalue, curValue, true);
+                plot.addPoint(i, _xValue, curValue, true);
             }
         }
     }
@@ -143,7 +143,7 @@ public class PlotActor extends TypedAtomicActor implements Placeable {
         _useCurrentTime = ((BooleanToken)timed.getToken()).booleanValue();
 
         plot.repaint();
-        _xvalue = -1.0;
+        _xValue = -1.0;
     }
 
     /** Specify the panel into which this plot should be placed.
@@ -188,5 +188,5 @@ public class PlotActor extends TypedAtomicActor implements Placeable {
 
     private Panel _panel;
     private boolean _useCurrentTime = true;
-    private double _xvalue;
+    private double _xValue;
 }
