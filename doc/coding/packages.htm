@@ -34,6 +34,12 @@ subpackage of <CODE>ptolemy.kernel</CODE>.  The makefiles are structured so
 that we run make in the subdirectories first so in general, it is best
 if subpackages do not depend on the parent package (the reverse is OK).
 
+
+<li> The test suite for a package should only use packages that
+are already depended upon by the package under test.  This rule
+cannot always be followed, but if it is followed, it makes it much
+easier to reuse a package since the tests will not require extra
+packages.
 </menu>
 </body>
 </html>
