@@ -55,6 +55,9 @@ import net.jini.space.JavaSpace;
 import net.jini.core.transaction.TransactionException;
 import net.jini.core.lease.Lease;
 
+// for debugging
+//import java.io.*;
+
 //////////////////////////////////////////////////////////////////////////
 //// Publisher
 /**
@@ -263,6 +266,21 @@ public class CarInformationPublisher extends TypedAtomicActor
                 TokenEntry entry = new TokenEntry(name,
                         new Long(0), array);
                 _space.write(entry, null, Lease.FOREVER);
+                /** The following test the size of the serialized obj.
+                    if(_first) {
+                    _first = false;
+                    try {
+                    FileOutputStream ostream = new FileOutputStream("tmp");
+                    ObjectOutputStream p = new ObjectOutputStream(ostream);
+                    
+                    p.writeObject(entry);
+                    p.flush();
+                    ostream.close();
+                    } catch (Exception ex) {
+                    System.err.println(ex.getMessage());
+                    }
+                    }   
+                */
             }
 	} catch (RemoteException re) {
 	    throw new IllegalActionException(this, "Cannot write into " +
@@ -288,5 +306,8 @@ public class CarInformationPublisher extends TypedAtomicActor
 
     // The next sampling time
     private double _nextSamplingTime;
+
+    // for debugging
+    //private boolean _first = true;
 }
 

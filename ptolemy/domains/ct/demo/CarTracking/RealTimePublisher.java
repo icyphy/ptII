@@ -56,6 +56,9 @@ import net.jini.space.JavaSpace;
 import net.jini.core.transaction.TransactionException;
 import net.jini.core.lease.Lease;
 
+// for debugging
+//import java.io.*;
+
 //////////////////////////////////////////////////////////////////////////
 //// RealTimePublisher
 /**
@@ -180,6 +183,21 @@ public class RealTimePublisher extends Sink
                 TokenEntry entry = new TokenEntry(name,
                         serialNumber, token);
                 _space.write(entry, null, Lease.FOREVER);
+                /** the following test the size of the serialized obj.
+                    if(_first) {
+                    _first = false;
+                    try {
+                    FileOutputStream ostream = new FileOutputStream("t1");
+                    ObjectOutputStream p = new ObjectOutputStream(ostream);
+                    
+                    p.writeObject(entry);
+                    p.flush();
+                    ostream.close();
+                    } catch (Exception ex) {
+                    System.err.println(ex.getMessage());
+                    }
+                    }   
+                */
                 //System.out.println(getName() + 
                 //        " write to space: " +  serialNumber + " "+ token);
             } catch (RemoteException re) {
@@ -204,6 +222,8 @@ public class RealTimePublisher extends Sink
     
     // The Java space;
     private JavaSpace _space;
+
+    //private boolean _first = true;
 
 }
 

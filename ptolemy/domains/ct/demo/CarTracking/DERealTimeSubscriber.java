@@ -41,6 +41,9 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.Director;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.lib.jspaces.util.SpaceFinder;
+import ptolemy.domains.de.kernel.DEActor;
+import ptolemy.domains.de.kernel.DEIOPort;
+
 
 import net.jini.space.JavaSpace;
 import net.jini.core.lease.Lease;
@@ -62,7 +65,7 @@ using this time.
 @version $Id$
 */
 
-public class DERealTimeSubscriber extends Source
+public class DERealTimeSubscriber extends DEActor
     implements RemoteEventListener {
 
     /** Construct an actor with the given container and name.
@@ -85,6 +88,7 @@ public class DERealTimeSubscriber extends Source
                 new StringToken(""));
         entryName.setTypeEquals(BaseType.STRING);
 
+        output = new DEIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -100,6 +104,10 @@ public class DERealTimeSubscriber extends Source
      *  an empty string of type StringToken.
      */
     public Parameter entryName;
+
+    /** The output port.
+     */
+    public DEIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -178,7 +186,7 @@ public class DERealTimeSubscriber extends Source
     /** Return true, and produce the oldest token in the list.
      *  This is the token at the correct time, since both the director
      *  and the tokenList are totally ordered.
-     */
+     *
     public boolean postfire() throws IllegalActionException {
         synchronized(_tokenList) {
             if (!_tokenList.isEmpty()) {
@@ -186,7 +194,8 @@ public class DERealTimeSubscriber extends Source
             }
         }
         return true;
-    }                    
+    }  
+    */
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -235,13 +244,13 @@ public class DERealTimeSubscriber extends Source
                     _event.getID() == _eventReg.getID() && 
                     _event.getSequenceNumber() > _notificationSeq) {
                 // grab a lock and read new entry.
+                TokenEntry entryTemplate = new TokenEntry(_entryName, 
+                        null, null);
                 synchronized(_tokenList) {
-                    TokenEntry entryTemplate = new TokenEntry(_entryName, 
-                            null, null);
                     TokenEntry entry;
                     try {
                         entry = (TokenEntry)_space.takeIfExists(
-                                entryTemplate, null, java.lang.Long.MAX_VALUE);
+                                entryTemplate, null, 1000);
                     } catch (Exception e) {
                         throw new InvalidStateException(_container,
                                 "error reading from space." +
@@ -254,6 +263,7 @@ public class DERealTimeSubscriber extends Source
                         //System.out.println(getName() + 
                         //        " take from space: " 
                         //        + entry.serialNumber + " " + entry.token);
+                        /**
                         _tokenList.addLast(entry.token); 
                         try {
                             _container.getDirector().fireAt(_container, 
@@ -263,10 +273,22 @@ public class DERealTimeSubscriber extends Source
                                     "can't register fireAt with the director."
                                     + ex.getMessage());
                         }
-                        _tokenList.notifyAll();
+                        //_tokenList.notifyAll();
+                        */
+                        double delay = 
+                            (double)System.currentTimeMillis()/1000.0 - 
+                            _container.getDirector().getCurrentTime();
+                        try {
+                            ((DEIOPort)((DERealTimeSubscriber)_container)
+                                    .output).send(0, entry.token, delay);
+                        } catch (IllegalActionException ex) {
+                            throw new InvalidStateException(_container,
+                                    "output failed." + ex.getMessage());
+                        }
                     }
                 }
-                 Thread.currentThread().yield();
+                _notificationSeq =  _event.getSequenceNumber();
+                //Thread.currentThread().yield();
             }
         }
         

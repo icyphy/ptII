@@ -110,7 +110,7 @@
     <entity name="toMonitor" 
         class="ptolemy.domains.ct.demo.CarTracking.RealTimePublisher">
 	<property name="entryName" 
-	    value="&quot;LeadingCarPosition&quot;"></property>
+	    value="&quot;A&quot;"></property>
 	<port name="input"></port>
     </entity>
 

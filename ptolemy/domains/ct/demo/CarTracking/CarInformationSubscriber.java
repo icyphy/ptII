@@ -306,6 +306,8 @@ public class CarInformationSubscriber extends TypedAtomicActor
                         _correct = false;
                     }
                     _lastData = _currentData;
+                    //System.out.println
+                    //    ("update new data. currently " + _correct);
                     _hasNewData = false;
                 } else {
                     // New data are definitely wrong. Don't even update them.
@@ -386,7 +388,7 @@ public class CarInformationSubscriber extends TypedAtomicActor
                     TokenEntry entry;
                     try {
                         entry = (TokenEntry)_space.readIfExists(
-                                entryTemplate, null, 100);
+                                entryTemplate, null, 1000);
                     } catch (Exception e) {
                         throw new InvalidStateException(_container,
                                 "error reading from space." +

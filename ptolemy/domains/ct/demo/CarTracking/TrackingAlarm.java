@@ -60,9 +60,9 @@ public class TrackingAlarm extends DEActor {
     public TrackingAlarm(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        _closeThreshold = 10.0;
+        _closeThreshold = 15.0;
         closeThreshold = new Parameter(this, "closeThreshold",
-                new DoubleToken(10.0));
+                new DoubleToken(15.0));
         closeThreshold.setTypeEquals(BaseType.DOUBLE);
 
         _awayThreshold = 40.0;

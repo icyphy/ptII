@@ -11,13 +11,13 @@
     <!-- Define the actors -->
     <entity name="leadingCar" 
         class="ptolemy.domains.ct.demo.CarTracking.DERealTimeSubscriber">
-	<property name="entryName" value="&quot;LeadingCarPosition&quot;">
+	<property name="entryName" value="&quot;A&quot;">
 	</property>
       	<port name="output"></port>
     </entity>
     <entity name="followingCar" 
         class="ptolemy.domains.ct.demo.CarTracking.DERealTimeSubscriber">
-	<property name="entryName" value="&quot;FollowingCarPosition&quot;">
+	<property name="entryName" value="&quot;B&quot;">
 	</property>
       	<port name="output"></port>
     </entity>
