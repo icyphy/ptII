@@ -108,5 +108,5 @@ test KernelException-7.5 {Create a KernelException with a unnamed NamedObj \
     set n2 [java::new pt.kernel.util.NamedObj]
     set pe [java::new pt.kernel.util.KernelException $n1 $n2 [java::null]]
     list [$pe getMessage]
-} {{. and .: Detail Message}}
+} {{. and .}}
 
