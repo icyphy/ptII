@@ -37,8 +37,12 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.event.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
+import ptolemy.data.*;
+import ptolemy.data.expr.Parameter;
+
 import java.util.Hashtable;
 import java.util.Enumeration;
+
 import collections.LinkedList;
 import collections.Comparator;
 
@@ -89,6 +93,15 @@ public class DDEDirector extends ProcessDirector {
      */
     public DDEDirector() {
         super();
+
+	try {
+	    stopTime = new 
+		    Parameter(this, "stopTime", new DoubleToken(-5.0) );
+	} catch( IllegalActionException e ) {
+	    throw new InternalErrorException( e.toString() );
+        } catch (NameDuplicationException e) {
+            throw new InvalidStateException( e.toString() );
+	}
     }
 
     /** Construct a director in the  workspace with an empty name.
@@ -98,6 +111,15 @@ public class DDEDirector extends ProcessDirector {
      */
     public DDEDirector(Workspace workspace) {
         super(workspace);
+
+	try {
+	    stopTime = new 
+		    Parameter(this, "stopTime", new DoubleToken(-5.0) );
+	} catch( IllegalActionException e ) {
+	    throw new InternalErrorException( e.toString() );
+        } catch (NameDuplicationException e) {
+            throw new InvalidStateException( e.toString() );
+	}
     }
 
     /** Construct a director in the given container with the given name.
@@ -108,13 +130,28 @@ public class DDEDirector extends ProcessDirector {
      *
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException It may be thrown in derived 
+     *   classes if the director is not compatible with the specified 
+     *   container.
      */
     public DDEDirector(CompositeActor container, String name)
             throws IllegalActionException {
         super(container, name);
+
+	try {
+	    stopTime = new 
+		    Parameter(this, "stopTime", new DoubleToken(-5.0) );
+	} catch( IllegalActionException e ) {
+	    throw new InternalErrorException( e.toString() );
+        } catch (NameDuplicationException e) {
+            throw new InvalidStateException( e.toString() );
+	}
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        public variables                   ////
+
+    public Parameter stopTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -269,7 +306,7 @@ public class DDEDirector extends ProcessDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _completionTime = -5.0;
+	_completionTime = -5.0;
         _readBlocks = 0;
         _writeBlocks = 0;
         _pendingMutations = false;
@@ -286,7 +323,13 @@ public class DDEDirector extends ProcessDirector {
      */
     public Receiver newReceiver() {
         DDEReceiver rcvr = new DDEReceiver();
-	rcvr.setCompletionTime( _completionTime );
+	double time = _completionTime;
+	try {
+	    time = ((DoubleToken)stopTime.getToken()).doubleValue();
+	} catch( IllegalActionException e ) {
+	    throw new InternalErrorException( e.toString() );
+	}
+	rcvr.setCompletionTime( time );
         return rcvr;
     }
 
@@ -334,7 +377,7 @@ public class DDEDirector extends ProcessDirector {
      *  negative, then throw an IllegalArgumentException.
      * @param time The specified completion time.
      */
-    public void setCompletionTime(double time) {
+    private void setCompletionTime(double time) {
 	if( time < 0.0 ) {
 	    throw new IllegalArgumentException(getName() +
 		    " - Attempt to set completion time to a " +
