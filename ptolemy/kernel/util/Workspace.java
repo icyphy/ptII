@@ -195,6 +195,7 @@ public class Workspace implements Nameable, Serializable {
     public synchronized void doneReading() {
         Thread current = Thread.currentThread();
         ReadDepth depth = (ReadDepth)_readers.get(current);
+	//System.out.println("Thread returning a read access");
         if (depth == null) {
             throw new InvalidStateException(this,
                     "Workspace: doneReading() called without a prior "
@@ -206,6 +207,7 @@ public class Workspace implements Nameable, Serializable {
             if (_writer != current) {
                 notifyAll();
             }
+	    //System.out.println("This thread gave up all @@@@@@@@@@@@@@");
         }
     }
 
@@ -226,6 +228,7 @@ public class Workspace implements Nameable, Serializable {
                     "Workspace: doneWriting called without a prior "
                     + "matching call to getWriteAccess().");
         }
+	//System.out.println("!!!!!!!!!!!!!Done writing: "+_writeReq);
     }
 
 
@@ -255,33 +258,39 @@ public class Workspace implements Nameable, Serializable {
      *  This method suspends the calling thread until such permission
      *  has been obtained.  Permission is granted unless either another
      *  thread has write permission, or there are threads that
-     *  have requested write permission and not gotten it yet.
+     *  have requested write permission and not gotten it yet. If this thread
+     *  already has a read permission, then another permission is granted 
+     *  irrespective of other write requests.
      *  It is essential that doneReading() be called
      *  after this, or write permission may never again be granted in
      *  this workspace.
      */
     public synchronized void getReadAccess() {
         while (true) {
-            // If the current thread has write permission, or if there
-            // are no pending write requests, then grant read permission.
+            // If the current thread has read permission, then grant 
+            // it read permission
             Thread current = Thread.currentThread();
-            if (current == _writer || _writeReq == 0 ) {
-                // The thread may already have read permission.
-                ReadDepth depth = (ReadDepth)_readers.get(current);
-                if (depth == null) {
-                    depth = new ReadDepth();
-                    _readers.put(current, depth);
-                }
-                depth.incr();
-                return;
-            }
-            try {
-                wait();
-            } catch(InterruptedException ex) {
-                throw new InternalErrorException(
-                        "Thread interrupted while waiting for read access!"
-                        + ex.getMessage());
-            }
+	    ReadDepth depth = (ReadDepth)_readers.get(current);
+	    if (depth != null) {
+		depth.incr();
+		return;
+	    } else {
+                // If the current thread has write permission or if there
+                // are no pending write requests, then grant read permission.
+                if (current == _writer || _writeReq == 0 ) {
+                    // The thread may already have read permission.
+                    //ReadDepth depth = (ReadDepth)_readers.get(current);
+		    if (depth == null) {
+			depth = new ReadDepth();
+			_readers.put(current, depth);
+			//System.out.println("Getting a new Read access ----");
+		    }
+		    depth.incr();
+		    //System.out.println("Incrementing read access");
+		    return;
+		}
+	    }
+            wait(this);
         }
     }
 
@@ -329,13 +338,11 @@ public class Workspace implements Nameable, Serializable {
                     return;
                 }
             }
-            try {
-                wait();
-            } catch(InterruptedException ex) {
-                throw new InternalErrorException(
-                        "Thread interrupted while waiting for write access!"
-                        + ex.getMessage());
-            }
+	    try {
+		wait();
+	    } catch (InterruptedException e) {
+		System.err.println(e.toString());
+	    }
         }
     }
 
@@ -394,20 +401,18 @@ public class Workspace implements Nameable, Serializable {
      */
     public void wait(Object obj) {
 	int depth = 0;
-	try {
-	    depth = _releaseAllReadPermissions();
-	    try {
-		synchronized(obj) {
-		    obj.wait();
-		}
-	    } catch (InterruptedException ex) {
-		throw new InternalErrorException(
-			"Thread interrupted while paused! " +
-			ex.getMessage());
-	    }
-	} finally {
-	    _reacquireReadPermissions(depth);
-	}
+        depth = _releaseAllReadPermissions();
+        try {
+            synchronized(obj) {
+                obj.wait();
+            }
+        } catch (InterruptedException ex) {
+            throw new InternalErrorException(
+                    "Thread interrupted while paused! " +
+                    ex.getMessage());
+        } finally {
+            _reacquireReadPermissions(depth);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -482,15 +487,9 @@ public class Workspace implements Nameable, Serializable {
             // are no pending write requests, then grant read permission.
             Thread current = Thread.currentThread();
             if (current == _writer || _writeReq == 0 ) {
-                // The thread may already have read permission.
-                ReadDepth depth = (ReadDepth)_readers.get(current);
-                if (depth == null) {
-                    depth = new ReadDepth();
-                    _readers.put(current, depth);
-                }
-		for (int i=0; i<count; i++) {
-		    depth.incr();
-		}
+                ReadDepth depth = new ReadDepth();
+		_readers.put(current, depth);
+		depth._count = count;
                 return;
             }
             try {
@@ -515,16 +514,9 @@ public class Workspace implements Nameable, Serializable {
         if (depth == null) {
 	    return 0;
         }
-	int count = 0;
-	while (!depth.isZero()) {
-	    depth.decr();
-	    count++;
-	}
 	_readers.remove(current);
-	if (_writer != current) {
-	    notifyAll();
-	}
-	return count;
+	notifyAll();
+	return depth._count;
     }
 
 
