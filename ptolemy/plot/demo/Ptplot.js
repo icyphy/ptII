@@ -141,12 +141,6 @@ function ptplot(theform) {
     document.write("</EMBED>\n");
     document.write("</OBJECT>\n");
 
-
-
-    document.write("<form name=\"aboutplot\">")
-        document.write("<input type=\"button\" Value=\"About\"");
-    document.write("onClick=\"alert(document.JSPlot.getAppletInfo())\">");
-    document.write("</form>");
     if ( displayargs ) {
 	document.write("<table border> <tr><th>Variable<th>Value");
 	document.write("<tr><td>width<td>" + width);
