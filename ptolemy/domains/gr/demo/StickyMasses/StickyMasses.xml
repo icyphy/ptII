@@ -807,8 +807,6 @@ each state refines to a continuous-time model of the dynamics in that mode.</tex
             </property>
             <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="backgroundColor" class="ptolemy.data.expr.Parameter" value="[1.0, 1.0, 1.0]">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="688.0, 66.0">
             </property>
         </entity>

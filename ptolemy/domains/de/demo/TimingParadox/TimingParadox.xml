@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 45.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {1, 2, 963, 674}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 2, 963, 674}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[748, 558]">
     </property>
@@ -165,7 +165,7 @@ delays.</text></svg></configure>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 30.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {177, 3, 815, 516}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={177, 3, 815, 516}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -256,7 +256,7 @@ delays.</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="0.0,.05,.1,.2,.3,.4">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {1, 94, 1032, 668}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 94, 1032, 668}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1024, 613]">
         </property>
@@ -271,10 +271,10 @@ delays.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>The Delay Paradox</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0050" max="1.4899999999999998"/>
-<yRange min="0.0" max="635.0"/>
+<xLabel>Delay Between Sample Produced and Sample Observed</xLabel>
+<yLabel>Number of Occurrences</yLabel>
+<xRange min="0.015" max="1.38"/>
+<yRange min="0.0" max="620.0"/>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.01" offset="0.0050"/>
 </plot>?>
@@ -295,7 +295,7 @@ delays.</text></svg></configure>
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value=".1">
         </property>
         <doc>Create an array of rician random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 85.0}">
         </property>
     </entity>
     <entity name="Rician2" class="ptolemy.actor.lib.Rician">
@@ -324,13 +324,13 @@ delays.</text></svg></configure>
         </property>
     </entity>
     <entity name="InstanceOfSampler2" class="Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 145.0}">
         </property>
         <property name="sampleDelay" class="ptolemy.data.expr.Parameter" value="0.05">
         </property>
     </entity>
     <entity name="InstanceOfSampler3" class="Sampler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 210.0}">
         </property>
         <property name="sampleDelay" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
