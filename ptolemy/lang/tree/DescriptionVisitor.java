@@ -99,7 +99,8 @@ public class DescriptionVisitor extends JavaVisitor {
         return _namedVisit(node, args);
     }
 
-    public Object visitImportOnDemandNode(ImportOnDemandNode node, LinkedList args) {
+    public Object visitImportOnDemandNode(ImportOnDemandNode node,
+            LinkedList args) {
         return _namedVisit(node, args);
     }
 
@@ -111,7 +112,8 @@ public class DescriptionVisitor extends JavaVisitor {
         return _namedVisit(node, args);
     }
 
-    public Object visitLocalVarDeclNode(LocalVarDeclNode node, LinkedList args) {
+    public Object visitLocalVarDeclNode(LocalVarDeclNode node,
+            LinkedList args) {
         return _namedVisit(node, args);
     }
 
@@ -119,11 +121,13 @@ public class DescriptionVisitor extends JavaVisitor {
         return _namedVisit(node, args);
     }
 
-    public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
+    public Object visitConstructorDeclNode(ConstructorDeclNode node,
+            LinkedList args) {
         return _namedVisit(node, args);
     }
 
-    public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
+    public Object visitInterfaceDeclNode(InterfaceDeclNode node,
+            LinkedList args) {
         return _namedVisit(node, args);
     }
 
@@ -139,24 +143,28 @@ public class DescriptionVisitor extends JavaVisitor {
         return _namedVisit(node, args);
     }
 
-    public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {
+    public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node,
+            LinkedList args) {
         return _namedVisit(node, args);
     }
 
-    public Object visitSuperFieldAccessNode(SuperFieldAccessNode node, LinkedList args) {
+    public Object visitSuperFieldAccessNode(SuperFieldAccessNode node,
+            LinkedList args) {
         return _namedVisit(node, args);
     }
 
-    public Object visitTypeFieldAccessNode(TypeFieldAccessNode node, LinkedList args) {
+    public Object visitTypeFieldAccessNode(TypeFieldAccessNode node,
+            LinkedList args) {
         return _namedVisit(node, args);
     }
 
-    public Object visitThisFieldAccessNode(ThisFieldAccessNode node, LinkedList args) {
+    public Object visitThisFieldAccessNode(ThisFieldAccessNode node,
+            LinkedList args) {
         return _namedVisit(node, args);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         protected methods                 ////
 
     /** The default visit method, which returns the (unqualified)
      *  class name of the node.
