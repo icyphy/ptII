@@ -982,7 +982,7 @@ public class MoMLParser extends HandlerBase {
                 Entity container = (Entity)_current;
 
                 Class newClass = null;
-                if (className != null) {
+                if (className != null && !className.trim().equals("")) {
                     newClass = Class.forName(className, true, _classLoader);
                 }
                 Port port = container.getPort(portName);
@@ -996,7 +996,7 @@ public class MoMLParser extends HandlerBase {
                     }
                 } else {
                     // No previously existing port with this name.
-                    if (className == null) {
+                    if (newClass == null) {
                         // Classname is not given.  Invoke newPort() on the
                         // container.
                         port = container.newPort(portName);
@@ -1334,22 +1334,16 @@ public class MoMLParser extends HandlerBase {
                         _parser.getLineNumber(),
                         _parser.getColumnNumber());
         } catch (Exception ex) {
+            // NOTE: While debugging, we print a stack trace here.
+            // This is because XmlException loses it.
+            // System.err.println("******** original error:");
+            // ex.printStackTrace();
+
             if (ex instanceof XmlException) {
-
-                // NOTE: While debugging, we print a stack trace here.
-                // This is because XmlException loses it.
-                // System.err.println("******** original error:");
-                // ex.printStackTrace();
-
                 throw (XmlException)ex;
             } else {
                 String msg = "XML element \"" + elementName
                     + "\" triggers exception:\n  " + ex.toString();
-
-                // NOTE: While debugging, we print a stack trace here.
-                // This is because XmlException loses it.
-                //System.err.println("******** original error:");
-                //ex.printStackTrace();
 
                 throw new XmlException(msg,
                         _currentExternalEntity(),
