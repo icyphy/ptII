@@ -83,8 +83,6 @@ CORE_JNLP_JARS = \
 	ptolemy/domains/sdf/doc/doc.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
-	ptolemy/actor/lib/javasound/javasound.jar \
-	ptolemy/media/javasound/javasound.jar \
 	$(DOC_CODEDOC_JAR)
 
 #######
@@ -135,9 +133,7 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 	ptolemy/domains/ct/doc/doc.jar \
 	ptolemy/domains/fsm/doc/doc.jar \
 	ptolemy/ptsupport.jar \
-	ptolemy/vergil/vergil.jar \
-	ptolemy/actor/lib/javasound/javasound.jar \
-	ptolemy/media/javasound/javasound.jar
+	ptolemy/vergil/vergil.jar
 
 #######
 # Ptiny
