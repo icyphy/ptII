@@ -134,10 +134,17 @@ case "`basename $0`" in
 	;;
     moml)
 	# Moml application
+	# This has no default configuration, run moml when you want
+	# to run your own graphical editor, for example:
+	# moml myBiggerBetterVergilConfiguration.xml foo.xml
 	javastartupclass=ptolemy.actor.gui.MoMLApplication
 	javasourcedir=
 	;;
     ptexecute)
+        # This takes over what CompositeActorApplication used to do (with the
+        # addition that you can give it either class files or MoML files).
+        # That is, it instantiates models, and all the models that are
+        # instances of CompositeActor, it runs.
 	javastartupclass=ptolemy.actor.gui.PtExecuteApplication
 	javasourcedir=
 	;;
@@ -188,6 +195,8 @@ case "`basename $0`" in
 	;;
     ptolemy)
 	# Ptolemy II Application
+	# Bring up a control panel for each model rather than running it
+	# like ptinvoke.
 	javastartupclass=ptolemy.actor.gui.PtolemyApplication
 	javasourcedir=ptolemy/actor/gui
 	# Please don't add jini or commapi to ptolemy.
