@@ -65,13 +65,13 @@ public class SimpleAdd extends TypedAtomicActor {
         super(container, name);
 
 	input1 = new TypedIOPort(this, "input1", true, false);
-        input1.setTypeEquals(BaseType.INT);
+        //     input1.setTypeEquals(BaseType.INT);
 
 	input2 = new TypedIOPort(this, "input2", true, false);
-        input2.setTypeEquals(BaseType.INT);
+        // input2.setTypeEquals(BaseType.INT);
 
 	output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(BaseType.INT);
+        // output.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////

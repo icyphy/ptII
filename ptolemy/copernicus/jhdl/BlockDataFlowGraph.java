@@ -38,6 +38,7 @@ import soot.jimple.InvokeStmt;
 import soot.jimple.TableSwitchStmt;
 import soot.jimple.LookupSwitchStmt;
 
+import soot.jimple.CastExpr;
 import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.UnopExpr;
 import soot.jimple.NegExpr;
@@ -303,8 +304,10 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	    rightOpNode = _processUnopExpr( (UnopExpr) rightOp);
 	} else if (rightOp instanceof BinopExpr){
 	    rightOpNode = _processBinopExpr( (BinopExpr) rightOp);
-	} else  if(rightOp instanceof Local) {
+	} else if(rightOp instanceof Local) {
 	    rightOpNode = _processLocal((Local)rightOp);
+	} else if(rightOp instanceof CastExpr) {
+	    rightOpNode = _processLocal((Local)((CastExpr)rightOp).getOp());
 	} else if(rightOp instanceof InstanceFieldRef) {
 	    rightOpNode = _processInstanceFieldRef((InstanceFieldRef) rightOp);
 	} else if(rightOp instanceof InstanceInvokeExpr) {

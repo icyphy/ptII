@@ -48,6 +48,7 @@ import soot.jimple.toolkits.scalar.CopyPropagator;
 import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
 import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.jimple.toolkits.scalar.Evaluator;
+import soot.jimple.toolkits.scalar.*;
 import soot.jimple.toolkits.typing.TypeAssigner;
 import soot.toolkits.graph.*;
 import soot.toolkits.scalar.LocalSplitter;
@@ -178,13 +179,30 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.iat",
                         InlineParameterTransformer.v(_toplevel)));
-        
+                
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot4",
                         JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot4",
                         ClassWriter.v()));
+
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ta",
+                        new TransformerAdapter(TypeAssigner.v())));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.nee",
+                        NamedObjEqualityEliminator.v(_toplevel)));
+
+        // Remove casts and instanceof Checks.
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.cie",
+                        new TransformerAdapter(
+                                CastAndInstanceofEliminator.v())));
+
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
         // Anywhere we have a method call on a token that can be
         // statically evaluated (usually, these will have been
@@ -197,8 +215,23 @@ public class Main extends KernelMain {
                         InlineTokenTransformer.v(_toplevel)));
 
         Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ipt",
+                        InlinePrimitivePortTransformer.v(_toplevel)));
+
+        _addStandardOptimizations(Scene.v().getPack("wjtp"));
+
+        // Unroll loops with constant loop bounds.
+        Scene.v().getPack("jtp").add(
+                new Transform("jtp.clu",
+                        ConstantLoopUnroller.v()));
+
+        Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.circuit",
                         ptolemy.copernicus.jhdl.CircuitTransformer.v(_toplevel)));
+        
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.finalSnapshot",
+                        JimpleWriter.v()));
 
     }
 
@@ -222,5 +255,30 @@ public class Main extends KernelMain {
 
 	// Generate Code
 	main.generateCode(args);
+    }
+    /** Add transforms corresponding to the standard soot optimizations
+     *  to the given pack.
+     */
+    private void _addStandardOptimizations(Pack pack) {
+        pack.add(new Transform("jop.cse",
+                         new TransformerAdapter(CommonSubexpressionEliminator.v())));
+        pack.add(new Transform("jop.cp",
+                         new TransformerAdapter(CopyPropagator.v())));
+        pack.add(new Transform("jop.cpf",
+                         new TransformerAdapter(ConstantPropagatorAndFolder.v())));
+        pack.add(new Transform("jop.cbf",
+                         new TransformerAdapter(ConditionalBranchFolder.v())));
+        pack.add(new Transform("jop.dae",
+                         new TransformerAdapter(ImprovedDeadAssignmentEliminator.v())));
+        pack.add(new Transform("jop.uce1",
+                         new TransformerAdapter(UnreachableCodeEliminator.v())));
+        pack.add(new Transform("jop.ubf1",
+                         new TransformerAdapter(UnconditionalBranchFolder.v())));
+        pack.add(new Transform("jop.uce2",
+                         new TransformerAdapter(UnreachableCodeEliminator.v())));
+        pack.add(new Transform("jop.ubf2",
+                         new TransformerAdapter(UnconditionalBranchFolder.v())));
+        pack.add(new Transform("jop.ule",
+                         new TransformerAdapter(UnusedLocalEliminator.v())));
     }
 }

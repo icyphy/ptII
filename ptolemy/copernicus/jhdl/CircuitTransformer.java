@@ -257,6 +257,7 @@ public class CircuitTransformer extends SceneTransformer {
 	    analysis =
 		new CircuitAnalysis(entity, entityClass);
 	} catch(IllegalActionException e) {
+            e.printStackTrace();
 	    throw new RuntimeException(e.toString());
 	}
 	DirectedGraph operatorGraph = analysis.getOperatorGraph();

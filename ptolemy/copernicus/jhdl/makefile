@@ -50,6 +50,7 @@ JSRCS = \
 	CircuitCreator.java \
 	CircuitTransformer.java \
 	Inliner.java \
+	InlinePrimitivePortTransformer.java \
 	JHDLTransformer.java \
 	Main.java \
 	Predefined.java \
