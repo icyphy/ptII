@@ -37,7 +37,6 @@ import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLParser;
 
 // Java imports
 import java.net.URL;
@@ -67,29 +66,10 @@ public class VergilApplication extends MoMLApplication {
      */
     public VergilApplication(String args[]) throws Exception {
 	super(args);
-        // FIXME: In March, 2001, Johan Ecker writes
-        // Ptolemy gave tons of exception when started on my laptop
-        // which has Swedish settings as default. The Swedish standard
-        // for floating points are "2,3", i.e. using a comma as
-        // delimiter. However, I think most Swedes are adaptable and
-        // do not mind using a dot instead since this more or less has
-        // become the world standard, at least in engineering. The
-        // problem is that I needed to change my global settings to
-        // start Ptolemy and this is quite annoying. I guess that the
-        // expression parser should just ignore the delimiter settings
-        // on the local computer and always use dot, otherwise Ptolemy
-        // will crash using its own init files.
 
-        // Even if the user is set up for foreign locale, use the US locale.
-        // This is because certain parts of Ptolemy (like the expression 
-        // language) are not localized.
-	try {
-	    // FIXME: This is a workaround for the locale problem, not a fix.
-	    java.util.Locale.setDefault(java.util.Locale.US);
-	} catch (java.security.AccessControlException accessControl) {
-	    // FIXME: If the application is run under Web Start, then this
-	    // exception will be thrown.
-	}
+        // Create register an error handler with the parser so that
+        // MoML errors are tolerated more than the default.
+        _parser.setErrorHandler(new VergilErrorHandler());
     }
 
     ///////////////////////////////////////////////////////////////////

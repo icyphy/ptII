@@ -66,9 +66,10 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	VergilApplication.java \
 	MoMLViewerApplet.java  \
-	TypeAnimatorApplet.java
+	TypeAnimatorApplet.java \
+	VergilApplication.java \
+	VergilErrorHandler.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	TODO.txt \
