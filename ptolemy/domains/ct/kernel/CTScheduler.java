@@ -855,7 +855,12 @@ public class CTScheduler extends Scheduler {
 			    + signalTypeToString(getType(port))
 			    + ") and "
                             + nextPort.getFullName() + " (of type "
-			    + signalTypeToString(getType(nextPort)) + ")");
+			    + signalTypeToString(getType(nextPort)) + ")"
+                            + "). Perhaps the connections has "
+                            + "sequence semantics instead of the continuous "
+                            + "signal semantics that CT requires?  This "
+                            + "would happen if one of the actors was an "
+                            + "SDF actor.");
                 }
             }
         }
