@@ -847,6 +847,32 @@ public class ComplexArrayMath {
         return true;
     }
 
+    /** Return true if all the absolute differences between corresponding
+     *  elements of array1 and array2, for both the real and imaginary parts,
+     *  are all less than or equal to corresponding elements in maxError. 
+     *  Otherwise, return false.  Throw an IllegalArgument exception if
+     *  the arrays are not of the same length. If both arrays are empty, return true.
+     *  This is computationally less expensive than isSquaredErrorWithin().
+     */
+    public static final boolean within(Complex[] array1,
+            Complex[] array2, Complex[] maxError) {
+        int length = _commonLength(array1, array2,
+                "ComplexArrayMath.within");
+
+	Complex temp = new Complex();
+
+	for (int i = 0; i < length; i++) {
+	    temp = array1[i].subtract(array2[i]);
+	    
+	    // ifgreater returns true if temp > maxError.
+            if (ifgreater(temp,maxError[i])) {
+		return false;
+            }
+        }
+        
+        return true;
+    }
+
     ///////////////////////////////////////////////////////////////////
     //    protected methods
 

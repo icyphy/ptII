@@ -751,6 +751,23 @@ public class IntegerArrayMath {
         return true;
     }
 
+    /** Return true if all the absolute differences between corresponding
+     *  elements of array1 and array2 are all less than or equal to the
+     *  elements in maxError.  Otherwise return false.
+     *  If the two arrays do not have the same length, throw an
+     *  IllegalArgumentException.
+     */
+    public static final boolean within(final int[] array1,
+            final int[] array2, int[] maxError) {
+        int length = _commonLength(array1, array2, "IntegerArrayMath.within");
+
+        for (int i = 0; i < length; i++) {
+            if (Math.abs(array1[i] - array2[i]) > maxError[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
