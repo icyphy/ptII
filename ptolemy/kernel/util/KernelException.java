@@ -25,10 +25,13 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (johnr@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu) stackTraceToString()
 */
 
 package ptolemy.kernel.util;
+
+import java.io.StringWriter;
+import java.io.PrintWriter;
 
 //////////////////////////////////////////////////////////////////////////
 //// KernelException
@@ -97,6 +100,19 @@ public class KernelException extends Exception {
      */
     public String getMessage() {
         return _message;
+    }
+
+    /** Return the stack trace as a String.
+     *  This method is useful if we are catching and rethrowing
+     *  an exception.
+     *  @param exception An exception. 
+     *  @return The stack trace of the exception.
+     */
+    public static String stackTraceToString(Exception exception) {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        exception.printStackTrace(printWriter);
+        return stringWriter.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
