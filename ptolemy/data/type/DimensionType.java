@@ -31,9 +31,9 @@
 
 package ptolemy.data.type;
 
-import ptolemy.graph.InequalityTerm;
-import ptolemy.graph.Inequality;	/* Needed for javadoc */ 
+import ptolemy.graph.*;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,7 +46,7 @@ $Id$
 
 */
 
-public class DimensionType implements Type, InequalityTerm
+public class DimensionType implements InequalityTerm
 {
     /**
      * Create a new dimension type variable, initialized to 
@@ -70,12 +70,14 @@ public class DimensionType implements Type, InequalityTerm
 
     /**
      * Create a new dimension type constant with the value given by the 
-     * given DimensionType.
+     * given DimensionType.  If the given type is constant, then the new
+     * type will also be constant.  If the given type is variable, then the
+     * new type will also be variable.
      */
     public DimensionType(DimensionType type) {
         _dimensions = type._dimensions;
         _size = type._size;
-        _isSettable = false;
+        _isSettable = type._isSettable;
     }
 
     /** Return the Object associated with this term. If this term is
@@ -87,7 +89,6 @@ public class DimensionType implements Type, InequalityTerm
     public Object getAssociatedObject() {
         return null;
     }
-    
 
     /** Return the value of this term.  If this term is a constant,
      *  return that constant; if this term is a variable, return the
@@ -122,7 +123,7 @@ public class DimensionType implements Type, InequalityTerm
      *  an object with this type can be expressed as an object of Type t with 
      *  no conversion.
      */
-    public boolean isEqualTo(Type type) {
+    public boolean isEqualTo(Object type) {
         if(!(type instanceof DimensionType)) return false;
         DimensionType dtype = (DimensionType) type;
         if(_dimensions != dtype._dimensions) return false;
@@ -166,7 +167,7 @@ public class DimensionType implements Type, InequalityTerm
     public void setValue(Object e)
             throws IllegalActionException {
         if(!(e instanceof DimensionType)) 
-            throw new IllegalActionException(
+            throw new InternalErrorException(
                     "Cannot setvalue of a DimensionType to something that" +
                     " is not a DimensionType");
         if(!isSettable()) throw new IllegalActionException( 
@@ -177,7 +178,14 @@ public class DimensionType implements Type, InequalityTerm
         _size = dtype._size;        
     }
 
-    /** 
+ 
+    /** Return the lattice associated with this type
+     */
+    public static CPO getTypeLattice() {
+        return DimensionTypeLattice.getInstance();
+    }
+
+   /** 
      * An unspecified dimension type.
      */
     public static final DimensionType BOTTOM = new DimensionType(-1, null);
@@ -186,6 +194,11 @@ public class DimensionType implements Type, InequalityTerm
      * A general dimension type.
      */
     public static final DimensionType TOP = new DimensionType(-2, null);
+
+    /** 
+     * The unique scalar type.
+     */
+    public static final DimensionType SCALAR = new DimensionType(0, null);
     
     /** The number of dimensions of an object of this type.
      *  0 = scalar, 1 = 1D array, 2 = 2D array, etc.

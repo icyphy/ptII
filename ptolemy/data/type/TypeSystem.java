@@ -1,4 +1,4 @@
-/** A class that solves constraints on DimensionTypes.
+/** A class that solves constraints on Types.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -35,12 +35,13 @@ import ptolemy.graph.InequalityTerm;
 import ptolemy.graph.Inequality;	/* Needed for javadoc */ 
 import ptolemy.kernel.util.IllegalActionException;
 import java.util.Enumeration;
+import collections.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// DimensionTypeResolver
+//// TypeSystem
 /**
-This class solves constraints on DimensionType objects.  After executing
-the resolveTypes method, the dimension type of all the appropriate Typeable 
+This class solves constraints on Type objects.  After executing
+the resolveTypes method, the type of all the appropriate Typeable 
 objects will be fully resolved unless a type conflict occured.
 
 @author Steve Neuendorffer
@@ -48,9 +49,8 @@ $Id$
 
 */
 
-public class DimensionTypeResolver implements TypeResolver
+public class TypeSystem implements TypeResolver
 {
-
     /** Check types on all the connections and resolve undeclared types.
      *  This method is not write-synchronized on the workspace, so one
      *  of its calling methods should be (normally Manager.resolveTypes()).
@@ -60,12 +60,45 @@ public class DimensionTypeResolver implements TypeResolver
      *  does not fall on DimensionTypes.
      */
     public Enumeration resolveTypes(Enumeration constraints) {
-        // FIXME should ensure that all the constraints act on 
-        // DimensionTypes.
+        
+        LinkedList dataconstraints = new LinkedList();
+        LinkedList dimensionconstraints = new LinkedList();
 
-        LatticeTypeResolver resolver = 
-            new LatticeTypeResolver(DimensionType.getTypeLattice());
-        return resolver.resolveTypes(constraints);
+        while(constraints.hasMoreElements()) {
+            Inequality constraint = (Inequality) constraints.nextElement();
+            InequalityTerm lesser = constraint.getLesserTerm();
+            InequalityTerm greater = constraint.getGreaterTerm();
+            if((lesser instanceof DataType) && (greater instanceof DataType)) {
+                dataconstraints.insertLast(constraint);
+            }
+            else if((lesser instanceof DimensionType) && 
+                    (greater instanceof DimensionType)) {
+                dimensionconstraints.insertLast(constraint);
+            }
+            else if((lesser instanceof Type) && 
+                    (greater instanceof Type)) {
+                Type lt = (Type) lesser;
+                Type gt = (Type) greater;
+                Inequality i1 = new Inequality(lt.getDataType(),
+                        gt.getDataType());
+                dataconstraints.insertLast(i1);
+                Inequality i2 = new Inequality(lt.getDimensionType(), 
+                        gt.getDimensionType());
+                dimensionconstraints.insertLast(i2);
+            }
+        }
+        
+        DataTypeResolver dataresolver = new DataTypeResolver();
+        Enumeration dataconflicts = 
+            dataresolver.resolveTypes(dataconstraints.elements());
+        DimensionTypeResolver dimensionresolver = new DimensionTypeResolver();
+        Enumeration dimensionconflicts = 
+            dimensionresolver.resolveTypes(dimensionconstraints.elements());
+
+        LinkedList conflicts = new LinkedList();
+        conflicts.appendElements(dataconflicts);
+        conflicts.appendElements(dimensionconflicts);
+        return conflicts.elements();
     }
 }
 
