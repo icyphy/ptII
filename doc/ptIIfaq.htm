@@ -167,7 +167,8 @@ hackers is automatically cross posted to the comp.soft-sys.ptolemy
 newsgroup.
 
  <p>To subscribe to the ptolemy-hackers mailing list, send mail to:
-ptolemy-hackers-request@ptolemy.eecs.berkeley.edu with the word 
+<a href="mailto:ptolemy-hackers-request@eecs.berkeley.edu"><CODE>ptolemy-hackers-request@eecs.berkeley.edu</CODE></a>
+ with the word 
 "subscribe" in the body of the letter.  To leave the newsgroup put
 the word "unsubscribe" in the body of your message.
  </p>
@@ -419,18 +420,19 @@ for the nightly test suite.
 <dt> <a name="reading data from files?"><b>4.2 How do I read data from a file?</b></a>
 <dd> 
 
-How we read in values from files needs to be revamped, we could do
-more with interpreting the file contents as expressions or as
-serialized data.
-
  <p>Actors that read and write data are visible in Vergil under 
 <CODE>actor library</CODE> -&gt; <CODE>io</CODE>.
 
- <p>When an actor takes a URL as an argument, use
-<CODE>file:./<I>filename</I></CODE>.  For details, see
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/DoubleReader.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/DoubleReader.html</CODE></a>
+ <p><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/LineReader.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/LineReader.html</CODE></a> 
+- Reads a file or URL, one line at a time, and outputs each line as a String.
+ <p><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/ExpressionReader.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/ExpressionReader.html</CODE></a>
+- Reads a file or URL, one line at a time, evaluates each line as an expression and outputs the tokens resulting from the evaluation.
 
- <p>There is also the <CODE>readFile</CODE>, <CODE>findFile</CODE> and
+ <p> These actors use a
+ <p><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/kernel/attribute/FileAttribute.html">FileAttribute</a>
+to specifies a file or URL.
+ <p>Actors that have Parameters may 
+read data using the <CODE>readFile</CODE>, <CODE>findFile</CODE> and
 <CODE>readMatrix</CODE> expression operators, see
 <a
 href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/expressions.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/expressions.htm</CODE></a>
@@ -486,6 +488,11 @@ Ptolemy II is written in Java, and Java has the Java Native Interface
 (JNI), see
 <a href="http://java.sun.com/j2se/1.4/docs/guide/jni/index.html" target="_top">Sun's JDK1.4 JNI Enhancements page at <CODE>http://java.sun.com/j2se/1.4/docs/guide/jni/index.html</CODE></a>.
 
+ <p>Vincent Arnould and others at Thales have implemented a prototype
+of an interface betwenn Ptolemy II actors and C code using the
+Java Native Interface (JNI), see
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/jni/package-summary.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/jni/package-summary.html</CODE></a>
+
  <p>Zoltan Kemenczy and others at Research In Motion, Ltd. developed an
 interface to Matlab that uses JNI, see
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/matlab/matlab.htm"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/matlab/matlab.htm</code></a>
@@ -493,8 +500,7 @@ interface to Matlab that uses JNI, see
  <p>Using JNI to interface to a C/C++ package on one platform is
 fairly straightforward, but it can be difficult to configure the paths
 that JNI in truly platform independent manner so that the same
-code will work on multiple platforms.  For example, the Ptolemy II/Matlab interface currently works only under Windows.
-
+code will work on multiple platforms.
 
 
 <dt> <a name="Customizing the GUI"><b>5.3 How do I customize the GUI?</b></a>
@@ -529,7 +535,18 @@ transform models.
 	
 <dt> <a name="Scripting"><b>5.5 Is there a scripting interface to Ptolemy II ?</b></a>
 
-<dd> The Ptolemy II test suite uses Jacl, a Java implementation of Tcl
+<dd> The PythonScript actor includes and interface to
+<a href="http://www.jython.org/#in_browser" target="_top">Jython</a>,
+a Java implementation of Python.  The PythonScript actor allows
+the user to define an actor on the fly by defining the <CODE>fire()</CODE>
+and other methods in Python.  Using an interpreted language in this context instead of defining actors in Java means that we need not recompile and restart
+Ptolemy II to make a change to an actor.  The tradeoff is that 
+a PythonScript actor will run more slowly than a similar actor implemented in 
+Java.
+ <br>For details, see
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/python/PythonScript.html"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codeDoc/ptolemy/actor/lib/python/PythonScript.html</CODE></a>
+
+ <p>The Ptolemy II test suite uses Jacl, a Java implementation of Tcl
 as a scripting language.  With Jacl, we can build and run models
 using an interpreted scripting environment without compilation
 and avoiding the usual edit/compile/run loop.
@@ -537,7 +554,6 @@ and avoiding the usual edit/compile/run loop.
  <br>For details, see the Testing link in 
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/index.htm" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/</code></a>
 	
-
 
 
 
