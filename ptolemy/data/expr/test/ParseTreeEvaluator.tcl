@@ -65,6 +65,10 @@ test ParseTreeEvaluator-2.2 {Construct a Parser, try simple integer expressions}
     list [theTest "2 + 3 + 4"] [theTest "2 - 3 - 4"] [theTest "2 * 3 * 4"] [theTest "7 % 5"] [theTest "12 / 2 / 3"]
 } {9 -5 24 2 2}
 
+test ParseTreeEvaluator-2.2.1 {Construct a Parser, try simple unsigned byte expressions} {
+    list [theTest "2ub + 3ub + 4ub "] [theTest "2ub - 3ub - 4ub"] [theTest "2ub * 3ub * 4ub"] [theTest "7ub % 5ub"] [theTest "12ub / 2ub / 3ub"]
+} {9ub 251ub 24ub 2ub 2ub}
+
 ######################################################################
 ####
 # 
@@ -200,8 +204,24 @@ test ParseTreeEvaluator-5.1 {Construct a Parser, unary minus & unary logical not
 ####
 # 
 test ParseTreeEvaluator-6.1 {Construct a Parser, check overflow} {
-    list [theTest "200ub + 200ub"]
-} {144ub}
+    list [theTest "MaxUnsignedByte + 1ub"] \
+	[theTest "MaxInt + 1"] \
+	[theTest "MaxLong + 1L"] \
+	[theTest "MaxDouble + 1.0"] \
+	[theTest "MaxDouble * 2.0"]
+} {0ub -2147483648 -9223372036854775808L 1.7976931348623E308 Infinity}
+
+
+######################################################################
+####
+# 
+test ParseTreeEvaluator-6.2 {Construct a Parser, check underflow} {
+    list [theTest "MinUnsignedByte - 1ub"] \
+	[theTest "MinInt - 1"] \
+	[theTest "MinLong - 1L"] \
+	[theTest "MinDouble - 1.0"] \
+	[theTest "MinDouble * 2.0"]
+} {0ub 2147483647 9223372036854775807L -1.0 1.0E-323}
 
 
 ######################################################################
