@@ -1,8 +1,8 @@
-# Makefile for the Java classes used to implement the Ptolemy kernel
+# Makefile for the Java classes used to test the Ptolemy kernel
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: @(#)makefile	1.14 04/08/97
+# @Version: $Id$
 #
 # @Copyright (c) 1997 The Regents of the University of California.
 # All rights reserved.
@@ -33,7 +33,7 @@
 # by Sun.  These classes came from tcljava, see license.terms for more info.
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
 
 ME =		java/pt/kernel
 
@@ -41,53 +41,16 @@ ME =		java/pt/kernel
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-CLASSPATH = ../..
+CLASSPATH = ../../..
 
 JSRCS = \
-	CentralizedExecutive.java \
-	DataPort.java \
-	DistributedExecutive.java \
-	Entity.java \
-	Executive.java \
-	FIFORelation.java \
-	Galaxy.java \
-	GenericPort.java \
-	GraphElement.java \
-	HasValue.java \
-	IntervalTag.java \
-	IntParam.java \
-	MultiPort.java \
-	NamedObj.java \
-	NoTag.java \
-	NoTagDoubleParticle.java \
-	NoTagHasValue.java \
-	NoValue.java \
-	ObservableParameter.java \
-	Param.java \
-	Parameter.java \
-	Particle.java \
-	POElement.java \
-	Port.java \
-	Relation.java \
+	SDFPort.java \
+	SDFRamp.java \
+	SDFPrint.java\
+	SDFStar.java \
 	Sample.java \
 	SampleTarget.java \
-	SampleSDFExecutive.java \
-	SDFPort.java \
-	SDFPrint.java \
-	SDFRamp.java \
-	SDFStar.java \
-	Star.java \
-	StatusArray.java \
-	Tag.java \
-	TagInterface.java \
-	Target.java \
-	TimedTag.java \
-	TimedHasValue.java \
-	TimedNoValue.java \
-	ThreadedEntity.java \
-	Universe.java \
-	Value.java \
-	ValueInterface.java
+	SampleSDFExecutive.java
 
 EXTRA_SRCS =	$(JSRCS)
 
