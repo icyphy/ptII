@@ -38,6 +38,8 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.ArrayType;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.math.DoubleArrayMath;
 import ptolemy.math.SignalProcessing;
 
@@ -52,13 +54,13 @@ are all between 0 and 1, and sum to 1. By default, <i>pmf</i> is
 initialized to [0.5, 0.5].
 <p>
 Output values are selected at random from the <i>values</i> parameter,
-which is a row vector with the same dimensions as <i>pmf</i>.
-Thus the <i>i</i>-th symbol <i>values</i>[<i>i</i>] has probability
-<i>pmf</i>[<i>i</i>]. The output port is of the type contained by
-<i>values</i>.  The default <i>values</i> are [0, 1], which are
+which contains an ArrayToken. This array must have the same dimensions as
+<i>pmf</i>.  Thus the <i>i</i>-th token in <i>values</i> has probability
+<i>pmf</i>[<i>i</i>]. The output port has the same type as the elements of
+the <i>values</i> array.  The default <i>values</i> are {0, 1}, which are
 integers.
 
-@author Jeff Tsay
+@author Jeff Tsay, Yuhong Xiong
 @version $Id$
 */
 
@@ -79,9 +81,18 @@ public class DiscreteRandomSource extends RandomSource {
                 new double[][] {{0.5, 0.5}}));
         pmf.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
-        values = new Parameter(this, "values", new IntMatrixToken(
-                new int[][] {{0, 1}}));
-        attributeTypeChanged(values);
+	// set the values parameter
+	IntToken[] defaultValues = new IntToken[2];
+	defaultValues[0] = new IntToken(0);
+	defaultValues[1] = new IntToken(1);
+	ArrayToken defaultValueToken = new ArrayToken(defaultValues);
+	values = new Parameter(this, "values", defaultValueToken);
+	values.setTypeEquals(new ArrayType(BaseType.ANY));
+
+	// set type constraint
+	ArrayType valuesArrayType = (ArrayType)values.getType();
+	InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+	output.setTypeAtLeast(elementTerm);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,8 +105,8 @@ public class DiscreteRandomSource extends RandomSource {
     public Parameter pmf;
 
     /** The values to be sent to the output.
-     *  This parameter contains a MatrixToken, initially with value
-     *  [0, 1] (an IntMatrixToken).
+     *  This parameter contains an ArrayToken, initially with value
+     *  {0, 1} (an int array).
      */
     public Parameter values;
 
@@ -130,32 +141,23 @@ public class DiscreteRandomSource extends RandomSource {
         }
     }
 
-    /** Allow the type of <i>values</i> to change. This will cause
-     *  the type of the output port to change. Notify the director,
-     *  which will cause type resolution to be redone at the next
-     *  opportunity. It is assumed that type changes in the parameter
-     *  are implemented by the container's change request mechanism,
-     *  so they are implemented when it is safe to redo type
-     *  resolution.
-     *  @param attribute The attribute whose type has changed.
-     *  @exception IllegalActionException If the base class throws it
-     *   for some parameter other than attribute.
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the parameter public members to refer
+     *  to the parameters of the new actor.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
-    public void attributeTypeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == values) {
-            // set the output type to be the type of the
-            // element at values[0][0]
-            Token value = ((MatrixToken) values.getToken())
-                .getElementAsToken(0, 0);
-            output.setTypeEquals(value.getType());
-            Director director = getDirector();
-            if (director != null) {
-                director.invalidateResolvedTypes();
-            }
-        } else {
-            super.attributeTypeChanged(attribute);
-        }
+    public Object clone(Workspace workspace)
+	    throws CloneNotSupportedException {
+        DiscreteRandomSource newObject =
+	        (DiscreteRandomSource)super.clone(workspace);
+        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
+        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elementTerm);
+
+        return newObject;
     }
 
     /** Output the token selected in the prefire() method.
@@ -177,9 +179,8 @@ public class DiscreteRandomSource extends RandomSource {
         double randomValue = _random.nextDouble();
         DoubleMatrixToken pmfMatrixToken = (DoubleMatrixToken) pmf.getToken();
         double[] pmfArray = pmfMatrixToken.doubleMatrix()[0];
-        MatrixToken valuesMatrixToken = (MatrixToken) values.getToken();
-        if (pmfArray.length != valuesMatrixToken.getColumnCount() ||
-                valuesMatrixToken.getRowCount() != 1) {
+        ArrayToken valuesToken = (ArrayToken) values.getToken();
+        if (pmfArray.length != valuesToken.length()) {
             throw new IllegalActionException(this,
                     "Parameters values and pmf are required to be row vectors "
                     + "of the same dimension.");
@@ -188,12 +189,12 @@ public class DiscreteRandomSource extends RandomSource {
         for (int i = 0; i < pmfArray.length; i++) {
             cdf += pmfArray[i];
             if (randomValue <= cdf) {
-                _current = valuesMatrixToken.getElementAsToken(0, i);
+                _current = valuesToken.getElement(i);
                 return true;
             }
         }
         // We shouldn't get here, but if we do, we output the last value.
-        _current = valuesMatrixToken.getElementAsToken(0, pmfArray.length - 1);
+        _current = valuesToken.getElement(pmfArray.length - 1);
         return true;
     }
 
