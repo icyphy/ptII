@@ -1,0 +1,191 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="configuration" class="ptolemy.actor.gui.Configuration">
+
+
+
+
+  <!-- NOTE:  If you add .xml files to this directory, be sure to
+       add them to the makefile
+    -->
+
+
+
+
+  <doc>Configuration for VisualSense</doc>
+  <!-- Specify the about file to open. -->
+  <property name="_about"
+            class="ptolemy.kernel.attributes.FileAttribute"
+            value="$CLASSPATH/ptolemy/configs/visualsense/about.htm"/>
+
+  <!-- Specify the help file to open. -->
+  <property name="_help"
+            class="ptolemy.kernel.attributes.FileAttribute"
+            value="$CLASSPATH/ptolemy/configs/visualsense/help.htm"/>
+
+  <!-- The directory of open models, each represented by an effigy. -->
+  <!-- Note that this begins empty. -->
+  <entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/>
+
+  <!-- An entity giving alternative state refinements for modal models. -->
+  <entity name="_stateRefinements" class="ptolemy.kernel.CompositeEntity">
+    <entity name="Discrete Event Refinement"
+            class="ptolemy.domains.fsm.modal.Refinement">
+      <property name="DEDirector"
+                class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
+      </property>
+    </entity>
+    <entity name="State Machine Refinement"
+            class="ptolemy.domains.fsm.modal.ModalController">
+    </entity>               
+  </entity>
+
+  <!-- An entity giving alternative transition refinements for modal models. -->
+  <entity name="_transitionRefinements" class="ptolemy.kernel.CompositeEntity">
+    <entity name="Default Refinement"
+            class="ptolemy.domains.fsm.modal.Refinement">
+      <property name="Refinement Director (SDF)"
+                class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
+      </property>
+    </entity>
+  </entity>
+
+  <!-- The list of effigy factories, which defines what goes in  -->
+  <!-- the New menu, and also what sorts of files can be opened. -->
+  <!-- These are searched in the order listed here, until one of -->
+  <!-- the effigies agrees to open the file. -->
+  <!-- Any of these effigies that return true to canCreateBlankEffigy -->
+  <!-- will appear in the New menu.  If there is a contained entity   -->
+  <!-- named "blank", then the effigy will initially refer to a clone -->
+  <!-- of that blank entity. -->
+  <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+    <!-- Use a custom graph editor with a CT director already in it. -->
+    <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+      <entity name="blank" class="ptolemy.actor.TypedCompositeActor">
+        <property name="Wireless Director"
+                  class="ptolemy.domains.wireless.kernel.WirelessDirector">
+          <property name="_location"
+                    class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+          </property>
+        </property>
+      </entity>
+    </entity>
+    <!-- We need an FSM editor, but do not want it to appear in the -->
+    <!-- File->New menu. -->
+    <entity name="FSM Editor"
+            class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
+      <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor">
+        <input source="ptolemy/configs/fsmLibrary.xml"/>
+      </entity>
+    </entity>
+    <entity name="Modal Model"
+            class="ptolemy.actor.gui.PtolemyEffigy$FactoryWithoutNew">
+      <entity name="blank" class="ptolemy.domains.fsm.modal.ModalModel">
+        <entity name="_Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
+          <input source="ptolemy/configs/fsmLibrary.xml"/>
+          <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName"
+                      class="ptolemy.kernel.util.SingletonAttribute"/>
+            <property name="_iconDescription"
+                      class="ptolemy.kernel.util.SingletonConfigurableAttribute"><configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
+create refinements for the states. Create transitions
+by holding the control key and dragging from one state
+to another. Then delete this annotation.</text></svg></configure></property>
+            <property name="_location"
+                      class="ptolemy.kernel.util.Location" value="120.0, 5.0"/>
+            <property name="_controllerFactory"
+                      class="ptolemy.vergil.basic.NodeControllerFactory"/>
+            <property name="_editorFactory"
+                      class="ptolemy.vergil.toolbox.AnnotationEditorFactory"/>
+          </property>
+        </entity>
+      </entity>
+    </entity>
+
+    <!-- Import HTML viewer, text editor, etc. -->
+    <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
+  </entity>
+
+  <!-- The list of tableau factories, which defines the visual   -->
+  <!-- editors that are available.  After an effigy is created   -->
+  <!-- for a model, these factories are tried in order until one -->
+  <!-- is willing to open the model. Each editor contains a list -->
+  <!-- of other editors that appear in the View menu.            -->
+  <property name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <input source="ptolemy/configs/fsmTableauFactory.xml"/>
+    <input source="ptolemy/configs/graphTableauFactory.xml"/>
+    <input source="ptolemy/configs/extendedTableauFactories.xml"/>
+  </property>
+
+  <!-- Main actor library -->
+  <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
+
+    <!-- Marker so that tree view expands the library. -->
+    <property name="_libraryMarker"
+              class="ptolemy.kernel.util.SingletonAttribute"/>
+
+    <!-- Custom utilities library. -->
+    <class name="utilities" extends="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+            <input source="ptolemy/configs/annotation.xml"/>
+            <input source="ptolemy/configs/utilityParameter.xml"/>
+            <input source="ptolemy/configs/utilityIntRangeParameter.xml"/>
+            <input source="ptolemy/configs/utilityPortParameter.xml"/>
+            <input source="ptolemy/configs/utilityCompositeActor.xml"/>
+            <input source="ptolemy/configs/utilityModalModel.xml"/>
+          </group>
+        ?>
+      </configure>
+    </class>
+
+    <!-- Custom actor library. -->
+    <class name="actor library" extends="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+<!-- Sources list is custom. -->
+<input source="ptolemy/configs/hyvisual/sources.xml"/>
+
+<!-- Sinks list is custom. -->
+<input source="ptolemy/configs/hyvisual/sinks.xml"/>
+
+<!-- Math list is custom. -->
+<input source="ptolemy/configs/hyvisual/math.xml"/>
+
+<!---------------------------------------------------------------------------->
+<!-- Standard libraries. -->
+  <input source="ptolemy/actor/lib/logic/logic.xml"/>
+  <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
+
+<!---------------------------------------------------------------------------->
+<!-- Continuous-time actors. -->
+<input source="ptolemy/domains/ct/lib/dynamics.xml"/>
+<input source="ptolemy/domains/ct/lib/eventgenerators.xml"/>
+<input source="ptolemy/domains/ct/lib/wavegenerators.xml"/>
+
+<!---------------------------------------------------------------------------->
+<!-- Modified libraries -->
+<input source="ptolemy/configs/hyvisual/flowcontrol.xml"/>
+<input source="ptolemy/configs/hyvisual/io.xml"/>
+<!-- OMIT: input source="ptolemy/actor/lib/realtime.xml"/-->
+<input source="ptolemy/configs/hyvisual/array.xml"/>
+<input source="ptolemy/configs/hyvisual/random.xml"/>
+
+<!-- Discrete library is added to include a few useful actors. -->
+<input source="ptolemy/configs/hyvisual/discrete.xml"/>
+
+<!-- Matlab depends on Matlab being present -->
+<input source="ptolemy/matlab/matlab.xml"/>
+
+          </group>
+        ?>
+      </configure>
+    </class>
+  </entity>
+
+</entity>
