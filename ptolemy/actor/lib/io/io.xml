@@ -45,10 +45,6 @@
          </property>
       </entity>
 
-      <entity name="DoubleReader" class="ptolemy.actor.lib.DoubleReader">
-        <doc>Read in doubles from either stdin or a URL</doc>
-      </entity>
-
       <entity name="ExpressionReader" class="ptolemy.actor.lib.io.ExpressionReader">
         <doc>Read one expression per line from a text file and output the result of evaluating the expression</doc>
       </entity>
