@@ -2,20 +2,32 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DB" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 306.6666666666667">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <entity name="DB0" class="ptolemy.actor.lib.DB">
         <property name="inputIsPower" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 120.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -29,10 +41,12 @@
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="-0.5">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="0.5">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.5">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="119.99999999999999, 200.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -41,17 +55,27 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
     </entity>
     <entity name="Test4" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-100.0, -100.0, -6.0206, 0.0, 3.5218, 6.0206}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
         </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 93.33333333333333">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <entity name="DB7" class="ptolemy.actor.lib.DB">
@@ -60,6 +84,8 @@
         <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
         </property>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 280.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -73,16 +99,25 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-3">
         </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="240.0, 200.0">
+        </vertex>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
     </relation>
