@@ -35,9 +35,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.moml.MoMLParser;
 import ptolemy.domains.fsm.kernel.InterfaceAutomaton;
+import ptolemy.domains.fsm.kernel.State;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// Check
@@ -70,7 +72,7 @@ public class Check {
     public Check(int numberOfPhilosophers, boolean useSimple )
             throws Exception {
         _numberOfPhilosophers = numberOfPhilosophers;
-	_useSimple = useSimple;
+        _useSimple = useSimple;
 
         // path to the automata MoML files. Set to current directory for now,
         // should set it to
@@ -99,7 +101,7 @@ public class Check {
                                           + "ConditionalBranchController.xml");
             parser = new MoMLParser();
             _controller = (InterfaceAutomaton)parser.parse(url, url);
-	}
+        }
 
         url = MoMLApplication.specToURL(base + "Philosopher.xml");
         parser = new MoMLParser();
@@ -139,33 +141,21 @@ public class Check {
                          new InterfaceAutomaton[_numberOfPhilosophers];
         for (int i=0; i<_numberOfPhilosophers; i++) {
             InterfaceAutomaton phiAndReceiver = _composePhiAndReceiver(i);
-
-System.out.println("finish " + i + "th phiAndReceiver:");
-System.out.println(phiAndReceiver.getInfo());
-
             phiAndReceiver.combineInternalTransitions();
 
-System.out.println("finish " + i + "th phiAndReceiver, after combine internals:");
+System.out.println(i + "th phiAndReceiver, after combine internals:");
 System.out.println(phiAndReceiver.getInfo());
 
             InterfaceAutomaton choAndReceiver = _composeChoAndReceiver(i);
-
-System.out.println("finish " + i + "th cho, receiver and send:");
-System.out.println(choAndReceiver.getInfo());
-
             choAndReceiver.combineInternalTransitions();
 
-System.out.println("finish " + i + "th cho, receiver and send, after combine internals:");
+System.out.println(i + "th cho, receiver and send, after combine internals:");
 System.out.println(choAndReceiver.getInfo());
 
             phiCho[i] = phiAndReceiver.compose(choAndReceiver);
-
-System.out.println("finish " + i + "th philosopher/chopstick pair");
-System.out.println(phiCho[i].getInfo());
-
             phiCho[i].combineInternalTransitions();
 
-System.out.println("finish " + i + "th philosopher/chopstick pair, after combine internals");
+System.out.println(i + "th philosopher/chopstick pair, after combine internals:");
 System.out.println(phiCho[i].getInfo());
 
         }
@@ -174,13 +164,26 @@ System.out.println(phiCho[i].getInfo());
         InterfaceAutomaton all = phiCho[0];
         for (int i=1; i<_numberOfPhilosophers; i++) {
             all = all.compose(phiCho[i]);
+
+System.out.println("0 to " + i + "th philosopher/chopstick pairs, before combine internals:");
+System.out.println(all.getInfo());
+
+            all.combineInternalTransitions();
+
+System.out.println("0 to " + i + "th philosopher/chopstick pairs, after combine internals:");
+System.out.println(all.getInfo());
+
         }
 
-System.out.println("finish all.");
-System.out.println(all.getInfo());
-System.out.println(all.exportMoML());
+// System.out.println(all.exportMoML());
 
         // check for deadlock
+        System.out.println("Deadlock States:");
+        Iterator deadlockStates = all.deadlockStates().iterator();
+        while (deadlockStates.hasNext()) {
+            State state = (State)deadlockStates.next();
+            System.out.println(state.getFullName());
+        }
     }
 
     /** Obtain the command line arguments and create a checker.
@@ -192,12 +195,12 @@ System.out.println(all.exportMoML());
     public static void main (String[] args) {
         try {
             int number = (Integer.valueOf(args[0])).intValue();
-	    boolean useSimple = true;
-	    if (args.length > 1) {
-	        if (args[1].equals("full")) {
-		    useSimple = false;
-		}
-	    }
+            boolean useSimple = true;
+            if (args.length > 1) {
+                if (args[1].equals("full")) {
+                    useSimple = false;
+                }
+            }
             Check check = new Check(number, useSimple);
             check.go();
         } catch (Exception ex) {
@@ -282,14 +285,7 @@ System.out.println(all.exportMoML());
             // compose
             InterfaceAutomaton choWithReceivers = cho.compose(leftReceiver);
             choWithReceivers = choWithReceivers.compose(rightReceiver);
-
-System.out.println("Chopstick and two receivers:");
-System.out.println(choWithReceivers.getInfo());
-
-           choWithReceivers.combineInternalTransitions();
-
-System.out.println("Chopstick and two receivers, after combining internals:");
-System.out.println(choWithReceivers.getInfo());
+            choWithReceivers.combineInternalTransitions();
 
             InterfaceAutomaton send = _composeSend(index);
 
@@ -387,34 +383,34 @@ System.out.println(choWithReceivers.getInfo());
     // compose the simple or the full version of conditional send.
     private InterfaceAutomaton _composeSend(int index)
             throws CloneNotSupportedException, IllegalActionException,
-	           NameDuplicationException {
+                   NameDuplicationException {
         InterfaceAutomaton send;
         if (_useSimple) {
             send = (InterfaceAutomaton)_simpleSend.clone();
-	    send.setName("c" + index + "s");
+            send.setName("c" + index + "s");
 
-	    HashMap nameMap = new HashMap();
-	    nameMap.put("p1", "c" + index + "pl");
-	    nameMap.put("p1R", "c" + index + "plR");
+            HashMap nameMap = new HashMap();
+            nameMap.put("p1", "c" + index + "pl");
+            nameMap.put("p1R", "c" + index + "plR");
 
-	    nameMap.put("iGW1", "c" + index + "iGWl");
-	    nameMap.put("iGW1T", "c" + index + "iGWlT");
-	    nameMap.put("iGW1F", "c" + index + "iGWlF");
+            nameMap.put("iGW1", "c" + index + "iGWl");
+            nameMap.put("iGW1T", "c" + index + "iGWlT");
+            nameMap.put("iGW1F", "c" + index + "iGWlF");
 
-	    nameMap.put("p2", "c" + index + "pr");
-	    nameMap.put("p2R", "c" + index + "prR");
+            nameMap.put("p2", "c" + index + "pr");
+            nameMap.put("p2R", "c" + index + "prR");
 
-	    nameMap.put("iGW2", "c" + index + "iGWr");
-	    nameMap.put("iGW2T", "c" + index + "iGWrT");
-	    nameMap.put("iGW2F", "c" + index + "iGWrF");
+            nameMap.put("iGW2", "c" + index + "iGWr");
+            nameMap.put("iGW2T", "c" + index + "iGWrT");
+            nameMap.put("iGW2F", "c" + index + "iGWrF");
 
-	    nameMap.put("c", "c" + index + "c");
-	    nameMap.put("c1", "c" + index + "cl");
-	    nameMap.put("c2", "c" + index + "cr");
+            nameMap.put("c", "c" + index + "c");
+            nameMap.put("c1", "c" + index + "cl");
+            nameMap.put("c2", "c" + index + "cr");
 
             send.renameTransitionLabels(nameMap);
-	    return send;
-	} else {
+            return send;
+        } else {
             // create conditional branch controller
             InterfaceAutomaton controller =
                                    (InterfaceAutomaton)_controller.clone();
@@ -502,15 +498,12 @@ System.out.println(choWithReceivers.getInfo());
             send = controller.compose(leftSend);
             send = send.compose(rightSend);
 
-System.out.println("Controller and two send:");
-System.out.println(send.getInfo());
-
             send.combineInternalTransitions();
 
 System.out.println("Controller and two send, after combining internals:");
 System.out.println(send.getInfo());
         }
-	return send;
+        return send;
     }
 
     ///////////////////////////////////////////////////////////////////
