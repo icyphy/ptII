@@ -64,7 +64,7 @@ public final class ImageSequence extends SDFAtomicActor {
                         "/data/seq/missa/missa***.qcf"));
         */
         Parameter p = new Parameter(this, "imageUrlTemplate",
-                new StringToken("../lib/vq" +
+                new StringToken("ptolemy/domains/sdf/lib/vq" +
                         "/data/seq/missa/missa***.qcf"));
         new Parameter(this, "XImageSize", new IntToken("176"));
         new Parameter(this, "YImageSize", new IntToken("144"));

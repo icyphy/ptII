@@ -89,7 +89,8 @@ public final class HTVQEncode extends SDFAtomicActor {
         inputport.setTypeEquals(IntMatrixToken.class);
 
         Parameter p = new Parameter(this, "Codebook",
-                new StringToken("../lib/vq/data/usc_hvq_s5.dat"));
+                new StringToken("ptolemy/domains/sdf" + 
+                        "/lib/vq/data/usc_hvq_s5.dat"));
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
         new Parameter(this, "XPartitionSize", new IntToken("4"));
