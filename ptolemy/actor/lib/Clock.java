@@ -250,9 +250,9 @@ public class Clock extends TimedSource {
         // override how this is done.
         _updateTentativeValues();
 
-        // Use Double.NEGATIVE_INFINITY to indicate that no refire
+        // Use Time.NEGATIVE_INFINITY to indicate that no refire
         // event should be scheduled because we aren't at a phase boundary.
-        _tentativeNextFiringTime = getDirector().timeConstants.NEGATIVE_INFINITY;
+        _tentativeNextFiringTime = Time.NEGATIVE_INFINITY;
 
         // By default, the cycle count will not be incremented.
         _tentativeCycleCountIncrement = 0;
@@ -456,8 +456,7 @@ public class Clock extends TimedSource {
         // Now, we leave it up to the director, unless the value
         // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
         if (!_done && 
-            _tentativeNextFiringTime.compareTo(
-                getDirector().timeConstants.NEGATIVE_INFINITY) != 0) {
+            _tentativeNextFiringTime.compareTo(Time.NEGATIVE_INFINITY) != 0) {
             getDirector().fireAt(this, _tentativeNextFiringTime);
             if (_debugging)_debug("Requesting firing at: "
                     + _tentativeNextFiringTime + ".");
