@@ -1,4 +1,4 @@
-/* A base class for actions with semicolon delimitted lists of commands.
+/* A base class for actions with semicolon delimited lists of commands.
 
  Copyright (c) 2000-2001 The Regents of the University of California.
  All rights reserved.
@@ -41,7 +41,7 @@ import java.util.StringTokenizer;
 //////////////////////////////////////////////////////////////////////////
 //// AbstractActionsAttribute
 /**
-A base class for actions with semicolon delimitted lists of commands.
+A base class for actions with semicolon delimited lists of commands.
 <p>
 The value of this attribute is a semicolon separated list of commands,
 where each command gives a destination to send data to and a value
@@ -143,7 +143,7 @@ public abstract class AbstractActionsAttribute extends Action {
             int equalSign = command.indexOf("=");
             if (equalSign < 1 || equalSign >= command.length()-1) {
                 throw new IllegalActionException(this,
-                "Malformed action: expected destination=expression."
+                "Malformed action: expected destination == expression."
                 + " Got: "
                 + command);
             }
@@ -157,7 +157,7 @@ public abstract class AbstractActionsAttribute extends Action {
                 int closeParen = completeDestinationSpec.indexOf(")");
                 if (closeParen < openParen) {
                     throw new IllegalActionException(this,
-                    "Malformed action: expected destination=expression. "
+                    "Malformed action: expected destination == expression. "
                     + "Got: "
                     + command);
                 }
@@ -170,7 +170,7 @@ public abstract class AbstractActionsAttribute extends Action {
                     _numbers.add(new Integer(channelSpec));
                 } catch (NumberFormatException ex) {
                     throw new IllegalActionException(this,
-                    "Malformed action: expected destination=expression. "
+                    "Malformed action: expected destination == expression. "
                     + "Got: "
                     + command);
                 }
@@ -187,8 +187,8 @@ public abstract class AbstractActionsAttribute extends Action {
             String variableName = "_action_"
                     + getName()
                     + "_"
-                    + completeDestinationSpec.replace('(','_')
-                    .replace(')','_').replace('.','_');
+                    + completeDestinationSpec.replace('(', '_')
+                    .replace(')', '_').replace('.', '_');
             Variable evalVariable = null;
             if (transition == null) {
                 // Create the variable in the workspace.
@@ -199,13 +199,13 @@ public abstract class AbstractActionsAttribute extends Action {
                     throw new InternalErrorException(this, ex, null);
                 }
             } else {
-                Attribute attr = transition.getAttribute(variableName);
-                if (attr instanceof Variable) {
-                    evalVariable = (Variable)attr;
+                Attribute attribute = transition.getAttribute(variableName);
+                if (attribute instanceof Variable) {
+                    evalVariable = (Variable)attribute;
                 } else {
                     try {
-                        if (attr != null) {
-                            attr.setContainer(null);
+                        if (attribute != null) {
+                            attribute.setContainer(null);
                         }
                         evalVariable = new Variable(transition, variableName);
                     } catch (NameDuplicationException ex) {
@@ -275,12 +275,12 @@ public abstract class AbstractActionsAttribute extends Action {
                 }
 	    }
 	    if (_variables != null) {
-		Iterator vars = _variables.iterator();
+		Iterator variables = _variables.iterator();
 		_variables = new LinkedList();
-		while (vars.hasNext()) {
-		    Variable var = (Variable)vars.next();
+		while (variables.hasNext()) {
+		    Variable variable = (Variable)variables.next();
 		    Transition container = (Transition)getContainer();
-		    _variables.add(container.getAttribute(var.getName()));
+		    _variables.add(container.getAttribute(variable.getName()));
 		}
 	    }
             _destinationsListVersion = workspace().getVersion();

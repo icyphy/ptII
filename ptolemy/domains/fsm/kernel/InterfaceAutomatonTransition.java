@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Red (yuhong@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.fsm.kernel;
@@ -43,7 +43,7 @@ import ptolemy.data.expr.Parameter;
 //// InterfaceAutomatonTransition
 /**
 A Transition for Interface Automaton. In the Interface Automata paper
-writen by Luca de Alfaro, transitions are called actions. However,
+written by Luca de Alfaro, transitions are called actions. However,
 the name action conflicts with the Action class in this package, so this
 class uses the name transition.  There are three types of transitions:
 input, output, and internal. Each transition has a label. The labels for
@@ -60,7 +60,7 @@ the parameter name.
 <p>
 The guard of each transition is set automatically. Users should not set
 the guard. For an input transition, the guard is set to <inputPort>_isPresent,
-where <inputPort> is the port corresponding to this transition; For ouput
+where <inputPort> is the port corresponding to this transition; For output
 and internal transitions, the guard is set to true. Each of the output
 and internal transitions contain an Action. The expression of the Action
 is also set automatically. For output transition, the action is set to
@@ -116,7 +116,7 @@ public class InterfaceAutomatonTransition extends Transition {
     /** React to a change in an attribute. If the changed attribute is
      *  <i>label</i>, use the ending character of the label to determine
      *  the transition type, and set the guard and output action of this
-     *  transtion. For internal transition, also create the parameter
+     *  transition. For internal transition, also create the parameter
      *  corresponding to the transition.
      *  Increment the version number of the workspace.
      *  @param attribute The attribute that changed.
@@ -236,18 +236,9 @@ public class InterfaceAutomatonTransition extends Transition {
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 
-    // transition types.
+    // Transition types.
+    // FIXME: If these are protected, they should have leading _
     protected static final int INPUT_TRANSITION = 0;
     protected static final int OUTPUT_TRANSITION = 1;
     protected static final int INTERNAL_TRANSITION = 2;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
 }

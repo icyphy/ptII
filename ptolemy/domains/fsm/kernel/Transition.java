@@ -114,7 +114,7 @@ of the FSMActor when the transition is chosen, but not yet taken.
 The difference is subtle, and for most domains, irrelevant.
 A few domains, however, such as CT, which have fixed point semantics,
 where the fire() method may be invoked several times before the
-transisition is taken (committed). For such domains, it is useful
+transition is taken (committed). For such domains, it is useful
 to have actions that implement the ChoiceAction interface.
 Such actions participate in the search for a fixed point, but
 do not change the state of the FSM.
@@ -365,9 +365,11 @@ public class Transition extends ComponentRelation {
      */
     public boolean isEnabled() throws IllegalActionException {
         try {
-            Token tok = _guard.getToken();
-            if (tok == null) return false;
-            return ((BooleanToken)tok).booleanValue();
+            Token token = _guard.getToken();
+            if (token == null) {
+                return false;
+            }
+            return ((BooleanToken)token).booleanValue();
         } catch (UnknownResultException ex) {
             return false;
         }
@@ -393,11 +395,11 @@ public class Transition extends ComponentRelation {
      *   trigger, or the trigger is true but the guard is false.
      */
     public boolean isTriggered() throws IllegalActionException {
-        Token tok = _trigger.getToken();
-        boolean result = ((BooleanToken)tok).booleanValue();
-        tok = _guard.getToken();
-        boolean g = ((BooleanToken)tok).booleanValue();
-        if (result == true && g == false) {
+        Token token = _trigger.getToken();
+        boolean result = ((BooleanToken)token).booleanValue();
+        token = _guard.getToken();
+        boolean guardValue = ((BooleanToken)token).booleanValue();
+        if (result == true && guardValue == false) {
             throw new IllegalActionException(this, "The trigger: "
                     + getTriggerExpression() + " is true but the guard: "
                     + getGuardExpression() + " is false.");

@@ -151,18 +151,18 @@ public class CommitActionsAttribute
                 if (nextDestination instanceof IOPort) {
                     IOPort destination = (IOPort)nextDestination;
                     try {
-                        Token tok = variable.getToken();
+                        Token token = variable.getToken();
                         if (channel != null) {
-                            if (tok == null) {
+                            if (token == null) {
                                 destination.sendAbsent(channel.intValue());
                             } else {
-                                destination.send(channel.intValue(), tok);
+                                destination.send(channel.intValue(), token);
                             }
                         } else {
-                            if (tok == null) {
+                            if (token == null) {
                                 destination.broadcastAbsent();
                             } else {
-                                destination.broadcast(tok);
+                                destination.broadcast(token);
                             }
                         }
                     } catch (NoRoomException ex) {
@@ -213,8 +213,8 @@ public class CommitActionsAttribute
         IOPort port = (IOPort)fsm.getPort(name);
         if (port == null) {
             // No port found.  Try for a variable.
-            Attribute var = fsm.getAttribute(name);
-            if (var == null) {
+            Attribute variable = fsm.getAttribute(name);
+            if (variable == null) {
                 // Try for a refinement variable.
                 int period = name.indexOf(".");
                 if (period > 0) {
@@ -239,14 +239,14 @@ public class CommitActionsAttribute
                 throw new IllegalActionException(fsm, this,
                 "Cannot find port or variable with the name: " + name);
             } else {
-                if (!(var instanceof Variable)) {
+                if (!(variable instanceof Variable)) {
                     throw new IllegalActionException(fsm, this,
                     "The attribute with name \""
                     + name
                     + "\" is not an "
                     + "instance of Variable.");
                 }
-                return var;
+                return variable;
             }
         } else {
             if (!port.isOutput()) {

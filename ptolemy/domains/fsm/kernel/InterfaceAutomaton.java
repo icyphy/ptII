@@ -415,7 +415,7 @@ public class InterfaceAutomaton extends FSMActor {
      *  @return True if this automaton does not have any input and output.
      */
     public boolean isClosed() {
-        return (portList().size()==0);
+        return (portList().size() == 0);
     }
 
     /** Return true if this automaton is empty; false otherwise.
@@ -464,7 +464,7 @@ public class InterfaceAutomaton extends FSMActor {
      *  specifying which transition labels should be renamed. The keys of the
      *  Map are the old label names, and the values are the new label names.
      *  Neither the keys nor the values should include the ending character
-     *  "?", "!", or ";" that indicate the type of the transtion. And this
+     *  "?", "!", or ";" that indicate the type of the transition. And this
      *  method does not change the type.
      *  <p>
      *  For input and output transitions, this method also renames the ports
@@ -723,7 +723,7 @@ public class InterfaceAutomaton extends FSMActor {
         }
     }
 
-    // Compute the product of this autmaton and the argument. Also store
+    // Compute the product of this automaton and the argument. Also store
     // the illegal states found in the Set _illegalStates.
     //
     // Use frontier exploration. The frontier is represented by a HashMap
@@ -739,7 +739,7 @@ public class InterfaceAutomaton extends FSMActor {
     //            (case 1) T is input for p:
     //              (1A) T is input of product: add T to product
     //              (1B) T is shared:
-    //                (1Ba) q has T ouput: add T to product as internal
+    //                (1Ba) q has T output: add T to product as internal
     //                      transition
     //                (1Bb) q does not have T output: transition cannot happen
     //                      in product. ignore
@@ -996,7 +996,7 @@ public class InterfaceAutomaton extends FSMActor {
 
             return product;
         } catch (NameDuplicationException exception) {
-            // FIXME: this can actually happen, although extremly unlikely.
+            // FIXME: this can actually happen, although extremely unlikely.
             // Eg. this automaton has states "X" and "Y_Z", the argument
             // has "X_Y" and "Z". Do we need to worry about this?
             throw new InternalErrorException(
@@ -1079,11 +1079,11 @@ public class InterfaceAutomaton extends FSMActor {
         return null;
     }
 
-    // prune illegal states from the argument. Use fontier exploration.
+    // prune illegal states from the argument. Use frontier exploration.
     // The Set frontier contains the references of illegal states in the
     // frontier; the Set _illegalStates contains references of all the
     // illegal states found so far. The Set frontier is always a subset
-    // of _illegalStates. When this method is called, _illegalStats contains
+    // of _illegalStates. When this method is called, _illegalStates contains
     // an initial set of illegal states computed in _computeProduct().
     //
     // init: frontier = _illegalStates
@@ -1095,10 +1095,10 @@ public class InterfaceAutomaton extends FSMActor {
     //
     //          end when frontier is empty
     //
-    // remove all states in _illegalstates from automaton
+    // remove all states in _illegalStates from automaton
     //
     // Note: this method does not operate the "this" automaton, it operates
-    // on the composition automaton. This is implicite since _illegalStates
+    // on the composition automaton. This is implicit since _illegalStates
     // contains the states in the composition.
     private void _pruneIllegalStates() {
         // init
@@ -1110,7 +1110,7 @@ public class InterfaceAutomaton extends FSMActor {
 
         // iterate
         while ( !frontier.isEmpty()) {
-            // there does not seem to be an easy way to remove an arbitray
+            // there does not seem to be an easy way to remove an arbitrary
             // element, except through Iterator
             iterator = frontier.iterator();
             State current = (State)iterator.next();
@@ -1226,7 +1226,7 @@ public class InterfaceAutomaton extends FSMActor {
 
         // iterate
         while ( !frontier.isEmpty()) {
-            // there does not seem to be an easy way to remove an arbitray
+            // there does not seem to be an easy way to remove an arbitrary
             // element, except through Iterator
             Iterator iterator = frontier.iterator();
             State current = (State)iterator.next();
@@ -1276,7 +1276,7 @@ public class InterfaceAutomaton extends FSMActor {
     // <nameInThisAutomaton><NAME_CONNECTOR><nameInArgumentAutomaton>
     // The transition name prefix in the composition is formed by
     // (1) <nameOfAutomaton> for non-shared transitions;
-    // (2) <nameOfAutomaton1><NAME_CONNECTOR><nameofAutomaton2> for shared
+    // (2) <nameOfAutomaton1><NAME_CONNECTOR><nameOfAutomaton2> for shared
     //     transitions.
     // The name of the product automaton is
     // <thisName><NAME_CONNECTOR><argumentName>

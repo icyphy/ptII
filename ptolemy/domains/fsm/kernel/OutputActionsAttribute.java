@@ -69,13 +69,13 @@ where each <i>command</i> has the form:
 </pre>
 where <i>destination</i> is either
 <pre>
-     <i>portname</i>
+     <i>portName</i>
 </pre>
 or
 <pre>
-     <i>portname</i>(<i>channelNumber</i>)
+     <i>portName</i>(<i>channelNumber</i>)
 </pre>
-where <i>portname</i> is the name of a port of the FSM actor.
+where <i>portName</i> is the name of a port of the FSM actor.
 If no <i>channelNumber</i> is given, then the value
 is broadcast to all channels of the port.
 <p>
@@ -141,12 +141,12 @@ public class OutputActionsAttribute
                 Integer channel = (Integer)channels.next();
                 Variable variable = (Variable)variables.next();
                 try {
-                    Token tok = variable.getToken();
-                    if (tok != null) {
+                    Token token = variable.getToken();
+                    if (token != null) {
                         if (channel != null) {
-                            destination.send(channel.intValue(), tok);
+                            destination.send(channel.intValue(), token);
                         } else {
-                            destination.broadcast(tok);
+                            destination.broadcast(token);
                         }
                     }
                 } catch (NoRoomException ex) {

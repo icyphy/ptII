@@ -250,13 +250,14 @@ public class State extends ComponentEntity {
             workspace().getReadAccess();
             _nonpreemptiveTransitionList.clear();
             _preemptiveTransitionList.clear();
-            Iterator trs = outgoingPort.linkedRelationList().iterator();
-            while (trs.hasNext()) {
-                Transition tr = (Transition)trs.next();
-                if (tr.isPreemptive()) {
-                    _preemptiveTransitionList.add(tr);
+            Iterator transitions =
+                outgoingPort.linkedRelationList().iterator();
+            while (transitions.hasNext()) {
+                Transition transition = (Transition)transitions.next();
+                if (transition.isPreemptive()) {
+                    _preemptiveTransitionList.add(transition);
                 } else {
-                    _nonpreemptiveTransitionList.add(tr);
+                    _nonpreemptiveTransitionList.add(transition);
                 }
             }
             _transitionListVersion = workspace().getVersion();

@@ -322,15 +322,15 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             try {
                 _workspace.getReadAccess();
                 // Update the cache.
-                LinkedList inports = new LinkedList();
+                LinkedList inPorts = new LinkedList();
                 Iterator ports = portList().iterator();
                 while(ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
                     if (p.isInput()) {
-                        inports.add(p);
+                        inPorts.add(p);
                     }
                 }
-                _cachedInputPorts = inports;
+                _cachedInputPorts = inPorts;
                 _inputPortsVersion = _workspace.getVersion();
             } finally {
                 _workspace.doneReading();
@@ -347,7 +347,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     }
 
     /** Invoke a specified number of iterations of the actor. An
-     *  iteration is equivalant to invoking prefire(), fire(), and
+     *  iteration is equivalent to invoking prefire(), fire(), and
      *  postfire(), in that order. In an iteration, if prefire()
      *  returns true, then fire() will be called once, followed by
      *  postfire(). Otherwise, if prefire() returns false, fire()
@@ -405,12 +405,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @return A new object implementing the Receiver interface.
      */
     public Receiver newReceiver() throws IllegalActionException {
-        Director dir = getDirector();
-        if (dir == null) {
+        Director director = getDirector();
+        if (director == null) {
             throw new IllegalActionException(this,
                     "Cannot create a receiver without a director.");
         }
-        return dir.newReceiver();
+        return director.newReceiver();
     }
 
     /** Create a new instance of Transition with the specified name in
@@ -491,9 +491,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         _createReceivers();
         Iterator inputPorts = inputPortList().iterator();
         while (inputPorts.hasNext()) {
-            TypedIOPort inport = (TypedIOPort)inputPorts.next();
+            TypedIOPort inPort = (TypedIOPort)inputPorts.next();
 
-            _removeInputVariables(inport);
+            _removeInputVariables(inPort);
         }
         _createInputVariables();
         // Validate the attributes of this actor.
@@ -563,20 +563,20 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             List result = new LinkedList();
             Iterator inPorts = inputPortList().iterator();
             while (inPorts.hasNext()) {
-                TypedIOPort inport = (TypedIOPort)inPorts.next();
-                boolean isUndeclared = inport.getTypeTerm().isSettable();
+                TypedIOPort inPort = (TypedIOPort)inPorts.next();
+                boolean isUndeclared = inPort.getTypeTerm().isSettable();
                 if (isUndeclared) {
-                    // inport has undeclared type
+                    // inPort has undeclared type
                     Iterator outPorts = outputPortList().iterator();
                     while (outPorts.hasNext()) {
                         TypedIOPort outport =
                             (TypedIOPort)outPorts.next();
 
                         isUndeclared = outport.getTypeTerm().isSettable();
-                        if (isUndeclared && inport != outport) {
+                        if (isUndeclared && inPort != outport) {
                             // outport also has undeclared type
                             Inequality ineq = new Inequality(
-                                    inport.getTypeTerm(),
+                                    inPort.getTypeTerm(),
                                     outport.getTypeTerm());
                             result.add(ineq);
                         }
@@ -591,20 +591,20 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 result.addAll(port.typeConstraintList());
             }
 
-            Iterator attrib = attributeList(Typeable.class).iterator();
-            while (attrib.hasNext()) {
-                Typeable att = (Typeable)attrib.next();
-                result.addAll(att.typeConstraintList());
+            Iterator attributes = attributeList(Typeable.class).iterator();
+            while (attributes.hasNext()) {
+                Typeable typeableAttribute = (Typeable)attributes.next();
+                result.addAll(typeableAttribute.typeConstraintList());
             }
 
             // Collect constraints from all transitions.
-            Iterator trs = relationList().iterator();
-            while (trs.hasNext()) {
-                Relation tr = (Relation)trs.next();
-                attrib = tr.attributeList(Typeable.class).iterator();
-                while (attrib.hasNext()) {
-                    Typeable att = (Typeable)attrib.next();
-                    result.addAll(att.typeConstraintList());
+            Iterator transitionRelations = relationList().iterator();
+            while (transitionRelations.hasNext()) {
+                Relation tr = (Relation)transitionRelations.next();
+                attributes = tr.attributeList(Typeable.class).iterator();
+                while (attributes.hasNext()) {
+                    Typeable typeableAttribute = (Typeable)attributes.next();
+                    result.addAll(typeableAttribute.typeConstraintList());
                 }
             }
 
@@ -683,18 +683,19 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     protected Transition _chooseTransition(List transitionList)
             throws IllegalActionException {
         Transition result = null;
-        Iterator trs = transitionList.iterator();
-        while (trs.hasNext()) {
-            Transition tr = (Transition)trs.next();
-            if (!tr.isEnabled()) {
+        Iterator transitionRelations = transitionList.iterator();
+        while (transitionRelations.hasNext()) {
+            Transition transition = (Transition)transitionRelations.next();
+            if (!transition.isEnabled()) {
                 continue;
             }
             if (result != null) {
                 throw new IllegalActionException(currentState(),
                         "Multiple enabled transitions: "
-                        + result.getName() + " and " + tr.getName() + ".");
+                        + result.getName() + " and "
+                        + transition.getName() + ".");
             } else {
-                result = tr;
+                result = transition;
             }
         }
         if (result != null) {
@@ -908,9 +909,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     protected void _setInputsFromRefinement()
             throws IllegalActionException {
-        Iterator inports = inputPortList().iterator();
-        while (inports.hasNext()) {
-            TypedIOPort p = (TypedIOPort)inports.next();
+        Iterator inPorts = inputPortList().iterator();
+        while (inPorts.hasNext()) {
+            TypedIOPort p = (TypedIOPort)inPorts.next();
             int width = p.getWidth();
             for (int channel = 0; channel < width; ++channel) {
                 if (_isRefinementOutput(p, channel)) {
@@ -925,9 +926,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *   the token read from its corresponding channel.
      */
     protected void _setInputVariables() throws IllegalActionException {
-        Iterator inports = inputPortList().iterator();
-        while (inports.hasNext()) {
-            TypedIOPort p = (TypedIOPort)inports.next();
+        Iterator inPorts = inputPortList().iterator();
+        while (inPorts.hasNext()) {
+            TypedIOPort p = (TypedIOPort)inPorts.next();
             int width = p.getWidth();
             for (int channel = 0; channel < width; ++channel) {
                 _setInputVariables(p, channel);
@@ -964,16 +965,16 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
         if (port.isKnown(channel)) {
             boolean t = port.hasToken(channel);
-            Token tok = t ? BooleanToken.TRUE : BooleanToken.FALSE;
-            pVars[channel][0].setToken(tok);
+            Token token = t ? BooleanToken.TRUE : BooleanToken.FALSE;
+            pVars[channel][0].setToken(token);
             // Update the value variable if there is a token in the channel.
             if (t == true) {
-                tok = port.get(channel);
+                token = port.get(channel);
                 if (_debugging) {
                     _debug("---", port.getName(),
-                            "token value:", tok.toString());
+                            "token value:", token.toString());
                 }
-                pVars[channel][1].setToken(tok);
+                pVars[channel][1].setToken(token);
             } else {
                 if (_debugging) {
                     _debug("---", port.getName(), "has no token.");
@@ -1018,42 +1019,43 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             }
             // Create a map for each state.
             Iterator states = entityList().iterator();
-            State st = null;
+            State state = null;
             while (states.hasNext()) {
-                st = (State)states.next();
-                Map stMap = new HashMap();
-		TypedActor[] actors = st.getRefinement();
+                state = (State)states.next();
+                Map stateMap = new HashMap();
+		TypedActor[] actors = state.getRefinement();
                 // Determine the boolean flags for each input port.
-                Iterator inports = inputPortList().iterator();
-                while (inports.hasNext()) {
-                    IOPort inport = (IOPort)inports.next();
-                    boolean[] flags = new boolean[inport.getWidth()];
+                Iterator inPorts = inputPortList().iterator();
+                while (inPorts.hasNext()) {
+                    IOPort inPort = (IOPort)inPorts.next();
+                    boolean[] flags = new boolean[inPort.getWidth()];
                     if (actors == null || actors.length == 0) {
                         java.util.Arrays.fill(flags, false);
-                        stMap.put(inport, flags);
+                        stateMap.put(inPort, flags);
                         continue;
                     }
-                    Iterator rels = inport.linkedRelationList().iterator();
-                    int chindex = 0;
-                    while (rels.hasNext()) {
-                        IORelation rel = (IORelation)rels.next();
+                    Iterator relations =
+                        inPort.linkedRelationList().iterator();
+                    int chIndex = 0;
+                    while (relations.hasNext()) {
+                        IORelation relation = (IORelation)relations.next();
                         boolean linked = false;
 			for (int i = 0; i < actors.length; ++i) {
 			    Iterator outports =
                                     actors[i].outputPortList().iterator();
 			    while (outports.hasNext()) {
 				IOPort outport = (IOPort)outports.next();
-				linked = linked | outport.isLinked(rel);
+				linked = linked | outport.isLinked(relation);
 			    }
 			}
-                        for (int j = 0; j < rel.getWidth(); ++j) {
-                            flags[chindex+j] = linked;
+                        for (int j = 0; j < relation.getWidth(); ++j) {
+                            flags[chIndex+j] = linked;
                         }
-                        chindex += rel.getWidth();
+                        chIndex += relation.getWidth();
                     }
-                    stMap.put(inport, flags);
+                    stateMap.put(inPort, flags);
                 }
-                _connectionMaps.put(st, stMap);
+                _connectionMaps.put(state, stateMap);
             }
             _connectionMapsVersion = workspace().getVersion();
         } finally {
@@ -1066,13 +1068,13 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     private void _createInputVariables() {
         Iterator inputPorts = inputPortList().iterator();
         while (inputPorts.hasNext()) {
-            TypedIOPort inport = (TypedIOPort)inputPorts.next();
+            TypedIOPort inPort = (TypedIOPort)inputPorts.next();
             try {
-                _createInputVariables(inport);
+                _createInputVariables(inPort);
             } catch (IllegalActionException ex) {
                 throw new InternalErrorException(getName() + ": "
                         + "Error creating input variables for port "
-                        + inport.getName() + ".\n"
+                        + inPort.getName() + ".\n"
                         + ex.getMessage());
             }
         }
@@ -1084,8 +1086,8 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     private void _createReceivers() throws IllegalActionException {
         Iterator inputPorts = inputPortList().iterator();
         while (inputPorts.hasNext()) {
-            IOPort inport = (IOPort)inputPorts.next();
-            inport.createReceivers();
+            IOPort inPort = (IOPort)inputPorts.next();
+            inPort.createReceivers();
         }
     }
 

@@ -258,9 +258,9 @@ public class FSMDirector extends Director {
         Nameable container = getContainer();
         if (container instanceof Actor) {
             Actor cont = (Actor)container;
-            Director execdir = cont.getExecutiveDirector();
-            if(execdir != null) {
-                execdir.fireAt(cont, time);
+            Director executiveDirector = cont.getExecutiveDirector();
+            if(executiveDirector != null) {
+                executiveDirector.fireAt(cont, time);
             } else {
                 setCurrentTime(time);
             }
@@ -343,7 +343,7 @@ public class FSMDirector extends Director {
 
     /** Return a receiver that is a one-place buffer. A token put into the
      *  receiver will override any token already in the receiver.
-     *  @retrun A receiver that is a one-place buffer.
+     *  @return A receiver that is a one-place buffer.
      */
     public Receiver newReceiver() {
         return new Mailbox() {
@@ -450,11 +450,11 @@ public class FSMDirector extends Director {
 
     /** Set the current time of the model under this director.
      *  It allows the set time to be earlier than the current time.
-     *  This fearure is needed when switching between timed and untimed
+     *  This feature is needed when switching between timed and untimed
      *  models.
      *
-     *  @exception IllegalActionException Never thrown
      *  @param newTime The new current simulation time.
+     *  @exception IllegalActionException Not thrown in this base class.
      *  FIXME: Changed by liuj, not yet reviewed.
      */
     public void setCurrentTime(double newTime) throws IllegalActionException {
@@ -470,7 +470,7 @@ public class FSMDirector extends Director {
      *  Any token left not consumed in the ports to which data are transferred
      *  is discarded.
      *  @param port The input port to transfer tokens from.
-     *  @return True if at least one data token is tranferred.
+     *  @return True if at least one data token is transferred.
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      */
@@ -480,29 +480,33 @@ public class FSMDirector extends Director {
                     "transferInputs: port argument is not an opaque" +
                     "input port.");
         }
-        boolean trans = false;
-        Receiver[][] insiderecs = _currentLocalReceivers(port);
+        boolean transferredToken = false;
+        Receiver[][] insideReceivers = _currentLocalReceivers(port);
         for (int i = 0; i < port.getWidth(); i++) {
             try {
                 if (port.hasToken(i)) {
                     Token t = port.get(i);
-                    if (insiderecs != null && insiderecs[i] != null) {
-                        for (int j = 0; j < insiderecs[i].length; j++) {
-                            if (insiderecs[i][j].hasToken()) {
-                                insiderecs[i][j].get();
+                    if (insideReceivers != null
+                            && insideReceivers[i] != null) {
+                        for (int j = 0; j < insideReceivers[i].length; j++) {
+                            if (insideReceivers[i][j].hasToken()) {
+                                insideReceivers[i][j].get();
                             }
-                            insiderecs[i][j].put(t);
+                            insideReceivers[i][j].put(t);
                             if(_debugging) _debug(getName(),
-                                "transfering input from " + port.getName()
-                                + " to " + (insiderecs[i][j]).getContainer().getName());
+                                "transferring input from " + port.getName()
+                                + " to "
+                                + (insideReceivers[i][j]).getContainer()
+                                    .getName());
                         }
-                        trans = true;
+                        transferredToken = true;
                     }
                 } else {
-                    if (insiderecs != null && insiderecs[i] != null) {
-                        for (int j = 0; j < insiderecs[i].length; j++) {
-                            if (insiderecs[i][j].hasToken()) {
-                                insiderecs[i][j].get();
+                    if (insideReceivers != null
+                            && insideReceivers[i] != null) {
+                        for (int j = 0; j < insideReceivers[i].length; j++) {
+                            if (insideReceivers[i][j].hasToken()) {
+                                insideReceivers[i][j].get();
                             }
                         }
                     }
@@ -514,7 +518,7 @@ public class FSMDirector extends Director {
                         ex.getMessage());
             }
         }
-        return trans;
+        return transferredToken;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -556,45 +560,54 @@ public class FSMDirector extends Director {
             _localReceiverMaps.clear();
             // Create a map for each state of the mode controller.
             Iterator states = ctrl.entityList().iterator();
-            State st = null;
+            State state = null;
             while (states.hasNext()) {
-                st = (State)states.next();
-                _localReceiverMaps.put(st, new HashMap());
+                state = (State)states.next();
+                _localReceiverMaps.put(state, new HashMap());
             }
             CompositeActor comp = (CompositeActor)getContainer();
-            Iterator inports = comp.inputPortList().iterator();
-            List rlist = new LinkedList();
-            while (inports.hasNext()) {
-                IOPort port = (IOPort)inports.next();
-                Receiver[][] allRcvrs = port.deepGetReceivers();
+            Iterator inPorts = comp.inputPortList().iterator();
+            List resultsList = new LinkedList();
+            while (inPorts.hasNext()) {
+                IOPort port = (IOPort)inPorts.next();
+                Receiver[][] allReceivers = port.deepGetReceivers();
                 states = ctrl.entityList().iterator();
                 while (states.hasNext()) {
-                    st = (State)states.next();
-                    TypedActor[] actors = st.getRefinement();
-                    Receiver[][] rs = new Receiver[allRcvrs.length][0];
-                    for (int i = 0; i < allRcvrs.length; ++i) {
-                        rlist.clear();
-                        for (int j = 0; j < allRcvrs[i].length; ++j) {
-                            Receiver r = allRcvrs[i][j];
-                            Nameable cont = r.getContainer().getContainer();
+                    state = (State)states.next();
+                    TypedActor[] actors = state.getRefinement();
+                    Receiver[][] allReceiversArray = new Receiver[allReceivers.length][0];
+                    for (int i = 0; i < allReceivers.length; ++i) {
+                        resultsList.clear();
+                        for (int j = 0; j < allReceivers[i].length; ++j) {
+                            Receiver receiver = allReceivers[i][j];
+                            Nameable cont = receiver.getContainer()
+                                .getContainer();
                             if (cont == ctrl) {
-				rlist.add(r);
+				resultsList.add(receiver);
 			    } else {
 				List stateList = new LinkedList();
-				stateList.add(st);
-			        Iterator trs = st.preemptiveTransitionList().iterator();
-				while (trs.hasNext()) {
-				    Transition tr = (Transition)trs.next();
-				    stateList.add(tr.destinationState());
+				stateList.add(state);
+			        Iterator transitions =
+                                    state.preemptiveTransitionList()
+                                    .iterator();
+				while (transitions.hasNext()) {
+				    Transition transition =
+                                        (Transition)transitions.next();
+				    stateList.add(transition
+                                            .destinationState());
 				}
 				Iterator nextStates = stateList.iterator();
 				while (nextStates.hasNext()) {
-				    actors = ((State)nextStates.next()).getRefinement();
+				    actors =
+                                        ((State)nextStates.next())
+                                        .getRefinement();
 				    if (actors != null) {
-					for (int k = 0; k < actors.length; ++k) {
+					for (int k = 0; k < actors.length;
+                                             ++k) {
 					    if (cont == actors[k]) {
-						if (!rlist.contains(r)) {
-						    rlist.add(r);
+						if (!resultsList
+                                                        .contains(receiver)) {
+						    resultsList.add(receiver);
 						    break;
 						}
 					    }
@@ -603,14 +616,15 @@ public class FSMDirector extends Director {
 				}
                             }
                         }
-                        rs[i] = new Receiver[rlist.size()];
-                        Object[] rcvrs = rlist.toArray();
-                        for (int j = 0; j < rcvrs.length; ++j) {
-                            rs[i][j] = (Receiver)rcvrs[j];
+                        allReceiversArray[i] =
+                            new Receiver[resultsList.size()];
+                        Object[] receivers = resultsList.toArray();
+                        for (int j = 0; j < receivers.length; ++j) {
+                            allReceiversArray[i][j] = (Receiver)receivers[j];
                         }
                     }
-                    Map m = (HashMap)_localReceiverMaps.get(st);
-                    m.put(port, rs);
+                    Map m = (HashMap)_localReceiverMaps.get(state);
+                    m.put(port, allReceiversArray);
                 }
             }
             _localReceiverMapsVersion = workspace().getVersion();
