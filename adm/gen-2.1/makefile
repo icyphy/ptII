@@ -296,7 +296,7 @@ ptbuild:
 	@echo "#"
 	@echo "$@ `date`"
 	rm -f /users/$(USER)/logs/java`date  '+%m%d'`
-	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g -target 1.1" JDOCFLAGS="-author -version -J-Xmx132m" -k sources install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
+	-(cd $(PTIIHOME); cvs update -d -P; PTII=/users/ptII $(MAKE) JFLAGS="-deprecation -g" JDOCFLAGS="-author -version -J-Xmx132m" -k sources install)  > /users/$(USER)/logs/java`date  '+%m%d'` 2>&1
 
 # test in ~ptII
 pttests:
@@ -432,7 +432,7 @@ bldmastrcoverage:
 		PTII=/home/bldmastr/ptII \
 		PTIIHOME=/home/bldmastr/ptII \
 		VERSION= \
-		JFLAGS="-deprecation -g -target 1.1" \
+		JFLAGS="-deprecation -g" \
 		JSDATABASE=/home/bldmastr/jsdatabase \
 		JSOUTDIR=/home/www/cvswww/ptolemy/nightly \
 		JSCLASSPATH=/usr/local/JavaScope/JavaScope.zip \
