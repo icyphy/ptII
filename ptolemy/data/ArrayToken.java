@@ -86,7 +86,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         Token token = evaluator.evaluateParseTree(tree);
 
         if (token instanceof ArrayToken) {
-            Token[] value = ((ArrayToken)token).arrayValue();
+            Token[] value = ((ArrayToken)token)._value;
             _initialize(value);
         } else {
             throw new IllegalActionException("An array token cannot be"
@@ -252,7 +252,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
      *  the same length and the elements are equal to that of this
      *  token.  Equality of the contained elements is tested by their
      *  equals() method.
-     *  @param object An instance of Object.
+     *  @param object the object to compare with.
      *  @return True if the argument is an array token of the same length
      *   and the elements are equal to that of this token.
      */
@@ -268,7 +268,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
             return false;
         }
 
-        Token[] array = arrayArgument.arrayValue();
+        Token[] array = arrayArgument._value;
         for (int i = 0; i < length; i++) {
             if ( !_value[i].equals(array[i])) {
                 return false;
