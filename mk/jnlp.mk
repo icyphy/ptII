@@ -87,8 +87,9 @@ CORE_JNLP_JARS = \
 	$(DOC_CODEDOC_JAR) \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/sdf/doc/doc.jar \
-	ptolemy/actor/parameters/demo/demo.jar
-
+	ptolemy/actor/parameters/demo/demo.jar \
+	ptolemy/matlab/demo/demo.jar \
+	lib/matlab.jar
 
 #######
 # DSP - The smallest runtime
@@ -165,8 +166,6 @@ PTINY_ONLY_JNLP_JARS = \
 	ptolemy/domains/fsm/doc/doc.jar \
 	ptolemy/domains/pn/demo/demo.jar \
 	ptolemy/domains/pn/doc/doc.jar \
-	ptolemy/matlab/demo/demo.jar \
-	lib/matlab.jar \
 	ptolemy/moml/demo/demo.jar
 
 PTINY_MAIN_JAR = \
