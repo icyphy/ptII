@@ -119,7 +119,7 @@ compat:
 		cp $(OLDTREE)/ptolemy/domains/sdf/lib/vq/test/auto/test1.xml \
 			compat/vqtest1.xml; \
 		echo "Removing tests that failed in earlier releases"; \
-		rm compat/MaximumEntropy.xml \
+		rm -f compat/MaximumEntropy.xml \
 			compat/OutputActionsAttribute.xml; \
 	fi
 
