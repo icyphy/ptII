@@ -97,8 +97,10 @@ public class ProcessThread extends PtolemyThread {
         // count even before this thread has incremented the active count.
         // This results in false deadlocks.
         _director._increaseActiveCount();
-
         _name = ((Nameable)_actor).getName();
+
+        // Set the name of the thread to the full name of the actor.
+        setName(((Nameable)_actor).getFullName());
     }
 
     ///////////////////////////////////////////////////////////////////
