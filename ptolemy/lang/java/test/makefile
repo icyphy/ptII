@@ -48,6 +48,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	FindExtraImportsVisitorTest.java \
 	ReflectTest.java \
 	ReflectTestFields.java \
 	ReflectTestInterface.java
@@ -55,7 +56,9 @@ JSRCS = \
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	ASTReflect.tcl \
+	FindExtraImportsVisitor.tcl \
 	SearchPath.tcl
+
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
