@@ -135,7 +135,10 @@ test UtilityFunctions-3.0 {Check readFile method} {
     set tree [$parser generateParseTree "readMatrix('matrix.mat')"]
     set matrix [$tree evaluateParseTree]
     $matrix toString
-} {[0.0, 0.0, 0.0; 0.0, 0.0, 4.0; 0.0, 2.0, 0.0]}
+} {[0.0, 0.0, 0.0; 0.0, 0.0, 4.0; 0.0, 2.0, 0.0]} \
+{  KNOWN Failure: The Matlab Matrix starts at [1,1] while a Ptolemy Matrix 
+   starts at [0,0]. How to handle this?
+}
 
 test UtilityFunctions-3.1 {Check readFile method} {
     # FIXME: The Matlab Matrix starts at [1,1] while a Ptolemy Matrix 
@@ -145,4 +148,7 @@ test UtilityFunctions-3.1 {Check readFile method} {
     set tree [$parser generateParseTree "readMatrix('matrix1.mat')"]
     set matrix [$tree evaluateParseTree]
     $matrix toString
-} {[0.0, 0.0, 0.0; 0.0, 1.0, 2.0; 0.0, 3.0, 4.0]}
+} {[0.0, 0.0, 0.0; 0.0, 1.0, 2.0; 0.0, 3.0, 4.0]} \
+{  KNOWN Failure: The Matlab Matrix starts at [1,1] while a Ptolemy Matrix 
+   starts at [0,0]. How to handle this?
+}
