@@ -316,7 +316,7 @@ public class TypedIOPort extends IOPort {
 	    // also set the resolved type,  If _declaredType == null, i.e.,
 	    // undeclared, the type resolution algorithm will reset the
 	    // _resolvedType.
-	    _resolvedType = _declaredType;
+	    _setResolvedType(_declaredType);
 	    _convertMethod = null;
 	} finally {
 	    workspace().doneWriting();
