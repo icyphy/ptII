@@ -187,80 +187,6 @@ public class ComplexArrayMath {
         return returnValue;
     }
 
-    /** Return true if all the magnitudes of the differences between
-     *  corresponding elements of array1 and array2, are all less than or
-     *  equal to maxMagnitudeDifference. Otherwise, return false.
-     *  Throw an exception if the arrays are not of the same length. If both
-     *  arrays are empty, return true.
-     *  This is computationally more expensive than arePartsWithin().
-     */
-    public static final boolean areMagnitudesWithin(Complex[] array1,
-            Complex[] array2, double maxMagnitudeDifference) {
-        int length = _commonLength(array1, array2,
-                "ComplexArrayMath.areMagnitudesWithin");
-
-        for (int i = 0; i < length; i++) {
-            if (array1[i].subtract(array2[i]).magnitude() >
-                    maxMagnitudeDifference) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /** Return true if all the absolute differences between corresponding
-     *  elements of array1 and array2, for both the real and imaginary parts,
-     *  are all less than or equal to maxError. Otherwise, return false.
-     *  Throw an IllegalArgument exception if the arrays are not of the same
-     *  length. If both arrays are empty, return true.
-     *  This is computationally less expensive than isSquaredErrorWithin().
-     */
-    public static final boolean arePartsWithin(Complex[] array1,
-            Complex[] array2, double maxError) {
-        int length = _commonLength(array1, array2,
-                "ComplexArrayMath.arePartsWithin");
-
-        for (int i = 0; i < length; i++) {
-            if ((Math.abs(array1[i].real - array2[i].real) > maxError) ||
-                    (Math.abs(array1[i].imag - array2[i].imag) > maxError)) {
-                return false;
-            }
-
-        }
-        return true;
-    }
-
-
-    /** Return true if the first argument is greater than the second argument 
-     *  (both complex numbers):
-     *  (a+ib) > (c+id) provided either a > c or a=c and b > d. 
-     */
-    public static final boolean ifgreater(Complex num1,
-            Complex num2) {
-        
-	if (((num1.real > num2.real) || (num1.real == num2.real)) && (num1.imag > num2.imag)) {
-	    return true;
-	}
-	else {
-	    return false;
-	}
-    }
-
-    /** Return true if the first argument is less than the second argument 
-     *  (both complex numbers):
-     *  (a+ib) < (c+id) provided either a < c or a=c and b < d. 
-     */
-    public static final boolean ifless(Complex num1,
-            Complex num2) {
-        
-	if (((num1.real < num2.real) || (num1.real == num2.real)) && (num1.imag < num2.imag)) {
-	    return true;
-	}
-	else {
-	    return false;
-	}
-    }
-
     /** Return a new array of complex numbers that is formed by taking the
      *  complex-conjugate of each element in the argument array.
      *  If the argument has length 0, return a new array of complex numbers,
@@ -293,17 +219,17 @@ public class ComplexArrayMath {
         return returnValue;
     }
 
-    /** Return a new array that is the element-by-element division of
+    /** Return a new array that is the result of dividing each element of
      *  the first array by the given value.
-     *  @param array The array of complex numbers.
-     *  @param num The complex number.
+     *  @param array An array of complex numbers.
+     *  @param divisor The number by which to divide each element of the array.
      *  @return A new array of complex numbers.
      */
-    public static final Complex[] divide(Complex[] array, Complex num) {
+    public static final Complex[] divide(Complex[] array, Complex divisor) {
 	int length = array.length;
         Complex[] returnValue = new Complex[length];
 	for (int i = 0; i < length; i++) {
-            returnValue[i] = array[i].divide(num);
+            returnValue[i] = array[i].divide(divisor);
         }
         return returnValue;
     }
@@ -329,39 +255,64 @@ public class ComplexArrayMath {
         return returnValue;
     }
 
-    /** Return a new array that is a copy of the argument except that the
-     *  elements are limited to lie within the specified range.
-     *  If any value is infinite or NaN (not a number),
-     *  then it is replaced by either the top or the bottom, depending on
-     *  its sign.  To leave either the bottom or the top unconstrained,
+    /** Return a new array that is a copy of the first argument except
+     *  that the elements are limited to lie within the specified range.
+     *  The specified range is given by two complex numbers, <i>bottom</i>
+     *  and <i>top</i>, where both the real and imaginary parts of
+     *  <i>bottom</i> are expected to be less than the real and imaginary
+     *  parts of <i>top</i>. Thus, <i>bottom</i> and <i>top</i> define a
+     *  rectangle in the complex plane, with <i>bottom</i> at the lower
+     *  left and <i>top</i> at the upper right.
+     *  If any value in the array is infinite
+     *  then it is replaced by the corresponding real or imaginary part
+     *  of <i>top</i> or <i>bottom</i>, depending on the sign of infinity.
+     *  If any value is NaN (not a number), then the result will be NaN.
+     *  To leave either the bottom or the top unconstrained,
      *  specify Complex.NEGATIVE_INFINITY or Complex.POSITIVE_INFINITY.
-     *
+     *  <p>
      *  If the length of the array is 0, return a new array of length 0.
      *  @param array An array of complex numbers.
      *  @param bottom The bottom limit.
      *  @param top The top limit.
-     *  @return A new array with values in the range [bottom, top].
+     *  @return A new array with values in the rectangle defined by
+     *   <i>bottom</i> and <i>top</i>.
+     *  @throws IllegalArgumentException If <i>bottom</i> has either a
+     *   real or imaginary part larger than the corresponding part of
+     *   <i>top</i>.
      */
     public static final Complex[] limit(final Complex[] array,
-            final Complex bottom, final Complex top) {
+            final Complex bottom, final Complex top) 
+            throws IllegalArgumentException {
         Complex[] returnValue = new Complex[array.length];
 	
+        // Check validity of the rectangle.
+        if (bottom.real > top.real || bottom.imag > top.imag) {
+            throw new IllegalArgumentException(
+                    "Complex.limit requires that bottom lie below and "
+                    + "to the left of top.");
+        }
         for (int i = 0; i < array.length; i++) {
-            if (ifgreater(array[i], top) ||
-                    (array[i].real == Double.NaN) ||
-                    (array[i].real == Double.POSITIVE_INFINITY)) {
-
-                returnValue[i] = top;
-
-            } else if (ifless(array[i],bottom) ||
-                    (array[i].real == -Double.NaN) ||
-                    (array[i].real == Double.NEGATIVE_INFINITY)) {
-
-                returnValue[i] = bottom;
-
+            double realPart, imagPart;
+            // NOTE: Assume here that if array[i].real is NaN, then
+            // this test returns false.
+            if (array[i].real > top.real) {
+                realPart = top.real;
+            } else if (array[i].real < bottom.real) {
+                realPart = bottom.real;
             } else {
-                returnValue[i] = array[i];
+                realPart = array[i].real;
             }
+            // NOTE: Assume here that if array[i].imag is NaN, then
+            // this test returns false.
+            if (array[i].imag > top.imag) {
+                imagPart = top.imag;
+            } else if (array[i].imag < bottom.imag) {
+                imagPart = bottom.imag;
+            } else {
+                imagPart = array[i].imag;
+            }
+
+            returnValue[i] = new Complex(realPart, imagPart);
         }
         return returnValue;
     }
@@ -817,32 +768,54 @@ public class ComplexArrayMath {
         return sb.toString();
     }
 
-  
-    /** Return true if all the absolute differences between corresponding
-     *  elements of array1 and array2, for both the real and imaginary parts,
-     *  are all less than or equal to maxError. Otherwise, return false.
-     *  Throw an IllegalArgument exception if the arrays are not of the same
-     *  length. If both arrays are empty, return true.
-     *  This is computationally less expensive than isSquaredErrorWithin().
+    /** Return true if all the distances between corresponding elements
+     *  <i>array1</i> and <i>array2</i> are all less than or equal to
+     *  the magnitude of <i>maxError</i>. If both arrays are empty,
+     *  return true.
+     *  @param array1 The first array.
+     *  @param array2 The second array.
+     *  @param maxError A complex number whose magnitude is taken to
+     *   be the distance threshold.
+     *  @throws IllegalArgumentException If the arrays are not of the same
+     *   length.
      */
     public static final boolean within(Complex[] array1,
             Complex[] array2, Complex maxError) {
+        return within(array1, array2, maxError.magnitude());
+    }
+
+    /** Return true if all the distances between corresponding elements
+     *  <i>array1</i> and <i>array2</i> are all less than or equal to
+     *  <i>maxError</i>. If both arrays are empty, return true.
+     *  @param array1 The first array.
+     *  @param array2 The second array.
+     *  @param maxError The threshold for the magnitude of the difference.
+     *  @throws IllegalArgumentException If the arrays are not of the same
+     *   length, or if <i>maxErorr</i> is negative.
+     */
+    public static final boolean within(Complex[] array1,
+            Complex[] array2, double maxError) {
         int length = _commonLength(array1, array2,
-                "ComplexArrayMath.within");
+                "ComplexArrayMath.areMagnitudesWithin");
 
-	Complex temp = new Complex();
-
-	for (int i = 0; i < length; i++) {
-	    temp = array1[i].subtract(array2[i]);
-	    
-	    // ifgreater returns true if temp > maxError.
-            if (ifgreater(temp,maxError)) {
-		return false;
+        if (maxError < 0) {
+            throw new IllegalArgumentException(
+                    "ComplexArrayMath.within requires that the third argument "
+                    + "be non-negative.");
+        }
+        for (int i = 0; i < length; i++) {
+            double realDifference = array1[i].real - array2[i].real;
+            double imagDifference = array1[i].imag - array2[i].imag;
+            if (realDifference*realDifference + imagDifference*imagDifference
+                   > maxError) {
+                return false;
             }
         }
-        
         return true;
     }
+
+    // FIXME: Need two more version: One that takes a double
+    // array as the third argument, and one that takes a complex array.
 
     /** Return the given complex number with the absolute value of the real part.
      */
@@ -853,33 +826,6 @@ public class ComplexArrayMath {
 	    array[i]= new Complex(Math.abs(array[i].real), array[i].imag);
 	}
 	return array;
-    }
-
-    /** Return true if all the absolute differences between corresponding
-     *  elements of array1 and array2, for both the real and imaginary parts,
-     *  are all less than or equal to corresponding elements in maxError. 
-     *  Otherwise, return false.  Throw an IllegalArgument exception if
-     *  the arrays are not of the same length. If both arrays are empty, return true.
-     *  This is computationally less expensive than isSquaredErrorWithin().
-     */
-    public static final boolean within(Complex[] array1,
-            Complex[] array2, Complex[] maxError) {
-        int length = _commonLength(array1, array2,
-                "ComplexArrayMath.within");
-
-	Complex temp = new Complex();
-	maxError = absValues(maxError);
-
-	for (int i = 0; i < length; i++) {
-	    temp = array1[i].subtract(array2[i]);
-	    
-	    // ifgreater returns true if temp > maxError.
-            if (ifgreater(temp,maxError[i])) {
-		return false;
-            }
-        }
-        
-        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
