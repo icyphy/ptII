@@ -179,7 +179,7 @@ public class VergilApplication extends MDIApplication {
 	// Generic services.
 	classReloadingService = new ClassReloadingService(this);
 	addService(classReloadingService);
-
+	
 	// Instantiate the modules.
 	// FIXME read this out of resources somehow.	
 	new ptolemy.vergil.ptolemy.PtolemyModule(this);
@@ -698,20 +698,24 @@ public class VergilApplication extends MDIApplication {
 	 * instantiated classes.
 	 */
 	public void resetClassLoader() {
-	    String classpath = 
-		getVergilResources().getString("dynamicClassPath");
-	    String separator = ":"; //System.getProperty("path.separator");
-	    StringTokenizer paths = new StringTokenizer(classpath, separator);
-	    URL urls[] = new URL[paths.countTokens()];
-	    int count = 0;
-	    while(paths.hasMoreTokens()) {
-		String path = paths.nextToken();
-		urls[count] = getClass().getResource(path);
-		System.out.println("URL = " + urls[count]);
-		count++;
+	    try {
+		String classpath = 
+		    getVergilResources().getString("dynamicClassPath");
+		String separator = ":"; //System.getProperty("path.separator");
+		StringTokenizer paths = new StringTokenizer(classpath, separator);
+		URL urls[] = new URL[paths.countTokens()];
+		int count = 0;
+		while(paths.hasMoreTokens()) {
+		    String path = paths.nextToken();
+		    urls[count] = getClass().getResource(path);
+		    System.out.println("URL = " + urls[count]);
+		    count++;
+		}
+		_classLoader =
+		    new URLClassLoader(urls, getClass().getClassLoader());
+	    } catch (Exception ex) {
+		_classLoader = getClass().getClassLoader();
 	    }
-	    _classLoader =
-		new URLClassLoader(urls, getClass().getClassLoader());
 	}
 	
 	// The class loader that this service uses.
