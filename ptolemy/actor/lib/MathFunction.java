@@ -62,6 +62,8 @@ If the argument is NaN, then the result is NaN.
 If the argument is NaN, then the result is NaN.
 <li> <b>remainder</b>: The remainder after division.
 If the second operand is zero, then the result is NaN.
+<li> <b>sign</b>: The signum function
+If the argument is NaN, then the result is NaN.
 <li> <b>square</b>: The square function
 If the argument is NaN, then the result is NaN.
 <li> <b>sqrt</b>: The square root function.
@@ -161,6 +163,11 @@ public class MathFunction extends TypedAtomicActor {
                 } else if (functionName.equals("remainder")) {
                     _function = _REMAINDER;
                     _createSecondPort();
+                } else if (functionName.equals("sign")) {
+                    _function = _SIGN;
+                    if (secondOperand != null) {
+                        secondOperand.setContainer(null);
+                    }
                 } else if (functionName.equals("square")) {
                     _function = _SQUARE;
                     if (secondOperand != null) {
@@ -294,14 +301,23 @@ public class MathFunction extends TypedAtomicActor {
         case _LOG:
             result = Math.log(input1);
             break;
+        case _REMAINDER:
+            result = input1 % input2;
+            break;
+        case _SIGN:
+            if (input1 > 0) {
+                result = 1.0;
+            } else if (input1 < 0) {
+                result = -1.0;
+            } else {
+                result = 0.0;
+            }
+            break;
         case _SQUARE:
             result = input1 * input1;
             break;
         case _SQRT:
             result = Math.sqrt(input1);
-            break;
-        case _REMAINDER:
-            result = input1 % input2;
             break;
         default:
             throw new InternalErrorException(
@@ -324,8 +340,9 @@ public class MathFunction extends TypedAtomicActor {
     // Constants used for more efficient execution.
     private static final int _EXP = 0;
     private static final int _LOG = 1;
-    private static final int _SQUARE = 2;
-    private static final int _SQRT = 3;
-    private static final int _REMAINDER = 4;
+    private static final int _REMAINDER = 2;
+    private static final int _SIGN = 3;
+    private static final int _SQUARE = 4;
+    private static final int _SQRT = 5;
 }
 
