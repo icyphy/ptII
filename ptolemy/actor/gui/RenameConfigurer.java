@@ -174,8 +174,8 @@ public class RenameConfigurer extends Query
      */
     public void changeFailed(ChangeRequest change, Exception exception) {
         // Ignore if this is not the originator.
-        if (change.getSource() != this) return;
-        if (!change.isErrorReported()) {
+        if (change != null && change.getSource() != this) return;
+        if (change != null && !change.isErrorReported()) {
             change.setErrorReported(true);
             MessageHandler.error("Rename failed: ", exception);
         }

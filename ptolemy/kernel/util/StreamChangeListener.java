@@ -66,9 +66,11 @@ public class StreamChangeListener implements ChangeListener {
      *  @param change The change that has been executed.
      */
     public void changeExecuted(ChangeRequest change) {
-        _output.println("StreamChangeRequest.changeExecuted(): " +
-                change.getDescription() +
-                " succeeded");
+        String description = "";
+        if (change != null) description = change.getDescription();
+        _output.println("StreamChangeRequest.changeExecuted(): "
+                + description
+                + " succeeded");
     }
 
     /** Print the description of the failure to the stream output.
@@ -76,9 +78,12 @@ public class StreamChangeListener implements ChangeListener {
      *  @param exception The exception that occurred.
      */
     public void changeFailed(ChangeRequest change, Exception exception) {
-        _output.println("StreamChangeRequest.changeFailed(): " +
-                change.getDescription() +
-                " failed: " + exception.toString());
+        String description = "";
+        if (change != null) description = change.getDescription();
+        _output.println("StreamChangeRequest.changeFailed(): "
+                + description
+                + " failed: "
+                + exception.toString());
     }
 
     ///////////////////////////////////////////////////////////////////

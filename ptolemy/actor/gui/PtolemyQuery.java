@@ -301,16 +301,18 @@ public class PtolemyQuery extends Query
      */
     public void changeExecuted(ChangeRequest change) {
         // Ignore if this was not the originator.
-        if (change.getSource() != this) return;
+        if (change != null) {
+            if (change.getSource() != this) return;
 
-        String name = change.getDescription();
-	if (_attributes.containsKey(name)) {
-	    final Settable attribute
-                = (Settable)(_attributes.get(name));
+            String name = change.getDescription();
+            if (_attributes.containsKey(name)) {
+                final Settable attribute = (Settable)(_attributes.get(name));
 
-            // Make a record of the successful attribute value change
-            // in case some future change fails and the user chooses to revert.
-            _revertValue.put(name, attribute.getExpression());
+                // Make a record of the successful attribute value change
+                // in case some future change fails and the user
+                // chooses to revert.
+                _revertValue.put(name, attribute.getExpression());
+            }
         }
     }
 
@@ -324,8 +326,8 @@ public class PtolemyQuery extends Query
      */
     public void changeFailed(final ChangeRequest change, Exception exception) {
         // Ignore if this was not the originator, or if the error has already
-        // been reported.
-        if (change.getSource() != this) {
+        // been reported, or if the change request is null.
+        if (change == null || change.getSource() != this) {
             return;
         }
 

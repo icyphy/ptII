@@ -303,9 +303,9 @@ public abstract class TableauFrame extends Top {
                     // then there are multiple possible views of data
                     // represented in this top-level window.
                     // Thus, we create a View menu here.
-                    JMenu viewMenu = new JMenu("View");
-                    viewMenu.setMnemonic(KeyEvent.VK_V);
-                    _menubar.add(viewMenu);
+                    _viewMenu = new JMenu("View");
+                    _viewMenu.setMnemonic(KeyEvent.VK_V);
+                    _menubar.add(_viewMenu);
                     ViewMenuListener vml = new ViewMenuListener();
                     Iterator factories =
                         _factoryContainer.entityList(TableauFactory.class)
@@ -319,7 +319,7 @@ public abstract class TableauFrame extends Top {
                         item.setActionCommand(name);
                         item.setMnemonic(name.charAt(0));
                         item.addActionListener(vml);
-                        viewMenu.add(item);
+                        _viewMenu.add(item);
                     }
                 }
             }
@@ -580,6 +580,15 @@ public abstract class TableauFrame extends Top {
         }
         throw new IOException("Cannot find an effigy to delegate writing.");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The view menu. Note that this is only created if there are multiple
+     *  views, so if derived classes use it, they must test to see whether
+     *  it is null.
+     */
+    protected JMenu _viewMenu;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

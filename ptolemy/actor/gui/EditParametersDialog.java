@@ -173,7 +173,7 @@ public class EditParametersDialog extends ComponentDialog
      */
     public void changeExecuted(ChangeRequest change) {
         // Ignore if this is not the originator.
-        if (change.getSource() != this) return;
+        if (change == null || change.getSource() != this) return;
 
         // FIXME: this is ugly..  Why is this necessary?
         // Open a new dialog.
@@ -188,7 +188,7 @@ public class EditParametersDialog extends ComponentDialog
      */
     public void changeFailed(ChangeRequest change, Exception exception) {
         // Ignore if this is not the originator.
-        if (change.getSource() != this) return;
+        if (change == null || change.getSource() != this) return;
 
         _target.removeChangeListener(this);
 

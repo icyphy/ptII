@@ -141,7 +141,7 @@ public class PortConfigurerDialog extends ComponentDialog
      */
     public void changeExecuted(ChangeRequest change) {
         // Ignore if this is not the originator.
-        if (change.getSource() != this) return;
+        if (change == null || change.getSource() != this) return;
 
         // Open a new dialog.
         PortConfigurerDialog dialog = new PortConfigurerDialog(_owner, _target);
@@ -155,7 +155,7 @@ public class PortConfigurerDialog extends ComponentDialog
      */
     public void changeFailed(ChangeRequest change, Exception exception) {
         // Ignore if this is not the originator.
-        if (change.getSource() != this) return;
+        if (change == null || change.getSource() != this) return;
 
         _target.removeChangeListener(this);
 
