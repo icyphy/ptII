@@ -138,3 +138,11 @@ test DirectedGraph-4.2 { backwardReachableNodes for a set of nodes } {
     list [$reach get 0] [$reach get 1] [$reach get 2] [$reach get 3]
 } {node1 node2 node3 node5}
 
+######################################################################
+####
+# 
+test DirectedGraph-4.3 { reachableNodes for a set of nodes } {
+    set nodeArray [java::new {java.lang.String[]} 4 [list $n1 $n2 $n3 $n5]]
+    set reach [$p {reachableNodes Object[]}  $nodeArray]
+    $reach getrange 0
+} {node2 node3 node4 node6}
