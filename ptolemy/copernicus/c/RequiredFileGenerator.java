@@ -313,8 +313,7 @@ public class RequiredFileGenerator {
      * @return The collection of all methods called by this method.
      * FIXME: Does this need to be made more general?
      */
-    private static Collection _methodsCalledBy(SootMethod method)
-    {
+    private static Collection _methodsCalledBy(SootMethod method) {
         // Set of all the called methods.
         HashSet targets = new HashSet();
 
@@ -379,8 +378,7 @@ public class RequiredFileGenerator {
      * @param method The method for which we want the target methods.
      * @return The collection of all methods called by this method.
      */
-    private static Collection _fieldsUsedBy(SootMethod method)
-    {
+    private static Collection _fieldsUsedBy(SootMethod method) {
         // Set of all the called methods.
         HashSet fields = new HashSet();
 
@@ -438,14 +436,14 @@ public class RequiredFileGenerator {
             if (FileHandler.exists(fileName+".c")) {
                 if(verbose) System.out.println( "\texists:"+fileName+".c");
             }
-            //else
             // FIXME: Now c files are always overwritten.
-            {
-                code = cGenerator.generate(sootClass);
-                FileHandler.write(fileName+".c", code);
-                if(verbose) System.out.println( "\tcreated: "
-                    +fileName+".c");
+            // else {
+            code = cGenerator.generate(sootClass);
+            FileHandler.write(fileName+".c", code);
+            if (verbose) {
+                System.out.println( "\tcreated: " + fileName + ".c");
             }
+            // }
         }
     }
 
