@@ -1529,7 +1529,7 @@ public class PlotBox extends Panel {
      * Since this is a log plot, number passed in will not have too many
      * digits to cause problems.
      * If the number is an integer, then we print 1e<num>.
-     * If the numer is not an integer, then print only the fractional
+     * If the number is not an integer, then print only the fractional
      * components.
      */
     private String _formatLogNum (double num, int numfracdigits) {

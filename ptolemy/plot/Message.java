@@ -56,7 +56,7 @@ public class Message extends Frame {
      *  @param foreground The foreground Color.
      *  @param rows The number of rows to display.
      *  @param columns The number of columns to display.
-     *  @param int Determines scrollbar visiblity, should be one
+     *  @param int Determines scrollbar visibility, should be one
      *  of TextArea.SCROLLBARS_BOTH, TextArea.SCROLLBARS_NONE,
      *  TextArea.SCROLLBARS_HORIZONTAL_ONLY or
      *  TextArea.SCROLLBARS_VERTICAL_ONLY.
