@@ -487,6 +487,7 @@ remote1distjavadocs:
 # it hangs
 #
 JSALLDIRS = \
+	$(REMOTE1PTIIDIST)/ptolemy/util \
 	$(REMOTE1PTIIDIST)/ptolemy/math \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/kernel/util \
