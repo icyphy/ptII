@@ -125,7 +125,7 @@ DINING_CLASSFILES = \
 	ptolemy/domains/csp/demo/Coordinate.class \
 	ptolemy/domains/csp/demo/PhilosopherListener.class \
 	'ptolemy/domains/csp/demo/TablePanel$$ChopstickCoords.class' \
-	'ptolemy/domains/csp/demo/TabelPanel$$PhilosopherCoords.class' \
+	'ptolemy/domains/csp/demo/TablePanel$$PhilosopherCoords.class' \
 	ptolemy/domains/csp/demo/TablePanel.class \
 	ptolemy/domains/csp/kernel/CSPActor.class \
 	ptolemy/domains/csp/kernel/CSPDirector.class \
