@@ -95,7 +95,8 @@ public class UnitAttribute extends AbstractSettableAttribute {
         }
     }
 
-    /** Write a MoML description of the UnitsAttribute.
+    /** Write a MoML description of the UnitsAttribute.  Nothing is
+     *  written if the value is null or "".
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use instead of the current name.
@@ -109,20 +110,21 @@ public class UnitAttribute extends AbstractSettableAttribute {
         if (value != null && !value.equals("")) {
             valueTerm =
                 " value=\"" + StringUtilities.escapeForXML(value) + "\"";
+        
+            output.write(
+                    _getIndentPrefix(depth)
+                    + "<"
+                    + _elementName
+                    + " name=\""
+                    + name
+                    + "\" class=\""
+                    + getClassName()
+                    + "\""
+                    + valueTerm
+                    + ">\n");
+            _exportMoMLContents(output, depth + 1);
+            output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
         }
-        output.write(
-                _getIndentPrefix(depth)
-                + "<"
-                + _elementName
-                + " name=\""
-                + name
-                + "\" class=\""
-                + getClassName()
-                + "\""
-                + valueTerm
-                + ">\n");
-        _exportMoMLContents(output, depth + 1);
-        output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }
 
     /** Get the descriptive form of this attribute.
