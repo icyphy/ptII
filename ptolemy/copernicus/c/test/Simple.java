@@ -112,7 +112,7 @@ public class Simple {
         }
     }
 
-    // Static method
+    // Static method.
     public static void staticMethod(Simple x) {
         int z = x.publicField1;
         do {
@@ -123,14 +123,14 @@ public class Simple {
         x.method2(5, 9);
     }
 
-    // Public fields
+    // Public fields.
     public int publicField1;
     public int publicField2;
 
-    // Private fields
+    // Private fields.
     private int privateField;
 
-    // Static fields
+    // Static fields.
     public static boolean staticFlag1 = false;
     private static boolean staticFlag2 = true;
 }
