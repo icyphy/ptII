@@ -650,13 +650,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 (Actor)getContainer(), _expectedNextIterationTime);
     }
 
-    // Return true if this director is embedded inside an opaque composite
-    // actor contained by another composite actor.
-    private boolean _isEmbedded() {
-        return (getContainer() != null &&
-                getContainer().getContainer() != null);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
