@@ -34,7 +34,7 @@ using double precision.</text>
         </property>
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0]">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[1]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1}">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -55,7 +55,7 @@ using double precision.</text>
         </property>
         <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="taps" class="ptolemy.data.expr.Parameter" value="[-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609]">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{-0.040609, -0.001628, 0.17853, 0.37665, 0.37665, 0.17853, -0.001628, -0.040609}">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="230.57144165039062, 220.0">
         </property>
@@ -85,7 +85,7 @@ using double precision.</text>
         </property>
         <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="taps" class="ptolemy.data.expr.Parameter" value="quantize( [ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ], 8, 2)">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{quantize(-.040609, 8, 2), quantize(-.001628, 8, 2), quantize(.17853, 8, 2), quantize(.37665, 8, 2), quantize(.37665, 8, 2), quantize(.17853, 8, 2), quantize(-.001628, 8, 2), quantize(-.040609, 8, 2)}">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="250.57144165039062, 285.0">
         </property>
@@ -115,7 +115,7 @@ using double precision.</text>
         </property>
         <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="taps" class="ptolemy.data.expr.Parameter" value="fix( [ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ], 6, 2)">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{fix(-.040609, 6, 2), fix(-.001628, 6, 2), fix(.17853, 6, 2), fix(.37665, 6, 2), fix(.37665, 6, 2), fix(.17853, 6, 2), fix(-.001628, 6, 2), fix(-.040609, 6, 2)}">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="248.0, 122.0">
         </property>
