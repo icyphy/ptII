@@ -55,20 +55,20 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
 
     public PetriNetActor() {
         super();
-        getMoMLInfo().className = 
+        getMoMLInfo().className =
                 "ptolemy.domains.petrinet.kernel.PetriNetActor";
     }
 
     public PetriNetActor(Workspace workspace) {
 	super(workspace);
-        getMoMLInfo().className = 
+        getMoMLInfo().className =
                  "ptolemy.domains.petrinet.kernel.PetriNetActor";
     }
 
     public PetriNetActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        getMoMLInfo().className = 
+        getMoMLInfo().className =
                  "ptolemy.domains.petrinet.kernel.PetriNetActor";
     }
 
@@ -76,13 +76,13 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-   
-   
+
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
- 
+
 
 
     public Object clone(Workspace workspace)
@@ -102,7 +102,7 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
             return rel;
 
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException(   
+            throw new InternalErrorException(
                     "TypedCompositeActor.newRelation: Internal error: "
                     + ex.getMessage());
         }
@@ -114,8 +114,8 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
 
 
     public void fire() throws IllegalActionException {
-   
-     
+
+
     }
 
    public Director getDirector() {
@@ -150,7 +150,7 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
    public void initialize() throws IllegalActionException {
         getDirector().initialize(this);
     }
-   
+
 
     public List inputPortList() {
         if(_inputPortsVersion != _workspace.getVersion()) {
@@ -220,28 +220,28 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
         return _cachedOutputPorts;
     }
 
-    
+
     public boolean postfire() throws IllegalActionException {
- 
+
         return true;
     }
 
 
     public boolean prefire() throws IllegalActionException {
-  
+
         return true;
     }
 
-    
+
     public void preinitialize() throws IllegalActionException {
 
-   
+
     }
 
-    
+
     public void stopFire() {
     }
- 
+
     public void terminate() {
         try {
             wrapup();
@@ -251,7 +251,7 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
         }
     }
 
-  
+
     public List typeConstraintList() {
         try {
             _workspace.getReadAccess();
@@ -333,7 +333,7 @@ public class PetriNetActor extends TypedCompositeActor implements TypedActor   {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

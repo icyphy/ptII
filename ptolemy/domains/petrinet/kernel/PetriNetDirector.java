@@ -21,7 +21,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                           COPYRIGHTENDKEY
 @ProposedRating Red (yukewang@eecs.berkeley.edu)
@@ -30,7 +30,7 @@
 
 package ptolemy.domains.petrinet.kernel;
 
-import ptolemy.actor.lib.Transformer; 
+import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -109,26 +109,26 @@ public class PetriNetDirector extends Director {
      int i = 0;
 
      Nameable container = getContainer();
-     if (container instanceof NamedObj) 
+     if (container instanceof NamedObj)
            System.out.println("the top container is" + container.getFullName());
 
-     Transition nextTransition = _chooseTransition(); 
+     Transition nextTransition = _chooseTransition();
      while (nextTransition != null) {
          i++;
-         System.out.println("_"+i+ 
+         System.out.println("_"+i+
                    "th firing __"+nextTransition.getFullName());
          nextTransition.fire();
          System.out.println("___________ start to choose next transition");
-         nextTransition = _chooseTransition(); 
+         nextTransition = _chooseTransition();
      }
    }
 
- 
+
 
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                      
+    ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -138,35 +138,35 @@ public class PetriNetDirector extends Director {
     ////                         private methods                   ////
 
  /** The method first accumulates all the enabled transitions, and
-  * then randomly choose one to fire. 
+  * then randomly choose one to fire.
   */
 
     private Transition _chooseTransition()  throws IllegalActionException {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
-            Iterator actors = 
+            Iterator actors =
                     ((CompositeActor)container).deepEntityList().iterator();
-     
+
             LinkedList readyTransitionList = new LinkedList();
             int i = 0;
 
             while (actors.hasNext()) {
                 Transformer actor = (Transformer) actors.next();
-                if (actor instanceof Transition)  {            
+                if (actor instanceof Transition)  {
                     Transition transition = (Transition) actor;
                     if (transition.prefire()) {
                         readyTransitionList.add(transition);
                         i++;
                     }
-                    else 
+                    else
                         System.out.println("not ready to fire______");
                 }
-            }   
-        
+            }
+
             if (i>0) {
                 System.out.print(i + "  transitions ready in choosing");
                 System.out.println(" transitions----------");
-                java.util.Random generator = new 
+                java.util.Random generator = new
                 java.util.Random(System.currentTimeMillis());
                 int j = generator.nextInt(i);
                 Object chosenTransition = readyTransitionList.get(j);
@@ -175,7 +175,7 @@ public class PetriNetDirector extends Director {
             }
             else
                 return null;
-        } 
+        }
         return null;
     }
 
@@ -188,6 +188,6 @@ public class PetriNetDirector extends Director {
    // private we have to set the current state here
    // we also need the initial state, which is the places with markings.
 
-     
+
 }
 

@@ -109,12 +109,12 @@ public class Place extends Transformer {
     public void increaseMarking(int i) {
          _currentMarking = _currentMarking + i;
     }
-    
+
     /** decreaseMarking() is to decrease the _currentMarking by i */
     public void decreaseMarking(int i) {
          _currentMarking = _currentMarking - i;
     }
-    
+
     /** decreaseTemporaryMarking() is to decrease the _tempoararyMarking by i */
     public void decreaseTemporaryMarking(int i) {
          _temporaryMarking = _temporaryMarking - i;
@@ -125,7 +125,7 @@ public class Place extends Transformer {
          _temporaryMarking = i;
     }
 
-    
+
     /** setTemporaryMarking() is to set the _currentMarking to i */
     public void setMarking(int i) {
          _currentMarking = i;
@@ -144,7 +144,7 @@ public class Place extends Transformer {
         _temporaryMarking = _currentMarking;
     }
 
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -162,7 +162,7 @@ public class Place extends Transformer {
 
     // Current marking.
     private int _currentMarking = 0;
-    private int _temporaryMarking = 0;   
+    private int _temporaryMarking = 0;
            // for dealing with multiple arcs between a place and a transition
 
 

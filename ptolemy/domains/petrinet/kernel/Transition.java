@@ -1,6 +1,6 @@
 
 /* A Petri net transition.
-  
+
  Copyright (c) 1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -11,7 +11,7 @@
 
  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
  FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF         
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
@@ -59,7 +59,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-//////////////////////////////////////////////////////////////////////////     
+//////////////////////////////////////////////////////////////////////////
 //// Transition
 /**
 A Petri net transition
@@ -105,9 +105,9 @@ public class Transition extends Transformer {
  *   Multiple arcs can exist between a place and a transition.
  *   Furthermore, the arcs can be marked as a "Weight" parameter or
  *   not marked. Not-marked arcs are treated as default weight 1.
- *   Loops can exist as well. 
+ *   Loops can exist as well.
  *
- *  
+ *
  *
  **/
 
@@ -117,7 +117,7 @@ public void fire() throws IllegalActionException {
     System.out.println(" width is " + output.getWidth()  );
     Iterator outRelations = output.linkedRelationList().iterator();
     while(outRelations.hasNext())  {
-    
+
         IORelation weights = (IORelation) outRelations.next();
         if (weights != null) {
            Iterator placePorts = weights.linkedDestinationPortList().iterator();
@@ -130,7 +130,7 @@ public void fire() throws IllegalActionException {
                if (temporaryAttribute == null) {
                    place.increaseMarking(1);
 	             System.out.print("default value 1");
-                   System.out.print(" source place "+ place.getFullName() +  
+                   System.out.print(" source place "+ place.getFullName() +
                            " original tokens " +i);
                    System.out.println(" new token  " + place.getMarking());
                }
@@ -166,12 +166,12 @@ public void fire() throws IllegalActionException {
                Place place = (Place) placePort.getContainer();
                int i = place.getMarking();
 
-               Attribute temporaryAttribute = (Attribute ) 
+               Attribute temporaryAttribute = (Attribute )
                        weights.getAttribute("Weight");
                if (temporaryAttribute == null) {
                    place.decreaseMarking(1);
 	             System.out.print("default value 1");
-                   System.out.print(" source place "+ place.getFullName()+ 
+                   System.out.print(" source place "+ place.getFullName()+
                            " original tokens " +i);
                    System.out.println("  new token  " + place.getMarking());
                }
@@ -199,16 +199,16 @@ public void fire() throws IllegalActionException {
  *  to see whether the marking in that place is bigger than
  *  the weight on the arc or not.
 
- *  We assume the petrinet is specified by arcs connecting places and   
+ *  We assume the petrinet is specified by arcs connecting places and
  *  transitions. Arcs can be marked by Weight attribute, or it can be unmarked.
  *  multiple arcs can be between a place and a transition.
- *  Unmarked arcs are treated as weight 1. 
+ *  Unmarked arcs are treated as weight 1.
  *
  *  To monitor the multiple links, we use the temporaryMarking varialbe.
  *  TemporaryMarking starts with the same marking as the currentMarking.
  *  Each time a link is seen, the temporaryMarking decreases the value
  *  of the weight on the link. If at the end, the temporaryMarking is
- *  less than 0, then the sum of the weights of all links between 
+ *  less than 0, then the sum of the weights of all links between
  *  the place and the transition is bigger than the marking in the place
  *  the transition is not ready to fire.
  **/
@@ -218,16 +218,16 @@ public boolean prefire() throws IllegalActionException {
     int k = input.getWidth();
     boolean readyToFire = true;
     System.out.println("--inside the prefire for transition--the width is" + k);
-              
+
     Iterator inRelations = input.linkedRelationList().iterator();
     while(inRelations.hasNext())  {
         IORelation inWeights = (IORelation) inRelations.next();
         if (inWeights != null) {
-            Iterator temporaryPlacePorts = 
+            Iterator temporaryPlacePorts =
                      inWeights.linkedSourcePortList().iterator();
             while(temporaryPlacePorts.hasNext()) {
                 IOPort temporaryPlacePort = (IOPort) temporaryPlacePorts.next();
-                Place temporaryPlace = (Place) 
+                Place temporaryPlace = (Place)
                         temporaryPlacePort.getContainer();
                 int i = temporaryPlace.getMarking();
                 temporaryPlace.setTemporaryMarking(i);
@@ -244,13 +244,13 @@ public boolean prefire() throws IllegalActionException {
                 IOPort placePort = (IOPort) placePorts.next();
                 Place place = (Place) placePort.getContainer();
                 int i = place.getMarking();
-                System.out.print("source place "+ place.getFullName() + 
+                System.out.print("source place "+ place.getFullName() +
                         " tokens  "+ i + " " + place.getTemporaryMarking());
 
-                Attribute temporaryAttribute = (Attribute) 
+                Attribute temporaryAttribute = (Attribute)
                         weights.getAttribute("Weight");
                 if (temporaryAttribute == null)  {
-	              place.decreaseTemporaryMarking(1);  
+	              place.decreaseTemporaryMarking(1);
                            //unmarked arcs have default value 1
                     System.out.println("  the weight is default value 1");
                 }
@@ -266,11 +266,11 @@ public boolean prefire() throws IllegalActionException {
                 }
                 if (place.getTemporaryMarking() <0) {
                     System.out.print("the place has not enough tokens");
-                    System.out.println(" Temporarytokens" + 
+                    System.out.println(" Temporarytokens" +
                                   place.getTemporaryMarking());
                     return false;
                 }
-            }   
+            }
         }
         else
             System.out.println("the arc weight is null");
