@@ -108,6 +108,11 @@ OTHER_FILES_TO_BE_JARED = \
 	usingVergil62.gif \
 	usingVergil63.gif \
 	usingVergil64.gif \
+	usingVergil65.gif \
+	usingVergil66.gif \
+	usingVergil67.gif \
+	usingVergil68.gif \
+	usingVergil69.gif \
 	usingVergil7.gif \
 	usingVergil70.gif \
 	usingVergil71.gif \
