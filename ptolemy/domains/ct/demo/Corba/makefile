@@ -50,7 +50,7 @@ JSRCS = \
 	NonlinearClientApplication.java \
 	NonlinearServant.java	
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) Corba
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -72,11 +72,7 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 demo: $(PTCLASSJAR)
-	$(PTJAVA_DIR)/bin/tnameserv -ORBInitialPort 1050 &
-	CLASSPATH="$(CLASSPATH)" \
-		$(JAVA) ptolemy.domains.ct.demo.Corba.ModelServer \
-				-ORBInitialPort 1050 &
-	CLASSPATH="$(CLASSPATH)" appletviewer SimpleCorbaDemo.htm
+	./Corba
 
 depend:
 	@echo "no dependencies in this directory"
