@@ -137,8 +137,8 @@ Issuer: CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, 
 Serial number: 3fa9b2c5
 Valid from: Wed Nov 05 18:32:37 PST 2003 until: Tue Feb 03 18:32:37 PST 2004
 Certificate fingerprints:
-	 MD5:  D7:43:A0:C0:39:49:A8:80:69:EA:11:91:17:CE:E5:E3
-	 SHA1: C1:3B:9A:92:35:4F:7F:A5:23:AB:57:28:D6:67:ED:43:AB:EA:A9:2B
+         MD5:  D7:43:A0:C0:39:49:A8:80:69:EA:11:91:17:CE:E5:E3
+         SHA1: C1:3B:9A:92:35:4F:7F:A5:23:AB:57:28:D6:67:ED:43:AB:EA:A9:2B
 Trust this certificate? [no]:  yes
 Certificate was added to keystore
 cxh@cooley 92%
@@ -153,8 +153,8 @@ Issuer: CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, 
 Serial number: 3fa9b2c5
 Valid from: Wed Nov 05 18:32:37 PST 2003 until: Tue Feb 03 18:32:37 PST 2004
 Certificate fingerprints:
-	 MD5:  D7:43:A0:C0:39:49:A8:80:69:EA:11:91:17:CE:E5:E3
-	 SHA1: C1:3B:9A:92:35:4F:7F:A5:23:AB:57:28:D6:67:ED:43:AB:EA:A9:2B
+         MD5:  D7:43:A0:C0:39:49:A8:80:69:EA:11:91:17:CE:E5:E3
+         SHA1: C1:3B:9A:92:35:4F:7F:A5:23:AB:57:28:D6:67:ED:43:AB:EA:A9:2B
 cxh@cooley 94%
 </pre>
 If the Certificate fingerprints match, then the file has not been
