@@ -56,7 +56,7 @@ public interface ViewListener extends java.util.EventListener {
      */
     public void viewDeselected (ViewEvent e);
 
-    /** Invoked when the view has been hidden. This might happend
+    /** Invoked when the view has been hidden. This might happened
      * because another view is placed over the top of it, or because
      * an internal frame is iconified.
      */
