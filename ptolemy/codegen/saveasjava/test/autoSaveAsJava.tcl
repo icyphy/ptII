@@ -73,4 +73,4 @@ autoSaveAsJava [file join $relativePathToPTII ptolemy domains sr kernel test aut
 autoSaveAsJava [file join $relativePathToPTII ptolemy domains sr lib test auto]
 
 # Print out stats
-doneTests
+#doneTests
