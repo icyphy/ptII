@@ -192,6 +192,7 @@ BASECLASSFILES = \
 		'$(ME)/PlotBox$$ZoomListener.class' \
 		$(ME)/img/fill.gif \
 		$(ME)/img/format.gif \
+		$(ME)/img/print.gif \
 		$(ME)/img/reset.gif
 
 # Class files used in simple applets
