@@ -55,6 +55,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	basicHelp.htm \
+	completeDemos.htm \
 	copyright.htm \
 	demos.htm \
 	demosPtiny.htm \
