@@ -58,18 +58,18 @@ class). The <i>server</i> is the object that implements the topology
 changes (by invoking doTopologyChange()).
 <p>
 This class contains
-several fields that indicate the objects involved in the mutation,
-such as <b>compositeEntity</b>, <b>entity</b>, <b>componentEntity</b>.
-<b>port</b>, <b>relation</b>. and <b>componentRelation</b>.
+several private fields that indicate the objects involved in the mutation,
+such as <b>_compositeEntity</b>, <b>_entity</b>, <b>_componentEntity</b>.
+<b>_port</b>, <b>_relation</b>. and <b>_componentRelation</b>.
 In a typical usage, a client constructs an instance of this classes,
 using a constructor that sets the appropriate fields.
 <p>
-The <i>id</id> field in the event signifies the type of this
+The <i>_id</id> field in the event signifies the type of this
 event. It should be one of the public static integer constants
 provided in the class.
-For example, if the <i>id</i> is
+For example, if the <i>_id</i> is
 ENTITY_ADDED, then the doTopologyChange() method will cause
-<i>componentEntity</i> to be added to <i>compositeEntity</i>. In
+<i>_componentEntity</i> to be added to <i>_compositeEntity</i>. In
 addition, when notifyListener() is called, the
 entityAdded() method of the TopologyListener interface will be called.
 
@@ -84,42 +84,42 @@ public class TopologyEvent extends java.util.EventObject {
     ////                     public static fields                  ////
 
     /** An entity has been added to a composite entity. The fields
-     * <b>entity</b> and <b>compositeEntity</b> are valid.
+     * <b>_entity</b> and <b>_compositeEntity</b> are valid.
      */
     public static final int ENTITY_ADDED = 7531;
 
     /** An entity has been removed from a composite entity. The fields
-     * <b>entity</b> and <b>compositeEntity</b> are valid.
+     * <b>_entity</b> and <b>_compositeEntity</b> are valid.
      */
     public static final int ENTITY_REMOVED = ENTITY_ADDED + 1;
 
     /** A port has been added to an entity. The fields
-     * <b>entity</b> and <b>port</b> are valid.
+     * <b>_entity</b> and <b>_port</b> are valid.
      */
     public static final int PORT_ADDED = ENTITY_REMOVED + 1;
 
     /** A port has been removed from an entity. The fields
-     * <b>entity</b> and <b>port</b> are valid.
+     * <b>_entity</b> and <b>_port</b> are valid.
      */
     public static final int PORT_REMOVED = PORT_ADDED + 1;;
 
     /** A port has been linked to a relation. The fields
-     * <b>relation</b> and <b>port</b> are valid.
+     * <b>_relation</b> and <b>_port</b> are valid.
      */
     public static final int PORT_LINKED = PORT_REMOVED + 1;
 
     /** A port has been unlinked from a relation. The fields
-     * <b>relation</b> and <b>port</b> are valid.
+     * <b>_relation</b> and <b>_port</b> are valid.
      */
     public static final int PORT_UNLINKED = PORT_LINKED + 1;
 
     /** A relation has been added to a composite entity. The fields
-     * <b>relation</b> and <b>compositeEntity</b> are valid.
+     * <b>_relation</b> and <b>_compositeEntity</b> are valid.
      */
     public static final int RELATION_ADDED = PORT_UNLINKED + 1;
 
     /** A relation has been removed from a composite entity. The fields
-     * <b>relation</b> and <b>compositeEntity</b> are valid.
+     * <b>_relation</b> and <b>_compositeEntity</b> are valid.
      */
     public static final int RELATION_REMOVED = RELATION_ADDED + 1;
 
@@ -135,9 +135,9 @@ public class TopologyEvent extends java.util.EventObject {
             CompositeEntity compositeEntity,
             ComponentEntity componentEntity) {
         super(client);
-        this.id = id;
-        this.compositeEntity = compositeEntity;
-        this.componentEntity = componentEntity;
+        this._id = id;
+        this._compositeEntity = compositeEntity;
+        this._componentEntity = componentEntity;
     }
 
     /** Create a new mutation event, with the specified ID and with
@@ -148,9 +148,9 @@ public class TopologyEvent extends java.util.EventObject {
             Entity entity,
             Port port) {
         super(client);
-        this.id = id;
-        this.entity = entity;
-        this.port = port;
+        this._id = id;
+        this._entity = entity;
+        this._port = port;
     }
 
     /** Create a new mutation event, with the specified ID and with
@@ -161,9 +161,9 @@ public class TopologyEvent extends java.util.EventObject {
             CompositeEntity compositeEntity,
             ComponentRelation componentRelation) {
         super(client);
-        this.id = id;
-        this.compositeEntity = compositeEntity;
-        this.componentRelation = componentRelation;
+        this._id = id;
+        this._compositeEntity = compositeEntity;
+        this._componentRelation = componentRelation;
     }
 
     /** Create a new mutation event, with the specified ID and with
@@ -174,9 +174,9 @@ public class TopologyEvent extends java.util.EventObject {
             Relation relation,
             Port port) {
         super(client);
-        this.id = id;
-        this.relation = relation;
-        this.port = port;
+        this._id = id;
+        this._relation = relation;
+        this._port = port;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -188,7 +188,7 @@ public class TopologyEvent extends java.util.EventObject {
      * type.
      */
     public CompositeEntity getCompositeEntity() {
-        return compositeEntity;
+        return _compositeEntity;
     }
 
     /** Get the component entity involved in this event.
@@ -197,7 +197,7 @@ public class TopologyEvent extends java.util.EventObject {
      * type.
      */
     public ComponentEntity getComponentEntity() {
-        return componentEntity;
+        return _componentEntity;
     }
 
     /** Get the entity involved in this event.
@@ -206,7 +206,7 @@ public class TopologyEvent extends java.util.EventObject {
      * type.
      */
     public Entity getEntity() {
-        return entity;
+        return _entity;
     }
 
     /** Get the ID of this event. The ID indicates what type
@@ -216,7 +216,7 @@ public class TopologyEvent extends java.util.EventObject {
      * @return The integer ID.
      */
     public int getID() {
-        return id;
+        return _id;
     }
 
     /** Get the relation involved in this event.
@@ -225,7 +225,7 @@ public class TopologyEvent extends java.util.EventObject {
      * type.
      */
     public Relation getRelation() {
-        return relation;
+        return _relation;
     }
 
     /** Get the component relation involved in this event.
@@ -234,7 +234,7 @@ public class TopologyEvent extends java.util.EventObject {
      * type.
      */
     public ComponentRelation getComponentRelation() {
-        return componentRelation;
+        return _componentRelation;
     }
 
     /** Get the port involved in this event.
@@ -243,7 +243,7 @@ public class TopologyEvent extends java.util.EventObject {
      * type.
      */
     public Port getPort() {
-        return port;
+        return _port;
     }
 
     /** Make the topology change represented by this event.
@@ -262,35 +262,35 @@ public class TopologyEvent extends java.util.EventObject {
         _mutationDone = true;
 	switch (getID()) {
 	case ENTITY_ADDED:
-            componentEntity.setContainer(compositeEntity);
+            _componentEntity.setContainer(_compositeEntity);
             break;
 
 	case ENTITY_REMOVED:
-            componentEntity.setContainer(null);
+            _componentEntity.setContainer(null);
             break;
 
 	case PORT_ADDED:
-            port.setContainer(entity);
+            _port.setContainer(_entity);
             break;
 
 	case PORT_REMOVED:
-            port.setContainer(null);
+            _port.setContainer(null);
             break;
 
 	case PORT_LINKED:
-            port.link(relation);
+            _port.link(_relation);
             break;
 
 	case PORT_UNLINKED:
-            port.unlink(relation);
+            _port.unlink(_relation);
             break;
 
 	case RELATION_ADDED:
-            componentRelation.setContainer(compositeEntity);
+            _componentRelation.setContainer(_compositeEntity);
             break;
 
 	case RELATION_REMOVED:
-            componentRelation.setContainer(null);
+            _componentRelation.setContainer(null);
             break;
 	}
     }
@@ -356,35 +356,35 @@ public class TopologyEvent extends java.util.EventObject {
     public void undoTopologyChange() throws Exception {
 	switch (getID()) {
 	case ENTITY_ADDED:
-            componentEntity.setContainer(null);
+            _componentEntity.setContainer(null);
             break;
 
 	case ENTITY_REMOVED:
-            componentEntity.setContainer(compositeEntity);
+            _componentEntity.setContainer(_compositeEntity);
             break;
 
 	case PORT_ADDED:
-            port.setContainer(null);
+            _port.setContainer(null);
             break;
 
 	case PORT_REMOVED:
-            port.setContainer(entity);
+            _port.setContainer(_entity);
             break;
 
 	case PORT_LINKED:
-            port.unlink(relation);
+            _port.unlink(_relation);
             break;
 
 	case PORT_UNLINKED:
-            port.link(relation);
+            _port.link(_relation);
             break;
 
 	case RELATION_ADDED:
-            componentRelation.setContainer(null);
+            _componentRelation.setContainer(null);
             break;
 
 	case RELATION_REMOVED:
-            componentRelation.setContainer(compositeEntity);
+            _componentRelation.setContainer(_compositeEntity);
             break;
 	}
     }
@@ -395,27 +395,27 @@ public class TopologyEvent extends java.util.EventObject {
     // Flag that the mutation has been performed.
     private boolean _mutationDone = false;
 
-    // The id of the event. Note: this field name does not have
-    // a preceding underscore for consistency with AWT.
-    private int id;
+    // The id of the event. Note: this field name has a
+    // preceding underscore even though it makes it inconsistent with AWT.
+    private int _id;
 
     // The component entity that was added to or removed from
     //  a composite entity
-    private ComponentEntity componentEntity;
+    private ComponentEntity _componentEntity;
 
     // The composite entity that had something added or removed.
-    private CompositeEntity compositeEntity;
+    private CompositeEntity _compositeEntity;
 
     // The entity that had a port added or removed
-    private Entity entity;
+    private Entity _entity;
 
     // The port that was added, removed, linked, or unlinked
-    private Port port;
+    private Port _port;
 
     // The relation that was linked or unlinked
-    private Relation relation;
+    private Relation _relation;
 
     // The component relation that was added to or removed
     // from a composite entity
-    private ComponentRelation componentRelation;
+    private ComponentRelation _componentRelation;
 }
