@@ -30,7 +30,7 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.lib.conversions.RectangularToPolar; // for javadoc
+import ptolemy.actor.lib.conversions.CartesianToPolar; // for javadoc
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.DoubleToken;
@@ -83,7 +83,7 @@ functions, and possibly to operate on matrices and arrays).
 The following functions in java.lang.Math are implemented elsewhere:
 <ul>
 <li> <b>abs</b>: AbsoluteValue actor.
-<li> <b>atan2</b>: RectangularToPolar actor.
+<li> <b>atan2</b>: CartesianToPolar actor.
 <li> <b>ceil</b>: Round actor
 <li> <b>exp</b>: MathFunction actor.
 <li> <b>floor</b>: Round actor
@@ -99,7 +99,7 @@ The following functions in java.lang.Math are implemented elsewhere:
 
 @author Edward A. Lee
 @version $Id$
-@see ptolemy.actor.lib.conversions.RectangularToPolar
+@see ptolemy.actor.lib.conversions.CartesianToPolar
 @see AbsoluteValue
 @see MathFunction
 @see Scale
