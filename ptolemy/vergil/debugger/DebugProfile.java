@@ -53,7 +53,7 @@ public class DebugProfile {
         _graphController = graphController;
         _firingEventTypes = new HashSet();
     }
-    
+
     ///////////////////////////////////////////////////////////////
     ////                     public methods                    ////
 
@@ -95,13 +95,13 @@ public class DebugProfile {
     public void unlistenForEvent(FiringEventType type) {
         _firingEventTypes.remove(type);
     }
-    
+
     ///////////////////////////////////////////////////////////////
     ////                     private variables                 ////
-    
+
     // Set of firing event types we want to break on.
     private HashSet _firingEventTypes;
-    
+
     // The GraphController associated with this actor.
     private BasicGraphController _graphController;
 

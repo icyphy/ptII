@@ -147,14 +147,15 @@ public class BreakpointConfigurer extends Query {
         // in the constructor.
         DebugController debugController =
             (DebugController) director.getAttribute(_DEBUGCONTROLLER);
-            
+
         // If some breakpoints were selected
         if (breakpointsSelected) {
             // If the director does not already have a
             // DebugController, create one.
             if (debugController == null) {
                 try {
-                    debugController = new DebugController(director, _DEBUGCONTROLLER);
+                    debugController =
+                        new DebugController(director, _DEBUGCONTROLLER);
                 } catch (NameDuplicationException exception) {
                     throw new RuntimeException(
                             "Could not create debug controller.");
@@ -166,7 +167,7 @@ public class BreakpointConfigurer extends Query {
                 director.addDebugListener(debugController);
 
                 // FIXME: when do we removeDebugListener?
-            } 
+            }
             // Add this actor to the set of objects being debugged.
             debugController.setDebug(_actor, profile);
         } else {
@@ -177,17 +178,8 @@ public class BreakpointConfigurer extends Query {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
-    // Name of the DebugController to attach to the director.
-    private static String _DEBUGCONTROLLER = "_DebugController";
-    
-    // The object that this configurer configures.
-    private Actor _actor;
-
-    // DebugProfile associated with _actor.
-    private DebugProfile _actorProfile;
-    
     // To add firing events for debugging, you must make changes in 2
     // places in this file: _firingEventTypeLabels, _firingEventTypes
     // Labels of FiringEventTypes to show in the dialog box.
@@ -213,6 +205,20 @@ public class BreakpointConfigurer extends Query {
         FiringEvent.BEFORE_ITERATE,
         FiringEvent.AFTER_ITERATE
     };
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Name of the DebugController to attach to the director.
+    private static String _DEBUGCONTROLLER = "_DebugController";
+
+    // The object that this configurer configures.
+    private Actor _actor;
+
+    // DebugProfile associated with _actor.
+    private DebugProfile _actorProfile;
+
+
 
     // The GraphController associated with _actor.
     private BasicGraphController _graphController;
