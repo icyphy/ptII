@@ -76,13 +76,33 @@ public class PortController extends LocatableNodeController {
 	SelectionInteractor interactor =
             (SelectionInteractor) getNodeInteractor();
 	interactor.setSelectionModel(sm);
-	_menuCreator = new MenuCreator(
-	    new EntityPortController.PortContextMenuFactory(controller));
+	_menuCreator = new MenuCreator(null);
 	interactor.addInteractor(_menuCreator);
     }
+   
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
+    /** Get the menu factory that will create context menus for this
+     *  controller.
+     */
+    public MenuFactory getMenuFactory() {
+        return _menuCreator.getMenuFactory();
+    }
+
+    /** Set the menu factory that will create menus for this Entity.
+     */
+    public void setMenuFactory(MenuFactory factory) {
+        _menuCreator.setMenuFactory(factory);
+    }
+
+    /** Render the external ports of a graph as a 5-sided tab thingy.  
+     *  Multiports are rendered hollow, 
+     *  while single ports are rendered filled.
+     */
     public static class PortRenderer implements NodeRenderer {
 	public Figure render(Object n) {
+
 	    Polygon2D.Double polygon = new Polygon2D.Double();
 	    polygon.moveTo(-6, 6);
 	    polygon.lineTo(0, 6);
@@ -90,8 +110,8 @@ public class PortController extends LocatableNodeController {
 	    polygon.lineTo(0, -6);
 	    polygon.lineTo(-6, -6);
 	    polygon.closePath();
-	    Figure figure = new BasicFigure(polygon, Color.black);
 
+	    Figure figure;
 	    // Wrap the figure in a TerminalFigure to set the direction that
 	    // connectors exit the port.  Note that this direction is the
 	    // OPPOSITE direction that is used to layout the port in the
@@ -100,6 +120,14 @@ public class PortController extends LocatableNodeController {
 	    Location location = (Location)n;
 	    if(location != null) {
 		Port port = (Port)location.getContainer();
+		Color fill;
+		if(port instanceof IOPort && ((IOPort)port).isMultiport()) {
+		    fill = Color.white;
+		} else {
+		    fill = Color.black;
+		}
+		figure = new BasicFigure(polygon, fill, (float)1.5);
+		figure.setToolTipText(port.getName());
 		if(!(port instanceof IOPort)) {
 		    direction = SwingUtilities.NORTH;
 		} else if(((IOPort)port).isInput() && 
@@ -118,7 +146,9 @@ public class PortController extends LocatableNodeController {
 		tsite.setNormal(normal);
 		tsite = new FixedNormalSite(tsite);
 		figure = new TerminalFigure(figure, tsite);
-	    }
+	    } else {
+		figure = new BasicFigure(polygon, Color.black);
+	    }			    
 	    return figure;
 	}
     }

@@ -88,9 +88,24 @@ public class FSMTransitionController extends EdgeController {
 	//    MouseFilter handleFilter = new MouseFilter(1, 0, 0);
 	//manipulator.setHandleFilter(handleFilter);
 
-	_menuCreator = new MenuCreator(
-	    new RelationController.RelationContextMenuFactory(controller));
+	_menuCreator = new MenuCreator(null);
 	interactor.addInteractor(_menuCreator);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Get the menu factory that will create context menus for this
+     *  controller.
+     */
+    public MenuFactory getMenuFactory() {
+        return _menuCreator.getMenuFactory();
+    }
+
+    /** Set the menu factory that will create menus for this Entity.
+     */
+    public void setMenuFactory(MenuFactory factory) {
+        _menuCreator.setMenuFactory(factory);
     }
 
     public class LinkTarget extends PerimeterTarget {

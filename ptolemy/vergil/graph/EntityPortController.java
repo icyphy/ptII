@@ -74,53 +74,35 @@ public class EntityPortController extends NodeController {
 	super(controller);
 	setNodeRenderer(new EntityPortRenderer());
 	//SelectionModel sm = controller.getSelectionModel();
-	// Ports of entities do not use the same selection model as
+	// Ports of entities do not use a selection interactor with 
+	// the same selection model as
 	// the rest of the first level figures.
 	// If this is allowed, then the port can be deleted.
 	CompositeInteractor interactor = new CompositeInteractor();
  	setNodeInteractor(interactor);
-	_menuCreator = new MenuCreator(new PortContextMenuFactory(controller));
+	_menuCreator = new MenuCreator(null);
 	interactor.addInteractor(_menuCreator);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Given a node, add it to the given parent.
-     
-    public void drawNode(Port port, Icon parent, int direction,
-            double fraction) {
-
-	GraphModel model = getController().getGraphModel();
-
-        // Create a figure for it
-	//System.out.println("adding port");
-	Figure figure = getNodeRenderer().render(port);
-	double normal = CanvasUtilities.getNormal(direction);
-	
-	Site tsite = new PerimeterSite(figure, 0);
-	tsite.setNormal(normal);
-	tsite = new FixedNormalSite(tsite);
-	figure = new TerminalFigure(figure, tsite);
-
-        figure.setInteractor(getNodeInteractor());
-        figure.setUserObject(port);
-        getController().setFigure(port, figure);
-        CompositeFigure parentFigure =
-	    (CompositeFigure)getController().getFigure(parent);
-	BoundsSite site =
-	    new BoundsSite(parentFigure.getBackgroundFigure(), 0,
-                    direction, fraction);
-
-	figure.translate(site.getX() -
-                parentFigure.getBackgroundFigure().getBounds().getX(),
-                site.getY() -
-                parentFigure.getBackgroundFigure().getBounds().getY());
-
-	parentFigure.add(figure);
+    /** Get the menu factory that will create context menus for this
+     *  controller.
+     */
+    public MenuFactory getMenuFactory() {
+        return _menuCreator.getMenuFactory();
     }
-    */
 
+    /** Set the menu factory that will create menus for this Entity.
+     */
+    public void setMenuFactory(MenuFactory factory) {
+        _menuCreator.setMenuFactory(factory);
+    }
+
+    /** Render the ports of components as triangles.  Multiports are
+     *  rendered hollow, while single ports are rendered filled.
+     */
     public static class EntityPortRenderer implements NodeRenderer {
 	public Figure render(Object n) {
 	    Port port = (Port)n;
@@ -164,64 +146,6 @@ public class EntityPortController extends NodeController {
 	}
     }
 
-    /**
-     * The factory for creating context menus on entities.
-     */
-    public static class PortContextMenuFactory extends PtolemyMenuFactory {
-	public PortContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
-	    addMenuItemFactory(new PortDescriptionFactory());
-	    //    addMenuItemFactory(new MenuActionFactory(VergilApplication.getInstance().getAction("Get Documentation")));
-	}
-
-	public class PortDescriptionFactory extends MenuItemFactory {
-	    /**
-	     * Add an item to the given context menu that will configure the
-	     * parameters on the given target.
-	     */
-	    public JMenuItem create(JContextMenu menu, NamedObj target) {
-		target = _getItemTargetFromMenuTarget(target);
-		if(target instanceof IOPort) {
-		    IOPort port = (IOPort)target;
-		    String string = "";
-		    int count = 0;
-		    if(port.isInput()) {
-			string += "Input";
-			count++;
-		    }
-		    if(port.isOutput()) {
-			if(count > 0) {
-			    string += ", ";
-			}
-			string += "Output";
-			count++;
-		    }
-		    if(port.isMultiport()) {
-			if(count > 0) {
-			    string += ", ";
-			}
-			string += "Multiport";
-			count++;
-		    }
-		    if(count > 0) {
-			return menu.add(new JMenuItem("   " + string));
-		    }
-		}
-		return null;
-	    }
-	    
-	    /**
-	     * Get the name of the items that will be created. 
-	     * This is provided so
-	     * that factory can be overriden slightly with the name changed.
-	     */
-	    protected String _getName() {
-		return null;
-	    }     
-	}
-    }
-
+    // The interactor for creating context menus.
     private MenuCreator _menuCreator;
 }

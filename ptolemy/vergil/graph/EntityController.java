@@ -93,7 +93,8 @@ public class EntityController extends LocatableNodeController {
             (NodeInteractor) getNodeInteractor();
 	interactor.setSelectionModel(sm);
 
-	/*	VergilApplication application = VergilApplication.getInstance();
+	/*	
+	VergilApplication application = VergilApplication.getInstance();
 	Action action = application.getAction("Look Inside");
 	ActionInteractor actionInteractor = new ActionInteractor(action);
 	actionInteractor.setConsuming(false);
@@ -106,8 +107,7 @@ public class EntityController extends LocatableNodeController {
 	interactor.setDragInteractor(interactor.getDragInteractor());
 	*/
         // Initialize the menu creator. 
-	_menuCreator = 
-	    new MenuCreator(new EntityContextMenuFactory(controller));
+	_menuCreator = new MenuCreator(null);
 	interactor.addInteractor(_menuCreator);
 
 	// The filter for the layout algorithm of the ports within this
@@ -216,20 +216,6 @@ public class EntityController extends LocatableNodeController {
         _menuCreator.setMenuFactory(factory);
     }
 
-    /**
-     * The factory for creating context menus on entities.
-     */
-    public static class EntityContextMenuFactory extends PtolemyMenuFactory {
-	public EntityContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
-	    //   addMenuItemFactory(new MenuActionFactory(VergilApplication.getInstance().getAction("Get Documentation")));
-	    //addMenuItemFactory(new MenuActionFactory(VergilApplication.getInstance().getAction("Look Inside")));
-	    //addMenuItemFactory(new MenuActionFactory(VergilApplication.getInstance().getAction("Edit Icon")));
-	}
-    }
-    
     public static class EntityRenderer implements NodeRenderer {
 	public Figure render(Object n) {
 	    Figure figure;

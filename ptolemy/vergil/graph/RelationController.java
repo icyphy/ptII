@@ -80,21 +80,24 @@ public class RelationController extends LocatableNodeController {
 	SelectionInteractor interactor =
             (SelectionInteractor) getNodeInteractor();
 	interactor.setSelectionModel(sm);
-	_menuCreator = 
-	    new MenuCreator(new RelationContextMenuFactory(controller));
+	_menuCreator = new MenuCreator(null);
 	interactor.addInteractor(_menuCreator);
     }
 
-    /**
-     * The factory for creating context menus on relations.
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Get the menu factory that will create context menus for this
+     *  controller.
      */
-    public static class RelationContextMenuFactory extends PtolemyMenuFactory {
-	public RelationContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new EditParameterStylesFactory());
-	    //  addMenuItemFactory(new MenuActionFactory(VergilApplication.getInstance().getAction("Get Documentation")));
-	}
+    public MenuFactory getMenuFactory() {
+        return _menuCreator.getMenuFactory();
+    }
+
+    /** Set the menu factory that will create menus for this Entity.
+     */
+    public void setMenuFactory(MenuFactory factory) {
+        _menuCreator.setMenuFactory(factory);
     }
 
     /** 

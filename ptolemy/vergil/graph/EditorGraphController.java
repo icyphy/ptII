@@ -37,11 +37,12 @@ import ptolemy.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.*;
-import ptolemy.vergil.VergilApplication;
+import ptolemy.vergil.toolbox.FigureAction;
 
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.GraphPane;
+import diva.graph.NodeRenderer;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.event.*;
@@ -53,6 +54,7 @@ import diva.util.java2d.Polygon2D;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Enumeration;
@@ -86,6 +88,16 @@ public class EditorGraphController extends ViewerGraphController {
 	super();
     }
 
+    // FIXME remove this methods.
+    public Action getNewPortAction() {
+	return _newPortAction;
+    }
+
+    // FIXME remove this methods.
+    public Action getNewRelationAction() {
+	return _newRelationAction;
+    }
+
     /**
      * Initialize all interaction on the graph pane. This method
      * is called by the setGraphPane() method of the superclass.
@@ -98,9 +110,9 @@ public class EditorGraphController extends ViewerGraphController {
         GraphPane pane = getGraphPane();
 
         // Create a listener that creates new relations
-	// _relationCreator = new RelationCreator();
-        //_relationCreator.setMouseFilter(_controlFilter);
-        //pane.getBackgroundEventLayer().addInteractor(_relationCreator);
+	_relationCreator = new RelationCreator();
+        _relationCreator.setMouseFilter(_controlFilter);
+        pane.getBackgroundEventLayer().addInteractor(_relationCreator);
 
         // Create a listener that creates new terminals
 	//_portCreator = new PortCreator();
@@ -130,21 +142,133 @@ public class EditorGraphController extends ViewerGraphController {
     ///////////////////////////////////////////////////////////////
     //// PortCreator
 
-    /* protected class PortCreator extends ActionInteractor {
-	public PortCreator() {
-	    super(VergilApplication.getInstance().getAction("New External Port"));
+    // An action to create a new port.
+    public class NewPortAction extends FigureAction {
+	public NewPortAction() {
+	    super("New External Port");
+	    putValue("tooltip", "New External Port");
+	    String dflt = "";
+	    // Creating the renderers this way is rather nasty..
+	    // Standard toolbar icons are 25x25 pixels.
+	    NodeRenderer renderer = new PortController.PortRenderer();
+	    Figure figure = renderer.render(null);
+	    
+	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
+	    putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
 	}
-	}*/
+
+	public void actionPerformed(ActionEvent e) {
+	    super.actionPerformed(e);
+	    GraphPane pane = getGraphPane();
+	    double x;
+	    double y;
+	    if(getSourceType() == TOOLBAR_TYPE ||
+	       getSourceType() == MENUBAR_TYPE) {	
+		// no location in the action, so make something up.
+		Point2D point = pane.getSize();    
+		x = point.getX()/2;
+		y = point.getY()/2;
+	    } else {		    
+		x = getX();
+		y = getY();
+	    }
+		
+	    PtolemyGraphModel graphModel = 
+		(PtolemyGraphModel)getGraphModel();
+	    final double finalX = x;
+	    final double finalY = y;
+	    final CompositeEntity toplevel = graphModel.getToplevel();
+	    // FIXME use moml.  
+	    toplevel.requestChange(new ChangeRequest(this,
+		"Creating new Port in " + toplevel.getFullName()) {
+		protected void _execute() throws Exception {
+		    Port port = 
+			toplevel.newPort(toplevel.uniqueName("port"));
+		    Location location =
+			new Location(port, 
+				     port.uniqueName("_location"));
+		    
+		    double coords[] = new double[2];
+		    coords[0] = ((int)finalX);
+		    coords[1] = ((int)finalY);
+		    location.setLocation(coords);
+		}
+	    });
+	}
+    }
+
+    // An action to create a new relation.
+    public class NewRelationAction extends FigureAction {
+	public NewRelationAction() {
+	    super("New Relation");
+	    putValue("tooltip", "New Relation");
+	    String dflt = "";
+	    // Creating the renderers this way is rather nasty..
+	    // Standard toolbar icons are 25x25 pixels.
+	    NodeRenderer renderer = new RelationController.RelationRenderer();
+	    Figure figure = renderer.render(null);
+	    
+	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
+	    putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+	    super.actionPerformed(e);
+	    GraphPane pane = getGraphPane();
+	    double x;
+	    double y;
+	    if(getSourceType() == TOOLBAR_TYPE ||
+	       getSourceType() == MENUBAR_TYPE) {	
+		// no location in the action, so make something up.
+		// FIXME this is a lousy way to do this.
+		Point2D point = pane.getSize();    
+		x = point.getX()/2;
+		y = point.getY()/2;
+	    } else {
+		x = getX();
+		y = getY();
+	    }
+	    
+	    PtolemyGraphModel graphModel = 
+		(PtolemyGraphModel)getGraphModel();
+	    final double finalX = x;
+	    final double finalY = y;
+	    final CompositeEntity toplevel = graphModel.getToplevel();
+	 		
+	    // FIXME use MoML.  If no class is specifed in MoML, it should
+	    // use the newRelation method.
+	    toplevel.requestChange(new ChangeRequest(this,
+		"Creating new Relation in " + toplevel.getFullName()) {
+		protected void _execute() throws Exception {
+		    Relation relation = 
+			toplevel.newRelation(toplevel.uniqueName("relation"));
+		    Vertex vertex =
+			new Vertex(relation, relation.uniqueName("vertex"));
+		    
+		    double coords[] = new double[2];
+		    coords[0] = ((int)finalX);
+		    coords[1] = ((int)finalY);
+		    vertex.setLocation(coords);
+		}
+	    });
+	}
+    }
+ 
+    protected class PortCreator extends ActionInteractor {
+	public PortCreator() {
+	    super(_newPortAction);
+	}
+    }
 
     ///////////////////////////////////////////////////////////////
     //// RelationCreator
-    /*
+    
     protected class RelationCreator extends ActionInteractor {
 	public RelationCreator() {
 	    // FIXME don't ref VergilApplication.
-	    super(VergilApplication.getInstance().getAction("New Relation"));
+	    super(_newRelationAction);
 	}
-	}*/
+    }
 	
     ///////////////////////////////////////////////////////////////
     //// LinkCreator
@@ -234,7 +358,7 @@ public class EditorGraphController extends ViewerGraphController {
     */
     /** The interactor for creating new relations
      */
-    // private RelationCreator _relationCreator;
+    private RelationCreator _relationCreator;
 
     /** The interactor for creating new vertecies connected
      *  to an existing relation
@@ -243,7 +367,7 @@ public class EditorGraphController extends ViewerGraphController {
 
     /** The interactor for creating new terminals
      */
-    //  private PortCreator _portCreator;
+    private PortCreator _portCreator;
 
     /** The interactor for creating context sensitive menus.
      */
@@ -252,6 +376,9 @@ public class EditorGraphController extends ViewerGraphController {
     /** The interactor that interactively creates edges
      */
     private LinkCreator _linkCreator;
+
+    private Action _newPortAction = new NewPortAction();
+    private Action _newRelationAction = new NewRelationAction();
 
     /** The filter for control operations
      */
