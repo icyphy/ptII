@@ -50,6 +50,7 @@ PTPACKAGE_DIR = ptolemy/domains/csp/demo
 
 JSRCS = \
 	BasicDemo.java \
+	BusContentionDemo.java \
 	Coordinate.java \
 	DiningApplet.java \
 	DiningPhilosophers.java \
