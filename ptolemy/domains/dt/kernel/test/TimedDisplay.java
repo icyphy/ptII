@@ -65,8 +65,6 @@ public class TimedDisplay extends Display implements Placeable, SequenceActor {
 
     public void place(Container container) {
         super.place(container);
-        _scrollPane.setPreferredSize(new Dimension(400,200));
-
     }
 
     public boolean postfire() throws IllegalActionException {
