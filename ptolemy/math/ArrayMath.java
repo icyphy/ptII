@@ -241,7 +241,7 @@ public final class ArrayMath {
             if (roots.length > 1) {
                 for (int i = 1; i < roots.length; i++) {
                     Complex[] factor =
-                            {new Complex(1), roots[i].negate(roots[i])};
+                    {new Complex(1), roots[i].negate(roots[i])};
                     result = convolve(result, factor);
                 }
             }
