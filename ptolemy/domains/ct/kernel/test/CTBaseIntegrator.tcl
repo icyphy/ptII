@@ -173,6 +173,11 @@ test CTBaseIntegrator-4.9 {rebalance: interpolation and extrapolation} {
 	    [arrayToStrings [$integ getHistory 2]]
 } {3 {3.0 1.5} {1.375 1.25} {0.0 -1.0}}
 
+test CTBaseIntegrator-4.10 {clear history} {  
+    $integ clearHistory
+    list [$integ getValidHistoryCount] 
+} {0}
+
 ######################################################################
 #### test auxVariables
 #
@@ -209,8 +214,12 @@ test CTBaseIntegrator-6.1 {set and get states and derivatives} {
     $integ setTentativeDerivative 0.0
     $integ setHistoryCapacity 1
     $integ postfire
-    list [$integ getState] [$integ getDerivative]
-} {1.0 0.0}
+    list [$integ getState] [$integ getTentativeState] [$integ getTentativeDerivative]
+} {1.0 1.0 0.0}
 
-
-
+######################################################################
+#### IsOutputAccurate
+#
+test CTBaseIntegrator-7.1 {isOutputAccurate} {
+    list [$integ isOutputAccurate]
+} {1}
