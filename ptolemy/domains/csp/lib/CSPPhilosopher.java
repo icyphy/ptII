@@ -66,8 +66,7 @@ which controls the distribution of the thinking times. Both these
 rates characterize a uniform distribution between 0 and the rate.
 <p>
 @author Neil Smyth
-@version
-
+@version %Id$
  */
 public class CSPPhilosopher extends CSPActor {
 
