@@ -89,12 +89,13 @@ public class MoMLSimpleApplication implements ChangeListener {
         CompositeActor toplevel = (CompositeActor) parser.parse(null,
                 new File(xmlFilename).toURL());
 
-        Manager manager = new Manager(toplevel.workspace(),
+        _manager = new Manager(toplevel.workspace(),
                 "MoMLSimpleApplication");
-        toplevel.setManager(manager);
+        toplevel.setManager(_manager);
         toplevel.addChangeListener(this);
-        manager.execute();
+        _manager.execute();
     }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -145,4 +146,15 @@ public class MoMLSimpleApplication implements ChangeListener {
             ex.printStackTrace();
         }
     }
+
+    /** Execute the same model again.
+     */
+    public void rerun() throws Exception {
+        _manager.execute();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private vaiables                    ////
+
+    private Manager _manager = null;
 }
