@@ -48,33 +48,8 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// BranchController
 /**
-   A controller that manages the conditional branches for performing
-   conditional communication within CSP (Communication Sequential Processes)
-   domain. Any CSP actors (either atomic or composite) that need the
-   functionality of conditional communication must contain and instantiate
-   an object of this class. In addition, they also needs to implement the
-   interface BranchActor.
-   <p>
-   The conditional branches are supposed to be created within the parent
-   actor that contains this controller.
-   <p>The chooseBranch() method takes those branches (an array) as an
-   argument, and controls which branch is successful. The successful
-   branch is the branch that succeeds with its communication. To
-   determine which branch is successful, the guards of <I>all</I>
-   branches are checked. If the guard for a branch is true then that
-   branch is <I>enabled</I>. If no branches are enabled, i.e. if all
-   the guards are false, then -1 is returned to indicate this.  If
-   exactly one branch is enabled, the corresponding communication is
-   carried out and the identification number of the branch is
-   returned.  If more than one branch is enabled, a separate thread is
-   created and started for each enabled branch. The method then waits
-   for one of the branches to succeed, after which it wakes up and
-   terminates the remaining branches. When the last conditional branch
-   thread has finished, the method returns allowing the parent actor
-   thread to continue.
 
-   <p>
-@author Neil Smyth, John S. Davis II
+@author John S. Davis II
 @version $Id$
 */
 
@@ -104,12 +79,6 @@ public class BranchController {
         return _parentActor;
     }
 
-    /**
-    public void setBranches(Branch[] branches) {
-    	_branches = branches;
-    }
-     */
-    
     /**
      */
     public void runBranches() {
@@ -146,7 +115,7 @@ public class BranchController {
 	    prodRcvr = (BoundaryReceiver)prodRcvrs[i][0];
 	    consRcvr = (BoundaryReceiver)consRcvrs[i][0];
 
-	    branch = new Branch( 3, true, prodRcvr, consRcvr, this );
+	    branch = new Branch( true, prodRcvr, consRcvr, this );
 	    _branches.add(branch);
 	}
     }
@@ -154,7 +123,7 @@ public class BranchController {
     /**
      */
     public void startBranches() {
-        synchronized(_internalLock) {
+        synchronized(this) {
 	    if( _branches == null ) {
 		return;
 	    }
@@ -188,43 +157,34 @@ public class BranchController {
      *  this method does not allow the threads to terminate gracefully.
      */
     public void terminate() {
-        // synchronized(_internalLock) {
-            // Now stop any threads created by this director.
-            if (_threadList != null) {
-                Iterator threads = _threadList.iterator();
-                BranchThread bThread = null;
-                Branch branch = null;
-                BoundaryReceiver bRcvr = null;
-                while (threads.hasNext()) {
-                    bThread = (BranchThread)threads.next();
-                    branch = bThread.getBranch();
-                    branch.setActive(false);
-                    bRcvr = branch.getConsReceiver();
-                    synchronized(bRcvr) {
-                        bRcvr.notifyAll();
-                    }
-                    bRcvr = branch.getProdReceiver();
-                    synchronized(bRcvr) {
-                        bRcvr.notifyAll();
-                    }
-                    
-                    /*
-                    if (bThread.isAlive()) {
-                        bThread.stop();
-                    }
-                    */
+        if (_threadList != null) {
+            Iterator threads = _threadList.iterator();
+            BranchThread bThread = null;
+            Branch branch = null;
+            BoundaryReceiver bRcvr = null;
+            while (threads.hasNext()) {
+                bThread = (BranchThread)threads.next();
+                branch = bThread.getBranch();
+                branch.setActive(false);
+                bRcvr = branch.getConsReceiver();
+                synchronized(bRcvr) {
+                    bRcvr.notifyAll();
+                }
+                bRcvr = branch.getProdReceiver();
+                synchronized(bRcvr) {
+                    bRcvr.notifyAll();
                 }
             }
-        // }
+        }
     }
 
     /**
      */
     public void waitOnBranches() {
         try {
-            synchronized(_internalLock) {
+            synchronized(this) {
     		while( _branchesActive != 0 ) {
-                    _internalLock.wait();
+                    this.wait();
         	}
             }
         } catch( InterruptedException e ) {
@@ -240,7 +200,7 @@ public class BranchController {
      *  actor as being blocked.
      */
     protected void _branchBlocked() {
-        synchronized(_internalLock) {
+        synchronized(this) {
             _branchesBlocked++;
             if ( _isDeadlocked() ) {
                 // Note: acquiring a second lock, need to be careful.
@@ -256,37 +216,15 @@ public class BranchController {
         }
     }
 
-    /** Registers the calling branch as failed. It reduces the count
-     *  of active branches, and if all the active branches have
-     *  finished, it wakes notifies chooseBranch() to continue.
-     *  It is called by a conditional branch just before it dies.
-     *  @param branchNumber The ID assigned to the calling branch
-     *   upon creation.
-    protected void _branchFailed(Branch branch) {
-        if (_successfulBranch == branchNumber) {
-            // the execution of the model must have finished.
-            _successfulBranch = -1;
-        }
-        synchronized(_internalLock) {
-            _branchesActive--;
-            if (_branchesActive == 0) {
-                //System.out.println(getName() + ": Last branch finished, " +
-                //      "waking up chooseBranch");
-                _internalLock.notifyAll();
-            }
-        }
-    }
-     */
-
     /** Registers the calling branch as the successful branch. It
      *  reduces the count of active branches, and notifies chooseBranch()
      *  that a branch has succeeded. The chooseBranch() method then
      *  proceeds to terminate the remaining branches. It is called by
      *  the first branch that succeeds with a rendezvous.
-     *  @param branchID The ID assigned to the calling branch upon creation.
+     *  @param branch The calling Branch.
      */
     protected void _engagementSucceeded(Branch branch) {
-        synchronized(_internalLock ) {
+        synchronized(this) {
             if( _maxEngagements < 0 && _maxEngagers < 0 ) {
                 return;
             }
@@ -301,7 +239,7 @@ public class BranchController {
                 // throw exception here.
             }
             
-            _internalLock.notifyAll();
+            this.notifyAll();
         }
     }
 
@@ -311,7 +249,7 @@ public class BranchController {
      *  blocked.
      */
     protected void _branchUnBlocked() {
-        synchronized(_internalLock) {
+        synchronized(this) {
  	    if (_blocked) {
             	if ( !_isDeadlocked() ) {
                     throw new InternalErrorException(
@@ -343,7 +281,7 @@ public class BranchController {
      *   to rendezvous, otherwise false.
      */
     protected boolean _canBranchEngage(Branch branch) {
-        synchronized(_internalLock) {
+        synchronized(this) {
             if( _maxEngagements < 0 && _maxEngagers < 0 ) {
                 return true;
             }
@@ -380,7 +318,7 @@ public class BranchController {
     
     /**
      */
-    protected boolean _isDeadlocked() {
+    protected synchronized boolean _isDeadlocked() {
         if( _branchesBlocked == _branchesStarted ) {
             return true;
         } 
@@ -398,7 +336,7 @@ public class BranchController {
      *  @param branchNumber The ID assigned to the branch upon creation.
      */
     protected void _disengageBranch(Branch branch) {
-        synchronized(_internalLock) {
+        synchronized(this) {
             if( _maxEngagements < 0 && _maxEngagers < 0 ) {
                 return;
             }
@@ -438,13 +376,12 @@ public class BranchController {
      * so that it starts with a consistent state each time.
      */
     private void _resetConditionalState() {
-        synchronized(_internalLock) {
+        synchronized(this) {
             _blocked = false;
             _branchesActive = 0;
 	    _branchesBlocked = 0;
             _branchesStarted = 0;
             _branchTrying = -1;
-            _successfulBranch = -1;
 	    _threadList = null;
         }
     }
@@ -464,10 +401,6 @@ public class BranchController {
     // trying to rendezvous.
     private int _branchesBlocked = 0;
 
-    // Contains the number of conditional write branches that are 
-    // blocked trying to rendezvous.
-    // private int _writeBranchesBlocked = 0;
-
     // Contains the number of branches that were actually started for
     // the most recent conditional rendezvous.
     private int _branchesStarted = 0;
@@ -476,17 +409,8 @@ public class BranchController {
     // is -1 if no branch is currently trying.
     private int _branchTrying = -1;
 
-    // This lock is only used internally by the actor. It is used to
-    // avoid having to synchronize on the actor itself. The chooseBranch()
-    // method waits on it so it knows when a branch has succeeded and when
-    // the last branch it created has died.
-    private Object _internalLock = new Object();
-
     // Point to the actor who owns this controller object.
     private CompositeActor _parentActor;
-
-    // Contains the ID of the branch that successfully rendezvoused.
-    private int _successfulBranch = -1;
 
     // Threads created by this actor to perform a conditional rendezvous.
     // Need to keep a list of them in case the execution of the model is

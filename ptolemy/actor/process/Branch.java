@@ -39,47 +39,33 @@ import ptolemy.kernel.util.*;
 //// Branch
 /**
 
-@author  John S. Davis II
+@author John S. Davis II
 @version $Id$
 */
 
 public class Branch {
 
-    /** Create a guarded communication statement. 
-    public Branch(boolean guard, int prodChannel, int consChannel, 
-    	    int branchID, IOPort prodPort, IOPort consPort, 
-            BranchController cntlr) throws IllegalActionException {
+    /** Construct a Branch object.
      */
-    public Branch(int branchID, boolean guard, BoundaryReceiver prodRcvr,
+    public Branch(boolean guard, BoundaryReceiver prodRcvr,
 	    BoundaryReceiver consRcvr, BranchController cntlr) 
 	    throws IllegalActionException {
         _guard = guard;
-        _branchID = branchID;
         _controller = cntlr;
         
         Receiver[][] receivers;
         BoundaryReceiver receiver;
         
-	/*
-        receivers = prodPort.getReceivers();
-        receiver = (BoundaryReceiver)receivers[prodChannel][0];
-	*/
         if( !prodRcvr.isProducerReceiver() ) {
             throw new IllegalActionException("Not producer "
             	    + "receiver");
         }
-        // _prodRcvr = (BoundaryReceiver)receivers[prodChannel][0];
 	_prodRcvr = prodRcvr;
         
-	/*
-        receivers = consPort.getRemoteReceivers();
-        receiver = (BoundaryReceiver)receivers[consChannel][0];
-	*/
         if( !_consRcvr.isConsumerReceiver() ) {
             throw new IllegalActionException("Not consumer "
             	    + "receiver");
         }
-        // _consRcvr = (BoundaryReceiver)receivers[consChannel][0];
 	_consRcvr = consRcvr;
     }
 
@@ -89,7 +75,7 @@ public class Branch {
     /**
      */
     public int numberOfEngagements() {
-        return 0;
+        return _successfulEngagements;
     }
     
     /** 
@@ -102,6 +88,7 @@ public class Branch {
      *  branch when performing a CIF or CDO.
      *  @return The controller that manages conditional rendezvous for
      *  this branch.
+     *  FIXME: Is this necesary? What about package friendly variable?
      */
     public BranchController getController() {
         return _controller;
@@ -110,17 +97,10 @@ public class Branch {
     /** Returns the guard for this guarded communication statement.
      *  If it is true the branch is said to be enabled.
      *  @return True if the branch is  enabled.
+     *  FIXME: Is this necesary? What about package friendly variable?
      */
     public boolean getGuard() {
         return _guard;
-    }
-
-    /** Returns the identification number of this branch(according to its
-     *  controller).
-     *  @return The identification number of this branch.
-     */
-    public int getID() {
-        return _branchID;
     }
 
     /** Return the Consumer BoundaryReceiver that this branch puts data into.
@@ -176,6 +156,7 @@ public class Branch {
     }
 
     /** 
+     * FIXME: Can we optimize this?
      */
     public void transferTokens() {
         try {
@@ -201,26 +182,15 @@ public class Branch {
     //////////////////////////////////////////////////////////////////
     ////                       protected methods                  ////
 
-    /** Set the BoundaryReceiver this branch is trying to rendezvous with.
-     *  This method should only be called from derived classes.
-     *  FIXME:param rec The BoundaryReceiver this branch is trying to 
-     *   rendezvous with.
-    protected void setReceiver(BoundaryReceiver rec) {
-        _receiver = rec;
-    }
-     */
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables                 ////
 
     // The guard for this guarded communication statement.
+    // FIXME: Should this be optimized?
     protected boolean _guard;
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The identification number of this branch (according to its controller)
-    private int _branchID;
 
     // Has another branch successfully rendezvoused? If so, then _active
     // is set to false. Otherwise, this branch still can potentially
