@@ -156,72 +156,72 @@ public class ImageDisplay extends Sink implements Placeable {
      */
     public void fire() throws IllegalActionException {
         if(_debugging) {
-	    _debug("ImageDisplay actor firing");
-	}
-	if (input.hasToken(0)) {
-	    ObjectToken objectToken = (ObjectToken) input.get(0);
+            _debug("ImageDisplay actor firing");
+        }
+        if (input.hasToken(0)) {
+            ObjectToken objectToken = (ObjectToken) input.get(0);
 
             // If there is no place to display, we can return after
             // consuming the input token.
             if (_container == null) return;
 
-	    Image image = (Image) objectToken.getValue();
-	    if (image == null) {
-		throw new IllegalActionException(this,
+            Image image = (Image) objectToken.getValue();
+            if (image == null) {
+                throw new IllegalActionException(this,
                 "ImageDisplay: input image was null!");
-	    } else {
-		int xsize = image.getWidth(null);
-		int ysize = image.getHeight(null);
-		if ((_oldxsize != xsize) || (_oldysize != ysize)) {
-		    if (_debugging) {
-			_debug("Image size has changed.");
-		    }
-		    _oldxsize = xsize;
-		    _oldysize = ysize;
-		    
-		    if (_picture != null) {
-			_container.remove(_picture);
-		    }
-		    _picture = new Picture(xsize, ysize);
-		    _picture.setImage(image);
-		    _picture.setBackground(null);
-		    _container.add("Center", _picture);
-		    _container.validate();
-		    _container.invalidate();
-		    _container.repaint();
-		    _container.doLayout();
-		    Container c = _container.getParent();
-		    while (c.getParent() != null) {
-			c.invalidate();
-			c.validate();
-			c = c.getParent();
-		    }
-		    if (_frame != null) {
-			_frame.pack();
-		    }
-		}
-		else {
-		    _picture.setImage(image);
-		}
-		
-		// display it.
-		_picture.displayImage();
-		_picture.repaint();
-		
+            } else {
+                int xsize = image.getWidth(null);
+                int ysize = image.getHeight(null);
+                if ((_oldxsize != xsize) || (_oldysize != ysize)) {
+                    if (_debugging) {
+                        _debug("Image size has changed.");
+                    }
+                    _oldxsize = xsize;
+                    _oldysize = ysize;
+                    
+                    if (_picture != null) {
+                        _container.remove(_picture);
+                    }
+                    _picture = new Picture(xsize, ysize);
+                    _picture.setImage(image);
+                    _picture.setBackground(null);
+                    _container.add("Center", _picture);
+                    _container.validate();
+                    _container.invalidate();
+                    _container.repaint();
+                    _container.doLayout();
+                    Container c = _container.getParent();
+                    while (c.getParent() != null) {
+                        c.invalidate();
+                        c.validate();
+                        c = c.getParent();
+                    }
+                    if (_frame != null) {
+                        _frame.pack();
+                    }
+                }
+                else {
+                    _picture.setImage(image);
+                }
+                
+                // display it.
+                _picture.displayImage();
+                _picture.repaint();
+                
                 // FIXME: Why is all this needed?  In theory,
                 // the repaint() call above should be enough.
-		Runnable painter = new Runnable() {
-			public void run() {
+                Runnable painter = new Runnable() {
+                        public void run() {
                             if (_container != null) {
                                 _container.paint(_container.getGraphics());
                             }
-			}
-		    };
-		// Make sure the image gets updated.
-		SwingUtilities.invokeLater(painter);
-		Thread.yield();
-	    }
-	}
+                        }
+                    };
+                // Make sure the image gets updated.
+                SwingUtilities.invokeLater(painter);
+                Thread.yield();
+            }
+        }
     }
 
     /** Set the background */
