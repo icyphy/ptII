@@ -125,10 +125,10 @@ public class HDFActor extends Transformer {
         if (director instanceof HDFDirector) {
             Scheduler scheduler =
                 ((SDFDirector)director).getScheduler();
-            _firingCount = 
+            _firingCount =
                 ((HDFDirector)director).getDirectorFiringsPerIteration()
                     * ((SDFScheduler)scheduler).getFiringCount(this);
-                
+
         }
         Token[] inputToken = (Token[])input.get(0, _rateValue);
         output.broadcast(inputToken, _rateValue);
@@ -187,9 +187,9 @@ public class HDFActor extends Transformer {
     // It does get updated if it is in the middle of one iteration.
     private int _rateValue;
 
-    // Number of firings so far in one iteration.    
+    // Number of firings so far in one iteration.
     private int _firingSoFar;
-    
+
     // Number of firings of this actor per iteration.
     private int _firingCount;
 }

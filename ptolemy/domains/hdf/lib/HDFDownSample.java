@@ -80,7 +80,7 @@ public class HDFDownSample extends Transformer {
         rate = new PortParameter(this, "rate");
         rate.setTypeEquals(BaseType.INT);
         rate.setExpression("1");
-        
+
         phase = new Parameter(this, "phase");
         phase.setExpression("0");
 
@@ -99,7 +99,7 @@ public class HDFDownSample extends Transformer {
      *  zero.
      */
     public PortParameter rate;
-    
+
     /** The phase of the output with respect to the input.
      *  This is an integer that defaults to 0 and must be between 0
      *  and <i>factor</i>-1. If <i>phase</i> = 0, the most recent
@@ -139,10 +139,10 @@ public class HDFDownSample extends Transformer {
         Director director = getDirector();
         Scheduler scheduler =
             ((SDFDirector)director).getScheduler();
-        _firingCount = 
+        _firingCount =
             ((HDFDirector)director).getDirectorFiringsPerIteration()
                 * ((SDFScheduler)scheduler).getFiringCount(this);
-          
+
         Token[] inputToken = (Token[])input.get(0, _rateValue);
         int phaseValue = ((IntToken)phase.getToken()).intValue();
         if (phaseValue >= _rateValue) {
@@ -160,7 +160,7 @@ public class HDFDownSample extends Transformer {
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void preinitialize() throws IllegalActionException {
-       
+
         _rateValue = ((IntToken)rate.getToken()).intValue();
         _inputRate.setToken(new IntToken(_rateValue));
         _firingSoFar = 0;
@@ -169,8 +169,8 @@ public class HDFDownSample extends Transformer {
         //if (director instanceof HDFDirector) {
         //    Scheduler scheduler =
         //         ((SDFDirector)director).getScheduler();
-        //    _firingCount = 
-        //        ((SDFScheduler)scheduler).getFiringCount(this);  
+        //    _firingCount =
+        //        ((SDFScheduler)scheduler).getFiringCount(this);
         //}
         super.preinitialize();
     }
@@ -188,8 +188,8 @@ public class HDFDownSample extends Transformer {
         if (director instanceof HDFDirector) {
             Scheduler scheduler =
                 ((SDFDirector)director).getScheduler();
-                
-            //_firingCount = 
+
+            //_firingCount =
                 //((SDFScheduler)scheduler).getFiringCount(this);
               //  ((HDFDirector)director).getDirectorFiringsPerIteration();
             if (_firingSoFar == _firingCount){
@@ -218,10 +218,10 @@ public class HDFDownSample extends Transformer {
     // The value of token received from the portParameter.
     // It does get updated if it is in the middle of one iteration.
     private int _rateValue;
-    
+
     // Number of firings so far in one iteration.
     private int _firingSoFar;
-    
+
     // Number of firings of this actor per iteration.
     private int _firingCount;
 }
