@@ -105,11 +105,7 @@ public class TimedSource extends Source implements TimedActor {
                     throw new IllegalActionException(this, "No director!");
                 }
                 double currentTime = director.getCurrentTime();
-                if (time > currentTime) {
-                    director.fireAt(this, time);
-                } else {
-                    director.fireAfterIteration(this);
-                }
+                director.fireAt(this, time);
             }
         } else {
             super.attributeChanged(attribute);

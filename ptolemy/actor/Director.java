@@ -175,21 +175,6 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
-    /** Schedule a firing of the given actor at the current time. Normally,
-     *  a domain will implement this by firing the actor only after all
-     *  other pending firings at the current time have been processed.
-     *  In this base class, this method simply calls fireAt() with the
-     *  current time.
-     *  @param actor The actor scheduled to be fired.
-     *  @exception IllegalActionException If the operation is not
-     *    permissible (e.g. the given time is in the past).
-     */
-    public void fireAfterIteration(Actor actor)
-            throws IllegalActionException {
-
-        fireAt(actor, getCurrentTime());
-    }
-
     /** Schedule a firing of the given actor at the given time. It does
      *  nothing in this base class. Derived classes
      *  should override this method.
@@ -431,11 +416,12 @@ public class Director extends NamedObj implements Executable {
             Enumeration allactors = container.deepGetEntities();
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
-                _debug("Initializing actor: ", ((NamedObj)actor).getFullName());
+                _debug("Invoking preinitialize(): ",
+                ((NamedObj)actor).getFullName());
                 actor.preinitialize();
             }
         }
-        _debug(getName() + " finished initializing.");
+        _debug("Finished preinitialize().");
     }
 
     /** Queue a change request with the manager.
