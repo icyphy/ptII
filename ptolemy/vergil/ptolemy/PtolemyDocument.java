@@ -166,6 +166,7 @@ public class PtolemyDocument extends AbstractDocument
 	jgraph.setAlignmentX(1);
 	jgraph.setAlignmentY(1);
 	jgraph.setBackground(PtolemyModule.BACKGROUND_COLOR);
+	jgraph.setToolTipText("jgraph");
 	return jgraph;
     }
 

@@ -35,7 +35,7 @@ import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.vergil.*;
-import ptolemy.vergil.toolbox.BasicContextMenu;
+import ptolemy.vergil.toolbox.*;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
 import diva.gui.*;
@@ -88,19 +88,16 @@ public class RelationController extends LocatableNodeController {
     /**
      * The factory for creating context menus on relations.
      */
-    public static class RelationContextMenuFactory extends MenuFactory {
-	public JPopupMenu create(Figure source) {
-	    Node sourcenode = (Node) source.getUserObject();
-	    Vertex vertex = (Vertex) sourcenode.getSemanticObject();
-            ComponentRelation relation = 
-               (ComponentRelation)vertex.getContainer();
-	    return new Menu(VergilApplication.getInstance(), relation);
+    public static class RelationContextMenuFactory extends PtolemyMenuFactory {
+	public RelationContextMenuFactory() {
+	    super();
+	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new EditParameterStylesFactory());
 	}
 
-	public class Menu extends BasicContextMenu {
-	    public Menu(Application application, NamedObj target) {
-		super(application, target);
-	    }
+	public NamedObj _getObjectFromFigure(Figure source) {
+	    Vertex vertex = (Vertex)super._getObjectFromFigure(source);
+	    return(NamedObj) vertex.getContainer();
 	}
     }
 

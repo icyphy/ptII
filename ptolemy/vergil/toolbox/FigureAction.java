@@ -38,6 +38,7 @@ import javax.swing.event.*;
 import diva.canvas.*;
 import diva.graph.*;
 import diva.graph.model.*;
+import diva.gui.toolbox.*;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.*;
 
@@ -72,7 +73,7 @@ public class FigureAction extends AbstractAction {
 	} else if(source instanceof JComponent) {
 	    // Action activated using a context menu.
 	    JMenuItem item = (JMenuItem) source;
-	    BasicContextMenu menu = (BasicContextMenu)item.getParent();
+	    JContextMenu menu = (JContextMenu)item.getParent();
 	    _target = (NamedObj) menu.getTarget();
 	} else {
 	    _target = null;

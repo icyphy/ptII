@@ -87,7 +87,7 @@ public class FSMStateController extends LocatableNodeController {
             (SelectionInteractor) getNodeInteractor();
 	interactor.setSelectionModel(sm);
 
-	_menuCreator = new MenuCreator(new EntityContextMenuFactory());
+	_menuCreator = new MenuCreator(new EntityController.EntityContextMenuFactory());
 	interactor.addInteractor(_menuCreator);
     }
 
@@ -107,24 +107,6 @@ public class FSMStateController extends LocatableNodeController {
      */
     public void removeNode(Node node) {
 	super.removeNode(node);
-    }
-
-    /**
-     * The factory for creating context menus on entities.
-     */
-    public static class EntityContextMenuFactory extends MenuFactory {
-	public JPopupMenu create(Figure source) {
-	    Node sourcenode = (Node) source.getUserObject();
-	    Icon icon = (Icon)sourcenode.getSemanticObject();
-	    NamedObj object = (NamedObj) icon.getContainer();
-	    return new Menu(VergilApplication.getInstance(), object);
-	}
-
-	public class Menu extends BasicContextMenu {
-	    public Menu(Application application, NamedObj target) {
-		super(application, target);
-	    }
-	}
     }
 
     public class EntityRenderer implements NodeRenderer {

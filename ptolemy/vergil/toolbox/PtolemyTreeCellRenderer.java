@@ -36,6 +36,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import diva.canvas.*;
 import diva.gui.toolbox.*;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.dnd.*;
@@ -66,8 +67,15 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 		selected, expanded, leaf, row, hasFocus);	
 	if(value instanceof NamedObj) {
 	    NamedObj object = (NamedObj) value;
+	    // Fix the background colors because transparent 
+	    // labels don't work quite right.		
+	    if(!selected) {
+		component.setBackground(tree.getBackground());
+		component.setOpaque(true);
+	    } else {
+		component.setOpaque(false);
+	    }	    
 	    component.setText(object.getName());
-	    component.setBackground(new java.awt.Color(0, 0, 0, 0));
 	   
             // Now we get to create its icon:
 	    NamedObj iconObject = object.getAttribute("_icon");

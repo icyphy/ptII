@@ -135,18 +135,6 @@ public class FSMTransitionController extends EdgeController {
      */
     public static class LinkContextMenuFactory 
 	extends RelationController.RelationContextMenuFactory {
-	public JPopupMenu create(Figure source) {
-	    Edge edge = (Edge) source.getUserObject();
-	    Relation relation = (Relation)edge.getSemanticObject();
-	    return new Menu(VergilApplication.getInstance(), relation);
-	}
-
-
-	public class Menu extends BasicContextMenu {
-	    public Menu(Application application, NamedObj target) {
-		super(application, target);		
-	    }
-	}
     }
 
     public class LinkRenderer implements EdgeRenderer {

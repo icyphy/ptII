@@ -130,7 +130,8 @@ public class LinkController extends EdgeController {
      */
     public static class LinkContextMenuFactory 
 	extends RelationController.RelationContextMenuFactory {
-	public JPopupMenu create(Figure source) {
+	
+	public NamedObj _getObjectFromFigure(Figure source) {
 	    Edge edge = (Edge) source.getUserObject();
 	    Relation relation = (Relation)edge.getSemanticObject();
 	    if(relation == null) {
@@ -145,14 +146,7 @@ public class LinkController extends EdgeController {
 		    relation = (Relation)vertex.getContainer();
 		}
 	    }
-	    return new Menu(VergilApplication.getInstance(), relation);
-	}
-
-
-	public class Menu extends BasicContextMenu {
-	    public Menu(Application application, NamedObj target) {
-		super(application, target);		
-	    }
+	    return relation;
 	}
     }
 

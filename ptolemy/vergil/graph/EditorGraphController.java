@@ -35,7 +35,6 @@ import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.vergil.VergilApplication;
-import ptolemy.vergil.toolbox.BasicContextMenu;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
 import diva.gui.*;

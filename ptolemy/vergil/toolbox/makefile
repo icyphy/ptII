@@ -48,18 +48,23 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	BasicContextMenu.java \
 	EditorIcon.java \
+	EditParametersFactory.java \
+	EditParameterStylesFactory.java \
 	FigureAction.java \
 	GraphicElement.java \
 	GraphPalette.java \
 	JDesignTree.java \
 	LibraryIcon.java \
+	MenuActionFactory.java \
+	MenuItemFactory.java \
 	PatternIcon.java \
 	PtolemyListCellRenderer.java \
+	PtolemyMenuFactory.java \
 	PtolemyTransferable.java \
 	PtolemyTreeCellRenderer.java \
 	PtolemyTreeModel.java \
+	ToolTipInteractor.java \
 	XMLIcon.java
 
 

@@ -105,6 +105,7 @@ public class EntityController extends LocatableNodeController {
         // Initialize the menu creator. 
 	_menuCreator = new MenuCreator(new EntityContextMenuFactory());
 	interactor.addInteractor(_menuCreator);
+	interactor.addInteractor(new ToolTipInteractor());
     }
 
     /** 
@@ -224,28 +225,17 @@ public class EntityController extends LocatableNodeController {
     /**
      * The factory for creating context menus on entities.
      */
-    public static class EntityContextMenuFactory extends MenuFactory {
-	public JPopupMenu create(Figure source) {
-	    Node sourcenode = (Node) source.getUserObject();
-	    Icon icon = (Icon)sourcenode.getSemanticObject();
-	    NamedObj object = (NamedObj) icon.getContainer();
-	    return new Menu(VergilApplication.getInstance(), object);
+    public static class EntityContextMenuFactory extends PtolemyMenuFactory {
+	public EntityContextMenuFactory() {
+	    super();
+	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new EditParameterStylesFactory());
+	    addMenuItemFactory(new MenuActionFactory(VergilApplication.getInstance().getAction("Look Inside")));
 	}
 
-	public class Menu extends BasicContextMenu {
-	    public Menu(Application application, NamedObj target) {
-		super(application, target);		
-	    } 
-	    
-	    protected void initialize() {
-		super.initialize();
-		NamedObj target = getTarget();
-		if(target instanceof CompositeEntity) {
-		    Action action;		    
-		    action = getApplication().getAction("Look Inside");
-		    add(action, "Look Inside");
-		}
-	    }
+	public NamedObj _getObjectFromFigure(Figure source) {
+	    Icon icon = (Icon)super._getObjectFromFigure(source);
+	    return(NamedObj) icon.getContainer();
 	}
     }
 
@@ -253,7 +243,8 @@ public class EntityController extends LocatableNodeController {
 	public Figure render(Node n) {
 	    Figure figure;
 	    EditorIcon icon = (EditorIcon)n.getSemanticObject();
-	    return icon.createFigure();
+	    figure = icon.createFigure();
+	    return figure;
 	}
     }
 

@@ -35,7 +35,7 @@ import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.vergil.*;
-import ptolemy.vergil.toolbox.BasicContextMenu;
+import ptolemy.vergil.toolbox.*;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
 import diva.gui.*;
@@ -160,24 +160,11 @@ public class FSMViewerController extends CompositeGraphController {
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
 
-    public class SchematicContextMenuFactory extends MenuFactory {
-	public JPopupMenu create(Figure figure) {
-	    Graph graph = getGraph();
-	    CompositeEntity object =
-		(CompositeEntity) graph.getSemanticObject();
-	    return new Menu(VergilApplication.getInstance(), object);
-	}
-
-        public class Menu extends BasicContextMenu {
-	    public Menu(Application application, CompositeEntity target) {
-		super(application, target);
-		//FIXME -- implement this.
-		JLabel domain = new JLabel("Domain");
-		add(domain);
-		JLabel director = new JLabel("Director");
-		add(director);
-
-	    }
+    public class SchematicContextMenuFactory extends PtolemyMenuFactory {
+	public SchematicContextMenuFactory() {
+	    super();
+	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new EditParameterStylesFactory());
 	}
     }
 

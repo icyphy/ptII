@@ -34,7 +34,7 @@ import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.vergil.*;
-import ptolemy.vergil.toolbox.BasicContextMenu;
+import ptolemy.vergil.toolbox.*;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
 import diva.gui.*;
@@ -132,20 +132,20 @@ public class EntityPortController extends NodeController {
     /**
      * The factory for creating context menus on entities.
      */
-    public static class PortContextMenuFactory extends MenuFactory {
-	public JPopupMenu create(Figure source) {
-	    Node sourcenode = (Node) source.getUserObject();
-	    NamedObj object = (NamedObj) sourcenode.getSemanticObject();
-	    return new Menu(VergilApplication.getInstance(), object);
+    public static class PortContextMenuFactory extends PtolemyMenuFactory {
+	public PortContextMenuFactory() {
+	    super();
+	    addMenuItemFactory(new EditParametersFactory());
+	    addMenuItemFactory(new EditParameterStylesFactory());
+	    addMenuItemFactory(new PortDescriptionFactory());
 	}
 
-	public class Menu extends BasicContextMenu {
-	    public Menu(Application application, NamedObj target) {
-		super(application, target);
-	    }
-
-	    protected void initialize() {
-		NamedObj target = getTarget();
+	public class PortDescriptionFactory extends MenuItemFactory {
+	    /**
+	     * Add an item to the given context menu that will configure the
+	     * parameters on the given target.
+	     */
+	    public JMenuItem create(JContextMenu menu, NamedObj target) {
 		if(target instanceof IOPort) {
 		    IOPort port = (IOPort)target;
 		    String string = "";
@@ -169,10 +169,10 @@ public class EntityPortController extends NodeController {
 			count++;
 		    }
 		    if(count > 0) {
-			add(new JLabel("   " + string));
+			return menu.add(new JMenuItem("   " + string));
 		    }
 		}
-		super.initialize();
+		return null;
 	    }
 	}
     }
