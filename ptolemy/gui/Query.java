@@ -369,6 +369,8 @@ public class Query extends JPanel {
     /** Set the value in the entry with the given name.
      *  The second argument must be a string that can be parsed to the
      *  proper type for the given entry, or an exception is thrown.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param value The value to set the entry to.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
      *   need not be declared explicitly.
