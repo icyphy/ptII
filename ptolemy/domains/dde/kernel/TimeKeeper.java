@@ -9,7 +9,7 @@
  of this software.
 
  IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTelelIAL DAMAGES
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
  ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
@@ -372,7 +372,7 @@ public class TimeKeeper {
 	    triple = (RcvrTimeTriple)oldRcvrTimeList.at(i);
 	    rcvr = triple.getReceiver();
 	    updateRcvrList(rcvr);
-	}
+	} 
     }
 
     /** Cause the actor managed by this time keeper to send a NullToken
