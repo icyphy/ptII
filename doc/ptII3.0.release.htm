@@ -603,6 +603,13 @@ start up Netscape for you.
 to place your Ptolemy II tree in a directory that does not have spaces
 in the path name if you plan on using Web Start.
 
+<li> If your user library contains actors that are not present in
+vergil, then you may see a dialog or dialogs asking if you want
+to skip these elements.  This could happen if you had developed custom
+actors and put them into your user library and these custom actors
+are not present in the release.  The work around is to click 'Skip Element'
+and continue with the start up.
+
 <li> Applet issues:
 	<ul>
 
@@ -710,8 +717,32 @@ Attempted to find as a moml class, but got:
 	Ptolemy II as source files and compile.
 
 	<li> Sometimes running a model that uses the Matlab interface
-	will cause Ptolemy II to exit.  We are not sure why.
-
+	will cause Ptolemy II to exit.  Usually this occurs if Vergil
+	has been running for a while and then the Matlab interface is loaded.
+	<br><b>Workaround #1</b>: Run a model that uses the Matlab interface
+	as the first model by doing Quick Tour -&gt; Matlab CT.
+	<br><b>Workaround #2</b>:
+        We believe that the problem has to do with loading the Direct
+	Draw library.
+<a href="http://developer.java.sun.com/developer/bugParade/bugs/4838939.html" target="_top"><code>http://developer.java.sun.com/developer/bugParade/bugs/4838939.html</code>
+        suggests invoking java with <code>-Dsun.java2d.noddraw=true</code>.
+	<br>The way to do this is to edit <code>vergil-full.<b>lax</b></code>
+	and add the line
+	<pre>
+lax.nl.java.option.additional=-Dsun.java2d.noddraw=true	
+</pre>
+        <br>The way to check if this argument is being used is to
+	hold down the Control key and double click on the
+	<code>vergil-full.<b>exe</b></code> icon.
+	<br>You should see something like:
+	<pre>	
+c:\j2sdk1.4.2\bin\java.exe -Dsun.java2d.noddraw=true com.zerog.lax.LAX C:\\Ptolemy\\Ptolemy_II_3.0.1ptiny\\vergil-ptiny.lax C:\\DOCUME~1\\cxh\\LOCALS~1\\Temp\\env.prop
+executing java...
+        </pre>
+	Note that to debug the binary, you would use the following line:
+        <pre>
+lax.nl.java.option.additional=-Xdebug -Xrunjdwp:transport=dt_shmem,server=y,suspend=n 
+        </pre>
 
 	<li> The Windows task bar shows a 'Launch Anywhere' icon instead
 	of a Vergil Icon.
