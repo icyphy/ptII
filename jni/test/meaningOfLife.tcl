@@ -47,37 +47,44 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
-######################################################################
-####
-#
-test meaningOfLife-1.1 {Run a simple JNI model} {
+proc testJNI {modelbase} {
     # Remove the jni directory that might contain code from a previous
     # run.
     file delete -force jni
 
     # Create the shared library that has the code we want
     puts "Running 'make shared'"
-    puts "[exec make shared]"
+    puts "[exec make shared SHAREDBASE=$modelbase]"
 
     # Read in the model
     set parser [java::new ptolemy.moml.MoMLParser]
 
-    set namedObj [$parser parseFile "./meaningOfLife.xml"]
+    set namedObj [$parser parseFile "./$modelbase.xml"]
     set toplevel [java::cast ptolemy.actor.CompositeActor $namedObj]
 
     # Create the JNI files and compile them
     java::call jni.JNIUtilities generateJNI $toplevel
     
-    set namedObj [$parser parseFile "./meaningOfLife.xml"]
+    set namedObj [$parser parseFile "./$modelbase.xml"]
     set toplevel [java::cast ptolemy.actor.CompositeActor $namedObj]
 
     # Run the model
     set workspace [$toplevel workspace]
     set manager [java::new ptolemy.actor.Manager \
-	    $workspace "meaningOfLife"]
+	    $workspace "$modelbase"]
     
     $toplevel setManager $manager
     $manager execute
 
-} {}
+}
 
+test meaningOfLife-1.2 {} {
+    testJNI testDeux
+} {}
+exit
+######################################################################
+####
+#
+test meaningOfLife-1.1 {Run a simple JNI model} {
+    testJNI meaningOfLife
+} {}
