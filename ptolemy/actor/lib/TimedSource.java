@@ -116,11 +116,9 @@ public class TimedSource extends Source implements TimedActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == stopTime) {
+        if (attribute == stopTime && _executing) {
             double time = ((DoubleToken)stopTime.getToken()).doubleValue();
-            Manager manager = getManager();
-            if (time > 0.0 && manager != null
-                    && manager.getState() != Manager.IDLE) {
+            if (time > 0.0) {
                 Director director = getDirector();
                 if (director != null) {
                     double currentTime = director.getCurrentTime();
@@ -129,7 +127,7 @@ public class TimedSource extends Source implements TimedActor {
                     } else {
                         director.fireAt(this, currentTime);
                     }
-                } // else ignore.
+                }
             }
         } else {
             super.attributeChanged(attribute);
@@ -150,6 +148,7 @@ public class TimedSource extends Source implements TimedActor {
             }
             double currentTime = director.getCurrentTime();
             director.fireAt(this, time);
+            _executing = true;
         }
     }
 
@@ -167,4 +166,20 @@ public class TimedSource extends Source implements TimedActor {
         }
         return true;
     }
+
+    /** Override the base class to reset a flag that indicates that the
+     *  model is executing. This method is invoked exactly once per execution
+     *  of an application.  None of the other action methods should be
+     *  be invoked after it.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void wrapup() throws IllegalActionException {
+        _executing = false;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // Flag indicating that the model is running.
+    private boolean _executing = false;
 }
