@@ -207,9 +207,9 @@ public class ODFActor extends AtomicActor {
      *  that all receivers contained by this actor have expired. In this
      *  case, call noticeOfTermination() so that actors connected downstream
      *  are made aware that this actor will no longer be producing tokens.
-     *  Then call setFinish() on the most recently expired receiver, followed
-     *  by get() on this receiver. This will lead to the calling of a 
-     *  TerminateProcessException which will cease iteration of this actor.
+     *  Then call requestFinish() on the most recently expired receiver, 
+     *  followed by get() on this receiver. This will lead to the calling of 
+     *  a TerminateProcessException which will cease iteration of this actor.
      *  <P>
      *  If the current time is not equal to -1, then call get() on the
      *  receiver which has the minimum rcvrTime and is listed first in 
@@ -247,7 +247,7 @@ public class ODFActor extends AtomicActor {
 
 	if( bestTriple.getTime() == -1.0 ) {
 	    noticeOfTermination();
-	    lowestRcvr.setFinish();
+	    lowestRcvr.requestFinish();
 	    lowestRcvr.get();
 	    System.out.println("Didn't throw TerminateProcessException "
 			       + "in ODFActor.get()");
