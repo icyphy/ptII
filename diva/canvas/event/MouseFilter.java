@@ -65,10 +65,13 @@ public class MouseFilter {
      */
     private int _modifierMask = 
     InputEvent.SHIFT_MASK
-    | InputEvent.CTRL_MASK
-    | InputEvent.ALT_MASK
-    | InputEvent.ALT_GRAPH_MASK
-    | InputEvent.META_MASK;
+    | InputEvent.CTRL_MASK;
+    
+    // Do not or these masks in, they will conflict with right mousing
+    // on transitions in modal models
+    //| InputEvent.ALT_MASK
+    //| InputEvent.ALT_GRAPH_MASK
+    //| InputEvent.META_MASK;
     
     /** The modifier flags, after masking
      */
