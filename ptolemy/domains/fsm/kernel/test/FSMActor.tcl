@@ -160,7 +160,7 @@ test FSMActor-5.1 {test creating input variables} {
     $p2 link $r1
     $dir preinitialize
     listToNames [$fsm attributeList]
-} {iconDescription initialStateName p0_S p0_V p1_0_S p1_0_V p1_1_S p1_1_V}
+} {_iconDescription initialStateName p0_S p0_V p1_0_S p1_0_V p1_1_S p1_1_V}
 
 ######################################################################
 ####
