@@ -61,6 +61,11 @@ public class DDESink extends TypedAtomicActor {
     /** Construct a DDESink with the specified container and name.
      * @param container The container of this actor.
      * @param name The name of this actor.
+     * @exception NameDuplicationException If the name of this actor
+     *  duplicates that of a actor already contained by the container
+     *  of this actor.
+     * @exception IllegalActionException If there are errors in
+     *  instantiating and specifying the type of this actor's ports.
      */
     public DDESink(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
