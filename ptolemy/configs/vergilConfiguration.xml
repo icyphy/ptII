@@ -127,6 +127,7 @@
          </property>
       </property>
       <property name="Giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
+      <property name="FSM" class="ptolemy.domains.fsm.kernel.FSMDirector"/>
           </group>
         ?>
       </configure>
