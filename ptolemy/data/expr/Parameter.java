@@ -428,8 +428,8 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
     protected void _checkType(Class tryType) 
             throws IllegalArgumentException {
         int typeInfo = TypeCPO.compare(_paramType, tryType);
-        if (typeInfo == CPO.STRICT_GREATER) return;
-        if (typeInfo == CPO.EQUAL) return;
+        if (typeInfo == CPO.HIGHER) return;
+        if (typeInfo == CPO.SAME) return;
         // Incompatible type!
         String str = "Cannot store a Token of type ";
         str += tryType.getName() + " in a Parameter restricted to ";
