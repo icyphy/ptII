@@ -118,7 +118,7 @@ public class IODependence extends Attribute {
      *  @exception IllegalActionException If the port is not an input port
      *  or the same port already exists.
      */
-    public IOInformation addInputPort (IOPort inputPort)
+    public IOInformation addInputPort(IOPort inputPort)
             throws IllegalActionException {
         if (inputPort.isInput() && !_inputPorts.contains(inputPort)) {
             IOInformation _inputInfo =
@@ -146,7 +146,7 @@ public class IODependence extends Attribute {
      *  @return an IOInformation object associated with the input port, or null
      *  if the input port is not added into the input ports list.
      */
-    public IOInformation getInputPort (IOPort inputPort) {
+    public IOInformation getInputPort(IOPort inputPort) {
         Iterator _inputPortsIterator = _inputPorts.listIterator();
         while (_inputPortsIterator.hasNext()) {
             IOInformation input =
@@ -178,7 +178,7 @@ public class IODependence extends Attribute {
          * @param name The name for the IOInformation, usually the input
          *  port name.
          */
-        public IOInformation (String name) {
+        public IOInformation(String name) {
             _inputPortName = name;
         }
 
@@ -188,14 +188,14 @@ public class IODependence extends Attribute {
         /** Add an output port into the delayed ports list.
          *  @param ioPort The output port to be added.
          */
-        public void addToDelayToPorts (IOPort ioPort) {
+        public void addToDelayToPorts(IOPort ioPort) {
             _delayToPorts.add(ioPort);
         }
 
         /** Add an output port into the direct feedthrough ports list.
          *  @param ioPort The output port to be added.
          */
-        public void addToDirectFeedthroughPorts (IOPort ioPort) {
+        public void addToDirectFeedthroughPorts(IOPort ioPort) {
             _directFeedThroughPorts.add(ioPort);
         }
 
@@ -209,7 +209,7 @@ public class IODependence extends Attribute {
         /** Get all the output ports of the delayed ports list.
          *  @return The list of delayed ports list.
          */
-        public LinkedList getDelayToPorts () {
+        public LinkedList getDelayToPorts() {
             return _delayToPorts;
         }
 
@@ -217,7 +217,7 @@ public class IODependence extends Attribute {
          *  ports list.
          *  @return The list of direct feedthrough ports list.
          */
-        public LinkedList getDirectFeedthroughPorts () {
+        public LinkedList getDirectFeedthroughPorts() {
             return _directFeedThroughPorts;
         }
         ///////////////////////////////////////////////////////////////////
