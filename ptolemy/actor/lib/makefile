@@ -167,8 +167,8 @@ JSRCS = \
 	Transformer.java \
 	TrigFunction.java \
 	TriggeredClock.java\
+        TriggeredContinuousClock.java \
 	TrigFunction.java \
-        TriggeredClock.java \
 	TypeTest.java \
 	Uniform.java \
 	URLReader.java \
