@@ -257,6 +257,17 @@ public class DDFDirector extends Director {
             super.attributeChanged(attribute);
         }
     }
+    
+    /** Set the flag indicating whether type resolution is disabled or not.
+     *  This method is used in an ActorRecursion actor. When a composite 
+     *  actor is cloned into an ActorRecursion actor, type compatibility 
+     *  has already been checked, therefore there is no need to invalidate
+     *  resolved types.
+     *  @param flag The flag to be set.
+     */
+    public void disableTypeResolution(boolean flag) {
+        _isTypeResolutionDisabled = flag;
+    }
 
     /** Execute the model for one iteration. First scan all active actors 
      *  to put all enabled and non-deferrable actors in a list and find the 
@@ -271,18 +282,15 @@ public class DDFDirector extends Director {
      *  continue until all are satisfied. If the parameter 
      *  <i>runUntilDeadlockInOneIteration</i> has value true, one iteration 
      *  consists of repeatedly executing basic iterations until the actors 
-     *  under control of this director reach a deadlock.
+     *  under control of this director have reached a deadlock.
      *  @exception IllegalActionException If any actor executed by this
      *   actor returns false in prefire().
      */
     public void fire() throws IllegalActionException {
-        boolean repeatBasicIteration = true;
 
-        while (repeatBasicIteration && !_stopRequested) {
-            // The default value indicates basic iteration will not
-            // be repeated until proved otherwise.
-            repeatBasicIteration = false;
-
+        boolean repeatBasicIteration = false;
+        
+        do {
             // The list to store minimax actors.
             List minimaxActors = new LinkedList();
             int minimaxSize = Integer.MAX_VALUE;
@@ -330,7 +338,7 @@ public class DDFDirector extends Director {
             Iterator enabledActors = toBeFiredActors.iterator();
             while (enabledActors.hasNext()) {
                 Actor actor = (Actor) enabledActors.next();
-                _fireActor(actor);
+                _firedOne = _firedOne || _fireActor(actor);
             }
 
             // If no actor has been fired, fire the set of minimax actors.
@@ -338,10 +346,10 @@ public class DDFDirector extends Director {
                 Iterator minimaxActorsIterator = minimaxActors.iterator();
                 while (minimaxActorsIterator.hasNext()) {
                     Actor minimaxActor = (Actor) minimaxActorsIterator.next();
-                    _fireActor(minimaxActor);
+                    _firedOne = _firedOne || _fireActor(minimaxActor);
                 }
             }            
-                       
+            
             if (_runUntilDeadlock) {
                 // Repeat basic iteration if at lease one actor
                 // has been fired.
@@ -350,7 +358,8 @@ public class DDFDirector extends Director {
                 // Check to see if we need to repeat basic iteration to
                 // satisfy requiredFiringsPerIteration for some actors.
                 actors = _actorsToCheckNumberOfFirings.iterator();
-
+                
+                repeatBasicIteration = false;
                 while (actors.hasNext()) {
                     Actor actor = (Actor) actors.next();
                     // If the actor has been deleted from the topology,
@@ -377,15 +386,15 @@ public class DDFDirector extends Director {
                  } 
                  repeatBasicIteration = false;
             }
-        }
+        } while (repeatBasicIteration && !_stopRequested);
     }
 
     /** Initialize the model controlled by this director. Initialize the 
-     *  actors associated with this director. set all the state variables 
+     *  actors associated with this director. Set all the state variables 
      *  to the their initial values.  The order in which the actors are 
      *  initialized is arbitrary. If actors connected directly to output 
-     *  ports have initial production, then copy that initial production 
-     *  to the outside of the composite actor.
+     *  ports produce initial tokens, then send those tokens to the outside 
+     *  of the composite actor.
      *  @exception IllegalActionException If the initialize() method of
      *   one of the associated actors throws it.
      */
@@ -422,8 +431,8 @@ public class DDFDirector extends Director {
      *  initialize() method of the director, and by the manager whenever 
      *  an actor is added to the executing model as a mutation. It first 
      *  calls the actor's initialize() method which may emit initial tokens. 
-     *  Then update the enabling status of the actor and all actors connected 
-     *  to this actor. Finally record the value given by
+     *  Then it updates the enabling status of the actor and all actors 
+     *  connected to this actor. Finally it records the value given by
      *  <i>requiredFiringsPerIteration</i> if the actor has such a parameter. 
      *  Any change to this parameter during execution will be ignored.
      *  @param actor The actor to be initialized.
@@ -441,6 +450,9 @@ public class DDFDirector extends Director {
             _checkDownstreamReceiversCapacity(actor, maximumCapacity);
         }
      
+        // Since an actor may produce initial tokens during initialization,
+        // the enabling status of those directly connected actors as well 
+        // as itself must be updated.
         _updateConnectedActorsStatus(actor);
         
         // Determine requiredFiringsPerIteration for this actor.
@@ -475,6 +487,10 @@ public class DDFDirector extends Director {
     /** Call base class method to invalidate resolved types if the flag to
      *  disable type resolution is set to false. If the flag is true,
      *  override the base class method to skip invalidating resolved types.
+     *  This method is used for an ActorRecursion actor. When a composite 
+     *  actor is cloned into an ActorRecursion actor, type compatibility 
+     *  has already been checked, therefore there is no need to invalidate
+     *  resolved types. 
      */
     public void invalidateResolvedTypes() {
         if (!_isTypeResolutionDisabled) {
@@ -482,16 +498,19 @@ public class DDFDirector extends Director {
         }
     }
 
-    /** Merge another DDFDirector with this director. It can be used
-     *  in ActorRecursion which clones a composite actor and then
-     *  merges with outside DDF domain.
-     *  @param director The DDFDirector to merge with.
+    /** Merge an opaque composite actor controlled by an inside DDFDirector 
+     *  with the outside domain controlled by this director. It aggregates 
+     *  the status variables for the inside actors with the status variables
+     *  for the outside actors. This method can be used in ActorRecursion 
+     *  which clones a composite actor into itself and then merges with the 
+     *  outside DDF domain.
+     *  @param insideDirector The inside DDFDirector to be merged.
      */
-    public void merge(DDFDirector director) {
-        _disabledActors.addAll(director._disabledActors);
+    public void merge(DDFDirector insideDirector) {
+        _disabledActors.addAll(insideDirector._disabledActors);
         _actorsToCheckNumberOfFirings.
-                addAll(director._actorsToCheckNumberOfFirings);
-        _actorsFlags.putAll(director._actorsFlags);
+                addAll(insideDirector._actorsToCheckNumberOfFirings);
+        _actorsFlags.putAll(insideDirector._actorsFlags);
     }
 
     /** Return a new SDFReceiver.
@@ -502,7 +521,7 @@ public class DDFDirector extends Director {
     }
 
     /** Increment the number of iterations. Return false if the system
-     *  has finished executing by reaching the iteration limit, or the system 
+     *  has finished executing by reaching the iteration limit or the system 
      *  is deadlocked.
      *  @return True if the Director wants to be fired again in the future.
      *  @exception IllegalActionException If the <i>iterations</i> parameter
@@ -522,7 +541,7 @@ public class DDFDirector extends Director {
         // The DDF domain is deadlocked if no actor is fired in the last 
         // basic iteration. However, if the DDF domain is embedded inside
         // another domain, then we have to check whether transferring
-        // more tokens into the DDF domain will solve the deadlock.
+        // more tokens into the DDF domain will break the deadlock.
         boolean isDeadlocked = !_firedOne;        
         if (isDeadlocked && _isEmbedded()) {
             Iterator inputPorts 
@@ -551,18 +570,18 @@ public class DDFDirector extends Director {
                 }
             }
         }    
-        return !isDeadlocked && super.postfire();
+        return  super.postfire() && !isDeadlocked ;
     }
 
     /** Check the input ports of the container composite actor (if there
      *  are any) to see whether they have enough tokens, and return true
      *  if they do. If there are no input ports, then also return true.
-     *  Otherwise, return false. If an input port does not have a 
-     *  parameter <i>tokenConsumptionRate</i>, then skip checking on that 
-     *  port because it will transfer all tokens (if there are any)
-     *  to the inside. Note the difference from SDF domain.
-     *  Finally, Initialize numberOfFirings to zero for those actors for 
-     *  which positive requiredFiringsPerIteration has been defined.
+     *  Otherwise, return false. If an input port does not have a parameter
+     *  <i>tokenConsumptionRate</i>, then skip checking on that port because 
+     *  it will transfer all tokens (if there are any) to the inside. Note 
+     *  the difference from SDF domain where the default rate is 1. Finally, 
+     *  initialize numberOfFirings to zero for those actors for which positive 
+     *  requiredFiringsPerIteration has been defined.
      *  @return true If all of the input ports of the container of this
      *   director have enough tokens.
      *  @exception IllegalActionException If any called method throws
@@ -614,14 +633,7 @@ public class DDFDirector extends Director {
         return true;
     }
 
-    /** Set the flag indicating whether type resolution is disabled or not.
-     *  @param flag The flag to be set.
-     */
-    public void setTypeResolutionFlag(boolean flag) {
-        _isTypeResolutionDisabled = flag;
-    }
-
-    /** Return an array of suggested directors to use with
+    /** Return an array of suggested directors to use with an embedded
      *  ModalModel. Each director is specified by its full class
      *  name.  The first director in the array will be the default
      *  director used by a modal model.
@@ -629,15 +641,11 @@ public class DDFDirector extends Director {
      *  @see ptolemy.actor.Director#suggestedModalModelDirectors()
      */
     public String[] suggestedModalModelDirectors() {
-        String[] defaultSuggestions = new String[4];
-        defaultSuggestions[0] 
-                = "ptolemy.domains.fsm.kernel.MultirateFSMDirector";
-        defaultSuggestions[1] 
-                = "ptolemy.domains.hdf.kernel.HDFFSMDirector";
-        defaultSuggestions[2] 
-                = "ptolemy.domains.fsm.kernel.FSMDirector";
-        defaultSuggestions[3] 
-                = "ptolemy.domains.fsm.kernel.NonStrictFSMDirector";
+        String[] defaultSuggestions = {
+                "ptolemy.domains.fsm.kernel.MultirateFSMDirector",
+                "ptolemy.domains.hdf.kernel.HDFFSMDirector",
+                "ptolemy.domains.fsm.kernel.FSMDirector",
+                "ptolemy.domains.fsm.kernel.NonStrictFSMDirector"};
         return defaultSuggestions;
     }
 
@@ -841,11 +849,11 @@ public class DDFDirector extends Director {
      *  Update the enabling status for each connected actor as well
      *  as itself.
      *  @param actor The actor to be fired.
-     *  @return NOT_READY, STOP_ITERATING, or COMPLETED.
+     *  @return true if the actor is actually fired, false if not.
      *  @exception IllegalActionException If any called method throws
      *   IllegalActionException or the actor is not ready.
      */
-    protected int _fireActor(Actor actor) throws IllegalActionException {
+    protected boolean _fireActor(Actor actor) throws IllegalActionException {
         if (_debugging) {
             _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_ITERATE));
         }
@@ -857,12 +865,8 @@ public class DDFDirector extends Director {
             _debug(new FiringEvent(this, actor, FiringEvent.AFTER_ITERATE));
         }
         
-        int maximumCapacity = ((IntToken) maximumReceiverCapacity.getToken())
-                .intValue();
-        if (maximumCapacity > 0) {
-            _checkDownstreamReceiversCapacity(actor, maximumCapacity);
-        }
-
+        _updateConnectedActorsStatus(actor);
+     
         if (returnValue == STOP_ITERATING) {
             if (_debugging) {
                 _debug("Actor " + ((NamedObj) actor).getFullName()
@@ -890,18 +894,24 @@ public class DDFDirector extends Director {
         //            "Actor " + "is not ready to fire.");
         }
 
+        boolean fired = false;
+        
         if (returnValue != NOT_READY) {
             // At least one actor has been fired in this basic iteration.
-            _firedOne = true;
+            fired = true;
 
             // Increment the firing number.
             int[] flags = (int[]) _actorsFlags.get(actor);
             flags[_NUMBER_OF_FIRINGS]++;
-        
-            _updateConnectedActorsStatus(actor);
+            
+            int maximumCapacity = ((IntToken) maximumReceiverCapacity
+                    .getToken()).intValue();
+            if (maximumCapacity > 0) {
+                _checkDownstreamReceiversCapacity(actor, maximumCapacity);
+            }
         }    
             
-        return returnValue;
+        return fired;
     }
     
     /** Determine actor enabling status. It must be one of the three:
