@@ -32,6 +32,8 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+
+import java.io.EOFException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -39,6 +41,21 @@ import java.lang.Byte;
 
 import java.net.URL;
 import java.net.MalformedURLException;
+
+/* A class thrown by Pxgraph */
+class InvalidCommandLineArgumentException extends Throwable {
+
+  public InvalidCommandLineArgumentException() { super(); }
+  public InvalidCommandLineArgumentException(String s) { super(s); }
+ 
+}
+
+class BadPlotDataException extends Throwable {
+
+  public BadPlotDataException() { super(); }
+  public BadPlotDataException(String s) { super(s); }
+ 
+}
 
 //////////////////////////////////////////////////////////////////////////
 //// Pxgraph
@@ -52,6 +69,8 @@ public class Pxgraph {
     /** Constructor
      */	
     public Pxgraph() {
+	// Initialize the array that contains the dataset descriptors.
+	datasets = new String[MAX_DATASETS];
     }
 
     /** Main
@@ -63,8 +82,13 @@ public class Pxgraph {
         Pxgraph pxgraph = new Pxgraph();
 
 
-	pxgraph.parseArgs(arg);
-
+	try {
+	    pxgraph.parseArgs(arg);
+	} catch (InvalidCommandLineArgumentException e) {
+	    System.err.println("Failed to parse command line arguments: "
+			       + e);
+	    System.exit(1);
+	}
 	pxgraph.preprocess();
 
         args[0] = new String("-width");
@@ -188,6 +212,79 @@ public class Pxgraph {
     /* Convert a binary pxgraph file to a ascii file
      */	
     private void convertBinaryFile(FileOutputStream fos){ 
+	try {
+	    URL data = new URL(dataurl);
+	    DataInputStream dis = new DataInputStream(data.openStream());
+	    int c;
+	    boolean printedDataSet = false;
+	    try {
+		while (true) {
+		    // Here, we read pxgraph binary format data.
+		    // For speed reasons, the Ptolemy group extended 
+		    // pxgraph to read binary format data.
+		    // The format consists of a command character,
+		    // followed by optional arguments
+		    // d <4byte float> <4byte float> - Draw a X,Y point
+		    // e                             - End of a data set
+		    // n <chars> \n                  - New set name, ends in \n
+		    // m                             - Move to a point
+		    c = dis.readByte();
+		    //System.out.print(c);
+		    switch (c) {
+		    case 'd':
+			{
+			    // Data point.
+			    float x = dis.readFloat();
+			    float y = dis.readFloat();
+			    //if (debug) System.out.print(outputline);
+			    if (!printedDataSet) {
+				String datasetstring;
+				printedDataSet = true;
+				if (datasets[0] != null) {
+				    datasetstring = new String("DataSet: "
+							 + datasets[0] + "\n");
+				} else {
+				    datasetstring =new String("DataSet: Set 0"
+							 + "\n");
+				}
+			        fos.write(datasetstring.getBytes());
+			    }
+			    String outputline = new String(x + "," + y + '\n');
+			    fos.write(outputline.getBytes());
+
+			}
+			break;
+		    case 'e':
+			// End of set name.
+			fos.write('\n');
+			break;
+		    case 'n':
+			// New set name, ends in \n.
+			while (c != '\n')
+			    fos.write(dis.readChar());
+			break;
+		    case 'm':
+			break;
+		    default:
+			throw new BadPlotDataException("Don't understand `"
+                                              + c + 
+					      "'character in binary data");
+		    }
+
+
+		}
+	    } catch (EOFException me) {
+		dis.close();
+	    } catch (BadPlotDataException me) {
+		dis.close();
+		System.out.println("BadPlotDataException: " + me);
+	    }
+	} catch (MalformedURLException me) {
+	    System.out.println("MalformedURLException: " + me);
+	} catch (IOException ioe) {
+	    System.out.println("IOException: " + ioe);
+	}
+	
     }
 
     /* Copy the dataurl file to the already open temporary file
@@ -195,7 +292,7 @@ public class Pxgraph {
     private void copyDataURLFile(FileOutputStream fos){ 
 	try {
 	    URL data = new URL(dataurl);
-		DataInputStream dis = new DataInputStream(data.openStream());
+	    DataInputStream dis = new DataInputStream(data.openStream());
 	    String inputLine;
 	    while ((inputLine = dis.readLine()) != null) {
 		fos.write(inputLine.getBytes());
@@ -229,36 +326,41 @@ public class Pxgraph {
         System.out.print("dataurl = " + dataurl + "\n");
         System.out.print("width = " + width + "\n");
         System.out.print("height = " + height + "\n");
+        for(j=0;j<datasets.length;j++) {
+	    if (datasets[j] != null)
+		System.out.print("dataset " + j + " = " + datasets[j]);
+	}
     }
 
 
-    private void parseArgs(String[] args) {
+    private void parseArgs(String[] args) 
+	throws InvalidCommandLineArgumentException{
         int i = 0, j;
         String arg;
-        char flag;
-        boolean vflag = false;
-        String outputfile = "";
-        
+        boolean parsedFlag;
+
         while (i < args.length && (args[i].startsWith("-") || 
             args[i].startsWith("=")) ) {
             arg = args[i++];
-
+	    if (debug) System.out.print("arg = " + arg + "\n");
+	    parsedFlag = false;
             // use this type of check for "wordy" arguments
             for(j=0;j<commandFlags.length;j++) {
                 if (arg.equals(commandFlags[j][0])) {
                     commandFlags[j][2] = "true";
-                    continue;
+		    if (debug) System.out.print(commandFlags[j][0] + "=1\n");
+		    parsedFlag = true;
                 }
             }
             for(j=0;j<commandOptions.length;j++) {
                 if (arg.equals(commandOptions[j][0])) {
                     commandOptions[j][3] = args[i++];
-                    continue;
+		    parsedFlag = true;
                 }
             }
             if (arg.charAt(0) == '=') {
+		// Process =WxH+X+Y
                 int endofheight;
-                System.out.print("Saw =");
                 width = arg.substring(1,arg.indexOf('x'));
                 if (arg.indexOf('+') != -1) {
                     height = arg.substring(arg.indexOf('x')+1,
@@ -269,10 +371,32 @@ public class Pxgraph {
                         	arg.length());
                     }
                 }
-
+		// FIXME: need to handle X and Y in =WxH+X+Y
+		parsedFlag = true;
             }
-            // Fixme:  Need to deal with -<digit> <name>
-        }
+	    if (arg.length() > 1  && arg.charAt(0) == '-') {
+		// Process '-<digit> <datasetname>'
+		try {
+		    Integer datasetnumberint = new Integer(arg.substring(1));
+		    int datasetnumber = datasetnumberint.intValue();
+		    if (datasetnumber >= 0 && datasetnumber <= MAX_DATASETS) {
+			// Save the next arg in the dataset array
+			datasets[datasetnumber] = args[i++];
+			if (debug)
+			    System.out.print("dataset " + datasetnumber + " = " + datasets[datasetnumber] + "\n");
+
+			parsedFlag = true;
+		    }
+		} catch (NumberFormatException e) {
+		}
+	    }
+	    if (!parsedFlag) {
+	    // If we got to here, then we failed to parse the arg 
+		throw new 
+		    InvalidCommandLineArgumentException("Failed to parse `" 
+                          + arg + "'");
+	    }
+	}
         if (i < args.length) {
             dataurl=args[i];
         }
@@ -338,4 +462,6 @@ public class Pxgraph {
         {"-rv", "ReverseVideo", "false", ""},
         {"-tk", "Ticks", "false", ""},
     };
+    private static final int MAX_DATASETS = 63; // Maximum number of datasets
+    private String datasets[];
 }
