@@ -37,6 +37,7 @@ import ptolemy.copernicus.kernel.GeneratorAttribute;
 import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.StringUtilities;
 import ptolemy.actor.gui.JNLPUtilities;
@@ -316,29 +317,38 @@ public class AppletWriter extends SceneTransformer {
 		String classResource =
 		    GeneratorAttribute.lookupClassAsResource(className);
 
-		if (classResource.equals(_ptIIDirectory)) {
+
+                if (classResource == null) {
+		    throw new IOException("Could not find '" + className
+					  + "' as a resource.\n"
+					  + "Try adding this class to the "
+					  + "necessaryClasses parameter"
+					  );
+                }
+
+                // We need to actually look up the file to deal with
+                // the various C:/ptII, c:/ptII, c:\ptII, C:\ptII possibilities
+                //
+                String canonicalClassResource =
+                    UtilityFunctions.findFile(classResource);
+                String canonicalPtIIDirectory =
+                    UtilityFunctions.findFile(_ptIIDirectory);
+		if (canonicalClassResource.equals(canonicalPtIIDirectory)) {
                     throw new IOException("Looking up '" + className
                             + "' returned the $PTII directory '"
                             + _ptIIDirectory + "' instead of a jar file. "
                             + " Perhaps you need to run 'make install'"
                             + "to create the jar files?");
                 }
-		if (classResource != null) {
-		    System.out.println("AppletWriter: "
-                            + "\n\tclassResource:    " + classResource
-                            + "\n\t_outputDirectory: " + _outputDirectory
-                            + "\n\tclassName:        " + className
-                            + "\n\tclassMap.get():   "
-                            + (String)classMap.get(className));
-                    _copyFile(classResource, _outputDirectory,
-                            (String)classMap.get(className));
-		} else {
-		    throw new IOException("Could not find '" + className
-					  + "' as a resource.\n"
-					  + "Try adding this class to the "
-					  + "necessaryClasses parameter"
-					  );
-		}
+
+                System.out.println("AppletWriter: "
+                        + "\n\tclassResource:    " + classResource
+                        + "\n\t_outputDirectory: " + _outputDirectory
+                        + "\n\tclassName:        " + className
+                        + "\n\tclassMap.get():   "
+                        + (String)classMap.get(className));
+                _copyFile(classResource, _outputDirectory,
+                        (String)classMap.get(className));
 	    }
 	}
 
