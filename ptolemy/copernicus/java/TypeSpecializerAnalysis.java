@@ -506,7 +506,12 @@ public class TypeSpecializerAnalysis {
             if (SootUtilities.derivesFrom(baseClass,
                     PtolemyUtilities.tokenClass)) {
                 if (methodName.equals("one") ||
-                        methodName.equals("zero")) {
+                        methodName.equals("zero") ||
+                        methodName.equals("bitwiseNot") ||
+                        methodName.equals("pow") ||
+                        methodName.equals("logicalRightShift") ||
+                        methodName.equals("leftShift") ||
+                        methodName.equals("rightShit")) {
                     // The returned type must be equal to the type
                     // we are calling the method on.
                     return baseTerm;
@@ -519,7 +524,10 @@ public class TypeSpecializerAnalysis {
                         methodName.equals("divide") ||
                         methodName.equals("divideReverse") ||
                         methodName.equals("modulo") ||
-                        methodName.equals("moduloReverse")) {
+                        methodName.equals("moduloReverse") ||
+                        methodName.equals("bitwiseAnd") ||
+                        methodName.equals("bitwiseOr") ||
+                        methodName.equals("bitwiseXor")) {
                     // The return value is greater than the base and
                     // the argument.
                     InequalityTerm returnValueTerm = new VariableTerm(
@@ -666,9 +674,9 @@ public class TypeSpecializerAnalysis {
             Type type = castExpr.getType();
             RefType tokenType = PtolemyUtilities.getBaseTokenType(type);
             if (tokenType != null) {
-                // The type of the argument must be greater than the type of the
-                // cast.
-                // The return type will be the type of the cast.
+                // The type of the argument must be greater than the
+                // type of the cast.  The return type will be the type
+                // of the cast.
                 InequalityTerm baseTerm = (InequalityTerm)objectToInequalityTerm.get(
                         castExpr.getOp());
                 InequalityTerm typeTerm = new ConstantTerm(

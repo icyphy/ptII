@@ -37,11 +37,13 @@ import ptolemy.copernicus.kernel.ClassWriter;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;
 import ptolemy.copernicus.kernel.InstanceEqualityEliminator;
+import ptolemy.copernicus.kernel.InvocationBinder;
 import ptolemy.copernicus.kernel.JimpleWriter;
 import ptolemy.copernicus.kernel.SideEffectFreeInvocationRemover;
 import ptolemy.copernicus.kernel.TransformerAdapter;
 import ptolemy.copernicus.kernel.UnusedFieldRemover;
 import ptolemy.copernicus.kernel.WatchDogTimer;
+import ptolemy.copernicus.c.CWriter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -127,12 +129,12 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.clt",
                         CommandLineTransformer.v(_toplevel)));
-                
+              
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", ClassWriter.v()));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffet",
                         FieldsForEntitiesTransformer.v(_toplevel)));
@@ -260,13 +262,13 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot5", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot5", ClassWriter.v()));
-                
+                         
         // Unroll loops with constant loop bounds.
         //Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
         
         //     _addStandardOptimizations(Scene.v().getPack("wjtp"));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ls",
                         new TransformerAdapter(LocalSplitter.v())));
@@ -305,20 +307,67 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ta",
                          new TransformerAdapter(TypeAssigner.v())));
-//         Scene.v().getPack("wjtp").add(
-//                 new Transform("wjtp.smb",
-//                         StaticMethodBinder.v()));
-//         Scene.v().getPack("wjtp").add(
-//                 new Transform("wjtp.noe",
-//                         NamedObjEliminator.v(_toplevel)));
-//         Scene.v().getPack("wjtp").add(
-//                 new Transform("wjtp.umr", UnreachableMethodRemover.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ib",
+                       InvocationBinder.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.noe",
+                        NamedObjEliminator.v(_toplevel)));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.umr", UnreachableMethodRemover.v()));
 
+        // Some cleanup.
+        // Remove object creations that are now dead (i.e. aren't used
+        // and have no side effects).  This currently only deals with
+        // Token and Type constructors, since we know that these will
+        // have no interesting side effects.  More complex analysis
+        // is possible here, but not likely worth it.
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.doe",
+                        new TransformerAdapter(
+                                DeadObjectEliminator.v())));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.dae",
+                        new TransformerAdapter(
+                                ImprovedDeadAssignmentEliminator.v())));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.doe",
+                        new TransformerAdapter(
+                                DeadObjectEliminator.v())));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.dae",
+                        new TransformerAdapter(
+                                ImprovedDeadAssignmentEliminator.v())));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.doe",
+                        new TransformerAdapter(
+                                DeadObjectEliminator.v())));
+        /*  
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot6", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot6", ClassWriter.v()));
+
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ttn",
+                        TokenToNativeTransformer.v(_toplevel)));
         
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ufr", 
+                        UnusedFieldRemover.v()));
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.smr",
+                        SideEffectFreeInvocationRemover.v()));
+        // Remove references to named objects.
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.ee",
+                        ExceptionEliminator.v(_toplevel)));
+         
+        Scene.v().getPack("wjtp").add(
+                new Transform("wjtp.doe",
+                        new TransformerAdapter(
+                                DeadObjectEliminator.v())));
+
    /*
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ts",
@@ -446,7 +495,10 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.finalSnapshot",
                         JimpleWriter.v()));
-
+        // And write C!
+        //         Scene.v().getPack("wjtp").add(
+        //                 new Transform("wjtp.finalSnapshot", CWriter.v()));
+       
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.watchDogCancel",
                         WatchDogTimer.v(), "cancel:true"));

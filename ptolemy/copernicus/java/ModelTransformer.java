@@ -375,19 +375,7 @@ public class ModelTransformer extends SceneTransformer {
              attributes.hasNext();) {
 	    Attribute attribute = (Attribute)attributes.next();
 
-            // FIXME: This is horrible...  I guess we need an attribute for
-            // persistence?
-            if (attribute instanceof Variable &&
-                    !(attribute instanceof Parameter)) {
-                continue;
-            }
-
-            // Ignore frame sizes and locations.  They aren't really
-            // necessary in the generated code, I don't think.
-            if (attribute instanceof SizeAttribute ||
-                attribute instanceof LocationAttribute ||
-                attribute instanceof LibraryAttribute ||
-                attribute instanceof TableauFactory) {
+            if(ActorTransformer._isIgnorableAttribute(attribute)) {
                 continue;
             }
             
@@ -396,10 +384,10 @@ public class ModelTransformer extends SceneTransformer {
             String attributeName = attribute.getName(context);
             String fieldName = getFieldNameForAttribute(attribute, context);
 
-            System.out.println("className = " + className);
+            //     System.out.println("className = " + className);
             Local local;
             if (createdSet.contains(attribute.getFullName())) {
-                System.out.println("already has " + attributeName);
+                //        System.out.println("already has " + attributeName);
                 // If the class for the object already creates the
                 // attribute, then get a reference to the existing attribute.
                 // Note that if the class creates the attribute, but
@@ -422,7 +410,7 @@ public class ModelTransformer extends SceneTransformer {
 //                     continue;
 //                 }
             } else {
-                System.out.println("creating " + attributeName);
+                //       System.out.println("creating " + attributeName);
                 // If the class does not create the attribute,
                 // then create a new attribute with the right name.
                 local = PtolemyUtilities.createNamedObjAndLocal(

@@ -117,6 +117,14 @@ public class ExceptionEliminator extends SceneTransformer {
 
                 // System.out.println("method = " + method);
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                for (Iterator traps = body.getTraps().iterator();
+                     traps.hasNext();) {
+                    Trap trap = (Trap)traps.next();
+                    SootClass exception = trap.getException();
+                    if(_isPtolemyException(exception)) {
+                        trap.setException(PtolemyUtilities.exceptionClass);
+                    }
+                }
 
                 for (Iterator units = body.getUnits().iterator();
                      units.hasNext();) {

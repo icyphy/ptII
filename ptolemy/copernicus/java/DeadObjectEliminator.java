@@ -92,9 +92,27 @@ public class DeadObjectEliminator extends BodyTransformer {
 
     protected void internalTransform(Body body,
             String phaseName, Map options) {
-        _removeDeadObjectCreation(body, PtolemyUtilities.tokenClass);
-        _removeDeadObjectCreation(body, PtolemyUtilities.typeClass);
-        _removeDeadObjectCreation(body, PtolemyUtilities.attributeClass);
+        // Assume that all classes we care about have been loaded...
+        Hierarchy hierarchy = Scene.v().getActiveHierarchy();
+        Set set = new HashSet();
+        
+        set.addAll(hierarchy.getSubclassesOfIncluding(
+                           PtolemyUtilities.tokenClass));
+        set.addAll(hierarchy.getSubclassesOfIncluding(
+                           PtolemyUtilities.baseTypeClass));
+        set.addAll(hierarchy.getSubclassesOfIncluding(
+                           PtolemyUtilities.arrayTypeClass));
+        set.addAll(hierarchy.getSubclassesOfIncluding(
+                           PtolemyUtilities.recordTypeClass));
+        set.addAll(hierarchy.getSubclassesOfIncluding(
+                           PtolemyUtilities.matrixTypeClass));
+        set.addAll(hierarchy.getSubclassesOfIncluding(
+                           PtolemyUtilities.attributeClass));
+        set.addAll(hierarchy.getSubclassesOfIncluding(
+                           Scene.v().loadClassAndSupport(
+                                   "ptolemy.data.expr.PtParser")));
+        
+        _removeDeadObjectCreation(body, set);
     }
 
     /** Remove any creations of objects of the given class, or
@@ -105,7 +123,7 @@ public class DeadObjectEliminator extends BodyTransformer {
      *  effects are not possible, or that the object is immutable.
      */
     private static void _removeDeadObjectCreation(
-            Body body, SootClass theClass) {
+            Body body, Set classSet) {
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
         // this will help us figure out where locals are defined.
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
@@ -116,36 +134,37 @@ public class DeadObjectEliminator extends BodyTransformer {
             if (!stmt.containsInvokeExpr()) {
                 continue;
             }
-                ValueBox box = stmt.getInvokeExprBox();
-                Value value = box.getValue();
-                if (value instanceof SpecialInvokeExpr) {
-                    SpecialInvokeExpr r = (SpecialInvokeExpr)value;
-                    if (SootUtilities.derivesFrom(
-                            r.getMethod().getDeclaringClass(), theClass) &&
-                            !liveLocals.getLiveLocalsAfter(stmt).contains(
-                                    r.getBase())) {
-                        // Remove the initialization and the constructor.
-                        // Note: This assumes a fairly tight coupling between
-                        // the new and the object constructor.  This may
-                        // not be true.
-                        body.getUnits().remove(stmt);
-                        for (Iterator defs = localDefs.getDefsOfAt(
-                                (Local)r.getBase(), stmt).iterator();
-                             defs.hasNext();) {
-                            Unit defUnit = (Unit)defs.next();
-                            if (defUnit instanceof DefinitionStmt) {
-                                // If we are keeping a definition, then
-                                // set the definition to be null.
-                                ((DefinitionStmt)defUnit).getRightOpBox().
-                                    setValue(NullConstant.v());
-                            } else {
-                                // I can't imagine when this would
-                                // be true?
-                                body.getUnits().remove(defUnit);
-                            }
+            ValueBox box = stmt.getInvokeExprBox();
+            Value value = box.getValue();
+            if (value instanceof SpecialInvokeExpr) {
+                SpecialInvokeExpr r = (SpecialInvokeExpr)value;
+           //      System.out.println("compare " + r.getMethod().getDeclaringClass());
+//                 System.out.println("with " + theClass);
+                if (classSet.contains(r.getMethod().getDeclaringClass()) &&
+                        !liveLocals.getLiveLocalsAfter(stmt).contains(
+                                r.getBase())) {
+                    // Remove the initialization and the constructor.
+                    // Note: This assumes a fairly tight coupling between
+                    // the new and the object constructor.  This may
+                    // not be true.
+                    body.getUnits().remove(stmt);
+                    for (Iterator defs = localDefs.getDefsOfAt(
+                                 (Local)r.getBase(), stmt).iterator();
+                         defs.hasNext();) {
+                        Unit defUnit = (Unit)defs.next();
+                        if (defUnit instanceof DefinitionStmt) {
+                            // If we are keeping a definition, then
+                            // set the definition to be null.
+                            ((DefinitionStmt)defUnit).getRightOpBox().
+                                setValue(NullConstant.v());
+                        } else {
+                            // I can't imagine when this would
+                            // be true?
+                            body.getUnits().remove(defUnit);
                         }
                     }
                 }
+            }
         }
     }
 

@@ -168,14 +168,18 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         Map in = (Map) inValue, out = (Map) outValue;
         Stmt stmt = (Stmt)d;
 
-        // System.out.println("flowing " + d + " " + in);
+        //System.out.println("flowing " + d + " " + in);
 
         // By default, the out is equal to the in.
         copy(inValue, outValue);
 
         if (stmt instanceof AssignStmt) {
             Value leftOp = ((AssignStmt)stmt).getLeftOp();
-            if (!_isTokenType(leftOp.getType())) return;
+            if (!_isTokenType(leftOp.getType())) {
+                //     System.out.println("type " + leftOp.getType() 
+                //             + " is not a token");
+                return;
+            }
             //  System.out.println("from " + in);
 
             Value rightOp = ((AssignStmt)stmt).getRightOp();
@@ -185,11 +189,14 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                 if (r.getMethod().equals(PtolemyUtilities.arraycopyMethod)) {
                     out.put(r.getArg(0), in.get(r.getArg(2)));
                 }
-            } else if (rightOp instanceof InstanceInvokeExpr) {
+            } else if (rightOp instanceof InstanceInvokeExpr ||
+                       rightOp instanceof InterfaceInvokeExpr) {
                 InstanceInvokeExpr r = (InstanceInvokeExpr)rightOp;
                 String methodName = r.getMethod().getName();
-                System.out.println("invokeExpr = " + r);
+                //System.out.println("invokeExpr = " + r);
                 Type type = r.getBase().getType();
+                //   System.out.println("baseType = " + type);
+                //  System.out.println("methodName = " + methodName);
                 if(type instanceof NullType) {
                     // Note: The control path that causes this to be
                     // null should never occur in practice.
@@ -355,8 +362,8 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                 TypeTag tag = (TypeTag)field.getTag("_CGType");
                 Object newType;
                 if(tag == null) {
-              //       System.out.println("No Tag... Existing type = " + in.get(rightOp));
-//                     System.out.println("No Tag... field type = " + field.getType());
+                    System.out.println("No Tag... Existing type = " + in.get(rightOp));
+                    System.out.println("No Tag... field type = " + field.getType());
                     
                     if(in.get(rightOp) == null) {
                         RefType fieldType = PtolemyUtilities.getBaseTokenType(field.getType());
