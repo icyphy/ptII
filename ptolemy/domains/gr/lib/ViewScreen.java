@@ -155,7 +155,6 @@ public class ViewScreen extends GRActor implements Placeable {
 
 
     public void place(Container container) {
-        System.out.println("place vs");
         GraphicsConfiguration config =
             SimpleUniverse.getPreferredConfiguration();
 
