@@ -23,7 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
@@ -39,7 +39,22 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// ExplicitRK23Solver
 /**
-Description of the class
+This class implements the Explicit Runge-Kutta 2(3) ODE solving method.
+For an ODE with form: <BR> 
+dx/dt = f(x, t) <BR>
+it does the following:<BR>
+K0 = f(x(n), tn);<BR>
+K1 = f(x(n)+0.5*h*K0, tn+0.5*h);<BR>
+K2 = f(x(n)+0.75*h*K1, tn+0.75*h);<BR>
+x(n+1) = x(n)+(2/9)*h*K0+(1/3)*h*K0+(4/9)*h*K2;<BR>
+For error control:
+K3 = f(x(n+1), tn+h); <BR>
+LTE = h*[(-5.0/72.0)*K0 + (1.0/12.0)*K1 + (1.0/9.0)*K2 + (-1.0/8.0)*K3]<BR>
+<P>
+If the LTE is less than the error tolerance, then this step is considered
+successful, and the next integration step is predicted as:
+h' = 0.8*Math.pow((ErrorTolerance/LTE), 1.0/3.0)
+<P>
 @author  Jie Liu
 @version $Id$
 */
@@ -71,76 +86,16 @@ public class ExplicitRK23Solver extends VariableStepSolver{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Resolve the state of the integrators at time currentTime
-     *  CurrentTime+CurrentStepSize. It gets the state transition
-     *  schedule from the scheduler and fire for one iteration.
-     *
-     * @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
-     */
-    public boolean resolveStates() throws IllegalActionException {
-        _debug(getFullName() + ": resolveState().");
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        CTScheduler sch = (CTScheduler)dir.getScheduler();
-        if (sch == null) {
-            throw new IllegalActionException( dir,
-                    " must have a director to fire.");
-        }
-        resetRound();
-        Enumeration actors;
-        // for the first iteration after a breakpoint, create the history.
-        if(dir.isBPIteration()) {
-            if(dir.STAT) {
-                dir.NFUNC ++;
-            }
-            actors = sch.dynamicActorSchedule();
-            while(actors.hasMoreElements()) {
-                CTDynamicActor next = (CTDynamicActor)actors.nextElement();
-                _debug(getFullName() + ": Build integrator history"
-                        +((Nameable)next).getName());
-                next.emitTentativeOutputs();
-            }
-            actors = sch.stateTransitionSchedule();
-            while(actors.hasMoreElements()) {
-                Actor next = (Actor)actors.nextElement();
-                _debug(getFullName() + ": Build integrator history..."
-                        +((Nameable)next).getName());
-                next.fire();
-            }
-        } 
-        for (int i = 0; i < _timeInc.length; i++) {
-            if(dir.STAT) {
-                dir.NFUNC ++;
-            }
-            actors = sch.dynamicActorSchedule();
-            while(actors.hasMoreElements()) {
-                Actor next = (Actor)actors.nextElement();
-                _debug(getFullName() + " firing..."+
-                        ((Nameable)next).getName());
-                next.fire();
-            }
-            dir.setCurrentTime(dir.getCurrentTime()+
-                    dir.getCurrentStepSize()*_timeInc[i]);
-            actors = sch.stateTransitionSchedule();
-            while(actors.hasMoreElements()) {
-                Actor next = (Actor)actors.nextElement();
-                _debug(getFullName() + " firing..."+((Nameable)next).getName());
-                next.fire();
-            }
-            incrRound();
-        }
-        if(dir.STAT) {
-            // for error control.
-            dir.NFUNC ++;
-        }
-        return true;
-    }
 
-    /**  fire() method for integrators.
+    /** Return 4. Four auxiliary variables are needed for this solver.
+     *  @return 4.
+     */
+    public final int getIntegratorAuxVariableCount() {
+        return 4;
+    }
+ 
+    /** This method is delegated to the fire() method of the integrator.
+     *  It implements the formula in the class document.
      *
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException If no director.
@@ -188,14 +143,6 @@ public class ExplicitRK23Solver extends VariableStepSolver{
         integrator.output.broadcast(new DoubleToken(outvalue));
     }
 
-    /** Integrator's aux variable number needed when solving the ODE.
-     *  @return The number of auxilary variables for the solver in each
-     *       integrator.
-     */
-    public final int getIntegratorAuxVariableCount() {
-        return 4;
-    }
-
     /** Integrator calculate potential state and test for local
      *  truncation error.
      *  @param integrator The integrator of that calls this method.
@@ -231,8 +178,8 @@ public class ExplicitRK23Solver extends VariableStepSolver{
         }
     }
 
-    /** Hook method for suggestedNextStepSize() method of
-     *  integrators.
+    /** This method is delegated to the predictedStepSize() method of the
+     *  integrator.
      *  @param integrator The integrator of that calls this method.
      *  @return The suggested next step by the given integrator.
      */
@@ -250,18 +197,95 @@ public class ExplicitRK23Solver extends VariableStepSolver{
         return newh;
     }
 
+    /**  Return true always.
+     *  Resolve the state of the integrators at time currentTime
+     *  CurrentTime+CurrentStepSize. It gets the state transition
+     *  schedule from the scheduler and fire for one iteration,
+     *  (which consists of 4 rounds.
+     *
+     * @exception IllegalActionException Not thrown in this base
+     *  class. May be needed by the derived class.
+     */
+    public boolean resolveStates() throws IllegalActionException {
+        _debug(getFullName() + ": resolveState().");
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir == null) {
+            throw new IllegalActionException( this,
+                    " must have a CT director.");
+        }
+        CTScheduler sch = (CTScheduler)dir.getScheduler();
+        if (sch == null) {
+            throw new IllegalActionException( dir,
+                    " must have a director to fire.");
+        }
+        resetRound();
+        Enumeration actors;
+        // for the first iteration after a breakpoint, create the history.
+        if(dir.isBPIteration()) {
+            if(dir.STAT) {
+                dir.NFUNC ++;
+            }
+            actors = sch.dynamicActorSchedule();
+            while(actors.hasMoreElements()) {
+                CTDynamicActor next = (CTDynamicActor)actors.nextElement();
+                _debug(getFullName() + ": Build integrator history"
+                        +((Nameable)next).getName());
+                next.emitTentativeOutputs();
+            }
+            actors = sch.stateTransitionSchedule();
+            while(actors.hasMoreElements()) {
+                Actor next = (Actor)actors.nextElement();
+                _debug(getFullName() + ": Build integrator history..."
+                            +((Nameable)next).getName());
+                next.fire();
+            }
+        } 
+        for (int i = 0; i < _timeInc.length; i++) {
+            if(dir.STAT) {
+                dir.NFUNC ++;
+            }
+            actors = sch.dynamicActorSchedule();
+            while(actors.hasMoreElements()) {
+                Actor next = (Actor)actors.nextElement();
+                _debug(getFullName() + " firing..."+
+                        ((Nameable)next).getName());
+                next.fire();
+            }
+            dir.setCurrentTime(dir.getCurrentTime()+
+                    dir.getCurrentStepSize()*_timeInc[i]);
+            actors = sch.stateTransitionSchedule();
+            while(actors.hasMoreElements()) {
+                Actor next = (Actor)actors.nextElement();
+                _debug(getFullName() + " firing..."+((Nameable)next).getName());
+                next.fire();
+            }
+            incrRound();
+        }
+        if(dir.STAT) {
+            // for error control.
+            dir.NFUNC ++;
+        }
+        return true;
+    }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
+    //name
     private static final String _name = "CT_Runge_Kutta_2_3_Solver";
-
+    
+    // time increase value.
     private static final double[] _timeInc = {0.5, 0.25, 0.25};
+
+    // B coefficients
     private static final double[][] _B = {{0.5},
                                           {0, 0.75},
                                           {2.0/9.0, 1.0/3.0, 4.0/9.0}};
+    // E coefficients                                           
     private static final double[] _E =
     {-5.0/72.0, 1.0/12.0, 1.0/9.0, -1.0/8.0};
+
+    // order.
     private static final double _order = 3;
 }

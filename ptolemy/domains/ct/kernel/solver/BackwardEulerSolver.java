@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -39,7 +39,14 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// BackwardEulerSolver
 /**
-Description of the class
+The backward Euler ODE solver. This solver uses the following formula to
+solve an ODE:<BR>
+x(n+1) = x(n) + h*x'(n+1)<BR>
+where x(n) is the previous state, x(n+1) is the current (to be resolved)
+state, h is the step size, and x'(n+1) is the derivative of x(n+1).
+The formula above is an algebraic equation, and this method uses fixed
+point iteration to solve it.
+<P>This method does not perform step size control.
 @author Jie Liu
 @version $Id$
 */
@@ -70,12 +77,39 @@ public class BackwardEulerSolver extends FixedStepSolver
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Vote if a fixed point has reached. The final result is the
-     *  <i>and</i> of all votes.
-     *  @param converge True if vote for converge.
+    /** Return 1. The integrator only need one auxiliary variable.
+     *  @return The number of auxiliary variables for the solver in each
+     *       integrator.
      */
-    public void voteForConverge(boolean converge) {
-        _converge = _converge && converge;
+    public final int getIntegratorAuxVariableCount() {
+        return 1;
+    }
+
+    /** For the integrator, do x(n+1)=x(n)+h*x'(n+1). Test if this
+     *  calculation is 
+     *  converge for this integrator.
+     *
+     *  @param integrator The integrator of that calls this method.
+     *  @exception IllegalActionException Not thrown in this base
+     *  class. May be needed by the derived class.
+     */
+    public void integratorFire(CTBaseIntegrator integrator)
+            throws IllegalActionException {
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir == null) {
+            throw new IllegalActionException( this,
+                    " must have a CT director.");
+        }
+        double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
+        double pstate = integrator.getState() + f*(dir.getCurrentStepSize());
+        double cerror =Math.abs(pstate-integrator.getTentativeState());
+        if( !(cerror < dir.getValueResolution())) {
+            voteForConverge(false);
+        }
+        integrator.setTentativeState(pstate);
+        integrator.setTentativeDerivative(f);
+
+        integrator.output.broadcast(new DoubleToken(pstate));
     }
 
     /** Return true if the vote result is true.
@@ -140,37 +174,12 @@ public class BackwardEulerSolver extends FixedStepSolver
         return true;
     }
 
-    /**  fire() method for integrators.
-     *
-     *  @param integrator The integrator of that calls this method.
-     * @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
+    /** Vote if a fixed point has reached. The final result is the
+     *  <i>and</i> of all votes.
+     *  @param converge True if vote for converge.
      */
-    public void integratorFire(CTBaseIntegrator integrator)
-            throws IllegalActionException {
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
-        double pstate = integrator.getState() + f*(dir.getCurrentStepSize());
-        double cerror =Math.abs(pstate-integrator.getTentativeState());
-        if( !(cerror < dir.getValueResolution())) {
-            voteForConverge(false);
-        }
-        integrator.setTentativeState(pstate);
-        integrator.setTentativeDerivative(f);
-
-        integrator.output.broadcast(new DoubleToken(pstate));
-    }
-
-    /** Integrator's aux variable number needed when solving the ODE.
-     *  @return The number of auxilary variables for the solver in each
-     *       integrator.
-     */
-    public final int getIntegratorAuxVariableCount() {
-        return 1;
+    public void voteForConverge(boolean converge) {
+        _converge = _converge && converge;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -241,7 +241,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
     }
 
     /** Integrator's aux variable number needed when solving the ODE.
-     *  @return The number of auxilary variables for the solver in each
+     *  @return The number of auxiliary variables for the solver in each
      *       integrator.
      */
     public final int getIntegratorAuxVariableCount() {

@@ -36,7 +36,8 @@ import ptolemy.domains.ct.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// FixedStepSolver
 /**
-Base class for fixed step size (no error control) ODE solvers.
+Abstract base class for fixed step size (no error control) ODE solvers.
+@author Jie Liu
 @version $Id$
 */
 public abstract class FixedStepSolver extends ODESolver{
@@ -74,16 +75,14 @@ public abstract class FixedStepSolver extends ODESolver{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Hook method for isSuccess() method of integrators.
-     *  Always returns true, since not error control.
+    /** Return true always, since not error control is performed.
      *  @return True always.
      */
     public final boolean integratorIsSuccessful(CTBaseIntegrator integrator) {
         return true;
     }
 
-    /** Hook method for suggestedNextStepSize() method of integrators.
-     *  Always returns 0 since no error control functionality.
+    /** Return 0 always, since no step size control is performed.
      *  @return 0 always.
      */
     public final double integratorPredictedStepSize(

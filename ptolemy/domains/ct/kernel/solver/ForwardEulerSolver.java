@@ -39,11 +39,11 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// ForwardEulerSolver
 /**
-The Forward Euler(FE) ODE solver. For ODE
-    dx/dt = f(x, u, t), x(0) = x0;
-The FE method approximate the x(t+h) as:
-    x(t+h) =  x(t) + h * f(x(t), u(t), t)
-No error control is performed.
+The Forward Euler(FE) ODE solver. For ODE<BR>
+    dx/dt = f(x, u, t), x(0) = x0;<BR>
+The FE method approximate the x(t+h) as:<BR>
+    x(t+h) =  x(t) + h * f(x(t), u(t), t)<BR>
+No error control is performed.<BR>
 @author  Jie Liu
 @version $Id$
 */
@@ -74,11 +74,42 @@ public class ForwardEulerSolver extends FixedStepSolver{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return 1 always.
+     *  @return 1.
+     */
+    public final int getIntegratorAuxVariableCount() {
+        return 1;
+    }
+
+    /** This method is delegated to the fire() method of the integrator.
+     *  It implements the formula in the class document..
+     *
+     *  @param integrator The integrator of that calls this method.
+     *  @exception IllegalActionException Not thrown in this base
+     *  class. May be needed by the derived class.
+     */
+    public void integratorFire(CTBaseIntegrator integrator)
+            throws IllegalActionException {
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir == null) {
+            throw new IllegalActionException( this,
+                    " must have a CT director.");
+        }
+        double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
+        double pstate = integrator.getState() + f*(dir.getCurrentStepSize());
+        integrator.setTentativeState(pstate);
+        integrator.setTentativeDerivative(f);
+
+        integrator.output.broadcast(new DoubleToken(pstate));
+    }
+
+
     /** Return true always, indicating that the states of the system
      *  is correctly resolved. 
      *  The resolved states are at time
      *  CurrentTime+CurrentStepSize. It gets the state transition
-     *  schedule from the scheduler and fire for one iteration.
+     *  schedule from the scheduler and fire for one iteration 
+     *  (which consists of 1 round).
      *  
      * @exception IllegalActionException If the firing of some actors
      *       throw it.
@@ -115,34 +146,6 @@ public class ForwardEulerSolver extends FixedStepSolver{
         return true;
     }
 
-    /**  fire() method for integrators.
-     *
-     *  @param integrator The integrator of that calls this method.
-     * @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
-     */
-    public void integratorFire(CTBaseIntegrator integrator)
-            throws IllegalActionException {
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
-        double pstate = integrator.getState() + f*(dir.getCurrentStepSize());
-        integrator.setTentativeState(pstate);
-        integrator.setTentativeDerivative(f);
-
-        integrator.output.broadcast(new DoubleToken(pstate));
-    }
-
-    /** Integrator's aux variable number needed when solving the ODE.
-     *  @return The number of auxilary variables for the solver in each
-     *       integrator.
-     */
-    public final int getIntegratorAuxVariableCount() {
-        return 1;
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

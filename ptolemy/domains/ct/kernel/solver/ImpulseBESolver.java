@@ -1,4 +1,4 @@
-/* The Impluse Backward Euler Solver
+/* The Impulse Backward Euler Solver
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -39,10 +39,21 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// ImpulseBESolver
 /** 
-Description of the class
-@author  youname
+This class implement the impulse backward Euler ODE solver. This solver
+uses two backward Euler solving process to deal with Dirac Delta functions
+appeared in a CT system. The first backward Euler process has a positive
+step size, h, and the second backward Euler process has a negative step 
+size, -h, where h is the minimum step size. 
+<P>
+By using this solver, we can find the state of the system at t+, which is
+the time at which the impulse occurs, but the effect of the impulse is
+considered.
+<P>
+This ODE solver does not advance time. So it can only be used as 
+a breakpoint solver in CTMultiSolverDirector.
+
+@author  Jie Liu
 @version $Id$
-FIXME: Need more accuracy on t+h-h
 */
 public class ImpulseBESolver extends BackwardEulerSolver {
     /** Construct a solver in the default workspace with an empty
@@ -83,13 +94,14 @@ public class ImpulseBESolver extends BackwardEulerSolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Description
+    /** Perform two successive backward Euler ODE solving method, with
+     *  step size h and -h, respectively, where h is the minimum 
+     *  step size.
+     *  @return True always.
      */	
     public boolean resolveStates() throws IllegalActionException {
         CTDirector dir = (CTDirector) getContainer();
         super.resolveStates();
-        System.out.println(getName() + " current time " + dir.getCurrentTime());
-
         
         Enumeration actors = ((CTScheduler)dir.getScheduler()
                               ).dynamicActorSchedule();
@@ -101,7 +113,6 @@ public class ImpulseBESolver extends BackwardEulerSolver {
         
         dir.setCurrentStepSize(-dir.getCurrentStepSize());
         super.resolveStates();
-        System.out.println(getName() + " current time " + dir.getCurrentTime());
 
         dir.setCurrentStepSize(-dir.getCurrentStepSize());
         return true;
@@ -114,8 +125,7 @@ public class ImpulseBESolver extends BackwardEulerSolver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
+    // The static name.
     private static final String _name="CT_ImpulseBE_Solver" ;
 
 }

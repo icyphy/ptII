@@ -54,8 +54,7 @@ JSRCS = \
 	ForwardEulerSolver.java \
 	ImplicitMethodSolver.java \
 	ImpulseBESolver.java \
-	TrapezoidalRuleSolver.java \
-	VariableStepSolver.java
+	TrapezoidalRuleSolver.java 
 
 
 EXTRA_SRCS =	$(JSRCS)
