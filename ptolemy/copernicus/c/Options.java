@@ -67,6 +67,10 @@ using this option turns the collector off.
 The target platform. A blank refers to a generic unix-like system. This
 includes Cygwin installations on windows.
 
+<p>
+<b> runtimeDir </b> <br>
+The path to the runtime directory.
+
 @author Ankush Varma
 @version $Id$
 @since Ptolemy II 2.0
@@ -82,6 +86,7 @@ public class Options {
         _optionTable.put("lib", "j2c_lib");
         _optionTable.put("gcDir", "");
         _optionTable.put("target", "");
+        _optionTable.put("runtimeDir", "../runtime");
     }
 
 

@@ -160,7 +160,9 @@ public class InvokeGraphCache{
 
             while (targets.hasNext()) {
                 SootMethod target = (SootMethod)targets.next();
-                targetSignatures.add(target.getSignature());
+                if (target.isDeclared()) {
+                    targetSignatures.add(target.getSignature());
+                }
             }
 
             map.put(method.getSignature(), targetSignatures);

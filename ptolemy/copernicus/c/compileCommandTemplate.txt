@@ -5,7 +5,7 @@
 # @author Christopher Hylands
 # @version $Id$
 #
-"@java@" @jvmSize@
+"@java@" -Xmx600M
  -classpath "@classPath@"
  "@javaPtIIProperty@"
  ptolemy.copernicus.c.Main "@modelPath@" -d "@ptIIUserDirectory@"

@@ -85,11 +85,11 @@ public class MakefileGenerator_C6000 extends MakeFileGenerator{
 
         // Native Bodies.
         code.append("NATIVE_BODIES ="
-                + NativeMethodGenerator.nativeBodyLib + "\n");
+                + NativeMethodGenerator.getNativeBodyLib() + "\n");
 
         // Overridden bodies.
         code.append("OVER_BODIES = "
-                + OverriddenMethodGenerator.overriddenBodyLib
+                + OverriddenMethodGenerator.getOverriddenBodyLib()
                 + "\n");
         // Java-to-C library.
         code.append("LIB = " + Options.v().get("lib")
@@ -116,23 +116,6 @@ public class MakefileGenerator_C6000 extends MakeFileGenerator{
         return code.toString();
     }
 
-    private static String specifyRules() {
-        StringBuffer code = new StringBuffer();
-        code.append("#Rules\n");
-
-        // Note that all object files will be created in current directory.
-        code.append("%.obj : %.c\n");
-        code.append("\tcl6x $(CC62FLAGS) $(CC62OPTS) $<\n\n");
-
-        code.append("%.out : %.obj\n");
-        code.append("\t$(LD62) $(LD62FLAGS) $(LD62OPTS) -o $@ $< *.obj "
-                + "$(LIBS) $(CMDS)\n");
-
-        code.append("\n");
-        return code.toString();
-    }
-
-
     private static String specifyFiles(SootClass source) {
         StringBuffer code = new StringBuffer();
 
@@ -158,6 +141,22 @@ public class MakefileGenerator_C6000 extends MakeFileGenerator{
 
         code.append("\n");
 
+        return code.toString();
+    }
+
+    private static String specifyRules() {
+        StringBuffer code = new StringBuffer();
+        code.append("#Rules\n");
+
+        // Note that all object files will be created in current directory.
+        code.append("%.obj : %.c\n");
+        code.append("\tcl6x $(CC62FLAGS) $(CC62OPTS) $<\n\n");
+
+        code.append("%.out : %.obj\n");
+        code.append("\t$(LD62) $(LD62FLAGS) $(LD62OPTS) -o $@ $< *.obj "
+                + "$(LIBS) $(CMDS)\n");
+
+        code.append("\n");
         return code.toString();
     }
 

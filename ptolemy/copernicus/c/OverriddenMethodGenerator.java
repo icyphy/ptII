@@ -69,8 +69,8 @@ public class OverriddenMethodGenerator {
      *  @return The name of the file.
      */
     public static String fileContainingCodeFor(SootMethod method) {
-        String fileName = overriddenBodyLib + CNames.functionNameOf(method)
-            + ".c";
+        String fileName = getOverriddenBodyLib()
+                + CNames.functionNameOf(method) + ".c";
 
         return fileName;
     }
@@ -91,6 +91,15 @@ public class OverriddenMethodGenerator {
 
     }
 
+    /* Returns the location of the directory containing the overridden
+     * bodies for methods.
+     * @return The location.
+     */
+    public static String getOverriddenBodyLib() {
+        return Options.v().get("runtimeDir") + "/over_bodies/";
+    }
+
+
 
     /**
      * Perform initialization functions and set up the list of
@@ -101,6 +110,7 @@ public class OverriddenMethodGenerator {
 
         ///////////// Methods replaced with dummy code ////////////
         // Methods ovverriden for speed
+        /*
         _forceOverriddenMethods.add("<java.lang.String: java.lang.String "
                 + "valueOf(java.lang.Object)>");
         _forceOverriddenMethods.add("<java.util.WeakHashMap: boolean "
@@ -113,13 +123,15 @@ public class OverriddenMethodGenerator {
                 + "indexOf(java.lang.Object,int)>");
 
 
-
+        */
         // End Speed.
 
+        /*
         _forceOverriddenMethods.add(
                 "<java.util.ResourceBundle: java.lang.Object "
                 + "loadBundle(java.lang.ClassLoader,java.lang.String)>");
         // Overridden it throws a warning for an unused variable.
+        */
 
         _forceOverriddenMethods.add("<java.util.Locale: void <clinit>()>");
         // Overridden because called and used the result from an
@@ -277,6 +289,10 @@ public class OverriddenMethodGenerator {
                 "<java.util.Random: void <clinit>()>");
         // Causes segfault.
 
+        _forceOverriddenMethods.add(
+                "<java.math.BigDecimal: void <clinit>()>");
+        // Uses classloader indirectly.
+
         ///////// Methods replaced with actual code ////////
 
         // Methods that provide basic I/O functionality in
@@ -298,10 +314,6 @@ public class OverriddenMethodGenerator {
         _forceOverriddenMethods.add(
                 "<java.io.PrintStream: void write(java.lang.String)>");
 
-        /*_forceOverriddenMethods.add(
-                "<java.lang.String: void <init>(char[])>");
-        // Overridden because C needs \0 at the end of a string.
-        */
 
         _forceOverriddenMethods.add(
                 "<java.lang.System: void initializeSystemClass()>");
@@ -313,6 +325,15 @@ public class OverriddenMethodGenerator {
                 "<java.util.Random: void setSeed(long)>");
         _forceOverriddenMethods.add(
                 "<java.util.Random: double nextDouble()>");
+
+        // Throwable does not need java.lang.Class anymore to find string
+        // corresponding to a throwable.
+        // FIXME: A better solution is to give some support to
+        // java.lang.Class.
+        _forceOverriddenMethods.add(
+                "<java.lang.Throwable: java.lang.String toString()>");
+
+
 
 
     }
@@ -345,6 +366,7 @@ public class OverriddenMethodGenerator {
                 ||(className.indexOf("javax.") == 0)
                 ||(className.indexOf("java.nio.") == 0)
                 ||(className.indexOf("java.net.") == 0)
+                ||(className.indexOf("java.rmi.") == 0)
                 ||(className.indexOf("java.lang.reflect.") == 0)
                 ||(className.indexOf("java.lang.ref.") == 0)
                 ||(className.indexOf("java.util.prefs.") == 0)
@@ -354,6 +376,24 @@ public class OverriddenMethodGenerator {
                 ||(className.indexOf("java.security.") == 0)
                 ||(className.indexOf("java.lang.Object") == 0)
                 ||(className.indexOf("java.text.") == 0)
+                ||(className.indexOf("java.awt.") == 0)
+                /* Ptolemy packages that are always overridden */
+                ||(className.indexOf("ptolemy.apps.") == 0)
+                ||(className.indexOf("ptolemy.cal.") == 0)
+                ||(className.indexOf("ptolemy.configs.") == 0)
+                ||(className.indexOf("ptolemy.data.") == 0)
+                ||(className.indexOf("ptolemy.domains.") == 0)
+                ||(className.indexOf("ptolemy.graph.") == 0)
+                ||(className.indexOf("ptolemy.gui.") == 0)
+                ||(className.indexOf("ptolemy.hsif.") == 0)
+                ||(className.indexOf("ptolemy.kernel.") == 0)
+                ||(className.indexOf("ptolemy.math.") == 0)
+                ||(className.indexOf("ptolemy.matlab.") == 0)
+                ||(className.indexOf("ptolemy.media.") == 0)
+                ||(className.indexOf("ptolemy.moml.") == 0)
+                ||(className.indexOf("ptolemy.plot.") == 0)
+                ||(className.indexOf("ptolemy.util.") == 0)
+                ||(className.indexOf("ptolemy.vergil.") == 0)
             ) {
             return true;
         }
@@ -364,11 +404,6 @@ public class OverriddenMethodGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
-
-    /** The directory containing the location of the bodies of overridden
-     * methods.
-     */
-    public static String overriddenBodyLib = "../runtime/over_bodies/";
 
 
     ///////////////////////////////////////////////////////////////////
@@ -396,8 +431,8 @@ public class OverriddenMethodGenerator {
         code.append(indent + "/* OVERRIDDEN METHOD */\n");
 
         if (FileHandler.exists(fileContainingCodeFor(method))) {
-            code.append(indent + "#include \""
-                    + overriddenBodyLib
+            code.append(indent
+                    + "#include \"over_bodies/"
                     + CNames.functionNameOf(method) + ".c\"");
         }
         else {

@@ -82,13 +82,12 @@ public class MakeFileGenerator {
         code.append("PTII = ../../../..\n");
 
         code.append("THIS = " + className + ".make\n");
-        code.append("RUNTIME = ../runtime\n");
+        code.append("RUNTIME = " + Options.v().get("runtimeDir") + "\n");
         code.append("NATIVE_BODIES ="
-                + NativeMethodGenerator.nativeBodyLib + "\n");
+                + NativeMethodGenerator.getNativeBodyLib() + "\n");
         // Overridden bodies.
         code.append("OVER_BODIES = "
-                + OverriddenMethodGenerator.overriddenBodyLib
-                + "\n");
+                + OverriddenMethodGenerator.getOverriddenBodyLib() + "\n");
         // Java-to-C library.
         code.append("LIB = " + Options.v().get("lib")
                 + "\n");
@@ -101,8 +100,8 @@ public class MakeFileGenerator {
         }
 
         // The -g flag is for gdb debugging.
-        //code.append("CFLAGS = -O2 -static -s -Wall -pedantic");
-        code.append("CFLAGS = -g -static -Wall -pedantic");
+        //code.append("CFLAGS = -O2 -static -s -Wall -pedantic -I .");
+        code.append("CFLAGS = -g -static -Wall -pedantic -I .");
         if (gc) {
             code.append(" -DGC");
         }
@@ -112,7 +111,7 @@ public class MakeFileGenerator {
         code.append("\n");
 
         code.append("DEPEND = gcc -MM -I $(RUNTIME) -I $(LIB) "
-                + "-I $(NATIVE_BODIES) -I $(OVER_BODIES)");
+                + "-I $(NATIVE_BODIES) -I $(OVER_BODIES) -I .");
         if (gc) {
             code.append(" -I $(GC_DIR)");
         }
@@ -121,7 +120,7 @@ public class MakeFileGenerator {
         // Get names of all .c files in the transitive closure.
         code.append("SOURCES = $(RUNTIME)/pccg_runtime.c "
                 + "$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n"
-                + "\t" + className + "_main.c\\\n");
+                + "\t" + CNames.classNameToFileName(className) + "_main.c\\\n");
 
         HashSet libSources = RequiredFileGenerator.generateUserClasses(code);
 
@@ -146,7 +145,7 @@ public class MakeFileGenerator {
                 + StubFileGenerator.stubFileNameSuffix() + ")\n");
 
         // Main Target.
-        code.append("\n"+ className + ".exe : $(OBJECTS) $(LIB_FILE)\n");
+        code.append("\n"+ className + ".exe : depend $(OBJECTS) $(LIB_FILE)\n");
 
         code.append("\tgcc $(CFLAGS) $(OBJECTS) $(LIB_FILE) ");
         if (gc) {
@@ -177,11 +176,14 @@ public class MakeFileGenerator {
         code.append("\tcat $(THIS) makefile.tmp>"
                 + className + ".mk;\\\n");
         code.append("\trm makefile.tmp;\n");
+        code.append("\tmv " + className + ".mk $(THIS)\n");
         code.append("\n");
 
         code.append("clean:\n");
-        code.append("\trm $(OBJECTS) $(LIB_OBJECTS) $(LIB_FILE)");
-        code.append(";\n");
+        code.append("\trm -f $(OBJECTS)\n"
+                + "\trm -f $(LIB_OBJECTS)\n"
+                + "\trm -f $(LIB_FILE)\n");
+        code.append("\n");
 
         code.append("# DO NOT DELETE THIS LINE "
                 + " -- make depend depends on it.\n\n");

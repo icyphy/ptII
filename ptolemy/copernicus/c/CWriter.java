@@ -101,8 +101,12 @@ public class CWriter extends SceneTransformer {
         // We need to cache the classes up front to avoid a concurrent
         // modification exception.
         ArrayList classList = new ArrayList();
+
+        /* Adds all classes to list. We just want main class.
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
              classes.hasNext(); classList.add(classes.next()));
+        */
+        classList.add(Scene.v().getMainClass());
 
         StringBuffer sourcesList = new StringBuffer();
 
@@ -139,9 +143,10 @@ public class CWriter extends SceneTransformer {
             System.out.println("CWriter: soot class path = " + classPath);
 
             // Options for fast minimal code generation.
-            Options.v().put("pruneLevel", "0");
-            Options.v().put("compileMode", "singleClass");
+            Options.v().put("pruneLevel", "1");
+            Options.v().put("compileMode", "full");
             Options.v().put("verbose", "true");
+            Options.v().put("runtimeDir", "../../runtime");
 
             RFG.init(classPath, sootClass.getName());
 
@@ -169,7 +174,6 @@ public class CWriter extends SceneTransformer {
             sourcesList.append(" " + fileName + ".c");
 
             // Generate other required files.
-            // FIXME: Improve exception handling here.
             try {
                 RequiredFileGenerator.generateTransitiveClosureOf(classPath,
                         sootClass.getName());
@@ -184,6 +188,10 @@ public class CWriter extends SceneTransformer {
                 code = mGenerator.generate(sootClass);
                 FileHandler.write(fileName + "_main.c", code);
             }
+
+            // Generate a makefile.
+            MakeFileGenerator.generateMakeFile(classPath, sootClass.getName());
+
 
             System.out.println("Done generating C code files for " + fileName);
 

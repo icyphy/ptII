@@ -76,11 +76,15 @@ public class InvokeGraphPruner {
         _verbose = Options.v().getBoolean("verbose");
         _cache = new InvokeGraphCache();
         if (!_cache.isPrecomputed()) {
-            _setAllClassesAsLibrary();
+            _setUnOverriddenClassesAsLibrary();
+            //_setAllClassesAsLibrary();
             InvokeGraph invokeGraph = _generateNewInvokeGraph();
             Scene.v().setActiveInvokeGraph(invokeGraph);
+            /* FIXME: Uncomment this.
             VariableTypeAnalysis vta = new VariableTypeAnalysis(invokeGraph);
             vta.trimActiveInvokeGraph();
+            */
+
             _cache.store(invokeGraph);
         }
         _cache.load();
@@ -89,7 +93,7 @@ public class InvokeGraphPruner {
         // All methods in the source, and no other methods, are required in
         // singleclass mode.
         if (!Options.v().get("compileMode").equals("singleClass")) {
-            _setAllClassesAsLibrary();// To see inside method bodies.
+            _setUnOverriddenClassesAsLibrary();
             _growTree(source);
         }
         else {
@@ -177,15 +181,35 @@ public class InvokeGraphPruner {
      * field.
      * @param node The object to add.
      */
-    //FIXME: Can be made more efficient by checking the type of node and
-    //comparing only against the list of that type.
     protected void _add(Object node) {
+        if (!_gray.contains(node)) {
+            if (node instanceof SootClass) {
+                if (!_reachableClasses.contains(node)) {
+                    _gray.addLast(node);
+                }
+            }
+            else if (node instanceof SootMethod) {
+                if (!_reachableMethods.contains(node)) {
+                    _gray.addLast(node);
+                }
+            }
+            else if (node instanceof SootField) {
+                if (!_reachableFields.contains(node)) {
+                    _gray.addLast(node);
+                }
+            }
+        }
+
+        //FIXME: Can be made more efficient by checking the type of node and
+        //comparing only against the list of that type.
+        /* FIXME: Remove this
         if ((!_gray.contains(node))
                 && (!_reachableClasses.contains(node))
                 && (!_reachableMethods.contains(node))
                 && (!_reachableFields.contains(node))){
             _gray.addLast(node);
         }
+        */
     }
 
     /** Adds a class, method or field  to the appropriate reachable list.
@@ -234,6 +258,10 @@ public class InvokeGraphPruner {
         // System.out is required by initializeSystemClass
         SootField field = source.getFieldByName("out");
         compulsoryNodes.add(field);
+        // System.err is required by initializeSystemClass
+        field = source.getFieldByName("err");
+        compulsoryNodes.add(field);
+
 
         // Printstream is required by the force-overridden version of
         // System.initializeSystemClass(), but it doesn't have a clinit.
@@ -343,13 +371,20 @@ public class InvokeGraphPruner {
         _gray.addAll(_getRoots(source));
 
         while (!_gray.isEmpty()) {
-            //System.out.println(_gray.size());
             Object node = _gray.getFirst();
             if (node instanceof SootClass) {
                 _processClass((SootClass)node);
             }
             else if (node instanceof SootMethod) {
-                _processMethod((SootMethod)node);
+                if (((SootMethod)node).isDeclared()) {
+                    _processMethod((SootMethod)node);
+                }
+                else {
+                    _gray.removeFirst();
+                    System.out.println(
+                        "InvokeGraphPruner._growTree: "
+                        + "Removed an undeclared method\n");
+                }
             }
             else if (node instanceof SootField) {
                 _processField((SootField)node);
@@ -510,10 +545,11 @@ public class InvokeGraphPruner {
      * non-precomputed classes only.
      */
     private void _generatePluginInvokeGraph() {
-        _setUncachedClassesAsLibrary();
+        _setUnCachedClassesAsLibrary();
         InvokeGraph invokeGraph = _generateNewInvokeGraph();
         Scene.v().setActiveInvokeGraph(invokeGraph);
     }
+
 
 
     /** Set all classes in the Scene as library classes. */
@@ -531,10 +567,11 @@ public class InvokeGraphPruner {
         }
     }
 
-    /** Set classes not in the cache as library classes */
-    private void _setUncachedClassesAsLibrary() {
+    /** Set classes not in the cache as library classes.*/
+    private void _setUnCachedClassesAsLibrary() {
         if (_verbose) {
-            System.out.println("Setting uncached classes to library classes ...");
+            System.out.println(
+                    "Setting uncached classes to library classes ...");
         }
 
         Iterator classes = Scene.v().getClasses().iterator();
@@ -546,6 +583,21 @@ public class InvokeGraphPruner {
         }
     }
 
+    /** Set all classes in the Scene that are not overridden as library classes. */
+    private void _setUnOverriddenClassesAsLibrary() {
+        if (_verbose) {
+            System.out.println(
+                    "Setting all un-overridden classes to library classes ...");
+        }
+
+        Iterator classes = Scene.v().getClasses().iterator();
+        while (classes.hasNext()) {
+            SootClass source = (SootClass)classes.next();
+            if (OverriddenMethodGenerator.isOverridden(source)) {
+                source.setLibraryClass();
+            }
+        }
+    }
 
 
     ///////////////////////////////////////////////////////////////////

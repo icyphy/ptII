@@ -71,9 +71,6 @@ public class NativeMethodGenerator {
      */
     public static final String nativeLib = "natives/";
 
-    /** The location of the hand-coded native library method bodies.
-     */
-    public static final String nativeBodyLib = "../runtime/native_bodies/";
 
 
     /** Return the name of the file where the C code for a native method
@@ -112,10 +109,11 @@ public class NativeMethodGenerator {
         String cReturnType = CNames.typeNameOf(method.getReturnType());
 
         // Add a #include if the method body exists.
-        if (FileHandler.exists(nativeBodyLib
+        if (FileHandler.exists(Options.v().get("runtimeDir")
+                + "/native_bodies/"
                 + fileContainingCodeFor(method))) {
 
-            code.append(_indent(1) + "#include \""
+            code.append(_indent(1) + "#include \"native_bodies/"
                     + fileContainingCodeFor(method)
                     + "\"\n");
         }
@@ -189,6 +187,11 @@ public class NativeMethodGenerator {
         return code;
     }
 
+    /** Returns the location of the hand-coded native library method bodies.
+     */
+    public static String getNativeBodyLib() {
+        return  Options.v().get("runtimeDir") + "/native_bodies/";
+    }
 
 
     /** Returns the first line of the stub for the given method.

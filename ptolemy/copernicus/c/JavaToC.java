@@ -117,7 +117,8 @@ public class JavaToC {
 
         if (!generateSingleClass) {
             // Generate other required files.
-            RequiredFileGenerator.generateTransitiveClosureOf(classPath, className);
+            RequiredFileGenerator
+                    .generateTransitiveClosureOf(classPath, className);
 
             // Generate the makefile.
             MakeFileGenerator.generateMakeFile(classPath, className);
@@ -162,7 +163,8 @@ public class JavaToC {
                         || args[i].equals("-compileMode")
                         || args[i].equals("-pruneLevel")
                         || args[i].equals("-gcDir")
-                        || args[i].equals("-target")) {
+                        || args[i].equals("-target")
+                        || args[i].equals("-runtimeDir")) {
                     if (i<args.length-1) {
                         i++;
                         Options.v().put(args[i-1].substring(1), args[i]);
@@ -185,7 +187,6 @@ public class JavaToC {
                 String gcDir = Options.v().get("gcDir");
                 if (!gcDir.equals("")) {
                     if (!FileHandler.exists(gcDir)) {
-                        System.out.println("NO GC\n");
                         Options.v().put("gcDir", "");
                     }
                 }

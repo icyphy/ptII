@@ -501,11 +501,15 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         v.getBase().apply(this);
         String instanceName = _pop().toString();
         String cast;
+
+        String returnType = CNames.typeNameOf(method.getReturnType());
+
         if (!method.isStatic()) {
-            cast = new String("(void* (*) (void*, ...))");
+             cast = new String("(" + returnType + " (*) (void*, ...))");
         }
         else {
-            cast = new String("(void* (*) "
+            cast = new String("(" + returnType
+                    + " (*) "
                     + CNames.typeNameOf(method.getParameterType(0))
                     + ", ...))");
         }
@@ -638,6 +642,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
      *  @param v The expression.
      */
     public void caseNewExpr(NewExpr v) {
+        Type type = v.getType();
         if (_debug) {
             System.out.println("new expr types: "
                     + v.getBaseType().getClass().getName()
@@ -647,7 +652,12 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
         }
 
         String name = CNames.typeNameOf(v.getType());
-        _context.addIncludeFile("<stdlib.h>");
+        // Put a #include for the appropriate type.
+        if (type instanceof RefType) {
+                SootClass sootClass = ((RefType)type).getSootClass();
+                _context.addIncludeFile("\""
+                    + CNames.includeFileNameOf(sootClass) + "\"");
+        }
         _push("( malloc(sizeof(struct " + name + ")))");
     }
 
