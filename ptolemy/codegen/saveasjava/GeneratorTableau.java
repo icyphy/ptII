@@ -145,21 +145,16 @@ public class GeneratorTableau extends Tableau {
 
             // Next, put in a Query to set parameters.
             final Query query = new Query();
-            // FIXME: getProperty() will probably fail in applets.
-            final File cwd = new File(System.getProperty("user.dir"));
 
-            query.addLine("directory", "Destination directory",
-			  cwd.toString());
+            query.addLine("directory", "Destination directory", _directoryName);
+
 	    // The vergil start up script sets ptolemy.ptII.dir to $PTII
-	    query.addLine("classpath",
-			  "Usually, location of Ptolemy II home directory",
-			  System.getProperty("ptolemy.ptII.dir")
-			  + File.pathSeparator
-			  + ".");
-            query.addLine("package", "Package name", "");
-            query.addCheckBox("show", "Show code", true);
-            query.addCheckBox("compile", "Compile code", true);
-            query.addCheckBox("run", "Run code", true);
+	    query.addLine("classpath", "Classpath", _classpathName);
+
+            query.addLine("package", "Package name", _packageName);
+            query.addCheckBox("show", "Show code", _show);
+            query.addCheckBox("compile", "Compile code", _compile);
+            query.addCheckBox("run", "Run code", _run);
 	    // FIXME: we need entries for javac and java
 
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
@@ -177,19 +172,23 @@ public class GeneratorTableau extends Tableau {
             goButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                     try {
-                        String directoryName = query.stringValue("directory");
-                        File directory = cwd;
-                        if (!directoryName.trim().equals("")) {
-                            directory = new File(directoryName);
+			// Handle the directory entry.
+                        _directoryName = query.stringValue("directory");
+
+			// If the directory query is empty, then set
+			// directory to the current working directory.
+			File directory = _currentWorkingDirectory;
+                        if (!_directoryName.trim().equals("")) {
+                            directory = new File(_directoryName);
                             if(!directory.isDirectory()) {
                                 throw new IllegalActionException(model,
-                                "Not a directory: " + directoryName);
+                                "Not a directory: " + _directoryName);
                             }
                         }
                         // FIXME: Check that directory is writable.
 
                         // Write the generated code.
-                        File destination = new File(directory,
+                        File destination = new File(_directoryName,
                                 model.getName() + ".java");
 
                         FileWriter outfile = new FileWriter(destination);
@@ -197,8 +196,25 @@ public class GeneratorTableau extends Tableau {
                         outprinter.print((new SaveAsJava()).generate(model));
                         outfile.close();
                         report("Code generation complete.");
+			
+			// Handle the classpath entry.
+			_classpathName = query.stringValue("classpath");
+			if (_classpathName.length() > 0 
+			    && !_classpathName.startsWith("-classpath")) {
+			    _classpathName = "-classpath \""
+				+ _classpathName + "\" ";
+			}
+			
+			// Handle the package entry.
+			_packageName = query.stringValue("package");
+			if (_packageName.length() > 0
+			    && ! _packageName.endsWith(".") ) {
+			    _packageName = _packageName + '.';
+			}
 
-                        if (query.booleanValue("show")) {
+			// Handle the show checkbox.
+			_show = query.booleanValue("show");
+                        if (_show) {
                             URL codeFile = destination.toURL();
                             Configuration config = (Configuration)toplevel();
                             // FIXME: If we previously had this file open,
@@ -207,38 +223,32 @@ public class GeneratorTableau extends Tableau {
                                   codeFile.toExternalForm());
                         }
 
-			String classpath = query.stringValue("classpath");
-			if (classpath.length() > 0 
-			    && !classpath.startsWith("-classpath")) {
-			    classpath = "-classpath \"" + classpath + "\" ";
-			}
-
-                        if (query.booleanValue("compile")) {
+			// Handle the compile checkbox.
+			_compile=query.booleanValue("compile");
+                        if (_compile) {
 			    text.setText("");
 			    _Exec exec = new _Exec(text,
 						   "javac "
-						   + classpath
-						   + directoryName
+						   + _classpathName
+						   + _directoryName
 						   + File.separatorChar
 						   + model.getName()
 						   + ".java");
 			    new Thread(exec).start();
                             report("Compilation complete.");
                         }
-                        if (query.booleanValue("run")) {
-			    String packageName =
-				query.stringValue("package");
-			    if (packageName.length() > 0
-				&& ! packageName.endsWith(".") ) {
-				packageName = packageName + '.';
-			    }
+
+			// Handle the run checkbox.
+			_run = query.booleanValue("run");
+                        if (_run) {
 			    _Exec exec =
+				//FIXME: we should not need to set iterations.
 				new _Exec(text,
 					  "java " 
-					  + classpath
+					  + _classpathName
 					  + "ptolemy.actor.gui.CompositeActorApplication "
 					  + "-class " 
-					  + packageName 
+					  + _packageName 
 					  + model.getName()
 					  + " -iterations 5");
 			    new Thread(exec).start();
@@ -247,10 +257,55 @@ public class GeneratorTableau extends Tableau {
                     } catch (Exception ex) {
                         MessageHandler.error("Code generation failed.", ex);
                     }
-                }
+		}
             });
 	}
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    // The current working directory.
+    private static File _currentWorkingDirectory;
+
+    // The name of the directory to create the .java file in.
+    private static String _directoryName;
+
+    // The classpath to use when compiling and running.
+    private static String _classpathName;
+
+    // The .java file should be created in this package.
+    private static String _packageName = new String("");;
+
+    // If true, then show the .java file that is generated.
+    private static boolean _show = true;
+
+    // If true, then compile the .java file that is generated.
+    private static boolean _compile = true;
+
+    // If true, then run the .java file that is generated.
+    private static boolean _run = true;
+
+    // Initialize the static variables so that the user settings
+    // are saved between invocations of the code generator.
+    // Ideally, we would have a preferences manager for this.
+    static {
+
+	// FIXME: getProperty() will probably fail in applets.
+	_currentWorkingDirectory = new File(System.getProperty("user.dir"));
+	_directoryName = _currentWorkingDirectory.toString();
+
+	if (System.getProperty("ptolemy.ptII.dir").equals(null)) {
+	    _classpathName = new String("-classpath . ");
+	} else {
+	    _classpathName = new String("-classpath \""
+				    + System.getProperty("ptolemy.ptII.dir")
+				    + File.pathSeparator
+				    + ".\" ");
+	}
+    }
+
+
 
     /** A factory that creates a control panel for code generation.
      */
