@@ -131,8 +131,8 @@ test FSMActor-4.1 {test setting initial state} {
     $p setExpression s2
     catch {$fsm getInitialState} msg
     list $re0 $re1 $msg
-} {1 1 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.fsm:
-Cannot find initial state with name "s2".}}
+} {1 1 {ptolemy.kernel.util.IllegalActionException: Cannot find initial state with name "s2".
+  in .<Unnamed Object>.fsm}}
 
 ######################################################################
 ####
@@ -280,8 +280,8 @@ test FSMActor-7.1 {test exception when multiple transitions enabled} {
     catch {$dir fire} msg
     $dir terminate
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.fsm.s0:
-Multiple enabled transitions: t0 and t1.}}
+} {{ptolemy.kernel.util.IllegalActionException: Multiple enabled transitions: t0 and t1.
+  in .<Unnamed Object>.fsm.s0}}
 
 ######################################################################
 ####

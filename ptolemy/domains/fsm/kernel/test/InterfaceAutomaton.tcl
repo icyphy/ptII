@@ -135,8 +135,8 @@ test InterfaceAutomaton-4.1 {test setting initial state} {
     $p setExpression s2
     catch {$ia getInitialState} msg
     list $re0 $re1 $msg
-} {1 1 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.ia:
-Cannot find initial state with name "s2".}}
+} {1 1 {ptolemy.kernel.util.IllegalActionException: Cannot find initial state with name "s2".
+  in .<Unnamed Object>.ia}}
 
 ######################################################################
 ####

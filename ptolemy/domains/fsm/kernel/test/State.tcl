@@ -115,5 +115,6 @@ test State-3.1 {test setting refinement} {
     [java::field $s0 refinementName] setExpression e3
     catch {$s0 getRefinement} msg
     list $re0 $re1 $re2 $msg
-} {1 .e0.e1 .e0.e2 {ptolemy.kernel.util.IllegalActionException: Object name: .e0.fsm.s0:
-Cannot find refinement with name "e3" in .e0}}
+} {1 .e0.e1 .e0.e2 {ptolemy.kernel.util.IllegalActionException: Cannot find refinement with name "e3" in .e0
+  in .e0.fsm.s0}}
+
