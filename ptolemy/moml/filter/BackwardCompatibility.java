@@ -65,7 +65,15 @@ public class BackwardCompatibility {
      *  @return the String that describes all the filters and that ends with a
      *  newline.
      */
-    public static String toString() {
+    public String toString() {
+        // This is a little strange because when we call 
+        // BackwardCompatibility.allFilters(), we add the individual filters 
+        // so when we iterate through the filters and call toString, we never
+        // actually call BackwardCompatibility.toString().
+
+        // Ideally, we would like to make toString() static, but we
+        // can't do that because Object.toString() is not static
+
         StringBuffer results =
             new StringBuffer("This filter contains the following filters:\n");
         Iterator filters = _filterList.iterator();
