@@ -46,7 +46,9 @@ PTPACKAGE = 	design
 PTCLASSJAR = $(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	design.pdf
+	ptIIdesign1-intro.pdf \
+	ptIIdesign2-software.pdf \
+	ptIIdesign3-domains.pdf
 
 EXTRA_SRCS = \
 	body.htm \
@@ -63,8 +65,10 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	design.pdf \
 	html \
+	ptIIdesign1-intro.pdf \
+	ptIIdesign2-software.pdf \
+	ptIIdesign3-domains.pdf \
 	src \
 	usingVergil \
 	usingVergil.pdf
