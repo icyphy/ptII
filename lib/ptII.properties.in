@@ -1,0 +1,26 @@
+# $PTII/lib/ptII.properties
+# $Id$
+# Properties set by configure for use when starting up.
+# 
+# If this file is named "ptII.properties", don't edit it!
+# Instead edit ptII.properties.in and run "cd $PTII;./configure"
+# configure reads in $PTII/lib/ptII.properties.in,
+# substitutes in variables that are surrounded with @,
+# and generated $PTII/lib/ptII.properties.in
+#
+# We use a properties file here so that we can easily start Ptolemy II
+# without passing lots of command line arguments
+#
+
+# Location of the the PTII directory
+ptolemy.ptII.dir=@PTII@
+
+# Start up with the US Locale so as to avoid problems with , instead
+# of . in floating point numbers in German and Swedish locales
+user.language=en
+Duser.region=US
+
+# These properties are used by PtinyOS
+ptolemy.ptII.jni.architecture=@PTJNI_ARCHITECTURE@
+ptolemy.ptII.java.dir=@PTJAVA_DIR_CLEAN@
+ptolemy.ptII.tosroot=@TOSROOT_NO_CYGDRIVE@
