@@ -72,9 +72,9 @@ import java.awt.*;
 //// MobileFunction
 /**
 This actor extends the TypedAtomicActor. It applies a function to its inputs
-and output the results. But rather than have the function specified
+and outputs the results. But rather than has the function specified
 statically, this actor allows dynamic change to the function, which means
-the computaion of this actor can be changed during executing. Its second
+the computation of this actor can be changed during executing. Its second
 input accept a function token for the new function's definition. The
 function token can be given by actors in the local model or remote actors.
 @author Yang Zhao

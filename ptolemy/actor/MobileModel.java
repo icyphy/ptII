@@ -83,6 +83,8 @@ to this actor is specified by a URL string.
 //FIXME: should factor the parser part out to another actor that takes
 //a moml string or URL string and output an ActorToken. and have the
 //second input take an actor token...
+//Fixme2:maybe should have this actor have a prameter to specify whether
+//merge the change to the old inside model or not.
 @author Yang Zhao
 @version $Id:
 */
