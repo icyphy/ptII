@@ -58,7 +58,7 @@ public class SetParameter extends ChangeRequest {
     public SetParameter(Nameable originator, Parameter parameter,
             String expression) {
         super(originator, "Change value of parameter "
-        + parameter.getFullName() + " to " + expression);
+                + parameter.getFullName() + " to " + expression);
         _parameter = parameter;
         _expression = expression;
     }
@@ -75,11 +75,11 @@ public class SetParameter extends ChangeRequest {
     public void execute() throws ChangeFailedException {
         // FIXME: Put this back in when getToken() is fixed.
         // try {
-            _parameter.setExpression(_expression);
-            // Force evaluation of the expression to ensure validity,
-            // and to ensure that the container is notified of the new
-            // value.
-            _parameter.getToken();
+        _parameter.setExpression(_expression);
+        // Force evaluation of the expression to ensure validity,
+        // and to ensure that the container is notified of the new
+        // value.
+        _parameter.getToken();
         // } catch (IllegalActionException ex) {
         //    throw new ChangeFailedException(this, ex);
         //}
