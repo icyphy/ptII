@@ -37,6 +37,7 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.LongToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -96,7 +97,7 @@ public class RTPDirector extends ProcessDirector {
      *  @exception NameDuplicationException If the base class has an
      *   "iterations" parameter (which it should not).
      */
-    public RTPDirector(TypedCompositeActor container, String name)
+    public RTPDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
