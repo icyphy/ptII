@@ -142,6 +142,24 @@ public class Fraction extends Object {
         return _num;
     }
 
+    /** Test if this Fraction is greater than the input.
+     * 
+     * @param testInput The input to compare against.
+     * @return True if this Fraction is greater than the input.
+     */
+    public boolean greaterThan(Fraction testInput) {
+        int gcd = ExtendedMath.gcd(testInput.getDenominator(), 
+                this.getDenominator());
+        int thisScaled = this.multiply(new Fraction(gcd, 1)).getNumerator();
+        int inputScaled = testInput.multiply(new Fraction(gcd, 1)).getNumerator();
+        if (thisScaled > inputScaled) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    
     /** Find the multiplicative inverse of this fraction.
      *  @return The answer as another fraction in lowest terms
      *  @exception ArithmeticException If this fraction has a value of zero,
