@@ -748,7 +748,8 @@ public class CTScheduler extends Scheduler{
      * is wrong or arithmetic loop exists.
      */
     protected Enumeration _schedule() throws NotSchedulableException {
-        System.out.println("Recompute schedule.");
+        // Uncomment this line to show when the schdule is recomputed.
+        // System.out.println("Recompute schedule.");
         CTDirector dir = (CTDirector)getContainer();
         if(dir == null) {
             return null;
