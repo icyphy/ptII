@@ -228,9 +228,9 @@ public abstract class Branch {
     }
     
     /** 
+     */
     public void branchWasSuccessful() {
     }
-     */
 
     ///////////////////////////////////////////////////////////////////
     ////                    package friendly methods               ////

@@ -104,12 +104,24 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
             } else if( !brnch.isActive() ) {
             	throw new TerminateBranchException("");
             } else {
+                //
+                // Get Permission From Controlling Branch
+                //
+                if( !brnch.isBranchCommitted() ) {
+                    throw new TerminateBranchException("");
+                }
+                
                 if( _writePending ) {
                     _writePending = false;
                     notifyAll();
                 }
+                
+                //
+                // Inform The Controlling Branch Of Success
+                //
+            	brnch.branchWasSuccessful();
+            	return super.get();
             }
-            return super.get();
         }
     }
 
@@ -171,13 +183,23 @@ public class MailboxBoundaryReceiver extends Mailbox implements BoundaryReceiver
             } else if( !brnch.isActive() ) {
             	throw new TerminateBranchException("");
             } else {
+                //
+                // Get Permission From Controlling Branch
+                //
+                if( !brnch.isBranchCommitted() ) {
+                    throw new TerminateBranchException("");
+                }
             
                 super.put(token);
-                
                 if( _readPending ) {
                     _readPending = false;
                     notifyAll();
                 }
+                
+                //
+                // Inform The Controlling Branch Of Success
+                //
+            	brnch.branchWasSuccessful();
             }
         }
     }
