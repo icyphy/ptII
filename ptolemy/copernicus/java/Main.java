@@ -130,7 +130,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.clt",
                         CommandLineTransformer.v(_toplevel)));
-              
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot1", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
@@ -273,7 +273,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot5", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot5", ClassWriter.v()));
-       
+          
         // Unroll loops with constant loop bounds.
         //Scene.v().getPack("jtp").add(new Transform("jtp.clu",
         //        ConstantLoopUnroller.v()));
@@ -362,7 +362,7 @@ public class Main extends KernelMain {
                 new Transform("wjtp.snapshot6", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot6", ClassWriter.v()));
-        
+       
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
                         TokenToNativeTransformer.v(_toplevel)));

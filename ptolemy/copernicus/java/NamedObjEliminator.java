@@ -242,18 +242,38 @@ public class NamedObjEliminator extends SceneTransformer {
                             // InlinePortTransformer
                             if (expr.getMethod().getSubSignature().equals(
                                     PtolemyUtilities.getFullNameMethod.getSubSignature())) {
-                                box.setValue(StringConstant.v(
-                                        _model.getFullName()));
-                            }
-                            if (expr.getMethod().getSubSignature().equals(
-                                    PtolemyUtilities.getNameMethod.getSubSignature())) {
-                                box.setValue(StringConstant.v(
-                                        _model.getName()));
+                                if(unit instanceof AssignStmt) {
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(
+                                                    ((AssignStmt)unit).getLeftOp(),
+                                                    StringConstant.v(
+                                                            _model.getFullName())),
+                                            unit);
+                                } 
+                                body.getUnits().remove(unit);
+                            } else if (expr.getMethod().getSubSignature().equals(
+                                               PtolemyUtilities.getNameMethod.getSubSignature())) {
+                                if(unit instanceof AssignStmt) {
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(
+                                                    ((AssignStmt)unit).getLeftOp(),
+                                                    StringConstant.v(
+                                                            _model.getName())),
+                                            unit);
+                                }
+                                body.getUnits().remove(unit);
+                            } else if (expr.getMethod().getSubSignature().equals(
+                                               PtolemyUtilities.findEffigyMethod.getSubSignature())) {
+                                if(unit instanceof AssignStmt) {
+                                    body.getUnits().insertBefore(
+                                            Jimple.v().newAssignStmt(
+                                                    ((AssignStmt)unit).getLeftOp(),
+                                                    NullConstant.v()),
+                                            unit);
+                                }
+                                body.getUnits().remove(unit);
                             }
                         }
-
-
-
                          
                  //    // If any box is removable, then remove the statement.
 //                     for (Iterator boxes = unit.getUseAndDefBoxes().iterator();

@@ -55,6 +55,9 @@ public class InvocationBinder extends SceneTransformer
     
     protected void internalTransform(String phaseName, Map options)
     {
+        System.out.println("InvocationBinder.internalTransform(" +
+                phaseName + ", " + options + ")");
+ 
         Date start = new Date();
         InvokeGraphBuilder.v().transform(phaseName + ".igb");
 
@@ -126,9 +129,9 @@ public class InvocationBinder extends SceneTransformer
                         ie instanceof SpecialInvokeExpr)
                         continue;
 
-                    //         System.out.println("considering " + ie);
+                    //System.out.println("considering " + ie);
                     List targets = graph.getTargetsOf(s);
-                    //        System.out.println("targets = " + targets);
+                    //System.out.println("targets = " + targets);
                    
                     if (targets.size() != 1)
                         continue;
