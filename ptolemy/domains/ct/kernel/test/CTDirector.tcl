@@ -85,7 +85,7 @@ test CTDirector-2.1 {Get default values} {
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
 	    [$dir getCurrentTime] \
-	    [[$dir getIterationBeginTime] getTimeValue] \
+	    [[$dir getIterationBeginTime] getDoubleValue] \
 	    [$dir getInitialStepSize] \
 	    [$dir getErrorTolerance] \
 	    [$dir getMaxIterations] \
@@ -96,7 +96,7 @@ test CTDirector-2.1 {Get default values} {
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Runge_Kutta_2_3_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 922337203.685 0.1 1e-10 1e-06}
+} {.System.DIR.CT_Runge_Kutta_2_3_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 Infinity 0.1 1e-10 1e-06}
 
 
 ######################################################################
@@ -147,8 +147,8 @@ test CTDirector-2.2 {set Parameters by expression} {
     $param getToken
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute timeResolution]]
-    $param setExpression 1e-11
+	    [$dir getAttribute timeScale]]
+    $param setExpression 11
     $param getToken
 
     set param [java::cast ptolemy.data.expr.Parameter \
@@ -160,7 +160,7 @@ test CTDirector-2.2 {set Parameters by expression} {
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
 	    [$dir getCurrentTime] \
-	    [[$dir getIterationBeginTime] getTimeValue] \
+	    [[$dir getIterationBeginTime] getDoubleValue] \
 	    [$dir getInitialStepSize] \
 	    [$dir getErrorTolerance] \
 	    [$dir getMaxIterations] \
@@ -221,8 +221,8 @@ test CTDirector-2.2a {set Parameters} {
     $param setToken $token
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute timeResolution]]
-    set token [java::new ptolemy.data.DoubleToken 1e-11]
+	    [$dir getAttribute timeScale]]
+    set token [java::new ptolemy.data.IntToken 11]
     $param setToken $token
 
     set param [java::cast ptolemy.data.expr.Parameter \
@@ -235,7 +235,7 @@ test CTDirector-2.2a {set Parameters} {
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
 	    [$dir getCurrentTime] \
-	    [[$dir getIterationBeginTime] getTimeValue] \
+	    [[$dir getIterationBeginTime] getDoubleValue] \
 	    [$dir getInitialStepSize] \
 	    [$dir getErrorTolerance] \
 	    [$dir getMaxIterations] \
@@ -300,16 +300,16 @@ test CTDirector-3.1 {register a breakpoint} {
     $dir {fireAt ptolemy.actor.Actor double} $sys 0.4
     $dir {fireAt ptolemy.actor.Actor double} $sys 0.2
     set bptable [$dir getBreakPoints]
-    set starttime [[java::cast ptolemy.actor.util.Time [$bptable first]] getTimeValue]
+    set starttime [[java::cast ptolemy.actor.util.Time [$bptable first]] getDoubleValue]
     $bptable removeFirst
-    set first [[java::cast ptolemy.actor.util.Time [$bptable first]] getTimeValue]
-    set firstAgain [[java::cast ptolemy.actor.util.Time [$bptable first]] getTimeValue]
+    set first [[java::cast ptolemy.actor.util.Time [$bptable first]] getDoubleValue]
+    set firstAgain [[java::cast ptolemy.actor.util.Time [$bptable first]] getDoubleValue]
     $bptable removeFirst
-    set second [[java::cast ptolemy.actor.util.Time [$bptable first]] getTimeValue]
+    set second [[java::cast ptolemy.actor.util.Time [$bptable first]] getDoubleValue]
     $bptable removeFirst
-    set third [[java::cast ptolemy.actor.util.Time [$bptable first]] getTimeValue]
+    set third [[java::cast ptolemy.actor.util.Time [$bptable first]] getDoubleValue]
     $bptable removeFirst
-    set stoptime [[java::cast ptolemy.actor.util.Time [$bptable first]] getTimeValue]
+    set stoptime [[java::cast ptolemy.actor.util.Time [$bptable first]] getDoubleValue]
     list $starttime $first $firstAgain $second $third $stoptime
 } {0.0 0.1 0.1 0.2 0.4 1.0}
 
