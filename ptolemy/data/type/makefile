@@ -57,7 +57,8 @@ JSRCS = \
 	DimensionTypeResolver.java \
 	DimensionLattice.java \
 	Type.java \
-	TypeSystem.java 
+	TypeSystem.java \
+	UnknownType.java
 
 EXTRA_SRCS =	$(JSRCS)
 

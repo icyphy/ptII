@@ -38,30 +38,22 @@ import java.util.Enumeration;
 import collections.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// DataType
+//// UnknownType
 /**
-A class representing an elementary data type.
+A class representing an unknown data type.   This is a placeholder, so that
+domain polymorphic actors can declare their types constraints.
 
 @author Steve Neuendorffer
 $Id$
 
 */
 
-public class DataType implements Type
+public class UnknownType implements Type
 {
     /** Create a new data type variable, initialized to bottom.
      */
-    public DataType() {
-        _value = Data.BOTTOM;
-        _isSettable = true;
-    }
-
-    /** 
-     * Create a new data type constant with the given value.
-     */
-    public DataType(Data value) {
-        _value = value;
-        _isSettable = false;
+    public UnknownType() {
+        _value = null;
     }
 
     /** Given a constraint on this Type, return an enumeration of constraints
@@ -76,14 +68,16 @@ public class DataType implements Type
     }
 
     public boolean equals(Object type) {
-        if(!(type instanceof DataType)) return false;        
-        return _value.equals(((DataType)type)._value);
+        if(!(type instanceof UnknownType)) 
+	    return _value.equals(type);        
+        else
+	    return _value.equals(((UnknownType)type)._value);
     }
 
     /** REturn the object associated with this type
      */
     public Object getAssociatedObject() {
-        return null;
+        return _value.getAssociatedObject();
     }
 
     /** Return the value of this term.  If this term is a constant,
@@ -94,7 +88,7 @@ public class DataType implements Type
      *  @return an Object representing an element in the underlying CPO.
      */
     public Object getValue() {
-        return _value;
+        return _value.getValue();
     }
 
     /** Return an array of variables contained in this term.
@@ -105,14 +99,7 @@ public class DataType implements Type
      *  @return an array of InequalityTerms
      */
     public InequalityTerm[] getVariables() {
-        InequalityTerm termArray[];
-        if(isSettable()) {
-            termArray = new InequalityTerm[1];
-            termArray[0] = this;
-        } else {
-            termArray = new InequalityTerm[0];
-        }
-        return termArray;
+	return _value.getVariables();
     }
 
     /** Check whether this term can be set to a specific element of the
@@ -122,7 +109,7 @@ public class DataType implements Type
      *   <code>false</code> otherwise.
      */
     public boolean isSettable() {
-        return _isSettable;
+        return _value.isSettable();
     }
 
     /** Check whether the current value of this term is acceptable,
@@ -130,7 +117,7 @@ public class DataType implements Type
      *  @return True if the current value is acceptable.
      */
     public boolean isValueAcceptable() {
-        return _value.isInstantiable();
+        return _value.isValueAcceptable();
     }
 
     /** Set the value of this term to the specified CPO element.
@@ -142,38 +129,19 @@ public class DataType implements Type
      */
     public void setValue(Object e)
             throws IllegalActionException {
-        if(isSettable()) {
-            if(e instanceof Data)
-                _value = (Data)e;
-            else
-                throw new IllegalActionException("Value of " +
-                        "type must be compatible with " +
-                        "DataType");
-        } else
-            throw new IllegalActionException("This " +
-                    "type cannot be set to the value because it " +
-                    "is not a variable.");
+	_value.setValue(e);
     }
 
     public String toString() {
-        String s = new String("DataType(");
+        String s = new String("UnknownType(");
         s += _value.toString();
-        s += ",";
-        if(isSettable()) 
-            s += "Variable";
-        else 
-            s += "Constant";
         s += ")";
         return s;
     }
 
     /** The value of this BasicType.
      */
-    private Data _value;
-
-    /** True if this type is a variable type, and its value can be set.
-     */
-    private boolean _isSettable;
+    private Type _value;
 }
 
 

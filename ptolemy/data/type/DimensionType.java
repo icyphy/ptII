@@ -155,6 +155,18 @@ public class DimensionType implements Type
                     "is not a variable.");
     }
 
+    public String toString() {
+        String s = new String("DimensionType(");
+        s += _value.toString();
+        s += ",";
+        if(isSettable()) 
+            s += "Variable";
+        else 
+            s += "Constant";
+        s += ")";
+        return s;
+    }
+
     /** The value of this type
      */
     protected Dimension _value;

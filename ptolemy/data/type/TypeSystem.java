@@ -60,15 +60,35 @@ public class TypeSystem
      *  does not fall on ArrayTypes.
      */
     public Enumeration resolveTypes(Enumeration constraints) {
-        LinkedList expandedconstraints = new LinkedList();
+	LinkedList allconstraints = new LinkedList();
+        LinkedList unknownconstraints = new LinkedList();
+	LinkedList expandedconstraints = new LinkedList();
         LinkedList dataconstraints = new LinkedList();
         LinkedList dimensionconstraints = new LinkedList();
+	
+	//Pull out the unknown constraints
+	while(constraints.hasMoreElements()) {
+            Inequality constraint = (Inequality) constraints.nextElement();
+	    if(constraint.getLesserTerm() instanceof UnknownType) 
+		unknownconstraints.insertLast(constraint);
+	    else if(constraint.getGreatedTerm() instanceof UnknownType) 
+		unknownconstraints.insertLast(constraint);
+	    else
+		allconstraints.insertLast(constraint);
+	}
 
+	// fix up the unkown constraints.
+	while() {
+	}
+
+	constraints = allconstraints.elements();
+
+	// now expand the constraints
         while(constraints.hasMoreElements()) {
             Inequality constraint = (Inequality) constraints.nextElement();
-            Enumeration expconstraint = _expandConstraint(constraint);
-            expandedconstraints.appendElements(expconstraint);
-        }
+            Enumeration expconstraints = _expandConstraint(constraint);
+            expandedconstraints.appendElements(expconstraints);
+	}
             
         constraints = expandedconstraints.elements();
         while(constraints.hasMoreElements()) {
@@ -101,10 +121,8 @@ public class TypeSystem
     }
     
     public Enumeration _expandConstraint(Inequality constraint) {
-        LinkedList constraints = new LinkedList();
         Type lesser = (Type)constraint.getLesserTerm();
-        lesser.expandConstraint(constraint);
-        return constraints.elements();
+        return lesser.expandConstraint(constraint);
     }    
 
     public boolean _validConstraint(Inequality constraint, Class cclass) {

@@ -88,7 +88,7 @@ public class ArrayType extends CompositeType
         newConstraint = new Inequality(lesser._type, 
                 greater._type);
         list.appendElements(lesser._type.expandConstraint(newConstraint));
-        // Create a constriant on the Dimension
+        // Create a constraint on the Dimension
         newConstraint = new Inequality(lesser._dimension, 
                 greater._dimension);
         list.appendElements(lesser._dimension.expandConstraint(newConstraint));

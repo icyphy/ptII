@@ -55,7 +55,7 @@ test TypeResolver-1.0 {datatypes} {
 	    [java::field ptolemy.data.type.Data INT]]
     set t2 [java::new ptolemy.data.type.DataType]
     list [$t1 toString] [$t2 toString]
-} {ConstDataType(INT) VarDataType(BOTTOM)}
+} {}
 
 test TypeResolver-1.1 {datatypes} {
     set i1 [java::new ptolemy.graph.Inequality $t1 $t2]
@@ -67,7 +67,7 @@ test TypeResolver-1.1 {datatypes} {
     set c1 [$s1 resolveTypes $e1]
 
     list [$t1 toString] [$t2 toString] [$c1 hasMoreElements]
-} {ConstDataType(INT) VarDataType(INT) 0}
+} {}
 
 ######################################################################
 ####
@@ -75,14 +75,11 @@ test TypeResolver-1.1 {datatypes} {
 test TypeResolver-2.0 {arraytypes} {
     set dim [java::new {int[]} {2} {1 1}]
     set tdim [java::new ptolemy.data.type.Dimension 2 $dim]
-    set dimtype [java::new ptolemy.data.type.DimensionType $tdim]
-    set datatype [java::new ptolemy.data.type.DataType \
-	    [java::field ptolemy.data.type.Data INT]]
-    set t1 [java::new ptolemy.data.type.ArrayType \
-	    $datatype $dimtype]
-    set t2 [java::new ptolemy.data.type.ArrayType]
+    set t1 [java::new ptolemy.data.type.DimensionType $tdim]
+    set t2 [java::new ptolemy.data.type.DimensionType]
+
     list [$t1 toString] [$t2 toString]
-} {{ConstArrayType(2, {1, 1, }, ConstDataType(INT))} {VarArrayType(-1, {}, VarDataType(BOTTOM))}}
+} {}
 
 test TypeResolver-2.1 {arraytypes} {
     set i1 [java::new ptolemy.graph.Inequality $t1 $t2]
@@ -90,20 +87,28 @@ test TypeResolver-2.1 {arraytypes} {
     set l1 [java::new collections.LinkedList]
     $l1 insertLast $i1
     set e1 [$l1 elements]
-    set s1 [java::new ptolemy.data.type.ArrayTypeResolver]
+    set s1 [java::new ptolemy.data.type.DimensionTypeResolver]
     set c1 [$s1 resolveTypes $e1]
 
     list [$t1 toString] [$t2 toString] [$c1 hasMoreElements]
-} {{ConstArrayType(2, {1, 1, }, ConstDataType(INT))} {VarArrayType(2, {1, 1, }, VarDataType(BOTTOM))} 0}
+} {}
 
 ######################################################################
 ####
 # 
 test TypeResolver-3.0 {typesystem} {
+    set data1 [java::new ptolemy.data.type.DataType \
+	    [java::field ptolemy.data.type.Data INT]]
+    set data2 [java::new ptolemy.data.type.DataType]
+
     set dim [java::new {int[]} {2} {1 1}]
-    set t1 [java::new ptolemy.data.type.ArrayType 2 $dim\
-	    [java::field ptolemy.data.type.DataType INT]]
-    set t2 [java::new ptolemy.data.type.ArrayType]
+    set tdim [java::new ptolemy.data.type.Dimension 2 $dim]
+    set dim1 [java::new ptolemy.data.type.DimensionType $tdim]
+    set dim2 [java::new ptolemy.data.type.DimensionType]
+
+    set t1 [java::new ptolemy.data.type.ArrayType $data1 $dim1]
+    set t2 [java::new ptolemy.data.type.ArrayType $data2 $dim2]
+
     set i1 [java::new ptolemy.graph.Inequality $t1 $t2]
     
     set l1 [java::new collections.LinkedList]
@@ -113,50 +118,5 @@ test TypeResolver-3.0 {typesystem} {
     set c1 [$s1 resolveTypes $e1]
 
     list [$t1 toString] [$t2 toString] [$c1 hasMoreElements]
-} {{ConstArrayType(2, {1, 1, }, ConstDataType(INT))} {VarArrayType(2, {1, 1, }, VarDataType(INT))} 0}
+} {}
 
-test TypeResolver-3.1 {typesystem} {
-    set dim [java::new {int[]} {2} {1 1}]
-    set t1 [java::new ptolemy.data.type.ArrayType 2 $dim\
-	    [java::field ptolemy.data.type.DataType INT]]
-    set t2 [java::new ptolemy.data.type.ArrayType]
-    set t3 [java::new ptolemy.data.type.DataType]
-
-    set i1 [java::new ptolemy.graph.Inequality $t1 $t2]
-    set i2 [java::new ptolemy.graph.Inequality [$t1 getContainedType] $t3]
-    
-    set l1 [java::new collections.LinkedList]
-    $l1 insertLast $i1
-    $l1 insertLast $i2
-    set e1 [$l1 elements]
-    set s1 [java::new ptolemy.data.type.TypeSystem]
-    set c1 [$s1 resolveTypes $e1]
-
-    list [$t1 toString] [$t2 toString] [$t3 toString] [$c1 hasMoreElements]
-} {{ConstArrayType(2, {1, 1, }, ConstDataType(INT))} {VarArrayType(2, {1, 1, }, VarDataType(INT))} VarDataType(INT) 0}
-
-test TypeResolver-3.2 {typesystem} {
-    set dim [java::new {int[]} {2} {2 2}]
-
-    set t1 [java::field ptolemy.data.type.DataType INT]
-    set t2 [java::new ptolemy.data.type.DataType]
-    set t3 [java::new ptolemy.data.type.ArrayType 2 $dim\
-	    [java::new ptolemy.data.type.DataType]]
-    set t4 [java::new ptolemy.data.type.ArrayType]
-
-
-    set i1 [java::new ptolemy.graph.Inequality $t1 $t2]
-    set i2 [java::new ptolemy.graph.Inequality $t2 [$t3 getContainedType]]
-    set i3 [java::new ptolemy.graph.Inequality $t3 $t4]
-    
-    set l1 [java::new collections.LinkedList]
-    $l1 insertLast $i1
-    $l1 insertLast $i2
-    $l1 insertLast $i3
-    set e1 [$l1 elements]
-    set s1 [java::new ptolemy.data.type.TypeSystem]
-    set c1 [$s1 resolveTypes $e1]
-
-    list [$t1 toString] [$t2 toString] [$t3 toString] [$t4 toString] \
-	    [$c1 hasMoreElements]
-} {ConstDataType(INT) VarDataType(INT) {ConstArrayType(2, {2, 2, }, VarDataType(INT))} {VarArrayType(2, {2, 2, }, VarDataType(INT))} 0}
