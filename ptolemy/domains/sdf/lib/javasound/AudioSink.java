@@ -238,26 +238,23 @@ public class AudioSink extends SDFAtomicActor {
      *  base class and then creates new ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
-        try {
-            AudioSink newobj = (AudioSink)super.clone(ws);
-            newobj.input = (SDFIOPort)newobj.getPort("input");
-	    newobj.sink = (Parameter)newobj.getAttribute("sink");
-            newobj.pathName = (Parameter)newobj.getAttribute("pathName");
-            newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
-            newobj.sampleSizeInBits =
-                (Parameter)newobj.getAttribute("sampleSizeInBits");
-	    newobj.channels = (Parameter)newobj.getAttribute("channels");
-	    newobj.bufferSize = (Parameter)newobj.getAttribute("bufferSize");
-	    newobj.tokenConsumptionRate =
-                (Parameter)newobj.getAttribute("tokenConsumptionRate");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        AudioSink newobj = (AudioSink)super.clone(ws);
+        newobj.input = (SDFIOPort)newobj.getPort("input");
+        newobj.sink = (Parameter)newobj.getAttribute("sink");
+        newobj.pathName = (Parameter)newobj.getAttribute("pathName");
+        newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
+        newobj.sampleSizeInBits =
+            (Parameter)newobj.getAttribute("sampleSizeInBits");
+        newobj.channels = (Parameter)newobj.getAttribute("channels");
+        newobj.bufferSize = (Parameter)newobj.getAttribute("bufferSize");
+        newobj.tokenConsumptionRate =
+            (Parameter)newobj.getAttribute("tokenConsumptionRate");
+        return newobj;
     }
 
     /** Read <i>tokenConsumptionRate</i> tokens from each channel.
