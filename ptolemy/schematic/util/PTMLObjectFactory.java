@@ -35,6 +35,7 @@ import java.util.Enumeration;
 import collections.*;
 import java.io.*;
 import ptolemy.schematic.xml.*;
+import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// XMLObjectFactory
@@ -74,7 +75,12 @@ public class PTMLObjectFactory {
 
                 String url = "";
                 try {
-                    url = child.getAttribute("link");
+                    URL baseurl = new URL(e.getXMLFileLocation());
+                    String offset = child.getAttribute("url");
+
+                    URL newurl = new URL(baseurl,offset);
+                    url = newurl.toString();
+
                     if(parser == null) parser = new PTMLParser();
                     
                     XMLElement sublibtree = parser.parse(url);
@@ -94,6 +100,17 @@ public class PTMLObjectFactory {
                 _unknownElementType(etype, "iconlibrary");
             }
         }
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            String v = e.getAttribute(n);
+            if (n.equals("name")) {
+                try {
+                    iconlibrary.setName(v);
+                } catch (Exception ex) {};
+            }
+        }
+
         return iconlibrary;
             
     }
@@ -122,17 +139,15 @@ public class PTMLObjectFactory {
             throw new IllegalActionException("_checkElement: " +
                     "Received null XMLElement");
         }
-        if(!e.getElementType().equals("iconlibrary")) {
+        if(!e.getElementType().equals(elementtype)) {
             throw new IllegalActionException("createIconLibrary: " +
                     "Element type " + e.getElementType() + 
-                    "differs from expected iconlibrary.");
+                    "differs from expected " + elementtype + ".");
         }
     }
 
     private static GraphicElement _createGraphicElement(XMLElement e)
         throws IllegalActionException {
-
-        _verifyElement(e, "xmlgraphic");
 
         String name = e.getElementType();
         GraphicElement graphic = new GraphicElement(name);
@@ -140,7 +155,7 @@ public class PTMLObjectFactory {
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();
             String etype = child.getElementType();
-            _unknownElementType(etype, "xmlgraphic");
+            _unknownElementType(etype, "GraphicElement");
         }
         
         Enumeration attributes = e.attributeNames();
@@ -169,11 +184,26 @@ public class PTMLObjectFactory {
                 icon.setDescription(child.getPCData());
             } else if(etype.equals("terminal")) {
             } else if(etype.equals("xmlgraphic")) {
-                GraphicElement g = _createGraphicElement(child);
-                icon.addGraphicElement(g);
+                Enumeration graphics = child.childElements();
+                while(graphics.hasMoreElements()) {
+                    XMLElement graphic = (XMLElement)graphics.nextElement();
+                    String gtype = graphic.getElementType();                
+                    GraphicElement g = _createGraphicElement(graphic);
+                    icon.addGraphicElement(g);
+                }
             } else {
                 _unknownElementType(etype, "icon");
             }    
+        }
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            String v = e.getAttribute(n);
+            if (n.equals("name")) {
+                try {
+                    icon.setName(v);
+                } catch (Exception ex) {};
+            }
         }
         return icon;
     }
@@ -199,10 +229,10 @@ public class PTMLObjectFactory {
             throw new InternalErrorException("_checkElement: " +
                     "Received null XMLElement");
         }
-        if(!e.getElementType().equals("iconlibrary")) {
+        if(!e.getElementType().equals(elementtype)) {
             throw new InternalErrorException("createIconLibrary: " +
                     "Element type " + e.getElementType() + 
-                    "differs from expected iconlibrary.");
+                    "differs from expected " + elementtype + ".");
         }
      }
                    
