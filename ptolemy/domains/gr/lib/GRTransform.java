@@ -39,6 +39,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.gr.kernel.GRActor;
+import ptolemy.domains.gr.kernel.SceneGraphToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
@@ -53,7 +54,7 @@ will only have meaning in the GR domain.
 The parameter <i>accumulate</i> determines whether transformations are
 accumulated or reset during firing.
 
-@author C. Fong
+@author C. Fong, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -74,10 +75,11 @@ abstract public class GRTransform extends GRActor {
         sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
         sceneGraphIn.setInput(true);
         sceneGraphIn.setMultiport(true);
+        sceneGraphIn.setTypeEquals(SceneGraphToken.TYPE);
 
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
-        sceneGraphOut.setTypeEquals(BaseType.OBJECT);
+        sceneGraphOut.setTypeEquals(SceneGraphToken.TYPE);
 
         accumulate = new Parameter(this,
                 "accumulate", new BooleanToken(false));
@@ -114,7 +116,7 @@ abstract public class GRTransform extends GRActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /**  Return the value of the <i>accumulate</i> parameter
+    /** Return the value of the <i>accumulate</i> parameter
      *  @return the accumulation mode
      *  @exception IllegalActionException If the value of some parameters can't
      *   be obtained
@@ -127,11 +129,12 @@ abstract public class GRTransform extends GRActor {
         int width = sceneGraphIn.getWidth();
         for (int i = 0; i < width; i++) {
             if (sceneGraphIn.hasToken(i)) {
-                ObjectToken objectToken = (ObjectToken) sceneGraphIn.get(i);
-                Node node = (Node) objectToken.getValue();
+                SceneGraphToken nodeToken = (SceneGraphToken) 
+                    sceneGraphIn.get(i);
+                Node node = (Node) nodeToken.getSceneGraphNode();
                 _addChild(node);
             }
         }
-        sceneGraphOut.send(0, new ObjectToken(_getNodeObject()));
+        sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
     }
 }

@@ -43,12 +43,12 @@ import ptolemy.actor.gui.Placeable;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.IntToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.gr.kernel.GRActor;
+import ptolemy.domains.gr.kernel.SceneGraphToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
@@ -106,37 +106,69 @@ public class ViewScreen extends GRActor implements Placeable {
 
         sceneGraphIn = new TypedIOPort(this, "sceneGraphIn");
         sceneGraphIn.setInput(true);
-        sceneGraphIn.setTypeEquals(BaseType.OBJECT);
+        sceneGraphIn.setTypeEquals(SceneGraphToken.TYPE);
         sceneGraphIn.setMultiport(true);
 
         horizontalResolution = new Parameter(this,
-                "horizontalResolution",new IntToken(400));
+                "horizontalResolution", new IntToken(400));
+        horizontalResolution.setTypeEquals(BaseType.INT);
+   
         verticalResolution = new Parameter(this,
-                "verticalResolution",new IntToken(400));
+                "verticalResolution", new IntToken(400));
+        verticalResolution.setTypeEquals(BaseType.INT);
+        
         rotatable = new Parameter(this,
-                "rotatable",new BooleanToken(true));
+                "rotatable", new BooleanToken(true));
+        rotatable.setTypeEquals(BaseType.BOOLEAN);
+   
         scalable = new Parameter(this,
-                "scalable",new BooleanToken(false));
+                "scalable", new BooleanToken(false));
+        scalable.setTypeEquals(BaseType.BOOLEAN);
+        
         translatable = new Parameter(this,
-                "translatable",new BooleanToken(false));
-        showAxes = new Parameter(this,"showAxes",new BooleanToken(false));
-        iterationSynchronized = new Parameter(this,
-                "iterationSynchronized",new BooleanToken(false));
-        backgroundColor = new Parameter(this, "backgroundColor", new
-                DoubleMatrixToken(new double[][] {{ 0.0, 0.0, 0.0}} ));
+                "translatable", new BooleanToken(false));
+        translatable.setTypeEquals(BaseType.BOOLEAN);
 
+        showAxes = new Parameter(this,"showAxes", new BooleanToken(false));
+        showAxes.setTypeEquals(BaseType.BOOLEAN);
+     
+        iterationSynchronized = new Parameter(this,
+                "iterationSynchronized", new BooleanToken(false));
+        iterationSynchronized.setTypeEquals(BaseType.BOOLEAN);
+
+        backgroundColor = new Parameter(this, "backgroundColor", 
+                new DoubleMatrixToken(new double[][] {{ 0.0, 0.0, 0.0}} ));
+        backgroundColor.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
         _lastTransform = new Transform3D();
         _root = this;
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     Ports and Parameters                  ////
+
+    /** The input scene graph.
+     */
     public TypedIOPort sceneGraphIn;
+
+    /** The background color, given as a 3-element array representing
+     *  rgb color
+     */
+    public Parameter backgroundColor;
 
     /** The horizontal resolution of the display screen
      *  This parameter should contain a IntToken.
      *  The default value of this parameter is the IntToken 400
      */
     public Parameter horizontalResolution;
+
+    /*  Boolean variable that determines whether screen update is done
+     *   once per iteration
+     *  This parameter should contain a BooleanToken
+     *  The default value of this parameter is BooleanToken false
+     */
+    public Parameter iterationSynchronized;
 
     /** Boolean variable that determines whether the user is allowed to
      *   rotate the model
@@ -152,14 +184,11 @@ public class ViewScreen extends GRActor implements Placeable {
      */
     public Parameter scalable;
 
-    public Parameter showAxes;
-
-    /*  Boolean variable that determines whether screen update is done
-     *   once per iteration
+    /** Boolean variable that determines whether or not axes are shown.
      *  This parameter should contain a BooleanToken
      *  The default value of this parameter is BooleanToken false
      */
-    public Parameter iterationSynchronized;
+    public Parameter showAxes;
 
     /** Boolean variable that determines whether the user is allowed to
      *   translate the model
@@ -173,15 +202,6 @@ public class ViewScreen extends GRActor implements Placeable {
      *  The default value of this parameter is IntToken 400
      */
     public Parameter verticalResolution;
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
-
-    /** The background color, given as a 3-element array representing
-     *  rgb color
-     */
-    public Parameter backgroundColor;
 
 
     ///////////////////////////////////////////////////////////////////
@@ -210,7 +230,6 @@ public class ViewScreen extends GRActor implements Placeable {
     public Canvas3D getCanvas() {
         return _canvas;
     }
-
 
     /** This method creates the ViewScreen frame if it hasn't been
      *  created (_canvas != null).  It sets up the canvas and draws any 3D
@@ -457,8 +476,9 @@ public class ViewScreen extends GRActor implements Placeable {
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();
         for (int i = 0 ; i < width; i++) {
-            ObjectToken objectToken = (ObjectToken) sceneGraphIn.get(i);
-            Node node = (Node) objectToken.getValue();
+            SceneGraphToken objectToken = (SceneGraphToken) 
+                sceneGraphIn.get(i);
+            Node node = (Node) objectToken.getSceneGraphNode();
             _addChild(node);
         }
         _branchRoot.compile();

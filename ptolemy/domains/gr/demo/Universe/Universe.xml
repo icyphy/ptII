@@ -9,6 +9,8 @@
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="100000">
         </property>
+        <property name="iterationTimeLowerBound" class="ptolemy.data.expr.Parameter" value="33">
+        </property>
         <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="100">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 33.5">
@@ -36,6 +38,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 390.0">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={84, 104, 856, 559}}">
+    </property>
     <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen">
         <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="400">
         </property>
@@ -51,7 +55,9 @@
         </property>
         <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="584.9999847412109, 178.0">
+        <property name="backgroundColor" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="615.0, 180.0">
         </property>
         <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -65,7 +71,7 @@
         </property>
         <property name="radius" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="446.0, 179.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 180.0">
         </property>
         <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -78,7 +84,7 @@
         </property>
         <property name="radius" class="ptolemy.data.expr.Parameter" value="0.15">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 30.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 40.0">
         </property>
         <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -93,7 +99,7 @@
         </property>
         <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="359.0, 53.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 60.0">
         </property>
         <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -151,7 +157,7 @@
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="0.1">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 155.0">
@@ -162,6 +168,9 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+        </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
         </port>
     </entity>
     <entity name="venus" class="ptolemy.domains.gr.lib.Sphere3D">
@@ -210,7 +219,7 @@
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="0.08">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.08">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 270.0">
@@ -221,6 +230,9 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+        </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
         </port>
     </entity>
     <entity name="Sine" class="ptolemy.actor.lib.TrigFunction">
@@ -266,7 +278,7 @@
         </property>
         <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="524.0, 353.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 355.0">
         </property>
         <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -296,7 +308,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 340.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 365.0">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
@@ -380,7 +392,7 @@
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="0.4">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="0.4">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 120.0">
@@ -391,6 +403,9 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+        </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
         </port>
     </entity>
     <entity name="Scale69" class="ptolemy.actor.lib.Scale">
@@ -452,7 +467,7 @@
         </port>
     </entity>
     <entity name="AddSubtract81" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 350.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="330.0, 375.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -482,7 +497,7 @@
         </property>
         <property name="hullRadius" class="ptolemy.data.expr.Parameter" value="0.75">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="448.0, 237.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="455.0, 250.0">
         </property>
         <port name="sceneGraphOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -505,11 +520,11 @@
     <relation name="relation49" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation52" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="125.0, 270.0">
+        <vertex name="vertex1" value="125.0, 270.0">
         </vertex>
     </relation>
     <relation name="relation65" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="120.0, 120.0">
+        <vertex name="vertex1" value="120.0, 120.0">
         </vertex>
     </relation>
     <relation name="relation72" class="ptolemy.actor.TypedIORelation">

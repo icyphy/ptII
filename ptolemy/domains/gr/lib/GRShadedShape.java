@@ -39,6 +39,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.gr.kernel.GRActor;
+import ptolemy.domains.gr.kernel.SceneGraphToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
@@ -55,7 +56,7 @@ properties. The parameters <i>redComponent</i>, <i>greenComponent</i>,
 <i>shininess</i> determines the Phong exponent used in calculating
 the shininess of the object.
 
-@author C. Fong
+@author C. Fong, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -75,7 +76,8 @@ abstract public class GRShadedShape extends GRActor {
         super(container, name);
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
-        sceneGraphOut.setTypeEquals(BaseType.OBJECT);
+        sceneGraphOut.setTypeEquals(SceneGraphToken.TYPE);
+
         rgbColor = new Parameter(this,"RGB color",
                 new DoubleMatrixToken(new double[][] {{ 0.7, 0.7, 0.7}} ));
 
@@ -122,9 +124,6 @@ abstract public class GRShadedShape extends GRActor {
      *  @exception IllegalActionException Not thrown in this base class
      */
     public boolean prefire() throws IllegalActionException {
-        // -prefire-
-        // Note: Actors return false on prefire if they don't want to be
-        // fired and postfired in the current iteration.
         if (_isSceneGraphInitialized) {
             return false;
         } else {
@@ -157,7 +156,6 @@ abstract public class GRShadedShape extends GRActor {
      *  @exception IllegalActionException If unable to setup the color.
      */
     protected void _createModel() throws IllegalActionException {
-
         DoubleMatrixToken color = (DoubleMatrixToken) rgbColor.getToken();
 
         _color.x = (float) color.getElementAt(0, 0);
@@ -169,10 +167,8 @@ abstract public class GRShadedShape extends GRActor {
     }
 
     protected void _makeSceneGraphConnection() throws IllegalActionException {
-        sceneGraphOut.send(0, new ObjectToken(_getNodeObject()));
+        sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -181,7 +177,6 @@ abstract public class GRShadedShape extends GRActor {
     protected Appearance _appearance;
     protected Material _material;
     protected float _shine;
-
 
     protected static final Color3f _whiteColor = new Color3f(1.0f, 1.0f, 1.0f);
     protected static final Color3f _blueColor = new Color3f(0.0f, 0.0f, 1.0f);

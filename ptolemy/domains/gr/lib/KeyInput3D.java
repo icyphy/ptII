@@ -80,8 +80,9 @@ public class KeyInput3D extends GRActor {
         super.fire();
         if (_hasData) {
             keycode.send(0, new IntToken((int)_keycode));
-            // FIXME: uncomment for debugging
-            //System.out.print(" "+(int)_keycode+",");
+            if(_debugging) {
+                _debug("KeyCode = " + (int)_keycode);
+            }
             _hasData = false;
         }
     }
@@ -113,11 +114,7 @@ public class KeyInput3D extends GRActor {
         }
     }
 
-
-
-
     private class React extends Behavior {
-
         public void initialize() {
             this.wakeupOn(new WakeupOnAWTEvent(KeyEvent.KEY_PRESSED));
         }
