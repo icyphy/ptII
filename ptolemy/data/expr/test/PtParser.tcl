@@ -135,7 +135,9 @@ test PtParser-2.4 {Construct a Parser, try simple integer expressions using arit
 # 
 test PtParser-2.5 {Construct a Parser, try simple integer expressions using arithmetic} {
     set p1 [java::new pt.data.parser.PtParser]
-    set root [ $p1 {generateParseTree String} "-(2 + (3) + 4*(3-(9/9)))\n"]
+    set root [ $p1 {generateParseTree String} "-(2 + (3) + 4*(3- 4 % 3))\n"]
+    # Note that dividing an Int by an Int gives a Double, here I want all nodes 
+    # the parse tree to have IntTokens
     set res  [ $root evaluateParseTree ]
 
     set c1 [$res getClass]
@@ -429,3 +431,32 @@ test PtParser-8.2 {Test more complicated bitwise operations, and bitwise ops on 
     set c3 [$res3 getClass]
     list  [$c1 getName ] [$res1 toString] [$c2 getName ] [$res2 toString] [$c3 getName ] [$res3 toString]
 } {pt.data.IntToken -5 pt.data.BooleanToken true pt.data.BooleanToken false}
+
+######################################################################
+####
+# Need to test that the tree can be reevaluated an arbitrary number of times
+test PtParser-9.0 {Check that evaluation of the parse tree does not change the parse tree} {
+    set p1 [java::new pt.data.parser.PtParser]
+    set root1 [ $p1 {generateParseTree String} "2+3"]
+    set root2 [ $p1 {generateParseTree String} "2-3"]
+    set root3 [ $p1 {generateParseTree String} "2*3"]
+    set root4 [ $p1 {generateParseTree String} "2/4"]
+    set root5 [ $p1 {generateParseTree String} "11 % 3"]
+    
+    set res1a [ $root1 evaluateParseTree ]
+    set res1b [ $root1 evaluateParseTree ]
+
+    set res2a [ $root2 evaluateParseTree ]
+    set res2b [ $root2 evaluateParseTree ]
+
+    set res3a [ $root3 evaluateParseTree ]
+    set res3b [ $root3 evaluateParseTree ]
+
+    set res4a [ $root4 evaluateParseTree ]
+    set res4b [ $root4 evaluateParseTree ]
+
+    set res5a [ $root5 evaluateParseTree ]
+    set res5b [ $root5 evaluateParseTree ]
+
+    list [$res1a getValue] [$res1b getValue] [$res2a getValue] [$res2b getValue] [$res3a getValue] [$res3b getValue] [$res4a getValue] [$res4b getValue] [$res5a getValue] [$res5b getValue]
+} {5 5 -1 -1 6 6 0.5 0.5 2 2}
