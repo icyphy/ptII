@@ -170,12 +170,12 @@ public class JAITranslate extends Transformer {
         RenderedOp oldImage = jaiImageToken.getValue();
 
         if (_debugging) {
-            _debug("oldimage width " + oldImage.getWidth());
-            _debug("oldimage height " + oldImage.getHeight());
-            _debug("oldimage min x " + oldImage.getMinX());
-            _debug("oldimage max x " + oldImage.getMaxX());
-            _debug("oldimage min y " + oldImage.getMinY());
-            _debug("oldimage max y " + oldImage.getMaxY());
+            _debug("oldImage width " + oldImage.getWidth());
+            _debug("oldImage height " + oldImage.getHeight());
+            _debug("oldImage min x " + oldImage.getMinX());
+            _debug("oldImage max x " + oldImage.getMaxX());
+            _debug("oldImage min y " + oldImage.getMinY());
+            _debug("oldImage max y " + oldImage.getMaxY());
         }
 
         parameters.addSource(oldImage);
