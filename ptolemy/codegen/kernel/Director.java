@@ -107,7 +107,7 @@ public class Director implements ActorCodeGenerator {
             CodeGeneratorHelper helperObject 
                     = (CodeGeneratorHelper) _getHelper((NamedObj)actor);
             code.append(helperObject.generateInitializeCode());
-            // Set the buffer sizes of each port of the actor.
+            // Set the buffer sizes of each channel of the actor.
             Set inputAndOutputPortsSet = new HashSet();
             inputAndOutputPortsSet.addAll(actor.inputPortList());
             inputAndOutputPortsSet.addAll(actor.outputPortList());
@@ -119,9 +119,6 @@ public class Director implements ActorCodeGenerator {
                     helperObject.setBufferSize(port, i, bufferSize);
                 }
             }
-
-            //((CodeGeneratorHelper)helperObject).resetOffsets();
-            //code.append(helperObject.generateInitializeCode());
         }
         return code.toString();
     }
@@ -145,7 +142,8 @@ public class Director implements ActorCodeGenerator {
     }
 
     /** Return the buffer size of a given port, which is the maximum of
-     *  the bufferSizes of each channel of the given port.
+     *  the bufferSizes of all channels of the given port. This method is
+     *  used to declare memory allocation for the variables.
      *  @param port The given port.
      *  @return The buffer size of the given port.
      *  @exception IllegalActionException If the getBufferSize(IOPort, int)
@@ -215,7 +213,7 @@ public class Director implements ActorCodeGenerator {
     ////                     private variables                      ////
     
     // The associate director;
-    private NamedObj _director;
+    private ptolemy.actor.Director _director;
     
     // The code generator containing this director helper.
     protected CodeGenerator _codeGenerator;

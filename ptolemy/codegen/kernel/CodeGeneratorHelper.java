@@ -151,7 +151,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     /** Return the buffer size of a given port, which is the maximum of
-     *  the bufferSizes of each channel of the given port.
+     *  the bufferSizes of all channels of the given port.
      *  @param port The given port.
      *  @return The buffer size of the given port.
      *  @exception IllegalActionException If the getBufferSize(IOPort, int)
@@ -185,15 +185,13 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @return The channel Object.
      */
     public Channel getChannel(IOPort port, int channelNumber) {
-        //Channel channel =
-          //      ((Channel[]) _channels.get(port))[channelNumber];
         Channel[] channels = (Channel[]) _channels.get(port);
         Channel channel = channels[channelNumber];
         return channel;
     }
     
     /** Get the component associated with this helper.
-     * @return The associated component.
+     *  @return The associated component.
      */
     public NamedObj getComponent() {
         return _component;
@@ -201,7 +199,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
     /** Get the offset in the buffer of a given channel to which a token
      *  should be put. The channel is given by its containing port and
-     *  the channel number in that port.
+     *  the channel number in that port. The default value is 0.
      *  @param port The given port.
      *  @param channelNumber The given channel number.
      *  @return The offset in the buffer of a given channel to which a token
@@ -210,7 +208,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public Object getOffset(IOPort port, int channelNumber) {
         Channel channel = getChannel(port, channelNumber);
         if (channel == null) {
-            System.out.println("can't find channel " + port.getFullName() + 
+            System.out.println("can't find channel " + port.getFullName() +
                     "," + channelNumber);
             return new Integer(0);
         }
@@ -223,16 +221,17 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     }
 
     /** Return the value of the specified parameter of the associated actor.
-     * @param parameterName The name of the parameter.
-     * @return The value as a string.
-     * @exception IllegalActionException If the parameter does not exist or
+     *  @param parameterName The name of the parameter.
+     *  @return The value as a string.
+     *  @exception IllegalActionException If the parameter does not exist or
      *  does not have a value.
      */
-    public String getParameterValue(String name) throws IllegalActionException {
+    public String getParameterValue(String name)
+            throws IllegalActionException {
         Attribute attribute = _component.getAttribute(name);
         if (attribute == null) {
-            throw new IllegalActionException(_component, "No attribute named: "
-                    + name);
+            throw new IllegalActionException(
+                    _component, "No attribute named: " + name);
         }
         if (attribute instanceof Variable) {
             // FIXME: need to ensure that the returned string
@@ -253,11 +252,11 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  the form "fullName_parameterName". For a port, the returned string
      *  is in the form "fullName_portName[channelNumber][offset]", if
      *  any channel number or offset is given.
-     * @param name The name of the parameter or port
-     * @return The reference to that parameter or port (a variable name,
-     *  for example).
-     * @exception IllegalActionException If the parameter or port does not
-     *  exist or does not have a value.
+     *  @param name The name of the parameter or port
+     *  @return The reference to that parameter or port (a variable name,
+     *   for example).
+     *  @exception IllegalActionException If the parameter or port does not
+     *   exist or does not have a value.
      */
     public String getReference(String name) throws IllegalActionException {
 
@@ -286,12 +285,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     result.append("[" + channelAndOffset[0] + "]");
                     channelNumber = new Integer(channelAndOffset[0]).intValue();
                 }
-                //Channel channel = getChannel(port, channelNumber);
                 if (!channelAndOffset[1].equals("")
                             && getBufferSize(port) > 1) {
-                    //int temp = _firingCount * DFUtilities.getRate(port);
-                    //String offset = channelAndOffset[1] + " + " + temp;
-                    //String temp = getOffset(port) + " + " + channelAndOffset[1];
                     String temp = "";
                     if (getOffset(port, channelNumber) instanceof Integer) {
                         int offset = ((Integer) getOffset(port, channelNumber))
@@ -370,12 +365,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         // port to substitute the buffer sizes of the sink input
                         // ports, which is not correct.
                         // For those buffer sizes increased to more than 1, set
-                        // an attribute on the sink port so we can create an extra dimension.
-                        //String temp = getOffset(port) + " + " + channelAndOffset[1];
+                        // an attribute on the sink port so we can create an
+                        // extra dimension.
+                        // String temp = getOffset(port) + " + " + channelAndOffset[1];
                         // Specified offset.
                         String temp = "";
                         if (getOffset(port, 0) instanceof Integer) {
-                            int offset = ((Integer)(getOffset(port, 0))).intValue() 
+                            int offset
+                                = ((Integer)(getOffset(port, 0))).intValue()
                                 + (new Integer(channelAndOffset[1])).intValue();
                             offset = offset % getBufferSize(port, channelNumber);
                             temp = new Integer(offset).toString();
@@ -468,7 +465,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         break;
                     }
                 }
-
             }
         }
         return sinkChannels;
@@ -507,10 +503,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     /** Get the size of a parameter. The size of a parameter
      *  is the length of its array if the parameter's type is array,
      *  and 1 otherwise.
-     * @param name The name of the parameter.
-     * @return The size of a parameter.
-     * @exception IllegalActionException If no port or parameter of
-     *  the given name is found.
+     *  @param name The name of the parameter.
+     *  @return The size of a parameter.
+     *  @exception IllegalActionException If no port or parameter of
+     *   the given name is found.
      */
     public int getSize(String name)
             throws IllegalActionException {
@@ -563,12 +559,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
 
             int flag = 0;
             boolean foundIt = false;
-            StringTokenizer tokenizer = new StringTokenizer(subcode, "()", true);
+            StringTokenizer tokenizer
+                    = new StringTokenizer(subcode, "()", true);
             if (tokenizer.hasMoreTokens()) {
                 // Do the trim so "$ ref (" can be recognized.
                 String token = (tokenizer.nextToken()).trim();
-                if ((token.equals("ref") || token.equals("val") || token.equals("actorSymbol")
-                            || token.equals("size")) && tokenizer.hasMoreTokens()) {
+                if ((token.equals("ref") || token.equals("val") 
+                        || token.equals("actorSymbol") || token.equals("size"))
+                        && tokenizer.hasMoreTokens()) {
                     if (token.equals("ref")) {
                         flag = 1;
                     } else if (token.equals("val")) {
@@ -590,8 +588,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                             if (closeParen.equals(")")) {
                                 if (name.trim().equals("")) {
                                     throw new IllegalActionException(_component,
-                                            "Illegal expression: $" + token + "("
-                                            + name + ")");
+                                            "Illegal expression: $" + token
+                                            + "(" + name + ")");
                                 }
                                 name = name.trim();
                                 if (flag == 1) {
@@ -601,7 +599,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                                 } else if (flag == 3) {
                                     result.append(getSize(name));
                                 } else {
-                                    result.append(_component.getFullName().replace('.', '_'));
+                                    result.append(_component.getFullName()
+                                            .replace('.', '_'));
                                     result.append("_" + name);
                                 }
                                 while (tokenizer.hasMoreTokens()) {
@@ -699,16 +698,10 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     /** The associated component. */
     private NamedObj _component;
 
-    /** A hashmap that keeps track of the bufferSizes of each port of the
-     *  actor. This info is used in variable declaration.
+    /** A hashmap that keeps track of the bufferSizes of each channel
+     *  of the actor.
      */
     private HashMap _bufferSizes = new HashMap();
-    
-    // FIXME
-    /** A hashmap that keeps track of the bufferSizes of each channel of
-     *  the actor. This info is used in fire method. 
-     */
-    private HashMap _bufferSizesPerChannel  = new HashMap();
 
     /** A hashmap that keeps track of the offsets of each channel of
      *  the actor.
@@ -723,6 +716,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      */
     private HashMap _channels = new HashMap();
 
-    // A set of parameters that have been referenced.
+    /** A set of parameters that have been referenced.
+     */
     private HashSet _referencedParameters = new HashSet();
 }

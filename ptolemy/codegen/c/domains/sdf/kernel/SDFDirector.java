@@ -67,7 +67,8 @@ import ptolemy.kernel.util.NamedObj;
 
 public class SDFDirector extends Director {
 
-    /** Construct the code generator helper associated with the given SDFDirector.
+    /** Construct the code generator helper associated with the given
+     *  SDFDirector.
      *  @param component The associated component.
      */
     public SDFDirector(ptolemy.domains.sdf.kernel.SDFDirector sdfDirector) {
@@ -85,18 +86,19 @@ public class SDFDirector extends Director {
             throws IllegalActionException {
         Attribute iterations = getComponent().getAttribute("iterations");
         if (iterations != null) {
-            int iterationCount = ((IntToken)((Variable)iterations).getToken()).intValue();
+            int iterationCount = 
+                ((IntToken)((Variable)iterations).getToken()).intValue();
             if (iterationCount <= 0) {
                 code.append("while (true) {\n");
             } else {
                 // Declare iteration outside of the loop to avoid 
-                // "error: `for' loop initial declaration used outside C99 mode"
-                // with gcc-3.3.3
+                // "error: `for' loop initial declaration used outside C99
+                // mode" with gcc-3.3.3
                 code.append("int iteration = 0;\n"
                             + "for (iteration = 0; iteration < "
 							+ iterationCount + "; iteration ++) {\n");
             }
-            // generate FireCode here;
+            // Generate code for one iteration.
             Schedule schedule = ((StaticSchedulingDirector) getComponent())
                     .getScheduler().getSchedule();
             
@@ -104,33 +106,30 @@ public class SDFDirector extends Director {
             while (actorsToFire.hasNext()) {
                 Firing firing = (Firing) actorsToFire.next();
                 Actor actor = firing.getActor();
-                // FIXME: Before looking for a helper class, we should check
-                // to see whether the actor contains a code generator attribute.
+                // FIXME: Before looking for a helper class, we should check to
+                // see whether the actor contains a code generator attribute.
                 // If it does, we should use that as the helper.
                 CodeGeneratorHelper helperObject
                         = (CodeGeneratorHelper) _getHelper((NamedObj) actor);
                 for (int i = 0; i < firing.getIterationCount(); i ++) {
                     helperObject.generateFireCode(code);
-                    // FIXME: Each time fire an actor, increase the offset of
-                    // each of its port by the port rate.
                     Set inputAndOutputPortsSet = new HashSet();
                     inputAndOutputPortsSet.addAll(actor.inputPortList());
                     inputAndOutputPortsSet.addAll(actor.outputPortList());
-                    Iterator inputAndOutputPorts = inputAndOutputPortsSet.iterator();
+                    Iterator inputAndOutputPorts
+                            = inputAndOutputPortsSet.iterator();
                     while (inputAndOutputPorts.hasNext()) {
                         IOPort port = (IOPort) inputAndOutputPorts.next();
                         for (int j = 0; j < port.getWidth(); j ++) {
-                            //Channel channel = helperObject.getChannel(port, j);
-                            if (helperObject.getOffset(port, j) instanceof Integer) {
-                                int offset = ((Integer) helperObject.getOffset(port, j)).intValue();
+                            // Update the offset for each channel.
+                            if (helperObject.getOffset(port, j)
+                                    instanceof Integer) {
+                                int offset = ((Integer) helperObject.getOffset(port, j))
+                                        .intValue();
                                 offset = (offset + DFUtilities.getRate(port))
-                                    % helperObject.getBufferSize(port, j);
+                                        % helperObject.getBufferSize(port, j);
                                 helperObject.setOffset(port, j, new Integer(offset));
                             } else {
-                                // FIXME: Set the offset to be a new string expression.
-                                // Declare the updated offset string expression and append
-                                // it to the fire code.
-                                // "port_offset = port_offset + portRate % portBufferSize;\n"
                                 // FIXME: didn't write "% portBufferSize" here.
                                 String temp = (String) helperObject.getOffset(port, j)
                                         + " += " + DFUtilities.getRate(port) + ";\n";
@@ -153,9 +152,9 @@ public class SDFDirector extends Director {
      *  @exception IllegalActionException If the base class throws it.
      */
     public String generateInitializeCode() throws IllegalActionException {
-        // FIXME: Declare offset variables here. Initial values to be 0.
-        String initializeCode = super.generateInitializeCode();
-        
+        StringBuffer initializeCode = new StringBuffer(); 
+        initializeCode.append(super.generateInitializeCode());
+
         Iterator actors = ((CompositeActor) _codeGenerator.getContainer())
                 .deepEntityList().iterator();
         while (actors.hasNext()) {
@@ -172,20 +171,23 @@ public class SDFDirector extends Director {
             Iterator ioPorts = ioPortsSet.iterator();
             while (ioPorts.hasNext()) {
                 IOPort port = (IOPort) ioPorts.next();
-                int totalTokens = DFUtilities.getRate(port) * firingsPerIteration;
+                int totalTokens
+                        = DFUtilities.getRate(port) * firingsPerIteration;
                 for (int channel = 0; channel < port.getWidth(); channel ++) {
                     int portOffset = totalTokens % getBufferSize(port, channel);
                     if (portOffset != 0) {
-                        //_dynamicBufferingPorts.put(port, new Integer(portOffset));
-                        // FIXME: change the API to return a stringBuffer.
-                        // FIXME: temporarily using channel = 0. Should go through
-                        // all channels.
-                        String channelOffsetVariable
-                            = port.getFullName().replace('.', '_')
-                            + "_" + channel + "_offset";
-                        // At this point, all offsets are 0 or the number of initial
-                        // tokens of SampleDelay.
-                        initializeCode = initializeCode.concat("int " + channelOffsetVariable
+                        // Declare the channel offset variables.
+                        StringBuffer channelOffset = new StringBuffer();
+                        channelOffset.append
+                                (port.getFullName().replace('.', '_'));
+                        if (port.getWidth() > 1) {
+                            channelOffset.append("_" + channel); 
+                        }
+                        channelOffset.append("_offset");
+                        String channelOffsetVariable = channelOffset.toString();
+                        // At this point, all offsets are 0 or the number of
+                        // initial tokens of SampleDelay.
+                        initializeCode.append("int " + channelOffsetVariable
                             + " = " + actorHelper.getOffset(port, channel) + ";\n");
                         // Now replace these concrete offsets with the variables.
                         actorHelper.setOffset(port, channel, channelOffsetVariable);
@@ -193,11 +195,11 @@ public class SDFDirector extends Director {
                 }
             }
         }
-        return initializeCode;
+        return initializeCode.toString();
     }
 
     /** Return the buffer size of a given channel (i.e, a given port
-     *  and a given channel number).
+     *  and a given channel number). The default value is 1.
      *  @param port The given port.
      *  @param channelNumber The given channel number.
      *  @return The buffer size of the given channel.
