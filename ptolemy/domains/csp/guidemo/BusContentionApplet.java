@@ -80,19 +80,6 @@ public class BusContentionApplet extends PtolemyApplet {
 	_demo.initializeDemo(this);
     }
  
-    /**
-     */
-    public void start() {
-      // Do Nothing
-    }
-
-    /**
-     */
-    public void stop() {
-        _demo.shutDown();
-        _demo = null;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
 
