@@ -247,107 +247,7 @@ test ConstVariableModelAnalysis-1.9 {test scoping} {
 	[lsort [listToNames [$analysis getNotConstVariables $ramp]]]
 } {init {a step} {firingCountLimit init} step}
 
-# FSM tests.
-test ConstVariableModelAnalysis-2.0 {test fsms.} {
-    set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    set a [java::new ptolemy.data.expr.Parameter $e0 a]
-    set cinit [java::new ptolemy.data.expr.Parameter $e0 init]
-    set cstep [java::new ptolemy.data.expr.Parameter $e0 step]
-    $cinit setExpression 1
-    $cstep setExpression a
-    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
-    set p1 [java::new ptolemy.data.expr.Parameter $fsm p1]
-    set p2 [java::new ptolemy.data.expr.Parameter $fsm p2]
-    set s1 [java::new ptolemy.domains.fsm.kernel.State $fsm s1]
-    set s2 [java::new ptolemy.domains.fsm.kernel.State $fsm s2]
-    set s1_incomingPort [$s1 getPort incomingPort]
-    set s2_incomingPort [$s2 getPort incomingPort]
-    set s1_outgoingPort [$s1 getPort outgoingPort]
-    set s2_outgoingPort [$s2 getPort outgoingPort]
-  
-    set t1 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t1]
-    set t2 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t2]
-    
-    $s1_incomingPort link $t1
-    $s2_outgoingPort link $t1
-    $s2_incomingPort link $t2
-    $s1_outgoingPort link $t2
-
-    set t1_action [getSettable $t1 setActions]
-    set t2_action [getSettable $t2 setActions]
-  
-    $p1 setExpression "1"
-    $p2 setExpression "2"
-    $t1_action setExpression "p1=1"
-    $t2_action setExpression "p1=2"
-
-    set varSet [java::new java.util.HashSet]
-    $varSet add $a
-    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0 $varSet]
-    list [lsort [listToNames [$analysis getConstVariables $e0]]] \
-	[lsort [listToNames [$analysis getNotConstVariables $e0]]] \
-	[lsort [listToNames [$analysis getConstVariables $fsm]]] \
-	[lsort [listToNames [$analysis getNotConstVariables $fsm]]]
-} {init {a step} p2 p1}
-
-test ConstVariableModelAnalysis-2.2 {test modal model.} {
-    set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    set a [java::new ptolemy.data.expr.Parameter $e0 a]
-    set cinit [java::new ptolemy.data.expr.Parameter $e0 init]
-    set cstep [java::new ptolemy.data.expr.Parameter $e0 step]
-    $cinit setExpression 1
-    $cstep setExpression a
-    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
-    set cinit [java::new ptolemy.data.expr.Parameter $e1 init]
-    set cstep [java::new ptolemy.data.expr.Parameter $e1 step]
-    $cinit setExpression a
-    $cstep setExpression 1
-
-    set ramp [java::new ptolemy.actor.lib.Ramp $e1 ramp]
-    set init [getParameter $ramp init]
-    set step [getParameter $ramp step]
-    $init setExpression "5"
-    $step setExpression "1"
-
-    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
-    set p1 [java::new ptolemy.data.expr.Parameter $fsm p1]
-    set p2 [java::new ptolemy.data.expr.Parameter $fsm p2]
-    set s1 [java::new ptolemy.domains.fsm.kernel.State $fsm s1]
-    set s2 [java::new ptolemy.domains.fsm.kernel.State $fsm s2]
-    set s1_incomingPort [$s1 getPort incomingPort]
-    set s2_incomingPort [$s2 getPort incomingPort]
-    set s1_outgoingPort [$s1 getPort outgoingPort]
-    set s2_outgoingPort [$s2 getPort outgoingPort]
-  
-    set t1 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t1]
-    set t2 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t2]
-    
-    $s1_incomingPort link $t1
-    $s2_outgoingPort link $t1
-    $s2_incomingPort link $t2
-    $s1_outgoingPort link $t2
-
-    set t1_action [getSettable $t1 setActions]
-    set t2_action [getSettable $t2 setActions]
-  
-    $p1 setExpression "1"
-    $p2 setExpression "2"
-    $t1_action setExpression "p1=1"
-    $t2_action setExpression "ramp.step=2"
-
-    set dynamicVariableSet [java::new java.util.HashSet]
-    $dynamicVariableSet add $a
-
-    set varSet [java::new java.util.HashSet]
-    $varSet add $a
-    set analysis [java::new ptolemy.actor.util.ConstVariableModelAnalysis $e0 $varSet]
-    list [lsort [listToNames [$analysis getConstVariables $e0]]] \
-	[lsort [listToNames [$analysis getConstVariables $e1]]] \
-	[lsort [listToNames [$analysis getConstVariables $ramp]]] \
-	[lsort [listToNames [$analysis getConstVariables $fsm]]]
-} {init step {firingCountLimit init} p2}
-
-test ConstVariableModelAnalysis-2.3 {test port parameters} {
+test ConstVariableModelAnalysis-3.1 {test port parameters} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
  
     set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
@@ -374,7 +274,7 @@ test ConstVariableModelAnalysis-2.3 {test port parameters} {
 	[lsort [listToNames [$analysis getNotConstVariables [$repeat getPort input]]]]
 } {inport init blockSize tokenConsumptionRate}
 
-test ConstVariableModelAnalysis-2.4 {test port parameters} {
+test ConstVariableModelAnalysis-3.2 {test port parameters} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
  
     set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
@@ -404,7 +304,7 @@ test ConstVariableModelAnalysis-2.4 {test port parameters} {
 } {inport {} {firingCountLimit init step} {} {blockSize numberOfTimes} {} tokenConsumptionRate {}}
 
 # Test change context
-test ConstVariableModelAnalysis-3.1 {test port parameters} {
+test ConstVariableModelAnalysis-3.3 {test port parameters} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
  
     set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]

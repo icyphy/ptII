@@ -221,53 +221,6 @@ public class ConstVariableModelAnalysis {
         }
     }
 
-    // Collect the dependence constraints from the given attribute in
-    // the given FSM actor.
-//     private void _collectConstraints(
-//             FSMActor actor, AbstractActionsAttribute action)
-//             throws IllegalActionException {
-//         for (Iterator names = action.getDestinationNameList().iterator();
-//              names.hasNext();) {
-//             String name = (String)names.next();
-//             NamedObj object = action.getDestination(name);
-//             if (object instanceof Variable) {
-//                 // Note that the context of change is the modal model
-//                 // container of the FSM.
-//                 _updateChangeContext((Variable)object, 
-//                         (Entity)actor.getContainer());
-//             }
-//         }
-//     }
-
-    // Collect all of the constraints from the given FSM actor.
- //    private void _collectConstraints(FSMActor actor)
-//             throws IllegalActionException {
-//         // Collect assignments from FSM transitions
-//         for (Iterator states = actor.entityList().iterator();
-//              states.hasNext();) {
-//             State state = (State)states.next();
-//             for (Iterator transitions =
-//                      state.outgoingPort.linkedRelationList().iterator();
-//                  transitions.hasNext();) {
-//                 Transition transition = (Transition)transitions.next();
-//                 for (Iterator actions =
-//                          transition.choiceActionList().iterator();
-//                      actions.hasNext();) {
-//                     AbstractActionsAttribute action =
-//                         (AbstractActionsAttribute)actions.next();
-//                     _collectConstraints(actor, action);
-//                 }
-//                 for (Iterator actions =
-//                          transition.commitActionList().iterator();
-//                      actions.hasNext();) {
-//                     AbstractActionsAttribute action =
-//                         (AbstractActionsAttribute)actions.next();
-//                     _collectConstraints(actor, action);
-//                 }
-//             }
-//         }
-//     }
-
     // Collect all of the constraints from the given variable.
     private void _collectConstraints(Variable variable) {
         Node targetNode = null;
@@ -353,6 +306,7 @@ public class ConstVariableModelAnalysis {
                 _updateChangeContext(variable, (Entity)container);
             }
         }
+
         // Recurse through the whole model.
         for (Iterator attributes = container.attributeList().iterator();
              attributes.hasNext();) {
@@ -412,6 +366,9 @@ public class ConstVariableModelAnalysis {
             _variableToChangeContext.get(variable);
         Entity newChangeContext = 
             _computeBound(changeContext, oldChangeContext);
+//         System.out.println("variable = " + variable);
+//         System.out.println("oldChangeContext = " + oldChangeContext);
+//         System.out.println("newChangeContext = " + newChangeContext);
         if(newChangeContext != oldChangeContext) {
             if(newChangeContext != null) {
                 _variableToChangeContext.put(variable,

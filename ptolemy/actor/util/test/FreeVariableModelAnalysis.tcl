@@ -67,8 +67,8 @@ test FreeVariableModelAnalysis-1.1 {} {
     $step setExpression init
 
     set analysis [java::new ptolemy.actor.util.FreeVariableModelAnalysis $e0]
-    list [lsort [listToObjects [$analysis getFreeVariables $e0]]] \
-	[lsort [listToObjects [$analysis getFreeVariables $ramp]]]
+    list [lsort [listToStrings [$analysis getFreeVariables $e0]]] \
+	[lsort [listToStrings [$analysis getFreeVariables $ramp]]]
 } {{} {}}
 
 
