@@ -76,7 +76,9 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass ptolemy
-install: jclass $(PTCLASSJAR)
+	chmod a+x ptolemy
+
+install: all $(PTCLASSJAR)
 	$(INSTALL_PROGRAM) ptolemy $(BIN_INSTALL_DIR)
 	$(INSTALL_PROGRAM) ptolemy.bat $(BIN_INSTALL_DIR)
 
