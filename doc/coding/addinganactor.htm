@@ -14,8 +14,8 @@ the Ptolemy II Design Document at
 <a href="http://ptolemy.eecs.berkeley.edu/publications/papers/01/HMAD"><CODE>http://ptolemy.eecs.berkeley.edu/publications/papers/01/HMAD</CODE></a>
 discusses how to design actors, but the design document does
 not discuss compiling the actor and adding it to Vergil.  The reason
-for this omission is because we are hoping to have a cleaner
-method adding actors.  The text below is a how-to guide for
+for this omission is because we are hoping to eventually have a cleaner
+method for adding actors.  The text below is a how-to guide for
 the current environment
 
  <p> For this example, we are going to take the Ramp actor
@@ -24,8 +24,8 @@ The new actor will be called Ramp2.
 
 <p> The instructions below assume that you have installed
 the Java Development Kit (JDK), which includes the <CODE>javac</CODE>
-binary, you have a <CODE>make</CODE> binary and other tools installed,
-Ptolemy II has been installed and <CODE>$PTII/configure</CODE>
+binary, that you have a <CODE>make</CODE> binary and other tools installed,
+that Ptolemy II has been installed, and that <CODE>$PTII/configure</CODE>
 and <CODE>make</CODE> have been run.  For details about the
 installation process, see
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII1.0/ptII1.0/doc/install.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII1.0/ptII1.0/doc/install.htm</CODE></a>
@@ -81,7 +81,7 @@ to
 <li> <pre>
         Ramp newObject = (Ramp)super.clone(workspace);
 </pre>
-To
+to
 <pre>
         Ramp<B>2</B> newObject = (Ramp<B>2</B>)super.clone(workspace);
 </pre>
