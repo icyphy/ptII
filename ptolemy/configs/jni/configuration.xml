@@ -29,7 +29,7 @@
   <!-- named "blank", then the effigy will initially refer to a clone -->
   <!-- of that blank entity. -->
   <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
-    <input source="ptolemy/configs/GraphEffigyFactory.xml"/>
+    <input source="ptolemy/configs/graphEffigyFactory.xml"/>
     <input source="ptolemy/configs/fsmEffigyFactories.xml"/>
     <input source="ptolemy/configs/extendedEffigyFactories.xml"/>
   </entity> 
