@@ -60,7 +60,6 @@ public class DebugProfile {
     ////                     public methods                    ////
 
     /** Get the GraphController.
-     *  @param enabled True if debugging should be enabled.
      *  @return The GraphController.
      */
     public BasicGraphController getGraphController() {

@@ -74,7 +74,8 @@ public class TreeEditor extends JFrame {
 
     /** Create an instance of this class to display the abstract syntax
      *  tree for the specified file.
-     *  @param The name of a MoML file(an array of size one).
+     *  @param args An array of size one where the first element contains
+     *  the name of a MoML file.
      */
     public static void main(String[] args) {
         if (args.length != 1) {

@@ -189,7 +189,7 @@ public abstract class BasicGraphController extends AbstractGraphController
     }
 
     /** React to a debug message.  This base class does nothing.
-     *  @param state The debug event.
+     *  @param message The message.
      */
     public void message(String message) {
     }

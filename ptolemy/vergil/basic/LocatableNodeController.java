@@ -150,7 +150,7 @@ public class LocatableNodeController extends BasicNodeController {
     /** Render the children of the specified node.
      *  This overrides the base class to do nothing if the node
      *  contains an attribute named "_hide".
-     *  @param The node with children to render.
+     *  @param node The node with children to render.
      */
     protected void _drawChildren(java.lang.Object node) {
         if (!_hide(node)) super._drawChildren(node);

@@ -465,7 +465,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  This class queues a new change request with the ptolemy model
          *  to make this modification.
          *  @param edge The edge, which is assumed to be an arc.
-         *  @param head The new head for the edge, which is assumed to
+         *  @param newArcHead The new head for the edge, which is assumed to
          *   be an icon.
          */
         public void setHead(final Object edge, final Object newArcHead) {
@@ -563,7 +563,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
          *  This class queues a new change request with the ptolemy model
          *  to make this modification.
          *  @param edge The edge, which is assumed to be an arc.
-         *  @param head The new head for the edge, which is assumed to
+         *  @param newArcTail The new tail for the edge, which is assumed to
          *  be an icon.
          */
         public void setTail(final Object edge, final Object newArcTail) {

@@ -545,12 +545,12 @@ public class PlotterBase extends TypedAtomicActor
          *  specified instance of PlotBox.
          *  After constructing this, it is necessary
          *  to call setVisible(true) to make the plot appear.
-         *  @param tableau
-         *  @param plotArg the plot object to put in the frame,
+         *  @param tableau The tableau.
+         *  @param plotBox the plot object to put in the frame,
          *   or null to create an instance of Plot.
          */
-        public PlotterPlotFrame(Tableau tableau, PlotBox plotArg) {
-            super(tableau, plotArg);
+        public PlotterPlotFrame(Tableau tableau, PlotBox plotBox) {
+            super(tableau, plotBox);
         }
 
         /** Close the window.  This overrides the base class to remove
