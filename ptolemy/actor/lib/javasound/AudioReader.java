@@ -25,18 +25,20 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (vogel@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.javasound;
 
-import ptolemy.actor.lib.URLReader;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.Source;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.*;
 import ptolemy.media.javasound.SoundReader; // For javadoc
 import ptolemy.media.javasound.SoundPlayback; // For javadoc
@@ -50,44 +52,25 @@ import java.net.URL;
 /////////////////////////////////////////////////////////////////
 //// AudioReader
 /**
-This actor sequentially outputs the samples from an sound file,
-specified as a URL. Although the sound file must be specified
-as a URL, it is still possible to specify files on the local
-file system. The audio samples that are read from the file are
-converted to DoubleTokens that may range from [-1.0, 1.0].
-Thus, the output type of this actor is DoubleToken.
+This actor outputs samples from a sound file as doubles in
+the range [-1.0, 1.0]. If the file has multiple channels of
+output data, then the separate channels are sent on successive
+output channels.  If the output has more channels than there
+are channels in the audio file, then nothing will be send
+on the output channels where there is no corresponding
+output data.
 <p>
-<b>Usage</b>
-<p>
-The <i>sourceURL</i> parameter should be set to the name of the file,
-specified as a fully qualified URL. It is possible to load a file
-from the local file system by using the prefix "file://" instead of
-"http://". Relative file paths are allowed. To specify a file
-relative to the current directory, use "../" or "./". For example,
-if the current directory contains a file called "test.wav", then
-<i>sourceURL</i> should be set to "file:./test.wav". If the parent
-directory contains a file called "test.wav", then <i>sourceURL</i>
-should be set to "file:../test.wav". To reference the file
-test.wav, located at "/tmp/test.wav", <i>sourceURL</i>
-should be set to "file:///tmp/test.wav".
-<p>
-The default initial value is
-<code>property("ptolemy.ptII.dirAsURL")
- + "/ptolemy/actor/lib/javasound/voice.wav"
-</code>.  If the initial url cannot be found, then the classpath
-is searched for <code>ptolemy/actor/lib/javasound/voice.wav</code>
-and if that value cannot be found then the initial value is the
-empty string.
-<p>Note, under Windows, to reference a file ":\WINNT\Media\chord.wav, use
-"file:///c:/WINNT/Media/chord.wav".  Note that URLS by definition
-have forward slashes, not backward slashes.
+The <i>fileOrURL</i> parameter should be set to the name of the file
+or a URL, in any form accepted by FileAttribute. The default initial value is
+<code>$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav</code>,
+which refers to a file that is found relative to the classpath.
 <p>
 Supported file formats are  WAV, AU, and AIFF. The sound
 file format is determined from the file extension.
 <p>
-The sound file is not periodically repeated by this actor, so
-postfire() will return false when the end of the sound
-file is reached.
+When the end of the file is reached, postfire() return false, which
+in some domains will cause the model to stop executing (e.g. SDF),
+and in some will prevent further firings of this actor (e.g. DE).
 <p>
 There are security issues involved with accessing files and audio
 resources in applets. Applets are only allowed access to files
@@ -96,14 +79,15 @@ applet is loaded. The .java.policy file may be modified to grant
 applets more privileges.
 <p>
 Note: Requires Java 2 v1.3.0 or later.
-@author Brian K. Vogel, Christopher Hylands
+
+@author Brian K. Vogel, Christopher Hylands, Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
 @see ptolemy.media.javasound.LiveSound
 @see SoundWriter
 @see SoundPlayback
 */
-public class AudioReader extends URLReader {
+public class AudioReader extends Source {
 
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
@@ -118,51 +102,54 @@ public class AudioReader extends URLReader {
     public AudioReader(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        // The property() method is defined in
-        // ptolemy.data.expr.UtilityFunctions.java
 
+        fileOrURL = new FileAttribute(this, "fileOrURL");
         // We use voice.wav so that we can include the voice.wav file
         // in the jar file for use under Web Start.
+        fileOrURL.setExpression(
+                "$CLASSPATH/ptolemy/actor/lib/javasound/voice.wav");
 
-        // FIXME: This should use FileAttribute, but if we did then
-        // backward compatibility would be difficult because we would have
-        // to change the sourceURL from a Parameter (which gets evaluated)
-        // to a FileAttribute.  However, we do want to provide an initial
-        // default
-        sourceURL.setExpression("property(\"ptolemy.ptII.dirAsURL\") "
-                + "+ \"ptolemy/actor/lib/javasound/voice.wav\"");
-
-        // Check to see if we can open sourceURL.  If not, try
-        // to find it in the classpath
-        try {
-            StringToken urlToken = (StringToken)sourceURL.getToken();
-            String theURLString = urlToken.stringValue();
-            URL theURL = new URL(theURLString);
-            theURL.openStream();
-        } catch (Exception ex) {
-            try {
-                // This jar url should work:
-                //jar:file:/C:/ptII/ptolemy/actor/lib/javasound/javasound.jar!/ptolemy/actor/lib/javasound/voice.wav
-                //sourceURL.setExpression("jar:"
-                //        + "+ property(\"ptolemy.ptII.dirAsURL\") "
-                //        + "+ \"ptolemy/actor/lib/javasound/javasound.jar\""
-                //        + " + \"!/ptolemy/actor/lib/javasound/voice.wav\"");
-                String entry = "ptolemy/actor/lib/javasound/voice.wav";
-                Class refClass =
-                    Class.forName("ptolemy.actor.lib.javasound.AudioReader");
-                URL entryURL = refClass.getClassLoader().getResource(entry);
-                // The url is inside double quotes because this is a Parameter.
-                sourceURL.setExpression("\"" + entryURL.toString() + "\"");
-            } catch (Exception ex2) {
-                // If all else fails, set it to the empty string.
-                // The url is inside double quotes because this is a Parameter.
-                sourceURL.setExpression("\"\"");
-            }
-        }
+        // Set the type of the output port.
+        output.setMultiport(true);
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The file name or URL from which to read.  This is a string with
+     *  any form accepted by FileAttribute.
+     *  @see FileAttribute
+     */
+    public FileAttribute fileOrURL;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the specified attribute is <i>fileOrURL</i> and there is an
+     *  open file being read, then close that file and open the new one;
+     *  do nothing if the file name is the same as the previous value of
+     *  this attribute.
+     *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the specified attribute
+     *   is <i>fileOrURL</i> and the file cannot be opened, or the previously
+     *   opened file cannot be closed.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == fileOrURL) {
+            // NOTE: We do not want to close the file if the file
+            // has not in fact changed.  We check this by just comparing
+            // name, which is not perfect...
+            if (_previousFileOrURL != null
+                    && !fileOrURL.getExpression().equals(_previousFileOrURL)) {
+                _previousFileOrURL = fileOrURL.getExpression();
+                _openReader();
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** Open the sound file specified by the URL for reading.
      *  @exception IllegalActionException If there is a problem opening
@@ -171,9 +158,13 @@ public class AudioReader extends URLReader {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _safeToInitialize = true;
-        _setURLReader(null);
-        _haveASample = false;
+        if (_firedSinceWrapup || _soundReader == null) {
+            // It would be better if there were a way to reset the
+            // input stream, but apparently there is not, short of
+            // closing it and reopening it.
+            fileOrURL.close();
+            _openReader();
+        }
     }
 
     /** Invoke <i>count</i> iterations of this actor. This method
@@ -195,68 +186,68 @@ public class AudioReader extends URLReader {
      *   from the specified sound file.
      */
     public int iterate(int count) throws IllegalActionException {
-        // Check if we need to reallocate the output token array.
-        if (count > _audioSendArray.length) {
-            _audioSendArray = new DoubleToken[count];
+        if (_reachedEOF || _soundReader == null) {
+            return STOP_ITERATING;
+        }
+        _firedSinceWrapup = true;
+        // Check whether we need to reallocate the output token array.
+        if (_audioSendArray == null
+                || _channels > _audioSendArray.length
+                || count > _audioSendArray[0].length) {
+            _audioSendArray = new DoubleToken[_channels][count];
         }
         // For each sample.
-        for (int i = 0; i < count; i++) {
-            if (_haveASample == false) {
+        int samplesToOutput = 0;
+        while (samplesToOutput < count) {
+            // Copy a sample to the output array for each channel.
+            for (int j = 0; j < _channels; j++) {
+                _audioSendArray[j][samplesToOutput] = new DoubleToken(
+                        _audioIn[j][_sampleIndex]);
+            }
+            samplesToOutput++;
+            _sampleIndex++;
+            // Check whether we still have at least one sample left.
+            // NOTE: This assumes that all channels have the same length
+            // as the 0 channel.
+            if ((_audioIn[0].length - _sampleIndex) <= 0) {
+                // We just ran out of samples.
                 // Need to read more data.
                 try {
                     // Read in audio data.
-                    _audioInDoubleArray = _soundReader.getSamples();
+                    _audioIn = _soundReader.getSamples();
                 } catch (Exception ex) {
-                    throw new IllegalActionException(this,
-                            "Unable to open the sound file for reading: " +
-                            ex);
+                    throw new IllegalActionException(this, ex,
+                            "Unable to get samples from the file.");
                 }
-                _getSamplesArrayPointer = 0;
+                _sampleIndex = 0;
                 // Check that the read was successful
-                if (_audioInDoubleArray != null) {
-                    _haveASample = true;
-                }
-            }
-            // Note: we cannot use an if..then..else here because the
-            // above block may set _haveASample = true. Thus, we may
-            // sometimes need to execute both blocks.
-            if (_haveASample == true) {
-                // Copy a sample to the output array.
-                // For each channel.
-                for (int j = 0; j < _channels; j++) {
-                    _audioSendArray[i] =
-                        new DoubleToken(_audioInDoubleArray[j][_getSamplesArrayPointer]);
-                }
-                _getSamplesArrayPointer++;
-                // Check if we still have at least one sample left.
-                if ((_audioInDoubleArray[0].length
-                        - _getSamplesArrayPointer) <= 0) {
-                    // We just ran out of samples.
-                    _haveASample = false;
+                if (_audioIn != null) {
+                    _reachedEOF = false;
+                } else {
+                    _reachedEOF = true;
+                    break;
                 }
             }
         }
-        // Check that the read was successful
-        if (_audioInDoubleArray != null) {
-            // Send.
-            for (int j = 0; j < _channels; j++) {
-                output.send(j, _audioSendArray, count);
-            }
-            return COMPLETED;
-        } else {
-            // Read was unsuccessful, so output an array of zeros.
-            // This generally means that the end of the sound file
-            // has been reached.
-            // Convert to DoubleToken[].
-            for (int i = 0; i < count; i++) {
-                _audioSendArray[i] = new DoubleToken(0);
-            }
-            // Output an array of zeros on each channel.
-            for (int j = 0; j < _channels; j++) {
-                output.send(j, _audioSendArray, count);
-            }
+        // Send outputs.
+        for (int j = 0; j < _channels; j++) {
+            output.send(j, _audioSendArray[j], samplesToOutput);
+        }
+        if (_reachedEOF) {
             return STOP_ITERATING;
+        } else {
+            return COMPLETED;
         }
+    }
+
+    /** Return false if there is no more data available in the file.
+     *  Otherwise, return whatever the superclass returns.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        _firedSinceWrapup = true;
+        if (_reachedEOF || _soundReader == null) return false;
+        else return super.prefire();
     }
 
     /** This method causes one audio sample per channel to be
@@ -275,8 +266,8 @@ public class AudioReader extends URLReader {
             return true;
         } else if (returnVal == NOT_READY) {
             // This should never happen.
-            throw new IllegalActionException(this, "Actor " +
-                    "is not ready to fire.");
+            throw new IllegalActionException(this,
+                    "Actor is not ready to fire.");
         } else if (returnVal == STOP_ITERATING) {
             return false;
         }
@@ -290,63 +281,61 @@ public class AudioReader extends URLReader {
      *   problem closing the file.
      */
     public void wrapup() throws IllegalActionException {
-        // Stop capturing audio.
-        if (_soundReader != null) {
-            try {
-                _soundReader.closeFile();
-            } catch (IOException ex) {
-                throw new IllegalActionException(this,
-                        "Problem closing SoundReader:"
-                        + ex);
-            }
-        }
+        fileOrURL.close();
+        _soundReader = null;
+        _firedSinceWrapup = false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Initialize/Reinitialize audio reading. First close any
-     *  open files. Then read the <i>sourceURL</i> parameter and
+     *  open files. Then read the <i>fileOrURL</i> parameter and
      *  open the file specified by this parameter.
-     *  <p>
-     *  This method is synchronized since it is not safe to call
-     *  other SoundReader methods while this method is executing.
      *  @exception IllegalActionException If there is a problem initializing
      *   the audio reader.
      */
-    protected void _setURLReader(java.io.BufferedReader reader)
-            throws IllegalActionException {
-        if (_safeToInitialize) {
-            synchronized (this) {
-                if (_soundReader != null) {
-                    try {
-                        _soundReader.closeFile();
-                    } catch (IOException ex) {
-                        throw new IllegalActionException(this,
-                                "Cannot close "
-                                + "SoundReader: "
-                                + ex);
-                    }
-                }
-                // Load audio from a URL.
-                StringToken urlToken = (StringToken)sourceURL.getToken();
-                String theURL = urlToken.stringValue();
-                // Each read this many samples per channel when
-                // _soundReader.getSamples() is called.
-                // This value was chosen somewhat arbitrarily.
-                int getSamplesArraySize = 64;
-                try {
-                    _soundReader = new SoundReader(theURL,
-                            getSamplesArraySize);
-                } catch (IOException ex) {
-                    throw new IllegalActionException(this,
-                            "Cannot open URL '"
-                            + theURL + "':"
-                            + ex);
-                }
-                // Read the number of audio channels and set
-                // parameter accordingly.
-                _channels = _soundReader.getChannels();
+    protected void _openReader() throws IllegalActionException {
+        fileOrURL.close();
+        // Ignore if the fileOrUL is blank.
+        if (fileOrURL.getExpression().trim().equals("")) {
+            _soundReader = null;
+            _reachedEOF = true;
+        } else {
+            // Each read this many samples per channel when
+            // _soundReader.getSamples() is called.
+            // This value was chosen arbitrarily.
+            int getSamplesArraySize = 64;
+            try {
+                _soundReader = new SoundReader(fileOrURL.asURL(),
+                        getSamplesArraySize);
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex,
+                          "Cannot open fileOrURL '"
+                          + fileOrURL.getExpression()
+                          + "'.");
+            }
+            // Get the number of audio channels.
+            _channels = _soundReader.getChannels();
+
+            // Begin immediately reading data so that we stay at
+            // least one sample ahead.  This is important so that
+            // postfire() will return false when the last sample
+            // in the file is encountered, rather than on the next
+            // iteration.
+            try {
+                // Read in audio data.
+                _audioIn = _soundReader.getSamples();
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                "Unable to get samples from the file.");
+            }
+            _sampleIndex = 0;
+            // Check that the read was successful
+            if (_audioIn != null) {
+                _reachedEOF = false;
+            } else {
+                _reachedEOF = true;
             }
         }
     }
@@ -354,11 +343,29 @@ public class AudioReader extends URLReader {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private SoundReader _soundReader;
+    /** Most recently read audio data. */
+    private double[][] _audioIn;
+
+    /** Buffer of tokens to send. */
+    private DoubleToken[][] _audioSendArray;
+
+    /** The number of channels. */
     private int _channels;
-    private double[][] _audioInDoubleArray;
-    private boolean _haveASample;
-    private int _getSamplesArrayPointer;
-    private DoubleToken[] _audioSendArray = new DoubleToken[1];
-    private boolean _safeToInitialize = false;
+
+    /** Indicator that the fire() method has been called, but wrapup
+     *  has not.  That is, we are in the middle of a run.
+     */
+    private boolean _firedSinceWrapup = false;
+
+    /** Previous value of fileOrURL parameter. */
+    private String _previousFileOrURL;
+
+    /** Indicator that we have reached the end of the file. */
+    private boolean _reachedEOF = true;
+
+    /** Index of the next output to produce from _audioIn. */
+    private int _sampleIndex;
+
+    /** The current reader for the input file. */
+    private SoundReader _soundReader;
 }
