@@ -97,21 +97,8 @@ public class FlowThrough extends TypedAtomicActor {
 			    DDEReceiver outRcvr = (DDEReceiver)outRcvrs[k][l];
 			    Thread thr = Thread.currentThread();
 			    if( thr instanceof DDEThread ) {
-				TimeKeeper kpr = ((DDEThread)thr).getTimeKeeper();
-                                /*
-                                if( !(token instanceof NullToken) ) {
-				    double time = kpr.getCurrentTime();
-                                    if( outRcvr.isInsideBoundary() ) {
-                                        System.out.println("FlowThrough is putting a "+
-                                        "non-NullToken into an insideBoundaryRcvr at time = "
-                                        +time);
-                                    } else {
-                                        System.out.println("FlowThrough is putting a "+
-                                        "non-NullToken into a non-InsideBoundaryRcvr at time = "
-                                        +time);
-                                    }
-                                }
-                                */
+				TimeKeeper kpr = 
+                                        ((DDEThread)thr).getTimeKeeper();
 			        outRcvr.put(token, kpr.getCurrentTime());
 			    }
 			}

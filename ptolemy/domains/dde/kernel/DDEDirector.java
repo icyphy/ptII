@@ -362,7 +362,6 @@ public class DDEDirector extends ProcessDirector {
 	    timeKeeper.updateIgnoredReceivers();
 	    timeKeeper._tokenConsumed = false;
 	}
-	System.out.println("\n");
 	return _notDone;
     }
 
@@ -377,13 +376,6 @@ public class DDEDirector extends ProcessDirector {
      *  @param port The port to transfer tokens from.
      */
     public void transferInputs(IOPort port) throws IllegalActionException {
-	Thread thread = Thread.currentThread();
-	if( thread instanceof DDEThread ) {
-	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
-	    timeKeeper.printRcvrList();
-	}
-
-        String name = ((Nameable)getContainer()).getName();
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferInputs: port argument is not an opaque" +
@@ -391,9 +383,6 @@ public class DDEDirector extends ProcessDirector {
         }
         Token token = null;
         Receiver[][] insiderecs = port.deepGetReceivers();
-        if( port.getWidth() > 0 ) {
-            // System.out.println(name+":\t Beginning of transferInputs");
-        }
         for (int i = 0; i < port.getWidth(); i++) {
             if (insiderecs != null && insiderecs[i] != null) {
             	for (int j = 0; j < insiderecs[i].length; j++ ) {
@@ -410,7 +399,6 @@ public class DDEDirector extends ProcessDirector {
                 }
             }
         }
-        // System.out.println(name+":\t End of transferInputs");
     }
 
     /** Transfer data from an output port of the container to the
@@ -424,16 +412,12 @@ public class DDEDirector extends ProcessDirector {
      *  @param port The port to transfer tokens from.
      */
     public void transferOutputs(IOPort port) throws IllegalActionException {
-        String name = ((Nameable)getContainer()).getName();
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferOutputs: port argument is not " +
                     "an opaque output port.");
         }
         Receiver[][] insiderecs = port.getInsideReceivers();
-        if( insiderecs.length > 0 ) {
-            // System.out.println(name+":\t Beginning of transferOutputs");
-        }
         if (insiderecs != null) {
             for (int i = 0; i < insiderecs.length; i++) {
                 if (insiderecs[i] != null) {
@@ -455,7 +439,6 @@ public class DDEDirector extends ProcessDirector {
                 }
             }
         }
-        // System.out.println(name+":\t End of transferOutputs");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -703,8 +686,6 @@ public class DDEDirector extends ProcessDirector {
      */
     protected boolean _resolveExternalReadDeadlock() throws
     	    IllegalActionException {
-        String name = ((Nameable)getContainer()).getName();
-        // System.out.println("Inside of "+name+" there is an External Read Deadlock!");
         if( _pendingMutations ) {
 	    /* FIXME
                try {
@@ -726,8 +707,6 @@ public class DDEDirector extends ProcessDirector {
     protected boolean _resolveExternalWriteDeadlock() throws
     	    IllegalActionException {
             
-        String name = ((Nameable)getContainer()).getName();
-        // System.out.println("Inside of "+name+" there is an External Write Deadlock!");
         _incrementLowestCapacityPort();
         
         if( _pendingMutations ) {
@@ -773,8 +752,6 @@ public class DDEDirector extends ProcessDirector {
     protected boolean _resolveInternalWriteDeadlock() throws
     	    IllegalActionException {
             
-        String name = ((Nameable)getContainer()).getName();
-        // System.out.println("Inside of "+name+" there is an Internal Write Deadlock!");
         _incrementLowestCapacityPort();
 
         if( _pendingMutations ) {

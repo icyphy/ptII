@@ -327,13 +327,6 @@ public class TimeKeeper {
 	Thread thread = Thread.currentThread();
         
         if( !((ComponentEntity)_actor).isAtomic() ) {
-	    /*
-	    if( thread instanceof DDEThread ) {
-		Actor actor = ((DDEThread)thread).getActor();
-		String name = ((Nameable)actor).getName();
-                System.out.println("Call to CompositeActor's TimeKeeper.getOutputTime() at time "+_outputTime + " by " + name);
-	    }
-	    */
             return _outputTime;
         }
         
@@ -341,7 +334,6 @@ public class TimeKeeper {
         if( _outputTime < _currentTime ) {
             _outputTime = _currentTime;
         }
-        // System.out.println("Call to AtomicActor's TimeKeeper.getOutputTime() at time "+_outputTime);
         return _outputTime;
     }
 
@@ -411,12 +403,6 @@ public class TimeKeeper {
      */
     public void sendOutNullTokens(DDEReceiver rcvr) {
         if( rcvr.isInsideBoundary() ) {
-        String name = ((Nameable)rcvr.getContainer()).getName();
-        if( name.equals("wormout") ) {
-            double time = getOutputTime(); 
-            System.out.println(name+": sending out null tokens at "+time);
-        }
-            
             if( _actor.getExecutiveDirector() instanceof DDEDirector ){
                 IOPort port = (IOPort)rcvr.getContainer();
                 Receiver[][] rcvrs = null;
@@ -515,12 +501,6 @@ public class TimeKeeper {
 	} else {
 	    return;
 	}
-
-	String actorName = ((Nameable)_actor).getName();
-	if( actorName.equals("wormhole") ) {
-	    // System.out.println(actorName+"'s TimeKeeper.setCurrentTime() called at time = "+time);
-	}
-
     }
 
     /** Set the priorities of the receivers contained in the input
@@ -587,36 +567,9 @@ public class TimeKeeper {
                 return;
             }
         }
-	/* We probably shouldn't have this...
-	if( outputTime < _currentTime ) {
-	    throw new IllegalActionException(
-		    ((NamedObj)_actor).getName() + " - Attempt to "
-		    + "set the output time to be less than the "
-                    + "current time.");
-	}
-	*/
-        String calleeName = ((Nameable)_actor).getName();
-/*
-        // if( calleeName.equals("wormhole") ) {
-	    Thread thread = Thread.currentThread();
-	    if( thread instanceof DDEThread ) {
-		String callerName = ((Nameable)((DDEThread)thread).getActor()).getName();
-		System.out.println(calleeName+"'s TimeKeeper.setOutputTime is called at time " 
-                + outputTime + " by " + callerName); 
-	    }
-            try {
-                if( outputTime == 15.0 ) {
-                    throw new IllegalActionException("Uggghhh");
-                }
-            } catch( IllegalActionException e ) {
-                e.printStackTrace();
-            }
-	// }
-*/
 	if( outputTime != TimedQueueReceiver.IGNORE ) {
             _outputTime = outputTime;
 	}
-	// _outputTime = outputTime;
     }
 
     /** Return true if a search for receivers with a receiver
@@ -644,8 +597,6 @@ public class TimeKeeper {
      *  each such receiver, call DDEReceiver.clearIgnoredTokens().
      */
     public synchronized void updateIgnoredReceivers() {
-	String name = ((Nameable)_actor).getName();
-	System.out.println(name+": updateIgnoredReceivers() called");
 	if( _rcvrTimeList == null ) {
 	    return;
 	}
@@ -712,7 +663,6 @@ public class TimeKeeper {
     /** Print the contents of the RcvrTimeTriple list contained by
      *  this actor. Use this method for testing purposes only.
      * @deprecated
-     */
     synchronized void printRcvrList() {
 	String name = ((NamedObj)_actor).getName();
         System.out.println("\n###Print "+name+"'s RcvrList.");
@@ -744,6 +694,7 @@ public class TimeKeeper {
         }
         System.out.println("###End of printRcvrList()\n");
     }
+     */
 
     /** Set a flag indicating whether a search for ignored
      *  tokens is taking place as per the specified parameter.

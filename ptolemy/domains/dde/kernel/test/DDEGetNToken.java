@@ -114,12 +114,6 @@ public class DDEGetNToken extends DDEGet {
 			if( rcvr.hasToken() ) {
 			    _tokens[cnt] = rcvr.get();
 			    _afterTimes[cnt] = timeKeeper.getCurrentTime();
-                            if( _name.equals("actorRcvr") || _name.equals("sink") ) {
-                                /*
-                                System.out.println(_name+": _afterTimes["+cnt+"] = "+
-                                _afterTimes[cnt]+"\t_beforeTimes["+cnt+"] = "+_beforeTimes[cnt]);
-                                */
-                            }
 		            cnt++;
 			    j = rcvrs[i].length + 1;
 			    finished = true;

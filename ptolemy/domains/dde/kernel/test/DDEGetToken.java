@@ -92,14 +92,12 @@ public class DDEGetToken extends DDEGet {
 		aCntr++;
 	    }
 	}
-	System.out.println("There are "+aCntr+" receivers in "+getName());
 	int cnt = 0;
 	while(cnt < _numTokens) {
 	    Receiver[][] rcvrs = input.getReceivers();
 	    for( int i = 0; i < rcvrs.length; i++ ) {
 		for( int j = 0; j < rcvrs[i].length; j++ ) {
 		    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
-		    System.out.println("DDEGetToken receiver["+i+"]["+j+"]; cnt = "+cnt);
 		    if( rcvr.hasToken() ) {
 			_rcvrTimes[cnt] = rcvr.getRcvrTime();
 	                _tokens[cnt] = rcvr.get();
@@ -117,7 +115,6 @@ public class DDEGetToken extends DDEGet {
 	    }
 	    cnt++;
 	}
-	System.out.println("DDEGetToken() ends with cnt = "+cnt);
     }
 
     ///////////////////////////////////////////////////////////////////

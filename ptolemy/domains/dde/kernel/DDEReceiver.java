@@ -115,10 +115,8 @@ public class DDEReceiver extends TimedQueueReceiver
             return;
         }
 
-	String actorName = ((Nameable)getContainer().getContainer()).getName();
-	if( actorName.equals("wormhole") ) {
-	    // System.out.println(actorName+": calling clearIgnoreTokens");
-	}
+	String actorName = ((Nameable)getContainer().
+                getContainer()).getName();
 
 	// If this is an Outside Boundary Port, then we need 
 	// to pass the IGNORE token into the interior. 
@@ -144,10 +142,6 @@ public class DDEReceiver extends TimedQueueReceiver
 	}
 	*/
 
-	// If this is an Inside Boundary Port, then we need
-	// to "ignore" this clear message.
-	// FIXME
-
 	// Remove Ignored Token
 	super.get();
 
@@ -161,7 +155,6 @@ public class DDEReceiver extends TimedQueueReceiver
 		TimeKeeper keeper = ddeThread.getTimeKeeper();
 		if( actorName.equals("wormhole") ) {
 		    double time = keeper.getCurrentTime();
-		    // System.out.println(actorName+": calling clearIgnoreTokens with time = "+time);
 		}
 		
 		setRcvrTime( keeper.getCurrentTime() );
@@ -196,8 +189,6 @@ public class DDEReceiver extends TimedQueueReceiver
     public Token get() throws NoTokenException {
         DDEDirector director = (DDEDirector)
             ((Actor)getContainer().getContainer()).getDirector();
-	String actorName = ((Nameable)getContainer().getContainer()).getName();
-	// System.out.println(actorName+": calling get()");
 	synchronized( this ) {
 	    if( _terminate ) {
 		throw new TerminateProcessException("");
@@ -330,48 +321,6 @@ public class DDEReceiver extends TimedQueueReceiver
 	    realToken = true;
 	}
 	Thread thread = Thread.currentThread();
-	if( thread instanceof DDEThread ) {
-        // if( portName.equals("wormoutB") ) {
-	    String callingActor = ((Nameable)((DDEThread)thread).getActor()).getName();
-	    if( realToken ) {
-		System.out.println("Port: "+portName+" of Actor: "+actorName+"\tput() called with Real Token at time = "+time+" by calling actor: "+callingActor+"");
-		/*
-		if( callingActor.equals("fBack") ) {
-		    if( time == 9.0 ) {
-			try {
-			    throw new IllegalActionException("fback.put() at time = 9.0");
-			} catch(IllegalActionException e) {
-			    e.printStackTrace();
-			}
-		    }
-		}
-		*/
-	    } else {
-		System.out.println("Port: "+portName+" of Actor: "+actorName+"\tput() called with NullToken at time = "+time+" by calling actor: "+callingActor+"");
-		/*
-		if( callingActor.equals("fBack") ) {
-		    if( time == 9.0 ) {
-			try {
-			    throw new IllegalActionException("fBack.put() at time = 9.0");
-			} catch(IllegalActionException e) {
-			    e.printStackTrace();
-			}
-		    }
-		}
-		*/
-	    }
-	}
-
-	/*
-	if( actorName.equals("fBack") || actorName.equals("join") ) {
-	    if( realToken ) {
-		System.out.println(actorName+": put() called with Real Token at time = "+time);
-	    } else {
-		System.out.println(actorName+": put() called with NullToken at time = "+time);
-	    }
-	}
-	*/
-        
         Workspace workspace = getContainer().workspace();
         DDEDirector director = null;
         if( isOutsideBoundary() ) {
@@ -482,12 +431,6 @@ public class DDEReceiver extends TimedQueueReceiver
 	    DDEDirector director, TimeKeeper timeKeeper,
 	    boolean _hideNullTokens ) {
 
-	String actorName = ((Nameable)getContainer().getContainer()).getName();
-	String portName = ((Nameable)getContainer()).getName();
-	if( actorName.equals("join") ) {
-	    // System.out.println(actorName+": Called _hasToken()");
-	}
-	// System.out.println(portName+": Called _hasToken()");
 	//////////////////////////////////////////////////////
 	// Resort the TimeKeeper to account for recents puts()
 	//////////////////////////////////////////////////////
@@ -507,9 +450,6 @@ public class DDEReceiver extends TimedQueueReceiver
 	    return false;
 	}
         if( getRcvrTime() == IGNORE && !_terminate ) {
-	    if( actorName.equals("join") ) {
-		System.out.println(actorName+": encountered an IGNORE token");
-	    }
 	    if( _ignoreNotSeen ) {
 		_ignoreNotSeen = false;
 		return false;
@@ -568,10 +508,6 @@ public class DDEReceiver extends TimedQueueReceiver
 	}
 	if( !super.hasToken() && !_terminate ) {
 	    _readPending = true;
-	    if( actorName.equals("join") ) {
-		System.out.println("********** Actor: " + actorName + " about to read block");
-		timeKeeper.printRcvrList();
-	    }
             if( isConnectedToBoundary() ) {
                 director.addExternalReadBlock();
             } else {
@@ -607,14 +543,6 @@ public class DDEReceiver extends TimedQueueReceiver
     private synchronized boolean _hasInsideToken(Workspace workspace,
 	    DDEDirector director, TimeKeeper timeKeeper ) {
 
-	String actorName = ((Nameable)getContainer().getContainer()).getName();
-	String portName = ((Nameable)getContainer()).getName();
-	// System.out.println(actorName+": Called _hasInsideToken()");
-	/*
-	if( portName.equals("wormoutA") || portName.equals("wormoutB") ) {
-	    System.out.println(portName+": Called _hasInsideToken()");
-	}
-	*/
 	///////////////////
 	// Check Rcvr Times
 	///////////////////
@@ -680,14 +608,6 @@ public class DDEReceiver extends TimedQueueReceiver
 	    DDEDirector director, TimeKeeper timeKeeper,
 	    boolean _hideNullTokens ) {
 
-	String actorName = ((Nameable)getContainer().getContainer()).getName();
-	String portName = ((Nameable)getContainer()).getName();
-	// System.out.println(actorName+": Called _hasOutsideToken()");
-	/*
-	if( portName.equals("worminA") || portName.equals("worminB") ) {
-	    System.out.println(portName+": Called _hasOutsideToken()");
-	}
-	*/
 	//////////////////////////////////////////////////////
 	// Resort the TimeKeeper to account for recents puts()
 	//////////////////////////////////////////////////////
@@ -707,40 +627,24 @@ public class DDEReceiver extends TimedQueueReceiver
 	    return false;
 	}
         if( getRcvrTime() == IGNORE && !_terminate ) {
-	    if( actorName.equals("wormhole") ) {
-		System.out.println(actorName+": found a IGNORE receiver");
-	    }
-	    // if( _ignoreNotSeen ) {
-		IOPort port = (IOPort)getContainer();
-		Director insideDir = ((Actor) 
-			port.getContainer()).getDirector();
-		if( insideDir instanceof DDEDirector ) {
-		    Receiver[][] rcvrs = null;
-		    try {
-			rcvrs = port.deepGetReceivers();
-		    } catch( IllegalActionException e ) {
-			// FIXME: Do Something
-		    }
-		    for(int i = 0; i < rcvrs.length; i++ ) {
-			for(int j = 0; j < rcvrs[i].length; j++ ) {
-			    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
-			    rcvr.put( new Token(), TimedQueueReceiver.IGNORE );
-			}
+            IOPort port = (IOPort)getContainer(); 
+            Director insideDir = ((Actor) 
+            	    port.getContainer()).getDirector();
+	    if( insideDir instanceof DDEDirector ) {
+            	Receiver[][] rcvrs = null;
+		try {
+		    rcvrs = port.deepGetReceivers();
+		} catch( IllegalActionException e ) {
+		    // FIXME: Do Something
+		}
+		for(int i = 0; i < rcvrs.length; i++ ) {
+		    for(int j = 0; j < rcvrs[i].length; j++ ) {
+			DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
+			rcvr.put( new Token(), TimedQueueReceiver.IGNORE );
 		    }
 		}
-		//_ignoreNotSeen = false;
-		return false;
-		/*
-	    } else {
-		_ignoreNotSeen = true;
-		clearIgnoredTokens();
-		// Call the next line since
-                // TimeKeeper.updateIgnoredReceivers()
-		// has not been called.
-		timeKeeper.setIgnoredTokens(false);
-		return false;
-	    }
-		*/
+            }
+	    return false;
         }
 	if( getRcvrTime() > timeKeeper.getNextTime() &&
         	!_terminate ) {
@@ -868,19 +772,11 @@ public class DDEReceiver extends TimedQueueReceiver
             if( super.hasRoom() && !_terminate ) {
                 super.put(token, time);
 		if( _readPending ) {
-                    // BEGIN JFIXME 
                     if( isConnectedToBoundary() ) {
-                        if( token instanceof NullToken ) {
-                    	    // System.out.println(name+": removed an external read block at time "+time+" on a Null Token.");
-                        } else {
-                    	    // System.out.println(name+": removed an external read block at time "+time+" on a non-Null Token.");
-                        }
 		        director.removeExternalReadBlock();
                     } else {
-                    	// System.out.println(name+": removed an internal read block at time "+time+".");
 		        director.removeInternalReadBlock();
                     }
-		    // END JFIXME: director.removeReadBlock();
 		    _readPending = false;
 		    notifyAll();
 		}
