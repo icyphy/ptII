@@ -359,7 +359,7 @@ public class PortLocationConfigurer extends Query implements QueryListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /**
+    /*
      * Go through all of the ports on a side and adjust the choices in
      * the JComboBox.  If the count is greater than the number of
      * items, add items to the JComboBox.  If the count is less
