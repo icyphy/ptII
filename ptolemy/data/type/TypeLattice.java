@@ -183,13 +183,24 @@ public class TypeLattice {
 
 	    Type ct1 = (Type)t1;
 	    Type ct2 = (Type)t2;
-
+         
 	    if (t1 instanceof BaseType && t2 instanceof BaseType) {
 	        return _basicLattice.greatestLowerBound(ct1, ct2);
 	    }
 
 	    Type t1Rep = _toRepresentative(ct1);
 	    Type t2Rep = _toRepresentative(ct2);
+
+	    if ( !_basicLattice.contains(t1Rep) ||
+	         !_basicLattice.contains(t2Rep)) {
+                // one or both arguments are user defined
+		if (t1Rep == t2Rep) {
+		    return ct1;
+		} else {
+		    return bottom();
+		}
+	    }
+
 	    if (t1Rep == t2Rep) {
 	        // t1 and t2 are of the same structured type
 	        return ((StructuredType)ct1)._greatestLowerBound(
@@ -304,13 +315,24 @@ public class TypeLattice {
 
 	    Type ct1 = (Type)t1;
 	    Type ct2 = (Type)t2;
-
+       
 	    if (ct1 instanceof BaseType && ct2 instanceof BaseType) {
 	        return _basicLattice.leastUpperBound(ct1, ct2);
 	    }
 
 	    Type t1Rep = _toRepresentative(ct1);
 	    Type t2Rep = _toRepresentative(ct2);
+
+	    if ( !_basicLattice.contains(t1Rep) ||
+	         !_basicLattice.contains(t2Rep)) {
+                // one or both arguments are user defined
+		if (t1Rep == t2Rep) {
+                    return ct1;
+		} else {
+                    return top();
+		}
+	    }
+
 	    if (t1Rep == t2Rep) {
 	        // t1 and t2 are of the same structured type
 	        return ((StructuredType)ct1)._leastUpperBound(
