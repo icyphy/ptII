@@ -204,7 +204,7 @@ public class MatlabUtilities {
 
 		    //result = matlabEngine.get(engine, "result__");
 
-		    result = (ptolemy.data.vToken)
+		    result = (ptolemy.data.Token)
 			_engineGet.invoke(matlabEngine,
                                 new Object[] {
                                     _engine, "result__"
