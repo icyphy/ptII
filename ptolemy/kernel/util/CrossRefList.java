@@ -28,14 +28,19 @@
 package pt.kernel;
 
 import java.util.Enumeration;
+import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CrossRefList
-/** 
-Description of the class
+/** Lists for implementing links between Objects.  
+If you need an Object to keep a list of references to other Objects
+(i.e. neighbors), and those other Objects need to maintain
+back-references, then use CrossRefList.  This list requires an owning
+Object in the constructor argument and access methods return or refer
+to neighboring Objects directly.  Removing a reference automatically
+updates back-references in N neighboring Objects in O(N) time.
 @author Geroncio Galicia
-@version $Id$
-*/
+@version $Id$ */
 public final class CrossRefList {
 
     // FIXME: add "final" modifiers noted below when JDK 1.2 is released.
@@ -50,7 +55,9 @@ public final class CrossRefList {
         _lastNode = null;
     }
 
-    /** Copy constructor. */
+    /** Copy constructor. 
+     * Creates a copy of this list with a new owner.
+     */
     public CrossRefList(Object owner, CrossRefList originalList) {
         this(owner);
         copyList(originalList);
@@ -62,8 +69,9 @@ public final class CrossRefList {
     ////                         public methods                           ////
 
     /** Link to an CrossRefList.
-     * Instantiate a new CrossRefList in the specified (far) list and
-     * link that to the the new one here.  Redundant links are allowed.
+     * Instantiate a new CrossRef in the specified (far) list and link
+     * that to the the new one here.  Redundant links are allowed.
+     * Time complexity: O(1).
      */
     public synchronized void associate(CrossRefList farList) {
         synchronized(farList) {
@@ -74,7 +82,9 @@ public final class CrossRefList {
         }
     }
 
-    /** Delete all CrossRefs. */
+    /** Delete all CrossRefs.
+     * Time complexity: O(n).
+     */
     public synchronized void dissociate() {
         if(isEmpty()) return; // List is already empty.
 
@@ -94,7 +104,9 @@ public final class CrossRefList {
         _dimen = 0;
     }
 
-    /** Delete a CrossRef indexed by far Object. */
+    /** Delete a CrossRef indexed by a neighboring Object. 
+     * Time complexity: O(1).
+     */
     public synchronized void dissociate(Object element) {
         if (element == null || _dimen == 0) return;
         Object v;
@@ -111,7 +123,9 @@ public final class CrossRefList {
         }
     }
 
-    /** Check if a far Object is referenced. */
+    /** Check if a neighboring Object is referenced. 
+     * Time complexity: O(n).
+     */
     public synchronized boolean isMember(Object element) {
         if (element == null || _dimen == 0) return false;
         for(CrossRef p = _headNode; p != null; p = p._next) {
@@ -122,20 +136,30 @@ public final class CrossRefList {
         return false;
     }
 
-    /** Check if list is empty. */
+    /** Check if list is empty. 
+     * Time complexity: O(1).
+     */
     public synchronized boolean isEmpty() {
         return _headNode == null;
     }
 
-    /** Return enumeration for this list. */
-    public synchronized Enumeration enumerate() { 
+    /** Return enumeration for this list. 
+     * Enumeration returns neighboring Objects.
+     * Time complexity: O(1).
+     */
+    public synchronized Enumeration elements() { 
         return new CrossRefEnumeration();
     }
 
-    /** Return size of this list. */
+    /** Return size of this list. 
+     * Time complexity: O(1).
+     */
     public synchronized int size() { return _dimen; }
 
-    /** Make an independent copy.  Does not clone elements. */
+    /** Make an independent copy.  Does not clone elements. 
+     * This methods assume that the new list already has an owning Object.
+     * Time complexity: O(n).
+     */
     public synchronized void copyList(CrossRefList originalList) {
         synchronized(originalList) {
             if(originalList.isEmpty()) return; // List to copy is empty.
@@ -237,22 +261,26 @@ public final class CrossRefList {
         public boolean hasMoreElements() {
             CrossRef tmp1 = _ref; // Callee-save.
             boolean tmp2 = _startAtHead; // Callee-save.
-            Object testObj = nextElement();
+            Object tmpObj;
+            try {
+                tmpObj = nextElement();
+            } catch (NoSuchElementException ex) {
+                tmpObj = null;
+            }
             _ref = tmp1; // Restore state.
             _startAtHead = tmp2; // Restore state.
-            return testObj != null;
+            return tmpObj != null;
         }
 
         /** Return the next element in the enumeration. */
-        public Object nextElement() {
+        public Object nextElement() throws NoSuchElementException {
             if(_startAtHead) { // If starting at beginning of list.
                 _startAtHead = false;
                 if(_headNode != null) { // List not empty.
                     _ref = _headNode;
                     return _ref._farOwner();
-                } else { // List is empty, pass NULL.
-                    _ref = null;
-                    return _ref;
+                } else { // List is empty, throw exception.
+                    throw new NoSuchElementException("List is empty.\n");
                 }
             } else { // If not at beginning of list.
                 if (_ref != _lastNode) { // If not at end of list.
@@ -262,13 +290,11 @@ public final class CrossRefList {
                         return _ref._farOwner();
                     } else {
                         // If pointer is NULL, then end of list was
-                        // already passed.
-                        _ref = null;
-                        return _ref;
+                        // already passed.  Throw exception.
+                        throw new NoSuchElementException("End of list passed.\n");
                     }
                 } else { // If at end of list.
-                    _ref = null;
-                    return _ref;
+                    throw new NoSuchElementException("End of list reached.\n");
                 }
             }
         }
