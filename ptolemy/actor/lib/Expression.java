@@ -118,9 +118,6 @@ public class Expression extends TypedAtomicActor {
 
         _time = new Variable(this, "time", new DoubleToken(0.0));
         _iteration = new Variable(this, "iteration", new IntToken(1));
-
-	_evaluateExpression = new Variable(this, "evaluateExpression",
-	                                   new IntToken(1));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -152,8 +149,6 @@ public class Expression extends TypedAtomicActor {
         newObject._iterationCount = 1;
         newObject._time = (Variable)newObject.getAttribute("time");
         newObject._iteration = (Variable)newObject.getAttribute("iteration");
-        newObject._evaluateExpression =
-	        (Variable)newObject.getAttribute("evaluateExpression");
         return newObject;
     }
 
@@ -182,11 +177,7 @@ public class Expression extends TypedAtomicActor {
             }
         }
 
-	// copy the expression string into _evaluateExpression and
-	// evaluate.
-	String expressionString = expression.getExpression();
-	_evaluateExpression.setExpression(expressionString);
-        Token result = _evaluateExpression.getToken();
+        Token result = expression.getToken();
 
         if (result == null) {
             throw new IllegalActionException(this,
@@ -242,9 +233,9 @@ public class Expression extends TypedAtomicActor {
         // already there.
         Attribute there = getAttribute(portName);
         if (there == null) {
-            // FIXME: Have to initialize with a token or type
-            // resolution fails.
-            new Variable(this, portName, new DoubleToken(1.0));
+            // FIXME: Have to initialize with a token since vergil
+            // evaluates variables at start-up.
+            new Variable(this, portName, new IntToken(1));
         } else if ((there instanceof Parameter)
                 || !(there instanceof Variable)) {
             throw new IllegalActionException(this, "Port name collides with"
@@ -279,7 +270,4 @@ public class Expression extends TypedAtomicActor {
     private Variable _time;
     private Variable _iteration;
     private int _iterationCount = 1;
-
-    // internal variable used to evaluate the expression
-    private Variable _evaluateExpression;
 }
