@@ -32,6 +32,8 @@ MAJOR_VERSION = 	1.0
 MINOR_VERSION =		beta
 
 VERSION=	$(MAJOR_VERSION)$(MINOR_VERSION)
+# Version string for lame filesystems that don't like more than one .
+WINDOWS_VERSION =	1_0$(MINOR_VERSION)
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
@@ -51,14 +53,7 @@ SPLITTAR =	/users/ptolemy/adm/bin/splittar
 
 # FTP Directory
 # Use this for release
-FTP_DEST =	/vol/ptolemy/pt0/ftp
-# Use this for testing, comment out for release.
-#FTP_DEST =	/vol/brahe/brahe1/ftp
-
-# Destination of the Ptolemy tar files
-PT_DEST =	$(FTP_DEST)/pub/ptolemy/$(PTOLEMY_SRC)$(VERSION)
-# Destination of the GNU tar files
-GNU_DEST =	$(FTP_DEST)/pub/gnu/$(PTOLEMY_SRC)$(VERSION)
+FTP_DEST =	/vol/ptolemy/pt0/ptweb/ptolemyII/ptII1.0
 
 # Name and directory of distribution.  For testing, use ptdesign
 # For release, use ptolemy
@@ -66,7 +61,8 @@ GNU_DEST =	$(FTP_DEST)/pub/gnu/$(PTOLEMY_SRC)$(VERSION)
 # For use under Windows
 # make USER=cxh PTIIHOME=//c/users/cxh/ptII/adm/trees/ptII1.0beta COMPRESS=gzip TAR=tar PTIIADM=//c/users/cxh/ptII/adm 
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0beta PTIIADM=/home/eecs/cxh/ptII/adm
-# rm unixPtII.xml; make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0beta PTIIADM=/home/eecs/cxh/ptII/adm clean all installshield_app build_unixPtII >& make2.out &
+# Run this command on a JDK1.3 machine so we get javasound documentation
+# rm unixPtII.xml; make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0beta PTIIADM=/home/eecs/cxh/ptII/adm rebuild >& make.out
 
 USER =		ptII
 PTIIHOME =	/users/ptII
@@ -82,6 +78,7 @@ PTIIDIST = 	$(PTIIADM)/dists/ptII$(VERSION)
 # Directories and files in the top level ptII directory that we should
 # include in the tar file.
 PTII_TOPDIR=	.cshrc \
+		README.txt \
 		bin \
 		com/JLex \
 		com/makefile \
@@ -103,27 +100,32 @@ CVS_REPOSITORY = :ext:gigasource.eecs.berkeley.edu:/home/cvs
 ##############################################################################
 # Files to be produced
 
-PTII_SRC = 	  $(GENDIR)/ptII$(VERSION).src.tar.$(SUFFIX)
-PTII_SRC_ZIP =    $(GENDIR)/ptII$(VERSION).src.zip
-PTII_SRC_ONLY =   $(GENDIR)/ptII$(VERSION).src_only.tar.$(SUFFIX)
+PTII_FULL = 	  $(GENDIR)/ptII$(VERSION).tar.$(SUFFIX)
+PTII_FULL_ZIP =    $(GENDIR)/ptII$(VERSION).src.zip
+# Source only, no .class, .jar or javadoc
+PTII_SRC =   $(GENDIR)/ptII$(VERSION).src.tar.$(SUFFIX)
 
 VERGIL = 	  $(GENDIR)/vergil$(VERSION).src.tar.$(SUFFIX)
 
 # Three forms we ship in.
-PTII_SRCS = 	$(PTII_SRC) $(basename $(PTII_SRC)) $(PTII_SRC_ZIP)
+PTII_SRCS = 	$(PTII_FULL) $(basename $(PTII_FULL)) $(PTII_FULL_ZIP)
 
 PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar.$(SUFFIX)
 
 ##############################################################################
 # Targets
-all: $(PTII_SRC) $(PTII_SRC_ZIP) #$(PTII_DEVEL_SRC)
+all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
+
+# Rebuild the distributions
+rebuild: clean all installshield_app build_unixPtII untar
+
 clean:
 	@echo "#"
 	@echo "# Now cleaning old tar files in ~ptII/adm/gen-latest"
 	@echo "#"
 	@echo `date`
-	rm -f $(PTII_SRC) $(basename $(PTII_SRC)) $(PTII_SRC_ZIP) $(PTII_DEVEL_SRC)
-	rm -rf $(PTIIDIST)
+	rm -f $(PTII_FULL) $(PTII_FULL_ZIP) $(PTII_DEVEL_SRC) $(PTII_SRC)
+	rm -rf $(PTIIDIST) src installshield/*
 
 # First we create a directory containing the distribution,
 # then we modify the distribution slightly,
@@ -140,9 +142,11 @@ $(PTIIDIST):
 		$ -f - $(PTII_TOPDIR) )| \
 		(cd $@; $(TAR) -xpf -)
 	@echo "Removing codeDoc directories and other documentation"
+	@echo "  tar -X does not seem to work under Cygwin"
 	-find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
 	-find $(PTIIDIST) -name CVS -exec rm -rf {} \;
 	@echo "Regenerate the documentation with gr and javasound"
+	@echo "  This requires JDK1.3, so run it on doppler"
 	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc JDOCFLAGS="-author -version -J-Xmx132m" GRJSRCS="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" JAVASOUNDJSRCS="ptolemy.actor.lib.javasound ptolemy.media.javasound")
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
@@ -152,10 +156,10 @@ $(PTIIDIST):
 	cp $(PTIIHOME)/.glimpse_exclude $(PTIIDIST)
 
 clean_src:
-	rm -f $(PTII_SRC)
-src: $(PTII_SRC) $(PTII_SRC_ZIP)
-ptii_src: $(PTII_SRC) $(PTII_SRC_ZIP)
-$(PTII_SRC): $(PTIIDIST)
+	rm -f $(PTII_FULL)
+src: $(PTII_FULL) #$(PTII_FULL_ZIP)
+PTII_FULL: $(PTII_FULL) #$(PTII_FULL_ZIP)
+$(PTII_FULL): $(PTIIDIST)
 	@echo "Creating $@"
 	(cd $(PTIIDIST); chmod -R a+rX .)
 	(cd $(PTIIDIST)/..; \
@@ -170,12 +174,12 @@ $(PTII_SRC): $(PTIIDIST)
 	-chgrp ptolemy $@ $(basename $@)
 	ls -l $@ $(basename $@)
 
-$(PTII_SRC_SPLIT):: $(PTII_SRC)
+$(PTII_FULL_SPLIT):: $(PTII_FULL)
 	$(SPLITTAR) $^
 
-src.zip: $(PTII_SRC_ZIP)
-ptii.src.zip: $(PTII_SRC_ZIP)
-$(PTII_SRC_ZIP): $(PTIIDIST)
+src.zip: $(PTII_FULL_ZIP)
+ptii.src.zip: $(PTII_FULL_ZIP)
+$(PTII_FULL_ZIP): $(PTIIDIST)
 	@echo "Creating $@"
 	(cd $(PTIIDIST)/..; \
 	$(ZIP) -r -q $@ \
@@ -186,41 +190,29 @@ $(PTII_SRC_ZIP): $(PTIIDIST)
 	ls -l $@
 
 
-ptii_src_only: $(PTII_SRC_ONLY)
-$(PTII_SRC_ONLY): #$(PTII_SRC)
+ptii_src: $(PTII_SRC)
+$(PTII_SRC): $(PTII_SRC)
 	@echo "Creating $@"
-	(cd tmp; \
-		$(TAR) -zxf $(PTII_SRC); cd ptII$(VERSION); \
-		./configure; make clean; 
-		$(TAR) -zcf $(PTII_SRC_ONLY) ptII$(VERSION));
+	-mkdir src
+	(cd src; \
+		$(TAR) -zxf $(PTII_FULL); cd ptII$(VERSION); \
+		./configure; make clean; \
+		rm -rf doc/codeDoc; \
+		autoconf; \
+		cd ..; \
+		$(TAR) -zcf $(PTII_SRC) ptII$(VERSION));
 
-
-vergil: $(VERGIL)
-$(VERGIL): $(PTIIDIST)
-	@echo "Creating $@"
-	(cd $(PTIIHOME); \
-	$(TAR) -c -X $(GENDIR)/src.ex \
-	 -f $(basename $@) \
-	ptolemy/vergil)
-	@echo "We will provide gzipped and non-gzipped tars"
-	cp $(basename $@) $(basename $@).bak
-	$(COMPRESS) $(basename $@)
-	mv $(basename $@).bak $(basename $@)
-	chmod g+w $@ $(basename $@)
-	-chgrp ptolemy $@ $(basename $@)
-	ls -l $@ $(basename $@)
-
-update_ftp: update_ptii_ftp update_ptii_itcl untar
-update_ptii_itcl:
-	@echo "Copying itcl files to website"
-	#cp -p $(ITCL_ALL) $(PTII_FTP)
-	cp -p $(ITCL_DIST) $(PTII_FTP)
+update_ftp: update_ptii_ftp untar
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
-	cp -p $(PTII_SRCS) $(PTII_FTP)
+	gzip installshield/ptII$(WINDOWS_VERSION)jar.exe
+	cp -p $(PTII_FULL) $(PTII_SRC) \
+		installshield/ptII$(WINDOWS_VERSION)jar.exe.gz \
+		installshield/applet/ptII$(WINDOWS_VERSION)setup.exe \
+		$(PTII_FTP)
 untar:
 	rm -rf $(PTII_FTP)/$(VERSION)
-	cd $(PTII_FTP); /usr/tools/gnu/bin/tar -zxf $(PTII_SRC)
+	cd $(PTII_FTP); /usr/tools/gnu/bin/tar -zxf $(PTII_FULL)
 
 # Make the distribution, run htmlchek
 htmlchek:
@@ -320,7 +312,7 @@ JSOUTDIR=/users/ptII/public_html/nightly/js
 # Create a separate tree and run the test suite with code coverage
 # on REMOTE1HOST
 remote1: remote1coverage
-remote1coverage: $(PTII_SRC) $(GENLOGDIR)
+remote1coverage: $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
 	@echo "# Now building on $(REMOTE1HOST) for code coverage"
 	@echo "#"
@@ -353,12 +345,12 @@ remote1nuke:
 
 # untarthe remote dist.  Usually this is run on the remote machine
 remote1ptiidist: $(REMOTE1PTIIDIST)
-$(REMOTE1PTIIDIST): $(PTII_SRC)
+$(REMOTE1PTIIDIST): $(PTII_FULL)
 	@echo "#"
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo `date`
-	(cd $(REMOTE1HOME); $(TAR) -xf $(GENDIR)/`basename $(PTII_SRC) .gz`)
+	(cd $(REMOTE1HOME); $(TAR) -xf $(GENDIR)/`basename $(PTII_FULL) .gz`)
 
 remote1configure:
 	@echo "#"
@@ -552,7 +544,7 @@ REMOTE2PTIIDIST = $(REMOTE2HOME)/ptII$(VERSION)
 REMOTE2LOG = $(GENLOGDIR)/remote2.out
 
 remote2: remote2jdk1.1
-remote2jdk1.1:  $(PTII_SRC) $(GENLOGDIR)
+remote2jdk1.1:  $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
 	@echo "# Now building on $(REMOTE2HOST) with JDK1.1 "
 	@echo "#"
@@ -569,12 +561,12 @@ remote2nuke:
 
 #Untar the remote dist.  Usually this is run on the remote machine
 remote2ptiidist: $(REMOTE2PTIIDIST)
-$(REMOTE2PTIIDIST): $(PTII_SRC)
+$(REMOTE2PTIIDIST): $(PTII_FULL)
 	@echo "#"
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo `date`
-	(cd $(REMOTE2HOME); $(TAR) -xf $(GENDIR)/`basename $(PTII_SRC) .gz`)
+	(cd $(REMOTE2HOME); $(TAR) -xf $(GENDIR)/`basename $(PTII_FULL) .gz`)
 
 
 # clean the remote tree
@@ -783,7 +775,7 @@ REMOTE4HOST = tycho
 REMOTE4LOG = $(GENLOGDIR)/remote4.out
 
 # Create a separate tree and build on REMOTE4HOST
-remote4: $(PTII_SRC) $(GENLOGDIR)
+remote4: $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
 	@echo "# Now building on $(REMOTE4HOST) from dist tar file"
 	@echo "#"
@@ -800,12 +792,12 @@ remote4nuke:
 
 # untarthe remote dist.  Usually this is run on the remote machine
 remote4ptiidist: $(REMOTE4PTIIDIST)
-$(REMOTE4PTIIDIST): $(PTII_SRC)
+$(REMOTE4PTIIDIST): $(PTII_FULL)
 	@echo "#"
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
 	@echo `date`
-	(cd $(REMOTE4HOME); $(TAR) -xf $(GENDIR)/`basename $(PTII_SRC) .gz`)
+	(cd $(REMOTE4HOME); $(TAR) -xf $(GENDIR)/`basename $(PTII_FULL) .gz`)
 
 remote4configure:
 	@echo "#"
@@ -909,9 +901,11 @@ clean_installshield:
 	$(INSTALLSHIELD_PTINY)
 
 
-$(INSTALLSHIELD_APP): $(PTII_SRC)
+tst: $(INSTALLSHIELD_APP)
+$(INSTALLSHIELD_APP): $(PTII_FULL)
 	@echo "#"
 	@echo "# Building $@"
+	@echo "#"
 	(cd $(INSTALLSHIELD_SRC); \
 	$(TAR) -xf ../ptII$(VERSION).src.tar; \
 	 mv ptII$(VERSION) `basename $@`)
@@ -945,9 +939,14 @@ $(INSTALLSHIELD_PTINY):
 	 # we move it back
 	 -mkdir	$(INSTALLSHIELD_APP)/ptolemy/configs/
 	 -mv $@/ptolemy/configs/intro.htm $(INSTALLSHIELD_APP)/ptolemy/configs/
+	 # Move vergilConfiguration.xml into app
+	 -mv $@/ptolemy/configs/vergilConfiguration.xml \
+		$(INSTALLSHIELD_APP)/ptolemy/configs/
 	 # We then rename introPtiny.htm so as to get doc/demoPtiny.htm
 	 # instead of doc/demo.htm
 	 -mv $@/ptolemy/configs/introPtiny.htm $@/ptolemy/configs/intro.htm 
+	 # Rename vergilConfigurationPtiny.xml so that we get the right 
+	 # directors
 	 -mv $@/ptolemy/configs/vergilConfigurationPtiny.xml \
 		$@/ptolemy/configs/vergilConfiguration.xml
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/vergil/vergil.jar $@/ptolemy/vergil
@@ -1094,3 +1093,5 @@ build_unixPtII: unixPtII.xml
 		-Dis.debug=12 \
 		com.installshield.isje.ISJE $< \
 		-build
+
+
