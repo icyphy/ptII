@@ -115,19 +115,26 @@ public class Link extends Attribute {
 	ComponentPort port;
 	ComponentRelation relation;
 	Vertex vertex;
+	CompositeEntity container = (CompositeEntity) getContainer();
 
         if(_head == null || _tail == null) return;
         if(_head instanceof ComponentPort && _tail instanceof ComponentPort) {
-            CompositeEntity container = (CompositeEntity) getContainer();
-            relation = 
+	    relation = 
                 container.newRelation(container.uniqueName("relation"));
-            port = (ComponentPort)_head;
+           
+	    port = (ComponentPort)_head;
             port.link(relation);
-            port = (ComponentPort)_tail;
+	    _checkReceivers(port);
+
+	    port = (ComponentPort)_tail;
             port.link(relation);
-            setRelation(relation);
+	    _checkReceivers(port);
+	    _checkSchedule(container);
+	    
+	    setRelation(relation);
             return;
         }
+
 	if(_tail instanceof ComponentPort && _head instanceof Vertex) {
 	    vertex = (Vertex)_head;
 	    port = (ComponentPort)_tail;
@@ -143,6 +150,8 @@ public class Link extends Attribute {
 	}
         setRelation(relation);
         port.link(relation);
+	_checkReceivers(port);
+	_checkSchedule(container);
     }
 
     public void unlink() throws IllegalActionException,
@@ -150,15 +159,20 @@ public class Link extends Attribute {
 	ComponentPort port;
 	Vertex vertex;
 	ComponentRelation relation;
+	CompositeEntity container = (CompositeEntity) getContainer();
 
 	if(_head == null || _tail == null) return;
         if(_head instanceof ComponentPort && _tail instanceof ComponentPort) {
             relation = (ComponentRelation)getRelation();
             port = (ComponentPort)_head;
             port.unlink(relation);
-            port = (ComponentPort)_tail;
-            port.unlink(relation);
-            // blow the relation away.
+	    _checkReceivers(port);
+	    
+	    port = (ComponentPort)_tail;
+	    port.unlink(relation);
+	    _checkReceivers(port);
+	    
+	    // blow the relation away.
             relation.setContainer(null);
 	    setRelation(null);
             return;
@@ -178,11 +192,31 @@ public class Link extends Attribute {
 	}
 	port.unlink(relation);
 	setRelation(null);
+	_checkReceivers(port);
+	_checkSchedule(container);
     }
 
     public void exportMoML(Writer output, int depth) 
 	throws IOException {
 	return;
+    }
+
+    public void _checkSchedule(CompositeEntity container) {
+	if (container instanceof Actor) {
+	    Director director = ((Actor)container).getDirector();
+	    if (director != null) {
+		director.invalidateSchedule();
+		director.invalidateResolvedTypes();
+	    }
+	}
+    }
+
+    public void _checkReceivers(Port port) throws IllegalActionException {
+	if (port instanceof IOPort) {
+	    IOPort ioPort = (IOPort) port;
+	    if(ioPort.isInput())
+		ioPort.createReceivers();
+	}
     }
 
     private Object _head; 

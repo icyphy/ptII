@@ -2,9 +2,11 @@
 package ptolemy.vergil.graph;
 
 import ptolemy.kernel.util.*;
+import ptolemy.kernel.event.*;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.actor.event.*;
 import ptolemy.moml.*;
 import diva.graph.*;
 import diva.graph.toolbox.*;
@@ -732,12 +734,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * graph listeners with a NODE_REMOVED event.
      */
     public void removeNode(ComponentPort port) {
-	try {
-	    port.unlinkAll();
-	    port.setContainer(null);
-	} catch (Exception ex) {
-            throw new GraphException(ex);
-	}
+	_doChangeRequest(new RemovePort(port, port));
     }
 	
     /**
@@ -745,32 +742,19 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * graph listeners with a NODE_REMOVED event.
      */
     public void removeNode(Icon icon) {
-	ComponentEntity entity = (ComponentEntity)icon.getContainer();
-	try {
-	    Iterator ports = entity.portList().iterator();
-	    while(ports.hasNext()) {
-		Port port = (Port) ports.next();
-		port.unlinkAll();
-	    }
-	    entity.setContainer(null);
-	} catch (Exception ex) {
-	    throw new GraphException(ex);
-	}
+	final ComponentEntity entity = (ComponentEntity)icon.getContainer();
+	_doChangeRequest(new RemoveActor(icon, entity));
+
     }  
 
     /**
      * Delete a node from its parent graph and notify
      * graph listeners with a NODE_REMOVED event.
      */
-    public void removeNode(Vertex vertex) {
-	ComponentRelation relation =
+    public void removeNode(final Vertex vertex) {
+	final ComponentRelation relation =
 	    (ComponentRelation)vertex.getContainer();
-	try {
-	    relation.unlinkAll();
-	    relation.setContainer(null);
-	} catch (Exception ex) {
-	    throw new GraphException(ex);
-	}
+	_doChangeRequest(new RemoveRelation(vertex, relation));
     }
 
     /**
@@ -793,20 +777,26 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * Connect an edge to the given head node and notify listeners
      * with an EDGE_HEAD_CHANGED event.
      */
-    public void setEdgeHead(Link link, Object head) {
-        try {
-            link.unlink();
-        } catch (Exception ex) {
-            throw new GraphException(ex);
-        }
-        
-        link.setHead(head);
-        try {
-            link.link();
-        } catch (Exception ex) {
-            throw new GraphException(ex);
-        }
-        GraphEvent e = new GraphEvent(GraphEvent.EDGE_HEAD_CHANGED,
+    public void setEdgeHead(final Link link, final Object head) {
+	_doChangeRequest(new ChangeRequest(link, "move head of link" + link.getFullName()) {
+	    public void execute() throws ChangeFailedException {
+		System.out.println("executing change request");
+		try {
+		    link.unlink();
+		} catch (Exception ex) {
+		    throw new ChangeFailedException(this, ex.getMessage());
+		}
+		
+		link.setHead(head);
+		try {
+		    link.link();
+		} catch (Exception ex) {
+		    throw new ChangeFailedException(this, ex.getMessage());
+		}
+		System.out.println("finished change request");
+	    }
+	});
+	GraphEvent e = new GraphEvent(GraphEvent.EDGE_HEAD_CHANGED,
                 this, link, head);
         dispatchGraphEvent(e);
     }
@@ -831,20 +821,25 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * Connect an edge to the given tail node and notify listeners
      * with an EDGE_TAIL_CHANGED event.
      */
-    public void setEdgeTail(Link link, NamedObj tail) {
-        try {
-            link.unlink();
-        } catch (Exception ex) {
-            throw new GraphException(ex);
-        }
-	link.setTail(tail);
-        try {
-            link.link();
-        } catch (Exception ex) {
-            throw new GraphException(ex);
-        }
-        GraphEvent e = new GraphEvent(GraphEvent.EDGE_TAIL_CHANGED,
-                this, link, tail);
+    public void setEdgeTail(final Link link, final NamedObj tail) {
+	_doChangeRequest(new ChangeRequest(link, "move head of link" + link.getFullName()) {
+	    public void execute() throws ChangeFailedException {
+		System.out.println("executing change request");
+		try {
+		    link.unlink();
+		} catch (Exception ex) {
+		    throw new ChangeFailedException(this, ex.getMessage());
+		}
+		link.setTail(tail);
+		try {
+		    link.link();
+		} catch (Exception ex) {
+		    throw new ChangeFailedException(this, ex.getMessage());
+		}
+	    }
+	});
+	GraphEvent e = new GraphEvent(GraphEvent.EDGE_TAIL_CHANGED,
+				      this, link, tail);
         dispatchGraphEvent(e);
     }
 
@@ -885,6 +880,25 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	throw new InternalErrorException(
                 "PtolemyGraphModel does not support" + 
                 " setting semantic objects.");
+    }
+
+    // Perform the desired change request.  If a director can be found, then 
+    // use that director to queue the change request and wait until the 
+    // change completes.   If a director cannot be found, then execute the
+    // request immediately.
+    public void _doChangeRequest(ChangeRequest request) {
+	try {
+	    Manager manager = null;
+	    if(_root instanceof CompositeActor) 
+		manager = ((CompositeActor)_root).getManager();
+	    if(manager != null) 
+		manager.requestChange(request);
+	    else 
+		request.execute();
+	} 
+	catch (Exception ex) {
+	    throw new GraphException(ex);
+	}
     }
     
     /**
