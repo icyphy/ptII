@@ -606,6 +606,23 @@ test PtParser-12.8 {Test matrix construction.} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: The LUB of the types of the terms of a regularly-spaced-vector matrix construction is not supported: complex}}
 
+# Test matrix construction, using regularly spaced vector as row.
+test PtParser-12.9 {Test matrix construction.} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p1 generateParseTree "transpose(\[1.0 : 1.0 : 3;0:1:2\])" ]
+    catch {[$root1 evaluateParseTree] toString} msg
+
+    list $msg
+} {{[1.0, 0.0; 2.0, 1.0; 3.0, 2.0]}}
+
+test PtParser-12.10 {Test matrix operations.} {
+    set p1 [java::new ptolemy.data.expr.PtParser]
+    set root1 [ $p1 generateParseTree "(\[0:1:2\] * gaussian(1.0,1.0,3,3).one() * transpose(\[0:1:2\])).getElementAt(0,0)" ]
+    catch {[$root1 evaluateParseTree] toString} msg
+
+    list $msg
+} {5.0}
+
 ######################################################################
 ####
 # Test array reference.
