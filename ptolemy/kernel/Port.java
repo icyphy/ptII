@@ -182,16 +182,10 @@ public class Port extends NamedObj {
     }
 
     /** Get the container entity.
-     *  This method is read-synchronized on the workspace.
      *  @return An instance of Entity.
      */
     public Nameable getContainer() {
-        try {
-            workspace().getReadAccess();
-            return _container;
-        } finally {
-            workspace().doneReading();
-        }
+        return _container;
     }
 
     /** Return true if the given Relation is linked to this port.
