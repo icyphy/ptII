@@ -230,6 +230,28 @@ xmlns:xalan="http://xml.apache.org/xslt" version="1.0">
 	<xsl:attribute name="name"><xsl:value-of select="$name"/></xsl:attribute>
 	<xsl:attribute name="class"><xsl:value-of select="$class"/></xsl:attribute>
 
+    <xsl:choose>
+        <xsl:when test="$type='CT'"><xsl:call-template name="CTDirector"/></xsl:when>
+        <xsl:when test="$type='CTEmbedded'"><xsl:call-template name="CTEmbeddedDirector"/></xsl:when>
+        <xsl:when test="$type='Modal'"><xsl:call-template name="ModalDirector"/></xsl:when>
+    </xsl:choose>
+</xsl:template>
+
+<!-- ==========================================================
+     Directors
+     Different directors for different domains.
+     ========================================================== -->
+
+<!-- CT MixedDirector -->
+<xsl:template name="CTDirector">
+    <xsl:element name="property">
+        <!-- attributes of entity -->
+        <xsl:attribute name="name">CT Director</xsl:attribute>
+        <xsl:attribute name="class">ptolemy.domains.ct.kernel.CTMixedSignalDirector</xsl:attribute>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="200"></property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1"></property>
+    </xsl:element>
+
     <!-- Help on how to use the model -->
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 70.0">
@@ -258,27 +280,6 @@ For more help, choose Help from the upper menu bar.</text>
         </property>
     </property>
 
-    <xsl:choose>
-        <xsl:when test="$type='CT'"><xsl:call-template name="CTDirector"/></xsl:when>
-        <xsl:when test="$type='CTEmbedded'"><xsl:call-template name="CTEmbeddedDirector"/></xsl:when>
-        <xsl:when test="$type='Modal'"><xsl:call-template name="ModalDirector"/></xsl:when>
-    </xsl:choose>
-</xsl:template>
-
-<!-- ==========================================================
-     Directors
-     Different directors for different domains.
-     ========================================================== -->
-
-<!-- CT MixedDirector -->
-<xsl:template name="CTDirector">
-    <xsl:element name="property">
-        <!-- attributes of entity -->
-        <xsl:attribute name="name">CT Director</xsl:attribute>
-        <xsl:attribute name="class">ptolemy.domains.ct.kernel.CTMixedSignalDirector</xsl:attribute>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="200"></property>
-        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.1"></property>
-    </xsl:element>
 </xsl:template>
 
 <!-- CT EmbeddedDirector -->
