@@ -159,7 +159,6 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
 
             System.out.println("consturct request change");
 
-            //NamedObj parent = MoMLChangeRequest.getDeferredToParent();
             ChangeRequest request = new MoMLChangeRequest(
                     simpleApplication,            // originator
                     simpleApplication.toplevel,          // context
