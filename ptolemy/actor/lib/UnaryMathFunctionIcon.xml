@@ -19,7 +19,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
     </property>
-    <property name="ParameterExpression" class="ptolemy.vergil.kernel.attributes.AttributeExpressionAttribute">
+    <property name="ParameterExpression" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="function">
         </property>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="6">
