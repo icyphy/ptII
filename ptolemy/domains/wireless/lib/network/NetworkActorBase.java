@@ -34,9 +34,7 @@ import java.util.Iterator;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -124,27 +122,6 @@ public class NetworkActorBase extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    /** Check whether this has a <i>id<i> attribute. If yes, return
-     *  the value of it; if no, return the default value 0.
-     *  @return return the value of the <i>id<i> attribute of 0 if no
-     *  such an attribute.
-     *
-     * FIXME: why use 0 as the default id? some node may use 0 as its id...
-     * FIXME: when this method is used?
-     */
-    protected int getID() {
-        int id = 0;
-        try {
-            Attribute idAttribute = getAttribute("id");
-            if (idAttribute instanceof Variable) {
-                Variable idVariable = (Variable)idAttribute;
-                id = ((IntToken)(idVariable.getToken())).intValue();
-            }
-        } catch (IllegalActionException ex) {
-            // ignore, use default id 0
-        }
-        return id;
-    }
 
     /** Construct a timer object with the specified <i>kink<i> and
      *  <i>expirationTime<i> and add the timer to the timers set.
@@ -155,7 +132,6 @@ public class NetworkActorBase extends TypedAtomicActor {
      */
     protected Timer setTimer(int kind, double expirationTime)
             throws IllegalActionException {
-
         Timer timer=new Timer();
         timer.kind=kind;
         timer.expirationTime=expirationTime;
@@ -204,7 +180,7 @@ public class NetworkActorBase extends TypedAtomicActor {
                     return timer.kind;
                 }
         }
-        return -1;
+        return UNKNOWN;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -215,9 +191,7 @@ public class NetworkActorBase extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     protected class Timer {
-
         public int kind;
         public double expirationTime;
     }
-
 }

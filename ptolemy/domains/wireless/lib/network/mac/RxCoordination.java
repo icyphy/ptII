@@ -172,7 +172,6 @@ public class RxCoordination extends MACActorBase {
                             int Type=((IntToken)pdu.get("Type")).intValue();
                             int Subtype=((IntToken)pdu.get("Subtype")).intValue();
                             int durId=((IntToken)pdu.get("durId")).intValue();
-                            int Addr2=((IntToken)pdu.get("Addr2")).intValue();
                             _rate=((IntToken)msg.get("rxRate")).intValue();
 
                             switch(Type)
@@ -206,12 +205,15 @@ public class RxCoordination extends MACActorBase {
                                             if (_tNavEnd != null && _tNavEnd instanceof Variable) {
                                                 Token token = ((Variable) _tNavEnd).getToken();
                                                 navEnd = ((DoubleToken) token).doubleValue();
-                                            } //FIXME: assume it is instanceof variable.                } 
+                                            } //FIXME: assume it is instanceof variable.
+                                            // has problem with navEnd, set it to 0 now
+                                            navEnd=0.0;
                                             if (navEnd <= currentTime)
                                                 {
                                                     // generate Cts
+                                                     int Addr2=((IntToken)pdu.get("Addr2")).intValue();
                                                     _rspdu=_createPacket(Cts,durId-_dRsp,Addr2);
-                                                    setTimer(SifsTimeout, currentTime + endRx+_dSifsDly*1e-6);
+                                                    setTimer(SifsTimeout, endRx+_dSifsDly*1e-6);
                                                     _currentState=Wait_Sifs;
                                                 }
                                             break;

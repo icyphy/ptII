@@ -186,7 +186,9 @@ public class TxCoordination extends MACActorBase {
                     backoff = ((BooleanToken) token).booleanValue();
                 } //FIXME: assume it is instanceof variable.     
                 if (isNetData && !backoff)
+                    {
                     _handleData();
+                    }
                 else if (BkDone.hasToken(0))
                 {
                      BkDone.get(0);
@@ -227,8 +229,9 @@ public class TxCoordination extends MACActorBase {
                 if (kind==Timeout)
                     {
                         if (_ccw!=_aCWmax)
+                           {
                             _ccw=2*_ccw+1;
-
+                           }
                         // backoff before retry
                         _backoff(_ccw,-1);
 
@@ -244,7 +247,9 @@ public class TxCoordination extends MACActorBase {
                             }
 
                         else
+                            {
                             _cont=true;
+                            }
                         _currentState=TxC_Backoff;
                     }
                 else if (GotAck.hasToken(0))
@@ -255,7 +260,8 @@ public class TxCoordination extends MACActorBase {
                                 cancelTimer(_Trsp);
                                 double endRx=((DoubleToken)GotCtsMsg.get("endRx")).doubleValue();
                                 _ssrc=0;
-                                setTimer(SifsTimeout, currentTime + endRx+_dSifsDly*1e-6);
+
+                                setTimer(SifsTimeout, endRx+_dSifsDly*1e-6);
                                 int durId=_aSifsTime+_aPreambleLength+_aPlcpHeaderLength+_sAckCtsLng/_mBrate;
                                 _setDurIdField(_tpdu,durId);
                                 _currentState=Wait_Cts_Sifs;
@@ -265,7 +271,9 @@ public class TxCoordination extends MACActorBase {
 
             case Wait_Cts_Sifs:
                 if (kind==SifsTimeout)
+                    {
                     _sendTxRequest();
+                    }
                 break;
 
             case Wait_Mpdu_Backoff:
@@ -313,7 +321,9 @@ public class TxCoordination extends MACActorBase {
                 if (kind==Timeout)
                     {
                         if (_ccw!=_aCWmax)
+                           {
                             _ccw=2*_ccw+1;
+                           }
                         // backoff before retry
                         _backoff(_ccw,-1);
                         _ssrc++;
@@ -327,7 +337,9 @@ public class TxCoordination extends MACActorBase {
                                 _cont=false;
                             }
                         else
+                            {
                             _cont=true;
+                            }
                         _currentState=TxC_Backoff;
                     }
                 else if (GotAck.hasToken(0))
@@ -354,7 +366,9 @@ public class TxCoordination extends MACActorBase {
                             _sendFrag();
                         }
                     else
+                        {
                         _checkQueue();
+                        }
                 break;
             }
     }
@@ -515,8 +529,8 @@ public class TxCoordination extends MACActorBase {
     private void _sendTxRequest() throws IllegalActionException {
         Token[] TxRequestMsgValues={
             new IntToken(TxRequest),
-            new IntToken(_mBrate*(int)1e6),
-            _tpdu};
+            _tpdu, 
+            new IntToken(_mBrate*(int)1e6)};
 
         RecordToken copyTpdu=new RecordToken(TxRequestMsgFields,TxRequestMsgValues);
         TXTXRequest.send(0, copyTpdu);
@@ -531,9 +545,13 @@ public class TxCoordination extends MACActorBase {
         int retryBit=((IntToken)_tpdu.get("retryBit")).intValue();
         int Addr1=((IntToken)_tpdu.get("Addr1")).intValue();
         if (length > _dotllRTSThreshold && retryBit==0 && Addr1!=mac_broadcast_addr)
+           {
             _currentState=Wait_Rts_Backoff;
+           }
         else
+           {
             _currentState=Wait_Mpdu_Backoff;
+           }
     }
 
     private void _handleData() throws IllegalActionException {
@@ -578,9 +596,13 @@ public class TxCoordination extends MACActorBase {
 
     private void _checkQueue() throws IllegalActionException {
         if (_txQueue.size() > 0)
+           {
             _handleData();
+           }
         else
+           {
             _currentState=TxC_Idle;
+           }
     }
 
 

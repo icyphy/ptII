@@ -6,13 +6,13 @@
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 185.0">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {85, 32, 1132, 809}, maximized = false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {2, 49, 1022, 738}, maximized = false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[917, 691]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[807, 620]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{373.5, 252.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{407.1597222222222, 241.1780303030303}">
     </property>
     <property name="sAckCtsLng" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -167,7 +167,7 @@
         </property>
         <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="NORTH">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 135.0]">
         </property>
     </port>
     <port name="toNET" class="ptolemy.actor.TypedIOPort">
@@ -385,27 +385,29 @@
                 </property>
             </port>
         </entity>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="toProtocolControl" relation="relation8"/>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[345.0, 45.0]">
+            </vertex>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="toProtocolControl" relation="relation"/>
         <link port="toTransmission" relation="relation3"/>
         <link port="fromPHYLayer" relation="relation7"/>
         <link port="ChannelStatus" relation="relation2"/>
         <link port="FilterMPDU.fromValidateMpdu" relation="relation6"/>
         <link port="FilterMPDU.toChannelState" relation="relation4"/>
-        <link port="FilterMPDU.toProtocolControl" relation="relation8"/>
+        <link port="FilterMPDU.toProtocolControl" relation="relation"/>
         <link port="ChannelState.channelStatus" relation="relation2"/>
         <link port="ChannelState.fromFilterMpdu" relation="relation4"/>
         <link port="ChannelState.fromValidateMpdu" relation="relation5"/>
@@ -417,7 +419,7 @@
     <entity name="Transmission" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 355.0">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {232, 253, 880, 611}, maximized = false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {66, 1, 880, 611}, maximized = false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[665, 493]">
         </property>
@@ -582,19 +584,21 @@
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="{-500.0, -395.0}">
+            </vertex>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="TXTXRequest" relation="relation4"/>
         <link port="TXTXConfirm" relation="relation5"/>
@@ -604,7 +608,7 @@
         <link port="BkDone" relation="relation8"/>
         <link port="fromReception" relation="relation3"/>
         <link port="PHYLayerConfirm" relation="relation"/>
-        <link port="XmitPacket" relation="relation11"/>
+        <link port="XmitPacket" relation="relation9"/>
         <link port="DataPump.TXTXRequest" relation="relation4"/>
         <link port="DataPump.RXTXRequest" relation="relation6"/>
         <link port="DataPump.fromReception" relation="relation3"/>
@@ -612,7 +616,7 @@
         <link port="DataPump.TXTXConfirm" relation="relation5"/>
         <link port="DataPump.RXTXConfirm" relation="relation7"/>
         <link port="DataPump.toBackoff" relation="relation2"/>
-        <link port="DataPump.toPHYLayer" relation="relation11"/>
+        <link port="DataPump.toPHYLayer" relation="relation9"/>
         <link port="BackoffProcedure.fromDataPump" relation="relation2"/>
         <link port="BackoffProcedure.getBackoff" relation="relation10"/>
         <link port="BackoffProcedure.BKDone" relation="relation8"/>
@@ -626,7 +630,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="-90.0, -235.0">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={181, 137, 815, 518}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {157, 104, 815, 518}, maximized = false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -832,23 +836,23 @@
                 </property>
             </port>
         </entity>
+        <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {779, 556, 290, 227}, maximized = false}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 75.0]">
+            </property>
+        </entity>
+        <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {710, 544, 290, 227}, maximized = false}">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 135.0]">
+            </property>
+        </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -856,48 +860,62 @@
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="TXTXRequest" relation="relation3"/>
-        <link port="TXTXConfirm" relation="relation4"/>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="{230.0, 0.0}">
+            </vertex>
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[305.0, -90.0]">
+            </vertex>
+        </relation>
+        <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="[100.0, 35.0]">
+            </vertex>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="{-115.0, 100.0}">
+            </vertex>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="TXTXRequest" relation="relation4"/>
+        <link port="TXTXConfirm" relation="relation3"/>
         <link port="RXTXRequest" relation="relation5"/>
         <link port="RXTXConfirm" relation="relation6"/>
         <link port="getBackoff" relation="relation8"/>
         <link port="BkDone" relation="relation7"/>
         <link port="toPowerControl" relation="relation12"/>
         <link port="fromPowerControl" relation="relation"/>
-        <link port="PduRequest" relation="relation2"/>
+        <link port="PduRequest" relation="relation10"/>
         <link port="SinkRequest" relation="relation11"/>
-        <link port="fromReception" relation="relation10"/>
-        <link port="TXCoordinationSTA.PduRequest" relation="relation2"/>
-        <link port="TXCoordinationSTA.TXTXConfirm" relation="relation4"/>
+        <link port="fromReception" relation="relation13"/>
+        <link port="TXCoordinationSTA.PduRequest" relation="relation10"/>
+        <link port="TXCoordinationSTA.TXTXConfirm" relation="relation3"/>
         <link port="TXCoordinationSTA.BkDone" relation="relation7"/>
         <link port="TXCoordinationSTA.GotAck" relation="relation9"/>
         <link port="TXCoordinationSTA.fromPowerControl" relation="relation"/>
         <link port="TXCoordinationSTA.getBackoff" relation="relation8"/>
-        <link port="TXCoordinationSTA.TXTXRequest" relation="relation3"/>
-        <link port="RXCoordination.fromReception" relation="relation10"/>
+        <link port="TXCoordinationSTA.TXTXRequest" relation="relation4"/>
+        <link port="RXCoordination.fromReception" relation="relation13"/>
         <link port="RXCoordination.RXTXConfirm" relation="relation6"/>
         <link port="RXCoordination.SinkRequest" relation="relation11"/>
         <link port="RXCoordination.toPowerControl" relation="relation12"/>
         <link port="RXCoordination.GotAck" relation="relation9"/>
         <link port="RXCoordination.RXTXRequest" relation="relation5"/>
+        <link port="Display.input" relation="relation3"/>
+        <link port="Display2.input" relation="relation9"/>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -905,13 +923,25 @@
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{385.0, 315.0}">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[295.0, 230.0]">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="toPHY" relation="relation10"/>
     <link port="fromPHY" relation="relation9"/>
@@ -921,13 +951,13 @@
     <link port="PHYConfirm" relation="relation11"/>
     <link port="PowerControl.in" relation="relation3"/>
     <link port="PowerControl.out" relation="relation"/>
-    <link port="Reception.toProtocolControl" relation="relation7"/>
+    <link port="Reception.toProtocolControl" relation="relation2"/>
     <link port="Reception.toTransmission" relation="relation5"/>
     <link port="Reception.fromPHYLayer" relation="relation9"/>
     <link port="Reception.ChannelStatus" relation="relation12"/>
     <link port="Transmission.TXTXRequest" relation="relation4"/>
     <link port="Transmission.TXTXConfirm" relation="relation8"/>
-    <link port="Transmission.RXTXRequest" relation="relation2"/>
+    <link port="Transmission.RXTXRequest" relation="relation17"/>
     <link port="Transmission.RXTXConfirm" relation="relation15"/>
     <link port="Transmission.getBackoff" relation="relation6"/>
     <link port="Transmission.BkDone" relation="relation16"/>
@@ -936,7 +966,7 @@
     <link port="Transmission.XmitPacket" relation="relation10"/>
     <link port="ProtocolControlSTA.TXTXRequest" relation="relation4"/>
     <link port="ProtocolControlSTA.TXTXConfirm" relation="relation8"/>
-    <link port="ProtocolControlSTA.RXTXRequest" relation="relation2"/>
+    <link port="ProtocolControlSTA.RXTXRequest" relation="relation17"/>
     <link port="ProtocolControlSTA.RXTXConfirm" relation="relation15"/>
     <link port="ProtocolControlSTA.getBackoff" relation="relation6"/>
     <link port="ProtocolControlSTA.BkDone" relation="relation16"/>
@@ -944,5 +974,5 @@
     <link port="ProtocolControlSTA.fromPowerControl" relation="relation"/>
     <link port="ProtocolControlSTA.PduRequest" relation="relation13"/>
     <link port="ProtocolControlSTA.SinkRequest" relation="relation14"/>
-    <link port="ProtocolControlSTA.fromReception" relation="relation7"/>
+    <link port="ProtocolControlSTA.fromReception" relation="relation2"/>
 </class>

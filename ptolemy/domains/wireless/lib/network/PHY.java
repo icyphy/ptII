@@ -27,7 +27,9 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
 
+
 package ptolemy.domains.wireless.lib.network;
+import ptolemy.actor.IOPort;
 import java.util.HashSet;
 import java.util.Iterator;
 import ptolemy.data.expr.Parameter;
@@ -102,7 +104,7 @@ public class PHY extends NetworkActorBase {
         // Configure parameters.
         SNRThresholdInDB = new Parameter(this, "SNRThresholdInDB");
         SNRThresholdInDB.setTypeEquals(BaseType.DOUBLE);
-        SNRThresholdInDB.setExpression("Infinity");
+        SNRThresholdInDB.setExpression("-20");
 
         sensitivity = new Parameter(this, "sensitivity");
         sensitivity.setTypeEquals(BaseType.DOUBLE);
@@ -209,21 +211,33 @@ public class PHY extends NetworkActorBase {
              channelStatus.send(0,ChannelStatusMsg);
           }
 
-        double power, duration;
+        double power=0, duration=-1;
         RecordToken msg;
 
         switch(_currentState)
             {
-            case Idle:
+            case PHY_Idle:
                 if (fromChannel.hasToken(0))
                     {   
                         _data = (RecordToken)fromChannel.get(0);
-                        RecordToken properties=(RecordToken)((WirelessIOPort)fromChannel).getProperties(0);
-                        power=((DoubleToken)properties.get("power")).doubleValue();
-                        duration=((DoubleToken)properties.get("duration")).doubleValue();
+
+                        Iterator connectedPorts = fromChannel.sourcePortList().iterator();
+                        while (connectedPorts.hasNext()) {
+                           IOPort port = (IOPort)connectedPorts.next();
+                           if (port.isInput() && port instanceof WirelessIOPort) {
+                              // Found the port.
+                              RecordToken properties=(RecordToken)((WirelessIOPort)port).getProperties(0);
+                              power=((DoubleToken)properties.get("power")).doubleValue();
+                              duration=((DoubleToken)properties.get("duration")).doubleValue();
+                              break;
+                            }
+                         }
+           
                         // let us be a little picky about receiving a message
-                        if (power > _sensitivity && ( (_interference == 0.0) || 
+                        /*if (power > _sensitivity && ( (_interference == 0.0) || 
                               (power / _interference > _SNRThresholdInDB) )  )
+*/
+                        if (power > 0) 
                           { 
                             // The PHY will receive this message
                             setTimer2(RxDone, currentTime+duration, power); 
@@ -260,7 +274,7 @@ public class PHY extends NetworkActorBase {
                     {
                         msg= (RecordToken)fromMAC.get(0);
                         if (((IntToken)msg.get("kind")).intValue() == TxStart)
-                             _startTransmission(msg);
+                             {_startTransmission(msg);}
                     }
 
                 break;       
@@ -279,10 +293,10 @@ public class PHY extends NetworkActorBase {
                         Token[] RxEndValues = {
                             new IntToken(RxEnd),
                             new IntToken(_rxStatus)};
-                        RecordToken RxEndMsg =new RecordToken(RxStartMsgFields, RxEndValues);
+                        RecordToken RxEndMsg =new RecordToken(RxEndMsgFields, RxEndValues);
                         toMAC.send(0, RxEndMsg);
 
-                        _currentState=Idle;
+                        _currentState=PHY_Idle;
                     }
                 else if (fromChannel.hasToken(0))
                     {   // This message is an interference
@@ -290,7 +304,7 @@ public class PHY extends NetworkActorBase {
 
                         // check collision
                         if (_receivedPower / _interference <= _SNRThresholdInDB) 
-                           _rxStatus=Error;
+                           {_rxStatus=Error;}
                     }              
                 else if (fromMAC.hasToken(0))
                     {
@@ -317,7 +331,7 @@ public class PHY extends NetworkActorBase {
                                                new IntToken(TxEnd)});
                         PHYConfirm.send(0, TxEndMsg);
 
-                        _currentState=Idle;
+                        _currentState=PHY_Idle;
                     }
                 else if (fromChannel.hasToken(0))
                     {   // This message is an interference
@@ -336,7 +350,7 @@ public class PHY extends NetworkActorBase {
                                  toChannel.send(0, ChMsg);
 
                                  // update the parameter: duration 
-                                 _setAttribute(_duration, new DoubleToken(_txDuration));
+                                 //_setAttribute(_duration, new DoubleToken(_txDuration));
                                  setTimer2(TxDone, currentTime+_txDuration, 0.0);
                              }  
                     }
@@ -350,7 +364,7 @@ public class PHY extends NetworkActorBase {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _currentState = Idle;
+        _currentState = PHY_Idle;
         _interference = 0.0;
         _numBusyTimers =0;
     }
@@ -392,17 +406,9 @@ public class PHY extends NetworkActorBase {
         } else if (attribute == SNRThresholdInDB) {
             double SNRThresholdInDBValue = ((DoubleToken)
                     SNRThresholdInDB.getToken()).doubleValue();
-            if (SNRThresholdInDBValue <= 0.0) {
-                throw new IllegalActionException(this,
-                        "SNRThresholdInDB is required to be positive. "
-                        + "Attempt to set it to: "
-                        + SNRThresholdInDBValue);
-            } else {
-                // Convert to linear scale.
-                _SNRThresholdInDB =
+            // Convert to linear scale.
+            _SNRThresholdInDB =
                     Math.pow(10, SNRThresholdInDBValue/10);
-            }
-
         } else if (attribute == sensitivity) {
             _sensitivity = ((DoubleToken)
                     sensitivity.getToken()).doubleValue();
@@ -473,12 +479,12 @@ public class PHY extends NetworkActorBase {
                       {
                          _interference = _interference - timer.power;
                          // Quantization errors may make this negative. Do not allow.
-                         if (_interference< 0.0) _interference= 0.0;
+                         if (_interference< 0.0) {_interference= 0.0;}
                       }
 
                     if ( ((timer.kind == InterferenceDone)||(
                         timer.kind == RxDone)) && timer.power > _sensitivity )
-                         _numBusyTimers--;
+                         {_numBusyTimers--;}
 
                     // remove it from the set no matter that
                     // it will be processed or ignored
@@ -489,8 +495,8 @@ public class PHY extends NetworkActorBase {
         return -1;
     }
 
-    // A convenient method for the MAC actors to set an
-    // attibute of the MAC composite.
+    // A convenient method for the PHY to set an
+    // attibute of its container.
     protected void _setAttribute(Attribute attribute, Token token)
             throws IllegalActionException {
         if (attribute != null) {
@@ -508,19 +514,32 @@ public class PHY extends NetworkActorBase {
 
     private void _handleInterference() throws IllegalActionException 
     {
+       double power=0.5,duration=-1;;
             fromChannel.get(0); // consume the token
-            RecordToken properties=(RecordToken)((WirelessIOPort)fromChannel).getProperties(0);
-            double power=((DoubleToken)properties.get("power")).doubleValue();
-            double duration=((DoubleToken)properties.get("duration")).doubleValue();
+        Iterator connectedPorts = fromChannel.sourcePortList().iterator();
+        while (connectedPorts.hasNext()) {
+            IOPort port = (IOPort)connectedPorts.next();
+            if (port.isInput() && port instanceof WirelessIOPort) {
+                // Found the port.
+                RecordToken properties=(RecordToken)((WirelessIOPort)port).getProperties(0);
+               power=((DoubleToken)properties.get("power")).doubleValue();
+               duration=((DoubleToken)properties.get("duration")).doubleValue();
+               break;
+             }
+         }
+           
             double currentTime=getDirector().getCurrentTime();
             // add every conversation in the network to this giant table
             setTimer2(InterferenceDone, currentTime+duration, power);
+
             // update interference 
             _interference= _interference+power;
 
             // update channel status
             if (power > _sensitivity)
+              {
                 _numBusyTimers++;
+              }
             if (_numBusyTimers==1)
               {
                 Token [] value={new IntToken(Busy)};            
@@ -596,11 +615,11 @@ public class PHY extends NetworkActorBase {
     private int    _numBusyTimers;
 
     // define states in FSM
-    private static final int Idle=0;
+    private static final int PHY_Idle=0; // not use Idle as state name
     private static final int Receive=1;
     private static final int Transmit=2;
 
-    private int _currentState=Idle;
+    private int _currentState=PHY_Idle;
 
     // timer types
     private static final int RxDone=1;

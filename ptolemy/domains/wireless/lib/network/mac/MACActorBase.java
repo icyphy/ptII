@@ -39,6 +39,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// MACActorBase
@@ -111,11 +112,11 @@ public class MACActorBase extends NetworkActorBase {
 
         aRxRfDelay = new Parameter(this, "aRxRfDelay");
         aRxRfDelay.setTypeEquals(BaseType.INT);
-        aRxRfDelay.setExpression("1");
+        aRxRfDelay.setExpression("0");
 
         aRxPlcpDelay = new Parameter(this, "aRxPlcpDelay");
         aRxPlcpDelay.setTypeEquals(BaseType.INT);
-        aRxPlcpDelay.setExpression("1");
+        aRxPlcpDelay.setExpression("0");
 
         aCWmin = new Parameter(this, " aCWmin");
         aCWmin.setTypeEquals(BaseType.INT);
@@ -447,15 +448,19 @@ public class MACActorBase extends NetworkActorBase {
                "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", 
                "Addr4", "payload","Length"};
 
+    // use Addr1 for RA, so FilterMpdu does not need to check packet type
+    // before checking Addr1 or RA filed
     protected static final String[] AckPacket 
             = {"protocolVer", "Type", "Subtype", "toDs", "frDs", 
                "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
-               "orderBit", "FCS", "durId", "RA","Length"};
+               //"orderBit", "FCS", "durId", "RA","Length"};
+               "orderBit", "FCS", "durId", "Addr1","Length"};
 
     protected static final String[] RtsPacket 
             = {"protocolVer", "Type", "Subtype", "toDs", "frDs", 
-               "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
-               "orderBit", "FCS", "durId", "RA", "TA","Length"};
+               "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit", 
+          //     "orderBit", "FCS", "durId", "RA", "TA","Length"};
+               "orderBit", "FCS", "durId", "Addr1", "Addr2","Length"};
 
     protected static final String[] BackoffDoneMsgFields 
             = {"kind","cnt"};
@@ -505,7 +510,30 @@ public class MACActorBase extends NetworkActorBase {
     protected static final int  ControlCh      = 0;
     protected static final int  DataCh         = 1;
 
-    
+    /** Check whether this has a <i>id<i> attribute. If yes, return
+     *  the value of it; if no, return the default value -2.
+     *  @return return the value of the <i>id<i> attribute of -2 if no
+     *  such an attribute.
+     *
+     */
+    // currently only used by the FilterMpdu and TxCordination classes
+    protected int getID() {
+        int id = -2;
+        // get the id parameter of the node composite
+        // make some assumptions about the hierarchy here
+        NamedObj nodeComposite = getContainer().getContainer().getContainer();
+        try {
+            Attribute idAttribute = nodeComposite.getAttribute("id");
+            if (idAttribute instanceof Variable) {
+                Variable idVariable = (Variable)idAttribute;
+                id = ((IntToken)(idVariable.getToken())).intValue();
+            }
+        } catch (IllegalActionException ex) {
+            // ignore, use the default id 
+        }
+        return id;
+    }
+
     // A convenient method for the MAC actors to set an
     // attibute of the MAC composite.
     protected void _setAttribute(Attribute attribute, Token token)

@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    The code is based on a OMNET model created by Charlie Zhong.
 
    @author Xiaojun Liu
-   @version $Id$
+   @version FilterMpdu.java,v 1.15 2004/04/22 19:46:18 ellen_zh Exp
    @since Ptolemy II 4.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (pjb2e)
@@ -139,7 +139,7 @@ public class FilterMpdu extends MACActorBase {
                         });
                 // send RxIndicate message to the ProtocolControl block
                 toProtocolControl.send(0, msgout);
-                if (_debugging) _debug("FILTER: Sent RxIndicate");
+                if (_debugging) {_debug("FILTER: Sent RxIndicate");}
             } else if (intFieldValue(pdu, "Addr1") == getID()) {
                 boolean dup = false;
                 if (intFieldValue(pdu, "retryBit") == 1)
