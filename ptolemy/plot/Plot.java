@@ -253,7 +253,9 @@ public class Plot extends PlotBox {
         boolean connected = false;
         if (_connected) connected = true;
         // parse only if the super class does not recognize the line.
-        if (!super.parseLine(line)) {
+        if (super.parseLine(line)) {
+	    return true;
+	} else {
             int start = 0;
             if (line.startsWith("Marks:")) {
                 String style = (line.substring(6)).trim();
