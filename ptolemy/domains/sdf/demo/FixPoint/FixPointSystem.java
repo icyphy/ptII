@@ -126,13 +126,15 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
             _myplot.place( getContentPane() );
             _myplot.plot.setGrid(false);
             _myplot.plot.setTitle("Ramp Diagram");
-            _myplot.plot.setXRange( 0, 200 );
+            _myplot.plot.setXRange( -1, 3 );
             _myplot.plot.setWrap(true);
-            _myplot.plot.setYRange(-10, 10);
-            _myplot.plot.setLabel("FixPoint value");
-            _myplot.plot.setLabel("input value");
+            _myplot.plot.setYRange(-1, 3);
+            _myplot.plot.setYLabel("FixPoint value");
+            _myplot.plot.setXLabel("input value");
             _myplot.plot.setMarksStyle("dots");
             _myplot.plot.setSize(500, 300);
+	    _myplot.xInit.setToken(new DoubleToken( -1.1 ));
+	    _myplot.xUnit.setToken(new DoubleToken( 0.1 ));
 
             Relation r = 
 		_toplevel.connect( _ramp.output, _doubleToFix.input);
@@ -183,7 +185,6 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
     private SequencePlotter _myplot;
     private SequencePlotter _myplot1;
     private Ramp _ramp;
-    private Ramp _ramp1;
 
     // Flag to prevent spurious exception being thrown by _go() method.
     // If this flag is not true, the _go() method will not execute the model.
