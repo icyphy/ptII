@@ -51,8 +51,11 @@ PTCLASSALLJARS = \
 	ABP/ABP.jar \
 	Blending/Blending.jar \
 	ModalBSC/ModalBSC.jar \
-	MultipleRuns/MultipleRuns.jar \
 	StateTracker/StateTracker.jar
+
+
+# We are not shipping MultipleRuns because it leaves threads running.
+# MultipleRuns/MultipleRuns.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
