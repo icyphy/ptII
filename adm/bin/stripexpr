@@ -86,13 +86,24 @@ END {
 	    if (i > 0) {
 		printf(" ");
 	    }
-	    # Strip out the {} around the results
-	    printf("%s", substr(results[i], 2, length(results[i]) - 2))
+	    if (index(results[i], " ") == 0) {
+		printf("%s", substr(results[i], 2, length(results[i]) - 2))
+	    } else {
+		printf("%s", results[i])
+	    } 
+
 	}    
         printf("}\n\n")
 	resultCount = 0
     }     
-     ' $file
+     ' $file | sed -e 's/doubleIdentityMatrix/identityDouble/g' \
+    -e 's/complexIdentityMatrix/identityComplex/g' \
+    -e 's/intIdentityMatrix/identityInt/g' \
+    -e 's/longIdentityMatrix/identityLong/g' \
+    -e 's/\&amp;/\&/g' \
+    -e 's/\&gt;/>/g' \
+    -e 's/\&lt;/</g' \
+    -e 's/\([0-9]\)l/\1L/g'
 done
 
 

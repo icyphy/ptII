@@ -15,16 +15,20 @@ oldVersion=2.0.1
 newVersion=2.1devel
 
 diffOutput=/tmp/fixsince.diffOutput.$$
+diffOutput=/tmp/pt.diffs
 if [ ! -f $diffOutput ]; then
-    echo "Generating $newJavaFiles, this will take awhile
+    echo "Generating $newJavaFiles, this will take awhile"
     diff -r $PTII/adm/dists/ptII$oldVersion \
 	$PTII/adm/dists/ptII$newVersion > $diffOutput
+fi
 
 newJavaFiles=/tmp/fixsince.newJavaFiles.$$
 if [ ! -f $newJavaFiles ]; then
     egrep "^Only in ptII$newVersion" $diffOutput | 
         egrep '.java$' |
-        sed -e 's/Only in //' -e 's@: @/@' > $newJavaFiles 
+        sed -e 's/Only in //' -e 's@: @/@' |
+	grep -v DEThreadActor.java |
+	> $newJavaFiles 
 fi
 
 if [ ! -f $newJavaFiles ]; then
