@@ -48,92 +48,92 @@ A second order system simulation. For performance testing.
 @version $Id$
 */
 public class SquareWaveResponse {
-     public static void main(String[] args) {
+    public static void main(String[] args) {
 
-         String _breaksolver = new String();
-         String _solver = new String();
+        String _breaksolver = new String();
+        String _solver = new String();
 
-         if(args.length == 0) {
-             _breaksolver = new String(
-                     "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
-             _solver = new String(
-                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
-         }else if(args.length == 1) {
-             _solver = new String(
-                     "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
-             _breaksolver = "ptolemy.domains.ct.kernel.solver."+args[0];
-         }else if(args.length == 2) {
-             _solver = "ptolemy.domains.ct.kernel.solver." + args[1];
-             _breaksolver = "ptolemy.domains.ct.kernel.solver."+args[0];
-         } else {
-             System.out.println(
-                     "Usage: WaveBERK23 [breakpointODESolver] [ODESolver]");
-             return;
-         }
+        if(args.length == 0) {
+            _breaksolver = new String(
+                    "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
+            _solver = new String(
+                    "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
+        }else if(args.length == 1) {
+            _solver = new String(
+                    "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
+            _breaksolver = "ptolemy.domains.ct.kernel.solver."+args[0];
+        }else if(args.length == 2) {
+            _solver = "ptolemy.domains.ct.kernel.solver." + args[1];
+            _breaksolver = "ptolemy.domains.ct.kernel.solver."+args[0];
+        } else {
+            System.out.println(
+                    "Usage: WaveBERK23 [breakpointODESolver] [ODESolver]");
+            return;
+        }
              
-         try {
-             TypedCompositeActor sys = new TypedCompositeActor();
-             sys.setName( "system");
-             Manager man = new Manager();
-             sys.setManager(man);
+        try {
+            TypedCompositeActor sys = new TypedCompositeActor();
+            sys.setName( "system");
+            Manager man = new Manager();
+            sys.setManager(man);
 
-             CTMultiSolverDirector dir = new CTMultiSolverDirector(
-                     sys, "DIR");
-             //dir.addDebugListener(new StreamListener());
-             CTSquareWave sqwv = new CTSquareWave(sys, "SQWV");
-             AddSubtract add1 = new AddSubtract( sys, "Add1");
-             CTIntegrator intgl1 = new CTIntegrator(sys, "Integrator1");
-             CTIntegrator intgl2 = new CTIntegrator(sys, "Integrator2");
-             Scale gain1 = new Scale( sys, "Gain1");
-             Scale gain2 = new Scale( sys, "Gain2");
-             Scale gain3 = new Scale( sys, "Gain3");
-             TimedPlotter plot = new TimedPlotter( sys, "Sink");
+            CTMultiSolverDirector dir = new CTMultiSolverDirector(
+                    sys, "DIR");
+            //dir.addDebugListener(new StreamListener());
+            CTSquareWave sqwv = new CTSquareWave(sys, "SQWV");
+            AddSubtract add1 = new AddSubtract( sys, "Add1");
+            CTIntegrator intgl1 = new CTIntegrator(sys, "Integrator1");
+            CTIntegrator intgl2 = new CTIntegrator(sys, "Integrator2");
+            Scale gain1 = new Scale( sys, "Gain1");
+            Scale gain2 = new Scale( sys, "Gain2");
+            Scale gain3 = new Scale( sys, "Gain3");
+            TimedPlotter plot = new TimedPlotter( sys, "Sink");
 
-             IORelation r1 = (IORelation)
-                 sys.connect(sqwv.output, gain1.input, "R1");
-             IORelation r2 = (IORelation)
-                 sys.connect(gain1.output, add1.plus, "R2");
-             IORelation r3 = (IORelation)
-                 sys.connect(add1.output, intgl1.input, "R3");
-             IORelation r4 = (IORelation)
-                 sys.connect(intgl1.output, intgl2.input, "R4");
-             IORelation r5 = (IORelation)
-                 sys.connect(intgl2.output, plot.input, "R5");
-             gain2.input.link(r4);
-             gain3.input.link(r5);
-             IORelation r6 = (IORelation)
-                 sys.connect(gain2.output, add1.plus, "R6");
-             IORelation r7 = (IORelation)
-                 sys.connect(gain3.output, add1.plus, "R7");
-             plot.input.link(r1);
+            IORelation r1 = (IORelation)
+                sys.connect(sqwv.output, gain1.input, "R1");
+            IORelation r2 = (IORelation)
+                sys.connect(gain1.output, add1.plus, "R2");
+            IORelation r3 = (IORelation)
+                sys.connect(add1.output, intgl1.input, "R3");
+            IORelation r4 = (IORelation)
+                sys.connect(intgl1.output, intgl2.input, "R4");
+            IORelation r5 = (IORelation)
+                sys.connect(intgl2.output, plot.input, "R5");
+            gain2.input.link(r4);
+            gain3.input.link(r5);
+            IORelation r6 = (IORelation)
+                sys.connect(gain2.output, add1.plus, "R6");
+            IORelation r7 = (IORelation)
+                sys.connect(gain3.output, add1.plus, "R7");
+            plot.input.link(r1);
 
-             dir.StartTime.setToken(new DoubleToken(0.0));
+            dir.StartTime.setToken(new DoubleToken(0.0));
 
-             dir.InitStepSize.setToken(new DoubleToken(0.000001));
+            dir.InitStepSize.setToken(new DoubleToken(0.000001));
 
-             dir.MinStepSize.setToken(new DoubleToken(1e-6));
+            dir.MinStepSize.setToken(new DoubleToken(1e-6));
 
-             dir.StopTime.setToken(new DoubleToken(4.0));
+            dir.StopTime.setToken(new DoubleToken(4.0));
 
-             dir.BreakpointODESolver.setToken(new StringToken(_breaksolver ));
+            dir.BreakpointODESolver.setToken(new StringToken(_breaksolver ));
 
-             dir.ODESolver.setToken(new StringToken(_solver));
+            dir.ODESolver.setToken(new StringToken(_solver));
 
-             Parameter freq = (Parameter)sqwv.getAttribute("Frequency");
-             sqwv.Frequency.setToken(new DoubleToken(0.25));
+            Parameter freq = (Parameter)sqwv.getAttribute("Frequency");
+            sqwv.Frequency.setToken(new DoubleToken(0.25));
 
-             gain1.gain.setToken(new DoubleToken(500.0));
+            gain1.gain.setToken(new DoubleToken(500.0));
 
-             gain2.gain.setToken(new DoubleToken(-25.0));
+            gain2.gain.setToken(new DoubleToken(-25.0));
 
-             gain3.gain.setToken(new DoubleToken(-2500.0));
+            gain3.gain.setToken(new DoubleToken(-2500.0));
 
-             man.startRun();
-         } catch (NameDuplicationException ex) {
-             throw new InternalErrorException("NameDuplication");
-         } catch (IllegalActionException ex) {
-             throw new InternalErrorException("IllegalAction:"+
-             ex.getMessage());
-         }
-     }
- }
+            man.startRun();
+        } catch (NameDuplicationException ex) {
+            throw new InternalErrorException("NameDuplication");
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException("IllegalAction:"+
+                    ex.getMessage());
+        }
+    }
+}

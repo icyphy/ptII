@@ -94,7 +94,7 @@ public class Server extends CSPActor {
      */
     public Server(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         this(cont, name, 1);
+        this(cont, name, 1);
     }
 
     /** Construct a Server in the specified container with the specified
@@ -114,7 +114,7 @@ public class Server extends CSPActor {
      *   an entity already in the container.
      */
     public Server(TypedCompositeActor cont, String name, double rate)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         _rate = new Parameter(this, "serviceRate", (new DoubleToken(rate)) );
         _input = new TypedIOPort(this, "input", true, false);
@@ -147,7 +147,7 @@ public class Server extends CSPActor {
                 interval = (int)(interval*1000);
                 delay(interval/1000);
                 System.out.println(getName() + " serviced customer: " +
-                      t.toString());
+                        t.toString());
             }
         } catch (NoTokenException ex) {
             throw new IllegalActionException(getName() + ": invalid get.");
