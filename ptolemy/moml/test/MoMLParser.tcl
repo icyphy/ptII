@@ -3046,11 +3046,9 @@ test MoMLParser-20.4 {Test deleting an entity from the base class} {
         <deleteEntity name="B"/>
     }]
     $toplevel requestChange $change
-    equals [[java::cast ptolemy.kernel.CompositeEntity \
-            [$toplevel getEntity {DerivedClass}]] getEntity {B}] \
-            [java::null]
-} {
-}
+    [java::cast ptolemy.kernel.CompositeEntity \
+            [$toplevel getEntity {DerivedClass}]] getEntity {B}
+} {java0x0}
 
 ######################################################################
 ####
@@ -3115,3 +3113,111 @@ test MoMLParser-20.6 {test relative class name for inner class} {
     </class>
 </entity>
 }
+
+######################################################################
+#### Test inner classes
+#
+
+set baseModel {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <class name="BaseClass" extends="ptolemy.actor.TypedCompositeActor">
+        <class name="B" extends="ptolemy.actor.TypedCompositeActor">
+        </class>
+        <entity name="InstanceOfB" class="B">
+        </entity>
+    </class>
+    <class name="DerivedClass" extends="BaseClass">
+        <entity name="A" class="ptolemy.actor.TypedCompositeActor">
+        </entity>
+        <class name="B">
+            <entity name="C" class="ptolemy.actor.TypedCompositeActor"/>
+        </class>
+    </class>
+    <entity name="InstanceOfBaseClass" class="BaseClass">
+    </entity>
+    <entity name="InstanceOfDerivedClass" class="DerivedClass">
+    </entity>
+</entity>
+}
+
+######################################################################
+####
+#
+test MoMLParser-20.7 {Overriding an inner class.} {
+    # Create a base model.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [java::cast ptolemy.actor.CompositeActor \
+            [$parser parse $baseModel]]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <class name="BaseClass" extends="ptolemy.actor.TypedCompositeActor">
+        <class name="B" extends="ptolemy.actor.TypedCompositeActor">
+        </class>
+        <entity name="InstanceOfB" class="B">
+        </entity>
+    </class>
+    <class name="DerivedClass" extends="BaseClass">
+        <class name="B" extends="ptolemy.actor.TypedCompositeActor">
+            <entity name="C" class="ptolemy.actor.TypedCompositeActor">
+            </entity>
+        </class>
+        <entity name="A" class="ptolemy.actor.TypedCompositeActor">
+        </entity>
+    </class>
+    <entity name="InstanceOfBaseClass" class="BaseClass">
+    </entity>
+    <entity name="InstanceOfDerivedClass" class="DerivedClass">
+    </entity>
+</entity>
+}
+
+######################################################################
+####
+#
+test MoMLParser-20.8 {Test modification to the base inner class.} {
+    # NOTE: Have to have the class definition as the context.
+    set baseClass [$toplevel getEntity {BaseClass}]
+    set change [java::new ptolemy.moml.MoMLChangeRequest $baseClass $baseClass {
+        <class name="B"><entity name="D" class="ptolemy.actor.TypedCompositeActor"/></class>
+    }]
+    # NOTE: Request is filled immediately because the model is not running.
+    $toplevel requestChange $change
+    set instanceOfDerivedClass [$toplevel getEntity {InstanceOfDerivedClass.InstanceOfB}]
+    list [$instanceOfDerivedClass getFullName] [$toplevel exportMoML]
+} {.top.InstanceOfDerivedClass.InstanceOfB {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <class name="BaseClass" extends="ptolemy.actor.TypedCompositeActor">
+        <class name="B" extends="ptolemy.actor.TypedCompositeActor">
+            <entity name="D" class="ptolemy.actor.TypedCompositeActor">
+            </entity>
+        </class>
+        <entity name="InstanceOfB" class="B">
+        </entity>
+    </class>
+    <class name="DerivedClass" extends="BaseClass">
+        <class name="B" extends="ptolemy.actor.TypedCompositeActor">
+            <entity name="C" class="ptolemy.actor.TypedCompositeActor">
+            </entity>
+        </class>
+        <entity name="A" class="ptolemy.actor.TypedCompositeActor">
+        </entity>
+    </class>
+    <entity name="InstanceOfBaseClass" class="BaseClass">
+    </entity>
+    <entity name="InstanceOfDerivedClass" class="DerivedClass">
+    </entity>
+</entity>
+}}
