@@ -78,11 +78,13 @@ import ptolemy.moml.HandlesInternalLinks;
 //// IterateOverArray
 /**
    This actor iterates the contained actor or model over input arrays.
-   To use it, drop an actor on it and provide arrays to the inputs.
-   You can drop an IterateComposite actor on it and look inside to
+   To use it, either drop an actor on it and provide arrays to the inputs,
+   or use a default configuration where the actor contains
+   an instance of IterateComposite. In the latter case,
+   you can simply look inside and
    populate that actor with a submodel that will be applied to the
-   array elements.  The submodel is required to have a director,
-   and by default will be provided with an SDF director, which will
+   array elements.  The submodel is required to have a director.
+   An SDF director will
    often be sufficient for operations taken on array elements.
    Note that this inside director should not impose a limit
    on the number of iterations of the inside model. If it does,
