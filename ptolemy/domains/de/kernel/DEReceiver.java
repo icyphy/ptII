@@ -117,7 +117,14 @@ public class DEReceiver implements Receiver {
             // Cache is invalid.  Reconstruct it.
             Actor actor = (Actor)port.getContainer();
             if (actor != null) {
-                Director dir = actor.getExecutiveDirector();
+                Director dir;
+                if ( (port.isOutput()) &&
+                        (actor instanceof CompositeActor) &&
+                        ((CompositeActor)actor).isOpaque()) {
+                    dir = actor.getDirector();
+                } else {
+                    dir = actor.getExecutiveDirector();
+                }
                 if (dir != null) {
                     if (dir instanceof DEDirector) {
                         _director = (DEDirector)dir;
@@ -192,17 +199,8 @@ public class DEReceiver implements Receiver {
      *   there is no director.
      */
     public void put(Token token, double delay) 
-            throws NoRoomException, IllegalActionException{
-        
-        if (_isOCAOutput()) {
-            
-            _tokens.insertFirst(token);
-            _tokendelays.insertFirst(new Double(delay));
-            
-        } else {
-                
-            getDirector().enqueueEvent(this, token, delay, _depth);
-        }
+            throws NoRoomException, IllegalActionException {
+        getDirector().enqueueEvent(this, token, delay, _depth);
     }
 
     /** Set the container.
@@ -291,8 +289,11 @@ public class DEReceiver implements Receiver {
     // _depth: The topological depth associated with this receiver.
     long _depth = 0;
 
-    // _director: The director of the actor that contains the port that
-    // contains this receiver.
+    // _director: The director where this DEReceiver should register the
+    // events being put in it. If this receiver is in the output port of
+    // an opaque composite actor, then the director will be the local director
+    // of the container of its port. Otherwise, it's the executive director of
+    // the container of its port.
     // Note: the code should be written to not refer to this field directly.
     // Rather, it should call the getDirector() method.
     DEDirector _director;

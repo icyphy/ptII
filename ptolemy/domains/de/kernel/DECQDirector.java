@@ -114,7 +114,7 @@ import java.util.Enumeration;
 // currently supported.
 public class DECQDirector extends DEDirector {
     
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     /** Construct a director with empty string as name in the
      *  default workspace.
@@ -237,8 +237,24 @@ public class DECQDirector extends DEDirector {
      *  @exception IllegalActionException If the firing actor throws it.
      */
     public void fire() throws IllegalActionException {
+        
+        
+
+        if (_actorToFire == getContainer()) {
+            // The actor to be fired is it's container.. so it must be that
+            // this director is a local director of an OCA.
+            if (!isEmbedded()) {
+                throw new InternalErrorException("The director of this " + 
+                        "composite actor doesn't " + 
+                        "realize that it's embedded.");
+            }
+            // Since the tokens is already in the right place, we just return.
+            return;
+        }
+
 
         if (DEBUG) {
+            System.out.print(getFullName() + ":");
             System.out.println("Prefiring actor: " + 
                     ((Entity)_actorToFire).description(FULLNAME)+
                     " at time: " +
@@ -262,6 +278,7 @@ public class DECQDirector extends DEDirector {
             
             do {
                 if (DEBUG) {
+                    System.out.print(getFullName() + ":");
                     System.out.println("Firing actor: " +
                     ((Entity)_actorToFire).description(FULLNAME)+
                     " at time: " +
