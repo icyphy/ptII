@@ -213,8 +213,12 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** If this actor is opaque, invoke the fire() method of its local
-     *  director. Otherwise, throw an exception.
+    /** If this actor is opaque, transfer any data from the input ports
+     *  of this composite to the ports connected on the inside, and then
+     *  invoke the fire() method of its local director.
+     *  The transfer is accomplished by calling the transferInputs() method
+     *  of the local director (the exact behavior of which depends on the
+     *  domain).  If the actor is not opaque, throw an exception.
      *  This method is read-synchronized on the workspace, so the
      *  fire() method of the director need not be (assuming it is only
      *  called from here).
@@ -548,13 +552,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** If this actor is opaque, transfer input data and invoke the prefire()
-     *  method of the local director. Specifically, transfer any data from
-     *  the input ports of this composite to the ports connected on the inside.
-     *  The transfer is accomplished by calling the transferInputs() method
-     *  of the local director (the exact behavior of which depends on the
-     *  domain).  This method returns true if the actor is
-     *  ready to fire (determined by the prefire() method of the director).
+    /** If this actor is opaque, invoke the prefire() method of the local
+     *  director. This method returns true if the actor is ready to fire
+     *  (determined by the prefire() method of the director).
      *  It is read-synchronized on the workspace.
      *
      *  @exception IllegalActionException If there is no director,
