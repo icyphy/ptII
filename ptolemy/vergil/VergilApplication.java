@@ -398,6 +398,24 @@ public class VergilApplication extends MDIApplication {
         action = DefaultActions.exitAction(this);
         addAction(action);
         addMenuItem(menuFile, action, 'X', "Exit from the graph editor");
+
+        // Create the File menu
+        menuFile = new JMenu("Edit");
+        menuFile.setMnemonic('E');
+        menuBar.add(menuFile);
+
+        action = DefaultActions.cutAction(this);
+        addAction(action);
+        addMenuItem(menuFile, action, 'u', "Cut");
+
+        action = DefaultActions.copyAction(this);
+        addAction(action);
+        addMenuItem(menuFile, action, 'C', "Copy");
+
+        action = DefaultActions.pasteAction(this);
+        addAction(action);
+        addMenuItem(menuFile, action, 'P', "Paste");
+
     }
 
     /** 

@@ -98,7 +98,9 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 		// No cached object, so render the icon.
 		try {
 		    Figure figure = icon.createBackgroundFigure();
-		    Icon newIcon = new FigureIcon(figure, 20, 15);
+		    Icon newIcon = new FigureIcon(figure, 
+						  component.getBackground(), 
+						  20, 15);
 		    component.setIcon(newIcon);
 		    Variable renderedVariable = 
 			new Variable(icon, "treeRenderedIcon");

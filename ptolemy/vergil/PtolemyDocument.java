@@ -50,6 +50,7 @@ import diva.graph.toolbox.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 
+import java.awt.datatransfer.*;
 import java.awt.Dimension;
 import java.awt.event.*;
 import java.util.*;
@@ -91,6 +92,46 @@ public class PtolemyDocument extends AbstractDocument
      */
     public void close() throws Exception {
         // Do nothing
+    }
+
+    /** Get the currently selected objects from this document, if any,
+     * and place them on the given clipboard.  If the document does not
+     * support such an operation, then do nothing. 
+     */
+    public void copy (Clipboard c) {
+	System.out.println("copy");
+	VergilApplication app = (VergilApplication)getApplication();
+	JGraph jgraph = (JGraph)app.getView(this);
+	GraphPane graphPane = jgraph.getGraphPane();
+	GraphController controller =
+	    (GraphController)graphPane.getGraphController();
+	GraphImpl impl = controller.getGraphImpl();
+	SelectionModel model = controller.getSelectionModel();
+	Object selection[] = model.getSelectionAsArray();
+	for(int i = 0; i < selection.length; i++) {
+	    if(selection[i] instanceof Figure) {
+		Object userObject =
+		    ((Figure)selection[i]).getUserObject();
+		System.out.println(userObject);
+	    }
+	}
+    }
+ 
+    /** Remove the currently selected objects from this document, if any,
+     * and place them on the given clipboard.  If the document does not
+     * support such an operation, then do nothing.
+     */
+    public void cut (Clipboard c) {
+	System.out.println("cut");
+	VergilApplication app = (VergilApplication)getApplication();
+	JGraph jgraph = (JGraph)app.getView(this);
+	GraphPane graphPane = jgraph.getGraphPane();
+	GraphController controller =
+	    (GraphController)graphPane.getGraphController();
+	GraphImpl impl = controller.getGraphImpl();
+	SelectionModel model = controller.getSelectionModel();
+	Object selection[] = model.getSelectionAsArray();
+	
     }
 
     /** Construct a view on this document.  In this class, return a 
@@ -149,6 +190,15 @@ public class PtolemyDocument extends AbstractDocument
 	    (CompositeEntity) parser.parse(schematicURL,
                     new FileInputStream(getFile()));
 	setModel(toplevel);
+    }
+
+    /** Clone the objects currently on the clipboard, if any,
+     * and place them in the given document.  If the document does not
+     * support such an operation, then do nothing.  This method is responsible
+     * for copying the data.
+     */
+    public void paste (Clipboard c) {
+	System.out.println("paste");
     }
 
     /** Save the document to the current file.

@@ -58,7 +58,7 @@ import javax.swing.*;
 /**
  * This class provides deletion support for most simple JGraph components. 
  * Associate this class with some action (such as a key press on an instance 
- * of the JGraph class.  Any nodes or edges in the selection model of the 
+ * of the JGraph class).  Any nodes or edges in the selection model of the 
  * graph pane's controller will be removed.
  *
  * @author Steve Neuendorffer
