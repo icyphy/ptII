@@ -258,7 +258,7 @@ public class UtilityFunctions {
      *   the specified file.
      *  @exception IllegalActionException If the file cannot be opened.
      *  @see ptolemy.data.expr.ASTPtFunctionNode
-     *  @see readResource()
+     *  @see #readResource(String)
      */
     public static StringToken readFile(String filename)
             throws IllegalActionException {
@@ -385,7 +385,7 @@ public class UtilityFunctions {
      *   the specified resource.
      *  @exception IllegalActionException If the resource cannot be opened.
      *  @see ptolemy.data.expr.ASTPtFunctionNode
-     *  @see readFile()
+     *  @see #readFile(String)
      */
     public static StringToken readResource(String name)
             throws IllegalActionException {
