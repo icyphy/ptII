@@ -50,11 +50,8 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	FSMController.tcl \
-	FSMDirector.tcl \
-	FSMState.tcl \
-	FSMTransition.tcl \
-	TransitionAction.tcl
+	FSMActor.tcl \
+	Transition.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

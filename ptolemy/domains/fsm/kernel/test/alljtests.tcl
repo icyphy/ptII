@@ -16,7 +16,7 @@ if {[info command update] == ""} then {
 #Do an update so that we are sure tycho is done displaying
 update
 set savedir "[pwd]"
-if {"FSMController.tcl FSMDirector.tcl FSMState.tcl FSMTransition.tcl TransitionAction.tcl" != ""} {foreach i [list FSMController.tcl FSMDirector.tcl FSMState.tcl FSMTransition.tcl TransitionAction.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
+if {"FSMActor.tcl Transition.tcl" != ""} {foreach i [list FSMActor.tcl Transition.tcl] {puts $i; cd "$savedir"; if [ file exists $i ] {source $i}}}
 puts stderr dummy.tcl
 cd "$savedir"
 if [ file exists dummy.tcl ] {source dummy.tcl}
