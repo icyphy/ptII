@@ -55,10 +55,8 @@
 <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
 </entity>
 
-
 <entity name="WaitingTime" class="ptolemy.domains.de.lib.WaitingTime">
 </entity>
-
       </group>
     ?>
   </configure>
