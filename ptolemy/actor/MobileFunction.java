@@ -29,44 +29,16 @@
 
 package ptolemy.actor;
 
-import ptolemy.actor.*;
-import ptolemy.actor.gui.*;
-import ptolemy.actor.gui.style.ChoiceStyle;
-import ptolemy.domains.ct.kernel.CTDirector;
-import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
-import ptolemy.domains.ct.kernel.CTTransparentDirector;
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.FSMDirector;
-import ptolemy.domains.fsm.kernel.HSDirector;
-import ptolemy.domains.fsm.kernel.State;
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.*;
-import ptolemy.moml.LibraryAttribute;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLParser;
-import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.StringToken;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.LinkedList;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.io.*;
-import java.io.IOException;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.*;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// MobileFunction
@@ -130,7 +102,7 @@ public class MobileFunction extends TypedAtomicActor{
      public void initialize() throws IllegalActionException {
         _function = null;
         _argList = new LinkedList();
-        System.out.println("--- invoke initialize of model manager, and do nothing. \n");
+        //System.out.println("--- invoke initialize of model manager, and do nothing. \n");
         super.initialize();
     }
 
@@ -155,16 +127,6 @@ public class MobileFunction extends TypedAtomicActor{
             } else {
                 Token in = input.get(0);
                 _argList.add(in);
-
-                /*int numOfArgs =_function.getNumberOfArguments();
-                if (_debugging) {
-                    _debug("the function require " + numOfArgs + " arguments.");
-                }
-                if (_argList.size() >= numOfArgs) {
-                    int k = 0;
-                    while( k < numOfArgs ) {
-
-                    } */
                 Token t = _function.apply(_argList);
                 output.broadcast(t);
                 _argList.remove(in);

@@ -29,48 +29,30 @@
 
 package ptolemy.actor;
 
-import ptolemy.actor.*;
-import ptolemy.actor.lib.Const;
-import ptolemy.actor.lib.Recorder;
-import ptolemy.actor.lib.io.ExpressionWriter;
-import ptolemy.actor.gui.*;
-import ptolemy.actor.gui.style.ChoiceStyle;
-import ptolemy.domains.ct.kernel.CTDirector;
-import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
-import ptolemy.domains.ct.kernel.CTTransparentDirector;
-import ptolemy.domains.fsm.kernel.FSMActor;
-import ptolemy.domains.fsm.kernel.FSMDirector;
-import ptolemy.domains.fsm.kernel.HSDirector;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.sdf.kernel.SDFDirector;
-import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.kernel.*;
-import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.attributes.VersionAttribute;
-import ptolemy.kernel.util.*;
-import ptolemy.moml.LibraryAttribute;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.moml.MoMLParser;
-import ptolemy.moml.filter.BackwardCompatibility;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.StringToken;
 import ptolemy.data.FunctionToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
+import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Entity;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.filter.BackwardCompatibility;
+import ptolemy.moml.filter.RemoveGraphicalClasses;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.LinkedList;
-import java.util.Enumeration;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.io.*;
 import java.io.IOException;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.*;
+import java.io.Writer;
 
 //////////////////////////////////////////////////////////////////////////
 //// MobileModel
