@@ -48,6 +48,7 @@ TCL_SRCS =
 
 JSRCS = \
 	BasicDemo.java \
+	Coordinate.java \
 	DiningApplet.java \
 	DiningPhilosophers.java \
 	Eratosthenes.java \
