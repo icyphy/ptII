@@ -57,7 +57,8 @@ JSRCS = \
 
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
-	QRvr.gif \
+	QRnetwork.gif \
+	QRvr.wmf \
 	dg.gif \
 	QR.xml
 

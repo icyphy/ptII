@@ -1,108 +1,41 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>Process Network Demo</TITLE>
+<META NAME="Template" CONTENT="C:\Program Files\Microsoft Office\Office\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080" BGCOLOR="#faf0e6">
+
+<P><!---@version $Id$--><!---@author--></P>
+<H1>Process Network Demo</H1>
+<P><!-- All of the controls of the applet should be visible when the
+applet is displayed on a XGA screen--><!-- The HTML below is for the Java Plugin.  The first 
+=======
 <html>
 <head>
 <title>Compiling NLPs written in Matlab into a Process Network Model</title>
 </head>
 <body bgcolor="#FAF0E6" link="#0000FF" vlink="#800080">
-<!---@version $Id$-->
-<!---@author-->
-<h1>Compiling Nested Loop Programs written in Matlab
-into a Process Network Model</h1>
-
-
-
-
-<P>
- <!-- All of the controls of the applet should be visible when the
-applet is displayed on a XGA screen-->
-<center>
 <!-- The HTML below is for the Java Plugin.  The first 
+>>>>>>> 1.8
      section is for IE, the second is for Netscape
- -->
-<OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93"
- width=600 height=600
- name="QRCompileApplet"
- codebase="http://java.sun.com/products/plugin/1.2.2/jinstall-1_2_2-win.cab#Version=1,2,2,0">
-<PARAM NAME=CODE VALUE=ptolemy.domains.pn.demo.QR.QRCompileApplet.class>
-<PARAM NAME=CODEBASE VALUE=../../../../..>
-<PARAM NAME=ARCHIVE VALUE="
-	ptolemy/ptsupport.jar,
-	ptolemy/domains/pn/pn.jar,
-	ptolemy/domains/pn/demo/QR/QR.jar">
-<PARAM NAME="type" VALUE="application/x-java-applet;version=1.2.2">
-<PARAM NAME="name" VALUE="QRCompileApplet">
-<PARAM NAME="background" VALUE="#faf0e6">
-<PARAM NAME="defaultStopTime" VALUE="100">
-<COMMENT>
-<EMBED type="application/x-java-applet;version=1.2.2"
- code=ptolemy.domains.pn.demo.QR.QRCompileApplet
- codebase=../../../../..
- archive="
-	ptolemy/ptsupport.jar,
-	ptolemy/domains/pn/pn.jar,
-	ptolemy/domains/pn/demo/QR/QR.jar"
- name="QRCompileApplet"
- width=600 height=600
- background="#faf0e6"
- defaultStopTime="100"
- pluginspage="http://java.sun.com/products/plugin/1.2.2/plugin-install.html">
-<NOEMBED></COMMENT>
-<I>If you were able to run applets, you would have a demo here.</I>
-</NOEMBED></EMBED>
-</OBJECT>
-</center>
-<h2>Introduction</h2>
-
-<p>At Delft University of Technology, in the Circuits and Systems
-group, research is carried out to automatically compile Nested-Loop
-Programs (NLP) written in Matlab into a process network model. The
-NLPs written in Matlab use the imperative model of computation. The
-compiled process networks however describe the same NLPs in terms of a
-concurrency model. These models seem more suited for system-level
-design of silicon systems.  <p>Many well-know signal-processing
-applications can be written as NLPs.  Having a compiler that
-automatically compiles these NLPs to process network models provides
-us with a large collection of applications described in the a
-concurrency model. As the process network model, they use Kahn Process
-Networks [Kahn, 1974] in which each process is internally structured
-in a particular way. Each process consists of a set of functions, a
-controller and state. Such process is called a Stream-Based Function
-process or SBF-process as described in [Kienhuis, 1999].
-
-<p>In this web page, we combine the compilation work done at Delft
-University with the simulation work done at the University of
-California at Berkeley.  The compiled NLPs can be simulated in the
-PN-domain [Goel, 1998] of the Ptolemy II framework [Davis, 1998]
-developed at the University of California at Berkeley. The Ptolemy II
-framework is an advanced heterogeneous modeling environment based on
-Java and it allows us to describe a particular application as a Java
-Applet that can run on any web browser.
-
-<h2>Compilation</h2>
-
-To show how what compiling a NLP into a process network model implies,
-we look at the QR algorithm. Such QR algorithm can be found, for
-example, in adaptive beam-forming applications. The QR algorithm is
-described as a NLP in Matlab. Two inner-loop iterators <CODE>j</CODE>
-and <CODE>i</CODE> form a parameterized triangular-shaped index space
-of size <CODE>N</CODE>( The programs loop bounds <CODE>K</CODE> and
-<CODE>N</CODE> are parameters). This triangular shaped space describes
-a single <i>QR-update</i>. The outer-loop iterator <CODE>k</CODE>
-indicates which iteration of the QR update is currently taking
-place. Notice that the QR decomposition program uses matrices
-<CODE>R</CODE> and <CODE>X</CODE> and has a lexicographical sequential
-index ordering as dictated by the <CODE>for</CODE>-loops 
-<pre>
-%parameter K 100 1000;
-%parameter N 8 16;
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%                                                                   %%
-%%                Nested Loop Program in Matlab                      %%
-%%                                                                   %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%% Calculate K iterations of a QR-update
+<<<<<<< QRCompileApplet.htm
+ --><OBJECT classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" width=600 height=600 name="QRCompileApplet" codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0"><PARAM NAME=CODE VALUE=ptolemy.domains.pn.demo.QR.QRCompileApplet.class><PARAM NAME=CODEBASE VALUE=../../../../..><PARAM NAME=ARCHIVE VALUE=" ptolemy/ptsupport.jar, ptolemy/domains/pn/pn.jar, ptolemy/domains/pn/demo/QR/QR.jar"><PARAM NAME="type" VALUE="application/x-java-applet;version=1.2"><PARAM NAME="name" VALUE="QRCompileApplet"><PARAM NAME="background" VALUE="#faf0e6"><PARAM NAME="defaultStopTime" VALUE="100"><EMBED type="application/x-java-applet;version=1.2" code=ptolemy.domains.pn.demo.QR.QRCompileApplet codebase=../../../../.. archive=" ptolemy/ptsupport.jar, ptolemy/domains/pn/pn.jar, ptolemy/domains/pn/demo/QR/QR.jar" name="QRCompileApplet" width=600 height=600 background="#faf0e6" defaultStopTime="100" pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html"><NOEMBED><I>If you were able to run applets, you would have a demo here.</I> </NOEMBED></EMBED></OBJECT>
+<P>The above applet shows the result of a Process Network (PN) executing a QR-algorithm on a stream of data coming from an array of antennas. Each execution of the QR algorithm on data from the antennas is called an update. The applet shows in the matrix R in a <I>MatrixViewer</I>.<I> </I>The matrix is of<I> </I>size NxN, where N is the number of antenna's involved. The individual entries in the matrix are shown in the <I>Plotter</I>. The resulting matrix R is obtained after doing a certain number of QR-algorithm updates on a stream of data coming from the antenna array of a certain size. </P>
+<P>In the demo, if we select 10 QR-updates for an array of 6 antenna's, the following R matrix must be found: </P>
+<PRE># name: Rout
+# type: matrix
+# rows: 6
+# columns: 6
+270.843 206.234&nbsp; 60.482 -39.318 -89.100 -38.568
+&nbsp; 0.000 144.933 181.192 172.919 104.333&nbsp; 10.488
+&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp; 32.964&nbsp; 18.280&nbsp; 10.909&nbsp;&nbsp; 9.170
+&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp; 24.739&nbsp;&nbsp; 7.446&nbsp;&nbsp; 7.208
+&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp; 20.308&nbsp; 11.206
+&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp;&nbsp; 8.535</PRE>
+<P>The QR algorithm describes a linear algebra problem in which a matrix A can be written as a product of two matrices Q and R (A=QR), in which R is an upper triangular matrix and Q an orthogonal matrix. A program that does this QR transformation is given below in the Matlab programming language. The algorithm uses the Cordic functions <I>Vectorize </I>and <I>Rotate </I>to find the QR transform. If we execute this program in Matlab, we would find the same matrix R.</P>
+<PRE>
 for k = 1:1:K,
   for j = 1:1:N,
     [r(j,j), x(k,j), t ] = Vectorize( r(j,j), x(k,j) );
@@ -112,108 +45,14 @@ for k = 1:1:K,
   end
 end
 
-%% After K iterations, collect the values of the R Matrix
+%% After the K iterations, collect the values of the R Matrix
 for j = 1:1:N,
   for i = j:1:N,
-    [ Sink(j,i) ] = _WriteMatrix_Rout( r(j,i) );
+    [ Sink(j,i) ] = Rout( r(j,i) );
   end
-end
-</pre>
-
-<p>The QR algorithm has a dependence graph representation. Instead of
-showing the complete dependence graph of the QR algorithm, we show
-only one <i>k</i>-plane, representing a single QR update. The complete
-DG would consist of <i>K</i> of these planes. Each and every
-<i>k</i>-plane depends on its predecessor.  Each node in the DG
-represents a function from the QR algorithm: a gray node represents
-the function <CODE>Vectorize</CODE> and a white node represents the
-function <CODE>Rotate</CODE>.
-
-At the side of the triangle at the top of the figure, data (i.e., the
-<i>X</i> data) is arriving from external sources -- say sensors of an
-<CODE>N</CODE>-antenna array (in this case <CODE>N</CODE>=6) -- that
-propagates downwards through the plane. The values of 21 <i>r</i>
-variables (i.e., elements of the <CODE>R</CODE> matrix in the Matlab
-program) produced by the previous plane are updated using the
-functions <CODE>Rotate</CODE> and <CODE>Vectorize</CODE>.  To rotate,
-each <CODE>Rotate</CODE> function needs to have an angle
-<CODE>theta</CODE> calculated by the function <CODE>Vectorize</CODE>
-on the diagonal of the triangle.
-
-<center>
-<p><img SRC="dg.gif" height=259 width=302>
-</center>
-
-<p>The dependence graph representation of the QR algorithm reveals features
-like regularity and locality. Unlike the Matlab description, it also reveals
-a high level of concurrency. These features -- regularity, locality, and
-concurrency -- are typical for many NLP algorithms. The dependence graph
-can be written down as a so-called reduced dataflow graph. The reduced
-dataflow graph for our QR algorithm is given below. To obtain a process
-network model, we replace each node in the reduced dataflow graph with
-a process and each edge with an unbounded FIFO buffers. Each process in
-the network description is described in terms of a set of functions, a
-controller and state.
-
-<center>
-<img SRC="QRvr.gif" height=211 width=621>
-</center>
-
-<p>The steps involved in the compilation from a NLP in Matlab to a
-process network are described in Rypkema et al. [1998]. The current
-status of the compilation from NLPs to process network models is that
-proof of concept is done for a small number of problems. The compiler
-tool-chain needs to be generalized such that process network models
-are generated for a much large class of NLPs. Also, the output
-generated by the compilation tool-chain is currently in C++. As a
-consequence, to make the example of the QR algorithm run in the
-Ptolemy II framework, we manually had to create the Java objects.
-
-<h2>Ptolemy II Demo</h2>
-
-We simulate the obtained process network using the Ptolemy II
-framework.  Each process in the reduced dependence graph is described
-by means of a PN-process. In the demo, we process a given array of N
-antenna signals using K iterations of the QR-update algorithm. The
-numbers produced are the values of the R matrix after K iterations.
-
-<p> In the demo, we select K=10 and N=6, we must find the following R matrix
-in order to be functionally correct
-
-<pre># name: Rout
-# type: matrix
-# rows: 6
-# columns: 6
-270.843 206.234&nbsp; 60.482 -39.318 -89.100 -38.568
-&nbsp; 0.000 144.933 181.192 172.919 104.333&nbsp; 10.488
-&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp; 32.964&nbsp; 18.280&nbsp; 10.909&nbsp;&nbsp; 9.170
-&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp; 24.739&nbsp;&nbsp; 7.446&nbsp;&nbsp; 7.208
-&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp; 20.308&nbsp; 11.206
-&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp;&nbsp; 0.000&nbsp;&nbsp; 8.535
-</pre>
-
-<h2>References</h2>
-Edwin Rijpkema, Bart Kienhuis and Ed F. Deprettere, 
-"<a href="ftp://cas.et.tudelft.nl/pub/kienhuis/rypkema:1998.pdf">From
-Piecewise Regular Algorithms to Process Networks</a>", In J.P.
-Veen (ed.), Proceedings of the ProRISC/IEEE Workshop on Circuits, Systems
-and Signal Processing, November 1998.
-
-<p>Gilles Kahn, "<i>The semantics of a simple language for parallel programming</i>".
-In proc. of the IFIP Congress 74, North-Holland Publishing Co., 1974
-
-<p>A.C.J. Kienhuis,
-"<a href="http://cas.et.tudelft.nl/~kienhuis/hse/thesis.html">Design Space Exploration of Stream-based Dataflow Architectures: Methods and Tools</a>",
-Ph.D. Thesis, Delft University of Technology, The Netherlands, January
-1999.
-
-<p>J. Davis, R. Galicia, M. Goel, C. Hylands, E.A. Lee, J. Liu, X. Liu,
-L. Muliadi, S. Neuendorffer, J. Reekie, N. Smyth, J. Tsay and Y. Xiong,
-<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/98/HMAD">"Heterogeneous Concurrent Modeling and Design in Java"</a> Technical Report UCB/ERL No.
-M98/72, University of California, Berkeley, CA 94720, November 23, 1998.
-
-<p>M. Goel, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/98/PNinPtolemyII">Process Networks in Ptolemy II</a>"
-MS Report, ERL Technical Report UCB/ERL No.
-M98/69, University of California, Berkeley, CA 94720, December 16, 1998.
-</body>
-</html>
+end</PRE>
+<P>However, we can also describe the same QR-algorithm as a <I>Process Network</I>. In this process network description, the nodes ND_1, ND_2, ND_3, ND_4, and ND_5 describe processes and the edges between these nodes describe FIFO buffers that have a certain capacity. The processes read from these buffers using a blocking-read semantics. In the applet, we simulate this process network to get the value for R matrix. The big difference between the Matlab program and the process network is that the process network executes in parallel whereas the Matlab description executes sequentially. </P>
+<P><IMG SRC="QRnetwork.gif" WIDTH=622 HEIGHT=317></P>
+<P>In process <A HREF="ND_2.java"><FONT SIZE=2>ND_2</FONT></A>, a large matrix is stored that contains 500 real data samples taken from 16 antennas. From this matrix, the process reads a number of samples (the number of antenna's) and sends these samples to either node <A HREF="ND_3.java"><FONT SIZE=2>ND_3</FONT></A> or <A HREF="ND_4.java"><FONT SIZE=2>ND_4</FONT></A>. This process is repeated a number of times, as many times as there will be a QR-update. In parallel with process ND_2, process ND_3, and process ND_4 execute by reading data from incoming edges and producing data on outgoing edges. After the numbers of QR-updates are done, the final matrix R is sent to process <A HREF="ND_5.java"><FONT SIZE=2>ND_5</FONT></A>, which sends the matrix <I>R</I> to the Plotter and the StreamToMatrix actor. The latter one reconstructs from the incoming stream a matrix, which is sent to the MatrixViewer to be visualized. Process <A HREF="ND_1.java"><FONT SIZE=2>ND_1</FONT></A> is used to properly initialize the process network by sending a specific number of zeros to either process ND_3 or process ND_4. </P>
+<P>Process networks have the characteristic that they execute in a <I>deterministic order</I>, which means that the computation of the result is independent of the schedule order of the processes. Thus, process networks do not imposing any particular schedule order and a process network can either be evaluated in parallel, as is done in the Applet, or equally, in a sequential order, similar to the execution in Matlab. The result we obtain, i.e. the matrix R, is in both cases the same.</P></BODY>
+</HTML>

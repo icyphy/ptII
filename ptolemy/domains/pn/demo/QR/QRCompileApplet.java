@@ -128,15 +128,11 @@ public class QRCompileApplet extends PNApplet implements QueryListener {
             _s2m.input.link( t );
             _toplevel.connect(_s2m.output, _matrixViewer.input);
 
+            // Propagate the parameter settings
+	    changed("N");
+	    changed("K");
+
             _initCompleted = true;
-
-            // _ND_1.addDebugListener(new StreamListener());
-            // _ND_2.addDebugListener(new StreamListener());
-            // _ND_3.addDebugListener(new StreamListener());
-            // _ND_4.addDebugListener(new StreamListener());
-            // _ND_5.addDebugListener(new StreamListener());
-
-            System.out.println(_toplevel.exportMoML());
 
             // The 2 argument requests a go and stop button.
             getContentPane().add(_createRunControls(2));

@@ -80,10 +80,10 @@ public class StreamToMatrix extends Transformer {
 
         }
 
-    /** If the argument is the meanTime parameter, check that it is
-     *  positive.
-     * @exception IllegalActionException If the
-     *  meanTime value is * not positive.
+    /** If the argument is the dimension parameter, update the 
+     *  the row and column values.
+     *  @throws IllegalActionException if no an integer value can 
+     *	be obtained from the dimension parameter.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
