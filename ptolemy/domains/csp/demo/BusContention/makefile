@@ -50,6 +50,7 @@ JSRCS = \
 	BusContentionApplet.java \
 	ContentionAlarm.java \
 	Controller.java \
+	ExecEvent.java \
 	Memory.java \
 	PortChannelCode.java \
 	Processor.java

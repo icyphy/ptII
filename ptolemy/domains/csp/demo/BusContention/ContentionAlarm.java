@@ -123,19 +123,6 @@ public class ContentionAlarm extends CSPActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add an ExecEventListener to this actor's list of
-     *  listeners. If the specified listener already exists
-     *  in this actor's list, then allow both instances to
-     *  separately remain on the list.
-     * @param listener The specified ExecEventListener.
-     */
-    public void addListeners(ExecEventListener listener) {
-        if( _listeners == null ) {
-            _listeners = new LinkedList();
-        }
-        _listeners.add(listener);
-    }
-
     /** Execute this actor by cycling through its three states
      *  continually. Each state can potentially block due to
      *  the blocking semantics of CSP communication. Upon entry
@@ -148,49 +135,16 @@ public class ContentionAlarm extends CSPActor {
 
         while(true) {
             // State 1
-            generateEvents( new ExecEvent( this, 1 ) );
+            _debug( new ExecEvent( this, ExecEvent.WAITING ) );
             input.get(0);
 
             // State 2
-            generateEvents( new ExecEvent( this, 2 ) );
+            _debug( new ExecEvent( this, ExecEvent.WAITING ) );
             _waitForDeadlock();
 
             // State 3
-            generateEvents( new ExecEvent( this, 3 ) );
+            _debug( new ExecEvent( this, ExecEvent.ACCESSING ) );
             output.send(0, new Token());
         }
     }
-
-    /** Notify all ExecEventListeners on this actor's
-     *  listener list that the specified event was
-     *  generated.
-     * @param event The specified ExecEvent.
-     */
-    public void generateEvents(ExecEvent event) {
-        if( _listeners == null ) {
-            return;
-        }
-        Iterator listeners = _listeners.iterator();
-        while( listeners.hasNext() ) {
-            ExecEventListener newListener =
-                (ExecEventListener)listeners.next();
-            newListener.stateChanged(event);
-        }
-    }
-
-    /** Remove one instance of the specified ExecEventListener
-     *  from this actor's list of listeners.
-     * @param listener The specified ExecEventListener.
-     */
-    public void removeListeners(ExecEventListener listener) {
-        if( _listeners == null ) {
-            return;
-        }
-        _listeners.remove(listener);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    private List _listeners;
 }

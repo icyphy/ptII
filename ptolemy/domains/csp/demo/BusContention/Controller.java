@@ -140,19 +140,6 @@ public class Controller extends CSPActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add an ExecEventListener to this actor's list of
-     *  listeners. If the specified listener already exists
-     *  in this actor's list, then allow both instances to
-     *  separately remain on the list.
-     * @param listener The specified ExecEventListener.
-     */
-    public void addListeners(ExecEventListener listener) {
-        if( _listeners == null ) {
-            _listeners = new LinkedList();
-        }
-        _listeners.add(listener);
-    }
-
     /** Execute this actor indefinitely.
      * @exception IllegalActionException If there is an error
      *  during communication through any of the input or output
@@ -180,7 +167,7 @@ public class Controller extends CSPActor {
             //
             // State 1: Wait for 1st Request
             //
-            generateEvents( new ExecEvent( this, 1 ) );
+            _debug( new ExecEvent( this, ExecEvent.WAITING) );
             ConditionalBranch[] requiredBranches =
                 new ConditionalBranch[_numRequestInChannels];
             for( int i = 0; i < _numRequestInChannels; i++ ) {
@@ -201,14 +188,13 @@ public class Controller extends CSPActor {
             //
             // State 2: Notify Contention Alarm of 1st Request
             //
-            generateEvents( new ExecEvent( this, 2 ) );
             contendOutput.send(0, new Token() );
 
 
             //
             // State 3: Wait for Contenders and Send Ack's
             //
-            generateEvents( new ExecEvent( this, 3 ) );
+            _debug( new ExecEvent( this, ExecEvent.ACCESSING) );
             _losingPortChannelCodes = new LinkedList();
             boolean continueCDO = true;
             while( continueCDO ) {
@@ -244,7 +230,7 @@ public class Controller extends CSPActor {
                     //
                     // State 4: Contention is Over
                     //
-                    generateEvents( new ExecEvent( this, 4 ) );
+                    _debug( new ExecEvent( this, ExecEvent.BLOCKED ) );
 
                     requiredBranches[br].getToken();
 
@@ -278,34 +264,6 @@ public class Controller extends CSPActor {
         }
     }
 
-    /** Notify all ExecEventListeners on this actor's
-     *  listener list that the specified event was
-     *  generated.
-     * @param event The specified ExecEvent.
-     */
-    public void generateEvents(ExecEvent event) {
-        if( _listeners == null ) {
-            return;
-        }
-        Iterator listeners = _listeners.iterator();
-        while( listeners.hasNext() ) {
-            ExecEventListener newListener =
-                (ExecEventListener)listeners.next();
-            newListener.stateChanged(event);
-        }
-    }
-
-    /** Remove one instance of the specified ExecEventListener
-     *  from this actor's list of listeners.
-     * @param listener The specified ExecEventListener.
-     */
-    public void removeListeners(ExecEventListener listener) {
-        if( _listeners == null ) {
-            return;
-        }
-        _listeners.remove(listener);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -313,6 +271,4 @@ public class Controller extends CSPActor {
 
     private PortChannelCode _winningPortChannelCode;
     private List _losingPortChannelCodes;
-
-    private List _listeners;
 }

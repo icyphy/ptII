@@ -43,7 +43,6 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
-import ptolemy.actor.gui.*;
 import ptolemy.domains.csp.lib.*;
 import ptolemy.domains.csp.gui.*;
 import ptolemy.domains.csp.kernel.*;
@@ -146,9 +145,9 @@ public class BusContentionApplet extends CSPApplet {
 	
 	StateListener listener =
             new StateListener((GraphPane)_jgraph.getCanvasPane());
-	_processActor1.addListeners(listener);
-	_processActor2.addListeners(listener);
-	_processActor3.addListeners(listener);
+	_processActor1.addDebugListener(listener);
+	_processActor2.addDebugListener(listener);
+	_processActor3.addDebugListener(listener);
     }
 
     /**  Construct the graph representing the topology.
@@ -443,7 +442,7 @@ public class BusContentionApplet extends CSPApplet {
      * events on the Ptolemy kernel and changes the color of
      * the nodes appropriately.
      */
-    public class StateListener implements ExecEventListener {
+    public class StateListener implements DebugListener {
 
         // The Pane
         GraphPane _graphPane;
@@ -454,11 +453,19 @@ public class BusContentionApplet extends CSPApplet {
             _graphPane = pane;
         }
 
-        /** Respond to a state changed event.
+	/** Ignore messages.
+	 */
+	public void message(String message) {
+	}
+
+        /** React to the given event.
          */
-        public void stateChanged(ExecEvent event) {
-            final int state = event.getCurrentState();
-            Actor actor = event.getActor();
+        public void event(DebugEvent debugEvent) {
+	    // only trap ExecEvents.
+	    if(!(debugEvent instanceof ExecEvent)) return;
+	    ExecEvent event = (ExecEvent) debugEvent;
+            final ExecEvent.ExecEventType state = event.getState();
+            NamedObj actor = event.getSource();
 
             // Get the corresponding graph node and its figure
             Object node = (Object) _nodeMap.get(actor);
@@ -471,26 +478,14 @@ public class BusContentionApplet extends CSPApplet {
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
                     public void run() {
-                        switch (state) {
-                        case 1:
+                        if(state == ExecEvent.WAITING) 
 			    figure.setFillPaint(Color.yellow);
-                            break;
-
-                        case 2:
-                            figure.setFillPaint(Color.yellow);
-                            break;
-
-                        case 3:
+			else if(state == ExecEvent.ACCESSING)
                             figure.setFillPaint(Color.green);
-                            break;
-
-                        case 4:
+			else if(state == ExecEvent.BLOCKED)
                             figure.setFillPaint(Color.red);
-                            break;
-
-                        default:
+			else
                             System.err.println("Unknown state: " + state);
-                        }
                     }
                 });
             }

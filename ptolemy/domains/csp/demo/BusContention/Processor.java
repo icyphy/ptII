@@ -142,19 +142,6 @@ public class Processor extends CSPActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add an ExecEventListener to this actor's list of
-     *  listeners. If the specified listener already exists
-     *  in this actor's list, then allow both instances to
-     *  separately remain on the list.
-     * @param listener The specified ExecEventListener.
-     */
-    public void addListeners(ExecEventListener listener) {
-        if( _listeners == null ) {
-            _listeners = new LinkedList();
-        }
-        _listeners.add(listener);
-    }
-
     /** Attempt to access the shared resource.
      * @exception IllegalActionException If there is an error
      *  during communication through any of this actor's ports.
@@ -162,7 +149,7 @@ public class Processor extends CSPActor {
     public void accessMemory(boolean read) throws IllegalActionException {
 
         // State 1
-        generateEvents( new ExecEvent( this, 1 ) );
+        _debug( new ExecEvent( this, ExecEvent.WAITING ) );
         double delayTime = java.lang.Math.random();
         if( delayTime < 0.25 ) {
             delayTime = 2.5;
@@ -178,7 +165,6 @@ public class Processor extends CSPActor {
         requestOutput.broadcast(iToken);
 
         // State 2
-        generateEvents( new ExecEvent( this, 2 ) );
 	try {
 	    Thread.sleep(300);
 	} catch( InterruptedException e ) {
@@ -188,7 +174,7 @@ public class Processor extends CSPActor {
 
         if( bToken.booleanValue() ) {
             // State 3
-            generateEvents( new ExecEvent( this, 3 ) );
+            _debug( new ExecEvent( this, ExecEvent.ACCESSING ) );
 	    try {
 	        Thread.sleep(300);
 	    } catch( InterruptedException e ) {
@@ -204,7 +190,7 @@ public class Processor extends CSPActor {
             return;
         } else {
             // State 4
-	    generateEvents( new ExecEvent( this, 4 ) );
+	    _debug( new ExecEvent( this, ExecEvent.BLOCKED ) );
 	    try {
 	        Thread.sleep(300);
 	    } catch( InterruptedException e ) {
@@ -246,23 +232,6 @@ public class Processor extends CSPActor {
         }
     }
 
-    /** Notify all ExecEventListeners on this actor's
-     *  listener list that the specified event was
-     *  generated.
-     * @param event The specified ExecEvent.
-     */
-    public void generateEvents(ExecEvent event) {
-        if( _listeners == null ) {
-            return;
-        }
-        Iterator enum = _listeners.iterator();
-        while( enum.hasNext() ) {
-            ExecEventListener newListener =
-                (ExecEventListener)enum.next();
-            newListener.stateChanged(event);
-        }
-    }
-
     /** Call initialize of the corresponding superclass method and
      *  store a reference to this actor's local director.
      * @exception IllegalActionException If the superclass method
@@ -287,17 +256,6 @@ public class Processor extends CSPActor {
         return false;
     }
 
-    /** Remove one instance of the specified ExecEventListener
-     *  from this actor's list of listeners.
-     * @param listener The specified ExecEventListener.
-     */
-    public void removeListeners(ExecEventListener listener) {
-        if( _listeners == null ) {
-            return;
-        }
-        _listeners.remove(listener);
-    }
-
     /** Wrapup this actor by first calling the super class
      *  wrapup method and then generating an event that 
      *  will set the final state of this actor for the
@@ -307,7 +265,7 @@ public class Processor extends CSPActor {
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        generateEvents( new ExecEvent( this, 1 ) );
+        _debug( new ExecEvent( this, ExecEvent.WAITING ) );
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -315,6 +273,4 @@ public class Processor extends CSPActor {
 
     private int _code;
     private CSPDirector _dir;
-    private List _listeners;
-
 }
