@@ -30,8 +30,11 @@
 
 package ptolemy.domains.ct.demo.SigmaDelta;
 
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.*;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+
 import ptolemy.domains.de.kernel.*;
 import ptolemy.domains.de.lib.*;
 import ptolemy.domains.ct.kernel.*;
@@ -75,31 +78,25 @@ public class SigmaDeltaApplet extends CTApplet {
     /** Initialize the applet.
      */
     public void init() {
-
         super.init();
-        Panel controlpanel = new Panel();
+
+        getContentPane().setLayout(
+                new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+
+        JPanel controlpanel = new JPanel();
         controlpanel.setLayout(new BorderLayout());
-        add(controlpanel);
+        controlpanel.setBackground(_getBackground());
+        getContentPane().add(controlpanel);
 
         _query = new Query();
         //_query.addQueryListener(new ParameterListener());
-        controlpanel.add("West", _query);
+        controlpanel.add(_query, BorderLayout.WEST);
         _query.addLine("stopT", "Stop Time", "15.0");
         _query.addLine("sample", "Sample Rate", "0.02");
         _query.addLine("feedback", "Feedback Gain", "-20.0");
         _query.setBackground(_getBackground());
 
-        Panel runcontrols = new Panel();
-        controlpanel.add("East",runcontrols);
-        runcontrols.add(_createRunControls(2));
-
-        Panel plotpanel = new Panel();
-        plotpanel.setLayout(new GridLayout(2, 1));
-        add(plotpanel, "Center");
-        Panel ctPanel = new Panel();
-        Panel dePanel = new Panel();
-        plotpanel.add(ctPanel);
-        plotpanel.add(dePanel);
+        controlpanel.add(_createRunControls(2), BorderLayout.EAST);
 
         // Creating the model.
         try {
@@ -141,7 +138,8 @@ public class SigmaDeltaApplet extends CTApplet {
             _gain3 = new Scale(ctsub, "Gain3");
 
             _ctPlot = new TimedPlotter(ctsub, "CTPlot");
-            _ctPlot.place(this);
+            _ctPlot.place(getContentPane());
+            _ctPlot.plot.setBackground(_getBackground());
             _ctPlot.plot.setGrid(true);
             _ctPlot.plot.setYRange(-1.0, 1.0);
             _ctPlot.plot.setSize(500, 180);
@@ -191,7 +189,8 @@ public class SigmaDeltaApplet extends CTApplet {
             clk.values.setExpression("[true]");
             
             _dePlot = new TimedPlotter(_toplevel, "DEPlot");
-            _dePlot.place(this);
+            _dePlot.place(getContentPane());
+            _dePlot.plot.setBackground(_getBackground());
             _dePlot.plot.setGrid(true);
             _dePlot.plot.setYRange(-1.0, 1.0);
             _dePlot.plot.setSize(500, 180);

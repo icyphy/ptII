@@ -30,8 +30,9 @@
 
 package ptolemy.domains.ct.demo.StickyBall;
 
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.*;
+
 import ptolemy.domains.fsm.kernel.*;
 import ptolemy.domains.fsm.lib.*;
 import ptolemy.domains.ct.kernel.*;
@@ -62,20 +63,16 @@ public class StickyBallApplet extends CTApplet {
     /** Initialize the applet.
      */
     public void init() {
-
         super.init();
-        Panel controlpanel = new Panel();
-        controlpanel.setLayout(new BorderLayout());
-        add(controlpanel);
 
         _query = new Query();
         _query.addQueryListener(new ParameterListener());
-        controlpanel.add("West", _query);
         _query.addLine("sticky", "Stickiness Decay", "-1.0");
         _query.setBackground(_getBackground());
+        getContentPane().add(_query, BorderLayout.NORTH);
         try {
             // The 2 argument requests a go and stop button.
-            add(_createRunControls(2));
+            getContentPane().add(_createRunControls(2), BorderLayout.SOUTH);
 
             // the top level composite actor
             _toplevel.setName("HybridSystem");
@@ -92,18 +89,19 @@ public class StickyBallApplet extends CTApplet {
 
             // the plot
             // FIXME: adjust configuration.
-            TimedPlotter myplot = new TimedPlotter(_toplevel, "plot");
-            myplot.place(this);
-            myplot.plot.setGrid(true);
-            myplot.plot.setTitle("Sticky Masses");
-            myplot.plot.addLegend(0, "Mass 1 Position");
-            myplot.plot.addLegend(1, "Mass 2 Position");
-            //myplot.plot.setWrap(true);
-            //myplot.plot.setPointsPersistence(1024);
-            //myplot.plot.setConnected(true);
-            myplot.plot.setXRange(0.0, 100.0);
-            myplot.plot.setYRange(0, 3.0);
-            myplot.plot.setSize(500, 300);
+            TimedPlotter responsePlot = new TimedPlotter(_toplevel, "plot");
+            responsePlot.place(getContentPane());
+            responsePlot.plot.setBackground(_getBackground());
+            responsePlot.plot.setGrid(true);
+            responsePlot.plot.setTitle("Sticky Masses");
+            responsePlot.plot.addLegend(0, "Mass 1 Position");
+            responsePlot.plot.addLegend(1, "Mass 2 Position");
+            //responsePlot.plot.setWrap(true);
+            //responsePlot.plot.setPointsPersistence(1024);
+            //responsePlot.plot.setConnected(true);
+            responsePlot.plot.setXRange(0.0, 100.0);
+            responsePlot.plot.setYRange(0, 3.0);
+            responsePlot.plot.setSize(500, 300);
 
             //System.out.println("Building a simple hybrid system.");
             CTCompositeActor hs = new CTCompositeActor(_toplevel, "HS");
@@ -341,8 +339,8 @@ public class StickyBallApplet extends CTApplet {
             // connect the top-level system
             _toplevel.connect(source1.output, hsin1);
             _toplevel.connect(source2.output, hsin2);
-            _toplevel.connect(hsout1, myplot.input);
-            _toplevel.connect(hsout2, myplot.input);
+            _toplevel.connect(hsout1, responsePlot.input);
+            _toplevel.connect(hsout2, responsePlot.input);
 
             //System.out.println("Set parameters.");
             // try to run the system

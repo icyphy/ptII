@@ -30,7 +30,6 @@
 
 package ptolemy.domains.ct.demo.SquareWave;
 
-import java.awt.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.gui.Query;
@@ -43,6 +42,8 @@ import ptolemy.domains.ct.gui.CTApplet;
 import ptolemy.domains.ct.kernel.solver.*;
 import ptolemy.domains.ct.lib.*;
 
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
 //// SquareWaveResponse
@@ -64,23 +65,22 @@ public class SquareWaveResponse extends CTApplet {
      */
     public void init() {
         super.init();
-        Panel controlpanel = new Panel();
+        JPanel controlpanel = new JPanel();
         controlpanel.setLayout(new BorderLayout());
-        add(controlpanel);
+        controlpanel.setBackground(_getBackground());
+        getContentPane().add(controlpanel, BorderLayout.NORTH);
 
         _query = new Query();
         _query.setBackground(_getBackground());
         //_query.addQueryListener(new ParameterListener());
-        controlpanel.add("West", _query);
+        controlpanel.add(_query, BorderLayout.WEST);
         _query.addLine("stopT", "Stop Time", "6.0");
         _query.addLine("solver", "DefaultSolver",
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver");
         _query.addLine("bpsolver", "BreakpointSolver",
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver");
 
-        Panel runcontrols = new Panel();
-        controlpanel.add("East",runcontrols);
-        runcontrols.add(_createRunControls(2));
+        controlpanel.add(_createRunControls(2), BorderLayout.EAST);
 
         try {
             _toplevel.setName( "system");
@@ -96,13 +96,14 @@ public class SquareWaveResponse extends CTApplet {
             Scale gain1 = new Scale( _toplevel, "Gain1");
             Scale gain2 = new Scale( _toplevel, "Gain2");
             Scale gain3 = new Scale( _toplevel, "Gain3");
-            TimedPlotter myplot = new TimedPlotter( _toplevel, "Sink");
-            myplot.place(this);
-            myplot.plot.setGrid(true);
-            myplot.plot.setXRange(0.0, 6.0);
-            myplot.plot.setYRange(-2.0, 2.0);
-            myplot.plot.setSize(600, 400);
-            myplot.plot.addLegend(0,"response");
+            TimedPlotter responsePlot = new TimedPlotter( _toplevel, "Sink");
+            responsePlot.place(getContentPane());
+            responsePlot.plot.setBackground(_getBackground());
+            responsePlot.plot.setGrid(true);
+            responsePlot.plot.setXRange(0.0, 6.0);
+            responsePlot.plot.setYRange(-2.0, 2.0);
+            responsePlot.plot.setSize(600, 400);
+            responsePlot.plot.addLegend(0,"response");
 
             IORelation r1 = (IORelation)
                 _toplevel.connect(sqwv.output, gain1.input, "R1");
@@ -113,14 +114,14 @@ public class SquareWaveResponse extends CTApplet {
             IORelation r4 = (IORelation)
                 _toplevel.connect(intgl1.output, intgl2.input, "R4");
             IORelation r5 = (IORelation)
-                _toplevel.connect(intgl2.output, myplot.input, "R5");
+                _toplevel.connect(intgl2.output, responsePlot.input, "R5");
             gain2.input.link(r4);
             gain3.input.link(r5);
             IORelation r6 = (IORelation)
                 _toplevel.connect(gain2.output, add1.plus, "R6");
             IORelation r7 = (IORelation)
                 _toplevel.connect(gain3.output, add1.plus, "R7");
-            myplot.input.link(r1);
+            responsePlot.input.link(r1);
 
             _dir.StartTime.setToken(new DoubleToken(0.0));
 

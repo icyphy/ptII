@@ -73,22 +73,20 @@ public class LorenzApplet extends CTApplet {
         super.init();
         JPanel controlpanel = new JPanel();
         controlpanel.setLayout(new BorderLayout());
-        add(controlpanel);
+        controlpanel.setBackground(_getBackground());
+        getContentPane().add(controlpanel, BorderLayout.NORTH);
 
         _query = new Query();
         _query.addQueryListener(new ParameterListener());
-        controlpanel.add("West", _query);
+        controlpanel.add(_query, BorderLayout.WEST);
         _query.addLine("stopT", "Stop Time", "50.0");
         _query.addLine("sigma", "Sigma", "10.0");
         _query.addLine("lambda", "Lambda", "25.0");
         _query.addLine("b", "b", "2.0");
         _query.setBackground(_getBackground());
 
-        JPanel runcontrols = new JPanel();
-        controlpanel.add("East",runcontrols);
-        runcontrols.add(_createRunControls(2));
+        controlpanel.add(_createRunControls(2), BorderLayout.EAST);
 
-        //System.out.println("Construct the model");
         // Creating the model.
         try {
             // Set up the top level composite actor, director and manager
@@ -124,7 +122,8 @@ public class LorenzApplet extends CTApplet {
             Scale MINUS3 = new Scale(_toplevel, "MINUS3");
 
             XYPlotter myplot = new XYPlotter(_toplevel, "CTXYPlot");
-            myplot.place(this);
+            myplot.place(getContentPane());
+            myplot.plot.setBackground(_getBackground());
             myplot.plot.setGrid(true);
             myplot.plot.setXRange(-25.0, 25.0);
             myplot.plot.setYRange(-25.0, 25.0);

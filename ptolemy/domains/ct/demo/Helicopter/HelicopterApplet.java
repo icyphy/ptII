@@ -46,6 +46,7 @@ import ptolemy.data.expr.Parameter;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.util.Enumeration;
 import javax.swing.*;
@@ -68,10 +69,10 @@ public class HelicopterApplet extends CTApplet {
 
         super.init();
         JPanel controlpanel = new JPanel();
-        controlpanel.setOpaque(false);
-        getContentPane().add(controlpanel);
-        JPanel progresspanel = new JPanel();
-        // FIXME: Why is this commented out?
+        controlpanel.setBackground(_getBackground());
+        getContentPane().add(controlpanel, BorderLayout.NORTH);
+
+        // JPanel progresspanel = new JPanel();
         // progresspanel.setOpaque(false);
         // getContentPane().add(progresspanel);
         // _currentTimeCanvas = new ProgressBar();
@@ -80,28 +81,21 @@ public class HelicopterApplet extends CTApplet {
         _query = new Query();
         _query.setBackground(_getBackground());
         //_query.addQueryListener(new ParameterListener());
-        controlpanel.add("West", _query);
+        controlpanel.add(_query, BorderLayout.WEST);
         _query.addLine("stopT", "Stop Time", "70.0");
         JPanel runcontrols = new JPanel();
+        runcontrols.setBackground(_getBackground());
         runcontrols.setLayout(new GridLayout(1, 3));
-        controlpanel.add("East",runcontrols);
+        controlpanel.add(runcontrols, BorderLayout.EAST);
         runcontrols.add(_createRunControls(1));
         _actionButton = new JButton("Climb");
         _actionButton.addActionListener(new ActionButtonListener());
         runcontrols.add(_actionButton);
 
-
-        JPanel plotpanel = new JPanel();
-        plotpanel.setLayout(new GridLayout(2, 2));
-        getContentPane().add(plotpanel, "Center");
-        JPanel xzPanel = new JPanel();
-        JPanel vxPanel = new JPanel();
-        JPanel pzPanel = new JPanel();
-        JPanel thPanel = new JPanel();
-        plotpanel.add(xzPanel);
-        plotpanel.add(vxPanel);
-        plotpanel.add(pzPanel);
-        plotpanel.add(thPanel);
+        JPanel plotPanel = new JPanel();
+        plotPanel.setLayout(new GridLayout(2, 2));
+        plotPanel.setBackground(_getBackground());
+        getContentPane().add(plotPanel);
 
         try {
             // Set up the top level composite actor, director and manager
@@ -321,7 +315,8 @@ public class HelicopterApplet extends CTApplet {
             Scale MINUS = new Scale(_toplevel, "MINUS");
             //CTPlot ctPlot = new CTPlot(_toplevel, "CTPlot", ctPanel);
             XYPlotter xzPlot = new XYPlotter(_toplevel, "Helicopter Position");
-            xzPlot.place(xzPanel);
+            xzPlot.place(plotPanel);
+            xzPlot.plot.setBackground(_getBackground());
             xzPlot.plot.setTitle("Helicopter Position");
             xzPlot.plot.setButtons(false);
             xzPlot.plot.setGrid(true);
@@ -332,7 +327,8 @@ public class HelicopterApplet extends CTApplet {
 
             TimedPlotter vxPlot = new TimedPlotter(_toplevel,
                     "Horizontal Speed");
-            vxPlot.place(vxPanel);
+            vxPlot.place(plotPanel);
+            vxPlot.plot.setBackground(_getBackground());
             vxPlot.plot.setTitle("Horizontal Speed");
             vxPlot.plot.setButtons(false);
             vxPlot.plot.setGrid(true);
@@ -343,7 +339,8 @@ public class HelicopterApplet extends CTApplet {
 
             TimedPlotter pzPlot = new TimedPlotter(_toplevel,
                     "Vertical Position");
-            pzPlot.place(pzPanel);
+            pzPlot.place(plotPanel);
+            pzPlot.plot.setBackground(_getBackground());
             pzPlot.plot.setTitle("Vertical Position");
             pzPlot.plot.setButtons(false);
             pzPlot.plot.setGrid(true);
@@ -354,7 +351,8 @@ public class HelicopterApplet extends CTApplet {
 
             TimedPlotter thPlot = new TimedPlotter(_toplevel,
                     "Pitch Angle");
-            thPlot.place(thPanel);
+            thPlot.place(plotPanel);
+            thPlot.plot.setBackground(_getBackground());
             thPlot.plot.setTitle("Pitch Angle");
             thPlot.plot.setButtons(false);
             thPlot.plot.setGrid(true);
