@@ -369,19 +369,20 @@ test NamedObj-11.1 {Test exportMoML} {
 }
 
 test NamedObj-11.2 {Test deferMoMLDefinitionTo} {
+    # The following causes clones of $a to defer their MoML definition to $a.
+    $a setMoMLElementName "class"
     set b [java::cast ptolemy.kernel.util.NamedObj [$a clone]]
     set a3 [java::new ptolemy.kernel.util.Attribute $a1 "A3"]
-    $b deferMoMLDefinitionTo $a
     $b exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="A" class=".A">
+<class name="A" extends=".A">
     <property name="A1" class="ptolemy.kernel.util.Attribute">
         <property name="A2" class="ptolemy.kernel.util.Attribute">
         </property>
     </property>
-</model>
+</class>
 }
 
 test NamedObj-11.3 {Test referTo of a class} {
@@ -402,10 +403,12 @@ test NamedObj-11.4 {Test deferredMoMLDefinitionFrom} {
     listToFullNames [$a deferredMoMLDefinitionFrom]
 } {.A}
 
-test NamedObj-11.5 {Test removal of deferral} {
-    $b deferMoMLDefinitionTo [java::null]
-    listToFullNames [$a deferredMoMLDefinitionFrom]
-} {}
+# NOTE: This test no longer makes sense, since such removal is
+# no longer possible.
+# test NamedObj-11.5 {Test removal of deferral} {
+#     $b deferMoMLDefinitionTo [java::null]
+#     listToFullNames [$a deferredMoMLDefinitionFrom]
+# } {}
 
 test NamedObj-11.6 {Test exportMoML Writer} {
     set n [java::new ptolemy.kernel.util.Workspace]
