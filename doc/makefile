@@ -178,7 +178,6 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.actor \
 			ptolemy.actor.gui \
 			ptolemy.actor.process \
-			ptolemy.actor.lib.hoc \
 			ptolemy.actor.lib.net \
 			ptolemy.actor.sched \
 			ptolemy.actor.util \
@@ -253,7 +252,6 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/actor/gui/*.java \
 			../ptolemy/actor/lib/*.java \
 			../ptolemy/actor/lib/conversions/*.java \
-			../ptolemy/actor/lib/hoc/*.java \
 			../ptolemy/actor/lib/net/*.java \
 			../ptolemy/actor/lib/gui/*.java \
 			../ptolemy/actor/lib/logic/*.java \
