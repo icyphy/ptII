@@ -81,9 +81,9 @@ public class Table extends Panel {
     public void line(String name, String label, String defvalue, int width) {
         // FIXME: This should really use the jdk 1.2 JTable class
         Label lbl = new Label(label);
-        Label valuebox = new Label(defvalue);
-        _addPair(lbl, valuebox);
-        _items.put(name, valuebox);
+        Label valueBox = new Label(defvalue);
+        _addPair(lbl, valueBox);
+        _items.put(name, valueBox);
     }
 
     /** Set the displayed value of the item with the given name.
@@ -92,12 +92,12 @@ public class Table extends Panel {
      *   need not be declared explicitly.
      */
     public void set(String name, String value) throws NoSuchElementException {
-        Label valuebox = (Label)(_items.get(name));
-        if(valuebox == null) {
+        Label valueBox = (Label)(_items.get(name));
+        if(valueBox == null) {
             throw new NoSuchElementException("No item named \"" +
                     name + " \" in the table.");
         }
-        valuebox.setText(value);
+        valueBox.setText(value);
     }
 
     ///////////////////////////////////////////////////////////////////
