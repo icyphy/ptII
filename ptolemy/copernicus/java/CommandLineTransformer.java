@@ -115,7 +115,7 @@ public class CommandLineTransformer extends SceneTransformer {
 
     public String getDefaultOptions() {
         return "iterations:" + _iterationsDefault
-            + "template:" + _commandLineTemplateDefault;
+            + " template:" + _commandLineTemplateDefault;
     }
 
     public String getDeclaredOptions() {
