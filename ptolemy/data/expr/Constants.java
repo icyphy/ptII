@@ -32,7 +32,6 @@
 package ptolemy.data.expr;
 
 import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
 import ptolemy.util.StringUtilities;
 import ptolemy.math.Complex;
 

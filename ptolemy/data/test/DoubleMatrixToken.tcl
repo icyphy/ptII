@@ -130,8 +130,8 @@ test DoubleMatrixToken-2.6 {Test multiplicative identity} {
 ######################################################################
 ####
 # 
-test DoubleMatrixToken-2.7 {Test createArray} {
-    set array [java::call ptolemy.data.MatrixToken createArray [$p one]]
+test DoubleMatrixToken-2.7 {Test matrixToArray} {
+    set array [java::call ptolemy.data.MatrixToken matrixToArray [$p one]]
     $array toString
 } {{1.0, 0.0, 0.0, 1.0}}
 

@@ -38,7 +38,6 @@ import ptolemy.data.ArrayToken;
 import ptolemy.data.MatrixToken;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -1312,7 +1311,7 @@ public class CachedMethod {
                 }
             }
 
-            return MatrixToken.createMatrix(tokenArray, ydim, xdim);
+            return MatrixToken.arrayToMatrix(tokenArray, ydim, xdim);
         }
 
         /** Override the base class to correctly implement the

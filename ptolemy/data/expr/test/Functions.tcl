@@ -638,11 +638,53 @@ test Function-toRadians {Test toRadians} {
 ####################################################################
 
 ####################################################################
+# arrayToMatrix
+
+test Function-arrayToMatrix {Test arrayToMatrix} {
+    list [evaluate {arrayToMatrix({true,false,true,true,false,false}, 2, 3)}] \
+	[evaluate {arrayToMatrix({1,2,3,4,5,6}, 2, 3)}] \
+	[evaluate {arrayToMatrix({1L,2L,3L,4L,5L,6L}, 2, 3)}] \
+	[evaluate {arrayToMatrix({1.0,2.0,3.0,4.0,5.0,6.0}, 2, 3)}] \
+	[evaluate {arrayToMatrix({1.0 + 0i, 2.0 + 1i, 3.0 - 1i, 4.0 + 4i, 5.0 - 5i, 6.0 - 6.0i}, 2, 3)}] \
+	[evaluate {arrayToMatrix({1ub,2,3.5,4,5,6}, 2, 3)}]
+} {{[true, false, true; true, false, false]} {[1, 2, 3; 4, 5, 6]} {[1L, 2L, 3L; 4L, 5L, 6L]} {[1.0, 2.0, 3.0; 4.0, 5.0, 6.0]} {[1.0 + 0.0i, 2.0 + 1.0i, 3.0 - 1.0i; 4.0 + 4.0i, 5.0 - 5.0i, 6.0 - 6.0i]} {[1.0, 2.0, 3.5; 4.0, 5.0, 6.0]}}
+
+test Function-arrayToMatrix {Test arrayToMatrix with an array that is not big enough} {
+    catch {evaluate {arrayToMatrix({1L,2L,3L,4L}, 2, 3)}} errMsg
+    list $errMsg	
+} {{ptolemy.kernel.util.IllegalActionException: Error invoking function public static ptolemy.data.MatrixToken ptolemy.data.MatrixToken.arrayToMatrix(ptolemy.data.Token[],int,int) throws ptolemy.kernel.util.IllegalActionException
+
+Because:
+LongMatrixToken: The specified array is not of the correct length}}
+
+
+####################################################################
 # conjugateTranspose
 
 test Function-conjugateTranspose {Test conjugateTranspose} {
     list [evaluate {conjugateTranspose([0, i; 0, 0])}] \
         } {{[0.0 + 0.0i, 0.0 + 0.0i; 0.0 - 1.0i, 0.0 + 0.0i]}}
+
+####################################################################
+# createSequence
+
+test Function-createSequence {Test createSequence} {
+    list "[evaluate {createSequence(false, false, 5)}]\n \
+	[evaluate {createSequence(false, true, 5)}]\n \
+	[evaluate {createSequence(true, false, 5)}]\n \
+	[evaluate {createSequence(true, true, 5)}]\n \
+	[evaluate {createSequence(-1, 1, 5)}]\n \
+	[evaluate {createSequence(-1L, 1L, 5)}]\n \
+	[evaluate {createSequence(-1.0, 1.0, 5)}]\n \
+	[evaluate {createSequence(-1.0 - 1i, 1.0 - 1i, 5)}]"
+} {{{false, false, false, false, false}
+  {false, true, true, true, true}
+  {true, true, true, true, true}
+  {true, true, true, true, true}
+  {-1, 0, 1, 2, 3}
+  {-1L, 0L, 1L, 2L, 3L}
+  {-1.0, 0.0, 1.0, 2.0, 3.0}
+  {-1.0 - 1.0i, 0.0 - 2.0i, 1.0 - 3.0i, 2.0 - 4.0i, 3.0 - 5.0i}}}
 
 ####################################################################
 # crop
@@ -708,6 +750,18 @@ test Function-identity {Test identity} {
 test Function-inverse {Test inverse} {
     list [evaluate {within(inverse(hilbert(3))*hilbert(3), identityDouble(3), 1.0e-6)}]
 } {true}
+
+####################################################################
+# matrixToArray
+
+test Function-matrixToArray {Test matrixToArray} {
+    list \
+	[evaluate {matrixToArray([true,false;true,true])}] \
+	[evaluate {matrixToArray([1,2;3,4])}] \
+	[evaluate {matrixToArray([1L,2L;3L,4L])}] \
+	[evaluate {matrixToArray([1.0,2.0;3.0,4.0])}] \
+	[evaluate {matrixToArray([1.0 + 0i, 2.0 + 1i; 3.0 - 1i, 4.0 + 4i])}]
+} {{{true, false, true, true}} {{1, 2, 3, 4}} {{1L, 2L, 3L, 4L}} {{1.0, 2.0, 3.0, 4.0}} {{1.0 + 0.0i, 2.0 + 1.0i, 3.0 - 1.0i, 4.0 + 4.0i}}}
 
 ####################################################################
 # merge
@@ -819,65 +873,6 @@ test Function-transpose {Test transpose} {
 ####################################################################
 ####################################################################
 # FIXME: Organize the following
-
-
-
-
-test Function-23.6.5 {Test various function calls: createArray} {
-    # FIXME: what about UnsignedByteArray and FixMatrixToken
-    list \
-	[evaluate {createArray([true,false;true,true])}] \
-	[evaluate {createArray([1,2;3,4])}] \
-	[evaluate {createArray([1L,2L;3L,4L])}] \
-	[evaluate {createArray([1.0,2.0;3.0,4.0])}] \
-	[evaluate {createArray([1.0 + 0i, 2.0 + 1i; 3.0 - 1i, 4.0 + 4i])}]
-} {{{true, false, true, true}} {{1, 2, 3, 4}} {{1L, 2L, 3L, 4L}} {{1.0, 2.0, 3.0, 4.0}} {{1.0 + 0.0i, 2.0 + 1.0i, 3.0 - 1.0i, 4.0 + 4.0i}}}
-
-
-test Function-23.6.6.1 {Test various function calls: createMatrix} {
-    # FIXME: what about UnsignedByteArray and FixMatrixToken
-    list "[evaluate {createMatrix({true,false,true,true,false,false}, 2, 3)}]\n \
-	[evaluate {createMatrix({1,2,3,4,5,6}, 2, 3)}]\n \
-	[evaluate {createMatrix({1L,2L,3L,4L,5L,6L}, 2, 3)}]\n \
-	[evaluate {createMatrix({1.0,2.0,3.0,4.0,5.0,6.0}, 2, 3)}]\n \
-	[evaluate {createMatrix({1.0 + 0i, 2.0 + 1i, 3.0 - 1i, 4.0 + 4i, 5.0 - 5i, 6.0 - 6.0i}, 2, 3)}]\n \
-	[evaluate {createMatrix({1ub,2,3.5,4,5,6}, 2, 3)}]"
-
-} {{[true, false, true; true, false, false]
-  [1, 2, 3; 4, 5, 6]
-  [1L, 2L, 3L; 4L, 5L, 6L]
-  [1.0, 2.0, 3.0; 4.0, 5.0, 6.0]
-  [1.0 + 0.0i, 2.0 + 1.0i, 3.0 - 1.0i; 4.0 + 4.0i, 5.0 - 5.0i, 6.0 - 6.0i]
-  [1.0, 2.0, 3.5; 4.0, 5.0, 6.0]}}
-
-test Function-23.6.6.2 {Test various function calls: createMatrix with an array that is not big enough} {
-    catch {evaluate {createMatrix({1L,2L,3L,4L}, 2, 3)}} errMsg
-    list $errMsg	
-} {{ptolemy.kernel.util.IllegalActionException: Error invoking function public static ptolemy.data.MatrixToken ptolemy.data.MatrixToken.createMatrix(ptolemy.data.Token[],int,int) throws ptolemy.kernel.util.IllegalActionException
-
-Because:
-LongMatrixToken: The specified array is not of the correct length}}
-
-
-test Function-23.6.7.1 {Test various function calls: createSequence} {
-    # FIXME: what about UnsignedByteArray and FixMatrixToken
-    list "[evaluate {createSequence(false, false, 5)}]\n \
-	[evaluate {createSequence(false, true, 5)}]\n \
-	[evaluate {createSequence(true, false, 5)}]\n \
-	[evaluate {createSequence(true, true, 5)}]\n \
-	[evaluate {createSequence(-1, 1, 5)}]\n \
-	[evaluate {createSequence(-1L, 1L, 5)}]\n \
-	[evaluate {createSequence(-1.0, 1.0, 5)}]\n \
-	[evaluate {createSequence(-1.0 - 1i, 1.0 - 1i, 5)}]"
-} {{{false, false, false, false, false}
-  {false, true, true, true, true}
-  {true, true, true, true, true}
-  {true, true, true, true, true}
-  {-1, 0, 1, 2, 3}
-  {-1L, 0L, 1L, 2L, 3L}
-  {-1.0, 0.0, 1.0, 2.0, 3.0}
-  {-1.0 - 1.0i, 0.0 - 2.0i, 1.0 - 3.0i, 2.0 - 4.0i, 3.0 - 5.0i}}}
-
 
 
 test Function-23.11 {Test various function calls} {

@@ -39,7 +39,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.ParseTreeEvaluator;
 import ptolemy.data.expr.PtParser;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -592,5 +592,5 @@ public class RecordToken extends AbstractNotConvertibleToken {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Map _fields = new HashMap();
+    private Map _fields = new TreeMap();
 }
