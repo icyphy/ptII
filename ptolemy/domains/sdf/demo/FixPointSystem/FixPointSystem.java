@@ -108,7 +108,6 @@ public class FixPointSystem extends SDFApplet implements QueryListener {
             _query.setBackground(_getBackground());
             _query.addLine("precision", "Precision of the FixTokens", "2.1");
 	    _query.addRadioButtons("rounding","Rounding Mode",options,"Saturate");
-	    _query.addProgressBar("rounding","Rounding Mode",1,0,100);
             _query.addQueryListener(this);
             getContentPane().add( _query );
 
