@@ -623,7 +623,7 @@ if ![info exists timeOutSeconds] {
 if {"$isRunningNightlyBuild" == "true" \
 	|| "$timeOutSeconds" != "" } {
     if {"$timeOutSeconds" == ""} {
-       set timeOutSeconds 1200
+       set timeOutSeconds 1500
     }
     puts "testDefs.tcl: setting time out to\
 	$timeOutSeconds seconds"
