@@ -97,7 +97,6 @@ public class AttributeNodeModel extends NamedObjNodeModel {
      *  @param node The node.
      */
     public void removeNode(final Object eventSource, final Object node) {
-        final Object prevParent = getParent(node);
         NamedObj attribute = (NamedObj)((Locatable)node).getContainer();
 
         NamedObj container = _getChangeRequestParent(attribute);

@@ -227,9 +227,6 @@ public class PortSite extends AbstractSite {
     /** The number of ports of the kind as this one. */
     private int _count;
 
-    /** The ID. */
-    private int _id;
-
     /** The normal. */
     private double _normal;
 
