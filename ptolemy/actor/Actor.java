@@ -81,6 +81,23 @@ public interface Actor extends Executable {
      */
     public Enumeration inputPorts();
 
+    /** Invoke a specified number of iterations of this actor. An
+     *  iteration consists of invoking prefire(), fire(), and 
+     *  postfire(), in that order. If prefire() returns true, then
+     *  fire() will be called once, followed by postfire(). Otherwise,
+     *  fire() and postfire() are not invoked, and this method will
+     *  return a value of false. This method will return true if 
+     *  the actor was successfully iterated the specified number of 
+     *  times. Otherwise, a value of false will be returned.
+     *  
+     *  @param count The number of iterations to perform.
+     *  @return True if the actor was successfully iterated the
+     *   specified number of times. Otherwise, return false.
+     *  @exception IllegalActionException If one of the Executable
+     *   methods throws it.
+     */
+    public boolean iterate(int count) throws IllegalActionException;
+
     /** Return a new receiver of a type compatible with the executive director.
      *  This is the receiver that should be used by ports of this actor.
      *  @exception IllegalActionException If there is no director.
