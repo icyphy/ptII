@@ -61,6 +61,7 @@ JSRCS = \
 	PNPrimeExample.java \
 	PNRamp.java \
 	PNRedirect.java \
+	PNSieve.java \
 	PNStar.java \
 	PNUniverse.java 
 
