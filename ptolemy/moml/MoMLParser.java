@@ -464,6 +464,8 @@ public class MoMLParser extends HandlerBase {
         // Use the current working directory as a base.
 	String cwd = System.getProperty("user.dir");
 	if (cwd != null) {
+            // We have to append a trailing / here for this to
+            // work under Solaris.
 	    base = new URL("file", null, cwd + "/");
 	}
 
@@ -501,6 +503,8 @@ public class MoMLParser extends HandlerBase {
         // Use the current working directory as a base.
 	String cwd = System.getProperty("user.dir");
 	if (cwd != null) {
+            // We have to append a trailing / here for this to
+            // work under Solaris.
 	    base = new URL("file", null, cwd + "/");
 	}
 		
@@ -1671,6 +1675,8 @@ public class MoMLParser extends HandlerBase {
             try {
                 String cwd = System.getProperty("user.dir");
                 if (cwd != null) {
+                    // We have to append a trailing / here for this to
+                    // work under Solaris.
                     base = new URL("file", null, cwd + "/");
                     xmlFile = new URL(base, source);
                     input = xmlFile.openStream();
