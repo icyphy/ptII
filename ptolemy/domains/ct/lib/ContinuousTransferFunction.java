@@ -37,8 +37,10 @@ import ptolemy.actor.lib.Scale;
 import ptolemy.actor.lib.AddSubtract;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.ArrayType;
 
 import java.util.Iterator;
 
@@ -94,16 +96,18 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
         _opaque = true;
-        double[][] b = {{1.0}};
+
+        DoubleToken[] defaultToken = {new DoubleToken(1.0)};
         numerator = new Parameter(this, "numerator",
-                new DoubleMatrixToken(b));
-        numerator.setTypeEquals(BaseType.DOUBLE_MATRIX);
+                new ArrayToken(defaultToken));
+        numerator.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         denominator = new Parameter(this, "denominator",
-                new DoubleMatrixToken(b));
-        denominator.setTypeEquals(BaseType.DOUBLE_MATRIX);
+                new ArrayToken(defaultToken));
+        denominator.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
-        getMoMLInfo().className =
+        // Do not use TypedCompositeActor as the MoML name for this actor.
+        getMoMLInfo().className = 
             "ptolemy.domains.ct.lib.ContinuousTransferFunction";
 
         // icon
@@ -129,17 +133,18 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
     /** Single output port.
      */
     public TypedIOPort output;
-
-    /** The coefficients of the numerator, containing a DoubleMatrixToken.
-     *  The DoubleMatrix can only be a row vector.
-     *  The default value is [1.0].
+    
+    /** The coefficients of the numerator, containing an array of 
+     *  DoubleTokens.
+     *  The default value is {1.0}.
      */
     public Parameter numerator;
-
-    /** The coefficients of the denominator, containing a DoubleMatrixToken.
-     *  The DoubleMatrix can only be a row vector will length greater
+    
+    /** The coefficients of the denominator, containing an array
+     *  of DoubleTokens.
+     *  The array must have a length greater
      *  than or equal to the length of the numerator.
-     *  The default value is [1.0].
+     *  The default value is {1.0}.
      */
     public Parameter denominator;
 
@@ -147,13 +152,13 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
     ////                      public methods                          ////
 
     /** If the argument is the <i>numerator</i> or the <i>denominator</i>
-     *  parameters, check that
-     *  they have the right dimensions,
-     *  and request for initialization from the director if there is one.
-     *  Other sanity checks like the denominator must have a higher
-     *  order than that of the numerator, and the first element of the
-     *  denominator should not be zero are done in
-     *  the preinitialize() method.
+     *  parameters, request for initialization from the director if 
+     *  there is one. Also check that the <i>denominator</i> vector
+     *  cannot start with 0.
+     *  Other sanity checks, like that the denominator must have a higher 
+     *  order than that of the numerator, and that the first element of the
+     *  denominator should not be zero, are done in the preinitialize() 
+     *  method.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the numerator and the
      *   denominator matrix is not a row vector.
@@ -161,13 +166,6 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == numerator) {
-            // Check the dimension.
-            double[][] b =
-                ((DoubleMatrixToken)numerator.getToken()).doubleMatrix();
-            if (b.length != 1 || b[0].length == 0) {
-                throw new IllegalActionException(this,
-                        "Value of the numerator is not a row vector.");
-            }
             // Set this composite to opaque.
             _opaque = true;
             // Request for initialization.
@@ -176,14 +174,9 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                 dir.requestInitialization(this);
             }
         } else if (attribute == denominator) {
-            // Check the dimension.
-            double[][] a =
-                ((DoubleMatrixToken)denominator.getToken()).doubleMatrix();
-            if (a.length != 1 || a[0].length == 0) {
-                throw new IllegalActionException(this,
-                        "Value of the denominator is not a row vector.");
-            }
-            if (a[0][0] == 0.0) {
+            // Check that a_0 is not 0.0
+            ArrayToken aToken = (ArrayToken)(denominator.getToken());
+            if (((DoubleToken)aToken.getElement(0)).doubleValue() == 0.0) {
                 throw new IllegalActionException(this,
                         "The denominator coefficient cannot start with 0.");
             }
@@ -218,13 +211,19 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
      */
     public void preinitialize() throws IllegalActionException {
         System.out.println("preinitializing " + getName());
-        // Check parameters.
-        double[] bRow =
-            ((DoubleMatrixToken)numerator.getToken()).doubleMatrix()[0];
-        double[] a =
-                ((DoubleMatrixToken)denominator.getToken()).doubleMatrix()[0];
-        int m = bRow.length;
-        int n = a.length;
+        // Construct local double[] and Check dimensions.
+        ArrayToken bToken = (ArrayToken)numerator.getToken();
+        int m = bToken.length();
+        double[] bRow = new double[m];
+        for (int i = 0; i < m; i++) {
+            bRow[i] = ((DoubleToken)bToken.getElement(i)).doubleValue();
+        }
+        ArrayToken aToken = (ArrayToken)denominator.getToken();
+        int n = aToken.length();
+        double[] a = new double[n];
+        for (int i = 0; i < n; i++) {
+            a[i] = ((DoubleToken)aToken.getElement(i)).doubleValue();
+        }
         if (m > n) {
             throw new IllegalActionException(this,
                     "The order of the denominator must be greater than or "
