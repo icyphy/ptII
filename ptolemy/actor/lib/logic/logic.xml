@@ -7,6 +7,21 @@
       <group>
   <doc>Logic functions</doc>
 
+  <entity name="Compare" class="ptolemy.actor.lib.logic.Compare">
+    <property name="comparison">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="gt" value="&gt;"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="ge" value="&gt;="
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="lt" value="&lt;"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+            <property name="le" value="&lt;="
+	              class="ptolemy.kernel.util.StringAttribute"/>
+        </property>
+     </property>
+  </entity>
+
   <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
   </entity>
 

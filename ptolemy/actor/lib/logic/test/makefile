@@ -49,6 +49,7 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	Compare.tcl \
 	Equals.tcl \
 	LogicFunction.tcl \
 	LogicalNot.tcl
