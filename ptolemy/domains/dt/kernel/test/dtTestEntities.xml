@@ -1,0 +1,31 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DT test actors" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>discrete time test actors</doc>
+
+<entity name="TimedDisplay" class="ptolemy.domains.dt.kernel.test.TimedDisplay">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.source</configure>
+</rendition>
+</entity>
+
+<entity name="OnePort" class="ptolemy.domains.dt.kernel.test.OnePort">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.source</configure>
+</rendition>
+</entity>
+
+<entity name="TwoPort" class="ptolemy.domains.dt.kernel.test.TwoPort">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.source</configure>
+</rendition>
+</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
