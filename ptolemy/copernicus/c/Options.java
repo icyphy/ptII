@@ -51,6 +51,10 @@ key-value string pairs. Possible options are:
 <i> 1 </i> Code Pruning done by InvokeGraphPruner.
 
 <p>
+<b> vta </b> <br>
+<i> true/false </i> Whether or not to perform Variable Type Analysis.
+
+<p>
 <b> lib </b> <br>
 stores the path to the directory where library of generated files is
 stored.
@@ -87,6 +91,7 @@ public class Options {
         _optionTable.put("gcDir", "");
         _optionTable.put("target", "");
         _optionTable.put("runtimeDir", "../runtime");
+        _optionTable.put("vta", "true");
     }
 
 
@@ -131,6 +136,41 @@ public class Options {
      */
     public int getInt(String key) {
         return Integer.valueOf(get(key)).intValue();
+    }
+
+    /** Checks if a given string is a valid Option.
+     * @param string The string to be checked.
+     * @return True if it is a valid Option flag.
+     */
+     public static boolean isValidOption(String string) {
+         if (string.equals("lib")
+               || string.equals("verbose")
+               || string.equals("compileMode")
+               || string.equals("pruneLevel")
+               || string.equals("gcDir")
+               || string.equals("target")
+               || string.equals("runtimeDir")
+               || string.equals("vta")) {
+             return true;
+         }
+         else {
+             return false;
+         }
+     }
+
+     /** Checks if a given string is a valid option flag. A valid option
+      * flag is a "-" followed by a valid Option String.
+      * @param string The string to be checked.
+      * @return True if it is a valid option flag.
+      */
+    public static boolean isValidFlag(String string) {
+        if (string.startsWith("-")
+                && isValidOption(string.substring(1))) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
 

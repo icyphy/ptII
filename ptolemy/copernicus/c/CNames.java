@@ -379,11 +379,6 @@ public class CNames {
      */
     public static final String arrayClassPrefix = "PCCG_ARRAY_";
 
-    /** The name of the type in the run-time code that represents
-     *  a pointers to an instance of an array object.
-     */
-    //shouldn't use this anymore
-    //public static final String arrayInstanceTypeName = "PCCG_ARRAY_INSTANCE";
 
     /** The name of the runtime function or macro to be used for
      *  determining the length of an array.

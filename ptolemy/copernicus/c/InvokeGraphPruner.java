@@ -76,15 +76,16 @@ public class InvokeGraphPruner {
         _verbose = Options.v().getBoolean("verbose");
         _cache = new InvokeGraphCache();
         if (!_cache.isPrecomputed()) {
-            _setUnOverriddenClassesAsLibrary();
-            //_setAllClassesAsLibrary();
+            _setAllClassesAsLibrary();
             InvokeGraph invokeGraph = _generateNewInvokeGraph();
             Scene.v().setActiveInvokeGraph(invokeGraph);
-            /* FIXME: Uncomment this.
-            VariableTypeAnalysis vta = new VariableTypeAnalysis(invokeGraph);
-            vta.trimActiveInvokeGraph();
-            */
 
+            // Use VTA for further trimming.
+            if (Options.v().getBoolean("vta")) {
+                VariableTypeAnalysis vta =
+                        new VariableTypeAnalysis(invokeGraph);
+                vta.trimActiveInvokeGraph();
+            }
             _cache.store(invokeGraph);
         }
         _cache.load();
@@ -93,7 +94,7 @@ public class InvokeGraphPruner {
         // All methods in the source, and no other methods, are required in
         // singleclass mode.
         if (!Options.v().get("compileMode").equals("singleClass")) {
-            _setUnOverriddenClassesAsLibrary();
+            _setAllClassesAsLibrary();// To see inside method bodies.
             _growTree(source);
         }
         else {
@@ -104,6 +105,33 @@ public class InvokeGraphPruner {
             _reachableMethods.addAll(source.getMethods());
             _reachableFields.addAll(source.getFields());
         }
+
+        /* FIXME: Remove this.
+        _verbose = Options.v().getBoolean("verbose");
+        _cache = new InvokeGraphCache();
+        if (!_cache.isPrecomputed()) {
+            //_setUnOverriddenClassesAsLibrary();
+            _setAllClassesAsLibrary();
+            InvokeGraph invokeGraph = _generateNewInvokeGraph();
+            Scene.v().setActiveInvokeGraph(invokeGraph);
+            VariableTypeAnalysis vta = new
+            VariableTypeAnalysis(invokeGraph);
+            vta.trimActiveInvokeGraph();
+
+            _cache.store(invokeGraph); } _cache.load();
+
+        _generatePluginInvokeGraph();
+        // All methods in the source, and no other methods, are required in
+        // singleclass mode.
+        if (!Options.v().get("compileMode").equals("singleClass")) {
+            //_setUnOverriddenClassesAsLibrary();
+            _setUnCachedClassesAsLibrary(); _growTree(source); } else {
+            // singleClass mode.
+            _reachableClasses = new HashSet();
+            _reachableClasses.add(source); _reachableMethods = new
+            HashSet(); _reachableMethods.addAll(source.getMethods());
+            _reachableFields.addAll(source.getFields()); }
+        */
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -583,7 +611,9 @@ public class InvokeGraphPruner {
         }
     }
 
-    /** Set all classes in the Scene that are not overridden as library classes. */
+    /** Set all classes in the Scene that are not overridden as library
+        classes.
+      */
     private void _setUnOverriddenClassesAsLibrary() {
         if (_verbose) {
             System.out.println(

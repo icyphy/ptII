@@ -141,8 +141,6 @@ public class JavaToC {
         String classPath = new String(args[0]);
         String className = new String();
 
-        //_test(classPath);
-
         // Default flags.
         String compileMode = new String("full");
         boolean verbose = false;
@@ -158,15 +156,10 @@ public class JavaToC {
                     System.exit(0);
                 }
                 // Check for possible options.
-                else if (args[i].equals("-lib")
-                        || args[i].equals("-verbose")
-                        || args[i].equals("-compileMode")
-                        || args[i].equals("-pruneLevel")
-                        || args[i].equals("-gcDir")
-                        || args[i].equals("-target")
-                        || args[i].equals("-runtimeDir")) {
+                else if (Options.isValidFlag(args[i])) {
                     if (i<args.length-1) {
                         i++;
+                        // Strip the leading "-" and note the option.
                         Options.v().put(args[i-1].substring(1), args[i]);
                     }
                     else {
@@ -174,7 +167,6 @@ public class JavaToC {
                                 "Invalid command-line format.");
                     }
                 }
-
             }
             else {
                 // Its the name of a class to convert.

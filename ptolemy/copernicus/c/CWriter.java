@@ -147,6 +147,8 @@ public class CWriter extends SceneTransformer {
             Options.v().put("compileMode", "full");
             Options.v().put("verbose", "true");
             Options.v().put("runtimeDir", "../../runtime");
+            // vta does not work with ptII for some reason.
+            Options.v().put("vta", "false");
 
             RFG.init(classPath, sootClass.getName());
 
