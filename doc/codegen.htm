@@ -143,6 +143,11 @@ then a plot will be displayed while the deep code generator is run.
 This is because the code generator calls initialize() and the plot
 actors render the plotter during initialize().
 
+
+<li> The deep code generator does not handle plot configurations,
+so if your model has a custom configuration for a plot, then
+that information is lost. 
+
 <li> Deep code generation does not work under Mac OSX because
 the deep code generator cannot find the Java <CODE>rt.jar</CODE>
 
