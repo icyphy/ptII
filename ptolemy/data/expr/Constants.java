@@ -157,16 +157,23 @@ public class Constants {
         _table.put("false", BooleanToken.FALSE);
 
         try {
-            // When Vergil is started up, java is called with
-            // -Dptolemy.ptII.dir=${PTII}.
+            // StringToken.getProperty() specially handles user.dir.
             _table.put("CWD",
                     new StringToken(StringUtilities.getProperty("user.dir")));
             _table.put("HOME",
                     new StringToken(StringUtilities.getProperty("user.home")));
 
+            // When Vergil is started up, java is called with
+            // -Dptolemy.ptII.dir=${PTII} and 
+            // StringUtilities.getProperty() does some special munging 
+            // for ptolemy.ptII.dir
+
             _table.put("PTII",
                     new StringToken(
                             StringUtilities.getProperty("ptolemy.ptII.dir")));
+
+            // See also the ptolemy.ptII.dirAsURL properyt in StringUtilities.
+
         } catch (Exception e) {}
 
         // Infinities and NaN
