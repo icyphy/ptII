@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/giotto/demo
 
-DIRS = 		Hierarchy Multimode
+DIRS = 		Composite Hierarchy Multimode
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -45,6 +45,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	Composite/Composite.jar \
 	Hierarchy/Hierarchy.jar \
 	Multimode/Multimode.jar
 
