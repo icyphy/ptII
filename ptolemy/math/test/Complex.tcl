@@ -60,6 +60,13 @@ test Complex-2.1 {magnitude} {
 3.60555127546}}
 
 ####################################################################
+test Complex-2.2 {magnitudeSquared} {
+    list "[$c0 magnitudeSquared]\n[$c1 magnitudeSquared]\n[$c2 magnitudeSquared]"
+} {{0.0
+0.25
+13.0}}
+
+####################################################################
 test Complex-2.3 {add} {
     set c22 [java::new ptolemy.math.Complex -1.1 -1.1]
     set c23 [$c2 add $c22]
