@@ -184,6 +184,8 @@ public class ActorController extends AttributeController {
 
     private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 10);
 
+    private boolean _addedLookInsideAction;
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
