@@ -171,12 +171,12 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _history.clear();
     }
 
-    /** Emit the tentative output, which is the tentative state of the
+    /** Emit the tentative output, which is the current state of the
      *  integrator.
      *  @exception IllegalActionException If the data transfer can not be
      *  completed.
      */
-    public void emitTentativeOutputs() throws IllegalActionException {
+    public void emitCurrentStates() throws IllegalActionException {
         output.send(0, new DoubleToken(_tentativeState));
     }
 

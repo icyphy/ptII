@@ -57,11 +57,12 @@ public interface CTTransparentDirector extends CTGeneralDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Implementations of this method should emit the tentative outputs.
+    /** Implementations of this method should emit the current states
+     *  of the dynamic actors executed by this director.
      *  @exception IllegalActionException If the data transfer is not
      *  completed.
      */
-    public void emitTentativeOutputs()  throws IllegalActionException;
+    public void emitCurrentStates()  throws IllegalActionException;
 
     /** Implementations of this method should go to the marked state.
      *  If there's no marked state, throws an exception.

@@ -81,6 +81,6 @@ public class CTDummyDynamicActor extends TypedAtomicActor
     ////                         public methods                    ////
 
     /** Dummy method. Do nothing. */
-    public void emitTentativeOutputs() {
+    public void emitCurrentStates() {
     }
 }

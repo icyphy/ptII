@@ -120,16 +120,17 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         return false;
     }
 
-    /** Emit the tentative outputs of dynamic actors.
+    /** Emit the current states of the dynamic actors executed by this 
+     *  director.
      */
-    public void emitTentativeOutputs() {
+    public void emitCurrentStates() {
         try {
             Iterator dynamicActors = getScheduler().getSchedule().get(
                     CTSchedule.DYNAMIC_ACTORS).actorIterator();
             while (dynamicActors.hasNext() && !_stopRequested) {
                 CTDynamicActor dynamicActor =
                     (CTDynamicActor) dynamicActors.next();
-                dynamicActor.emitTentativeOutputs();
+                dynamicActor.emitCurrentStates();
             }
         } catch (IllegalActionException e) {
             throw new InternalErrorException (e);

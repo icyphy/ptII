@@ -112,16 +112,17 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Iterate the enbled refinenents to emit their tentative outputs.
-     *  @exception IllegalActionException If the tentative states can not
+    /** Iterate the enbled refinenents to emit the current states of their
+     *  dynamic actors.
+     *  @exception IllegalActionException If the current states can not
      *  be emitted.
      */
-    public void emitTentativeOutputs() throws IllegalActionException {
+    public void emitCurrentStates() throws IllegalActionException {
         Iterator actors = _enabledRefinements.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             if (actor instanceof CTCompositeActor) {
-                ((CTCompositeActor)actor).emitTentativeOutputs();
+                ((CTCompositeActor)actor).emitCurrentStates();
             }
         }
     }

@@ -641,7 +641,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             result = result && ready;
         }
 
-        // NOTE: Need for integrators to emit their current output so that
+        // NOTE: Need for integrators to emit their current states so that
         // the state transition actors can operate on the most up-to
         // date inputs and generate derivatives for integrators.
         // Without this, on the first round of integration, the state
@@ -654,7 +654,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
                 _debug("Emit tentative state "
                         + ((Nameable)dynamic).getName());
             }
-            dynamic.emitTentativeOutputs();
+            dynamic.emitCurrentStates();
         }
 
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);

@@ -126,15 +126,15 @@ public class CTCompositeActor extends TypedCompositeActor
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Call the emitTentativeOutputs() method of the local director if the
+    /** Call the emitCurrentStates() method of the local director if the
      *  local director is an instance of CTTransparentDirector. Otherwise,
      *  do nothing.
      *  @exception IllegalActionException If tentative states can not be emitted.
      */
-    public void emitTentativeOutputs() throws IllegalActionException {
+    public void emitCurrentStates() throws IllegalActionException {
         Director dir = getDirector();
         if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            ((CTTransparentDirector)dir).emitTentativeOutputs();
+            ((CTTransparentDirector)dir).emitCurrentStates();
         }
     }
 
