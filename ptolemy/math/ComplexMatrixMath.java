@@ -1157,6 +1157,11 @@ public class ComplexMatrixMath {
      *  the magnitude of the corresponding element in <i>maxError</i>.
      *  If both matrices are empty, return true.
      *
+     *  <p>Note that there is no notion of negative distance with
+     *  complex numbers, so unlike the within() methods for other
+     *  types, this method will not return false if an element of the
+     *  maxError matrix is negative.
+     *
      *  @param matrix1 The first matrix.
      *  @param matrix2 The second matrix.
      *  @param maxError A matrix of complex numbers whose magnitudes
