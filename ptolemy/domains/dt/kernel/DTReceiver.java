@@ -112,14 +112,14 @@ public class DTReceiver extends SDFReceiver {
     ////                         public methods                    ////
 
     /** Calculate the constant time increment for this receiver. This method
-     *  should only be invoked by the DT Director. 
+     *  should only be invoked by the DT Director.
      *
      *  @exception IllegalActionException If there is an error in
      *  getting attribute information from the ports.
      */
     public void calculateDeltaTime() throws IllegalActionException {
     // This method should only be called after the preinitialize() stage.
-    // Prior to that, certain information about the SDF graph topology is 
+    // Prior to that, certain information about the SDF graph topology is
     // not yet accessible
         int repeats;
         double periodValue;
@@ -204,7 +204,7 @@ public class DTReceiver extends SDFReceiver {
     	    connectedPort = (IOPort) portListIterator.next();
 
     	    if (connectedPort.isOutput() == true) {
-                Receiver[][] remoteReceivers = 
+                Receiver[][] remoteReceivers =
                                    connectedPort.getRemoteReceivers();
 
                 for(int i = 0; i < connectedPort.getWidth(); i++) {
@@ -220,7 +220,7 @@ public class DTReceiver extends SDFReceiver {
                         }
                     }
                 }
-    	    } else if (connectedPort.getContainer() 
+    	    } else if (connectedPort.getContainer()
     	                          instanceof TypedCompositeActor) {
     	        // FIXME: should use at isAtomic() insteadof instanceof?
     	        _from = (Actor) connectedPort.getContainer();
@@ -271,7 +271,7 @@ public class DTReceiver extends SDFReceiver {
         _localTime = _localTime + _deltaTime;
         return super.get();
     }
-    
+
     /**  Return the local time associated with this receiver.
      *
      *   @return The local time associated with this receiver.
@@ -282,9 +282,9 @@ public class DTReceiver extends SDFReceiver {
 
 
     /** Return the time interval between tokens for this receiver.
-     *  Delta time is defined as "period / (token flow rate)"; where 
+     *  Delta time is defined as "period / (token flow rate)"; where
      *  period is the director's <i>period</i> parameter and token
-     *  flow rate is the number of tokens flowing through this 
+     *  flow rate is the number of tokens flowing through this
      *  receiver per iteration
      *
      *  @return The time interval between tokens
@@ -305,9 +305,9 @@ public class DTReceiver extends SDFReceiver {
 
     /** Return the token flow rate for this receiver
      *  In DT, the token flow rate has the value
-     *  "rate * repetitions"; where 'rate' is the 
-     *  port rate and 'repetitions' is the firing 
-     *  count of the actor that contains this 
+     *  "rate * repetitions"; where 'rate' is the
+     *  port rate and 'repetitions' is the firing
+     *  count of the actor that contains this
      *  receiver.
      *
      *  @return The token flow rate of this receiver

@@ -223,7 +223,7 @@ public class DTDirector extends SDFDirector {
     ////                         public methods                    ////
 
     /** React to a change in an attribute. For this director the only
-     *  relevant attribute is the <i>period</i> parameter.  
+     *  relevant attribute is the <i>period</i> parameter.
      *
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -237,9 +237,9 @@ public class DTDirector extends SDFDirector {
 
     /** Go through the schedule and iterate every actor with calls to
      *  prefire() , fire() , and postfire().  If this director is not
-     *  in the top-level, get the outside director's current time; and 
-     *  check whether the returned time is an integer multiple of the 
-     *  <i>period</i> parameter. If it is not, then don't fire. 
+     *  in the top-level, get the outside director's current time; and
+     *  check whether the returned time is an integer multiple of the
+     *  <i>period</i> parameter. If it is not, then don't fire.
      *  @exception IllegalActionException If an actor executed by this
      *  director returns false in its prefire().
      */
@@ -259,7 +259,7 @@ public class DTDirector extends SDFDirector {
             return;
         }
 
-        // FIXME: this portion of code is currently commented out 
+        // FIXME: this portion of code is currently commented out
         // because super.fire() is called. However, there are problems
         // with prefire return false in SDFDirector:fire()
         /*
@@ -317,7 +317,7 @@ public class DTDirector extends SDFDirector {
 
             }
         }*/
-        
+
         super.fire();
         if ((outsideDirector != null) && _shouldDoInternalTransferOutputs) {
             _issueTransferOutputs();
@@ -339,7 +339,7 @@ public class DTDirector extends SDFDirector {
 
 
     /** Return the time value of the next iteration.
-     *  
+     *
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
@@ -477,7 +477,7 @@ public class DTDirector extends SDFDirector {
 
             if (dtFromActor != null) {
                 if (dtFromActor._shouldGenerateInitialTokens) {
-                    int numberInitialTokens = 
+                    int numberInitialTokens =
                         currentScheduler.getTokenInitProduction(currentPort);
                     debug.prompt("initial port: " + fromType
                             + " to " + currentPort.getType());
@@ -514,7 +514,7 @@ public class DTDirector extends SDFDirector {
      *  is instantiated under this director. This method is also
      *  called when a link is made between ports and/or relations.
      *  see also other mutation methods:
-     *    
+     *
      *  @see ptolemy.kernel.util.NamedObj#attributeChanged
      *  @see ptolemy.kernel.util.NamedObj#attributeTypeChanged
      */
@@ -592,12 +592,12 @@ public class DTDirector extends SDFDirector {
     }
 
 
-    /** Override the base class method to make sure that enough tokens 
+    /** Override the base class method to make sure that enough tokens
      *  are available to complete one iteration.
      *  This behavior is required to handle the case of non-homogeneous
      *  opaque composite actors. The port argument must be an opaque
      *  input port. If any channel of the input port has no data, then
-     *  that channel is ignored.  
+     *  that channel is ignored.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
@@ -667,7 +667,7 @@ public class DTDirector extends SDFDirector {
 
 
 
-   
+
    /**  Reset this director to an uninitialized state.
     *
     *  @exception IllegalActionException If the parent class
@@ -720,7 +720,7 @@ public class DTDirector extends SDFDirector {
      */
     private void _buildActorTable() throws IllegalActionException {
         SDFScheduler currentScheduler = (SDFScheduler) getScheduler();
-        
+
         CompositeActor container = (CompositeActor) getContainer();
         if (container != null) {
             Iterator allActors = container.deepEntityList().iterator();
@@ -733,9 +733,9 @@ public class DTDirector extends SDFDirector {
                     dtActor = (DTActor) _allActorsTable.get(actor);
                     _actorTable.add(dtActor);
                 }
-                dtActor._repeats = 
+                dtActor._repeats =
                     currentScheduler.getFiringCount((Entity)dtActor._actor);
-                
+
             }
         }
 
