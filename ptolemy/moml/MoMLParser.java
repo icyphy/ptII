@@ -128,7 +128,9 @@ MoML elements within a group element, as follows:
     &lt;/group&gt
 </pre>
 The group element is ignored, and just serves to aggregate the MoML
-elements.
+elements, unless it has a name attribute.  If it has a name attribute,
+then the name becomes a prefix (separated by a colon) of all the names
+of items immediately in the group element.
 <p>
 The parse methods throw a variety of exceptions if the parsed
 data does not represent a valid MoML file or if the stream
@@ -219,6 +221,10 @@ public class MoMLParser extends HandlerBase {
                 _currentExternalEntity(),
                 _parser.getLineNumber(),
                 _parser.getColumnNumber());
+        // If we have a non-default namespace, then prepend the namespace.
+        if (_namespace != DEFAULT_NAMESPACE && name.equals("name")) {
+            value = _namespace + ":" + value;
+        }
         // NOTE: value may be null if attribute default is #IMPLIED.
         _attributes.put(name, value);
     }
@@ -277,6 +283,12 @@ public class MoMLParser extends HandlerBase {
                 doc.setValue(_currentCharData.toString());
             }
             _currentDocName = null;
+        } else if (elementName.equals("group")) {
+            try {
+                _namespace = (String)_namespaces.pop();
+            } catch (EmptyStackException ex) {
+                _namespace = DEFAULT_NAMESPACE;
+            }
         } else if (
                 elementName.equals("property")
                 || elementName.equals("class")
@@ -293,9 +305,11 @@ public class MoMLParser extends HandlerBase {
                 || elementName.equals("vertex")) {
             try {
                 _current = (NamedObj)_containers.pop();
+                _namespace = (String)_namespaces.pop();
             } catch (EmptyStackException ex) {
                 // We are back at the top level.
                 _current = null;
+                _namespace = DEFAULT_NAMESPACE;
             }
         }
     }
@@ -444,8 +458,10 @@ public class MoMLParser extends HandlerBase {
     public void reset() {
         _attributes = new HashMap();
         _containers = new Stack();
+        _namespaces = new Stack();
         _toplevel = null;
         _current = null;
+        _namespace = DEFAULT_NAMESPACE;
     }
 
     /** Resolve an external entity.  If the first argument is the
@@ -536,6 +552,7 @@ public class MoMLParser extends HandlerBase {
                 NamedObj newEntity = _createEntity(className, entityName);
                 if (_current != null) {
                     _containers.push(_current);
+                    _namespaces.push(_namespace);
                 } else if (_toplevel == null) {
                     // NOTE: Used to set _toplevel to newEntity, but
                     // this isn't quite right because the entity may have a
@@ -544,6 +561,7 @@ public class MoMLParser extends HandlerBase {
                 }
                 newEntity.setMoMLElementName("class");
                 _current = newEntity;
+                _namespace = DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("configure")) {
                 _checkClass(_current, Configurable.class,
@@ -572,8 +590,10 @@ public class MoMLParser extends HandlerBase {
                     // included, then they will be evaluated in the correct
                     // context.
                     _containers.push(_current);
+                    _namespaces.push(_namespace);
                 }
                 _current = deletedEntity;
+                _namespace = DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("deletePort")) {
                 String portName = (String)_attributes.get("name");
@@ -587,8 +607,10 @@ public class MoMLParser extends HandlerBase {
                     // included, then they will be evaluated in the correct
                     // context.
                     _containers.push(_current);
+                    _namespaces.push(_namespace);
                 }
                 _current = deletedPort;
+                _namespace = DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("deleteProperty")) {
                 String propName = (String)_attributes.get("name");
@@ -602,8 +624,10 @@ public class MoMLParser extends HandlerBase {
                     // included, then they will be evaluated in the correct
                     // context.
                     _containers.push(_current);
+                    _namespaces.push(_namespace);
                 }
                 _current = deletedProp;
+                _namespace = DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("deleteRelation")) {
                 String relationName = (String)_attributes.get("name");
@@ -617,8 +641,10 @@ public class MoMLParser extends HandlerBase {
                     // included, then they will be evaluated in the correct
                     // context.
                     _containers.push(_current);
+                    _namespaces.push(_namespace);
                 }
                 _current = deletedRelation;
+                _namespace = DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("director")) {
                 // NOTE: We do not check for a previously existing director.
@@ -635,11 +661,13 @@ public class MoMLParser extends HandlerBase {
                 arguments[0] = _current;
                 arguments[1] = dirName;
                 _containers.push(_current);
+                _namespaces.push(_namespace);
                 // If the container is cloned from something, break
                 // the link, since now the object has changed.
                 _current.deferMoMLDefinitionTo(null);
                 Class newClass = Class.forName(className, true, _classLoader);
                 _current = _createInstance(newClass, arguments);
+                _namespace = DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("doc")) {
                 _currentDocName = (String)_attributes.get("name");
@@ -657,6 +685,7 @@ public class MoMLParser extends HandlerBase {
                 // though this is not proper MoML.
                 if (_current != null) {
                     _containers.push(_current);
+                    _namespaces.push(_namespace);
                 } else if (_toplevel == null) {
                     // NOTE: We used to set _toplevel to newEntity, but
                     // this isn't quite right because the entity may have a
@@ -664,6 +693,18 @@ public class MoMLParser extends HandlerBase {
                     _toplevel = (NamedObj)getTopLevel(newEntity);
                 }
                 _current = newEntity;
+                _namespace = DEFAULT_NAMESPACE;
+
+            } else if (elementName.equals("group")) {
+                String groupName = (String)_attributes.get("name");
+                if (groupName != null) {
+                    // Defining a namespace.
+                    _namespaces.push(_namespace);
+                    _namespace = groupName;
+                } else {
+                    _namespaces.push(DEFAULT_NAMESPACE);
+                    _namespace = DEFAULT_NAMESPACE;
+                }
 
             } else if (elementName.equals("import")) {
                 String source = (String)_attributes.get("source");
@@ -807,18 +848,19 @@ public class MoMLParser extends HandlerBase {
                 String modelName = (String)_attributes.get("name");
                 _checkForNull(modelName, "No name for element \"model\"");
 
+                NamedObj newModel;
                 if (className != null) {
                     Object[] arguments = new Object[1];
                     arguments[0] = _workspace;
                     Class newClass
                             = Class.forName(className, true, _classLoader);
-                    _toplevel = _createInstance(newClass, arguments);
-                    _toplevel.setName(modelName);
-                    _toplevel.setMoMLElementName("model");
+                    newModel = _createInstance(newClass, arguments);
+                    newModel.setName(modelName);
+                    newModel.setMoMLElementName("model");
                 } else {
                     // Look for previously existing model.
-                    _toplevel = _searchForEntity(modelName, true);
-                    if (_toplevel == null) {
+                    newModel = _searchForEntity(modelName, true);
+                    if (newModel == null) {
                         throw new XmlException(
                                 "No class given for element \"model\".",
                                 _currentExternalEntity(),
@@ -826,7 +868,18 @@ public class MoMLParser extends HandlerBase {
                                 _parser.getColumnNumber());
                     }
                 }
-                _current = _toplevel;
+
+                if (_current != null) {
+                    _containers.push(_current);
+                    _namespaces.push(_namespace);
+                } else if (_toplevel == null) {
+                    // NOTE: We used to set _toplevel to newEntity, but
+                    // this isn't quite right because the entity may have a
+                    // composite name.
+                    _toplevel = (NamedObj)getTopLevel(newModel);
+                }
+                _current = newModel;
+                _namespace = DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("port")) {
                 String className = (String)_attributes.get("class");
@@ -864,7 +917,9 @@ public class MoMLParser extends HandlerBase {
                     _current.deferMoMLDefinitionTo(null);
                 }
                 _containers.push(_current);
+                _namespaces.push(_namespace);
                 _current = port;
+                _namespace = DEFAULT_NAMESPACE;
 
                 if (port instanceof IOPort) {
                     String direction = (String)_attributes.get("direction");
@@ -894,18 +949,24 @@ public class MoMLParser extends HandlerBase {
                     // makes the enclosing port a multiport.
                     ((IOPort)_current).setMultiport(true);
                     _containers.push(_current);
+                    _namespaces.push(_namespace);
                     _current =  (Attribute)
                         _current.getAttribute(propertyName);
+                    _namespace = DEFAULT_NAMESPACE;
                 } else if (propertyName.equals("output") && isIOPort) {
                     ((IOPort)_current).setOutput(true);
                     _containers.push(_current);
+                    _namespaces.push(_namespace);
                     _current =  (Attribute)
                         _current.getAttribute(propertyName);
+                    _namespace = DEFAULT_NAMESPACE;
                 } else if (propertyName.equals("input") && isIOPort) {
                     ((IOPort)_current).setInput(true);
                     _containers.push(_current);
+                    _namespaces.push(_namespace);
                     _current =  (Attribute)
                         _current.getAttribute(propertyName);
+                    _namespace = DEFAULT_NAMESPACE;
                 } else {
                     // Ordinary attribute.
                     NamedObj property = (Attribute)
@@ -968,7 +1029,9 @@ public class MoMLParser extends HandlerBase {
                         }
                     }
                     _containers.push(_current);
+                    _namespaces.push(_namespace);
                     _current = property;
+                    _namespace = DEFAULT_NAMESPACE;
                 }
 
             } else if (elementName.equals("relation")) {
@@ -993,7 +1056,9 @@ public class MoMLParser extends HandlerBase {
                     arguments[0] = (CompositeEntity)_current;
                     arguments[1] = relationName;
                     _containers.push(_current);
+                    _namespaces.push(_namespace);
                     _current = _createInstance(newClass, arguments);
+                    _namespace = DEFAULT_NAMESPACE;
                 } else {
                     // Previously existing relation with the specified name.
                     if (newClass != null) {
@@ -1003,10 +1068,12 @@ public class MoMLParser extends HandlerBase {
                                 + className);
                     }
                     _containers.push(_current);
+                    _namespaces.push(_namespace);
                     // If the container is cloned from something, break
                     // the link, since now the object has changed.
                     _current.deferMoMLDefinitionTo(null);
                     _current = relation;
+                    _namespace = DEFAULT_NAMESPACE;
                 }
 
             } else if (elementName.equals("rendition")) {
@@ -1018,8 +1085,10 @@ public class MoMLParser extends HandlerBase {
                 arguments[1] = "_icon";
 
                 _containers.push(_current);
+                _namespaces.push(_namespace);
                 Class newClass = Class.forName(className, true, _classLoader);
                 _current = _createInstance(newClass, arguments);
+                _namespace = DEFAULT_NAMESPACE;
 
             } else if (elementName.equals("unlink")) {
                 String portName = (String)_attributes.get("port");
@@ -1084,8 +1153,9 @@ public class MoMLParser extends HandlerBase {
                 Vertex vertex = new Vertex((Relation)_current, vertexName);
 
                 _containers.push(_current);
+                _namespaces.push(_namespace);
                 _current = vertex;
-
+                _namespace = DEFAULT_NAMESPACE;
             }
         } catch (InvocationTargetException ex) {
             // NOTE: While debugging, we print a stack trace here.
@@ -1148,7 +1218,7 @@ public class MoMLParser extends HandlerBase {
     /** The standard MoML DTD, represented as a string.  This is used
      *  to parse MoML data when a compatible PUBLIC DTD is specified.
      */
-    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | group | import | input | link | property | relation | rendition | unlink)*><!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT class (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | group | import | input | link | property | relation | rendition | unlink)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT deleteEntity EMPTY><!ATTLIST deleteEntity name CDATA #REQUIRED><!ELEMENT deletePort EMPTY><!ATTLIST deletePort name CDATA #REQUIRED><!ELEMENT deleteProperty EMPTY><!ATTLIST deleteProperty name CDATA #REQUIRED><!ELEMENT deleteRelation EMPTY><!ATTLIST deleteRelation name CDATA #REQUIRED><!ELEMENT director (configure | property)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ATTLIST doc name CDATA \"_doc_\"><!ELEMENT entity (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | group | import | input | link | port | property | relation | rendition | unlink)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT group ANY><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT input EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link insertAt CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location value CDATA #REQUIRED><!ELEMENT port (configure | doc | property)*><!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED><!ELEMENT property (configure | doc | property)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (property | vertex)*><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rendition (configure | location | property)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT unlink EMPTY><!ATTLIST unlink index CDATA #IMPLIED insideIndex CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED><!ELEMENT vertex (location | property)*><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED>";
+    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | group | import | input | link | property | relation | rendition | unlink)*><!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT class (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | group | import | input | link | property | relation | rendition | unlink)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT deleteEntity EMPTY><!ATTLIST deleteEntity name CDATA #REQUIRED><!ELEMENT deletePort EMPTY><!ATTLIST deletePort name CDATA #REQUIRED><!ELEMENT deleteProperty EMPTY><!ATTLIST deleteProperty name CDATA #REQUIRED><!ELEMENT deleteRelation EMPTY><!ATTLIST deleteRelation name CDATA #REQUIRED><!ELEMENT director (configure | property)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ATTLIST doc name CDATA \"_doc_\"><!ELEMENT entity (class | configure | deleteEntity | deletePort | deleteRelation | director | doc | entity | group | import | input | link | port | property | relation | rendition | unlink)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT group ANY><!ATTLIST group name CDATA #IMPLIED><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT input EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link insertAt CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location value CDATA #REQUIRED><!ELEMENT port (configure | doc | property)*><!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED><!ELEMENT property (configure | doc | property)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (property | vertex)*><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rendition (configure | location | property)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT unlink EMPTY><!ATTLIST unlink index CDATA #IMPLIED insideIndex CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #REQUIRED><!ELEMENT vertex (location | property)*><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED>";
 
     // NOTE: The master file for the above DTD is at
     // $PTII/ptolemy/moml/MoML_1.dtd.  If modified, it needs to be also
@@ -1703,6 +1773,15 @@ public class MoMLParser extends HandlerBase {
 
     // List of top-level entities imported via import element.
     private List _imports;
+
+    // The default namespace.
+    private static String DEFAULT_NAMESPACE = "";
+
+    // The current namespace.
+    private String _namespace = DEFAULT_NAMESPACE;
+
+    // The stack of name spaces.
+    private Stack _namespaces = new Stack();
 
     // The graphical container into which to place Placeable entities.
     private Container _panel;
