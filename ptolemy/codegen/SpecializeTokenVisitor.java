@@ -256,6 +256,12 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
     public Object visitLocalVarDeclNode(LocalVarDeclNode node,
             LinkedList args) {
+	if (_debug) {
+	    System.out.println("SpecializedTokenVisitor."
+			       + "_visitLocalVarDeclNode():\n " + node);
+
+	}
+
         return _visitVarInitDeclNode(node);
     }
 
@@ -265,6 +271,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 	    System.out.println("SpecializedTokenVisitor.visitMethodDeclNode():" +
 			       methodName);
         }
+
         // get rid of the following methods
         if ( methodName.equals("attributeChanged") ||
                 methodName.equals("attributeTypeChanged") ||
@@ -316,6 +323,9 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
             _declToTermMap.put(typedDecl, term);
 
             // constrain the type (it must be added the inequalities)
+	    if (_debug) {
+		System.out.println("SpecializedTokenVisitor addInequality1");
+	    }
             _solver.addInequality(new Inequality(term,
                     _makeConstantTerm(type, null)));
         }
@@ -438,6 +448,24 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                                 + (( argTerms == null) ?
                                         "null" : argTerms.get(0))
 					   );
+			/*
+			if (methodName.equals("getElement")) {
+			    System.err.println("SpecializeTokenVisitor."
+					       + "visitMethodCallNode(): "
+					       + "methodName is getElement.");
+					       if (_debug) {
+					       System.out.println("SpecializedTokenVisitor addInequality2");
+					       }
+
+			    _solver.addInequality(new Inequality(accessedObjTerm,
+								 retval));
+			    System.err.println("SpecializeTokenVisitor."
+					       + "visitMethodCallNode(): "
+					       + "methodName is getElement: "
+					       + "Done adding inequality");
+
+			}
+			*/
 			return retval;
 		    } 
 		    try {
@@ -482,8 +510,17 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                         // Constrain the return value to be >= both
                         // the accessedObject and the first argument
 
+	    if (_debug) {
+		System.out.println("SpecializedTokenVisitor addInequality3");
+	    }
+
                         _solver.addInequality(new Inequality(accessedObjTerm,
                                 retval));
+	    if (_debug) {
+		System.out.println("SpecializedTokenVisitor addInequality4");
+	    }
+
+
                         _solver.addInequality(new Inequality(firstArgTerm,
                                 retval));
 
@@ -493,6 +530,10 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                         // be <= the accessedObject
 
                         retval = accessedObjTerm;
+
+	    if (_debug) {
+		System.out.println("SpecializedTokenVisitor addInequality5");
+	    }
 
                         _solver.addInequality(new Inequality(firstArgTerm,
                                 accessedObjTerm));
@@ -528,6 +569,12 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
             if (methodName.equals("broadcast")) {
                 // first argument is a token, constrain it
                 InequalityTerm firstArgTerm = (InequalityTerm) argTerms.get(0);
+		if (_debug) {
+		    System.out.println("SpecializedTokenVisitor."
+				       + "visitMethodCallNode(): " 
+				       + "addInequality6");
+		}
+
                 _solver.addInequality(new Inequality(firstArgTerm,
                         _makeConstantTerm(portTypeNode, null)));
                 return null; // return type is void
@@ -539,7 +586,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                     // consider dealing with that.
                     System.err.println("Warning: "
 				       + "SpecializedTokenVisitor"
-				       + ".specializeTokens(): "
+				       + ".visitMethodCallNode(): "
 				       + "found 3 argument send call. "
                             /*
 				       + " We are ignoring the 3rd arg (count)"
@@ -576,6 +623,10 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 			InequalityTerm secondArgTerm =
 			    (InequalityTerm) argTerms.get(1);
 			
+	    if (_debug) {
+		System.out.println("SpecializedTokenVisitor addInequality7");
+	    }
+
 			_solver.addInequality(new Inequality(secondArgTerm,
 				     _makeVariableTerm(portTypeNode, null)));
 		    }
@@ -597,6 +648,10 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                     // Second argument is a token, constrain it.
                     InequalityTerm secondArgTerm =
                         (InequalityTerm) argTerms.get(1);
+	    if (_debug) {
+		System.out.println("SpecializedTokenVisitor addInequality8");
+	    }
+
                     _solver.addInequality(new Inequality(secondArgTerm,
                             _makeConstantTerm(portTypeNode, null)));
 
@@ -619,7 +674,7 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                 if (token == null) {
                     System.err.println("Warning: "
 				       + "SpecializedTokenVisitor"
-				       + ".specializeTokens(): "
+				       + ".visitMethodCallNode(): "
 				       + "getToken() called on "
 				       + "parameter that is not a field "
 				       + "of the actor");
@@ -641,14 +696,25 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     }
 
     public Object visitCastNode(CastNode node, LinkedList args) {
+	if (_debug) {
+	    System.out.println("SpecializedTokenVisitor."
+			       + "_visitCastNode():\n " + node);
+	}
+
         // Assume that all casts succeed.
 
         InequalityTerm term = null;
         try {
             term = (InequalityTerm) node.getExpr().accept(this, null);
             if (term != null) {
-                _solver.addInequality(new Inequality(term,
-                        _makeConstantTerm(node.getDtype(), null)));
+		if (_debug) {
+		    System.out.println("SpecializedTokenVisitor."
+				       + "_visitCastNode(): "
+				       + " addInequality9");
+		}
+
+		_solver.addInequality(new Inequality(term,
+						     _makeConstantTerm(node.getDtype(), null)));
             }
         } catch (RuntimeException exception) {
             System.err.println("SpecializedTokenVisitor.CastNode(): "
@@ -656,16 +722,30 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                     + node);
             throw exception;
         }
+	if (_debug) {
+	    System.out.println("SpecializedTokenVisitor."
+			       + "_visitCastNode(): returning\n " + term);
+	}
+
         return term;
     }
 
     public Object visitAssignNode(AssignNode node, LinkedList args) {
+	if (_debug) {
+	    System.out.println("SpecializedTokenVisitor."
+			       + "_visitAssignNode():\n " + node);
+	}
+
         InequalityTerm leftTerm =
             (InequalityTerm) node.getExpr1().accept(this, null);
         InequalityTerm rightTerm =
             (InequalityTerm) node.getExpr2().accept(this, null);
 
         if ((leftTerm != null) && (rightTerm != null)) {
+	    if (_debug) {
+		System.out.println("SpecializedTokenVisitor addInequality10");
+	    }
+
             _solver.addInequality(new Inequality(rightTerm, leftTerm));
         }
 
@@ -797,6 +877,12 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     }
 
     private Object _visitVarInitDeclNode(VarInitDeclNode node) {
+	if (_debug) {
+	    System.out.println("SpecializedTokenVisitor."
+			       + "_visitVarInitDeclNode(): "
+			       + "Start . . .\n " + node);
+	}
+
         TypeNode type = node.getDefType();
         TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) node);
 
@@ -818,10 +904,20 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
             _declToTermMap.put(typedDecl, term);
 
             // constrain the type (it must be added the inequalities)
+	    if (_debug) {
+		System.out.println("SpecializedTokenVisitor."
+				   + "_visitVarInitDeclNode: "
+				   + "addInequality11");
+	    }
             _solver.addInequality(new Inequality(term,
                     _makeConstantTerm(type, null)));
 
             if (initExprTerm != null) {
+		if (_debug) {
+		    System.out.println("SpecializedTokenVisitor."
+				       + "_visitVarInitDeclNode: "
+				       + "addInequality12");
+		}
                 _solver.addInequality(new Inequality(initExprTerm, term));
             }
         }
