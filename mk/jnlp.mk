@@ -105,7 +105,7 @@ DSP_JNLP_JARS =	\
 # HybridSystems - HybridSystenms
 #
 # Jar files that will appear in a HybridSystems only JNLP Ptolemy II Runtime.
-HYBRID_SYSTEMS_ONLY_JNLP_JARS =
+HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/sdf/lib/lib.jar \
