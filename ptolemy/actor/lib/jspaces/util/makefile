@@ -59,8 +59,6 @@ PTCLASSALLJAR =
 
 # Keep this list alphabetized.
 JSRCS = \
-	ServiceFinder.java \
-	ServiceFinderListener.java \
 	SpaceFinder.java \
 	SpaceCleaner.java
 
