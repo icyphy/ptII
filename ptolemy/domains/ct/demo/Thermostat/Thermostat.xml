@@ -28,6 +28,24 @@
         <property name="_location" class="ptolemy.moml.Location" value="84.0, 37.0">
         </property>
     </property>
+    <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="277.0, 290.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows a hybrid system, which mixes continuous-time modeling
+with finite state machines. In this example, the temperature of a room is
+controlled by turning a heater on and off. If the heater is on, the 
+temperature raises linearly. If the heater is off, the temperator drops
+linearly. The temperature starts from 0. The control law is that if the
+temperature reaches 0.2, then turn off the heater. If the temperature
+drops to 0, then turn on the heater. The on-off modes are modeled as
+a finite state machine.</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
@@ -58,16 +76,14 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Thermostat</title>
-<xRange min="0.17016208668691202" max="0.23433790269489688"/>
-<yRange min="0.18055781250000005" max="0.20570312500000007"/>
+<xRange min="0.0" max="5.0"/>
+<yRange min="-3.885780586188048E-16" max="0.20000000000000023"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="HS" class="ptolemy.domains.ct.kernel.CTCompositeActor">
         <property name="HSDirector" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
@@ -83,12 +99,12 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="46.999999999999986, 201.0">
+            <property name="_location" class="ptolemy.moml.Location" value="66.99999999999999, 194.0">
             </property>
         </port>
         <port name="state" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.moml.Location" value="512.0, 251.0">
+            <property name="_location" class="ptolemy.moml.Location" value="512.0, 246.0">
             </property>
         </port>
         <entity name="Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
@@ -102,9 +118,13 @@
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="_location" class="ptolemy.moml.Location" value="80.0, 274.0">
+                </property>
             </port>
             <port name="state" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="_location" class="ptolemy.moml.Location" value="74.0, 178.0">
+                </property>
             </port>
             <entity name="Increasing" class="ptolemy.domains.fsm.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Increasing">
@@ -131,23 +151,27 @@
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-		<property name="reset" class="ptolemy.data.expr.Parameter" value="true">
-		</property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Decreasing.Integrator.initialState = state">
-		</property>
+                </property>
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
+                </property>
             </relation>
             <relation name="ctrlTr2" class="ptolemy.domains.fsm.kernel.Transition">
                 <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="output_isPresent">
                 </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
-		<property name="reset" class="ptolemy.data.expr.Parameter" value="true">
-		</property>
+                <property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+                </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="Increasing.Integrator.initialState = state">
+                </property>
+                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
             </relation>
             <link port="Increasing.incomingPort" relation="ctrlTr2"/>
@@ -203,11 +227,6 @@
                 <property name="_location" class="ptolemy.moml.Location" value="278.0, 151.0">
                 </property>
             </port>
-            <port name="trig" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="504.0, 307.0">
-                </property>
-            </port>
             <entity name="Hold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
                 <property name="_location" class="ptolemy.moml.Location" value="129.0, 129.0">
                 </property>
@@ -219,7 +238,7 @@
                 </port>
             </entity>
             <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
-                <property name="initialState" class="ptolemy.data.expr.Parameter" value="-1.110223025E-16">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="-3.885780586E-16">
                 </property>
                 <property name="_location" class="ptolemy.moml.Location" value="152.0, 228.0">
                 </property>
@@ -274,7 +293,6 @@
             <link port="input" relation="_R0"/>
             <link port="output" relation="_R2"/>
             <link port="state" relation="CTIncR1"/>
-            <link port="trig" relation="R2"/>
             <link port="Hold.input" relation="_R0"/>
             <link port="Hold.output" relation="_R1"/>
             <link port="Integrator.input" relation="_R1"/>
@@ -325,17 +343,12 @@
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="512.3333333333333, 246.0">
+                <property name="_location" class="ptolemy.moml.Location" value="512.3333333333333, 240.0">
                 </property>
             </port>
             <port name="state" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_location" class="ptolemy.moml.Location" value="329.33333333333326, 190.0">
-                </property>
-            </port>
-            <port name="trig" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="_location" class="ptolemy.moml.Location" value="512.3333333333333, 316.0">
                 </property>
             </port>
             <entity name="Hold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
@@ -363,7 +376,7 @@
             <entity name="Gain" class="ptolemy.actor.lib.Scale">
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0">
                 </property>
-                <property name="_location" class="ptolemy.moml.Location" value="207.3333282470703, 146.0">
+                <property name="_location" class="ptolemy.moml.Location" value="207.3333282470703, 145.0">
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -418,7 +431,6 @@
             <link port="input" relation="_R0"/>
             <link port="output" relation="_R3"/>
             <link port="state" relation="CTDecR1"/>
-            <link port="trig" relation="R2"/>
             <link port="Hold.input" relation="_R0"/>
             <link port="Hold.output" relation="_R1"/>
             <link port="Integrator.input" relation="_R2"/>
@@ -443,8 +455,6 @@
             <vertex name="vertex0" class="ptolemy.moml.Vertex" value="341.0, 251.0">
             </vertex>
         </relation>
-        <relation name="HSr4" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <link port="input" relation="HSr1"/>
         <link port="state" relation="HSr3"/>
         <link port="Controller.output" relation="HSr2"/>
@@ -452,11 +462,9 @@
         <link port="Increasing.input" relation="HSr1"/>
         <link port="Increasing.output" relation="HSr2"/>
         <link port="Increasing.state" relation="HSr3"/>
-        <link port="Increasing.trig" relation="HSr4"/>
         <link port="Decreasing.input" relation="HSr1"/>
         <link port="Decreasing.output" relation="HSr2"/>
         <link port="Decreasing.state" relation="HSr3"/>
-        <link port="Decreasing.trig" relation="HSr4"/>
     </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
     </relation>
