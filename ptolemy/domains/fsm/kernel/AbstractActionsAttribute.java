@@ -164,8 +164,6 @@ public abstract class AbstractActionsAttribute extends Action {
     
     /** Test if a channel number is associated with the given name.
      *  @return true If a channel was specified.
-     *  @exception IllegalActionException If the name does not refer to a
-     *  port.
      */      
     public boolean isChannelSpecified(String name) {
         Integer integer = (Integer)_numbers.get(
