@@ -1004,7 +1004,7 @@ public class DEDirector extends Director {
                     if (_debugging) {
                         _debug("Queue is empty. Waiting for input events.");
                     }
-                    Thread.currentThread().yield();
+                    Thread.yield();
                     synchronized(_eventQueue) {
                         if (_eventQueue.isEmpty()) {
                             try {

@@ -507,7 +507,7 @@ public class DTDirector extends SDFDirector {
             if (dtFromActor != null) {
                 if (dtFromActor._shouldGenerateInitialTokens) {
                     int numberInitialTokens =
-                        currentScheduler.getTokenInitProduction(currentPort);
+                        SDFScheduler.getTokenInitProduction(currentPort);
                     if (_debugging) {
                         _debug("initial port: " + fromType
                                 + " to " + currentPort.getType());
