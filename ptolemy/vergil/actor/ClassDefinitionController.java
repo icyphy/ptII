@@ -50,7 +50,9 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
+import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.layout.GlobalLayout;
@@ -80,8 +82,8 @@ labels appearing twice.
 */
 public class ClassDefinitionController extends ActorController {
 
-    /** Create an actor instance controller associated with the specified graph
-     *  controller with full access.
+    /** Create an actor instance controller associated with the
+     *  specified graph controller with full access.
      *  @param controller The associated graph controller.
      */
     public ClassDefinitionController(GraphController controller) {
@@ -93,7 +95,8 @@ public class ClassDefinitionController extends ActorController {
      *  @param controller The associated graph controller.
      *  @param access The access level, one of FULL or PARTIAL.
      */
-    public ClassDefinitionController(GraphController controller, Access access) {
+    public ClassDefinitionController(
+            GraphController controller, Access access) {
         super(controller, access);
         
         if (access == FULL) {
@@ -102,7 +105,7 @@ public class ClassDefinitionController extends ActorController {
                     new MenuActionFactory(_createInstanceAction));
 
             _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_createSubclassAction));                
+                    new MenuActionFactory(_createSubclassAction));
 
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(_convertToInstanceAction));
@@ -152,11 +155,16 @@ public class ClassDefinitionController extends ActorController {
     /** Draw the node at its location. This overrides the base class
      *  to highlight the actor to indicate that it is a class definition.
      */
-    public Figure drawNode(Object node) {
-        Figure nf = super.drawNode(node);
-        AnimationRenderer decorator = new AnimationRenderer(_HIGHLIGHT_COLOR);
-        decorator.renderSelected(nf);
-        return nf;
+    protected Figure _renderNode(Object node) {
+        Figure nf = super._renderNode(node);
+        // This cast should be safe...
+        CompositeFigure cf = (CompositeFigure)nf;
+        BasicFigure bf = 
+            new BasicFigure(cf.getBackgroundFigure().getBounds(), 4.0f);
+        bf.setStrokePaint(_HIGHLIGHT_COLOR);
+        cf.add(bf);
+    
+        return cf;
     }
 
     ///////////////////////////////////////////////////////////////////
