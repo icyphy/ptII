@@ -3,41 +3,35 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="configuration" class="ptolemy.actor.gui.Configuration">
 
-  <doc>Configuration to run but not edit Ptolemy II models</doc>
-
-  <!-- The library of all icons. -->
-  <input source="../vergil/lib/rootIconLibrary.xml"/>
-
-  <!-- Factories for effigies. -->
-  <entity name="effigyFactory" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
-    <doc name="description">Block Diagram Model</doc>
-  </entity>
-  <entity name="FSMEffigyFactory" class="ptolemy.vergil.ptolemy.fsm.FSMEffigyFactory">
-    <doc name="description">FSM Diagram Model</doc>
-  </entity>
+  <doc>Configuration to edit and run Ptolemy II models</doc>
 
   <!-- The directory of open models, each represented by an effigy. -->
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
   </entity>
 
-  <!-- The reader is responsible for reading XML files. -->
-  <entity name="reader" class="ptolemy.actor.gui.ModelReader">
+  <!-- Factories for effigies. -->
+  <entity name="effigyFactory" class="ptolemy.actor.gui.EffigyFactory">
+     <entity name="Graph Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+       <entity name="blank" class="ptolemy.actor.TypedCompositeActor"/>
+     </entity>
+     <entity name="FSM Editor" class="ptolemy.actor.gui.PtolemyEffigy$Factory">
+       <entity name="blank" class="ptolemy.domains.fsm.kernel.FSMActor"/>
+     </entity>
+     <entity name="Text Editor" class="ptolemy.actor.gui.TextEffigy$Factory"/>
   </entity>
 
   <!-- Factories for tableaux. -->
-  <entity name="factory" class="ptolemy.actor.gui.TableauFactory">
-    <entity name="FSM Editor" class="ptolemy.vergil.ptolemy.fsm.FSMGraphTableau$Factory">
-    </entity>
+  <entity name="tableauFactory" class="ptolemy.actor.gui.TableauFactory">
+    <entity name="FSM Editor" class="ptolemy.vergil.ptolemy.fsm.FSMGraphTableau$Factory"/>
     <!-- Factories for tableaux that offer views of Ptolemy II entities. -->
     <entity name="factory1" class="ptolemy.actor.gui.PtolemyTableauFactory">
       <!-- These will appear in the View menu of an entity tableau. -->
-      <entity name="Graph Editor" class="ptolemy.vergil.ptolemy.kernel.KernelGraphTableau$Factory">
-      </entity>
-      <entity name="Run Window" class="ptolemy.actor.gui.RunTableau$Factory">
-      </entity>
-      <entity name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory">
-      </entity>
+      <entity name="Graph Editor" class="ptolemy.vergil.ptolemy.kernel.KernelGraphTableau$Factory"/>
+      <entity name="Run Window" class="ptolemy.actor.gui.RunTableau$Factory"/>
+      <entity name="Tree View" class="ptolemy.vergil.tree.TreeTableau$Factory"/>
+      <entity name="XML view" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
     </entity>
+    <entity name="Text Editor" class="ptolemy.actor.gui.TextEditorTableau$Factory"/>
     <!-- FIXME: text editor, plot data tableau, HTML viewer, etc. -->
   </entity>
 

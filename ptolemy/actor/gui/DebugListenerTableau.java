@@ -86,6 +86,9 @@ public class DebugListenerTableau extends Tableau {
                 setDebuggable(null);
 	    }
 	});
+        if (container instanceof TextEffigy) {
+            ((TextEffigy)container).setDocument(frame.text.getDocument());
+        }
 	frame.setVisible(true);
 	frame.pack();
     }
@@ -112,7 +115,9 @@ public class DebugListenerTableau extends Tableau {
             _debug.removeDebugListener((DebugListenerFrame)getFrame());
         }
         _debug = debuggable;
-	_debug.addDebugListener((DebugListenerFrame)getFrame());
+        if (_debug != null) {
+            _debug.addDebugListener((DebugListenerFrame)getFrame());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

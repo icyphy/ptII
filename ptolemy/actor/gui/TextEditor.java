@@ -35,15 +35,16 @@
 package ptolemy.actor.gui;
 
 // Java imports
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JOptionPane;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Point;
 import java.io.*;
 import java.net.URL;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JOptionPane;
+import javax.swing.text.Document;
 
 //////////////////////////////////////////////////////////////////////////
 //// TextEditor
@@ -61,7 +62,7 @@ public class TextEditor extends TableauFrame {
      *  to call setVisible(true) to make the frame appear.
      */
     public TextEditor() {
-        this("UnNamed");
+        this("Unnamed");
     }
 
     /** Construct an empty text editor with the specified title.
@@ -70,10 +71,20 @@ public class TextEditor extends TableauFrame {
      *  @param title The title to put in the title bar.
      */
     public TextEditor(String title) {
+        this(title, null);
+    }
+
+    /** Construct an empty text editor with the specified title and
+     *  document.  After constructing this, it is necessary
+     *  to call setVisible(true) to make the frame appear.
+     *  @param title The title to put in the title bar.
+     *  @param document The document containing text, or null if none.
+     */
+    public TextEditor(String title, Document document) {
         super();
         setTitle(title);
 
-        text = new JTextArea();
+        text = new JTextArea(document);
         JScrollPane scrollPane = new JScrollPane(text);
 
         getContentPane().add(scrollPane, BorderLayout.CENTER);
@@ -90,12 +101,14 @@ public class TextEditor extends TableauFrame {
     ///////////////////////////////////////////////////////////////////
     ////                            public methods                 ////
 
+    /** Scroll as necessary so that the last line is visible.
+     */
     public void scrollToEnd() {
 	// Song and dance to scroll to the new line.
 	text.scrollRectToVisible(new Rectangle(
 	     new Point(0, text.getHeight())));
     }
-	
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -135,38 +148,11 @@ public class TextEditor extends TableauFrame {
         _about();
     }
 
-    /** Read the specified URL.
-     *  @param url The URL to read.
-     *  @exception IOException If the URL cannot be read.
-     */
-    protected void _read(URL url) throws IOException {
-        InputStream in = url.openStream();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        String line = reader.readLine();
-        while (line != null) {
-            text.append(line + "\n");
-            line = reader.readLine();
-        }
-    }
-
     /** Print the contents.
      */
     protected void _print() {
-        // FIXME: What should we print?  Plots?  How?
+        // FIXME: What should we print?
         super._print();
-    }
-
-    /** Write the model to the specified file.
-     *  @param file The file to write to.
-     *  @exception IOException If the write fails.
-     */
-    protected void _writeFile(File file) throws IOException {
-        // FIXME: This should probably delegate to the effigy.
-        // To do this, we need to create a TextEffigy.  Then just
-        // delete this method.  There is a starting point for the TextEffigy.
-        java.io.FileWriter fout = new java.io.FileWriter(file);
-        fout.write(text.getText());
-        fout.close();
     }
 
     // FIXME: Listen for edit changes.

@@ -162,11 +162,11 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @param container The container.
      *  @param name The name of this actor within the container.
      *  @exception IllegalActionException If the entity cannot be contained
-     *   by the proposed container (see the setContainer() method).
+     *   by the proposed container.
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public FSMActor(TypedCompositeActor container, String name)
+    public FSMActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         initialStateName = new Parameter(this, "initialStateName");
@@ -251,9 +251,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  @return The director that invokes this actor.
      */
     public Director getDirector() {
-        CompositeActor container = (CompositeActor)getContainer();
-        if (container != null) {
-            return container.getDirector();
+        CompositeEntity container = (CompositeEntity)getContainer();
+        if (container instanceof CompositeActor) {
+            return ((CompositeActor)container).getDirector();
         }
         return null;
     }
@@ -302,9 +302,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     public Manager getManager() {
 	try {
 	    _workspace.getReadAccess();
-	    CompositeActor container = (CompositeActor)getContainer();
-	    if (container != null) {
-		return container.getManager();
+	    CompositeEntity container = (CompositeEntity)getContainer();
+	    if (container instanceof CompositeActor) {
+		return ((CompositeActor)container).getManager();
 	    }
 	    return null;
 	} finally {
@@ -506,28 +506,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     public void reset() throws IllegalActionException {
         _gotoInitialState();
-    }
-
-    /** Override the base class to ensure that the proposed container
-     *  is an instance of TypedCompositeActor or null. If it is, call the
-     *  base class setContainer() method. A null argument will remove
-     *  the actor from its container.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If this actor and the container
-     *   are not in the same workspace, or if the argument is not a
-     *   TypedCompositeActor or null.
-     *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this actor.
-     */
-    public void setContainer(CompositeEntity container)
-            throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof TypedCompositeActor) &&
-                (container != null)) {
-            throw new IllegalActionException(container, this,
-                    "FSMActor can only be contained by instances of " +
-                    "TypedCompositeActor.");
-        }
-        super.setContainer(container);
     }
 
     /** Do nothing.

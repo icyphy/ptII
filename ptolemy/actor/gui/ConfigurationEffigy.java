@@ -51,19 +51,19 @@ easily created on the configuration that contains this effigy.
 */
 public class ConfigurationEffigy extends PtolemyEffigy {
 
-    /** Create a new proxy in the specified workspace with an empty string
+    /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
-     *  @param workspace The workspace for this proxy.
+     *  @param workspace The workspace for this effigy.
      */
     public ConfigurationEffigy(Workspace workspace) {
 	super(workspace);
     }
 
-    /** Create a new proxy in the given directory with the given name.
-     *  @param container The directory that contains this proxy.
-     *  @param name The name of this proxy.
+    /** Create a new effigy in the given directory with the given name.
+     *  @param container The directory that contains this effigy.
+     *  @param name The name of this effigy.
      */
-    public ConfigurationEffigy(ModelDirectory container, String name)
+    public ConfigurationEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
     }

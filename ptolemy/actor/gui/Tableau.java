@@ -186,6 +186,15 @@ public class Tableau extends ComponentEntity {
 	}
     }
 
+    /** Make the tableau editable or uneditable.
+     *  This base class does nothing.
+     *  @param flag False to make the tableau uneditable.
+     */
+    public void setEditable(boolean flag) {
+        // FIXME: Should this give some visual indication that the
+        // tableau is uneditable?
+    }
+
     /** Set the top-level window associated with this tableau.
      *  @param frame The top-level window associated with the attribute.
      */

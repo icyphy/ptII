@@ -30,8 +30,13 @@
 package ptolemy.actor.gui;
 
 import ptolemy.gui.Top;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.net.URL;
+import java.util.List;
+import javax.swing.JTextArea;
 
 //////////////////////////////////////////////////////////////////////////
 //// TextEditorTableau
@@ -57,12 +62,13 @@ public class TextEditorTableau extends Tableau {
      *  @exception NameDuplicationException If the name coincides with an 
      *   attribute already in the container.
      */
-    public TextEditorTableau(Effigy container, String name)
+    public TextEditorTableau(TextEffigy container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        TextEditor frame = new TextEditor();
+        String title = "Unnamed";
+        TextEditor frame = new TextEditor(title, container.getDocument());
 	frame.text.setColumns(80);
-	frame.text.setRows(20);
+	frame.text.setRows(40);
 	setFrame(frame);
 	frame.setTableau(this);
     }
@@ -70,4 +76,88 @@ public class TextEditorTableau extends Tableau {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Make the tableau editable or uneditable.
+     *  @param flag False to make the tableau uneditable.
+     */
+    public void setEditable(boolean flag) {
+        TextEditor editor = (TextEditor)getFrame();
+        if (editor.text != null) {
+            editor.text.setEditable(false);
+            super.setEditable(flag);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** A factory that creates text editor tableaux for Ptolemy models.
+     */
+    public static class Factory extends TableauFactory {
+
+	/** Create an factory with the given name and container.
+	 *  The container argument must not be null, or a
+	 *  NullPointerException will be thrown.  This entity will use the
+	 *  workspace of the container for synchronization and version counts.
+	 *  If the name argument is null, 
+	 *  then the name is set to the empty string.
+	 *  Increment the version of the workspace.
+	 *  @param container The container entity.
+	 *  @param name The name of the entity.
+	 *  @exception IllegalActionException If the container is incompatible
+	 *   with this entity.
+	 *  @exception NameDuplicationException If the name coincides with
+	 *   an entity already in the container.
+	 */
+	public Factory(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+	    super(container, name);
+	}
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+
+	/** If the specified effigy already contains a tableau named
+         *  "textTableau", then show it; otherwise, create a new instance
+         *  of TextEditorTableau in the specified effigy, and name it
+         *  "textTableau".  If the specified effigy is not an instance of
+         *  TextEffigy, then do not create a tableau and return null.
+	 *  @param effigy The effigy.
+	 *  @return A new text editor tableau if the effigy is a TextEffigy,
+	 *    or null otherwise.
+         *  @exception Exception If the factory should be able to create a
+         *   tableau for the effigy, but something goes wrong.
+	 */
+	public Tableau createTableau(Effigy effigy) throws Exception {
+	    if(effigy instanceof TextEffigy) {
+                // First see whether the effigy already contains a
+                // TextEditorTableau with the appropriate name.
+                TextEditorTableau tableau =
+                        (TextEditorTableau)effigy.getEntity("textTableau");
+                if (tableau == null) {
+                    tableau = new TextEditorTableau(
+                             (TextEffigy)effigy, "textTableau");
+                }
+                tableau.show();
+                return tableau;
+	    } else {
+                // The effigy is not an instance of TextEffigy.
+                // See whether it contains an instance of TextEffigy.
+                List effigies = effigy.entityList(TextEffigy.class);
+                if (effigies.size() > 0) {
+                    TextEffigy textEffigy = (TextEffigy)effigies.get(0);
+                    return createTableau(textEffigy);
+                } else {
+                    // It does not contain an instance of TextEffigy.
+                    // Attempt to use it's url attribute and create a new
+                    // instance of TextEffigy contained by the specified one.
+                    URL url = effigy.url.getURL();
+                    TextEffigy textEffigy = TextEffigy.newTextEffigy(
+                            effigy, url, url);
+                    Tableau textTableau = createTableau(textEffigy);
+                    textTableau.setEditable(false);
+                    return textTableau;
+                }
+            }
+	}
+    }
 }

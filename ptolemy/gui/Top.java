@@ -436,8 +436,8 @@ public abstract class Top extends JFrame {
         int returnVal = fileDialog.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
 	    _directory = fileDialog.getCurrentDirectory();
-            File file = fileDialog.getSelectedFile();
             try {
+                File file = fileDialog.getSelectedFile().getCanonicalFile();
                 _read(file.toURL());
             } catch (Exception ex) {
                 report("Error reading input", ex);

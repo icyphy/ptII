@@ -77,6 +77,34 @@ public class MessageHandler {
 	return string;
     }
 
+    /** Show the specified error message.
+     *  @param info The message.
+     */
+    public static void error(String info) {
+
+        // Sometimes you find that errors are reported multiple times.
+        // To find out who is calling this method, uncomment the following.
+        // System.out.println("------ reporting error:");
+        // (new Exception()).printStackTrace();
+
+        Object[] message = new Object[1];
+	String string = info;
+	message[0] = ellipsis(string, 400);
+	
+        Object[] options = {"Dismiss"};
+
+        // Show the MODAL dialog
+        int selected = JOptionPane.showOptionDialog(
+                _context,
+                message,
+                "Error",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.ERROR_MESSAGE, 
+                null,
+                options,
+                options[0]);
+    }
+
     /** Show the specified message and exception information.
      *  If the exception is an instance of CancelException, then it
      *  is not shown.

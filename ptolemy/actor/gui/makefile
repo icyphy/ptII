@@ -68,7 +68,6 @@ JSRCS = \
 	ModelDirectory.java \
 	ModelFrame.java \
 	ModelPane.java \
-	ModelReader.java \
 	MoMLApplet.java \
 	MoMLApplication.java \
 	Placeable.java \
@@ -83,6 +82,7 @@ JSRCS = \
 	TableauFrame.java \
 	TextEditor.java \
 	TextEditorTableau.java \
+	TextEffigy.java \
 	Tableau.java \
 	TableauFactory.java \
 	URLAttribute.java

@@ -58,16 +58,16 @@ import javax.swing.JFrame;
 This is a base class for a composite entity that defines the
 configuration of an application that uses Ptolemy II classes.
 It must contain, at a minimum, an instance of ModelDirectory, called
-"directory", and an instance of ModelReader, called "reader".
-It may also contain an instance of TableauFactory, called "factory".
+"directory", and an instance of EffigyFactory, called "effigyFactory".
+It may also contain an instance of TableauFactory, called "tableuFactory".
 A tableau is a visual representation of the model in a top-level window.
 This class uses those instances to manage a collection of models,
 open new models, and create tableaux of those models.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@see EffigyFactory
 @see ModelDirectory
-@see ModelReader
 @see Tableau
 @see TableauFactory
 */
@@ -97,7 +97,7 @@ public class Configuration extends CompositeEntity {
      */
     public void createPrimaryTableau(Effigy effigy) throws Exception {
         // Create a tableau if there is a tableau factory.
-        TableauFactory factory = (TableauFactory)getEntity("factory");
+        TableauFactory factory = (TableauFactory)getEntity("tableauFactory");
         if (factory != null) {
             Tableau tableau = factory.createTableau(effigy);
             if (tableau == null) {
@@ -113,25 +113,20 @@ public class Configuration extends CompositeEntity {
      *  by this configuration.
      */
     public void newModel() {
-	final ModelDirectory directory = 
-	        (ModelDirectory)getEntity("directory");
+	final ModelDirectory directory = (ModelDirectory)getEntity("directory");
 	if(directory == null) return;
-	List factoryList = entityList(EffigyFactory.class);
+
+        EffigyFactory mainFactory = (EffigyFactory)getEntity("effigyFactory");
+        if (mainFactory == null) return;
+
+	List factoryList = mainFactory.entityList(EffigyFactory.class);
 	Box panel = new Box(BoxLayout.Y_AXIS);
 	final JFrame frame = new JFrame();
 	frame.getContentPane().add(panel);
 	Iterator factories = factoryList.iterator();
 	while(factories.hasNext()) {
-	    final EffigyFactory factory = 
-		    (EffigyFactory)factories.next();
-	    Documentation doc = 
-		    (Documentation)factory.getAttribute("description");
-	    String buttonName;
-	    if(doc != null) {
-		buttonName = doc.getValue();
-	    } else {
-		buttonName = factory.getName();
-	    }
+	    final EffigyFactory factory = (EffigyFactory)factories.next();
+	    String buttonName = factory.getName();
 	    JButton button = new JButton(buttonName);
 	    panel.add(button);
 	    button.addActionListener(new ActionListener() {
@@ -140,9 +135,8 @@ public class Configuration extends CompositeEntity {
 		    Effigy effigy = null;
 		    try {
 			effigy = factory.createEffigy(directory);
-		    } catch (KernelException ex) {
-			MessageHandler.error("Could not create new effigy",
-					     ex);
+		    } catch (Exception ex) {
+			MessageHandler.error("Could not create new effigy", ex);
 		    } 
 		    try {
 			createPrimaryTableau(effigy);
@@ -187,21 +181,24 @@ public class Configuration extends CompositeEntity {
         Effigy effigy = directory.getEffigy(identifier);
         if (effigy == null) {
             // No previous effigy exists that is identified by this URL.
-            ModelReader reader = (ModelReader)getEntity("reader");
-            if (reader == null) {
-                throw new InternalErrorException("No model reader!");
+            // Find an effigy factory to read it.
+            EffigyFactory factory = (EffigyFactory)getEntity("effigyFactory");
+            if (factory == null) {
+                throw new InternalErrorException(
+                        "No effigy factories in the configuration!");
             }
-            effigy = reader.read(base, in);
-	    effigy.identifier.setExpression(identifier);
-
-            effigy.setName(directory.uniqueName("effigy"));
-	    effigy.setContainer(directory);
-
+            effigy = factory.createEffigy(directory, base, in);
+            if (effigy == null) {
+                MessageHandler.error("Could not create new effigy.");
+            }
+            effigy.identifier.setExpression(identifier);
             // If this fails, we do not want the effigy in the directory.
             try {
                 createPrimaryTableau(effigy);
             } catch (Exception ex) {
                 effigy.setContainer(null);
+                // Hmm... the following doesn't seem to properly give the
+                // stack trace.
                 throw (Exception)(ex.fillInStackTrace());
             }
         } else {

@@ -46,12 +46,15 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// Effigy
 /**
-An effigy represents model data, and is contained in the model directory.
+An effigy represents model data, and is contained in the model directory
+or another effigy.
 An effigy contains all open instances of Tableau associated with the model.
 It also contains a string attribute named "identifier" with a value that
 uniquely identifies the model. A typical choice (which depend on
 the configuration) is the canonical URL for a MoML file that
-describes the model.
+describes the model.  In the case of an effigy contained by another,
+a typical choice is the URL of the parent effigy, a pound sign "#",
+and a name.
 <p>
 An effigy may contain other effigies.  The top effigy
 in such a containment hierarchy is associated with a URL or file.
@@ -95,7 +98,7 @@ public class Effigy extends CompositeEntity {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public Effigy(ModelDirectory container, String name)
+    public Effigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
         identifier = new StringAttribute(this, "identifier");
@@ -188,6 +191,12 @@ public class Effigy extends CompositeEntity {
 	    while (tableaux.hasNext()) {
 		ComponentEntity tableau = (ComponentEntity)tableaux.next();
 		tableau.setContainer(null);
+	    }
+	    // Remove all contained effigies as well.
+	    Iterator effigies = entityList(Effigy.class).iterator();
+	    while (effigies.hasNext()) {
+		ComponentEntity effigy = (ComponentEntity)effigies.next();
+		effigy.setContainer(null);
 	    }
         }
         super.setContainer(container);

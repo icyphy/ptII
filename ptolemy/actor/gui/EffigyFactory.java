@@ -43,11 +43,15 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// EffigyFactory
 /**
-A configuration contains multiple instances of this class, and uses them
-to create new effigies.  Toplevel frames will usually provide a menu for
-ubclasses
+A configuration contains an instance of this class, and uses it to create
+effigies from a URL, or to create blank effigies of a particular kind.
+This base class assumes that it contains other effigy factories.
+Its createEffigy() methods defer to each contained factory in order
+until one is capable of creating an effigy. Subclasses of this class
+will usually be inner classes of an Effigy and will create the Effigy,
+or they might themselves be aggregates of instances of EffigyFactory.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 @see Configuration
 @see Effigy
@@ -70,14 +74,64 @@ public class EffigyFactory extends CompositeEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create a new effigy in the given model directory 
-     *  The new effigy should be
-     *  of a type appropriate for this factory.  Subclasses will
+    /** Create a new blank effigy in the given container. This base class
+     *  defers to each contained effigy factory until one returns
+     *  an effigy.  If there are no contained effigies, or if none
+     *  returns an effigy, then this method returns null. Subclasses will
      *  override this method to create an effigy of an appropriate type.
+     *  @param container The container for the effigy.
      *  @return A new effigy.
+     *  @exception Exception If the effigy created by one of the contained
+     *   factories is incompatible with the specified container, or a name
+     *   duplication occurs.
      */
-    public Effigy createEffigy(ModelDirectory directory) 
-	throws NameDuplicationException, IllegalActionException {
-	return new Effigy(directory, directory.uniqueName("effigy"));
+    public Effigy createEffigy(CompositeEntity container) throws Exception {
+	return createEffigy(container, null, null);
+    }
+
+    /** Create a new effigy in the given container by reading the specified
+     *  URL. If the specified URL is null, then create a blank effigy.
+     *  The specified base is used to expand any relative file references
+     *  within the URL.  This base class defers to each contained effigy
+     *  factory until one returns an effigy.  If there are no 
+     *  contained effigies, or if none
+     *  returns an effigy, then this method returns null. Subclasses will
+     *  override this method to create an effigy of an appropriate type.
+     *  @param container The container for the effigy.
+     *  @param base The base for relative file references, or null if
+     *   there are no relative file references.
+     *  @param in The input URL.
+     *  @return A new effigy.
+     *  @exception Exception If the stream cannot be read, or if the data
+     *   is malformed in some way.
+     */
+    public Effigy createEffigy(CompositeEntity container, URL base, URL in) 
+	    throws Exception {
+	Effigy effigy = null;
+	Iterator factories = entityList(EffigyFactory.class).iterator();
+	while(factories.hasNext() && effigy == null) {
+	    EffigyFactory factory = (EffigyFactory)factories.next();
+	    effigy = factory.createEffigy(container, base, in);
+	}
+	return effigy;
+    }
+
+    /** Return the extension on the name of the specified URL.
+     *  This is a utility method designed to help derived classes
+     *  decide whether the URL matches the particular type of effigy
+     *  they can create.  If the URL has no extension, return an
+     *  empty string.
+     *  @param url A URL.
+     *  @return The extension on the URL.
+     */
+    public static String getExtension(URL url) {
+        String filename = url.getFile();
+        int index = filename.lastIndexOf(".");
+        if (index < 0) return "";
+        try {
+            return filename.substring(index+1);
+        } catch (IndexOutOfBoundsException ex) {
+            return "";
+        }
     }
 }

@@ -99,6 +99,13 @@ public class RunTableau extends Tableau {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+   
+    // FIXME: should be somewhere else?
+    // Default background color is a light grey.
+    private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
+
+    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** The frame that is created by an instance of RunTableau.
@@ -170,10 +177,13 @@ public class RunTableau extends Tableau {
                             debug = null;
                         }
                         if(debug != null) {
-                            Effigy proxy = (Effigy)getContainer();
+                            Effigy effigy = (Effigy)getContainer();
+                            // Create a new text effigy inside this one.
+                            Effigy textEffigy = new TextEffigy(effigy,
+                                    effigy.uniqueName("debug listener"));
                             DebugListenerTableau tableau =
-                                    new DebugListenerTableau(proxy,
-                                    proxy.uniqueName("debugListener"));
+                                    new DebugListenerTableau(textEffigy,
+                                    textEffigy.uniqueName("debugListener"));
                             tableau.setDebuggable(debug);
                         }
                     } catch (KernelException ex) {
@@ -213,18 +223,16 @@ public class RunTableau extends Tableau {
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
-	/** Create a tableau in the default workspace with no name for the 
-	 *  given effigy.  The tableau will created with the name "runTableau"
-	 *  in the given effigy.  If there is already a tableau with this
-         *  name, then thie method just calls show on that tableau and
-         *  returns it.  If this factory cannot create a tableau
-	 *  for the given effigy (if it is not an instance of
-         *  PtolemyEffigy) then return null.
+	/** If the specified effigy already contains a tableau named
+         *  "runTableau", then show it; otherwise, create a new instance
+         *  of RunTableau in the specified effigy, and name it "runTableau".
+         *  If the specified effigy is not an instance of
+         *  PtolemyEffigy, then do not create a tableau and return null.
 	 *  @param effigy The model effigy.
-	 *  @return A new RunView, if the effigy is a PtolemyEffigy, or null
-	 *   otherwise.
+	 *  @return A new run tableau if the effigy is a PtolemyEffigy,
+	 *    or null otherwise.
          *  @exception Exception If the factory should be able to create a
-         *   Tableau for the effigy, but something goes wrong.
+         *   tableau for the effigy, but something goes wrong.
 	 */
 	public Tableau createTableau(Effigy effigy) throws Exception {
 	    if(effigy instanceof PtolemyEffigy) {
@@ -242,12 +250,5 @@ public class RunTableau extends Tableau {
 	    }
 	}
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-   
-    // FIXME: should be somewhere else?
-    // Default background color is a light grey.
-    private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
 }
 

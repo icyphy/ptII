@@ -34,10 +34,12 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.kernel.util.*;
 import ptolemy.gui.MessageHandler;
+import ptolemy.moml.MoMLParser;
 
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -59,11 +61,11 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 	super(workspace);
     }
 
-    /** Create a new effigy in the given directory with the given name.
-     *  @param container The directory that contains this effigy.
+    /** Create a new effigy in the given container with the given name.
+     *  @param container The container that contains this effigy.
      *  @param name The name of this effigy.
      */
-    public PtolemyEffigy(ModelDirectory container, String name)
+    public PtolemyEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
     }
@@ -156,6 +158,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
     /** A factory for creating new ptolemy effigies.
      */
     public static class Factory extends EffigyFactory {
+
 	/** Create a factory with the given name and container.
 	 *  @param container The container.
 	 *  @param name The name.
@@ -169,17 +172,79 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 	    super(container, name);
 	}
 
-	/** Create a new effigy in the given directory.  This class
-	 *  overrides the base class to create a new Ptolemy Effigy
-	 *  whose model is set to a TypedCompositeActor.
-	 */
-	public Effigy createEffigy(ModelDirectory directory) 
-	    throws NameDuplicationException, IllegalActionException {
-	    PtolemyEffigy effigy = new PtolemyEffigy(directory, 
-				     directory.uniqueName("effigy"));
-	    effigy.setModel(new TypedCompositeActor(new Workspace()));
-	    return effigy;
-	}		
+        ///////////////////////////////////////////////////////////////
+        ////                     public methods                    ////
+
+        /** Create a new effigy in the given container by reading the specified
+         *  URL. If the specified URL is null, then create a blank effigy.
+         *  The blank effigy will have a new model associated with it.
+         *  If this effigy factory contains an entity named "blank", then
+         *  the new model will be a clone of that entity.  Otherwise,
+         *  it will be an instance of TypedCompositeActor.
+         *  If the URL does not end with extension ".xml" or ".moml", then
+         *  return null.  If the URL points to an XML file that is not
+         *  a MoML file, then also return null.
+         *  The specified base is used to expand any relative file references
+         *  within the URL.
+         *  @param container The container for the effigy.
+         *  @param base The base for relative file references, or null if
+         *   there are no relative file references.
+         *  @param in The input URL.
+         *  @return A new instance of PtolemyEffigy, or null if the URL
+         *   does not specify a Ptolemy II model.
+         *  @exception Exception If the URL cannot be read, or if the data
+         *   is malformed in some way.
+         */
+         public Effigy createEffigy(
+                 CompositeEntity container, URL base, URL in)
+                 throws Exception {
+	    if (in == null) {
+                // Create a blank effigy.
+                PtolemyEffigy effigy = new PtolemyEffigy(
+                        container, container.uniqueName("effigy"));
+                // If this factory contains an entity called "blank", then
+                // clone that.
+                NamedObj entity = getEntity("blank");
+                if (entity != null) {
+                    effigy.setModel((NamedObj)entity.clone(new Workspace()));
+                } else {
+                    effigy.setModel(new TypedCompositeActor(new Workspace()));
+                }
+                return effigy;
+            } else {
+                String extension = getExtension(in);
+                if (!extension.equals("xml") && !extension.equals("moml")) {
+                    return null;
+                }
+                NamedObj toplevel = _parser.parse(base, in.openStream());
+
+                if (toplevel != null) {
+                    // Create an effigy for the model.
+                    PtolemyEffigy effigy = new PtolemyEffigy(
+                            container, container.uniqueName("effigy"));
+                    effigy.setModel(toplevel);
+
+                    // Identify the URL from which the model was read by
+                    // inserting an attribute into both the model and the
+                    // effigy.
+                    URLAttribute url = new URLAttribute(
+                            toplevel, toplevel.uniqueName("url"));
+                    url.setURL(in);
+
+                    // This is used by TableauFrame in its _save() method.
+                    effigy.url.setURL(in);
+
+                    return effigy;
+                }
+                return null;
+            }
+	}
+
+        ///////////////////////////////////////////////////////////////
+        ////                     private members                   ////
+
+        // The parser to use to read MoML files.
+        private static MoMLParser _parser = new MoMLParser();
     }
 }
 
