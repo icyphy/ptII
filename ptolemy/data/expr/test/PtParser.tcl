@@ -152,7 +152,7 @@ test PtParser-2.4 {Construct a Parser, try simple double expressions} {
     set res4  [ $root evaluateParseTree ]
 
     list [$res toString] [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString] 
-} {pt.data.DoubleToken(9.7) pt.data.DoubleToken(-5.6) pt.data.DoubleToken(29.4) pt.data.DoubleToken(1.6) pt.data.DoubleToken(2.0)}
+} {pt.data.DoubleToken(9.7) pt.data.DoubleToken(-5.6) pt.data.DoubleToken(29.4) pt.data.DoubleToken(1.6) pt.data.DoubleToken(2)}
 ######################################################################
 ####
 # 
@@ -174,7 +174,7 @@ test PtParser-3.0 {Construct a Parser,mixing doubles, strings and integers using
     list [$res toString]
     # for some reason TclBlend puts brackets around the result, it seems 
     # because there are spaces within the paranthesis???
-} {{pt.data.StringToken(-27.5 hello 11.0)}}
+} {{pt.data.StringToken(-27.5 hello 11)}}
 ######################################################################
 ####
 # 
@@ -267,14 +267,14 @@ test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist}
     set param4 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id4 $tok4]
 
     set parser [java::new {pt.data.expr.PtParser java.util.Observer} $param1]
-    $e {addParam pt.data.expr.Parameter} $param1
-    $e {addParam pt.data.expr.Parameter} $param2
-    $e {addParam pt.data.expr.Parameter} $param3
-    $e {addParam pt.data.expr.Parameter} $param4
+    $param1 setContainer $e
+    $param2 setContainer $e
+    $param3 setContainer $e
+    $param4 setContainer $e
 
     set nl [$param1 getScope]
 
-    set root1 [ $parser {generateParseTree String pt.kernel.NamedList} "id2 + id3 + id4\n" $nl]
+    set root1 [ $parser {generateParseTree String pt.kernel.util.NamedList} "id2 + id3 + id4\n" $nl]
     set res1  [ $root1 evaluateParseTree ]
    
     list [$res1 toString] 
@@ -294,16 +294,15 @@ test PtParser-6.1 {Test reEvaluation of parse Tree} {
     set param3 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id3 $tok3]
     set param4 [java::new {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} $e id4 $tok4]
 
-    $e {addParam pt.data.expr.Parameter} $param1
-    $e {addParam pt.data.expr.Parameter} $param2
-    $e {addParam pt.data.expr.Parameter} $param3
-    $e {addParam pt.data.expr.Parameter} $param4
-
+   
     set parser [java::new pt.data.expr.PtParser]
-
+    $param1 setContainer $e
+    $param2 setContainer $e
+    $param3 setContainer $e
+    $param4 setContainer $e
     set nl [$param1 getScope]
 
-    set root1 [ $parser {generateParseTree String pt.kernel.NamedList} "id2 + id3 + id4\n" $nl]
+    set root1 [ $parser {generateParseTree String pt.kernel.util.NamedList} "id2 + id3 + id4\n" $nl]
     set res1  [ $root1 evaluateParseTree ]
 
     $tok2 {setValue double} 102.45
@@ -341,7 +340,7 @@ test PtParser-7.2 {Test complicated expression within boolean test condition} {
     set res  [ $root evaluateParseTree ]
 
     list [$res toString] 
-} {pt.data.DoubleToken(24.0)}
+} {pt.data.DoubleToken(24)}
 ######################################################################
 ####
 # 
@@ -371,7 +370,7 @@ test PtParser-8.0 {Test method calls on PtTokens} {
     set res1  [ $root1 evaluateParseTree ]
 
     list [$res1 toString] 
-} {pt.data.DoubleToken(7.0)}
+} {pt.data.DoubleToken(7)}
 ######################################################################
 ####
 # 
