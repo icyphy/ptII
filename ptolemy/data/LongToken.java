@@ -1,6 +1,6 @@
-/* A token that contains a long integer.
+/* A token that contains a long integer number.
 
- Copyright (c) 1997 The Regents of the University of California.
+ Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -26,22 +26,24 @@
 */
 
 package pt.data;
-import pt.kernel.*;
+
+import pt.kernel.IllegalActionException;
+import pt.graph.Cpo;
 
 //////////////////////////////////////////////////////////////////////////
 //// LongToken
 /** 
-A token that contains a long integer.
-
-@author Yuhong Xiong
-$Id$
-*/
+ * A token that contains an long integer number.
+ * 
+ * @author Neil Smyth, Yuhong Xiong
+ * $Id$
+ */
 public class LongToken extends ScalarToken {
 
     /** Construct a token with long integer 0.
      */
     public LongToken() {
-	_value = 0L;
+	_value = 0;
     }
 
     /** Construct a token with the specified value.
@@ -53,22 +55,113 @@ public class LongToken extends ScalarToken {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Set the value of the token to be the specified value.
+
+    /** Add the value of the argument Token to this Token. Type resolution
+     *  also occurs here, with the returned Token type chosen to achieve
+     *  a lossless conversion.
+     *  @param tok The token to add to this Token.
+     *  @exception IllegalActionException Thrown if the passed token 
+     *   is not of a type that can be added to this Tokens value in
+     *   a lossless fashion.
      */
-    public void setValue(long value) {
-	_value = value;
+    public Token add(pt.data.Token tok) throws IllegalActionException {
+        long typeInfo = TypeCpo.compare(this, tok);
+        try {
+            if (typeInfo == Cpo.STRICT_GREATER) {
+                return tok.addR(this);
+            } else if (tok instanceof LongToken) {
+                long result = _value + ((LongToken)tok).getValue();
+                return new LongToken(result);
+            } else if (typeInfo == Cpo.STRICT_LESS) {
+                LongToken tmp = this.convert(tok);
+                long result = _value + tmp.getValue();
+                return new LongToken(result);
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception ex) {
+            String str = "add method not supported between";
+            str = str + this.getClass().getName() + " and ";
+            str = str + tok.getClass().getName();
+            throw new IllegalActionException(str + ": " + ex.getMessage());
+        }
+    }
+         
+    /** Add the value of this Token to the argument Token. Type resolution
+     *  also occurs here, with the returned Token type chosen to achieve
+     *  a lossless conversion.
+     *  @param tok The token to add this Token to.
+     *  @exception IllegalActionException Thrown if the passed token 
+     *   is not of a type that can be added to this Tokens value in
+     *   a lossless fashion.
+     */
+    public Token addR(pt.data.Token tok) throws IllegalActionException {
+        LongToken tmp = this.convert(tok);
+        long result = tmp.getValue() + _value;
+        return new LongToken(result);
+    }
+   
+     /** Used to convert Token types further down the type hierarchy to
+     *  the type of this Token
+     *  @param tok The token to be converted to a LongToken.
+     *  @exception IllegalActionException Thrown if the conversion
+     *  cannot be carried out in a lossless fashion.
+     */
+    static public LongToken convert(Token tok) throws IllegalActionException{
+        if (tok instanceof IntToken) {
+            long result = ((IntToken)tok).longValue();
+            return new LongToken(result);
+        } else {
+            try {
+                IntToken res = IntToken.convert(tok);
+                return convert(res);
+            } catch (Exception ex) {
+                String str = "cannot convert from token type: ";
+                str = str + tok.getClass().getName() + " to a ";
+                throw new IllegalActionException(str + "LongToken");
+            }
+        }
     }
 
-    /** Return the value in the token as a long integer.
+     
+    /** Test the values of this Token and the argument Token for equality.
+     *  Type resolution also occurs here, with the returned Token type 
+     *  chosen to achieve a lossless conversion. 
+     *  @param tok The token to divide this Token by
+     *  @exception IllegalActionException Thrown if the passed token is 
+     *  not of a type that can be compared with this Tokens value.
      */
-    public long longValue() {
-	return _value;
+    public BooleanToken equality(Token tok) throws IllegalActionException {
+        long typeInfo = TypeCpo.compare(this, tok);
+        try {
+            if (typeInfo == Cpo.STRICT_GREATER) {
+                return tok.equality(this);
+            } else if (tok instanceof LongToken) {
+                if ( _value == ((LongToken)tok).getValue()) {
+                    return new BooleanToken(true);
+                }
+                return new BooleanToken(false);
+            } else if (typeInfo == Cpo.STRICT_LESS) {
+                LongToken tmp = this.convert(tok);
+                if ( _value == tmp.getValue()) {
+                    return new BooleanToken(true);
+                }
+                return new BooleanToken(false);
+            } else {
+                throw new Exception();            
+            }
+        } catch (Exception ex) {
+            String str = "equality method not supported between";
+            str = str + this.getClass().getName() + " and ";
+            str = str + tok.getClass().getName();
+            throw new IllegalActionException(str + ": " + ex.getMessage());
+        }
     }
 
     /** Set the value in the token to the value represented by the
-        specified string.
-        @exception IllegalArgumentException The string does not contain
-         a parsable number.
+     *  specified string.
+     *  @exception IllegalArgumentException The string does not contain
+     *  a parsable number.
      */
     public void fromString(String init)
 	    throws IllegalArgumentException {
@@ -78,124 +171,186 @@ public class LongToken extends ScalarToken {
 	    throw new IllegalArgumentException(e.getMessage());
 	}
     }
+    
+    /** Get the long value contained by this token.
+     */
+    public long getValue() {
+        return _value;
+    }
 
-    /** Create a string representation of the value in the token.
+    /** Return the value in the token as a long.
+     */
+    public long longValue() {
+	return (long)_value;
+    }
+
+    /** Get the value of this Token modulo the value of the argument Token.
+     *  Type resolution also occurs here, with the returned Token type 
+     *  chosen to achieve a lossless conversion. 
+     *  @param tok The token to modulo this Token by
+     *  @exception IllegalActionException Thrown if the passed token is
+     *  not of a type that can be  used with modulo in a lossless fashion.
+     */
+    public Token modulo(Token tok) throws IllegalActionException {
+        long typeInfo = TypeCpo.compare(this, tok);
+        try {
+            if (typeInfo == Cpo.STRICT_GREATER) {
+                return tok.moduloR(this);
+            } else if (tok instanceof LongToken) {
+                long result = _value % ((LongToken)tok).getValue();
+                return new LongToken(result);
+            } else if (typeInfo == Cpo.STRICT_LESS) {
+                LongToken tmp = this.convert(tok);
+                long result = _value % tmp.getValue();
+                return new LongToken(result);
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception ex) {
+            String str = "modulo method not supported between";
+            str = str + this.getClass().getName() + " and ";
+            str = str + tok.getClass().getName();
+            throw new IllegalActionException(str + ": " + ex.getMessage());
+        }
+    }
+    /** Modulo the value of the argument Token by this Token. 
+     *  Type resolution also occurs here, with the returned Token 
+     *  type chosen to achieve a lossless conversion.
+     *  @param tok The token to apply modulo to by the value of this Token.
+     *  @exception IllegalActionException Thrown if the passed token 
+     *   is not of a type that can apply modulo by this Tokens value in
+     *   a lossless fashion.
+     */
+    public Token moduloR(pt.data.Token tok) throws IllegalActionException {
+        LongToken tmp = this.convert(tok);
+        long result = tmp.getValue() %  _value;
+        return new LongToken(result);
+    }
+   
+
+    /** Multiply the value of this Token with the value of the argument Token.
+     *  Type resolution also occurs here, with the returned Token type 
+     *  chosen to achieve a lossless conversion. 
+     *  @param tok The token to multiply this Token by.
+     *  @exception IllegalActionException Thrown if the passed token is 
+     *  not of a type that can be multiplied by this Tokens value in 
+     *  a lossless fashion.
+     */
+    public Token multiply(Token tok) throws IllegalActionException {
+        long typeInfo = TypeCpo.compare(this, tok);
+        try {
+            if (typeInfo == Cpo.STRICT_GREATER) {
+                return tok.multiplyR(this);
+            } else if (tok instanceof LongToken) {
+                long result = _value * ((LongToken)tok).getValue();
+                return new LongToken(result);
+            } else if (typeInfo == Cpo.STRICT_LESS){
+                LongToken tmp = this.convert(tok);
+                long result = _value * tmp.getValue();
+                return new LongToken(result);
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception ex) {
+            String str = "multiply method not supported between";
+            str = str + this.getClass().getName() + " and ";
+            str = str + tok.getClass().getName();
+            throw new IllegalActionException(str + ": " + ex.getMessage());
+        } 
+    }
+   
+    /** Multiply the value of the argument Token by this Token. 
+     *  Type resolution also occurs here, with the returned Token 
+     *  type chosen to achieve a lossless conversion.
+     *  @param tok The token to be multiplied by the value of this Token.
+     *  @exception IllegalActionException Thrown if the passed token 
+     *   is not of a type that can be multiplied by this Tokens value in
+     *   a lossless fashion.
+     */
+    public Token multiplyR(pt.data.Token tok) throws IllegalActionException {
+        LongToken tmp = this.convert(tok);
+        long result = tmp.getValue() * _value;
+        return new LongToken(result);
+    }
+    
+    /** Returns the multiplicative identity. 
+     */
+    public Token one() {
+        return new LongToken(1);
+    }
+
+    /** Set the value in the token 
+     *  @param d The new value for the token
+     */
+    public void setValue(long d) {
+        _value = d;
+    }
+
+    /** Get the value contained in this Token as a String.
+     */
+    public String stringValue() {
+        return Long.toString(_value);
+    }
+
+    /** Subtract the value of the argument Token from this Token. Type 
+     *  resolution also occurs here, with the returned Token type chosen to 
+     *  achieve a lossless conversion. 
+     *  @param tok The token to subtract to this Token.
+     *  @exception IllegalActionException Thrown if the passed token is 
+     *   not of a type that can be subtracted from this Tokens value in
+     *   a lossless fashion.
+     */
+    public Token subtract(pt.data.Token tok) throws IllegalActionException {
+        long typeInfo = TypeCpo.compare(this, tok);
+        try {
+            if (typeInfo == Cpo.STRICT_GREATER) {
+                return tok.addR(this);
+            } else if (tok instanceof LongToken) {
+                long result = _value -  ((LongToken)tok).getValue();
+                return new LongToken(result);
+            } else if (typeInfo == Cpo.STRICT_LESS){
+                LongToken tmp = this.convert(tok);
+                long result = _value - tmp.getValue();
+                return new LongToken(result);
+            } else {
+                throw new Exception();
+            }
+        } catch (Exception ex) {
+            String str = "subtract method not supported between";
+            str = str + this.getClass().getName() + " and ";
+            str = str + tok.getClass().getName();
+            throw new IllegalActionException(str + ": " + ex.getMessage());
+        }
+    }
+
+    /** Subtract the value of this Token from the argument Token. Type 
+     *  resolution also occurs here, with the returned Token type 
+     *  chosen to achieve a lossless conversion.
+     *  @param tok The token to add this Token to.
+     *  @exception IllegalActionException Thrown if the passed token 
+     *   is not of a type that can be added to this Tokens value in
+     *   a lossless fashion.
+     */
+    public Token subtractR(pt.data.Token tok) throws IllegalActionException {
+        LongToken tmp = this.convert(tok);
+        long result = _value - tmp.getValue();
+        return new LongToken(result);
+    }
+   
+    /** Return a representation of the token as a String.
      */
     public String toString() {
-	return Long.toString(_value);
+        String str = getClass().getName() + "(" + stringValue() + ")";
+        return str;
     }
 
-    /** Add the value of the argument Token to the current Token.
-     *  @param The token whose value we add to this Token
-     *  @return A token of the appropriate type.
+    /** Returns the additive identity. 
      */
-    public Token add(Token a)
-            throws IllegalActionException {
-        if (a instanceof StringToken) {
-            return new StringToken(this.toString() +
-                                        ((StringToken)a).toString());
-        } else if (a instanceof ByteToken) {
-            return new LongToken(_value + ((ByteToken)a).longValue());
-        } else if (a instanceof IntToken) {
-            return new LongToken(_value + ((IntToken)a).longValue());
-        } else if (a instanceof LongToken) {
-            return new LongToken(_value + ((LongToken)a).longValue());
-        } else {
-            throw new IllegalActionException("Can't add " +
-                getClass().getName() + "to " + a.getClass().getName());
-        }
+    public Token zero() {
+        return new LongToken(0);
     }
+        
 
-    /** Subtract the value of the argument Token from the current Token.
-     *  @param The token whose value we substract from this Token.
-     *  @return A token of the appropriate type.
-     */
-    public Token subtract(Token a)
-            throws IllegalActionException {
-        if (a instanceof ByteToken) {
-            return new LongToken(_value - ((ByteToken)a).longValue());
-        } else if (a instanceof IntToken) {
-            return new LongToken(_value - ((IntToken)a).longValue());
-        } else if (a instanceof LongToken) {
-            return new LongToken(_value - ((LongToken)a).longValue());
-        } else {
-            throw new IllegalActionException("Can't subtract " +
-                a.getClass().getName() + "from " + getClass().getName());
-        }
-    }
- 
-    /** Multiply the value of the argument Token to the current Token.
-     *  @param The token whose value we multiply to this Token.
-     *  @return A token of the appropriate type.
-     */
-    public Token multiply(Token a)
-            throws IllegalActionException {
-        if (a instanceof ByteToken) {
-            return new LongToken(_value * ((ByteToken)a).longValue());
-        } else if (a instanceof IntToken) {
-            return new LongToken(_value * ((IntToken)a).longValue());
-        } else if (a instanceof LongToken) {
-            return new LongToken(_value * ((LongToken)a).longValue());
-        } else {
-            throw new IllegalActionException("Can't multiply " +
-                getClass().getName() + "to " + a.getClass().getName());
-        }
-    }
-
-    /** Divide the value of the argument Token with the current Token.
-     *  @param The token whose value we divide with this Token.
-     *  @return A token of the appropriate type.
-     */
-    public Token divide(Token a)
-            throws IllegalActionException {
-        if (a instanceof ByteToken) {
-            return new LongToken(_value / ((ByteToken)a).longValue());
-        } else if (a instanceof IntToken) {
-            return new LongToken(_value / ((IntToken)a).longValue());
-        } else if (a instanceof LongToken) {
-            return new LongToken(_value / ((LongToken)a).longValue());
-        } else {
-            throw new IllegalActionException("Can't divide " +
-                getClass().getName() + "by " + a.getClass().getName());
-        }
-    }
- 
-    /** Find the result of the value of this Token modulo the value of the
-     *  argument Token.
-     *  @param The token whose value we do modulo with.
-     *  @return A token of the appropriate type.
-     */
-    public Token modulo(Token a)
-            throws IllegalActionException {
-        if (a instanceof ByteToken) {
-            return new LongToken(_value % ((ByteToken)a).longValue());
-        } else if (a instanceof IntToken) {
-            return new LongToken(_value % ((IntToken)a).longValue());
-        } else if (a instanceof LongToken) {
-            return new LongToken(_value % ((LongToken)a).longValue());
-        } else {
-            throw new IllegalActionException("Can't do modulo on " +
-                getClass().getName() + "and " + a.getClass().getName());
-        }
-    }
-
-    /** Test for equality of the values of this Token and the argument Token.
-     *  @param The token with which to test equality.
-     */
-    public BooleanToken equality(Token a)
-            throws  IllegalActionException {
-        if (a instanceof ByteToken) {
-            return new BooleanToken(_value == ((ByteToken)a).longValue());
-        } else if (a instanceof IntToken) {
-            return new BooleanToken(_value == ((IntToken)a).longValue());
-        } else if (a instanceof LongToken) {
-            return new BooleanToken(_value == ((LongToken)a).longValue());
-        } else {
-            throw new IllegalActionException("Can't compare equality between "
-                + getClass().getName() + "and " + a.getClass().getName());
-        }
-    }
- 
     //////////////////////////////////////////////////////////////////////////
     ////                        private variables                         ////
     private long _value;
