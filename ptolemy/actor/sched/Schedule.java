@@ -137,7 +137,7 @@ public class Schedule extends ScheduleElement {
 	super();
 	// This list will contain the schedule elements.
 	_schedule = new LinkedList();
-	_firingIteratorVersion = 0;
+	//_firingIteratorVersion = 0;
 	// Default tree depth to use for allocation state arrays
 	// for the firingIterator() method. The arrays will be
 	// dynamically resized as needed. 3 was an arbitrary
@@ -596,11 +596,11 @@ public class Schedule extends ScheduleElement {
     ////                         private variables                 ////
 
     // The list of schedule elements contained by this schedule.
-    private List _schedule;
+    protected List _schedule;
     // The list of Firings for this schedule.
-    private List _firingList;
+    //private List _firingList;
     // The current version of the firing iterator list.
-    private long _firingIteratorVersion;
+    //private long _firingIteratorVersion;
     // The depth of this schedule tree. This may grow.
     private int _treeDepth;
     private ScheduleElement _currentNode;
