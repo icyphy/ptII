@@ -40,6 +40,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
@@ -109,8 +110,7 @@ public class CompositeActorApplication {
             application.processArgs(args);
             application.waitForFinish();
         } catch (Exception ex) {
-            System.err.println(ex.toString());
-            ex.printStackTrace();
+            System.err.println(KernelException.stackTraceToString(ex));
             System.exit(0);
         }
 
@@ -163,10 +163,8 @@ public class CompositeActorApplication {
      *  @param ex The exception to report.
      */
     public void report(String message, Exception ex) {
-        String msg = "Exception thrown.\n" + message + "\n"
-            + ex.toString();
-        System.err.println(msg);
-        ex.printStackTrace();
+        System.err.println("Exception thrown:\n" + message + "\n"
+                + KernelException.stackTraceToString(ex));
     }
 
     /** If the specified model has a manager and is not already running,
