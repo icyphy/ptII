@@ -99,9 +99,14 @@ awk '
 				# "Exception occurred during processing"
 				sawTestGeneratedError = 0
 			    }
+			    if ($0 ~ /WatchDogTimer.internalTransform\(wjtp.watchDog/) {
+				sawTestGeneratedError = 0
+				sawTestGeneratedErrorAndWatchDogTimer = 1
+			    }
                        }
       sawTestGeneratedError == 1 {
 			    sawTestGeneratedError--
+			    sawTestGeneratedErrorAndWatchDogTimer = 0
 			    tmp = errorLine2 "\n" $0
 			    errorLine2 = tmp
 			    # Skip any lines that contain
@@ -145,6 +150,7 @@ awk '
 				}    
 			    }
 			    modelName2 = modelName2 f[nf]
+			    sawTestGeneratedErrorAndWatchDogTimer = 0
 	              }		    
     $0  ~/Command failed/ {
                            sawTestGeneratedError=2
@@ -158,6 +164,13 @@ awk '
                            sawTestGeneratedError=2
     			   errorLine2=""
                       }
+    $0  ~/Caused by/ {	      
+			    # DifferentialSystem.xml needs this
+			    if (sawTestGeneratedErrorAndWatchDogTimer == 1 && sawTestGeneratedError == 0) {
+				sawTestGeneratedErrorAndWatchDogTimer == 0
+    			        sawTestGeneratedError=3
+                           }
+                     }
     $0  ~/ Test generated error:/ {
     			    sawTestGeneratedError=4
     			    errorLine2=""
