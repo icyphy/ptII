@@ -2,7 +2,7 @@
 #
 # @Authors: Xiaojun Liu
 #
-# @Version: $ID$
+# @Version: $Id$
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
@@ -37,7 +37,7 @@ ROOT =		../../../..
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS = 		#doc
+DIRS = 		#test #doc
 
 # Used to build zip files
 TYPACKAGE = 	ptolemy.domains.sc.lib
@@ -57,16 +57,13 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	doc test
+MISC_FILES =	$(DIRS) doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = 
 
 JCLASS = $(JSRCS:%.java=%.class)
-
-# Needed for compiling under Cygwin on NT
-LIB = dummylib
 
 all: jclass
 install: jclass javadocs $(JARFILE)
