@@ -3,19 +3,13 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="topLevel" class="ptolemy.actor.TypedCompositeActor">
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="365.0, 70.0">
+        <property name="_location" class="ptolemy.moml.Location" value="284.0, 35.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">The follow plot shows the numbers generated
-by a Ramp actor (i.e., the blue line),
-which generates a stream of double tokens
-with a 0.1 increment starting from -1.0.
-The double tokens are converted into
-fixpoint tokens with the given precision
-(i.e., the red line).
- </text>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model compares fixed-point (quantized)
+data against unquantized data.</text>
            </svg>
            </configure>
         </property>
@@ -25,17 +19,21 @@ fixpoint tokens with the given precision
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="78.0, 38.0">
+        <property name="_location" class="ptolemy.moml.Location" value="62.0, 33.0">
         </property>
     </property>
-    <entity name="ramp" class="ptolemy.actor.lib.Ramp">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[560, 204]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[126, 152]">
+    </property>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="-1">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="-1.0">
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="68.0, 326.0">
+        <property name="_location" class="ptolemy.moml.Location" value="43.0, 168.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -45,26 +43,18 @@ fixpoint tokens with the given precision
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="tofix" class="ptolemy.actor.lib.conversions.DoubleToFix">
-        <property name="precision" class="ptolemy.data.expr.Parameter" value="&quot;(2.1)&quot;">
+    <entity name="DoubleToFix" class="ptolemy.actor.lib.conversions.DoubleToFix">
+        <property name="precision" class="ptolemy.data.expr.Parameter" value="[4,2]">
         </property>
-        <property name="quantizer" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="quantization" class="ptolemy.kernel.util.StringAttribute" value="round">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="round" class="ptolemy.kernel.util.StringAttribute" value="round">
+                </property>
+                <property name="truncate" class="ptolemy.kernel.util.StringAttribute" value="truncate">
+                </property>
+            </property>
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="260.0, 179.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="todouble" class="ptolemy.actor.lib.conversions.FixToDouble">
-        <property name="precision" class="ptolemy.data.expr.Parameter" value="&quot;(2.16)&quot;">
-        </property>
-        <property name="overflow" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="365.0, 179.0">
+        <property name="_location" class="ptolemy.moml.Location" value="146.0, 132.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -73,49 +63,109 @@ fixpoint tokens with the given precision
             <property name="output"/>
         </port>
     </entity>
-    <entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter">
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="second quantized, first quantized, original">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="-1.1">
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="-1.0">
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="506.99998474121094, 324.0">
+        <property name="_location" class="ptolemy.moml.Location" value="480.0, 167.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Ramp Diagram</title>
-<xLabel>input value</xLabel>
-<yLabel>FixPoint value</yLabel>
-<xRange min="-1.0" max="2.9"/>
+<title>Quantization of fixed-point numbers</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="-1.0" max="2.9000000000000012"/>
 <yRange min="-1.0" max="2.9000000000000012"/>
 <noGrid/>
-<wrap/>
 <default marks="dots"/>
 </plot>?>
-                        </configure>    </entity>
+        </configure>
+    </entity>
+    <entity name="FixToFix" class="ptolemy.actor.lib.conversions.FixToFix">
+        <property name="precision" class="ptolemy.data.expr.Parameter" value="[3, 2]">
+        </property>
+        <property name="quantization" class="ptolemy.kernel.util.StringAttribute" value="round">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="round" class="ptolemy.kernel.util.StringAttribute" value="round">
+                </property>
+                <property name="truncate" class="ptolemy.kernel.util.StringAttribute" value="truncate">
+                </property>
+            </property>
+        </property>
+        <property name="overflow" class="ptolemy.kernel.util.StringAttribute" value="overflow_to_zero">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="saturate" class="ptolemy.kernel.util.StringAttribute" value="saturate">
+                </property>
+                <property name="overflow_to_zero" class="ptolemy.kernel.util.StringAttribute" value="overflow_to_zero">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="264.0, 84.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="FixToDouble0" class="ptolemy.actor.lib.conversions.FixToDouble">
+        <property name="_location" class="ptolemy.moml.Location" value="360.0, 84.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="FixToDouble1" class="ptolemy.actor.lib.conversions.FixToDouble">
+        <property name="_location" class="ptolemy.moml.Location" value="318.0, 143.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="201.0, 331.0">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="97.0, 174.0">
         </vertex>
     </relation>
-    <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="221.0, 148.0">
+        </vertex>
     </relation>
-    <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ramp.output" relation="_R0"/>
-    <link port="tofix.input" relation="_R0"/>
-    <link port="tofix.output" relation="_R1"/>
-    <link port="todouble.input" relation="_R1"/>
-    <link port="todouble.output" relation="_R2"/>
-    <link port="plot.input" relation="_R2"/>
-    <link port="plot.input" relation="_R0"/>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="_R0"/>
+    <link port="DoubleToFix.input" relation="_R0"/>
+    <link port="DoubleToFix.output" relation="relation8"/>
+    <link port="SequencePlotter.input" relation="relation3"/>
+    <link port="SequencePlotter.input" relation="relation4"/>
+    <link port="SequencePlotter.input" relation="_R0"/>
+    <link port="FixToFix.input" relation="relation8"/>
+    <link port="FixToFix.output" relation="relation2"/>
+    <link port="FixToDouble0.input" relation="relation2"/>
+    <link port="FixToDouble0.output" relation="relation3"/>
+    <link port="FixToDouble1.input" relation="relation8"/>
+    <link port="FixToDouble1.output" relation="relation4"/>
 </entity>

@@ -40,13 +40,10 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-JSRCS = \
-	ExpressionApplet.java
+JSRCS =
 
 EXTRA_SRCS =	$(JSRCS) \
 	Expression.htm \
-	expression.gif \
-	expression.vsd \
 	Expression.xml
 
 # Sources that may or may not be present, but if they are present, we don't

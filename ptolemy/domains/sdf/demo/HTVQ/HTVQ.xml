@@ -7,12 +7,61 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="59.33332824707031, 41.0">
+        <property name="_location" class="ptolemy.moml.Location" value="59.33332824707031, 28.0">
         </property>
     </property>
     <property name="blockWidth" class="ptolemy.data.expr.Parameter" value="4">
     </property>
     <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="2">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 273]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 152]">
+    </property>
+    <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="317.0, 21.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows a simple vector quantizer for images.</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <property name="1:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="167.0, 81.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">176 x 144 integer matrices</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <property name="0:1:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="489.0, 243.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">176 x 144 integer matrices</text>
+           </svg>
+           </configure>
+        </property>
+    </property>
+    <property name="1:0:1:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_location" class="ptolemy.moml.Location" value="219.0, 248.0">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+           <svg>
+           <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">4 x 2
+integer matrices</text>
+           </svg>
+           </configure>
+        </property>
     </property>
     <entity name="Source" class="ptolemy.domains.sdf.lib.vq.ImageSequence">
         <property name="imageURLTemplate" class="ptolemy.data.expr.Parameter" value="&quot;/ptolemy/domains/sdf/lib/vq/data/seq/missa/missa***.qcf&quot;">
@@ -25,7 +74,7 @@
         </property>
         <property name="endFrame" class="ptolemy.data.expr.Parameter" value="29">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="38.66666793823242, 148.0">
+        <property name="_location" class="ptolemy.moml.Location" value="40.66666793823242, 92.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -36,7 +85,7 @@
         </port>
     </entity>
     <entity name="PSNR" class="ptolemy.domains.sdf.lib.vq.PSNR">
-        <property name="_location" class="ptolemy.moml.Location" value="477.0, 186.0">
+        <property name="_location" class="ptolemy.moml.Location" value="479.0, 130.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -48,7 +97,7 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="Part" class="ptolemy.domains.sdf.lib.vq.ImagePartition">
+    <entity name="Partition Image" class="ptolemy.domains.sdf.lib.vq.ImagePartition">
         <property name="imageColumns" class="ptolemy.data.expr.Parameter" value="176">
         </property>
         <property name="imageRows" class="ptolemy.data.expr.Parameter" value="144">
@@ -57,7 +106,7 @@
         </property>
         <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="146.3333282470703, 257.0">
+        <property name="_location" class="ptolemy.moml.Location" value="150.3333282470703, 200.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -74,7 +123,7 @@
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3168">
             </property>
         </port>
     </entity>
@@ -87,11 +136,11 @@
         </property>
         <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="230.66666412353516, 257.0">
+        <property name="_location" class="ptolemy.moml.Location" value="232.66666412353516, 201.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3168">
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -104,7 +153,7 @@
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3168">
             </property>
         </port>
     </entity>
@@ -117,11 +166,11 @@
         </property>
         <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="313.0, 257.0">
+        <property name="_location" class="ptolemy.moml.Location" value="315.0, 201.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3168">
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -134,11 +183,11 @@
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3168">
             </property>
         </port>
     </entity>
-    <entity name="Unpart" class="ptolemy.domains.sdf.lib.vq.ImageUnpartition">
+    <entity name="Unpartition" class="ptolemy.domains.sdf.lib.vq.ImageUnpartition">
         <property name="imageColumns" class="ptolemy.data.expr.Parameter" value="176">
         </property>
         <property name="imageRows" class="ptolemy.data.expr.Parameter" value="144">
@@ -147,11 +196,11 @@
         </property>
         <property name="partitionRows" class="ptolemy.data.expr.Parameter" value="blockHeight">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="393.3333435058594, 256.0">
+        <property name="_location" class="ptolemy.moml.Location" value="395.3333435058594, 200.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3168">
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -169,7 +218,7 @@
         </port>
     </entity>
     <entity name="Compressed" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
-        <property name="_location" class="ptolemy.moml.Location" value="558.3333435058594, 256.0">
+        <property name="_location" class="ptolemy.moml.Location" value="560.3333435058594, 200.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -177,7 +226,7 @@
         </port>
     </entity>
     <entity name="Original" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
-        <property name="_location" class="ptolemy.moml.Location" value="555.3333435058594, 123.0">
+        <property name="_location" class="ptolemy.moml.Location" value="557.3333435058594, 67.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -185,11 +234,11 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="7">
         </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="554.3333435058594, 184.0">
+        <property name="_location" class="ptolemy.moml.Location" value="556.3333435058594, 128.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -197,7 +246,7 @@
         </port>
     </entity>
     <relation name="R1" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="101.0, 154.0">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="103.0, 98.0">
         </vertex>
     </relation>
     <relation name="R2" class="ptolemy.actor.TypedIORelation">
@@ -207,7 +256,7 @@
     <relation name="R4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="R5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="438.6666564941406, 263.0">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex" value="440.6666564941406, 207.0">
         </vertex>
     </relation>
     <relation name="R6" class="ptolemy.actor.TypedIORelation">
@@ -216,14 +265,14 @@
     <link port="PSNR.output" relation="R6"/>
     <link port="PSNR.signal" relation="R1"/>
     <link port="PSNR.distortedSignal" relation="R5"/>
-    <link port="Part.input" relation="R1"/>
-    <link port="Part.output" relation="R2"/>
+    <link port="Partition Image.input" relation="R1"/>
+    <link port="Partition Image.output" relation="R2"/>
     <link port="Encoder.input" relation="R2"/>
     <link port="Encoder.output" relation="R3"/>
     <link port="Decoder.input" relation="R3"/>
     <link port="Decoder.output" relation="R4"/>
-    <link port="Unpart.input" relation="R4"/>
-    <link port="Unpart.output" relation="R5"/>
+    <link port="Unpartition.input" relation="R4"/>
+    <link port="Unpartition.output" relation="R5"/>
     <link port="Compressed.input" relation="R5"/>
     <link port="Original.input" relation="R1"/>
     <link port="Display.input" relation="R6"/>

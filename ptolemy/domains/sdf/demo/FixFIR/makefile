@@ -40,8 +40,7 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-JSRCS = \
-	FixFIR.java
+JSRCS =
 
 EXTRA_SRCS =	$(JSRCS) \
 	FixFIR.htm \

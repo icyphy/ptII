@@ -26,7 +26,9 @@ The signal is multiplied by a sine wave.
 <PARAM NAME="codebase" VALUE="../../../../..">
 <PARAM NAME="type" VALUE="application/x-java-applet;version=1.2.2">
 <PARAM NAME="background" VALUE="#faf0e6">
-<PARAM NAME="iterations" VALUE="500">
+<PARAM NAME="modelURL" VALUE="Sketch.xml">
+<PARAM NAME="orientation" VALUE="controls_only">
+<PARAM NAME="controls" VALUE="none">
 <PARAM NAME=ARCHIVE VALUE="
 	ptolemy/ptsupport.jar,
 	ptolemy/domains/sdf/sdf.jar,
@@ -38,7 +40,9 @@ The signal is multiplied by a sine wave.
    code="ptolemy.domains.sdf.demo.Sketch.SketchApplet.class"
    codebase="../../../../.."
    background="#faf0e6"
-   iterations="500"
+   modelURL="Sketch.xml"
+   orientation="controls_only"
+   controls="none"
    pluginspage="http://java.sun.com/products/plugin/1.2.2/plugin-install.html"
    archive="
 	ptolemy/ptsupport.jar,
@@ -56,9 +60,19 @@ Notice that you can zoom in with the left mouse button
 and very precisely control the sketched curve.
 You can also update just portion of the curve by sketching over
 only a subset of the horizontal axis.
+<!-- FIXME: The following doesn't work.
 You can undo your updates by typing Control-Z (the undo history is infinite).
 You can redo what you have undone by typing Control-Y.  For undo and
 redo to work, you have to make sure the focus is in the plot window
 (clicking on the fill button will do this).
+-->
+<p>
+This model is implemented by a
+<a href="SketchApplet.java">custom applet</a>,
+which uses as a basis a <a href="SketchVergil.htm">block diagram</a>
+constructed in Vergil.
+The applet extends the Vergil implementation to make the
+sketched source and the plotter share the same graphical object
+on screen.
 </body>
 </html>

@@ -3,23 +3,18 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="topLevel" class="ptolemy.actor.TypedCompositeActor">
     <property name="annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.moml.Location" value="422.0, 91.0">
+        <property name="_location" class="ptolemy.moml.Location" value="392.0, 73.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model evaluates an expression,
-which is a function of two ramp signals, slow and fast.
-The slow signal is a ramp that starts at zero and increments by
-PI/100 on each firing. The fast signal is a ramp that starts
-at zero and increments by PI/10 on each firing.
-Try right clicking on the expr actor, select "Edit Parameters"
-and change it to "cos(slow)*cos(fast)"
-and then run the demo with View->Run Window->Go
-Other interesting alternatives include:
-"cos(fast*cos(slow))"
-"0.2*slow + cos(fast)"
- </text>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model repeatedly evaluates an expression, a function of two ramp
+signals, slow and fast. Try right clicking on the expr actor, select
+"Edit Parameters" and change it to "cos(slow)*cos(fast)" and then run
+the demo with View->Run Window->Go. Other interesting alternatives
+include:
+    "cos(fast*cos(slow))"
+    "0.2*slow + cos(fast)"</text>
            </svg>
            </configure>
         </property>
@@ -29,17 +24,21 @@ Other interesting alternatives include:
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="78.0, 42.0">
+        <property name="_location" class="ptolemy.moml.Location" value="73.0, 25.0">
         </property>
     </property>
-    <entity name="ramp1" class="ptolemy.actor.lib.Ramp">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[657, 230]">
+    </property>
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[76, 152]">
+    </property>
+    <entity name="slow" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="0.0314159">
+        <property name="step" class="ptolemy.data.expr.Parameter" value="PI/100.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="105.0, 217.0">
+        <property name="_location" class="ptolemy.moml.Location" value="63.0, 113.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -49,14 +48,14 @@ Other interesting alternatives include:
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="ramp2" class="ptolemy.actor.lib.Ramp">
+    <entity name="fast" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="init" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="step" class="ptolemy.data.expr.Parameter" value="0.3141593">
+        <property name="step" class="ptolemy.data.expr.Parameter" value="PI/10.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="140.0, 315.0">
+        <property name="_location" class="ptolemy.moml.Location" value="63.0, 200.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -66,10 +65,10 @@ Other interesting alternatives include:
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="expr" class="ptolemy.actor.lib.Expression">
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="cos(slow) + cos(fast)">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="300.0, 225.0">
+        <property name="_location" class="ptolemy.moml.Location" value="202.0, 191.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -81,7 +80,7 @@ Other interesting alternatives include:
             <property name="input"/>
         </port>
     </entity>
-    <entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter">
+    <entity name="Plot" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
@@ -92,7 +91,7 @@ Other interesting alternatives include:
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="485.0, 224.0">
+        <property name="_location" class="ptolemy.moml.Location" value="349.0, 192.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -106,17 +105,17 @@ Other interesting alternatives include:
 <yRange min="-1.9510565162951554" max="2.0"/>
 <noGrid/>
 </plot>?>
-                        </configure>    </entity>
+                                                                </configure>    </entity>
     <relation name="_R0" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R1" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="_R2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ramp1.output" relation="_R0"/>
-    <link port="ramp2.output" relation="_R1"/>
-    <link port="expr.output" relation="_R2"/>
-    <link port="expr.slow" relation="_R0"/>
-    <link port="expr.fast" relation="_R1"/>
-    <link port="plot.input" relation="_R2"/>
+    <link port="slow.output" relation="_R0"/>
+    <link port="fast.output" relation="_R1"/>
+    <link port="Expression.output" relation="_R2"/>
+    <link port="Expression.slow" relation="_R0"/>
+    <link port="Expression.fast" relation="_R1"/>
+    <link port="Plot.input" relation="_R2"/>
 </entity>

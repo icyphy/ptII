@@ -49,11 +49,15 @@ import ptolemy.plot.*;
 //////////////////////////////////////////////////////////////////////////
 //// SketchApplet
 /**
+This applet demonstrates the use of the SketchSource actor,
+and in particular, how to share the same plot display between
+an instance of SketchedSource and an instance of SequencePlotter.
 
+@see SketchedSource
 @author Edward A. Lee
 @version $Id$
 */
-public class SketchApplet extends SDFApplet implements EditListener {
+public class SketchApplet extends MoMLApplet implements EditListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -74,38 +78,24 @@ public class SketchApplet extends SDFApplet implements EditListener {
         }
     }
 
-    /** Initialize the applet.
+    /** Create the shared plot and set it up based on the director parameters.
      */
-    public void init() {
-        super.init();
+    public void _createView() {
+        super._createView();
         try {
             // Find out how many iterations the director expects to run for.
+            SDFDirector director = (SDFDirector)_toplevel.getDirector();
             int iterations =
-                ((IntToken)(_director.iterations.getToken())).intValue();
+                ((IntToken)(director.iterations.getToken())).intValue();
 
-            Ramp ramp = new Ramp(_toplevel, "ramp");
-            ramp.step.setExpression("PI/10.0");
-            TrigFunction trigFunction =
-                new TrigFunction(_toplevel, "trigFunction");
-            trigFunction.function.setExpression("sin");
-            MultiplyDivide mult = new MultiplyDivide(_toplevel, "mult");
-            SketchedSource source = new SketchedSource(_toplevel,"source");
-            SequencePlotter plotter = new SequencePlotter(_toplevel,"plotter");
+            SketchedSource source = (SketchedSource)
+                    _toplevel.getEntity("Sketched Source");
+            SequencePlotter plotter = (SequencePlotter)
+                    _toplevel.getEntity("Plotter");
 
             // Note: The order of the following is important.
             // First, specify how long the sketched plot should be.
             source.length.setToken(new IntToken(iterations));
-
-            // Specify that the plotter should put its display at dataset 1.
-            // (If you give it additional inputs, it will use dataset 2,
-            // 3, etc., in order).  This must be called before you call
-            // place() on plotter, or the plotter will clear the wrong
-            // dataset.
-            plotter.startingDataset.setExpression("1");
-
-            // Do not fill on wrapup, since this is disoriented when the
-            // user has just drawn a trace to have the trace rescaled.
-            plotter.fillOnWrapup.setExpression("false");
 
             // Then, create the plot and place it in this applet,
             // and specify to both the source and destination actors
@@ -113,19 +103,13 @@ public class SketchApplet extends SDFApplet implements EditListener {
             EditablePlot plot = new EditablePlot();
             plot.setSize(700, 300);
             plot.setTitle("Editable envelope");
-            plot.setYRange(-1, 1);
             plot.setXRange(0, iterations);
             plot.setButtons(true);
             getContentPane().add(plot);
             plotter.place(plot);
             source.place(plot);
-            plot.setBackground(getBackground());
+            plot.setBackground(null);
             plot.addEditListener(this);
-
-            _toplevel.connect(ramp.output, trigFunction.input);
-            _toplevel.connect(trigFunction.output, mult.multiply);
-            _toplevel.connect(source.output, mult.multiply);
-            _toplevel.connect(mult.output, plotter.input);
         } catch (Exception ex) {
             report("Error constructing model.", ex);
         }
