@@ -336,8 +336,18 @@ public class PortConfigurerDialog
                         (UnitAttribute) p.getAttribute("_units");
                     if (_unitsAttribute != null) {
                         _units = _unitsAttribute.getExpression();
+                        if (_units != null) {
+                            portInfo.put(ColumnNames.COL_UNITS, _units);
+                        } else {
+                            portInfo.put(ColumnNames.COL_UNITS, "");
+                        }
+                    } else {
+                        // Set units to "" anyways.  If the user
+                        // doesn't change the value, nothing will be
+                        // added to the MoMLChangeRequest for units in
+                        // _apply().
+                        portInfo.put(ColumnNames.COL_UNITS, "");
                     }
-                    portInfo.put(ColumnNames.COL_UNITS, _units);
                 }
 
                 portInfo.put(ColumnNames.COL_ACTUAL_PORT, p);
@@ -383,7 +393,7 @@ public class PortConfigurerDialog
             }
             
             if (_columnNames.contains(ColumnNames.COL_TYPE)) {
-                portInfo.put(ColumnNames.COL_TYPE, "unknown");
+                portInfo.put(ColumnNames.COL_TYPE, "");
             }
             
             if (_columnNames.contains(ColumnNames.COL_UNITS)) {
@@ -1049,9 +1059,11 @@ public class PortConfigurerDialog
                     }
                     String tableValue =
                         (String) portInfo.get(ColumnNames.COL_UNITS);
+                    // tableValue will not be null because we put ""
+                    // into portInfo in the constructor of
+                    // PortTableModel.
                     if ((_units == null && (!tableValue.equals("")))
-                            || ((_units != null)
-                                    && (!tableValue.equals(_units)))) {
+                            || ((_units != null) && (!tableValue.equals(_units)))) {
                         havePortUpdate = true;
                         updates.put(ColumnNames.COL_UNITS, Boolean.TRUE);
                     }
@@ -1092,17 +1104,22 @@ public class PortConfigurerDialog
                 // FIXME is it necessary to remove unchanged fields
                 // from updates hashtable?
 
+                // Make this false, since this is a new port that does
+                // not have a pre-existing name.  Note that "rename"
+                // is used for pre-existing ports with new names.
                 if (_columnNames.contains(ColumnNames.COL_NAME)) {
                     updates.put(ColumnNames.COL_NAME, Boolean.FALSE);
                 }
 
-                // NOTE: Assumes default value is false.
+                // Put this in the MoMLChangeRequest if the value is
+                // not the default of false.
                 if (_columnNames.contains(ColumnNames.COL_SHOW_NAME)) {
                     updates.put(ColumnNames.COL_SHOW_NAME,
                             (Boolean) portInfo.get(ColumnNames.COL_SHOW_NAME));
                 }
 
-                // NOTE: Assumes default value is false.
+                // Put this in the MoMLChangeRequest if the value is
+                // not the default of false.
                 if (_columnNames.contains(ColumnNames.COL_HIDE)) {
                     updates.put(ColumnNames.COL_HIDE,
                             (Boolean) portInfo.get(ColumnNames.COL_HIDE));
@@ -1115,10 +1132,15 @@ public class PortConfigurerDialog
                         updates.put(ColumnNames.COL_TYPE, Boolean.TRUE);
                         _portTableModel.fireTableDataChanged();
                     } else {
+                        // Do not make this part of the
+                        // MoMLChangeRequest if the value is equal to
+                        // "".
                         updates.put(ColumnNames.COL_TYPE, Boolean.FALSE);
                     }
                 }
-
+                
+                // Put this in the MoMLChangeRequest if the value is
+                // not the default.
                 if (_columnNames.contains(ColumnNames.COL_DIRECTION)) {
                     String direction =
                         (String) portInfo.get(ColumnNames.COL_DIRECTION);
@@ -1136,6 +1158,9 @@ public class PortConfigurerDialog
                         updates.put(ColumnNames.COL_UNITS, Boolean.TRUE);
                         _portTableModel.fireTableDataChanged();
                     } else {
+                        // Do not make this part of the
+                        // MoMLChangeRequest if the value is equal to
+                        // "".
                         updates.put(ColumnNames.COL_UNITS, Boolean.FALSE);
                     }
                 }
@@ -1228,6 +1253,9 @@ public class PortConfigurerDialog
             new StringBuffer("<port name=\"" + currentPortName + "\">");
 
         // Assumes that updates only contains keys that are in _columnNames.
+
+        // Assumes that updates only contains COL_NAME as key if the
+        // pre-existing port needs to be renamed.
         if (updates.containsKey(ColumnNames.COL_NAME)) {
             Boolean updateValue = (Boolean) updates.get(ColumnNames.COL_NAME);
             if (updateValue.booleanValue()) {
@@ -1336,7 +1364,6 @@ public class PortConfigurerDialog
             }
         }
 
-        
         if (updates.containsKey(ColumnNames.COL_HIDE)) {
             Boolean updateValue = (Boolean) updates.get(ColumnNames.COL_HIDE);
             if (updateValue.booleanValue()) {
