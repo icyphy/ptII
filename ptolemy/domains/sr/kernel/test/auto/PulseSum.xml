@@ -4,7 +4,7 @@
 <entity name="sr" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[141, 132]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
         <property name="period" class="ptolemy.data.expr.Parameter" value="1">
@@ -67,18 +67,6 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="447.0, 134.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 1}">
         </property>
@@ -103,6 +91,18 @@
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="SequenceTest" class="ptolemy.domains.sr.lib.SequenceTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0,1,-99}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="415.0, 138.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="209.0, 129.0">
         </vertex>
@@ -118,7 +118,7 @@
     <link port="AddSubtract.plus" relation="relation5"/>
     <link port="AddSubtract.plus" relation="relation6"/>
     <link port="AddSubtract.output" relation="relation"/>
-    <link port="Test.input" relation="relation5"/>
     <link port="Test2.input" relation="relation6"/>
     <link port="Test3.input" relation="relation"/>
+    <link port="SequenceTest.input" relation="relation5"/>
 </entity>
