@@ -30,6 +30,9 @@
   <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
   </entity>
 
+  <entity name="IsPresent" class="ptolemy.actor.lib.logic.IsPresent">
+  </entity>
+
   <entity name="LogicalNot" class="ptolemy.actor.lib.logic.LogicalNot">
   </entity>
 

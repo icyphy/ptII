@@ -53,6 +53,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	Comparator.java \
 	Equals.java \
+	IsPresent.java \
 	LogicFunction.java \
 	LogicalNot.java
 
