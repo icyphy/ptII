@@ -49,7 +49,6 @@ public class DirectedGraph extends Graph {
     public DirectedGraph() {
         super();
         _inDegree = new Vector();
-        _modified = true;
     }
 
     /** Construct an empty directed graph with enough storage allocated
@@ -62,7 +61,6 @@ public class DirectedGraph extends Graph {
     public DirectedGraph(int numNodes) {
         super(numNodes);
         _inDegree = new Vector(numNodes);
-        _modified = true;
     }
         
     ////////////////////////////////////////////////////////////////////////
@@ -271,6 +269,6 @@ public class DirectedGraph extends Graph {
 
     private boolean[][] _tranClosure;
     private boolean _isAcyclic;
-    private boolean _modified;
+    private boolean _modified = true;
 }
 
