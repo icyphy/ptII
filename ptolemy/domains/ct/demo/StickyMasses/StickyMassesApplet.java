@@ -155,17 +155,17 @@ public class StickyMassesApplet extends CTApplet {
             // HSInit hsinit1 = new HSInit(ctrlTr1, "P1", "P1");
             SetRefinementVariable hsinit1 =
                     new SetRefinementVariable(ctrlTr1, "act1");
-            hsinit1.variableName.setToken(new StringToken("P1.InitialState"));
+            hsinit1.variableName.setToken(new StringToken("P1.initialState"));
             hsinit1.expression.setToken(new StringToken("P1_V"));
             // HSInit hsinit4 = new HSInit(ctrlTr1, "V1", "(V1*1.0+V2*1.0)/2.0");
             SetRefinementVariable hsinit4 =
                     new SetRefinementVariable(ctrlTr1, "act4");
-            hsinit4.variableName.setToken(new StringToken("V1.InitialState"));
+            hsinit4.variableName.setToken(new StringToken("V1.initialState"));
             hsinit4.expression.setToken(new StringToken("(V1_V*1.0+V2_V*1.0)/2.0"));
             // HSInit hsinit0 = new HSInit(ctrlTr1, "STI", "10.0");
             SetRefinementVariable hsinit0 =
                     new SetRefinementVariable(ctrlTr1, "act0");
-            hsinit0.variableName.setToken(new StringToken("STI.InitialState"));
+            hsinit0.variableName.setToken(new StringToken("STI.initialState"));
             hsinit0.expression.setToken(new StringToken("10.0"));
             ResetRefinement reset1 = new ResetRefinement(ctrlTr1, "reset1");
 
@@ -177,22 +177,22 @@ public class StickyMassesApplet extends CTApplet {
             // HSInit hsinit2 = new HSInit(ctrlTr2, "P1", "P1");
             SetRefinementVariable hsinit2 =
                     new SetRefinementVariable(ctrlTr2, "act2");
-            hsinit2.variableName.setToken(new StringToken("P1.InitialState"));
+            hsinit2.variableName.setToken(new StringToken("P1.initialState"));
             hsinit2.expression.setToken(new StringToken("P1_V"));
             // HSInit hsinit3 = new HSInit(ctrlTr2, "P2", "P1");
             SetRefinementVariable hsinit3 =
                     new SetRefinementVariable(ctrlTr2, "act3");
-            hsinit3.variableName.setToken(new StringToken("P2.InitialState"));
+            hsinit3.variableName.setToken(new StringToken("P2.initialState"));
             hsinit3.expression.setToken(new StringToken("P1_V"));
             // HSInit hsinit5 = new HSInit(ctrlTr2, "V1", "V1");
             SetRefinementVariable hsinit5 =
                     new SetRefinementVariable(ctrlTr2, "act5");
-            hsinit5.variableName.setToken(new StringToken("V1.InitialState"));
+            hsinit5.variableName.setToken(new StringToken("V1.initialState"));
             hsinit5.expression.setToken(new StringToken("V1_V"));
             // HSInit hsinit6 = new HSInit(ctrlTr2, "V2", "V1");
             SetRefinementVariable hsinit6 =
                     new SetRefinementVariable(ctrlTr2, "act6");
-            hsinit6.variableName.setToken(new StringToken("V2.InitialState"));
+            hsinit6.variableName.setToken(new StringToken("V2.initialState"));
             hsinit6.expression.setToken(new StringToken("V1_V"));
             ResetRefinement reset2 = new ResetRefinement(ctrlTr2, "reset2");
 
@@ -458,10 +458,10 @@ public class StickyMassesApplet extends CTApplet {
         try {
             _ctGain.factor.setToken(new DoubleToken(
                     _query.doubleValue("sticky")));
-            _ctIncV1.InitialState.setToken(new DoubleToken(0.0));
-            _ctIncP1.InitialState.setToken(new DoubleToken(0.0));
-            _ctIncV2.InitialState.setToken(new DoubleToken(0.0));
-            _ctIncP2.InitialState.setToken(new DoubleToken(3.0));
+            _ctIncV1.initialState.setToken(new DoubleToken(0.0));
+            _ctIncP1.initialState.setToken(new DoubleToken(0.0));
+            _ctIncV2.initialState.setToken(new DoubleToken(0.0));
+            _ctIncP2.initialState.setToken(new DoubleToken(3.0));
             System.out.println("a new run");
 
             super._go();
