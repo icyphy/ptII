@@ -63,7 +63,8 @@ JSRCS = \
 	SideEffectAnalysis.java \
 	SideEffectFreeInvocationRemover.java \
 	SootUtilities.java \
-	TransformerAdapter.java
+	TransformerAdapter.java \
+	WatchDogTimer.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
