@@ -102,15 +102,15 @@ install: all
 # The -d $(ROOT) is necessary for the rmic that ships with JDK1.3
 
 CarInformationSubscriber_Stub.class: CarInformationSubscriber.java
-	$(RMIC) -d $(ROOT) -classpath "$(CLASSPATH)" \
+	"$(RMIC)" -d $(ROOT) -classpath "$(CLASSPATH)" \
 		ptolemy.domains.ct.demo.jspaces.$(PTPACKAGE).CarInformationSubscriber
 
 CTSubscriber_Stub.class: CTSubscriber.java
-	$(RMIC) -d $(ROOT) -classpath "$(CLASSPATH)" \
+	"$(RMIC)" -d $(ROOT) -classpath "$(CLASSPATH)" \
 		ptolemy.domains.ct.demo.jspaces.$(PTPACKAGE).CTSubscriber
 
 DERealTimeSubscriber_Stub.class: DERealTimeSubscriber.java
-	$(RMIC) -d $(ROOT) -classpath "$(CLASSPATH)" \
+	"$(RMIC)" -d $(ROOT) -classpath "$(CLASSPATH)" \
 		ptolemy.domains.ct.demo.jspaces.$(PTPACKAGE).DERealTimeSubscriber
 
 demo:
