@@ -3007,8 +3007,6 @@ Five controllers are applied sequentially to the modes.</text>
         <link port="IntegratorDTm.input" relation="rDDTm"/>
         <link port="IntegratorDTm.output" relation="rDTm"/>
         <link port="Linearizer.inputTm" relation="rTm"/>
-        <link port="Linearizer.inputTm" relation="rTm"/>
-        <link port="Linearizer.inputTm" relation="rTm"/>
         <link port="Linearizer.inputDTm" relation="rDTm"/>
         <link port="Linearizer.inputDDTm" relation="rDDTm"/>
         <link port="Linearizer.inputA" relation="rA"/>
