@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<class name="RelayNode" extends="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+<class name="RelayNode" extends="ptolemy.domains.wireless.demo.SmallWorld.RelayNode">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.0-alpha">
     </property>
     <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
         <property name="circle2" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -145,7 +145,7 @@ Discard the rest.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 110.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 100.0">
         </property>
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
@@ -166,9 +166,9 @@ Discard the rest.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 40.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 32, 960, 671}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {35, 32, 960, 560}, maximized = false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[745, 555]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[745, 444]">
     </property>
     <property name="nodeColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -209,18 +209,20 @@ Discard the rest.</text></svg></configure>
         </property>
     </property>
     <property name="model ID" class="ptolemy.kernel.attributes.IDAttribute">
-        <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Apr 5, 2004 12:01:12 PM">
         </property>
-        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Dec 18, 2003 9:04:52 PM">
+        <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValuesIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="name">
             </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 495.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="555.0, 45.0">
         </property>
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{372.5, 222.0}">
     </property>
     <port name="in" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
         <property name="input"/>
@@ -245,7 +247,7 @@ Discard the rest.</text></svg></configure>
         </property>
         <property name="_hide" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="675.0, 205.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="590.0, 215.0">
         </property>
     </port>
     <port name="out" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
@@ -256,7 +258,7 @@ Discard the rest.</text></svg></configure>
         </property>
         <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="650.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="675.0, 165.0">
         </property>
         <property name="_hide" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -299,13 +301,20 @@ Discard the rest.</text></svg></configure>
         </port>
     </entity>
     <entity name="BooleanSwitch" class="ptolemy.actor.lib.BooleanSwitch">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 175.0">
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 165.0">
+        </property>
+        <port name="control" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+        </port>
     </entity>
     <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
         <property name="delay" class="ptolemy.data.expr.Parameter" value="nodePropagationDelay">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="590.0, 165.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="580.0, 155.0">
         </property>
     </entity>
     <entity name="Const2" class="ptolemy.actor.lib.Const">
@@ -349,8 +358,15 @@ Discard the rest.</text></svg></configure>
         </property>
     </entity>
     <entity name="BooleanSwitch2" class="ptolemy.actor.lib.BooleanSwitch">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 300.0">
+        <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 300.0">
+        </property>
+        <port name="control" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="SOUTH">
+            </property>
+        </port>
     </entity>
     <entity name="Const4" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="false">
@@ -434,7 +450,7 @@ Discard the rest.</text></svg></configure>
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="545.0, 205.0">
+        <vertex name="vertex1" value="555.0, 165.0">
         </vertex>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
