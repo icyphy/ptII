@@ -36,11 +36,11 @@ import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
 
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLChangeRequest;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.ImageFigure;
 
@@ -173,10 +173,13 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
             // Regrettably, the only way to do this is to
             // trigger a graph listener, which lays out the entire graph.
             // Trigger this by issuing a change request.
-            // FIXME: Doesn't work for centering image properly!
-            requestChange(new MoMLChangeRequest(this, this, "<group></group>"));
+            /* FIXME
+            requestChange(new ChangeRequest(this, "Dummy change request") {
+                protected void _execute() {}
+            });
+            */
 
-            /* FIXME: Probably not needed. */
+            /* NOTE: Probably not needed. */
             Runnable doRepaint = new Runnable() {
                     public void run() {
                         // If this was called for any other reason, repaint.
@@ -188,6 +191,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
                     }
                 };
             SwingUtilities.invokeLater(doRepaint);
+            
 
             return false;
         }
