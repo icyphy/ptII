@@ -1342,6 +1342,55 @@ testArrayMathArrayInt padMiddle $types 2_3 3
 
 ######################################################################
 ####
+##  *ArrayMath Test out: xxx[] resize(xxx[], int)
+
+# resize a 2 element array to 4 elements
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{2.0 - 2.0i 1.0 + 1.0i 0.0 + 0.0i 0.0 + 0.0i}}] \
+	[list Double double double {{2.0 -1.0 0.0 0.0}}] \
+	[list Float float float {{2.0 -1.0 0.0 0.0}}] \
+	[list Integer int int {{2 -1 0 0}}] \
+	[list Long long long {{2 -1 0 0}}]]
+
+testArrayMathArrayInt resize $types 2_2 4
+
+# resize a 4 element array to 2 elements
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{2.0 - 2.0i 1.0 + 1.0i}}] \
+	[list Double double double {{2.0 -1.0}}] \
+	[list Float float float {{2.0 -1.0}}] \
+	[list Integer int int {{2 -1}}] \
+	[list Long long long {{2 -1}}]]
+
+testArrayMathArrayInt resize $types 2_4 2
+
+# resize a 4 element array to 0 elements
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{}}] \
+	[list Double double double {{}}] \
+	[list Float float float {{}}] \
+	[list Integer int int {{}}] \
+	[list Long long long {{}}]]
+
+testArrayMathArrayInt resize $types 2_4 0
+
+# resize a 0 element array to 0 elements
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{}}] \
+	[list Double double double {{}}] \
+	[list Float float float {{}}] \
+	[list Integer int int {{}}] \
+	[list Long long long {{}}]]
+
+testArrayMathArrayInt resize $types 2_0 0
+
+
+######################################################################
+####
 ##  *ArrayMath Test out: xxx[] scale(xxx[], xxx)
 
 # FIXED (FIXME): Note that ComplexArrayMath.scale(Complex[], double)
