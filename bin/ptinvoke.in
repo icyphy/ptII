@@ -220,7 +220,7 @@ fi
 # Set to colt and used in $PTII/ptolemy/actor/lib/makefile if Colt was found.
 PTCOLT_DIR=@PTCOLT_DIR@
 COLT_JARS=""
-if [ "$PTCOLT_DIR" = "caltrop" ]; then
+if [ "$PTCOLT_DIR" = "colt" ]; then
     # Directory that contains the Colt jar file colt.jar
     COLT_DIR="@COLT_DIR@"
     COLT_JARS="${CLASSPATHSEPARATOR}${COLT_DIR}/colt.jar"
