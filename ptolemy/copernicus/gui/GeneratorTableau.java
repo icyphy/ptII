@@ -61,6 +61,7 @@ import ptolemy.gui.JTextAreaExec;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
@@ -268,7 +269,9 @@ public class GeneratorTableau extends Tableau {
                         try {
                             options.sanityCheckAndUpdateParameters(null);
                         } catch (Exception ex) {
-                            exec.appendJTextArea(ex.toString());
+                            exec.appendJTextArea("***Exception while updating "
+                                    + "parameters:\n"
+                                    + KernelException.stackTraceToString(ex));
                         }
                         exec.appendJTextArea(options.toString());
                     }
