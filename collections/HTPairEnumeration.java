@@ -26,31 +26,31 @@ import java.util.NoSuchElementException;
  * <P> For an introduction to this package see <A HREF="index.html"> Overview </A>.
 **/
 final class HTPairEnumeration extends CEImpl {
-  private LLPair tab_[];
-  private LLPair cell_;
-  private int row_;
-  private boolean usekeys_;
+    private LLPair tab_[];
+    private LLPair cell_;
+    private int row_;
+    private boolean usekeys_;
 
-  public HTPairEnumeration(UpdatableCollection c, LLPair tab[], boolean usekeys) {
-    super(c);
-    tab_ = tab;
-    row_ = 0;
-    cell_ = null;
-    usekeys_ = usekeys;
-  }
+    public HTPairEnumeration(UpdatableCollection c, LLPair tab[], boolean usekeys) {
+        super(c);
+        tab_ = tab;
+        row_ = 0;
+        cell_ = null;
+        usekeys_ = usekeys;
+    }
 
-/**
- * Implements java.util.Enumeration.nextElement.
- * @see java.util.Enumeration#nextElement
-**/
-  public Object nextElement() {
-    decRemaining();
-    // if this loop fails, then we've not detected a version change?
-    while (cell_ == null) cell_ = tab_[row_++];
-    Object v = (usekeys_)? cell_.key() : cell_.element();
-    cell_ = (LLPair)(cell_.next());
-    return v;
-  }
+    /**
+     * Implements java.util.Enumeration.nextElement.
+     * @see java.util.Enumeration#nextElement
+     **/
+    public Object nextElement() {
+        decRemaining();
+        // if this loop fails, then we've not detected a version change?
+        while (cell_ == null) cell_ = tab_[row_++];
+        Object v = (usekeys_)? cell_.key() : cell_.element();
+        cell_ = (LLPair)(cell_.next());
+        return v;
+    }
 
 }
 

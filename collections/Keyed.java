@@ -33,10 +33,10 @@ import java.util.NoSuchElementException;
 
 public interface Keyed {
 
-/**
- * Return an object serving as a comparison key
-**/
+    /**
+     * Return an object serving as a comparison key
+     **/
 
-  public Object  key();
+    public Object  key();
 };
 

@@ -27,61 +27,61 @@ import java.util.NoSuchElementException;
 **/
 
 public final class IncrCollectionEnumeration implements CollectionEnumeration {
-  private IncrImpl owner_;
-  private CollectionEnumeration enum_;
+    private IncrImpl owner_;
+    private CollectionEnumeration enum_;
 
-/**
- * Wrap the enumeration e created by o in an Incr version
-**/
+    /**
+     * Wrap the enumeration e created by o in an Incr version
+     **/
 
-  IncrCollectionEnumeration(IncrImpl o, CollectionEnumeration e) {
-    owner_ = o; enum_ = e;
-  }
-
-
-/**
- * Implements java.util.Enumeration.hasMoreElements.
- * @see java.util.Enumeration#hasMoreElements
-**/
-  public synchronized boolean hasMoreElements() {
-    // call back owner_ if exhausted
-    boolean has = enum_.hasMoreElements();
-    if (!has) owner_.unpin(this);
-    return has;
-  }
-
-/**
- * Implements collections.CollectionEnumeration.numberOfRemainingElements
- * @see collections.CollectionEnumeration#numberOfRemainingElements
-**/
-  public synchronized int numberOfRemainingElements() {
-    return enum_.numberOfRemainingElements();
-  }
-
-/**
- * Implements java.util.Enumeration.nextElement().
- * @see java.util.Enumeration#nextElement()
-**/
-  public synchronized Object nextElement() {
-    return enum_.nextElement();
-  }
-
-/**
- * Implements collections.CollectionEnumeration.corrupted.
- * Should always return false unless underlying collection
- * that has been wrapped in Incr version has been independently
- * modified.
- * @return false
- * @see collections.CollectionEnumeration#corrupted
-**/
-  public synchronized boolean corrupted() {
-    return enum_.corrupted();
-  }
+    IncrCollectionEnumeration(IncrImpl o, CollectionEnumeration e) {
+        owner_ = o; enum_ = e;
+    }
 
 
-/**
- * IncrCollectionEnumerations are NOT copyable!
-**/
+    /**
+     * Implements java.util.Enumeration.hasMoreElements.
+     * @see java.util.Enumeration#hasMoreElements
+     **/
+    public synchronized boolean hasMoreElements() {
+        // call back owner_ if exhausted
+        boolean has = enum_.hasMoreElements();
+        if (!has) owner_.unpin(this);
+        return has;
+    }
+
+    /**
+     * Implements collections.CollectionEnumeration.numberOfRemainingElements
+     * @see collections.CollectionEnumeration#numberOfRemainingElements
+     **/
+    public synchronized int numberOfRemainingElements() {
+        return enum_.numberOfRemainingElements();
+    }
+
+    /**
+     * Implements java.util.Enumeration.nextElement().
+     * @see java.util.Enumeration#nextElement()
+     **/
+    public synchronized Object nextElement() {
+        return enum_.nextElement();
+    }
+
+    /**
+     * Implements collections.CollectionEnumeration.corrupted.
+     * Should always return false unless underlying collection
+     * that has been wrapped in Incr version has been independently
+     * modified.
+     * @return false
+     * @see collections.CollectionEnumeration#corrupted
+     **/
+    public synchronized boolean corrupted() {
+        return enum_.corrupted();
+    }
+
+
+    /**
+     * IncrCollectionEnumerations are NOT copyable!
+     **/
 
 }
 

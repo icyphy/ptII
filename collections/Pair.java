@@ -27,9 +27,9 @@ import java.util.NoSuchElementException;
 **/
 
 public interface Pair extends Keyed {
-/**
- * Return an object serving as an element value
-**/
-  public Object  element();
+    /**
+     * Return an object serving as an element value
+     **/
+    public Object  element();
 }
 

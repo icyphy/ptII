@@ -51,102 +51,102 @@ import java.util.NoSuchElementException;
 
 public class FilteringEnumeration implements Enumeration {
 
-// instance variables
+    // instance variables
 
-/**
- * The enumeration we are wrapping
-**/
+    /**
+     * The enumeration we are wrapping
+     **/
 
-  private Enumeration src_;
+    private Enumeration src_;
 
-/**
- * The screening predicate
-**/
+    /**
+     * The screening predicate
+     **/
 
-  private Predicate pred_;
+    private Predicate pred_;
 
-/**
- * The sense of the predicate. False means to invert
-**/
+    /**
+     * The sense of the predicate. False means to invert
+     **/
 
-  private boolean sign_;
+    private boolean sign_;
 
-/**
- * The next element to hand out
-**/
+    /**
+     * The next element to hand out
+     **/
 
-  private Object  nextElement_;
+    private Object  nextElement_;
 
-/**
- * True if we have a next element
-**/
+    /**
+     * True if we have a next element
+     **/
 
-  private boolean haveNext_;
+    private boolean haveNext_;
 
-/**
- * Make a Filter using src for the elements, and p as the screener,
- * selecting only those elements of src for which p is true
-**/
+    /**
+     * Make a Filter using src for the elements, and p as the screener,
+     * selecting only those elements of src for which p is true
+     **/
 
-  public FilteringEnumeration(Enumeration src, Predicate p) { this(src, p, true); }
+    public FilteringEnumeration(Enumeration src, Predicate p) { this(src, p, true); }
 
-/**
- * Make a Filter using src for the elements, and p as the screener,
- * selecting only those elements of src for which p.predicate(v) == sense.
- * A value of true for sense selects only values for which p.predicate
- * is true. A value of false selects only those for which it is false.
-**/
-  public FilteringEnumeration(Enumeration src, Predicate p, boolean sense) {
-    src_ = src;
-    pred_ = p;
-    sign_ = sense;
-    haveNext_ = false;
-    findNext();
-  }
-
-/**
- * Implements java.util.Enumeration.hasMoreElements
-**/
-
-  public synchronized boolean hasMoreElements() { return haveNext_; }
-
-/**
- * Implements java.util.Enumeration.nextElement.
-**/
-  public synchronized Object nextElement() {
-    if (!hasMoreElements())
-      throw new NoSuchElementException("exhausted enumeration");
-    else {
-      Object result = nextElement_;
-      findNext();
-      return result;
+    /**
+     * Make a Filter using src for the elements, and p as the screener,
+     * selecting only those elements of src for which p.predicate(v) == sense.
+     * A value of true for sense selects only values for which p.predicate
+     * is true. A value of false selects only those for which it is false.
+     **/
+    public FilteringEnumeration(Enumeration src, Predicate p, boolean sense) {
+        src_ = src;
+        pred_ = p;
+        sign_ = sense;
+        haveNext_ = false;
+        findNext();
     }
-  }
 
-/**
- * Traverse through src_ elements finding one passing predicate
-**/
-  private void findNext() {
-    haveNext_ = false;
-    nextElement_ = null;
-    for (;;) {
-      if (!src_.hasMoreElements())
-        return;
-      else {
-        try {
-          Object v = src_.nextElement();
-          if (pred_.predicate(v) == sign_) {
-            haveNext_ = true;
-            nextElement_ = v;
-            return;
-          }
+    /**
+     * Implements java.util.Enumeration.hasMoreElements
+     **/
+
+    public synchronized boolean hasMoreElements() { return haveNext_; }
+
+    /**
+     * Implements java.util.Enumeration.nextElement.
+     **/
+    public synchronized Object nextElement() {
+        if (!hasMoreElements())
+            throw new NoSuchElementException("exhausted enumeration");
+        else {
+            Object result = nextElement_;
+            findNext();
+            return result;
         }
-        catch (NoSuchElementException ex) {
-          return;
-        }
-      }
     }
-  }
+
+    /**
+     * Traverse through src_ elements finding one passing predicate
+     **/
+    private void findNext() {
+        haveNext_ = false;
+        nextElement_ = null;
+        for (;;) {
+            if (!src_.hasMoreElements())
+                return;
+            else {
+                try {
+                    Object v = src_.nextElement();
+                    if (pred_.predicate(v) == sign_) {
+                        haveNext_ = true;
+                        nextElement_ = v;
+                        return;
+                    }
+                }
+                catch (NoSuchElementException ex) {
+                    return;
+                }
+            }
+        }
+    }
 
 
 }

@@ -40,9 +40,9 @@ import java.util.NoSuchElementException;
 
 public interface SortableCollection extends UpdatableCollection {
 
-/**
- * Sort the current elements with respect to cmp.compare.
-**/
+    /**
+     * Sort the current elements with respect to cmp.compare.
+     **/
 
-  public void sort(Comparator  cmp);
+    public void sort(Comparator  cmp);
 };

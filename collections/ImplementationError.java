@@ -27,28 +27,28 @@ package collections;
 
 public class ImplementationError extends Error {
 
-/**
- * @serial The object failing the ImplementationCheck
-**/
+    /**
+     * @serial The object failing the ImplementationCheck
+     **/
 
-  public Object failedObject;
+    public Object failedObject;
 
-  public ImplementationError() { super(); }
+    public ImplementationError() { super(); }
 
-  public ImplementationError(String msg, Object v) {
-    super(msg); failedObject = v;
-  }
+    public ImplementationError(String msg, Object v) {
+        super(msg); failedObject = v;
+    }
 
-/**
- * Assertion checking utility.
- * Throws Implementation error if pred is false.
- * @param obj -- the object making the assertion
- * @param pred -- the assertion
-**/
-  public static void assert(Object obj, boolean pred)
-  throws ImplementationError {
-    if (!pred) throw new ImplementationError("Assertion failure", obj);
-  }
+    /**
+     * Assertion checking utility.
+     * Throws Implementation error if pred is false.
+     * @param obj -- the object making the assertion
+     * @param pred -- the assertion
+     **/
+    public static void assert(Object obj, boolean pred)
+            throws ImplementationError {
+        if (!pred) throw new ImplementationError("Assertion failure", obj);
+    }
 
 }
 

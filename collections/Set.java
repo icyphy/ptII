@@ -33,20 +33,20 @@ import java.util.NoSuchElementException;
 
 public interface Set extends Collection {
 
-/**
- * Construct a new Collection that is a clone of self except
- * that it includes indicated element. This can be used
- * to create a series of collections, each differing from the
- * other only in that they contain additional elements.
- *
- * @param element the element to include in the new collection
- * @return a new collection c, with the sameStructure as this, except that
- * c.includes(element)
- * @exception IllegalElementException if !canInclude(element)
-**/
+    /**
+     * Construct a new Collection that is a clone of self except
+     * that it includes indicated element. This can be used
+     * to create a series of collections, each differing from the
+     * other only in that they contain additional elements.
+     *
+     * @param element the element to include in the new collection
+     * @return a new collection c, with the sameStructure as this, except that
+     * c.includes(element)
+     * @exception IllegalElementException if !canInclude(element)
+     **/
 
-  public Set  including(Object element)
-                       throws IllegalElementException;
+    public Set  including(Object element)
+            throws IllegalElementException;
 
 }
 

@@ -27,29 +27,29 @@ import java.util.NoSuchElementException;
  * <P> For an introduction to this package see <A HREF="index.html"> Overview </A>.
 **/
 final class HTEnumeration extends CEImpl {
-  private LLCell tab_[];
-  private LLCell cell_;
-  private int row_;
+    private LLCell tab_[];
+    private LLCell cell_;
+    private int row_;
 
-  public HTEnumeration(UpdatableCollection c, LLCell tab[]) {
-    super(c);
-    tab_ = tab;
-    row_ = 0;
-    cell_ = null;
-  }
+    public HTEnumeration(UpdatableCollection c, LLCell tab[]) {
+        super(c);
+        tab_ = tab;
+        row_ = 0;
+        cell_ = null;
+    }
 
-/**
- * Implements java.util.Enumeration.nextElement.
- * @see java.util.Enumeration#nextElement
-**/
-  public Object nextElement() {
-    decRemaining();
-    // if this loop fails, then we've not detected a version change?
-    while (cell_ == null) cell_ = tab_[row_++];
-    Object v = cell_.element();
-    cell_ = cell_.next();
-    return v;
-  }
+    /**
+     * Implements java.util.Enumeration.nextElement.
+     * @see java.util.Enumeration#nextElement
+     **/
+    public Object nextElement() {
+        decRemaining();
+        // if this loop fails, then we've not detected a version change?
+        while (cell_ == null) cell_ = tab_[row_++];
+        Object v = cell_.element();
+        cell_ = cell_.next();
+        return v;
+    }
 
 }
 

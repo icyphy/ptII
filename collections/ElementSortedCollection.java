@@ -38,10 +38,10 @@ import java.util.NoSuchElementException;
 
 public interface ElementSortedCollection extends Collection {
 
-/**
- * Report the Comparator used for ordering
-**/
+    /**
+     * Report the Comparator used for ordering
+     **/
 
-  public Comparator  elementComparator();
+    public Comparator  elementComparator();
 };
 

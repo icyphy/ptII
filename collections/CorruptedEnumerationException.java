@@ -31,31 +31,31 @@ import java.util.NoSuchElementException;
 
 public class CorruptedEnumerationException extends NoSuchElementException {
 
-/**
- * @serial The collection that this is an enumeration of
-**/
+    /**
+     * @serial The collection that this is an enumeration of
+     **/
 
- public Collection collection;
+    public Collection collection;
 
-/**
- * @serial The version expected of the collection
-**/
- public int oldVersion;
+    /**
+     * @serial The version expected of the collection
+     **/
+    public int oldVersion;
 
-/**
- * @serial The current version of the collection
-**/
+    /**
+     * @serial The current version of the collection
+     **/
 
- public int newVersion;
+    public int newVersion;
 
- public CorruptedEnumerationException() { super(); }
+    public CorruptedEnumerationException() { super(); }
 
- public CorruptedEnumerationException(int oldv, int newv, Collection coll, String msg) {
-   super(msg);
-   oldVersion = oldv;
-   newVersion = newv;
-   collection = coll;
- }
+    public CorruptedEnumerationException(int oldv, int newv, Collection coll, String msg) {
+        super(msg);
+        oldVersion = oldv;
+        newVersion = newv;
+        collection = coll;
+    }
 
 }
 

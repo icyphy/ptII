@@ -28,78 +28,78 @@ import java.util.NoSuchElementException;
 
 class CEImpl implements CollectionEnumeration {
 
-/**
- * The collection being enumerated
-**/
+    /**
+     * The collection being enumerated
+     **/
 
-  protected UpdatableCollection coll_;
+    protected UpdatableCollection coll_;
 
-/**
- * The version number of the collection we got upon construction
-**/
+    /**
+     * The version number of the collection we got upon construction
+     **/
 
-  protected int version_;
+    protected int version_;
 
-/**
- * The number of elements we think we have left.
- * Initialized to coll_.size() upon construction
-**/
+    /**
+     * The number of elements we think we have left.
+     * Initialized to coll_.size() upon construction
+     **/
 
-  protected int remaining_;
+    protected int remaining_;
 
-  protected CEImpl(UpdatableCollection c) {
-    coll_ = c;
-    version_ = c.version();
-    remaining_ = c.size();
-  }
+    protected CEImpl(UpdatableCollection c) {
+        coll_ = c;
+        version_ = c.version();
+        remaining_ = c.size();
+    }
 
-/**
- * Implements collections.CollectionEnumeration.corrupted.
- * Claim corruption if version numbers differ
- * @see collections.CollectionEnumeration#corrupted
-**/
+    /**
+     * Implements collections.CollectionEnumeration.corrupted.
+     * Claim corruption if version numbers differ
+     * @see collections.CollectionEnumeration#corrupted
+     **/
 
-  public boolean corrupted() {
-    return version_ != coll_.version();
-  }
+    public boolean corrupted() {
+        return version_ != coll_.version();
+    }
 
-/**
- * Implements collections.CollectionEnumeration.numberOfRemaingingElements.
- * @see collections.CollectionEnumeration#numberOfRemaingingElements
-**/
-  public int numberOfRemainingElements() {
-    return remaining_;
-  }
+    /**
+     * Implements collections.CollectionEnumeration.numberOfRemaingingElements.
+     * @see collections.CollectionEnumeration#numberOfRemaingingElements
+     **/
+    public int numberOfRemainingElements() {
+        return remaining_;
+    }
 
-/**
- * Implements java.util.Enumeration.hasMoreElements.
- * Return true if numberOfRemainingElements > 0 and not corrupted
- * @see java.util.Enumeration#hasMoreElements
-**/
-  public boolean hasMoreElements() {
-    return !corrupted() && remaining_ > 0;
-  }
+    /**
+     * Implements java.util.Enumeration.hasMoreElements.
+     * Return true if numberOfRemainingElements > 0 and not corrupted
+     * @see java.util.Enumeration#hasMoreElements
+     **/
+    public boolean hasMoreElements() {
+        return !corrupted() && remaining_ > 0;
+    }
 
-/**
- * Subclass utility.
- * Tries to decrement remaining_, raising exceptions
- * if it is already zero or if corrupted()
- * Always call as the first line of nextElement.
-**/
-  protected void decRemaining() throws NoSuchElementException {
-    if (corrupted())
-      throw new CorruptedEnumerationException(version_, coll_.version(), coll_, "Using version " + version_ + "but now at version " + coll_.version());
-    else if (numberOfRemainingElements() <= 0)
-      throw new NoSuchElementException("exhausted enumeration");
-    else
-      --remaining_;
-  }
+    /**
+     * Subclass utility.
+     * Tries to decrement remaining_, raising exceptions
+     * if it is already zero or if corrupted()
+     * Always call as the first line of nextElement.
+     **/
+    protected void decRemaining() throws NoSuchElementException {
+        if (corrupted())
+            throw new CorruptedEnumerationException(version_, coll_.version(), coll_, "Using version " + version_ + "but now at version " + coll_.version());
+        else if (numberOfRemainingElements() <= 0)
+            throw new NoSuchElementException("exhausted enumeration");
+        else
+            --remaining_;
+    }
 
-/**
- * Implements java.util.Enumeration.nextElement.
- * No-Op default version
- * @see java.util.Enumeration#nextElement
-**/
-  public Object nextElement() { return null; }
+    /**
+     * Implements java.util.Enumeration.nextElement.
+     * No-Op default version
+     * @see java.util.Enumeration#nextElement
+     **/
+    public Object nextElement() { return null; }
 }
 

@@ -23,19 +23,19 @@ package collections;
  * <P> For an introduction to this package see <A HREF="index.html"> Overview </A>.
 **/
 final class DAEnumeration extends CEImpl {
-  private Object [] arr_;
-  private int cur_;
+    private Object [] arr_;
+    private int cur_;
 
-  public DAEnumeration(UpdatableCollection c, Object arr[]) {
-    super(c); arr_ = arr; cur_ = 0;
-  }
+    public DAEnumeration(UpdatableCollection c, Object arr[]) {
+        super(c); arr_ = arr; cur_ = 0;
+    }
 
-/**
- * Implements java.util.Enumeration.nextElement().
- * @see java.util.Enumeration#nextElement()
-**/
-  public Object nextElement() {
-    decRemaining();
-    return  arr_[cur_++];
-  }
+    /**
+     * Implements java.util.Enumeration.nextElement().
+     * @see java.util.Enumeration#nextElement()
+     **/
+    public Object nextElement() {
+        decRemaining();
+        return  arr_[cur_++];
+    }
 }

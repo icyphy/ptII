@@ -26,41 +26,41 @@ import java.io.Serializable;
  * @version 0.93
  *
  * <P> For an introduction to this package see <A HREF="index.html"> Overview </A>.
-**/
+ **/
 
 public class Cell implements Cloneable, Serializable{
 
-// instance variables
+    // instance variables
 
-  /** @serial instance variable */
-  private Object   element_;
+    /** @serial instance variable */
+    private Object   element_;
 
-/**
- * Make a cell with element value v
-**/
-  public Cell(Object v)                  { element_ = v; }
-/**
- * Make A cell with null element value
-**/
+    /**
+     * Make a cell with element value v
+     **/
+    public Cell(Object v)                  { element_ = v; }
+    /**
+     * Make A cell with null element value
+     **/
 
-  public Cell()                          { element_ = null; }
+    public Cell()                          { element_ = null; }
 
-/**
- * return the element value
-**/
+    /**
+     * return the element value
+     **/
 
-  public final Object element()          { return element_; }
+    public final Object element()          { return element_; }
 
-/**
- * set the element value
-**/
+    /**
+     * set the element value
+     **/
 
-  public final void   element(Object v)  { element_ = v; }
+    public final void   element(Object v)  { element_ = v; }
 
 
-  protected Object clone() throws CloneNotSupportedException {
-    return new Cell(element_);
-  }
+    protected Object clone() throws CloneNotSupportedException {
+        return new Cell(element_);
+    }
 
 }
 

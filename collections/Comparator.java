@@ -29,16 +29,16 @@ import java.util.NoSuchElementException;
 
 public interface Comparator {
 
-/**
- * Compare two Objects with respect to ordering. Typical
- * implementations first cast their arguments to particular
- * types in order to perform comparison
- *
- * @param fst first argument
- * @param snd second argument
- * @return a negative number if fst is less than snd; a
- * positive number if fst is greater than snd; else 0
-**/
-  public int        compare(Object fst, Object snd);
+    /**
+     * Compare two Objects with respect to ordering. Typical
+     * implementations first cast their arguments to particular
+     * types in order to perform comparison
+     *
+     * @param fst first argument
+     * @param snd second argument
+     * @return a negative number if fst is less than snd; a
+     * positive number if fst is greater than snd; else 0
+     **/
+    public int        compare(Object fst, Object snd);
 }
 

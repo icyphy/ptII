@@ -30,61 +30,61 @@ import java.util.NoSuchElementException;
 public abstract class UpdatableSeqImpl extends UpdatableImpl implements UpdatableSeq {
 
 
-/**
- * Initialize at version 0, an empty count, and null screener
-**/
+    /**
+     * Initialize at version 0, an empty count, and null screener
+     **/
 
-  protected UpdatableSeqImpl() { super(); }
+    protected UpdatableSeqImpl() { super(); }
 
-/**
- * Initialize at version 0, an empty count, and supplied screener
-**/
-  protected UpdatableSeqImpl(Predicate screener) { super(screener); }
+    /**
+     * Initialize at version 0, an empty count, and supplied screener
+     **/
+    protected UpdatableSeqImpl(Predicate screener) { super(screener); }
 
 
-// Default implementations of Seq methods
+    // Default implementations of Seq methods
 
-/**
- * Implements collections.Seq.insertingAt.
- * @see collections.Seq#insertingAt
-**/
-  public synchronized Seq  insertingAt(int index, Object element)
-  throws IllegalElementException, NoSuchElementException {
-    UpdatableSeq c = null;
-    try {
-      c = ((UpdatableSeq)clone());
-      c.insertAt(index, element);
-    } catch (CloneNotSupportedException ex) {}
-    return c;
-  }
+    /**
+     * Implements collections.Seq.insertingAt.
+     * @see collections.Seq#insertingAt
+     **/
+    public synchronized Seq  insertingAt(int index, Object element)
+            throws IllegalElementException, NoSuchElementException {
+        UpdatableSeq c = null;
+        try {
+            c = ((UpdatableSeq)clone());
+            c.insertAt(index, element);
+        } catch (CloneNotSupportedException ex) {}
+        return c;
+    }
 
-/**
- * Implements collections.Seq.removingAt.
- * @see collections.Seq#removingAt
-**/
-  public synchronized Seq  removingAt(int index)
-  throws NoSuchElementException {
-    UpdatableSeq c = null;
-    try {
-      c = ((UpdatableSeq)clone());
-      c.removeAt(index);
-    } catch (CloneNotSupportedException ex) {}
-    return c;
-  }
+    /**
+     * Implements collections.Seq.removingAt.
+     * @see collections.Seq#removingAt
+     **/
+    public synchronized Seq  removingAt(int index)
+            throws NoSuchElementException {
+        UpdatableSeq c = null;
+        try {
+            c = ((UpdatableSeq)clone());
+            c.removeAt(index);
+        } catch (CloneNotSupportedException ex) {}
+        return c;
+    }
 
-/**
- * Implements collections.Seq.replacingAt
- * @see collections.Seq#replacingAt
-**/
-  public synchronized  Seq  replacingAt(int index, Object element)
-  throws IllegalElementException, NoSuchElementException {
-    UpdatableSeq c = null;
-    try {
-      c = ((UpdatableSeq)clone());
-      c.replaceAt(index, element);
-    } catch (CloneNotSupportedException ex) {}
-    return c;
-  }
+    /**
+     * Implements collections.Seq.replacingAt
+     * @see collections.Seq#replacingAt
+     **/
+    public synchronized  Seq  replacingAt(int index, Object element)
+            throws IllegalElementException, NoSuchElementException {
+        UpdatableSeq c = null;
+        try {
+            c = ((UpdatableSeq)clone());
+            c.replaceAt(index, element);
+        } catch (CloneNotSupportedException ex) {}
+        return c;
+    }
 
 }
 

@@ -37,11 +37,11 @@ import java.util.NoSuchElementException;
 
 public interface KeySortedCollection extends Collection {
 
-/**
- * Report the Comparator used for ordering
-**/
+    /**
+     * Report the Comparator used for ordering
+     **/
 
-  public Comparator  keyComparator();
+    public Comparator  keyComparator();
 
 }
 

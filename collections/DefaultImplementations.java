@@ -31,55 +31,55 @@ import java.util.NoSuchElementException;
 
 public class DefaultImplementations {
 
-  public static UpdatableSet   set()         {
-    return new HashedSet();
-  }
-  public static UpdatableBag   bag()         {
-    return new LinkedBuffer();
-  }
-  public static UpdatableBag   sortedBag()   {
-    return new RBTree();
-  }
-  public static UpdatableSeq   seq()         {
-    return new Dynarray();
-  }
-  public static UpdatableSeq   seqForQueue() {
-    return new CircularList();
-  }
-  public static UpdatableMap   map()         {
-    return new HashedMap();
-  }
-  public static UpdatableMap   sortedMap()   {
-    return new RBMap();
-  }
+    public static UpdatableSet   set()         {
+        return new HashedSet();
+    }
+    public static UpdatableBag   bag()         {
+        return new LinkedBuffer();
+    }
+    public static UpdatableBag   sortedBag()   {
+        return new RBTree();
+    }
+    public static UpdatableSeq   seq()         {
+        return new Dynarray();
+    }
+    public static UpdatableSeq   seqForQueue() {
+        return new CircularList();
+    }
+    public static UpdatableMap   map()         {
+        return new HashedMap();
+    }
+    public static UpdatableMap   sortedMap()   {
+        return new RBMap();
+    }
 
-/*  TODO
+    /*  TODO
 
- * It would be much better to use Class.forName to avoid pulling
- * in implementations that aren't needed. But these could fail?
- * Consider options...
+     * It would be much better to use Class.forName to avoid pulling
+     * in implementations that aren't needed. But these could fail?
+     * Consider options...
 
-  public static UpdatableSet   set()         {
-    return (UpdatableSet)(Class.forName("HashedSet").newInstance());
-  }
-  public static UpdatableBag   bag()         {
-    return (UpdatableBag)(Class.forName("LinkedBuffer").newInstance());
-  }
-  public static UpdatableBag   sortedBag()   {
-    return (UpdatableSet)(Class.forName("RBTree").newInstance());
-  }
-  public static UpdatableSeq   seq()         {
-    return (UpdatableSeq)(Class.forName("Dynarray").newInstance());
-  }
-  public static UpdatableSeq   seqForQueue() {
-    return (UpdatableSeq)(Class.forName("CircularList").newInstance());
-  }
-  public static UpdatableMap   map()         {
-    return (UpdatableMap)(Class.forName("HashedMap").newInstance());
-  }
-  public static UpdatableMap   sortedMap()   {
-    return (UpdatableMap)(Class.forName("RBMap").newInstance());
-  }
-*/
+     public static UpdatableSet   set()         {
+     return (UpdatableSet)(Class.forName("HashedSet").newInstance());
+     }
+     public static UpdatableBag   bag()         {
+     return (UpdatableBag)(Class.forName("LinkedBuffer").newInstance());
+     }
+     public static UpdatableBag   sortedBag()   {
+     return (UpdatableSet)(Class.forName("RBTree").newInstance());
+     }
+     public static UpdatableSeq   seq()         {
+     return (UpdatableSeq)(Class.forName("Dynarray").newInstance());
+     }
+     public static UpdatableSeq   seqForQueue() {
+     return (UpdatableSeq)(Class.forName("CircularList").newInstance());
+     }
+     public static UpdatableMap   map()         {
+     return (UpdatableMap)(Class.forName("HashedMap").newInstance());
+     }
+     public static UpdatableMap   sortedMap()   {
+     return (UpdatableMap)(Class.forName("RBMap").newInstance());
+     }
+    */
 }
 

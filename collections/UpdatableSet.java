@@ -30,37 +30,37 @@ import java.util.NoSuchElementException;
 
 public interface UpdatableSet extends UpdatableCollection, Set  {
 
-/**
- * Include the indicated element in the collection.
- * No effect if the element is already present.
- * @param element the element to add
- * @return condition:
- * <PRE>
- * includes(element) &&
- * no spurious effects &&
- * Version change iff !PREV(this).includes(element)
- * </PRE>
- * @exception IllegalElementException if !canInclude(element)
-**/
+    /**
+     * Include the indicated element in the collection.
+     * No effect if the element is already present.
+     * @param element the element to add
+     * @return condition:
+     * <PRE>
+     * includes(element) &&
+     * no spurious effects &&
+     * Version change iff !PREV(this).includes(element)
+     * </PRE>
+     * @exception IllegalElementException if !canInclude(element)
+     **/
 
 
-  public void include(Object element) throws IllegalElementException;
+    public void include(Object element) throws IllegalElementException;
 
 
-/**
- * Include all elements of the enumeration in the collection.
- * Behaviorally equivalent to
- * <PRE>
- * while (e.hasMoreElements()) include(e.nextElement());
- * </PRE>
- * @param e the elements to include
- * @exception IllegalElementException if !canInclude(element)
- * @exception CorruptedEnumerationException propagated if thrown
-**/
+    /**
+     * Include all elements of the enumeration in the collection.
+     * Behaviorally equivalent to
+     * <PRE>
+     * while (e.hasMoreElements()) include(e.nextElement());
+     * </PRE>
+     * @param e the elements to include
+     * @exception IllegalElementException if !canInclude(element)
+     * @exception CorruptedEnumerationException propagated if thrown
+     **/
 
 
-  public void includeElements(Enumeration e)
-   throws IllegalElementException, CorruptedEnumerationException;
+    public void includeElements(Enumeration e)
+            throws IllegalElementException, CorruptedEnumerationException;
 
 
 }

@@ -28,23 +28,23 @@ import java.util.NoSuchElementException;
 **/
 
 final class LLCellEnumeration extends CEImpl {
-  private LLCell cur_;
+    private LLCell cur_;
 
-  public LLCellEnumeration(UpdatableCollection c, LLCell first) {
-    super(c);
-    cur_ = first;
-  }
+    public LLCellEnumeration(UpdatableCollection c, LLCell first) {
+        super(c);
+        cur_ = first;
+    }
 
-/**
- * Implements java.util.Enumeration.nextElement.
- * @see java.util.Enumeration#nextElement
-**/
-  public Object nextElement() {
-    decRemaining();
-    Object v = cur_.element();
-    cur_ = cur_.next();
-    return v;
-  }
+    /**
+     * Implements java.util.Enumeration.nextElement.
+     * @see java.util.Enumeration#nextElement
+     **/
+    public Object nextElement() {
+        decRemaining();
+        Object v = cur_.element();
+        cur_ = cur_.next();
+        return v;
+    }
 
 }
 

@@ -27,22 +27,22 @@ import java.util.NoSuchElementException;
  * <P> For an introduction to this package see <A HREF="index.html"> Overview </A>.
 **/
 final class CLEnumeration extends CEImpl {
-  private CLCell cur_;
+    private CLCell cur_;
 
-  public CLEnumeration(UpdatableCollection c, CLCell first) {
-    super(c);
-    cur_ = first;
-  }
+    public CLEnumeration(UpdatableCollection c, CLCell first) {
+        super(c);
+        cur_ = first;
+    }
 
-/**
- * Implements java.util.Enumeration.nextElement.
- * @see java.util.Enumeration#nextElement
-**/
-  public Object nextElement() {
-    decRemaining();
-    Object v = cur_.element();
-    cur_ = cur_.next();
-    return v;
-  }
+    /**
+     * Implements java.util.Enumeration.nextElement.
+     * @see java.util.Enumeration#nextElement
+     **/
+    public Object nextElement() {
+        decRemaining();
+        Object v = cur_.element();
+        cur_ = cur_.next();
+        return v;
+    }
 }
 

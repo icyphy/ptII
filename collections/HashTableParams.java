@@ -32,51 +32,51 @@ import java.util.NoSuchElementException;
 
 public interface HashTableParams {
 
-/**
- * The default initial number of buckets of a non-empty HT
-**/
+    /**
+     * The default initial number of buckets of a non-empty HT
+     **/
 
-  public static final int defaultInitialBuckets = 31;
+    public static final int defaultInitialBuckets = 31;
 
-/**
- * The default load factor for a non-empty HT. When the proportion
- * of elements per buckets exceeds this, the table is resized.
-**/
+    /**
+     * The default load factor for a non-empty HT. When the proportion
+     * of elements per buckets exceeds this, the table is resized.
+     **/
 
-  public static final float defaultLoadFactor = 0.75f;
+    public static final float defaultLoadFactor = 0.75f;
 
-/**
- * return the current number of hash table buckets
-**/
+    /**
+     * return the current number of hash table buckets
+     **/
 
-  public int buckets();
+    public int buckets();
 
-/**
- * Set the desired number of buckets in the hash table.
- * Any value greater than or equal to one is OK.
- * if different than current buckets, causes a version change
- * @exception IllegalArgumentException if newCap less than 1
-**/
+    /**
+     * Set the desired number of buckets in the hash table.
+     * Any value greater than or equal to one is OK.
+     * if different than current buckets, causes a version change
+     * @exception IllegalArgumentException if newCap less than 1
+     **/
 
-  public void buckets(int newCap)
-    throws IllegalArgumentException;
+    public void buckets(int newCap)
+            throws IllegalArgumentException;
 
-/**
- * Return the current load factor threshold
- * The Hash table occasionally checka against the load factor
- * resizes itself if it has gone past it.
-**/
+    /**
+     * Return the current load factor threshold
+     * The Hash table occasionally checka against the load factor
+     * resizes itself if it has gone past it.
+     **/
 
-  public float thresholdLoadFactor();
+    public float thresholdLoadFactor();
 
-/**
- * Set the current desired load factor. Any value greater than 0 is OK.
- * The current load is checked against it, possibly causing resize.
- * @exception IllegalArgumentException if desired is 0 or less
-**/
+    /**
+     * Set the current desired load factor. Any value greater than 0 is OK.
+     * The current load is checked against it, possibly causing resize.
+     * @exception IllegalArgumentException if desired is 0 or less
+     **/
 
-  public void thresholdLoadFactor(float desired)
-    throws IllegalArgumentException;
+    public void thresholdLoadFactor(float desired)
+            throws IllegalArgumentException;
 
 }
 

@@ -28,10 +28,10 @@ package collections;
 
 public interface Function {
 
-/**
- * Execute some function of the argument.
-**/
+    /**
+     * Execute some function of the argument.
+     **/
 
-  public Object     function(Object obj);
+    public Object     function(Object obj);
 }
 

@@ -28,19 +28,19 @@ package collections;
 
 public interface Assertable {
 
-/**
- * Raise an exception if predicate is false.
- *
- * Suggested default implementation is:
- * <PRE>
- * {
- *  ImplementationError.assert(this, predicate);
- * }
- * </PRE>
- * This method should either return normally or throw:
- * @exception ImplementationError if predicate is false.
-**/
+    /**
+     * Raise an exception if predicate is false.
+     *
+     * Suggested default implementation is:
+     * <PRE>
+     * {
+     *  ImplementationError.assert(this, predicate);
+     * }
+     * </PRE>
+     * This method should either return normally or throw:
+     * @exception ImplementationError if predicate is false.
+     **/
 
-  public void assert(boolean predicate) throws ImplementationError;
+    public void assert(boolean predicate) throws ImplementationError;
 }
 

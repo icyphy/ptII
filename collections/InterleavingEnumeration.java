@@ -50,83 +50,83 @@ import java.util.NoSuchElementException;
 
 public class InterleavingEnumeration implements Enumeration {
 
-/**
- * The first source; nulled out once it is exhausted
-**/
+    /**
+     * The first source; nulled out once it is exhausted
+     **/
 
-  private Enumeration fst_;
+    private Enumeration fst_;
 
-/**
- * The second source; nulled out once it is exhausted
-**/
+    /**
+     * The second source; nulled out once it is exhausted
+     **/
 
-  private Enumeration snd_;
+    private Enumeration snd_;
 
-/**
- * The source currently being used
-**/
+    /**
+     * The source currently being used
+     **/
 
-  private Enumeration current_;
+    private Enumeration current_;
 
 
 
-/**
- * Make an enumeration interleaving elements from fst and snd
-**/
+    /**
+     * Make an enumeration interleaving elements from fst and snd
+     **/
 
-  public InterleavingEnumeration(Enumeration fst, Enumeration snd) {
-    fst_ = fst;
-    snd_ = snd;
-    current_ = snd_; // flip will reset to fst (if it can)
-    flip();
-  }
-
-/**
- * Implements java.util.Enumeration.hasMoreElements
-**/
-  public synchronized boolean hasMoreElements() {
-    return current_ != null;
-  }
-
-/**
- * Implements java.util.Enumeration.nextElement.
-**/
-  public synchronized Object nextElement() {
-    if (!hasMoreElements())
-      throw new NoSuchElementException("exhausted enumeration");
-    else {
-      // following line may also throw ex, but there's nothing
-      // reasonable to do except propagate
-      Object result = current_.nextElement();
-      flip();
-      return result;
+    public InterleavingEnumeration(Enumeration fst, Enumeration snd) {
+        fst_ = fst;
+        snd_ = snd;
+        current_ = snd_; // flip will reset to fst (if it can)
+        flip();
     }
-  }
 
-/**
- * Alternate sources
-**/
+    /**
+     * Implements java.util.Enumeration.hasMoreElements
+     **/
+    public synchronized boolean hasMoreElements() {
+        return current_ != null;
+    }
 
-  private void flip() {
-    if (current_ == fst_) {
-      if (snd_ != null && !snd_.hasMoreElements()) snd_ = null;
-      if (snd_ != null)
-        current_ = snd_;
-      else {
-        if (fst_ != null && !fst_.hasMoreElements()) fst_ = null;
-        current_ = fst_;
-      }
+    /**
+     * Implements java.util.Enumeration.nextElement.
+     **/
+    public synchronized Object nextElement() {
+        if (!hasMoreElements())
+            throw new NoSuchElementException("exhausted enumeration");
+        else {
+            // following line may also throw ex, but there's nothing
+            // reasonable to do except propagate
+            Object result = current_.nextElement();
+            flip();
+            return result;
+        }
     }
-    else {
-      if (fst_ != null && !fst_.hasMoreElements()) fst_ = null;
-      if (fst_ != null)
-        current_ = fst_;
-      else {
-        if (snd_ != null && !snd_.hasMoreElements()) snd_ = null;
-        current_ = snd_;
-      }
+
+    /**
+     * Alternate sources
+     **/
+
+    private void flip() {
+        if (current_ == fst_) {
+            if (snd_ != null && !snd_.hasMoreElements()) snd_ = null;
+            if (snd_ != null)
+                current_ = snd_;
+            else {
+                if (fst_ != null && !fst_.hasMoreElements()) fst_ = null;
+                current_ = fst_;
+            }
+        }
+        else {
+            if (fst_ != null && !fst_.hasMoreElements()) fst_ = null;
+            if (fst_ != null)
+                current_ = fst_;
+            else {
+                if (snd_ != null && !snd_.hasMoreElements()) snd_ = null;
+                current_ = snd_;
+            }
+        }
     }
-  }
 
 
 }

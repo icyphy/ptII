@@ -27,25 +27,25 @@ import java.util.NoSuchElementException;
  * <P> For an introduction to this package see <A HREF="index.html"> Overview </A>.
 **/
 final class LLPairEnumeration extends CEImpl {
-  private LLPair cur_;
-  private boolean useKeys_;
+    private LLPair cur_;
+    private boolean useKeys_;
 
-  public LLPairEnumeration(UpdatableCollection c, LLPair fst,boolean useKeys) {
-    super(c);
-    cur_ = fst;
-    useKeys_ = useKeys;
-  }
+    public LLPairEnumeration(UpdatableCollection c, LLPair fst,boolean useKeys) {
+        super(c);
+        cur_ = fst;
+        useKeys_ = useKeys;
+    }
 
-/**
- * Implements java.util.Enumeration.nextElement.
- * @see java.util.Enumeration#nextElement
-**/
-  public Object nextElement() {
-    decRemaining();
-    Object v = (useKeys_)? cur_.key(): cur_.element();
-    cur_ = (LLPair)(cur_.next());
-    return v;
-  }
+    /**
+     * Implements java.util.Enumeration.nextElement.
+     * @see java.util.Enumeration#nextElement
+     **/
+    public Object nextElement() {
+        decRemaining();
+        Object v = (useKeys_)? cur_.key(): cur_.element();
+        cur_ = (LLPair)(cur_.next());
+        return v;
+    }
 
 }
 

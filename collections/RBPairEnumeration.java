@@ -27,28 +27,28 @@ import java.util.NoSuchElementException;
  * <P> For an introduction to this package see <A HREF="index.html"> Overview </A>.
 **/
 final class RBPairEnumeration extends CEImpl {
-  private RBPair cur_;
-  private boolean useKeys_;
+    private RBPair cur_;
+    private boolean useKeys_;
 
-  public RBPairEnumeration(UpdatableCollection c, RBPair t,boolean useKeys) {
-    super(c);
-    if (t == null)
-      cur_ = t;
-    else
-      cur_ = (RBPair)(t.leftmost());
-    useKeys_ = useKeys;
-  }
+    public RBPairEnumeration(UpdatableCollection c, RBPair t,boolean useKeys) {
+        super(c);
+        if (t == null)
+            cur_ = t;
+        else
+            cur_ = (RBPair)(t.leftmost());
+        useKeys_ = useKeys;
+    }
 
-/**
- * Implements java.util.Enumeration.nextElement.
- * @see java.util.Enumeration#nextElement
-**/
-  public Object nextElement() {
-    decRemaining();
-    Object v = (useKeys_)? cur_.key(): cur_.element();
-    cur_ = (RBPair)(cur_.successor());
-    return v;
-  }
+    /**
+     * Implements java.util.Enumeration.nextElement.
+     * @see java.util.Enumeration#nextElement
+     **/
+    public Object nextElement() {
+        decRemaining();
+        Object v = (useKeys_)? cur_.key(): cur_.element();
+        cur_ = (RBPair)(cur_.successor());
+        return v;
+    }
 
 }
 

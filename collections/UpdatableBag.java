@@ -30,50 +30,50 @@ import java.util.NoSuchElementException;
 public interface UpdatableBag extends UpdatableCollection, Bag  {
 
 
-/**
- * Add an occurrence of the indicated element to the collection.
- * @param element the element to add
- * @return condition:
- * <PRE>
- * occurrences(element) == PREV(this).occurrencesOf(element)+1 &&
- * Version change: always
- * </PRE>
- * @exception IllegalElementException if !canInclude(element)
-**/
+    /**
+     * Add an occurrence of the indicated element to the collection.
+     * @param element the element to add
+     * @return condition:
+     * <PRE>
+     * occurrences(element) == PREV(this).occurrencesOf(element)+1 &&
+     * Version change: always
+     * </PRE>
+     * @exception IllegalElementException if !canInclude(element)
+     **/
 
-  public void add(Object element) throws IllegalElementException;
+    public void add(Object element) throws IllegalElementException;
 
-/**
- * Add an occurrence of the indicated element if it
- * is not already present in the collection.
- * No effect if the element is already present.
- * @param element the element to add
- * @return condition:
- * <PRE>
- * occurrencesOf(element) == min(1, PREV(this).occurrencesOf(element) &&
- * no spurious effects &&
- * Version change iff !PREV(this).includes(element)
- * </PRE>
- * @exception IllegalElementException if !canInclude(element)
-**/
-
-
-  public void addIfAbsent(Object element) throws IllegalElementException;
-
-/**
- * Add all elements of the enumeration to the collection.
- * Behaviorally equivalent to
- * <PRE>
- * while (e.hasMoreElements()) add(e.nextElement());
- * </PRE>
- * @param e the elements to include
- * @exception IllegalElementException if !canInclude(element)
- * @exception CorruptedEnumerationException propagated if thrown
-**/
+    /**
+     * Add an occurrence of the indicated element if it
+     * is not already present in the collection.
+     * No effect if the element is already present.
+     * @param element the element to add
+     * @return condition:
+     * <PRE>
+     * occurrencesOf(element) == min(1, PREV(this).occurrencesOf(element) &&
+     * no spurious effects &&
+     * Version change iff !PREV(this).includes(element)
+     * </PRE>
+     * @exception IllegalElementException if !canInclude(element)
+     **/
 
 
-  public void addElements(Enumeration e)
-   throws IllegalElementException, CorruptedEnumerationException;
+    public void addIfAbsent(Object element) throws IllegalElementException;
+
+    /**
+     * Add all elements of the enumeration to the collection.
+     * Behaviorally equivalent to
+     * <PRE>
+     * while (e.hasMoreElements()) add(e.nextElement());
+     * </PRE>
+     * @param e the elements to include
+     * @exception IllegalElementException if !canInclude(element)
+     * @exception CorruptedEnumerationException propagated if thrown
+     **/
+
+
+    public void addElements(Enumeration e)
+            throws IllegalElementException, CorruptedEnumerationException;
 
 
 }

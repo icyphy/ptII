@@ -31,43 +31,43 @@ import java.util.NoSuchElementException;
 public abstract class UpdatableSetImpl extends UpdatableImpl implements UpdatableSet {
 
 
-/**
- * Initialize at version 0, an empty count, and null screener
-**/
+    /**
+     * Initialize at version 0, an empty count, and null screener
+     **/
 
-  protected UpdatableSetImpl() { super(); }
+    protected UpdatableSetImpl() { super(); }
 
-/**
- * Initialize at version 0, an empty count, and supplied screener
-**/
-  protected UpdatableSetImpl(Predicate screener) { super(screener); }
+    /**
+     * Initialize at version 0, an empty count, and supplied screener
+     **/
+    protected UpdatableSetImpl(Predicate screener) { super(screener); }
 
 
-// Default implementations of Set methods
+    // Default implementations of Set methods
 
-/**
- * Implements collections.Set.including
- * @see collections.Set#including
-**/
-  public synchronized  Set including(Object element)
-  throws IllegalElementException {
-    UpdatableSet c = null;
-    try {
-      c = ((UpdatableSet)clone());
-      c.include(element);
-    } catch (CloneNotSupportedException ex) {}
-    return c;
-  }
+    /**
+     * Implements collections.Set.including
+     * @see collections.Set#including
+     **/
+    public synchronized  Set including(Object element)
+            throws IllegalElementException {
+        UpdatableSet c = null;
+        try {
+            c = ((UpdatableSet)clone());
+            c.include(element);
+        } catch (CloneNotSupportedException ex) {}
+        return c;
+    }
 
-/**
- * Implements collections.UpdatableSet.includeElements
- * @see collections.UpdatableSet#includeElements
-**/
+    /**
+     * Implements collections.UpdatableSet.includeElements
+     * @see collections.UpdatableSet#includeElements
+     **/
 
-  public synchronized  void includeElements(Enumeration e)
-   throws IllegalElementException, CorruptedEnumerationException {
-    while (e.hasMoreElements()) include(e.nextElement());
-  }
+    public synchronized  void includeElements(Enumeration e)
+            throws IllegalElementException, CorruptedEnumerationException {
+        while (e.hasMoreElements()) include(e.nextElement());
+    }
 
 }
 

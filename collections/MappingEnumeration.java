@@ -57,49 +57,49 @@ import java.util.NoSuchElementException;
 
 public class MappingEnumeration implements Enumeration {
 
-// instance variables
+    // instance variables
 
-/**
- * The enumeration we are wrapping
-**/
+    /**
+     * The enumeration we are wrapping
+     **/
 
-  private Enumeration src_;
+    private Enumeration src_;
 
-/**
- * The transformation function
-**/
+    /**
+     * The transformation function
+     **/
 
-  private Function fn_;
+    private Function fn_;
 
-/**
- * Make an enumeration wrapping src, returning p.function for each nextElement
-**/
+    /**
+     * Make an enumeration wrapping src, returning p.function for each nextElement
+     **/
 
-  public MappingEnumeration(Enumeration src, Function p) {
-    src_ = src;
-    fn_ = p;
-  }
-
-/**
- * Implements java.util.Enumeration.hasMoreElements
-**/
-
-  public synchronized boolean hasMoreElements() {
-    return src_.hasMoreElements();
-  }
-
-/**
- * Implements java.util.Enumeration.nextElement.
-**/
-  public synchronized Object nextElement() {
-    if (!hasMoreElements())
-      throw new NoSuchElementException("exhausted enumeration");
-    else {
-      Object v = src_.nextElement();
-      Object result = fn_.function(v);
-      return result;
+    public MappingEnumeration(Enumeration src, Function p) {
+        src_ = src;
+        fn_ = p;
     }
-  }
+
+    /**
+     * Implements java.util.Enumeration.hasMoreElements
+     **/
+
+    public synchronized boolean hasMoreElements() {
+        return src_.hasMoreElements();
+    }
+
+    /**
+     * Implements java.util.Enumeration.nextElement.
+     **/
+    public synchronized Object nextElement() {
+        if (!hasMoreElements())
+            throw new NoSuchElementException("exhausted enumeration");
+        else {
+            Object v = src_.nextElement();
+            Object result = fn_.function(v);
+            return result;
+        }
+    }
 
 }
 

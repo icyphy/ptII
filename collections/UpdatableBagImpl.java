@@ -30,59 +30,59 @@ import java.util.NoSuchElementException;
 public abstract class UpdatableBagImpl extends UpdatableImpl implements UpdatableBag {
 
 
-/**
- * Initialize at version 0, an empty count, and null screener
-**/
+    /**
+     * Initialize at version 0, an empty count, and null screener
+     **/
 
-  protected UpdatableBagImpl() { super(); }
+    protected UpdatableBagImpl() { super(); }
 
-/**
- * Initialize at version 0, an empty count, and supplied screener
-**/
-  protected UpdatableBagImpl(Predicate screener) { super(screener); }
-
-
-// Default implementations of Bag methods
-
-/**
- * Implements collections.Bag.addingIfAbsent
- * @see collections.Bag#addingIfAbsent
-**/
-  public synchronized Bag addingIfAbsent(Object element)
-  throws IllegalElementException {
-    UpdatableBag c = null;
-    try {
-      c = ((UpdatableBag)clone());
-      c.addIfAbsent(element);
-    } catch (CloneNotSupportedException ex) {}
-    return c;
-  }
+    /**
+     * Initialize at version 0, an empty count, and supplied screener
+     **/
+    protected UpdatableBagImpl(Predicate screener) { super(screener); }
 
 
-/**
- * Implements collections.Bag.adding
- * @see collections.Bag#adding
-**/
+    // Default implementations of Bag methods
 
-  public synchronized  Bag adding(Object element)
-  throws IllegalElementException {
-    UpdatableBag c = null;
-    try {
-      c = ((UpdatableBag)clone());
-      c.add(element);
-    } catch (CloneNotSupportedException ex) {}
-    return c;
-  }
+    /**
+     * Implements collections.Bag.addingIfAbsent
+     * @see collections.Bag#addingIfAbsent
+     **/
+    public synchronized Bag addingIfAbsent(Object element)
+            throws IllegalElementException {
+        UpdatableBag c = null;
+        try {
+            c = ((UpdatableBag)clone());
+            c.addIfAbsent(element);
+        } catch (CloneNotSupportedException ex) {}
+        return c;
+    }
 
-/**
- * Implements collections.UpdatableBag.addElements
- * @see collections.UpdatableBag#addElements
-**/
 
-  public synchronized  void addElements(Enumeration e)
-   throws IllegalElementException, CorruptedEnumerationException {
-    while (e.hasMoreElements()) add(e.nextElement());
-  }
+    /**
+     * Implements collections.Bag.adding
+     * @see collections.Bag#adding
+     **/
+
+    public synchronized  Bag adding(Object element)
+            throws IllegalElementException {
+        UpdatableBag c = null;
+        try {
+            c = ((UpdatableBag)clone());
+            c.add(element);
+        } catch (CloneNotSupportedException ex) {}
+        return c;
+    }
+
+    /**
+     * Implements collections.UpdatableBag.addElements
+     * @see collections.UpdatableBag#addElements
+     **/
+
+    public synchronized  void addElements(Enumeration e)
+            throws IllegalElementException, CorruptedEnumerationException {
+        while (e.hasMoreElements()) add(e.nextElement());
+    }
 
 }
 

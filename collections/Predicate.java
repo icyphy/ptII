@@ -38,13 +38,13 @@ import java.util.NoSuchElementException;
 
 public interface Predicate {
 
-/**
- * Report whether obj obeys maintained predicate
- * @param obj any object (possibly null)
- * @return true is obeys predicate
-**/
+    /**
+     * Report whether obj obeys maintained predicate
+     * @param obj any object (possibly null)
+     * @return true is obeys predicate
+     **/
 
-  public boolean     predicate(Object obj);
+    public boolean     predicate(Object obj);
 }
 
 

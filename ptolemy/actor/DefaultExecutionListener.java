@@ -67,7 +67,7 @@ public class DefaultExecutionListener implements ExecutionListener {
      */
     public void executionFinished(Manager manager) {
         System.out.println("Completed execution with "
-        + manager.getIterationCount() + " iterations");
+                + manager.getIterationCount() + " iterations");
     }
 
     /** Called to report that the manager has changed state.
@@ -79,7 +79,7 @@ public class DefaultExecutionListener implements ExecutionListener {
         String msg;
         if (state == manager.ITERATING) {
             msg = state.getDescription() + " number "
-            + manager.getIterationCount();
+                + manager.getIterationCount();
         } else {
             msg = state.getDescription();
         }

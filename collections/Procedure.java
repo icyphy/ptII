@@ -27,10 +27,10 @@ package collections;
 
 public interface Procedure {
 
-/**
- * Execute some procedure on obj.
- * Raise any Exception at all.
-**/
-  public void       procedure(Object obj) throws Exception;
+    /**
+     * Execute some procedure on obj.
+     * Raise any Exception at all.
+     **/
+    public void       procedure(Object obj) throws Exception;
 }
 

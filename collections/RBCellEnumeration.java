@@ -27,26 +27,26 @@ import java.util.NoSuchElementException;
  * <P> For an introduction to this package see <A HREF="index.html"> Overview </A>.
 **/
 final class RBCellEnumeration extends CEImpl {
-  private RBCell cur_;
+    private RBCell cur_;
 
-  public RBCellEnumeration(UpdatableCollection c, RBCell t) {
-    super(c);
-    if (t == null)
-      cur_ = t;
-    else
-      cur_ = t.leftmost();
-  }
+    public RBCellEnumeration(UpdatableCollection c, RBCell t) {
+        super(c);
+        if (t == null)
+            cur_ = t;
+        else
+            cur_ = t.leftmost();
+    }
 
-/**
- * Implements java.util.Enumeration.nextElement.
- * @see java.util.Enumeration#nextElement
-**/
-  public Object nextElement() {
-    decRemaining();
-    Object v = cur_.element();
-    cur_ = cur_.successor();
-    return v;
-  }
+    /**
+     * Implements java.util.Enumeration.nextElement.
+     * @see java.util.Enumeration#nextElement
+     **/
+    public Object nextElement() {
+        decRemaining();
+        Object v = cur_.element();
+        cur_ = cur_.successor();
+        return v;
+    }
 
 }
 

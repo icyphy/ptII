@@ -27,9 +27,9 @@ package collections;
 
 public interface BinaryFunction {
 
-/**
- * Execute some function of two arguments. return a result
-**/
+    /**
+     * Execute some function of two arguments. return a result
+     **/
 
-  public Object     binaryFunction(Object fst, Object snd);
+    public Object     binaryFunction(Object fst, Object snd);
 }

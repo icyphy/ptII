@@ -27,30 +27,30 @@ import java.util.NoSuchElementException;
  * <P> For an introduction to this package see <A HREF="index.html"> Overview </A>.
 **/
 final class LBEnumeration extends CEImpl {
-  private CLCell list_;
-  private int idx_;
+    private CLCell list_;
+    private int idx_;
 
-  public LBEnumeration(UpdatableCollection c, CLCell l) {
-    super(c);
-    list_ = l;
-    idx_ = 0;
-  }
-
-/**
- * Implements java.util.Enumeration.nextElement.
- * @see java.util.Enumeration#nextElement
-**/
-  public Object nextElement() {
-    decRemaining();
-    Object buff[] = (Object[])(list_.element());
-    Object v = buff[idx_];
-    ++idx_;
-    if (idx_ >= buff.length) {
-      list_ = list_.next();
-      idx_ = 0;
+    public LBEnumeration(UpdatableCollection c, CLCell l) {
+        super(c);
+        list_ = l;
+        idx_ = 0;
     }
-    return v;
-  }
+
+    /**
+     * Implements java.util.Enumeration.nextElement.
+     * @see java.util.Enumeration#nextElement
+     **/
+    public Object nextElement() {
+        decRemaining();
+        Object buff[] = (Object[])(list_.element());
+        Object v = buff[idx_];
+        ++idx_;
+        if (idx_ >= buff.length) {
+            list_ = list_.next();
+            idx_ = 0;
+        }
+        return v;
+    }
 
 }
 
