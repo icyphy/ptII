@@ -72,6 +72,7 @@ JSRCS = \
 	Average.java \
 	Bernoulli.java \
 	BooleanExpression.java \
+	ClassWrapper.java \
 	Clock.java \
 	Commutator.java \
 	Const.java \
