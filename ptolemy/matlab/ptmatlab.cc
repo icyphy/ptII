@@ -41,6 +41,7 @@ typedef long long __int64;
 #include "engine.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 extern "C"
 {
@@ -78,8 +79,12 @@ extern "C"
   JNIEXPORT jint JNICALL Java_ptolemy_matlab_Engine_ptmatlabEngClose
   (JNIEnv *jni,
    jobject obj,
-   jlong e)
+   jlong e,
+   jlong p)
   {
+    if (p != 0) {
+      free((char*)p);
+    }
     return (jint) engClose((Engine*)e);
   }
 
@@ -106,7 +111,7 @@ extern "C"
     char debug = ptmatlabGetDebug(jni,obj);
     const char *str = jni->GetStringUTFChars(name, 0);
     mxArray *ma = engGetArray(ep, str);
-    if (debug > 1) {
+    if (debug > 1 && ma != NULL) {
         const int *dimArray = mxGetDimensions(ma);
         printf("ptmatlabEngGetArray(%s) %d x %d\n", str, dimArray[0], dimArray[1]);
     }
@@ -130,25 +135,25 @@ extern "C"
     if (debug > 1) printf("ptmatlabEngPutArray(%s) %d x %d\n", str, dimArray[0], dimArray[1]);
     int retval = engPutArray(ep, ma);
     jni->ReleaseStringUTFChars(name, str);
-    mxDestroyArray(ma);
     return retval;
   }
 
-  JNIEXPORT jint JNICALL Java_ptolemy_matlab_Engine_ptmatlabEngOutputBuffer
+  JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabEngOutputBuffer
   (JNIEnv *jni, 
    jobject obj, 
    jlong e,
-   jbyteArray b)
+   jint n)
   {
+    Engine *ep = (Engine*) e;
     char debug = ptmatlabGetDebug(jni,obj);
-    // Get pointer to the beginning of the engine output buffer. In Java, this
-    // should be a statically allocated array to make sure it is not released.
-    jboolean isCopy;
-    char *p = (char*)jni->GetPrimitiveArrayCritical(b, &isCopy);
-    // isCopy should be false!
-    if (isCopy) printf("ptmatlabEngOutputBuffer(...) could not obtain output buffer from JNI!");
-    jni->ReleasePrimitiveArrayCritical(b, p, 0);
-    engOutputBuffer((Engine *)e, p, jni->GetArrayLength(b));
+    char *p = (char*)calloc(n+1,sizeof(char));
+    if (p == NULL) {
+      printf("ptmatlabEngOutputBuffer(...) could not obtain output buffer pointer - null\n");
+      return -2;
+    }
+    if (debug > 1) printf("ptmatlabEngOutputBuffer: set, n=%d\n", n);
+    engOutputBuffer(ep, p, n);
+    return (jlong)p;
   }
 
   JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabCreateCellMatrix
@@ -353,6 +358,22 @@ extern "C"
     return (jlong) ma;
   }
 
+  JNIEXPORT void JNICALL Java_ptolemy_matlab_Engine_ptmatlabDestroy
+  (JNIEnv *jni,
+   jobject obj,
+   jlong pma,
+   jstring name)
+  {
+    char debug = ptmatlabGetDebug(jni,obj);
+    mxArray *ma = (mxArray*) pma;
+    if (debug > 1) {
+        const char *str = jni->GetStringUTFChars(name, 0);
+        printf("ptmatlabDestroy(%s)", str);
+        jni->ReleaseStringUTFChars(name, str);
+    }
+    mxDestroyArray(ma);
+  }
+
   JNIEXPORT jlong JNICALL Java_ptolemy_matlab_Engine_ptmatlabGetCell
   (JNIEnv *jni,
    jobject obj,
@@ -473,6 +494,20 @@ extern "C"
     return retval;
   }
 
+  JNIEXPORT jstring JNICALL Java_ptolemy_matlab_Engine_ptmatlabGetOutput
+  (JNIEnv *jni,
+   jobject obj,
+   jlong jp,
+   jint n)
+  {
+    char debug = ptmatlabGetDebug(jni,obj);
+    char *p = (char*)jp;
+    if (debug > 1) printf("ptmatlabGetOutput(%d) = %s\n", n, p);
+    jstring retval = jni->NewStringUTF(p);
+    return retval;
+  }
+
+
   JNIEXPORT jboolean JNICALL Java_ptolemy_matlab_Engine_ptmatlabIsComplex
   (JNIEnv *jni,
    jobject obj,
@@ -513,7 +548,6 @@ extern "C"
       jni->ReleasePrimitiveArrayCritical(row, rowelements, 0);
       jni->SetObjectArrayElement(retval, i, row);
     }
-    mxDestroyArray(ma);
     return retval;
   }
 
@@ -553,7 +587,6 @@ extern "C"
       }
       jni->SetObjectArrayElement(retval, i, tmp);
     }
-    mxDestroyArray(ma);
     return retval;
   }
 

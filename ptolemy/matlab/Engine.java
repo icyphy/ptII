@@ -27,7 +27,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (zkemenczy@rim.net)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -35,6 +35,7 @@ package ptolemy.matlab;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.Token;
 import ptolemy.data.ScalarToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.MatrixToken;
@@ -48,89 +49,95 @@ import ptolemy.math.ComplexMatrixMath;
 
 //////////////////////////////////////////////////////////////////////////
 //// Engine
+
+// NOTE: PLEASE DO NOT remove the leading '*'s from this javadoc... 
+// javadoc screws up the formatting of the tables for some reason
+// if the lines are all left aligned without '*'s. (Next time we'll
+// have to switch to html tables... :-)
 /**
-Provides a java API to the matlab environment. It uses an
-intermediary C++ language layer (ptmatlab) that converts between
-the java environment using the Java Native Interface and the matlab
-environment using the matlab engine API and associated
-mx-functions.<p>
-
-The intermediary layer is built as a DLL on Windows systems
-(ptmatlab.dll).  This shared library is placed into the $PTII/bin
-directory (that should be in the user's path) when this package is
-built. Ptmatlab depends on matlab's engine API shared libraries
-(libeng and libmx) that should also be installed in the user's path
-(usually the case when matlab is installed and matlab's bin
-directory is added to the path).<p>
-
-The bulk of the work done by this class is the conversion between
-PtolemyII Tokens and matlab variables ("mxArrays").<p>
-
-{@link #get(String name)} converts a matlab engine mxArray (ma)
-variable to a Ptolemy II Token. Recursion is used if ma is a struct
-or cell.  The type of the Token returned is determined according to
-the following table:
-<pre>
-    Matlab Type              PtolemyII Token
-    ------------------------------------------------------------------
-    'double'                 Double, if mxArray dimension is 1x1,
-                             DoubleMatrix otherwise.
-                             Complex, if mxArray is mxCOMPLEX and 1x1,
-                             ComplexMatrix otherwise.
-    'struct'                 RecordToken, if mxArray dimension 1x1,
-                             ArrayToken of ArrayTokens of RecordTokens
-                             {{RecordToken,...},{...}}  otherwise.
-    'cell'                   ArrayToken of whatever Tokens the cell
-                             elements resolve to through recursion
-                             of _convertMxArrayToToken(). Note that
-                             PtolemyII is more restrictive here in that
-                             it requires all array elements to be of
-                             the same type (not all matlab cell variables
-                             may be converted to PtolemyII ArrayTokens).
-    'char'                   StringToken, if the mxArray is 1xn,
-                             ArrayToken of StringTokens otherwise.
-    ------------------------------------------------------------------
-</pre>
-<p>
-
-{@link #put(String name, Token t)} converts a PtolemyII Token to a
-matlab engine mxArray. Recursion is used if t is a RecordToken or
-ArrayToken.  The type of mxArray created is determined according to
-the following table:
-<pre>
-    PtolemyII Token          Matlab type
-    ------------------------------------------------------------------
-    ArrayToken               'cell', 1xn, elements are determined by
-                             recursing this method on ArrayToken
-                             elements.
-    RecordToken              'struct', 1x1, fields are determined by
-                             recursing this method on RecordToken
-                             fields
-    StringToken              'char', 1xn
-    ComplexMatrixToken       'double', mxCOMPLEX, nxm
-    MatrixToken              'double', mxREAL, nxm
-    ComplexToken             'double', mxCOMPLEX, 1x1
-    ScalarToken              'double', mxREAL, 1x1
-    ------------------------------------------------------------------
-</pre>
-<p>
-Debug statements to stdout are enabled by calling {@link
-#setDebugging} with a byte parameter > 0. 1 enables basic tracing,
-2 includes traces from the dll as well.<p>
-
-{@link #evalString(String)} send a string to the matlab engine for
-evaluation.<p>
-
-{@link #open} and {@link #close} are used to open / close the
-connection to the matlab engine. Multiple simultaneous open()s are
-allowed and supported. However, the current implementation is
-<i>not</i> multi-thread-safe, so calls to methods of this class
-should be guaranteed not to overlap. All users share the same
-matlab engine and its workspace.<p>
-
-@author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited.
-@version $Id$
-*/
+ * Provides a java API to the matlab environment. It uses an
+ * intermediary C++ language layer (ptmatlab) that converts between
+ * the java environment using the Java Native Interface and the matlab
+ * environment using the matlab engine API and associated
+ * mx-functions.<p>
+ * 
+ * The intermediary layer is built as a DLL on Windows systems
+ * (ptmatlab.dll).  This shared library is placed into the $PTII/bin
+ * directory (that should be in the user's path) when this package is
+ * built. Ptmatlab depends on matlab's engine API shared libraries
+ * (libeng and libmx) that should also be installed in the user's path
+ * (usually the case when matlab is installed and matlab's bin
+ * directory is added to the path).<p>
+ * 
+ * The bulk of the work done by this class is the conversion between
+ * PtolemyII Tokens and matlab variables ("mxArrays").<p>
+ * 
+ * {@link #get(String name)} converts a matlab engine mxArray (ma)
+ * variable to a Ptolemy II Token. Recursion is used if ma is a struct
+ * or cell.  The type of the Token returned is determined according to
+ * the following table:
+ * <pre>
+ *     Matlab Type              PtolemyII Token
+ *     ------------------------------------------------------------------
+ *     'double'                 Double, if mxArray dimension is 1x1,
+ *                              DoubleMatrix otherwise.
+ *                              Complex, if mxArray is mxCOMPLEX and 1x1,
+ *                              ComplexMatrix otherwise.
+ *     'struct'                 RecordToken, if mxArray dimension 1x1,
+ *                              ArrayToken of ArrayTokens of RecordTokens
+ *                              {{RecordToken,...},{...}}  otherwise.
+ *     'cell'                   ArrayToken of whatever Tokens the cell
+ *                              elements resolve to through recursion
+ *                              of _convertMxArrayToToken(). Note that
+ *                              PtolemyII is more restrictive here in that
+ *                              it requires all array elements to be of
+ *                              the same type (not all matlab cell variables
+ *                              may be converted to PtolemyII ArrayTokens).
+ *     'char'                   StringToken, if the mxArray is 1xn,
+ *                              ArrayToken of StringTokens otherwise.
+ *     ------------------------------------------------------------------
+ * </pre>
+ * <p>
+ * 
+ * {@link #put(String name, Token t)} converts a PtolemyII Token to a
+ * matlab engine mxArray. Recursion is used if t is a RecordToken or
+ * ArrayToken.  The type of mxArray created is determined according to
+ * the following table:
+ * <pre>
+ *     PtolemyII Token          Matlab type
+ *     ------------------------------------------------------------------
+ *     ArrayToken               'cell', 1xn, elements are determined by
+ *                              recursing this method on ArrayToken
+ *                              elements.
+ *     RecordToken              'struct', 1x1, fields are determined by
+ *                              recursing this method on RecordToken
+ *                              fields
+ *     StringToken              'char', 1xn
+ *     ComplexMatrixToken       'double', mxCOMPLEX, nxm
+ *     MatrixToken              'double', mxREAL, nxm
+ *     ComplexToken             'double', mxCOMPLEX, 1x1
+ *     ScalarToken              'double', mxREAL, 1x1
+ *     ------------------------------------------------------------------
+ * </pre>
+ * <p>
+ * Debug statements to stdout are enabled by calling {@link
+ * #setDebugging} with a byte parameter > 0. 1 enables basic tracing,
+ * 2 includes traces from the dll as well.<p>
+ * 
+ * {@link #evalString(String)} send a string to the matlab engine for
+ * evaluation.<p>
+ * 
+ * {@link #open} and {@link #close} are used to open / close the
+ * connection to the matlab engine.<p>
+ *
+ * All callers share the same matlab engine and its workspace. Enigne's methods
+ * synhronize on the static {@link #semaphore} to prevent
+ * overlapping calls to the same method from different threads. Use
+ * Engine.{@link #semaphore} to synchronize accross multiple method calls
+ * if needed.<p>
+ * 
+ * @author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited.
+ * @version $Id$ */
 
 public class Engine {
     /** Load the "ptmatlab" native interface. */
@@ -141,13 +148,17 @@ public class Engine {
     /** Matlab engine stdout buffer. One per matlab engine / all instances of
      *  this class.
      */
-    static public byte[] engOutputBuffer = new byte[2048];
+    static long engOutputBuffer = 0;
+    static int engOutputBufferSize = 2048;
 
     /** Matlab engine handle - c++ native (Engine*) converted to java long. */
-    static public long eng = 0;
+    static long eng = 0;
 
     /** Counts the number of (this) instances using eng. */
     static int engUserCount = 0;
+
+    /** Used for Synchronization */
+    static Integer semaphore = new Integer(0);
 
     /** Construct an instance of the matlab engine interface.
      * The matlab engine is not activated at this time. 
@@ -172,7 +183,8 @@ public class Engine {
      * @see #open(String) below.
      */
     public void open() throws IllegalActionException {
-        open(null);                         // Use default invocation
+        open(null);              // Use default invocation, no 
+                                        // output buffering
     }
 
     /** Open a connection to a matlab engine.  Currently all matlab
@@ -181,7 +193,6 @@ public class Engine {
      * static member of this class, and a usage count ("engUserCount")
      * is maintained.
      * @param startCmd hostname or command to use to start the engine.
-
      * @exception IllegalActionException If the matlab engine open is
      * unsuccessful.  This will typically occur if ptmatlab (.dll)
      * cannot be located or if the matlab bin directory is not in the
@@ -190,30 +201,33 @@ public class Engine {
      * For more information, see matlab engine API reference engOpen()
      */
     public void open(String startCmd) throws IllegalActionException {
-        if (eng == 0) {
-            long ne = ptmatlabEngOpen(startCmd);
-            if (ne != 0) {
-                eng = ne;
-                ptmatlabEngOutputBuffer(eng, engOutputBuffer);
-                engUserCount = 1;
+        synchronized(semaphore) {
+            if (eng == 0) {
+                long ne = ptmatlabEngOpen(startCmd);
+                if (ne != 0) {
+                    eng = ne;
+                    engOutputBuffer =
+                        ptmatlabEngOutputBuffer(eng, engOutputBufferSize);
+                    engUserCount = 1;
+                    if (debug > 0) {
+                        System.out.println("matlabEngine.open(" + startCmd
+                                           + ") = " + eng + ", engUserCount="
+                                           + engUserCount);
+                    }
+                }
+            } else {
+                engUserCount++;
                 if (debug > 0) {
-		    System.out.println("matlabEngine.open(" + startCmd
-				       + ") = " + eng + ", engUserCount="
-				       + engUserCount);
-		}
+                    System.out.println("matlabEngine.open(" + startCmd
+                                       + ") : reusing eng=" + eng
+                                       + ", engUserCount="+engUserCount);
+                }
             }
-        } else {
-            engUserCount++;
-            if (debug > 0) {
-		System.out.println("matlabEngine.open(" + startCmd
-				   + ") : reusing eng=" + eng
-				   + ", engUserCount="+engUserCount);
-	    }
-        }
-        if (eng == 0) {
-            throw new IllegalActionException("matlabEngine.open(" + startCmd
-					     + ") : can't find matlab" 
-					     + "engine.");
+            if (eng == 0) {
+                throw new IllegalActionException("matlabEngine.open(" + startCmd
+                                                 + ") : can't find matlab" 
+                                                 + "engine.");
+            }
         }
     }
 
@@ -225,15 +239,17 @@ public class Engine {
      */
     public int close() {
         int retval = 0;
-        if (eng != 0 && engUserCount > 0) {
-            engUserCount--;
-            if (debug > 0) {
-		System.out.println("matlabEngine.close() : engUserCount="
-				   + engUserCount);
-	    }
-            if (engUserCount <= 0) {
-                retval = ptmatlabEngClose(eng);
-                eng = 0;
+        synchronized(semaphore) {
+            if (eng != 0 && engUserCount > 0) {
+                engUserCount--;
+                if (debug > 0) {
+                    System.out.println("matlabEngine.close() : engUserCount="
+                                       + engUserCount);
+                }
+                if (engUserCount <= 0) {
+                    retval = ptmatlabEngClose(eng, engOutputBuffer);
+                    eng = 0;
+                }
             }
         }
         return retval;
@@ -247,14 +263,17 @@ public class Engine {
      * @exception IllegalActionException If the matlab engine is not opened.
      */
     public int evalString(String evalStr) throws IllegalActionException {
-	if (eng == 0) {
-	    throw new IllegalActionException("matlabEngine.evalStr(): "
-					     + errNotOpened);
-	}
-	if (debug > 0) {
-	    System.out.println("matlabEngine.evalString(\"" + evalStr + "\")");
-	}
-	int retval = ptmatlabEngEvalString(eng, evalStr);
+        int retval;
+        synchronized(semaphore) {
+            if (eng == 0) {
+                throw new IllegalActionException("matlabEngine.evalStr(): "
+                                                 + errNotOpened);
+            }
+            if (debug > 0) {
+                System.out.println("matlabEngine.evalString(\"" + evalStr + "\")");
+            }
+            retval = ptmatlabEngEvalString(eng, evalStr);
+        }
 	return retval;
     }
 
@@ -267,21 +286,26 @@ public class Engine {
      * @see Engine
      */
     public Token get(String name) throws IllegalActionException {
-        if (eng == 0) {
-	    throw new IllegalActionException("matlabEngine.get(): "
-					     + errNotOpened);
-	}
-        long ma = ptmatlabEngGetArray(eng, name);
-        if (ma == 0) {
-            throw new IllegalActionException("matlabEngine.get(" + name
-					     + "): can't find variable; "
-					     + getOutput().stringValue());
+        Token retval = null;
+        synchronized(semaphore) {
+            if (eng == 0) {
+                throw new IllegalActionException("matlabEngine.get(): "
+                                                 + errNotOpened);
+            }
+            long ma = ptmatlabEngGetArray(eng, name);
+            if (ma == 0) {
+                throw new IllegalActionException("matlabEngine.get(" + name +
+                                                 "): can't find matlab variable \"" +
+                                                 name + "\"\n" +
+                                                 getOutput().stringValue());
+            }
+            retval = _convertMxArrayToToken(ma);
+            ptmatlabDestroy(ma, name);
+            if (debug > 0) {
+                System.out.println("matlabEngine.get(" + name + ") = "
+                                   + retval.toString());
+            }
         }
-        Token retval = _convertMxArrayToToken(ma);
-        if (debug > 0) {
-	    System.out.println("matlabEngine.get(" + name + ") = "
-			       + retval.toString());
-	}
         return retval;
     }
 
@@ -289,10 +313,11 @@ public class Engine {
      * @return PtolemyII StringToken
      */
     public StringToken getOutput() {
-        int n;
-        for (n = 0; engOutputBuffer[n] != '\0' && n < engOutputBuffer.length;
-	     n++);
-        return new StringToken(new String(engOutputBuffer, 0, n));
+        String str = "";
+        synchronized(semaphore) {
+            str = ptmatlabGetOutput(engOutputBuffer, engOutputBufferSize);
+        }
+        return new StringToken(str);
     }
 
     /** Create a matlab variable using name and a Token.
@@ -301,95 +326,78 @@ public class Engine {
      * @see Engine
      */
     public int put(String name, Token t) throws IllegalActionException {
-        if (eng == 0) {
-	    throw new IllegalActionException("matlabEngine.put(): "
-					     + errNotOpened);
-	}
-        if (debug > 0) {
-	    System.out.println("matlabEngine.put(" + name + ", "
-			       + t.toString()+")");
-	}
-        long ma = _createMxArray(name, t);
-        return ptmatlabEngPutArray(eng, name, ma);
+        int retval;
+        synchronized(semaphore) {
+            if (eng == 0) {
+                throw new IllegalActionException("matlabEngine.put(): "
+                                                 + errNotOpened);
+            }
+            if (debug > 0) {
+                System.out.println("matlabEngine.put(" + name + ", "
+                                   + t.toString()+")");
+            }
+            long ma = _createMxArray(name, t);
+            retval = ptmatlabEngPutArray(eng, name, ma);
+            ptmatlabDestroy(ma, name);
+        }
+        return retval;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
 
-    // Engine functions
-    // Native method implemented in ptmatlab.cc.
+    // Engine functions - native methods implemented in ptmatlab.cc.
     private native long ptmatlabEngOpen(String startCmd);
-    // Native method implemented in ptmatlab.cc.
-    private native int ptmatlabEngClose(long e);
-    // Native method implemented in ptmatlab.cc.
+    private native int ptmatlabEngClose(long e, long outputBuffer);
     private native int ptmatlabEngEvalString(long e, String s);
-    // Native method implemented in ptmatlab.cc.
     private native long ptmatlabEngGetArray(long e, String name);
-    // Native method implemented in ptmatlab.cc.
     private native int ptmatlabEngPutArray(long e, String name, long mxArray);
-    // Native method implemented in ptmatlab.cc.
-    private native int ptmatlabEngOutputBuffer(long e, byte[] b);
+    private native long ptmatlabEngOutputBuffer(long e, int n);
 
     // C-Mx style functions
-    // Native method implemented in ptmatlab.cc.
     private native long ptmatlabCreateCellMatrix(String name, int n, int m);
-    // Native method implemented in ptmatlab.cc.
     private native long
 	ptmatlabCreateString(String name, String s, int n, int m);
-    // Native method implemented in ptmatlab.cc.
     private native long
 	ptmatlabCreateDoubleMatrixOneDim(String name, double[]a, int length);
-    // Native method implemented in ptmatlab.cc.
     private native long
 	ptmatlabCreateDoubleMatrix(String name, double[][]a, int n, int m);
-    // Native method implemented in ptmatlab.cc.
     private native long
 	ptmatlabCreateComplexMatrixOneDim(String name, Complex[]a, int length);
-    // Native method implemented in ptmatlab.cc.
     private native long
 	ptmatlabCreateComplexMatrix(String name, Complex[][]a, int n, int m);
-    // Native method implemented in ptmatlab.cc.
     private native long
 	ptmatlabCreateStructMatrix(String name, Object[] fieldNames,
 				   int n, int m);
-    // Native method implemented in ptmatlab.cc.
+    private native void
+        ptmatlabDestroy(long mxArray, String name);
     private native long
 	ptmatlabGetCell(long mxArray, int n, int m);
-    // Native method implemented in ptmatlab.cc.
     private native String
 	ptmatlabGetClassName(long mxArray);
-    // Native method implemented in ptmatlab.cc.
     private native int[]
 	ptmatlabGetDimensions(long mxArray);
-    // Native method implemented in ptmatlab.cc.
     private native Complex[][]
-	ptmatlabGetComplexMatrix(long mxArray, int n, int m);
-    // Native method implemented in ptmatlab.cc.
+        ptmatlabGetComplexMatrix(long mxArray, int n, int m);
     private native double[][]
-	ptmatlabGetDoubleMatrix(long mxArray, int n, int m);
-    // Native method implemented in ptmatlab.cc.
+        ptmatlabGetDoubleMatrix(long mxArray, int n, int m);
     private native String ptmatlabGetFieldNameByNumber(long mxArray, int k);
-    // Native method implemented in ptmatlab.cc.
     private native long
 	ptmatlabGetFieldByNumber(long mxArray, int k, int n, int m);
-    // Native method implemented in ptmatlab.cc.
     private native int ptmatlabGetNumberOfFields(long mxArray);
-    // Native method implemented in ptmatlab.cc.
     private native String ptmatlabGetString(long mxArray, int n);
-    // Native method implemented in ptmatlab.cc.
+    private native String ptmatlabGetOutput(long outputBuffer, int n);
     private native boolean ptmatlabIsComplex(long mxArray);
-    // Native method implemented in ptmatlab.cc.
     private native void
 	ptmatlabSetCell(String name, long mxArray,
 			int n, int m, long valueMxArray);
     private native void
 	ptmatlabSetString(String name, long mxArray,
 			  int n, String s, int slen); 
-
-    // Native method implemented in ptmatlab.cc.
     private native void
 	ptmatlabSetStructField(String name, long mxArray, String fieldName,
 			       int n, int m, long valueMxArray);
+
 
     // Converts a matlab engine mxArray (ma) variable to a Ptolemy II Token.
     // @param ma Pointer to the matlab engine variable's mxArray
@@ -400,7 +408,6 @@ public class Engine {
     // 'double', 'struct', 'char' or 'cell', or if not all elements of
     // an ArrayToken to be created are of the same type.
     // @see Engine
-    
 
     private Token _convertMxArrayToToken(long ma)
 	throws IllegalActionException {
@@ -431,7 +438,11 @@ public class Engine {
 						     + "engine.");
 		}
 		if (scalar) {
-		    retval = new DoubleToken(a[0][0]);
+                    double tmp = a[0][0];
+                    if (tmp == Math.floor(tmp) && Math.abs(tmp) <= Integer.MAX_VALUE)
+                        retval = new IntToken((int)tmp);
+                    else
+                        retval = new DoubleToken(tmp);
                 } else {
 		    retval = new DoubleMatrixToken(a);
 		}
@@ -451,7 +462,12 @@ public class Engine {
                         long fma = ptmatlabGetFieldByNumber(ma, k, n, m);
                         if (fma != 0) {
                             fieldValues[k] = _convertMxArrayToToken(fma);
-                        } // else - throw exception?
+                        } else {	
+                            throw new IllegalActionException("can't get field "
+                                                             + fieldNames[k] + 
+                                                             "from matlab struct "
+                                                             + nRows+"x"+ nCols);
+                        }
                     }
                     ta[m] = new RecordToken(fieldNames,fieldValues);
                 }

@@ -4,12 +4,12 @@
 <entity name="TestExpression" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[597, 693]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[232, 107]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[127, 221]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="3">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -38,23 +38,23 @@ testing against matlab...</text></svg></configure>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="type" class="ptolemy.data.expr.Parameter" value="[0.0]">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[0.0]">
             </property>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="type" class="ptolemy.data.expr.Parameter" value="[0.0]">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[0.0]">
             </property>
         </port>
     </entity>
     <entity name="ComplexMatrixMatlabExpression" class="ptolemy.matlab.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="output=input*i">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="output=input*iteration">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="345.0, 440.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="type" class="ptolemy.data.expr.Parameter" value="[0+0i]">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[0+0i]">
             </property>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -68,7 +68,7 @@ testing against matlab...</text></svg></configure>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{[1.0],[1.0,2,3],[1.0,2,3;4,5,6]}">
         </property>
-        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="85.0, 256.0">
         </property>
@@ -87,27 +87,29 @@ testing against matlab...</text></svg></configure>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="type" class="ptolemy.data.expr.Parameter" value="[0.0]">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[0.0]">
             </property>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="type" class="ptolemy.data.expr.Parameter" value="[0.0]">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[0.0]">
             </property>
         </port>
     </entity>
     <entity name="ComplexMatrixExpression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.data.expr.Parameter" value="input * i">
+        <property name="expression" class="ptolemy.data.expr.Parameter" value="input * iteration">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="325.0, 362.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="type" class="ptolemy.data.expr.Parameter" value="[0+0i]">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[0+0i]">
             </property>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[0+0i]">
+            </property>
         </port>
     </entity>
     <entity name="RecordSource" class="ptolemy.actor.lib.Pulse">
@@ -117,13 +119,13 @@ testing against matlab...</text></svg></configure>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{{x=1.0,y=[2.0,3.0],r={a=0.0}},{x=2.0,y=[4.0,5.0],r={a=0.0}},{x=3.0,y=[6.0,7.0],r={a=0.0}}}">
         </property>
-        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="67.0, 500.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="type" class="ptolemy.data.expr.Parameter" value="{x=0.0}">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{x=0.0}">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -138,7 +140,7 @@ testing against matlab...</text></svg></configure>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="type" class="ptolemy.data.expr.Parameter" value="{x=0.0}">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{x=0.0}">
             </property>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -152,14 +154,18 @@ testing against matlab...</text></svg></configure>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
             </property>
         </port>
         <port name="reference" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{x=0.0}">
+            </property>
         </port>
         <port name="test" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{x=0.0}">
+            </property>
         </port>
     </entity>
     <entity name="Test1" class="ptolemy.actor.lib.Test">
@@ -202,7 +208,7 @@ testing against matlab...</text></svg></configure>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="type" class="ptolemy.actor.TypeAttribute" value="string">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -230,7 +236,7 @@ testing against matlab...</text></svg></configure>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{[1+0i],[1,2+i,3i],[1i,2,3i;4,5i,6]}">
         </property>
-        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="189.0, 374.0">
         </property>
@@ -249,43 +255,67 @@ testing against matlab...</text></svg></configure>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="type" class="ptolemy.actor.TypeAttribute" value="string">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="131.0, 261.0">
         </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="212.0, 380.0">
         </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="147.0, 505.0">
         </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="104.0, 380.0">
         </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="251.0, 521.0">
         </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <link port="DoubleMatrixMatlabExpression.output" relation="relation14"/>
     <link port="DoubleMatrixMatlabExpression.input" relation="relation"/>
