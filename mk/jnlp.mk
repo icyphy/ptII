@@ -368,3 +368,11 @@ jnlp_verify:
 		echo "$$x"; \
 		"$(PTJAVA_DIR)/bin/jarsigner" -verify $$x; \
 	done;
+
+# Update a location with the files necessary to download
+DIST_DIR=/vol/ptolemy/pt0/ptweb/ptolemyII/ptII2.0/jnlp
+DIST_URL=http://ptolemy.eecs.berkeley.edu:/ptolemyII/ptII2.0/jnlp
+jnlp_dist:
+	rm -f $(JNLPS)
+	$(MAKE) PTII_LOCALURL=$(DIST_URL) $(JNLPS)
+	tar -cf - $(ALL_JNLP_JARS) $(JNLPS) | (cd $(DIST_DIR); tar -xpf -)
