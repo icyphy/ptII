@@ -659,14 +659,11 @@ public class CompositeEntity extends ComponentEntity {
         _containedRelations.remove(relation);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     // Return a name that is not the name of any contained entity.
     // This can be used when it is necessary to name an entity, but you
     // do not care what the name is.
     //
-    private synchronized String _uniqueEntityName() {
+    protected synchronized String _uniqueEntityName() {
         String name = new String("_E" + _entitynamecount);
         while (getEntity(name) != null) {
             _entitynamecount += 1;
@@ -680,7 +677,7 @@ public class CompositeEntity extends ComponentEntity {
     // This can be used when it is necessary to name a relation, but you
     // do not care what the name is.
     //
-    private synchronized String _uniqueRelationName() {
+    protected synchronized String _uniqueRelationName() {
         String name = new String("_R" + _relationnamecount);
         while (getRelation(name) != null) {
             _relationnamecount += 1;
