@@ -34,8 +34,8 @@ ME =		ptolemy/domains/sdf/lib/javasound/demo/AudioSourceSinkDemo
 # Root of the Java directory
 ROOT =		../../../../../../..
 
-# FIXME: This classpath only works in windows. 
-CLASSPATH =	$(ROOT);.
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
