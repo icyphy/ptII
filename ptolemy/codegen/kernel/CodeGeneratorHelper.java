@@ -126,13 +126,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
             throws IllegalActionException {
     }
 
-    /** Get the component associated with this helper.
-     * @return The associated component.
-     */
-    public NamedObj getComponent() {
-        return _component;
-    }
-
     /** Get the buffer size of the given port of this actor.
      *  @param port The given port.
      *  @return The buffer size of the given port of this actor.
@@ -140,7 +133,14 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     public int getBufferSize(IOPort port) {
         return ((Integer) _bufferSizes.get(port)).intValue();
     }
-    
+
+    /** Get the component associated with this helper.
+     * @return The associated component.
+     */
+    public NamedObj getComponent() {
+        return _component;
+    }
+
     /** Get the offset in the buffer of a given port to which a token
      *  should be put.
      *  @param port The given port.
@@ -476,22 +476,6 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         return result.toString();
     }
 
-    /** Reset the buffer sizes of all ports of the associated actor to the
-     *  default value of 1.
-     */
-    public void resetBufferSizes() {
-        Iterator inputPorts = ((Actor) _component).inputPortList().iterator();
-        while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort) inputPorts.next();
-            setBufferSize(inputPort, 1);
-        }
-        Iterator outputPorts = ((Actor) _component).outputPortList().iterator();
-        while (outputPorts.hasNext()) {
-            IOPort outputPort = (IOPort) outputPorts.next();
-            setBufferSize(outputPort, 1);
-        }
-    }
-    
     /** Reset the offsets of all ports of the associated actor to the
      *  default value of 0.
      */
