@@ -57,6 +57,8 @@ JSRCS = \
 
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
+	QRCompileApplet.htm \
+	QRprocessnetwork.gif \
 	QRnetwork.gif \
 	QRvr.wmf \
 	dg.gif \
