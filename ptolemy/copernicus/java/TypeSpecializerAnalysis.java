@@ -36,7 +36,6 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.copernicus.kernel.MustAliasAnalysis;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.Variable;
@@ -387,8 +386,6 @@ public class TypeSpecializerAnalysis {
             // this will help us figure out where locals are defined.
             SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
             SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
-            //  System.out.println("computing aliases for " + method);
-            MustAliasAnalysis aliasAnalysis = null; //new MustAliasAnalysis(unitGraph);
             //   System.out.println("done computing aliases for " + method);
 
             for (Iterator locals = body.getLocals().iterator();
@@ -415,12 +412,12 @@ public class TypeSpecializerAnalysis {
                     InequalityTerm leftOpTerm =
                         _getInequalityTerm(method, debug, leftOp,
                                 _solver, _objectToInequalityTerm, stmt,
-                                localDefs, localUses, aliasAnalysis);
+                                localDefs, localUses);
 
                     InequalityTerm rightOpTerm =
                         _getInequalityTerm(method, debug, rightOp,
                                 _solver, _objectToInequalityTerm, stmt,
-                                localDefs, localUses, aliasAnalysis);
+                                localDefs, localUses);
 
                     // The type of all aliases of the left hand side
                     // must always be greater than
@@ -444,7 +441,7 @@ public class TypeSpecializerAnalysis {
                     _getInequalityTerm(method, debug,
                             ((InvokeStmt)stmt).getInvokeExpr(),
                             _solver, _objectToInequalityTerm, stmt,
-                            localDefs, localUses, aliasAnalysis);
+                            localDefs, localUses);
                 }
             }
         }
@@ -536,8 +533,7 @@ public class TypeSpecializerAnalysis {
             SootMethod method, boolean debug,
             Value value, InequalitySolver solver,
             Map objectToInequalityTerm,
-            Unit unit, LocalDefs localDefs, LocalUses localUses,
-            MustAliasAnalysis aliasAnalysis) {
+            Unit unit, LocalDefs localDefs, LocalUses localUses) {
         if (value instanceof StaticInvokeExpr) {
             StaticInvokeExpr r = (StaticInvokeExpr)value;
             if (r.getMethod().equals(PtolemyUtilities.arraycopyMethod)) {

@@ -45,7 +45,8 @@ import soot.jimple.InstanceInvokeExpr;
 import soot.jimple.InvokeExpr;
 import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.StaticInvokeExpr;
-import soot.jimple.toolkits.invoke.MethodCallGraph;
+import soot.jimple.toolkits.callgraph.CallGraph;
+import soot.jimple.toolkits.callgraph.ReachableMethods;
 import soot.toolkits.scalar.BackwardFlowAnalysis;
 
 import java.util.HashSet;
@@ -58,9 +59,14 @@ An analysis that determines which methods in a given invoke graph
 have no side effects.
 */
 public class SideEffectAnalysis extends BackwardFlowAnalysis {
-    public SideEffectAnalysis(MethodCallGraph g) {
+    public SideEffectAnalysis(CallGraph g) {
         super(g);
+        _reachables = new ReachableMethods(g);
         doAnalysis();
+    }
+
+    protected Object entryInitialFlow() {
+        new EffectFlow();
     }
 
     /** Return the set of fields that the given method assigns
@@ -186,8 +192,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                             hierarchy.resolveSpecialDispatch(
                                     (SpecialInvokeExpr)expr, invokedMethod);
 
-                        if (!((MethodCallGraph)graph).isReachable(
-                                target.getSignature())) {
+                        if (!_reachables.contains(target)) {
                             if (_debug) System.out.println(
                                     "SideEffectAnalysis: specialInvokes method that is not in the graph");
                             out.setUnknownSideEffects();
@@ -205,16 +210,14 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                         for (Iterator targets = list.iterator();
                              targets.hasNext();) {
                             SootMethod target = (SootMethod)targets.next();
-                            if (!((MethodCallGraph)graph).isReachable(
-                                    target.getSignature())) {
+                            if (!_reachables.contains(target)) {
                                 if (_debug) System.out.println(
-                                        "SideEffectAnalysis: virtualInvokes method that is not in the graph");
+                                       "SideEffectAnalysis: virtualInvokes method that is not in the graph");
                                 out.setUnknownSideEffects();
                             }
                         }
                     } else if (expr instanceof StaticInvokeExpr) {
-                        if (!((MethodCallGraph)graph).isReachable(
-                                invokedMethod.getSignature())) {
+                        if (!_reachables.contains(target)) {
                             if (_debug) System.out.println(
                                     "SideEffectAnalysis: staticInvokes method that is not in the graph");
                             out.setUnknownSideEffects();
@@ -341,4 +344,5 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         private Set _effectSet;
     }
     private boolean _debug = false;
+    private ReachableMethods _reachables = null;
 }

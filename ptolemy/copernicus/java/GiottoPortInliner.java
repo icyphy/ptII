@@ -49,9 +49,9 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.util.StringUtilities;
 import soot.ArrayType;
-import soot.BaseType;
 import soot.Body;
 import soot.IntType;
+import soot.RefType;
 import soot.Local;
 import soot.Modifier;
 import soot.Scene;
@@ -768,7 +768,7 @@ public class GiottoPortInliner implements PortInliner {
             TypedIOPort port, ptolemy.data.type.Type type,
             Map typeNameToBufferField) {
         System.out.println("creating  buffer reference for " + port + " type = " + type);
-        BaseType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
+        RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
         // Create a field that refers to all the channels of that port.
         SootField bufferField =
             new SootField("_portbuffer_" +
@@ -866,7 +866,7 @@ public class GiottoPortInliner implements PortInliner {
             TypedIOPort port, ptolemy.data.type.Type type,
             Map typeNameToBufferField) {
         //  System.out.println("creating inside buffer reference for " + port + " type = " + type);
-        BaseType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
+        RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
         // Create a field that refers to all the channels of that port.
         SootField bufferField =
             new SootField("_portinsidebuffer_" +

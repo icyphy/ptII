@@ -36,8 +36,9 @@ import java.util.Map;
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
+import soot.HasPhaseOptions;
 import soot.Local;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -69,7 +70,7 @@ generated code.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ExceptionEliminator extends SceneTransformer {
+public class ExceptionEliminator extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private ExceptionEliminator(CompositeActor model) {
@@ -85,12 +86,16 @@ public class ExceptionEliminator extends SceneTransformer {
         return new ExceptionEliminator(model);
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage obfuscate";
+        return "targetPackage obfuscate";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -98,7 +103,7 @@ public class ExceptionEliminator extends SceneTransformer {
         System.out.println("ExceptionEliminator.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        _obfuscate = Options.getBoolean(options, "obfuscate");
+        _obfuscate = PhaseOptions.getBoolean(options, "obfuscate");
         // Loop over all the classes
 
         for (Iterator i = Scene.v().getApplicationClasses().iterator();

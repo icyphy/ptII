@@ -30,7 +30,9 @@
 
 package ptolemy.copernicus.kernel;
 
-import soot.Options;
+import soot.HasPhaseOptions;
+import soot.PhaseOptions;
+import soot.Printer;
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
@@ -54,7 +56,7 @@ according to their package name.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ClassWriter extends SceneTransformer {
+public class ClassWriter extends SceneTransformer implements HasPhaseOptions {
     private static ClassWriter instance = new ClassWriter();
     private ClassWriter() {}
 
@@ -62,8 +64,16 @@ public class ClassWriter extends SceneTransformer {
         return instance;
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
+    public String getDefaultOptions() {
+        return "";
+    }
+
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug outDir";
+        return "debug outDir";
     }
 
 
@@ -90,7 +100,7 @@ public class ClassWriter extends SceneTransformer {
         System.out.println("ClassWriter.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        String outDir = Options.getString(options, "outDir");
+        String outDir = PhaseOptions.getString(options, "outDir");
 
         if (!outDir.equals("")) {
             File outDirFile = new File(outDir);
@@ -103,7 +113,7 @@ public class ClassWriter extends SceneTransformer {
              classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             try {
-                theClass.write(outDir);
+                Printer.v().write(theClass, outDir);
             } catch (Exception ex) {
                 // If we get an IOException, we might not have any idea
                 // of which directory was problematic

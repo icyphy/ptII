@@ -30,7 +30,9 @@
 
 package ptolemy.copernicus.kernel;
 
-import soot.Options;
+import soot.HasPhaseOptions;
+import soot.PhaseOptions;
+import soot.Printer;
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
@@ -50,7 +52,7 @@ A transformer that writes Jimple text.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class JimpleWriter extends SceneTransformer {
+public class JimpleWriter extends SceneTransformer implements HasPhaseOptions {
     private static JimpleWriter instance = new JimpleWriter();
     private JimpleWriter() {}
 
@@ -58,8 +60,16 @@ public class JimpleWriter extends SceneTransformer {
         return instance;
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
+    public String getDefaultOptions() {
+        return "";
+    }
+
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug outDir";
+        return "debug outDir";
     }
 
     /** Write out the Jimple file.
@@ -78,7 +88,7 @@ public class JimpleWriter extends SceneTransformer {
         System.out.println("JimpleWriter.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        String outDir = Options.getString(options, "outDir");
+        String outDir = PhaseOptions.getString(options, "outDir");
 
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
              classes.hasNext();) {
@@ -104,7 +114,10 @@ public class JimpleWriter extends SceneTransformer {
                 streamOut = new FileOutputStream(fileName);
                 writerOut = new PrintWriter(new EscapedWriter(
                         new OutputStreamWriter(streamOut)));
-                theClass.printJimpleStyleTo(writerOut, 0);
+                Printer printer = Printer.v();
+                printer.setOption(Integer.MAX_VALUE);
+                printer.printTo(theClass, new java.io.PrintWriter(writerOut));
+                //                theClass.printJimpleStyleTo(writerOut, 0);
             }
             catch (Exception e) {
                 System.out.println("JimpleWriter.internalTransform(): "

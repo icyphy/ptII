@@ -26,7 +26,7 @@
 /* Reference Version: $SootVersion: 1.2.2.dev.6 $ */
 
 package ptolemy.copernicus.kernel;
-import soot.Main;
+import soot.*;
 import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.scalar.FlowAnalysis;
 
@@ -86,6 +86,18 @@ public abstract class FastForwardFlowAnalysis extends FlowAnalysis
         }
         // ENDCHANGE
         customizeInitialFlowGraph();
+
+        // Feng Qian: March 07, 2002
+        // Set initial values for entry points
+        {
+            Iterator it = graph.getHeads().iterator();
+            
+            while (it.hasNext()) {
+                Object s = it.next();
+                // this is a forward flow analysis
+                unitToBeforeFlow.put(s, entryInitialFlow());
+            }
+        }
 
         // Perform fixed point flow analysis
         {
@@ -152,10 +164,9 @@ public abstract class FastForwardFlowAnalysis extends FlowAnalysis
         // System.out.println(graph.getBody().getMethod().getSignature() + " numNodes: " + numNodes +
         //    " numComputations: " + numComputations + " avg: " + Main.truncatedOf((double) numComputations / numNodes, 2));
 
-        Main.totalFlowNodes += numNodes;
-        Main.totalFlowComputations += numComputations;
+        Timers.v().totalFlowNodes += numNodes;
+        Timers.v().totalFlowComputations += numComputations;
     }
-
 }
 
 

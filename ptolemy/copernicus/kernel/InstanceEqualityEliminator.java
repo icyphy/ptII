@@ -32,7 +32,7 @@ package ptolemy.copernicus.kernel;
 
 import soot.Local;
 import soot.NullType;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -86,7 +86,7 @@ public class InstanceEqualityEliminator extends SceneTransformer
         System.out.println("InstanceEqualityEliminator.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        boolean debug = Options.getBoolean(options, "debug");
+        boolean debug = PhaseOptions.getBoolean(options, "debug");
 
         /*  if (debug) System.out.println("building invoke graph");
             InvokeGraph invokeGraph =

@@ -37,11 +37,13 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.Token;
+
 import soot.ArrayType;
-import soot.BaseType;
-import soot.Local;
-import soot.Options;
+import soot.HasPhaseOptions;
 import soot.RefType;
+import soot.Local;
+import soot.PhaseOptions;
+import soot.PrimType;
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
@@ -84,7 +86,7 @@ ValueTag.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class InlineTokenTransformer extends SceneTransformer {
+public class InlineTokenTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private InlineTokenTransformer(CompositeActor model) {
@@ -100,16 +102,20 @@ public class InlineTokenTransformer extends SceneTransformer {
         return new InlineTokenTransformer(model);
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug targetPackage";
+        return "debug targetPackage";
     }
 
     protected void internalTransform(String phaseName, Map options) {
-        _debug = Options.getBoolean(options, "debug");
+        _debug = PhaseOptions.getBoolean(options, "debug");
         _options = options;
         System.out.println("InlineTokenTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
@@ -249,7 +255,7 @@ public class InlineTokenTransformer extends SceneTransformer {
                             box.setValue(constant);
                             doneSomething = true;
                         }
-                    } else if (returnType instanceof BaseType &&
+                    } else if (returnType instanceof PrimType &&
                             !(returnType instanceof VoidType)) {
                         if (_debug) System.out.println("handling as base type");
                         // Must be a primitive type...

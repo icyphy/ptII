@@ -71,14 +71,6 @@ public class UnusedFieldRemover extends SceneTransformer {
         return _instance;
     }
 
-    public String getDefaultOptions() {
-        return "";
-    }
-
-    public String getDeclaredOptions() {
-        return super.getDeclaredOptions();
-    }
-
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("UnusedFieldRemover.internalTransform("

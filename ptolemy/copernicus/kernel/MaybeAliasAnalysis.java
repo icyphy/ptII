@@ -49,7 +49,7 @@ import soot.jimple.NewArrayExpr;
 import soot.jimple.NewExpr;
 import soot.jimple.NullConstant;
 import soot.jimple.Stmt;
-import soot.jimple.toolkits.invoke.InvokeGraph;
+import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.toolkits.graph.HashMutableDirectedGraph;
 import soot.toolkits.graph.UnitGraph;
 
@@ -81,10 +81,10 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
      *  and side effect information.
      */
     public MaybeAliasAnalysis(UnitGraph g,
-            InvokeGraph invokeGraph,
+            CallGraph callGraph,
             SideEffectAnalysis sideEffectAnalysis) {
         super(g);
-        _invokeGraph = invokeGraph;
+        _callGraph = callGraph;
         _sideEffectAnalysis = sideEffectAnalysis;
         if (_debug) {
             _countMap = new HashMap();
@@ -123,7 +123,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
                         " to " + stmt);
             }
         }
-        _invokeGraph = null;
+        _callGraph = null;
         _sideEffectAnalysis = null;
         _countMap = null;
     }
@@ -276,10 +276,11 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
                 Set allSideEffects = new HashSet();
                 // Union the side effect sets over
                 // all the possible targets
-                List targets = _invokeGraph.getTargetsOf((Stmt)unit);
-                for (Iterator i = targets.iterator();
-                i.hasNext();) {
-                SootMethod target = (SootMethod)i.next();
+                List edges = _callGraph.getTargetsOf((Stmt)unit);
+                for (Iterator i = edges.iterator();
+                     i.hasNext();) {
+                    Edge edge = (edge)i.next();
+                    SootMethod target = edge.tgt();
 
                 Set newSet = _sideEffectAnalysis.getSideEffects(method);
 
@@ -632,7 +633,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
     private Map _constructorMap;
 
     // The invoke graph that is used to track method calls.
-    private InvokeGraph _invokeGraph;
+    private CallGraph _callGraph;
 
     // The analysis that provides side effect information for methods.
     private SideEffectAnalysis _sideEffectAnalysis;

@@ -38,7 +38,7 @@ import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.util.StringUtilities;
 
 import soot.ArrayType;
-import soot.BaseType;
+import soot.PrimType;
 import soot.Body;
 import soot.BooleanType;
 import soot.ByteType;
@@ -392,7 +392,8 @@ public class SootUtilities {
             SootClass theClass, SootClass oldClass, SootClass newClass) {
         //  System.out.println("fixing references on " + theClass);
         //  System.out.println("replacing " + oldClass + " with " + newClass);
-        for (Iterator methods = theClass.getMethods().snapshotIterator();
+        ArrayList methodList = new ArrayList(theClass.getMethods());
+        for (Iterator methods = methodList.iterator();
              methods.hasNext();) {
             SootMethod newMethod = (SootMethod)methods.next();
             //   System.out.println("newMethod = " + newMethod.getSignature());
@@ -696,12 +697,13 @@ public class SootUtilities {
      */
     public static Type createIsomorphicType(Type shapeType,
             Type elementType) {
-        if (shapeType instanceof BaseType) {
+        if (shapeType instanceof RefType || shapeType instanceof PrimType) {
             return elementType;
         } else if (shapeType instanceof ArrayType) {
             ArrayType arrayShapeType = (ArrayType)shapeType;
-            if (elementType instanceof BaseType) {
-                return ArrayType.v((BaseType)elementType,
+            if (elementType instanceof RefType 
+                    || elementType instanceof PrimType) {
+                return ArrayType.v(elementType,
                         arrayShapeType.numDimensions);
             } else if (elementType instanceof ArrayType) {
                 ArrayType arrayElementType = (ArrayType)elementType;
@@ -818,7 +820,8 @@ public class SootUtilities {
 
         // Loop through the class and make all the non-static method static.
         // Make all reference to this into static references.
-        for (Iterator methods = staticClass.getMethods().snapshotIterator();
+        ArrayList methodList = new ArrayList(staticClass.getMethods());
+        for (Iterator methods = methodList.iterator();
              methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             // ignore static methods.
@@ -887,7 +890,7 @@ public class SootUtilities {
                     Local lock = (Local)monitorStmt.getOp();
                     if (lock == thisLocal) {
                         Local classLocal =
-                            SynchronizerManager.addStmtsToFetchClassBefore(
+                            SynchronizerManager.v().addStmtsToFetchClassBefore(
                                     body, stmt);
                         monitorStmt.setOp(classLocal);
                     }
@@ -982,7 +985,7 @@ public class SootUtilities {
      */
     public static void foldClass(SootClass theClass) {
         SootClass superClass = theClass.getSuperclass();
-        //System.out.println("folding " + theClass + " into " + superClass);
+        System.out.println("folding " + theClass + " into " + superClass);
         Scene.v().setActiveHierarchy(new Hierarchy());
 
         // Copy the interface declarations.
@@ -1015,9 +1018,6 @@ public class SootUtilities {
         // Copy the field declarations.
         List collidedFieldList = _copyFields(theClass, superClass);
 
-        // A list of methods that need to be inlined.
-        List collidedMethodList = new LinkedList();
-
         // Now create new methods in the given class for methods that
         // exist in the super class, but not in the given class.
         // Invoke the super class.
@@ -1025,7 +1025,6 @@ public class SootUtilities {
              methods.hasNext();) {
             SootMethod oldMethod = (SootMethod)methods.next();
             if (theClass.declaresMethod(oldMethod.getSubSignature())) {
-                collidedMethodList.add(oldMethod);
                 continue;
             }
             oldMethod.retrieveActiveBody();
@@ -1089,11 +1088,8 @@ public class SootUtilities {
                 // return the value
                 units.add(Jimple.v().newReturnStmt(returnValueLocal));
             }
-            SiteInliner.inlineSite(oldMethod,
-                    invokeStmt, newMethod);
         }
 
-        System.err.println("collidedMethodList = " + collidedMethodList);
         // Loop through all the methods again, this time looking for
         // method invocations on the old superClass...  Inline these calls.
         // This code is similar to inlineCallsToMethod, but avoids iterating
@@ -1112,8 +1108,8 @@ public class SootUtilities {
                 if (stmt.containsInvokeExpr()) {
                     InvokeExpr invoke = (InvokeExpr)stmt.getInvokeExpr();
                     SootMethod invokeMethod = invoke.getMethod();
-                    //if (invokeMethod.getDeclaringClass() == superClass) {
-                    if (collidedMethodList.contains(invokeMethod)) {    
+                    if (invokeMethod.getDeclaringClass() == superClass) {
+                        // if (collidedMethodList.contains(invokeMethod)) {    
                         // Force the body of the thing we are inlining to be
                         // loaded
 
@@ -1154,9 +1150,6 @@ public class SootUtilities {
                                                 + "foldClass() "
                                                 + "found " + superC + " "
                                                 + invokeMethod);
-                                        if (superC.isContextClass()) {
-                                            superC.setApplicationClass();
-                                        }
                                         invokeMethod.retrieveActiveBody();
                                         break;
                                     }
@@ -1182,6 +1175,7 @@ public class SootUtilities {
         changeTypesInMethods(theClass, superClass, theClass);
 
         theClass.setSuperclass(superClass.getSuperclass());
+        System.out.println("done folding");
     }
 
     /** Given a Type object, return the java.lang.Class object that the
@@ -1241,7 +1235,7 @@ public class SootUtilities {
                 boolean isEqual = true;
                 while (parameterTypes.hasNext()) {
                     Type parameterType = (Type)parameterTypes.next();
-                    Local argument = (Local)arguments.next();
+                    Value argument = (Value)arguments.next();
                     Type argumentType = argument.getType();
                     if (argumentType != parameterType) {
                         // This is inefficient.  Full type merging is
@@ -1413,7 +1407,8 @@ public class SootUtilities {
      */
     public static void makeFieldStatic(SootClass theClass, SootField field) {
         field.setModifiers(field.getModifiers() | Modifier.STATIC);
-        for (Iterator methods = theClass.getMethods().snapshotIterator();
+        ArrayList methodList = new ArrayList(theClass.getMethods());
+        for (Iterator methods = methodList.iterator();
              methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             // ignore static methods?
@@ -1566,7 +1561,7 @@ public class SootUtilities {
             for (Iterator blocks = graph.iterator();
                  blocks.hasNext();) {
                 Block block = (Block)blocks.next();
-                // System.out.println("body = " + block);
+                System.out.println("body = " + block);
                 // filter out anything that doesn't look like a loop body.
                 if ((block.getPreds().size() != 1) ||
                         (block.getSuccs().size() != 1)) {
@@ -1677,6 +1672,9 @@ public class SootUtilities {
                     blockStmtList.add(original);
                     blockStmts.remove();
                 }
+
+                // Remove the jump that should be the final statement.
+                blockStmtList.remove(blockStmtList.get(blockStmtList.size()-1));
 
                 // Loop through and unroll the loop body once for
                 // every element of the field list.

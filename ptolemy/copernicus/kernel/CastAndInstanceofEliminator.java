@@ -34,7 +34,7 @@ import soot.ArrayType;
 import soot.Body;
 import soot.BodyTransformer;
 import soot.Hierarchy;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
 import soot.SootClass;
@@ -71,7 +71,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + "targetPackage debug";
+        return "targetPackage debug";
     }
 
     protected void internalTransform(Body b, String phaseName, Map options)
@@ -81,7 +81,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
         //         System.out.println("CastAndInstanceofEliminator.internalTransform("
         //                 + b.getMethod() + phaseName + ")");
 
-        boolean debug = Options.getBoolean(options, "debug");
+        boolean debug = PhaseOptions.getBoolean(options, "debug");
 
         eliminateCastsAndInstanceOf(body, phaseName, new HashSet(), debug);
     }

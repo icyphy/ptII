@@ -56,14 +56,16 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
+
 import soot.ArrayType;
 import soot.BooleanType;
 import soot.FastHierarchy;
+import soot.HasPhaseOptions;
 import soot.Hierarchy;
 import soot.IntType;
 import soot.Local;
 import soot.Modifier;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -97,7 +99,7 @@ order of the SDF schedule.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class InlineDirectorTransformer extends SceneTransformer {
+public class InlineDirectorTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private InlineDirectorTransformer(CompositeActor model) {
@@ -113,12 +115,16 @@ public class InlineDirectorTransformer extends SceneTransformer {
         return new InlineDirectorTransformer(model);
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage outDir";
+        return "targetPackage outDir";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -221,7 +227,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
         //         modelClass.addField(postfireReturnsField);
 
         // First, write out Giotto Code for the model.
-        String directory = Options.getString(options, "outDir");
+        String directory = PhaseOptions.getString(options, "outDir");
         try {
             String giottoCode =
                 ptolemy.domains.giotto.kernel.GiottoCodeGenerator.generateCode(
@@ -486,7 +492,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
                 String portID = StringUtilities.sanitizeName(
                         port.getName(model));
                 String driverClassName =
-                    Options.getString(options, "targetPackage")
+                    PhaseOptions.getString(options, "targetPackage")
                     + ".CG" + "init_" + portID;
                 SootClass driverInterface =
                     Scene.v().loadClassAndSupport(
@@ -1064,7 +1070,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             //                   insertPoint);
         }
         Scene.v().setActiveHierarchy(new Hierarchy());
-        Scene.v().setActiveFastHierarchy(new FastHierarchy());
+        Scene.v().setFastHierarchy(new FastHierarchy());
     }
 
     private void _inlineHSDirector(CompositeActor model, SootClass modelClass,
@@ -1490,7 +1496,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             //                   insertPoint);
         }
         Scene.v().setActiveHierarchy(new Hierarchy());
-        Scene.v().setActiveFastHierarchy(new FastHierarchy());
+        Scene.v().setFastHierarchy(new FastHierarchy());
     }
 
     private void _inlineSDFDirector(CompositeActor model, SootClass modelClass,
@@ -1994,7 +2000,7 @@ public class InlineDirectorTransformer extends SceneTransformer {
             //               insertPoint);
         }
         Scene.v().setActiveHierarchy(new Hierarchy());
-        Scene.v().setActiveFastHierarchy(new FastHierarchy());
+        Scene.v().setFastHierarchy(new FastHierarchy());
     }
     private CompositeActor _model;
 }

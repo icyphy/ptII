@@ -37,7 +37,8 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.BackwardCompatibility;
 
-import soot.Options;
+import soot.HasPhaseOptions;
+ import soot.PhaseOptions;
 import soot.SceneTransformer;
 
 import java.io.BufferedReader;
@@ -57,7 +58,7 @@ in the directory named by the outDir parameter.
 @version $Id$
 @since Ptolemy II 2.1
 */
-public class MakefileWriter extends SceneTransformer {
+public class MakefileWriter extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private MakefileWriter(CompositeActor model) {
@@ -73,14 +74,18 @@ public class MakefileWriter extends SceneTransformer {
         return new MakefileWriter(model);
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
-        return super.getDefaultOptions() + "templateDirectory:" +
+        return "templateDirectory:" +
             TEMPLATE_DIRECTORY_DEFAULT;
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() +
-            " _generatorAttributeFileName outDir targetPackage templateDirectory";
+        return 
+            "_generatorAttributeFileName outDir targetPackage templateDirectory";
     }
 
     /** Add a makefile substitution from the given name to the given value.
@@ -179,7 +184,7 @@ public class MakefileWriter extends SceneTransformer {
         // Read in the GeneratorAttribute and use it for substitution
 
         // Note that this option has a leading _
-        _generatorAttributeFileName = Options.getString(options,
+        _generatorAttributeFileName = PhaseOptions.getString(options,
                 "_generatorAttributeFileName");
 
         if (_generatorAttributeFileName.length() == 0) {
@@ -245,7 +250,7 @@ public class MakefileWriter extends SceneTransformer {
 
 
 
-        _outputDirectory = Options.getString(options, "outDir");
+        _outputDirectory = PhaseOptions.getString(options, "outDir");
         if (!_outputDirectory.endsWith("/")) {
             _outputDirectory = _outputDirectory + "/";
         }
@@ -256,9 +261,9 @@ public class MakefileWriter extends SceneTransformer {
             outDirFile.mkdirs();
         }
 
-        _targetPackage = Options.getString(options, "targetPackage");
+        _targetPackage = PhaseOptions.getString(options, "targetPackage");
 
-        _templateDirectory = Options.getString(options, "templateDirectory");
+        _templateDirectory = PhaseOptions.getString(options, "templateDirectory");
         if (!_templateDirectory.endsWith("/")) {
             _templateDirectory = _templateDirectory + "/";
         }

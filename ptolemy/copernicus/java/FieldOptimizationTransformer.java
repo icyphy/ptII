@@ -35,7 +35,7 @@ import java.util.Map;
 import ptolemy.actor.CompositeActor;
 import ptolemy.kernel.Entity;
 import soot.Modifier;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -76,14 +76,6 @@ public class FieldOptimizationTransformer extends SceneTransformer {
      */
     public static FieldOptimizationTransformer v(CompositeActor model) {
         return new FieldOptimizationTransformer(model);
-    }
-
-    public String getDefaultOptions() {
-        return "";
-    }
-
-    public String getDeclaredOptions() {
-        return super.getDeclaredOptions();
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -130,7 +122,7 @@ public class FieldOptimizationTransformer extends SceneTransformer {
         for (Iterator i = _model.deepEntityList().iterator();
              i.hasNext();) {
             Entity entity = (Entity)i.next();
-            String className = Options.getString(options, "targetPackage")
+            String className = PhaseOptions.getString(options, "targetPackage")
                 + "." + entity.getName();
             SootClass entityClass = Scene.v().loadClassAndSupport(className);
 

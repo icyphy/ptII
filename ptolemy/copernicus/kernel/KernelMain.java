@@ -40,10 +40,14 @@ import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.StringUtilities;
 
+import soot.HasPhaseOptions;
+import soot.Pack;
+import soot.PackManager;
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 import soot.Transform;
+import soot.Transformer;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -129,6 +133,26 @@ public class KernelMain {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a new transform to the given pack, dealing properly with
+     *  options specified in the transformer.
+     */
+    public static void addTransform(Pack pack, String name, Transformer transformer, String defaultOptions) {
+        Transform t = new Transform(name, transformer);
+        if(transformer instanceof HasPhaseOptions) {
+            HasPhaseOptions options = (HasPhaseOptions) transformer;
+            t.setDefaultOptions(t.getDefaultOptions() + " " + options.getDefaultOptions() + " " + defaultOptions);
+            t.setDeclaredOptions(t.getDeclaredOptions() + " " + options.getDeclaredOptions());
+        }
+        pack.add(t);
+    }
+
+    /** Add a new transform to the given pack, dealing properly with
+     *  options specified in the transformer.
+     */
+    public static void addTransform(Pack pack, String name, Transformer transformer) {
+      addTransform(pack, name, transformer, "");
+    }
+
     /** Add transforms to the Scene.  Derived classes should do most
      *  of their added functionality in this method.
      */
@@ -140,8 +164,8 @@ public class KernelMain {
         // only application class in Main. The first transformation
         // will ignore all application classes (i.e. set them to
         // library classes)
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.hack",
-                new _IgnoreAllApplicationClasses(), ""));
+        PackManager.v().getPack("wjtp").add(new Transform("wjtp.hack",
+                new _IgnoreAllApplicationClasses()));
     }
 
     /** Call soot.Main.main(), which does command line argument
@@ -158,18 +182,18 @@ public class KernelMain {
         // this class so that we don't actually generate code for it.
         args[0] = "java.lang.Object";
 
-        // Rather than calling soot.Main.main() here directly, which
-        // spawns a separate thread, we run this in the same thread
-        //soot.Main.main(args);
-        soot.Main.setReservedNames();
-        soot.Main.setCmdLineArgs(args);
-        soot.Main main = new soot.Main();
-        soot.ConsoleCompilationListener consoleCompilationListener =
-            new soot.ConsoleCompilationListener();
-        soot.Main.addCompilationListener(consoleCompilationListener);
-        // Thread thread = new Thread(main);
-        // thread.start();
-        main.run();
+        // As of soot 2.0.1, this is all that is required.
+        soot.Main.main(args);
+        
+        // soot.Main.setReservedNames();
+//         soot.Main.setCmdLineArgs(args);
+//         soot.Main main = new soot.Main();
+//         soot.ConsoleCompilationListener consoleCompilationListener =
+//             new soot.ConsoleCompilationListener();
+//         soot.Main.addCompilationListener(consoleCompilationListener);
+//         // Thread thread = new Thread(main);
+//         // thread.start();
+//         main.run();
 
         // Reset the state of the manager.  We haven't actually done
         // anything, but the state of the manager must be reset.
@@ -412,10 +436,14 @@ public class KernelMain {
          *  @param options The options to apply.
          */
         protected void internalTransform(String phaseName, Map options) {
+            // For some reason, soot 2.0.1 gives java.lang.Object as
+            // its own superclass!
+            PtolemyUtilities.objectClass.setSuperclass(null);
             for (Iterator classes =
                      Scene.v().getApplicationClasses().snapshotIterator();
                  classes.hasNext();) {
-                ((SootClass)classes.next()).setLibraryClass();
+                SootClass theClass = (SootClass)classes.next();
+                theClass.setLibraryClass();
             }
         }
     }

@@ -71,7 +71,7 @@ public class TransformerAdapter extends SceneTransformer {
                     // FIXME: pass in the options.
                     // Currently this is not possible because the
                     // internalTransform method is protected.
-                    _transformer.transform(body, phaseName, "");
+                    _transformer.transform(body, phaseName);
 
                 } catch (RuntimeException ex) {
                     System.err.println("Exception occured while processing "

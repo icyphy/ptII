@@ -83,14 +83,6 @@ public class ConstantLoopUnroller extends BodyTransformer {
         return instance;
     }
 
-    public String getDefaultOptions() {
-        return "";
-    }
-
-    public String getDeclaredOptions() {
-        return super.getDeclaredOptions();
-    }
-
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("ConstantLoopUnroller.internalTransform("
                 + phaseName + ", " + options + ")");

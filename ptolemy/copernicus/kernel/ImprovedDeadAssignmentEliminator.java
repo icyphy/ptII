@@ -39,7 +39,7 @@ import soot.IntType;
 import soot.Local;
 import soot.LongType;
 import soot.Main;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.Value;
 import soot.ValueBox;
 import soot.jimple.ArrayRef;

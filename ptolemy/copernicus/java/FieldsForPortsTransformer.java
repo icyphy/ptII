@@ -43,9 +43,11 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
+
+import soot.HasPhaseOptions;
 import soot.Local;
 import soot.Modifier;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -83,7 +85,7 @@ the field of the appropriate class that points to the correct port.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class FieldsForPortsTransformer extends SceneTransformer {
+public class FieldsForPortsTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private FieldsForPortsTransformer(CompositeActor model) {
@@ -98,13 +100,17 @@ public class FieldsForPortsTransformer extends SceneTransformer {
     public static FieldsForPortsTransformer v(CompositeActor model) {
         return new FieldsForPortsTransformer(model);
     }
+    
+    public String getPhaseName() {
+        return "";
+    }
 
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage";
+        return "targetPackage";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -113,7 +119,7 @@ public class FieldsForPortsTransformer extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         _options = options;
-        _debug = Options.getBoolean(_options, "debug");
+        _debug = PhaseOptions.getBoolean(_options, "debug");
         _portToFieldMap = new HashMap();
         _classToObjectMap = new HashMap();
 

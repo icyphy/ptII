@@ -153,7 +153,7 @@ $Id$
 
      <property name="necessaryClasses" 
                class="ptolemy.data.expr.Parameter"
-	       value="{&quot;ptolemy.domains.sdf.kernel.SDFScheduler&quot;,&quot;ptolemy.copernicus.java.Main&quot;,&quot;ptolemy.kernel.util.NamedObj&quot;,&quot;soot.gui.ICompilationListener&quot;,&quot;jasmin.Main&quot;,&quot;ptolemy.vergil.MoMLViewerApplet&quot;,&quot;diva.graph.GraphController&quot;}">
+	       value="{&quot;ptolemy.domains.sdf.kernel.SDFScheduler&quot;,&quot;ptolemy.copernicus.java.Main&quot;,&quot;ptolemy.kernel.util.NamedObj&quot;,&quot;jasmin.Main&quot;,&quot;ptolemy.vergil.MoMLViewerApplet&quot;,&quot;diva.graph.GraphController&quot;}">
 	       <doc>An array of Strings, where each element names a class that needs to be present in the classpath </doc>
      </property>
 

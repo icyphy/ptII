@@ -43,7 +43,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
-import soot.BaseType;
+import soot.PrimType;
+import soot.RefType;
 import soot.Body;
 import soot.Local;
 import soot.Modifier;
@@ -329,7 +330,7 @@ public class HSPortInliner implements PortInliner {
                  types.hasNext();) {
                 ptolemy.data.type.Type type =
                     (ptolemy.data.type.Type)typeMap.get(types.next());
-                BaseType tokenType =
+                RefType tokenType =
                     PtolemyUtilities.getSootTypeForTokenType(type);
 
                 String fieldName = relation.getName() + "_bufferLocal";

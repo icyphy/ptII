@@ -39,7 +39,7 @@ import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.type.Typeable;
 
 import soot.ArrayType;
-import soot.BaseType;
+import soot.PrimType;
 import soot.Body;
 import soot.Local;
 import soot.RefType;
@@ -1306,7 +1306,7 @@ public class PtolemyUtilities {
     public static SootMethod tokenPowMethod;
 
     // Soot Type representing the ptolemy.data.Token class.
-    public static BaseType tokenType;
+    public static RefType tokenType;
 
     public static SootMethod toplevelMethod;
 

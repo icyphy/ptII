@@ -45,8 +45,10 @@ import ptolemy.data.type.Typeable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
+
+import soot.HasPhaseOptions;
 import soot.Local;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -98,7 +100,7 @@ index or portbuffer arrays.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class InlinePortTransformer extends SceneTransformer {
+public class InlinePortTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private InlinePortTransformer(CompositeActor model) {
@@ -140,12 +142,16 @@ public class InlinePortTransformer extends SceneTransformer {
         _modelToPortInliner.put(model, inliner);
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug";
+        return "targetPackage debug";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -154,7 +160,7 @@ public class InlinePortTransformer extends SceneTransformer {
 
         _options = options;
         _phaseName = phaseName;
-        _debug = Options.getBoolean(options, "debug");
+        _debug = PhaseOptions.getBoolean(options, "debug");
 
         _inlineAllPortsIn(ModelTransformer.getModelClass(), _model);
 
@@ -211,7 +217,7 @@ public class InlinePortTransformer extends SceneTransformer {
                         modelClass, method, body,
                         inliner, _debug);
                 LocalNameStandardizer.v().transform(body,
-                        _phaseName + ".lns", "");
+                        _phaseName + ".lns");
             }
         }
 
@@ -239,7 +245,7 @@ public class InlinePortTransformer extends SceneTransformer {
                             modelClass, entityClass, method, body,
                             inliner, _debug);
                     LocalNameStandardizer.v().transform(body,
-                            _phaseName + ".lns", "");
+                            _phaseName + ".lns");
                 }
             }
         }

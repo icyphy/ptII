@@ -50,9 +50,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.util.StringUtilities;
+
+import soot.HasPhaseOptions;
 import soot.Local;
 import soot.Modifier;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -106,7 +108,7 @@ of any parameter values.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class InlineParameterTransformer extends SceneTransformer {
+public class InlineParameterTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private InlineParameterTransformer(CompositeActor model) {
@@ -122,12 +124,16 @@ public class InlineParameterTransformer extends SceneTransformer {
         return new InlineParameterTransformer(model);
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug";
+        return "targetPackage debug";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -138,7 +144,7 @@ public class InlineParameterTransformer extends SceneTransformer {
 
         Map attributeToValueFieldMap = new HashMap();
 
-        boolean debug = Options.getBoolean(options, "debug");
+        boolean debug = PhaseOptions.getBoolean(options, "debug");
 
         // Determine which parameters have a constant value.
         ConstVariableModelAnalysis constantAnalysis;

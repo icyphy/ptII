@@ -38,10 +38,12 @@ import java.util.Set;
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.data.type.BaseType;
+
 import soot.Body;
 import soot.BodyTransformer;
+import soot.HasPhaseOptions;
 import soot.Local;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.Scene;
 import soot.Type;
 import soot.Unit;
@@ -64,16 +66,23 @@ Ptolemy token types.
 @since Ptolemy II 2.0
 */
 
-public class TokenInstanceofEliminator extends BodyTransformer
-{
+public class TokenInstanceofEliminator extends BodyTransformer implements HasPhaseOptions {
     private static TokenInstanceofEliminator instance =
     new TokenInstanceofEliminator();
     private TokenInstanceofEliminator() {}
 
     public static TokenInstanceofEliminator v() { return instance; }
 
+    public String getPhaseName() {
+        return "";
+    }
+
+    public String getDefaultOptions() {
+        return "";
+    }
+
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug";
+        return "debug";
     }
 
     protected void internalTransform(Body b, String phaseName, Map options)
@@ -83,7 +92,7 @@ public class TokenInstanceofEliminator extends BodyTransformer
         System.out.println("TokenInstanceofEliminator.internalTransform(" +
                 body.getMethod() + ", " + phaseName + ")");
 
-        boolean debug = Options.getBoolean(options, "debug");
+        boolean debug = PhaseOptions.getBoolean(options, "debug");
 
         eliminateCastsAndInstanceOf(body, phaseName, new HashSet(), debug);
     }

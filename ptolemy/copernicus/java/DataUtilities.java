@@ -37,6 +37,7 @@ import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
+import soot.PrimType;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;

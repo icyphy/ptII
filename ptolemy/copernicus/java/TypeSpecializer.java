@@ -39,11 +39,13 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.Entity;
+
 import soot.Body;
 import soot.FastHierarchy;
+import soot.HasPhaseOptions;
 import soot.Hierarchy;
 import soot.Local;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -78,7 +80,7 @@ the the types of a port.  This transformation enables the token unboxing
 performed by the TokenToNativeTransformer
 
 */
-public class TypeSpecializer extends SceneTransformer {
+public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private TypeSpecializer(CompositeActor model) {
@@ -94,12 +96,16 @@ public class TypeSpecializer extends SceneTransformer {
         return new TypeSpecializer(model);
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug";
+        return "debug";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -107,10 +113,10 @@ public class TypeSpecializer extends SceneTransformer {
         System.out.println("TypeSpecializer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        boolean debug = Options.getBoolean(options, "debug");
+        boolean debug = PhaseOptions.getBoolean(options, "debug");
 
         Scene.v().setActiveHierarchy(new Hierarchy());
-        Scene.v().setActiveFastHierarchy(new FastHierarchy());
+        Scene.v().setFastHierarchy(new FastHierarchy());
 
         Hierarchy h = Scene.v().getActiveHierarchy();
         for (Iterator entities = _model.deepEntityList().iterator();
@@ -289,14 +295,14 @@ public class TypeSpecializer extends SceneTransformer {
             // First split local variables that are used in
             // multiple places.
             LocalSplitter.v().transform(
-                    body, "ls", "");
+                    body, "ls");
             // We may have locals with the same name.  Rename them.
             LocalNameStandardizer.v().transform(
-                    body, "lns", "");
+                    body, "lns");
             // Assign types to local variables... This types
             // everything that isn't a token type.
             TypeAssigner.v().transform(
-                    body, "ta", "");
+                    body, "ta");
         }
         return map;
     }

@@ -40,6 +40,7 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.attributes.URIAttribute;
 import soot.FastHierarchy;
+import soot.HasPhaseOptions;
 import soot.Hierarchy;
 import soot.Local;
 import soot.RefType;
@@ -75,7 +76,7 @@ import soot.toolkits.scalar.LocalSplitter;
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class NamedObjEliminator extends SceneTransformer {
+public class NamedObjEliminator extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private NamedObjEliminator(CompositeActor model) {
@@ -91,12 +92,16 @@ public class NamedObjEliminator extends SceneTransformer {
         return new NamedObjEliminator(model);
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage";
+        return "debug";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -259,6 +264,7 @@ public class NamedObjEliminator extends SceneTransformer {
                 } catch (RuntimeException ex) {
                     System.out.println("Could not get method <init> by name "
                             + "from class " + theClass );
+                    System.out.println("Methods = " + theClass.getMethods());
                     throw ex;
                 }
                 if(method.getParameterCount() == 2) {
@@ -345,7 +351,7 @@ public class NamedObjEliminator extends SceneTransformer {
 
         // Reset the hierarchy, since we've changed superclasses and such.
         Scene.v().setActiveHierarchy(new Hierarchy());
-        Scene.v().setActiveFastHierarchy(new FastHierarchy());
+        Scene.v().setFastHierarchy(new FastHierarchy());
 
         // Fix the specialInvokes.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
@@ -420,9 +426,9 @@ public class NamedObjEliminator extends SceneTransformer {
               
                 // Infer types.
                 LocalSplitter.v().transform(
-                        body, "nee.ls", "");
+                        body, "nee.ls");
                 TypeAssigner.v().transform(
-                        body, "nee.ta", "");
+                        body, "nee.ta");
 
                 for (Iterator units = body.getUnits().snapshotIterator();
                      units.hasNext();) {

@@ -50,7 +50,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
 import ptolemy.util.StringUtilities;
 import soot.ArrayType;
-import soot.BaseType;
+import soot.RefType;
 import soot.IntType;
 import soot.Local;
 import soot.Modifier;
@@ -1105,7 +1105,7 @@ public class SDFPortInliner implements PortInliner {
                  types.hasNext();) {
                 ptolemy.data.type.Type type =
                     (ptolemy.data.type.Type)typeMap.get(types.next());
-                BaseType tokenType =
+                RefType tokenType =
                     PtolemyUtilities.getSootTypeForTokenType(type);
                 Type arrayType = ArrayType.v(tokenType, 1);
                 String fieldName = relation.getName() + "_bufferLocal";
@@ -1266,7 +1266,7 @@ public class SDFPortInliner implements PortInliner {
     private void _createPortBufferReference(SootClass entityClass,
             TypedIOPort port, ptolemy.data.type.Type type, Map typeNameToBufferField) {
         //  System.out.println("creating  buffer reference for " + port + " type = " + type);
-        BaseType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
+        RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
         // Create a field that refers to all the channels of that port.
         SootField bufferField =
             new SootField("_portbuffer_" +
@@ -1448,7 +1448,7 @@ public class SDFPortInliner implements PortInliner {
             Map typeNameToBufferField) {
         
         //  System.out.println("creating inside buffer reference for " + port + " type = " + type);
-        BaseType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
+        RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
         // Create a field that refers to all the channels of that port.
         SootField bufferField =
             new SootField("_portinsidebuffer_" +

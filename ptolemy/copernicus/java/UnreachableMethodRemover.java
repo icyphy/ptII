@@ -29,19 +29,17 @@
 
 package ptolemy.copernicus.java;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import soot.Options;
+import soot.HasPhaseOptions;
+import soot.PhaseOptions;
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootMethod;
-import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
-import soot.jimple.toolkits.invoke.InvokeGraph;
-import soot.jimple.toolkits.invoke.MethodCallGraph;
+import soot.jimple.toolkits.callgraph.CallGraph;
+import soot.jimple.toolkits.callgraph.EntryPoints;
+import soot.jimple.toolkits.callgraph.ReachableMethods;
 
 //////////////////////////////////////////////////////////////////////////
 //// UnreachableMethodRemover
@@ -63,7 +61,7 @@ really a big deal.
 // We need a lightweight way of getting the method call graph for
 // these methods without creating a JimpleBody which is expensive.
 
-public class UnreachableMethodRemover extends SceneTransformer {
+public class UnreachableMethodRemover extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private UnreachableMethodRemover() {}
@@ -74,29 +72,28 @@ public class UnreachableMethodRemover extends SceneTransformer {
         return instance;
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug";
+        return "debug";
     }
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("UnreachableMethodRemover.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        boolean debug = Options.getBoolean(options, "debug");
-
-        // Construct the graph of all method invocations, so we know what
-        // method contains each invocation and what method(s) can be
-        // targeted by that invocation.
-        InvokeGraph invokeGraph =
-            ClassHierarchyAnalysis.newInvokeGraph();
+        boolean debug = PhaseOptions.getBoolean(options, "debug");
 
         // Temporary hack to deal with interfaces...  assume that methods of
         // interfaces are automatically reachable.
         HashSet forcedReachableMethodSet = new HashSet();
+        forcedReachableMethodSet.addAll(EntryPoints.v().all());
         // Loop over all the classes...
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
              i.hasNext();) {
@@ -106,8 +103,8 @@ public class UnreachableMethodRemover extends SceneTransformer {
             // methods of the toplevel class are reachable.  We need a
             // way of preserving the container, name constructor
             // instead of the no arg constructor for the toplevel.
-          //   SootClass modelClass = ModelTransformer.getModelClass();
-//             if(theClass.equals(modelClass)) {
+            //            SootClass modelClass = ModelTransformer.getModelClass();
+            //           if(theClass.equals(modelClass)) {
 //                 Set methodSet = _getMethodSet(theClass);
 //                 forcedReachableMethodSet.addAll(methodSet);
 //             }
@@ -134,15 +131,18 @@ public class UnreachableMethodRemover extends SceneTransformer {
             }
         }       
 
+        System.out.println("forcedMethods = " + forcedReachableMethodSet);
+
         // Construct the graph of methods that are directly reachable
         // from any method.
-        MethodCallGraph methodCallGraph = (MethodCallGraph)
-            invokeGraph.newMethodGraph(forcedReachableMethodSet);
-
-        // Compute the transitive closure of the method call graph,
-        // starting from main(), finalize(), etc..
-        HashSet reachableMethodSet = new HashSet();
-        reachableMethodSet.addAll(methodCallGraph.getReachableMethods());
+        // Construct the graph of all method invocations, so we know what
+        // method contains each invocation and what method(s) can be
+        // targeted by that invocation.
+        Scene.v().releaseCallGraph();
+        CallGraph callGraph = Scene.v().getCallGraph();
+        ReachableMethods reachables = new ReachableMethods(callGraph, 
+                forcedReachableMethodSet);
+        reachables.update();
 
         // Loop over all the classes...
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
@@ -150,12 +150,13 @@ public class UnreachableMethodRemover extends SceneTransformer {
             SootClass theClass = (SootClass)i.next();
 
             // Loop through all the methods...
-            for (Iterator methods = theClass.getMethods().snapshotIterator();
+            List methodList = new ArrayList(theClass.getMethods());
+            for (Iterator methods = methodList.iterator();
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
 
                 // And remove any methods that aren't reachable.
-                if (!reachableMethodSet.contains(method)) {
+                if (!reachables.contains(method)) {
                     if (debug) System.out.println("removing method " + method);
                     theClass.removeMethod(method);
                 }
@@ -167,8 +168,8 @@ public class UnreachableMethodRemover extends SceneTransformer {
     // methods in the cgiven class.
     private Set _getMethodSet(SootClass theClass) {
         Set methodSet = new HashSet();
-        for (Iterator methods =
-                 theClass.getMethods().snapshotIterator();
+        List methodList = new ArrayList(theClass.getMethods());
+        for (Iterator methods = methodList.iterator();
              methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             SootMethod aMethod = theClass.getMethod(

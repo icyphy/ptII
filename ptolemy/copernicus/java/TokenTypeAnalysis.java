@@ -181,6 +181,10 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
         box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
     }
 
+    protected Object entryInitialFlow() {
+        return new HashMap();
+    }
+
     // Formulation:
     protected Object newInitialFlow() {
         return new HashMap();

@@ -62,7 +62,7 @@ import soot.util.Chain;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// AtomicActorCreator
+//// GenericAtomicActorCreator
 /**
 
 @author Stephen Neuendorffer
@@ -123,13 +123,12 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
         // from a constructor.
         _removeAttributeInitialization(theClass);
 
-        Entity classEntity;
+        Entity classEntity = null;
         try {
             classEntity = (Entity)
-                ModelTransformer._findDeferredInstance(entity).clone();
+                ModelTransformer._findDeferredInstance(entity).clone(null);
         } catch (Exception ex) {
             ex.printStackTrace();
-            throw new RuntimeException(ex.getMessage());
         }
 
         ModelTransformer.updateCreatedSet(
@@ -202,8 +201,18 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
         }
 
         // Reinitialize the hierarchy, since we've added classes.
-        Scene.v().setActiveHierarchy(new Hierarchy());
-        Scene.v().setActiveFastHierarchy(new FastHierarchy());
+        try {
+            Scene.v().setActiveHierarchy(new Hierarchy());
+        } catch (Error ex) {
+            ex.printStackTrace(System.out);
+        }
+     
+        try {
+            Scene.v().setFastHierarchy(new FastHierarchy());
+        } catch (Error ex) {
+            System.out.println("foo");
+            ex.printStackTrace(System.out);
+        }
 
         // Inline all methods in the class that are called from
         // within the class.

@@ -44,9 +44,10 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
+import soot.HasPhaseOptions;
 import soot.Local;
 import soot.Modifier;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -86,7 +87,7 @@ Any calls to the getDirector() method are replaced with null.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class FieldsForAttributesTransformer extends SceneTransformer {
+public class FieldsForAttributesTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private FieldsForAttributesTransformer(CompositeActor model) {
@@ -102,12 +103,16 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
         return new FieldsForAttributesTransformer(model);
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage";
+        return "targetPackage";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -116,7 +121,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         _options = options;
-        _debug = Options.getBoolean(_options, "debug");
+        _debug = PhaseOptions.getBoolean(_options, "debug");
         _attributeToFieldMap = new HashMap();
         _classToObjectMap = new HashMap();
 

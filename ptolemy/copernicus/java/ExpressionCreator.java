@@ -259,7 +259,7 @@ public class ExpressionCreator implements AtomicActorCreator {
 
         // Reinitialize the hierarchy, since we've added classes.
         Scene.v().setActiveHierarchy(new Hierarchy());
-        Scene.v().setActiveFastHierarchy(new FastHierarchy());
+        Scene.v().setFastHierarchy(new FastHierarchy());
 
         // Inline all methods in the class that are called from
         // within the class.

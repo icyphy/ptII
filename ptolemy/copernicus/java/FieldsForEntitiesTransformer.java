@@ -39,9 +39,11 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+
+import soot.HasPhaseOptions;
 import soot.Local;
 import soot.Modifier;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.SceneTransformer;
 import soot.SootClass;
@@ -80,7 +82,7 @@ FIXME: deal with this also?
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class FieldsForEntitiesTransformer extends SceneTransformer {
+public class FieldsForEntitiesTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private FieldsForEntitiesTransformer(CompositeActor model) {
@@ -96,12 +98,16 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
         return new FieldsForEntitiesTransformer(model);
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage debug";
+        return "targetPackage debug";
     }
 
     /** Given an object in the model, return the first object above it
@@ -224,7 +230,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         _options = options;
-        _debug = Options.getBoolean(options, "debug");
+        _debug = PhaseOptions.getBoolean(options, "debug");
 
         for(Iterator classes =
                 ModelTransformer.actorClassList().iterator();
@@ -375,7 +381,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
                     }
                 }
             }
-            TypeAssigner.v().transform(body, "ta", "");
+            TypeAssigner.v().transform(body, "ta");
         }
     }
 

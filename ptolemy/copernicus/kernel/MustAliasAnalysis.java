@@ -43,7 +43,7 @@ import soot.jimple.InvokeExpr;
 import soot.jimple.NewArrayExpr;
 import soot.jimple.NewExpr;
 import soot.jimple.Stmt;
-import soot.jimple.toolkits.invoke.InvokeGraph;
+import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.toolkits.graph.UnitGraph;
 
 import java.util.HashMap;
@@ -67,13 +67,13 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
      *  and side effect information.
      */
     public MustAliasAnalysis(UnitGraph g,
-            InvokeGraph invokeGraph,
+            CallGraph callGraph,
             SideEffectAnalysis sideEffectAnalysis) {
         super(g);
-        _invokeGraph = invokeGraph;
+        _callGraph = callGraph;
         _sideEffectAnalysis = sideEffectAnalysis;
         doAnalysis();
-        _invokeGraph = null;
+        _callGraph = null;
         _sideEffectAnalysis = null;
     }
 
@@ -170,6 +170,10 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
     // all fields (i.e. aliases for all fields are killed.  If the
     // object has no other aliases, or any maybe-aliases, then it
     // points to null.
+    protected Object entryInitialFlow() {
+        return new HashMap();
+    }
+
     protected Object newInitialFlow() {
         return new HashMap();
     }
@@ -210,10 +214,11 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
                 Set allSideEffects = new HashSet();
                 // Union the side effect sets over
                 // all the possible targets
-                List targets = _invokeGraph.getTargetsOf((Stmt)unit);
-                for (Iterator i = targets.iterator();
+                List edges = _callGraph.getTargetsOf((Stmt)unit);
+                for (Iterator i = edges.iterator();
                      i.hasNext();) {
-                    SootMethod target = (SootMethod)i.next();
+                    Edge edge = (edge)i.next();
+                    SootMethod target = edge.tgt();
 
                     Set newSet = _sideEffectAnalysis.getSideEffects(method);
 
@@ -370,6 +375,6 @@ public class MustAliasAnalysis extends FastForwardFlowAnalysis {
         }
     }
 
-    private InvokeGraph _invokeGraph;
+    private CallGraph _callGraph;
     private SideEffectAnalysis _sideEffectAnalysis;
 }

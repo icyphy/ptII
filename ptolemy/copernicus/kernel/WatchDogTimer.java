@@ -32,7 +32,8 @@ package ptolemy.copernicus.kernel;
 
 import ptolemy.actor.Manager;
 
-import soot.Options;
+import soot.HasPhaseOptions;
+import soot.PhaseOptions;
 import soot.SceneTransformer;
 
 import java.util.Date;
@@ -50,7 +51,7 @@ class to get parameter handling for free.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class WatchDogTimer extends SceneTransformer {
+public class WatchDogTimer extends SceneTransformer implements HasPhaseOptions {
     private static WatchDogTimer instance = new WatchDogTimer();
     private WatchDogTimer() {}
 
@@ -70,12 +71,16 @@ public class WatchDogTimer extends SceneTransformer {
         }
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
-        return super.getDefaultOptions() + " cancel:false";
+        return "cancel:false";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug time cancel";
+        return "enabled debug time cancel";
     }
 
     /** Start up a watch dog timer that will call System.exit().
@@ -96,13 +101,13 @@ public class WatchDogTimer extends SceneTransformer {
         System.out.println("WatchDogTimer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        boolean isCancelling = Options.getBoolean(options, "cancel");
+        boolean isCancelling = PhaseOptions.getBoolean(options, "cancel");
         if (isCancelling) {
             cancel();
             return;
         }
 
-        String timeToDieString = Options.getString(options, "time");
+        String timeToDieString = PhaseOptions.getString(options, "time");
         if (timeToDieString == null
                 || timeToDieString.length() == 0) {
             return;

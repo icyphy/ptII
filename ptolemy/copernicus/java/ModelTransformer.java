@@ -74,12 +74,14 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.StringUtilities;
+
 import soot.BooleanType;
 import soot.FastHierarchy;
+import soot.HasPhaseOptions;
 import soot.Hierarchy;
 import soot.Local;
 import soot.Modifier;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -125,7 +127,7 @@ specializes it.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class ModelTransformer extends SceneTransformer {
+public class ModelTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private ModelTransformer(CompositeActor model) {
@@ -634,12 +636,16 @@ public class ModelTransformer extends SceneTransformer {
         }
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage";
+        return "targetPackage";
     }
 
     /** Return the name of the field that is created for the
@@ -786,7 +792,7 @@ public class ModelTransformer extends SceneTransformer {
         // Note that we use sanitizeName because entity names can have
         // spaces, and append leading characters because entity names
         // can start with numbers.
-        return Options.getString(options, "targetPackage")
+        return PhaseOptions.getString(options, "targetPackage")
             + ".CG"
             + StringUtilities.sanitizeName(object.getName(object.toplevel()));
     }
@@ -805,7 +811,7 @@ public class ModelTransformer extends SceneTransformer {
         // Note that we use sanitizeName because entity names can have
         // spaces, and append leading characters because entity names
         // can start with numbers.
-        return Options.getString(options, "targetPackage")
+        return PhaseOptions.getString(options, "targetPackage")
             + ".CGModel" + StringUtilities.sanitizeName(model.getName());
     }
 
@@ -1688,7 +1694,7 @@ public class ModelTransformer extends SceneTransformer {
 
         // Reinitialize the hierarchy, since we've added classes.
         Scene.v().setActiveHierarchy(new Hierarchy());
-        Scene.v().setActiveFastHierarchy(new FastHierarchy());
+        Scene.v().setFastHierarchy(new FastHierarchy());
 
         // Inline all methods in the class that are called from
         // within the class.

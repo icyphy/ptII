@@ -75,14 +75,6 @@ public class DeadObjectEliminator extends BodyTransformer {
         return instance;
     }
 
-    public String getDefaultOptions() {
-        return "";
-    }
-
-    public String getDeclaredOptions() {
-        return super.getDeclaredOptions();
-    }
-
     protected void internalTransform(Body body,
             String phaseName, Map options) {
         // Assume that all classes we care about have been loaded...

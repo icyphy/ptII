@@ -49,30 +49,32 @@ DIRS =
 # Keep this list alphabetized.
 JSRCS = \
 	AliasAnalysis.java \
-	AliasAssignmentEliminator.java \
 	CastAndInstanceofEliminator.java \
 	ClassWriter.java \
 	Copernicus.java \
 	EntitySootClass.java \
 	FastForwardFlowAnalysis.java \
-	ImprovedDeadAssignmentEliminator.java \
-	InstanceEqualityEliminator.java \
 	InvocationBinder.java \
 	GeneratorAttribute.java \
 	JimpleWriter.java \
 	KernelMain.java \
 	LibraryUsageReporter.java \
 	MakefileWriter.java \
-	MaybeAliasAnalysis.java \
-	MustAliasAnalysis.java \
 	NullPointerAnalysis.java \
 	PtolemyUtilities.java \
-	SideEffectAnalysis.java \
-	SideEffectFreeInvocationRemover.java \
 	SootUtilities.java \
 	TransformerAdapter.java \
 	UnusedFieldRemover.java \
 	WatchDogTimer.java 
+
+#	ImprovedDeadAssignmentEliminator.java \
+#	SideEffectAnalysis.java \
+#	SideEffectFreeInvocationRemover.java \
+#	InstanceEqualityEliminator.java \
+#	MaybeAliasAnalysis.java \
+#	MustAliasAnalysis.java \
+#	AliasAssignmentEliminator.java \
+
 
 OTHER_FILES_TO_BE_JARED = \
 	Generator.xml \

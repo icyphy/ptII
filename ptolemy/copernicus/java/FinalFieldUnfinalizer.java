@@ -32,8 +32,9 @@ package ptolemy.copernicus.java;
 import java.util.Iterator;
 import java.util.Map;
 
+import soot.HasPhaseOptions;
 import soot.Modifier;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
@@ -55,7 +56,7 @@ specifiers.
 @since Ptolemy II 2.0
 */
 
-public class FinalFieldUnfinalizer extends SceneTransformer {
+public class FinalFieldUnfinalizer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private FinalFieldUnfinalizer() {}
@@ -66,19 +67,23 @@ public class FinalFieldUnfinalizer extends SceneTransformer {
         return instance;
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug";
+        return "debug";
     }
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("FinalFieldUnfinalizer.internalTransform("
                 + phaseName + ", " + options + ")");
 
-        boolean debug = Options.getBoolean(options, "debug");
+        boolean debug = PhaseOptions.getBoolean(options, "debug");
 
         // Loop over all the classes...
         for (Iterator i = Scene.v().getApplicationClasses().iterator();

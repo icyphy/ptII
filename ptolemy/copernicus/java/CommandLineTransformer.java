@@ -45,11 +45,12 @@ import ptolemy.kernel.util.Attribute;
 import soot.Body;
 import soot.BooleanType;
 import soot.FastHierarchy;
+import soot.HasPhaseOptions;
 import soot.Hierarchy;
 import soot.IntType;
 import soot.Local;
 import soot.Modifier;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -82,7 +83,7 @@ class that creates and executes the model being generated.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class CommandLineTransformer extends SceneTransformer {
+public class CommandLineTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private CommandLineTransformer(CompositeActor model) {
@@ -98,14 +99,17 @@ public class CommandLineTransformer extends SceneTransformer {
         return new CommandLineTransformer(model);
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
         return "iterations:" + _iterationsDefault
             + " template:" + _commandLineTemplateDefault;
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions()
-            + " iterations targetPackage template ";
+        return "iterations targetPackage template";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -120,7 +124,7 @@ public class CommandLineTransformer extends SceneTransformer {
         */
         // SootClass applicationClass = Scene.v().loadClassAndSupport(
         //        "ptolemy.actor.gui.CompositeActorApplication");
-        String commandLineTemplate = Options.getString(options, "template");
+        String commandLineTemplate = PhaseOptions.getString(options, "template");
         if (commandLineTemplate.equals("")) {
             commandLineTemplate = _commandLineTemplateDefault;
         }
@@ -131,7 +135,7 @@ public class CommandLineTransformer extends SceneTransformer {
         SootClass modelClass = ModelTransformer.getModelClass();
 
         SootClass mainClass = SootUtilities.copyClass(applicationClass,
-                Options.getString(options, "targetPackage") + ".Main");
+                PhaseOptions.getString(options, "targetPackage") + ".Main");
 
         mainClass.setApplicationClass();
 
@@ -140,7 +144,7 @@ public class CommandLineTransformer extends SceneTransformer {
 
         // Reinitialize the hierarchy, since we've added classes.
         Scene.v().setActiveHierarchy(new Hierarchy());
-        Scene.v().setActiveFastHierarchy(new FastHierarchy());
+        Scene.v().setFastHierarchy(new FastHierarchy());
 
         // Optimizations.
         // We know that we will never parse classes, so throw away that code.
@@ -357,7 +361,7 @@ public class CommandLineTransformer extends SceneTransformer {
           SootClass staticMainClass =
           SootUtilities.createStaticClassForInstance(
           mainClass, body, newStmt, constructorStmt,
-          Options.getString(options, "targetPackage")
+          PhaseOptions.getString(options, "targetPackage")
           + ".StaticMain");
 
           // Remove the extra Main method that we created in
@@ -377,7 +381,7 @@ public class CommandLineTransformer extends SceneTransformer {
             SootMethod method2 = Scene.v().getMethod(method.toString());
         }
         Scene.v().setActiveHierarchy(new Hierarchy());
-        Scene.v().setActiveFastHierarchy(new FastHierarchy());
+        Scene.v().setFastHierarchy(new FastHierarchy());
     }
 
     /** Default value for the iterations command line parameter
@@ -412,7 +416,7 @@ public class CommandLineTransformer extends SceneTransformer {
         System.out.println("modelClass = " + modelClass);
         Chain units = body.getUnits();
 
-        int iterationLimit = Options.getInt(options, "iterations");
+        int iterationLimit = PhaseOptions.getInt(options, "iterations");
 
         if (iterationLimit == _iterationsDefault) {
             try {

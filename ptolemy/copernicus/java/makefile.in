@@ -332,8 +332,7 @@ runTreeShakeObfuscate:
 # Rules to run gcj, the GNU Java -> Native compiler
 # This code is very experimental, and not likely to work
 
-
-GCJ_DIR =	/usr/local
+GCJ_DIR =	c:
 
 # The GNU C/Java compiler 
 GCJ =		$(GCJ_DIR)/bin/gcj
@@ -342,7 +341,7 @@ GCJ_LIBDIR =	$(GCJ_DIR)/lib
 # GCJ Options, see http://gcc.gnu.org/onlinedocs/
 # If there is no -g or -O option, then the default is -g1
 #GCJ_FLAGS =	-static
-GCJ_FLAGS =	-static -pg -g0 -O3 -fno-bounds-check
+GCJ_FLAGS =	-pg -g0 -O3 -fno-bounds-check
 
 
 # GCJ flags used at link time
@@ -351,7 +350,12 @@ GCJ_LINK_FLAGS = -v
 # -L$(GCJ_LIBDIR) should be first so we get the right libgcj.spec
 #GCJ_LINK_LIBS =  -L$(GCJ_LIBDIR)
 
-gcj:
+#  GCJ only needs one rule now!
+gcj:    treeShake
+	$(GCJ) $(GCJ_FLAGS) --main=$(TARGETPACKAGE).Main -o $(MODEL)_gcj $(TARGETPATH)/treeshake_codegen.jar
+
+
+gcjOld:
 	echo "To compile a demo with gcj:" 
 	echo " 1) Run 'make gcjSetup gcjFix'"
 	echo " 2) Fix CGoutputBitDisplay.java so that 'make gcjFixCompile' works"

@@ -41,22 +41,24 @@ import java.util.Map;
 import java.util.Set;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;
+
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
+
 import soot.ArrayType;
 import soot.Body;
 import soot.BooleanType;
 import soot.ByteType;
 import soot.DoubleType;
 import soot.FloatType;
+import soot.HasPhaseOptions;
 import soot.Hierarchy;
 import soot.IntType;
 import soot.Local;
 import soot.LongType;
 import soot.Modifier;
 import soot.NullType;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -101,6 +103,7 @@ import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
 import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
 import soot.jimple.toolkits.scalar.CopyPropagator;
+import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.jimple.toolkits.typing.TypeAssigner;
@@ -126,7 +129,7 @@ may themselves be contained by other tokens.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class TokenToNativeTransformer extends SceneTransformer {
+public class TokenToNativeTransformer extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private TokenToNativeTransformer(CompositeActor model) {
@@ -142,12 +145,16 @@ public class TokenToNativeTransformer extends SceneTransformer {
         return new TokenToNativeTransformer(model);
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
-        return super.getDefaultOptions() + " level:0";
+        return "level:0";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " level";
+        return "debug level";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -170,8 +177,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
         // from a call to evaluateParseTree.
         Set unsafeLocalSet = new HashSet();
 
-        boolean debug = Options.getBoolean(options, "debug");
-        int level = Options.getInt(options, "level");
+        boolean debug = PhaseOptions.getBoolean(options, "debug");
+        int level = PhaseOptions.getInt(options, "level");
 
         entityFieldToTokenFieldToReplacementField = new HashMap();
         entityFieldToIsNotNullField = new HashMap();
@@ -249,14 +256,14 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 // First split local variables that are used in
                 // multiple places.
                 LocalSplitter.v().transform(
-                        body, _phaseName + ".ls", "");
+                        body, _phaseName + ".ls");
                 // We may have locals with the same name.  Rename them.
                 LocalNameStandardizer.v().transform(
-                        body, _phaseName + ".lns", "");
+                        body, _phaseName + ".lns");
                 // Assign types to local variables... This types
                 // everything that isn't a token type.
                 TypeAssigner.v().transform(
-                        body, _phaseName + ".ta", "");
+                        body, _phaseName + ".ta");
 
                 // Run some cleanup...  this will speedup the rest
                 // of the analysis.  And prevent typing errors.
@@ -265,55 +272,55 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 //                         true);
 
                 UnreachableCodeEliminator.v().transform(
-                        body, _phaseName + ".uce", "");
+                        body, _phaseName + ".uce");
                 CopyPropagator.v().transform(
-                        body, _phaseName + ".cp", "");
+                        body, _phaseName + ".cp");
                 ConstantPropagatorAndFolder.v().transform(
-                        body, _phaseName + ".cpf", "");
+                        body, _phaseName + ".cpf");
                 ConditionalBranchFolder.v().transform(
-                        body, _phaseName + ".cbf", "");
-                ImprovedDeadAssignmentEliminator.v().transform(
-                        body, _phaseName + ".dae", "");
+                        body, _phaseName + ".cbf");
+                DeadAssignmentEliminator.v().transform(
+                        body, _phaseName + ".dae");
                 UnreachableCodeEliminator.v().transform(
-                        body, _phaseName + ".uce", "");
+                        body, _phaseName + ".uce");
                 UnusedLocalEliminator.v().transform(
-                        body, _phaseName + ".ule", "");
+                        body, _phaseName + ".ule");
 
                 // Run some cleanup...  this will speedup the rest
                 // of the analysis.  And prevent typing errors.
                 TypeAssigner.v().transform(
-                        body, _phaseName + ".ta", "");
+                        body, _phaseName + ".ta");
 
          //        TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
 //                         body, _phaseName + ".tie", unsafeLocalSet,
 //                         false);
 
                 UnreachableCodeEliminator.v().transform(
-                        body, _phaseName + ".uce", "");
+                        body, _phaseName + ".uce");
                 CopyPropagator.v().transform(
-                        body, _phaseName + ".cp", "");
+                        body, _phaseName + ".cp");
                 ConstantPropagatorAndFolder.v().transform(
-                        body, _phaseName + ".cpf", "");
+                        body, _phaseName + ".cpf");
                 ConditionalBranchFolder.v().transform(
-                        body, _phaseName + ".cbf", "");
-                ImprovedDeadAssignmentEliminator.v().transform(
-                        body, _phaseName + ".dae", "");
+                        body, _phaseName + ".cbf");
+                DeadAssignmentEliminator.v().transform(
+                        body, _phaseName + ".dae");
                 UnusedLocalEliminator.v().transform(
-                        body, _phaseName + ".ule", "");
+                        body, _phaseName + ".ule");
                 UnreachableCodeEliminator.v().transform(
-                        body, _phaseName + ".uce", "");
+                        body, _phaseName + ".uce");
                 CopyPropagator.v().transform(
-                        body, _phaseName + ".cp", "");
+                        body, _phaseName + ".cp");
                 ConstantPropagatorAndFolder.v().transform(
-                        body, _phaseName + ".cpf", "");
+                        body, _phaseName + ".cpf");
                 ConditionalBranchFolder.v().transform(
-                        body, _phaseName + ".cbf", "");
-                ImprovedDeadAssignmentEliminator.v().transform(
-                        body, _phaseName + ".dae", "");
+                        body, _phaseName + ".cbf");
+                DeadAssignmentEliminator.v().transform(
+                        body, _phaseName + ".dae");
                 UnusedLocalEliminator.v().transform(
-                        body, _phaseName + ".ule", "");
+                        body, _phaseName + ".ule");
                 LocalSplitter.v().transform(
-                        body, _phaseName + ".ls", "");
+                        body, _phaseName + ".ls");
             }
         }
 
@@ -358,14 +365,14 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 // First split local variables that are used in
                 // multiple places.
                 LocalSplitter.v().transform(
-                        body, _phaseName + ".ls", "");
+                        body, _phaseName + ".ls");
                 // We may have locals with the same name.  Rename them.
                 LocalNameStandardizer.v().transform(
-                        body, _phaseName + ".lns", "");
+                        body, _phaseName + ".lns");
                 // Assign types to local variables... This types
                 // everything that isn't a token type.
                 TypeAssigner.v().transform(
-                        body, _phaseName + ".ta", "");
+                        body, _phaseName + ".ta");
 
                 // Run some cleanup...  this will speedup the rest
                 // of the analysis.  And prevent typing errors.
@@ -374,19 +381,19 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 //                         true);
 
                 UnreachableCodeEliminator.v().transform(
-                        body, _phaseName + ".uce", "");
+                        body, _phaseName + ".uce");
                 CopyPropagator.v().transform(
-                        body, _phaseName + ".cp", "");
+                        body, _phaseName + ".cp");
                 ConstantPropagatorAndFolder.v().transform(
-                        body, _phaseName + ".cpf", "");
+                        body, _phaseName + ".cpf");
                 ConditionalBranchFolder.v().transform(
-                        body, _phaseName + ".cbf", "");
-                ImprovedDeadAssignmentEliminator.v().transform(
-                        body, _phaseName + ".dae", "");
+                        body, _phaseName + ".cbf");
+                DeadAssignmentEliminator.v().transform(
+                        body, _phaseName + ".dae");
                 UnreachableCodeEliminator.v().transform(
-                        body, _phaseName + ".uce", "");
+                        body, _phaseName + ".uce");
                 UnusedLocalEliminator.v().transform(
-                        body, _phaseName + ".ule", "");
+                        body, _phaseName + ".ule");
 
                 // Run some cleanup...  this will speedup the rest
                 // of the analysis.  And prevent typing errors.
@@ -395,31 +402,31 @@ public class TokenToNativeTransformer extends SceneTransformer {
                         debug);
 
                 UnreachableCodeEliminator.v().transform(
-                        body, _phaseName + ".uce", "");
+                        body, _phaseName + ".uce");
                 CopyPropagator.v().transform(
-                        body, _phaseName + ".cp", "");
+                        body, _phaseName + ".cp");
                 ConstantPropagatorAndFolder.v().transform(
-                        body, _phaseName + ".cpf", "");
+                        body, _phaseName + ".cpf");
                 ConditionalBranchFolder.v().transform(
-                        body, _phaseName + ".cbf", "");
-                ImprovedDeadAssignmentEliminator.v().transform(
-                        body, _phaseName + ".dae", "");
+                        body, _phaseName + ".cbf");
+                DeadAssignmentEliminator.v().transform(
+                        body, _phaseName + ".dae");
                 UnusedLocalEliminator.v().transform(
-                        body, _phaseName + ".ule", "");
+                        body, _phaseName + ".ule");
                 UnreachableCodeEliminator.v().transform(
-                        body, _phaseName + ".uce", "");
+                        body, _phaseName + ".uce");
                 CopyPropagator.v().transform(
-                        body, _phaseName + ".cp", "");
+                        body, _phaseName + ".cp");
                 ConstantPropagatorAndFolder.v().transform(
-                        body, _phaseName + ".cpf", "");
+                        body, _phaseName + ".cpf");
                 ConditionalBranchFolder.v().transform(
-                        body, _phaseName + ".cbf", "");
-                ImprovedDeadAssignmentEliminator.v().transform(
-                        body, _phaseName + ".dae", "");
+                        body, _phaseName + ".cbf");
+                DeadAssignmentEliminator.v().transform(
+                        body, _phaseName + ".dae");
                 UnusedLocalEliminator.v().transform(
-                        body, _phaseName + ".ule", "");
+                        body, _phaseName + ".ule");
                 LocalSplitter.v().transform(
-                        body, _phaseName + ".ls", "");
+                        body, _phaseName + ".ls");
             }
 
             // InvokeGraph invokeGraph = ClassHierarchyAnalysis.newInvokeGraph();

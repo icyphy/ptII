@@ -33,7 +33,7 @@ package ptolemy.copernicus.kernel;
 import soot.Body;
 import soot.BodyTransformer;
 import soot.Local;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.SootField;
 import soot.Unit;
@@ -64,7 +64,7 @@ public class AliasAssignmentEliminator extends BodyTransformer
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug";
+        return "debug";
     }
 
     protected void internalTransform(Body b, String phaseName, Map options)
@@ -73,7 +73,7 @@ public class AliasAssignmentEliminator extends BodyTransformer
         System.out.println("AliasAssignmentEliminator.internalTransform("
                 + phaseName + ", " + body.getMethod() + ", " + options + ")");
 
-        boolean debug = Options.getBoolean(options, "debug");
+        boolean debug = PhaseOptions.getBoolean(options, "debug");
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
 
         // The analyses that give us the information to transform the code.

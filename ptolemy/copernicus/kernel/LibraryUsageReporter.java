@@ -29,15 +29,15 @@
 
 package ptolemy.copernicus.kernel;
 
+import soot.HasPhaseOptions;
 import soot.Hierarchy;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.Scene;
 import soot.SceneTransformer;
 import soot.SootClass;
 import soot.SootMethod;
-import soot.jimple.toolkits.invoke.ClassHierarchyAnalysis;
-import soot.jimple.toolkits.invoke.InvokeGraph;
-import soot.jimple.toolkits.invoke.MethodCallGraph;
+import soot.jimple.toolkits.callgraph.CallGraph;
+import soot.jimple.toolkits.callgraph.ReachableMethods;
 
 import java.io.FileWriter;
 import java.util.Collections;
@@ -59,7 +59,7 @@ A Transformer that reports reachable methods in the Java libraries.
 @since Ptolemy II 2.0
 
 */
-public class LibraryUsageReporter extends SceneTransformer {
+public class LibraryUsageReporter extends SceneTransformer implements HasPhaseOptions {
 
     /** Return an instance of this transformer that will operate on
      *  the given model.  The model is assumed to already have been
@@ -70,29 +70,30 @@ public class LibraryUsageReporter extends SceneTransformer {
         return _instance;
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " outDir";
+        return "outDir";
     }
 
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
-        String outDir = Options.getString(options, "outDir");
+        String outDir = PhaseOptions.getString(options, "outDir");
         System.out.println("LibraryUsageReporter.internalTransform("
                 + phaseName + ", " + options + ")");
-        Hierarchy hierarchy = Scene.v().getActiveHierarchy();
-        InvokeGraph invokeGraph =
-            ClassHierarchyAnalysis.newPreciseInvokeGraph(true);
-        MethodCallGraph methodCallGraph =
-            (MethodCallGraph)invokeGraph.newMethodGraph();
-        List reachableList = methodCallGraph.getMethodsReachableFrom(
+        CallGraph callGraph = Scene.v().getCallGraph();
+        ReachableMethods reachableMethods = new ReachableMethods(callGraph, 
                 Scene.v().getMainClass().getMethods());
-
+        Hierarchy hierarchy = Scene.v().getActiveHierarchy();
+        
         Set createableClasses = new HashSet();
-        for (Iterator reachables = reachableList.iterator(); reachables.hasNext();) {
+        for (Iterator reachables = reachableMethods.listener(); reachables.hasNext();) {
             SootMethod method = (SootMethod)reachables.next();
             if (method.getName().equals("<init>")) {
                 createableClasses.addAll(
@@ -104,7 +105,7 @@ public class LibraryUsageReporter extends SceneTransformer {
 
         Set RTAReachableClasses = new HashSet(createableClasses);
         List list = new LinkedList();
-        for (Iterator reachables = reachableList.iterator(); reachables.hasNext();) {
+        for (Iterator reachables = reachableMethods.listener(); reachables.hasNext();) {
             SootMethod method = (SootMethod)reachables.next();
             String methodName = method.getSignature();
             if (method.isStatic() ||

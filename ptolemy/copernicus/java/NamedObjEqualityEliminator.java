@@ -38,9 +38,11 @@ import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
+
+import soot.HasPhaseOptions;
 import soot.Local;
 import soot.NullType;
-import soot.Options;
+import soot.PhaseOptions;
 import soot.RefType;
 import soot.Scene;
 import soot.SceneTransformer;
@@ -76,7 +78,7 @@ import soot.toolkits.scalar.UnitValueBoxPair;
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class NamedObjEqualityEliminator extends SceneTransformer {
+public class NamedObjEqualityEliminator extends SceneTransformer implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private NamedObjEqualityEliminator(CompositeActor model) {
@@ -92,12 +94,16 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
         return new NamedObjEqualityEliminator(model);
     }
 
+    public String getPhaseName() {
+        return "";
+    }
+
     public String getDefaultOptions() {
         return "";
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " debug";
+        return "debug targetPackage";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -105,7 +111,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         _options = options;
-        _debug = Options.getBoolean(options, "debug");
+        _debug = PhaseOptions.getBoolean(options, "debug");
 
         _eliminateAllComparisons(_model);
 
