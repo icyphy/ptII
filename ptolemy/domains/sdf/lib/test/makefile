@@ -57,6 +57,7 @@ JSIMPLE_TESTS = \
 	BitsToInt.tcl\
 	Delay.tcl\
 	IntToBits.tcl \
+	Repeat.tcl \
 	SequenceToArray.tcl
 
 # Graphical Java tests that use Tcl.
