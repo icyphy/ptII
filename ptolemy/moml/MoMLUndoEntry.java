@@ -46,7 +46,7 @@ the single argument constructor, and to override execute() to directly
 perform the undo.
 
 @see MoMLParser
-@see kernel.util.UndoStackAttribute
+@see ptolemy.kernel.util.UndoStackAttribute
 @see MoMLChangeRequest
 @author  Neil Smyth and Edward A. Lee
 @version $Id$
@@ -69,7 +69,7 @@ public class MoMLUndoEntry implements UndoAction {
     /** Parse the MoML specified in the constructor call in the context
      *  specified in the constructor call using the parser associated
      *  with the context (as determined by ParserAttribute.getParser()).
-     *  @see ParserAttribute.getParser(NamedObj)
+     *  @see ParserAttribute#getParser(NamedObj)
      */
     public void execute() throws Exception {
         // Use a MoMLChangeRequest so that changes get propogated
