@@ -79,13 +79,16 @@ install: all $(PTPACKAGE).jar
 
 demo: compileDemo runDemo
 
-# OrthogonalCom - There is no .xml file for this model
+# OrthogonalCom
 MODEL =			OrthogonalCom
-MODELPATH =		ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
+MODELPATH =		$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
 
 # 
-MODEL =			modulation
-MODELPATH = 		../../../ptolemy/moml/demo/modulation.xml
+#MODEL =			modulation
+#MODELPATH = 		../../../ptolemy/moml/demo/modulation.xml
+
+MODEL =			Butterfly
+MODELPATH = 		$(ROOT)/ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml
 
 # Usually, we run code gen on OrthogonalCom, to run on the IIR model, use:
 #   make MODEL=IIR MODELPATH=../../../ptolemy/actor/lib/test/auto/IIR.xml compileDemo runDemo 

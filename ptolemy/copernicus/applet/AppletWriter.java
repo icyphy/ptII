@@ -169,6 +169,9 @@ public class AppletWriter extends SceneTransformer {
 
 	try {
 	    if (!_isSubdirectory(_ptIIDirectory, _outputDirectory)) {
+                System.out.println("'" + _outputDirectory + "' is not a "
+                        + "subdirectory of '" + _ptIIDirectory + "', so "
+                        + "we copy the jar files and set the codebase to '.'");
 		copyJarFiles = true;
 		_codeBase = ".";
 	    }
@@ -307,6 +310,9 @@ public class AppletWriter extends SceneTransformer {
                      _domainJar);
         classMap.put("ptolemy.vergil.MoMLViewerApplet",
                      "ptolemy/vergil/vergilApplet.jar");
+        // FIXME: unfortunately, vergil depends on FSM now.
+        classMap.put("ptolemy.domains.fsm.kernel.FSMActor",
+                     "ptolemy/domains/fsm/fsm.jar");
         classMap.put("diva.graph.GraphController",
                      "lib/diva.jar");
 	// First, we search for the jar file, then we try
@@ -425,7 +431,7 @@ public class AppletWriter extends SceneTransformer {
 	System.out.println("\n\n_isSubdirectory: \n\t"
 			   + parentCanonical + "\n\t"
 			   + possibleSubdirectoryCanonical);
-	return parentCanonical.startsWith(possibleSubdirectoryCanonical);
+	return possibleSubdirectoryCanonical.startsWith(parentCanonical);
     }
 
     ///////////////////////////////////////////////////////////////////
