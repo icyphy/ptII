@@ -231,8 +231,8 @@ public class DTDirector extends SDFDirector {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-    // -attributeChanged-
-    // FIXME: handle period parameter mutations
+        // -attributeChanged-
+        // FIXME: handle period parameter mutations
         super.attributeChanged(attribute);
     }
 
@@ -264,60 +264,60 @@ public class DTDirector extends SDFDirector {
         // because super.fire() is called. However, there are problems
         // with prefire return false in SDFDirector.fire()
         /*
-        _debugViewSchedule();
+          _debugViewSchedule();
 
-        if (container == null) {
-            throw new InvalidStateException("DTDirector " + getName() +
-                    " fired, but it has no container!");
-        } else {
+          if (container == null) {
+          throw new InvalidStateException("DTDirector " + getName() +
+          " fired, but it has no container!");
+          } else {
 
-            Scheduler scheduler = getScheduler();
-            if (scheduler == null)
-                throw new IllegalActionException("Attempted to fire " +
-                        "DT system with no scheduler");
-            Enumeration allActors = scheduler.schedule();
-            while (allActors.hasMoreElements()) {
+          Scheduler scheduler = getScheduler();
+          if (scheduler == null)
+          throw new IllegalActionException("Attempted to fire " +
+          "DT system with no scheduler");
+          Enumeration allActors = scheduler.schedule();
+          while (allActors.hasMoreElements()) {
 
-                Actor actor = (Actor)allActors.nextElement();
+          Actor actor = (Actor)allActors.nextElement();
 
-                boolean isFiringNonDTCompositeActor = false;
+          boolean isFiringNonDTCompositeActor = false;
 
-                if (actor instanceof CompositeActor) {
-                    CompositeActor compositeActor = (CompositeActor) actor;
-		            Director  insideDirector =
-                            compositeActor.getDirector();
+          if (actor instanceof CompositeActor) {
+          CompositeActor compositeActor = (CompositeActor) actor;
+          Director  insideDirector =
+          compositeActor.getDirector();
 
-		            if ( !(insideDirector instanceof DTDirector)) {
-		                isFiringNonDTCompositeActor = true;
-		                _insideDirector = insideDirector;
-		            }
-		        }
+          if ( !(insideDirector instanceof DTDirector)) {
+          isFiringNonDTCompositeActor = true;
+          _insideDirector = insideDirector;
+          }
+          }
 
-		        if (isFiringNonDTCompositeActor) {
-		            _pseudoTimeEnabled = true;
-		        }
+          if (isFiringNonDTCompositeActor) {
+          _pseudoTimeEnabled = true;
+          }
 
 
-                if(!actor.prefire()) {
-                    throw new IllegalActionException(this,
-                            (ComponentEntity) actor, "Actor " +
-                            "is not ready to fire.");
-                }
+          if(!actor.prefire()) {
+          throw new IllegalActionException(this,
+          (ComponentEntity) actor, "Actor " +
+          "is not ready to fire.");
+          }
 
-                if(_debugging)
-                    _debug("Firing " + ((Nameable)actor).getFullName());
+          if(_debugging)
+          _debug("Firing " + ((Nameable)actor).getFullName());
 
-                actor.fire();
+          actor.fire();
 
-                // note: short circuit evaluation here
-                _postFireReturns = actor.postfire() && _postFireReturns;
+          // note: short circuit evaluation here
+          _postFireReturns = actor.postfire() && _postFireReturns;
 
-                if (isFiringNonDTCompositeActor) {
-		            _pseudoTimeEnabled = false;
-		        }
+          if (isFiringNonDTCompositeActor) {
+          _pseudoTimeEnabled = false;
+          }
 
-            }
-        }*/
+          }
+          }*/
 
         super.fire();
         if ((outsideDirector != null) && _shouldDoInternalTransferOutputs) {
@@ -363,11 +363,11 @@ public class DTDirector extends SDFDirector {
      *  is not of type DoubleToken or IntToken.
      */
     public double getPeriod() throws IllegalActionException {
-    //  FIXME:  A faster implementation of this method should cache a
-    //  private local _period variable instead. Also the implementation might
-    //  need to update the inside DT director's period value
-    //  FIXME: It is inefficient to calculate and set the inside
-    //  DT director's period value at every call to this function
+        //  FIXME:  A faster implementation of this method should cache a
+        //  private local _period variable instead. Also the implementation might
+        //  need to update the inside DT director's period value
+        //  FIXME: It is inefficient to calculate and set the inside
+        //  DT director's period value at every call to this function
         Token periodToken;
         double periodValue = 0.0;
         Director outsideDirector;
@@ -395,7 +395,7 @@ public class DTDirector extends SDFDirector {
             periodValue = periodValue * storedValue;
         } else {
             throw new IllegalActionException(
-                  "Illegal DT period parameter value");
+                    "Illegal DT period parameter value");
         }
         if (shouldUpdatePeriod) {
             period.setToken(new DoubleToken(periodValue));
@@ -415,7 +415,7 @@ public class DTDirector extends SDFDirector {
      *  one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-    //  -initialize-
+        //  -initialize-
 
         _requestRefireAt(0.0);
         _actorTable = new ArrayList();
@@ -426,7 +426,7 @@ public class DTDirector extends SDFDirector {
         _buildOutputPortTable();
         super.initialize();
 
-      // This portion figures out which actors should generate initial tokens
+        // This portion figures out which actors should generate initial tokens
         ListIterator receiverIterator = _receiverTable.listIterator();
         while(receiverIterator.hasNext()) {
             DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
@@ -440,14 +440,14 @@ public class DTDirector extends SDFDirector {
             debug.println(dtActor);
             if (dtActor == null) {
                 throw new IllegalActionException(
-                          "DT internal error: unknown actor");
+                        "DT internal error: unknown actor");
             }
 
             Parameter param =
                 (Parameter) currentPort.getAttribute("tokenConsumptionRate");
     	    if ((param != null)&&(currentPort.isInput())) {
-               rate = ((IntToken)param.getToken()).intValue();
-               if (rate > 1) dtActor._shouldGenerateInitialTokens = true;
+                rate = ((IntToken)param.getToken()).intValue();
+                if (rate > 1) dtActor._shouldGenerateInitialTokens = true;
             }
     	}
         _debugViewActorTable();
@@ -520,7 +520,7 @@ public class DTDirector extends SDFDirector {
      *  @see ptolemy.kernel.util.NamedObj#attributeTypeChanged
      */
     public void invalidateSchedule() {
-    //  -invalidateSchedule-
+        //  -invalidateSchedule-
         super.invalidateSchedule();
     }
 
@@ -546,7 +546,7 @@ public class DTDirector extends SDFDirector {
         _currentTime = _formerValidTimeFired + timeIncrement;
         _requestRefireAt(_formerValidTimeFired + timeIncrement);
         if (! _isFiringAllowed) {
-          return true;
+            return true;
         }
 
         return super.postfire();
@@ -563,7 +563,7 @@ public class DTDirector extends SDFDirector {
      *  @return True.
      */
     public boolean prefire() throws IllegalActionException {
-    //  -prefire-
+        //  -prefire-
         _inputTokensAvailable = super.prefire();
         return true;
     }
@@ -606,7 +606,7 @@ public class DTDirector extends SDFDirector {
      *  @return True if data are transferred.
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
-    //  -transferInputs-
+        //  -transferInputs-
         if (_inputTokensAvailable) {
             return super.transferInputs(port);
         } else {
@@ -635,7 +635,7 @@ public class DTDirector extends SDFDirector {
 
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
-    //  -transferOutputs-
+        //  -transferOutputs-
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferOutputs: port argument is not " +
@@ -647,7 +647,7 @@ public class DTDirector extends SDFDirector {
             for (int i = 0; i < insideReceivers.length; i++) {
                 if (insideReceivers[i] != null) {
                     for (int j = 0; j < insideReceivers[i].length; j++) {
-			            while (insideReceivers[i][j].hasToken()) {
+                        while (insideReceivers[i][j].hasToken()) {
                             try {
                                 ptolemy.data.Token t = insideReceivers[i][j].get();
                                 port.send(i, t);
@@ -669,13 +669,13 @@ public class DTDirector extends SDFDirector {
 
 
 
-   /**  Reset this director to an uninitialized state.
-    *
-    *  @exception IllegalActionException If the parent class
-    *  throws it
-    */
+    /**  Reset this director to an uninitialized state.
+     *
+     *  @exception IllegalActionException If the parent class
+     *  throws it
+     */
     public void wrapup() throws IllegalActionException {
-    //  -wrapup-
+        //  -wrapup-
         super.wrapup();
         _reset();
     }
@@ -693,7 +693,7 @@ public class DTDirector extends SDFDirector {
         ListIterator actorIterator = _actorTable.listIterator();
         int repeats = 0;
 
-        foundRepeatValue:
+    foundRepeatValue:
         while(actorIterator.hasNext()) {
             DTActor currentActor = (DTActor) actorIterator.next();
             if (actor.equals(currentActor._actor)) {
@@ -704,7 +704,7 @@ public class DTDirector extends SDFDirector {
 
         if (repeats == 0) {
             throw new IllegalActionException(
-                      "internal DT error: actor with zero firing count");
+                    "internal DT error: actor with zero firing count");
         }
     	return repeats;
     }
@@ -760,8 +760,8 @@ public class DTDirector extends SDFDirector {
         receiverIterator = _receiverTable.listIterator();
 
         while(receiverIterator.hasNext()) {
-    	   DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
-    	   currentReceiver.calculateDeltaTime();
+            DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
+            currentReceiver.calculateDeltaTime();
         }
 
         _debugViewActorTable();
@@ -844,7 +844,7 @@ public class DTDirector extends SDFDirector {
      */
     private final void _checkValidTimeIntervals()
             throws IllegalActionException {
-    //  -checkValidTimeIntervals-
+        //  -checkValidTimeIntervals-
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         Director outsideDirector = _getOutsideDirector();
         debug.println("shouldIgnoreFire subroutine called");
@@ -867,13 +867,13 @@ public class DTDirector extends SDFDirector {
         double timeElapsed = currentTime - _formerValidTimeFired;
 
         debug.println("DT Director just started fire----------------"
-                      + _formerValidTimeFired + " " + currentTime);
+                + _formerValidTimeFired + " " + currentTime);
 
 
         if ((currentTime != 0) && (! _inputTokensAvailable) &&
-            ((currentTime - _formerTimeFired) < _TOLERANCE )) {
-           //  duplicate firings at the same time should be ignored
-           //  unless there are input tokens
+                ((currentTime - _formerTimeFired) < _TOLERANCE )) {
+            //  duplicate firings at the same time should be ignored
+            //  unless there are input tokens
             _isFiringAllowed = false;
             _shouldDoInternalTransferOutputs = false;
             _makeTokensUnavailable();
@@ -918,23 +918,23 @@ public class DTDirector extends SDFDirector {
                 if (Math.abs(Math.round(ratio) - ratio) < _TOLERANCE) {
                     // firing at a time when transferOutputs should be called
                     debug.println("*************** fractional fire ratio "
-                                   + ratio + " should transferOutputs");
+                            + ratio + " should transferOutputs");
                     dtPort._shouldTransferOutputs = true;
                     _isFiringAllowed = false;
                     _shouldDoInternalTransferOutputs = true;
                 } else {
-                // firing at a time when transferOutputs should not be called
+                    // firing at a time when transferOutputs should not be called
 
-                	for(int i = 0; i < dtPort._port.getWidth(); i++) {
-                	    for(int j = 0;
-                                j < insideReceivers[i].length; j++) {
-                	        DTReceiver receiver;
-                	        receiver = (DTReceiver) insideReceivers[i][j];
-                                receiver.overrideHasToken=true;
-                	    }
+                    for(int i = 0; i < dtPort._port.getWidth(); i++) {
+                        for(int j = 0;
+                            j < insideReceivers[i].length; j++) {
+                            DTReceiver receiver;
+                            receiver = (DTReceiver) insideReceivers[i][j];
+                            receiver.overrideHasToken=true;
+                        }
             	    }
                     debug.println("******* nonfractional fire ratio "
-                                  + ratio + " don't transferOutputs");
+                            + ratio + " don't transferOutputs");
                     dtPort._shouldTransferOutputs = false;
                 }
             }
@@ -964,11 +964,11 @@ public class DTDirector extends SDFDirector {
      */
     private void _debugViewActorTable() throws IllegalActionException {
 
-         debug.println("---------------------------------------");
-         debug.println("\nACTOR TABLE with " + _actorTable.size()
-                 + " unique actors");
-         ListIterator actorIterator = _actorTable.listIterator();
-         while(actorIterator.hasNext()) {
+        debug.println("---------------------------------------");
+        debug.println("\nACTOR TABLE with " + _actorTable.size()
+                + " unique actors");
+        ListIterator actorIterator = _actorTable.listIterator();
+        while(actorIterator.hasNext()) {
             DTActor currentActor = (DTActor) actorIterator.next();
             String actorName = ((Nameable) currentActor._actor).getName();
 
@@ -990,7 +990,7 @@ public class DTDirector extends SDFDirector {
                 debug.print(" **COMPOSITE** ");
             }
             debug.println(" ");
-         }
+        }
     }
 
 
@@ -1052,7 +1052,7 @@ public class DTDirector extends SDFDirector {
      *  connected to a port.
      */
     private void _debugViewPortInsideReceivers(IOPort port)
-                                        throws IllegalActionException {
+            throws IllegalActionException {
         Receiver[][] portReceivers = port.getInsideReceivers();
 
     	for(int i = 0; i < port.getWidth(); i++) {
@@ -1081,7 +1081,7 @@ public class DTDirector extends SDFDirector {
      *  and other pertinent information about them.
      */
     private void _debugViewReceiverTable() {
-    //  -displayReceiverTable-
+        //  -displayReceiverTable-
         debug.print("\nARC RECEIVER table with "+_receiverTable.size());
         debug.println(" unique receivers");
 
@@ -1166,7 +1166,7 @@ public class DTDirector extends SDFDirector {
      *  name 'pseudo-firing'
      */
     private void _issuePseudoFire(double currentTime)
-                 throws IllegalActionException {
+            throws IllegalActionException {
         List list = ((TypedCompositeActor)getContainer()).outputPortList();
         Iterator listIterator = list.iterator();
         Receiver[][] insideReceivers;
@@ -1217,7 +1217,7 @@ public class DTDirector extends SDFDirector {
     	        for(int j = 0; j < portReceivers[i].length; j++) {
                     ((DTReceiver) portReceivers[i][j]).overrideHasToken =
                         false;
-        	    }
+                }
     	    }
         }
     }
@@ -1239,7 +1239,7 @@ public class DTDirector extends SDFDirector {
     	        for(int j = 0; j < portReceivers[i].length; j++) {
                     ((DTReceiver) portReceivers[i][j]).overrideHasToken =
                         true;
-        	    }
+                }
     	    }
         }
     }
@@ -1357,9 +1357,9 @@ public class DTDirector extends SDFDirector {
     	 * @param a The actor
     	 */
     	public DTActor(Actor actor) {
-    		_actor = actor;
-    		_repeats = 0;
-    		_localTime = 0.0;
+            _actor = actor;
+            _repeats = 0;
+            _localTime = 0.0;
             _shouldGenerateInitialTokens = false;
     	}
     }
