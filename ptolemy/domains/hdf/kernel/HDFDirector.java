@@ -94,7 +94,7 @@ import ptolemy.kernel.util.Workspace;
 
    @see HDFFSMDirector
 
-   @author Brian K. Vogel and Rachel Zhou
+   @author Ye Zhou and Brian K. Vogel
    @version $Id$
    @Pt.ProposedRating Red (zhouye)
    @Pt.AcceptedRating Red (cxh)

@@ -72,7 +72,7 @@ import ptolemy.kernel.util.Workspace;
    '' April 13, 1998.</LI>
    </ol>
 
-   @author Rachel Zhou and Brian K. Vogel
+   @author Ye Zhou and Brian K. Vogel
    @version $Id$
    @Pt.ProposedRating Red (zhouye)
    @Pt.AcceptedRating Red (cxh)

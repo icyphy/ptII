@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FibonacciWithNullInitial" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
-    <property name="HDFTop" class="ptolemy.domains.hdf.kernel.HDFDirector">
+    <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector">
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="20">
@@ -18,22 +18,22 @@
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 755}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={135, 48, 833, 524}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 637]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[618, 406]">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is similar to Fibonacci.xml, but with a null initial state, which is used&#10;to set the initial downsampling value.&#10;&#10;Author: Rachel Zhou">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is similar to Fibonacci.xml, but with a null initial state, which is used&#10;to set the initial downsampling value.&#10;&#10;Author: Ye Zhou">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 270.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{408.5, 318.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.0, 203.0}">
     </property>
     <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
                 </property>
@@ -43,17 +43,13 @@
                 </property>
             </property>
         </property>
-        <property name="_Director" class="ptolemy.domains.hdf.kernel.HDFFSMDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-            </property>
-        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 185.0">
         </property>
         <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="6765">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
@@ -79,25 +75,6 @@
             </property>
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
-            </property>
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-                </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states.  Create transitions
-by holding the control key and dragging from one state
-to another. Then delete this annotation.</text>
-</svg></configure>
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 5.0">
-                </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-                </property>
             </property>
             <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
@@ -168,7 +145,7 @@ to another. Then delete this annotation.</text>
             <link port="init.outgoingPort" relation="relation"/>
         </entity>
         <entity name="state" class="ptolemy.domains.fsm.modal.Refinement">
-            <property name="factor" class="ptolemy.data.expr.Parameter" value="6765">
+            <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
                 <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -222,6 +199,12 @@ to another. Then delete this annotation.</text>
                 <property name="factor" class="ptolemy.data.expr.Parameter" value="factor">
                 </property>
                 <property name="phase" class="ptolemy.data.expr.Parameter" value="0">
+                </property>
+                <property name="DownSampleIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>

@@ -23,7 +23,7 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[592, 451]">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is similar to FibonacciWithTransientStates.xml, but with different&#10;transition actions in order to test if actions are correctly committed and&#10;the parameter values are correctly set.&#10;&#10;Author: Rachel Zhou">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model is similar to FibonacciWithTransientStates.xml, but with different&#10;transition actions in order to test if actions are correctly committed and&#10;the parameter values are correctly set.&#10;&#10;Author: Ye Zhou">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 270.0]">
         </property>
