@@ -60,7 +60,7 @@ import javax.media.jai.RenderedOp;
    translation).
    <p>
 
-   @see ImageDisplay
+   @see JAIImageDisplay
    @author James Yeh
    @version $Id$
    @since Ptolemy II 3.0
