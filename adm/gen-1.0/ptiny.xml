@@ -246,8 +246,9 @@ Berkeley, CA 94706</property>
                     <property name="title">Vergil Launcher</property>
                     <property name="mainClass">ptolemy.vergil.VergilApplication</property>
                     <property name="mainClassArguments"/>
-                    <property array="True" length="7" name="classPath" type="string">
+                    <property array="True" length="8" name="classPath" type="string">
                         <arrayItem>./</arrayItem>
+                        <arrayItem>./lib/user.jar</arrayItem>
                         <arrayItem>./ptolemy/vergil/vergil.jar</arrayItem>
                         <arrayItem>./ptolemy/ptolemy.jar</arrayItem>
                         <arrayItem>./ptolemy/actor/lib/javasound/javasound.jar</arrayItem>
@@ -326,8 +327,9 @@ Berkeley, CA 94706</property>
                     <property name="title">Vergil DSP Launcher</property>
                     <property name="mainClass">ptolemy.actor.gui.MoMLApplication</property>
                     <property name="mainClassArguments">./ptolemy/configs/dspConfiguration.xml ./ptolemy/configs/dspIntro.htm</property>
-                    <property array="True" length="7" name="classPath" type="string">
+                    <property array="True" length="8" name="classPath" type="string">
                         <arrayItem>./</arrayItem>
+                        <arrayItem>./lib/user.jar</arrayItem>
                         <arrayItem>./ptolemy/vergil/vergil.jar</arrayItem>
                         <arrayItem>./ptolemy/ptolemy.jar</arrayItem>
                         <arrayItem>./ptolemy/actor/lib/javasound/javasound.jar</arrayItem>
