@@ -62,25 +62,51 @@ proc testCalExpr {name docString expression expectedValue} {
 ####
 #
 
-testCalExpr {PtolemyPlatform-1.1} {Simple expression.} {
+####### basic stuff
+
+testCalExpr {PtolemyPlatform-1.0} {Simple expression.} {
     1 + 2
 } {3}
 
-testCalExpr {PtolemyPlatform-1.1.1} {Operator precedences.} {
+testCalExpr {PtolemyPlatform-1.1} {Operator precedences.} {
     [3 + 4 * 5, 4 * 5 + 3]
 } {object([23, 23])} 
 
-testCalExpr {PtolemyPlatform-1.2} {Applying a function.} {
+
+####### functions, closures etc.
+
+testCalExpr {PtolemyPlatform-2.0} {Applying a function.} {
     lambda (x) : x * x end (5)
 } {25}
 
+
+####### comprehensions, collection stuff
+
 # FIXME: Equality test on ObjectTokens currently broken.
-testCalExpr {PtolemyPlatform-1.3} {Simple comprehension.} {
+testCalExpr {PtolemyPlatform-3.0} {Simple comprehension.} {
     [a : for a in Integers(0, 10), a mod 2 = 0]
     .equals( [0, 2, 4, 6, 8, 10] )  
 } {true}
 
-testCalExpr {PtolemyPlatform-1.4} {Mutual recursion.} {
+testCalExpr {PtolemyPlatform-3.1} {Map domain.} {
+    map {a + 1 -> a * a : for a in Integers(0, 10), a mod 2 = 0}
+    .keySet()
+    .equals({1, 3, 5, 7, 9, 11})
+} {true}
+  # FIXME: dom/rng operators 
+
+
+####### variable declarations
+
+testCalExpr {PtolemyPlatform-4.0} {Variable declaration sorting.} {
+    let a = 11 :
+        let a = 6, b = a + 1 : a * b end
+        =
+        let b = a + 1, a = 6 : a * b end
+    end
+} {true}
+
+testCalExpr {PtolemyPlatform-4.1} {Mutual recursion.} {
     let 
        function f (x) : g (x) end,
        function g (x) :
@@ -91,31 +117,19 @@ testCalExpr {PtolemyPlatform-1.4} {Mutual recursion.} {
     end
 } {3628800}
 
-# FIXME: dom/rng operators
-testCalExpr {PtolemyPlatform-1.5} {Map domain.} {
-    map {a + 1 -> a * a : for a in Integers(0, 10), a mod 2 = 0}
-    .keySet()
-    .equals({1, 3, 5, 7, 9, 11})
-} {true}
 
-testCalExpr {PtolemyPlatform-1.6} {Calling Java method.} {
+####### Java interface
+
+testCalExpr {PtolemyPlatform-5.0} {Calling Java method.} {
     ["abc", "def"] . size()
 } {2}
 
-testCalExpr {PtolemyPlatform-1.6} {Calling Java method.} {
+testCalExpr {PtolemyPlatform-5.1} {Calling Java method.} {
     let a = ["abc", "def"], b = a . add ("xyz") : 
        // NOTE: observe wrapping problem in result string
        a . size() 
     end
 } {3}
-
-testCalExpr {PtolemyPlatform-1.7} {Variable declaration sorting.} {
-    let a = 11 :
-        let a = 6, b = a + 1 : a * b end
-        =
-        let b = a + 1, a = 6 : a * b end
-    end
-} {true}
 
 
 
