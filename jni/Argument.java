@@ -60,8 +60,6 @@ public class Argument extends Attribute implements Settable {
     public Argument(GenericJNIActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        getMoMLInfo().elementName = "property";
-        setContainer(container);
     }
 
     /** Default constructor */
@@ -96,7 +94,7 @@ public class Argument extends Attribute implements Settable {
         output.write(
                 _getIndentPrefix(depth)
                 + "<"
-                + getMoMLInfo().elementName
+                + _elementName
                 + " name=\""
                 + name.trim()
                 + "\" class=\""
@@ -107,7 +105,7 @@ public class Argument extends Attribute implements Settable {
         _exportMoMLContents(output, depth + 1);
         output.write(
                 _getIndentPrefix(depth) + "</"
-                + getMoMLInfo().elementName + ">\n");
+                + _elementName + ">\n");
     }
 
 
