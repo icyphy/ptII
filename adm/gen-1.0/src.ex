@@ -26,6 +26,7 @@ config.cache
 config.log
 config.status
 core
+doc/codeDocPtiny
 doc/design/src
 doc/design/html
 doc/uml
