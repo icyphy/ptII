@@ -103,7 +103,7 @@ public class CompositeActor extends CompositeEntity implements Executable {
 	super();
         if (dir == null && execdir == null) {
             throw new IllegalActionException(
-            "CompositeActor requires a director or executive director.");
+                    "CompositeActor requires a director or executive director.");
         }
 	_director = dir;
         _execdirector = execdir;
@@ -150,7 +150,7 @@ public class CompositeActor extends CompositeEntity implements Executable {
         if (dir == null && execdir == null) {
             workspace.remove(this);
             throw new IllegalActionException(
-            "CompositeActor requires a director or executive director.");
+                    "CompositeActor requires a director or executive director.");
         }
         setName(name);
 	_director = dir;
@@ -329,8 +329,8 @@ public class CompositeActor extends CompositeEntity implements Executable {
         synchronized(workspace()) {
             if (director == null && _execdirector == null) {
                 throw new IllegalActionException(
-                    "CompositeActor cannot have both a null director and " +
-                    "executive director.");
+                        "CompositeActor cannot have both a null director and " +
+                        "executive director.");
             }
             _director = director;
             workspace().incrVersion();
@@ -350,8 +350,8 @@ public class CompositeActor extends CompositeEntity implements Executable {
         synchronized(workspace()) {
             if (execdir == null && _director == null) {
                 throw new IllegalActionException(
-                    "CompositeActor cannot have both a null director and " +
-                    "executive director.");
+                        "CompositeActor cannot have both a null director and " +
+                        "executive director.");
             }
             _execdirector = execdir;
             workspace().incrVersion();
@@ -370,26 +370,26 @@ public class CompositeActor extends CompositeEntity implements Executable {
     }
         
     //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
+            ////                         protected methods                        ////
 
-    /** Add an actor to this container with minimal error checking.
-     *  This overrides the base-class method to register the actor with
-     *  the director. This method does not alter the entity in any way.
-     *  This method is sychronized on the workspace.
-     *  @param entity Entity to contain.
-     *  @exception IllegalActionException Argument has no name.
-     *  @exception NameDuplicationException Name collides with a name already
-     *  on the entity contents list.
-     */	
-    protected void _addEntity(ComponentEntity entity)
-            throws IllegalActionException, NameDuplicationException {
-        synchronized(workspace()) {
-            super._addEntity(entity);
-            // getDirector().registerNewActor((Actor)entity);
-            // FIXME -- is this right?  NO -- definitely wrong!
-            // The entity might be a CompositeActor, which is not an actor!
-        }
-    }
+            /** Add an actor to this container with minimal error checking.
+             *  This overrides the base-class method to register the actor with
+             *  the director. This method does not alter the entity in any way.
+             *  This method is sychronized on the workspace.
+             *  @param entity Entity to contain.
+             *  @exception IllegalActionException Argument has no name.
+             *  @exception NameDuplicationException Name collides with a name already
+             *  on the entity contents list.
+             */	
+            protected void _addEntity(ComponentEntity entity)
+                    throws IllegalActionException, NameDuplicationException {
+                synchronized(workspace()) {
+                    super._addEntity(entity);
+                    // getDirector().registerNewActor((Actor)entity);
+                    // FIXME -- is this right?  NO -- definitely wrong!
+                    // The entity might be a CompositeActor, which is not an actor!
+                }
+            }
 
     /** Remove the specified entity with minimal error checking.
      *  This overrides the base class method to unregister the actor
@@ -406,9 +406,9 @@ public class CompositeActor extends CompositeEntity implements Executable {
         }
     }
     ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+                    ////                         private variables                      ////
 
-    private Director _director, _execdirector;
+                    private Director _director, _execdirector;
 
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;

@@ -39,13 +39,13 @@ implemented by classes Actor and Director
 public interface Executable {
 
     //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+////                         public methods                           ////
 
-    /** This fires an actor and maybe invoked several times between 
-     *  invocations of prefire() and postfire().
-     * @exception IllegalActionException Throw by derived classes.
-     */
-    public void fire() throws IllegalActionException;
+/** This fires an actor and maybe invoked several times between 
+ *  invocations of prefire() and postfire().
+ * @exception IllegalActionException Throw by derived classes.
+ */
+public void fire() throws IllegalActionException;
 
     /** This method should be invoked exactly once during the lifetime of
      *  an application. It maybe invoked again to restart an execution

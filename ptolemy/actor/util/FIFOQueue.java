@@ -190,10 +190,10 @@ public class FIFOQueue implements Cloneable {
      *   than the proposed capacity.
      */	
     public void setCapacity(int capacity) 
-           throws IllegalActionException {
+            throws IllegalActionException {
         if (size() > capacity) {
             throw new IllegalActionException(_container,
-                   "Queue contains more elements than the proposed capacity.");
+                    "Queue contains more elements than the proposed capacity.");
         }
         _queuecapacity = capacity;
     }
