@@ -101,28 +101,6 @@ public class TwoPort extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param workspace The workspace for the new object.
-     *  @return A new actor.
-     */
-    public Object clone(Workspace workspace)
-            throws CloneNotSupportedException {
-        TwoPort newObject = (TwoPort)(super.clone(workspace));
-        newObject.input1 = (SDFIOPort)newObject.getPort("input1");
-        newObject.input2 = (SDFIOPort)newObject.getPort("input2");
-        newObject.output1 = (SDFIOPort)newObject.getPort("output1");
-        newObject.output2 = (SDFIOPort)newObject.getPort("output2");
-        newObject.inrate1 = (Parameter) newObject.getAttribute("inrate1");
-        newObject.inrate2 = (Parameter) newObject.getAttribute("inrate2");
-        newObject.outrate1 = (Parameter) newObject.getAttribute("outrate1");
-        newObject.outrate2 = (Parameter) newObject.getAttribute("outrate2");
-
-
-        return newObject;
-    }
-
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         Director dir = getDirector();
 
