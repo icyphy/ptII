@@ -1108,11 +1108,12 @@ public class Graph implements Cloneable {
      * An edge that is removed from a graph can be re-inserted
      * into the graph at a later time (using {@link #addEdge(Edge)}),
      * provided that the incident nodes are still in the graph.
-     * This is an <em>O(e)</em> operation.
+     * This is an <em>O(e)</em> operation. A similar operation can be
+     * performed in <em>O(1)</em> time using {@link #hideEdge(Edge)}.
      * @param edge The edge to be removed.
-     * @see #hideEdge(Edge).
      * @exception IllegalArgumentException If the edge is not contained
      * in the graph.
+     * @see #hideEdge(Edge).
      */
     public void removeEdge(Edge edge) {
         try {
