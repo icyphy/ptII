@@ -108,21 +108,14 @@ public class DeScrambler extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute being changed is <i>initialState</i>, then verify
-     *  that is a non-negative interger; if it is <i>polynomial</i>, then
+    /** If the attribute being changed is <i>polynomial</i>, then
      *  verify that is a positive interger and the lower-order bit is 1.
-     *  @exception IllegalActionException If <i>initialState</i> is non-positive
-     *  or polynomial is non-positive or the lower-order bit is not 1.
+     *  @exception IllegalActionException If <i>polynomial</i> is
+     *  non-positive or the lower-order bit is not 1.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == initial) {
-            int seed = ((IntToken)initial.getToken()).intValue();
-            if (seed<0 ) {
-                throw new IllegalActionException(this,
-                        "shift register's value must be non-negative.");
-            }
-        } else if (attribute == polynomial) {
+        if (attribute == polynomial) {
             int mask = ((IntToken)polynomial.getToken()).intValue();
             if (mask <= 0) {
                 throw new IllegalActionException(this,

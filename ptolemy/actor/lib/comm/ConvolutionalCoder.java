@@ -164,25 +164,17 @@ public class ConvolutionalCoder extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the attribute being changed is <i>initialState</i>, then verify
-     *  that it is a non-negative integer; if it is <i>uncodedRate</i>,
+    /** If the attribute being changed is <i>uncodedRate</i>,
      *  then verify that it is a positive integer; if it is
      *  <i>polynomialArray</i>, then verify that each of its elements is
      *  a positive integer and find the maximum value among them, which
      *  is used to compute the highest order among all polynomials.
-     *  @exception IllegalActionException If <i>initialState</i> is negative
-     *  or <i>uncodedRate</i> is non-positive or any element of
-     *  <i>polynomialArray</i> is non-positive.
+     *  @exception IllegalActionException If <i>uncodedRate</i> is
+     *  non-positive or any element of <i>polynomialArray</i> is non-positive.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == initialState) {
-            int initialValue = ((IntToken)initialState.getToken()).intValue();
-            if (initialValue < 0 ) {
-                throw new IllegalActionException(this,
-                        "shift register's value must be non-negative.");
-            }
-        } else if (attribute == uncodedRate) {
+        if (attribute == uncodedRate) {
             _inputNumber = ((IntToken)uncodedRate.getToken()).intValue();
             if (_inputNumber < 1 ) {
                 throw new IllegalActionException(this,
