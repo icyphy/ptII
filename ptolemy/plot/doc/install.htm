@@ -7,11 +7,24 @@
 </head>
 <body>
 <h1>Installing Ptplot</h1>
-Ptplot is distributed in several formats. 
+Ptplot 4.1 requires Swing, which is shipped as part of JDK1.2.
+(In theory, it is possible to install Swing with JDK1.1, but we have not
+tried it).  To run Ptplot 4.1 applets, you must install the version 1.2
+or later of the 
+<a href="http://www.javasoft.com/products/plugin/" target="_top">Javasoft Java Plugin</a>
+
+<p>If you do not want to require your users to install the JDK1.2 plugin,
+then you should stick with Ptplot3.1, which does not use Swing.
+
+<p>Ptplot is distributed in several formats. 
 <menu>
- <li>The first format is the usual <a href="#tarorzip">tar file and zip file format.</a>
- <li>The second format is an experimental format using the 
+ <li>The usual <a href="#tarorzip">tar file and zip file format.</a>
+ <li>An experimental format using the 
 <a href="#installshield">Installshield JShield installer.</a>
+ <li>As part of the Ptolemy II distribution - This page covers the
+ above two cases, for information about installing Ptolemy II
+see <code>$PTII/doc/index.htm</code>
+
 </menu>
 
 
@@ -130,12 +143,12 @@ When the <a href="../../../configure"><CODE>configure</CODE></a>
  script is run, it reads in 
 <a href="../../../mk/ptII.mk.in"><CODE>mk/ptII.mk.in</CODE></a>
 and
-<a href="../ptplot.in"><CODE>ptolemy/plot/ptplot.in</CODE></a>
+<a href="../../../bin/ptinvoke.in"><CODE>bin/ptinvoke.in</CODE></a>
 
 generates 
 <a href="../../../mk/ptII.mk.in"><CODE>mk/ptII.mk</CODE></a>
 and
-<a href="../ptplot">ptolemy/plot/ptplot</a>
+<a href="../../../bin/ptplot"><CODE>bin/ptplot</CODE></a>
 
  <p>To get help with <CODE>configure</CODE>, try
 <pre>
@@ -146,8 +159,8 @@ and
  <p> <CODE>configure</CODE> reads in the <CODE>.in</CODE> files
 and substitutes strings inside the <CODE>@</CODE>
  <p>For example, <CODE>configure</CODE> reads in
-<a href="../ptplot.in"><CODE>ptolemy/plot/ptplot.in</CODE></a>
-and
+<a href="../../../bin/ptinvoke.in"><CODE>bin/ptinvoke.in</CODE></a>
+and sees
 <pre>
 PTII_DEFAULT=@PTII_DEFAULT@
 PTJAVA_DIR=@PTJAVA_DIR@
@@ -156,7 +169,7 @@ PTJAVA_DIR=@PTJAVA_DIR@
 becomes
 <pre>
 PTII_DEFAULT=/users/cxh/ptII
-PTJAVA_DIR=/usr/java1.1
+PTJAVA_DIR=/opt/jdk1.2.1
 </pre>
 
 
@@ -270,7 +283,7 @@ is mostly backward compatible with the older X11 <CODE>pxgraph</CODE>
 program
 </menu>
 
-When configure is run, it substitutes variables inside <CODE>ptplot.in</CODE>
+When configure is run, it substitutes variables inside <CODE>ptinvoke.in</CODE>
 and produced <CODE>ptplot</CODE>.  The <CODE>ptplot</CODE> script
 is shared between the standalone applications, <CODE>ptplot</CODE>
 determines what name it was called with, and selects the appropriate
@@ -288,6 +301,7 @@ then <CODE>ptolemy.plot.compat.PxgraphApplication</CODE> is run
  <p>Under Unix, you can use a hard link to create the histogram and 
 pxgraph script:
 <pre>
+cd $PTII/bin
 ln ptplot histogram
 ln ptplot pxgraph
 </pre>
