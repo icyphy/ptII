@@ -78,7 +78,17 @@ public class UndoChangeRequest extends ChangeRequest {
             throw new InternalErrorException("Context is unexpectedly null.");
         }
         UndoStackAttribute undoStack = UndoStackAttribute.getUndoInfo(_context);
-        undoStack.undo();
+        // The undo action may involve several subactions.
+        // These may queue further change requests.
+        // Collect these change requests without executing them
+        // until after the whole action is completed.
+        boolean previous = _context.isDeferringChangeRequests();
+        try {
+            _context.setDeferringChangeRequests(true);
+            undoStack.undo();
+        } finally {
+            _context.setDeferringChangeRequests(previous);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
