@@ -56,7 +56,15 @@ The Constants class defines the constant "double" to have the value
 0.0, so that instead you may give the type by name.
 The Constants class defines for convenience the following
 contants: boolean, complex, double, fixedpoint, general,
-int, long, object, and string.
+int, long, matrix, object, scalar, string, and unknown.
+The constant "unknown" has a rather special behavior, in that
+it sets the type of the port to be unknown, allowing type resolution
+to infer it.  The constant "matrix" designates a matrix
+without specifying an element type, in contrast to, for example,
+"[double]", which specifies a double matrix.
+Similarly, the constant "scalar" designates a scalar of any type
+(double, int, long, etc.).
+The constant "general" designates any type.
 <p>
 Since the type is given by a "prototype" (an expression with the
 appropriate type), any data type that can be given in an expression
@@ -67,10 +75,6 @@ same syntax as in expressions. For example:
     [int]    - int matrix
     {field1 = string, field2 = int} - record with two fields
 </pre>
-<p>
-Note that because the type is given as a prototype, there is no
-mechanism for specifying a type that is an abstract type,
-like "scalar."
 
 @author Edward A. Lee, Xiaojun Liu
 @version $Id$

@@ -299,7 +299,7 @@ public class BaseType implements Type, Serializable {
     /** The matrix data type */
     public static final BaseType MATRIX = new BaseType(
             MatrixToken.class,
-            "[]",
+            "matrix",
             new ConvertOperator() {
         public Token convert(Token t) throws IllegalActionException {
             return MatrixToken.convert(t);

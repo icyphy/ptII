@@ -32,7 +32,7 @@
 package ptolemy.data.expr;
 
 import ptolemy.data.*;
-import ptolemy.data.type.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.math.Complex;
 
 import java.util.Hashtable;
@@ -56,6 +56,9 @@ public class Constants {
 
     // There is no need to create an instance of this class.
     private Constants() {}
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Add a constant with the given name and value to the table.
      *  Neither the name nor the value can be null, otherwise a
@@ -85,9 +88,14 @@ public class Constants {
         _table.remove(name);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
     // The hash table containing the named constants.
-    // FIXME: need to make the table persistent?
-    public static Hashtable _table = new Hashtable();
+    private static Hashtable _table = new Hashtable();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         static initializer                ////
 
     // Add the default set of named constants to the table.
     static {
@@ -111,8 +119,10 @@ public class Constants {
 	_table.put("general", new ptolemy.data.Token());
 	_table.put("int", new IntToken(0));
 	_table.put("long", new LongToken(0));
+	_table.put("matrix", new ConcreteMatrixToken());
         _table.put("object", new ObjectToken());
+	_table.put("scalar", new ConcreteScalarToken());
 	_table.put("string", new StringToken(""));
+        _table.put("unknown", new UnknownToken());
     }
-
 }

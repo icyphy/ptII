@@ -113,9 +113,9 @@ public abstract class ScalarToken extends Token {
     		getClass().getName() + " to an int losslessly.");
     }
 
-    /** Check if the value of this token is strictly less than that of the
+    /** Check whether the value of this token is strictly less than that of the
      *  argument token.
-     *  @arg A ScalarToken.
+     *  @param arg A token to compare against.
      *  @return A BooleanToken with value true if this token is strictly
      *   less than the argument.
      *  @exception IllegalActionException If the type of the argument token

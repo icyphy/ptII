@@ -43,6 +43,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.moml.MoMLChangeRequest;
 
 import java.awt.Frame;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
@@ -67,13 +68,18 @@ public class PortConfigurerDialog extends ComponentDialog
      *  @param owner The object that, per the user, appears to be
      *   generating the dialog.
      *  @param target The object whose ports are being configured.
+     *  @param configuration The configuration to use to open the
+     *   help screen (or null if help is not supported).
      */
-    public PortConfigurerDialog(Frame owner, Entity target) {
+    public PortConfigurerDialog(Frame owner,
+            Entity target,
+            Configuration configuration) {
         super(owner,
                 "Configure ports for " + target.getName(),
                 new PortConfigurer(target),
                 _moreButtons);
         // Once we get to here, the dialog has already been dismissed.
+        _configuration = configuration;
         _owner = owner;
         _target = target;
         if (buttonPressed().equals("Add")) {
@@ -130,6 +136,20 @@ public class PortConfigurerDialog extends ComponentDialog
                     }
                 }
             }
+        } else if (buttonPressed().equals("Help")) {
+            URL toRead = getClass().getClassLoader().getResource(
+                    "doc/help/portDialog.htm");
+            if (toRead != null && configuration != null) {
+                try {
+                    configuration.openModel(
+                            null,  toRead, toRead.toExternalForm());
+                } catch (Exception ex) {
+                    MessageHandler.error("Help screen failure: "
+                            + ex.toString());
+                }
+            } else {
+                MessageHandler.error("No help available.");
+            }
         }
     }
 
@@ -144,7 +164,8 @@ public class PortConfigurerDialog extends ComponentDialog
         if (change == null || change.getSource() != this) return;
 
         // Open a new dialog.
-        PortConfigurerDialog dialog = new PortConfigurerDialog(_owner, _target);
+        PortConfigurerDialog dialog = new PortConfigurerDialog(
+                _owner, _target, _configuration);
 
         _target.removeChangeListener(this);
     }
@@ -224,9 +245,12 @@ public class PortConfigurerDialog extends ComponentDialog
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The configuration.
+    private Configuration _configuration;
+
     // Button labels.
     private static String[] _moreButtons
-    = {"Commit", "Add", "Remove", "Cancel"};
+            = {"Commit", "Add", "Remove", "Help", "Cancel"};
 
     // The owner window.
     private Frame _owner;

@@ -61,6 +61,7 @@ import diva.gui.toolbox.FigureIcon;
 import diva.gui.toolbox.MenuCreator;
 
 import ptolemy.actor.IOPort;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -133,6 +134,16 @@ public class EditorGraphController extends ViewerGraphController {
 	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newRelationAction);
     }
 
+    /** Set the configuration.  This is used to open documentation files.
+     *  @param configuration The configuration.
+     */
+    public void setConfiguration(Configuration configuration) {
+        super.setConfiguration(configuration);
+        if (_portDialogFactory != null) {
+            _portDialogFactory.setConfiguration(configuration);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -167,7 +178,9 @@ public class EditorGraphController extends ViewerGraphController {
         GraphPane pane = getGraphPane();
 
         // Add a menu command to configure the ports.
-	_menuFactory.addMenuItemFactory(new PortDialogFactory());
+        _portDialogFactory = new PortDialogFactory();
+	_menuFactory.addMenuItemFactory(_portDialogFactory);
+        _portDialogFactory.setConfiguration(getConfiguration());
 
         // Create a listener that creates new relations
 	_relationCreator = new RelationCreator();
@@ -259,6 +272,9 @@ public class EditorGraphController extends ViewerGraphController {
 
     /** Action for creating a new relation. */
     private Action _newRelationAction = new NewRelationAction();
+
+    /** The port dialog factory. */
+    private PortDialogFactory _portDialogFactory;
 
     /** The interactor for creating new relations. */
     private RelationCreator _relationCreator;

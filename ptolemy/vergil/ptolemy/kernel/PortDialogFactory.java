@@ -30,6 +30,7 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.PortConfigurerDialog;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
@@ -54,6 +55,9 @@ from objects.
 @version $Id$
 */
 public class PortDialogFactory implements MenuItemFactory {
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
 
     /** Add an item to the given context menu that will open a dialog
      *  to add or remove ports from an object.
@@ -82,12 +86,29 @@ public class PortDialogFactory implements MenuItemFactory {
                     parent = parent.getParent();
                 }
                 if (parent instanceof Frame) {
-                    new PortConfigurerDialog((Frame)parent, (Entity)target);
+                    new PortConfigurerDialog((Frame)parent,
+                            (Entity)target,
+                            _configuration);
                 } else {
-                    new PortConfigurerDialog(null, (Entity)target);
+                    new PortConfigurerDialog(null,
+                            (Entity)target,
+                            _configuration);
                 }
             }
         };
 	return menu.add(action, name);
     }
+
+    /** Set the configuration for use by the help screen.
+     *  @param configuration The configuration.
+     */
+    public void setConfiguration(Configuration configuration) {
+        _configuration = configuration;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private variables                     ////
+
+    /** The configuration. */
+    private Configuration _configuration;
 }

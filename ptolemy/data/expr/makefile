@@ -68,11 +68,14 @@ JSRCS = \
 	ASTPtRootNode.java \
 	ASTPtSumNode.java \
 	ASTPtUnaryNode.java \
+	ConcreteMatrixToken.java \
+	ConcreteScalarToken.java \
 	Constants.java \
 	Parameter.java \
 	UnknownResultException.java \
 	UtilityFunctions.java \
 	FixPointFunctions.java \
+	UnknownToken.java \
 	Variable.java
 
 EXTRA_SRCS =	PtParser.jjt MatrixParser.jjt $(JSRCS)

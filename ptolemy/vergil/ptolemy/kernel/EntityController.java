@@ -31,6 +31,7 @@
 package ptolemy.vergil.ptolemy.kernel;
 
 import ptolemy.actor.IOPort;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.CompositeEntity;
@@ -102,8 +103,8 @@ public class EntityController extends AttributeController {
 
         if(access == FULL) {
             // Add to the context menu.
-            _menuFactory.addMenuItemFactory(
-                    new PortDialogFactory());
+            _portDialogFactory = new PortDialogFactory();
+            _menuFactory.addMenuItemFactory(_portDialogFactory);
         }
 
         // NOTE: This requires that the configuration be non null, or it
@@ -134,7 +135,22 @@ public class EntityController extends AttributeController {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+
+    /** Set the configuration.  This is used to open documentation files.
+     *  @param configuration The configuration.
+     */
+    public void setConfiguration(Configuration configuration) {
+        super.setConfiguration(configuration);
+        if (_portDialogFactory != null) {
+            _portDialogFactory.setConfiguration(configuration);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
+
+    private PortDialogFactory _portDialogFactory;
 
     private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 10);
 
