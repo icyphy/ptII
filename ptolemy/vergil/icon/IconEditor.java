@@ -833,11 +833,9 @@ public class IconEditor {
     }
 
     // A private method to change the currently remembered shape for the "cut", 
-    // "copy" and "paste" functions.  This method creates a new BasicFigure 
+    // "copy" and "paste" functions.  This method creates a new VersatileFigure 
     // from the current one recently "cut", "copied", or "pasted".  
     //
-    // Parameter boolean newCopy True if the figure is a new one to copy, false 
-    // if the figure was pasted and hence shouldn't copy the selected figure.
 
     private void makeNewCutOrCopiedFigure () {
 	_cutOrCopiedFigure = new VersatileFigure
