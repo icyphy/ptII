@@ -204,7 +204,7 @@ public class AccelerLinearizer extends TypedAtomicActor
      *  The new parameter will be used only after this method is called.
      *  @exception IllegalActionException Not thrown in this base class
      */
-    public void attributeChnaged(Attribute att) throws IllegalActionException {
+    public void attributeChanged(Attribute att) throws IllegalActionException {
         if (att == paramAlphaP) {
             String taps = ((StringToken)paramAlphaP.getToken()).stringValue();
             StringTokenizer stokens = new StringTokenizer(taps);
