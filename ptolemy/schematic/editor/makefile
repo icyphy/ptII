@@ -56,7 +56,6 @@ JSRCS = \
 	EntityPortController.java \
 	GraphDocument.java \
 	GraphEditor.java \
-	GraphViewer.java \
 	JGraphViewer.java \
 	LinkController.java \
 	LocatableNodeController.java \
@@ -87,8 +86,6 @@ editor:
 	$(JAVA) -classpath "$(CLASSPATH)" -Djava.compiler=NONE ptolemy.schematic.editor.GraphEditor
 grapheditor:
 	$(JAVA) -classpath "$(CLASSPATH)" -Djava.compiler=NONE ptolemy.schematic.editor.GraphEditor
-viewer:
-	$(JAVA) -classpath "$(CLASSPATH)" -Djava.compiler=NONE ptolemy.schematic.editor.GraphViewer
 
 depend:
 	@echo "no dependencies in this directory"
