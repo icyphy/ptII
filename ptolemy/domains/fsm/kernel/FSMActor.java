@@ -85,10 +85,8 @@ committed. The commit actions contained by the transition are executed and
 the current state of the actor is set to the destination state of the
 transition.
 <p>
-An FSMActor enters its initial state during initialization. There are two
-ways to set the initial state: one is by calling setInitialState(), the
-other is by putting the name of the initial state in a StringToken, and
-setting the initialStateName parameter with this token.
+An FSMActor enters its initial state during initialization. The name of the
+initial state is specified by the <i>initialStateName</i> parameter.
 <p>
 An FSMActor contains a set of variables for the input ports that can be
 referenced in the guard and trigger expressions of transitions. If an input
@@ -97,7 +95,7 @@ variable with name "<i>portName</i>_S"; the other is input value variable
 with name "<i>portName</i>_V". The input status variable always contains a
 BooleanToken. When this actor is fired, the status variable is set to true
 if the port has a token, false otherwise. The input value variable always
-contains the token received from the port, or null if the port has no token.
+contains the latest token received from the port.
 If the given port is a multiport, a status variable and a value variable are
 created for each channel. The status variable is named
 "<i>portName</i>_<i>channelIndex</i>_S". The value variable is named
@@ -122,7 +120,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  name. The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     *
      *  @param container The container.
      *  @param name The name of this actor within the container.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -133,41 +130,39 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     public FSMActor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        initialStateName = new Parameter(this, "InitialStateName");
+        initialStateName = new Parameter(this, "initialStateName");
         initialStateName.setTypeEquals(BaseType.STRING);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** Parameter specifying the name of the initial state of this
+     *  actor.
+     */
+    public Parameter initialStateName = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** React to a change in an attribute. If the changed attribute is
-     *  the initialStateName parameter, set the initial state of this
-     *  actor to the state named with the value of the parameter. If this
-     *  actor does not contain such a state, throw an exception.
+     *  the <i>initialStateName</i> parameter, record the change but do
+     *  not check whether this actor contains a state with the specified
+     *  name.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the changed attribute is
-     *   the initialStateName parameter and this actor does not contain a
-     *   state named with the value of the parameter, or if thrown by
-     *   the superclass attributeChanged() method.
+     *  @exception IllegalActionException If thrown by the superclass
+     *   attributeChanged() method.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         super.attributeChanged(attribute);
         if (attribute == initialStateName) {
-            StringToken tok = (StringToken)initialStateName.getToken();
-            State state = (State)getEntity(tok.toString());
-            if (state == null) {
-                throw new IllegalActionException(this,
-                        "Cannot find state with name \""
-                        + tok.toString() + "\" in this actor.");
-            } else {
-                _initialState = state;
-            }
+            _initialStateVersion = -1;
         }
     }
 
     /** Return the current state of this actor.
-     *  @return The current state.
+     *  @return The current state of this actor.
      */
     public State currentState() {
         return _currentState;
@@ -213,6 +208,36 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     public Director getExecutiveDirector() {
         return getDirector();
+    }
+
+    /** Return the initial state of this actor. The name of the initial
+     *  state is specified by the <i>initialStateName</i> parameter. An
+     *  exception is thrown if this actor does not contain a state with
+     *  the specified name.
+     *  This method is read-synchronized on the workspace.
+     *  @return The initial state of this actor.
+     *  @exception IllegalActionException If this actor does not contain
+     *   a state with the specified name.
+     */
+    public State getInitialState() throws IllegalActionException {
+        if (_initialStateVersion == workspace().getVersion()) {
+            return _initialState;
+        }
+        try {
+            workspace().getReadAccess();
+            StringToken tok = (StringToken)initialStateName.getToken();
+            State st = (State)getEntity(tok.toString());
+            if (st == null) {
+                throw new IllegalActionException(this, "Cannot find "
+                        + "initial state with name \"" + tok.toString()
+                        + "\".");
+            }
+            _initialState = st;
+            _initialStateVersion = workspace().getVersion();
+            return _initialState;
+        } finally {
+            workspace().doneReading();
+        }
     }
 
     /** Return the Manager responsible for execution of this actor,
@@ -274,6 +299,13 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     public Enumeration inputPorts() {
         return Collections.enumeration(inputPortList());
+    }
+
+    /** Return true.
+     *  @return True.
+     */
+    public boolean isOpaque() {
+        return true;
     }
 
     /** Create a new TypedIOPort with the specified name.
@@ -369,80 +401,47 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     /** Create receivers and input variables for the input ports of this
      *  actor. Set current state to the initial state. Throw an
-     *  IllegalActionException if the initial state is not set.
-     *  @exception IllegalActionException If the initial state is not set.
+     *  IllegalActionException if this actor does not contain a state with
+     *  name specified by the <i>initialStateName</i> parameter.
+     *  @exception IllegalActionException If this actor does not contain a
+     *   state with name specified by the <i>initialStateName</i> parameter.
      */
     public void preinitialize() throws IllegalActionException {
         _createReceivers();
         _createInputVariables();
         _gotoInitialState();
-        _buildConnectionMaps();
     }
 
     /** Reset current state to the initial state. Throw an
-     *  IllegalActionException if the initial state is not set.
-     *  @exception IllegalActionException If the initial state is not set.
+     *  IllegalActionException if this actor does not contain a state with
+     *  name specified by the <i>initialStateName</i> parameter.
+     *  @exception IllegalActionException If this actor does not contain a
+     *   state with name specified by the <i>initialStateName</i> parameter.
      */
     public void reset() throws IllegalActionException {
         _gotoInitialState();
-        _currentConnectionMap = (Map)_connectionMaps.get(_currentState);
     }
 
     /** Override the base class to ensure that the proposed container
      *  is an instance of TypedCompositeActor or null. If it is, call the
      *  base class setContainer() method. A null argument will remove
      *  the actor from its container.
-     *  If the director of this actor is an FSMDirector and this actor is
-     *  the mode controller of the director, set the controller of the
-     *  director to null if the proposed container is not the current
-     *  container.
      *  @param container The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this actor and container are not in the same workspace, or
-     *   if the argument is not a TypedCompositeActor or null.
+     *  @exception IllegalActionException If this actor and the container
+     *   are not in the same workspace, or if the argument is not a
+     *   TypedCompositeActor or null.
      *  @exception NameDuplicationException If the container already has
      *   an entity with the name of this actor.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        Director director = getDirector();
         if (!(container instanceof TypedCompositeActor) &&
                 (container != null)) {
             throw new IllegalActionException(container, this,
-                    "TypedAtomicActor can only be contained by instances of " +
+                    "FSMActor can only be contained by instances of " +
                     "TypedCompositeActor.");
         }
         super.setContainer(container);
-        // Change NewFSMDirector to FSMDirector after the current FSMDirector
-        // phases off.
-        if ((director != null) && (director instanceof NewFSMDirector)) {
-            FSMActor controller = ((NewFSMDirector)director).getController();
-            if (controller == this) {
-                ((NewFSMDirector)director).setController(null);
-            }
-        }
-    }
-
-    /** Set the initial state. When this actor is initialized or reset,
-     *  its current state is set to the initial state.
-     *  The value of the initialStateName parameter of this actor is set with
-     *  the name of the initial state.
-     *  An IllegalActionException is thrown if the argument is not contained
-     *  by this actor.
-     *  @param state The proposed initial state.
-     *  @exception IllegalActionException If the argument is not contained
-     *   by this actor.
-     */
-    public void setInitialState(State state)
-            throws IllegalActionException {
-        if (state.getContainer() != this) {
-            throw new IllegalActionException(this, state,
-                    "The proposed initial state is not contained by the "
-                    + "FSMActor.");
-        }
-        _initialState = state;
-        initialStateName.setToken(new StringToken(state.getName()));
     }
 
     /** Do nothing.
@@ -457,8 +456,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             wrapup();
         }
         catch (IllegalActionException e) {
-            // Do not pass go, do not collect $200.  Most importantly,
-            // just ignore everything and terminate.
+            // Just ignore everything and terminate.
         }
     }
 
@@ -529,13 +527,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     public void wrapup() throws IllegalActionException {
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** Parameter containing name of initial state.
-     */
-    public Parameter initialStateName = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -635,7 +626,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             action.execute();
         }
         _currentState = _lastChosenTransition.destinationState();
-        _currentConnectionMap = (Map)_connectionMaps.get(_currentState);
+        _setCurrentConnectionMap();
     }
 
     /** Create input variables for the port. The variables are contained
@@ -647,7 +638,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *  input status variable always contains a BooleanToken. When this
      *  actor is fired, the status variable is set to true if the port has
      *  a token, false otherwise. The input value variable always contains
-     *  the token received from the port, or null if the port has no token.
+     *  the latest token received from the port.
      *  If the given port is a multiport, a status variable and a value
      *  variable are created for each channel. The status variable is
      *  named "<i>portName</i>_<i>channelIndex</i>_S". The value variable
@@ -737,7 +728,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             return false;
         }
         if (_connectionMapsVersion != workspace().getVersion()) {
-            _buildConnectionMaps();
+            _setCurrentConnectionMap();
         }
         boolean[] flags = (boolean[])_currentConnectionMap.get(port);
         return flags[channel];
@@ -806,9 +797,8 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         boolean t = port.hasToken(channel);
         Token tok = t ? BooleanToken.TRUE : BooleanToken.FALSE;
         pVars[channel][0].setToken(tok);
-        if (t == false) {
-            pVars[channel][1].setToken(null);
-        } else {
+        // Update the value variable if there is a token in the channel.
+        if (t == true) {
             pVars[channel][1].setToken(port.get(channel));
         }
     }
@@ -875,7 +865,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 _connectionMaps.put(st, stMap);
             }
             _connectionMapsVersion = workspace().getVersion();
-            _currentConnectionMap = (Map)_connectionMaps.get(_currentState);
         } finally {
             workspace().doneReading();
         }
@@ -909,20 +898,29 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
     }
 
-    /*  Set the current state to initial state. There are two ways
-     *  to set the initial state: one is by calling setInitialState(),
-     *  the other is by putting the name of the initial state in a
-     *  StringToken, and setting the initialStateName parameter with this
-     *  token.
-     *  An exception will be thrown if initial state is not set.
-     *  @exception IllegalActionException If initial state is not set.
+    /*  Set the current state to the initial state. The name of the initial
+     *  state is specified by the <i>initialStateName</i> parameter. An
+     *  exception is thrown if this actor does not contain a state with
+     *  the specified name.
+     *  @exception IllegalActionException If this actor does not contain
+     *   a state with the specified name.
      */
     private void _gotoInitialState() throws IllegalActionException {
-        if (_initialState == null) {
-            throw new IllegalActionException(this,
-                    "Initial state is not set.");
+        _currentState = getInitialState();
+        _setCurrentConnectionMap();
+    }
+
+    /*  Set the map from input ports to boolean flags indicating whether a
+     *  channel is connected to an output port of the refinement of the
+     *  current state.
+     *  @exception IllegalActionException If the refinement specified
+     *   for one of the states is not valid.
+     */
+    private void _setCurrentConnectionMap() throws IllegalActionException {
+        if (_connectionMapsVersion != workspace().getVersion()) {
+            _buildConnectionMaps();
         }
-        _currentState = _initialState;
+        _currentConnectionMap = (Map)_connectionMaps.get(_currentState);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -950,8 +948,11 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     // Current state.
     private State _currentState = null;
 
-    // Initial state.
+    // Cached reference to the initial state.
     private State _initialState = null;
+
+    // Version of the reference to the initial state.
+    private long _initialStateVersion = -1;
 
     // The last chosen transition.
     private Transition _lastChosenTransition = null;
