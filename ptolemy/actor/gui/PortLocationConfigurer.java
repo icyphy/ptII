@@ -73,10 +73,10 @@ public class PortLocationConfigurer extends Query implements QueryListener {
      */
     public PortLocationConfigurer(Entity object) {
       super();
-	this.addQueryListener(this);
-	setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.addQueryListener(this);
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-	setTextWidth(2);
+        setTextWidth(2);
 
       // The second column is for type designators.
       setColumns(2);
@@ -212,7 +212,7 @@ public class PortLocationConfigurer extends Query implements QueryListener {
                 cardinal = null;
             }
             i++;
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -223,7 +223,7 @@ public class PortLocationConfigurer extends Query implements QueryListener {
     public void apply() {
         StringBuffer moml = new StringBuffer("<group>");
         boolean foundOne = false;
-	Iterator ports = _object.portList().iterator();
+        Iterator ports = _object.portList().iterator();
         NamedObj parent = null;
         while (ports.hasNext()) {
             Object candidate = ports.next();

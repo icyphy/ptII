@@ -96,7 +96,7 @@ public class PortLocationDialogFactory implements MenuItemFactory {
                 }
             }
         };
-	return menu.add(action, name);
+        return menu.add(action, name);
     }
 
     /** Set the configuration for use by the help screen.
