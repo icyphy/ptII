@@ -38,7 +38,11 @@ import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.media.javasound.SoundReader;
+import ptolemy.media.javasound.SoundCapture; // For javadoc
+import ptolemy.media.javasound.SoundReader; // For javadoc
+import ptolemy.media.javasound.SoundPlayback; // For javadoc
+import ptolemy.media.javasound.SoundWriter; // For javadoc
+
 
 import java.io.IOException;
 
