@@ -31,6 +31,8 @@ package ptolemy.domains.sdf.kernel;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 
 import java.util.Enumeration;
@@ -69,7 +71,6 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
      */
     public SDFAtomicActor() {
 	super();
-        _init();
     }
 
     /** Construct an actor in the specified workspace with an empty
@@ -81,7 +82,6 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
      */
     public SDFAtomicActor(Workspace workspace) {
 	super(workspace);
-        _init();
     }
 
     /** Create a new actor in the specified container with the specified
@@ -99,7 +99,6 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
     public SDFAtomicActor(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -122,11 +121,9 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
                 p.getName() + " is not contained in Actor " + 
                 getName());
 
-        if(! _tokenconsumptionrate.includesKey(p)) return 0;
+        Parameter param = (Parameter)p.getAttribute("Token Consumption Rate");
+        return ((IntToken)param.getToken()).intValue();
 
-        Integer i = (Integer) _tokenconsumptionrate.at(p);
-
-        return i.intValue();
     }
 
     /** Get the number of tokens that are produced or consumed 
@@ -147,10 +144,9 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
                 p.getName() + " is not contained in Actor " + 
                 getName());
         
-        if(! _tokeninitproduction.includesKey(p)) return 0;
-        Integer i = (Integer) _tokeninitproduction.at(p);
+        Parameter param = (Parameter)p.getAttribute("Token Init Production");
+        return ((IntToken)param.getToken()).intValue();
 
-        return i.intValue();
     }
 
     /** Get the number of tokens that are produced or consumed 
@@ -171,10 +167,9 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
                 p.getName() + " is not contained in Actor " + 
                 getName());
         
-        if(! _tokenproductionrate.includesKey(p)) return 0;
-        Integer i = (Integer) _tokenproductionrate.at(p);
+        Parameter param = (Parameter)p.getAttribute("Token Production Rate");
+        return ((IntToken)param.getToken()).intValue();
 
-        return i.intValue();
     }
 
 
@@ -194,8 +189,9 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " + 
                 getName());
-        _tokenconsumptionrate = 
-            (HashedMap) _tokenconsumptionrate.puttingAt(p,new Integer(r));
+        Parameter param = (Parameter)p.getAttribute("Token Consumption Rate");
+        param.setToken(new IntToken(r));
+
     }
 
     /** Set the number of tokens that are produced or consumed 
@@ -217,8 +213,9 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " + 
                 getName());
-        _tokeninitproduction = 
-            (HashedMap) _tokeninitproduction.puttingAt(p,new Integer(r));
+        Parameter param = (Parameter)p.getAttribute("Token Init Production");
+        param.setToken(new IntToken(r));
+
     }
 
     /** Set the number of tokens that are produced or consumed 
@@ -237,26 +234,38 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " + 
                 getName());
-        _tokenproductionrate = 
-            (HashedMap) _tokenproductionrate.puttingAt(p,new Integer(r));
+        Parameter param = (Parameter)p.getAttribute("Token Production Rate");
+        param.setToken(new IntToken(r));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
-    private void _init() {
-        _tokenconsumptionrate = new HashedMap();
-        _tokenproductionrate = new HashedMap();
-        _tokeninitproduction = new HashedMap();
-    }
 
+    protected void _addPort(Port p)
+        throws IllegalActionException, NameDuplicationException {
+        super._addPort(p);
+        if(p instanceof IOPort) {
+            Parameter param;
+            
+            param = new Parameter(p,"Token Consumption Rate",
+                    new IntToken(1));
+            param = new Parameter(p,"Token Production Rate",
+                    new IntToken(1));
+            //            Parameter param = new Parameter(p,"Token Consumption Rate",
+            //         new IntToken(1));
+            param = new Parameter(p,"Token Init Production",
+                    new IntToken(0));
+        }
+    }
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
 
-    private HashedMap _tokenconsumptionrate;
-    private HashedMap _tokenproductionrate;
-    private HashedMap _tokeninitproduction;
-
 }
+
+
+
+
+
 
 
 
