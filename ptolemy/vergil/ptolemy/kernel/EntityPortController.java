@@ -103,6 +103,11 @@ public class EntityPortController extends AttributeController {
     public class EntityPortRenderer implements NodeRenderer {
 	public Figure render(Object n) {
 	    final Port port = (Port)n;
+
+            // If the port has an attribute called "_hide", then
+            // do not render it.
+            if (port.getAttribute("_hide") != null) return null;
+
 	    Polygon2D.Double polygon = new Polygon2D.Double();
 	    polygon.moveTo(-4, 4);
 	    polygon.lineTo(4, 0);

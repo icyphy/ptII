@@ -45,6 +45,7 @@ import ptolemy.moml.URLAttribute;
 
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
+import diva.canvas.toolbox.LabelFigure;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.basic.BasicLayoutTarget;
@@ -54,6 +55,7 @@ import diva.graph.layout.IncrementalLayoutListener;
 import diva.graph.layout.IncrLayoutAdapter;
 import diva.util.Filter;
 
+import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
@@ -131,6 +133,11 @@ public class EntityController extends AttributeController {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
+
+    private static Font _portLabelFont = new Font("SansSerif", Font.PLAIN, 10);
+
+    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** This layout algorithm is responsible for laying out the ports
@@ -190,7 +197,6 @@ public class EntityController extends AttributeController {
                     SwingConstants.EAST);
 	    _placePortFigures(figure, inouts, inOutCount,
                     SwingConstants.SOUTH);
-
 	}
 
         ///////////////////////////////////////////////////////////////
@@ -205,7 +211,7 @@ public class EntityController extends AttributeController {
 	    Iterator ports = portList.iterator();
 	    int number = 0;
 	    while(ports.hasNext()) {
-		Object port = ports.next();
+		IOPort port = (IOPort)ports.next();
 		Figure portFigure = getController().getFigure(port);
 		// If there is no figure, then ignore this port.  This may
 		// happen if the port hasn't been rendered yet.
@@ -213,7 +219,7 @@ public class EntityController extends AttributeController {
                 Rectangle2D portBounds = portFigure.getShape().getBounds2D();
 		PortSite site = new PortSite(
                         figure.getBackgroundFigure(),
-                        (IOPort)port,
+                        port,
                         number,
                         count);
 		number ++;
@@ -224,9 +230,48 @@ public class EntityController extends AttributeController {
                 // Note that we don't use CanvasUtilities.translateTo because
                 // we want to only get the bounds of the background of the
                 // port figure.
-                portFigure.translate(
-                        site.getX() - portBounds.getCenterX(),
-                        site.getY() - portBounds.getCenterY());
+                double x = site.getX() - portBounds.getCenterX();
+                double y = site.getY() - portBounds.getCenterY();
+                portFigure.translate(x, y);
+
+                // If the port contains an attribute named "_showName",
+                // the render the name of the port as well.
+                if (port.getAttribute("_showName") != null) {
+                    LabelFigure label = null;
+                    if (port.isOutput() && port.isInput()) {
+                        // FIXME: Rotate the label?
+                        // The 1.0 argument is the padding.
+                        label = new LabelFigure(
+                                port.getName(),
+                                _portLabelFont,
+                                1.0,
+                                SwingConstants.NORTH_WEST);
+                        // Shift the label right so it doesn't
+                        // collide with ports.
+                        label.translateTo(x, y + 5);
+                    } else if (port.isOutput()) {
+                        // The 1.0 argument is the padding.
+                        label = new LabelFigure(
+                                port.getName(),
+                                _portLabelFont,
+                                1.0,
+                                SwingConstants.SOUTH_WEST);
+                        // Shift the label right so it doesn't
+                        // collide with ports.
+                        label.translateTo(x + 5, y);
+                    } else if (port.isInput()) {
+                        // The 1.0 argument is the padding.
+                        label = new LabelFigure(
+                                port.getName(),
+                                _portLabelFont,
+                                1.0,
+                                SwingConstants.SOUTH_EAST);
+                        // Shift the label right so it doesn't
+                        // collide with ports.
+                        label.translateTo(x - 5, y);
+                    }
+                    figure.add(label);
+                }
 	    }
 	}
     }
