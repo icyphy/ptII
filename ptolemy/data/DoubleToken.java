@@ -72,7 +72,7 @@ public class DoubleToken extends ScalarToken {
      *   be created with the given String.
      */
     public DoubleToken(String init) throws IllegalActionException {
-	        try {
+        try {
             _value = (Double.valueOf(init)).doubleValue();
         } catch (NumberFormatException e) {
             throw new IllegalActionException(e.getMessage());
@@ -112,9 +112,9 @@ public class DoubleToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             DoubleToken doubleToken;
             if (typeInfo == CPO.HIGHER) {
-               doubleToken = (DoubleToken)DoubleToken.convert(rightArgument);
+                doubleToken = (DoubleToken)DoubleToken.convert(rightArgument);
             } else {
-               doubleToken = (DoubleToken)rightArgument;
+                doubleToken = (DoubleToken)rightArgument;
             }
             double sum = _value + doubleToken.doubleValue();
             DoubleToken result = new DoubleToken(sum);
@@ -214,15 +214,15 @@ public class DoubleToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             DoubleToken doubleToken;
             if (typeInfo == CPO.HIGHER) {
-               doubleToken = (DoubleToken)DoubleToken.convert(divisor);
+                doubleToken = (DoubleToken)DoubleToken.convert(divisor);
             } else {
-               doubleToken = (DoubleToken)divisor;
+                doubleToken = (DoubleToken)divisor;
             }
             double quotient = _value / doubleToken.doubleValue();
             DoubleToken result = new DoubleToken(quotient);
             // compute units
             result._unitCategoryExponents =
-                            _subtractCategoryExponents(doubleToken);
+                _subtractCategoryExponents(doubleToken);
             return result;
         } else if (typeInfo == CPO.LOWER) {
             return divisor.divideReverse(this);
@@ -251,7 +251,7 @@ public class DoubleToken extends ScalarToken {
 
         // compute units
         result._unitCategoryExponents =
-                        doubleToken._subtractCategoryExponents(this);
+            doubleToken._subtractCategoryExponents(this);
         return result;
     }
 
@@ -318,25 +318,25 @@ public class DoubleToken extends ScalarToken {
      *  @exception IllegalActionException If the argument token is
      *   not of a type that can be compared with this token.  */
     public BooleanToken isCloseTo(Token token,
-				  double epsilon)
-	throws IllegalActionException {
+            double epsilon)
+            throws IllegalActionException {
         int typeInfo = TypeLattice.compare(this, token);
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             DoubleToken doubleToken;
             if (typeInfo == CPO.HIGHER) {
-               doubleToken = (DoubleToken)DoubleToken.convert(token);
+                doubleToken = (DoubleToken)DoubleToken.convert(token);
             } else {
-               doubleToken = (DoubleToken)token;
+                doubleToken = (DoubleToken)token;
             }
 
             if (_value == doubleToken.doubleValue()
-                && _isUnitEqual(doubleToken)) {
+                    && _isUnitEqual(doubleToken)) {
                 return new BooleanToken(true);
             } else {
 		double difference = _value - doubleToken.doubleValue();
 		// Here is where we differ from isEqualTo().
 		return new BooleanToken(Math.abs(difference)
-					< epsilon);
+                        < epsilon);
             }
 
         } else if (typeInfo == CPO.LOWER) {
@@ -368,13 +368,13 @@ public class DoubleToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             DoubleToken doubleToken;
             if (typeInfo == CPO.HIGHER) {
-               doubleToken = (DoubleToken)DoubleToken.convert(token);
+                doubleToken = (DoubleToken)DoubleToken.convert(token);
             } else {
-               doubleToken = (DoubleToken)token;
+                doubleToken = (DoubleToken)token;
             }
 
             if (_value == doubleToken.doubleValue()
-                && _isUnitEqual(doubleToken)) {
+                    && _isUnitEqual(doubleToken)) {
                 return new BooleanToken(true);
             } else {
                 return new BooleanToken(false);
@@ -407,9 +407,9 @@ public class DoubleToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             DoubleToken doubleToken;
             if (typeInfo == CPO.HIGHER) {
-               doubleToken = (DoubleToken)DoubleToken.convert(token);
+                doubleToken = (DoubleToken)DoubleToken.convert(token);
             } else {
-               doubleToken = (DoubleToken)token;
+                doubleToken = (DoubleToken)token;
             }
             if ( !_isUnitEqual(doubleToken)) {
                 throw new IllegalActionException("DoubleToken.isLessThan: "
@@ -452,9 +452,9 @@ public class DoubleToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             DoubleToken doubleToken;
             if (typeInfo == CPO.HIGHER) {
-               doubleToken = (DoubleToken)DoubleToken.convert(rightArgument);
+                doubleToken = (DoubleToken)DoubleToken.convert(rightArgument);
             } else {
-               doubleToken = (DoubleToken)rightArgument;
+                doubleToken = (DoubleToken)rightArgument;
             }
             double remainder = _value % doubleToken.doubleValue();
             DoubleToken result = new DoubleToken(remainder);
@@ -493,7 +493,7 @@ public class DoubleToken extends ScalarToken {
     public Token moduloReverse(Token leftArgument)
             throws IllegalActionException {
         DoubleToken doubleToken =
-                (DoubleToken)DoubleToken.convert(leftArgument);
+            (DoubleToken)DoubleToken.convert(leftArgument);
 
         double remainder = doubleToken.doubleValue() % _value;
         DoubleToken result = new DoubleToken(remainder);
@@ -521,9 +521,9 @@ public class DoubleToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             DoubleToken doubleToken;
             if (typeInfo == CPO.HIGHER) {
-               doubleToken = (DoubleToken)DoubleToken.convert(rightFactor);
+                doubleToken = (DoubleToken)DoubleToken.convert(rightFactor);
             } else {
-               doubleToken = (DoubleToken)rightFactor;
+                doubleToken = (DoubleToken)rightFactor;
             }
             double product = _value * doubleToken.doubleValue();
             DoubleToken result = new DoubleToken(product);
@@ -579,9 +579,9 @@ public class DoubleToken extends ScalarToken {
         if (typeInfo == CPO.HIGHER || typeInfo == CPO.SAME) {
             DoubleToken doubleToken;
             if (typeInfo == CPO.HIGHER) {
-               doubleToken = (DoubleToken)DoubleToken.convert(rightArgument);
+                doubleToken = (DoubleToken)DoubleToken.convert(rightArgument);
             } else {
-               doubleToken = (DoubleToken)rightArgument;
+                doubleToken = (DoubleToken)rightArgument;
             }
             double difference = _value - doubleToken.doubleValue();
             DoubleToken result = new DoubleToken(difference);
@@ -618,7 +618,7 @@ public class DoubleToken extends ScalarToken {
     public Token subtractReverse(Token leftArgument)
             throws IllegalActionException {
         DoubleToken doubleToken =
-	        (DoubleToken)DoubleToken.convert(leftArgument);
+            (DoubleToken)DoubleToken.convert(leftArgument);
         double difference = doubleToken.doubleValue() - _value;
         DoubleToken result = new DoubleToken(difference);
         if ( !_isUnitEqual(doubleToken)) {

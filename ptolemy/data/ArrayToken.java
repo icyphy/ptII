@@ -191,8 +191,8 @@ public class ArrayToken extends Token {
      *  @exception IllegalActionException If the argument token is
      *   not of a type that can be compared with this token.  */
     public BooleanToken isCloseTo(Token token,
-				  double epsilon)
-	throws IllegalActionException {
+            double epsilon)
+            throws IllegalActionException {
 
 	_checkArgument(token);
 	Token[] argArray = ((ArrayToken)token).arrayValue();

@@ -344,8 +344,8 @@ public class DoubleMatrixToken extends MatrixToken {
      *   not of a type that can be compared with this token.
      */
     public BooleanToken isCloseTo(Token token,
-				  double epsilon)
-	throws IllegalActionException {
+            double epsilon)
+            throws IllegalActionException {
         int compare = TypeLattice.compare(this, token);
         if ( !(token instanceof MatrixToken) || compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("Cannot check equality " +
@@ -500,7 +500,7 @@ public class DoubleMatrixToken extends MatrixToken {
     public final Token one() {
 	try {
             return new DoubleMatrixToken(DoubleMatrixMath.identity(_rowCount),
-	                             DO_NOT_COPY);
+                    DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
 	    // should not happen
 	    throw new InternalErrorException("DoubleMatrixToken.one: "
@@ -593,7 +593,7 @@ public class DoubleMatrixToken extends MatrixToken {
         // add the argument Token to the negative of this Token
         DoubleMatrixToken negativeToken =
             new DoubleMatrixToken(DoubleMatrixMath.negative(_value),
-	                          DO_NOT_COPY);
+                    DO_NOT_COPY);
         return negativeToken.add(token);
     }
 
@@ -606,7 +606,7 @@ public class DoubleMatrixToken extends MatrixToken {
     public final Token zero() {
 	try {
             return new DoubleMatrixToken(new double[_rowCount][_columnCount],
-	                             DO_NOT_COPY);
+                    DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
 	    // should not happen
 	    throw new InternalErrorException("DoubleMatrixToken.zero: "

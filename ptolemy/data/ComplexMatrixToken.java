@@ -109,7 +109,7 @@ public class ComplexMatrixToken extends MatrixToken {
         PtParser parser = new PtParser();
         ASTPtRootNode tree = parser.generateParseTree(init);
 	ComplexMatrixToken token =
-	                        (ComplexMatrixToken)tree.evaluateParseTree();
+            (ComplexMatrixToken)tree.evaluateParseTree();
         Complex[][] value = token.complexMatrix();
         _initialize(value, DO_COPY);
     }
@@ -340,8 +340,8 @@ public class ComplexMatrixToken extends MatrixToken {
      *   not of a type that can be compared with this token.
      */
     public BooleanToken isCloseTo(Token token,
-				  double epsilon)
-	throws IllegalActionException {
+            double epsilon)
+            throws IllegalActionException {
         int compare = TypeLattice.compare(this, token);
         if ( !(token instanceof MatrixToken) ||
                 compare == CPO.INCOMPARABLE) {
@@ -502,7 +502,7 @@ public class ComplexMatrixToken extends MatrixToken {
     public Token one() {
         try {
             return new ComplexMatrixToken(
-                ComplexMatrixMath.identity(_rowCount), DO_NOT_COPY);
+                    ComplexMatrixMath.identity(_rowCount), DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
 	    // should not happen
 	    throw new InternalErrorException("ComplexMatrixToken.one: "
@@ -520,7 +520,7 @@ public class ComplexMatrixToken extends MatrixToken {
     public Token oneRight() {
 	try {
             return new ComplexMatrixToken(
-                ComplexMatrixMath.identity(_columnCount), DO_NOT_COPY);
+                    ComplexMatrixMath.identity(_columnCount), DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
 	    // should not happen
 	    throw new InternalErrorException("ComplexMatrixToken.oneRight: "
@@ -595,7 +595,7 @@ public class ComplexMatrixToken extends MatrixToken {
         // add the argument Token to the negative of this Token
         ComplexMatrixToken negativeToken =
             new ComplexMatrixToken(
-	                     ComplexMatrixMath.negative(_value), DO_NOT_COPY);
+                    ComplexMatrixMath.negative(_value), DO_NOT_COPY);
         return negativeToken.add(token);
     }
 
@@ -608,7 +608,7 @@ public class ComplexMatrixToken extends MatrixToken {
     public Token zero() {
 	try {
             return new ComplexMatrixToken(
-                ComplexMatrixMath.zero(_rowCount, _columnCount), DO_NOT_COPY);
+                    ComplexMatrixMath.zero(_rowCount, _columnCount), DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
 	    // should not happen
 	    throw new InternalErrorException("ComplexMatrixToken.zero: "

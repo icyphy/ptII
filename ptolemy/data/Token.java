@@ -188,7 +188,7 @@ public class Token implements Serializable {
      *  @exception IllegalActionException If the argument token is
      *   not of a type that can be compared with this token.  */
     public BooleanToken isCloseTo(Token token, double epsilon)
-	throws IllegalActionException {
+            throws IllegalActionException {
 	return isEqualTo(token);
     }
 

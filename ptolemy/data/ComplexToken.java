@@ -294,8 +294,8 @@ public class ComplexToken extends ScalarToken {
      *   not of a type that can be compared with this token.
      */
     public BooleanToken isCloseTo(Token token,
-				  double epsilon)
-	throws IllegalActionException {
+            double epsilon)
+            throws IllegalActionException {
 
         int compare = TypeLattice.compare(this, token);
 	if (compare == CPO.INCOMPARABLE) {
