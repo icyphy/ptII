@@ -99,12 +99,61 @@ public class ScopeExtendingAttribute extends Attribute
         Nameable oldContainer = getContainer();
         super.setContainer(container);
         if (oldContainer != container) {
+            // Every variable in the new scope that may be shadowed by
+            // a variable inside this attribute must be invalidated.
+            // This does not include variables inside the container itself, 
+            // which take precedence.
+            if(container != null) {
+                _invalidateShadowedSettables(
+                        (NamedObj)container.getContainer());
+            }
+
+            // Every variable inside this attribute, and anything that
+            // had been depending on them, must still be valid.
             Iterator vars = attributeList(Variable.class).iterator();
             while (vars.hasNext()) {
                 Variable var = (Variable)vars.next();
-                var._notifyScopeChange();
+                var.validate();
             }
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private void _invalidateShadowedSettables(NamedObj object)
+            throws IllegalActionException {
+        if(object == null) {
+            // Nothing to do.
+            return;
+        }
+        for(Iterator variables = object.attributeList(
+                    Variable.class).iterator();
+            variables.hasNext();) {
+            Variable variable = (Variable)variables.next();
+            if (getAttribute(variable.getName()) != null) {
+                variable.invalidate();
+            }
+        }
+        // Also invalidate the variables inside any
+        // scopeExtendingAttributes.
+        Iterator scopeAttributes = object.attributeList(
+                ScopeExtendingAttribute.class).iterator();
+        while (scopeAttributes.hasNext()) {
+           ScopeExtendingAttribute attribute = 
+                (ScopeExtendingAttribute)scopeAttributes.next();
+            Iterator variables = attribute.attributeList(
+                    Variable.class).iterator();
+            while (variables.hasNext()) {
+                Variable variable = (Variable)variables.next();
+                if (getAttribute(variable.getName()) != null) {
+                    variable.invalidate();
+                }
+            }
+        }
+        NamedObj container = (NamedObj)object.getContainer();
+        if (container != null) {
+            _invalidateShadowedSettables(container);
+        }
+    }
 }

@@ -658,6 +658,16 @@ test PtParser-13.0 {Test array reference.} {
     set res2 [ [ $evaluator evaluateParseTree $root2 $scope] toString ]
     list $res1 $res2
 } {{1.0 + 6.0i} {2.0 + 6.0i}}
+
+test PtParser-13.1 {Test array method calls.} {
+    set p1 [java::new ptolemy.data.expr.PtParser]    
+    set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
+
+    set root1 [ $p1 generateParseTree "{1, 2, 3}.getElement(1)"]
+    set res1 [ [ $evaluator evaluateParseTree $root1] toString ]
+    list $res1 
+} {2}
+
 ######################################################################
 ####
 # Test that constant expressions are evaluated only once.

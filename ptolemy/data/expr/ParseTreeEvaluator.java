@@ -554,7 +554,8 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         if (result == null) {
             boolean anyArray = false;
             for (int i = 0; i < argCount; i++) {
-                ptolemy.data.Token child = (ptolemy.data.Token)argValues[i];
+                ptolemy.data.Token child = (ptolemy.data.Token)
+                    node.jjtGetChild(i).getToken();
                 if (child instanceof ArrayToken) {
                     anyArray = true;
                     argValues[i] = ((ArrayToken)child).arrayValue();
@@ -578,8 +579,11 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         // the corresponding native java types, but do not convert
         // the first argument.
         if (result == null) {
+            argValues[0] = (ptolemy.data.Token)node.jjtGetChild(0).getToken();
+            argTypes[0] = argValues[0].getClass();
             for (int i = 1; i < argCount; i++) {
-                ptolemy.data.Token child = (ptolemy.data.Token)argValues[i];
+                ptolemy.data.Token child = (ptolemy.data.Token)
+                    node.jjtGetChild(i).getToken();
                 Object[] javaArg =
                     ASTPtFunctionNode.convertTokenToJavaType(child);
                 argValues[i] = javaArg[0];
@@ -605,9 +609,10 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         }
 
         // If result is still null, then try converting
-        // arg 0 to its java type...
-        if (result == null ) {
-            ptolemy.data.Token child = (ptolemy.data.Token)argValues[0];
+        // arg 0 to its java type instead.
+        if (result == null) {
+            ptolemy.data.Token child = (ptolemy.data.Token)
+                node.jjtGetChild(0).getToken();
             Object[] javaArg =
                 ASTPtFunctionNode.convertTokenToJavaType(child);
             argValues[0] = javaArg[0];

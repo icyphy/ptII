@@ -393,12 +393,16 @@ test Parameter-14.0 {Test the mechanism for extending scope} {
 
     set r3 [$p4 getToken]
 
-    $ext1 setContainer [java::null]
+    catch {$ext1 setContainer [java::null]} msg1
 
-    catch {$p4 getToken} msg
+    catch {$p4 getToken} msg2
 
-    list [$r1 toString] [$r2 toString] [$r3 toString] $msg
-} {5 0 5 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.e2.p4:
+    list [$r1 toString] [$r2 toString] [$r3 toString] $msg1 $msg2
+} {5 0 5 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.p3:
+Error evaluating expression: "p"
+In variable: ..p3
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.e2.p4:
 Error evaluating expression: "p"
 In variable: ..e2.p4
 Caused by:
@@ -424,11 +428,34 @@ test Parameter-15.0 {Test for a known bug - insert a new parameter does not shad
     set r2 [$p3 getToken]
 
     list [$r1 toString] [$r2 toString]
-} {5 10} {KNOWN_FAILED}
+} {5 10}
 
-test Parameter-15.1 {Test for another known bug - Removing an actor that contains a parameter should not throw an exception if that parameter depends on other parameters} {
+test Parameter-15.1 {Removing an actor that contains a parameter should throw an exception if that parameter depends on other parameters} {
     set e1 [java::new ptolemy.kernel.CompositeEntity]
     set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
+    set p3 [java::new ptolemy.data.expr.Parameter $e2 "p3"]
+
+    $p1 setExpression "5"
+    $p3 setExpression "p1"
+    
+    set r1 [$p3 getToken]
+
+    catch {$e2 setContainer [java::null]} msg
+    $p1 setExpression "6"
+    catch {$p1 validate} msg2
+
+    list $msg $msg2
+} {{ptolemy.kernel.util.IllegalActionException: Object name: .e2.p3:
+Error evaluating expression: "p1"
+In variable: ..e2.p3
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: The ID p1 is undefined.} {}}
+
+test Parameter-15.2 {Failure to Shadow, including scopeeEtending} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    set e3 [java::new ptolemy.data.expr.ScopeExtendingAttribute $e2 "e3"]
     set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
     set p3 [java::new ptolemy.data.expr.Parameter $e2 "p3"]
 
@@ -437,13 +464,201 @@ test Parameter-15.1 {Test for another known bug - Removing an actor that contain
     
     set r1 [$p3 getToken]
 
-    $e2 setContainer [java::null]
-    $p1 setExpression "6"
-    set msg PASSED
-    catch {$p1 validate} msg
+    set p2 [java::new ptolemy.data.expr.Parameter $e3 "p"]
+    $p2 setExpression "10"
 
-    list $msg
-} {PASSED} {KNOWN_FAILED}
+    set r2 [$p3 getToken]
+
+    list [$r1 toString] [$r2 toString]
+} {5 10}
+
+test Parameter-15.3 {Changing container of parameter depends on scope.} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e1 "e2"]
+    set e3 [java::new ptolemy.kernel.ComponentEntity $e2 "e3"]
+ 
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
+    set p2 [java::new ptolemy.data.expr.Parameter $e2 "p"]
+    set p3 [java::new ptolemy.data.expr.Parameter $e1 "p3"]
+
+    $p1 setExpression "5"
+    $p2 setExpression "7"
+    $p3 setExpression "p"
+    
+    set r1 [$p3 getToken]
+
+    $p3 setContainer $e2
+
+    set r2 [$p3 getToken]
+
+    list [$r1 toString] [$r2 toString]
+} {5 7}
+
+test Parameter-15.4 {Changing container of parameter that depends on scope to an invalid scope.} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+
+    set e3 [java::new ptolemy.kernel.ComponentEntity]
+ 
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
+    set p2 [java::new ptolemy.data.expr.Parameter $e2 "p"]
+    set p3 [java::new ptolemy.data.expr.Parameter $e1 "p3"]
+
+    $p1 setExpression "5"
+    $p2 setExpression "7"
+    $p3 setExpression "p"
+    
+    catch {set msg1 [[$p3 getToken] toString]} msg1
+
+    catch {$p3 setContainer $e3} msg2
+
+    catch {set msg3 [[$p3 getToken] toString]} msg3
+    
+    list $msg1 $msg2 $msg3
+} {5 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.p3:
+Error evaluating expression: "p"
+In variable: ..p3
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.p3:
+Error evaluating expression: "p"
+In variable: ..p3
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: The ID p is undefined.}}
+
+test Parameter-15.5 {Changing container of parameter depends on scope.} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e1 "e2"]
+    set e3 [java::new ptolemy.kernel.ComponentEntity $e2 "e3"]
+ 
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
+    set p2 [java::new ptolemy.data.expr.Parameter $e2 "p"]
+    set p3 [java::new ptolemy.data.expr.Parameter $e1 "p3"]
+
+    $p1 setExpression "5"
+    $p2 setExpression "7"
+    $p3 setExpression "p"
+    
+    catch {set msg1 [[$p3 getToken] toString]} msg1
+
+    catch {$p3 setContainer [java::null]} msg2
+
+    catch {set msg3 [[$p3 getToken] toString]} msg3
+    
+    list $msg1 $msg2 $msg3
+} {5 {ptolemy.kernel.util.IllegalActionException: Object name: .p3:
+Error evaluating expression: "p"
+In variable: .p3
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Object name: .p3:
+Error evaluating expression: "p"
+In variable: .p3
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: The ID p is undefined.}}
+
+test Parameter-15.6 {Changing container of container of parameter that depends on outside scope from valid scope to valid scope} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e1 "e2"]
+    set e3 [java::new ptolemy.kernel.ComponentEntity $e2 "e3"]
+ 
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
+    set p2 [java::new ptolemy.data.expr.Parameter $e2 "p"]
+    set p3 [java::new ptolemy.data.expr.Parameter $e3 "p3"]
+
+    $p1 setExpression "5"
+    $p2 setExpression "7"
+    $p3 setExpression "p"
+    
+    set r1 [$p3 getToken]
+
+    $e3 setContainer $e1
+
+    set r2 [$p3 getToken]
+
+    list [$r1 toString] [$r2 toString]
+} {7 5}
+
+test Parameter-15.7 {Removing parameter invalidate dependants.} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e1 "e2"]
+ 
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p"]
+    set p3 [java::new ptolemy.data.expr.Parameter $e1 "p3"]
+
+    $p1 setExpression "5"
+    $p3 setExpression "p"
+    
+    catch {set msg1 [[$p3 getToken] toString]} msg1
+
+    catch {$p1 setContainer [java::null]} msg2
+
+    catch {set msg3 [[$p3 getToken] toString]} msg3
+
+    list $msg1 $msg2 $msg3
+} {5 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.p3:
+Error evaluating expression: "p"
+In variable: ..p3
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.p3:
+Error evaluating expression: "p"
+In variable: ..p3
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: The ID p is undefined.}}
+
+test Parameter-15.8 {Changing container of container of parameter that depends on outside scope from valid scope to invalid scope} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e1 "e2"]
+    set e3 [java::new ptolemy.kernel.ComponentEntity $e2 "e3"]
+ 
+    set p2 [java::new ptolemy.data.expr.Parameter $e2 "p"]
+    set p3 [java::new ptolemy.data.expr.Parameter $e3 "p3"]
+
+    $p2 setExpression "7"
+    $p3 setExpression "p"
+    
+    catch {set msg1 [[$p3 getToken] toString]} msg1
+
+    catch {$p3 setContainer $e1} msg2
+
+    catch {set msg3 [[$p3 getToken] toString]} msg3
+
+    list $msg1 $msg2 $msg3
+} {7 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.p3:
+Error evaluating expression: "p"
+In variable: ..p3
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.p3:
+Error evaluating expression: "p"
+In variable: ..p3
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: The ID p is undefined.}}
+
+test Parameter-15.9 {Changing container of container of parameter that depends on outside scope from valid scope to invalid null scope} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.CompositeEntity $e1 "e2"]
+    set e3 [java::new ptolemy.kernel.ComponentEntity $e2 "e3"]
+ 
+    set p2 [java::new ptolemy.data.expr.Parameter $e2 "p"]
+    set p3 [java::new ptolemy.data.expr.Parameter $e3 "p3"]
+
+    $p2 setExpression "7"
+    $p3 setExpression "p"
+    
+    catch {set msg1 [[$p3 getToken] toString]} msg1
+
+    catch {$p3 setContainer [java::null]} msg2
+
+    catch {set msg3 [[$p3 getToken] toString]} msg3
+
+    list $msg1 $msg2 $msg3
+} {7 {ptolemy.kernel.util.IllegalActionException: Object name: .p3:
+Error evaluating expression: "p"
+In variable: .p3
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Object name: .p3:
+Error evaluating expression: "p"
+In variable: .p3
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: The ID p is undefined.}}
 
 ######################################################################
 ####

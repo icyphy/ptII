@@ -428,16 +428,20 @@ test Variable-10.0 {Check setContainer} {
     set p2 [java::new ptolemy.data.expr.Variable $e1 P2]
     $p2 setExpression {P1}
     set r1 [[$p2 getToken] toString]
-    $p1 setContainer $e2
-    catch {[$p2 getToken] toString} r2
-    $p2 setContainer $e2
-    set r3 [[$p2 getToken] toString]
-    list $r1 $r2 $r3
+    catch {$p1 setContainer $e2} msg1
+    catch {set r2 [[$p2 getToken] toString]} r2
+    catch {$p2 setContainer $e2} msg2
+    catch {set r3 [[$p2 getToken] toString]} r3
+    list $r1 $msg1 $r2 $msg2 $r3
 } {{"a"} {ptolemy.kernel.util.IllegalActionException: Object name: .E1.P2:
 Error evaluating expression: "P1"
 In variable: .E1.P2
 Caused by:
- ptolemy.kernel.util.IllegalActionException: The ID P1 is undefined.} {"a"}}
+ ptolemy.kernel.util.IllegalActionException: The ID P1 is undefined.} {ptolemy.kernel.util.IllegalActionException: Object name: .E1.P2:
+Error evaluating expression: "P1"
+In variable: .E1.P2
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: The ID P1 is undefined.} {} {"a"}}
 
 #################################
 ####
