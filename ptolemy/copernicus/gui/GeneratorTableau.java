@@ -268,7 +268,7 @@ public class GeneratorTableau extends Tableau {
 
 	    // Update the modelPath parameter with the path to the model
 	    attribute.sanityCheckAndUpdateParameters(
-                    getEffigy().uri.toString());
+                    getEffigy().uri.getURI().toString());
 
             Configurer configurer = new Configurer(attribute);
             final GeneratorAttribute options = attribute;
