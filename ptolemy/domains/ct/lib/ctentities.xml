@@ -10,7 +10,7 @@
 
 <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
 </entity>
-<entity name="LaplaceFransferFunction" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
+<entity name="LaplaceTransferFunction" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
 </entity>
 <entity name="LinearStateSpace" class="ptolemy.domains.ct.lib.LinearStateSpace">
 </entity>
