@@ -95,7 +95,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  @deprecated
      */
     public void clear() {
-        super.initialize();
+        super.reset();
     }
 
     //FIXME: Add Clone()
@@ -195,6 +195,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** Reset the state variables in the receiver, so that the simulation 
      *  can be started again.
+     *  @deprecated use reset() instead.
      */
     public void initialize() {
 	super.initialize();
@@ -275,6 +276,17 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
                 workspace.wait(this);
             }
         }
+    }
+
+    /** Reset the state variables in the receiver, so that the simulation 
+     *  can be started again.
+     */
+    public void reset() {
+	super.reset();
+	_readpending = false;
+	_writepending = false;
+	_pause = false;
+	_terminate = false;
     }
 
     /** Pause any process that tries to read from or write to this receiver
