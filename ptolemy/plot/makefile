@@ -52,7 +52,8 @@ JARFILE = 	$(TYPACKAGE).jar
 # Classes that are included in the jar file as Java Beand.
 JBEANCLASSES =	ptplot/Plot.class ptplot/PlotLive.class
 
-DIRS = 	demo doc #test
+SRCDIRS = 	demo
+DIRS = 		$(SRCDIRS) doc #test
 
 CLASSPATH =	..
 # Order matters here.
