@@ -165,11 +165,11 @@ test Ramp-2.4 {test with record containing array} {
     $step setToken $r2
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {{{name="a", anArray=[1.5, 2.5], value=1.0}} {{name="ab", anArray=[11.5, 22.5], value=3.5}} {{name="abb", anArray=[21.5, 42.5], value=6.0}} {{name="abbb", anArray=[31.5, 62.5], value=8.5}} {{name="abbbb", anArray=[41.5, 82.5], value=11.0}}}
+} {{{anArray=[1.5, 2.5], name="a", value=1.0}} {{anArray=[11.5, 22.5], name="ab", value=3.5}} {{anArray=[21.5, 42.5], name="abb", value=6.0}} {{anArray=[31.5, 62.5], name="abbb", value=8.5}} {{anArray=[41.5, 82.5], name="abbbb", value=11.0}}}
 
 test Ramp-2.5 {check types of the above model} {
     list [[$constOut getType] toString] [[$recIn getType] toString]
-} {{{name:string, anArray:(double)array, value:double}} {{name:string, anArray:(double)array, value:double}}}
+} {{{anArray:(double)array, name:string, value:double}} {{anArray:(double)array, name:string, value:double}}}
 
 test Ramp-2.6 {test an array of record} {
     # init is [{name="a", value=1}, {name="b", value=2}]
