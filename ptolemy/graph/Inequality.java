@@ -38,7 +38,7 @@ An inequality over a CPO.
 Each inequality consists of two <code>InequalityTerms</code>, the lesser
 term and the greater term. The relation between them is <i>less than or
 equal to</i>.  In addition, an inequality keeps a list of variables in it.
-The variables are <code>Inequalityterms</code> that consist of a single
+The variables are <code>InequalityTerms</code> that consist of a single
 variable.
 
 @author Yuhong Xiong
