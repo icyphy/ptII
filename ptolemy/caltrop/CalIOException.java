@@ -29,12 +29,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.caltrop;
 
 /**
- * An exception used to indicate an IO error during interpretation of a CAL actor in Ptolemy.
- * This can occur during
- * the getting/putting of a {@link ptolemy.data.Token caltrop.data.Token} on a channel.
- *
- * @author Jörn W. Janneck <janneck@eecs.berkeley.edu>
- */
+An exception used to indicate an IO error during interpretation of a
+CAL actor in Ptolemy.  This can occur during the getting/putting of a
+{@link ptolemy.data.Token caltrop.data.Token} on a channel.
+
+@author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+*/
 public class CalIOException extends RuntimeException {
 
     /**
