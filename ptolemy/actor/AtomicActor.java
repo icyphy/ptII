@@ -218,6 +218,39 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return Collections.enumeration(inputPortList());
     }
 
+    /** Invoke a specified number of iterations of this actor. An
+     *  iteration consists of invoking prefire(), fire(), and 
+     *  postfire(), in that order. If prefire() returns true, then
+     *  fire() will be called once, followed by postfire(). Otherwise,
+     *  fire() and postfire() are not invoked, and this method will
+     *  return a value of false. This method will return true if 
+     *  the actor was successfully iterated the specified number of 
+     *  times. Otherwise, a value of false will be returned.
+     *  
+     *  @param count The number of iterations to perform.
+     *  @return True if the actor was successfully iterated the
+     *   specified number of times. Otherwise, return false.
+     *  @exception IllegalActionException If one of the Executable
+     *   methods throws it.
+     */
+    public boolean iterate(int count) throws IllegalActionException {
+	
+	int n = 0;
+	while (n < count) {
+	    if (prefire()) {
+		fire();
+		postfire();
+	    } else break;
+	    count++;
+	}
+	if (count == n) {
+	    return (true);
+	} else {
+	    return (false);
+	}
+    }
+
+
     /** Create a new IOPort with the specified name.
      *  The container of the port is set to this actor.
      *  This method is write-synchronized on the workspace.
