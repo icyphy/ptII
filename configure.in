@@ -2660,11 +2660,12 @@ if test ! -d "$PTII/ptolemy/domains/giotto"; then
     GIOTTO_CLASSES='${GIOTTO_DIR}/gdk.jar'
 else
     AC_MSG_CHECKING([for giotto directory])
-    AC_ARG_WITH(tini, [  --with-giotto=DIR       use GiottoSDF from DIR,
+    AC_ARG_WITH(giotto, [  --with-giotto=DIR       use GiottoSDF from DIR,
                           defaults to \$PTII/vendors/giotto],
 	GIOTTO_DIR=$withval,
 	GIOTTO_DIR=$PTII/vendors/giotto)
 
+    GIOTTO_CLASSES=no
     if test -d "$GIOTTO_DIR"; then
     	AC_MSG_RESULT([$GIOTTO_DIR])
       	AC_MSG_CHECKING([for \$GIOTTO_DIR/gdk.jar])
@@ -2696,6 +2697,45 @@ else
 	PTGIOTTO_DIR=giotto
     fi
 fi
+
+#--------------------------------------------------------------------
+#	Test for vendors.vr Volume Rendering code used by gr/lib/vr 
+#--------------------------------------------------------------------
+# PTVR_DIR is set to vr and used in
+# $PTII/ptolemy/domains/gr/lib/makefile if Volume Rendering was found
+PTVR_DIR=
+
+# We only need to look for Java3D if the vr actors are present
+VR_USER_DIR="$PTII/ptolemy/domains/gr/lib/vr"
+
+if test ! -d "$VR_USER_DIR" -o -z "$PTJAVA3D_DIR"; then
+    AC_MSG_RESULT([$VR_USER_DIR is not present
+    or Java 3D was not found, so we need not find Java 3D Volume Rendering.])
+else
+    AC_MSG_CHECKING([for Java 3D Volume Rendering])
+    AC_ARG_WITH(ptvr, [  --with-ptvr=DIR       use Volume Rendering from DIR
+                          defaults to \$PTII/lib/ptvr.jar],
+	PTVR_JAR=$withval,
+	PTVR_JAR=$PTII/lib/ptvr.jar)
+
+    if test -f "$PTVR_JAR"; then 
+       AC_MSG_RESULT(ok)
+       PTVR_DIR=vr
+       # PTVR_PACKAGES is used in ptII/doc/makefile
+       PTVR_PACKAGES="ptolemy.domains.gr.lib.vr"
+    else
+       AC_MSG_WARN(['Could not find $PTVR_JAR.
+    http://www.j3d.org/tutorials/quick_fix/volume.html
+    Java 3D Volume Rendering is only needed if you want to build in
+    $VR_USER_DIR,
+    otherwise the build will proceed fine without Java 3D Volume Rendering.])
+    fi
+    cd "$startdir"
+fi
+
+if test -z "$PTVR_DIR"; then
+    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/lib/vr"
+fi 
 
 #--------------------------------------------------------------------
 #       WABA is the JDK for PalmOS
@@ -3192,6 +3232,17 @@ AC_SUBST(PTGIOTTO_DIR)
 # Set to quicktime and used in
 # $PTII/ptolemy/domains/gr/lib/makefile if Quicktime for Java was found
 AC_SUBST(PTQUICKTIME_DIR)
+
+# Set to vr and used in
+# $PTII/ptolemy/domains/gr/lib if Volume Rendering code was found
+AC_SUBST(PTVR_DIR)
+
+# $PTII/lib/ptvr.jar file, used to for Volume Rendering
+AC_SUBST(PTVR_JAR)
+
+# Ptolemy II packages that use the Java 3D Volume Rendering
+# PTVR_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTVR_PACKAGES)
 
 # Set to waba and used in
 # $PTII/ptolemy/apps/makefile if Waba was found
