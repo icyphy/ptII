@@ -298,12 +298,12 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	    // ptIIUserDirectory directory of the build.  Usually
 	    // ptIIUserDirectory is $PTII or ptolemy.ptII.dir
 
-	    // Get user.dir and create a ptII/cg subdir if necessary
-            String userDirectory = 
+	    // Get user.dir  and create a ptII/cg subdir if necessary
+            String userDir = 
 		UtilityFunctions.getProperty("user.dir");
-	    if (userDirectory != null) {
+	    if (userDir != null) {
 		ptIIUserDirectoryFile =
-		    new File(userDirectory + "/ptII/cg");
+		    new File(userDir + "/ptII/cg");
 		if (!ptIIUserDirectoryFile.isDirectory()) {
 		    // No need to check the return value here,
 		    // we do it later anyway
@@ -336,6 +336,14 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	} catch (java.net.MalformedURLException ex) {
 	    ptIIUserDirectoryAsURL = ex.getMessage();
 	}
+	// Strip of the trailing /, it causes problems when
+	// we invoke the browser to view an applet.
+	if (ptIIUserDirectoryAsURL.endsWith("/")) {
+	    ptIIUserDirectoryAsURL =
+		ptIIUserDirectoryAsURL
+		.substring(0, ptIIUserDirectoryAsURL.length() - 1);
+	}
+
 	((Variable)getAttribute("ptIIUserDirectoryAsURL"))
 	    .setExpression("\"" +  ptIIUserDirectoryAsURL + "\"");
 
