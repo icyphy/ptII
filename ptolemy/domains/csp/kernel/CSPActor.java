@@ -95,7 +95,7 @@ import java.util.Enumeration;
    the director controlling the process represented by this actor.
 
    <p>A process can also choose to delay its execution until the next
-   occasion a deadlock occurs by calling waitForDeadlock(). The
+   occasion a deadlock occurs by calling _waitForDeadlock(). The
    process resumes at the same model time at which it delayed. This is
    useful if a process wishes to delay itself until some changes to
    the topology have been carried out.
@@ -183,7 +183,7 @@ public class CSPActor extends TypedAtomicActor {
      */
     public int chooseBranch(ConditionalBranch[] branches) {
         try {
-            synchronized(_getInternalLock()) {
+            synchronized(_internalLock) {
                 // reset the state that controls the conditional branches
                 _resetConditionalState();
 
@@ -238,7 +238,7 @@ public class CSPActor extends TypedAtomicActor {
 		    // wait for a branch to succeed
                     while ((_successfulBranch == -1) &&
                             (_branchesActive > 0)) {
-                        _getInternalLock().wait();
+                        _internalLock.wait();
                     }
                 }
             }
@@ -262,9 +262,9 @@ public class CSPActor extends TypedAtomicActor {
 
             // when there are no more active branches, branchFailed()
             // should issue a notifyAll() on the internal lock.
-            synchronized(_getInternalLock()) {
+            synchronized(_internalLock) {
                 while (_branchesActive != 0) {
-                    _getInternalLock().wait();
+                    _internalLock.wait();
                 }
                 // counter indicating # active branches, should be zero
                 if (_branchesActive != 0) {
@@ -309,10 +309,12 @@ public class CSPActor extends TypedAtomicActor {
         newobj._blocked = false;
         newobj._branchesActive = 0;
 	newobj._branchesBlocked = 0;
+	newobj._branchesStarted = 0;
 	newobj._branchTrying = -1;
         newobj._delayed = false;
         newobj._internalLock = new Object();
         newobj._successfulBranch = -1;
+        newobj._threadList = null;
 	return newobj;
     }
 
@@ -326,7 +328,7 @@ public class CSPActor extends TypedAtomicActor {
      */
     public void delay(double delta) {
         try {
-            synchronized(_getInternalLock()) {
+            synchronized(_internalLock) {
 	        if (delta == 0.0) {
 		    return;
 		} else if (delta < 0.0) {
@@ -336,7 +338,7 @@ public class CSPActor extends TypedAtomicActor {
 		    _delayed = true;
 		    ((CSPDirector)getDirector())._actorDelayed(delta, this);
 		    while(_delayed) {
-		        _getInternalLock().wait();
+		        _internalLock.wait();
 		    }
 		}
 	    }
@@ -358,7 +360,7 @@ public class CSPActor extends TypedAtomicActor {
      *  this method does not allow the threads to terminate gracefully.
      */
     public void terminate() {
-        synchronized(_getInternalLock()) {
+        synchronized(_internalLock) {
             // Now stop any threads created by this director.
             if (_threadList != null) {
                 Enumeration threads = _threadList.elements();
@@ -369,26 +371,6 @@ public class CSPActor extends TypedAtomicActor {
                     }
                 }
             }
-        }
-    }
-
-    /** Wait for deadlock to occur. The current model time will not
-     *  advance while this actor is delayed. This method may be useful if
-     *  an actor wishes to delay itself until some topology changes
-     *  have been carried out.
-     */
-    public void waitForDeadlock() {
-        try {
-	    synchronized(_getInternalLock()) {
-	        _delayed = true;
-		((CSPDirector)getDirector())._actorDelayed(0.0, this);
-		while(_delayed) {
-		    _getInternalLock().wait();
-		}
-	    }
-	} catch (InterruptedException ex) {
-            throw new TerminateProcessException("CSPActor interrupted " +
-                    "while waiting for deadlock." );
         }
     }
 
@@ -406,7 +388,7 @@ public class CSPActor extends TypedAtomicActor {
      *   to rendezvous, otherwise false.
      */
     protected boolean _isBranchFirst(int branchNumber) {
-        synchronized(_getInternalLock()) {
+        synchronized(_internalLock) {
             if ((_branchTrying == -1) || (_branchTrying == branchNumber)) {
                 // store branchNumber
                 _branchTrying = branchNumber;
@@ -421,7 +403,7 @@ public class CSPActor extends TypedAtomicActor {
      *  being executed) are blocked, register this actor as being blocked.
      */
     protected void _branchBlocked() {
-        synchronized(_getInternalLock()) {
+        synchronized(_internalLock) {
             _branchesBlocked++;
             if (_branchesBlocked == _branchesStarted) {
                 // Note: acquiring a second lock, need to be careful.
@@ -443,12 +425,12 @@ public class CSPActor extends TypedAtomicActor {
             // the execution of the model must have finished.
             _successfulBranch = -1;
         }
-        synchronized(_getInternalLock()) {
+        synchronized(_internalLock) {
             _branchesActive--;
             if (_branchesActive == 0) {
                 //System.out.println(getName() + ": Last branch finished, " +
                 //      "waking up chooseBranch");
-                _getInternalLock().notifyAll();
+                _internalLock.notifyAll();
             }
         }
     }
@@ -461,7 +443,7 @@ public class CSPActor extends TypedAtomicActor {
      *  @param branchID The ID assigned to the calling branch upon creation.
      */
     protected void _branchSucceeded(int branchID) {
-        synchronized(_getInternalLock() ) {
+        synchronized(_internalLock ) {
             if (_branchTrying != branchID) {
                 throw new InvalidStateException(getName() +
                         ": branchSucceeded called with a branch id not " +
@@ -470,7 +452,7 @@ public class CSPActor extends TypedAtomicActor {
             _successfulBranch = _branchTrying;
             _branchesActive--;
             // wakes up chooseBranch() which wakes up parent thread
-            _getInternalLock().notifyAll();
+            _internalLock.notifyAll();
         }
     }
 
@@ -479,7 +461,7 @@ public class CSPActor extends TypedAtomicActor {
      *  this actor with the director as no longer being blocked.
      */
     protected void _branchUnblocked() {
-        synchronized(_getInternalLock()) {
+        synchronized(_internalLock) {
  	    if (_blocked) {
 	        if (_branchesBlocked != _branchesStarted) {
                     throw new InternalErrorException(getName() +
@@ -504,9 +486,9 @@ public class CSPActor extends TypedAtomicActor {
         }
         // perhaps this notifyAll() should be done in a new
         // thread as it is called from CSPDirector?
-        synchronized(_getInternalLock()) {
+        synchronized(_internalLock) {
             _delayed = false;
-            _getInternalLock().notifyAll();
+            _internalLock.notifyAll();
         }
     }
 
@@ -521,7 +503,7 @@ public class CSPActor extends TypedAtomicActor {
      *  @param branchNumber The ID assigned to the branch upon creation.
      */
     protected void _releaseFirst(int branchNumber) {
-        synchronized(_getInternalLock()) {
+        synchronized(_internalLock) {
             if (branchNumber == _branchTrying) {
                 _branchTrying = -1;
                 return;
@@ -532,28 +514,43 @@ public class CSPActor extends TypedAtomicActor {
                 " & " + branchNumber);
     }
 
+    /** Wait for deadlock to occur. The current model time will not
+     *  advance while this actor is delayed. This method may be useful if
+     *  an actor wishes to delay itself until some topology changes
+     *  have been carried out.
+     */
+    protected void _waitForDeadlock() {
+        try {
+	    synchronized(_internalLock) {
+	        _delayed = true;
+		((CSPDirector)getDirector())._actorDelayed(0.0, this);
+		while(_delayed) {
+		    _internalLock.wait();
+		}
+	    }
+	} catch (InterruptedException ex) {
+            throw new TerminateProcessException("CSPActor interrupted " +
+                    "while waiting for deadlock." );
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
-
-    /* Internal lock used to for controlling conditional rendezvous
-     * constructs.
-     */
-    private Object _getInternalLock() {
-        return _internalLock;
-    }
 
     /* Resets the internal state controlling the execution of a conditional
      * branching construct (CIF or CDO). It is only called by chooseBranch()
      * so that it starts with a consistent state each time.
      */
     private void _resetConditionalState() {
-        synchronized(_getInternalLock()) {
+        synchronized(_internalLock) {
             _blocked = false;
             _branchesActive = 0;
             _branchesBlocked = 0;
             _branchesStarted = 0;
             _branchTrying = -1;
+	    _delayed = false;
             _successfulBranch = -1;
+	    _threadList = null;
         }
     }
 
