@@ -203,7 +203,7 @@ public class Entity extends NamedObj {
 
     /** Enumerate relations that are linked to ports contained by this
      *  entity. Note that a relation may be listed more once. 
-     *  This method is sread-ynchronized on the workspace.
+     *  This method is read-synchronized on the workspace.
      *  @return An enumeration of Relation objects.
      */	
     public Enumeration linkedRelations() {
