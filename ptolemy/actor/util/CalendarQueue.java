@@ -33,6 +33,7 @@ package ptolemy.actor.util;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.Debuggable;
 
 import java.util.LinkedList;
 import java.util.Iterator;
@@ -116,7 +117,7 @@ CalendarQueue class.</i>
 @see CQComparator
 */
 
-public class CalendarQueue {
+public class CalendarQueue implements Debuggable{
 
     /** Construct an empty queue with a given comparator, which
      *  is used to sort the entries.
