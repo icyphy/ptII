@@ -903,7 +903,7 @@ public class ModelTransformer extends SceneTransformer {
                 }
             }
             catch (Exception ex) {
-                System.err.println("Exception occured during parsing:\n");
+                System.err.println("Exception occurred during parsing:\n");
                 ex.printStackTrace();
                 deferredObject = null;
             }
