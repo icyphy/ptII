@@ -1,6 +1,6 @@
 /* List of cross-references.
 
- Copyright (c) 1997 The Regents of the University of California.
+ Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -50,7 +50,7 @@ sizes of the cross-reference lists.
 
 @author Geroncio Galicia
 @contributor Edward A. Lee
-@version @(#)CrossRefList.java	1.12 12/29/97
+@version $Id$
 */
 public final class CrossRefList {
 
