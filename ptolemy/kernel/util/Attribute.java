@@ -196,7 +196,7 @@ public class Attribute extends NamedObj {
             if((another != null) && (another != this)) {
                 throw new NameDuplicationException (container,
                         "already contains an attribute with the name " + 
-                        name+".");
+                        name + ".");
             }
         }
         super.setName(name);
