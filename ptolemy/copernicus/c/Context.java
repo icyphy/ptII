@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
-/* A class that maintains context information for C code generation.
+/** A class that maintains context information for C code generation.
 
    @author Shuvra S. Bhattacharyya
    @version $Id$
@@ -49,20 +49,29 @@ public class Context {
         _includeFileSet = new HashSet();
         _stringConstantMap = new HashMap();
         _stringConstantCount = 0;
+        _arrayInstanceSet = new HashSet();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Add an include file to the set of include files in the context.
-     *  File name delimiters (double quotes or angle brackets), and the .h
+     *  File name delimeters (double quotes or angle brackets), and the .h
      *  suffix, must be included in the argument.
-     *  @param fileName the name of the include file.
+     *  @param fileName The name of the include file.
      */
     public void addIncludeFile(String fileName) {
         if (!_includeFileSet.contains(fileName)) {
             _includeFileSet.add(fileName);
         }
+    }
+
+    /** Add an array instance to the set of array instances in the context.
+     *  @param instanceName The name of the array instance.
+     */
+
+    public void addArrayInstance(String instanceName) {
+        _arrayInstanceSet.add(instanceName);
     }
 
     /** Reset the context to be empty. All information in the current context
@@ -72,6 +81,7 @@ public class Context {
         _includeFileSet.clear();
         _stringConstantMap = new HashMap();
         _stringConstantCount = 0;
+        _arrayInstanceSet.clear();
     }
 
     /** Enable importing of referenced include files.
@@ -89,16 +99,16 @@ public class Context {
 
     /** Return true if and only if importing of referenced include files
      *  is presently disabled.
-     *  @return true if and only if importing is disabled.
+     *  @return True if and only if importing is disabled.
      */
     public boolean getDisableImports() {
         return _disableImports;
     }
 
-    /** Return the C identifier that corresponds to a string constant in this
+    /** Return the C identifer that corresponds to a string constant in this
      *  context.
-     *  @param constant the string constant.
-     *  @return the C identifier.
+     *  @param constant The string constant.
+     *  @return The C identifier.
      */
     public String getIdentifier(String constant) {
         return (String)(_stringConstantMap.get(constant));
@@ -107,12 +117,21 @@ public class Context {
     /** Return an Iterator over the set of include files in the context.
      *  Each element in the Iterator is a String representing an include
      *  file name.
-     *  Each such file name includes appropriate file name delimiters
+     *  Each such file name includes appropriate file name delimeters
      *  (double quotes or angle brackets), and the .h suffix.
-     *  @return the Iterator.
+     *  @return The Iterator.
      */
     public Iterator getIncludeFiles() {
         return _includeFileSet.iterator();
+    }
+
+    /** Return an Iteratorover the set of array Instance names in the context.
+     *  Each element in the Iterator is a String representing the name of the
+     *  array instance.
+     *  @return The Iterator over the set of array Instances
+     */
+    public Iterator getArrayInstances() {
+        return _arrayInstanceSet.iterator();
     }
 
     /** Return true if and only if single class mode translation is
@@ -120,14 +139,14 @@ public class Context {
      *  and fields are ignored, which can greatly reduce the number of
      *  references to other classes. Single class mode is used primarily
      *  for diagnostic purposes, and for rapid testing of new code.
-     *  @return true if and only if single class mode translation is enabled.
+     *  @return True if and only if single class mode translation is enabled.
      */
     public static boolean getSingleClassMode() {
         return _singleClassMode;
     }
 
     /** Return an Iterator over the set of string constants in the context.
-     *  @return an Iterator over the set of string constants.
+     *  @return An Iterator over the set of string constants.
      */
     public Iterator getStringConstants() {
         return _stringConstantMap.keySet().iterator();
@@ -136,8 +155,8 @@ public class Context {
     /** Add a new string constant to the pool of string constants if the
      *  string does not already exist in the pool. Return the C identifier
      *  for the string constant.
-     *  @param the string constant.
-     *  @return the C identifier.
+     *  @param value The string constant.
+     *  @return The C identifier.
      */
     public String newStringConstant(String value) {
         String name;
@@ -189,5 +208,8 @@ public class Context {
     // the strings in the generated code. For each string constant, a static
     // string object is created in the generated code.
     private HashMap _stringConstantMap;
+
+    //The set of array instances that need to be typedef'd
+    private HashSet _arrayInstanceSet;
 
 }
