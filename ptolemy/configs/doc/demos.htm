@@ -33,7 +33,8 @@ diagrams are fully editable, so feel free to explore. The top-level
 parameters are the model are shown in the run window. Edit these to
 explore the models. They can be edited while the models are running.
 You can also access the <a href="completeDemos.htm">complete
-list of demos</a>.
+list of demos</a> and the summary of
+<a href="whatsNew.htm">new capabilities</a>.
 
 <ul>
 <li><a href="../../domains/sdf/demo/Spectrum/Spectrum.xml">
@@ -47,8 +48,22 @@ processing, hierarchical models,
 the Expression actor, and the FFT actor.
 This model is build using the <i>synchronous dataflow</i> (SDF) domain,
 which statically schedules the firing of the actors.
-
 </li>
+
+<!--/vergilDocs-->
+
+<li><a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">
+Wireless Sound Detection</a> (See also
+<a href="../visualsense/intro.htm">VisualSense introduction</a>)
+<br> This example illustrates the wireless domain in Ptolemy II,
+which extends discrete-event modeling with wireless channel models.
+This example models a sound localization problem. A single sound source
+moves through a field of sound sensors. The sound sensors detect the sound
+and communicate via a radio channel to a sensor fusion component that
+localizes the sound by triangulation.
+</li>
+
+<!--vergilDocs-->
 
 <li><a href="../../domains/ct/demo/Lorenz/Lorenz.xml">
 Continuous-Time Modeling</a> (see also
@@ -111,6 +126,18 @@ This example models a physical system consisting of two point masses
 on springs that stick together when they collide.
 </li>
 
+<li>
+<a href="ClassesIllustrated.xml">
+Classes, subclasses, and inner classes</a> (see also
+<a href="../../domains/sdf/demo/NoisySinewave/NoisySinewave.xml">
+Noisy sinewaves</a> and
+<a href="../../domains/sdf/demo/RijndaelEncryption/RijndaelEncryption.xml">
+Rijndael Encryption</a>).
+<br>
+Version 4.0 introduces actor-oriented classes, subclasses, and
+inner classes with inheritance. This is a major improvement in
+the modularity mechanisms available in actor-oriented design. 
+
 <li><a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">
 Process Networks</a> (see also
 <a href="../../domains/pn/demo/QR/QR.xml">QR</a>).<br>
@@ -145,7 +172,6 @@ delays may result in out-of-order arrival of packets.
 <li><a href="../../domains/ct/demo/Transmission/Transmission.xml">
 Higher-order expressions</a>.
 <br>
-
 To simplify creating new components, Ptolemy II contains a functional
 expression language.  The expression language is integrated with the
 type system, allowing static type checking of polymorphic expressions
@@ -181,19 +207,17 @@ control the values of "port parameters," which in turn control the
 execution of a model.
 
 <li>
+<a href="../../data/unit/demo/StaticUnits/StaticUnits.xml">
+Statically Checked Units System</a> (see also
 <a href="../../data/unit/demo/Units/Units.xml">
-Unit Systems</a> 
+Dynamically Checked Units System</a>).
 <br>
-This model illustrates the use of Ptolemy II unit systems. A unit system
+This model illustrates the use of the statically
+checked units system. A unit system
 defines a set of interrelated dimensions and measures. For example, in
 the time dimension, we might have seconds, minutes, hours, days, weeks,
-and fortnights. The Ptolemy II unit system allows us to express
-quantities equivalently with different units, and keeps track of the
-units through mathematical operations. For example, one centimeter
-divided by one millisecond is equal to 10 meters/second. This is
-expressed in the expression language as "1*cm/ms" or "10 m/second",
-where "cm", "ms", "m", and "second" are defined in the unit system. A
-unit system is a modular component that one drags into a model.
+and fortnights. Ptolemy II includes two experimental units systems,
+one that is statically checked and one that is dynamically checked.
 </li>
 
 <li><a href="../../moml/demo/Networked/Networked.xml">
