@@ -255,7 +255,7 @@ public class CTSingleSolverDirector extends CTDirector {
         if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
             fireAt(null, getStopTime());
         }
-        if(Math.abs(getCurrentTime() - getStopTime()) < getTimeAccuracy()) {
+        if(Math.abs(getCurrentTime() - getStopTime()) < getTimeResolution()) {
             updateStates(); // call postfire on all actors
             return false;
         }

@@ -184,7 +184,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
             if(DEBUG) {
                 System.out.println("Outside Time =" + _outsideTime);
             }
-            double timeAcc = getTimeAccuracy();
+            double timeAcc = getTimeResolution();
             double nextIterTime = exe.getNextIterationTime();
             double runlength = nextIterTime - _outsideTime;
             if((runlength != 0.0)&& (runlength < timeAcc)) {
@@ -268,7 +268,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
         // FIXME: what should these do?
         // prepare some variables.
         CompositeActor ca = (CompositeActor) getContainer();
-        double timeAcc = getTimeAccuracy();
+        double timeAcc = getTimeResolution();
         boolean knownGood = false;
         boolean endOfFire = false;
         if (_first) {
@@ -405,7 +405,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector{
      */
     public boolean postfire() throws IllegalActionException {
         if(_isTopLevel()) {
-            if(Math.abs(getCurrentTime()-getStopTime()) < getTimeAccuracy()) {
+            if(Math.abs(getCurrentTime()-getStopTime()) < getTimeResolution()) {
                 updateStates(); // call postfire on all actors
                 return false;
             }

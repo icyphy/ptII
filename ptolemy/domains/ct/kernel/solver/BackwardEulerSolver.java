@@ -163,7 +163,7 @@ public class BackwardEulerSolver extends FixedStepSolver
         double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
         double pstate = integrator.getState() + f*(dir.getCurrentStepSize());
         double cerror =Math.abs(pstate-integrator.getPotentialState());
-        if( !(cerror < dir.getValueAccuracy())) {
+        if( !(cerror < dir.getValueResolution())) {
             voteForConverge(false);
         }
         integrator.setPotentialState(pstate);

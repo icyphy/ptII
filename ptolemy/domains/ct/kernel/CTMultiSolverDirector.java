@@ -160,7 +160,7 @@ public class CTMultiSolverDirector extends CTDirector {
         if (VERBOSE) {
             System.out.println("Director prefire.");
         }
-        if(DEBUG) {
+        if(STAT) {
             NSTEP++;
         }
         if(!scheduleValid()) {
@@ -198,7 +198,7 @@ public class CTMultiSolverDirector extends CTDirector {
         // If now is a break point, remove the break point from table;
         if((breakPoints != null) && !breakPoints.isEmpty()) {
             bp = ((Double)breakPoints.first()).doubleValue();
-            if(Math.abs(bp-getCurrentTime()) < getTimeAccuracy()) {
+            if(Math.abs(bp-getCurrentTime()) < getTimeResolution()) {
                 // break point now!
                 breakPoints.removeFirst();
                 setCurrentODESolver(_breakpointSolver);
@@ -240,8 +240,8 @@ public class CTMultiSolverDirector extends CTDirector {
         if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
             fireAt(null, getStopTime());
         }
-        if(Math.abs(getCurrentTime() - getStopTime()) < getTimeAccuracy()) {
-            updateStates(); // call postfire on all actors
+        if(Math.abs(getCurrentTime() - getStopTime()) < getTimeResolution()) {
+            updateStates(); // call postfire on all actors.
             return false;
         }
         if(getStopTime() < getCurrentTime()) {

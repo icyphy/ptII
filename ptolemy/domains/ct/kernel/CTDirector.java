@@ -43,8 +43,62 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// CTDirector
 /**
-This class maintains most parameters that are share by all ODE solvers.
-It maintains a break point table to record all the break points.
+This is the base class for directors of continuous time simulation.
+<P>
+The continuous time (CT) domain is a timed domain. There is a global
+notion of time that all the actors are shared. Time is maintained
+by the directors. The method getCurrentTime() returns the current
+global time. Time can be set by setCurrentTime() method, but this
+method should not the called by the actors. Time can only be advanced
+by directors or its ODE solvers.
+<P>
+CTDirectors has a CTScheduler which provides the schedule for firing
+the actors in different phase of the execution.
+<P> 
+CTDirectors may have one or more ODE solvers. In each iteration, one
+of the ODE solvers is taking charge of solving the ODEs. This solver
+is called the <I>current ODE solver</I>.
+<P>  
+This base class maintains a list of parameters that may be used by 
+ODE solvers. These parameters are: <Br>
+<LI> start time (<code>StartTime</code>): The start time of the 
+simulation. The parameter should only be affective if the director
+is at the top level. Default value is 0.0.</LI><BR>
+<LI> stop time (<code>StopTime</code>): The stop time of the simulation.
+ The parameter should only be affective if the director
+is at the top level. Default value is 1.0.</LI><BR>
+<LI> initial step size (<code>InitialStepSize</code>): The suggested
+step size from the user. This will be the step size for fixed step
+size ODE sovlers. However, it is just a guide for variable step size
+ODE solvers. Default value is 0.1</LI><Br>
+<LI> minimum step size (<code>MinimumStepSize</code>): The minimum step
+size the user wants to use in the simulation. Default value is 1e-5.
+</LI><Br>
+<LI> maximum iteration per step (<code>MaximumIterationPerStep</code>):
+Used only in implicit ODE solvers. This is the maximum number of
+iterations for finding the fixed point at one time point. 
+Default value is 20. </LI><Br>
+<LI> local trancation error tolerance (<code>LocalTruncationError
+Tolerance</code>): This used for controlling the local truncation error 
+in vairable step size ODE sovlers. If the local truncation error
+at some error control actors are greater than this tolerance, then the 
+integration step is considered failed, and should be restarted with 
+a reduced step size. Default value 1e-4. </LI><Br>
+<LI> value resolution for convergence (<code>ConvergeValueResolution</code>)
+: This is used to control the convergence of fixed point iteration.
+If in two successive iterations the differences of the state variables
+is less than this resolution, then the fixed point is considered found.
+Default value is 1e-6.<LI><Br>
+<LI> time resolution (<code>TimeResolution</code>): The minimum resolution
+of time, such that if two time values differ less than this value,
+they are considered equivalent. Default value is 1e-10. </LI><Br>
+<P>
+This director maintains a breakpoint table to record all the break points.
+The breakpoints are sorted in their chronological order in the table.
+Breakpoints at the "same" time (controlled by time resolution) are
+considered to be one. A breakpoint can be inserted into the table by
+calling the fireAt() method. How to deal with these breakpoint are
+director dependent.
 @author Jie Liu
 @version $Id$
 @see ptolemy.actor.Director
@@ -62,8 +116,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
 
     /** Construct a CTDirector with no name and no Container.
-     *  The default startTime and stopTime are all zeros. There's no
-     *  scheduler associated.
+     *  All parameters take their default values. The scheduler
+     *  is created.
      */
     public CTDirector () {
         super();
@@ -81,8 +135,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  If the name argument is null, then the name is set to the empty
      *  string. The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  The default startTime and stopTime are all zeros. There's no
-     *  scheduler associated.
+     *  All parameters take their default values. The scheduler
+     *  is created.
      *
      *  @param name The name of this director.
      */
@@ -103,8 +157,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  The director is added to the list of objects in the workspace.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     *  The default startTime and stopTime are all zeros. There's no
-     *  scheduler associated.
+     *  All parameters take their default values. The scheduler
+     *  is created.
      *
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
@@ -154,21 +208,22 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _currentTime;
     }
 
-    /** Return the initial step size, as in the parameter.
+    /** Return the initial step size.
+     *  @return the initial step size.
      */
     public final double getInitialStepSize() {
-        return ((DoubleToken)_paramInitStepSize.getToken()).doubleValue();
+        return _initStepSize;
     }
 
-    /** Return the startTime.
-     *  @return the startTime.
+    /** Return the start time.
+     *  @return the start time.
      */
     public final double getStartTime() {
         return _startTime;
     }
 
-    /** Return the stopTime.
-     *  @return the stopTime.
+    /** Return the stop time.
+     *  @return the stop time.
      */
     public final double getStopTime() {
         return _stopTime;
@@ -181,20 +236,20 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _suggestedNextStepSize;
     }
 
-    /** Return the time accuracy such that two time stamp within this
-     *  accuracy is considered identical.
-     *  @return The time accuracy.
+    /** Return the time resolution such that two time stamp within this
+     *  resolution is considered identical.
+     *  @return The time resolution.
      */
-    public final double getTimeAccuracy() {
-        return _timeAccuracy;
+    public final double getTimeResolution() {
+        return _timeResolution;
     }
 
     /** Return the local trancation error tolerant, used for
      *  adjustable step size solvers.
      *  @return The local trancation error tolerant.
      */
-    public final double getLTETolerant() {
-        return _lteTolerant;
+    public final double getLTETolerance() {
+        return _lteTolerance;
     }
 
     /** Return the value accuracy, used for test if implicit method
@@ -204,8 +259,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *
      *  @return The local trancation error tolerant.
      */
-    public final double getValueAccuracy() {
-        return _valueAccuracy;
+    public final double getValueResolution() {
+        return _valueResolution;
     }
 
     /** Return the minimum step size used in variable step size
@@ -310,22 +365,22 @@ public abstract class CTDirector extends StaticSchedulingDirector
                 System.out.println("starttime updating.");
             }
             _startTime = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(param == _paramLTETolerant) {
+        } else if(param == _paramLTETolerance) {
             if(VERBOSE) {
                 System.out.println("LTE tolerant updating.");
             }
-            _lteTolerant = ((DoubleToken)param.getToken()).doubleValue();
+            _lteTolerance = ((DoubleToken)param.getToken()).doubleValue();
         } else if(param == _paramMinStepSize) {
             if(VERBOSE) {
                 System.out.println("minstep updating.");
             }
             _minStepSize =
             ((DoubleToken)param.getToken()).doubleValue();
-        }  else if(param == _paramValueAccuracy) {
-            _valueAccuracy =
+        }  else if(param == _paramValueResolution) {
+            _valueResolution =
             ((DoubleToken)param.getToken()).doubleValue();
-        } else if(param == _paramTimeAccuracy) {
-            _timeAccuracy =
+        } else if(param == _paramTimeResolution) {
+            _timeResolution =
             ((DoubleToken)param.getToken()).doubleValue();
         } else if(param == _paramMaxIterations) {
             _maxIterations =
@@ -399,11 +454,11 @@ public abstract class CTDirector extends StaticSchedulingDirector
             _startTime = 0.0;
             _stopTime = 1.0;
             _initStepSize = 0.1;
-            _minStepSize = 0.001;
+            _minStepSize = 1e-5;
             _maxIterations = 20;
-            _lteTolerant = 1e-4;
-            _valueAccuracy = 1e-6;
-            _timeAccuracy = 1e-6;
+            _lteTolerance = 1e-4;
+            _valueResolution = 1e-6;
+            _timeResolution = 1e-10;
 
 
             _paramStartTime = new CTParameter(
@@ -416,13 +471,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
                 this, "MinimumStepSize", new DoubleToken(_minStepSize));
             _paramMaxIterations = new CTParameter(
                 this, "MaximumIterationsPerStep", new IntToken(_maxIterations));
-            _paramLTETolerant =  new CTParameter(
-                this, "LocalTrancationErrorTolerant",
-                new DoubleToken(_lteTolerant));
-            _paramValueAccuracy =  new CTParameter(
-                this, "ConvergeValueAccuracy", new DoubleToken(_valueAccuracy));
-            _paramTimeAccuracy= new CTParameter(
-                this, "TimeAccuracy", new DoubleToken(_timeAccuracy));
+            _paramLTETolerance =  new CTParameter(
+                this, "LocalTrancationErrorTolerance",
+                new DoubleToken(_lteTolerance));
+            _paramValueResolution =  new CTParameter(
+                this, "ConvergeValueResolution", new DoubleToken(_valueResolution));
+            _paramTimeResolution= new CTParameter(
+                this, "TimeResolution", new DoubleToken(_timeResolution));
 
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
@@ -488,9 +543,9 @@ public abstract class CTDirector extends StaticSchedulingDirector
     private CTParameter _paramInitStepSize;
     private CTParameter _paramMinStepSize;
     private CTParameter _paramMaxIterations;
-    private CTParameter _paramLTETolerant;
-    private CTParameter _paramValueAccuracy;
-    private CTParameter _paramTimeAccuracy;
+    private CTParameter _paramLTETolerance;
+    private CTParameter _paramValueResolution;
+    private CTParameter _paramTimeResolution;
 
 
     //values
@@ -499,9 +554,9 @@ public abstract class CTDirector extends StaticSchedulingDirector
     private double _initStepSize;
     private double _minStepSize;
     private int _maxIterations;
-    private double _lteTolerant;
-    private double _valueAccuracy;
-    private double _timeAccuracy;
+    private double _lteTolerance;
+    private double _valueResolution;
+    private double _timeResolution;
 
 
     private LinkedList _parameterEvents = null;

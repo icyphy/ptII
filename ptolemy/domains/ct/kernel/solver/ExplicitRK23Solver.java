@@ -184,7 +184,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
     public boolean integratorIsSuccess(CTBaseIntegrator integrator){
         try {
             CTDirector dir = (CTDirector)getContainer();
-            double errtol = dir.getLTETolerant();
+            double errtol = dir.getLTETolerance();
             double h = dir.getCurrentStepSize();
             double f = ((DoubleToken)integrator.input.get(0)).doubleValue();
             integrator.setPotentialDerivative(f);
@@ -227,9 +227,9 @@ public class ExplicitRK23Solver extends VariableStepSolver{
         CTDirector dir = (CTDirector)getContainer();
         double lte = (integrator.getAuxVariables())[3];
         double h = dir.getCurrentStepSize();
-        double errtol = dir.getLTETolerant();
+        double errtol = dir.getLTETolerance();
         double newh = 5.0*h;
-        if(lte>dir.getValueAccuracy()) {
+        if(lte>dir.getValueResolution()) {
             newh = h* Math.max(0.5, 0.8*Math.pow((errtol/lte), 1.0/_order));
         }
         if(DEBUG) {

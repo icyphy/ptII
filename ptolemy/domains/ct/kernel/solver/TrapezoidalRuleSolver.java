@@ -189,7 +189,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
             double f2 = ((DoubleToken)integrator.input.get(0)).doubleValue();
             pstate = integrator.getState() + (h*(f1+f2))/(double)2.0;
             double cerror = Math.abs(pstate-integrator.getPotentialState());
-            if( !(cerror < dir.getValueAccuracy())) {
+            if( !(cerror < dir.getValueResolution())) {
                 voteForConverge(false);
             }
             integrator.setPotentialDerivative(f2);
@@ -206,7 +206,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
     public boolean integratorIsSuccess(CTBaseIntegrator integrator){
         try {
             CTDirector dir = (CTDirector)getContainer();
-            double errtol = dir.getLTETolerant();
+            double errtol = dir.getLTETolerance();
             double[] k = integrator.getAuxVariables();
             double lte = 0.5*Math.abs(integrator.getPotentialState() - k[0]);
             integrator.setAuxVariables(1, lte);
@@ -243,9 +243,9 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
         CTDirector dir = (CTDirector)getContainer();
         double lte = (integrator.getAuxVariables())[1];
         double h = dir.getCurrentStepSize();
-        double errtol = dir.getLTETolerant();
+        double errtol = dir.getLTETolerance();
         double newh = 5.0*h;
-        if(lte>dir.getValueAccuracy()) {
+        if(lte>dir.getValueResolution()) {
             newh = h* Math.max(0.5, Math.pow((3.0*errtol/lte), 1.0/3.0));
         }
         if(DEBUG) {
