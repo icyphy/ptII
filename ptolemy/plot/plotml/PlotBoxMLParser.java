@@ -34,11 +34,12 @@ package ptolemy.plot.plotml;
 import ptolemy.plot.PlotBox;
 
 // Java imports.
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.net.URL;
 import java.util.Hashtable;
 import java.util.Stack;
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.net.URL;
 
 // XML imports.
 import com.microstar.xml.*;
@@ -187,7 +188,11 @@ public class PlotBoxMLParser extends HandlerBase {
         }
     }
 
-    /** Resolve an external entity.  This method returns null,
+    /** Resolve an external entity. If the first argument is the
+     *  name of the PlotML PUBLIC DTD ("-//UC Berkeley//DTD PlotML 1//EN"),
+     *  then return a StringReader
+     *  that will read the locally cached version of this DTD
+     *  (the public variable PlotML_DTD_1). Otherwise, return null,
      *  which has the effect of deferring to &AElig;lfred for
      *  resolution of the URI.  Derived classes may return a
      *  a modified URI (a string), an InputStream, or a Reader.
@@ -198,7 +203,13 @@ public class PlotBoxMLParser extends HandlerBase {
      *  @return Null, indicating to use the default system identifier.
      */
     public Object resolveEntity(String publicID, String systemID) {
-        return null;
+        if (publicID != null &&
+                publicID.equals("-//UC Berkeley//DTD PlotML 1//EN")) {
+            // This is the generic MoML DTD.
+            return new StringReader(PlotML_DTD_1);
+        } else {
+            return null;
+        }
     }
 
     /** Start a document.  This method is called just before the parser
@@ -320,6 +331,18 @@ public class PlotBoxMLParser extends HandlerBase {
     public void startExternalEntity(String systemId) {
         _externalEntities.push(systemId);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public members                    ////
+
+    /** The standard PlotML DTD, represented as a string.  This is used
+     *  to parse PlotML data when a compatible PUBLIC DTD is specified.
+     */
+    public static String PlotML_DTD_1 = "<!ELEMENT plot (barGraph | bin | dataset | default | noColor | noGrid | size | title | wrap | xLabel | xLog | xRange | xTicks | yLabel | yLog | yRange | yTicks)*><!ELEMENT barGraph EMPTY><!ATTLIST barGraph width CDATA #IMPLIED offset CDATA #IMPLIED><!ELEMENT bin EMPTY><!ATTLIST bin width CDATA #IMPLIED offset CDATA #IMPLIED><!ELEMENT dataset (m | move | p | point)*><!ATTLIST dataset connected (yes | no) #IMPLIED marks (none | dots | points | various) #IMPLIED name CDATA #IMPLIED stems (yes | no) #IMPLIED><!ELEMENT default EMPTY><!ATTLIST default connected (yes | no) \"yes\" marks (none | dots | points | various) \"none\" stems (yes | no) \"no\"><!ELEMENT noColor EMPTY><!ELEMENT noGrid EMPTY><!ELEMENT reuseDatasets EMPTY><!ELEMENT size EMPTY><!ATTLIST size height CDATA #REQUIRED width CDATA #REQUIRED><!ELEMENT title (#PCDATA)><!ELEMENT wrap EMPTY><!ELEMENT xLabel (#PCDATA)><!ELEMENT xLog EMPTY><!ELEMENT xRange EMPTY><!ATTLIST xRange min CDATA #REQUIRED max CDATA #REQUIRED><!ELEMENT xTicks (tick)+><!ELEMENT yLabel (#PCDATA)><!ELEMENT yLog EMPTY><!ELEMENT yRange EMPTY><!ATTLIST yRange min CDATA #REQUIRED max CDATA #REQUIRED><!ELEMENT yTicks (tick)+><!ELEMENT tick EMPTY><!ATTLIST tick label CDATA #REQUIRED position CDATA #REQUIRED><!ELEMENT m EMPTY><!ATTLIST m x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED><!ELEMENT move EMPTY><!ATTLIST move x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED><!ELEMENT p EMPTY><!ATTLIST p x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED><!ELEMENT point EMPTY><!ATTLIST point x CDATA #IMPLIED y CDATA #REQUIRED lowErrorBar CDATA #IMPLIED highErrorBar CDATA #IMPLIED>";
+
+    // NOTE: The master file for the above DTD is at
+    // $PTII/ptolemy/plot/plotml/plotml.dtd.  If modified, it needs to be also
+    // updated at ptweb/archive/plotml.dtd.
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

@@ -72,7 +72,8 @@ of the data in a PlotML file is:
 <p>
 <pre>
     &lt;?xml version="1.0" standalone="yes"?&gt;
-    &lt;!DOCTYPE plot SYSTEM "<i>location of plotml.dtd</i>"&gt;
+    &lt;!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+	"http://ptolemy.eecs.berkeley.edu/archive/moml.dtd"&gt;
     &lt;plot&gt;
         &lt;title&gt;Sample histogram&lt;/title&gt;
         &lt;xLabel&gt;values&lt;/xLabel&gt;
@@ -115,7 +116,7 @@ Here is an example of a histogram that reads PlotML data from a URL:
 <PARAM NAME="archive"    VALUE="ptolemy/plot/plotmlapplet.jar">
 <PARAM NAME="type"       VALUE="application/x-java-applet;version=1.2">
 <PARAM NAME="background" VALUE="#faf0e6">
-<PARAM NAME="dataurl"    VALUE="sinusoids.txt">
+<PARAM NAME="dataurl"    VALUE="sinusoids.xml">
 <COMMENT>
 <EMBED type="application/x-java-applet;version=1.2"
    width="500"

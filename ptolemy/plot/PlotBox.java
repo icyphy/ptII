@@ -967,16 +967,17 @@ public class PlotBox extends JPanel implements Printable {
 
     /** Write the current data and plot configuration to the
      *  specified stream in PlotML syntax.  PlotML is an XML
-     *  extension for plot data.  The written information is not
-     *  standalone, in that it refers to an external DTD (document type
-     *  definition). The URL (relative or absolute) for the DTD is
+     *  dialect for plot data. The URL (relative or absolute) for the DTD is
      *  given as the second argument.  If that argument is null,
-     *  then standalone file is written, which includes the DTD.
+     *  then the PlotML PUBLIC DTD is referenced, resulting in a file
+     *  that can be read by a PlotML parser without any external file
+     *  references, as long as that parser has local access to the DTD.
      *  The output is buffered, and is flushed and
      *  closed before exiting.  Derived classes should override _write()
      *  rather than this method.
      *  @param out An output stream.
-     *  @param dtd The reference (URL) for the DTD.
+     *  @param dtd The reference (URL) for the DTD, or null to use the
+     *   PUBLIC DTD.
      */
     public void write(OutputStream out, String dtd) {
         // Auto-flush is disabled.
@@ -984,9 +985,10 @@ public class PlotBox extends JPanel implements Printable {
                 false);
         if (dtd == null) {
             output.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
-            output.println("<!DOCTYPE plot [");
-            output.println(_DTD);
-            output.println("]>");
+            output.println(
+                "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
+            output.println(
+                "    \"http://ptolemy.eecs.berkeley.edu/archive/plotml.dtd\">");
         } else {
             output.println("<?xml version=\"1.0\" standalone=\"no\"?>");
             output.println("<!DOCTYPE plot SYSTEM \"" + dtd + "\">");
