@@ -49,7 +49,6 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	PythonScale.xml \
-	Butterfly.xml \
 	JavaScale.xml
 
 EXTRA_SRCS = \
