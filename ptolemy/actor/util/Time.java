@@ -32,6 +32,7 @@ import java.math.BigInteger;
 import ptolemy.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.math.ExtendedMath;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -121,9 +122,9 @@ public class Time implements Comparable {
      *  resulting Time object is a multiple of the precision.
      *  @param director The director with which this time object is associated.
      *  @param timeValue A double value as the specified time value.
-     *  @exception IllegalActionException If the director has an invalid
-     *   value for its time resolution.
      *  @exception ArithmeticException If the argument is NaN.
+     *  @exception IllegalActionException If the given double time value does 
+     *  not match the time resolution. 
      */
     public Time(Director director, double timeValue) throws IllegalActionException {
         _director = director;
@@ -184,6 +185,9 @@ public class Time implements Comparable {
     
     // Indicator to create positve infinite value.
     private static int _POSITIVE_INFINITY = 1;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     // NOTE: For the following constants, the director argument is null
     // because these constants are invariant to any time resolution.
@@ -205,7 +209,7 @@ public class Time implements Comparable {
      *  @param timeValue The amount of the time increment.
      *  @return A new time object with the incremented time value.
      *  @exception ArithmeticException If the result is not a valid
-     *   number (the argument is NaN or the sum would be).
+     *  number (the argument is NaN or the sum would be).
      */
     public Time add(double timeValue) {
         
@@ -238,7 +242,16 @@ public class Time implements Comparable {
         } else if (isInfinite()) {
             return this;
         } else {
-            return new Time(_director, _timeValue.add(_doubleToMultiple(timeValue)));
+            BigInteger quantizedValue;
+            try {
+                quantizedValue = _doubleToMultiple(timeValue);
+            } catch (IllegalActionException e) {
+                throw new ArithmeticException("Can not guarantee the specified " 
+                        + "time resolution " + _director.getTimeResolution() 
+                        + " for the time value " + timeValue + ". Try" 
+                        + " using a larger time resolution.");
+            }
+            return new Time(_director, _timeValue.add(quantizedValue));
         }
     }
 
@@ -430,21 +443,6 @@ public class Time implements Comparable {
         } else if (_isNegativeInfinite) {
             return Double.NEGATIVE_INFINITY;
         } else {
-			// NOTE: A simple computation may help to warn users that
-			// the returned double value loses the specified precisoin.
-			// One example: if time resolution is 1E-12,
-			// any double that is bigger than 8192.0 cannot distinguish itself
-			// from any other bigger values (even slightly bigger with the 
-            // difference as small as the time resolution). Therefore, 8192 is 
-            // the LUB of the set of double values have the time resolution.
-			// NOTE: The strategy to find the LUB for a given time resolution r:
-			// find the smallest N such that time resolution r >=  2^(-1*N);
-			// get M = 52 - N, which is the multiplication we can apply on the
-			// significand without loss of time resolution;
-			// the LUB is approximately (1+1)*2^M.
-			// NOTE: the formula to calculate a decimal value from a binary
-			// representation is (-1)^(sign)x(1+significand)x2^(exponent-127).
-            
             // NOTE: Using doubleValue() here hugely increases the
             // execution time... Could instead use longValue(), but the
             // result would not necessarily be accurate.
@@ -555,14 +553,60 @@ public class Time implements Comparable {
      *  the double by the time resolution.
      *  @param value The value as a double.
      *  @return A BigInteger that specifies this double value as a multiple
-     *   of the resolution given by the associated director.
+     *  of the resolution given by the associated director.
+     *  @exception IllegalActionException If the given double time value does 
+     *  not match the time resolution. 
      */
-    private BigInteger _doubleToMultiple(double value) {
-        // FIXME: when the value is too big a multiple of the resolution,
-        // the division fails to deliver adequate precision.
-        // Is there a better way?  Or throw an exception when
-        // the value is too large relative to the precision.
+    private BigInteger _doubleToMultiple(double value) 
+        throws IllegalActionException {
+        // NOTE: when the value is too big a multiple of the resolution,
+        // the division fails to deliver adequate precision. If this happens,
+        // an illegal action exception will be thrown indicating the double
+        // value does not match the specified time resolution.
+
+        // Here is an example: if time resolution is 1E-12,
+        // any double that is bigger than 8191.999999999999 cannot distinguish 
+        // itself from any other bigger values (even slightly bigger with the 
+        // difference as small as the time resolution). Therefore, 
+        // 8191.999999999999 is the LUB of the set of double values have the 
+        // specified time resolution.
+
+        // NOTE: The strategy to find the LUB for a given time resolution r:
+        // find the smallest N such that time resolution r >=  2^(-1*N);
+        // get M = 52 - N, which is the multiplication we can apply on the
+        // significand without loss of time resolution;
+        // the LUB is (1 + 1 - 1.0/2^(-52)) * 2^M.
+        
+        // For example: with the above example time resolution 1e-12, we get 
+        // N = 40, M = 12. Then we get the LUB as 8191.999999999999. 
+        
+        // NOTE: according to the IEEE754 floating point standard, 
+        // the formula to calculate a decimal value from a binary
+        // representation is (-1)^(sign)x(1+significand)x2^(exponent-127) for 
+        // signal precision and (-1)^(sign)x(1+significand)x2^(exponent-1023)
+        // for double presision.
+        
 		double precision = _director.getTimeResolution();
+        
+        // Calculate the minimum number of bits in the significand to represent
+        // the part after the decimal point. A double is presented with 64 bits 
+        // in computer while 52 bits are allocated for the siginicand. 
+        // Therefore we can safely cast the number of bits into int.
+        int minimumNumberOfBits = 
+            (int)Math.floor(-1*ExtendedMath.log2(precision)) + 1;
+        // the maximum multiplication we can apply on the
+        // significand without loss of time resolution
+        int maximumGain = 52 - minimumNumberOfBits;
+        double lub = ExtendedMath.DOUBLE_PRECISION_SIGNIFICAND_ONLY * 
+            Math.pow(2.0, maximumGain);
+        
+        if (value > lub) {
+            throw new IllegalActionException("The given time value " + value +
+                    " exceeds the maximum allowed value " + lub + ".\n" +
+                    "The given time value does not match the time resolution " 
+                    + precision + ". Try choosing a bigger time resolution.");
+        }
+        
 		return BigInteger.valueOf(Math.round(value/precision));
     }
 
