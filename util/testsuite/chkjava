@@ -129,5 +129,18 @@ do
 	    echo "$results"
 	fi
 
+	# Check for problems with equals signs
+	results=`egrep '[^ ><+&=\!]=' $file`
+	if [ "x$results" != "x" ]; then
+	    echo "$file: contains an equal sign without a leading space"
+	    echo "$results"
+	fi
+
+	# Check for problems with equals signs
+	results=`egrep '=[^ =]' $file`
+	if [ "x$results" != "x" ]; then
+	    echo "$file: contains an equal sign without a trailing space"
+	    echo "$results"
+	fi
 done
 
