@@ -75,7 +75,7 @@ OPTIONAL_FILES = \
 	'InequalitySolver$$1.class' \
 	'InequalitySolver$$Info.class' \
 	'LabeledList$$1.class' \
-	'LabeledList$$SubList.class
+	'LabeledList$$SubList.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
