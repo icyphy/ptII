@@ -24,6 +24,9 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.demo;
@@ -72,8 +75,12 @@ public class AdderApplet extends Applet implements Runnable {
 
         // Initialization
 
-        _ATextField = new TextField("1 0 0 1 1 0 1 1 0 1 1 0 0 1 1 1 0 1 1 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 1 0 1 0 1 0 1 1 0 0 1 1 1 0 0 1 0 0 0 0", 50);
-        _BTextField = new TextField("0 0 1 0 1 1 1 1 0 1 1 0 1 0 1 0 0 1 1 1 0 1 0 1 0 1 1 0 0 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 1 0 1 0 1 0 1 1 1 1 1 1", 50);
+        _ATextField = new TextField("1 0 0 1 1 0 1 1 0 1 1 0 0 1 1 1 0 " +
+                "1 1 0 1 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 1 0 1 0 1 0 1 1 " + 
+                "0 0 1 1 1 0 0 1 0 0 0 0", 50);
+        _BTextField = new TextField("0 0 1 0 1 1 1 1 0 1 1 0 1 0 1 0 0 " +
+                "1 1 1 0 1 0 1 0 1 1 0 0 1 1 1 0 0 1 1 1 0 0 0 1 1 1 1 " +
+                "1 0 1 0 1 0 1 1 1 1 1 1", 50);
         _stopTimeBox = new TextField("30.0", 10);
         _currentTimeLabel = new Label("Current time = 0.0      ");
         _goButton = new Button("Go");
@@ -101,7 +108,7 @@ public class AdderApplet extends Applet implements Runnable {
 
         // Adding A and B in the control panel.
         Panel checkboxPanel = new Panel();
-        checkboxPanel.setLayout(new GridLayout(2,1));
+        checkboxPanel.setLayout(new GridLayout(2, 1));
         Panel AEntry = new Panel();
         Panel BEntry = new Panel();
         checkboxPanel.add(AEntry);
@@ -116,7 +123,7 @@ public class AdderApplet extends Applet implements Runnable {
 
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
-        simulationParam.setLayout(new GridLayout(2,1));
+        simulationParam.setLayout(new GridLayout(2, 1));
         controlPanel.add(simulationParam);
         // Done adding simulation parameter panel.
 
@@ -154,15 +161,18 @@ public class AdderApplet extends Applet implements Runnable {
             // _clock supplies the global tick.
             DEClock _clock = new DEClock(topLevel, "Clock", 1.0, 1.0);
             // a full adder with propagation delay equal to 0.1
-            DEFullAdder _fullAdder = new DEFullAdder(topLevel, "Fulladder", 0.1);
+            DEFullAdder _fullAdder = new DEFullAdder(topLevel,
+                    "Fulladder", 0.1);
 
             // These wave form generators output the given array once, then
             // zeros..
             //double[] a = {0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0};
-            DEWaveForm _A = new DEWaveForm(topLevel, "WaveForm A", null, false, false, 0);
+            DEWaveForm _A = new DEWaveForm(topLevel, "WaveForm A",
+                    null, false, false, 0);
             //double[] b = {0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0};
 
-            DEWaveForm _B = new DEWaveForm(topLevel, "WaveForm B", null, false, false, 0);
+            DEWaveForm _B = new DEWaveForm(topLevel, "WaveForm B",
+                    null, false, false, 0);
 
             _valueOfA = (Parameter)_A.getAttribute("value");
             _valueOfB = (Parameter)_B.getAttribute("value");
@@ -172,7 +182,8 @@ public class AdderApplet extends Applet implements Runnable {
             DERegister _Cout = new DERegister(topLevel, "Reg Cout", null);
 
             // actor to display the result.
-            DELogicAnalyzer _logicAnalyzer = new DELogicAnalyzer(topLevel, "Logic Analyzer", la);
+            DELogicAnalyzer _logicAnalyzer = new DELogicAnalyzer(topLevel,
+                    "Logic Analyzer", la);
 
             // -----------------------
             // Creating connections
