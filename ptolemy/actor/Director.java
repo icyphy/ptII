@@ -406,9 +406,8 @@ public class Director extends NamedObj implements Executable {
     /** Check types on all the connections and resolve undeclared types.
      *  If the container is not an instance of TypedCompositeActor,
      *  do nothing.
-     *  @exception TypeConflictException there are type conflicts in
-     *   the topology.
      */
+    // FIXME: should have a TypeConflictException?
     public void resolveTypes() {
         CompositeActor container = ((CompositeActor)getContainer());
         if ( !(container instanceof TypedCompositeActor)) {
