@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -32,7 +32,7 @@ import pt.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ScalarToken
-/** 
+/**
 A token that contains a reference to an arbitrary scalar object.
 It provides interface for type conversion among different scalar types.
 
@@ -52,7 +52,7 @@ public abstract class ScalarToken extends Token {
 	    throws IllegalActionException {
 	Class myclass = getClass();
 	throw new IllegalActionException("Value in class "
-		+ myclass.getName() + " cannot be converted to a byte" + 
+		+ myclass.getName() + " cannot be converted to a byte" +
 		"without loss of information.");
     }
 

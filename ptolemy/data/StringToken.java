@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -33,7 +33,7 @@ import pt.graph.CPO;
 
 //////////////////////////////////////////////////////////////////////////
 //// StringToken
-/** 
+/**
 A token that contains a string, or more specifically, a reference
 to an instance of String.  The reference is never null, although it may
 be an empty string ("").
@@ -48,13 +48,13 @@ one of the strings will be changed.
 public class StringToken extends ObjectToken {
 
     /** Contruct a token with an empty string.
-     */	
+     */
     public StringToken() {
         this("");
     }
 
     /** Contruct a token with the specified string.
-     */	
+     */
     public StringToken(String value) {
         if (value != null) {
             _value = value;
@@ -66,14 +66,14 @@ public class StringToken extends ObjectToken {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Add the value of the argument Token to this Token. The value of 
-     *  the argument token is converted to a String and concatenated 
+    /** Add the value of the argument Token to this Token. The value of
+     *  the argument token is converted to a String and concatenated
      *  with the value stored in this token. Type resolution
      *  also occurs here, with the returned Token type chosen to achieve
      *  a lossless conversion.
      *  @param tok The token to add to this Token
-     *  @exception IllegalActionException Thrown if the passed token is 
-     *  not of a type that can be added to this Tokens value in a 
+     *  @exception IllegalActionException Thrown if the passed token is
+     *  not of a type that can be added to this Tokens value in a
      *  lossless fashion.
      */
     public Token add(Token tok) throws IllegalActionException {
@@ -87,7 +87,7 @@ public class StringToken extends ObjectToken {
                 String result = _value + ((StringToken)tok).getValue();
                 return new StringToken(result);
             } else if (typeInfo == CPO.STRICT_LESS) {
-                return tok.addR(this); 
+                return tok.addR(this);
             } else {
                 throw new Exception();
             }
@@ -99,13 +99,13 @@ public class StringToken extends ObjectToken {
         }
     }
 
-     /** Add the value of this Token to the argument Token. The value of 
-     *  the argument token is converted to a String and concatenated 
+     /** Add the value of this Token to the argument Token. The value of
+     *  the argument token is converted to a String and concatenated
      *  with the value stored in this token. Type resolution
      *  also occurs here, with the returned Token type chosen to achieve
      *  a lossless conversion.
      *  @param tok The token to concatenate this Token to.
-     *  @exception IllegalActionException Thrown if the passed token 
+     *  @exception IllegalActionException Thrown if the passed token
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      */
@@ -120,9 +120,9 @@ public class StringToken extends ObjectToken {
      *  @param tok The token to be converted to a StringToken.
      *  @exception IllegalActionException Thrown if the conversion
      *  cannot be carried out in a lossless fashion.
-     *  FIXME: does not currently support the lossless hierarchy fully 
-     *  as do not currently have LongMatrix, CompleMatrix or ComplexToken 
-     *  classes. It skips down to the DoubleToken part of the lossless 
+     *  FIXME: does not currently support the lossless hierarchy fully
+     *  as do not currently have LongMatrix, CompleMatrix or ComplexToken
+     *  classes. It skips down to the DoubleToken part of the lossless
      *  type hierarchy.
      */
     static public StringToken convert(Token tok) throws IllegalActionException{
@@ -144,12 +144,12 @@ public class StringToken extends ObjectToken {
         }
     }
 
-    /** Lexicographically test the values of this Token and the 
+    /** Lexicographically test the values of this Token and the
      *  argument Token for equality.
-     *  @param a The token to lexicographically compare the value this 
+     *  @param a The token to lexicographically compare the value this
      *  Token with.
      *  @return BooleanToken indicating result of comparision.
-     *  @exception Thrown if the passed token is not of a type that can be 
+     *  @exception Thrown if the passed token is not of a type that can be
      *   compared this Tokens value.
      */
     public BooleanToken equality(Token a) throws IllegalActionException {
@@ -158,7 +158,7 @@ public class StringToken extends ObjectToken {
                 return new BooleanToken(true);
             } else {
                 return new BooleanToken(false);
-            } 
+            }
        } else {
            String str = "equality method not supported between ";
             str = str + this.getClass().getName();
@@ -172,7 +172,7 @@ public class StringToken extends ObjectToken {
      *  If the argument is null, then the value is set to an empty string
      *  rather than null.
      *  @param init The String to be stored in this token.
-     */	
+     */
     public void fromString(String init) {
         if (init != null) {
             _value = init;
@@ -193,7 +193,7 @@ public class StringToken extends ObjectToken {
      *  If the argument is null, then the value is set to an empty string
      *  rather than null.
      *  @param value The String to store in this token.
-     */	
+     */
     public void setValue(String value) {
         if (value != null) {
             _value = value;
@@ -202,17 +202,17 @@ public class StringToken extends ObjectToken {
         }
     }
 
-    /** Return the value of this Token as a String 
+    /** Return the value of this Token as a String
      */
     public String stringValue() {
         return _value;
     }
-        
+
 
     /** Return the string description of the object.  If there is no such
      *  object, then return a description of the token.
      *  @return The String description of this token.
-     */	
+     */
     public String toString() {
         String str = getClass().getName() + "(" + _value + ")";
         return str;

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -32,7 +32,7 @@ import pt.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ObjectToken
-/** 
+/**
 A token that contains a reference to an arbitrary object.
 Note that when this token is cloned, the clone will refer to exactly
 the same object.  Thus, care must be exercised to ensure that actors do
@@ -47,7 +47,7 @@ which triggers an exception.
 public class ObjectToken extends Token {
 
     /** Contruct an empty token.
-     */	
+     */
     public ObjectToken() {
         super();
     }
@@ -55,7 +55,7 @@ public class ObjectToken extends Token {
     /** Contruct a token with a reference to the specified object.
      *  @exceptions IllegalActionException Argument is not of the appropriate
      *   type (may be thrown by derived classes, but is not thrown here).
-     */	
+     */
     public ObjectToken(Object value)
             throws IllegalActionException {
         setValue(value);
@@ -76,12 +76,12 @@ public class ObjectToken extends Token {
     public Object getObject() {
         return _value;
     }
-    
+
 
     /** Set the value of the token to be a reference to the specified object.
      *  @exceptions IllegalActionException Argument is not of the appropriate
      *   type (may be thrown by derived classes, but is not thrown here).
-     */	
+     */
     public void setValue(Object value)
             throws IllegalActionException {
         _value = value;
@@ -89,7 +89,7 @@ public class ObjectToken extends Token {
 
     /** Return the string description of the object.  If there is no such
      *  object, then return a description of the token.
-     */	
+     */
     public String toString() {
         if (_value != null) {
             return _value.toString();

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -29,7 +29,7 @@ package pt.data;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixToken
-/** 
+/**
 A token that contains a reference to a 2-D double array.
 
 @author Yuhong Xiong
@@ -117,7 +117,7 @@ public class DoubleMatrixToken extends MatrixToken {
 	}
 	return array;
     }
- 
+
     /** Return the content in the token as a 2-D double array.
      */
     public double[][] doubleMatrix() {
@@ -128,12 +128,12 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     // FIXME: uncomment this method after the Complex class is available.
     // public Complex[][] complexMatrix();
- 
+
     /** Return the content in the token as a 2-D Fix array.
      */
     // FIXME: uncomment this method after the Complex class is implemented.
     // public Fix[][] fixMatrix();
- 
+
     /** Return the content in the token as a 2-D integer array.
      */
     public int[][] intMatrix() {
@@ -150,7 +150,7 @@ public class DoubleMatrixToken extends MatrixToken {
 	}
 	return array;
     }
- 
+
     /** Return the content in the token as a 2-D long array.
      */
     public long[][] longMatrix() {
@@ -167,7 +167,7 @@ public class DoubleMatrixToken extends MatrixToken {
 	}
 	return array;
     }
- 
+
     //////////////////////////////////////////////////////////////////////////
     ////                        private variables                         ////
     private double[][] _value = null;

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -31,7 +31,7 @@ import pt.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// MatrixToken
-/** 
+/**
 Abstract base class for tokens that contain a reference to a 2-D array.
 The derived classes should override the clone() method to do a deep copy
 of the token.
@@ -47,7 +47,7 @@ public abstract class MatrixToken extends Token {
     /** Return the number of rows in the matrix.
      */
     public abstract int numRows();
- 
+
     /** Return the number of columns in the matrix.
      */
     public abstract int numColumns();
@@ -59,7 +59,7 @@ public abstract class MatrixToken extends Token {
     /** Return the content in the token as a 2-D double array.
      */
     public abstract double[][] doubleMatrix();
- 
+
     /** Return the content in the token as a 2-D Complex array.
      */
     // FIXME: uncomment this method after the Complex class is available.
@@ -69,11 +69,11 @@ public abstract class MatrixToken extends Token {
      */
     // FIXME: uncomment this method after the Complex class is implemented.
     // public abstract Fix[][] fixMatrix();
- 
+
     /** Return the content in the token as a 2-D integer array.
      */
     public abstract int[][] intMatrix();
- 
+
     /** Return the content in the token as a 2-D long array.
      */
     public abstract long[][] longMatrix();

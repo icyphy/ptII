@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -29,7 +29,7 @@ package pt.data;
 
 //////////////////////////////////////////////////////////////////////////
 //// IntMatrixToken
-/** 
+/**
 A token that contains a reference to a 2-D integer array.
 
 @author Yuhong Xiong
@@ -89,7 +89,7 @@ public class IntMatrixToken extends MatrixToken {
             return _value.length;
         }
     }
- 
+
     /** Return the number of columns in the matrix.  If the matrix is not
         initialized, return 0.
      */
@@ -139,7 +139,7 @@ public class IntMatrixToken extends MatrixToken {
      */
     // FIXME: uncomment this method after the Complex class is available.
     // public Complex[][] complexMatrix();
- 
+
     /** Return the content in the token as a 2-D Fix array.
      */
     // FIXME: uncomment this method after the Complex class is implemented.

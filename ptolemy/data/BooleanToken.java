@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -31,7 +31,7 @@ import pt.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// BooleanToken
-/** 
+/**
  * A token that contains a boolean variable.
  *
  * @author Neil Smyth
@@ -55,7 +55,7 @@ public class BooleanToken extends Token {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /* *Test to see if the argument Token has the same truth value as this 
+    /* *Test to see if the argument Token has the same truth value as this
      *  Token.
      *  @param the Token to compare truth values against.
      *  @exception Thrown if the argument Token is not a BooleanToken
@@ -96,7 +96,7 @@ public class BooleanToken extends Token {
             _value = true;
         }
     }
-    
+
 
     /** Set the value of the token to be the specified value.
      *  @param The boolean value to be contained in this token

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -33,9 +33,9 @@ import java.text.NumberFormat;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleToken
-/** 
+/**
  * A token that contains a double precision number.
- * 
+ *
  * @author Yuhong Xiong, Neil Smyth
  * @see pt.data.Token
  * @see java.text.NumberFormat
@@ -64,7 +64,7 @@ public class DoubleToken extends ScalarToken {
      *  a lossless conversion.
      * FIXME: what do do about long in the next six methods?
      *  @param tok The token to add to this Token.
-     *  @exception IllegalActionException Thrown if the passed token 
+     *  @exception IllegalActionException Thrown if the passed token
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      */
@@ -90,12 +90,12 @@ public class DoubleToken extends ScalarToken {
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
-         
+
     /** Add the value of this Token to the argument Token. Type resolution
      *  also occurs here, with the returned Token type chosen to achieve
      *  a lossless conversion.
      *  @param tok The token to add this Token to.
-     *  @exception IllegalActionException Thrown if the passed token 
+     *  @exception IllegalActionException Thrown if the passed token
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      */
@@ -104,7 +104,7 @@ public class DoubleToken extends ScalarToken {
         double result = tmp.getValue() + _value;
         return new DoubleToken(result);
     }
-   
+
     // Return a reference to a Complex. The real part of the Complex
     // is the value in the token, the imaginary part is set to 0.
     // FIXME: finish after the Complex class is moved to this package.
@@ -135,11 +135,11 @@ public class DoubleToken extends ScalarToken {
     }
 
     /** Divide the value of this Token with the value of the argument Token.
-     *  Type resolution also occurs here, with the returned Token type 
-     *  chosen to achieve a lossless conversion. 
+     *  Type resolution also occurs here, with the returned Token type
+     *  chosen to achieve a lossless conversion.
      *  @param tok The token to divide this Token by
-     *  @exception IllegalActionException Thrown if the passed token is 
-     *  not of a type that can be divide this Tokens value by in a 
+     *  @exception IllegalActionException Thrown if the passed token is
+     *  not of a type that can be divide this Tokens value by in a
      *  lossless fashion.
      */
     public Token divide(Token tok) throws IllegalActionException {
@@ -169,7 +169,7 @@ public class DoubleToken extends ScalarToken {
      *  also occurs here, with the returned Token type chosen to achieve
      *  a lossless conversion.
      *  @param tok The token to be divided by the value of this Token.
-     *  @exception IllegalActionException Thrown if the passed token 
+     *  @exception IllegalActionException Thrown if the passed token
      *   is not of a type that can be divided by this Tokens value in
      *   a lossless fashion.
      */
@@ -178,7 +178,7 @@ public class DoubleToken extends ScalarToken {
         double result = tmp.getValue() / _value;
         return new DoubleToken(result);
     }
-  
+
     /** Return the value in the token as a double.
      */
     public double doubleValue() {
@@ -186,10 +186,10 @@ public class DoubleToken extends ScalarToken {
     }
 
     /** Test the values of this Token and the argument Token for equality.
-     *  Type resolution also occurs here, with the returned Token type 
-     *  chosen to achieve a lossless conversion. 
+     *  Type resolution also occurs here, with the returned Token type
+     *  chosen to achieve a lossless conversion.
      *  @param tok The token to divide this Token by
-     *  @exception IllegalActionException Thrown if the passed token is 
+     *  @exception IllegalActionException Thrown if the passed token is
      *  not of a type that can be compared with this Tokens value.
      */
     public BooleanToken equality(Token tok) throws IllegalActionException {
@@ -210,7 +210,7 @@ public class DoubleToken extends ScalarToken {
                 return new BooleanToken(false);
             } else {
                 throw new Exception();
-            }            
+            }
         } catch (Exception ex) {
             String str = "equality method not supported between";
             str = str + this.getClass().getName() + " and ";
@@ -232,7 +232,7 @@ public class DoubleToken extends ScalarToken {
 	    throw new IllegalArgumentException(e.getMessage());
 	}
     }
-    
+
     /** Get the double value contained by this token.
      */
     public double getValue() {
@@ -240,8 +240,8 @@ public class DoubleToken extends ScalarToken {
     }
 
     /** Get the value of this Token modulo the value of the argument Token.
-     *  Type resolution also occurs here, with the returned Token type 
-     *  chosen to achieve a lossless conversion. 
+     *  Type resolution also occurs here, with the returned Token type
+     *  chosen to achieve a lossless conversion.
      *  @param tok The token to modulo this Token by
      *  @exception IllegalActionException Thrown if the passed token is
      *  not of a type that can be  used with modulo in a lossless fashion.
@@ -268,11 +268,11 @@ public class DoubleToken extends ScalarToken {
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
-    /** Modulo the value of the argument Token by this Token. 
-     *  Type resolution also occurs here, with the returned Token 
+    /** Modulo the value of the argument Token by this Token.
+     *  Type resolution also occurs here, with the returned Token
      *  type chosen to achieve a lossless conversion.
      *  @param tok The token to apply modulo to by the value of this Token.
-     *  @exception IllegalActionException Thrown if the passed token 
+     *  @exception IllegalActionException Thrown if the passed token
      *   is not of a type that can apply modulo by this Tokens value in
      *   a lossless fashion.
      */
@@ -281,14 +281,14 @@ public class DoubleToken extends ScalarToken {
         double result = tmp.getValue() %  _value;
         return new DoubleToken(result);
     }
-   
+
 
     /** Multiply the value of this Token with the value of the argument Token.
-     *  Type resolution also occurs here, with the returned Token type 
-     *  chosen to achieve a lossless conversion. 
+     *  Type resolution also occurs here, with the returned Token type
+     *  chosen to achieve a lossless conversion.
      *  @param tok The token to multiply this Token by.
-     *  @exception IllegalActionException Thrown if the passed token is 
-     *  not of a type that can be multiplied by this Tokens value in 
+     *  @exception IllegalActionException Thrown if the passed token is
+     *  not of a type that can be multiplied by this Tokens value in
      *  a lossless fashion.
      */
     public Token multiply(Token tok) throws IllegalActionException {
@@ -311,14 +311,14 @@ public class DoubleToken extends ScalarToken {
             str = str + this.getClass().getName() + " and ";
             str = str + tok.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
-        } 
+        }
     }
-   
-    /** Multiply the value of the argument Token by this Token. 
-     *  Type resolution also occurs here, with the returned Token 
+
+    /** Multiply the value of the argument Token by this Token.
+     *  Type resolution also occurs here, with the returned Token
      *  type chosen to achieve a lossless conversion.
      *  @param tok The token to be multiplied by the value of this Token.
-     *  @exception IllegalActionException Thrown if the passed token 
+     *  @exception IllegalActionException Thrown if the passed token
      *   is not of a type that can be multiplied by this Tokens value in
      *   a lossless fashion.
      */
@@ -327,14 +327,14 @@ public class DoubleToken extends ScalarToken {
         double result = tmp.getValue() * _value;
         return new DoubleToken(result);
     }
-    
-    /** Returns the multiplicativeive identity. 
+
+    /** Returns the multiplicativeive identity.
      */
     public Token one() {
         return new DoubleToken(1.0);
     }
 
-    /** Set the value in the token 
+    /** Set the value in the token
      *  @param d The new value for the token
      */
     public void setValue(double d) {
@@ -349,11 +349,11 @@ public class DoubleToken extends ScalarToken {
         return nf.format(_value);
     }
 
-    /** Subtract the value of the argument Token from this Token. Type 
-     *  resolution also occurs here, with the returned Token type chosen to 
-     *  achieve a lossless conversion. 
+    /** Subtract the value of the argument Token from this Token. Type
+     *  resolution also occurs here, with the returned Token type chosen to
+     *  achieve a lossless conversion.
      *  @param tok The token to subtract to this Token.
-     *  @exception IllegalActionException Thrown if the passed token is 
+     *  @exception IllegalActionException Thrown if the passed token is
      *   not of a type that can be subtracted from this Tokens value in
      *   a lossless fashion.
      */
@@ -380,11 +380,11 @@ public class DoubleToken extends ScalarToken {
         }
     }
 
-    /** Subtract the value of this Token from the argument Token. Type 
-     *  resolution also occurs here, with the returned Token type 
+    /** Subtract the value of this Token from the argument Token. Type
+     *  resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
      *  @param tok The token to add this Token to.
-     *  @exception IllegalActionException Thrown if the passed token 
+     *  @exception IllegalActionException Thrown if the passed token
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      */
@@ -393,21 +393,21 @@ public class DoubleToken extends ScalarToken {
         double result = _value - tmp.getValue();
         return new DoubleToken(result);
     }
-   
+
     /** Return a description of the token as a string.
      *  In this base class, we return the fully qualified class name.
-     */	
+     */
     public String toString() {
         String str =  getClass().getName() + "(" + stringValue() + ")";
         return str;
     }
 
-    /** Returns the additive identity. 
+    /** Returns the additive identity.
      */
     public Token zero() {
         return new DoubleToken(0);
     }
-        
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                        private variables                         ////

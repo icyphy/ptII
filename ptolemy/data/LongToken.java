@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -32,9 +32,9 @@ import pt.graph.CPO;
 
 //////////////////////////////////////////////////////////////////////////
 //// LongToken
-/** 
+/**
  * A token that contains an long integer number.
- * 
+ *
  * @author Neil Smyth, Yuhong Xiong
  * $Id$
  */
@@ -60,7 +60,7 @@ public class LongToken extends ScalarToken {
      *  also occurs here, with the returned Token type chosen to achieve
      *  a lossless conversion.
      *  @param tok The token to add to this Token.
-     *  @exception IllegalActionException Thrown if the passed token 
+     *  @exception IllegalActionException Thrown if the passed token
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      */
@@ -86,12 +86,12 @@ public class LongToken extends ScalarToken {
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
-         
+
     /** Add the value of this Token to the argument Token. Type resolution
      *  also occurs here, with the returned Token type chosen to achieve
      *  a lossless conversion.
      *  @param tok The token to add this Token to.
-     *  @exception IllegalActionException Thrown if the passed token 
+     *  @exception IllegalActionException Thrown if the passed token
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      */
@@ -100,7 +100,7 @@ public class LongToken extends ScalarToken {
         long result = tmp.getValue() + _value;
         return new LongToken(result);
     }
-   
+
      /** Used to convert Token types further down the type hierarchy to
      *  the type of this Token
      *  @param tok The token to be converted to a LongToken.
@@ -123,12 +123,12 @@ public class LongToken extends ScalarToken {
         }
     }
 
-     
+
     /** Test the values of this Token and the argument Token for equality.
-     *  Type resolution also occurs here, with the returned Token type 
-     *  chosen to achieve a lossless conversion. 
+     *  Type resolution also occurs here, with the returned Token type
+     *  chosen to achieve a lossless conversion.
      *  @param tok The token to divide this Token by
-     *  @exception IllegalActionException Thrown if the passed token is 
+     *  @exception IllegalActionException Thrown if the passed token is
      *  not of a type that can be compared with this Tokens value.
      */
     public BooleanToken equality(Token tok) throws IllegalActionException {
@@ -148,7 +148,7 @@ public class LongToken extends ScalarToken {
                 }
                 return new BooleanToken(false);
             } else {
-                throw new Exception();            
+                throw new Exception();
             }
         } catch (Exception ex) {
             String str = "equality method not supported between";
@@ -171,7 +171,7 @@ public class LongToken extends ScalarToken {
 	    throw new IllegalArgumentException(e.getMessage());
 	}
     }
-    
+
     /** Get the long value contained by this token.
      */
     public long getValue() {
@@ -185,8 +185,8 @@ public class LongToken extends ScalarToken {
     }
 
     /** Get the value of this Token modulo the value of the argument Token.
-     *  Type resolution also occurs here, with the returned Token type 
-     *  chosen to achieve a lossless conversion. 
+     *  Type resolution also occurs here, with the returned Token type
+     *  chosen to achieve a lossless conversion.
      *  @param tok The token to modulo this Token by
      *  @exception IllegalActionException Thrown if the passed token is
      *  not of a type that can be  used with modulo in a lossless fashion.
@@ -213,11 +213,11 @@ public class LongToken extends ScalarToken {
             throw new IllegalActionException(str + ": " + ex.getMessage());
         }
     }
-    /** Modulo the value of the argument Token by this Token. 
-     *  Type resolution also occurs here, with the returned Token 
+    /** Modulo the value of the argument Token by this Token.
+     *  Type resolution also occurs here, with the returned Token
      *  type chosen to achieve a lossless conversion.
      *  @param tok The token to apply modulo to by the value of this Token.
-     *  @exception IllegalActionException Thrown if the passed token 
+     *  @exception IllegalActionException Thrown if the passed token
      *   is not of a type that can apply modulo by this Tokens value in
      *   a lossless fashion.
      */
@@ -226,14 +226,14 @@ public class LongToken extends ScalarToken {
         long result = tmp.getValue() %  _value;
         return new LongToken(result);
     }
-   
+
 
     /** Multiply the value of this Token with the value of the argument Token.
-     *  Type resolution also occurs here, with the returned Token type 
-     *  chosen to achieve a lossless conversion. 
+     *  Type resolution also occurs here, with the returned Token type
+     *  chosen to achieve a lossless conversion.
      *  @param tok The token to multiply this Token by.
-     *  @exception IllegalActionException Thrown if the passed token is 
-     *  not of a type that can be multiplied by this Tokens value in 
+     *  @exception IllegalActionException Thrown if the passed token is
+     *  not of a type that can be multiplied by this Tokens value in
      *  a lossless fashion.
      */
     public Token multiply(Token tok) throws IllegalActionException {
@@ -256,14 +256,14 @@ public class LongToken extends ScalarToken {
             str = str + this.getClass().getName() + " and ";
             str = str + tok.getClass().getName();
             throw new IllegalActionException(str + ": " + ex.getMessage());
-        } 
+        }
     }
-   
-    /** Multiply the value of the argument Token by this Token. 
-     *  Type resolution also occurs here, with the returned Token 
+
+    /** Multiply the value of the argument Token by this Token.
+     *  Type resolution also occurs here, with the returned Token
      *  type chosen to achieve a lossless conversion.
      *  @param tok The token to be multiplied by the value of this Token.
-     *  @exception IllegalActionException Thrown if the passed token 
+     *  @exception IllegalActionException Thrown if the passed token
      *   is not of a type that can be multiplied by this Tokens value in
      *   a lossless fashion.
      */
@@ -272,14 +272,14 @@ public class LongToken extends ScalarToken {
         long result = tmp.getValue() * _value;
         return new LongToken(result);
     }
-    
-    /** Returns the multiplicative identity. 
+
+    /** Returns the multiplicative identity.
      */
     public Token one() {
         return new LongToken(1);
     }
 
-    /** Set the value in the token 
+    /** Set the value in the token
      *  @param d The new value for the token
      */
     public void setValue(long d) {
@@ -292,11 +292,11 @@ public class LongToken extends ScalarToken {
         return Long.toString(_value);
     }
 
-    /** Subtract the value of the argument Token from this Token. Type 
-     *  resolution also occurs here, with the returned Token type chosen to 
-     *  achieve a lossless conversion. 
+    /** Subtract the value of the argument Token from this Token. Type
+     *  resolution also occurs here, with the returned Token type chosen to
+     *  achieve a lossless conversion.
      *  @param tok The token to subtract to this Token.
-     *  @exception IllegalActionException Thrown if the passed token is 
+     *  @exception IllegalActionException Thrown if the passed token is
      *   not of a type that can be subtracted from this Tokens value in
      *   a lossless fashion.
      */
@@ -323,11 +323,11 @@ public class LongToken extends ScalarToken {
         }
     }
 
-    /** Subtract the value of this Token from the argument Token. Type 
-     *  resolution also occurs here, with the returned Token type 
+    /** Subtract the value of this Token from the argument Token. Type
+     *  resolution also occurs here, with the returned Token type
      *  chosen to achieve a lossless conversion.
      *  @param tok The token to add this Token to.
-     *  @exception IllegalActionException Thrown if the passed token 
+     *  @exception IllegalActionException Thrown if the passed token
      *   is not of a type that can be added to this Tokens value in
      *   a lossless fashion.
      */
@@ -336,7 +336,7 @@ public class LongToken extends ScalarToken {
         long result = _value - tmp.getValue();
         return new LongToken(result);
     }
-   
+
     /** Return a representation of the token as a String.
      */
     public String toString() {
@@ -344,12 +344,12 @@ public class LongToken extends ScalarToken {
         return str;
     }
 
-    /** Returns the additive identity. 
+    /** Returns the additive identity.
      */
     public Token zero() {
         return new LongToken(0);
     }
-        
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                        private variables                         ////
