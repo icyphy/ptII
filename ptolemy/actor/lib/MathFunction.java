@@ -1,4 +1,4 @@
-/* An actor that outputs a specified math function of the input.
+/* An actor that computes a specified math function of the input.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -60,12 +60,12 @@ This is the default function for this actor
 If the argument is NaN, then the result is NaN.
 <li> <b>log</b>: The natural logarithm function.
 If the argument is NaN, then the result is NaN.
+<li> <b>remainder</b>: The remainder after division.
+If the second operand is zero, then the result is NaN.
 <li> <b>square</b>: The square function
 If the argument is NaN, then the result is NaN.
 <li> <b>sqrt</b>: The square root function.
 If the argument is NaN, then the result is NaN.
-<li> <b>remainder</b>: The remainder after division.
-If the second operand is zero, then the result is NaN.
 </ul>
 <p>
 NOTE: Some functions like exp, log, square, and sqrt act on a single
@@ -96,13 +96,19 @@ public class MathFunction extends TypedAtomicActor {
         // Parameters
         function = new StringAttribute(this, "function");
         function.setExpression("exp");
-        _function = EXP;
+        _function = _EXP;
 
         // Ports
-        firstOperand = new TypedIOPort(this, "firstOperand", true, false);
-        output = new TypedIOPort(this, "output", false, true);
+        // secondOperand port is not allocated in the constructor
+        // instead it will allocated dynamically during run-time
+        
+        firstOperand = new TypedIOPort(this, "firstOperand");
+        firstOperand.setInput(true);
+        output = new TypedIOPort(this, "output");
+        output.setOutput(true);
         firstOperand.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
+        
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -141,33 +147,33 @@ public class MathFunction extends TypedAtomicActor {
             throws  IllegalActionException {
         try {
             if (attribute == function) {
-                String spec = function.getExpression();
-                if (spec.equals("exp")) {
-                    _function = EXP;
+                String functionName = function.getExpression();
+                if (functionName.equals("exp")) {
+                    _function = _EXP;
                     if (secondOperand != null) {
                         secondOperand.setContainer(null);
                     }
-                } else if (spec.equals("log")) {
-                    _function = LOG;
+                } else if (functionName.equals("log")) {
+                    _function = _LOG;
                     if (secondOperand != null) {
                         secondOperand.setContainer(null);
                     }
-                } else if (spec.equals("remainder")) {
-                    _function = REMAINDER;
+                } else if (functionName.equals("remainder")) {
+                    _function = _REMAINDER;
                     _createSecondPort();
-                } else if (spec.equals("square")) {
-                    _function = SQUARE;
+                } else if (functionName.equals("square")) {
+                    _function = _SQUARE;
                     if (secondOperand != null) {
                         secondOperand.setContainer(null);
                     }
-                } else if (spec.equals("sqrt")) {
-                    _function = SQRT;
+                } else if (functionName.equals("sqrt")) {
+                    _function = _SQRT;
                     if (secondOperand != null) {
                         secondOperand.setContainer(null);
                     }
                 } else {
                     throw new IllegalActionException(this,
-                            "Unrecognized math function: " + spec);
+                            "Unrecognized math function: " + functionName);
                 }
             } else {
                 super.attributeChanged(attribute);
@@ -177,21 +183,21 @@ public class MathFunction extends TypedAtomicActor {
         }
     }
 
-    /** Compute the specified math function of the input. Consumes at most one
-     *  token on each input port during firing.
+    /** This computes the specified math function of the input. This consumes at 
+     *  most one token on each input port during firing.
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         if (firstOperand.hasToken(0)) {
             double input1 = ((DoubleToken) firstOperand.get(0)).doubleValue();
-            double input2 = 0;
-            if (_function == REMAINDER) {
+            double input2 = 1.0;
+            if (_function == _REMAINDER) {
                 if (secondOperand.hasToken(0)) {
                     input2 =
                         ((DoubleToken) secondOperand.get(0)).doubleValue();
                 }
-            }
+            } 
             output.send(0, new DoubleToken(_doFunction(input1, input2)));
         }
     }
@@ -214,17 +220,19 @@ public class MathFunction extends TypedAtomicActor {
      */
     public int iterate(int count) throws IllegalActionException {
 	// Check whether we need to reallocate the output token array.
+	
+	    Token[] inArray1;
+	    Token[] inArray2;
+
         if (count > _resultArray.length) {
             _resultArray = new DoubleToken[count];
         }
 
         if (firstOperand.hasToken(0, count)) {
-            Token[] inArray1 = firstOperand.get(0, count);
-
-
-            if (_function == REMAINDER) {
+            if (_function == _REMAINDER) {
                 if (secondOperand.hasToken(0, count)) {
-                    Token[] inArray2 = secondOperand.get(0, count);
+                    inArray1 = firstOperand.get(0, count);
+                    inArray2 = secondOperand.get(0, count);
                     for (int i = 0; i < count; i++) {
                         double input1 =
                             ((DoubleToken)(inArray1[i])).doubleValue();
@@ -239,6 +247,7 @@ public class MathFunction extends TypedAtomicActor {
                     return NOT_READY;
                 }
             } else {
+                inArray1 = firstOperand.get(0,count);
                 for(int i = 0; i < count ; i++) {
                     double input1 = ((DoubleToken)(inArray1[i])).doubleValue();
                     _resultArray[i] = new DoubleToken(_doFunction(input1, 0));
@@ -249,6 +258,8 @@ public class MathFunction extends TypedAtomicActor {
         } else {
             return NOT_READY;
         }
+        // Note: constants COMPLETED and NOT_READY are defined in
+        // ptolemy.actor.Executable
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -263,39 +274,41 @@ public class MathFunction extends TypedAtomicActor {
         if (secondOperand == null) {
             secondOperand = new TypedIOPort(this, "secondOperand", true, false);
         } else if (secondOperand.getContainer() == null) {
-            secondOperand = new TypedIOPort(this, "secondOperand", true, false);
+            secondOperand.setContainer(this);
         }
         secondOperand.setTypeEquals(BaseType.DOUBLE);
     }
 
 
     /** Calculate the function on the given argument.
-     *  @param in The input value.
+     *  @param input1 The first input value.
+     *  @param input2 The second input value.
      *  @return The result of applying the function.
      */
     private double _doFunction(double input1, double input2) {
         double result;
         switch(_function) {
-        case EXP:
+        case _EXP:
             result = Math.exp(input1);
             break;
-        case LOG:
+        case _LOG:
             result = Math.log(input1);
             break;
-        case SQUARE:
+        case _SQUARE:
             result = input1 * input1;
             break;
-        case SQRT:
+        case _SQRT:
             result = Math.sqrt(input1);
             break;
-        case REMAINDER:
+        case _REMAINDER:
             result = input1 % input2;
             break;
         default:
             throw new InternalErrorException(
                     "Invalid value for _function private variable. "
                     + "MathFunction actor (" + getFullName()
-                    + ")");
+                    + ")"
+                    + " on function type " + _function);
         }
         return result;
     }
@@ -303,16 +316,16 @@ public class MathFunction extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private DoubleToken[] _resultArray = new DoubleToken[1];
+    private DoubleToken[] _resultArray = new DoubleToken[0];
 
     // An indicator for the function to compute.
     private int _function;
 
     // Constants used for more efficient execution.
-    private static final int EXP = 0;
-    private static final int LOG = 1;
-    private static final int SQUARE = 2;
-    private static final int SQRT = 3;
-    private static final int REMAINDER = 4;
+    private static final int _EXP = 0;
+    private static final int _LOG = 1;
+    private static final int _SQUARE = 2;
+    private static final int _SQRT = 3;
+    private static final int _REMAINDER = 4;
 }
 
