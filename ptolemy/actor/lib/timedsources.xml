@@ -11,15 +11,6 @@
 <doc>Create a generalized square wave</doc>
 </entity>
 
-<!-- NOTE: Appears also in sequencesources.xml. -->
-<entity name="Const" class="ptolemy.actor.lib.Const">
-<doc>Create a constant signal</doc>
-   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-      <property name="attributeName" value="value"/>
-      <property name="displayWidth" value="40"/>
-   </property>
-</entity>
-
 <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
 <doc>Output the current time.</doc>
 </entity>

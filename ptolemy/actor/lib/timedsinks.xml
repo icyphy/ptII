@@ -6,18 +6,6 @@
     <?moml
       <group>
 <doc>Sinks that are time based. </doc>
-<!-- NOTE: Appears also in sequencesinks.xml. -->
-<entity name="Discard" class="ptolemy.actor.lib.Discard"/>
-<!-- NOTE: Appears also in sequencesinks.xml. -->
-<entity name="MonitorValue" class="ptolemy.actor.lib.MonitorValue">
-<doc>Monitor and display values</doc>
-   <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
-      <property name="attributeName" value="value"/>
-      <property name="displayWidth" value="10"/>
-   </property>
-</entity>
-<!-- NOTE: Appears also in sequencesinks.xml. -->
-<entity name="Recorder" class="ptolemy.actor.lib.Recorder"/>
 <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter"/>
 <entity name="TimedScope" class="ptolemy.actor.lib.gui.TimedScope"/>
       </group>

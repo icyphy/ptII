@@ -3,6 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="sinks" class="ptolemy.moml.EntityLibrary">
   <doc>Domain-polymorphic sinks</doc>
+  <input source="ptolemy/actor/lib/genericsinks.xml"/>
   <input source="ptolemy/actor/lib/timedsinks.xml"/>
   <input source="ptolemy/actor/lib/sequencesinks.xml"/>
 </entity>

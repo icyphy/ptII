@@ -2,6 +2,7 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="sources" class="ptolemy.moml.EntityLibrary">
+  <input source="ptolemy/actor/lib/genericsources.xml"/>
   <input source="ptolemy/actor/lib/timedsources.xml"/>
   <input source="ptolemy/actor/lib/sequencesources.xml"/>
 </entity>
