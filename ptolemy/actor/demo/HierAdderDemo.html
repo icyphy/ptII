@@ -1,0 +1,71 @@
+<!-- $Id$-->
+<HTML>
+<HEAD>
+<TITLE>Ptolemy II Type System Demo</TITLE>
+</HEAD>
+<BODY BGCOLOR="WHITE">
+
+<H1>
+Ptolemy II Type System Demo</H1>
+(note: this demo requires the DE domain.)
+<p>
+This demo is based on the following DE model:
+<p>
+<center><IMG SRC="img/HierAdderDemo.gif"></center>
+
+The upper composite actor is transparent, and the lower one is opaque. 
+Each composite contains a Clock and a Ramp. The output of
+both composites are added together and then plotted.
+<p>
+When this demo runs, it prints out the types of all the ports in
+the model at various stages of the execution. The declared type of
+the Clock output and Ramp input is <i>Token</i>, which corresponds to a
+pure event without a value. The declared type of the plotter is
+<i>Double</i>. The types of all the other ports are undeclared initially.
+<p>
+Each Ramp actor has two Parameters, the initial value and the step
+size. In this demo, The upper Ramp has initial value 0, step size 0.5;
+the lower Ramp has initial value 2, step size 0 (so it sends out the
+constant 2 at each firing.) At the initialization stage of the execution,
+both Ramps evaluate their Parameters, and set the output type, which
+is the type of the token representing the sum of the initial value
+and the step size. In this case, the output type for the upper Ramp is
+<i>Double</i>, the lower one is <i>Int</i>.
+<p>
+After type resolution, the output of the lower composite actor is
+resolved to <i>Int</i>, the ports on the Adder are resolved to
+<i>Double</i>. The type of the  transparent port on the upper composite
+acotr remains undeclared since it is not involved in type resolution
+(and data transfer).
+<p>
+
+<H3>This Demo Shows:</H3>
+<UL>
+  <li> Type resolution for polymorphic actor (Adder).
+  <li> Ports with different types can be connected together.
+       (The two ports connected with the Adder input have different
+       types.)
+  <li> Run-time type conversion. (The IntToken from the lower Ramp
+       is converted to DoubleToken before sent to the Adder. This is
+       not shown explicitly in the demo.)
+  <li> Type resolution works across transparent and opaque composite
+       actors.
+  <li> The adder in the polymorphic actor library works in the DE domain.
+  <li> The use of the pure event type <i>Token</i>. (The output of
+       the Clock and the trigger input of the Ramp have this type).
+</UL>
+
+<H3>To Run This Demo:</H3>
+<pre>
+  cd ~ptII/ptolemy/domains/de/demo
+  setenv CLASSPATH ~ptII
+  jtclsh
+  source HierAdderDemo.tcl
+</pre>
+
+<BR>
+<HR>Copyright &copy; 1998 The Regents of the University of California.
+All rights reserved.
+<BR>Last updated: $Date$, comments to:&nbsp;<author>ptII@eecs.berkeley.edu</author>
+</BODY>
+</HTML>
