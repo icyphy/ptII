@@ -31,6 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.security;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.ObjectToken;
@@ -79,7 +80,7 @@ which will create a keystore store password and key password is
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class KeyReader extends Source {
+public class KeyReader extends KeyStoreActor {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -92,42 +93,21 @@ public class KeyReader extends Source {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        output.setTypeEquals(BaseType.OBJECT);
-
-        alias = new StringParameter(this, "alias");
-        alias.setExpression("claudius");
-        // We could try to set the alias choices here, but instead
-        // we wait until initialize() so that we are sure the
-        // KeyStore file is present.
-
-        fileOrURL = new FileParameter(this, "fileOrURL");
-        // To create the initial default KeyStore, do
-        // cd $PTII; make ptKeystore
-        fileOrURL.setExpression("$PTII/ptKeystore");
-
         getPublicKey = new Parameter(this, "getPublicKey",
                 new BooleanToken(true));
         getPublicKey.setTypeEquals(BaseType.BOOLEAN);                
 
-        keyPassword = new StringParameter(this, "keyPassword");
-        keyPassword.setExpression(
-                "this.is.not.secure,it.is.for.testing.only");
+        output = new TypedIOPort(this, "output", false, true);
+        output.setTypeEquals(BaseType.OBJECT);
 
-        storePassword = new StringParameter(this, "storePassword");
-        storePassword.setExpression(
-                "this.is.not.secure,it.is.for.testing.only");
-        try {
-            // We could have parameters that allow the user to set
-            // the KeyStore type and provider, but since most users
-            // will just use the default, let's wait.
-            // BTW - to see the KeyStore type, run keytool -list
-            _keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                    "Failed to get instance of key store");
-        }
+        trigger = new TypedIOPort(this, "trigger", true, false);
+        // NOTE: It used to be that trigger was set to GENERAL, but this
+        // isn't really what we want.  What we want is an undeclared type
+        // that can resolve to anything.  EAL 12/31/02
+        // trigger.setTypeEquals(BaseType.GENERAL);
+        trigger.setMultiport(true);
 
-        signatureAlgorithm = new StringParameter(this, "signatureAlgorithm");
+       signatureAlgorithm = new StringParameter(this, "signatureAlgorithm");
         signatureAlgorithm.setExpression(
                 "Unknown, will be set after first run");
         signatureAlgorithm.setVisibility(Settable.NOT_EDITABLE);
@@ -142,29 +122,21 @@ public class KeyReader extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The alias of the certificate that we are looking for.
-     *  The default alias is the String "claudius"
-     */
-    public StringParameter alias;
-
-    /** The file name or URL from which to read.  This is a string with
-     *  any form accepted by FileParameter.
-     *  The initial default is "$PTII/ptKeystore".  To create the
-     *  initial default keystore, run "cd $PTII; make ptKeystore"
-     *  @see FileParameter
-     */
-    public FileParameter fileOrURL;
-
     /** True if we should get the public key.  False if we should
      *  get the private key.  The default value is true.
      *  Getting the private key requires using the keyPassword.
      */
     public Parameter getPublicKey;
 
-    /** The password to the Key itself.
-     *  The default password is "this.is.not.secure,it.is.for.testing.only".
+    /** The output port.  This port contains an ObjectToken that contains
+     *  a java.security.Key
      */
-    public StringParameter keyPassword;
+    public TypedIOPort output = null;
+
+    /** The trigger port.  The type of this port is undeclared, meaning
+     *  that it will resolve to any data type.
+     */
+    public TypedIOPort trigger = null;
 
     /** The name of the signature algorithm used to generate the key.
      *  This StringParameter is not settable by the user, it is set
@@ -172,11 +144,6 @@ public class KeyReader extends Source {
      *  obtained from the KeyStore.
      */
     public StringParameter signatureAlgorithm;
-
-    /** The password to the KeyStore.
-     *  The default password is "this.is.not.secure,it.is.for.testing.only".
-     */
-    public StringParameter storePassword;
 
     /** True if the certificate associated with a key should be verified.
      *  False if the certificate (if any) need not be verified.
@@ -203,20 +170,12 @@ public class KeyReader extends Source {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == alias) {
-            _updateKeyNeeded = true;
-            _alias = alias.getExpression();
-        } else if (attribute == fileOrURL) {
-            _updateKeyNeeded = true;
-            // Would it be worth checking to see if the URL exists and
-            // is readable?
-            _url = fileOrURL.asURL();
-        } else if (attribute == getPublicKey) {
-            _updateKeyNeeded = true;
+        if (attribute == getPublicKey) {
+            _updateKeyStoreNeeded = true;
             _getPublicKey =
                 ((BooleanToken)getPublicKey.getToken()).booleanValue();
         } else if (attribute == verifyCertificate) {
-            _updateKeyNeeded = true;
+            _updateKeyStoreNeeded = true;
             _verifyCertificate = 
                 ((BooleanToken)verifyCertificate.getToken()).booleanValue();
         } else {
@@ -224,115 +183,86 @@ public class KeyReader extends Source {
         }
     }
 
-    /** Output the key that was created in initialize().
+    /** Output the java.security.Key that was read in
+     *  Read at most one input token from each channel of the trigger
+     *  input and discard it.  If the trigger input is not connected,
+     *  then this method does nothing.  Derived classes should be
+     *  sure to call super.fire(), or to consume the trigger input
+     *  tokens themselves, so that they aren't left unconsumed.
+     *  @exception IllegalActionException Not thrown in this base class.
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        _updateKey();
+        for (int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.hasToken(i)) {
+                trigger.get(i);
+            }
+        }
         output.broadcast(new ObjectToken(_key));
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** If necessary, update _key by using the values of the 
-     *  alias, fileOrURL and getPublicKey parameters. 
-     *  @exception IllegalActionException If the parent class throws it
-     *  or if there is a problem with the cryptographic configuration.
+    /** Read in or initialize the keyStore.
+     *
+     * @exception IllegalActionException If there is a problem with
+     *  the keyStore.
      */
-    private void _updateKey() throws IllegalActionException {
-        if (_updateKeyNeeded) {
-            InputStream keyStoreStream;
-            try {
-                // FIXME: this will not work if the input is stdin.
-                // FIXME: FileParameter needs to have a way of getting the
-                // unbuffered stream.
-                keyStoreStream = _url.openStream();
-            } catch (IOException ex) {
-                throw new IllegalActionException(this, ex,
-                        "Failed to open " + _url);
-            }
-
-            try {
-                _keyStore.load(keyStoreStream,
-                        storePassword.getExpression().toCharArray());
-                alias.removeAllChoices();
-                // Add all the aliases as possible choices.
-                for (Enumeration aliases = _keyStore.aliases();
-                     aliases.hasMoreElements() ;) {
-                    String aliasName = (String)aliases.nextElement();
-                    alias.addChoice(aliasName);
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        try {
+            if (!_verifyCertificate) {
+                if (_getPublicKey) {
+                    throw new IllegalActionException(this,
+                            "To get the public key, one must use "
+                            + "certificates, so the verifyCertificate "
+                            + "parameter must be set to true if the "
+                            + "getPublicKey parameter is true.");
                 }
+            } else {
+                Certificate certificate = _keyStore.getCertificate(_alias);
+                if (certificate == null) {
+                    throw new KeyStoreException("Failed to get certificate "
+                            + "for alias '" + _alias + "' from  keystore '"
+                            + fileOrURL.asURL() +
+                            "', keyStore: " + _keyStore);
+                }
+                PublicKey publicKey = certificate.getPublicKey();
+            
+                // FIXME: The testsuite needs to test this with an
+                // invalid certificate.
+                certificate.verify(publicKey);
 
-                if (!_verifyCertificate) {
-                    if (_getPublicKey) {
-                        throw new IllegalActionException(this,
-                                "To get the public key, one must use "
-                                + "certificates, so the verifyCertificate "
-                                + "parameter must be set to true if the "
-                                + "getPublicKey parameter is true.");
-                    }
+                if (certificate instanceof X509Certificate) {
+                    signatureAlgorithm.setExpression(
+                            ((X509Certificate)certificate)
+                            .getSigAlgName());
                 } else {
-                    Certificate certificate = _keyStore.getCertificate(_alias);
-                    if (certificate == null) {
-                        throw new KeyStoreException("Failed to get certificate "
-                                + "for alias '"
-                                + _alias + "' from  keystore '" + _url + "'");
-                    }
-
-                    PublicKey publicKey = certificate.getPublicKey();
-
-                    // FIXME: The testsuite needs to test this with an
-                    // invalid certificate.
-                    certificate.verify(publicKey);
-
-                    if (certificate instanceof X509Certificate) {
-                        signatureAlgorithm.setExpression(
-                                ((X509Certificate)certificate)
-                                .getSigAlgName());
-                    } else {
-                        signatureAlgorithm.setExpression(
-                                "Unknown, certificate was not a X509 cert.");
-                    }
-                    _key = publicKey;
-                }                    
-                if (!_getPublicKey) {
-                    _key = _keyStore.getKey(_alias,
-                            keyPassword.getExpression().toCharArray());
+                    signatureAlgorithm.setExpression(
+                            "Unknown, certificate was not a X509 cert.");
                 }
-                _updateKeyNeeded = false;
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
-                        "Failed to get key store aliases or certificate");
+                _key = publicKey;
+            }                    
+            if (!_getPublicKey) {
+                _key = _keyStore.getKey(_alias,
+                        keyPassword.getExpression().toCharArray());
             }
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                    "Failed to get key store alias '" + _alias 
+                    + "' or certificate from " + fileOrURL.asURL());
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    // The alias of the Certificate that we are looking for.
-    private String _alias;
-
     // True if we should get the public key, false if we should get
     // the private key or secret key.
     private boolean _getPublicKey;
 
-    // The KeyStore itself.
-    private KeyStore _keyStore;
-
-    // The PublicKey located in the Certificate.
+    // The PublicKey, PrivateKey or SecretKey located in the keyStore
     private java.security.Key _key;
-
-    // Set to true if one of the parameters changed and we need to
-    // call _updateKey().
-    private boolean _updateKeyNeeded = true;
-
-    // The URL of the keystore file.
-    private URL _url;
 
     // True if we should verify the certificate
     private boolean _verifyCertificate;
-
 }
