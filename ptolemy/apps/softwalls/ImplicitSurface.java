@@ -203,10 +203,11 @@ public class ImplicitSurface extends TypedAtomicActor {
         dthetaName = path.concat(dthetaName);
 
         try {
-            _surfaceFunction = new ThreeDFunction(functionName);
-            _xGradientFunction = new ThreeDFunction(dxName);
-            _yGradientFunction = new ThreeDFunction(dyName);
-            _thetaGradientFunction = new ThreeDFunction(dthetaName);
+            // FIXME: The above code doesn't work... Hardwire in the names.
+            _surfaceFunction = new ThreeDFunction("c:\\ptII\\ptolemy\\apps\\softwalls\\surfaces\\softwall.final.dense.data");
+            _xGradientFunction = new ThreeDFunction("c:\\ptII\\ptolemy\\apps\\softwalls\\surfaces\\softwall.final.gradx.data");
+            _yGradientFunction = new ThreeDFunction("c:\\ptII\\ptolemy\\apps\\softwalls\\surfaces\\softwall.final.grady.data");
+            _thetaGradientFunction = new ThreeDFunction("c:\\ptII\\ptolemy\\apps\\softwalls\\surfaces\\softwall.final.gradz.data");
         }
         catch (IllegalActionException a) {
             throw a;
