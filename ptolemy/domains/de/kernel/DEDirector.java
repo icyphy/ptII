@@ -156,7 +156,13 @@ import java.util.Enumeration;
 // FIXME:
 // The topological depth of the receivers are static and computed once
 // in the initialize() method. This means that mutations are not
-// currently supported.
+// currently supported. The fix is to override invalidateSchedule()
+// to set a flag, and then to compute the topological sort in prefire()
+// if the flag is set. This doesn't mean that DE supports mutations
+// because something has to be done about events in the event queue
+// that are destined for actors that are no longer in the topology.
+// Currently, those actors will be fired, which may or may not be the
+// right thing.
 public class DEDirector extends Director {
 
     /** Construct a director in the default workspace with an empty string
@@ -177,7 +183,7 @@ public class DEDirector extends Director {
         try {
             _stopTime = new Parameter(this,
                     "StopTime",
-                    new DoubleToken(0.0));
+                    new DoubleToken(Double.MAX_VALUE));
         } catch (IllegalActionException e) {
             // shouldn't happen, because we know the Parameter class is an
             // acceptable type for this director.
@@ -227,7 +233,7 @@ public class DEDirector extends Director {
         try {
             _stopTime = new Parameter(this,
                     "StopTime",
-                    new DoubleToken(0.0));
+                    new DoubleToken(Double.MAX_VALUE));
         } catch (IllegalActionException e) {
             // shouldn't happen, because we know the Parameter class is an
             // acceptable type for this director.
@@ -528,7 +534,6 @@ public class DEDirector extends Director {
         if (isEmbedded() && !_eventQueue.isEmpty()) {
             _requestFiring();
         }
-
     }
 
     /** Return true if this director is embedded inside an opaque composite
@@ -599,13 +604,17 @@ public class DEDirector extends Director {
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      */
-    // FIXME: Maybe this can be removed and update current time differently...
-    // lukito: Remove this FIXME, because I think this is the correct approach
-    // and moreover, it works.. 
     public void transferInputs(IOPort port) throws IllegalActionException {
+        // NOTE: This code is essentially identical to that in the
+        // Director base class, except that it knows that it is dealing
+        // with DEReceiver, and thus can access the time of the input
+        // event and transfer it.  FIXME: A better mechanism would be
+        // just set current time from the outside time, checking to make sure
+        // it doesn't move time backwards, and then call super.transferInputs().
+
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque input port.");
+            "transferInputs: port argument is not an opaque input port.");
         }
         Receiver[][] insiderecs = port.deepGetReceivers();
         for (int i=0; i < port.getWidth(); i++) {
@@ -662,7 +671,6 @@ public class DEDirector extends Director {
             }
         }
 
-        // FIXME: Provide a mechanism for listening for events.
         if (DEBUG) {
             System.out.print(getFullName() + ":");
             System.out.println("Enqueue event for actor: " +
@@ -671,7 +679,6 @@ public class DEDirector extends Director {
                     " with depth = " + depth +
                     " .");
         }
-
 
         DEEventTag key = new DEEventTag(time, depth);
         DEEvent event = new DEEvent(actor, key);
@@ -693,18 +700,12 @@ public class DEDirector extends Director {
     protected void _enqueueEvent(DEReceiver receiver, Token token,
             double time, long depth) throws IllegalActionException {
 
-        // FIXME: Should this check that the depth is not negative?
-        // lukito: Not necessary actually, since it is non-negative by
-        // construction. See _computeDepth() method.
         if (time < _currentTime) {
             throw new IllegalActionException(getContainer(),
                     "Attempt to queue a token with a past time stamp = " +
                     time + ", while current time " +
                     "is equal to " + _currentTime + " .");
         }
-
-        // FIXME: Provide a mechanism for listening for events.
-
         DEEventTag key = new DEEventTag(time, depth);
         DEEvent event = new DEEvent(receiver, token, key);
         if (DEBUG) {
@@ -731,44 +732,6 @@ public class DEDirector extends Director {
         return false;
     } 
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    // The current time of the simulation.
-    // Firing actors may get the current time by calling getCurrentTime()
-    protected double _currentTime = 0.0;
-
-    // Indicate whether the actors (not the director) is initialized.
-    protected boolean _isInitialized = false;
-
-    // The time of the next iteration.
-    protected double _nextIterationTime;
-
-    // Set to true when it's time to end the simulation.
-    // e.g. The earliest time in the global event queue is greater than
-    // the stop time.
-    // FIXME: This is a hack :(
-    // lukito: It is a flag that is set to true when the model should stop
-    // executing. e.g. The earliest event in the global event queue is
-    // greater than the stop time.
-    protected boolean _shouldPostfireReturnFalse = false;
-
-    // The time of the earliest event seen in the current simulation.
-    protected double _startTime = Double.MAX_VALUE;
-
-    // Decide whether the simulation should be stopped when there's no more
-    // events in the global event queue.
-    // By default, its value is 'true', meaning that the simulation will stop
-    // under that circumstances. Setting it to 'false', instruct the director
-    // to wait on the queue while some other threads might enqueue events in
-    // it.
-    protected boolean _stopWhenQueueIsEmpty = true;
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////   
-    // The stop time parameter.
-    private Parameter _stopTime;
-
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
 
@@ -794,9 +757,6 @@ public class DEDirector extends Director {
         _actorToFire = null;
 	// Initialize the _filledReceivers field.
 	_filledReceivers.clear();
-        // FIXME: This is just temporary, to see if it works.
-        // lukito: That's a bogus FIXME, probably got there when I was
-        // debugging something
 
         DEEvent currentEvent = null;
         // Keep taking events out until there are no more simultaneous
@@ -849,39 +809,22 @@ public class DEDirector extends Director {
                 // Advance current time.
                 _currentTime = currentEvent.getEventTag().timeStamp();
 
-                // FIXME: The following line should happen only during the
-                // first prefire(), because subsequent enqueue is
-                // restricted to be ahead of _currentTime.
-
-                // lukito: Note: The following statement should be executed
-                // only during the first iteration before the start time
+                // Note: The following comparison is true
+                // only during the first iteration, before the start time
                 // is initialized to the smallest time stamp in the
                 // event queue.
-                
-                // FIXME: debug structure here...
-                // lukito: Left over fixme's... :( Just remove it...
-                
                 if (_currentTime < _startTime) {
                     if (_startTimeInitialized) {
                         throw new InternalErrorException("DEDirector "+
                                 "_prepareActorToFire() bug.. trying " +
-                                "to initialize " +
-                                "start time twice.");
+                                "to initialize start time twice.");
                     }
-
                     _startTime = _currentTime;
                     _startTimeInitialized = true;
                 }
 
-                if (_currentTime >= getStopTime() && !isEmbedded()) {
+                if (_currentTime >= getStopTime()) {
                     // The stopping condition is met.
-                    // Note that, if this director is embedded then
-                    // he doesn't determine the stopping condition, rather
-                    // outer director should do that...
-
-                    // FIXME: might be wrong approach
-                    // lukito: Hmm....
-
                     _shouldPostfireReturnFalse = true;
                     if (DEBUG) {
                         System.out.println("Stopping time is met " +
@@ -928,20 +871,6 @@ public class DEDirector extends Director {
                     // The event has the same time stamp as the first
                     // event seen.  Check whether it is for the same actor.
                     if (currentEvent.getDestinationActor() == _actorToFire) {
-                        // FIXME: Currently, this might put the event
-                        // into a receiver that already has an event.
-                        // The actors may not be written to look for
-                        // multiple events in the same receiver.
-                        // Perhaps this should check to see whether there
-                        // is an event in the receiver and save this
-                        // one if so.  That's still not quite right though
-                        // because the event in the receiver may be an
-                        // old one...
-
-                        // lukito: Remove this FIXME because an actor will,
-                        // by default, be fired multiple times until
-                        // it consumes all its input events.
-                
                         DEReceiver rec = currentEvent.getDestinationReceiver();
                         // if rec is null, then it's a 'pure event' and
                         // there's no need to put event into receiver.
@@ -970,16 +899,13 @@ public class DEDirector extends Director {
         }
 
         if (_actorToFire == null) {
-            // FIXME: No std out!
-            System.out.println("No actor to fire anymore");
+            _debug("No more actors to fire.");
             _shouldPostfireReturnFalse = true;
         } else {
             _shouldPostfireReturnFalse = false;
         }
         return _actorToFire != null;
     }
-
-
 
     // Construct a directed graph with the nodes representing input ports and
     // directed edges representing zero delay path.  The directed graph
@@ -1090,33 +1016,17 @@ public class DEDirector extends Director {
         }
 	for(int i=sort.length-1; i >= 0; i--) {
             IOPort p = (IOPort)sort[i];
-            // FIXME: Debugging topological sort
-            // lukito: Just remove this
             if (DEBUG) {
                 System.out.println(p.description(FULLNAME) + ":" + i);
             }
-            // FIXME: End debugging
-            // lukito: Just remove this...
-            // set the fine levels of all DEReceiver instances in IOPort p
-            // to be i
-            // FIXME: should I use deepGetReceivers() here ?
-            // lukito: No, becauese deepGetReceivers() assumes that the
-            // IOPort is transparent. According to the doc., this method
-            // should be used for transparent composite actor.
-            
+            // Set the fine levels of all DEReceiver instances in IOPort p
+            // to be i.
             Receiver[][] r;
 	    try {
                 r = p.getReceivers();
             } catch (IllegalActionException e) {
-                // do nothing
-                // FIXME: Replace with InternalErrorException and a more
-                // meaningful message.
-                // suggestion: 
-                // throw new InternalErrorException("Error while performing "
-                //        + "the topological sort computation");
-                
-                throw new InternalErrorException("Bug in DEDirector."+
-                        "computeDepth() (3)");
+                throw new InternalErrorException("Error while calculating "
+                        + "the topological sort.");
             }
 	    if (r == null) {
 		// dangling input port..
@@ -1174,8 +1084,35 @@ public class DEDirector extends Director {
     // Access with insertFirst(), take().
     private LinkedList _filledReceivers = new LinkedList();
 
-    // FIXME: debug variables
-    // lukito: Not really anymore....
+    // Flag indicating whether the _startTime has been initialized.
     private boolean _startTimeInitialized = false;
 
+    // The current time of the simulation.
+    // Firing actors may get the current time by calling getCurrentTime()
+    private double _currentTime = 0.0;
+
+    // Indicate whether the actors (not the director) is initialized.
+    private boolean _isInitialized = false;
+
+    // The time of the next iteration.
+    private double _nextIterationTime;
+
+    // Set to true when it's time to end the simulation.
+    // e.g. The earliest time in the global event queue is greater than
+    // the stop time.
+    private boolean _shouldPostfireReturnFalse = false;
+
+    // The time of the earliest event seen in the current simulation.
+    private double _startTime = Double.MAX_VALUE;
+
+    // Decide whether the simulation should be stopped when there's no more
+    // events in the global event queue.
+    // By default, its value is 'true', meaning that the simulation will stop
+    // under that circumstances. Setting it to 'false', instruct the director
+    // to wait on the queue while some other threads might enqueue events in
+    // it.
+    private boolean _stopWhenQueueIsEmpty = true;
+
+    // The stop time parameter.
+    private Parameter _stopTime;
 }
