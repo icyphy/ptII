@@ -80,43 +80,43 @@ public class ComplexArrayMath {
         return retval;
     }
 
-  /** Return a new array that is the result of appending array2 to the end
-   *  of array1. This method simply calls
-   *  append(array1, 0, array1.length, array2, 0, array2.length)
-   */
-  public static final Complex[] append(Complex [] array1, Complex[] array2) {
-    return append(array1, 0, array1.length, array2, 0, array2.length);
-  }
-
-  /** Return a new array that is the result of appending length2 elements
-   *  of array2, starting from the array1[idx2] to length1 elements of array1,
-   *  starting from array1[idx1].
-   *  Appending empty arrays is supported. In that case, the corresponding
-   *  idx may be any number. Allow System.arraycopy() to throw array access
-   *  exceptions if idx .. idx + length - 1 are not all valid array indices,
-   *  for both of the arrays.
-   *  @param array1 The first array of Complex.
-   *  @param idx1 The starting index for array1.
-   *  @param length1 The number of elements of array1 to use.
-   *  @param array2 The second array of Complex, which is appended.
-   *  @param idx2 The starting index for array2.
-   *  @param length2 The number of elements of array2 to append.
-   *  @return A new array of Complex.
-   */
-  public static final Complex[] append(Complex[] array1, int idx1,
-    int length1, Complex[] array2, int idx2, int length2) {
-    Complex[] retval = new Complex[length1 + length2];
-
-    if (length1 > 0) {
-       System.arraycopy(array1, idx1, retval, 0, length1);
+    /** Return a new array that is the result of appending array2 to the end
+     *  of array1. This method simply calls
+     *  append(array1, 0, array1.length, array2, 0, array2.length)
+     */
+    public static final Complex[] append(Complex [] array1, Complex[] array2) {
+        return append(array1, 0, array1.length, array2, 0, array2.length);
     }
 
-    if (length2 > 0) {
-       System.arraycopy(array2, idx2, retval, length1, length2);
-    }
+    /** Return a new array that is the result of appending length2 elements
+     *  of array2, starting from the array1[idx2] to length1 elements of array1,
+     *  starting from array1[idx1].
+     *  Appending empty arrays is supported. In that case, the corresponding
+     *  idx may be any number. Allow System.arraycopy() to throw array access
+     *  exceptions if idx .. idx + length - 1 are not all valid array indices,
+     *  for both of the arrays.
+     *  @param array1 The first array of Complex.
+     *  @param idx1 The starting index for array1.
+     *  @param length1 The number of elements of array1 to use.
+     *  @param array2 The second array of Complex, which is appended.
+     *  @param idx2 The starting index for array2.
+     *  @param length2 The number of elements of array2 to append.
+     *  @return A new array of Complex.
+     */
+    public static final Complex[] append(Complex[] array1, int idx1,
+            int length1, Complex[] array2, int idx2, int length2) {
+        Complex[] retval = new Complex[length1 + length2];
 
-    return retval;
-  }
+        if (length1 > 0) {
+            System.arraycopy(array1, idx1, retval, 0, length1);
+        }
+
+        if (length2 > 0) {
+            System.arraycopy(array2, idx2, retval, length1, length2);
+        }
+
+        return retval;
+    }
 
 
     /** Return a new array that is the complex-conjugate of the argument.
@@ -154,16 +154,16 @@ public class ComplexArrayMath {
      *  If imagArray has length 0, return a new Complex array of length 0.
      */
     public static final Complex[] imagArrayToComplexArray(double[] imagArray)
-    {
-       int size = imagArray.length;
+        {
+            int size = imagArray.length;
 
-       Complex[] retval = new Complex[size];
+            Complex[] retval = new Complex[size];
 
-       for (int i = 0; i < size; i++) {
-           retval[i] = new Complex(0, imagArray[i]);
-       }
-       return retval;
-    }
+            for (int i = 0; i < size; i++) {
+                retval[i] = new Complex(0, imagArray[i]);
+            }
+            return retval;
+        }
 
     /** Return a new array of doubles with the imaginary parts of the array of
      *  Complex's.
@@ -188,17 +188,17 @@ public class ComplexArrayMath {
      *  @return A new array of Complex's.
      */
     public static final Complex[] formComplexArray(double[] realPart,
-     double[] imagPart) {
-       int size = DoubleArrayMath._commonLength(realPart, imagPart,
-        "ComplexArrayMath.formComplexArray");
+            double[] imagPart) {
+        int size = DoubleArrayMath._commonLength(realPart, imagPart,
+                "ComplexArrayMath.formComplexArray");
 
-       Complex[] retval = new Complex[size];
+        Complex[] retval = new Complex[size];
 
-       for (int i = 0; i < size; i++) {
-           retval[i] = new Complex(realPart[i], imagPart[i]);
-       }
+        for (int i = 0; i < size; i++) {
+            retval[i] = new Complex(realPart[i], imagPart[i]);
+        }
 
-       return retval;
+        return retval;
     }
 
     /** Return a new array of doubles containing the magnitudes of the elements
@@ -219,9 +219,9 @@ public class ComplexArrayMath {
      *  IllegalArgumentException.
      */
     public static final Complex[] multiply(Complex[] array1,
-     Complex[] array2) {
+            Complex[] array2) {
         int length = _commonLength(array1, array2,
-         "ComplexArrayMath.multiply");
+                "ComplexArrayMath.multiply");
         Complex[] retval = new Complex[length];
         for (int i = 0; i < length; i++) {
             retval[i] = array1[i].multiply(array2[i]);
@@ -357,7 +357,7 @@ public class ComplexArrayMath {
     public static final boolean pureImag(Complex[] array) {
         for (int i = 0; i < array.length; i++) {
             if (array[i].real != 0.0) {
-               return false;
+                return false;
             }
         }
         return true;
@@ -370,7 +370,7 @@ public class ComplexArrayMath {
     public static final boolean pureReal(Complex[] array) {
         for (int i = 0; i < array.length; i++) {
             if (array[i].imag != 0.0) {
-               return false;
+                return false;
             }
         }
         return true;
@@ -381,14 +381,14 @@ public class ComplexArrayMath {
      *  of length 0, return a new array of length 0.
      */
     public static final Complex[] realArrayToComplexArray(double[] realArray) {
-       int size = realArray.length;
+        int size = realArray.length;
 
-       Complex[] retval = new Complex[size];
+        Complex[] retval = new Complex[size];
 
-       for (int i = 0; i < size; i++) {
-           retval[i] = new Complex(realArray[i], 0);
-       }
-       return retval;
+        for (int i = 0; i < size; i++) {
+            retval[i] = new Complex(realArray[i], 0);
+        }
+        return retval;
     }
 
     /** Return a new array of doubles with the real parts of the array of
@@ -436,18 +436,18 @@ public class ComplexArrayMath {
      *  @param startIdx The starting index for the input array.
      */
     public static final Complex[] resize(Complex[] array, int newLength,
-     int startIdx) {
+            int startIdx) {
 
         Complex[] retval = new Complex[newLength];
         int copySize = Math.min(newLength, array.length - startIdx);
 
         if ((startIdx >= array.length) && (copySize >= 0)) {
-           throw new IllegalArgumentException(
-            "resize() :  input array size is less than the start index");
+            throw new IllegalArgumentException(
+                    "resize() :  input array size is less than the start index");
         }
 
         if (copySize > 0) {
-           System.arraycopy(array, startIdx, retval, 0, copySize);
+            System.arraycopy(array, startIdx, retval, 0, copySize);
         }
 
         for (int i = copySize; i < newLength; i++) {
@@ -496,9 +496,9 @@ public class ComplexArrayMath {
      *  @return A new array of Complex's.
      */
     public static final Complex[] subtract(Complex[] array1,
-     Complex[] array2) {
+            Complex[] array2) {
         int length = _commonLength(array1, array2,
-                      "ComplexArrayMath.subtract");
+                "ComplexArrayMath.subtract");
         Complex[] result = new Complex[length];
         for (int i = 0; i < length; i++) {
             result[i] = array1[i].subtract(array2[i]);
@@ -506,132 +506,132 @@ public class ComplexArrayMath {
         return result;
     }
 
-  /** Return a new String representing the array, formatted as
-   *  in Java array initializers.
-   */
-  public static final String toString(Complex[] array) {
-    return toString(array, ArrayStringFormat.javaASFormat);
-  }
-
-  /** Return a new String representing the array, formatted as
-   *  specified by the ArrayStringFormat argument.
-   *  To get a String in the Ptolemy expression language format,
-   *  call this method with ArrayStringFormat.exprASFormat as the
-   *  format argument.
-   */
-  public static final String toString(Complex[] array,
-   ArrayStringFormat format) {
-    int length = array.length;
-    StringBuffer sb = new StringBuffer();
-
-    sb.append(format.vectorBeginString());
-
-    for (int i = 0; i < length; i++) {
-
-        sb.append(format.complexString(array[i]));
-
-        if (i < (length - 1)) {
-           sb.append(format.elementDeliminatorString());
-        }
+    /** Return a new String representing the array, formatted as
+     *  in Java array initializers.
+     */
+    public static final String toString(Complex[] array) {
+        return toString(array, ArrayStringFormat.javaASFormat);
     }
 
-    sb.append(format.vectorEndString());
+    /** Return a new String representing the array, formatted as
+     *  specified by the ArrayStringFormat argument.
+     *  To get a String in the Ptolemy expression language format,
+     *  call this method with ArrayStringFormat.exprASFormat as the
+     *  format argument.
+     */
+    public static final String toString(Complex[] array,
+            ArrayStringFormat format) {
+        int length = array.length;
+        StringBuffer sb = new StringBuffer();
 
-    return new String(sb);
-  }
+        sb.append(format.vectorBeginString());
+
+        for (int i = 0; i < length; i++) {
+
+            sb.append(format.complexString(array[i]));
+
+            if (i < (length - 1)) {
+                sb.append(format.elementDeliminatorString());
+            }
+        }
+
+        sb.append(format.vectorEndString());
+
+        return new String(sb);
+    }
 
     /** @deprecated */
     public static final boolean within(Complex[] array1, Complex[] array2,
-     double maxError) {
-      return arePartsWithin(array1, array2, maxError);
+            double maxError) {
+        return arePartsWithin(array1, array2, maxError);
     }
 
-  /** Return true if all the absolute differences between corresponding
-   *  elements of array1 and array2, for both the real and imaginary parts,
-   *  are all less than or equal to maxError. Otherwise, return false.
-   *  Throw an IllegalArgument exception if the arrays are not of the same
-   *  length. If both arrays are empty, return true.
-   *  This is computationally less expensive than isSquaredErrorWithin().
-   */
-  public static final boolean arePartsWithin(Complex[] array1,
-   Complex[] array2, double maxError) {
-    int length = _commonLength(array1, array2,
-     "ComplexArrayMath.arePartsWithin");
+    /** Return true if all the absolute differences between corresponding
+     *  elements of array1 and array2, for both the real and imaginary parts,
+     *  are all less than or equal to maxError. Otherwise, return false.
+     *  Throw an IllegalArgument exception if the arrays are not of the same
+     *  length. If both arrays are empty, return true.
+     *  This is computationally less expensive than isSquaredErrorWithin().
+     */
+    public static final boolean arePartsWithin(Complex[] array1,
+            Complex[] array2, double maxError) {
+        int length = _commonLength(array1, array2,
+                "ComplexArrayMath.arePartsWithin");
 
-    for (int i = 0; i < length; i++) {
-        if ((Math.abs(array1[i].real - array2[i].real) > maxError) ||
-            (Math.abs(array1[i].imag - array2[i].imag) > maxError)) {
-           return false;
+        for (int i = 0; i < length; i++) {
+            if ((Math.abs(array1[i].real - array2[i].real) > maxError) ||
+                    (Math.abs(array1[i].imag - array2[i].imag) > maxError)) {
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+    /** Return true if all the magnitudes of the differences between
+     *  corresponding elements of array1 and array2, are all less than or
+     *  equal to maxMagnitudeDifference. Otherwise, return false.
+     *  Throw an exception if the arrays are not of the same length. If both
+     *  arrays are empty, return true.
+     *  This is computationally more expensive than arePartsWithin().
+     */
+    public static final boolean areMagnitudesWithin(Complex[] array1,
+            Complex[] array2, double maxMagnitudeDifference) {
+        int length = _commonLength(array1, array2,
+                "ComplexArrayMath.areMagnitudesWithin");
+
+        for (int i = 0; i < length; i++) {
+            if (array1[i].subtract(array2[i]).magnitude() >
+                    maxMagnitudeDifference) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+    //    protected methods
+
+    // Throw an exception if the array is null or length 0.
+    // Otherwise return the length of the array.
+    protected static final int _nonZeroLength(Complex[] array,
+            String methodName) {
+        if (array == null) {
+            throw new IllegalArgumentException("ptolemy.math." + methodName +
+                    "() : input array is null.");
         }
 
-    }
-    return true;
-  }
+        if (array.length <= 0) {
+            throw new IllegalArgumentException("ptolemy.math." + methodName +
+                    "() : input array has length 0.");
+        }
 
-  /** Return true if all the magnitudes of the differences between
-   *  corresponding elements of array1 and array2, are all less than or
-   *  equal to maxMagnitudeDifference. Otherwise, return false.
-   *  Throw an exception if the arrays are not of the same length. If both
-   *  arrays are empty, return true.
-   *  This is computationally more expensive than arePartsWithin().
-   */
-  public static final boolean areMagnitudesWithin(Complex[] array1,
-    Complex[] array2, double maxMagnitudeDifference) {
-    int length = _commonLength(array1, array2,
-     "ComplexArrayMath.areMagnitudesWithin");
-
-    for (int i = 0; i < length; i++) {
-         if (array1[i].subtract(array2[i]).magnitude() >
-            maxMagnitudeDifference) {
-            return false;
-         }
-    }
-    return true;
-  }
-
-  /////////////////////////////////////////////////////////////////////////
-  //    protected methods
-
-  // Throw an exception if the array is null or length 0.
-  // Otherwise return the length of the array.
-  protected static final int _nonZeroLength(Complex[] array,
-   String methodName) {
-    if (array == null) {
-       throw new IllegalArgumentException("ptolemy.math." + methodName +
-        "() : input array is null.");
+        return array.length;
     }
 
-    if (array.length <= 0) {
-       throw new IllegalArgumentException("ptolemy.math." + methodName +
-        "() : input array has length 0.");
+    // Throw an exception if the two arrays are not of the same length,
+    // or if either array is null. An exception is NOT thrown if both
+    // arrays are of size 0. If no exception is thrown, return the common
+    // length of the arrays.
+    protected static final int _commonLength(Complex[] array1, Complex[] array2,
+            String methodName) {
+        if (array1 == null) {
+            throw new IllegalArgumentException("ptolemy.math." + methodName +
+                    "() : first input array is null.");
+        }
+
+        if (array2 == null) {
+            throw new IllegalArgumentException("ptolemy.math." + methodName +
+                    "() : second input array is null.");
+        }
+
+        if (array1.length != array2.length) {
+            throw new IllegalArgumentException("ptolemy.math." + methodName +
+                    "() : input arrays must have the same length, but the first " +
+                    "array has length " + array1.length + " and the second array " +
+                    "has length " + array2.length + ".");
+        }
+
+        return array1.length;
     }
-
-    return array.length;
-  }
-
-  // Throw an exception if the two arrays are not of the same length,
-  // or if either array is null. An exception is NOT thrown if both
-  // arrays are of size 0. If no exception is thrown, return the common
-  // length of the arrays.
-  protected static final int _commonLength(Complex[] array1, Complex[] array2,
-   String methodName) {
-    if (array1 == null) {
-       throw new IllegalArgumentException("ptolemy.math." + methodName +
-        "() : first input array is null.");
-    }
-
-    if (array2 == null) {
-       throw new IllegalArgumentException("ptolemy.math." + methodName +
-        "() : second input array is null.");
-    }
-
-    if (array1.length != array2.length) {
-       throw new IllegalArgumentException("ptolemy.math." + methodName +
-        "() : input arrays must have the same length, but the first " +
-        "array has length " + array1.length + " and the second array " +
-        "has length " + array2.length + ".");
-    }
-
-    return array1.length;
-  }
 }

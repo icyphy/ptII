@@ -59,13 +59,13 @@ public class DoubleArrayStat extends DoubleArrayMath {
     /** Return the sum of all of the elements in the array.
      *  Return 0.0 of the length of the array is 0.
      */
-  public static final double sumOfElements(double[] array) {
-    double sum = 0.0;
-    for (int i = 0; i < array.length; i++) {
-        sum += array[i];
+    public static final double sumOfElements(double[] array) {
+        double sum = 0.0;
+        for (int i = 0; i < array.length; i++) {
+            sum += array[i];
+        }
+        return sum;
     }
-    return sum;
-  }
 
     /** Return the product of all of the elements in the array.
      *  Return 1.0 if the length of the array is 0.
@@ -145,7 +145,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  Simply return variance(array, false).
      */
     public static double variance(double[] array) {
-      return variance(array, false);
+        return variance(array, false);
     }
 
     /** Return the variance of the elements in the array.
@@ -170,10 +170,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
         int length = _nonZeroLength(array, "DoubleArrayStat.variance");
 
         if (sample && (array.length < 2)) {
-           throw new IllegalArgumentException(
-            "ptolemy.math.DoubleArrayStat.variance() : sample variance and " +
-            "standard deviation of an array of length less than 2 are not " +
-            "defined.");
+            throw new IllegalArgumentException(
+                    "ptolemy.math.DoubleArrayStat.variance() : sample variance and " +
+                    "standard deviation of an array of length less than 2 are not " +
+                    "defined.");
         }
 
         double ex2 = 0.0;
@@ -230,7 +230,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @return A double, Rxy[lag].
      */
     public static double crossCorrelationAt(double[] x, double[] y,
-                                            int N, int lag) {
+            int N, int lag) {
 
         // Find the most efficient and correct place to start the summation
         int start = Math.max(0, -lag);
@@ -293,7 +293,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @return A new array of doubles.
      */
     public static final double[] crossCorrelation(double[] x, double[] y, int N,
-     int startLag, int endLag) {
+            int startLag, int endLag) {
         int outputLength = endLag - startLag + 1;
         double[] retval = new double[outputLength];
 
@@ -332,7 +332,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @return A new array of doubles.
      */
     public static final double[] autoCorrelation(double[] x, int N,
-     int startLag, int endLag) {
+            int startLag, int endLag) {
         int outputLength = endLag - startLag + 1;
         double[] retval = new double[outputLength];
 
@@ -381,13 +381,13 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
         for (int i = 0; i < length; i++) {
             if (p[i] < 0.0) {
-               throw new IllegalArgumentException(
-                "ptolemy.math.DoubleArrayStat.entropy() : " +
-                "Negative probability encountered.");
+                throw new IllegalArgumentException(
+                        "ptolemy.math.DoubleArrayStat.entropy() : " +
+                        "Negative probability encountered.");
             } else if (p[i] == 0.0) {
-               // do nothing
+                // do nothing
             } else {
-               h -= p[i] * ExtendedMath.log2(p[i]);
+                h -= p[i] * ExtendedMath.log2(p[i]);
             }
         }
         return h;
@@ -419,15 +419,15 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
         for (int i = 0; i < length; i++) {
             if ((p[i] < 0.0) || (q[i] < 0.0)) {
-               throw new IllegalArgumentException(
-                "ptolemy.math.DoubleArrayStat.relativeEntropy() : " +
-                "Negative probability encountered.");
+                throw new IllegalArgumentException(
+                        "ptolemy.math.DoubleArrayStat.relativeEntropy() : " +
+                        "Negative probability encountered.");
             } else if (p[i] == 0.0) {
-               // do nothing
+                // do nothing
             } else if (q[i] == 0.0) {
-               return Double.POSITIVE_INFINITY;
+                return Double.POSITIVE_INFINITY;
             } else {
-               d += p[i] * ExtendedMath.log2(p[i] / q[i]);
+                d += p[i] * ExtendedMath.log2(p[i] / q[i]);
             }
         }
         return d;
@@ -456,7 +456,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  This algorithm is from [1].
      */
     public static final double[] randomGaussian(double mean,
-     double standardDeviation, int N) {
+            double standardDeviation, int N) {
         double t;
         double x, v1, v2, r;
         Random random = new Random();
@@ -464,17 +464,17 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
         for (int i = 0; i < N; i+=2) {
             do {
-               v1 = 2.0 * random.nextDouble() - 1.0;
-               v2 = 2.0 * random.nextDouble() - 1.0;
-               r = v1 * v1 + v2 * v2;
+                v1 = 2.0 * random.nextDouble() - 1.0;
+                v2 = 2.0 * random.nextDouble() - 1.0;
+                r = v1 * v1 + v2 * v2;
             } while ((r >= 1.0) && (r == 0.0));
-              // prevent division by zero later in very rare cases
+            // prevent division by zero later in very rare cases
 
             r = Math.sqrt((-2.0 * Math.log(r)) / r);
             retval[i] = mean + v1 * r * standardDeviation;
 
             if ((i + 1) < N) {
-               retval[i + 1] = mean + v2 * r * standardDeviation;
+                retval[i + 1] = mean + v2 * r * standardDeviation;
             }
         }
 
@@ -507,7 +507,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         for (int i = 0; i < N; i++) {
             double r;
             do {
-               r = random.nextDouble();
+                r = random.nextDouble();
             } while (r != 0.0);
 
             retval[i] = -Math.log(r) / lambda;
@@ -524,17 +524,17 @@ public class DoubleArrayStat extends DoubleArrayMath {
         double[] retval = new double[N];
 
         for (int i = 0; i < N; i++) {
-           double j;
-           double u, p, f;
+            double j;
+            double u, p, f;
 
-           j = 0.0;
-           f = p = Math.exp(-mean);
-           u = random.nextDouble();
+            j = 0.0;
+            f = p = Math.exp(-mean);
+            u = random.nextDouble();
 
             while (f <= u) {
-               p *= (mean / (j + 1.0));
-               f += p;
-               j += 1.0;
+                p *= (mean / (j + 1.0));
+                f += p;
+                j += 1.0;
             }
 
             retval[i] = j;

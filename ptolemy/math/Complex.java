@@ -336,7 +336,7 @@ public class Complex implements Cloneable, Serializable {
 
     /** Return the magnitude or absolute value of this complex number.
      *  @return A non-negative number.
-      */
+     */
     public final double magnitude() {
         return Math.sqrt(magnitudeSquared());
     }
@@ -391,7 +391,7 @@ public class Complex implements Cloneable, Serializable {
      *  @return A new complex number.
      */
     public static final Complex polarToComplex(double magnitude,
-     double angle) {
+            double angle) {
         if (magnitude < 0.0) {
             angle +=  Math.PI;
             magnitude = -magnitude;

@@ -35,144 +35,144 @@ package ptolemy.math;
 
 public interface ArrayStringFormat {
 
-  /**
-   *  Return a String representation of a complex number.
-   */
-  public String complexString(Complex c);
+    /**
+     *  Return a String representation of a complex number.
+     */
+    public String complexString(Complex c);
 
-  /**
-   *  Return a String representation of a double.
-   */
-  public String doubleString(double d);
+    /**
+     *  Return a String representation of a double.
+     */
+    public String doubleString(double d);
 
-  /**
-   *  Return a String separating elements in the matrix or vector.
-   */
-  public String elementDeliminatorString();
+    /**
+     *  Return a String separating elements in the matrix or vector.
+     */
+    public String elementDeliminatorString();
 
-  /**
-   *  Return a String marking the beginning of a matrix.
-   */
-  public String matrixBeginString();
+    /**
+     *  Return a String marking the beginning of a matrix.
+     */
+    public String matrixBeginString();
 
-  /**
-   *  Return a String marking the end of a matrix.
-   */
-  public String matrixEndString();
+    /**
+     *  Return a String marking the end of a matrix.
+     */
+    public String matrixEndString();
 
-  /**
-   *  Return a String marking the beginning of a vector.
-   */
-  public String vectorBeginString();
+    /**
+     *  Return a String marking the beginning of a vector.
+     */
+    public String vectorBeginString();
 
-  /**
-   *  Return a String separating the row vectors.
-   */
-  public String vectorDeliminatorString();
+    /**
+     *  Return a String separating the row vectors.
+     */
+    public String vectorDeliminatorString();
 
-  /**
-   *  Return a String marking the beginning of a vector.
-   */
-  public String vectorEndString();
+    /**
+     *  Return a String marking the beginning of a vector.
+     */
+    public String vectorEndString();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-  /** Implements ArrayStringFormat to produce strings in the format used
-   *  to initialize arrays in Java. More specifically, the format
-   *  "{x[0], x[1], x[2], ... , x[n-1]}",
-   *  where x[i] is the ith element of the array.
-   */
-  public static class JavaArrayStringFormat implements
-   ArrayStringFormat {
+    /** Implements ArrayStringFormat to produce strings in the format used
+     *  to initialize arrays in Java. More specifically, the format
+     *  "{x[0], x[1], x[2], ... , x[n-1]}",
+     *  where x[i] is the ith element of the array.
+     */
+    public static class JavaArrayStringFormat implements
+                                                                                            ArrayStringFormat {
 
-    public JavaArrayStringFormat() {}
+        public JavaArrayStringFormat() {}
 
-    public String complexString(Complex c) {
-      return c.toString();
+        public String complexString(Complex c) {
+            return c.toString();
+        }
+
+        public String doubleString(double d) {
+            return Double.toString(d);
+        }
+
+        public String elementDeliminatorString() {
+            return ", ";
+        }
+
+        public String matrixBeginString() {
+            return "{";
+        }
+
+        public String matrixEndString() {
+            return "}";
+        }
+
+        public String vectorBeginString() {
+            return "{";
+        }
+
+        public String vectorDeliminatorString() {
+            return ", ";
+        }
+
+        public String vectorEndString() {
+            return "}";
+        }
     }
 
-    public String doubleString(double d) {
-      return Double.toString(d);
-    }
+    /** Implements ArrayStringFormat to produce strings in the format used
+     *  in the Ptolemy II expression language and Matlab. More specifically,
+     *  the format
+     *  "[x[0] x[1] x[2] ...  x[n-1]]",
+     */
+    public static class ExprArrayStringFormat implements
+                                                                                            ArrayStringFormat {
+        public ExprArrayStringFormat() {}
 
-    public String elementDeliminatorString() {
-      return ", ";
-    }
+        public String complexString(Complex c) {
+            return c.toString();
+        }
 
-    public String matrixBeginString() {
-      return "{";
-    }
+        public String elementDeliminatorString() {
+            return " ";
+        }
 
-    public String matrixEndString() {
-      return "}";
-    }
+        public String doubleString(double d) {
+            return Double.toString(d);
+        }
 
-    public String vectorBeginString() {
-      return "{";
-    }
+        public String matrixBeginString() {
+            return "[";
+        }
 
-    public String vectorDeliminatorString() {
-      return ", ";
-    }
+        public String matrixEndString() {
+            return "]";
+        }
 
-    public String vectorEndString() {
-      return "}";
-    }
-  }
+        public String vectorBeginString() {
+            return "[";
+        }
 
-  /** Implements ArrayStringFormat to produce strings in the format used
-   *  in the Ptolemy II expression language and Matlab. More specifically,
-   *  the format
-   *  "[x[0] x[1] x[2] ...  x[n-1]]",
-   */
-  public static class ExprArrayStringFormat implements
-   ArrayStringFormat {
-    public ExprArrayStringFormat() {}
+        public String vectorDeliminatorString() {
+            return " | ";
+        }
 
-    public String complexString(Complex c) {
-      return c.toString();
+        public String vectorEndString() {
+            return "]";
+        }
     }
-
-    public String elementDeliminatorString() {
-      return " ";
-    }
-
-    public String doubleString(double d) {
-      return Double.toString(d);
-    }
-
-    public String matrixBeginString() {
-      return "[";
-    }
-
-    public String matrixEndString() {
-      return "]";
-    }
-
-    public String vectorBeginString() {
-      return "[";
-    }
-
-    public String vectorDeliminatorString() {
-      return " | ";
-    }
-
-    public String vectorEndString() {
-      return "]";
-    }
-  }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-  /** A static instance of JavaArrayStringFormat.
-   */
-  public static final ArrayStringFormat javaASFormat =
-   new JavaArrayStringFormat();
+    /** A static instance of JavaArrayStringFormat.
+     */
+    public static final ArrayStringFormat javaASFormat =
+                                                                                            new JavaArrayStringFormat();
 
-  /** A static instance of ExprArrayStringFormat.
-   */
-  public static final ArrayStringFormat exprASFormat =
-   new ExprArrayStringFormat();
+    /** A static instance of ExprArrayStringFormat.
+     */
+    public static final ArrayStringFormat exprASFormat =
+    new ExprArrayStringFormat();
 }

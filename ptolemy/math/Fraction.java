@@ -71,9 +71,9 @@ public class Fraction extends Object {
      * zero.
      */
     public Fraction(int Numerator, int Denominator) {
-                if(Denominator == 0)
-                    throw new ArithmeticException("Illegal Fraction: " +
-                            "cannot have denominator of zero.");
+        if(Denominator == 0)
+            throw new ArithmeticException("Illegal Fraction: " +
+                    "cannot have denominator of zero.");
 
         _num = Numerator;
         _den = Denominator;
@@ -207,8 +207,8 @@ public class Fraction extends Object {
      *  @return The answer as another fraction in lowest terms
      */
     public Fraction subtract(Fraction b) {
-       Fraction f = new Fraction(
-               _num * b._den - _den * b._num, _den * b._den);
+        Fraction f = new Fraction(
+                _num * b._den - _den * b._num, _den * b._den);
         return f;
     }
 
@@ -223,7 +223,7 @@ public class Fraction extends Object {
         return s.toString();
     }
 
-   /** Reduce the fraction to lowest terms by dividing the Numerator and
+    /** Reduce the fraction to lowest terms by dividing the Numerator and
      *  Denominator by their Greatest Common Divisor.  In addition the
      *  fraction is put in standard form (denominator greater than zero).
      */
