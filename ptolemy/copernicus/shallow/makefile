@@ -73,12 +73,6 @@ install: all $(PTPACKAGE).jar
 demo: shallowDemo
 shallowDemo: compileShallowDemo runOrthoCommDemo timeOrthoCommDemo
 
-TARGETPACKAGE = 	ptolemy.copernicus.shallow.cg
-TARGETPATH =		ptolemy/copernicus/shallow/cg
-
-JADTARGETPACKAGE =	ptolemy.copernicus.shallow.cg.jad
-JADTARGETPATH =		$(ROOT)/ptolemy/copernicus/shallow/cg/jad
-
 # OrthogonalCom - There is no .xml file for this model
 MODEL = OrthogonalCom
 SOURCECLASS = ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
@@ -92,6 +86,13 @@ SOURCECLASS = ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
 #
 #MODEL = IIR
 #SOURCECLASS = $(ROOT)/ptolemy/actor/lib/test/auto/$(MODEL).xml
+
+
+TARGETPACKAGE = 	ptolemy.copernicus.shallow.cg.$(MODEL)
+TARGETPATH =		ptolemy/copernicus/shallow/cg/$(MODEL)
+
+JADTARGETPACKAGE =	ptolemy.copernicus.shallow.cg.jad
+JADTARGETPATH =		$(ROOT)/ptolemy/copernicus/shallow/cg/jad
 
 
 JVM_SIZE = -Xmx256m
