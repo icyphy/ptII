@@ -324,7 +324,7 @@ public abstract class GraphFrame extends PtolemyFrame
     /** Get the currently selected objects from this document, if any,
      * and place them on the given clipboard. 
      */
-    public void copy () {
+    public void copy() {
 	Clipboard clipboard = 
 	    java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
 	GraphPane graphPane = _jgraph.getGraphPane();
@@ -374,7 +374,7 @@ public abstract class GraphFrame extends PtolemyFrame
      *  and place them on the given clipboard.  If the document does not
      *  support such an operation, then do nothing.
      */
-    public void cut () {
+    public void cut() {
 	// FIXME
 	copy();
     }
@@ -420,7 +420,6 @@ public abstract class GraphFrame extends PtolemyFrame
 	GraphController controller =
 	    (GraphController)graphPane.getGraphController();
 	MutableGraphModel model = controller.getGraphModel();
-	Workspace workspace = ((NamedObj) model.getRoot()).workspace();
 	if(transferable == null) 
 	    return;
 	try {
@@ -431,10 +430,8 @@ public abstract class GraphFrame extends PtolemyFrame
 	    moml.append((String)
 		transferable.getTransferData(DataFlavor.stringFlavor));
 	    moml.append("</group>\n");
-	    MoMLParser parser = new MoMLParser(workspace);
-	    parser.setContext(toplevel);
 	    toplevel.requestChange(
-                new MoMLChangeRequest(this, parser, moml.toString()));
+                new MoMLChangeRequest(this, toplevel, moml.toString()));
 	} catch (UnsupportedFlavorException ex) {
 	    System.out.println("Transferable object didn't " + 
 			       "support stringFlavor: " +
