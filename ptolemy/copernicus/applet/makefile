@@ -44,7 +44,7 @@ include $(CONFIG)
 PTPACKAGE = 	applet
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-DIRS =
+DIRS =		#test
 
 # Keep this list alphabetized.
 JSRCS = \
@@ -69,7 +69,8 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	cg \
-	doc
+	doc \
+	test
 
 JCLASS = $(JSRCS:%.java=%.class)
 
