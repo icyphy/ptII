@@ -195,8 +195,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         } else {
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
-            throw new InternalErrorException("A CT model with " +
-                    "a CTEmbeddedDirector must be used inside another CT model.");
+            throw new InternalErrorException("A CT model with a " +
+                    "CTEmbeddedDirector must be used inside "
+                    + "another CT model.");
         }
     }
 
@@ -211,8 +212,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         } else {
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
-            throw new InternalErrorException("A CT model with " +
-                    "a CTEmbeddedDirector must be used inside another CT model.");
+            throw new InternalErrorException("A CT model with a " +
+                    "CTEmbeddedDirector must be used inside "
+                    + "another CT model.");
         }
     }
 
@@ -228,8 +230,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         } else {
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
-            throw new InternalErrorException("A CT model with " +
-                    "a CTEmbeddedDirector must be used inside another CT model.");
+            throw new InternalErrorException("A CT model with a " +
+                    "CTEmbeddedDirector must be used inside "
+                    + "another CT model.");
         }
     }
 
@@ -244,8 +247,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         } else {
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
-            throw new InternalErrorException("A CT model with " +
-                    "a CTEmbeddedDirector must be used inside another CT model.");
+            throw new InternalErrorException("A CT model with a " +
+                    "CTEmbeddedDirector must be used inside "
+                    + "another CT model.");
         }
     }
 
@@ -278,8 +282,9 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         } else {
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
-            throw new InternalErrorException("A CT model with " +
-                    "a CTEmbeddedDirector must be used inside another CT model.");
+            throw new InternalErrorException("A CT model with a " +
+                    "CTEmbeddedDirector must be used inside "
+                    + "another CT model.");
         }
     }
 
@@ -398,6 +403,24 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         super.preinitialize();
     }
 
+    /** Return false if some actor returns false from its postfire method
+     *  or a stop is requested.
+     *  @return false if some actor returns false from its postfire method or
+     *  a stop is requested.
+     *  @exception IllegalActionException If thrown by any actor during its
+     *  postfire method.
+     */
+    public boolean postfire() throws IllegalActionException {
+        if (getExecutionPhase()
+                == CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE) {
+            super.updateContinuousStates();
+        } else if (getExecutionPhase()
+                == CTExecutionPhase.POSTFIRING_EVENT_GENERATORS_PHASE) {
+            super.postfireEventGenerators();
+        }
+        return super.postfire();
+    }
+
     /** Return the refined step size if the current fire is not accurate.
      *  @return The refined step size.
      */
@@ -416,24 +439,6 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             throw new InternalErrorException (
                     "Fail to refine step size. " + ex.getMessage());
         }
-    }
-
-    /** Return false if some actor returns false from its postfire method
-     *  or a stop is requested.
-     *  @return false if some actor returns false from its postfire method or
-     *  a stop is requested.
-     *  @exception IllegalActionException If thrown by any actor during its
-     *  postfire method.
-     */
-    public boolean postfire() throws IllegalActionException {
-        if (getExecutionPhase()
-                == CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE) {
-            super.updateContinuousStates();
-        } else if (getExecutionPhase()
-                == CTExecutionPhase.POSTFIRING_EVENT_GENERATORS_PHASE) {
-            super.postfireEventGenerators();
-        }
-        return super.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
