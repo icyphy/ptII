@@ -80,6 +80,7 @@ MISC_FILES =	test
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	'KeyStoreActor$$_StreamReaderThread.class' \
 	'KeyToken$$1.class' \
 	'KeyToken$$KeyType.class'
 
