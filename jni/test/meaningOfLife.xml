@@ -19,11 +19,11 @@
         </property>
     </property>
     <entity name="meaningOfLifeImeaningOfLife" class="jni.GenericJNIActor">
-        <property name="Native Function Name" class="ptolemy.data.expr.Parameter" value="&quot;meaningOfLife&quot;">
+        <property name="nativeFunction" class="ptolemy.data.expr.Parameter" value="&quot;meaningOfLife&quot;">
         </property>
-        <property name="Native Library Name" class="ptolemy.data.expr.Parameter" value="&quot;meaningOfLife&quot;">
+        <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;meaningOfLife&quot;">
         </property>
-        <property name="DLLs Directory" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
+        <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;&quot;">
         </property>
         <doc> An actor able to call a native function </doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 140.0">

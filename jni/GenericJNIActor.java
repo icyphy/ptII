@@ -72,9 +72,8 @@ Once the interface has been generated, it is necessary to open the
 Visual Project generated to compile the interface dll. Then the actor is
 ready to be run.
 
-<p>Note that under Windows, your path needs to include $PTII/jni/dll
-and that the dll, the h file and the lib file must be
-in the $(PTII)/jni/dll/ directory.
+<p>Note that under Windows, your path needs to include the directory
+named by the libraryDirectory Parameter.
 
 @author Vincent Arnould (vincent.arnould@thalesgroup.com), Contributor: Christopher Hylands
 @version $Id$
@@ -120,23 +119,13 @@ public class GenericJNIActor extends TypedAtomicActor {
         super(container, name);
         _argumentsList = new NamedList(this);
 
-        // FIXME: these parameters should have names like
-        // nativeFunction, library and libraryDirectory.
-        // The names should be complete words with embedded capitalization.
-
-        // FIXME: Also, the code might work on platforms other than Windows
-        // so there is no need to mention dlls
-
-        // FIXME: The Ptolemy standard is to have the second argument should
-        // be the same as the name of the parameter.
-
-        nativeFunc = new Parameter(this, "Native Function Name",
-                (Token) new StringToken("unknownFunc"));
-        lib = new Parameter(this, "Native Library Name",
-                (Token) new StringToken("unknownLib"));
-
-        dllDir = new Parameter(this, "DLLs Directory",
-                (Token) new StringToken("jni\\\\dll"));
+	// FIXME: Should libraryDirectory be a FileAttribute?
+        libraryDirectory = new Parameter(this, "libraryDirectory",
+                (Token) new StringToken("jni" + File.separator + "lib"));
+        nativeFunction = new Parameter(this, "nativeFunction",
+                (Token) new StringToken("unknownFunction"));
+        nativeLibrary = new Parameter(this, "nativeLibrary",
+                (Token) new StringToken("unknownLibrary"));
 
         _attachText(
                 "_iconDescription",
@@ -153,18 +142,22 @@ public class GenericJNIActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The name of the native library.
-     *  existing native library.
+    /** The directory that contains the native library, which under
+     *  Windows should include a dll, an h file and a lib file.
+     *  The default value of thie parameter is the string 
+     *  "jni" + File.separator + "lib"
      */
-    public Parameter lib;
+    public Parameter libraryDirectory;
 
-    /** The name of the native function.
+    /** The name of the native library.  The default value of this
+     *  parameter is the String "nativeFunction"
      */
-    public Parameter nativeFunc;
+    public Parameter nativeFunction;
 
-    /** The directory that contains the dll, h file and lib files
+    /** The name of the native library.  The default value of this
+     *  parameter is the String "nativeLibrary"
      */
-    public Parameter dllDir;
+    public Parameter nativeLibrary;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -233,10 +226,9 @@ public class GenericJNIActor extends TypedAtomicActor {
     }
 
     /** For each Argument, a port of the same name is created,
-     * belonging to this argument.
-     *  @return void
+     *  belonging to this argument.
      */
-    public void createPorts() {
+    public void createPorts() throws IllegalActionException {
         Iterator arguments = this.argumentsList().iterator();
         TypedIOPort port;
         boolean exist = false;
@@ -244,16 +236,19 @@ public class GenericJNIActor extends TypedAtomicActor {
             Argument argument = (Argument) arguments.next();
             port = (TypedIOPort) this.getPort(argument.getName());
             if (port == null) {
-                if (argument.isReturn())
+                if (argument.isReturn()) {
                     try {
                         port = (TypedIOPort) this.newPort(argument.getName());
                         port.setInput(false);
                         port.setOutput(true);
                         port.setTypeEquals(BaseType.GENERAL);
                     } catch (Exception ex) {
-                        MessageHandler.error("Unable to construct port", ex);
+			throw new IllegalActionException(this, ex,
+							 "Unable to construct "
+							 + "return port '"
+							 + port +"'");
                     }
-                else if (argument.isInput() && argument.isOutput()) {
+                } else if (argument.isInput() && argument.isOutput()) {
                     try {
                         port = (TypedIOPort) this.newPort(argument.getName()
                                                           + "in");
@@ -264,8 +259,11 @@ public class GenericJNIActor extends TypedAtomicActor {
                         port.setOutput(argument.isOutput());
                         port.setTypeEquals(BaseType.GENERAL);
                     } catch (Exception ex) {
-                        MessageHandler.error("Unable to construct port",
-                                             ex);
+			throw new IllegalActionException(this, ex,
+							 "Unable to construct "
+							 + "input or output "
+							 + "port '"
+							 + port +"'");
                     }
                 } else {
                     try {
@@ -274,8 +272,10 @@ public class GenericJNIActor extends TypedAtomicActor {
                         port.setOutput(argument.isOutput());
                         port.setTypeEquals(BaseType.GENERAL);
                     } catch (Exception ex) {
-                        MessageHandler.error("Unable to construct port",
-                                             ex);
+			throw new IllegalActionException(this, ex,
+							 "Unable to construct "
+							 + "port '"
+							 + port +"'");
                     }
                 }
             } else {
@@ -381,37 +381,41 @@ public class GenericJNIActor extends TypedAtomicActor {
      *  order
      *  <ol>
      *  <li> The directory named by the value
-     *  the <i>dllDir</i> parameter relative to the current directory.
+     *  the <i>libraryDirectory</i> parameter relative to the current directory.
      *  (The current directory is named by the user.dir property)
      *  <li> The directory named by the value
-     *  the <i>dllDir</i> parameter relative to $PTII, which is named
+     *  the <i>libraryDirectory</i> parameter relative to $PTII, which is named
      *  by the ptolemy.ptII.dir property.
      *  <li> Elsewhere in the path named by the the java.library.path
      *  property.
      *  </ol>
      */
     public void initialize() throws IllegalActionException {
-        String libName = "";
-        String dllDirValue = "";
+        String nativeLibraryValue = "";
+        String libraryDirectoryValue = "";
         try {
-            libName =
+            libraryDirectoryValue =
                 ((StringToken) ((Parameter) this
-                        .getAttribute("Native Library Name"))
-                        .getToken())
-                .toString();
-            dllDirValue =
-                ((StringToken) ((Parameter) this
-                        .getAttribute("DLLs Directory"))
+                        .getAttribute("libraryDirectory"))
                         .getToken())
                 .stringValue();
+
+            nativeLibraryValue =
+                ((StringToken) ((Parameter) this
+                        .getAttribute("nativeLibrary"))
+                        .getToken())
+                .toString();
         } catch (Exception ex) {
-            MessageHandler.error("no dllDir or libName ! : ", ex);
+	    throw new IllegalActionException(this, ex,
+					     "no libraryDirectory or "
+					     + "nativeLibrary Parameter");
         }
 
-        String interlibName =
-            "jni" + libName.substring(1, libName.length() - 1);
+        String internativeLibraryValue =
+            "jni" + nativeLibraryValue
+	    .substring(1, nativeLibraryValue.length() - 1);
         //searching the class generated
-	String className = "jni." + interlibName + ".Jni"
+	String className = "jni." + internativeLibraryValue + ".Jni"
 	    + this.getName();
 
 	URL[] tab = new URL[1];
@@ -443,19 +447,19 @@ public class GenericJNIActor extends TypedAtomicActor {
 					     + tab[0]);
 	}
 
-        // Add the value of dllDir to the java.library.path
+        // Add the value of libraryDirectory to the java.library.path
         // First, look relative to the current directory (user.dir)
         // Second, look relative to $PTII
         System.setProperty("java.library.path",
                 StringUtilities.getProperty("user.dir")
                 + File.separator
-                + dllDirValue
+                + libraryDirectoryValue
                 + File.pathSeparator
 
                 + StringUtilities
                 .getProperty("ptolemy.ptII.dir")
                 + File.separator
-                + dllDirValue
+                + libraryDirectoryValue
                 + File.pathSeparator
 
                 + StringUtilities.getProperty("user.dir")
@@ -502,10 +506,10 @@ public class GenericJNIActor extends TypedAtomicActor {
     }
 
     /** Read the argument of the function from the ports,
-     * call the native method throw the generated interface,
-     * and put the results on the corresponding ports
-     @exception IllegalActionException If a exception occured
-    */
+     *  call the native method throw the generated interface,
+     *  and put the results on the corresponding ports
+     *  @exception IllegalActionException If a exception occured
+     */
     public void fire() throws IllegalActionException {
 
         //getting the in/inout parameters
@@ -625,7 +629,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                     typ = (String) field.getType().toString();
                 } catch (NoSuchFieldException e) {
                     try {
-                        MessageHandler.warning("No return typ!");
+			MessageHandler.warning("No return typ!");
                     } catch (Exception ex2) {
                         getDirector().stop();
                     }

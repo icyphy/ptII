@@ -58,11 +58,11 @@ See the Visual Project jnitesttrois.</text></svg></configure>
         </property>
     </property>
     <entity name="testtroisIfnTest" class="jni.GenericJNIActor">
-        <property name="Native Function Name" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
+        <property name="nativeFunction" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
         </property>
-        <property name="Native Library Name" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
+        <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
         </property>
-        <property name="DLLs Directory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
+        <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
         </property>
         <doc> to dko</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="659.484375, 528.4375">

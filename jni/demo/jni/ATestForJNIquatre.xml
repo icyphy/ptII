@@ -53,11 +53,11 @@ and jnitesttrois.</text></svg></configure>
         </property>
     </property>
     <entity name="testdeuxIfnTestdeux" class="jni.GenericJNIActor">
-        <property name="Native Function Name" class="ptolemy.data.expr.Parameter" value="&quot;fnTestdeux&quot;">
+        <property name="nativeFunction" class="ptolemy.data.expr.Parameter" value="&quot;fnTestdeux&quot;">
         </property>
-        <property name="Native Library Name" class="ptolemy.data.expr.Parameter" value="&quot;testdeux&quot;">
+        <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testdeux&quot;">
         </property>
-        <property name="DLLs Directory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
+        <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
         </property>
         <doc> to dko</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="670.0, 315.0">
@@ -151,11 +151,11 @@ and jnitesttrois.</text></svg></configure>
         </configure>
     </entity>
     <entity name="testtroisIfnTest" class="jni.GenericJNIActor">
-        <property name="Native Function Name" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
+        <property name="nativeFunction" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
         </property>
-        <property name="Native Library Name" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
+        <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
         </property>
-        <property name="DLLs Directory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
+        <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
         </property>
         <doc> to dko</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="441.0, 443.5">
@@ -238,11 +238,11 @@ and jnitesttrois.</text></svg></configure>
         </port>
     </entity>
     <entity name="testdeuxIfnTestdeux2" class="jni.GenericJNIActor">
-        <property name="Native Function Name" class="ptolemy.data.expr.Parameter" value="&quot;fnTestdeux&quot;">
+        <property name="nativeFunction" class="ptolemy.data.expr.Parameter" value="&quot;fnTestdeux&quot;">
         </property>
-        <property name="Native Library Name" class="ptolemy.data.expr.Parameter" value="&quot;testdeux&quot;">
+        <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testdeux&quot;">
         </property>
-        <property name="DLLs Directory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
+        <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
         </property>
         <doc> to dko</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="670.0, 265.0">
@@ -267,11 +267,11 @@ and jnitesttrois.</text></svg></configure>
         </port>
     </entity>
     <entity name="testtroisIfnTest2" class="jni.GenericJNIActor">
-        <property name="Native Function Name" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
+        <property name="nativeFunction" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
         </property>
-        <property name="Native Library Name" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
+        <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
         </property>
-        <property name="DLLs Directory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
+        <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
         </property>
         <doc> to dko</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="441.0, 498.5">
@@ -298,11 +298,11 @@ and jnitesttrois.</text></svg></configure>
         </port>
     </entity>
     <entity name="testtroisIfnTest3" class="jni.GenericJNIActor">
-        <property name="Native Function Name" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
+        <property name="nativeFunction" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
         </property>
-        <property name="Native Library Name" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
+        <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
         </property>
-        <property name="DLLs Directory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
+        <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
         </property>
         <doc> to dko</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="441.0, 558.5">
@@ -329,11 +329,11 @@ and jnitesttrois.</text></svg></configure>
         </port>
     </entity>
     <entity name="testtroisIfnTest4" class="jni.GenericJNIActor">
-        <property name="Native Function Name" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
+        <property name="nativeFunction" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
         </property>
-        <property name="Native Library Name" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
+        <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
         </property>
-        <property name="DLLs Directory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
+        <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
         </property>
         <doc> to dko</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="441.0, 618.5">
@@ -360,11 +360,11 @@ and jnitesttrois.</text></svg></configure>
         </port>
     </entity>
     <entity name="testtroisIfnTest5" class="jni.GenericJNIActor">
-        <property name="Native Function Name" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
+        <property name="nativeFunction" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
         </property>
-        <property name="Native Library Name" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
+        <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
         </property>
-        <property name="DLLs Directory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
+        <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
         </property>
         <doc> to dko</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="441.0, 678.5">
@@ -391,11 +391,11 @@ and jnitesttrois.</text></svg></configure>
         </port>
     </entity>
     <entity name="testtroisIfnTest6" class="jni.GenericJNIActor">
-        <property name="Native Function Name" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
+        <property name="nativeFunction" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
         </property>
-        <property name="Native Library Name" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
+        <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
         </property>
-        <property name="DLLs Directory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
+        <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
         </property>
         <doc> to dko</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="438.409423828125, 734.43994140625">
@@ -424,11 +424,11 @@ and jnitesttrois.</text></svg></configure>
         </port>
     </entity>
     <entity name="testtroisIfnTest7" class="jni.GenericJNIActor">
-        <property name="Native Function Name" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
+        <property name="nativeFunction" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
         </property>
-        <property name="Native Library Name" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
+        <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
         </property>
-        <property name="DLLs Directory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
+        <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
         </property>
         <doc> to dko</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="438.409423828125, 789.43994140625">
@@ -457,11 +457,11 @@ and jnitesttrois.</text></svg></configure>
         </port>
     </entity>
     <entity name="testtroisIfnTest8" class="jni.GenericJNIActor">
-        <property name="Native Function Name" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
+        <property name="nativeFunction" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
         </property>
-        <property name="Native Library Name" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
+        <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
         </property>
-        <property name="DLLs Directory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
+        <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
         </property>
         <doc> to dko</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="442.909423828125, 848.43994140625">
@@ -488,11 +488,11 @@ and jnitesttrois.</text></svg></configure>
         </port>
     </entity>
     <entity name="testtroisIfnTest9" class="jni.GenericJNIActor">
-        <property name="Native Function Name" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
+        <property name="nativeFunction" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
         </property>
-        <property name="Native Library Name" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
+        <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
         </property>
-        <property name="DLLs Directory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
+        <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
         </property>
         <doc> to dko</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="437.909423828125, 908.43994140625">
@@ -519,11 +519,11 @@ and jnitesttrois.</text></svg></configure>
         </port>
     </entity>
     <entity name="testtroisIfnTest10" class="jni.GenericJNIActor">
-        <property name="Native Function Name" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
+        <property name="nativeFunction" class="ptolemy.data.expr.Parameter" value="&quot;fnTest&quot;">
         </property>
-        <property name="Native Library Name" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
+        <property name="nativeLibrary" class="ptolemy.data.expr.Parameter" value="&quot;testtrois&quot;">
         </property>
-        <property name="DLLs Directory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
+        <property name="libraryDirectory" class="ptolemy.data.expr.Parameter" value="&quot;jni\\dll&quot;">
         </property>
         <doc> to dko</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="437.909423828125, 968.43994140625">

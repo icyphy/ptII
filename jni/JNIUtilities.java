@@ -116,11 +116,11 @@ the argument configurer
 <li> Right Click on the actor to edit
 the parameters
 <dl>
-<dt><code><b>Native Function Name:</b></code>
+<dt><code><b>nativeFunction:</b></code>
 <dd><code>"meaningOfLife"</code>
-<dt><code>Native Library Name<b></b></code>
+<dt><code>nativeLibrary<b></b></code>
 <dd><code>"meaningOfLife"</code>
-<dt><code><b>DLLs Directory</b></code>
+<dt><code><b>libraryDirectory</b></code>
 <dd><code>""</code>
 </dl>
 <li> Select Commit to close the 
@@ -238,17 +238,17 @@ public class JNIUtilities {
         actor.createPorts();
 
         //Nommage de l'acteur en fonction de ses parameters
-        String nativeFuncName = "";
-        String libName = "";
+        String nativeFunction = "";
+        String nativeLibrary = "";
         try {
-            nativeFuncName =
+            nativeFunction =
                 (((StringToken) ((Parameter) actor
-                        .getAttribute("Native Function Name"))
+                        .getAttribute("nativeFunction"))
                         .getToken())
                         .toString());
-            libName =
+            nativeLibrary =
                 ((StringToken) ((Parameter) actor
-                        .getAttribute("Native Library Name"))
+                        .getAttribute("nativeLibrary"))
                         .getToken())
                 .toString();
 
@@ -257,13 +257,13 @@ public class JNIUtilities {
 					 "no library or function name !");
 
         }
-        libName =
-            libName.substring(1, libName.length() - 1);
-        nativeFuncName =
-            nativeFuncName.substring(1, nativeFuncName.length() - 1);
+        nativeLibrary =
+            nativeLibrary.substring(1, nativeLibrary.length() - 1);
+        nativeFunction =
+            nativeFunction.substring(1, nativeFunction.length() - 1);
 
         try {
-            actor.setName(libName + "I" + nativeFuncName);
+            actor.setName(nativeLibrary + "I" + nativeFunction);
         } catch (NameDuplicationException ex) {
 	    throw new IllegalActionException(actor, ex, 
 					 "Unable to rename JNIActor '"
@@ -299,20 +299,20 @@ public class JNIUtilities {
         execCommands.add("javac -classpath \"" 
                 + StringUtilities.getProperty("ptolemy.ptII.dir")
                 + "\" jni/jni" 
-                + libName
+                + nativeLibrary
                 + "/Jni"
                 + actor.getName()
                 + ".java");
         // Create the .h file.
-        execCommands.add("javah -d jni/jni" + libName
+        execCommands.add("javah -d jni/jni" + nativeLibrary
                 + " jni.jni"
-                + libName
+                + nativeLibrary
                 + ".Jni"
                 + actor.getName());
 
         // Create the shared library.
-        execCommands.add("make -C jni/jni" + libName + " -f " 
-                + "Jnijni" + libName + ".mk");
+        execCommands.add("make -C jni/jni" + nativeLibrary + " -f " 
+                + "Jnijni" + nativeLibrary + ".mk");
 
 
         StreamExec javaExec = new StreamExec();
@@ -360,22 +360,25 @@ public class JNIUtilities {
     protected static File _exportJavaInterfaceFile(GenericJNIActor actor) 
 	throws IllegalActionException, IOException {
         StringBuffer results = new StringBuffer();
-        String nativeFuncName = "";
+
         String returnJType = "";
         String returnName = "";
-        String libName = "";
-        String interlibName = "";
+
+        String internativeLibrary = "";
         String interFuncName = "";
         String returnJType2 = "";
+
+        String nativeFunction = "";
+        String nativeLibrary = "";
         try {
-            nativeFuncName =
+            nativeFunction =
                 (((StringToken) ((Parameter) actor
-                        .getAttribute("Native Function Name"))
+                        .getAttribute("nativeFunction"))
                         .getToken())
                         .toString());
-            libName =
+            nativeLibrary =
                 ((StringToken) ((Parameter) actor
-                        .getAttribute("Native Library Name"))
+                        .getAttribute("nativeLibrary"))
                         .getToken())
                 .toString();
         } catch (IllegalActionException ex) {
@@ -383,11 +386,11 @@ public class JNIUtilities {
 					 "no library or function name !");
         }
 
-        interlibName = "jni" + libName.substring(
-                1, libName.length() - 1);
+        internativeLibrary = "jni" + nativeLibrary.substring(
+                1, nativeLibrary.length() - 1);
         interFuncName =
-            "jni" + nativeFuncName.substring(
-                    1, nativeFuncName.length() - 1);
+            "jni" + nativeFunction.substring(
+                    1, nativeFunction.length() - 1);
 
         List argumentsList = actor.argumentsList();
         Iterator arguments = argumentsList.iterator();
@@ -407,7 +410,7 @@ public class JNIUtilities {
 
         results.append(
 		       "package jni."
-		       + interlibName
+		       + internativeLibrary
 		       + ";\n"
 		       + "\n\n\n"
 		       + "/* The class that interface the native function call\n"
@@ -426,7 +429,7 @@ public class JNIUtilities {
 		       + " */\n"
 		       + "static {\n"
 		       + "System.loadLibrary(\"Jni"
-		       + interlibName
+		       + internativeLibrary
 		       + "\");\n }\n\n"
 		       + "public native "
 		       + returnJType
@@ -551,7 +554,7 @@ public class JNIUtilities {
 
         results.append( "\n}");
         File dir = new File(System.getProperty("user.dir")
-                + "/jni/" + interlibName);
+                + "/jni/" + internativeLibrary);
         //Creation du repertoire
         try {
             dir.mkdirs();
@@ -563,7 +566,7 @@ public class JNIUtilities {
         File javaFile =
             new File(
                     System.getProperty("user.dir") + "/jni/"
-                    + interlibName
+                    + internativeLibrary
                     + "/Jni"
                     + actor.getName()
                     + ".java");
@@ -581,26 +584,26 @@ public class JNIUtilities {
     protected static File _exportCInterfaceFile(GenericJNIActor actor)
 	throws IllegalActionException, IOException {
         StringBuffer results = new StringBuffer();
-        String nativeFuncName = "";
         String returnType = "";
         String returnName = "";
 
-        String dllDir = "";
-        String libName = "";
+        String libraryDirectory = "";
+        String nativeFunction = "";
+        String nativeLibrary = "";
         try {
-            nativeFuncName =
-                (((StringToken) ((Parameter) actor
-                          .getAttribute("Native Function Name"))
-                        .getToken())
-                        .toString());
-            libName =
+            libraryDirectory =
                 ((StringToken) ((Parameter) actor
-                        .getAttribute("Native Library Name"))
+                        .getAttribute("libraryDirectory"))
                         .getToken())
                 .toString();
-            dllDir =
+            nativeFunction =
+                (((StringToken) ((Parameter) actor
+                          .getAttribute("nativeFunction"))
+                        .getToken())
+                        .toString());
+            nativeLibrary =
                 ((StringToken) ((Parameter) actor
-                        .getAttribute("DLLs Directory"))
+                        .getAttribute("nativeLibrary"))
                         .getToken())
                 .toString();
 
@@ -608,11 +611,11 @@ public class JNIUtilities {
 	    throw new IllegalActionException(actor, ex, 
 					 "no library or function name !");
         }
-        String interlibName =
-            "jni" + libName.substring(1, libName.length() - 1);
+        String internativeLibrary =
+            "jni" + nativeLibrary.substring(1, nativeLibrary.length() - 1);
         String interFuncName =
-            "jni" + nativeFuncName.substring(1,
-                    nativeFuncName.length() - 1);
+            "jni" + nativeFunction.substring(1,
+                    nativeFunction.length() - 1);
         List argumentsList = actor.argumentsList();
         Iterator arguments = argumentsList.iterator();
         while (arguments.hasNext()) {
@@ -643,13 +646,13 @@ public class JNIUtilities {
 	    // gcc with cygwin
             +"/* #include <iostream> */\n "
             + "#include \"" + System.getProperty("user.dir")
-            + "/" + dllDir.substring(1,
-                    dllDir.length()-1) + "/"
-            + libName.substring(1, libName.length() - 1)
+            + "/" + libraryDirectory.substring(1,
+                    libraryDirectory.length()-1) + "/"
+            + nativeLibrary.substring(1, nativeLibrary.length() - 1)
             + ".h\"\n"
             // le fichier entete g‰n‰r‰ par javah
             +"#include \"jni_"
-            + interlibName
+            + internativeLibrary
             + "_Jni"
             + actor.getName()
             + ".h\"\n"
@@ -664,7 +667,7 @@ public class JNIUtilities {
             + "//extern \"C\" "
             + returnType
             + " "
-            + nativeFuncName.substring(1, nativeFuncName.length() - 1)
+            + nativeFunction.substring(1, nativeFunction.length() - 1)
             + "("
             + _getArgsInWithCType(actor, ",")
             + _virgule( _getArgsInWithCType(actor, ","),
@@ -677,7 +680,7 @@ public class JNIUtilities {
             + "JNIEXPORT "
             + actor.getArgumentReturn().getJNIType()
             + " JNICALL Java_jni_"
-            + interlibName
+            + internativeLibrary
             + "_Jni"
             + actor.getName()
             + "_"
@@ -755,7 +758,7 @@ public class JNIUtilities {
         //native function call
 
 	results.append(
-		       nativeFuncName.substring(1, nativeFuncName.length() - 1)
+		       nativeFunction.substring(1, nativeFunction.length() - 1)
 		       + "("
 		       + _getArgsWithCTypeCast(actor, true, false, false, ",")
 		       + _virgule( _getArgsInWithCType(actor, ","), _getArgsInOut(actor, ","))
@@ -850,7 +853,7 @@ public class JNIUtilities {
         File cFile =
             new File(
                     System.getProperty("user.dir") + "/jni/"
-                    + interlibName
+                    + internativeLibrary
                     + "/jni"
                     + actor.getName()
                     + ".cpp");
@@ -865,59 +868,61 @@ public class JNIUtilities {
     protected static void _exportDSP(GenericJNIActor actor)
 	throws IllegalActionException, IOException {
         StringBuffer results = new StringBuffer();
-        String libName = "";
-        String dllDir = "";
+
+        String libraryDirectory = "";
+        String nativeLibrary = "";
         try {
-            libName =
+            libraryDirectory =
                 ((StringToken) ((Parameter) actor
-                        .getAttribute("Native Library Name"))
+			.getAttribute("libraryDirectory"))
                         .getToken())
                 .toString();
-            dllDir =
-                ((StringToken) ((Parameter) actor.getAttribute("DLLs Directory"))
+            nativeLibrary =
+                ((StringToken) ((Parameter) actor
+                        .getAttribute("nativeLibrary"))
                         .getToken())
                 .toString();
         } catch (Exception ex) {
 	    throw new IllegalActionException(actor, ex, 
 					 "no library or function name !");
         }
-        libName = libName.substring(1, libName.length() - 1);
-        String interlibName = "jni" + libName;
+        nativeLibrary = nativeLibrary.substring(1, nativeLibrary.length() - 1);
+        String internativeLibrary = "jni" + nativeLibrary;
         results.append(
             "# Microsoft Developer Studio Project File - Name=\""
-            + interlibName
+            + internativeLibrary
             + "\" - Package Owner=<4>\r\n"
             + "# Microsoft Developer Studio Generated Build File,"
             + " Format Version 6.00\r\n"
             + "# ** DO NOT EDIT **\r\n"
             + "# TARGTYPE \"Win32 (x86) Dynamic-Link Library\" 0x0102\r\n"
             + "CFG="
-            + interlibName
+            + internativeLibrary
             + " - Win32 Debug\r\n"
             + "!MESSAGE This is not a valid makefile. To build this project"
             + " using NMAKE,\r\n"
             + "!MESSAGE use the Export Makefile command and run\r\n"
             + "!MESSAGE \r\n"
             + "!MESSAGE NMAKE /f \""
-            + interlibName
+            + internativeLibrary
             + ".mak\".\r\n"
             + "!MESSAGE \r\n"
             + "!MESSAGE You can specify a configuration when running NMAKE\r\n"
             + "!MESSAGE by defining the macro CFG on the command line. For example:\r\n"
             + "!MESSAGE \r\n"
             + "!MESSAGE NMAKE /f \""
-            + interlibName
+            + internativeLibrary
             + ".mak\" CFG=\""
-            + interlibName
+            + internativeLibrary
             + " - Win32 Debug\"\r\n"
             + "!MESSAGE \r\n"
             + "!MESSAGE Possible choices for configuration are:\r\n"
             + "!MESSAGE \r\n"
             + "!MESSAGE \""
-            + interlibName
+            + internativeLibrary
             + " - Win32 Release\" (based on \"Win32 (x86) Dynamic-Link Library\")\r\n"
             + "!MESSAGE \""
-            + interlibName
+            + internativeLibrary
             + " - Win32 Debug\" (based on \"Win32 (x86) Dynamic-Link Library\")\r\n"
             + "!MESSAGE \r\n\r\n"
             + "# Begin Project\r\n"
@@ -928,7 +933,7 @@ public class JNIUtilities {
             + "MTL=midl.exe\r\n"
             + "RSC=rc.exe\r\n\r\n"
             + "!IF  \"$(CFG)\" == \""
-            + interlibName
+            + internativeLibrary
             + "- Win32 Release\"\r\n\r\n"
             + "# PROP BASE Use_MFC 0\r\n"
             + "# PROP BASE Use_Debug_Libraries 0\r\n"
@@ -938,19 +943,19 @@ public class JNIUtilities {
             + "# PROP Use_MFC 0\r\n"
             + "# PROP Use_Debug_Libraries 0\r\n"
             + "# PROP Output_Dir \"" + System.getProperty("user.dir")
-            + "\\" + dllDir.substring(1, dllDir.length())
+            + "\\" + libraryDirectory.substring(1, libraryDirectory.length())
             + "\r\n"
             + "# PROP Intermediate_Dir \"Release\"\r\n"
             + "# PROP Target_Dir \"\" \r\n"
             + "# ADD BASE CPP /nologo /MT /W3 /GX /O2 /D \"WIN32\""
             + " /D \"NDEBUG\" /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\""
             + " /D \""
-            + interlibName.toUpperCase()
+            + internativeLibrary.toUpperCase()
             + "_EXPORTS\" /YX /FD /c\r\n"
             + "# ADD CPP /nologo /MT /W3 /GX /O2 /D \"WIN32\" /D \"NDEBUG\""
             + " /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\""
             + " /D \""
-            + interlibName.toUpperCase()
+            + internativeLibrary.toUpperCase()
             + "_EXPORTS\" /YX /FD /c /I "
             + "\"d:/users/arnould/jdk1.4.1/include/\" "
             + "/I "
@@ -970,7 +975,7 @@ public class JNIUtilities {
             + " advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib"
             + " /nologo /dll /machine:I386\r\n\r\n"
             + "!ELSEIF  \"$(CFG)\" == \""
-            + interlibName
+            + internativeLibrary
             + " - Win32 Debug\"\r\n\r\n"
             + "# PROP BASE Use_MFC 0\r\n"
             + "# PROP BASE Use_Debug_Libraries 1\r\n"
@@ -980,7 +985,7 @@ public class JNIUtilities {
             + "# PROP Use_MFC 0\r\n"
             + "# PROP Use_Debug_Libraries 1\r\n"
             + "# PROP Output_Dir \"" + System.getProperty("user.dir")
-            + "\\" + dllDir.substring(1, dllDir.length())
+            + "\\" + libraryDirectory.substring(1, libraryDirectory.length())
             + "\r\n"
             + "# PROP Intermediate_Dir \"Debug\"\r\n"
             + "# PROP Ignore_Export_Lib 0\r\n"
@@ -988,12 +993,12 @@ public class JNIUtilities {
             + "# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D \"WIN32\""
             + " /D \"_DEBUG\" /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\""
             + " /D \""
-            + interlibName.toUpperCase()
+            + internativeLibrary.toUpperCase()
             + "_EXPORTS\" /YX /FD /GZ /c\r\n"
             + "# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od  /D \"WIN32\""
             + " /D \"_DEBUG\" /D \"_WINDOWS\" /D \"_MBCS\" /D \"_USRDLL\""
             + " /D \""
-            + interlibName.toUpperCase()
+            + internativeLibrary.toUpperCase()
             + "_EXPORTS\" /YX /FD /GZ /c /I "
             + "\"d:/users/arnould/jdk1.4.1/include/\" "
             + "/I "
@@ -1016,10 +1021,10 @@ public class JNIUtilities {
             + "!ENDIF \r\n\r\n"
             + "# Begin Target\r\n\r\n"
             + "# Name \""
-            + interlibName
+            + internativeLibrary
             + " - Win32 Release\"\r\n"
             + "# Name \""
-            + interlibName
+            + internativeLibrary
             + " - Win32 Debug\"\r\n"
             + "# Begin Group \"Source Files\"\r\n\r\n"
             + "# PROP Default_Filter \"cpp;c;cxx;rc;def;r;odl;idl;hpj;bat\"\r\n"
@@ -1033,15 +1038,15 @@ public class JNIUtilities {
             + "# PROP Default_Filter \"h;hpp;hxx;hm;inl\"\r\n"
             + "# Begin Source File\r\n\r\n"
             + "SOURCE=.\\jni_jni"
-            + libName
+            + nativeLibrary
             + "_Jni"
             + actor.getName()
             + ".h\r\n"
             + "# End Source File\r\n"
             + "# Begin Source File\r\n\r\n"
             + "SOURCE=\"" + System.getProperty("user.dir")
-            + "\\" + dllDir.substring(1, dllDir.length()-1) + "\\"
-            + libName
+            + "\\" + libraryDirectory.substring(1, libraryDirectory.length()-1) + "\\"
+            + nativeLibrary
             + ".h\"\r\n"
             + "# End Source File\r\n"
             + "# End Group\r\n"
@@ -1049,14 +1054,14 @@ public class JNIUtilities {
             + "# PROP Default_Filter \"ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe\"\r\n"
             + "# Begin Source File\r\n\r\n"
             + "SOURCE=\"" + System.getProperty("user.dir")
-            + "\\" + dllDir.substring(1, dllDir.length()-1) + "\\"
-            + libName
+            + "\\" + libraryDirectory.substring(1, libraryDirectory.length()-1) + "\\"
+            + nativeLibrary
             + ".dll\"\r\n"
             + "# End Source File\r\n"
             + "# Begin Source File\r\n\r\n"
             + "SOURCE=\"" + System.getProperty("user.dir")
-            + "\\" + dllDir.substring(1, dllDir.length()-1) + "\\"
-            + libName
+            + "\\" + libraryDirectory.substring(1, libraryDirectory.length()-1) + "\\"
+            + nativeLibrary
             + ".lib\"\r\n"
             + "# End Source File\r\n"
             + "# End Group\r\n"
@@ -1065,9 +1070,9 @@ public class JNIUtilities {
         File dspFile =
             new File(
                     System.getProperty("user.dir") + "/jni/"
-                    + interlibName
+                    + internativeLibrary
                     + "/Jni"
-                    + interlibName
+                    + internativeLibrary
                     + ".dsp");
 	FileWriter writer = new FileWriter(dspFile);
 	writer.write(results.toString());
@@ -1079,25 +1084,28 @@ public class JNIUtilities {
     protected static void _exportMakefile(GenericJNIActor actor)
 	throws IllegalActionException, IOException {
         StringBuffer results = new StringBuffer();
-        String libName = "";
-        String dllDir = "";
+
+        String libraryDirectory = "";
+        String nativeLibrary = "";
         try {
-            libName =
+            libraryDirectory =
                 ((StringToken) ((Parameter) actor
-                        .getAttribute("Native Library Name"))
+			.getAttribute("libraryDirectory"))
                         .getToken())
                 .toString();
-            dllDir =
-                ((StringToken) ((Parameter) actor.getAttribute("DLLs Directory"))
+            nativeLibrary =
+                ((StringToken) ((Parameter) actor
+                        .getAttribute("nativeLibrary"))
                         .getToken())
                 .toString();
+
         } catch (Exception ex) {
 	    throw new IllegalActionException(actor, ex, 
 					 "no library or function name !");
         }
-        libName = libName.substring(1, libName.length() - 1);
-        String interlibName = "jni" + libName;
-	String libraryPath = dllDir;
+        nativeLibrary = nativeLibrary.substring(1, nativeLibrary.length() - 1);
+        String internativeLibrary = "jni" + nativeLibrary;
+	String libraryPath = libraryDirectory;
 	if (libraryPath.equals("\"\"")) {
 	    libraryPath = ".";
 	}
@@ -1110,14 +1118,14 @@ public class JNIUtilities {
                     + "# Get configuration info\n"
 		    + "CONFIG =\t$(ROOT)/mk/ptII.mk\n" 
 		    + "include $(CONFIG)\n\n"
-		    + interlibName + ":\n"
+		    + internativeLibrary + ":\n"
 		    + "\t\"$(PTCC)\" \\\n"
 		    + "\t\t\"-I$(PTJAVA_DIR)/include\" \\\n"
 		    + "\t\t\"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)\" \\\n"
 		    + "\t\t-fno-exceptions \\\n"
 		    + "\t\t-Wl,--add-stdcall-alias -shared \\\n"
-		    + "\t\t-L" + libraryPath + " -l" + libName + " \\\n"
-		    + "\t\t -o Jnijni" + libName
+		    + "\t\t-L" + libraryPath + " -l" + nativeLibrary + " \\\n"
+		    + "\t\t -o Jnijni" + nativeLibrary
 		    + ".$(PTJNI_SHAREDLIBRARY_SUFFIX) \\\n"
 		    + "\t\tjni" + actor.getName() + ".cpp\n\n"
                     + "# Get the rest of the rules\n"
@@ -1127,9 +1135,9 @@ public class JNIUtilities {
         File makeFile =
             new File(
                     System.getProperty("user.dir") + "/jni/"
-                    + interlibName
+                    + internativeLibrary
                     + "/Jni"
-                    + interlibName
+                    + internativeLibrary
                     + ".mk");
 	FileWriter writer = new FileWriter(makeFile);
 	writer.write(results.toString());
