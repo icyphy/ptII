@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Discrete Event domain demo
+# Makefile for Ptolemy II Discrete Event Timing Paradox domain demo
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2003 The Regents of the University of California.
+# @Copyright (c) 2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
