@@ -571,7 +571,7 @@ public class Graph implements Cloneable {
 
     /** Return an edge in this graph given the edge label;
      *  the returned edge may be hidden see {@link #hideEdge(Edge)}.
-     *  @param edge The edge label.
+     *  @param label The edge label.
      *  @return The edge.
      *  @exception GraphElementException If the label is not associated
      *  with an edge in this graph.
@@ -914,7 +914,7 @@ public class Graph implements Cloneable {
     }
 
     /** Return a node in this graph given the node label.
-     *  @param node The node label.
+     *  @param label The node label.
      *  @return The node.
      *  @exception IndexOutOfBoundsException If the label is not associated with
      *  a node in this graph.
