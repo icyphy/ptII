@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE schematic PUBLIC "test.dtd" "http://foo/bar.dtd">
+<!DOCTYPE schematic PUBLIC "xml1.dtd">
 
 <schematic name="hello world" version="1.0">
 <description>ramp-recorder...  a good first start</description>

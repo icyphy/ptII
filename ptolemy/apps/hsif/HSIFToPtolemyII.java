@@ -33,8 +33,6 @@ package ptolemy.apps.hsif;
 // Ptolemy imports.
 import ptolemy.kernel.util.IllegalActionException;
 
-import diva.util.*;
-
 // Java imports.
 import java.io.IOException;
 

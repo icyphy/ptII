@@ -44,7 +44,8 @@ include $(CONFIG)
 
 JSRCS = \
 	HSIFToPtolemyII.java \
-	HSIFProcessor.java 
+	HSIFProcessor.java \
+	DOMEcho.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -72,4 +73,7 @@ all: jclass
 include $(ROOT)/mk/ptcommon.mk
 
 demo:
-	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.apps.hsif.HSIFToPtolemyII xml1.xml
+	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.apps.hsif.HSIFToPtolemyII poolExample.xml
+
+sundemo:
+	$(JAVA) -classpath ".;$(CLASSPATH)" DOMEcho poolExample.xml
