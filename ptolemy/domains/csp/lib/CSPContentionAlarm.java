@@ -24,23 +24,25 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (nsmyth@eecs.berkeley.edu)
+@ProposedRating Red (davisj@eecs.berkeley.edu)
 
 */
 
 package ptolemy.domains.csp.lib;
 
-import ptolemy.domains.csp.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.actor.process.*;
+import ptolemy.domains.csp.kernel.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
+import java.util.Enumeration;
+import collections.LinkedList;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPContentionAlarm
 /**
-   FIXME: add description!!
 
 @author John S. Davis II
 @version $Id$
@@ -64,21 +66,56 @@ public class CSPContentionAlarm extends CSPActor {
 
     /**
      */
+    public void addListeners(ExecEventListener listener) {
+        if( _listeners == null ) {
+            _listeners = new LinkedList();
+        }
+        _listeners.insertLast(listener);
+    }
+    
+    /**
+     */
     public void fire() throws IllegalActionException {
         
         while(true) {
             // State 1
+            generateEvents( new ExecEvent( this, 1 ) );
 	    System.out.println("\t\t\t\tSTATE 1: " +getName());
             _input.get(0);
             
             // State 2
+            generateEvents( new ExecEvent( this, 2 ) );
 	    System.out.println("\t\t\t\tSTATE 2: " +getName());
             waitForDeadlock();
             
             // State 3
+            generateEvents( new ExecEvent( this, 3 ) );
 	    System.out.println("\t\t\t\tSTATE 3: " +getName());
             _output.send(0, new Token());
         }
+    }
+    
+    /**
+     */
+    public void generateEvents(ExecEvent event) {
+        if( _listeners == null ) {
+            return;
+        }
+        Enumeration enum = _listeners.elements();
+        while( enum.hasMoreElements() ) {
+            ExecEventListener newListener = 
+                    (ExecEventListener)enum.nextElement();
+            newListener.stateChanged(event);
+        }
+    }
+    
+    /**
+     */
+    public void removeListeners(ExecEventListener listener) {
+        if( _listeners == null ) {
+            return;
+        }
+        _listeners.removeOneOf(listener);
     }
     
     ////////////////////////////////////////////////////////////////////////
@@ -86,4 +123,6 @@ public class CSPContentionAlarm extends CSPActor {
 
     private IOPort _input;
     private IOPort _output;
+    
+    private LinkedList _listeners;
 }

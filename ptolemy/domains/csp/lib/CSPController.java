@@ -30,8 +30,9 @@
 
 package ptolemy.domains.csp.lib;
 
-import ptolemy.domains.csp.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.actor.process.*;
+import ptolemy.domains.csp.kernel.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
@@ -74,6 +75,15 @@ public class CSPController extends CSPActor {
 
     /**
      */
+    public void addListeners(ExecEventListener listener) {
+        if( _listeners == null ) {
+            _listeners = new LinkedList();
+        }
+        _listeners.insertLast(listener);
+    }
+    
+    /**
+     */
     public void fire() throws IllegalActionException {
         
         if( _numRequestInChannels == -1 ) {
@@ -96,6 +106,7 @@ public class CSPController extends CSPActor {
             //
             // State 1: Wait for 1st Request
             //
+            generateEvents( new ExecEvent( this, 1 ) );
 	    System.out.println("\t\t\tSTATE 1: " +getName());
             ConditionalBranch[] reqBrchs = 
                     new ConditionalBranch[_numRequestInChannels];
@@ -117,6 +128,7 @@ public class CSPController extends CSPActor {
             //
             // State 2: Notify Contention Alarm of 1st Request
             //
+            generateEvents( new ExecEvent( this, 2 ) );
 	    System.out.println("\t\t\tSTATE 2: " +getName());
             _contendOut.send(0, new Token() );
             
@@ -124,6 +136,7 @@ public class CSPController extends CSPActor {
             //
             // State 3: Wait for Contenders and Send Ack's
             //
+            generateEvents( new ExecEvent( this, 3 ) );
 	    System.out.println("\t\t\tSTATE 3: " +getName());
             _losingPortChannelCodes = new LinkedList(); 
             boolean continueCDO = true;
@@ -157,6 +170,7 @@ public class CSPController extends CSPActor {
                     // 
                     // State 4: Contention is Over 
                     // 
+                    generateEvents( new ExecEvent( this, 4 ) );
 	            System.out.println("\t\t\tSTATE 4: " +getName());
                 
                     reqBrchs[br].getToken();
@@ -191,6 +205,29 @@ public class CSPController extends CSPActor {
         }
     }
     
+    /**
+     */
+    public void generateEvents(ExecEvent event) {
+        if( _listeners == null ) {
+            return;
+        }
+        Enumeration enum = _listeners.elements();
+        while( enum.hasMoreElements() ) {
+            ExecEventListener newListener = 
+                    (ExecEventListener)enum.nextElement();
+            newListener.stateChanged(event);
+        }
+    }
+    
+    /**
+     */
+    public void removeListeners(ExecEventListener listener) {
+        if( _listeners == null ) {
+            return;
+        }
+        _listeners.removeOneOf(listener);
+    }
+    
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
@@ -204,4 +241,6 @@ public class CSPController extends CSPActor {
     
     private PortChannelCode _winningPortChannelCode;
     private LinkedList _losingPortChannelCodes;
+    
+    private LinkedList _listeners;
 }
