@@ -107,6 +107,21 @@ public class Sine extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the parameters of the new actor.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @throws CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        Sine newobj = (Sine)super.clone(ws);
+        newobj.amplitude = (Parameter)newobj.getAttribute("amplitude");
+        newobj.omega = (Parameter)newobj.getAttribute("omega");
+        newobj.phase = (Parameter)newobj.getAttribute("phase");
+        return newobj;
+    }
+
     /** Compute the sine of the input.  If there is no input, then
      *  produce no output.
      *  @exception IllegalActionException If there is no director.
