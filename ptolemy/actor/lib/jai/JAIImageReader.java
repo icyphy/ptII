@@ -128,9 +128,11 @@ public class JAIImageReader extends Source {
             PlanarImage dummy = _outputtedImage.getRendering();
         } finally {
             try {
-                _stream.close();
-            } catch (IOException ex) {
-                throw new IllegalActionException(this, ex,
+                if (_stream != null) {
+                    _stream.close();
+                }
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable,
                         "Unable to close stream for '" + _fileRoot + "'");
             }
         }
