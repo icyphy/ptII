@@ -51,11 +51,14 @@ represented as inequalities between Typeable objects.
 
 public interface Typeable
 {
-    /** Return the type of this object. If the type is not
-     *  determined, return null.
+    /** Return the type of this object. An exception is thrown if the type
+     *  cannot be determined. This can happen if the type of this object
+     *  is dependent on some other objects whose value is not available yet.
      *  @return An instance of Type.
+     *  @exception IllegalActionException If the type cannot be determined.
      */
-    public Type getType();
+    public Type getType()
+	    throws IllegalActionException;
 
     /** Return an InequalityTerm representing this object.
      *  @return An InequalityTerm.

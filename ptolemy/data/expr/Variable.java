@@ -407,19 +407,24 @@ public class Variable extends Attribute implements Typeable {
 
     /** Get the type of this variable. It is BaseType.NAT if the type has
      *  not set by setTypeEquals(), no token has been set by setToken(),
-     *  and no expression has been set by setExpression().  If an expression
-     *  has been set, then calling this method causes this expression to be
-     *  evaluated, and the type of this variable is derived from the 
-     *  resulting token. If the evaluation fails, then this method returns
-     *  BaseType.NAT; i.e., the type is undefined.
+     *  and no expression has been set by setExpression(). Calling this method
+     *  will trigger evaluation of the expression, if the value has been
+     *  given by setExpression(). Notice the evaluation of the expression
+     *  can trigger an exception if the expression is not valid, or if the
+     *  result of the expression violates type constraints specified by
+     *  setTypeEquals() or setTypeAtMost(), or if the result of the expression
+     *  is null and there are other variables that depend on this one.
+     *  The returned value will be BaseType.NAT if neither an expression nor a
+     *  token has been set.
      *  @return The type of this variable.
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated, or if the result of evaluation
+     *   violates type constraints, or if the result of evaluation is null
+     *   and there are variables that depend on this one.
      */
-    public Type getType() {
-        try {
-            _evaluate();
-        } catch (IllegalActionException ex) {
-            return BaseType.NAT;
-        }
+    public Type getType()
+	    throws IllegalActionException {
+        _evaluate();
         return _varType;
     }
 
@@ -795,12 +800,12 @@ public class Variable extends Attribute implements Typeable {
 	result.appendElements(_constraints.elements());
 
         // If the variable has a type, add a constraint.
-        Type currentType = getType();
-        if (currentType != BaseType.NAT) {
-            TypeConstant current = new TypeConstant(currentType);
-            Inequality ineq = new Inequality(current, getTypeTerm());
-            result.insertLast(ineq);
-        }
+        // Type currentType = getType();
+        // if (currentType != BaseType.NAT) {
+        //     TypeConstant current = new TypeConstant(currentType);
+        //     Inequality ineq = new Inequality(current, getTypeTerm());
+        //     result.insertLast(ineq);
+        // }
 
         // If an upper bound has been specified, add a constraint.
         if (_typeAtMost != BaseType.NAT) {
@@ -1258,7 +1263,12 @@ public class Variable extends Attribute implements Typeable {
 	/** Return the type of this Variable.
 	 */
 	public Object getValue() {
-	    return getType();
+	    try {
+	        return getType();
+	    } catch (IllegalActionException ex) {
+		throw new InternalErrorException("Variable " +
+		"TypeTerm.getValue(): Cannot get type. " + ex.getMessage());
+	    }
         }
 
         /** Return this TypeTerm in an array if this term represent
@@ -1268,7 +1278,7 @@ public class Variable extends Attribute implements Typeable {
 	 *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-	    if ( !_declaredType.isConstant()) {
+	    if ( isSettable()) {
 	    	InequalityTerm[] result = new InequalityTerm[1];
 	    	result[0] = this;
 	    	return result;
@@ -1276,13 +1286,21 @@ public class Variable extends Attribute implements Typeable {
 	    return (new InequalityTerm[0]);
         }
 
-        /** Test if the type of this Variable is set thought
-	 *  setTypeEquals().
+        /** Test if the type of this Variable is fixed. The type is fixed if
+	 *  setTypeEquals() is called with an argument that is not
+	 *  BaseType.NAT, or the user has set a non-null expression or token
+	 *  into this variable.
          *  @return True if the type of this Variable is set;
 	 *   false otherwise.
          */
         public boolean isSettable() {
-	    return ( !_declaredType.isConstant());
+	    // return ( !_declaredType.isConstant());
+
+	    if (_token != null || _currentExpression != null ||
+		_declaredType.isConstant()) {
+		return false;
+	    }
+	    return true;
         }
 
         /** Check whether the current type of this term is acceptable,
@@ -1291,10 +1309,16 @@ public class Variable extends Attribute implements Typeable {
          *  @return True if the current type is acceptable.
          */
         public boolean isValueAcceptable() {
-            if (getType().isInstantiable()) {
-                return true;
-            }
-            return false;
+	    try {
+            	if (getType().isInstantiable()) {
+                    return true;
+                }
+                return false;
+	    } catch (IllegalActionException ex) {
+		throw new InternalErrorException("Variable " +
+		"TypeTerm.isValueAcceptable(): Cannot get type. " +
+		ex.getMessage());
+	    }
         }
 
         /** Set the type of this variable.
@@ -1321,8 +1345,12 @@ public class Variable extends Attribute implements Typeable {
          *  @return A description of the port and its type.
          */
         public String toString() {
-            return "(" + _variable.toString() + ", "
-            + getType() + ")";
+	    try {
+                return "(" + _variable.toString() + ", " + getType() + ")";
+	    } catch (IllegalActionException ex) {
+		throw new InternalErrorException("Variable " +
+		"TypeTerm.toString(): Cannot get type. " + ex.getMessage());
+	    }
         }
 
         ///////////////////////////////////////////////////////////////

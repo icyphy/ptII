@@ -33,9 +33,13 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.type.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.graph.*;
+
+import collections.LinkedList;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// Pulse
@@ -94,8 +98,6 @@ public class Pulse extends SequenceSource {
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
         _zero = new IntToken(0);
-        _dummy = new Variable(this, "_dummy", _zero);
-	output.setTypeAtLeast(_dummy);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -176,7 +178,6 @@ public class Pulse extends SequenceSource {
             try {
                 MatrixToken valuesArray = (MatrixToken)values.getToken();
                 Token prototype = valuesArray.getElementAsToken(0, 0);
-                _dummy.setToken(prototype);
                 _zero = prototype.zero();
             } catch (ArrayIndexOutOfBoundsException ex) {
                 throw new IllegalActionException(this,
@@ -186,8 +187,7 @@ public class Pulse extends SequenceSource {
                         "Cannot set values to something that is not an array: "
                         + values.getToken());
             }
-        } else if (attribute != _dummy) {
-            // Notice that type changes to _dummy are allowed...
+        } else {
             super.attributeTypeChanged(attribute);
         }
     }
@@ -216,9 +216,6 @@ public class Pulse extends SequenceSource {
             } else {
                 newobj._zero = new IntToken(0);
             }
-            newobj._dummy = (Variable)(newobj.getAttribute("_dummy"));
-            newobj._dummy.setToken(_zero);
-            newobj.output.setTypeAtLeast(newobj._dummy);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
@@ -289,6 +286,33 @@ public class Pulse extends SequenceSource {
         return super.prefire();
     }
 
+    /** Return the type constraints of this actor. The constraints are the
+     *  ones imposed by the super class, plus the constraint that the type
+     *  of the output port must be no less than the element type of the
+     *  values parameter.
+     *  @return an Enumeration of Inequality.
+     */
+    public Enumeration typeConstraints() {
+	try {
+	    // Set up the constraint that the output type must be no less than
+	    // the element type of the values parameter. This constraint is
+	    // regenerated every time since the element type may change.
+	    MatrixToken val = (MatrixToken)(values.getToken());
+            Type elemType = val.getElementAsToken(0, 0).getType();
+	    TypeConstant elemTerm = new TypeConstant(elemType);
+	    Inequality ineq = new Inequality(elemTerm, output.getTypeTerm());
+
+	    LinkedList result = new LinkedList();
+	    result.insertLast(ineq);
+	    result.appendElements(super.typeConstraints());
+
+	    return result.elements();
+	} catch (IllegalActionException ex) {
+	    throw new InternalErrorException("Clock.typeConstraints(): " +
+		"Cannot get element of the values parameter.");
+	}
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -322,10 +346,4 @@ public class Pulse extends SequenceSource {
     // Default value of the values parameter.
     private IntMatrixToken _defaultValueToken =
             new IntMatrixToken(defaultValues);
-
-    // Dummy variable which reflects the type of the elements of the
-    // values parameter, so that the output type can be related to it.
-    // FIXME: When the type system handles aggregate types, this should
-    // go away.
-    private Variable _dummy;
 }

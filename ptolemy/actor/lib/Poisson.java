@@ -33,9 +33,13 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.type.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.graph.*;
+
+import collections.LinkedList;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// Poisson
@@ -118,9 +122,6 @@ public class Poisson extends TimedSource {
         values = new Parameter(this, "values", defaultValueToken);
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
-
-        _dummy = new Variable(this, "_dummy", _getValue(0));
-	output.setTypeAtLeast(_dummy);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -180,15 +181,7 @@ public class Poisson extends TimedSource {
             if (dir != null) {
                 dir.invalidateResolvedTypes();
             }
-            try {
-                _dummy.setToken(_getValue(0));
-            } catch (ClassCastException ex) {
-                throw new IllegalActionException(this,
-                "Cannot set values to something that is not an array: "
-                + values.getToken());
-            }
-        } else if (attribute != _dummy) {
-            // Notice that type changes to _dummy are allowed...
+        } else {
             super.attributeTypeChanged(attribute);
         }
     }
@@ -205,9 +198,6 @@ public class Poisson extends TimedSource {
             newobj.meanTime = (Parameter)newobj.getAttribute("meanTime");
             newobj.values = (Parameter)newobj.getAttribute("values");
             newobj.attributeChanged(values);
-            newobj._dummy = (Variable)(newobj.getAttribute("_dummy"));
-            newobj._dummy.setToken(newobj._getValue(0));
-            newobj.output.setTypeAtLeast(newobj._dummy);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
@@ -271,6 +261,33 @@ public class Poisson extends TimedSource {
         return super.postfire();
     }
 
+    /** Return the type constraints of this actor. The constraints are the
+     *  ones imposed by the super class, plus the constraint that the type
+     *  of the output port must be no less than the element type of the
+     *  values parameter.
+     *  @return an Enumeration of Inequality.
+     */
+    public Enumeration typeConstraints() {
+
+	try {
+	    // Set up the constraint that the output type must be no less than
+	    // the element type of the values parameter. This constraint is
+	    // regenerated every time since the element type may change.
+            Type elemType = _getValue(0).getType();
+	    TypeConstant elemTerm = new TypeConstant(elemType);
+	    Inequality ineq = new Inequality(elemTerm, output.getTypeTerm());
+
+	    LinkedList result = new LinkedList();
+	    result.insertLast(ineq);
+	    result.appendElements(super.typeConstraints());
+
+	    return result.elements();
+	} catch (IllegalActionException ex) {
+	    throw new InternalErrorException("Clock.typeConstraints(): " +
+		"Cannot get element of the values parameter.");
+	}
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -287,10 +304,6 @@ public class Poisson extends TimedSource {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // Dummy variable which reflects the type of the elements of the
-    // values parameter, so that the output type can be related to it.
-    private Variable _dummy;
 
     // The following are all transient to silence a javadoc bug
     // about the @serialize tag.

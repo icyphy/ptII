@@ -107,24 +107,26 @@ public class TypeConflictException extends KernelException {
     // their types. Each Typeable takes one line, and each line starts
     // with 2 white spaces to make the String more readable.
     private String _getTypeablesAndTypes() {
-	String result = "";
-	Enumeration e = getTypeables();
-	while(e.hasMoreElements()) {
-	    Typeable typeable = (Typeable)e.nextElement();
-	    if (typeable instanceof NamedObj) {
-	        result += "  " + ((NamedObj)typeable).getFullName() + ": ";
-	    } else {
-		result += "Unnamed Typeable: ";
+	try {
+	    String result = "";
+	    Enumeration e = getTypeables();
+	    while(e.hasMoreElements()) {
+	        Typeable typeable = (Typeable)e.nextElement();
+	        if (typeable instanceof NamedObj) {
+	            result += "  " + ((NamedObj)typeable).getFullName() + ": ";
+	        } else {
+		    result += "Unnamed Typeable: ";
+	        }
+	        Type type = typeable.getType();
+	        result += type.toString() + "\n";
 	    }
-	    Type type = typeable.getType();
-	    if (type.equals(Void.TYPE)) {
-		result += "NaT\n";
-	    } else {
-		result += type.toString() + "\n";
-	    }
-	}
 
-	return result;
+	    return result;
+        } catch (IllegalActionException ex) {
+	    throw new InternalErrorException("TypeConflictException." +
+	        "_getTypeablesAndTypes(): Cannot get type of Typeable. " +
+		ex.getMessage());
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
