@@ -35,8 +35,6 @@ import ptolemy.data.*;
 import ptolemy.data.type.*;
 import ptolemy.kernel.util.*;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
@@ -270,18 +268,10 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *
      *  A third case is the matlab() function, which is also handled
      *  specially in this method, allowing the evaluation of
-     *  expressions in matlab if matlab is installed.  The matlab
-     *  function is of the form
-     *  <em>matlab("expression(" + arg1 + "," arg2 + ")")</em>, where
-     *  <em>arg1, + "," + arg2</em>is a list of arguments appearing in
-     *  <em>"expression"</em>. Note that this form of invoking matlab
-     *  is limited to returning only the first return value of a
-     *  matlab function. If you need multiple return values, use the
-     *  matlab {@link ptolemy.matlab.Expression} actor. If a
-     *  "packageDirectories" Parameter is in the scope of this
-     *  expression, its value is added to the matlab path while the
-     *  expression is being executed (like {@link
-     *  ptolemy.matlab.Expression}).
+     *  expressions in matlab if matlab is installed.  The format
+     *  of the function is covered in 
+     *  {@link ptolemy.data.expr.MatlabUtilities#evaluate(String, ParserScope)}
+     *  .
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
      */
@@ -383,217 +373,13 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             ptolemy.data.Token token =
                 _evaluatedChildToken;
             if (token instanceof StringToken) {
-                try {
-                // Invoke the matlab engine to evaluate this function.
-
                 String expression = ((StringToken)token).stringValue();
                 // NamedList scope = node.getParser().getScope();
 
-                ptolemy.data.Token result = null;
-
-                // Use reflection so that we can compile without
-                // ptolemy.matlab and we check to see if is present at runtime.
-
-                Class engineClass = null;
-                try {
-                    engineClass = Class.forName("ptolemy.matlab.Engine");
-                } catch (Throwable throwable) {
-                    // UnsatsifiedLinkError is an Error, not an Exception, so
-                    // we catch Throwable
-                    throw new IllegalActionException(null, throwable,
-                            "Failed to load ptolemy.matlab.Engine class");
-                }
-
-                //MatlabEngineInterface matlabEngine =
-                //    MatlabEngineFactory.createEngine();
-
-                // Engine matlabEngine = new Engine();
-
-                Object matlabEngine = null;
-                try {
-                    matlabEngine = engineClass.newInstance();
-                } catch (InstantiationException ex) {
-                    throw new IllegalActionException(null, ex,
-                            "Failed to instantiate ptolemy.matlab.Engine");
-                }
-
-                //long[] engine = matlabEngine.open();
-
-                Method engineOpenMethod
-                    = engineClass.getMethod("open", new Class[0]);
-                long[] engine = (long []) engineOpenMethod
-                        .invoke(matlabEngine, new Object[0]);
-                try {
-                    Method engineGetSemaphore
-                        = engineClass.getMethod("getSemaphore",
-                                new Class[0]);
-
-                    synchronized (
-                            engineGetSemaphore.invoke(
-                                    matlabEngine, new Object[0])
-                            //matlabEngine.getSemaphore();
-                            ) {
-                        String addPathCommand = null;         // Assume none
-                        ptolemy.data.Token previousPath = null;
-                        ptolemy.data.Token packageDirectories = null;
-                        if (_scope != null) {
-                            packageDirectories =
-                                _scope.get("packageDirectories");
-                        }
-                        if (packageDirectories != null &&
-                                packageDirectories instanceof StringToken) {
-                            StringTokenizer dirs = new
-                                StringTokenizer
-                                ((String)((StringToken)packageDirectories
-                                          ).stringValue(), ",");
-                            StringBuffer cellFormat = new StringBuffer(512);
-                            cellFormat.append("{");
-                            if (dirs.hasMoreTokens()) {
-                                cellFormat.append
-                                    ("'" + UtilityFunctions
-                                     .findFile(dirs.nextToken()) + "'");
-                            }
-                            while (dirs.hasMoreTokens()) {
-                                cellFormat.append
-                                    (",'" + UtilityFunctions
-                                     .findFile(dirs.nextToken()) + "'");
-                            }
-                            cellFormat.append("}");
-
-                            if (cellFormat.length() > 2) {
-                                addPathCommand = "addedPath_=" +
-                                    cellFormat.toString()
-                                    + ";addpath(addedPath_{:});";
-                                //matlabEngine.evalString
-                                //    (engine, "previousPath_=path");
-
-                                Method engineEvalString
-                                    = engineClass.getMethod("evalString",
-                                            new Class[] {
-                                        long[].class, String.class
-                                    });
-                                engineEvalString.invoke(matlabEngine,
-                                        new Object[] {
-                                    engine, "previousPath_=path"
-                                });
-                                
-
-                                //previousPath = matlabEngine.get
-                                //    (engine, "previousPath_");
-
-                                Method engineGet
-                                    = engineClass.getMethod("get",
-                                            new Class[] {
-                                        long[].class, String.class
-                                    });
-                                engineGet.invoke(matlabEngine,
-                                        new Object[] {
-                                    engine, "previousPath_"
-                                });
-
-                            }
-                        }
-                        //matlabEngine.evalString
-                        //    (engine, "clear variables;clear globals");
-
-                        Method engineEvalString
-                            = engineClass.getMethod("evalString",
-                                    new Class[] {
-                                long[].class, String.class
-                                    });
-                        engineEvalString.invoke(matlabEngine,
-                                new Object[] {
-                            engine, "clear variables;clear globals"
-                                });
-
-
-                        if (addPathCommand != null) {
-                            // matlabEngine.evalString(engine, addPathCommand);
-                            engineEvalString.invoke(matlabEngine,
-                                    new Object[] {
-                                engine, addPathCommand
-                                    });
-                        }
-                        // Set scope variables
-                        // This would be more efficient if the matlab engine
-                        // understood the scope.
-			NamedList scopeVariableList =
-			    _scope.variableList();
-			if (scopeVariableList != null) {
-			    Iterator variables =
-                            scopeVariableList.elementList().iterator();
-			    while (variables.hasNext()) {
-				Variable var = (Variable)variables.next();
-				// This was here...  don't understand why???
-				// if (var != packageDirectories)
-
-				//matlabEngine.put
-				//    (engine, var.getName(), var.getToken());
-				Method enginePut
-				    = engineClass.getMethod("put",
-					    new Class[] {
-						long[].class, String.class,
-						String.class
-					    });
-				enginePut.invoke(matlabEngine,
-                                    new Object[] {
-                                engine, var.getName(), var.getToken()
-                                    });
-			    }
-                        }
-                        //matlabEngine.evalString(engine,
-                        //        "result__=" + expression);
-
-                        engineEvalString.invoke(matlabEngine,
-                                new Object[] {
-                            engine, "result__=" + expression
-                                });
-
-                        //result = matlabEngine.get(engine, "result__");
-
-                        Method engineGet
-                            = engineClass.getMethod("get",
-                                    new Class[] {
-                                long[].class, String.class
-                                    });
-                        result = (ptolemy.data.Token)
-			    engineGet.invoke(matlabEngine,
-                                new Object[] {
-                            engine, "result__"
-                                });
-                    }
-                }
-                finally {
-		    
-                    //matlabEngine.close(engine);
-                    Method engineClose
-                        = engineClass.getMethod("close",
-                                new Class[] {
-				    long[].class
-                                });
-
-                    engineClose.invoke(matlabEngine,
-                            new Object[] {
-                        engine
-                            });
-
-                }
-                _evaluatedChildToken = (result);
-                return;
-                } catch (IllegalAccessException ex) {
-                    throw new IllegalActionException(null, ex,
-                            "Problem invoking a method on "
-                            + "ptolemy.matlab.Engine");
-                } catch (InvocationTargetException ex) {
-                    throw new IllegalActionException(null, ex,
-                            "Problem invoking a method of "
-                            + "ptolemy.matlab.Engine");
-                } catch (NoSuchMethodException ex) {
-                    throw new IllegalActionException(null, ex,
-                            "Problem finding a method of"
-                            + "ptolemy.matlab.Engine");
-                }
-
+                // Invoke the matlab engine to evaluate this function.
+                _evaluatedChildToken
+		    = MatlabUtilities.evaluate(expression, _scope);
+		return;
             } else {
                 throw new IllegalActionException("The function \"matlab\" is" +
                         " reserved for invoking the matlab engine, and takes" +

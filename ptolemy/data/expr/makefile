@@ -83,6 +83,7 @@ JSRCS = \
 	ExpressionFunction.java \
 	FixPointFunctions.java \
 	GeneralToken.java \
+	MatlabUtilities.java \
 	ModelScope.java \
         NamedConstantsScope.java \
         NestedScope.java \
