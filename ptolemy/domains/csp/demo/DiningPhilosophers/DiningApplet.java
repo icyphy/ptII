@@ -320,15 +320,17 @@ public class DiningApplet extends Applet implements Runnable,
                     return;
                 }
 
-                // get the current time from director.
-                double currentTime = _localDirector.getModelTime()
-                    .getDoubleValue();
-                _currentTimeLabel.setText("Current time = "
-                        + nf.format(currentTime));
-
-                try {
-                    sleep(100);
-                } catch (InterruptedException e) {
+                if (_localDirector != null) {
+                    // get the current time from director.
+                    double currentTime = _localDirector.getModelTime()
+                        .getDoubleValue();
+                    _currentTimeLabel.setText("Current time = "
+                            + nf.format(currentTime));
+    
+                    try {
+                        sleep(100);
+                    } catch (InterruptedException e) {
+                    }
                 }
             }
         }
