@@ -198,7 +198,11 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
             } else {
                 System.out.println("ActorTransformerVisitor."
                         + "visitLocalVarDeclNode(): "
-                        + "kind '" + kind + "' is not supported.\n "
+                        + "kind '" + kind + "' is not supported."
+			+ "\n type: " + type	   
+			+ "\n initExpr: " + initExpr	   
+                        + "\n TYPE_KIND_CLASS="
+                        + TypeIdentifier.TYPE_KIND_CLASS
                         + "TYPE_KIND_TOKEN="
                         + PtolemyTypeIdentifier.TYPE_KIND_TOKEN
                         + " TYPE_KIND_INT_ARRAY_TOKEN="
@@ -572,6 +576,31 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 				       + " firstArg: " + firstArg);
 		}
                 return new ArrayAccessNode(accessedObj, firstArg);
+            } else if (methodName.equals("arrayValue")) {
+		if (_debug) {
+		    System.out.println("ActorTransformerVistor."
+				       + "visitMethodCallNode(): "
+				       + "arrayValue(): "
+				       + "accessedObjKind: " + accessedObjKind
+				       );
+		}
+                switch (accessedObjKind) {
+                case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY_TOKEN:
+                case PtolemyTypeIdentifier.TYPE_KIND_INT_ARRAY_TOKEN:
+                    {
+                        if (_debug) {
+                            System.out.println("ActorTransformerVistor."
+                                    + "visitMethodCallNode(): "
+                                    + "arrayValue(): array token" 
+                                    + node);
+                        }
+		    }
+		    return accessedObj;
+		default:
+		    throw new RuntimeException("arrayValue() of unknown "
+					       + "kind '" + accessedObjKind
+					       + "'");
+		}
             } else if (methodName.equals("stringValue") ||
                     methodName.equals("toString")) {
                 switch (accessedObjKind) {
