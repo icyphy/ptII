@@ -78,6 +78,25 @@ public class ProcessDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+        /** Clone the director into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new director with no container, no pending mutations,
+     *  and no mutation listeners.
+     *
+     *  FIXME: not finished.
+     *  @param ws The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If one of the attributes
+     *   cannot be cloned.
+     *  @return The new CSPDirector.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        ProcessDirector newobj = (ProcessDirector)super.clone(ws);
+        newobj._actorsActive = 0;
+        newobj._pausedReceivers = new LinkedList();
+        return newobj;
+    }
+
     /** This decreases the number of active threads in the 
      *  compositeActor by 1.
      *  It also checks if the simulation has paused if a pause was 
@@ -438,7 +457,7 @@ public class ProcessDirector extends Director {
     private boolean _paused = false;
     private boolean _mutate = true;
     
-    private boolean _notdone = true;
+    private boolean _simulationFinished = true;
     
     private boolean _terminate = false;
     private boolean _urgentMutations = false;
