@@ -54,11 +54,10 @@ OTHER_FILES_TO_BE_JARED = \
 	Poisson.xml
 
 EXTRA_SRCS = \
-	$(OTHER_FILES_TO_BE_JARED)
-
-#	Brownian.htm
-#	IncreasingRatePoisson.htm
-#	Poisson.htm
+	$(OTHER_FILES_TO_BE_JARED) \
+	Brownian.htm \
+	IncreasingRatePoisson.htm \
+	Poisson.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
