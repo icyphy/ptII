@@ -1,53 +1,111 @@
 <!-- $Id$ -->
-<!-- W%  11/09/98 -->
 <html>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<link href="../default.css" rel="stylesheet" type="text/css">
 <head>
 <title>Eclipse</title>
 </head>
 <body>
 <h1>Eclipse</h1>
-<h2>Installation</h2>
-
-Download from
+Eclipse is an Integrated Development Environment available
+from
 <a href="http://www.eclipse.org"><CODE>http://www.eclipse.org</CODE></a>
 
-<h2>Setting up for Ptolemy II</h2>
+<h2>Installation</h2>
 
-JohnR writes
- <br><I>I added notes in italics -cxh</I>
-<BLOCKQUOTE>
+<h2><a name="dotFileSetup">Using dot files in $PTII to set up</a></h2>
 
+Eclipse uses projects to manage source trees.
 
-If you would like to try these tools:
+<p> Eclipse uses <code>.project</code> to manage the project
+and <code>.classpath</code> to set the classpath and exclude files.
 
-
-<menu>
-<li> <a href="http://www.eclipse.org"><CODE>http://www.eclipse.org</CODE></a>
-
-<li> <a href="http://www.gentleware.de"><CODE>http://www.gentleware.de</CODE></a>
-</menu>
-
-I will look at the plugin architecture for next week or the week after.
-
- <p>Here is how I got Pt going under Eclipse. It's probably faster
-if you do:
-<pre>
-make clean
-</pre>
-before setting up Eclipse
+<p> When <code>$PTII/configure</code> is run, it 
+reads in <code>$PTII/.classpath.in</code> substitutes in variables
+that are surrounded with <code>@</code> and generates
+<code>$PTII/.classpath</code>, which will contain the
+proper classpath and directories to exclude
 
 <ol>
+<li>You may find that running <code>make clean</code>
+in your ptII tree speeds things up.
+
+<li> If necessary download Eclipse from
+<a href="http://www.eclipse.org"><CODE>http://www.eclipse.org</CODE></a>
+
+<li> If you have already used Eclipse and you would like to start
+over with new settings,
+remove the <code>workspace</code> directory in the Eclipse directory.
+(This directory will only appear if you have already run Eclipse).
+
+<li> Start eclipse by clicking on the <code>eclipse.exe</code> icon.
+
+<li> <a name="importPreferences">Import the Ptolemy II specific preferences</a>:
+Window -&gt; Preferences -&gt; Import, and then browse
+to <code>$PTII/.eclipse.epf</code>.
+<li> Unfortunately, not all the preferences are set, you will need
+to do:
+Window-&gt;Preferences. Deselect Workbench-&gt;"Perform build automatically on resource modification."
+<br>If you edit .tcl files, you will also need to follow the
+instructions in
+<a href="#tcl">Associating the Text editor with .tcl files</a>
+
+<li> Import the Ptolemy II preferences by doing:
+
+<li> File -&gt; Import -&gt Existing Project into Workspace
+<li> Browse to the <code>ptII</code> directory (Folder: should say <code>ptII</code>). Hit OK, then Finish.
+<li> Project -&gt; Rebuild All <i>Probably not necessary</i>
+<li> Proceed with the <a name="simpleDebug">Simple Debugging Session</a>. 
+</ol>
+See <a href="#troubleshooting">Troubleshooting</a> for hints
+
+<h2>Setting up for Ptolemy II By Hand</h2>
+Below are instructions on how to set up a project by hand.
+Note that the Ptolemy II tree includes <code>.classpath</code>
+and <code>.project</code> files, so rather than
+setting up by hand, you might want to try 
+<a href="#dotFileSetup">Using dot files in $PTII to set up</a>.
+
+<p>It is probably faster if you do:
+<pre>
+cd $PTII
+make clean
+</pre>
+before setting up Eclipse.
+
+<ol>
+ <li> Download and install Eclipse from
+<a href="http://www.eclipse.org"><CODE>http://www.eclipse.org</CODE></a>
+
  <li> Start Eclipse.
- <li> Window-&gt;Preferences. Deselect Workbench-&gt;"Perform build automatically
-on resource modification." Deselect Debug-&gt;"Build (if required) before
-launching"
+ <li> Window-&gt;Preferences. Deselect Workbench-&gt;"Perform build automatically on resource modification."
+Deselect Debug-&gt;"Build (if required) before launching"
  <li> File-&gt;New-&gt;Project. Select 'Java project'. Name it PtolemyII.
 Deselect 'Use default' and browse to the PTII directory. Finish.
- <li> File-&gt;Properties, select Java Build Path, then Libraries tab,
-then press Add Jarfile. Browse to PtolemyII/lib/diva.jar and select it.
-Finish.
- <li> Project-&gt; <I>Rebuild</I> All.
+<li>When asked if you want to shift to the Java perspective, click on Yes.
+ <li> Right click on the <code>PtolemyII</code> icon in the Package Explorer
+ and select Properties</i>.
+ select Java Build Path -&gt; Libraries tab -&gt
+Add JARs. Browse to <code>PtolemyII/lib/</code>
+and select all the jar files by holding down the Control key
+and clicking on each jar file.  Hit OK, then Finish.
+<li> Exclude some of the larger directories that will not compile.
+<br>In the 'Properties for PtolemyII' window, select
+Source, then expand the PtolemyII folder by clicking on the +,
+then click on the Exclusion Filter and hit Edit.  
+<br>Note that the filter paths should have trailing slashes.
+<br><code>**</code> is specially interpreted.
+<br>Click on Add and type in <code>**/CVS/</code>. Ok
+<br>Click on Add and type in <code>**/codeDoc/</code>. Ok
+<br>Click on Add and type in <code>ptolemy/apps/</code>. Ok
+<br>Click on Add and type in <code>vendors/</code>. Ok
+<br>Click on OK to close the Exclusion Filter
+<br>Click on OK to close the 'Properties for Ptolemy II' window.
+ <li> In the top level Eclipse window: Project-&gt; Rebuild All.
+</ol>
+
+<h2><a name="simpleDebug">Simple Debugging Session</a></h2>
+<ol>
  <li> Locate ptolemy/vergil/VergilApplication in the Explorer and
 double click. Place a breakpoint on the first line of main()
 <I>[with Run-&gt;Add/Remove Breakpoint]</I>
@@ -57,10 +115,7 @@ enter ptolemy.vergil.VergilApplication as Main class.
  <li> To debug, quit Vergil, and place a breakpoint in, say, the fire() method
 of ptolemy.domains.ct.kernel.CTBaseIntegrator. Then Run-&gt;Debug, and
 as above. Open the Lorenz CT demo from the Quick Tour and run it.
-
 </ol>
-
-</BLOCKQUOTE>
 
 <h2>Additional setup for compiling just what's necessary</h2>
 
@@ -119,21 +174,30 @@ as above. Open the Lorenz CT demo from the Quick Tour and run it.
 
 </ol>       
 
+
 <h2>Don't use tabs in the editor</h2>
-Before editing any files, adjust the Editor Preference to not use tapbs
+This setting is in the <code>$PTII/.eclipse.epf</code> file.
+See <a name="importPreferences">Import the Ptolemy II specific preferences</a>
+for details.
+
+<b>Before editing any files, adjust the Editor Preference to not use tabs</b>
 <ol>
 <li> Window -&gt;Preferences: expand the Java tree, select
-'Code Formatter' and then the Style tab.  Uncheck 'Insert tabs for indentaion, not spaces'.
+'Code Formatter' and then the Style tab.  Uncheck 'Insert tabs for indentation, not spaces'.
 
 <li> Go back to to the Java tree on the left, select
-'Editor' and then the Type tab.
+'Editor' and then the Typing tab.
 Check 'InsertSpace for tabs (see Code Formatter preference page)
 
 <li> Click Ok
 </ol>
 
-<h2>Associating the Text editor with .tcl files</h2>
-In the initial default settings, when you double click on a .tcl file
+
+<h2><a name="tcl">Associating the Text editor with .tcl files</a></h2>
+This setting is <b>not</b> in the <code>$PTII/.eclipse.epf</code> file.
+
+
+<p>In the initial default settings, when you double click on a .tcl file
 it tries to execute it.
 
  <p>The fix is:
@@ -149,13 +213,27 @@ and select the Text editor, then hit OK.
 </ol>
 
 
-<h2>Troubleshooting</h2>
+<h2><a name="troubleshooting">Troubleshooting</a></h2>
+
+<h3>Rebuilding Briefly flashes a window</h3> 
+<p>If you have problems where clicking on build briefly flashes up
+a window, look in <code>$PTII/.classpath</code> for and empty
+exclusion that looks like <code>||</code>
+
+<p>If you have problems with the classpath, look in the 
+<code>workspace/.metadata/log</code> file that is in
+the directory where eclipse is installed. For more information
+about the <code>.metadata</code> directory, see
+<a href="#metadata">below</a>.
+
+
 <h3>Eclipse takes a long time to start up</h3>
 
 If Eclipse takes a long time to start up, then the problem could be that
 
  <p>Basically, when eclipse starts up, it might try to update
-<CODE>H:/workspace/.metadata</CODE>.  The solution is covered in
+<a name="metadata"><CODE>H:/workspace/.metadata</CODE></a>
+.  The solution is covered in
 <a href="http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm"><CODE>http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm</CODE></a>:
 
 <BLOCKQUOTE>
