@@ -40,12 +40,20 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	Pendulum
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS) \
-	Pendulum.htm \
-	PendulumVergil.htm \
+OTHER_FILES_TO_BE_JARED = \
 	Pendulum.xml
+
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
+	Pendulum.htm \
+	PendulumVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

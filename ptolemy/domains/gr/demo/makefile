@@ -34,13 +34,29 @@ ME =		ptolemy/domains/gr/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		Pendulum Universe
+DIRS =		FurutaPendulum InverseKinematics Pendulum RobotArm \
+		StickyMasses Universe
 
 CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
+
+# Used to build jar files
+PTPACKAGE = 	demo
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	FurutaPendulum/FurutaPendulum.jar \
+	InverseKinematics/InverseKinematics.jar \
+	Pendulum/Pendulum.jar \
+	RobotArm/RobotArm.jar \
+	StickyMasses/StickyMasses.jar \
+	Universe/Universe.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS =	index.htm

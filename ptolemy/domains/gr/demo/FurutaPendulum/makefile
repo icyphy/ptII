@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II GR Universe demo
+# Makefile for Ptolemy II GR FurutaPendulum demo
 #
 # @Authors: Christopher Hylands (makefile only)
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/demo/Universe
+ME =		ptolemy/domains/sdf/demo/FurutaPendulum
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -41,19 +41,20 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Universe
+PTPACKAGE = 	FurutaPendulum
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	Universe.xml
+	FurutaPendulum.xml \
 
 EXTRA_SRCS = \
 	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED) \
-	Universe.htm \
-	UniverseVergil.htm
+	$(OTHER_FILES_TO_BE_JARED)
+
+#	FurutaPendulum.htm
+#	FurutaPendulumVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -74,14 +75,14 @@ all: jclass
 install: all
 
 demo: demo_applet demo_ptolemy demo_vergil
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer Universe.htm
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer FurutaPendulum.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" Universe.xml
+	"$(PTII)/bin/ptolemy" FurutaPendulum.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" Universe.xml
+	"$(PTII)/bin/vergil" FurutaPendulum.xml
 
 depend:
 	@echo "no dependencies in this directory"

@@ -40,10 +40,18 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	InverseKinematics
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS) \
+OTHER_FILES_TO_BE_JARED = \
 	InverseKinematics.xml
+
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -64,8 +72,8 @@ all: jclass
 install: all
 
 demo: demo_applet demo_ptolemy demo_vergil
-demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer InverseKinematics.htm
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer InverseKinematics.htm
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" InverseKinematics.xml
