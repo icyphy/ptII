@@ -196,8 +196,8 @@ public class MoMLApplication {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return a default Configuration, or null to do without one.
      *  This configuration will be created before any command-line arguments
@@ -469,15 +469,15 @@ public class MoMLApplication {
         return result;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-            ////                         protected variables                    ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
-            /** The command-line options that are either present or not. */
-            protected String _commandFlags[] = {
-                "-help",
-                "-test",
-                "-version",
-            };
+    /** The command-line options that are either present or not. */
+    protected String _commandFlags[] = {
+        "-help",
+        "-test",
+        "-version",
+    };
 
     /** The command-line options that take arguments. */
     protected String _commandOptions[][] = {
@@ -497,8 +497,8 @@ public class MoMLApplication {
     /** If true, then auto exit after a few seconds. */
     protected static boolean _test = false;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Flag indicating that the previous argument was -class.
     private boolean _expectingClass = false;
