@@ -155,7 +155,7 @@ test ComplexToken-3.1 {Test adding Complex and double} {
     # use the Complex above
     set d [java::new {ptolemy.data.DoubleToken double} 2.5]
     set res1 [$p add $d]
-    set res2 [$p addR $d]
+    set res2 [$p addReverse $d]
 
     set res3 [$d add $p]
 
@@ -169,7 +169,7 @@ test ComplexToken-3.2 {Test adding Complex and int} {
     # use the Complex above
     set i [java::new {ptolemy.data.IntToken int} 2]
     set res1 [$p add $i]
-    set res2 [$p addR $i]
+    set res2 [$p addReverse $i]
 
     set res3 [$i add $p]
 
@@ -196,7 +196,7 @@ test ComplexToken-4.1 {Test dividing Complex and double} {
     set p [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c]
     set d [java::new {ptolemy.data.DoubleToken double} 2.0]
     set res1 [$p divide $d]
-    set res2 [$p divideR $d]
+    set res2 [$p divideReverse $d]
 
     list [$res1 toString] [$res2 toString]
 } {{ptolemy.data.ComplexToken(4.0 + 2.0i)} {ptolemy.data.ComplexToken(0.2 - 0.1i)}}
@@ -208,7 +208,7 @@ test ComplexToken-4.2 {Test dividing Complex and int} {
     # use the Complex above
     set i [java::new {ptolemy.data.IntToken int} 2]
     set res1 [$p divide $i]
-    set res2 [$p divideR $i]
+    set res2 [$p divideReverse $i]
 
     set res3 [$i divide $p]
  
@@ -302,7 +302,7 @@ test ComplexToken-7.1 {Test multiply between Complex and double} {
     set d [java::new {ptolemy.data.DoubleToken double} 6]
 
     set res1 [$p1 multiply $d]
-    set res2 [$p1 multiplyR $d]
+    set res2 [$p1 multiplyReverse $d]
     set res3 [$d multiply $p1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
@@ -316,7 +316,7 @@ test ComplexToken-7.2 {Test multiply between Complex and int} {
     set i [java::new {ptolemy.data.IntToken int} 6]
 
     set res1 [$p1 multiply $i]
-    set res2 [$p1 multiplyR $i]
+    set res2 [$p1 multiplyReverse $i]
     set res3 [$i multiply $p1]
 
     list [$res1 toString] [$res2 toString] [$res3 toString]
@@ -344,7 +344,7 @@ test ComplexToken-8.1 {Test subtract operator between Complex and double} {
     set d [java::new {ptolemy.data.DoubleToken double} 12.0]
     
     set res1 [$p1 subtract $d]
-    set res2 [$p1 subtractR $d]
+    set res2 [$p1 subtractReverse $d]
 
     set res3 [$d subtract $p1]
    

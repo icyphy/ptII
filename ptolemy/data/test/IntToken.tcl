@@ -138,7 +138,7 @@ test IntToken-2.6 {Test multiplicative identity} {
 test IntToken-3.0 {Test adding ints.} {
     set p [java::new {ptolemy.data.IntToken int} 7]
     set res1 [$p add $p]
-    set res2 [$p addR $p]
+    set res2 [$p addReverse $p]
 
     list [$res1 toString] [$res2 toString]
 } {ptolemy.data.IntToken(14) ptolemy.data.IntToken(14)}
@@ -153,10 +153,10 @@ test IntToken-4.0 {Test dividing ints.} {
     set tok2 [java::new {ptolemy.data.IntToken int} 14]
     
     set res1 [$tok1 divide $tok1]
-    set res2 [$tok1 divideR $tok1]
+    set res2 [$tok1 divideReverse $tok1]
 
     set res3 [$tok1 divide $tok2]
-    set res4 [$tok1 divideR $tok2]
+    set res4 [$tok1 divideReverse $tok2]
 
     list [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]
 } {ptolemy.data.IntToken(1) ptolemy.data.IntToken(1) ptolemy.data.DoubleToken(0.5) ptolemy.data.IntToken(2)}
@@ -183,7 +183,7 @@ test IntToken-6.0 {Test modulo between ints.} {
     set tok2 [java::new {ptolemy.data.IntToken int} 2]
 
     set res1 [$tok1 modulo $tok2]
-    set res2 [$tok1 moduloR $tok2]
+    set res2 [$tok1 moduloReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
 } {ptolemy.data.IntToken(1) ptolemy.data.IntToken(2)}
@@ -196,7 +196,7 @@ test intToken-7.0 {Test multiply operator between ints.} {
     set tok2 [java::new {ptolemy.data.IntToken int} 2]
 
     set res1 [$tok1 multiply $tok2]
-    set res2 [$tok1 multiplyR $tok2]
+    set res2 [$tok1 multiplyReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
 } {ptolemy.data.IntToken(14) ptolemy.data.IntToken(14)}
@@ -209,7 +209,7 @@ test IntToken-8.0 {Test subtract operator between ints.} {
     set tok2 [java::new {ptolemy.data.IntToken int} 2]
 
     set res1 [$tok1 subtract $tok2]
-    set res2 [$tok1 subtractR $tok2]
+    set res2 [$tok1 subtractReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
 } {ptolemy.data.IntToken(5) ptolemy.data.IntToken(-5)}

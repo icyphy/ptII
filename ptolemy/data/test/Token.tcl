@@ -68,12 +68,12 @@ test Token-2.0 {Test add} {
 ######################################################################
 ####
 # 
-test Token-2.1 {Test addR} {
+test Token-2.1 {Test addReverse} {
     set p1 [java::new ptolemy.data.Token]
     set p2 [java::new ptolemy.data.Token]
-    catch {$p1 addR $p2} msg
+    catch {$p1 addReverse $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: addR method not supported on ptolemy.data.Token objects.}}
+} {{ptolemy.kernel.util.IllegalActionException: addReverse method not supported on ptolemy.data.Token objects.}}
 
 ######################################################################
 ####
@@ -88,12 +88,12 @@ test Token-2.2 {Test divide} {
 ######################################################################
 ####
 # 
-test Token-2.3 {Test divideR} {
+test Token-2.3 {Test divideReverse} {
     set p1 [java::new ptolemy.data.Token]
     set p2 [java::new ptolemy.data.Token]
-    catch {$p1 divideR $p2} msg
+    catch {$p1 divideReverse $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: divideR method not supported on ptolemy.data.Token objects.}}
+} {{ptolemy.kernel.util.IllegalActionException: divideReverse method not supported on ptolemy.data.Token objects.}}
 
 ######################################################################
 ####
@@ -118,12 +118,12 @@ test Token-2.5 {Test modulo} {
 ######################################################################
 ####
 # 
-test Token-2.6 {Test moduloR} {
+test Token-2.6 {Test moduloReverse} {
     set p1 [java::new ptolemy.data.Token]
     set p2 [java::new ptolemy.data.Token]
-    catch {$p1 moduloR $p2} msg
+    catch {$p1 moduloReverse $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: moduloR method not supported on ptolemy.data.Token objects.}}
+} {{ptolemy.kernel.util.IllegalActionException: moduloReverse method not supported on ptolemy.data.Token objects.}}
 
 ######################################################################
 ####
@@ -138,12 +138,12 @@ test Token-2.7 {Test multiply} {
 ######################################################################
 ####
 # 
-test Token-2.8 {Test multiplyR} {
+test Token-2.8 {Test multiplyReverse} {
     set p1 [java::new ptolemy.data.Token]
     set p2 [java::new ptolemy.data.Token]
-    catch {$p1 multiplyR $p2} msg
+    catch {$p1 multiplyReverse $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: multiplyR method not supported on ptolemy.data.Token objects.}}
+} {{ptolemy.kernel.util.IllegalActionException: multiplyReverse method not supported on ptolemy.data.Token objects.}}
 
 ######################################################################
 ####
@@ -158,12 +158,12 @@ test Token-2.9 {Test subtract} {
 ######################################################################
 ####
 # 
-test Token-2.10 {Test subtractR} {
+test Token-2.10 {Test subtractReverse} {
     set p1 [java::new ptolemy.data.Token]
     set p2 [java::new ptolemy.data.Token]
-    catch {$p1 subtractR $p2} msg
+    catch {$p1 subtractReverse $p2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: subtractR method not supported on ptolemy.data.Token objects.}}
+} {{ptolemy.kernel.util.IllegalActionException: subtractReverse method not supported on ptolemy.data.Token objects.}}
 
 ######################################################################
 ####

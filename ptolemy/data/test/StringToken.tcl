@@ -89,7 +89,7 @@ test DoubleToken-3.1 {Test adding String and boolean} {
     set tok1 [java::new {ptolemy.data.StringToken} foo]
     set tok2 [java::new {ptolemy.data.BooleanToken boolean} true]
     set res1 [$tok1 add $tok2]
-    set res2 [$tok1 addR $tok2]
+    set res2 [$tok1 addReverse $tok2]
 
     set res3 [$tok2 add $tok1]
 
@@ -103,7 +103,7 @@ test DoubleToken-3.2 {Test adding String and long} {
     set tok1 [java::new {ptolemy.data.StringToken} foo]
     set tok2 [java::new {ptolemy.data.LongToken long} 3]
     set res1 [$tok1 add $tok2]
-    set res2 [$tok1 addR $tok2]
+    set res2 [$tok1 addReverse $tok2]
 
     set res3 [$tok2 add $tok1]
 
@@ -117,7 +117,7 @@ test DoubleToken-3.3 {Test adding String and int} {
     set tok1 [java::new {ptolemy.data.StringToken} foo]
     set tok2 [java::new {ptolemy.data.IntToken int} 4]
     set res1 [$tok1 add $tok2]
-    set res2 [$tok1 addR $tok2]
+    set res2 [$tok1 addReverse $tok2]
 
     set res3 [$tok2 add $tok1]
 
@@ -133,7 +133,7 @@ test DoubleToken-3.4 {Test adding String and Complex} {
     set tok2 [java::new {ptolemy.data.ComplexToken ptolemy.math.Complex} $c]
 
     set res1 [$tok1 add $tok2]
-    set res2 [$tok1 addR $tok2]
+    set res2 [$tok1 addReverse $tok2]
 
     set res3 [$tok2 add $tok1]
 
@@ -147,7 +147,7 @@ test DoubleToken-3.5 {Test adding String and double} {
     set tok1 [java::new {ptolemy.data.StringToken} foo]
     set tok2 [java::new {ptolemy.data.DoubleToken double} 2.5]
     set res1 [$tok1 add $tok2]
-    set res2 [$tok1 addR $tok2]
+    set res2 [$tok1 addReverse $tok2]
 
     set res3 [$tok2 add $tok1]
 

@@ -143,7 +143,7 @@ test LongToken-2.6 {Test multiplicative identity} {
 test LongToken-3.0 {Test adding longs.} {
     set p [java::new {ptolemy.data.LongToken long} 7]
     set res1 [$p add $p]
-    set res2 [$p addR $p]
+    set res2 [$p addReverse $p]
 
     list [$res1 toString] [$res2 toString]
 } {ptolemy.data.LongToken(14) ptolemy.data.LongToken(14)}
@@ -154,7 +154,7 @@ test LongToken-3.1 {Test adding longs and ints.} {
     set tok1 [java::new {ptolemy.data.LongToken long} 7]
     set tok2 [java::new {ptolemy.data.IntToken int} 2]
     set res1 [$tok1 add $tok2]
-    set res2 [$tok1 addR $tok2]
+    set res2 [$tok1 addReverse $tok2]
 
     set res3 [$tok2 add $tok1]
 
@@ -168,7 +168,7 @@ test LongToken-3.1 {Test adding longs and ints.} {
 #test LongToken-4.0 {Test dividing longs.} {
 #    set p [java::new {ptolemy.data.LongToken long} 7]
 #    set res1 [$p divide $p]
-#    set res2 [$p divideR $p]
+#    set res2 [$p divideReverse $p]
 #
 #    list [$res1 toString] [$res2 toString]
 #} {}
@@ -179,7 +179,7 @@ test LongToken-3.1 {Test adding longs and ints.} {
 #    set tok1 [java::new {ptolemy.data.LongToken long} 7]
 #    set tok2 [java::new {ptolemy.data.IntToken int} 2]
 #    set res1 [$tok1 divide $tok2]
-#    set res2 [$tok1 divideR $tok2]
+#    set res2 [$tok1 divideReverse $tok2]
 #
 #    set res3 [$tok2 divide $tok1]
 # 
@@ -224,7 +224,7 @@ test LongToken-6.0 {Test modulo between longs.} {
     set tok2 [java::new {ptolemy.data.LongToken long} 2]
 
     set res1 [$tok1 modulo $tok2]
-    set res2 [$tok1 moduloR $tok2]
+    set res2 [$tok1 moduloReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
 } {ptolemy.data.LongToken(1) ptolemy.data.LongToken(2)}
@@ -236,7 +236,7 @@ test LongToken-6.1 {Test modulo operator between longs and ints.} {
     set tok2 [java::new {ptolemy.data.IntToken int} 3]
     
     set res1 [$tok1 modulo $tok2]
-    set res2 [$tok1 moduloR $tok2]
+    set res2 [$tok1 moduloReverse $tok2]
 
     set res3 [$tok2 modulo $tok1]
    
@@ -251,7 +251,7 @@ test longToken-7.0 {Test multiply operator between longs.} {
     set tok2 [java::new {ptolemy.data.LongToken long} 2]
 
     set res1 [$tok1 multiply $tok2]
-    set res2 [$tok1 multiplyR $tok2]
+    set res2 [$tok1 multiplyReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
 } {ptolemy.data.LongToken(14) ptolemy.data.LongToken(14)}
@@ -263,7 +263,7 @@ test LongToken-7.1 {Test multiply operator between longs and ints.} {
     set tok2 [java::new {ptolemy.data.IntToken int} 3]
     
     set res1 [$tok1 multiply $tok2]
-    set res2 [$tok1 multiplyR $tok2]
+    set res2 [$tok1 multiplyReverse $tok2]
 
     set res3 [$tok2 multiply $tok1]
    
@@ -279,7 +279,7 @@ test LongToken-8.0 {Test subtract operator between longs.} {
     set tok2 [java::new {ptolemy.data.LongToken long} 2]
 
     set res1 [$tok1 subtract $tok2]
-    set res2 [$tok1 subtractR $tok2]
+    set res2 [$tok1 subtractReverse $tok2]
 
     list [$res1 toString] [$res2 toString]
 } {ptolemy.data.LongToken(5) ptolemy.data.LongToken(-5)}
@@ -291,7 +291,7 @@ test LongToken-8.1 {Test subtract operator between longs and ints.} {
     set tok2 [java::new {ptolemy.data.IntToken int} 3]
     
     set res1 [$tok1 subtract $tok2]
-    set res2 [$tok1 subtractR $tok2]
+    set res2 [$tok1 subtractReverse $tok2]
 
     set res3 [$tok2 subtract $tok1]
    
