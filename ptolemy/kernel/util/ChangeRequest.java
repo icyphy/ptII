@@ -79,6 +79,18 @@ public abstract class ChangeRequest {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a new change listener to this request.  The listener will get 
+     *  notified when the change is executed, or the change fails.  This
+     *  listener is notified first, and then any listeners that were
+     *  given by setListeners.
+     */
+    public void addChangeListener(ChangeListener listener) {
+	if(_localListeners == null) {
+	    _localListeners = new LinkedList();
+	}
+	_localListeners.add(listener);
+    }
+
     /** Execute the change.  This method invokes the protected method
      *  _execute(), reports to listeners (if any) that have been
      *  specified using the setListeners() method, and wakes up any
@@ -92,6 +104,19 @@ public abstract class ChangeRequest {
         } catch (Exception ex) {
             needToReport = true;
             _exception = ex;
+        }
+        if (_localListeners != null) {
+            Iterator listeners = _localListeners.iterator();
+            while (listeners.hasNext()) {
+                ChangeListener listener = (ChangeListener)listeners.next();
+                if (_exception == null) {
+                    listener.changeExecuted(this);
+                } else {
+		    // note that local listeners do not prevent an exception
+		    // from being seen globally.  This is wierd.
+                    listener.changeFailed(this, _exception);
+                }
+            }
         }
         if (_listeners != null) {
             Iterator listeners = _listeners.iterator();
@@ -143,6 +168,16 @@ public abstract class ChangeRequest {
      */
     public boolean isErrorReported() {
         return _errorReported;
+    }
+
+    /** Remove the given change listener from this request.  
+     *  The listener will no longer be
+     *  notified when the change is executed, or the change fails.
+     */
+    public void removeChangeListener(ChangeListener listener) {
+	if(_localListeners != null) {
+	    _localListeners.remove(listener);
+	}
     }
 
     /** Call with a true argument to indicate that an error has been
@@ -215,8 +250,11 @@ public abstract class ChangeRequest {
     // The exception thrown by the most recent call to execute(), if any.
     private Exception _exception;
 
-    // A list of listeners.
+    // A list of listeners that are given in setListeners
     private List _listeners;
+
+    // A list of listeners that are maintained locally.
+    private List _localListeners;
 
     // A flag indicating whether the error has been reported.
     private boolean _errorReported;
