@@ -2111,12 +2111,11 @@ void genDef ()
 		genCodeBlock( fp, codeBlocks[i], 0);
 		fprintf (fp, ";\n");
 	    } else {
-		fprintf (fp, "\nconst char* %s :: %s(%s) {\n%s\n",
-			fullClass,codeBlockNames[i],codeBlockArgs[i],
-			codeBlockLines[i]);
-		fprintf (fp, "\tstatic StringList _str_; _str_.initialize(); _str_ << \n");
+		fprintf (fp, "\n    public String %s (%s) {\n",
+			codeBlockNames[i],codeBlockArgs[i]);
+		fprintf (fp, "        return\n        ");
 		genCodeBlock( fp, codeBlocks[i], 1);
-		fprintf (fp, ";\n\treturn (const char*)_str_;\n}\n");
+		genCodeBlock( fp, "\n");
 	    }
 	}
 
