@@ -53,7 +53,7 @@ import ptolemy.media.javasound.*;
 /**
 This actor sequentially outputs the samples from an sound file, specified as a
 URL. Although the sound file must be specified as a URL, it is
-still possible to specify files on the local filesystem. The audio
+still possible to specify files on the local file system. The audio
 samples are converted to DoubleTokens that may range from [-1.0, 1.0].
 Thus, the output type of this actor is DoubleToken.
 <p>
@@ -115,7 +115,6 @@ public class AudioReader extends Source {
      *  must be specified. As an example, to reference the file
      *  test.wav, located at c:\tmp\test.wav, <i>sourceURL</i>
      *  should be set to file:c:\tmp\test.wav.
-     *
      *  <p>
      *  An exception will be occur if the path references a
      *  non-existent or unsupported sound file.
@@ -159,7 +158,6 @@ public class AudioReader extends Source {
     public void initialize() throws IllegalActionException {
         super.initialize();
 	if(_debugging) _debug("AudioReader: initialize(): invoked");
-	//System.out.println("AudioReader: initialize(): invoked");
 	try {
 	    _initializeReader();
 	} catch (IOException ex) {
@@ -191,8 +189,6 @@ public class AudioReader extends Source {
      *   from the specified sound file.
      */
     public int iterate(int count) throws IllegalActionException {
-	//System.out.println("AudioReader: iterate(): invoked with count = " +
-	//	   count);
 	// Check if we need to reallocate the output token array.
 	if (count > _audioSendArray.length) {
 	    _audioSendArray = new DoubleToken[count];
@@ -215,7 +211,7 @@ public class AudioReader extends Source {
 		    _haveASample = true;
 		}
 	    }
-	    // Note: we cannot use an if..then..else here becuase the
+	    // Note: we cannot use an if..then..else here because the
 	    // above block may set _haveASample = true. Thus, we may
 	    // sometimes need to execute both blocks.
 	    if (_haveASample == true) {
@@ -263,7 +259,7 @@ public class AudioReader extends Source {
      *  @return True if there are samples available from the
      *  audio source. False if there are no more samples (end
      *  of sound file reached).
-     *  @exception IllegalActionException  If there is a problem reading
+     *  @exception IllegalActionException If there is a problem reading
      *   from the specified sound file.
      */
     public boolean postfire() throws IllegalActionException {
@@ -288,7 +284,6 @@ public class AudioReader extends Source {
      */
     public void wrapup() throws IllegalActionException {
 	if(_debugging) _debug("AudioReader: wrapup(): invoked");
-	//System.out.println("AudioReader: wrapup(): invoked");
 	// Stop capturing audio.
 	if (_soundReader != null) {
 	    try {
@@ -315,12 +310,11 @@ public class AudioReader extends Source {
      */
     private synchronized void _initializeReader()
 	throws IOException, IllegalActionException {
-	//System.out.println("AudioReader: _initializeReader() invoked.");
 	if (_soundReader != null) {
 		_soundReader.closeFile();
 	}
 	// Load audio from a URL.
-	String theURL =sourceURL.getExpression();
+	String theURL = sourceURL.getExpression();
 	// Each read this many samples per channel when
 	// _soundReader.getSamples() is called.
 	// This value was chosen somewhat arbitrarily.
