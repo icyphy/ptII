@@ -92,14 +92,16 @@ public class DECQEventQueue implements DEEventQueue {
         _cQueue.addDebugListener(listener);
     }
 
-    /** Empty the event queue.
+    /** Empty the event queue. This method is synchronized since there
+     *  may be actors running under different threads in the DE domain.
      */
-    // FIXME: Why is this synchronized? document or remove...
     public synchronized void clear() {
         _cQueue.clear();
     }
 
     /** Return the smallest event in the queue without dequeueing it.
+     *  This method is synchronized since there
+     *  may be actors running under different threads in the DE domain.
      *  @return The smallest event in the queue.
      *  @exception IllegalActionException If the queue is empty.
      */
@@ -116,9 +118,11 @@ public class DECQEventQueue implements DEEventQueue {
 
     /** Enqueue an event into the event queue and notify all threads
      *  that are stalled waiting for an event to be put in the queue.
+     *  This method is synchronized since there
+     *  may be actors running under different threads in the DE domain.
      *  @param event The event to enqueue.
      */
-    public final synchronized void put(DEEvent event) {
+    public synchronized final void put(DEEvent event) {
         _cQueue.put(event);
         notifyAll();
     }
@@ -133,10 +137,12 @@ public class DECQEventQueue implements DEEventQueue {
     }
 
     /** Dequeue the earliest event in this event queue.
+     *  This method is synchronized since there
+     *  may be actors running under different threads in the DE domain.
      *  @return The earliest event in the queue.
      *  @exception IllegalActionException If the queue is empty.
      */
-    public final synchronized DEEvent take() throws IllegalActionException {
+    public synchronized final DEEvent take() throws IllegalActionException {
         return (DEEvent)_cQueue.take();
     }
 

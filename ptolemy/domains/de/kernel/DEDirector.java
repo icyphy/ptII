@@ -258,6 +258,13 @@ public class DEDirector extends Director {
         _deadActors.add(actor);
     }
 
+    /** Return the event queue.
+     *  @return The event queue.
+     */
+    public DEEventQueue getEventQueue() {
+        return _eventQueue;
+    } 
+
     /** Advance current time to the next event in the event queue,
      *  and fire one or more actors that have events at that time.
      *  Each actor is iterated repeatedly (prefire(), fire(), postfire()),
