@@ -48,7 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		expr/expr.jar \
+		expr/expr.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

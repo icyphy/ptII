@@ -51,7 +51,7 @@ JSRCS = \
 	PlotDemo.java \
 	PlotFourierSeries.java \
 	PlotLiveDemo.java \
-	PlotLiveDemoApplet.java \
+	PlotLiveDemoApplet.java
 
 EXTRA_SRCS = $(JSRCS) \
 	BarGraph.html \
