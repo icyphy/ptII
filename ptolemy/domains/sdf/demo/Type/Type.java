@@ -39,8 +39,9 @@ import java.awt.geom.*;
 import java.util.Hashtable;
 
 import diva.graph.*;
-import diva.graph.model.*;
+import diva.graph.basic.*;
 import diva.graph.layout.*;
+
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.interactor.*;
@@ -305,7 +306,89 @@ public class Type extends SDFApplet implements ChangeListener {
 
     // Construct the graph representing the Ptolemy type lattice
     private JGraph _constructLatticeModel() {
-        JGraph jgraph = new JGraph();
+	BasicGraphModel model = new BasicGraphModel();
+	
+        // nodes, with user object set to the actor
+        Object nNaT = model.createNode(BaseType.NAT);
+        Object nInt = model.createNode(BaseType.INT);
+        Object nDouble = model.createNode(BaseType.DOUBLE);
+        Object nComplex = model.createNode(BaseType.COMPLEX);
+        Object nString = model.createNode(BaseType.STRING);
+        Object nGeneral = model.createNode(BaseType.GENERAL);
+        Object nBoolean = model.createNode(BaseType.BOOLEAN);
+        Object nObject = model.createNode(BaseType.OBJECT);
+        Object nScalar = model.createNode(BaseType.SCALAR);
+        Object nLong = model.createNode(BaseType.LONG);
+
+	Object root = model.getRoot();
+        model.addNode(nNaT, root);
+        model.addNode(nInt, root);
+        model.addNode(nDouble, root);
+        model.addNode(nComplex, root);
+        model.addNode(nString, root);
+        model.addNode(nGeneral, root);
+        model.addNode(nBoolean, root);
+        model.addNode(nObject, root);
+        model.addNode(nScalar, root);
+        model.addNode(nLong, root);
+
+        // Edges
+        Object e;
+
+	e = model.createEdge(null);
+	model.setEdgeTail(e, nObject);
+	model.setEdgeHead(e, nNaT);
+
+        e = model.createEdge(null);
+	model.setEdgeTail(e, nGeneral);
+	model.setEdgeHead(e, nObject);
+
+	e = model.createEdge(null);
+	model.setEdgeTail(e, nGeneral);
+	model.setEdgeHead(e, nString);
+
+	e = model.createEdge(null);
+	model.setEdgeTail(e, nString);
+	model.setEdgeHead(e, nBoolean);
+
+	e = model.createEdge(null);
+	model.setEdgeTail(e, nBoolean);
+	model.setEdgeHead(e, nNaT);
+
+	e = model.createEdge(null);
+	model.setEdgeTail(e, nString);
+	model.setEdgeHead(e, nScalar);
+
+        e = model.createEdge(null);
+	model.setEdgeTail(e, nScalar);
+	model.setEdgeHead(e, nLong);
+
+        e = model.createEdge(null);
+	model.setEdgeTail(e, nLong);
+	model.setEdgeHead(e, nInt);
+
+        e = model.createEdge(null);
+	model.setEdgeTail(e, nInt);
+	model.setEdgeHead(e, nNaT);
+
+        e = model.createEdge(null);
+	model.setEdgeTail(e, nDouble);
+	model.setEdgeHead(e, nInt);
+
+        e = model.createEdge(null);
+	model.setEdgeTail(e, nComplex);
+	model.setEdgeHead(e, nDouble);
+
+	e = model.createEdge(null);
+	model.setEdgeTail(e, nScalar);
+	model.setEdgeHead(e, nComplex);
+
+        // Make sure we have the right renderers and then
+        // display the graph
+        GraphController gc = new TypeGraphController();
+        GraphPane gp = new GraphPane(gc, model);
+
+        JGraph jgraph = new JGraph(gp);
         jgraph.setBackground(getBackground());
         // FIXME: title borders don't work in diva...
         // jgraph.setBorder(new TitledBorder(new LineBorder(Color.black),
@@ -314,90 +397,6 @@ public class Type extends SDFApplet implements ChangeListener {
         jgraph.setMinimumSize(new Dimension(400, 290));
         jgraph.setPreferredSize(new Dimension(400, 290));
         jgraph.setMaximumSize(new Dimension(400, 290));
-
-	GraphImpl impl = new BasicGraphImpl();
-	Graph graph = impl.createGraph(null);
-
-        // nodes, with user object set to the actor
-        Node nNaT = impl.createNode(BaseType.NAT);
-        Node nInt = impl.createNode(BaseType.INT);
-        Node nDouble = impl.createNode(BaseType.DOUBLE);
-        Node nComplex = impl.createNode(BaseType.COMPLEX);
-        Node nString = impl.createNode(BaseType.STRING);
-        Node nGeneral = impl.createNode(BaseType.GENERAL);
-        Node nBoolean = impl.createNode(BaseType.BOOLEAN);
-        Node nObject = impl.createNode(BaseType.OBJECT);
-        Node nScalar = impl.createNode(BaseType.SCALAR);
-        Node nLong = impl.createNode(BaseType.LONG);
-
-        impl.addNode(nNaT, graph);
-        impl.addNode(nInt, graph);
-        impl.addNode(nDouble, graph);
-        impl.addNode(nComplex, graph);
-        impl.addNode(nString, graph);
-        impl.addNode(nGeneral, graph);
-        impl.addNode(nBoolean, graph);
-        impl.addNode(nObject, graph);
-        impl.addNode(nScalar, graph);
-        impl.addNode(nLong, graph);
-
-        // Edges
-        Edge e;
-
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, nObject);
-	impl.setEdgeHead(e, nNaT);
-
-        e = impl.createEdge(null);
-	impl.setEdgeTail(e, nGeneral);
-	impl.setEdgeHead(e, nObject);
-
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, nGeneral);
-	impl.setEdgeHead(e, nString);
-
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, nString);
-	impl.setEdgeHead(e, nBoolean);
-
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, nBoolean);
-	impl.setEdgeHead(e, nNaT);
-
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, nString);
-	impl.setEdgeHead(e, nScalar);
-
-        e = impl.createEdge(null);
-	impl.setEdgeTail(e, nScalar);
-	impl.setEdgeHead(e, nLong);
-
-        e = impl.createEdge(null);
-	impl.setEdgeTail(e, nLong);
-	impl.setEdgeHead(e, nInt);
-
-        e = impl.createEdge(null);
-	impl.setEdgeTail(e, nInt);
-	impl.setEdgeHead(e, nNaT);
-
-        e = impl.createEdge(null);
-	impl.setEdgeTail(e, nDouble);
-	impl.setEdgeHead(e, nInt);
-
-        e = impl.createEdge(null);
-	impl.setEdgeTail(e, nComplex);
-	impl.setEdgeHead(e, nDouble);
-
-	e = impl.createEdge(null);
-	impl.setEdgeTail(e, nScalar);
-	impl.setEdgeHead(e, nComplex);
-
-        // Make sure we have the right renderers and then
-        // display the graph
-        final GraphController gc = new TypeGraphController();
-	final GraphPane gp = new GraphPane(gc);
-        jgraph.setCanvasPane(gp);
-	gc.setGraph(graph);
    
         LayoutTarget target = new BasicLayoutTarget(gc);
         LayoutUtilities.place(target, nGeneral, 230, 30); 
@@ -730,7 +729,7 @@ public class Type extends SDFApplet implements ChangeListener {
     	}
     }
 
-    public class TypeGraphController extends BasicGraphController {
+    public class TypeGraphController extends SimpleGraphController {
 
 	/** The selection interactor for drag-selecting nodes
 	 */
@@ -744,7 +743,7 @@ public class Type extends SDFApplet implements ChangeListener {
 	    // The interactors attached to nodes and edges
 	    setNodeController(new NodeController(this));
 	    setEdgeController(new EdgeController(this));
-            getNodeController().setNodeRenderer(new TypeRenderer());
+            getNodeController().setNodeRenderer(new TypeRenderer(this));
             getEdgeController().setEdgeRenderer(new LineRenderer());
 	}
 
@@ -761,23 +760,29 @@ public class Type extends SDFApplet implements ChangeListener {
 	    // Create and set up the selection dragger
 	    _selectionDragger = new SelectionDragger(pane);
 	    _selectionDragger.addSelectionInteractor(
-                    (SelectionInteractor)getEdgeController().getEdgeInteractor());
+		(SelectionInteractor)getEdgeController().getEdgeInteractor());
 	    _selectionDragger.addSelectionInteractor(
-                    (SelectionInteractor)getNodeController().getNodeInteractor());
+                (SelectionInteractor)getNodeController().getNodeInteractor());
         }
     }
 
     // TypeRenderer draws the nodes to represent types in a type lattice
     private class TypeRenderer implements NodeRenderer {
-
         // The size
         private double _size = 20;
 
-        // Return the rendered visual representation of this node.
-        public Figure render(Node n) {
-            Object typeObj = n.getSemanticObject();
+	// The graph controller
+	private GraphController _controller;
 
-            // Create a colored circle
+	public TypeRenderer(GraphController controller) {
+	    _controller = controller;
+	}
+
+        // Return the rendered visual representation of this node.
+        public Figure render(Object n) {
+	    Object typeObj = _controller.getGraphModel().getSemanticObject(n);
+	    
+	    // Create a colored circle
             BasicFigure figure = new BasicEllipse(0, 0, _size, _size);
 
             // Get the color and label
@@ -832,7 +837,7 @@ public class Type extends SDFApplet implements ChangeListener {
         /**
          * Render a visual representation of the given edge.
          */
-        public Connector render(Edge edge, Site tailSite, Site headSite) {
+        public Connector render(Object edge, Site tailSite, Site headSite) {
             StraightConnector c = new StraightConnector(tailSite, headSite);
             c.setUserObject(edge);
             return c;

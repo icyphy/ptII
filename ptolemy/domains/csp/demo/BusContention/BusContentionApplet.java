@@ -31,7 +31,7 @@
 package ptolemy.domains.csp.demo.BusContention;
 
 import diva.graph.*;
-import diva.graph.model.*;
+import diva.graph.basic.*;
 import diva.graph.layout.*;
 import diva.canvas.*;
 import diva.canvas.toolbox.*;
@@ -125,23 +125,29 @@ public class BusContentionApplet extends CSPApplet {
         _divaPanel.setBackground(getBackground());
 	_divaPanel.setSize( new Dimension(600, 350) );
 	_divaPanel.setBackground(getBackground());
-	_jgraph.setBackground(getBackground());
 	getContentPane().add( _divaPanel, BorderLayout.CENTER );
 
         _graph = constructDivaGraph();
-	final Graph finalGraph = _graph;
+	final MutableGraphModel finalGraphModel = _graph;
+	// display the graph.
+	final GraphController gc = new BusContentionGraphController();
+	final GraphPane gp = new GraphPane(gc, _graph);
+	_jgraph = new JGraph(gp);
+	_divaPanel.add(_jgraph, BorderLayout.NORTH );
+	_jgraph.setPreferredSize( new Dimension(600, 400) );
 
         try {
 	    SwingUtilities.invokeAndWait(new Runnable(){
 		public void run() {
-		    displayGraph(_jgraph, finalGraph);
+		    doLayout(finalGraphModel, gp);
 		}
 	    });
         } catch(Exception ex) {
             ex.printStackTrace();
             System.exit(0);
         }
-
+	_jgraph.setBackground(getBackground());
+	
         StateListener listener =
             new StateListener((GraphPane)_jgraph.getCanvasPane());
 	_processActor1.addListeners(listener);
@@ -153,24 +159,24 @@ public class BusContentionApplet extends CSPApplet {
      * This is sort of bogus because it's totally hard-wired,
      * but it will do for now...
      */
-    public Graph constructDivaGraph() {
-	GraphImpl impl = new BasicGraphImpl();
-	Graph graph = impl.createGraph(null);
+    public BasicGraphModel constructDivaGraph() {
+	BasicGraphModel model = new BasicGraphModel();
+	Object root = model.getRoot();
 
         // Nodes, with user object set to the actor
-        Node n1 = impl.createNode(_contentionActor);
-        Node n2 = impl.createNode(_alarmActor);
-        Node n3 = impl.createNode(_memoryActor);
-        Node n4 = impl.createNode(_processActor1);
-        Node n5 = impl.createNode(_processActor2);
-        Node n6 = impl.createNode(_processActor3);
+        Object n1 = model.createNode(_contentionActor);
+        Object n2 = model.createNode(_alarmActor);
+        Object n3 = model.createNode(_memoryActor);
+        Object n4 = model.createNode(_processActor1);
+        Object n5 = model.createNode(_processActor2);
+        Object n6 = model.createNode(_processActor3);
 
-        impl.addNode(n1, graph);
-        impl.addNode(n2, graph);
-        impl.addNode(n3, graph);
-        impl.addNode(n4, graph);
-        impl.addNode(n5, graph);
-        impl.addNode(n6, graph);
+        model.addNode(n1, root);
+        model.addNode(n2, root);
+        model.addNode(n3, root);
+        model.addNode(n4, root);
+        model.addNode(n5, root);
+        model.addNode(n6, root);
 
         _nodeMap.put(_contentionActor, n1);
         _nodeMap.put(_alarmActor, n2);
@@ -180,37 +186,37 @@ public class BusContentionApplet extends CSPApplet {
         _nodeMap.put(_processActor3, n6);
 
         // Edges
-	Edge e;
+	Object e;
 
-	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n1);
-	impl.setEdgeTail(e, n2);
+	e = model.createEdge(null);
+	model.setEdgeHead(e, n1);
+	model.setEdgeTail(e, n2);
 
- 	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n1);
-	impl.setEdgeTail(e, n4);
+ 	e = model.createEdge(null);
+	model.setEdgeHead(e, n1);
+	model.setEdgeTail(e, n4);
 
-	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n1);
-	impl.setEdgeTail(e, n5);
+	e = model.createEdge(null);
+	model.setEdgeHead(e, n1);
+	model.setEdgeTail(e, n5);
 
-	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n1);
-	impl.setEdgeTail(e, n6);
+	e = model.createEdge(null);
+	model.setEdgeHead(e, n1);
+	model.setEdgeTail(e, n6);
 
-	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n3);
-	impl.setEdgeTail(e, n4);
+	e = model.createEdge(null);
+	model.setEdgeHead(e, n3);
+	model.setEdgeTail(e, n4);
 
-	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n3);
-	impl.setEdgeTail(e, n5);
+	e = model.createEdge(null);
+	model.setEdgeHead(e, n3);
+	model.setEdgeTail(e, n5);
 
-	e = impl.createEdge(null);
-	impl.setEdgeHead(e, n3);
-	impl.setEdgeTail(e, n6);
+	e = model.createEdge(null);
+	model.setEdgeHead(e, n3);
+	model.setEdgeTail(e, n6);
 
-        return graph;
+        return model;
     }
 
     /** Construct the Ptolemy system */
@@ -277,28 +283,12 @@ public class BusContentionApplet extends CSPApplet {
         }
     }
 
-    /** Construct the graph widget with the default constructor (giving
-     *  it an empty graph).
-     */
-    public void displayGraph(JGraph g, Graph graph) {
-	_divaPanel.add( g, BorderLayout.NORTH );
-	g.setPreferredSize( new Dimension(600, 400) );
-
-    	// display the graph.
-	final GraphController gc = new BusContentionGraphController();
-	final GraphPane gp = new GraphPane(gc);
-	g.setCanvasPane(gp);
-	gc.setGraph(graph);
-
-	doLayout(graph, gp);
-    }
-
     /** Layout the graph again.
      */
-    public void doLayout(Graph graph, GraphPane gp) {
+    public void doLayout(GraphModel graph, GraphPane gp) {
         // Do the layout
 	try {
-	    final Graph layoutGraph = graph;
+	    final GraphModel layoutGraph = graph;
 	    final GraphController gc = gp.getGraphController();
 	    final GraphPane pane = gp;
 	    SwingUtilities.invokeLater(new Runnable() {
@@ -307,7 +297,7 @@ public class BusContentionApplet extends CSPApplet {
 		    LevelLayout staticLayout = new LevelLayout();
 		    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
 		    LayoutTarget target = new BasicLayoutTarget(gc);
-		    staticLayout.layout(target, layoutGraph);
+		    staticLayout.layout(target, layoutGraph.getRoot());
 		    pane.repaint();
 		}
 	    });
@@ -360,13 +350,13 @@ public class BusContentionApplet extends CSPApplet {
     private HashMap _nodeMap = new HashMap();
 
     // The JGraph where we display stuff
-    private JGraph _jgraph = new JGraph();
+    private JGraph _jgraph;
 
     // The Diva panel where we display stuff
     private JPanel _divaPanel;
 
     // The Diva graph
-    private Graph _graph;
+    private MutableGraphModel _graph;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -377,7 +367,7 @@ public class BusContentionApplet extends CSPApplet {
     private class LayoutListener implements ActionListener {
 	public void actionPerformed(ActionEvent evt) {
 	    final GraphPane gp = (GraphPane)_jgraph.getCanvasPane();
-	    final Graph g = _graph;
+	    final GraphModel g = _graph;
 	    doLayout(g, gp);
 	}
     }
@@ -394,7 +384,7 @@ public class BusContentionApplet extends CSPApplet {
 	    // The interactors attached to nodes and edges
 	    setNodeController(new NodeController(this));
 	    setEdgeController(new EdgeController(this));
-	    getNodeController().setNodeRenderer(new ThreadRenderer());
+	    getNodeController().setNodeRenderer(new ThreadRenderer(this));
 	    getEdgeController().setEdgeRenderer(new LocalEdgeRenderer());
 	}
 
@@ -412,9 +402,9 @@ public class BusContentionApplet extends CSPApplet {
 	    // Create and set up the selection dragger
 	    _selectionDragger = new SelectionDragger(pane);
 	    _selectionDragger.addSelectionInteractor(
-                    (SelectionInteractor)getEdgeController().getEdgeInteractor());
+                (SelectionInteractor)getEdgeController().getEdgeInteractor());
 	    _selectionDragger.addSelectionInteractor(
-                    (SelectionInteractor)getNodeController().getNodeInteractor());
+                (SelectionInteractor)getNodeController().getNodeInteractor());
 	}
     }
 
@@ -428,7 +418,7 @@ public class BusContentionApplet extends CSPApplet {
         /**
          * Render the edge
          */
-        public Connector render(Edge edge, Site tailSite, Site headSite) {
+        public Connector render(Object edge, Site tailSite, Site headSite) {
             StraightConnector c = new StraightConnector(tailSite, headSite);
 
             // Create an arrow at the head
@@ -472,9 +462,9 @@ public class BusContentionApplet extends CSPApplet {
             Actor actor = event.getActor();
 
             // Get the corresponding graph node and its figure
-            Node node = (Node) _nodeMap.get(actor);
+            Object node = (Object) _nodeMap.get(actor);
             LabelWrapper wrapper = (LabelWrapper)
-                node.getVisualObject();
+                _graphPane.getGraphController().getGraphModel().getVisualObject(node);
             final BasicFigure figure = (BasicFigure)
                 wrapper.getChild();
 
@@ -524,11 +514,20 @@ public class BusContentionApplet extends CSPApplet {
          */
         private double _size = 50;
 
+	/** The graph controller
+	 */
+	private GraphController _controller;
+	
+	public ThreadRenderer(GraphController controller) {
+	    _controller = controller;
+	}
+
         /**
          * Return the rendered visual representation of this node.
          */
-        public Figure render(Node n) {
-            ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
+        public Figure render(Object n) {
+            ComponentEntity actor = (ComponentEntity) 
+		_controller.getGraphModel().getSemanticObject(n);
 
             boolean isEllipse =
                 actor instanceof Controller
