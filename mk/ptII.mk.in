@@ -421,7 +421,7 @@ PTQUICKTIME_DIR =	@PTQUICKTIME_DIR@
 
 # Ptolemy II packages that use the Quicktime facility
 # PTQUICKTIME_PACKAGES is used in ptII/doc/makefile
-PTQUCKTIME_PACKAGES = 	@PTQUICKTIME_PACKAGES@
+PTQUICKTIME_PACKAGES = 	@PTQUICKTIME_PACKAGES@
 
 # Set to tini and used in $PTII/ptolemy/apps/makefile if the Dallas Semi
 # TINI was found
