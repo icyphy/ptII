@@ -49,54 +49,170 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 
-# Test MoML
-set moml_1 {<entity name="top" class="ptolemy.actor.TypedCompositeActor">
-    <doc>xxx</doc>
-</entity>
-}
-
-set moml_2 {<model name="top" class="ptolemy.actor.TypedCompositeActor">
-    <doc>xxx</doc>
-</model>
-}
-
-set moml_3 {<class name="top" extends="ptolemy.actor.TypedCompositeActor">
-    <doc>xxx</doc>
-</class>
-}
+set header {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">}
 
 #----------------------------------------------------------------------
 test MoMLParser-1.1 {parse incorrect MoML} {
+    set moml_1 "$header
+<entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <doc>xxx</doc>
+</entity>
+"
     set parser [java::new ptolemy.moml.MoMLParser]
     catch {$parser parse $moml_1} msg
     list $msg
 } {{com.microstar.xml.XmlException: Element "entity" found inside an element that is not a CompositeEntity. It is: null}}
 
+#----------------------------------------------------------------------
+set moml_2 "$header
+<model name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <doc>xxx</doc>
+</model>
+"
 test MoMLParser-1.2 {parse simple model with doc only} {
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [$parser parse $moml_2]
     $toplevel exportMoML
 } $moml_2
 
-test MoMLParser-1.3 {parse simple class with doc only} {
-    set parser [java::new ptolemy.moml.MoMLParser]
-    set toplevel [$parser parse $moml_3]
-    $toplevel exportMoML
-} $moml_3
-
 #----------------------------------------------------------------------
-set moml_4 {<<?xml version="1.0" standalone="no"?>
-<!DOCTYPE model SYSTEM "../moml.dtd">
-<class name="top" extends="ptolemy.actor.TypedCompositeActor">
+set moml_3 "$header
+<class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <doc>xxx</doc>
 </class>
-}
-#----------------------------------------------------------------------
-
+"
 test MoMLParser-1.3 {parse simple class with doc only} {
     set parser [java::new ptolemy.moml.MoMLParser]
     set toplevel [$parser parse $moml_3]
     $toplevel exportMoML
 } $moml_3
 
+#----------------------------------------------------------------------
+set moml_4 {    <class name="top" extends="ptolemy.actor.TypedCompositeActor">
+        <doc>xxx</doc>
+    </class>
+}
+test MoMLParser-1.4 {produce class without header} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml_4]
+    set output [java::new java.io.StringWriter]
+    $toplevel exportMoML $output 1
+    $output toString
+} $moml_4
+
+#----------------------------------------------------------------------
+set moml "$header
+<class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
+    <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
+    </entity>
+</class>
+"
+set result {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<class name="top" extends="ptolemy.actor.TypedCompositeActor">
+    <entity name="a" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+        </port>
+    </entity>
+</class>
+}
+# NOTE: result is not the same as what is parsed...
+test MoMLParser-1.5 {test with an actor} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} $result
+
+#----------------------------------------------------------------------
+set moml "$header
+<class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
+    <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
+        <property name=\"init\" value=\"0\" class=\"ptolemy.data.expr.Parameter\">
+        </property>
+    </entity>
+</class>
+"
+# NOTE: result is not the same as what is parsed...
+test MoMLParser-1.6 {test with a pre-existing parameter given, with class} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} $result
+
+#----------------------------------------------------------------------
+set moml "$header
+<class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
+    <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
+        <port name=\"output\">
+        </port>
+    </entity>
+</class>
+"
+# NOTE: result is not the same as what is parsed...
+test MoMLParser-1.7 {test with a pre-existing port given, without class} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} $result
+
+#----------------------------------------------------------------------
+set moml "$header
+<class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
+    <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
+        <port name=\"output\" class=\"ptolemy.actor.lib.Ramp\">
+        </port>
+    </entity>
+</class>
+"
+# NOTE: result is not the same as what is parsed...
+test MoMLParser-1.7 {test with a pre-existing port given, with wrong class} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    catch {set toplevel [$parser parse $moml]} msg
+    list $msg
+} {{com.microstar.xml.XmlException: port named "output" exists and is not an instance of ptolemy.actor.lib.Ramp}}
+
+#----------------------------------------------------------------------
+set moml "$header
+<class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
+    <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
+        <property name=\"init\" value=\"1\">
+        </property>
+    </entity>
+</class>
+"
+set result {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+<class name="top" extends="ptolemy.actor.TypedCompositeActor">
+    <entity name="a" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+        </port>
+    </entity>
+</class>
+}
+# NOTE: result is not the same as what is parsed...
+test MoMLParser-1.9 {test with changed parameter value from default} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml]
+    $toplevel exportMoML
+} $result
 

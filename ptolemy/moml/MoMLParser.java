@@ -320,7 +320,12 @@ public class MoMLParser extends HandlerBase {
      *  @return Null, indicating to use the default system identifier.
      */
     public Object resolveEntity(String publicID, String systemID) {
-        return null;
+        if (publicID.equals("-//UC Berkeley//DTD MoML 1//EN")) {
+            // This is the generic MoML DTD.
+            return new StringReader(MoML_DTD_1);
+        } else {
+            return null;
+        }
     }
 
     /** Start a document.  This method is called just before the parser
@@ -721,6 +726,18 @@ public class MoMLParser extends HandlerBase {
     public void startExternalEntity (String systemId) {
         _externalEntities.push(systemId);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public members                    ////
+
+    /** The standard MoML DTD, represented as a string.  This is used
+     *  to parse MoML data when a compatible PUBLIC DTD is specified.
+     */
+    public static String MoML_DTD_1 = "<!ELEMENT model (property | class | configure | doc | director | entity | import | link | relation)*><!ATTLIST model name CDATA #REQUIRED class CDATA #REQUIRED><!ELEMENT class (property | configure | director | doc | entity | link)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #REQUIRED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT director (property | configure)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ELEMENT entity (property | class | configure | doc | director | entity | rendition | relation)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED><!ELEMENT link EMPTY><!ATTLIST link port CDATA #REQUIRED relation CDATA #REQUIRED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location x CDATA #REQUIRED y CDATA #IMPLIED z CDATA #IMPLIED><!ELEMENT port (doc | configure)*><!ATTLIST port name CDATA #REQUIRED class CDATA #IMPLIED direction (input | output | both) #IMPLIED><!ELEMENT property (doc | configure)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (vertex*)><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rendition (configure | location)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT vertex (location?)><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED>";
+
+    // NOTE: The master file for the above DTD is at
+    // $PTII/ptolemy/moml/moml.dtd.  If modified, it needs to be also
+    // updated at ptweb/archive/moml.dtd.
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
