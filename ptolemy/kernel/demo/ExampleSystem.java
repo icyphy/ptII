@@ -182,7 +182,7 @@ public class ExampleSystem implements Serializable {
     public String printLinkedPorts(ComponentRelation r) {
         String st = r.getName() + ": ";
         ComponentPort po;
-        Enumeration ports = r.getLinkedPorts();
+        Enumeration ports = r.linkedPorts();
         while (ports.hasMoreElements()) {
             po = (ComponentPort) ports.nextElement();
             st += po.getName() + " ";
@@ -200,7 +200,7 @@ public class ExampleSystem implements Serializable {
     public String printDeepLinkedPorts(ComponentRelation r) {
         String st = r.getName() + ": ";
         ComponentPort po;
-        Enumeration ports = r.deepGetLinkedPorts();
+        Enumeration ports = r.deepLinkedPorts();
         while (ports.hasMoreElements()) {
             po = (ComponentPort) ports.nextElement();
             st += po.getName() + " ";
@@ -217,7 +217,7 @@ public class ExampleSystem implements Serializable {
     public String printConnectedPorts(ComponentPort p) {
         String st = p.getName() + ": ";
         ComponentPort po;
-        Enumeration ports = p.getConnectedPorts();
+        Enumeration ports = p.connectedPorts();
         while (ports.hasMoreElements()) {
             po = (ComponentPort) ports.nextElement();
             st += po.getName() + " ";
@@ -235,7 +235,7 @@ public class ExampleSystem implements Serializable {
     public String printDeepConnectedPorts(ComponentPort p) {
         String st = p.getName() + ": ";
         ComponentPort po;
-        Enumeration ports = p.deepGetConnectedPorts();
+        Enumeration ports = p.deepConnectedPorts();
         while (ports.hasMoreElements()) {
             po = (ComponentPort) ports.nextElement();
             st += po.getName() + " ";
