@@ -74,7 +74,7 @@ public class TotallyOrderedSet {
     }
 
     /** Return true if the given element is contained in this set.
-     *  The equivalence relation is defined by the comparetor.
+     *  The equivalence relation is defined by the comparator.
      *  If the type of given element
      *  is uncomparable by the comparator, then a ClassCastException
      *  will be thrown.
