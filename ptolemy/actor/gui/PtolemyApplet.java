@@ -134,13 +134,13 @@ public class PtolemyApplet extends BasicJApplet
         stop();
     }
 
-    /** Report that an execution error occurred.  This is
+    /** Report that an execute error occurred.  This is
      *  called by the manager.
      *  @param manager The manager in charge of the execution.
-     *  @param ex The exception that triggered the error.
+     *  @param throwable The throwable that triggered the error.
      */
-    public void executionError(Manager manager, Exception ex) {
-        report(ex);
+    public void executionError(Manager manager, Throwable throwable) {
+	report(throwable);
     }
 
     /** Report that execution of the model has finished.  This is

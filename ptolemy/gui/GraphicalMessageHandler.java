@@ -1,4 +1,4 @@
-/* Singleton class for displaying exceptions, warnings, and messages.
+/* Singleton class for displaying exceptions, errors, warnings, and messages.
 
  Copyright (c) 1999-2003 The Regents of the University of California.
  All rights reserved.
@@ -102,30 +102,30 @@ public class GraphicalMessageHandler extends MessageHandler {
                 options[0]);
     }
 
-    /** Show the specified message and exception information.
-     *  If the exception is an instance of CancelException, then it
-     *  is not shown.  By default, only the message of the exception
+    /** Show the specified message and throwable information.
+     *  If the throwable is an instance of CancelException, then it 
+     *  is not shown.  By default, only the message of the throwable
      *  is thrown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *
      *  @param info The message.
-     *  @param exception The exception.
+     *  @param throwable The throwable.
      *  @see CancelException
      */
-    protected void _error(String info, Exception exception) {
-        if (exception instanceof CancelException) return;
+    protected void _error(String info, Throwable throwable) {
+        if (throwable instanceof CancelException) return;
 
         // Sometimes you find that errors are reported multiple times.
         // To find out who is calling this method, uncomment the following.
         // System.out.println("------ reporting error:");
-        // (new Exception()).printStackTrace();
+        // (new Throwable()).printStackTrace();
 
         Object[] message = new Object[1];
 	String string;
 	if (info != null) {
-	    string = info + "\n" + exception.getMessage();
+	    string = info + "\n" + throwable.getMessage();
 	} else {
-	    string = exception.getMessage();
+	    string = throwable.getMessage();
 	}
 	message[0] = _ellipsis(string, 400);
 
@@ -135,7 +135,7 @@ public class GraphicalMessageHandler extends MessageHandler {
         int selected = JOptionPane.showOptionDialog(
                 _context,
                 message,
-                "Exception",
+		MessageHandler.shortDescription(throwable),
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.ERROR_MESSAGE,
                 null,
@@ -143,7 +143,7 @@ public class GraphicalMessageHandler extends MessageHandler {
                 options[0]);
 
         if (selected == 1) {
-            _showStackTrace(exception, info);
+            _showStackTrace(throwable, info);
         }
     }
 
@@ -196,19 +196,20 @@ public class GraphicalMessageHandler extends MessageHandler {
         }
     }
 
-    /** Show the specified message and exception information
+    /** Show the specified message and throwable information
      *  in a modal dialog.  If the user
      *  clicks on the "Cancel" button, then throw an exception.
      *  This gives the user the option of not continuing the
      *  execution, something that is particularly useful if continuing
      *  execution will result in repeated warnings.
-     *  By default, only the message of the exception
+     *  By default, only the message of the throwable
      *  is thrown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *  @param info The message.
+     *  @param throwable The throwable.
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
-    protected void _warning(String info, Exception exception)
+    protected void _warning(String info, Throwable throwable)
             throws CancelException {
         Object[] message = new Object[1];
         message[0] = info;
@@ -226,7 +227,7 @@ public class GraphicalMessageHandler extends MessageHandler {
                 options[0]);
 
         if (selected == 1) {
-            _showStackTrace(exception, info);
+            _showStackTrace(throwable, info);
         } else if (selected == 2) {
             throw new CancelException();
         }
@@ -283,18 +284,18 @@ public class GraphicalMessageHandler extends MessageHandler {
     }
 
     /** Display a stack trace dialog. The "info" argument is a
-     *  string printed at the top of the dialog instead of the Exception
+     *  string printed at the top of the dialog instead of the Throwable
      *  message.
-     *  @param exception The exception.
+     *  @param throwable The throwable.
      *  @param info A message.
      */
-    private void _showStackTrace(Exception exception, String info) {
+    private void _showStackTrace(Throwable throwable, String info) {
         // FIXME: Eventually, the dialog should
         // be able to email us a bug report.
         // Show the stack trace in a scrollable text area.
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
-        exception.printStackTrace(pw);
+        throwable.printStackTrace(pw);
         JTextArea text = new JTextArea(sw.toString(), 60, 80);
         JScrollPane stext = new JScrollPane(text);
         stext.setPreferredSize(new Dimension(600, 300));
@@ -305,9 +306,9 @@ public class GraphicalMessageHandler extends MessageHandler {
         Object[] message = new Object[2];
         String string;
         if (info != null) {
-            string = info + "\n" + exception.getMessage();
+            string = info + "\n" + throwable.getMessage();
         } else {
-            string = exception.getMessage();
+            string = throwable.getMessage();
         }
         message[0] = _ellipsis(string, 400);
         message[1] = stext;

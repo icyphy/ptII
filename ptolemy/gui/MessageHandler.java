@@ -69,9 +69,9 @@ public class MessageHandler {
     }
 
     /** Defer to the set message handler to
-     *  show the specified message and exception information.
-     *  If the exception is an instance of CancelException, then it
-     *  is not shown.  By default, only the message of the exception
+     *  show the specified message and throwable information.
+     *  If the throwable is an instance of CancelException, then it
+     *  is not shown.  By default, only the message of the throwable
      *  is thrown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *
@@ -79,12 +79,30 @@ public class MessageHandler {
      *  @param exception The exception.
      *  @see CancelException
      */
-    public static void error(String info, Exception exception) {
+    public static void error(String info, Throwable throwable) {
         // Sometimes you find that errors are reported multiple times.
         // To find out who is calling this method, uncomment the following.
         // System.out.println("------ reporting error:");
         // (new Exception()).printStackTrace();
-        _handler._error(info, exception);
+        _handler._error(info, throwable);
+    }
+
+    /** Return a short description of the throwable.
+     *  @param throwable The throwable
+     *  @return If the throwable is an Exception, return "Exception",
+     *  if it is an Error, return "Error", if it is a Throwable, return
+     *  "Throwable".
+     */
+    public static String shortDescription(Throwable throwable) {
+	String throwableType = null;
+	if (throwable instanceof Exception) {
+	    throwableType = "Exception";
+	} else if (throwable instanceof Error) {
+	    throwableType = "Error";
+	} else {
+	    throwableType = "Throwable";
+	}
+	return throwableType;
     }
 
     /** Return the message handler instance that is used by the static
@@ -126,21 +144,21 @@ public class MessageHandler {
         _handler._warning(info);
     }
 
-    /** Show the specified message and exception information
+    /** Show the specified message and throwable information
      *  in a modal dialog.  If the user
      *  clicks on the "Cancel" button, then throw an exception.
      *  This gives the user the option of not continuing the
      *  execution, something that is particularly useful if continuing
      *  execution will result in repeated warnings.
-     *  By default, only the message of the exception
+     *  By default, only the message of the throwable
      *  is thrown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *  @param info The message.
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
-    public static void warning(String info, Exception exception)
+    public static void warning(String info, Throwable throwable)
             throws CancelException {
-        _handler._warning(info + ": " + exception.getMessage(), exception);
+        _handler._warning(info + ": " + throwable.getMessage(), throwable);
     }
 
     /** Ask the user a yes/no question, and return true if the answer
@@ -161,20 +179,22 @@ public class MessageHandler {
         System.err.println(info);
     }
 
-    /** Show the specified message and exception information.
-     *  If the exception is an instance of CancelException, then it
+    /** Show the specified message and throwable information.
+     *  If the throwable is an instance of CancelException, then it
      *  is not shown.  By default, only the message of the exception
      *  is thrown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *
      *  @param info The message.
-     *  @param exception The exception.
+     *  @param throwable The throwable.
      *  @see CancelException
      */
-    protected void _error(String info, Exception exception) {
-        if (exception instanceof CancelException) return;
+    protected void _error(String info, Throwable throwable) {
+        if (throwable instanceof CancelException) {
+	    return;
+	}
         System.err.println(info);
-        exception.printStackTrace();
+        throwable.printStackTrace();
     }
 
     /** Show the specified message.
@@ -196,21 +216,21 @@ public class MessageHandler {
         _error(info);
     }
 
-    /** Show the specified message and exception information
+    /** Show the specified message and throwable information
      *  in a modal dialog.  If the user
      *  clicks on the "Cancel" button, then throw an exception.
      *  This gives the user the option of not continuing the
      *  execution, something that is particularly useful if continuing
      *  execution will result in repeated warnings.
-     *  By default, only the message of the exception
+     *  By default, only the message of the throwable
      *  is thrown.  The stack trace information is only shown if the
      *  user clicks on the "Display Stack Trace" button.
      *  @param info The message.
      *  @exception CancelException If the user clicks on the "Cancel" button.
      */
-    protected void _warning(String info, Exception exception)
+    protected void _warning(String info, Throwable throwable)
             throws CancelException {
-        _error(info, exception);
+        _error(info, throwable);
     }
 
     /** Ask the user a yes/no question, and return true if the answer

@@ -64,9 +64,9 @@ public class StreamExecutionListener implements ExecutionListener {
     /** Report an execution failure by printing a message to output
      *  stream specified to the constructor.
      */
-    public void executionError(Manager manager, Exception ex) {
+    public void executionError(Manager manager, Throwable throwable) {
         _output.println("Execution error.");
-        ex.printStackTrace(_output);
+        throwable.printStackTrace(_output);
     }
 
     /** Report that the current execution finished  by printing a

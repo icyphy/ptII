@@ -87,9 +87,10 @@ public class PtExecuteApplication extends MoMLApplication
      *  executing models drops ot zero, then notify threads that might
      *  be waiting for this event.
      *  @param manager The manager calling this method.
-     *  @param ex The exception being reported.
+     *  @param throwable The throwable being reported.
      */
-    public synchronized void executionError(Manager manager, Exception ex) {
+    public synchronized void executionError(Manager manager,
+					    Throwable throwable) {
         _activeCount--;
         if (_activeCount == 0) {
             notifyAll();

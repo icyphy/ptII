@@ -191,14 +191,15 @@ public abstract class Top extends JFrame {
         return _modified;
     }
 
-    /** Report an exception.  This displays a message in a dialog by
+    /** Report a Throwable, which is usually an Exception but can also
+     *	be an Error.  This displays a message in a dialog by
      *  calling the two-argument version with an empty string as the
      *  first argument.
-     *  @param ex The exception to report.
-     *  @see #report(String, Exception)
+     *  @param throwable The Throwable to report
+     *  @see #report(String, Throwable)
      */
-    public void report(Exception ex) {
-	report("", ex);
+    public void report(Throwable throwable) {
+	report("", throwable);
     }
 
     /** Report a message to the user by displaying it in a status bar,
@@ -211,17 +212,20 @@ public abstract class Top extends JFrame {
         }
     }
 
-    /** Report an exception.  This pops up a window with the option
-     *  of examining the stack trace, and reports the specified message
-     *  in the status bar, if there is one.
+    /** Report a Throwable, which is usually an Exception but can also
+     *	be an Error. 
+     *  This pops up a window with the option of examining the stack
+     *  trace, and reports the specified message in the status bar, if
+     *  there is one.
      *  @param message The message.
-     *  @param ex The exception to report.
+     *  @param throwable The Throwable to report.
      */
-    public void report(String message, Exception ex) {
+    public void report(String message, Throwable throwable) {
         if (_statusBar != null) {
-            _statusBar.setMessage("Exception. " + message);
+	    _statusBar.setMessage(MessageHandler.shortDescription(throwable)
+				  + ". " + message);
         }
-        MessageHandler.error(message, ex);
+        MessageHandler.error(message, throwable);
     }
 
     /** Set background color.  This overrides the base class to set the

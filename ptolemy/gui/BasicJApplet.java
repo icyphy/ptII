@@ -115,9 +115,11 @@ public class BasicJApplet extends JApplet {
     /** Report an exception.  This prints a message to the standard error
      *  stream, followed by the stack trace, but displays on the screen
      *  only the error message associated with the exception.
+     *  @param throwable The throwable that triggered the error.
      */
-    public void report(Exception ex) {
-	report("Exception thrown by applet.", ex);
+    public void report(Throwable throwable) {
+	report(MessageHandler.shortDescription(throwable)
+	       + " thrown by applet.", throwable);
     }
 
     /** Report a message to the user.
@@ -132,12 +134,14 @@ public class BasicJApplet extends JApplet {
      *  This prints a message to standard error, followed by the stack trace,
      *  and pops up a window with the message and the message of the
      *  exception.
+     *  @param message The message to report.
+     *  @param throwable The throwable that triggered the error.
      */
-    public void report(String message, Exception ex) {
+    public void report(String message, Throwable throwable) {
 	// In JDK1.3.1, we can't copy the contents of the window that the
 	// applet pops up, so be sure to print the stack trace to stderr.
-	ex.printStackTrace();
-        MessageHandler.error(message, ex);
+	throwable.printStackTrace();
+        MessageHandler.error(message, throwable);
         showStatus("exception occurred.");
     }
 

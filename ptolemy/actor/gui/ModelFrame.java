@@ -136,10 +136,10 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     /** Report that an execution error has occurred.  This method
      *  is called by the specified manager.
      *  @param manager The manager calling this method.
-     *  @param ex The exception being reported.
+     *  @param throwable The throwable being reported.
      */
-    public void executionError(Manager manager, Exception ex) {
-        report(ex);
+    public void executionError(Manager manager, Throwable throwable) {
+        report(throwable);
     }
 
     /** Report that execution of the model has finished.
