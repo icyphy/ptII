@@ -168,7 +168,7 @@ public class CheckedCollection implements UpdatableCollection  {
         assert((result >= 0));
         // cannot be greater than size()
         assert(result <= thys.size());
-        // occurrences of things you canot include must be 0
+        // occurrences of things you cannot include must be 0
         assert(thys.canInclude(element) || result == 0);
         // cross-check of include condition
         assert( !((result == 0) && thys.includes(element)));
