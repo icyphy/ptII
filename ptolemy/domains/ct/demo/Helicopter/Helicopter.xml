@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Helicopter" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.0.1">
     </property>
     <property name="CTDirector" class="ptolemy.domains.ct.kernel.CTMultiSolverDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -35,17 +35,13 @@
         </property>
     </property>
     <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 20.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 15.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-           <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model shows a hybrid control system for a high-attitute take-off operation of a helicopter. 
-Only the x-z plane dynamics of the helicopter is considered. The take-off operation is devided
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model shows a hybrid control system for a high-attitute take-off operation of a helicopter. 
+Only the x-z plane dynamics of the helicopter is considered. The take-off operation is divided
 into 5 sub-operations (i.e. modes): hover, accelerate, cruise, climb, and cruise. 
-Five controllers are applied sequentially to the modes.</text>
-           </svg>
-           </configure>
+Five controllers are applied sequentially to the modes.</text></svg></configure>
         </property>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
@@ -58,7 +54,7 @@ Five controllers are applied sequentially to the modes.</text>
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[182, 131]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 19, 975, 725}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={15, 19, 975, 716}}">
     </property>
     <entity name="StartClimb" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -122,7 +118,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 110, 508, 293}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 110, 508, 286}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 238]">
         </property>
@@ -161,7 +157,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={518, 425, 508, 293}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={518, 425, 508, 286}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 238]">
         </property>
@@ -182,8 +178,8 @@ Five controllers are applied sequentially to the modes.</text>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Horizontal Speed</title>
-<xRange min="0.0" max="39.431753573470544"/>
-<yRange min="-2.608169045223375E-4" max="5.138648510864521"/>
+<xRange min="0.0" max="3.110937500000457"/>
+<yRange min="0.0" max="0.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -192,7 +188,7 @@ Five controllers are applied sequentially to the modes.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={518, 110, 508, 293}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={518, 110, 508, 286}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 238]">
         </property>
@@ -213,8 +209,8 @@ Five controllers are applied sequentially to the modes.</text>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Vertical Position</title>
-<xRange min="0.0" max="39.43170025586524"/>
-<yRange min="1.5" max="9.950539697397083"/>
+<xRange min="0.0" max="3.1093750000004565"/>
+<yRange min="1.5" max="2.0162871027972993"/>
 </plot>?>
         </configure>
     </entity>
@@ -342,6 +338,8 @@ Five controllers are applied sequentially to the modes.</text>
         </port>
         <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Hover">
+            </property>
+            <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
@@ -2686,7 +2684,7 @@ Five controllers are applied sequentially to the modes.</text>
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 426, 508, 293}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 426, 508, 286}}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 238]">
             </property>
@@ -2707,8 +2705,8 @@ Five controllers are applied sequentially to the modes.</text>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Pitch Angle</title>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="3.1093750000004565"/>
+<yRange min="0.0" max="0.0"/>
 </plot>?>
             </configure>
         </entity>
