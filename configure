@@ -865,7 +865,7 @@ Optional Packages:
   --with-tools_jar=DIR    use tools.jar from DIR,
                           defaults to \$PTJAVA_HOME/../lib/tools.jar
   --with-eclipse=ECLIPSE_DIR     use Eclipse from ECLIPSE_DIR,
-                          defaults to \$PTII/lib/jrefactory.jar
+                          defaults to c:/Program Files/Eclipse
   --with-gc-include=DIR       use gc.h from DIR
                           defaults to \$PTII/vendors/gc/gc/include
   --with-jhdl-jar=JARFILE       use JHDL from JARFILE,
@@ -3882,9 +3882,9 @@ else
     echo "$as_me:$LINENO: checking for Cal, the actor language" >&5
 echo $ECHO_N "checking for Cal, the actor language... $ECHO_C" >&6
 
-# Check whether --with-CALTROP_DIR or --without-CALTROP_DIR was given.
-if test "${with_CALTROP_DIR+set}" = set; then
-  withval="$with_CALTROP_DIR"
+# Check whether --with-cal or --without-cal was given.
+if test "${with_cal+set}" = set; then
+  withval="$with_cal"
   CALTROP_DIR=$withval
 else
   CALTROP_DIR=$PTII/lib
@@ -3987,9 +3987,9 @@ else
     echo "$as_me:$LINENO: checking for Chic, the model checker" >&5
 echo $ECHO_N "checking for Chic, the model checker... $ECHO_C" >&6
 
-# Check whether --with-CHIC_DIR or --without-CHIC_DIR was given.
-if test "${with_CHIC_DIR+set}" = set; then
-  withval="$with_CHIC_DIR"
+# Check whether --with-chic or --without-chic was given.
+if test "${with_chic+set}" = set; then
+  withval="$with_chic"
   CHIC_DIR=$withval
 else
   CHIC_DIR=$PTII/lib
@@ -4055,9 +4055,9 @@ else
     echo "$as_me:$LINENO: checking for Colt, the scientific computing lib" >&5
 echo $ECHO_N "checking for Colt, the scientific computing lib... $ECHO_C" >&6
 
-# Check whether --with-COLT_DIR or --without-COLT_DIR was given.
-if test "${with_COLT_DIR+set}" = set; then
-  withval="$with_COLT_DIR"
+# Check whether --with-colt or --without-colt was given.
+if test "${with_colt+set}" = set; then
+  withval="$with_colt"
   COLT_DIR=$withval
 else
   COLT_DIR=$PTII/vendors/misc/colt
@@ -4126,9 +4126,9 @@ else
     echo "$as_me:$LINENO: checking for commapi directory" >&5
 echo $ECHO_N "checking for commapi directory... $ECHO_C" >&6
 
-# Check whether --with-COMMAPI or --without-COMMAPI was given.
-if test "${with_COMMAPI+set}" = set; then
-  withval="$with_COMMAPI"
+# Check whether --with-commapi or --without-commapi was given.
+if test "${with_commapi+set}" = set; then
+  withval="$with_commapi"
   COMMAPI_DIR=$withval
 else
   COMMAPI_DIR=$PTII/vendors/sun/commapi
@@ -4244,9 +4244,9 @@ else
     echo "$as_me:$LINENO: checking for tools.jar directory" >&5
 echo $ECHO_N "checking for tools.jar directory... $ECHO_C" >&6
 
-# Check whether --with-DOCLETS or --without-DOCLETS was given.
-if test "${with_DOCLETS+set}" = set; then
-  withval="$with_DOCLETS"
+# Check whether --with-tools_jar or --without-tools_jar was given.
+if test "${with_tools_jar+set}" = set; then
+  withval="$with_tools_jar"
   TOOLS_JAR=$withval
 else
   TOOLS_JAR=${PTJAVA_HOME}/../lib/tools.jar
@@ -4282,9 +4282,9 @@ fi
 #       We use Eclipse for parsing java backtracking.
 #       Eclipse is an integrated development environment, see
 #	http://www.eclipse.org
-#       See if there was a command-line option for where JRefactory interface
+#       See if there was a command-line option for where Eclipse can be found
 #       is
-#       If not, look for for $PTII/lib/jrefactory
+#       If not, look for for $PTII/vendors/eclipse
 #--------------------------------------------------------------------
 
 # PTBACKTRACK_DIR is set to backtrack and used in
@@ -4304,9 +4304,9 @@ else
     echo "$as_me:$LINENO: checking for Eclipse installation" >&5
 echo $ECHO_N "checking for Eclipse installation... $ECHO_C" >&6
 
-# Check whether --with-jrefactory_jar or --without-jrefactory_jar was given.
-if test "${with_jrefactory_jar+set}" = set; then
-  withval="$with_jrefactory_jar"
+# Check whether --with-eclipse or --without-eclipse was given.
+if test "${with_eclipse+set}" = set; then
+  withval="$with_eclipse"
   ECLIPSE_DIR=$withval
 else
   ECLIPSE_DIR=c:/Program\ Files/Eclipse
@@ -4349,7 +4349,7 @@ echo "$as_me: WARNING: Failed to find $jar in $ECLIPSE_DIR: $jarpath" >&2;}
 	    echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
 	    # Set to backtrack and used in
-	    # $PTII/ptolemy/make if jrefactory.jar was found
+	    # $PTII/ptolemy/make if Eclipse jar files were found
 	    PTBACKTRACK_DIR=backtrack
    	    # PTBACKTRACK_PACKAGES is used in ptII/doc/makefile
 	    PTBACKTRACK_PACKAGES=ptolemy.backtrack.ast
@@ -4592,9 +4592,9 @@ echo "$as_me: WARNING: Failed to find GC_malloc(), but
    echo "$as_me:$LINENO: checking for gc.h" >&5
 echo $ECHO_N "checking for gc.h... $ECHO_C" >&6
 
-# Check whether --with-gc_include_dir or --without-gc_include_dir was given.
-if test "${with_gc_include_dir+set}" = set; then
-  withval="$with_gc_include_dir"
+# Check whether --with-gc-include or --without-gc-include was given.
+if test "${with_gc_include+set}" = set; then
+  withval="$with_gc_include"
   GC_INCLUDE_DIR=$withval
 else
   GC_INCLUDE_DIR=$PTII/vendors/gc/gc/include
@@ -5477,7 +5477,7 @@ else
     echo "$as_me:$LINENO: checking for jhdl jar file" >&5
 echo $ECHO_N "checking for jhdl jar file... $ECHO_C" >&6
 
-# Check whether --with-jhdl_jar or --without-jhdl_jar was given.
+# Check whether --with-jhdl-jar or --without-jhdl-jar was given.
 if test "${with_jhdl_jar+set}" = set; then
   withval="$with_jhdl_jar"
   JHDL_JAR=$withval
@@ -5653,7 +5653,7 @@ else
     echo "$as_me:$LINENO: checking for joystick jar file" >&5
 echo $ECHO_N "checking for joystick jar file... $ECHO_C" >&6
 
-# Check whether --with-joystick_jar or --without-joystick_jar was given.
+# Check whether --with-joystick-jar or --without-joystick-jar was given.
 if test "${with_joystick_jar+set}" = set; then
   withval="$with_joystick_jar"
   JOYSTICK_JAR=$withval
@@ -5722,9 +5722,9 @@ else
     echo "$as_me:$LINENO: checking for Jython, the Java implementation of Jython" >&5
 echo $ECHO_N "checking for Jython, the Java implementation of Jython... $ECHO_C" >&6
 
-# Check whether --with-jython_dir or --without-jython_dir was given.
-if test "${with_jython_dir+set}" = set; then
-  withval="$with_jython_dir"
+# Check whether --with-jython or --without-jython was given.
+if test "${with_jython+set}" = set; then
+  withval="$with_jython"
   JYTHON_DIR=$withval
 else
   JYTHON_DIR=$PTII/lib
@@ -5801,9 +5801,9 @@ else
     echo "$as_me:$LINENO: checking for jxta directory that contains jxta.jar" >&5
 echo $ECHO_N "checking for jxta directory that contains jxta.jar... $ECHO_C" >&6
 
-# Check whether --with-jxta_dir or --without-jxta_dir was given.
-if test "${with_jxta_dir+set}" = set; then
-  withval="$with_jxta_dir"
+# Check whether --with-jxta or --without-jxta was given.
+if test "${with_jxta+set}" = set; then
+  withval="$with_jxta"
   JXTA_DIR=$withval
 else
   JXTA_DIR=$PTII/vendors/sun/jxta
@@ -5876,9 +5876,9 @@ echo "$as_me: WARNING: Lejos requires commapi, which was not found." >&2;}
 	echo "$as_me:$LINENO: checking for lejos directory" >&5
 echo $ECHO_N "checking for lejos directory... $ECHO_C" >&6
 
-# Check whether --with-LEJOS or --without-LEJOS was given.
-if test "${with_LEJOS+set}" = set; then
-  withval="$with_LEJOS"
+# Check whether --with-lejos or --without-lejos was given.
+if test "${with_lejos+set}" = set; then
+  withval="$with_lejos"
   LEJOS_DIR=$withval
 else
   LEJOS_DIR=$PTII/vendors/lejos/lejosBeta3
@@ -6915,9 +6915,9 @@ else
     echo "$as_me:$LINENO: checking for mapss.jar, used by the PSDF domain" >&5
 echo $ECHO_N "checking for mapss.jar, used by the PSDF domain... $ECHO_C" >&6
 
-# Check whether --with-PSDF_DIR or --without-PSDF_DIR was given.
-if test "${with_PSDF_DIR+set}" = set; then
-  withval="$with_PSDF_DIR"
+# Check whether --with-mapss or --without-mapss was given.
+if test "${with_mapss+set}" = set; then
+  withval="$with_mapss"
   PSDF_DIR=$withval
 else
   PSDF_DIR=$PTII/lib
