@@ -200,18 +200,6 @@ public class VersionAttribute
         return false;
     }
 
-    /** Write a MoML description of this object, which in this case is
-     *  empty.  Nothing is written.
-     *  We handle exporting this attribute in {@link NamedObj#exportMoML()}.
-     *  
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @param name The name to use instead of the current name.
-     */
-    public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
-    }
-
     /** Return true if this version is less than the specified version.
      *  This method uses compareTo(), but may yield more readable code
      *  in certain circumstances.
