@@ -259,7 +259,11 @@ public class BasePNDirector extends ProcessDirector {
      */
     public boolean postfire() throws IllegalActionException {
 	if (_readBlockCount == _getActiveActorsCount()) {
-	    return false;
+	    if ((((CompositeActor)getContainer()).inputPorts()).hasMoreElements()) {
+		return true;
+	    } else {
+		return false;
+	    }
 	} else {
 	    return true;
 	}
