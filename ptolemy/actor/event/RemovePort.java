@@ -79,8 +79,10 @@ public class RemovePort extends ChangeRequest {
             Nameable container = _port.getContainer();
             if (container instanceof Actor) {
                 Director director = ((Actor)container).getDirector();
-                director.invalidateSchedule();
-                director.invalidateResolvedTypes();
+		if(director != null) {
+		    director.invalidateSchedule();
+		    director.invalidateResolvedTypes();
+		}
             }
             _port.setContainer(null);
         } catch (KernelException ex) {
