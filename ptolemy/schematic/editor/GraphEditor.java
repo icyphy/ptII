@@ -31,6 +31,7 @@
 package ptolemy.schematic.editor;
 
 import ptolemy.schematic.util.Schematic;
+import ptolemy.schematic.util.SchematicDirector;
 import ptolemy.schematic.util.SchematicEntity;
 import ptolemy.schematic.util.IconLibrary;
 import ptolemy.schematic.util.EntityLibrary;
@@ -38,6 +39,9 @@ import ptolemy.schematic.util.PTMLObjectFactory;
 import ptolemy.schematic.util.PtolemyModelFactory;
 import ptolemy.schematic.util.SchematicGraphImpl;
 import ptolemy.actor.*;
+import ptolemy.kernel.util.*;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.IntToken;
 import diva.graph.*;
 import diva.graph.editor.*;
 import diva.graph.layout.*;
@@ -89,6 +93,10 @@ public class GraphEditor extends AbstractApplication {
     /** A mapping from content panes to documents
      */
     private HashMap _documents = new HashMap();
+
+    /** The director selection combobox
+     */
+    private JComboBox _directorComboBox;
 
     /** The layout selection combobox
      */
@@ -157,9 +165,10 @@ public class GraphEditor extends AbstractApplication {
 				       new SchematicGraphImpl());
 	JGraph jgraph = new JGraph(pane);
 	new EditorDropTarget(jgraph);
-        GraphController controller = jgraph.getGraphPane().getGraphController();
-        //        GraphModel model = (GraphModel) d.getSheet(0).getModel();
-        Graph graph = (Graph) d.getSheet(0).getModel();//model.getGraph();
+        GraphController controller = 
+	    jgraph.getGraphPane().getGraphController();
+        
+        Graph graph = (Graph) d.getSheet(0).getModel();
 
         // Set and draw the new graph
         controller.setGraph(graph);
@@ -360,6 +369,11 @@ public class GraphEditor extends AbstractApplication {
                     TypedCompositeActor system = 
                         factory.createPtolemyModel(schematic);
                     Manager manager = system.getManager();
+		    // manager.addDebugListener(new StreamListener());
+		    Director director = system.getDirector();
+		    Parameter iterations = 
+		    (Parameter) director.getAttribute("iterations");
+		    iterations.setToken(new IntToken(20000));
 
                     manager.startRun();
                 } catch (Exception ex) {
@@ -414,6 +428,27 @@ public class GraphEditor extends AbstractApplication {
         tb.add(_layoutComboBox);
 
         //tb.addSeparator();
+
+	//FIXME find these names somehow.
+	_directorComboBox = new JComboBox();
+	dflt = "sdf.director";
+        _directorComboBox.addItem(dflt);
+        _directorComboBox.addItem("de.director");
+        _directorComboBox.setSelectedItem(dflt);
+        _directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());
+        _directorComboBox.addItemListener(new ItemListener() {
+            public void itemStateChanged (ItemEvent e) {
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    GraphDocument d = (GraphDocument) getCurrentDocument();
+		    Schematic schematic = 
+			(Schematic) d.getCurrentSheet().getModel();
+		    SchematicDirector director = 
+			_entityLibrary.findDirector((String)e.getItem());
+		    schematic.setDirector(director);
+                }
+            }
+        });
+        tb.add(_directorComboBox);
     }
 
     /** Create and run a new graph application
