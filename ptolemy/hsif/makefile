@@ -48,7 +48,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 PTCLASSALLJARS = \
-	data/data.jar
+	xsl/xsl.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
