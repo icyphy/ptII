@@ -150,7 +150,7 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
         if (parserAttribute == null) {
             // If there is a context, but no parser, then there is 
             // nothing to undo.  This may or may not be a bug.
-
+            return;
             // 	    throw new InternalErrorException(_context, null,
             //                     "There was no _parser attribute "
             //                     + "found. "
