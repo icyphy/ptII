@@ -37,6 +37,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs jdkCapture] == "" } then {
+    source [file join $PTII util testsuite jdktools.tcl]
+}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -240,8 +244,6 @@ test Manager-8.8 {Test type resolution} {
 ####
 #
 test Manager-10.0 {Test execution listener} {
-    # NOTE: The real results of this test go to stdout, which we can't
-    # test... So the test just makes sure an exception isn't thrown.
     set e0 [sdfModel 2]
     set manager [$e0 getManager]
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
@@ -249,13 +251,61 @@ test Manager-10.0 {Test execution listener} {
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-    set listener [java::new ptolemy.actor.StreamExecutionListener]
-    $manager addExecutionListener $listener
-    $manager run
-    puts "------- result: [enumToTokenValues [$rec getRecord 0]]"
-    $manager removeExecutionListener $listener
-    [$manager getState] getDescription
-} {idle}
+    jdkCapture {
+	set listener [java::new ptolemy.actor.StreamExecutionListener]
+	$manager addExecutionListener $listener
+	$manager run
+	$manager removeExecutionListener $listener
+    } stdoutResults
+
+    # Strip out the time in ms, which will vary between runs  
+    regsub {[0-9]* ms} $stdoutResults "xxx ms" stdoutResultsWithoutTime
+
+    #puts "------- result: [enumToTokenValues [$rec getRecord 0]]"
+    list $stdoutResultsWithoutTime [[$manager getState] getDescription] 
+} {{preinitializing
+resolving types
+initializing
+executing number 1
+wrapping up
+idle
+Completed execution with 2 iterations
+ptolemy.actor.Manager run(): elapsed time: xxx ms
+} idle}
+
+######################################################################
+####
+#
+test Manager-10.1 {Test execution listener with one arg} {
+    set e0 [sdfModel 2]
+    set manager [$e0 getManager]
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    jdkCapture {
+	set listener [java::new ptolemy.actor.StreamExecutionListener \
+		[java::field System out]]
+	$manager addExecutionListener $listener
+	$manager run
+	$manager removeExecutionListener $listener
+    } stdoutResults
+
+    # Strip out the time in ms, which will vary between runs  
+    regsub {[0-9]* ms} $stdoutResults "xxx ms" stdoutResultsWithoutTime
+
+    #puts "------- result: [enumToTokenValues [$rec getRecord 0]]"
+    list $stdoutResultsWithoutTime [[$manager getState] getDescription] 
+} {{preinitializing
+resolving types
+initializing
+executing number 1
+wrapping up
+idle
+Completed execution with 2 iterations
+ptolemy.actor.Manager run(): elapsed time: xxx ms
+} idle}
 
 ######################################################################
 ####
