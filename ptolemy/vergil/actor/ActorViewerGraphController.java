@@ -166,6 +166,18 @@ public class ActorViewerGraphController extends RunnableGraphController {
         return _linkController;
     }
 
+    /** Return the value of the entity controller so that callers
+     *  can add context menus by calling 
+     *  <pre>
+     *  getEntityController.addMenuItemFactory(new XXXDialogFactory);
+     *  </pre>
+     *  @return that ActorController that is used to  
+     */
+    public ActorController getEntityController() {
+        // Used by jni.ThalesGraphFrame to add jni.ArgumentDialogFactory
+        return _entityController;
+    }
+
     /** Return the node controller appropriate for the given object.
      *  If the object is an instance of Vertex, then return the
      *  local relation controller.  If it implements Locatable,
