@@ -165,3 +165,14 @@ test NamedObj-5.1 {Test getFullName} {
     set b [java::new pt.kernel.NamedObj $n "bar"]
     list [$n getFullName] [$b getFullName]
 } {foo foo.bar}
+
+######################################################################
+####
+# 
+test NamedObj-6.1 {Test toString} {
+    set n [java::new pt.kernel.Workspace "foo"]
+    set a [java::new pt.kernel.NamedObj]
+    set b [java::new pt.kernel.NamedObj $n ""]
+    set c [java::new pt.kernel.NamedObj $n "car" ]
+    list [$a toString] [$b toString] [$c toString]
+} {}
