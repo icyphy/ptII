@@ -29,7 +29,8 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = tcl tycho
+# Order matters here, tycho depends on pn and tcl.
+DIRS = tcl pn tycho
 
 # Root of Tycho directory
 ROOT =		../..
