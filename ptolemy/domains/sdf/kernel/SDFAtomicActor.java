@@ -36,7 +36,6 @@ import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.Mailbox;   // for javadoc
-import ptolemy.domains.sdf.kernel.SDFDirector; // for javadoc
 
 import java.util.Enumeration;
 import collections.HashedMap;
