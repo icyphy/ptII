@@ -1,0 +1,102 @@
+<html>
+<head>
+<!-- $Id$ -->
+</head>
+<body>
+<h1>
+Quick Tour
+</h1>
+<!--
+Quick Tour for the non-experimental release
+Basically, we don't include dt, giotto, gr or codegen 
+-->
+
+<!--
+Note:  demos should go with in the directory of their respective
+domains.
+demo xml files should usually be upper case, and have the
+same name as the directory they reside in, so we should
+have sdf/demo/Foo/Foo.xml.
+The reason that the xml files are upcased is so that if
+we do codegen, we get Foo.java instead of foo.java
+
+These demos should be in the same order as the ones listed in
+     ptII/doc/tour/toc.htm
+-->
+
+
+The following links open Ptolemy models in Vergil.
+To run the models, follow the link, then select "Run Window"
+from the "View" menu.
+The diagrams are fully editable, so feel free to explore.
+The top-level parameters are the model are shown in the run window.
+Edit these to explore the models.  They can be edited while the
+models are running.
+<ul>
+<li><a href="../../domains/sdf/demo/Spectrum/Spectrum.xml">
+Spectrum of a modulated sine wave</a>.
+<br> This example shows simple spectral estimation of the product
+of two sinusoids in noise.  It illustrates hierarchical models,
+the Expression actor, and the FFT actor.
+The Sinewave actors with the red outline are hierarchical.
+Right click on them and select "look inside" to see their refinement.
+This model is build using the <i>synchronous dataflow</i> (SDF) domain,
+which statically schedules the firing of the actors.
+</br></li>
+
+<li><a href="../../domains/ct/demo/Lorenz/Lorenz.xml">Lorenz attractor chaotic system</a>.
+<br> This example shows a nonlinear feedback system that exhibits
+chaotic behavior.  It illustrates the continuous-time (CT) domain,
+which uses an underlying solver for ordinary differential equations,
+the Expression actor, and the X-Y plotter.
+</br></li>
+
+<li><a href="../../domains/de/demo/Inspection/Inspection.xml">Inspection paradox</a>.
+<br> This example shows
+a famous paradox in probability called the inspection paradox.
+It illustrates use of the discrete-event (DE) domain, where random
+data stimulates a model and statics are collected and reported
+in various ways.  Note the way that the final waiting time averages
+are reported.  This technique heavily uses Ptolemy II's polymorphic
+type system to do string manipulation.
+</br></li>
+
+<li><a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">Hybrid system model</a>.
+<br> This example illustrates the use of the finite-state-machine (FSM)
+domain together with another domain to get a <i>modal model</i>.
+A special case of modal models are <i>hybrid systems</i>, where FSM
+is combined with CT, as in this example.
+</br></li>
+
+<li><a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">Karplus-Strong Algorithm</a>.<br>
+<font color="red">NOTE: This model requires that you have
+the 1.3 version of Java (see http://java.sun.com/j2se/).</font>
+This example shows the Karplus-Strong algorithm, which synthesizes
+a musical sound that closely resembles a plucked string instrument.
+It illustrates the audio capabilities of Ptolemy II, which require
+version 1.3 of Java, and a reasonable capable computer.
+</br></li>
+
+<li><a href="../../moml/demo/Networked/Networked.xml">Network Integration</a>.<br>
+This model contains a component that is defined on the Ptolemy project
+website.  When you open the model, you will be alerted to the fact
+that it requires loading a model definition from a remote source.
+If you agree to proceed, then you will have a model with a remotely
+defined component.  The component itself is at
+<a href="http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml">
+http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</a>.
+You can open that definition by clicking on the hyperlink, or by
+using the "Open URL" command in the File menu.
+</br></li>
+
+<li><a href="../../data/type/demo/Router/Router.xml">Record Types and Type Propagation</a>.<br>
+This model illustrates the very sophisticated type system
+in Ptolemy II, where type constraints propagate transparently.
+This example illustrates composite types, where records are
+constructed out of tokens with various types. Here, a record
+models a packet in a packet-switched network, where variable
+delays may result in out-of-order arrival of packets.
+</li>
+</ul>
+</body>
+</html>
