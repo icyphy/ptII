@@ -125,7 +125,7 @@ test Exceptions-1.1 {Generate all required files for Exceptions.java} {
     #This creates the .mk file.
     # Under Unix, ar might print to stderr, which exec usually interprets
     # as an error, so we use the -stderrok flag so that exec does not error 
-    exec -stderr make -s -f $mkFile
+    exec -stderrok make -s -f $mkFile
 
     # Move all generated files to the output directory.
     file rename -force \
