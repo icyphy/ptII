@@ -60,6 +60,7 @@ PTCLASSALLJARS = \
 	ComparedClocks/ComparedClocks.jar \
 	Helicopter/Helicopter.jar \
 	LevelCrossingDetector/LevelCrossingDetector.jar \
+	LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.jar \
 	Lorenz/Lorenz.jar \
 	SampledClocks/SampledClocks.jar \
 	SigmaDelta/SigmaDelta.jar \
