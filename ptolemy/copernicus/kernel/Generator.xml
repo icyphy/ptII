@@ -115,7 +115,7 @@ $Id$
 
      <property name="classPath" 
                class="ptolemy.data.expr.Parameter"
-	       value="property(&quot;java.class.path&quot;) + classPathSeparator + sootClasses"
+	       value="root + classPathSeparator + property(&quot;java.class.path&quot;) + classPathSeparator + sootClasses"
 	       >
 	       <doc>The class path. Defaults to the value of of the java.class.path property.</doc>
      </property>
