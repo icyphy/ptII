@@ -65,7 +65,6 @@ OTHER_FILES_TO_BE_JARED = \
 	ClassesIllustrated.png \
 	ClassesIllustrated.xml \
 	completeDemos.htm \
-	completeDemosPtiny.htm \
 	copyright.htm \
 	demos.htm \
 	docs.htm \
