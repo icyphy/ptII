@@ -347,7 +347,8 @@ vergil.jnlp: vergil.jnlp.in $(KEYSTORE)
 
 # We first copy the jars, then sign them so as to avoid
 # problems with cvs and applets.
-jnlp_sign: $(JNLPS) $(KEYSTORE)
+jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
+jnlp_sign1:
 	set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
 		if [ ! -f $(SIGNED_DIR)/$$x ]; then \
@@ -397,7 +398,7 @@ jnlp_dist_1:
 		PTII_LOCALURL=$(DIST_URL) jnlp_sign
 
 jnlp_dist_update:
-	tar -cf - $(ALL_JNLP_JARS) $(JNLPS) \
+	tar -cf - $(SIGNED_DIR) $(JNLPS) \
 		$(OTHER_FILES_TO_BE_DISTED) | \
 		(cd $(DIST_DIR); tar -xpf -)
 	cp doc/webStartHelp.htm $(DIST_DIR)
