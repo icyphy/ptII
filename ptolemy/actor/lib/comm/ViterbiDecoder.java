@@ -50,7 +50,7 @@ import ptolemy.util.StringUtilities;
 //// ViterbiDecoder
 /**
 The Viterbi algorithm is one optimal way to decode convolutional codes.
-The <i>polynomialArray<i> indicates the polynomials used to compute
+The <i>polynomialArray</i> indicates the polynomials used to compute
 parities for the corresponding convolutional encoder.
 The <i>uncodeBlockSize</i> is the input rate of the encoder, and it is
 actually the output rate of the decoder.
