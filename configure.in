@@ -73,11 +73,10 @@ echo "$PTII" | grep cygdrive > /dev/null
 status=$?
 if test "$status" -eq 1 ; then
     AC_MSG_RESULT([ok
-  $PTII does not contain cygdrive, which is right.])
+	$PTII does not contain cygdrive, which is right.])
 else
-    AC_MSG_WARN([\$PTII == $PTII,
-which contains "cygdrive".
-
+    AC_MSG_WARN(['\$PTII == $PTII,
+which contains 'cygdrive'.
 It could be that you have incorrectly set PTII.
 If you have installed Cygwin in c:/cygwin, and your Ptolemy II installation
 is in a directory outside of the c:/cygwin tree, then Cygwin may
@@ -85,15 +84,66 @@ change your PTII variable to include "/cygdrive/c".  This
 will cause problems with non-Cygwin tools like javac that do
 not understand /cygdrive/c
 
-Under Cygwin, try setting PTII in the control panel 
+Under Cygwin, try permanently setting PTII in the control panel 
 (Start->Control Panels->Advanced->Environment Variables)
-or it with backslashes:
+or temporary set it within bash by using backslashes:
   PTII=c:\\\\users\\\\yourname\\\\ptII
   export PTII
 and then rerun
   ./configure
 See $PTII/doc/install.htm for details.'])
 fi
+
+
+case "`uname -s`" in
+    CYGWIN_NT-*)
+        AC_MSG_CHECKING([if $PTII contains "cygwin"])
+        cygpath -w $PTII | grep cygwin > /dev/null
+        status=$?
+        if test "$status" -eq 1 ; then
+	     AC_MSG_RESULT([ok
+  $PTII does not contain cygwin, which is right.])
+        else
+    AC_MSG_WARN([
+'cygpath -w \$PTII' == '`cygpath -w $PTII`'
+which contains 'cygwin'.
+This could happen if your home directory is in the default location
+for cygwin which cygwin thinks is /home/yourname,
+but windows thinks is c:\\cygwin\\home\\yourname.
+This will cause problems with non-Cygwin tools like javac that do
+not understand Cygwin directory structure and mounts will not
+be able to find files in $PTII.
+The solution is to move the Ptolemy II tree outside of
+c:\\cygwin and to set the PTII variable to point to that location
+and then rerun
+  cd \$PTII  
+  ./configure
+See $PTII/doc/install.htm for details.'])
+     fi
+     ;;
+esac 
+
+
+# If we are under Cygwin, check that we can find CMD
+case "`uname -s`" in
+    CYGWIN_NT-*)
+	AC_PATH_PROG(CMD_PATH, cmd)
+	if test -x "$CMD_PATH"; then
+		AC_MSG_RESULT([$CMD_PATH])
+	else
+		AC_MSG_WARN([Failed to find the 'cmd' command, which
+    is used by the $PTII/bin/ptolemy script.
+    Under Windows 2000, cmd is usually found at c:\\winnt\\system32\\cmd.exe.
+    Under Windows XP, cmd is usually found at c:\\windows\\system32\\cmd.exe.
+    You may need to modify your PATH to explicitly include 
+    c:\\winnt\\system32 by going or c:\\windows\\system32 by going to
+    to Start->Settings->Control Panels->System->Environment and changing
+    %SystemRoot%\\system32 to c:\\winnt\\system32 or c:\\windows\\system32.])
+	fi
+	;;
+
+    *) ;;
+esac
 
 PTII_DEFAULT=$PTII
 # The default value of prefix
@@ -238,7 +288,7 @@ if test -f "$PTJAVA_DIR/bin/javac"; then
     AC_MSG_CHECKING([that you have the right javac in your path.])
     AC_PATH_PROG(JAVAC, javac)
     if test -x "$JAVAC"; then
-	AC_MSG_RESULT([$CMD_PATH])
+	AC_MSG_RESULT([$JAVAC])
     else
 	AC_MSG_WARN([Failed to find the 'javac' command in your path.
         This is not necessarily a problem, since
@@ -366,24 +416,6 @@ case "`uname -s`" in
 esac
 AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
 
-case "`uname -s`" in
-    CYGWIN_NT-*)
-	AC_PATH_PROG(CMD_PATH, cmd)
-	if test -x "$CMD_PATH"; then
-		AC_MSG_RESULT([$CMD_PATH])
-	else
-		AC_MSG_WARN([Failed to find the 'cmd' command, which
-    is used by the $PTII/bin/ptolemy script.  Usually cmd is found
-    at c:\\winnt\\system32\\cmd.exe.  You may need to modify your
-    PATH to explicitly include c:\\winnt\\system32 by going
-    to Start->Settings->Control Panels->System->Environment and changing
-    %SystemRoot%\\system32 to c:\\winnt\\system32])
-
-	fi
-	;;
-
-    *) ;;
-esac
 #####################################################################
 #####################################################################
 #       Below here we look for various packages.
