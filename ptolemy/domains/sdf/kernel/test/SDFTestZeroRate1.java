@@ -75,12 +75,12 @@ public class SDFTestZeroRate1 extends Transformer {
 
 	input_rate1 = new Parameter(this, "input_rate1", new IntToken(1));
 	input_tokenConsumptionRate = 
-            new Parameter(this, "input_tokenConsumptionRate");
+            new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("input_rate1");
 
 	output_rate1 = new Parameter(this, "output_rate1", new IntToken(1));
 	output_tokenProductionRate = 
-            new Parameter(this, "output_tokenProductionRate");
+            new Parameter(output, "tokenProductionRate");
         output_tokenProductionRate.setExpression("output_rate1");
 	// Set the type constraint.
 	output.setTypeAtLeast(value);

@@ -181,7 +181,7 @@ public class SDFTestZeroRate2 extends Transformer {
              i++) {
             output.send(0, value.getToken());
 	}
-	for (int i = 0; i < ((IntToken)output_rate.getToken()).intValue();
+	for (int i = 0; i < ((IntToken)output2_rate.getToken()).intValue();
              i++) {
             output2.send(0, value.getToken());
 	}
