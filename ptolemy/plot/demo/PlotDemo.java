@@ -48,7 +48,8 @@ public class PlotDemo extends Plot {
      */
     public String getAppletInfo() {
         return "PlotDemo 1.0: Demo of Plot. " +
-	    "By: Edward A. Lee, eal@eecs.berkeley.edu";
+	    "By: Edward A. Lee, eal@eecs.berkeley.edu " +
+	    "($Id$)";
     }
 
     /**

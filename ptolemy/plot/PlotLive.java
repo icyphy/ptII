@@ -100,7 +100,8 @@ public abstract class PlotLive extends Plot implements Runnable {
      */
     public String getAppletInfo() {
         return "PlotLive 1.0: A live data plotter. " +
-	    "By: Edward A. Lee, eal@eecs.berkeley.edu";
+	    "By: Edward A. Lee, eal@eecs.berkeley.edu " +
+	    "($Id$)";
     }
 
     /**

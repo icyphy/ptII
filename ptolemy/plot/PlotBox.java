@@ -536,7 +536,8 @@ public class PlotBox extends Applet {
     public String getAppletInfo() {
         return "PlotBox 1.0: Base class for plots. " +
 	    "By: Edward A. Lee, eal@eecs.berkeley.edu and " +
-	    "Christopher Hylands, cxh@eecs.berkeley.edu" ;
+	    "Christopher Hylands, cxh@eecs.berkeley.edu" +
+	    "($Id$)";
     }
        
     /**

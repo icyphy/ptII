@@ -225,7 +225,10 @@ public class Plot extends PlotBox {
      */
     public String getAppletInfo() {
         return "Plot 1.0: A flexible data plotter. " +
-	    "By: Edward A. Lee, eal@eecs.berkeley.edu";
+	    "By: Edward A. Lee, eal@eecs.berkeley.edu and " +
+	    "Christopher Hylands, cxh@eecs.berkeley.edu" +
+	    "($Id$)";
+
     }
 
     /**
