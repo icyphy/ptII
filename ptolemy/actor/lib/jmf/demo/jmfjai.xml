@@ -1,0 +1,90 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="jmfjai" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 40.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1043, -37, 815, 509}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <entity name="VideoCamera" class="ptolemy.actor.lib.jmf.VideoCamera">
+        <property name="formatName" class="ptolemy.kernel.util.StringAttribute" value="RGB">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="RGB" class="ptolemy.kernel.util.StringAttribute" value="RGB">
+                </property>
+                <property name="YUV" class="ptolemy.kernel.util.StringAttribute" value="YUV">
+                </property>
+            </property>
+        </property>
+        <property name="deviceNumber" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 125.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="ImageToJAI" class="ptolemy.actor.lib.jai.ImageToJAI">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="185.0, 125.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JAIInvert" class="ptolemy.actor.lib.jai.JAIInvert">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 145.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={348, 240, 328, 288}}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[320, 240]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 150.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="VideoCamera.output" relation="relation"/>
+    <link port="ImageToJAI.input" relation="relation"/>
+    <link port="ImageToJAI.output" relation="relation2"/>
+    <link port="JAIInvert.input" relation="relation2"/>
+    <link port="JAIInvert.output" relation="relation3"/>
+    <link port="ImageDisplay.input" relation="relation3"/>
+</entity>
