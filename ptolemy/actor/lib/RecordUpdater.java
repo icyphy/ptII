@@ -38,6 +38,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.graph.Inequality;
@@ -235,20 +236,10 @@ public class RecordUpdater extends TypedAtomicActor {
     // is bottom if the type of the port with name "input" is bottom. If
     // the type of this port is not bottom (it must be a record), the value
     // of the function is computed as described above.
-    private class FunctionTerm implements InequalityTerm {
-        // private constructor...
-        private FunctionTerm() {
-        }
+    private class FunctionTerm extends MonotonicFunction {
 
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
-
-        /** Return null.
-         *  @return null.
-         */
-        public Object getAssociatedObject() {
-            return null;
-        }
 
         /** Return the function result.
          *  @return A Type.
@@ -304,47 +295,6 @@ public class RecordUpdater extends TypedAtomicActor {
                 variables[i] = port.getTypeTerm();
             }
             return variables;
-        }
-
-        /** Throw an Exception. This function InequalityTerm cannot be
-         *  initialized.
-         *  @exception IllegalActionException Always thrown in this class.
-         */
-        public void initialize(Object e)
-                throws IllegalActionException {
-            throw new IllegalActionException("RecordUpdater$FunctionTerm." +
-                    "initialize: Cannot initialize a function term.");
-        }
-
-        /** Return false.
-         *  @return false.
-         */
-        public boolean isSettable() {
-            return false;
-        }
-
-        /** Return true.
-         *  @return True.
-         */
-        public boolean isValueAcceptable() {
-            return true;
-        }
-
-        /** Throw an Exception. The value of function InequalityTerm cannot
-         *  be set.
-         *  @exception IllegalActionException Always thrown in this class.
-         */
-        public void setValue(Object e) throws IllegalActionException {
-            throw new IllegalActionException(
-                    "RecordUpdater$FunctionTerm.setValue: This function "
-                    + "InequalityTerm is not settable.");
-        }
-
-        /** Override the base class to give a description of this term.
-         *  @return A description of this term.
-         */
-        public String toString() {
-            return "(RecordUpdater$FunctionTerm, " + getValue() + ")";
         }
     }
 }

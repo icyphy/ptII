@@ -38,6 +38,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.MonotonicFunction;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.graph.Inequality;
@@ -177,21 +178,13 @@ public class RecordDisassembler extends TypedAtomicActor {
     //     UNKNOWN,                  if input.getType() = UNKNOWN
     //     input.getType()[name] if input.getType() instanceof RecordToken.
     //
-    private class PortFunction implements InequalityTerm {
-
+    private class PortFunction extends MonotonicFunction {
         private PortFunction(String name) {
             _name = name;
         }
 
         ///////////////////////////////////////////////////////////////
         ////                       public inner methods            ////
-
-        /** Return null.
-         *  @return null.
-         */
-        public Object getAssociatedObject() {
-            return null;
-        }
 
         /** Return the function result.
          *  @return A Type.
@@ -213,10 +206,10 @@ public class RecordDisassembler extends TypedAtomicActor {
             }
         }
 
-        /** Return the type variable in this inequality term. If the type
-         *  of the input port is not declarad, return an one element array
-         *  containing the inequality term representing the type of the port;
-         *  otherwise, return an empty array.
+        /** Return the type variable in this inequality term. If the
+         *  type of the input port is not declarad, return an one
+         *  element array containing the inequality term representing
+         *  the type of the port; otherwise, return an empty array.
          *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
@@ -227,51 +220,6 @@ public class RecordDisassembler extends TypedAtomicActor {
                 return variable;
             }
             return (new InequalityTerm[0]);
-        }
-
-        /** Throw an Exception. This method cannot be called on a function
-         *  term.
-         *  @exception IllegalActionException Always thrown.
-         */
-        public void initialize(Object e)
-                throws IllegalActionException {
-            throw new IllegalActionException(getClass().getName()
-                    + ": Cannot initialize a function term.");
-        }
-
-        /** Return false.
-         *  @return false.
-         */
-        public boolean isSettable() {
-            return false;
-        }
-
-        /** Return true.
-         *  @return True.
-         */
-        public boolean isValueAcceptable() {
-            return true;
-        }
-
-        /** Throw an Exception. The value of a function term cannot be set.
-         *  @exception IllegalActionException Always thrown.
-         */
-        public void setValue(Object e) throws IllegalActionException {
-            throw new IllegalActionException(getClass().getName()
-                    + ": The type is not settable.");
-        }
-
-        /** Override the base class to give a description of this term.
-         *  @return A description of this term.
-         */
-        public String toString() {
-            try {
-                return "(" + getClass().getName() + ":" + _name + 
-                    ", " + getValue() + ")";
-            } catch (IllegalActionException ex) {
-                return "(" + getClass().getName() + ":" + _name + 
-                    ", INVALID)";
-            }
         }
 
         ///////////////////////////////////////////////////////////////
