@@ -1,0 +1,157 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="" class="ptolemy.actor.TypedCompositeActor">
+    <director name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="200.0">
+        </property>
+        <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        </property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
+        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+        </property>
+        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+        </property>
+        <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+    </director>
+    <entity name="Integrator0" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="-99.0, 3.0"/>
+            <configure>generic.integral</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="171.0, -99.0"/>
+            <configure>generic.integral</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="525.0, 489.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <port name="plus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="minus" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="TimedPlotter7" class="ptolemy.actor.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="405.0, -116.0"/>
+            <configure>generic.sink</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Scale20" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="-0.05">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="76.0, 394.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Scale21" class="ptolemy.actor.lib.Scale">
+        <property name="factor" class="ptolemy.data.expr.Parameter" value="-0.005">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="-475.0, 678.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <property name="editorFactory0" class="ptolemy.actor.gui.EditorPaneFactory">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex">
+            <location value="323.0, 7.0"/>
+        </vertex>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex0" class="ptolemy.moml.Vertex">
+            <location value="114.0, 135.0"/>
+        </vertex>
+    </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Integrator0.input" relation="relation19"/>
+    <link port="Integrator0.output" relation="relation13"/>
+    <link port="Integrator1.input" relation="relation13"/>
+    <link port="Integrator1.output" relation="relation10"/>
+    <link port="AddSubtract2.plus" relation="relation24"/>
+    <link port="AddSubtract2.plus" relation="relation27"/>
+    <link port="AddSubtract2.output" relation="relation19"/>
+    <link port="TimedPlotter7.input" relation="relation10"/>
+    <link port="TimedPlotter7.input" relation="relation13"/>
+    <link port="Scale20.input" relation="relation10"/>
+    <link port="Scale20.output" relation="relation24"/>
+    <link port="Scale21.input" relation="relation13"/>
+    <link port="Scale21.output" relation="relation27"/>
+</model>
