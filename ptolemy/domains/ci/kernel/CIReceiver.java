@@ -34,7 +34,7 @@ package ptolemy.domains.ci.kernel;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.Token;
 import ptolemy.actor.*;
-import ptolemy.actor.util.FIFOQueue;	/* Needed by javadoc */
+import ptolemy.actor.util.FIFOQueue;        /* Needed by javadoc */
 
 import java.util.NoSuchElementException;
 import java.util.Collections;
@@ -168,9 +168,9 @@ public class CIReceiver extends AbstractReceiver {
      */
     public synchronized void putArray(Token[] tokenArray, int numberOfTokens)
             throws NoRoomException {
-	    for (int i = 0; i < numberOfTokens; i++) {
-	        _tokens.add(tokenArray[i]);
-	    }
+            for (int i = 0; i < numberOfTokens; i++) {
+                _tokens.add(tokenArray[i]);
+            }
         _notify();
     }
 
