@@ -701,10 +701,69 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * graph listeners with a NODE_REMOVED event.
      */
     public void removeNode(Object node) {
+	Object parent = getParent(node);
+	if(node instanceof ComponentPort) {
+	    removeNode((ComponentPort)node);
+	} else if(node instanceof Icon) {
+	    removeNode((Icon)node);
+	} else if(node instanceof Vertex) {
+	    removeNode((Vertex)node);
+	} else {
+	    throw new RuntimeException("Ptolemy Graph Model only handles " +
+				       "named objects. node = " + node);
+	}
+	GraphEvent e = new GraphEvent(GraphEvent.NODE_REMOVED,
+				      this, node, parent);
+	dispatchGraphEvent(e);
+    }
+    
+    /**
+     * Delete a node from its parent graph and notify
+     * graph listeners with a NODE_REMOVED event.
+     */
+    public void removeNode(ComponentPort port) {
+	try {
+	    port.unlinkAll();
+	    port.setContainer(null);
+	} catch (Exception ex) {
+	    ex.printStackTrace();
+	    throw new RuntimeException(ex.getMessage());
+	}
+    }
+	
+    /**
+     * Delete a node from its parent graph and notify
+     * graph listeners with a NODE_REMOVED event.
+     */
+    public void removeNode(Icon icon) {
+	ComponentEntity entity = (ComponentEntity)icon.getContainer();
+	try {
+	    Iterator ports = entity.portList().iterator();
+	    while(ports.hasNext()) {
+		Port port = (Port) ports.next();
+		port.unlinkAll();
+	    }
+	    entity.setContainer(null);
+	} catch (Exception ex) {
+	    ex.printStackTrace();
+	    throw new RuntimeException(ex.getMessage());
+	}
+    }  
 
-	//        GraphEvent e = new GraphEvent(GraphEvent.NODE_REMOVED,
-        //        this, nodePeer, prevParentPeer);
-        //dispatchGraphEvent(e);
+    /**
+     * Delete a node from its parent graph and notify
+     * graph listeners with a NODE_REMOVED event.
+     */
+    public void removeNode(Vertex vertex) {
+	ComponentRelation relation =
+	    (ComponentRelation)vertex.getContainer();
+	try {
+	    relation.unlinkAll();
+	    relation.setContainer(null);
+	} catch (Exception ex) {
+	    ex.printStackTrace();
+	    throw new RuntimeException(ex.getMessage());
+	}
     }
 
     /**
@@ -715,7 +774,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	if(link instanceof Link) {
 	    setEdgeHead((Link)link,
 			(NamedObj)object);
-	    } else {
+	} else {
 	    throw new RuntimeException("Ptolemy Graph Model only handles " +
 				       "named objects. link = " + link + 
 				       "object = " + object);

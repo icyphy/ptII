@@ -537,10 +537,35 @@ public class FSMGraphModel extends AbstractGraphModel
      * graph listeners with a NODE_REMOVED event.
      */
     public void removeNode(Object node) {
+	Object parent = getParent(node);
+	if(node instanceof Icon) {
+	    removeNode((Icon)node);
+	} else {
+	    throw new RuntimeException("Ptolemy Graph Model only handles " +
+				       "named objects. node = " + node);
+	}
+	GraphEvent e = new GraphEvent(GraphEvent.NODE_REMOVED,
+				      this, node, parent);
+	dispatchGraphEvent(e);
+    }
 
-	//        GraphEvent e = new GraphEvent(GraphEvent.NODE_REMOVED,
-        //        this, nodePeer, prevParentPeer);
-        //dispatchGraphEvent(e);
+    /**
+     * Delete a node from its parent graph and notify
+     * graph listeners with a NODE_REMOVED event.
+     */
+    public void removeNode(Icon icon) {
+	ComponentEntity entity = (ComponentEntity)icon.getContainer();
+	try {
+	    Iterator ports = entity.portList().iterator();
+	    while(ports.hasNext()) {
+		Port port = (Port) ports.next();
+		port.unlinkAll();
+	    }
+	    entity.setContainer(null);
+	} catch (Exception ex) {
+	    ex.printStackTrace();
+	    throw new RuntimeException(ex.getMessage());
+	}
     }
 
     /**
