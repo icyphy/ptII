@@ -32,14 +32,13 @@ package ptolemy.vergil.graph;
 
 // FIXME: Trim this list and replace with explict (per class) imports.
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.event.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.gui.MessageHandler;
 import ptolemy.moml.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.Token;
 import ptolemy.data.ObjectToken;
-import ptolemy.vergil.ExceptionHandler;
 import ptolemy.vergil.toolbox.EditorIcon;
 
 import diva.graph.AbstractGraphModel;

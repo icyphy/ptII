@@ -30,9 +30,9 @@
 
 package ptolemy.vergil.ptolemy;
 
+// FIXME: Trim this.
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
-import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.data.expr.Parameter;
@@ -127,43 +127,117 @@ public class PtolemyModule implements Module {
 	action = new lookInsideAction();
 	_application.addAction(action);
 
-        // Create the Devel menu
-        JMenu menuDevel = new JMenu("Ptolemy II");
-        menuDevel.setMnemonic('P');
-        _application.addMenu(menuDevel);
+        // Create the View menu
+        JMenu menuView = new JMenu("View");
+        menuView.setMnemonic('V');
+        _application.addMenu(menuView);
 
-        action = new AbstractAction ("Print document info") {
+        action = new AbstractAction ("Description") {
             public void actionPerformed(ActionEvent e) {
-                Document d = _application.getCurrentDocument();
-                if (d == null) {
-                    System.out.println("Document is null");
+                Document doc = _application.getCurrentDocument();
+                if (doc == null) {
+                    try {
+                        MessageHandler.warning("No current document");
+                    } catch (CancelException ex) {
+                        // Ignore, since there is nothing happening anyway.
+                    }
                 } else {
-                    System.out.println(d.toString());
+                    TextEditor show = new TextEditor();
+                    show.text.setEditable(false);
+                    show.text.append(doc.toString());
+                    show.setVisible(true);
                 }
             }
         };
-	GUIUtilities.addMenuItem(menuDevel, action, 'I',
-				 "Print current document info");
+	GUIUtilities.addMenuItem(menuView, action, 'D',
+                "Show a description of the current model");
 
+	action = new LayoutAction();
+        _application.addAction(action);
+	GUIUtilities.addMenuItem(menuView, action, 'L', 
+                "Automatically layout the model");
+
+        // Create the Execute menu
+        JMenu menuExecute = new JMenu("Execute");
+        menuExecute.setMnemonic('X');
+        _application.addMenu(menuExecute);
+
+        // Populate the Execute menu
+	action = new executeSystemAction();
+	_application.addAction(action);
+	GUIUtilities.addMenuItem(menuExecute, action, 'X', "Execute the model");
+	
+        action = new AbstractAction ("Listen to Manager") {
+            public void actionPerformed(ActionEvent e) {
+                PtolemyDocument doc =
+                        (PtolemyDocument)_application.getCurrentDocument();
+                if (doc == null) {
+                    try {
+                        MessageHandler.warning("No current document");
+                    } catch (CancelException ex) {
+                        // Ignore, since there is nothing happening anyway.
+                    }
+                } else {
+                    CompositeActor toplevel = (CompositeActor)doc.getModel();
+                    // NOTE: Is a null toplevel ever possible here?
+                    Manager manager = toplevel.getManager();
+                    if (manager == null) {
+                        try {
+                            MessageHandler.warning("No manager");
+                        } catch (CancelException ex) {
+                            // Ignore, since there is nothing happening anyway.
+                        }
+                    } else {
+                        manager.addDebugListener(new TopDebugListener());
+                    }
+                }
+            }
+        };
+	_application.addAction(action);
+	GUIUtilities.addMenuItem(menuExecute, action, 'M',
+                "Open a window that displays messages from the manager.");
+
+        action = new AbstractAction ("Listen to Director") {
+            public void actionPerformed(ActionEvent e) {
+                PtolemyDocument doc =
+                        (PtolemyDocument)_application.getCurrentDocument();
+                if (doc == null) {
+                    try {
+                        MessageHandler.warning("No current document");
+                    } catch (CancelException ex) {
+                        // Ignore, since there is nothing happening anyway.
+                    }
+                } else {
+                    CompositeActor toplevel = (CompositeActor)doc.getModel();
+                    // NOTE: Is a null toplevel ever possible here?
+                    Director director = toplevel.getDirector();
+                    if (director == null) {
+                        try {
+                            MessageHandler.warning("No director");
+                        } catch (CancelException ex) {
+                            // Ignore, since there is nothing happening anyway.
+                        }
+                    } else {
+                        director.addDebugListener(new TopDebugListener());
+                    }
+                }
+            }
+        };
+	_application.addAction(action);
+	GUIUtilities.addMenuItem(menuExecute, action, 'D',
+                "Open a window that displays messages from the director.");
+
+        // Create the toolbar.
 	JToolBar tb = new JToolBar();
 	Container pane = _application.getDesktopContext().getToolBarPane();
 	pane.add(tb);
-	
-	action = new executeSystemAction();
-	_application.addAction(action);
-	GUIUtilities.addMenuItem(menuDevel, action, 'E', "Execute System");
 
-	action = new layoutAction();
-        _application.addAction(action);
-	GUIUtilities.addMenuItem(menuDevel, action, 'L', 
-				 "Automatically layout the model");
-	
 	String dflt = "";
 	// Creating the renderers this way is rather nasty..
 	// Standard toolbar icons are 25x25 pixels.
 	NodeRenderer renderer = new PortController.PortRenderer();
 	Figure figure = renderer.render(null);
-
+	
 	Icon icon = new FigureIcon(figure, 25, 25, 1, true);
 	action = new newPortAction();
 	_application.addAction(action);
@@ -211,7 +285,7 @@ public class PtolemyModule implements Module {
                     iconlibURL, iconlibURL.openStream());
             LibraryIcon.setIconLibrary(_iconLibrary);
         } catch (Exception e) {
-           ExceptionHandler.show("Failed to parse icon library", e);
+           MessageHandler.error("Failed to parse icon library", e);
         }
    
 	// Get the url for the entity library.
@@ -326,37 +400,43 @@ public class PtolemyModule implements Module {
 
     private class executeSystemAction extends AbstractAction {
 	public executeSystemAction() {
-	    super("Execute System");
+	    super("Execute Model");
 	}
 
 	public void actionPerformed(ActionEvent e) {
-	    PtolemyDocument d =
+	    PtolemyDocument doc =
 		(PtolemyDocument) _application.getCurrentDocument();
-	    if (d == null) {
-		return;
+	    if (doc == null) {
+                try {
+                    MessageHandler.warning("No current document");
+                } catch (CancelException ex) {
+                    // Ignore, since there is nothing happening anyway.
+                }
 	    }
 	    try {
 		CompositeActor toplevel =
-		    (CompositeActor) d.getModel();
+		    (CompositeActor) doc.getModel();
 		Manager manager = toplevel.getManager();
 		
 		// FIXME there is alot of code in here that is similar
 		// to code in MoMLApplet and MoMLApplication.  I think
 		// this should all be in ModelPane.
+
+                // FIXME: Create the manager sooner?
 				
 		// Create a manager.
 		// Attaching these listeners is a nasty business...
 		// All Managers are not created equal, since some have
 		// listeners attached.
 		if(manager == null) {
-		    manager =
-			new Manager(toplevel.workspace(), "Manager");
+		    manager = new Manager(toplevel.workspace(), "Manager");
 		    toplevel.setManager(manager);
 		    manager.addExecutionListener(_statusListener);
 		    manager.addExecutionListener(_streamListener);
 		}
 		
 		// Get a frame to execute in.
+                // FIXME: Use ModelFrame here.  How?
                 JFrame frame;
 		// First see if we've created a frame previously.
 		List list = toplevel.attributeList(FrameAttribute.class);
@@ -429,7 +509,7 @@ public class PtolemyModule implements Module {
 		timer.setRepeats(false);
 		timer.start();
 	    } catch (Exception ex) {
-		ExceptionHandler.show("Execution Failed", ex);
+		MessageHandler.error("Execution Failed", ex);
 	    }	    
 	}
     }
@@ -454,15 +534,23 @@ public class PtolemyModule implements Module {
 	}
     };
     
-    private class layoutAction extends AbstractAction {
-	public layoutAction() {
+    private class LayoutAction extends AbstractAction {
+	public LayoutAction() {
 	    super("Automatic Layout");
 	}
 	public void actionPerformed(ActionEvent e) {
-	    PtolemyDocument d = (PtolemyDocument)
-		_application.getCurrentDocument();
-	    JGraph jg = d.getView();
-	    _redoLayout(jg);
+            PtolemyDocument doc =
+                    (PtolemyDocument)_application.getCurrentDocument();
+            if (doc == null) {
+                try {
+                    MessageHandler.warning("No current document");
+                } catch (CancelException ex) {
+                    // Ignore, since there is nothing happening anyway.
+                }
+            } else {
+                JGraph jg = doc.getView();
+                _redoLayout(jg);
+            }
 	}
     }
     
@@ -603,7 +691,7 @@ public class PtolemyModule implements Module {
 
         // Defer to the application to display the error to the user.
 	public void executionError(Manager manager, Exception exception) {
-	    ExceptionHandler.show(manager.getName(), exception);
+	    MessageHandler.error(manager.getName(), exception);
 	}
 	
 	// Do nothing when execution finishes
@@ -781,7 +869,7 @@ public class PtolemyModule implements Module {
         try {
             layout.layout(model.getRoot());
         } catch (Exception e) {
-            ExceptionHandler.show("Layout failed", e);
+            MessageHandler.error("Layout failed", e);
         }
         jgraph.repaint();
     }

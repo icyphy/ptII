@@ -34,6 +34,7 @@ package ptolemy.vergil;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
+import ptolemy.gui.MessageHandler;
 import ptolemy.moml.MoMLParser;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.vergil.tree.LibraryTreeModel;
@@ -114,7 +115,7 @@ public class VergilApplication extends MDIApplication {
 	// Initialize behavioral objects for superclass
         final DesktopContext context = new DesktopContext(frame, palettePane);
         setAppContext(context);
-        ExceptionHandler.setContext(frame.makeComponent());
+        MessageHandler.setContext(frame.makeComponent());
 
 	Clipboard clipboard;
 	try {
@@ -129,7 +130,7 @@ public class VergilApplication extends MDIApplication {
         // No, this is not such a nice way.  It's using undocumented
         // features of Java, and features that will fail for applets.
         // We need to be systematically handling errors using
-        // the ExceptionHandler class.  EAL
+        // the MessageHandler class.  EAL
 	// ApplicationExceptionHandler.setApplication(this);
 
         // Create and initialize the storage policy
@@ -469,10 +470,10 @@ public class VergilApplication extends MDIApplication {
     }
 
     /** Show the error without the stack trace by default.
-     *  @deprecated Use ExceptionHandler.show() instead.
+     *  @deprecated Use MessageHandler.error() instead.
      */
     public void showError(String op, Exception e) {
-        ExceptionHandler.show(op, e);
+        MessageHandler.error(op, e);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -544,7 +545,7 @@ public class VergilApplication extends MDIApplication {
                                     new FileReader(file));
                         LibraryTreeModel.addLibrary(toplevel);
                     } catch (Exception ex) {
-                        ExceptionHandler.show("Library import failed.", ex);
+                        MessageHandler.error("Library import failed.", ex);
                     }
                 }
             }

@@ -36,10 +36,8 @@ import ptolemy.actor.gui.*;
 import ptolemy.gui.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.event.ChangeRequest;
 import ptolemy.moml.*;
 import ptolemy.vergil.VergilApplication;
-import ptolemy.vergil.ExceptionHandler;
 
 import diva.gui.*;
 import diva.gui.toolbox.*;
@@ -208,7 +206,7 @@ public class EditorGraphController extends ViewerGraphController {
                 GrabHandle gh = cm.getHeadHandle();
                 layer.grabPointer(event, gh);
             } catch (Exception ex) {
-                ExceptionHandler.show("Drag connection failed:", ex);
+                MessageHandler.error("Drag connection failed:", ex);
             }
 	}
     }

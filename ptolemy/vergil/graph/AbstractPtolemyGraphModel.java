@@ -32,14 +32,13 @@ package ptolemy.vergil.graph;
 
 // FIXME: Trim this list and replace with explict (per class) imports.
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.event.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.gui.MessageHandler;
 import ptolemy.moml.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.Token;
 import ptolemy.data.ObjectToken;
-import ptolemy.vergil.ExceptionHandler;
 import ptolemy.vergil.toolbox.EditorIcon;
 
 import diva.graph.AbstractGraphModel;
@@ -356,15 +355,15 @@ public abstract class AbstractPtolemyGraphModel extends ModularGraphModel {
          *  @param exception The exception that was thrown.
          */
         public void changeFailed(ChangeRequest change, Exception exception) {
-	    // FIXME? Hmm... I believe that this is (or should be) 
-	    // handled elsewhere?
-	    ExceptionHandler.show("Change failed", exception);
-	    
+            // Ignore unless this is the originator.
+            if(change.getOriginator() == AbstractPtolemyGraphModel.this) {
+                MessageHandler.error("Change failed", exception);
+            }
 	    // Just in case something happened to the graph.
 	    dispatchGraphEvent(new GraphEvent(AbstractPtolemyGraphModel.this, 
 					      GraphEvent.STRUCTURE_CHANGED, 
 					      getRoot()));
-	}
+        }
     }
 
     // The root of this graph model, as a CompositeEntity.

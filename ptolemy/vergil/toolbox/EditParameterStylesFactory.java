@@ -39,8 +39,8 @@ import ptolemy.actor.*;
 import ptolemy.actor.gui.style.*;
 import ptolemy.data.expr.*;
 import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.MessageHandler;
 import ptolemy.vergil.VergilApplication;
-import ptolemy.vergil.ExceptionHandler;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -80,7 +80,7 @@ public class EditParameterStylesFactory extends MenuItemFactory {
                         panel.restore();
                     }
                 } catch (IllegalActionException ex) {
-		    ExceptionHandler.show("Edit Parameter Style failed", ex);
+		    MessageHandler.error("Edit Parameter Style failed", ex);
                 }
 	    }
 	};

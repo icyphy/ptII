@@ -30,16 +30,16 @@
 
 package ptolemy.vergil.ptolemy;
 
+// FIXME Trim this.
 import ptolemy.vergil.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
-
+import ptolemy.gui.MessageHandler;
 import ptolemy.data.*;
 import ptolemy.data.expr.Variable;
 import ptolemy.actor.gui.Documentation;
 import ptolemy.kernel.util.Attribute;
-
 
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
@@ -160,7 +160,7 @@ public class CompaanNotation extends Attribute implements VisualNotation {
                                 d.getApplication())); 
             }                
             catch (Exception e) {
-                ExceptionHandler.show("Failed to create Manager", e);
+                MessageHandler.error("Failed to create Manager", e);
             }
         }
 

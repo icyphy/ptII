@@ -30,6 +30,7 @@
 
 package ptolemy.vergil.ptolemy.fsm;
 
+// FIXME: Trim this.
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 import ptolemy.kernel.*;
@@ -120,7 +121,7 @@ public class FSMGraphController extends FSMViewerController {
                 link = new Arc(container, container.uniqueName("link"));
             }
             catch (Exception ex) {
-		ExceptionHandler.show("Create relation failed:", ex);
+		MessageHandler.error("Create relation failed:", ex);
 		return;
 	    }
 	    // Add it to the editor

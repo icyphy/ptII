@@ -40,7 +40,6 @@ import ptolemy.actor.gui.*;
 import ptolemy.data.expr.*;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.vergil.VergilApplication;
-import ptolemy.vergil.ExceptionHandler;
 
 import java.awt.event.*;
 import javax.swing.*;
@@ -69,9 +68,7 @@ public class EditParametersFactory extends MenuItemFactory {
 		// Create a dialog for configuring the object.
                 // FIXME: First argument below should be a parent window
                 // (a JFrame).
-                EditParametersDialog dialog = new EditParametersDialog(
-                        null,
-                        target);
+                new EditParametersDialog(null, target);
 	    }
 	};
 	return menu.add(action, name);

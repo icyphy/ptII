@@ -47,11 +47,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.event.*;
 import ptolemy.kernel.*;
+import ptolemy.gui.MessageHandler;
 import ptolemy.moml.Icon;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.ExceptionHandler;
 import ptolemy.vergil.toolbox.EditorIcon;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
 
@@ -124,7 +123,7 @@ public class EditorDropTarget extends DropTarget {
 		    iterator = (Iterator)dtde.getTransferable().
 			getTransferData(PtolemyTransferable.namedObjFlavor);
 		} catch(Exception e) {
-		    ExceptionHandler.show(
+		    MessageHandler.error(
                         "Couldn't find a supported data flavor in " + dtde, e);
 		}
             } else {

@@ -31,8 +31,8 @@
 package ptolemy.vergil.tree;
 
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.gui.MessageHandler;
 import ptolemy.moml.MoMLParser;
-import ptolemy.vergil.ExceptionHandler;
 
 import java.net.URL;
 import java.util.LinkedList;
@@ -109,7 +109,7 @@ public class LibraryTreeModel extends EntityTreeModel {
                     entitylibURL, entitylibURL.openStream());
             instance._directory.add(instance._masterLibrary);
         } catch (Exception ex) {
-            ExceptionHandler.show("Failed to open the master library: ", ex);
+            MessageHandler.error("Failed to open the master library: ", ex);
         }
 
         instance._pTree = new PTree(instance);

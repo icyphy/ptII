@@ -710,7 +710,7 @@ public class DebuggerUI extends JFrame
 			timer.setRepeats(false);
 			timer.start();
 		    } catch (Exception ex) {
-			ExceptionHandler.show("Execution Failed", ex);
+			MessageHandler.error("Execution Failed", ex);
 		    }
 		}
 	    });

@@ -30,23 +30,18 @@
 
 package ptolemy.vergil.ptolemy;
 
+// FIXME: Trim this
 import diva.gui.*;
 
 import ptolemy.kernel.*;
-import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.gui.style.EditableChoiceStyle;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
+import ptolemy.gui.MessageHandler;
 import ptolemy.vergil.*;
 import ptolemy.vergil.toolbox.*;
-
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.domains.de.kernel.*;
@@ -56,6 +51,11 @@ import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.dt.kernel.*;
 import ptolemy.domains.giotto.kernel.GiottoDirector;
+
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.event.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DirectorService
@@ -130,7 +130,7 @@ public class DirectorService extends AbstractService {
 	    addDirector(dir);
 	}
 	catch (Exception ex) {
-	    ExceptionHandler.show("Director combobox creation failed", ex);
+	    MessageHandler.error("Director combobox creation failed", ex);
 	}
 	//FIXME find these names somehow.
 	_directorComboBox = new JComboBox(_directorModel);
@@ -237,10 +237,3 @@ public class DirectorService extends AbstractService {
     // The list of directors.
     private DefaultComboBoxModel _directorModel;
 }
-
-
-
-
-
-
-

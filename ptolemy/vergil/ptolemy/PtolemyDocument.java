@@ -30,14 +30,15 @@
 
 package ptolemy.vergil.ptolemy;
 
+// FIXME: Trim this.
 import ptolemy.vergil.*;
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.kernel.*;
-import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.moml.*;
+import ptolemy.gui.MessageHandler;
 
 import diva.graph.*;
 import diva.graph.layout.*;
@@ -462,7 +463,7 @@ public class PtolemyDocument extends AbstractDocument
                 new ptolemy.vergil.ptolemy.fsm.PtolemyFSMNotation(toplevel, 
                         "notation");
             } catch (Exception e) {
-                ExceptionHandler.show("Failed to create new model", e);
+                MessageHandler.error("Failed to create new model", e);
                 return null;
             }
             d.setModel(toplevel);
