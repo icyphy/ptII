@@ -550,6 +550,7 @@ public class PtolemyModule implements Module {
 	    if(getSourceType() == TOOLBAR_TYPE ||
 	       getSourceType() == MENUBAR_TYPE) {	
 		// no location in the action, so make something up.
+		// FIXME this is a lousy way to do this.
 		Point2D point = pane.getSize();    
 		x = point.getX()/2;
 		y = point.getY()/2;
@@ -565,6 +566,9 @@ public class PtolemyModule implements Module {
 	    final GraphModel model = controller.getGraphModel();
 	    final CompositeEntity toplevel =
 		(CompositeEntity)model.getRoot();
+
+	    // FIXME use MoML.  If no class is specifed in MoML, it should
+	    // use the newRelation method.
 	    toplevel.requestChange(new ChangeRequest(this,
 		"Creating new Relation in " + toplevel.getFullName()) {
 		protected void _execute() throws Exception {
@@ -572,7 +576,11 @@ public class PtolemyModule implements Module {
                          toplevel.newRelation(toplevel.uniqueName("relation"));
 		    Vertex vertex =
                          new Vertex(relation, relation.uniqueName("vertex"));
-                    controller.addNode(vertex, finalX, finalY);
+		
+		    double location[] = new double[2];
+		    location[0] = ((int)finalX);
+		    location[1] = ((int)finalY);
+		    vertex.setLocation(location);
 		}
             });
 	}
