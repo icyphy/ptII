@@ -62,8 +62,6 @@ public class Latch extends Transformer {
     public Latch(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        output.setTypeSameAs(input);
     }
 
     ///////////////////////////////////////////////////////////////////

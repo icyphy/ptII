@@ -66,7 +66,6 @@ public class NonStrictDelay extends Transformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
-        output.setTypeSameAs(input);
     }
 
     ///////////////////////////////////////////////////////////////////

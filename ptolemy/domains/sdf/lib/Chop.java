@@ -136,8 +136,6 @@ public class Chop extends SDFTransformer {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-	output.setTypeSameAs(input);
-
         numberToRead = new Parameter(this, "numberToRead");
         numberToRead.setExpression("128");
         numberToWrite = new Parameter(this, "numberToWrite");

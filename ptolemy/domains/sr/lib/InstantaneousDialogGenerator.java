@@ -74,7 +74,6 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
         dataOutput = new TypedIOPort(this, "dataOutput", false, true);
 
         indexOutput.setTypeEquals(BaseType.INT);
-        dataOutput.setTypeSameAs(dataInput);
     }
 
     ///////////////////////////////////////////////////////////////////
