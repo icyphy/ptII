@@ -75,7 +75,8 @@ a class with which this class works very closely.
 public class PtolemyApplication extends MoMLApplication {
 
     /** Parse the specified command-line arguments, creating models
-     *  and frames to interact with them.
+     *  and frames to interact with them.  If the size of the argument
+     *  array is 0, then open a default model.
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
@@ -83,7 +84,15 @@ public class PtolemyApplication extends MoMLApplication {
         // Invoke the base class constructor with null arguments to prevent
         // the base class from running any specified models.
         super(null);
-        _parseArgs(args);
+	if (args.length == 0) {
+            // FIXME: We need a better initial default model,
+            // perhaps something with a console that we can type
+            // commands into?
+            String temporaryArgs[] = {"ptolemy/moml/demo/modulation.xml"};
+	   _parseArgs(temporaryArgs);
+	} else { 
+            _parseArgs(args);
+        }
         _commandTemplate = "ptolemy [ options ] [file ...]";
 
         // The Java look & feel is pretty lame, so we use the native
