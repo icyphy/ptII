@@ -34,9 +34,8 @@ import java.util.Enumeration;
 //// TypedActor
 /**
 A TypedActor is an actor whose ports have types.
-The interface defines the method to get type constraints from
-TypedAtomicActor and TypedCompositeActor.  The ports on a
-TypedActor are constrainted to be TypedIOPorts.
+This interface defines the method to get type constraints from
+an actor.  The ports on a TypedActor are constrainted to be TypedIOPorts.
 
 @author Yuhong Xiong
 $Id$
@@ -54,6 +53,7 @@ public interface TypedActor extends Actor {
      *  @return an enumeration of Inequality.
      *  @see ptolemy.graph.Inequality
      */
-    public Enumeration typeConstraints();
+    public Enumeration typeConstraints()
+	throws TypeConflictException;
 }
 
