@@ -32,15 +32,21 @@
 package ptolemy.domains.csp.kernel;
 
 // Ptolemy imports.
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.process.*;
-
-// Java imports.
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.process.CompositeProcessDirector;
+import ptolemy.actor.process.ProcessDirector;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
+
+// Java imports.
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPDirector
@@ -231,9 +237,9 @@ public class CSPDirector extends CompositeProcessDirector {
         Iterator actors =
             ((CompositeActor)getContainer()).deepEntityList().iterator();
         while( _delayedActorList.size() > 0 ) {
-            DelayListLink val =
+            DelayListLink value =
                 (DelayListLink)_delayedActorList.get(0);
-            val._actor._cancelDelay();
+            value._actor._cancelDelay();
             _delayedActorList.remove(0);
             _actorsDelayed--;
         }
@@ -245,8 +251,8 @@ public class CSPDirector extends CompositeProcessDirector {
     /** Increase the count of blocked processes and check if the actors
      *  are deadlocked or stopped.
      */
-    protected synchronized void _actorBlocked(CSPReceiver rcvr) {
-        super._actorBlocked(rcvr);
+    protected synchronized void _actorBlocked(CSPReceiver receiver) {
+        super._actorBlocked(receiver);
     }
 
     /** Called by a CSPActor when it wants to delay. When the
@@ -279,8 +285,8 @@ public class CSPDirector extends CompositeProcessDirector {
 
     /** An actor has unblocked, decrease the count of blocked actors.
      */
-    protected synchronized void _actorUnBlocked(CSPReceiver rcvr) {
-        super._actorUnBlocked(rcvr);
+    protected synchronized void _actorUnBlocked(CSPReceiver receiver) {
+        super._actorUnBlocked(receiver);
     }
 
     /** Returns true if all active processes are either blocked or
@@ -335,11 +341,11 @@ public class CSPDirector extends CompositeProcessDirector {
             // any times within TOLERANCE are considered the same.
             boolean done = false;
             while (!done && _delayedActorList.size() > 0 ) {
-                DelayListLink val =
+                DelayListLink value =
                     (DelayListLink)_delayedActorList.get(0);
-                if (Math.abs(val._resumeTime - nextTime) < TOLERANCE) {
+                if (Math.abs(value._resumeTime - nextTime) < TOLERANCE) {
                     _delayedActorList.remove(0);
-                    val._actor._continue();
+                    value._actor._continue();
                     _actorsDelayed--;
                 } else {
                     done = true;

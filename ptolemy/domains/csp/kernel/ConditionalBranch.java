@@ -31,9 +31,12 @@
 
 package ptolemy.domains.csp.kernel;
 
-import ptolemy.actor.*;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.process.BoundaryDetector;
 import ptolemy.data.Token;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalBranch
@@ -194,7 +197,8 @@ public abstract class ConditionalBranch {
 
     /** Set the CSPReceiver this branch is trying to rendezvous with.
      *  This method should only be called from derived classes.
-     *  @param rec The CSPReceiver this branch is trying to rendezvous with.
+     *  @param receiver The CSPReceiver this branch is trying to rendezvous
+     *  with. 
      */
     void setReceiver(CSPReceiver rec) {
         _receiver = rec;

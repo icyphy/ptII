@@ -31,15 +31,19 @@
 
 package ptolemy.domains.csp.kernel;
 
-import ptolemy.actor.*;
-import ptolemy.actor.process.*;
+import ptolemy.actor.AbstractReceiver;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.process.BoundaryDetector;
+import ptolemy.actor.process.Branch;
+import ptolemy.actor.process.ProcessReceiver;
+import ptolemy.actor.process.TerminateProcessException;
 import ptolemy.data.Token;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.util.InvalidStateException;
-
-import java.util.List;
-import java.util.Iterator;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPReceiver
@@ -123,11 +127,13 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 _setGetWaiting(true);
                 notifyAll();
 
-                // This is needed for the case when a condSend reaches
-                // the receiver before a get. When the condSend continues,
-                // it resets the condSendWaiting flag and does a put()
-                // which sets the getWaiting flag to
-                // false and the rendezvous proceeds normally.
+                // This is needed for the case when a conditionalSend
+                // reaches the receiver before a get. When the
+                // conditionalSend continues, it resets the
+                // _isConditionalSendWaiting flag and does a put()
+                // which sets the getWaiting flag to false and the
+                // rendezvous proceeds normally.
+
                 while (_isConditionalSendWaiting()) {
                     _checkFlagsAndWait();
                 }
@@ -378,11 +384,13 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 _setPutWaiting(true);
                 notifyAll();
 
-                // This is needed for the case when a condRec reaches
-                // the receiver before a put. When the condRec continues,
-                // it resets the condRecWaiting flag and does a get()
-                // which sets the putWaiting flag to
+                // This is needed for the case when a
+                // conditionalReceive reaches the receiver before a
+                // put. When the conditionalReceive continues, it
+                // resets the _isConditionalReceiveWaiting flag and
+                // does a get() which sets the putWaiting flag to
                 // false and the rendezvous proceeds normally.
+
                 while (_isConditionalReceiveWaiting()) {
                     _checkFlagsAndWait();
                 }
@@ -596,11 +604,11 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      */
     private CSPDirector _getDirector() {
         try {
-            Actor cont = (Actor)getContainer().getContainer();
-	    if (cont instanceof CompositeActor) {
-		return  (CSPDirector)cont.getExecutiveDirector();
+            Actor container = (Actor)getContainer().getContainer();
+	    if (container instanceof CompositeActor) {
+		return  (CSPDirector)container.getExecutiveDirector();
 	    } else {
-		return  (CSPDirector)cont.getDirector();
+		return  (CSPDirector)container.getDirector();
 	    }
         } catch (NullPointerException ex) {
             // If a thread has a reference to a receiver with no director it

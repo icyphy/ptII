@@ -33,16 +33,20 @@
 package ptolemy.domains.csp.kernel;
 
 // Ptolemy imports.
-import ptolemy.actor.*;
-import ptolemy.actor.process.*;
-import ptolemy.data.Token;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-
-// Java imports
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
+import ptolemy.actor.Actor;
+import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.Receiver;
+import ptolemy.actor.process.NotifyThread;
+import ptolemy.actor.process.TerminateProcessException;
+import ptolemy.data.Token;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.Nameable;
+
+// Java imports
 
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalBranchController
@@ -139,13 +143,13 @@ public class ConditionalBranchController {
                 // directly, 3) More than one guard was true, so start
                 // the thread for each branch and wait for one of them
                 // to rendezvous.
-                int num = _threadList.size();
+                int threadListSize = _threadList.size();
 
-                if (num == 0) {
+                if (threadListSize == 0) {
                     // The guards preceding all the conditional
                     // communications were false, so no branches to create.
                     return _successfulBranch; // will be -1
-                } else if (num == 1) {
+                } else if (threadListSize == 1) {
                     // Only one guard was true, so perform simple rendezvous.
                     if (onlyBranch instanceof ConditionalSend) {
                         Token t = onlyBranch.getToken();
@@ -184,8 +188,8 @@ public class ConditionalBranchController {
                 if ( (i!= _successfulBranch) && (branches[i].getGuard()) ) {
                     // to terminate a branch, need to set a flag
                     // on the receiver it is rendezvousing with & wake it up
-                    Receiver rec = branches[i].getReceiver();
-                    tmp.add(0, rec);
+                    Receiver receiver = branches[i].getReceiver();
+                    tmp.add(0, receiver);
                     branches[i].setAlive(false);
                 }
             }
@@ -279,11 +283,11 @@ public class ConditionalBranchController {
      *  If all the enabled branches (for the CIF or CDO currently
      *  being executed) are blocked, register this actor as being blocked.
      */
-    protected void _branchBlocked(CSPReceiver rcvr) {
+    protected void _branchBlocked(CSPReceiver receiver) {
         synchronized(_internalLock) {
 	    _branchesBlocked++;
 	    if( _branchesBlocked == _branchesStarted ) {
-		_getDirector()._actorBlocked( rcvr );
+		_getDirector()._actorBlocked( receiver );
 		_blocked = true;
 	    }
         }
@@ -338,7 +342,7 @@ public class ConditionalBranchController {
      *  register this actor with the director as no longer being
      *  blocked.
      */
-    protected void _branchUnblocked(CSPReceiver rcvr) {
+    protected void _branchUnblocked(CSPReceiver receiver) {
         synchronized(_internalLock) {
  	    if (_blocked) {
 	        if (_branchesBlocked != _branchesStarted) {
@@ -348,7 +352,7 @@ public class ConditionalBranchController {
                             "blocked.");
 		}
                 // Note: acquiring a second lock, need to be careful.
-                _getDirector()._actorUnBlocked(rcvr);
+                _getDirector()._actorUnBlocked(receiver);
                 _blocked = false;
             }
         }
@@ -380,7 +384,7 @@ public class ConditionalBranchController {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Get the director that controlls the execution of its parent actor.
+    /** Get the director that controls the execution of its parent actor.
      */
     private CSPDirector _getDirector() {
         try {
@@ -405,7 +409,7 @@ public class ConditionalBranchController {
     private void _resetConditionalState() {
         synchronized(_internalLock) {
             _blocked = false;
-            _blockedBranchRcvrs.clear();
+            _blockedBranchReceivers.clear();
             _branchesActive = 0;
 	    _branchesBlocked = 0;
             _branchesStarted = 0;
@@ -423,7 +427,7 @@ public class ConditionalBranchController {
     boolean _blocked = false;
 
     // A list of receivers associated with blocked branches.
-    private LinkedList _blockedBranchRcvrs = new LinkedList();
+    private LinkedList _blockedBranchReceivers = new LinkedList();
 
     // Contains the number of conditional branches that are still
     // active.

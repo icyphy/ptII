@@ -31,12 +31,16 @@
 
 package ptolemy.domains.csp.kernel;
 
-
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.*;
-import ptolemy.actor.process.*;
-import ptolemy.data.Token;
+import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.process.TerminateProcessException;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPActor
@@ -232,8 +236,8 @@ public class CSPActor extends TypedAtomicActor
     }
 
     /** Initialize the state of the actor.
-     *  @exception IllegalActionException Not thrown in this class, but might
-     *   be in a derived class.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  but might be in a derived class.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
