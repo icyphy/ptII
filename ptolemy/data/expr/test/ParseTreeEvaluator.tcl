@@ -300,3 +300,11 @@ test ParseTreeEvaluator-18.2 {Test various matrix ops} {
          [theTest {[1, 2; 3, 4]^2}] \
          [theTest {[1, 2; 3, 4]==[2, 2; 2, 2]}]
 } {{[6, 6; 14, 14]} {[3, 4; 5, 6]} {[-1, 0; 1, 2]} {[7, 10; 15, 22]} false}
+
+####################################################################
+
+test ParseTreeEvaluator-19.1 {Test various function calls} {
+    list [theTest {conjugate(1+i)}] \
+         [theTest {conjugate({1+i, 1-i})}] \
+         [theTest {conjugate([1+i, 1-i])}]
+ } {{1.0 - 1.0i} {{1.0 - 1.0i, 1.0 + 1.0i}} {[1.0 - 1.0i, 1.0 + 1.0i]}}
