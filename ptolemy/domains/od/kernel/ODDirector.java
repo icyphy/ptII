@@ -138,6 +138,13 @@ public class ODDirector extends ProcessDirector {
         System.out.println(_writeBlocks + " actors are blocked on writes.");
     }
 
+    /* FIXME
+     */
+    public boolean postfire() throws IllegalActionException {
+        System.out.println("ODDirector.postfire() = "+_notdone);
+	return _notdone;
+    }
+    
     /** Execute all deeply contained actors of the container of this
      *  ODDirector and resolve deadlocked actors. 
      *
@@ -155,7 +162,8 @@ public class ODDirector extends ProcessDirector {
             if( isDeadlocked() ) {
                 resolveDeadlock();
                 if( isDeadlocked() ) {
-		    System.out.println("End of fire()");
+		    System.out.println("End of ODDirector.fire()");
+                    _notdone = false;
                     return;
                 }
             }
@@ -191,8 +199,8 @@ public class ODDirector extends ProcessDirector {
     
     /** FIXME
      */
-    public boolean isDeadlocked() {
-        if( _actorsActive == _readBlocks + _writeBlocks ) {
+    public synchronized boolean isDeadlocked() {
+        if( _getActiveActorsCount() == _readBlocks + _writeBlocks ) {
 	  // System.out.println("All actors blocked - Deadlock!");
             return true;
         }

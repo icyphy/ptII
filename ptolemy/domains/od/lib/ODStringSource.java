@@ -108,6 +108,9 @@ public abstract class ODStringSource extends ODSourceActor {
 
             cnt++;
         }
+        
+        // System.out.println(getName() + " is finished with fire()");
+        
             /*
             System.out.println(getName() + " fired \"" 
                     + strTime.getString() + "\" at time = " + fireTime );
