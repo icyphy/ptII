@@ -173,6 +173,7 @@ public class Plotter extends TypedAtomicActor
             // place the plot in its own frame.
             plot = new Plot();
             PlotFrame frame = new PlotFrame(getFullName(), plot);
+	    frame.setVisible(true);
         } else {
             if (_panel instanceof Plot) {
                 plot = (Plot)_panel;
