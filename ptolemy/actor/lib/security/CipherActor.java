@@ -105,6 +105,7 @@ abstract public class CipherActor extends CryptographyActor {
         mode.addChoice("PCBC");
 
         padding = new StringParameter(this, "padding");
+        padding.setVisibility(Settable.EXPERT);
         padding.setExpression("");
         padding.addChoice("");
         padding.addChoice("NoPadding");
