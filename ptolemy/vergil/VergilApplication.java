@@ -41,16 +41,17 @@ import ptolemy.moml.MoMLParser;
 
 // Java imports
 import java.net.URL;
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// VergilApplication
 /**
 This application opens run control panels for models specified on the
 command line.  The exact facilities that are available are determined
-by the configuration file ptolemy/configs/runPanelConfiguration.xml,
+by the configuration file ptolemy/configs/vergilConfiguration.xml,
 which is loaded before any command-line arguments are processed.
-If there are no command-line arguments at all, then the file
-ptolemy/configs/runBlankConfiguration.xml is read instead.
+If there are no command-line arguments at all, then the configuration
+file is augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
 
 @author Edward A. Lee and Steve Neuendorffer
 @version $Id$
@@ -106,23 +107,23 @@ public class VergilApplication extends MoMLApplication {
     }
 
     /** Return a default Configuration to use when there are no command-line
-     *  arguments, which in this case is given by the MoML file
-     *  ptolemy/configs/vergilBlankConfiguration.xml.
+     *  arguments, which in this case is given by the default configuration
+     *  augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
      *  @return A configuration for when there no command-line arguments.
      *  @exception Exception If the configuration cannot be opened.
      */
     protected Configuration _createEmptyConfiguration() throws Exception {
         Configuration configuration = _createDefaultConfiguration();
 
-	// FIXME: This code is Dog slow for some reason.
-	URL inurl = specToURL("ptolemy/configs/vergilWelcomeWindow.xml");
+        // FIXME: This code is Dog slow for some reason.
+        URL inurl = specToURL("ptolemy/configs/vergilWelcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
         _parser.parse(inurl, inurl.openStream());
-	Effigy doc = (Effigy)configuration.getEntity("directory.doc");
-	URL idurl = specToURL("ptolemy/configs/intro.htm");
+        Effigy doc = (Effigy)configuration.getEntity("directory.doc");
+        URL idurl = specToURL("ptolemy/configs/intro.htm");
         doc.identifier.setExpression(idurl.toExternalForm());
-	return configuration;
+        return configuration;
     }
 
     /** Parse the command-line arguments. This overrides the base class
@@ -130,8 +131,21 @@ public class VergilApplication extends MoMLApplication {
      *  @exception Exception If an argument is not understood or triggers
      *   an error.
      */
-    protected void _parseArgs(String args[]) throws Exception {
+    protected void _parseArgs(final String args[]) throws Exception {
         _commandTemplate = "vergil [ options ] [file ...]";
-        super._parseArgs(args);
+        // NOTE: Java superstition dictates that if you want something
+        // to work, you should invoke it in event thread.  Otherwise,
+        // weird things happens at the user interface level.  This
+        // seems to prevent occasional errors rending HTML.
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    VergilApplication.super._parseArgs(args);
+                } catch (Exception ex) {
+                    MessageHandler.error("Command failed", ex);
+                    System.exit(0);
+                }
+            }
+        });
     }
 }
