@@ -13,6 +13,8 @@ import diva.canvas.*;
 import diva.canvas.toolbox.*;
 import diva.util.gui.TutorialWindow;
 
+import diva.surfaces.trace.*;
+
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.domains.pn.lib.*;
 import ptolemy.actor.*;
@@ -49,6 +51,14 @@ public class ThreadDemo {
      */
     private TutorialWindow window;
 
+    /** The window to display the traces
+     */
+    private TutorialWindow traceWindow;
+
+    /** The pane displaying the trace
+     */
+    private TracePane tracePane;
+
     /* The actors
      */
     PNImageSource a1;
@@ -80,19 +90,25 @@ public class ThreadDemo {
             ex.printStackTrace();
             System.exit(0);
         }
- 
+
+        // Construct the trace model
+        TraceModel traceModel = constructTraceModel();
+
+        // Display the trace
+        displayTrace(traceModel);
+
         // Add the process state listener
         BasePNDirector pnDir = (BasePNDirector) compositeActor.getDirector();
         pnDir.addProcessListener(new StateListener(
                  (GraphPane) jgraph.getCanvasPane()));
 
         // Run the model
-	System.out.println("Connections made");
+  System.out.println("Connections made");
         Parameter p = (Parameter)pnDir.getAttribute("Initial_queue_capacity");
         p.setToken(new IntToken(10));
- 	compositeActor.getManager().run();
+   compositeActor.getManager().run();
         System.out.println("Bye World\n");
-	return;
+  return;
     }
 
     /**  Construct the graph representing the PN topology.
@@ -146,8 +162,8 @@ public class ThreadDemo {
     /** Construct the Ptolemy system
      */
     public CompositeActor constructPtolemyModel () {
-	CompositeActor c1 = new CompositeActor();
-	Manager manager = new Manager();
+  CompositeActor c1 = new CompositeActor();
+  Manager manager = new Manager();
         // FIXME FIXME FIXME
         try {
             c1.setManager(manager);
@@ -157,11 +173,12 @@ public class ThreadDemo {
             //myUniverse.setCycles(Integer.parseInt(args[0]));
 
             a1 = new PNImageSource(c1, "A1");
- 
+
             //Parameter p1 = (Parameter)a1.getAttribute("Image_file");
             //p1.setToken(new StringToken("/users/mudit/ptII/ptolemy/domains/pn/lib/test/ptII.pbm"));
-            //String filename = 
+            //String filename =
             //    "/users/mudit/_PTII/ptolemy/domains/pn/lib/test/ptII.pbm";
+            //String filename = "c:/java/ptII/ptolemy/domains/pn/guidemo/ptII.pbm";
             String filename = "ptII.pbm";
             try {
                 FileInputStream fis = new FileInputStream(filename);
@@ -235,7 +252,7 @@ public class ThreadDemo {
         // Display the window
         window.getContentPane().add("Center", g);
         window.setSize(800, 300);
-        window.setLocation(100, 100);
+        window.setLocation(20, 20);
         window.setVisible(true);
 
         // Make sure we ahve the right renders and then
@@ -252,6 +269,43 @@ public class ThreadDemo {
         gp.repaint();
     }
 
+    /**
+     * Construct the trace model.
+     */
+    public TraceModel constructTraceModel() {
+        TraceModel traceModel = new TraceModel();
+        traceModel.addTrace("A1", new TraceModel.Trace());
+        traceModel.addTrace("A2", new TraceModel.Trace());
+        traceModel.addTrace("A3", new TraceModel.Trace());
+        traceModel.addTrace("A4", new TraceModel.Trace());
+        traceModel.addTrace("A5", new TraceModel.Trace());
+        traceModel.addTrace("A6", new TraceModel.Trace());
+        traceModel.addTrace("dispin", new TraceModel.Trace());
+        traceModel.addTrace("dispout", new TraceModel.Trace());
+        return traceModel;
+    }
+
+    /**
+     * Construct the trace display.
+     */
+    public void displayTrace(TraceModel traceModel) {
+        traceWindow = new TutorialWindow("PN Thread Trace");
+        tracePane = new TracePane();
+        JCanvas traceWidget = new JCanvas(tracePane);
+        
+        // Configure the view
+        TraceView traceView = tracePane.getTraceView();
+        traceView.setTimeScale(0.1);
+        traceView.setLayout(10,10,500,30,5);
+        traceView.setTraceModel(traceModel);
+
+        // Display the window
+        traceWindow.getContentPane().add("Center", traceWidget);
+        traceWindow.setSize(800, 300);
+        traceWindow.setLocation(300, 300);
+        traceWindow.setVisible(true);
+    }
+
     ///////////////////////////////////////////////////////////////////
     //// StateListener
 
@@ -264,6 +318,15 @@ public class ThreadDemo {
 
         // The pane
         GraphPane _graphPane;
+
+        // The pending start times
+        private double _startTime[] = new double[9];
+
+        // The previous states
+        private int _previousState[] = {7,7,7,7,7,7,7,7,7};
+
+        // The absolute start time
+        private long _start = 0;
 
         /* Create a listener on the given graph pane
          */
@@ -284,7 +347,7 @@ public class ThreadDemo {
             final BasicFigure figure = (BasicFigure)
                 wrapper.getChild();
 
-            // Color it!
+            // Color the graph node!
             try {
                 SwingUtilities.invokeAndWait(new Runnable () {
                     public void run () {
@@ -312,6 +375,53 @@ public class ThreadDemo {
                 });
             } 
             catch (Exception e) {}
+
+            // Get the trace and element figure
+            ComponentEntity ce = (ComponentEntity) actor;
+            String name = ce.getName();
+            TraceModel model = tracePane.getTraceView().getTraceModel();
+            TraceModel.Trace trace = model.getTrace(name);
+            int id = trace.getID();
+
+            if (_start == 0) {
+                _start = System.currentTimeMillis();
+            }
+            double currentTime = (double) (System.currentTimeMillis() - _start);
+            final TraceModel.Element element = new TraceModel.Element(
+                    _startTime[id], currentTime, _previousState[id]);
+            trace.add(element);
+
+            try {
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    public void run () {
+                        tracePane.getTraceView().drawTraceElement(element);
+                    }
+                });
+            }
+            catch (Exception e) {
+                System.out.println(e);
+            }
+
+            _startTime[id] = currentTime;
+
+            // OK, this is nasty, but get the color from the previous state
+            switch (state) {
+            case PNProcessEvent.PROCESS_BLOCKED:
+                _previousState[id] = 0;
+                break;
+                        
+            case PNProcessEvent.PROCESS_FINISHED:
+                _previousState[id] = 7;
+                break;
+                        
+            case PNProcessEvent.PROCESS_PAUSED:
+                _previousState[id] = 2;
+                break;
+
+            case PNProcessEvent.PROCESS_RUNNING:
+                _previousState[id] = 3;
+                break;
+            }
         }
 
         /** Respond to a process finshed event.
@@ -345,7 +455,6 @@ public class ThreadDemo {
                 || actor instanceof PNImageSink
                 || actor instanceof ImageDisplay;
 
-            
             BasicFigure f;
             if (isEllipse) {
                 f = new BasicEllipse(0, 0, _size, _size);
