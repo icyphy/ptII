@@ -1457,15 +1457,15 @@ public class PlotBox extends Panel {
     static protected Color[] _colors = {
         new Color(0xff0000),   // red
         new Color(0x0000ff),   // blue
-        new Color(0x14ff14),   // green-ish
+        new Color(0x00aaaa),   // cyan-ish
         new Color(0x000000),   // black
         new Color(0xffa500),   // orange
         new Color(0x53868b),   // cadetblue4
         new Color(0xff7f50),   // coral
-        new Color(0x55bb2f),   // dark green-ish
+        new Color(0x45ab1f),   // dark green-ish
         new Color(0x90422d),   // sienna-ish
         new Color(0xa0a0a0),   // grey-ish
-        new Color(0x00aaaa),   // cyan-ish
+        new Color(0x14ff14),   // green-ish
     };
 
     // Width and height of component in pixels.
