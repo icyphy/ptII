@@ -35,10 +35,9 @@ ME =		ptolemy/copernicus/java/test
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
-# We would include diva.jar so that tests like fsm/test/auto/modalModel
-# would work, but that would require having a display
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
-# $(CLASSPATHSEPARATOR)$(DIVA_JAR)
+# We include diva.jar so that tests like fsm/test/auto/modalModel
+# would work, but that might require having a display
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
