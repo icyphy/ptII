@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/sdf/demo
 
-DIRS = 		ComSystem Expression HTVQ Pulses typesystem
+DIRS = 		ComSystem Expression HTVQ Pulses Type
 
 # Root of Ptolemy II directory
 ROOT =		../../../..

@@ -62,18 +62,16 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: $(JCLASS)
-	@echo "To run all the HTVQ demo, point an applet viewer at HTVQ.html"
+all: jclass
+	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
-
+demo:
+	CLASSPATH=$(CLASSPATH) appletviewer HTVQ.htm
 
 depend:
 	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-

@@ -1,6 +1,6 @@
-# Makefile for Ptolemy II Communicating Sequential Processes demos
+# Makefile for Ptolemy II SDF GUI demo
 #
-# @Authors: Christopher Hylands, Neil Smyth
+# @Authors: Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -29,24 +29,24 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/demo/Pulses
+ME =		ptolemy/domains/sdf/demo/Type
 
 # Root of the Java directory
 ROOT =		../../../../..
-
-CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+CLASSPATH =	$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
+#CLASSPATH =	c:/java$(CLASSPATHSEPARATOR)$(ROOT)
+
+
 TCL_SRCS = \
 
 
 JSRCS = \
-	Pulses.java
-
-
+	TypeApplet.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
 
@@ -60,7 +60,6 @@ OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
 all: jclass
@@ -69,11 +68,10 @@ all: jclass
 install: all
 
 demo:
-	CLASSPATH=$(CLASSPATH) appletviewer Pulses.htm
+	CLASSPATH=$(CLASSPATH) appletviewer Type.htm
 
 depend:
 	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
