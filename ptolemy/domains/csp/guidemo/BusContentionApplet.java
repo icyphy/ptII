@@ -48,10 +48,36 @@ public class BusContentionApplet extends PtolemyApplet {
     /**
      */
    public void init() {
-        super.init();
-        _demo = new BusContentionApplication();
+        // Process the background parameter.
+        _background = Color.white;
+        try {
+            String colorspec = getParameter("background");
+            if (colorspec != null) {
+                _background = Color.decode(colorspec);
+            }
+        } catch (Exception ex) {
+            report("Warning: background parameter failed: ", ex);
+        }
+        setBackground(_background);
+
+        Manager manager = new Manager("manager");
+	CompositeActor topLevel = new CompositeActor();
+	try {
+	    topLevel.setName("topLevel"); 
+	    topLevel.setManager(manager);
+	} catch( NameDuplicationException e ) {
+	    System.err.println("NameDuplicationException thrown in the main \n" +
+		    "method. Stack trace: \n");
+            e.printStackTrace();
+	} catch( IllegalActionException e ) {
+	    System.err.println("IllegalActionException thrown in the main \n" +
+		    "method. Stack trace: \n");
+            e.printStackTrace();
+	}
+
+        _demo = new BusContentionApplication(manager, topLevel);
         Panel nullPanel = null;
-	_demo.initializeDemo(nullPanel);
+	_demo.initializeDemo(this);
     }
  
     /**
