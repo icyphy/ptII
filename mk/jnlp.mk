@@ -214,7 +214,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/python/demo/demo.jar \
 	lib/ptCal.jar \
 	lib/saxon7.jar \
-	ptolemy/caltrop/cal.jar \
+	ptolemy/caltrop/caltrop.jar \
 	ptolemy/caltrop/demo/demo.jar \
 	ptolemy/domains/experimentalDomains.jar \
 	ptolemy/domains/ci/demo/demo.jar \
