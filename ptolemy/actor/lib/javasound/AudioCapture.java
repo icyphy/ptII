@@ -128,20 +128,20 @@ public class AudioCapture extends Source implements LiveSoundListener {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output.setTypeEquals(BaseType.DOUBLE);
-	output.setMultiport(true);
+        output.setMultiport(true);
 
-	sampleRate = new Parameter(this, "sampleRate", new IntToken(8000));
-	sampleRate.setTypeEquals(BaseType.INT);
-	bitsPerSample = new Parameter(this, "bitsPerSample",
+        sampleRate = new Parameter(this, "sampleRate", new IntToken(8000));
+        sampleRate.setTypeEquals(BaseType.INT);
+        bitsPerSample = new Parameter(this, "bitsPerSample",
                 new IntToken(16));
-	bitsPerSample.setTypeEquals(BaseType.INT);
-	channels = new Parameter(this, "channels",
+        bitsPerSample.setTypeEquals(BaseType.INT);
+        channels = new Parameter(this, "channels",
                 new IntToken(1));
-	channels.setTypeEquals(BaseType.INT);
-	attributeChanged(channels);
-	// Add this class as a listener of live sound change
-	// events.
-	LiveSound.addLiveSoundListener(this);
+        channels.setTypeEquals(BaseType.INT);
+        attributeChanged(channels);
+        // Add this class as a listener of live sound change
+        // events.
+        LiveSound.addLiveSoundListener(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -181,48 +181,48 @@ public class AudioCapture extends Source implements LiveSoundListener {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	try {
-	    if (attribute == channels) {
-		_channels =
-		    ((IntToken)channels.getToken()).intValue();
-		if (_channels < 1) {
-		    throw new IllegalActionException(this,
+        try {
+            if (attribute == channels) {
+                _channels =
+                    ((IntToken)channels.getToken()).intValue();
+                if (_channels < 1) {
+                    throw new IllegalActionException(this,
                             "Attempt to set channels parameter to an illegal "
                             + "value of: " +  _channels
-			    + " . The value must be a "
+                            + " . The value must be a "
                             + "positive integer.");
-		}
-		// Only set the channels if it is different than
-		// the currently active channels.
-		if (LiveSound.getChannels() != _channels) {
-		    LiveSound.setChannels(_channels);
-		}
-	    }  else if (attribute == sampleRate) {
-		int sampleRateInt =
-		    ((IntToken)sampleRate.getToken()).intValue();
-		// Only set the sample rate if it is different than
-		// the currently active sample rate.
-		if (LiveSound.getSampleRate() != sampleRateInt) {
-		    LiveSound.setSampleRate(sampleRateInt);
-		}
-	    } else if (attribute == bitsPerSample) {
-		int bitsPerSampleInt =
-		    ((IntToken)bitsPerSample.getToken()).intValue();
-		// Only set the bitsPerSample if it is different than
-		// the currently active bitsPerSample.
-		if (LiveSound.getBitsPerSample() != bitsPerSampleInt) {
-		    LiveSound.setBitsPerSample(bitsPerSampleInt);
-		}
-	    } else {
-		super.attributeChanged(attribute);
-		return;
-	    }
-	} catch (IOException ex) {
-	    throw new IllegalActionException(this,
+                }
+                // Only set the channels if it is different than
+                // the currently active channels.
+                if (LiveSound.getChannels() != _channels) {
+                    LiveSound.setChannels(_channels);
+                }
+            }  else if (attribute == sampleRate) {
+                int sampleRateInt =
+                    ((IntToken)sampleRate.getToken()).intValue();
+                // Only set the sample rate if it is different than
+                // the currently active sample rate.
+                if (LiveSound.getSampleRate() != sampleRateInt) {
+                    LiveSound.setSampleRate(sampleRateInt);
+                }
+            } else if (attribute == bitsPerSample) {
+                int bitsPerSampleInt =
+                    ((IntToken)bitsPerSample.getToken()).intValue();
+                // Only set the bitsPerSample if it is different than
+                // the currently active bitsPerSample.
+                if (LiveSound.getBitsPerSample() != bitsPerSampleInt) {
+                    LiveSound.setBitsPerSample(bitsPerSampleInt);
+                }
+            } else {
+                super.attributeChanged(attribute);
+                return;
+            }
+        } catch (IOException ex) {
+            throw new IllegalActionException(this,
                     "Cannot perform audio capture " +
                     "with the specified parameter values." +
                     ex);
-	}
+        }
     }
 
     /** Read parameter values and begin the sound capture process.
@@ -241,8 +241,8 @@ public class AudioCapture extends Source implements LiveSoundListener {
                     "Cannot initialize audio capture " +
                     ex);
         }
-	_safeToInitialize = true;
-	_haveASample = false;
+        _safeToInitialize = true;
+        _haveASample = false;
     }
 
     /** Invoke <i>count</i> iterations of this actor. This method
@@ -268,69 +268,69 @@ public class AudioCapture extends Source implements LiveSoundListener {
      *   audio.
      */
     public int iterate(int count) throws IllegalActionException {
-	// Note: If audio is read from file and file channels < parameter
-	// channels then exception thrown.
+        // Note: If audio is read from file and file channels < parameter
+        // channels then exception thrown.
 
-	// Check if we need to reallocate the output token array.
-	if (count > _audioSendArray.length) {
-	    _audioSendArray = new DoubleToken[count];
-	}
-	// For each sample.
-	for (int i = 0; i < count; i++) {
-	    if (_haveASample == false) {
-		// Need to capture more data.
-		try {
-		    // Read in audio data.
-		    _audioInDoubleArray = LiveSound.getSamples(this);
-		} catch (Exception ex) {
-		    throw new IllegalActionException(this,
+        // Check if we need to reallocate the output token array.
+        if (count > _audioSendArray.length) {
+            _audioSendArray = new DoubleToken[count];
+        }
+        // For each sample.
+        for (int i = 0; i < count; i++) {
+            if (_haveASample == false) {
+                // Need to capture more data.
+                try {
+                    // Read in audio data.
+                    _audioInDoubleArray = LiveSound.getSamples(this);
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this,
                             "Cannot capture audio: " +
                             ex);
-		}
-		_getSamplesArrayPointer = 0;
-		// Check that the read was successful
-		if (_audioInDoubleArray != null) {
-		    _haveASample = true;
-		}
-	    }
-	    if (_haveASample == true) {
-		// Copy a sample to the output array.
-		// For each channel.
-		for (int j = 0; j < _channels; j++) {
+                }
+                _getSamplesArrayPointer = 0;
+                // Check that the read was successful
+                if (_audioInDoubleArray != null) {
+                    _haveASample = true;
+                }
+            }
+            if (_haveASample == true) {
+                // Copy a sample to the output array.
+                // For each channel.
+                for (int j = 0; j < _channels; j++) {
 
-		    _audioSendArray[i] =
-			new DoubleToken(_audioInDoubleArray[j][_getSamplesArrayPointer]);
-		}
-		_getSamplesArrayPointer++;
-		// Check if we still have at least one sample left.
-		if ((_audioInDoubleArray[0].length - _getSamplesArrayPointer) <= 0) {
-		    // We just ran out of samples.
-		    _haveASample = false;
-		}
-	    }
-	}
-	// Check that the read was successful
-	if (_audioInDoubleArray != null) {
-	    // Send.
-	    for (int j = 0; j < _channels; j++) {
-		output.send(j, _audioSendArray, count);
-	    }
-	    return COMPLETED;
-	} else {
-	    // Note: This code may now be unnecessary.
-	    // Read was unsuccessful, so output an array of zeros.
-	    // This generally means that the end of the sound file
-	    // has been reached.
-	    // Convert to DoubleToken[].
-	    for (int i = 0; i < count; i++) {
-		_audioSendArray[i] = new DoubleToken(0);
-	    }
-	    // Output an array of zeros on each channel.
-	    for (int j = 0; j < _channels; j++) {
-		output.send(j, _audioSendArray, count);
-	    }
-	    return STOP_ITERATING;
-	}
+                    _audioSendArray[i] =
+                        new DoubleToken(_audioInDoubleArray[j][_getSamplesArrayPointer]);
+                }
+                _getSamplesArrayPointer++;
+                // Check if we still have at least one sample left.
+                if ((_audioInDoubleArray[0].length - _getSamplesArrayPointer) <= 0) {
+                    // We just ran out of samples.
+                    _haveASample = false;
+                }
+            }
+        }
+        // Check that the read was successful
+        if (_audioInDoubleArray != null) {
+            // Send.
+            for (int j = 0; j < _channels; j++) {
+                output.send(j, _audioSendArray, count);
+            }
+            return COMPLETED;
+        } else {
+            // Note: This code may now be unnecessary.
+            // Read was unsuccessful, so output an array of zeros.
+            // This generally means that the end of the sound file
+            // has been reached.
+            // Convert to DoubleToken[].
+            for (int i = 0; i < count; i++) {
+                _audioSendArray[i] = new DoubleToken(0);
+            }
+            // Output an array of zeros on each channel.
+            for (int j = 0; j < _channels; j++) {
+                output.send(j, _audioSendArray, count);
+            }
+            return STOP_ITERATING;
+        }
     }
 
     /** React to a change in an audio parameters of LiveSound.
@@ -341,52 +341,52 @@ public class AudioCapture extends Source implements LiveSoundListener {
      *  @param event The live sound change event.
      */
     public void liveSoundChanged(LiveSoundEvent event) {
-	// Check to see what parameter was changed.
-	int changedParameter = event.getSoundParameter();
-	try {
-	    if (changedParameter == LiveSoundEvent.SAMPLE_RATE) {
-		// Get the currently active sample rate.
-		int activeSampleRate = LiveSound.getSampleRate();
-		// Get the current value of this actor's sampleRate parameter.
-		int thisActorSampleRate =
-		    ((IntToken)sampleRate.getToken()).intValue();
-		// Only set the sampleRate parameter if it is different from
-		// the new sample rate.
-		if (activeSampleRate != thisActorSampleRate) {
-		    sampleRate.setToken(new IntToken(activeSampleRate));
-		    attributeChanged(sampleRate);
-		}
-	    } else if (changedParameter == LiveSoundEvent.CHANNELS) {
-		// Get the currently active number of channels.
-		int activeChannels = LiveSound.getChannels();
-		// Get the current value of this actor's sampleRate parameter.
-		int thisActorChannels =
-		    ((IntToken)channels.getToken()).intValue();
-		// Only set the channels parameter if it is different from
-		// the new channels.
-		if (activeChannels != thisActorChannels) {
-		    channels.setToken(new IntToken(activeChannels));
-		    attributeChanged(channels);
-		}
-	    } else if (changedParameter == LiveSoundEvent.BITS_PER_SAMPLE) {
-		// Get the currently active bitsPerSample.
-		int activeBitsPerSample = LiveSound.getBitsPerSample();
-		// Get the current value of this actor's bitsPerSample
-		// parameter.
-		int thisActorBitsPerSample =
-		    ((IntToken)bitsPerSample.getToken()).intValue();
-		// Only set the channels parameter if it is different from
-		// the new channels.
-		if (activeBitsPerSample != thisActorBitsPerSample) {
-		    bitsPerSample.setToken(new IntToken(activeBitsPerSample));
-		    attributeChanged(bitsPerSample);
-		}
-	    }
-	} catch (IllegalActionException ex) {
-	    throw new InternalErrorException(
+        // Check to see what parameter was changed.
+        int changedParameter = event.getSoundParameter();
+        try {
+            if (changedParameter == LiveSoundEvent.SAMPLE_RATE) {
+                // Get the currently active sample rate.
+                int activeSampleRate = LiveSound.getSampleRate();
+                // Get the current value of this actor's sampleRate parameter.
+                int thisActorSampleRate =
+                    ((IntToken)sampleRate.getToken()).intValue();
+                // Only set the sampleRate parameter if it is different from
+                // the new sample rate.
+                if (activeSampleRate != thisActorSampleRate) {
+                    sampleRate.setToken(new IntToken(activeSampleRate));
+                    attributeChanged(sampleRate);
+                }
+            } else if (changedParameter == LiveSoundEvent.CHANNELS) {
+                // Get the currently active number of channels.
+                int activeChannels = LiveSound.getChannels();
+                // Get the current value of this actor's sampleRate parameter.
+                int thisActorChannels =
+                    ((IntToken)channels.getToken()).intValue();
+                // Only set the channels parameter if it is different from
+                // the new channels.
+                if (activeChannels != thisActorChannels) {
+                    channels.setToken(new IntToken(activeChannels));
+                    attributeChanged(channels);
+                }
+            } else if (changedParameter == LiveSoundEvent.BITS_PER_SAMPLE) {
+                // Get the currently active bitsPerSample.
+                int activeBitsPerSample = LiveSound.getBitsPerSample();
+                // Get the current value of this actor's bitsPerSample
+                // parameter.
+                int thisActorBitsPerSample =
+                    ((IntToken)bitsPerSample.getToken()).intValue();
+                // Only set the channels parameter if it is different from
+                // the new channels.
+                if (activeBitsPerSample != thisActorBitsPerSample) {
+                    bitsPerSample.setToken(new IntToken(activeBitsPerSample));
+                    attributeChanged(bitsPerSample);
+                }
+            }
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(
                     "Error responding to audio parameter change. " +
                     ex);
-	}
+        }
     }
 
     /** Capture and output a single audio sample on each channel.
@@ -404,34 +404,34 @@ public class AudioCapture extends Source implements LiveSoundListener {
      *  @exception IllegalActionException If audio cannot be captured.
      */
     public boolean postfire() throws IllegalActionException {
-	int returnVal = iterate(1);
-	if (returnVal == COMPLETED) {
-	    return true;
-	} else if (returnVal == NOT_READY) {
-	    // This should never happen.
-	    throw new IllegalActionException(this, "Actor " +
+        int returnVal = iterate(1);
+        if (returnVal == COMPLETED) {
+            return true;
+        } else if (returnVal == NOT_READY) {
+            // This should never happen.
+            throw new IllegalActionException(this, "Actor " +
                     "is not ready to fire.");
-	} else if (returnVal == STOP_ITERATING) {
-	    return false;
-	}
-	return false;
+        } else if (returnVal == STOP_ITERATING) {
+            return false;
+        }
+        return false;
     }
 
     /** Stop capturing audio. Free up any system resources involved
      *  in the capturing process.
      */
     public void wrapup() throws IllegalActionException {
-	// Stop capturing audio.
-	if (LiveSound.isCaptureActive()) {
-	    try {
-		LiveSound.stopCapture(this);
-	    } catch (IOException ex) {
-		throw new IllegalActionException(this,
+        // Stop capturing audio.
+        if (LiveSound.isCaptureActive()) {
+            try {
+                LiveSound.stopCapture(this);
+            } catch (IOException ex) {
+                throw new IllegalActionException(this,
                         "Error stopping audio capture : \n" +
                         ex);
-	    }
-	}
-	_safeToInitialize = false;
+            }
+        }
+        _safeToInitialize = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -447,50 +447,50 @@ public class AudioCapture extends Source implements LiveSoundListener {
      */
     private synchronized void _initializeCapture()
             throws IllegalActionException, IOException {
-	if (LiveSound.isCaptureActive()) {
-	    throw new IllegalActionException(this,
+        if (LiveSound.isCaptureActive()) {
+            throw new IllegalActionException(this,
                     "This actor cannot start audio capture because " +
                     "another actor currently has access to the audio " +
                     "capture resource. Only one AudioCapture actor may " +
                     "be used at a time.");
-	    //LiveSound.stopCapture(this);
+            //LiveSound.stopCapture(this);
 
-	}
-	// Now initialize audio capture.
+        }
+        // Now initialize audio capture.
 
-	// Use live capture mode.
-	int sampleRateInt =
-	    ((IntToken)sampleRate.getToken()).intValue();
-	int bitsPerSampleInt =
-	    ((IntToken)bitsPerSample.getToken()).intValue();
-	int channelsInt =
-	    ((IntToken)channels.getToken()).intValue();
+        // Use live capture mode.
+        int sampleRateInt =
+            ((IntToken)sampleRate.getToken()).intValue();
+        int bitsPerSampleInt =
+            ((IntToken)bitsPerSample.getToken()).intValue();
+        int channelsInt =
+            ((IntToken)channels.getToken()).intValue();
 
-	if (LiveSound.getSampleRate() != sampleRateInt) {
-	    LiveSound.setSampleRate(sampleRateInt);
-	}
-	if (LiveSound.getBitsPerSample() != bitsPerSampleInt) {
-	    LiveSound.setBitsPerSample(bitsPerSampleInt);
-	}
-	if (LiveSound.getChannels() != channelsInt) {
-	    LiveSound.setChannels(channelsInt);
-	}
-	// Set the buffer size to 4096 samples per channel.
-	// This affects the latency. We hide this from the
-	// user for simplicity, and because low-latency
-	// operation is not possible under Java anyway.
-	if (LiveSound.getBufferSize() != 4096) {
-	    LiveSound.setBufferSize(4096);
-	}
-	// Set the size of the array that is returned by
-	// LiveSound.getSamples().
-	if (LiveSound.getTransferSize() != 128) {
+        if (LiveSound.getSampleRate() != sampleRateInt) {
+            LiveSound.setSampleRate(sampleRateInt);
+        }
+        if (LiveSound.getBitsPerSample() != bitsPerSampleInt) {
+            LiveSound.setBitsPerSample(bitsPerSampleInt);
+        }
+        if (LiveSound.getChannels() != channelsInt) {
+            LiveSound.setChannels(channelsInt);
+        }
+        // Set the buffer size to 4096 samples per channel.
+        // This affects the latency. We hide this from the
+        // user for simplicity, and because low-latency
+        // operation is not possible under Java anyway.
+        if (LiveSound.getBufferSize() != 4096) {
+            LiveSound.setBufferSize(4096);
+        }
+        // Set the size of the array that is returned by
+        // LiveSound.getSamples().
+        if (LiveSound.getTransferSize() != 128) {
             LiveSound.setTransferSize(128);
-	}
+        }
 
-	try {
-	    // Start capturing audio.
-	    LiveSound.startCapture(this);
+        try {
+            // Start capturing audio.
+            LiveSound.startCapture(this);
         } catch (IOException ex) {
             throw new IllegalActionException(this,
                     "Cannot capture audio:\n" +

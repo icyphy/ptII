@@ -68,7 +68,7 @@ public class LongToDouble extends Converter {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setTypeEquals(BaseType.LONG);
-	output.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -80,8 +80,8 @@ public class LongToDouble extends Converter {
      */
     public void fire() throws IllegalActionException {
         LongToken inputToken = (LongToken)input.get(0);
-	Long inputValue = new Long(inputToken.longValue());
-	DoubleToken result = new DoubleToken(inputValue.doubleValue());
+        Long inputValue = new Long(inputToken.longValue());
+        DoubleToken result = new DoubleToken(inputValue.doubleValue());
 
         output.send(0, result);
     }

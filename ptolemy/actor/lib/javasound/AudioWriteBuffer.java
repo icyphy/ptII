@@ -23,8 +23,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Red (vogel@eecs.berkeley.edu)
 @AcceptedRating Red (vogel@eecs.berkeley.edu)
 */
@@ -126,16 +126,16 @@ public class AudioWriteBuffer extends TypedAtomicActor {
     public AudioWriteBuffer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	if (_debugging) _debug("AudioWriteBuffer: Constructor invoked");
-	address = new TypedIOPort(this, "address", true, false);
+        if (_debugging) _debug("AudioWriteBuffer: Constructor invoked");
+        address = new TypedIOPort(this, "address", true, false);
         address.setMultiport(true);
         address.setTypeEquals(BaseType.INT);
-	data = new TypedIOPort(this, "data", true, false);
+        data = new TypedIOPort(this, "data", true, false);
         data.setMultiport(true);
         data.setTypeEquals(BaseType.DOUBLE);
 
-	pathName = new StringAttribute(this, "pathName");
-	pathName.setExpression("outfile.wav");
+        pathName = new StringAttribute(this, "pathName");
+        pathName.setExpression("outfile.wav");
 
         sampleRate = new Parameter(this, "sampleRate", new IntToken(8000));
         sampleRate.setTypeEquals(BaseType.INT);
@@ -143,13 +143,13 @@ public class AudioWriteBuffer extends TypedAtomicActor {
         bitsPerSample = new Parameter(this, "bitsPerSample",
                 new IntToken(16));
         bitsPerSample.setTypeEquals(BaseType.INT);
-	channels = new Parameter(this, "channels",
+        channels = new Parameter(this, "channels",
                 new IntToken(1));
-	channels.setTypeEquals(BaseType.INT);
-	attributeChanged(channels);
-	bufferLength = new Parameter(this, "bufferLength", new IntToken(8000));
-	overwrite = new Parameter(this, "overwrite", new BooleanToken(true));
-	_curElement = 0;
+        channels.setTypeEquals(BaseType.INT);
+        attributeChanged(channels);
+        bufferLength = new Parameter(this, "bufferLength", new IntToken(8000));
+        overwrite = new Parameter(this, "overwrite", new BooleanToken(true));
+        _curElement = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -221,44 +221,44 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	if (_debugging) _debug("AudioWriteBuffer: attributeChanged() invoked on: " +
+        if (_debugging) _debug("AudioWriteBuffer: attributeChanged() invoked on: " +
                 attribute.getName());
-	if (attribute == channels) {
-	    _channels =
+        if (attribute == channels) {
+            _channels =
                 ((IntToken)channels.getToken()).intValue();
-	    if (_channels < 1) {
-		throw new IllegalActionException(this,
+            if (_channels < 1) {
+                throw new IllegalActionException(this,
                         "Attempt to set channels parameter to an illegal " +
                         "value of: " +  _channels + " . The value must be a " +
                         "positive integer.");
-	    }
-	    // Check if we need to reallocate.
-	    if ((_inArray == null) || (_channels != _inArray.length)) {
-		_inArray = new Token[_channels][];
-	    }
-	    if ((_audioPutArray == null) || (_channels != _audioPutArray.length)) {
-		_audioPutArray = new double[_channels][];
-	    }
-	    for (int i = 0; i < _channels; i++) {
-		_audioPutArray[i] = new double[_putSampleSize];
-	    }
-	} else if (attribute == bufferLength) {
-	    if (_safeToInitialize == true) {
-		//try {
+            }
+            // Check if we need to reallocate.
+            if ((_inArray == null) || (_channels != _inArray.length)) {
+                _inArray = new Token[_channels][];
+            }
+            if ((_audioPutArray == null) || (_channels != _audioPutArray.length)) {
+                _audioPutArray = new double[_channels][];
+            }
+            for (int i = 0; i < _channels; i++) {
+                _audioPutArray[i] = new double[_putSampleSize];
+            }
+        } else if (attribute == bufferLength) {
+            if (_safeToInitialize == true) {
+                //try {
                 _initializeWriter();
                 //} catch (IOException ex) {
                 //throw new IllegalActionException(this,
                 //      "Cannot read audio:\n" +
                 //      ex);
                 //}
-	    }
-	} else {
-	    super.attributeChanged(attribute);
-	    return;
-	}
-	if (_safeToInitialize == true) {
-	    _initializeWriter();
-	}
+            }
+        } else {
+            super.attributeChanged(attribute);
+            return;
+        }
+        if (_safeToInitialize == true) {
+            _initializeWriter();
+        }
     }
 
     /** Open a new audio file for writing. Any existing file
@@ -268,10 +268,10 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	if (_debugging) _debug("AudioWriteBuffer: initialize(): invoked");
-	// Initialize/Reinitialize audio resources.
-	_initializeWriter();
-	_safeToInitialize = true;
+        if (_debugging) _debug("AudioWriteBuffer: initialize(): invoked");
+        // Initialize/Reinitialize audio resources.
+        _initializeWriter();
+        _safeToInitialize = true;
     }
 
     /** If there is a token available on the <i>data</i> and
@@ -284,51 +284,51 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      *  <i>pathName</i> parameter on wrapup.
      */
     public void fire () throws IllegalActionException {
-	if (address.hasToken(0) && data.hasToken(0)) {
-	    int addressValue = ((IntToken)address.get(0)).intValue();
-	    if (addressValue < 0) {
-		// invalid index, so write nothing.
-		// still need to consume the data token, however.
-		data.get(0);
-	    } else if (addressValue > (_audioBuffer.length - 1)) {
-		// invalid index. exceeds buffer length, so
-		// do nothing.
-		// still need to consume the data token, however.
-		data.get(0);
-	    } else {
-		// Read one token from the data port and write the
-		// token to the specified address in the buffer.
-		double sampleValue =
-		    ((DoubleToken)data.get(0)).doubleValue();
-		boolean overwriteMode =
-		    ((BooleanToken)overwrite.getToken()).booleanValue();
-		if (overwriteMode == true) {
-		    // Overwrite the element at the specified
-		    // address.
-		    _audioBuffer[addressValue] = sampleValue;
-		} else {
-		    // Add the data value to the element at the
-		    // specified address.
-		    _audioBuffer[addressValue] += sampleValue;
-		}
-	    }
-	} else if (address.hasToken(0)) {
-	    System.out.println(getName()
+        if (address.hasToken(0) && data.hasToken(0)) {
+            int addressValue = ((IntToken)address.get(0)).intValue();
+            if (addressValue < 0) {
+                // invalid index, so write nothing.
+                // still need to consume the data token, however.
+                data.get(0);
+            } else if (addressValue > (_audioBuffer.length - 1)) {
+                // invalid index. exceeds buffer length, so
+                // do nothing.
+                // still need to consume the data token, however.
+                data.get(0);
+            } else {
+                // Read one token from the data port and write the
+                // token to the specified address in the buffer.
+                double sampleValue =
+                    ((DoubleToken)data.get(0)).doubleValue();
+                boolean overwriteMode =
+                    ((BooleanToken)overwrite.getToken()).booleanValue();
+                if (overwriteMode == true) {
+                    // Overwrite the element at the specified
+                    // address.
+                    _audioBuffer[addressValue] = sampleValue;
+                } else {
+                    // Add the data value to the element at the
+                    // specified address.
+                    _audioBuffer[addressValue] += sampleValue;
+                }
+            }
+        } else if (address.hasToken(0)) {
+            System.out.println(getName()
                     + "WARNING: address port does not have a token!");
-	} else if (data.hasToken(0)) {
-	    System.out.println(getName()
+        } else if (data.hasToken(0)) {
+            System.out.println(getName()
                     + "WARNING: data port does not have a token!");
-	} else {
-	    System.out.println(getName()
+        } else {
+            System.out.println(getName()
                     + "WARNING: neither data port has a token!");
-	}
+        }
     }
 
     /** Return true.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
-	return true;
+        return true;
     }
 
     /** Set up the number channels to use.
@@ -336,9 +336,9 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void preinitialize() throws IllegalActionException {
-	super.preinitialize();
-	_channels =
-	    ((IntToken)channels.getToken()).intValue();
+        super.preinitialize();
+        _channels =
+            ((IntToken)channels.getToken()).intValue();
     }
 
     /** Close the specified file.
@@ -346,14 +346,14 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      *   closing the file.
      */
     public void wrapup() throws IllegalActionException {
-	super.wrapup();
-	if (_debugging) _debug("AudioWriteBuffer: wrapup(): invoked");
-	// Close any open sound files.
-	if (_soundWriter != null) {
+        super.wrapup();
+        if (_debugging) _debug("AudioWriteBuffer: wrapup(): invoked");
+        // Close any open sound files.
+        if (_soundWriter != null) {
             try {
-		for (int i = 0; i < _audioBuffer.length; i++) {
-		    _audioPutArray[0][0] = _audioBuffer[i];
-		    _soundWriter.putSamples(_audioPutArray);
+                for (int i = 0; i < _audioBuffer.length; i++) {
+                    _audioPutArray[0][0] = _audioBuffer[i];
+                    _soundWriter.putSamples(_audioPutArray);
 
                 }
                 _soundWriter.closeFile();
@@ -362,8 +362,8 @@ public class AudioWriteBuffer extends TypedAtomicActor {
                         "Error closing file:\n" +
                         ex.getMessage());
             }
-	}
-	_safeToInitialize = false;
+        }
+        _safeToInitialize = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -380,10 +380,10 @@ public class AudioWriteBuffer extends TypedAtomicActor {
      */
     private synchronized void _initializeWriter()
             throws IllegalActionException {
-	if (_debugging) _debug("AudioWriteBuffer: _initializeWriter() invoked.");
-	// Close any open sound files. Free
-	// up audio system resources.
-	if (_soundWriter != null) {
+        if (_debugging) _debug("AudioWriteBuffer: _initializeWriter() invoked.");
+        // Close any open sound files. Free
+        // up audio system resources.
+        if (_soundWriter != null) {
             try {
                 _soundWriter.closeFile();
             } catch (IOException ex) {
@@ -391,30 +391,30 @@ public class AudioWriteBuffer extends TypedAtomicActor {
                         "Cannot write audio: \n" +
                         ex.getMessage());
             }
-	}
+        }
 
-	_putSampleSize = 1;
-	for (int i = 0; i < _channels; i++) {
-	    _audioPutArray[i] = new double[_putSampleSize];
-	}
-	String pathNameString = pathName.getExpression();
-	// Write audio data to a file.
-	if (_debugging) _debug("AudioWriteBuffer: initialize(): write to file");
-	int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
-	int bitsPerSampleInt =
-	    ((IntToken)bitsPerSample.getToken()).intValue();
-	int channelsInt = ((IntToken)channels.getToken()).intValue();
-	int putSamplesSize = _putSampleSize;
+        _putSampleSize = 1;
+        for (int i = 0; i < _channels; i++) {
+            _audioPutArray[i] = new double[_putSampleSize];
+        }
+        String pathNameString = pathName.getExpression();
+        // Write audio data to a file.
+        if (_debugging) _debug("AudioWriteBuffer: initialize(): write to file");
+        int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
+        int bitsPerSampleInt =
+            ((IntToken)bitsPerSample.getToken()).intValue();
+        int channelsInt = ((IntToken)channels.getToken()).intValue();
+        int putSamplesSize = _putSampleSize;
 
-	_soundWriter = new SoundWriter(pathNameString,
+        _soundWriter = new SoundWriter(pathNameString,
                 sampleRateInt,
                 bitsPerSampleInt,
                 channelsInt,
                 putSamplesSize);
-	_curElement = 0;
-	int length = ((IntToken)bufferLength
+        _curElement = 0;
+        int length = ((IntToken)bufferLength
                 .getToken()).intValue();
-	_audioBuffer = new double[length];
+        _audioBuffer = new double[length];
     }
 
     ///////////////////////////////////////////////////////////////////

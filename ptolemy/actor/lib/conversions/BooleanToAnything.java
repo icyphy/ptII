@@ -71,8 +71,8 @@ public class BooleanToAnything extends Converter {
         trueValue = new Parameter(this, "trueValue", new IntToken(1));
 
         input.setTypeEquals(BaseType.BOOLEAN);
-	output.setTypeAtLeast(trueValue);
-	output.setTypeAtLeast(falseValue);
+        output.setTypeAtLeast(trueValue);
+        output.setTypeAtLeast(falseValue);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -96,12 +96,12 @@ public class BooleanToAnything extends Converter {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         BooleanToAnything newObject = (BooleanToAnything)
             super.clone(workspace);
-	// Set the type constraint.
-	newObject.output.setTypeAtLeast(newObject.trueValue);
-	newObject.output.setTypeAtLeast(newObject.falseValue);
+        // Set the type constraint.
+        newObject.output.setTypeAtLeast(newObject.trueValue);
+        newObject.output.setTypeAtLeast(newObject.falseValue);
         return newObject;
     }
 

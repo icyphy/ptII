@@ -67,7 +67,7 @@ public class LogicalNot extends Transformer {
         input.setTypeEquals(BaseType.BOOLEAN);
         output.setTypeEquals(BaseType.BOOLEAN);
 
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-15\" y=\"-15\" "
                 + "width=\"30\" height=\"30\" "
                 + "style=\"fill:white\"/>\n"
@@ -85,7 +85,7 @@ public class LogicalNot extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-	if (input.hasToken(0)) {
+        if (input.hasToken(0)) {
             output.send(0, ((BooleanToken)input.get(0)).not());
         }
     }

@@ -94,16 +94,16 @@ public class FixToFix extends Converter {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.setTypeEquals(BaseType.FIX);
-	output.setTypeEquals(BaseType.FIX);
+        output.setTypeEquals(BaseType.FIX);
 
-	precision = new Parameter(this, "precision");
+        precision = new Parameter(this, "precision");
         precision.setTypeEquals(BaseType.INT_MATRIX);
         precision.setExpression("[16, 2]");
 
-	rounding = new StringAttribute(this, "rounding");
+        rounding = new StringAttribute(this, "rounding");
         rounding.setExpression("nearest");
 
-	overflow = new StringAttribute(this, "overflow");
+        overflow = new StringAttribute(this, "overflow");
         overflow.setExpression("saturate");
     }
 

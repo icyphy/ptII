@@ -75,10 +75,10 @@ public class InUnitsOf extends Transformer {
         super(container, name);
         units = new Parameter(this, "units", new DoubleToken(1.0));
 
-	// set the type constraints.
-	input.setTypeEquals(BaseType.DOUBLE);
-	output.setTypeEquals(BaseType.DOUBLE);
-	units.setTypeEquals(BaseType.DOUBLE);
+        // set the type constraints.
+        input.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeEquals(BaseType.DOUBLE);
+        units.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ public class InUnitsOf extends Transformer {
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             DoubleToken in = (DoubleToken)input.get(0);
-	    DoubleToken out = (DoubleToken)in.inUnitsOf(
+            DoubleToken out = (DoubleToken)in.inUnitsOf(
                     (DoubleToken)units.getToken());
             output.send(0, out);
         }

@@ -81,7 +81,7 @@ public class ComplexToPolar extends TypedAtomicActor {
         angle = new TypedIOPort(this, "angle", false, true);
         angle.setTypeEquals(BaseType.DOUBLE);
 
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" +
                 "</svg>\n");

@@ -58,7 +58,7 @@ public class Converter extends Transformer {
     public Converter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" +
                 "</svg>\n");

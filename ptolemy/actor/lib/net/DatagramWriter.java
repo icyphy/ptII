@@ -134,8 +134,8 @@ public class DatagramWriter extends TypedAtomicActor {
         //        new StringAttribute(this, "defaultRemoteAddress");
         //defaultRemoteAddress.setExpression("localhost");
 
-	// Above way was set w/o quotes vs constant which is set with them.
-	// This has been confusing, so I've switched to the approach below.
+        // Above way was set w/o quotes vs constant which is set with them.
+        // This has been confusing, so I've switched to the approach below.
         defaultRemoteAddress = new Parameter(this, "defaultRemoteAddress");
         defaultRemoteAddress.setTypeEquals(BaseType.STRING);
         defaultRemoteAddress.setToken(new StringToken("localhost"));
@@ -150,8 +150,8 @@ public class DatagramWriter extends TypedAtomicActor {
         localSocketNumber.setTypeEquals(BaseType.INT);
         localSocketNumber.setToken(new IntToken(4003)); //setToken works too
 
-	// Added for SDF usability.  Empty Token() is output, just a trigger.
-  	triggerOutput = new TypedIOPort(this, "triggerOutput");
+        // Added for SDF usability.  Empty Token() is output, just a trigger.
+          triggerOutput = new TypedIOPort(this, "triggerOutput");
         triggerOutput.setTypeEquals(BaseType.GENERAL);
         // 'INT' works too in place of 'GENERAL'.
         triggerOutput.setOutput(true);
@@ -240,7 +240,7 @@ public class DatagramWriter extends TypedAtomicActor {
                     _localSocketNumber =
                         ((IntToken)(localSocketNumber.getToken())).intValue();
                     if (_debugging) _debug("Socket number is "
-		            + _localSocketNumber);
+                            + _localSocketNumber);
                     try {
                         if (_debugging) _debug("Try create socket for port "
                                 + _localSocketNumber);
@@ -256,26 +256,26 @@ public class DatagramWriter extends TypedAtomicActor {
                                 + "local socket number: " + ex.getMessage());
                     }
                 }
-	    }
+            }
 
-	} else if (attribute == defaultRemoteAddress) {
-	    String address =
+        } else if (attribute == defaultRemoteAddress) {
+            String address =
                 ((StringToken)defaultRemoteAddress.getToken())
                 .stringValue();
-	    try {
-		_address = InetAddress.getByName(address);
-	    } catch (UnknownHostException ex) {
-		throw new IllegalActionException(this, "The default remote "
+            try {
+                _address = InetAddress.getByName(address);
+            } catch (UnknownHostException ex) {
+                throw new IllegalActionException(this, "The default remote "
                         + "address specifies an unknown host: "
                         + ex.getMessage());
-	    }
+            }
 
-	} else if (attribute == defaultRemoteSocketNumber) {
-	    _remoteSocketNumber =
+        } else if (attribute == defaultRemoteSocketNumber) {
+            _remoteSocketNumber =
                 ((IntToken)defaultRemoteSocketNumber.getToken())
                 .intValue();
-	    _remoteSocketNumber &= 65535; // Truncate to 16 bits.
-	} else {
+            _remoteSocketNumber &= 65535; // Truncate to 16 bits.
+        } else {
             super.attributeChanged(attribute);
         }
     }
@@ -288,13 +288,13 @@ public class DatagramWriter extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
 
-	String address = null;
+        String address = null;
         for (int jj = 0; jj < remoteAddress.getWidth(); jj++) {
-	    if (remoteAddress.hasToken(jj)) {
-		address = ((StringToken)(remoteAddress.get(jj))).stringValue();
-	    }
-	}
-	if (address != null) {
+            if (remoteAddress.hasToken(jj)) {
+                address = ((StringToken)(remoteAddress.get(jj))).stringValue();
+            }
+        }
+        if (address != null) {
             try {
                 _address = InetAddress.getByName(address);
             }
@@ -307,12 +307,12 @@ public class DatagramWriter extends TypedAtomicActor {
 
         for (int jj = 0; jj < remoteSocketNumber.getWidth(); jj++) {
             if (remoteSocketNumber.hasToken(jj)) {
-		// Valid socket numbers are 0..65535,
-		// so keep only lower 16 bits.
-		_remoteSocketNumber = 65535 &
+                // Valid socket numbers are 0..65535,
+                // so keep only lower 16 bits.
+                _remoteSocketNumber = 65535 &
                     ((IntToken)remoteSocketNumber.get(jj)).intValue();
-	    }
-	}
+            }
+        }
 
         if (data.hasToken(0)) {
             ArrayToken dataArrayToken = (ArrayToken) data.get(0);
@@ -324,7 +324,7 @@ public class DatagramWriter extends TypedAtomicActor {
                 dataBytes[j] = (byte)token.byteValue();
             }
 
-	    DatagramPacket packet = new
+            DatagramPacket packet = new
                 DatagramPacket(dataBytes, dataBytes.length,
                         _address, _remoteSocketNumber);
             try {
@@ -339,7 +339,7 @@ public class DatagramWriter extends TypedAtomicActor {
                 //     then it threw it right away!? )
                 // Would TCP stall here awaiting reply??  I doubt it!
             }
-	    triggerOutput.broadcast(new Token());
+            triggerOutput.broadcast(new Token());
         }
     }
 
@@ -357,14 +357,14 @@ public class DatagramWriter extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
 
-	//System.out.println("initialize() called in " + this);
+        //System.out.println("initialize() called in " + this);
 
         super.initialize();
         _localSocketNumber =
             ((IntToken)(localSocketNumber.getToken())).intValue();
         if (_localSocketNumber < 0 || _localSocketNumber > 65535) {
             throw new IllegalActionException(this, "Local socket number "
-		    + _localSocketNumber
+                    + _localSocketNumber
                     + " must be between 0 and 65535.");
         }
         try {
@@ -378,7 +378,7 @@ public class DatagramWriter extends TypedAtomicActor {
                     + "the specified local socket number: " + ex.getMessage());
         }
 
-	String address =
+        String address =
             ((StringToken)defaultRemoteAddress.getToken()).stringValue();
         try {
             _address = InetAddress.getByName(address);
@@ -393,12 +393,12 @@ public class DatagramWriter extends TypedAtomicActor {
             ((IntToken)defaultRemoteSocketNumber.getToken()).intValue();
         if (_remoteSocketNumber < 0 || _remoteSocketNumber > 65535) {
             //System.out.println(this + " defaultRemoteSocketNumber is "
-	    //        + _remoteSocketNumber + " .  Must be in 0..65535.");
-	    _remoteSocketNumber &= 65535; // Truncate to 16 bits.
-	    throw new IllegalActionException(this, "defaultRemoteSocketNumber"
-		    + _remoteSocketNumber
+            //        + _remoteSocketNumber + " .  Must be in 0..65535.");
+            _remoteSocketNumber &= 65535; // Truncate to 16 bits.
+            throw new IllegalActionException(this, "defaultRemoteSocketNumber"
+                    + _remoteSocketNumber
                     + " is out of range, must be between 0 and 65535.");
-	}
+        }
     }
 
     /** Override the setContainer() method to call wrapup() if
@@ -409,10 +409,10 @@ public class DatagramWriter extends TypedAtomicActor {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-	if (container != getContainer()) {
+        if (container != getContainer()) {
             wrapup();
-	}
-	super.setContainer(container);
+        }
+        super.setContainer(container);
     }
 
     /** Wrap up.  Free the socket, allowing the socket number to be reused.
@@ -424,7 +424,7 @@ public class DatagramWriter extends TypedAtomicActor {
                 _socket.close();
                 _socket = null;
             } else {
-		if (_debugging) _debug("Socket was already null in " + this);
+                if (_debugging) _debug("Socket was already null in " + this);
             }
         }
     }

@@ -148,17 +148,17 @@ above are generally available.
 <pre>
 Well-known Ports
 (Commonly Used Ports)
-   7	(Echo)
-  21	(FTP)
-  23	(TELNET)
-  25	(SMTP)
-  53	(DNS)
-  79	(finger)
-  80	(HTTP)
- 110	(POP3)
- 119	(NNTP)
- 161	(SNMP)
- 162	(SNMP Trap)
+   7        (Echo)
+  21        (FTP)
+  23        (TELNET)
+  25        (SMTP)
+  53        (DNS)
+  79        (finger)
+  80        (HTTP)
+ 110        (POP3)
+ 119        (NNTP)
+ 161        (SNMP)
+ 162        (SNMP Trap)
 </pre>
 Reference:  http://192.168.1.1/Forward.htm
 (A webpage hosted from within the Linksys BEFSR41 Cable/DSL Router)

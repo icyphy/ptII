@@ -125,10 +125,10 @@ public class AudioReadBuffer extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output.setTypeEquals(BaseType.DOUBLE);
-	output.setMultiport(true);
-	sourceURL = new StringAttribute(this, "sourceURL");
-	bufferLength = new Parameter(this, "bufferLength", new IntToken(8000));
-	sourceURL.setExpression("file:///tmp/test.wav");
+        output.setMultiport(true);
+        sourceURL = new StringAttribute(this, "sourceURL");
+        bufferLength = new Parameter(this, "bufferLength", new IntToken(8000));
+        sourceURL.setExpression("file:///tmp/test.wav");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -159,30 +159,30 @@ public class AudioReadBuffer extends Transformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	if (attribute == sourceURL) {
-	    if (_safeToInitialize == true) {
-		try {
-		    _initializeReader();
-		} catch (IOException ex) {
-		    throw new IllegalActionException(this,
+        if (attribute == sourceURL) {
+            if (_safeToInitialize == true) {
+                try {
+                    _initializeReader();
+                } catch (IOException ex) {
+                    throw new IllegalActionException(this,
                             "Cannot read audio:\n" +
                             ex);
-		}
-	    }
-	} else if (attribute == bufferLength) {
-	    if (_safeToInitialize == true) {
-		try {
-		    _initializeReader();
-		} catch (IOException ex) {
-		    throw new IllegalActionException(this,
+                }
+            }
+        } else if (attribute == bufferLength) {
+            if (_safeToInitialize == true) {
+                try {
+                    _initializeReader();
+                } catch (IOException ex) {
+                    throw new IllegalActionException(this,
                             "Cannot read audio:\n" +
                             ex);
-		}
-	    }
-	} else {
-	    super.attributeChanged(attribute);
-	    return;
-	}
+                }
+            }
+        } else {
+            super.attributeChanged(attribute);
+            return;
+        }
     }
 
     /** Open the sound file specified by the URL for reading.
@@ -192,15 +192,15 @@ public class AudioReadBuffer extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	try {
-	    _initializeReader();
-	} catch (IOException ex) {
-	    throw new IllegalActionException(this,
+        try {
+            _initializeReader();
+        } catch (IOException ex) {
+            throw new IllegalActionException(this,
                     "Cannot open the specified URL: " +
                     ex);
-	}
-	_safeToInitialize = true;
-	_haveASample = false;
+        }
+        _safeToInitialize = true;
+        _haveASample = false;
     }
 
     /** Read the buffer address from the input port and output
@@ -218,21 +218,21 @@ public class AudioReadBuffer extends Transformer {
      *  specified, only the left channel will be used.
      */
     public void fire () throws IllegalActionException {
-	if (input.hasToken(0)) {
-	    int in = ((IntToken)input.get(0)).intValue();
-	    if (in < 0) {
-		// invalid index, so just output a 0.0
-		output.send(0, new DoubleToken(0.0));
-	    } else if (in > (_audioBuffer.length - 1)) {
-		// invalid index. exceeds buffer length, so
-		// just output a 0.0 and return false in postfire.
-		_postfireReturn = false;
-		output.send(0, new DoubleToken(0.0));
-	    } else {
-		double sampleValue = _audioBuffer[in];
-		output.send(0, new DoubleToken(sampleValue));
-	    }
-	}
+        if (input.hasToken(0)) {
+            int in = ((IntToken)input.get(0)).intValue();
+            if (in < 0) {
+                // invalid index, so just output a 0.0
+                output.send(0, new DoubleToken(0.0));
+            } else if (in > (_audioBuffer.length - 1)) {
+                // invalid index. exceeds buffer length, so
+                // just output a 0.0 and return false in postfire.
+                _postfireReturn = false;
+                output.send(0, new DoubleToken(0.0));
+            } else {
+                double sampleValue = _audioBuffer[in];
+                output.send(0, new DoubleToken(sampleValue));
+            }
+        }
     }
 
     /** This method causes one audio sample per channel to be
@@ -246,7 +246,7 @@ public class AudioReadBuffer extends Transformer {
      *   from the specified sound file.
      */
     public boolean postfire() throws IllegalActionException {
-	return _postfireReturn;
+        return _postfireReturn;
     }
 
     /** Free up any system resources involved in the audio
@@ -256,16 +256,16 @@ public class AudioReadBuffer extends Transformer {
      *   problem closing the file.
      */
     public void wrapup() throws IllegalActionException {
-	// Stop capturing audio.
-	if (_soundReader != null) {
-	    try {
-		_soundReader.closeFile();
-	    } catch (IOException ex) {
-		throw new IllegalActionException(this,
+        // Stop capturing audio.
+        if (_soundReader != null) {
+            try {
+                _soundReader.closeFile();
+            } catch (IOException ex) {
+                throw new IllegalActionException(this,
                         "Problem closing sound file: \n" +
                         ex.getMessage());
-	    }
-	}
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -282,37 +282,37 @@ public class AudioReadBuffer extends Transformer {
      */
     private synchronized void _initializeReader()
             throws IOException, IllegalActionException {
-	if (_soundReader != null) {
+        if (_soundReader != null) {
             _soundReader.closeFile();
-	}
-	// Load audio from a URL.
-	String theURL = sourceURL.getExpression();
-	// Each read this many samples per channel when
-	// _soundReader.getSamples() is called.
-	// This value was chosen somewhat arbitrarily.
-	int getSamplesArraySize = 1;
-	_soundReader = new SoundReader(theURL,
+        }
+        // Load audio from a URL.
+        String theURL = sourceURL.getExpression();
+        // Each read this many samples per channel when
+        // _soundReader.getSamples() is called.
+        // This value was chosen somewhat arbitrarily.
+        int getSamplesArraySize = 1;
+        _soundReader = new SoundReader(theURL,
                 getSamplesArraySize);
-	// Read the number of audio channels and set
-	// parameter accordingly.
-	_channels = _soundReader.getChannels();
-	int length = ((IntToken)bufferLength
+        // Read the number of audio channels and set
+        // parameter accordingly.
+        _channels = _soundReader.getChannels();
+        int length = ((IntToken)bufferLength
                 .getToken()).intValue();
-	_audioBuffer = new double[length];
-	// Read all of the samples into an array.
-	double[][] samples = new double[_channels][getSamplesArraySize];
-	boolean done = false;
-	for (int i = 0; i < length; i++) {
-	    if (!done) {
-		samples = _soundReader.getSamples();
-		// Write the sample to the buffer.
-		if (samples != null) {
-		    _audioBuffer[i] = samples[0][0];
-		} else {
-		    done = true;
-		}
-	    }
-	}
+        _audioBuffer = new double[length];
+        // Read all of the samples into an array.
+        double[][] samples = new double[_channels][getSamplesArraySize];
+        boolean done = false;
+        for (int i = 0; i < length; i++) {
+            if (!done) {
+                samples = _soundReader.getSamples();
+                // Write the sample to the buffer.
+                if (samples != null) {
+                    _audioBuffer[i] = samples[0][0];
+                } else {
+                    done = true;
+                }
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -121,16 +121,16 @@ public class AudioReader extends URLReader {
         // The property() method is defined in
         // ptolemy.data.expr.UtilityFunctions.java
 
-	// We use voice.wav so that we can include the voice.wav file
-	// in the jar file for use under Web Start.
+        // We use voice.wav so that we can include the voice.wav file
+        // in the jar file for use under Web Start.
 
         // FIXME: This should use FileAttribute, but if we did then
         // backward compatibility would be difficult because we would have
         // to change the sourceURL from a Parameter (which gets evaluated)
         // to a FileAttribute.  However, we do want to provide an initial
         // default
-	sourceURL.setExpression("property(\"ptolemy.ptII.dirAsURL\") "
-		+ "+ \"ptolemy/actor/lib/javasound/voice.wav\"");
+        sourceURL.setExpression("property(\"ptolemy.ptII.dirAsURL\") "
+                + "+ \"ptolemy/actor/lib/javasound/voice.wav\"");
 
         // Check to see if we can open sourceURL.  If not, try
         // to find it in the classpath
@@ -171,9 +171,9 @@ public class AudioReader extends URLReader {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	_safeToInitialize = true;
-	_setURLReader(null);
-	_haveASample = false;
+        _safeToInitialize = true;
+        _setURLReader(null);
+        _haveASample = false;
     }
 
     /** Invoke <i>count</i> iterations of this actor. This method
@@ -195,68 +195,68 @@ public class AudioReader extends URLReader {
      *   from the specified sound file.
      */
     public int iterate(int count) throws IllegalActionException {
-	// Check if we need to reallocate the output token array.
-	if (count > _audioSendArray.length) {
-	    _audioSendArray = new DoubleToken[count];
-	}
-	// For each sample.
-	for (int i = 0; i < count; i++) {
-	    if (_haveASample == false) {
-		// Need to read more data.
-		try {
-		    // Read in audio data.
-		    _audioInDoubleArray = _soundReader.getSamples();
-		} catch (Exception ex) {
-		    throw new IllegalActionException(this,
+        // Check if we need to reallocate the output token array.
+        if (count > _audioSendArray.length) {
+            _audioSendArray = new DoubleToken[count];
+        }
+        // For each sample.
+        for (int i = 0; i < count; i++) {
+            if (_haveASample == false) {
+                // Need to read more data.
+                try {
+                    // Read in audio data.
+                    _audioInDoubleArray = _soundReader.getSamples();
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this,
                             "Unable to open the sound file for reading: " +
                             ex);
-		}
-		_getSamplesArrayPointer = 0;
-		// Check that the read was successful
-		if (_audioInDoubleArray != null) {
-		    _haveASample = true;
-		}
-	    }
-	    // Note: we cannot use an if..then..else here because the
-	    // above block may set _haveASample = true. Thus, we may
-	    // sometimes need to execute both blocks.
-	    if (_haveASample == true) {
-		// Copy a sample to the output array.
-		// For each channel.
-		for (int j = 0; j < _channels; j++) {
-		    _audioSendArray[i] =
-			new DoubleToken(_audioInDoubleArray[j][_getSamplesArrayPointer]);
-		}
-		_getSamplesArrayPointer++;
-		// Check if we still have at least one sample left.
-		if ((_audioInDoubleArray[0].length
+                }
+                _getSamplesArrayPointer = 0;
+                // Check that the read was successful
+                if (_audioInDoubleArray != null) {
+                    _haveASample = true;
+                }
+            }
+            // Note: we cannot use an if..then..else here because the
+            // above block may set _haveASample = true. Thus, we may
+            // sometimes need to execute both blocks.
+            if (_haveASample == true) {
+                // Copy a sample to the output array.
+                // For each channel.
+                for (int j = 0; j < _channels; j++) {
+                    _audioSendArray[i] =
+                        new DoubleToken(_audioInDoubleArray[j][_getSamplesArrayPointer]);
+                }
+                _getSamplesArrayPointer++;
+                // Check if we still have at least one sample left.
+                if ((_audioInDoubleArray[0].length
                         - _getSamplesArrayPointer) <= 0) {
-		    // We just ran out of samples.
-		    _haveASample = false;
-		}
-	    }
-	}
-	// Check that the read was successful
-	if (_audioInDoubleArray != null) {
-	    // Send.
-	    for (int j = 0; j < _channels; j++) {
-		output.send(j, _audioSendArray, count);
-	    }
-	    return COMPLETED;
-	} else {
-	    // Read was unsuccessful, so output an array of zeros.
-	    // This generally means that the end of the sound file
-	    // has been reached.
-	    // Convert to DoubleToken[].
-	    for (int i = 0; i < count; i++) {
-		_audioSendArray[i] = new DoubleToken(0);
-	    }
-	    // Output an array of zeros on each channel.
-	    for (int j = 0; j < _channels; j++) {
-		output.send(j, _audioSendArray, count);
-	    }
-	    return STOP_ITERATING;
-	}
+                    // We just ran out of samples.
+                    _haveASample = false;
+                }
+            }
+        }
+        // Check that the read was successful
+        if (_audioInDoubleArray != null) {
+            // Send.
+            for (int j = 0; j < _channels; j++) {
+                output.send(j, _audioSendArray, count);
+            }
+            return COMPLETED;
+        } else {
+            // Read was unsuccessful, so output an array of zeros.
+            // This generally means that the end of the sound file
+            // has been reached.
+            // Convert to DoubleToken[].
+            for (int i = 0; i < count; i++) {
+                _audioSendArray[i] = new DoubleToken(0);
+            }
+            // Output an array of zeros on each channel.
+            for (int j = 0; j < _channels; j++) {
+                output.send(j, _audioSendArray, count);
+            }
+            return STOP_ITERATING;
+        }
     }
 
     /** This method causes one audio sample per channel to be
@@ -270,17 +270,17 @@ public class AudioReader extends URLReader {
      *   from the specified sound file.
      */
     public boolean postfire() throws IllegalActionException {
-	int returnVal = iterate(1);
-	if (returnVal == COMPLETED) {
-	    return true;
-	} else if (returnVal == NOT_READY) {
-	    // This should never happen.
-	    throw new IllegalActionException(this, "Actor " +
+        int returnVal = iterate(1);
+        if (returnVal == COMPLETED) {
+            return true;
+        } else if (returnVal == NOT_READY) {
+            // This should never happen.
+            throw new IllegalActionException(this, "Actor " +
                     "is not ready to fire.");
-	} else if (returnVal == STOP_ITERATING) {
-	    return false;
-	}
-	return false;
+        } else if (returnVal == STOP_ITERATING) {
+            return false;
+        }
+        return false;
     }
 
     /** Free up any system resources involved in the audio
@@ -290,16 +290,16 @@ public class AudioReader extends URLReader {
      *   problem closing the file.
      */
     public void wrapup() throws IllegalActionException {
-	// Stop capturing audio.
-	if (_soundReader != null) {
-	    try {
-		_soundReader.closeFile();
-	    } catch (IOException ex) {
-		throw new IllegalActionException(this,
+        // Stop capturing audio.
+        if (_soundReader != null) {
+            try {
+                _soundReader.closeFile();
+            } catch (IOException ex) {
+                throw new IllegalActionException(this,
                         "Problem closing SoundReader:"
                         + ex);
-	    }
-	}
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -316,39 +316,39 @@ public class AudioReader extends URLReader {
      */
     protected void _setURLReader(java.io.BufferedReader reader)
             throws IllegalActionException {
-	if (_safeToInitialize) {
-	    synchronized (this) {
-		if (_soundReader != null) {
-		    try {
-			_soundReader.closeFile();
-		    } catch (IOException ex) {
-			throw new IllegalActionException(this,
+        if (_safeToInitialize) {
+            synchronized (this) {
+                if (_soundReader != null) {
+                    try {
+                        _soundReader.closeFile();
+                    } catch (IOException ex) {
+                        throw new IllegalActionException(this,
                                 "Cannot close "
                                 + "SoundReader: "
                                 + ex);
-		    }
-		}
-		// Load audio from a URL.
-		StringToken urlToken = (StringToken)sourceURL.getToken();
-		String theURL = urlToken.stringValue();
-		// Each read this many samples per channel when
-		// _soundReader.getSamples() is called.
-		// This value was chosen somewhat arbitrarily.
-		int getSamplesArraySize = 64;
-		try {
-		    _soundReader = new SoundReader(theURL,
+                    }
+                }
+                // Load audio from a URL.
+                StringToken urlToken = (StringToken)sourceURL.getToken();
+                String theURL = urlToken.stringValue();
+                // Each read this many samples per channel when
+                // _soundReader.getSamples() is called.
+                // This value was chosen somewhat arbitrarily.
+                int getSamplesArraySize = 64;
+                try {
+                    _soundReader = new SoundReader(theURL,
                             getSamplesArraySize);
-		} catch (IOException ex) {
-		    throw new IllegalActionException(this,
+                } catch (IOException ex) {
+                    throw new IllegalActionException(this,
                             "Cannot open URL '"
                             + theURL + "':"
                             + ex);
-		}
-		// Read the number of audio channels and set
-		// parameter accordingly.
-		_channels = _soundReader.getChannels();
-	    }
-	}
+                }
+                // Read the number of audio channels and set
+                // parameter accordingly.
+                _channels = _soundReader.getChannels();
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

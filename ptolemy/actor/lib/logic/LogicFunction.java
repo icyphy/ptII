@@ -106,7 +106,7 @@ public class LogicFunction extends Transformer {
         input.setTypeEquals(BaseType.BOOLEAN);
         output.setTypeEquals(BaseType.BOOLEAN);
 
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-30\" y=\"-15\" "
                 + "width=\"60\" height=\"30\" "
                 + "style=\"fill:white\"/>\n" +
