@@ -93,6 +93,11 @@ class SaveAsJava {
 
         // Generate class header output
         String sanitizedName = _name(compositeModel);
+        if (sanitizedName.length() == 0 ) {
+            throw new IllegalActionException("Name of the toplevel entity is "
+                    + "empty, so we don't know what file to build in.");
+        }
+
         code += "public class "
             + sanitizedName
             + " extends "
@@ -433,10 +438,17 @@ class SaveAsJava {
     // imported in the generated Java code, insert the class name
     // (fully qualified) into this list.
     private String _getClassName(NamedObj object) {
+        // We use fully qualified classnames so that we can
+        // generate code for actor/lib/test/auto/IIR.xml.
+        // If we don't, then when we create IIR.java, we have problems
+        // compiling because we have the ptolemy.actor.lib.IIR actor.
+
+        //String className = _extractSuffix(classFullName);
+        //_insertIfUnique(classFullName, _importList);
+        //return className;
+
         String classFullName = object.getClass().getName();
-        String className = _extractSuffix(classFullName);
-        _insertIfUnique(classFullName, _importList);
-        return className;
+        return classFullName;
     }
 
     // Return TRUE if and only if <obj> is a accessible as
