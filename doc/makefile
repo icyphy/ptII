@@ -87,6 +87,7 @@ EXTRA_SRCS = \
 	ptII$(PTVERSION).release.htm \
 	ptIIfaq.htm \
 	removeasd \
+	sandbox.htm \
 	toc.css \
 	toc.htm \
 	troubleshooting.htm \
