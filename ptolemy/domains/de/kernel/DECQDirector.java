@@ -267,6 +267,9 @@ public class DECQDirector extends Director {
         _currentTime = 0.0;
         // Haven't seen any events yet, so...
         _startTime = Double.MAX_VALUE;
+	// FIXME: _startTimeInitialized is only used for bug catching..
+	// FIXME: It could be removed later...
+	_startTimeInitialized = false;
         // Update _dag, the directed graph that indicates priorities.
         _constructDirectedGraph();
 	if (!_dag.isAcyclic()) {
