@@ -720,9 +720,10 @@ public class MultirateFSMDirector extends FSMDirector {
     /** Return the set of variables with the given parameter name that are
      *  contained by ports connected to the given port on the inside.
      *  @param port The given port.
-     *  @param parametername The given parameter name.
+     *  @param parameterName The given parameter name.
      */
-    protected List _getRefinementRateVariables(IOPort port, String parameterName)
+    protected List _getRefinementRateVariables(IOPort port,
+            String parameterName)
             throws IllegalActionException {
         List list = new LinkedList();
 
