@@ -125,6 +125,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
             report("Warning: background parameter failed: ", ex);
         }
         setBackground(_background);
+        _setupOK = true;
 
         _workspace = new Workspace(getClass().getName());
         try {
@@ -134,6 +135,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
             _toplevel.setName("topLevel");
             _toplevel.setManager(_manager);
         } catch (Exception ex) {
+            _setupOK = false;
             report("Setup of manager and top level actor failed:\n", ex);
         }
     }
@@ -153,18 +155,12 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      *  stream, followed by the stack trace.
      */
     public void report(Exception ex) {
-        String msg = "Exception thrown by applet.\n" + ex.toString();
+        String msg = "Exception thrown by applet.";
         System.err.println(msg);
         ex.printStackTrace();
         showStatus("Exception occurred.");
 
-	// Put the stack trace into a string.
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        PrintWriter printWriter = new PrintWriter(stream);
-        ex.printStackTrace(printWriter);
-        printWriter.flush();
-
-        new Message(msg + "\n" + stream.toString());
+        new Message(msg + "\n" + _getStackTrace(ex));
     }
 
     /** Report an exception with an additional message.  Currently
@@ -172,12 +168,11 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      *  although soon it will pop up a message window instead.
      */
     public void report(String message, Exception ex) {
-        String msg = "Exception thrown by applet.\n" + message + "\n"
-            + ex.toString();
+        String msg = "Exception thrown by applet.\n" + message;
             System.err.println(msg);
             ex.printStackTrace();
             showStatus("Exception occurred.");
-            new Message(msg + "\nSee Java console for stack trace.");
+            new Message(msg + "\n" + _getStackTrace(ex));
     }
 
     /** Start execution of the model. This method is called by the
@@ -190,6 +185,8 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      *  override this method with a blank method.
      */
     public void start() {
+        // If an exception occurred during init, do not execute.
+        if (!_setupOK) return;
         try {
             _go();
         } catch (Exception ex) {
@@ -206,7 +203,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      *  of the manager. If there is no manager, do nothing.
      */
     public void stop() {
-        if(_manager != null) {
+        if(_manager != null && _setupOK) {
             _manager.finish();
         }
     }
@@ -221,7 +218,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      *  is deprecated.
      */
     public void destroy() {
-        if(_manager != null) {
+        if(_manager != null && _setupOK) {
             _manager.terminate();
         }
     }
@@ -279,43 +276,64 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
         return _background;
     }
 
+    /** Get the stack trace and return as a string.
+     *  @param ex The exception for which we want the stack trace.
+     *  @return The stack trace.
+     */
+    protected String _getStackTrace(Exception ex) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        PrintWriter printWriter = new PrintWriter(stream);
+        ex.printStackTrace(printWriter);
+        printWriter.flush();
+        return stream.toString();
+    }
+
     /** Execute the model.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected void _go() throws IllegalActionException {
+        // If an exception occurred during init, do not execute.
+        if (!_setupOK) return;
         _manager.startRun();
     }
 
     /** Stop the execution.
      */
     protected void _stop() {
+        // If an exception occurred during init, do not finish.
+        if (!_setupOK) return;
 	_manager.finish();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** The background color as set by the "background" applet parameter.
+     *  This is protected so that derived classes can control what the
+     *  background color is.  The Applet base class does not provide
+     *  a getBackground() method.  Derived classes may wish to know the
+     *  color so they can match it in some of their components.
+     */
+    protected Color _background;
+
+    /** The manager, created in the init() method. */
+    protected Manager _manager;
+
+    /** Set this to false if the setup of the model during the init()
+     *  method fails.  This prevents the model from executing.
+     */
+    protected boolean _setupOK = true;
+
+    /** The top-level composite actor, created in the init() method. */
+    protected TypedCompositeActor _toplevel;
+
     /** The workspace that the applet is built in. Each applet has
      *  it own workspace.
      */
     protected Workspace _workspace;
 
-    /** The manager, created in the init() method. */
-    protected Manager _manager;
-
-    /** The top-level composite actor, created in the init() method. */
-    protected TypedCompositeActor _toplevel;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /*  The background color as set by the "background" applet parameter.
-     *  This is protected so that derived classes can find out what the
-     *  background color is.  The Applet base class does not provide
-     *  a getBackground() method.  Derived classes may wish to know the
-     *  color so they can match it in some of their components.
-     */
-    private Color _background;
 
     private Button _goButton;
     private Button _stopButton;
