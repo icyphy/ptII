@@ -243,7 +243,6 @@ public final class Workspace implements Nameable, Serializable {
         // FIXME: The code for PtolemyThread and non-PtolemyThread are really
         // similar. Find way to consolidate them.. I sure can't find one now
         // (lmuliadi).
-
         if (current instanceof PtolemyThread) {
             // The current thread is a PtolemyThread.
             PtolemyThread ptThread = (PtolemyThread)current;
@@ -356,11 +355,10 @@ public final class Workspace implements Nameable, Serializable {
         // check if this current thread can get a read access, if not then
         // at the end of iteration, do a wait() on the workspace. Otherwise,
         // once the thread get a read access, it returns.
+        Thread current = Thread.currentThread();
         while (true) {
             // If the current thread has read permission, then grant
             // it read permission
-            Thread current = Thread.currentThread();
-
             if (current instanceof PtolemyThread) {
                 // If the current thread is an instance of PtolemyThread,
                 // then use the readDepth field of it.
@@ -388,15 +386,8 @@ public final class Workspace implements Nameable, Serializable {
                     // are no pending write requests, then grant
                     // read permission.
                     if (current == _writer || _writeReq == 0 ) {
-                        // The thread may already have read permission.
-                        if (depth == null) {
-                            // FIXME: Note that depth will always be null in
-                            // here, so maybe we should get rid of this inner
-                            // if... Let me know if this is not right..
-                            // (lmuliadi)
-                            depth = new ReadDepth();
-                            _readers.put(current, depth);
-                        }
+                        depth = new ReadDepth();
+                        _readers.put(current, depth);
                         depth.incr();
                         return;
                     }
@@ -458,7 +449,6 @@ public final class Workspace implements Nameable, Serializable {
                 }
 
                 // Check if sole reader is this current thread.
-
                 if (current instanceof PtolemyThread) {
                     // current thread is a PtolemyThread.
                     PtolemyThread ptThread = (PtolemyThread)current;
@@ -566,10 +556,14 @@ public final class Workspace implements Nameable, Serializable {
     public synchronized void setReadOnly(boolean flagValue)
             throws IllegalActionException {
         if (flagValue == true) {
-            // Check if there's no writer.
-            if (_writer != null) {
-                throw new IllegalActionException(this, "Can't make a " +
-                        "workspace read-only while there is a writer on it.");
+            // Check if there's no writer or reader.
+            // NOTE: This used to only check the writer, but that's
+            // not correct, because doneReading() and getReadPermission()
+            // will get out of sync.  EAL 4/10/03
+            if (_writer != null || (_readers.isEmpty() && _numPtReaders == 0)) {
+                throw new IllegalActionException(this,
+                        "Can't make a workspace read-only while "
+                        + "threads have read or write permission.");
             }
         }
         _readOnly = flagValue;
@@ -741,7 +735,6 @@ public final class Workspace implements Nameable, Serializable {
         Thread current = Thread.currentThread();
 
         // First check whether current thread is an instance of PtolemyThread.
-
         if (current instanceof PtolemyThread) {
             // the current thread is an instance of PtolemyThread.
             PtolemyThread pthread = (PtolemyThread) current;
