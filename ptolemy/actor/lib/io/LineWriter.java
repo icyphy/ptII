@@ -180,7 +180,7 @@ public class LineWriter extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            StringToken token = (StringToken)input.get(0);
+            Token token = input.get(0);
             if (_writer == null) {
                 // Open the file.
                 File file = fileName.asFile();

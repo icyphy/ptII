@@ -31,6 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.io;
 
 import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.attributes.FileAttribute; // For javadoc
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
@@ -81,6 +82,7 @@ public class ExpressionWriter extends LineWriter {
     public ExpressionWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        input.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////
