@@ -196,8 +196,12 @@ PTINYPACKAGES = \
 #GRPACKAGES =		ptolemy.domains.gr.kernel \
 #			ptolemy.domains.gr.lib
 
+# ptoelmy.actor.lib.joystick.Joystick uses the Joystick API
+#JOYSTICKPACKAGES =	ptolemy.actor.lib.joystick
+
 ALLPACKAGES =		$(COMMPACKAGES) \
 			$(COPERNICUSPACKAGES) \
+			$(JOYSTICKPACKAGES) \
 			$(PTINYPACKAGES) \
 			$(GRPACKAGES) \
 			jni \
