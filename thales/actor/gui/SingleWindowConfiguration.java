@@ -58,7 +58,7 @@ import thales.vergil.SingleWindowApplication;
 
    @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and technology, 01 sept. 2003
    @version $Id$
-   @since Ptolemy II 3.1
+   @since Ptolemy II 4.0
 */
 public class SingleWindowConfiguration extends Configuration {
 

@@ -1,24 +1,6 @@
-/*
- * Created on 01 sept. 2003
- *
- * @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
- * @AcceptedRating
- */
-package thales.vergil.navigable;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.tree.TreePath;
-
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.tree.ClassAndEntityTreeModel;
-
-/**
- * <p>Titre : NavigationTreeModel</p>
- * <p>Description : used to represent all the entities of a MoML file</p>
+ @author J&eacute;r&ocirc;me Blanc & Benoit Masson
+ @version $Id$
+ @since Ptolemy II 4.0
  Copyright (c) 2003-2004 THALES.
  All rights reserved.
 
@@ -38,9 +20,38 @@ import ptolemy.vergil.tree.ClassAndEntityTreeModel;
  A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
  BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
  UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
- * @author J&eacute;r&ocirc;me Blanc & Benoit Masson
- * 01 sept. 2003
+
+ Created on 01 sept. 2003
+
+ @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+ @AcceptedRating
+*/
+
+/*
+ * Created on 01 sept. 2003
+ *
+ * @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+ * @AcceptedRating
+ */
+package thales.vergil.navigable;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.tree.TreePath;
+
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.tree.ClassAndEntityTreeModel;
+
+/**
+ <p>Titre : NavigationTreeModel</p>
+ <p>Description : used to represent all the entities of a MoML file</p>
+ <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
+ @author J&eacute;r&ocirc;me Blanc & Benoit Masson  * 01 sept. 2003
+ @version $Id$
+ @since Ptolemy II 4.0
  */
 public class NavigationTreeModel extends ClassAndEntityTreeModel {
 

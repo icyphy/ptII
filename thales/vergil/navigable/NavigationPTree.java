@@ -1,28 +1,3 @@
-/*
- * Created on 01 sept. 2003
- *
- * @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
- * @AcceptedRating
- */
-package thales.vergil.navigable;
-
-import javax.swing.event.TreeExpansionEvent;
-import javax.swing.event.TreeExpansionListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreePath;
-
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.tree.PTree;
-import thales.vergil.SingleWindowApplication;
-
-/**
- * <p>Titre : NavigationPTree</p>
- * <p>Description : A navigation tree to browse a Ptolemy model</p>
  Copyright (c) 2003-2004 THALES.
  All rights reserved.
 
@@ -42,9 +17,36 @@ import thales.vergil.SingleWindowApplication;
  A PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
  BASIS, AND THALES HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT,
  UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
- * <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
- * @author J&eacute;r&ocirc;me Blanc & Benoit Masson
- * 01 sept. 2003
+
+ Created on 01 sept. 2003
+
+ @ProposedRating Yellow (jerome.blanc@thalesgroup.com)
+ @AcceptedRating
+*/
+
+package thales.vergil.navigable;
+
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.tree.PTree;
+import thales.vergil.SingleWindowApplication;
+
+/**
+ <p>Titre : NavigationPTree</p>
+ <p>Description : A navigation tree to browse a Ptolemy model</p>
+ <p>Soci&eacute;t&eacute; : Thales Research and technology</p>
+ @author J&eacute;r&ocirc;me Blanc & Benoit Masson  01 sept. 2003
+ @version $Id$
+ @since Ptolemy II 4.0
  */
 
 public class NavigationPTree extends PTree {
