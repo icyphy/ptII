@@ -57,6 +57,7 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	about.htm \
 	authors.htm \
+	completeDemos.htm \
 	configuration.xml \
 	copyright.htm \
 	directors.xml \
