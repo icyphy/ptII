@@ -58,17 +58,19 @@ test XSLTUtilities-1.1 {Call main} {
 
     # Strip out spaces.  between java 1.4.1 and 1.4.2, the
     # output changed
+
     regsub -all {[ ]+} $results { } results2
-    list $results2
+    regsub -all {^[ ]*} $results2 {} results3
+    list $results3
 } {{<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <WMBasicEdit>
- <Attributes>
+<Attributes>
 <WMENC_STRING Name="Title"/>
 </Attributes>
 
- <RemoveAllMarkers/>
- <RemoveAllScripts/>
- <Scripts>
+<RemoveAllMarkers/>
+<RemoveAllScripts/>
+<Scripts>
 <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
 <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
 </Scripts>
@@ -92,21 +94,21 @@ test XSLTUtilities-2.1 {test parse and toString} {
     # Strip out spaces.  between java 1.4.1 and 1.4.2, the
     # output changed
     regsub -all {[ ]+} $inputString { } results2
-    list $results2
-
+    regsub -all {^[ ]*} $results2 {} results3
+    list $results3
 } {{<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <WMBasicEdit>
- <Attributes>
- <WMENC_STRING Name="Title"/>
+<Attributes>
+<WMENC_STRING Name="Title"/>
 
- </Attributes>
+</Attributes>
 
- <RemoveAllMarkers/>
- <RemoveAllScripts/>
- <Scripts>
- <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
- <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
- </Scripts>
+<RemoveAllMarkers/>
+<RemoveAllScripts/>
+<Scripts>
+<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
+<Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+</Scripts>
 
 </WMBasicEdit>
 }}
@@ -140,17 +142,17 @@ test XSLTUtilities-3.2 {Call transform(Document, List) using local files} {
     # Strip out spaces.  between java 1.4.1 and 1.4.2, the
     # output changed
     regsub -all {[ ]+} $outputString { } results2
-    list $results2
-
+    regsub -all {^[ ]*} $results2 {} results3
+    list $results3
 } {{<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <WMBasicEdit>
- <Attributes>
+<Attributes>
 <WMENC_STRING Name="Title"/>
 </Attributes>
 
- <RemoveAllMarkers/>
- <RemoveAllScripts/>
- <Scripts>
+<RemoveAllMarkers/>
+<RemoveAllScripts/>
+<Scripts>
 <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
 <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
 </Scripts>
@@ -176,16 +178,17 @@ test XSLTUtilities-3.3 {Call transform(Document, List) using files found in the 
     # Strip out spaces.  between java 1.4.1 and 1.4.2, the
     # output changed
     regsub -all {[ ]+} $outputString { } results2
-    list $results2
+    regsub -all {^[ ]*} $results2 {} results3
+    list $results3
 } {{<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <WMBasicEdit>
- <Attributes>
+<Attributes>
 <WMENC_STRING Name="Title"/>
 </Attributes>
 
- <RemoveAllMarkers/>
- <RemoveAllScripts/>
- <Scripts>
+<RemoveAllMarkers/>
+<RemoveAllScripts/>
+<Scripts>
 <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
 <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
 </Scripts>
@@ -219,16 +222,17 @@ test XSLTUtilities-3.4 {Call transform(String, String, String)} {
     # Strip out spaces.  between java 1.4.1 and 1.4.2, the
     # output changed
     regsub -all {[ ]+} $results { } results2
-    list $results2
+    regsub -all {^[ ]*} $results2 {} results3
+    list $results3
 } {{<?xml version="1.0" encoding="UTF-8"?>
 <WMBasicEdit>
- <Attributes>
+<Attributes>
 <WMENC_STRING Name="Title"/>
 </Attributes>
 
- <RemoveAllMarkers/>
- <RemoveAllScripts/>
- <Scripts>
+<RemoveAllMarkers/>
+<RemoveAllScripts/>
+<Scripts>
 <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
 <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
 </Scripts>
