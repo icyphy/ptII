@@ -440,7 +440,11 @@ For more help, choose Help from the upper menu bar.</text>
     <xsl:variable name="nextState" select="key('nodeID',$nextStateID)/@name"/>
     <xsl:element name="relation">
         <!-- attributes of relation -->
-        <xsl:attribute name="name"><xsl:value-of select="@_id"/></xsl:attribute>
+        <xsl:variable name="transitionID" select="@_id"/>
+        <xsl:attribute name="name">
+             <xsl:if test="$transitionID!=''"><xsl:value-of select="$transitionID"/></xsl:if>
+             <xsl:if test="$transitionID=''"><xsl:value-of select="concat($stateID, $nextStateID)"/></xsl:if>
+        </xsl:attribute>
         <xsl:attribute name="class">ptolemy.domains.fsm.kernel.Transition</xsl:attribute>
         <!-- attributes of guard Expression -->
         <xsl:element name="property">
@@ -902,7 +906,22 @@ For more help, choose Help from the upper menu bar.</text>
         </xsl:for-each>
         <xsl:value-of select="@value|key('nodeID',@var)/@name|@name"/>
     </xsl:for-each>
-    <!-- weird behaviors -->
+    <xsl:for-each select="FunctionCall">
+        <xsl:for-each select="@unOp">
+            <xsl:variable name="temp"><xsl:value-of select="."/></xsl:variable>
+            <xsl:choose>
+                <xsl:when test="$temp!='NOP'"><xsl:value-of select="$temp"/></xsl:when>
+            </xsl:choose>
+        </xsl:for-each>
+        <xsl:variable name="tempName" select="@name"/>
+        <xsl:value-of select='translate($tempName,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz")'/>
+        <xsl:text>(</xsl:text>
+        <xsl:for-each select="ExprArg">
+            <xsl:apply-templates select="Expr" mode="expr"/>
+            <xsl:if test="position()!=last()">,</xsl:if>
+        </xsl:for-each>
+        <xsl:text>)</xsl:text>
+    </xsl:for-each>
     <xsl:apply-templates select="ParExpr"/>
     <xsl:for-each select="MExprR">
         <xsl:value-of select="@mulOp"/>
