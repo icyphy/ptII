@@ -98,7 +98,7 @@ public class ECSLStep extends ContinuousClock {
             throws IllegalActionException {
         if (attribute == After) {
             // FIXME: Ther is probably a better way to do this.
-            values.setExpression("{0.0, " + After.getToken());
+            values.setExpression("{0.0, " + After.getToken() + "}");
         } else {
             super.attributeChanged(attribute);
         }
