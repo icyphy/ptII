@@ -51,10 +51,10 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 # test NameDuplicationException-2.1 {One named objects} {
-#     set containee [java::new pt.kernel.Port]
+#     set containee [java::new ptolemy.kernel.Port]
 #     $containee setName "wouldBeContainee"
-#     set pe [java::new {pt.kernel.util.NameDuplicationException \
-#             pt.kernel.util.Nameable} $containee]
+#     set pe [java::new {ptolemy.kernel.util.NameDuplicationException \
+#             ptolemy.kernel.util.Nameable} $containee]
 #     list [$pe getMessage] [$pe getLocalizedMessage]
 # } {{Attempt to insert object named "wouldBeContainee" into a container that already contains an object with that name.} {Attempt to insert object named "wouldBeContainee" into a container that already contains an object with that name.}}
 
@@ -62,10 +62,10 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 # test NameDuplicationException-2.2 {One named object and one string} {
-#     set containee [java::new pt.kernel.Port]
+#     set containee [java::new ptolemy.kernel.Port]
 #     $containee setName "wouldBeContainee"
-#     set pe [java::new {pt.kernel.util.NameDuplicationException \
-#             pt.kernel.util.Nameable String} $containee {more info}]
+#     set pe [java::new {ptolemy.kernel.util.NameDuplicationException \
+#             ptolemy.kernel.util.Nameable String} $containee {more info}]
 #     list [$pe getMessage] [$pe getLocalizedMessage]
 # } {{Attempt to insert object named "wouldBeContainee" into a container that already contains an object with that name. more info} {Attempt to insert object named "wouldBeContainee" into a container that already contains an object with that name. more info}}
 
@@ -73,11 +73,11 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test NameDuplicationException-2.3 {Two named objects arguments} {
-    set container [java::new pt.kernel.Entity "container"]
-    set containee [java::new pt.kernel.Port]
+    set container [java::new ptolemy.kernel.Entity "container"]
+    set containee [java::new ptolemy.kernel.Port]
     $containee setName "wouldBeContainee"
-    set pe [java::new {pt.kernel.util.NameDuplicationException \
-            pt.kernel.util.Nameable pt.kernel.util.Nameable} $container $containee]
+    set pe [java::new {ptolemy.kernel.util.NameDuplicationException \
+            ptolemy.kernel.util.Nameable ptolemy.kernel.util.Nameable} $container $containee]
     list [$pe getMessage] [$pe getLocalizedMessage]
 } {{Attempt to insert object named "wouldBeContainee" into container named ".container", which already contains an object with that name.} {Attempt to insert object named "wouldBeContainee" into container named ".container", which already contains an object with that name.}}
 
@@ -85,10 +85,10 @@ test NameDuplicationException-2.3 {Two named objects arguments} {
 ####
 #
 test NameDuplicationException-2.4 {two objects and a string} {
-    set container [java::new pt.kernel.Entity "container"]
-    set containee [java::new pt.kernel.Port]
+    set container [java::new ptolemy.kernel.Entity "container"]
+    set containee [java::new ptolemy.kernel.Port]
     $containee setName "wouldBeContainee"
-    set pe [java::new pt.kernel.util.NameDuplicationException \
+    set pe [java::new ptolemy.kernel.util.NameDuplicationException \
             $container $containee "more info" ]
     list [$pe getMessage] [$pe getLocalizedMessage]
 } {{Attempt to insert object named "wouldBeContainee" into container named ".container", which already contains an object with that name. more info} {Attempt to insert object named "wouldBeContainee" into container named ".container", which already contains an object with that name. more info}}
@@ -99,7 +99,7 @@ test NameDuplicationException-2.4 {two objects and a string} {
 test NameDuplicationException-3.1 {Two null objects} {
     set container [java::null]
     set containee [java::null]
-    set pe [java::new pt.kernel.util.NameDuplicationException \
+    set pe [java::new ptolemy.kernel.util.NameDuplicationException \
             $container $containee "more info" ]
     list [$pe getMessage] [$pe getLocalizedMessage]
 } {{Attempt to insert object named "" into a container that already contains an object with that name. more info} {Attempt to insert object named "" into a container that already contains an object with that name. more info}}

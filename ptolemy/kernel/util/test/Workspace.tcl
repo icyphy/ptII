@@ -55,7 +55,7 @@ if {[info procs enumToObjects] == "" } then {
 ####
 #
 test Workspace-2.1 {Create a Workspace, set the name, change it} {
-    set w [java::new pt.kernel.util.Workspace]
+    set w [java::new ptolemy.kernel.util.Workspace]
     set result1 [$w getName]
     $w setName A
     set result2 [$w getName]
@@ -70,35 +70,35 @@ test Workspace-2.1 {Create a Workspace, set the name, change it} {
 ####
 #
 test Workspace-3.1 {Add objects to the workspace directory} {
-    set w [java::new pt.kernel.util.Workspace W]
-    set n1 [java::new pt.kernel.util.NamedObj $w N1]
-    set n2 [java::new pt.kernel.util.NamedObj $w N2]
-    set n3 [java::new pt.kernel.util.NamedObj $w N3]
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set n1 [java::new ptolemy.kernel.util.NamedObj $w N1]
+    set n2 [java::new ptolemy.kernel.util.NamedObj $w N2]
+    set n3 [java::new ptolemy.kernel.util.NamedObj $w N3]
     enumToFullNames [$w directory]
 } {W.N1 W.N2 W.N3}
 
 test Workspace-3.2 {Add objects to the wrong workspace} {
-    set w [java::new pt.kernel.util.Workspace W]
-    set n1 [java::new pt.kernel.util.NamedObj N1]
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set n1 [java::new ptolemy.kernel.util.NamedObj N1]
     catch {$w add $n1} msg
     list $msg
-} {{pt.kernel.util.IllegalActionException: W and .N1: Cannot add an item to the directory of a workspace that it is not in.}}
+} {{ptolemy.kernel.util.IllegalActionException: W and .N1: Cannot add an item to the directory of a workspace that it is not in.}}
 
 test Workspace-3.3 {Add objects twice to the workspace directory} {
-    set w [java::new pt.kernel.util.Workspace W]
-    set n1 [java::new pt.kernel.util.NamedObj $w N1]
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set n1 [java::new ptolemy.kernel.util.NamedObj $w N1]
     catch {$w add $n1} msg
     list $msg
-} {{pt.kernel.util.IllegalActionException: W and W.N1: Object is already listed in the workspace directory.}}
+} {{ptolemy.kernel.util.IllegalActionException: W and W.N1: Object is already listed in the workspace directory.}}
 
 ######################################################################
 ####
 #
 test Workspace-4.1 {Remove objects from the workspace directory} {
-    set w [java::new pt.kernel.util.Workspace W]
-    set n1 [java::new pt.kernel.util.NamedObj $w N1]
-    set n2 [java::new pt.kernel.util.NamedObj $w N2]
-    set n3 [java::new pt.kernel.util.NamedObj $w N3]
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set n1 [java::new ptolemy.kernel.util.NamedObj $w N1]
+    set n2 [java::new ptolemy.kernel.util.NamedObj $w N2]
+    set n3 [java::new ptolemy.kernel.util.NamedObj $w N3]
     $w remove $n2
     enumToFullNames [$w directory]
 } {W.N1 W.N3}
@@ -113,8 +113,8 @@ test Workspace-4.2 {Remove all objects from the workspace directory} {
 ####
 #
 test Workspace-5.1 {Test multi-thread access} {
-    set w [java::new pt.kernel.util.Workspace W]
-    set t [java::new pt.kernel.util.test.TestWorkspace T $w]
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set t [java::new ptolemy.kernel.util.test.TestWorkspace T $w]
     $t profile
 } {}
 
@@ -135,9 +135,9 @@ T.doneWriting()
 }
 
 test Workspace-5.3 {Test multi-thread access} {
-    set w [java::new pt.kernel.util.Workspace W]
-    set t1 [java::new pt.kernel.util.test.TestWorkspace T1 $w]
-    set t2 [java::new pt.kernel.util.test.TestWorkspace T2 $w]
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set t1 [java::new ptolemy.kernel.util.test.TestWorkspace T1 $w]
+    set t2 [java::new ptolemy.kernel.util.test.TestWorkspace T2 $w]
     $t1 start
     $t2 start
     # Give the threads a chance to start up.

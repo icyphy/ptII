@@ -35,7 +35,7 @@
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-ME =		pt/kernel/util
+ME =		ptolemy/kernel/util
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -49,9 +49,9 @@ DIRS = 		test #doc
 CLASSPATH = 	../../..
 
 # Used to build zip files
-TYPACKAGE = 	pt.kernel.util
+TYPACKAGE = 	ptolemy.kernel.util
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = pt/kernel/util
+TYPACKAGE_DIR = ptolemy/kernel/util
 TYVERSION =	1.0
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip

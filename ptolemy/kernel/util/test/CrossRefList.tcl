@@ -61,8 +61,8 @@ if {[info procs enumToNames] == "" } then {
 #
 test CrossRefList-2.1 {Create a CrossRefList, copy it} {
     set owner [java::new Object]
-    set crlone [java::new pt.kernel.util.CrossRefList $owner]
-    set crltwo [java::new pt.kernel.util.CrossRefList $owner $crlone]
+    set crlone [java::new ptolemy.kernel.util.CrossRefList $owner]
+    set crltwo [java::new ptolemy.kernel.util.CrossRefList $owner $crlone]
     list [$crlone size] [$crlone size]
 } {0 0}
 
@@ -71,7 +71,7 @@ test CrossRefList-2.1 {Create a CrossRefList, copy it} {
 #
 test CrossRefList-2.2 {Create a CrossRefList, try to enumerate it} {
     set owner [java::new Object]
-    set crlone [java::new pt.kernel.util.CrossRefList $owner]
+    set crlone [java::new ptolemy.kernel.util.CrossRefList $owner]
     set enum [$crlone getContainers]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
@@ -81,10 +81,10 @@ test CrossRefList-2.2 {Create a CrossRefList, try to enumerate it} {
 ####
 #
 test CrossRefList-3.1 {link CrossRefLists, check out isLinked} {
-    set ownerone [java::new pt.kernel.util.NamedObj "Owner One"]
-    set crlone [java::new pt.kernel.util.CrossRefList $ownerone]
-    set ownertwo [java::new pt.kernel.util.NamedObj "Owner Two"]
-    set crltwo [java::new pt.kernel.util.CrossRefList $ownertwo]
+    set ownerone [java::new ptolemy.kernel.util.NamedObj "Owner One"]
+    set crlone [java::new ptolemy.kernel.util.CrossRefList $ownerone]
+    set ownertwo [java::new ptolemy.kernel.util.NamedObj "Owner Two"]
+    set crltwo [java::new ptolemy.kernel.util.CrossRefList $ownertwo]
     $crlone link $crltwo
     list [_testCrossRefListGetLinks $crlone $crltwo] \
 	    [list \
@@ -102,12 +102,12 @@ test CrossRefList-3.1 {link CrossRefLists, check out isLinked} {
 test CrossRefList-4.1 {link CrossRefLists, check out unlink} {
     # Create Three CrossRefLists, link the first to the other two,
     # then unlink
-    set ownerone [java::new pt.kernel.util.NamedObj "Owner One"]
-    set crlone [java::new pt.kernel.util.CrossRefList $ownerone]
-    set ownertwo [java::new pt.kernel.util.NamedObj "Owner Two"]
-    set crltwo [java::new pt.kernel.util.CrossRefList $ownertwo]
-    set ownerthree [java::new pt.kernel.util.NamedObj "Owner Three"]
-    set crlthree [java::new pt.kernel.util.CrossRefList $ownerthree]
+    set ownerone [java::new ptolemy.kernel.util.NamedObj "Owner One"]
+    set crlone [java::new ptolemy.kernel.util.CrossRefList $ownerone]
+    set ownertwo [java::new ptolemy.kernel.util.NamedObj "Owner Two"]
+    set crltwo [java::new ptolemy.kernel.util.CrossRefList $ownertwo]
+    set ownerthree [java::new ptolemy.kernel.util.NamedObj "Owner Three"]
+    set crlthree [java::new ptolemy.kernel.util.CrossRefList $ownerthree]
     set result0 [_testCrossRefListGetLinks $crlone $crltwo $crlthree]
 
     $crlone link $crltwo
@@ -140,12 +140,12 @@ result4 = $result4\n\
 ####
 #
 test CrossRefList-4.2 {link CrossRefLists, check out unlink} {
-    set ownerone [java::new pt.kernel.util.NamedObj "Owner One"]
-    set crlone [java::new pt.kernel.util.CrossRefList $ownerone]
-    set ownertwo [java::new pt.kernel.util.NamedObj "Owner Two"]
-    set crltwo [java::new pt.kernel.util.CrossRefList $ownertwo]
-    set ownerthree [java::new pt.kernel.util.NamedObj "Owner Three"]
-    set crlthree [java::new pt.kernel.util.CrossRefList $ownerthree]
+    set ownerone [java::new ptolemy.kernel.util.NamedObj "Owner One"]
+    set crlone [java::new ptolemy.kernel.util.CrossRefList $ownerone]
+    set ownertwo [java::new ptolemy.kernel.util.NamedObj "Owner Two"]
+    set crltwo [java::new ptolemy.kernel.util.CrossRefList $ownertwo]
+    set ownerthree [java::new ptolemy.kernel.util.NamedObj "Owner Three"]
+    set crlthree [java::new ptolemy.kernel.util.CrossRefList $ownerthree]
     set result0 [_testCrossRefListGetLinks $crlone $crltwo $crlthree]
 
     # 1->2 2->3 3->2
@@ -182,10 +182,10 @@ unlink 1 = $result4\n\
 ####
 #
 test CrossRefList-4.3 {link two CrossLists many times, then unlink} {
-    set ownerone [java::new pt.kernel.util.NamedObj "Owner One"]
-    set crlone [java::new pt.kernel.util.CrossRefList $ownerone]
-    set ownertwo [java::new pt.kernel.util.NamedObj "Owner Two"]
-    set crltwo [java::new pt.kernel.util.CrossRefList $ownertwo]
+    set ownerone [java::new ptolemy.kernel.util.NamedObj "Owner One"]
+    set crlone [java::new ptolemy.kernel.util.CrossRefList $ownerone]
+    set ownertwo [java::new ptolemy.kernel.util.NamedObj "Owner Two"]
+    set crltwo [java::new ptolemy.kernel.util.CrossRefList $ownertwo]
 
     set result0 [_testCrossRefListGetLinks $crlone $crltwo $crlthree]
 
@@ -221,12 +221,12 @@ unlink 1->2 4 times = $result3\n\
 ####
 #
 test CrossRefList-5.1 {link CrossRefLists, then use the copy constructor} {
-    set ownerone [java::new pt.kernel.util.NamedObj "Owner One"]
-    set crlone [java::new pt.kernel.util.CrossRefList $ownerone]
-    set ownertwo [java::new pt.kernel.util.NamedObj "Owner Two"]
-    set crltwo [java::new pt.kernel.util.CrossRefList $ownertwo]
-    set ownerthree [java::new pt.kernel.util.NamedObj "Owner Three"]
-    set crlthree [java::new pt.kernel.util.CrossRefList $ownerthree]
+    set ownerone [java::new ptolemy.kernel.util.NamedObj "Owner One"]
+    set crlone [java::new ptolemy.kernel.util.CrossRefList $ownerone]
+    set ownertwo [java::new ptolemy.kernel.util.NamedObj "Owner Two"]
+    set crltwo [java::new ptolemy.kernel.util.CrossRefList $ownertwo]
+    set ownerthree [java::new ptolemy.kernel.util.NamedObj "Owner Three"]
+    set crlthree [java::new ptolemy.kernel.util.CrossRefList $ownerthree]
 
     set result0 [_testCrossRefListGetLinks $crlone $crltwo $crlthree]
 
@@ -234,8 +234,8 @@ test CrossRefList-5.1 {link CrossRefLists, then use the copy constructor} {
     $crlone link $crlthree
     set result1 [_testCrossRefListGetLinks $crlone $crltwo $crlthree]
 
-    set ownerfour [java::new pt.kernel.util.NamedObj "Owner Four"]
-    set crlfour [java::new pt.kernel.util.CrossRefList $ownerfour $crlone]
+    set ownerfour [java::new ptolemy.kernel.util.NamedObj "Owner Four"]
+    set crlfour [java::new ptolemy.kernel.util.CrossRefList $ownerfour $crlone]
     set result2 [_testCrossRefListGetLinks $crlone $crltwo $crlthree $crlfour]
 
     $crlone unlinkAll
@@ -262,12 +262,12 @@ unlink 4->3 = $result4\n\
 ####
 #
 test CrossRefList-5.2 {link CrossRefLists, then check ordering} {
-    set a1 [java::new pt.kernel.util.NamedObj A1]
-    set c1 [java::new pt.kernel.util.CrossRefList $a1]
-    set a2 [java::new pt.kernel.util.NamedObj A2]
-    set c2 [java::new pt.kernel.util.CrossRefList $a2]
-    set a3 [java::new pt.kernel.util.NamedObj A3]
-    set c3 [java::new pt.kernel.util.CrossRefList $a3]
+    set a1 [java::new ptolemy.kernel.util.NamedObj A1]
+    set c1 [java::new ptolemy.kernel.util.CrossRefList $a1]
+    set a2 [java::new ptolemy.kernel.util.NamedObj A2]
+    set c2 [java::new ptolemy.kernel.util.CrossRefList $a2]
+    set a3 [java::new ptolemy.kernel.util.NamedObj A3]
+    set c3 [java::new ptolemy.kernel.util.CrossRefList $a3]
 
     $c1 link $c2
     $c1 link $c3
@@ -278,9 +278,9 @@ test CrossRefList-5.2 {link CrossRefLists, then check ordering} {
 ####
 #
 test CrossRefList-5.3 {link CrossRefList to itself} {
-    set a1 [java::new pt.kernel.util.NamedObj A1]
-    set c1 [java::new pt.kernel.util.CrossRefList $a1]
+    set a1 [java::new ptolemy.kernel.util.NamedObj A1]
+    set c1 [java::new ptolemy.kernel.util.CrossRefList $a1]
 
     catch {$c1 link $c1} errmsg
     list $errmsg
-} {{pt.kernel.util.IllegalActionException: CrossRefLink.link: Illegal self-link.}}
+} {{ptolemy.kernel.util.IllegalActionException: CrossRefLink.link: Illegal self-link.}}

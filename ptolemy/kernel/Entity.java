@@ -28,9 +28,9 @@
 @AcceptedRating Green (johnr@eecs.berkeley.edu)
 */
 
-package pt.kernel;
+package ptolemy.kernel;
 
-import pt.kernel.util.*;
+import ptolemy.kernel.util.*;
 
 import java.util.Enumeration;
 import java.lang.reflect.*;
@@ -65,8 +65,8 @@ to a topology from multiple threads.  The workspace is immutable
 
 @author John S. Davis II, Edward A. Lee
 @version $Id$
-@see pt.kernel.Port
-@see pt.kernel.Relation
+@see ptolemy.kernel.Port
+@see ptolemy.kernel.Relation
 */
 public class Entity extends NamedObj {
 

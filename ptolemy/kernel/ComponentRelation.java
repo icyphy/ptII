@@ -27,9 +27,9 @@
 @AcceptedRating Green (johnr@eecs.berkeley.edu)
 */
 
-package pt.kernel;
+package ptolemy.kernel;
 
-import pt.kernel.util.*;
+import ptolemy.kernel.util.*;
 
 import java.util.Enumeration;
 import collections.LinkedList;

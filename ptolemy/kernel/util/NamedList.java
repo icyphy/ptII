@@ -34,7 +34,7 @@ This would require extensions to the interface, but not modifications
 of the current interface.
 */
 
-package pt.kernel.util;
+package ptolemy.kernel.util;
 
 import collections.CorruptedEnumerationException;
 

@@ -51,7 +51,7 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test NoSuchItemException-3.1 {Create a NoSuchItemException with a detail message} {
-    set pe [java::new {pt.kernel.util.NoSuchItemException String} "A message"]
+    set pe [java::new {ptolemy.kernel.util.NoSuchItemException String} "A message"]
     list [$pe getMessage] [$pe getLocalizedMessage]
 } {{A message} {A message}}
 
@@ -59,7 +59,7 @@ test NoSuchItemException-3.1 {Create a NoSuchItemException with a detail message
 ####
 #
 test NoSuchItemException-3.2 {Create a NoSuchItemException with a null detail message} {
-    set pe [java::new {pt.kernel.util.NoSuchItemException String} [java::null]]
+    set pe [java::new {ptolemy.kernel.util.NoSuchItemException String} [java::null]]
     list [$pe getMessage]
 } {{}}
 
@@ -68,11 +68,11 @@ test NoSuchItemException-3.2 {Create a NoSuchItemException with a null detail me
 #
 test NoSuchItemException-3.3 {Create a NoSuchItemException with a \
 	detail message that is not a String} {
-    set n1 [java::new pt.kernel.util.NamedObj]
+    set n1 [java::new ptolemy.kernel.util.NamedObj]
     # We can't check the error message here because Tcl Blend returns
     # a hex number that changes:
-    # expected object of type java.lang.String but got "java0x2c4" (pt.kernel.util.NamedObj)
-    catch {set pe [java::new {pt.kernel.util.NoSuchItemException String} $n1]}
+    # expected object of type java.lang.String but got "java0x2c4" (ptolemy.kernel.util.NamedObj)
+    catch {set pe [java::new {ptolemy.kernel.util.NoSuchItemException String} $n1]}
 } {1}
 
 ######################################################################
@@ -80,8 +80,8 @@ test NoSuchItemException-3.3 {Create a NoSuchItemException with a \
 #
 test NoSuchItemException-5.1 {Create a NoSuchItemException with a NamedObj \
 	that has no name and a detail string} {
-    set n1 [java::new pt.kernel.util.NamedObj]
-    set pe [java::new {pt.kernel.util.NoSuchItemException pt.kernel.util.Nameable String} $n1 "Detail String"]
+    set n1 [java::new ptolemy.kernel.util.NamedObj]
+    set pe [java::new {ptolemy.kernel.util.NoSuchItemException ptolemy.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
 } {{.: Detail String}}
 
@@ -90,7 +90,7 @@ test NoSuchItemException-5.1 {Create a NoSuchItemException with a NamedObj \
 #
 test NoSuchItemException-5.2 {Create a NoSuchItemException with a NamedObj \
 	that has a name  and a detail string} {
-    set n1 [java::new pt.kernel.util.NamedObj "My NamedObj"]
-    set pe [java::new {pt.kernel.util.NoSuchItemException pt.kernel.util.Nameable String} $n1 "Detail String"]
+    set n1 [java::new ptolemy.kernel.util.NamedObj "My NamedObj"]
+    set pe [java::new {ptolemy.kernel.util.NoSuchItemException ptolemy.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
 } {{.My NamedObj: Detail String}}

@@ -55,7 +55,7 @@ if {[info procs enumToObjects] == "" } then {
 ####
 #
 test Attribute-2.1 {Create a Attribute} {
-    set n [java::new pt.kernel.util.Attribute]
+    set n [java::new ptolemy.kernel.util.Attribute]
     $n setName "A"
     $n getName
 } {A}
@@ -64,9 +64,9 @@ test Attribute-2.1 {Create a Attribute} {
 ####
 #
 test Attribute-2.2 {Create a Attribute with a container} {
-    set n [java::new pt.kernel.util.NamedObj]
+    set n [java::new ptolemy.kernel.util.NamedObj]
     $n setName N
-    set p [java::new pt.kernel.util.Attribute $n P]
+    set p [java::new ptolemy.kernel.util.Attribute $n P]
     $p getFullName
 } {.N.P}
 
@@ -74,23 +74,23 @@ test Attribute-2.2 {Create a Attribute with a container} {
 ####
 #
 test Attribute-6.2 {Test description} {
-    set w [java::new pt.kernel.util.Workspace W]
-    set n [java::new pt.kernel.util.NamedObj N]
-    set a [java::new pt.kernel.util.Attribute]
-    set b [java::new pt.kernel.util.Attribute $w]
-    set c [java::new pt.kernel.util.Attribute $n C]
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set n [java::new ptolemy.kernel.util.NamedObj N]
+    set a [java::new ptolemy.kernel.util.Attribute]
+    set b [java::new ptolemy.kernel.util.Attribute $w]
+    set c [java::new ptolemy.kernel.util.Attribute $n C]
     # Test with DEEP bit not set
-    set detail [expr "[java::field pt.kernel.util.NamedObj COMPLETE] & \
-            ~[java::field pt.kernel.util.NamedObj DEEP]"]
+    set detail [expr "[java::field ptolemy.kernel.util.NamedObj COMPLETE] & \
+            ~[java::field ptolemy.kernel.util.NamedObj DEEP]"]
     list [$a description $detail] \
 	    [$b description $detail] \
 	    [$c description $detail] \
 	    [$n description $detail]
-} {{pt.kernel.util.Attribute {.} attributes {
-}} {pt.kernel.util.Attribute {W.} attributes {
-}} {pt.kernel.util.Attribute {.N.C} attributes {
-}} {pt.kernel.util.NamedObj {.N} attributes {
-    {pt.kernel.util.Attribute {.N.C}}
+} {{ptolemy.kernel.util.Attribute {.} attributes {
+}} {ptolemy.kernel.util.Attribute {W.} attributes {
+}} {ptolemy.kernel.util.Attribute {.N.C} attributes {
+}} {ptolemy.kernel.util.NamedObj {.N} attributes {
+    {ptolemy.kernel.util.Attribute {.N.C}}
 }}}
 
 ######################################################################
@@ -98,7 +98,7 @@ test Attribute-6.2 {Test description} {
 #
 test Attribute-7.1 {Test clone into a new workspace} {
     # NOTE: Builds on previous test.
-    set x [java::new pt.kernel.util.Workspace X]
+    set x [java::new ptolemy.kernel.util.Workspace X]
     set ax [$a clone $x]
     set aw [$a clone]
     set bx [$b clone $x]
@@ -118,8 +118,8 @@ test Attribute-7.2 {Test cloning of NamedObj with attributes} {
     set nx [$n clone $x]
     set nw [$n clone]
     list [$nx description $detail] [$nw description $detail]
-} {{pt.kernel.util.NamedObj {X.N} attributes {
-    {pt.kernel.util.Attribute {X.N.C}}
-}} {pt.kernel.util.NamedObj {.N} attributes {
-    {pt.kernel.util.Attribute {.N.C}}
+} {{ptolemy.kernel.util.NamedObj {X.N} attributes {
+    {ptolemy.kernel.util.Attribute {X.N.C}}
+}} {ptolemy.kernel.util.NamedObj {.N} attributes {
+    {ptolemy.kernel.util.Attribute {.N.C}}
 }}}

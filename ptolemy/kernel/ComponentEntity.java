@@ -28,9 +28,9 @@
 
 */
 
-package pt.kernel;
+package ptolemy.kernel;
 
-import pt.kernel.util.*;
+import ptolemy.kernel.util.*;
 
 import java.util.Enumeration;
 
@@ -129,7 +129,7 @@ public class ComponentEntity extends Entity {
      *  Derived classes that return false are assumed to be instances of
      *  CompositeEntity or a class derived from that.
      *  @return True if the entity is atomic.
-     *  @see pt.kernel.CompositeEntity
+     *  @see ptolemy.kernel.CompositeEntity
      */
     public boolean isAtomic() {
 	return true;
@@ -142,7 +142,7 @@ public class ComponentEntity extends Entity {
      *  Derived classes may be transparent, in which case they return false
      *  to this method and to isAtomic().
      *  @return True if the entity is opaque.
-     *  @see pt.kernel.CompositeEntity
+     *  @see ptolemy.kernel.CompositeEntity
      */
     public boolean isOpaque() {
 	return true;

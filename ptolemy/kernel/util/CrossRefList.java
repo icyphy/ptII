@@ -28,7 +28,7 @@
 
 */
 
-package pt.kernel.util;
+package ptolemy.kernel.util;
 
 import collections.CorruptedEnumerationException;
 

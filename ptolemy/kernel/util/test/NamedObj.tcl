@@ -55,7 +55,7 @@ if {[info procs enumToObjects] == "" } then {
 ####
 #
 test NamedObj-2.1 {Create a NamedObj, set the name, change it} {
-    set n [java::new pt.kernel.util.NamedObj]
+    set n [java::new ptolemy.kernel.util.NamedObj]
     set result1 [$n getName]
     $n setName "A Named Obj"
     set result2 [$n getName]
@@ -70,7 +70,7 @@ test NamedObj-2.1 {Create a NamedObj, set the name, change it} {
 ####
 #
 test NamedObj-2.2 {Create a NamedObj, set the name, change it} {
-    set n [java::new pt.kernel.util.NamedObj "name set in constructor"]
+    set n [java::new ptolemy.kernel.util.NamedObj "name set in constructor"]
     set result1 [$n getName]
     $n setName "A Named Obj"
     set result2 [$n getName]
@@ -88,7 +88,7 @@ test NamedObj-2.2 {Create a NamedObj, set the name, change it} {
 test NamedObj-2.3 { Check names with dots} {
     # In early versions of the kernel, we prohibited names with dots
     # Now, dots are permitted.
-    set n [java::new pt.kernel.util.NamedObj "This.name.has.dots"]
+    set n [java::new ptolemy.kernel.util.NamedObj "This.name.has.dots"]
     list [ $n getName]
 } {This.name.has.dots}
 
@@ -96,9 +96,9 @@ test NamedObj-2.3 { Check names with dots} {
 ####
 # FIXME:  test addParam, removeParam, getParam, getParams
 # test NamedObj-3.1 {Experiment with Parameters} {
-#     set n [java::new pt.kernel.util.NamedObj]
-#     set a1 [java::new pt.data.Parameter A1 1]
-#     set a2 [java::new pt.data.Parameter A2 2]
+#     set n [java::new ptolemy.kernel.util.NamedObj]
+#     set a1 [java::new ptolemy.data.Parameter A1 1]
+#     set a2 [java::new ptolemy.data.Parameter A2 2]
 #     $n addParameter $a1
 #     set result [enumToFullNames [$n getParameters]]
 # } {{first parameter} 42 {second parameter} -4}
@@ -107,7 +107,7 @@ test NamedObj-2.3 { Check names with dots} {
 ####
 #
 test NamedObj-4.1 {Set the name to null in the constructor} {
-    set n [java::new pt.kernel.util.NamedObj [java::null]]
+    set n [java::new ptolemy.kernel.util.NamedObj [java::null]]
     $n getName
 } {}
 
@@ -115,7 +115,7 @@ test NamedObj-4.1 {Set the name to null in the constructor} {
 ####
 #
 test NamedObj-4.2 {Set the name to null after construction} {
-    set n [java::new pt.kernel.util.NamedObj "foo"]
+    set n [java::new ptolemy.kernel.util.NamedObj "foo"]
     $n setName [java::null]
     $n getName
 } {}
@@ -124,8 +124,8 @@ test NamedObj-4.2 {Set the name to null after construction} {
 ####
 #
 test NamedObj-5.1 {Test getFullName} {
-    set n [java::new pt.kernel.util.Workspace "foo"]
-    set b [java::new pt.kernel.util.NamedObj $n "bar"]
+    set n [java::new ptolemy.kernel.util.Workspace "foo"]
+    set b [java::new ptolemy.kernel.util.NamedObj $n "bar"]
     list [$n getFullName] [$b getFullName]
 } {foo foo.bar}
 
@@ -133,35 +133,35 @@ test NamedObj-5.1 {Test getFullName} {
 ####
 #
 test NamedObj-6.1 {Test toString} {
-    set n [java::new pt.kernel.util.Workspace "foo"]
-    set a [java::new pt.kernel.util.NamedObj]
-    set b [java::new pt.kernel.util.NamedObj $n ""]
-    set c [java::new pt.kernel.util.NamedObj $n "car" ]
+    set n [java::new ptolemy.kernel.util.Workspace "foo"]
+    set a [java::new ptolemy.kernel.util.NamedObj]
+    set b [java::new ptolemy.kernel.util.NamedObj $n ""]
+    set c [java::new ptolemy.kernel.util.NamedObj $n "car" ]
     list [$a toString] [$b toString] [$c toString]
-} {{pt.kernel.util.NamedObj {.}} {pt.kernel.util.NamedObj {foo.}} {pt.kernel.util.NamedObj {foo.car}}}
+} {{ptolemy.kernel.util.NamedObj {.}} {ptolemy.kernel.util.NamedObj {foo.}} {ptolemy.kernel.util.NamedObj {foo.car}}}
 
 ######################################################################
 ####
 #
 test NamedObj-6.2 {Test description} {
-    set n [java::new pt.kernel.util.Workspace "foo"]
-    set a [java::new pt.kernel.util.NamedObj]
-    set b [java::new pt.kernel.util.NamedObj $n ""]
-    set c [java::new pt.kernel.util.NamedObj $n "car" ]
-    list "[$a description [java::field pt.kernel.util.NamedObj COMPLETE]]\n\
-	    [$b description [java::field pt.kernel.util.NamedObj COMPLETE]]\n\
-	    [$c description [java::field pt.kernel.util.NamedObj COMPLETE]]\n\
-	    [$n description [java::field pt.kernel.util.NamedObj COMPLETE]]"
-} {{pt.kernel.util.NamedObj {.} attributes {
+    set n [java::new ptolemy.kernel.util.Workspace "foo"]
+    set a [java::new ptolemy.kernel.util.NamedObj]
+    set b [java::new ptolemy.kernel.util.NamedObj $n ""]
+    set c [java::new ptolemy.kernel.util.NamedObj $n "car" ]
+    list "[$a description [java::field ptolemy.kernel.util.NamedObj COMPLETE]]\n\
+	    [$b description [java::field ptolemy.kernel.util.NamedObj COMPLETE]]\n\
+	    [$c description [java::field ptolemy.kernel.util.NamedObj COMPLETE]]\n\
+	    [$n description [java::field ptolemy.kernel.util.NamedObj COMPLETE]]"
+} {{ptolemy.kernel.util.NamedObj {.} attributes {
 }
- pt.kernel.util.NamedObj {foo.} attributes {
+ ptolemy.kernel.util.NamedObj {foo.} attributes {
 }
- pt.kernel.util.NamedObj {foo.car} attributes {
+ ptolemy.kernel.util.NamedObj {foo.car} attributes {
 }
- pt.kernel.util.Workspace {foo} directory {
-    {pt.kernel.util.NamedObj {foo.} attributes {
+ ptolemy.kernel.util.Workspace {foo} directory {
+    {ptolemy.kernel.util.NamedObj {foo.} attributes {
     }}
-    {pt.kernel.util.NamedObj {foo.car} attributes {
+    {ptolemy.kernel.util.NamedObj {foo.car} attributes {
     }}
 }}}
 
@@ -169,9 +169,9 @@ test NamedObj-6.2 {Test description} {
 ####
 #
 test NamedObj-7.1 {Test clone} {
-    set n [java::new pt.kernel.util.Workspace "N"]
-    set a [java::new pt.kernel.util.NamedObj $n "A" ]
+    set n [java::new ptolemy.kernel.util.Workspace "N"]
+    set a [java::new ptolemy.kernel.util.NamedObj $n "A" ]
     set b [$a clone]
-    $b description [java::field pt.kernel.util.NamedObj COMPLETE]
-} {pt.kernel.util.NamedObj {N.A} attributes {
+    $b description [java::field ptolemy.kernel.util.NamedObj COMPLETE]
+} {ptolemy.kernel.util.NamedObj {N.A} attributes {
 }}

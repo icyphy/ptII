@@ -30,7 +30,7 @@
 @AcceptedRating Green (johnr@eecs.berkeley.edu)
 */
 
-package pt.kernel.util;
+package ptolemy.kernel.util;
 
 //////////////////////////////////////////////////////////////////////////
 //// IllegalActionException

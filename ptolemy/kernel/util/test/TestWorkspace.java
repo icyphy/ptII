@@ -28,12 +28,12 @@
 
 */
 
-package pt.kernel.util.test;
+package ptolemy.kernel.util.test;
 
 import java.io.Serializable;
 import collections.LinkedList;
 import collections.CollectionEnumeration;
-import pt.kernel.util.Workspace;
+import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
 //// TestWorkspace

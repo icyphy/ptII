@@ -28,9 +28,9 @@
 @AcceptedRating Green (johnr@eecs.berkeley.edu)
 */
 
-package pt.kernel;
+package ptolemy.kernel;
 
-import pt.kernel.util.*;
+import ptolemy.kernel.util.*;
 
 import java.util.Hashtable;
 import java.util.Enumeration;
@@ -418,7 +418,7 @@ public class CompositeEntity extends ComponentEntity {
     /** Return false.  Derived classes may return true in order to hide
      *  their components behind opaque ports.
      *  @return True if the entity is opaque.
-     *  @see pt.kernel.CompositeEntity
+     *  @see ptolemy.kernel.CompositeEntity
      */
     public boolean isOpaque() {
 	return false;
