@@ -75,7 +75,7 @@ subclass.
 */
 public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
-    // all the constructors are wrappers of the super class constructors.
+    // All the constructors are wrappers of the super class constructors.
 
     /** Construct an actor in the default workspace with an empty string
      *  as its name.  The object is added to the workspace directory.
@@ -173,7 +173,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  @return A list of instances of Inequality.
      *  @see ptolemy.graph.Inequality
      */
-    public List typeConstraintList()  {
+    public List typeConstraintList() {
 	try {
 	    _workspace.getReadAccess();
 
@@ -183,7 +183,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 	        TypedIOPort inPort = (TypedIOPort)inPorts.next();
 		boolean isUndeclared = inPort.getTypeTerm().isSettable();
 		if (isUndeclared) {
-		    // inPort has undeclared type
+		    // inPort has undeclared type.
 		    Iterator outPorts = outputPortList().iterator();
 	    	    while (outPorts.hasNext()) {
 		    	TypedIOPort outPort =
@@ -244,13 +244,13 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  This method does not set the container of the port to point to
      *  this entity. It assumes that the port is in the same workspace
      *  as this actor.
-     *  Derived classes may override this method to further constrain to
-     *  a subclass of TypedIOPort. This method is <i>not</i> synchronized on
-     *  the workspace, so the caller should be.
+     *  Derived classes may override this method to further constrain the
+     *  port to be a subclass of TypedIOPort. This method is <i>not</i>
+     *  synchronized on the workspace, so the caller should be.
      *
      *  @param port The port to add to this actor.
-     *  @exception IllegalActionException If the port class is not
-     *   acceptable to this actor, or the port has no name.
+     *  @exception IllegalActionException If the port is not an instance
+     *   of TypedIOPort, or the port has no name.
      *  @exception NameDuplicationException If the port name coincides with
      *   the name of another port already in the actor.
      */
