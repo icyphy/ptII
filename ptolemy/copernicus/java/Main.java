@@ -234,7 +234,7 @@ public class Main extends KernelMain {
 
         //       _addStandardOptimizations(Scene.v().getPack("wjtp"));
 
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot2", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
@@ -271,7 +271,7 @@ public class Main extends KernelMain {
         //        InvokeGraphBuilder.v()));
         // Scene.v().getPack("wjtp").add(new Transform("wjtp.si",
         //        StaticInliner.v()));
-
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot3", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
@@ -367,7 +367,7 @@ public class Main extends KernelMain {
                         new TransformerAdapter(
                                 DeadObjectEliminator.v())));
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
-
+        /*
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.snapshot4", JimpleWriter.v()));
         Scene.v().getPack("wjtp").add(
