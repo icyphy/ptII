@@ -225,6 +225,27 @@ public class RecordType extends StructuredType {
         return _fields.keySet().hashCode() + 2917;
     }
 
+    /** Set the elements that have declared type BaseType.UNKNOWN (the leaf
+     *  type variable) to the specified type.
+     *  @param type the type to set the leaf type variable to.
+     */
+    public void initialize(Type type) {
+        try {
+            Iterator fieldNames = _fields.keySet().iterator();
+            while (fieldNames.hasNext()) {
+                String label = (String)fieldNames.next();
+                FieldType fieldType = (FieldType)_fields.get(label);
+                if (fieldType.isSettable()) {
+                    fieldType.initialize(type);
+                }
+            }
+        } catch (IllegalActionException iae) {
+            throw new InternalErrorException("RecordType.initialize: Cannot " +
+                    "initialize the element type to " + type + " " +
+                    iae.getMessage());
+        }
+    }
+
     /** Test if the argument type is compatible with this type.  The
      *  given type will be compatible with this type if it is
      *  BaseType.UNKNOWN, or a RecordType that contains at least as
@@ -343,6 +364,13 @@ public class RecordType extends StructuredType {
         return true;
     }
 
+    /** Return the labels of this record type as a Set.
+     *  @return A Set containing strings.
+     */
+    public Set labelSet() {
+        return _fields.keySet();
+    }
+
     /** Return the string representation of this type. The format is
      *  {<lable>=<type>, <label>=<type>, ...}.
      *  The record fields are listed in the lexicographical order of the
@@ -376,34 +404,6 @@ public class RecordType extends StructuredType {
             s += label + "=" + type;
         }
         return s + "}";
-    }
-
-    /** Set the elements that have declared type BaseType.UNKNOWN (the leaf
-     *  type variable) to the specified type.
-     *  @param type the type to set the leaf type variable to.
-     */
-    public void initialize(Type type) {
-        try {
-            Iterator fieldNames = _fields.keySet().iterator();
-            while (fieldNames.hasNext()) {
-                String label = (String)fieldNames.next();
-                FieldType fieldType = (FieldType)_fields.get(label);
-                if (fieldType.isSettable()) {
-                    fieldType.initialize(type);
-                }
-            }
-        } catch (IllegalActionException iae) {
-            throw new InternalErrorException("RecordType.initialize: Cannot " +
-                    "initialize the element type to " + type + " " +
-                    iae.getMessage());
-        }
-    }
-
-    /** Return the labels of this record type as a Set.
-     *  @return A Set containing strings.
-     */
-    public Set labelSet() {
-        return _fields.keySet();
     }
 
     /** Update this Type to the specified RecordType.
@@ -520,7 +520,7 @@ public class RecordType extends StructuredType {
         String[] labels = new String[size];
         Type[] types = new Type[size];
 
-        for (int i=0; i<size; i++) {
+        for (int i = 0; i < size; i++) {
             labels[i] = (String)labelArray[i];
             Type type1 = this.get(labels[i]);
             Type type2 = recordType.get(labels[i]);
