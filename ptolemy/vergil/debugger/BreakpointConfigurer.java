@@ -49,7 +49,6 @@ import ptolemy.vergil.basic.BasicGraphController;
    configure the breakpoints of an actor in an SDF model.
    The user can set breakpoints before or after iterate().
 
-   <p>
    <p>There is further documentation in the
    <a href="package-summary.html">package summary</a>.
 
@@ -198,10 +197,11 @@ public class BreakpointConfigurer extends Query implements ChangeListener{
                 director.requestChange(request);
             }
         } else {
-            // Remove profile if there are no longer any
-            // breakpoints selected for this _actor.
-            debugController.removeDebugProfile(_actor);
-
+            if (_debugController != null) {
+                // Remove profile if there are no longer any
+                // breakpoints selected for this _actor.
+                debugController.removeDebugProfile(_actor);
+            }
             // FIXME: removeDebugListener if no more actors have breakpoints.
         }
     }
