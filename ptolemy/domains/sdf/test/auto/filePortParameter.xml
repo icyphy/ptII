@@ -4,7 +4,7 @@
 <entity name="filePortParameter" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 220, 815, 516}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 220, 815, 518}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -57,7 +57,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 95.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 518}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -78,14 +78,11 @@
             </property>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;1
-&#10;&quot;, &quot;2
-&#10;&quot;, &quot;3
-&#10;&quot;}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;1&#13;&#10;&quot;, &quot;2&#13;&#10;&quot;, &quot;3&#13;&#10;&quot;}">
             </property>
             <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 155.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 155.0]">
             </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
