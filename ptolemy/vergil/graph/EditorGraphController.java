@@ -78,7 +78,7 @@ public class EditorGraphController extends ViewerGraphController {
      * Create a new basic controller with default
      * terminal and edge interactors.
      */
-    public EditorGraphController () {
+    public EditorGraphController() {
 	super();
     }
 
@@ -117,7 +117,7 @@ public class EditorGraphController extends ViewerGraphController {
      * the controller does not yet have a reference to its pane
      * at that time.
      */
-    protected void initializeInteraction () {
+    protected void initializeInteraction() {
         super.initializeInteraction();
         GraphPane pane = getGraphPane();
 
