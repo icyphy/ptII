@@ -33,6 +33,7 @@ package ptolemy.vergil;
 // Ptolemy imports
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -156,11 +157,9 @@ public class VergilApplication extends MoMLApplication {
             return;
         }
 
-        //FIXME: why do we have problems with spaces?
-        //URL fileURL = file.toURL();
-        URL fileURL =
-            new URL( StringUtilities.substitute(file.toURL().toExternalForm(),
-                             " ", "%20"));
+	// If we have a jar URL, convert spaces to %20
+        URL fileURL =  JNLPUtilities.canonicalizeJarURL(file.toURL());
+
         String identifier = fileURL.toExternalForm();
 
         // Check to see whether the library is already open.
@@ -287,20 +286,21 @@ public class VergilApplication extends MoMLApplication {
             _configurationSubdirectory = "full";
         }
         // FIXME: This code is Dog slow for some reason.
-        URL inurl = specToURL("ptolemy/configs/"
+        URL inURL = specToURL("ptolemy/configs/"
                 + _configurationSubdirectory + "/welcomeWindow.xml");
+
         _parser.reset();
         _parser.setContext(configuration);
-        _parser.parse(inurl, inurl.openStream());
+        _parser.parse(inURL, inURL.openStream());
         Effigy doc = (Effigy)configuration.getEntity("directory.doc");
 
         if (_configurationSubdirectory == null) {
             _configurationSubdirectory = "full";
         }
-        URL idurl = specToURL("ptolemy/configs/"
+        URL idURL = specToURL("ptolemy/configs/"
                 + _configurationSubdirectory + "/intro.htm");
 
-        doc.identifier.setExpression(idurl.toExternalForm());
+        doc.identifier.setExpression(idURL.toExternalForm());
         return configuration;
     }
 
