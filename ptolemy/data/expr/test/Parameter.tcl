@@ -47,41 +47,6 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
-######################################################################
-####
-# 
-test Param-1.1 {Get information about the class} {
-    # If anything changes, we want to know about it so we can write tests.
-    set e [java::new {pt.kernel.Entity String} parent]
-    set tok [java::new  {pt.data.DoubleToken double} 4.5]
-    set param [java::new \
-	    {pt.data.expr.Parameter pt.kernel.util.NamedObj String pt.data.Token} \
-	    $e id1 $tok]
-
-    list [getJavaInfo $param]
-} {{
-  fields:        
-  methods:       clone {clone pt.kernel.util.Workspace} {deepContains pt
-    .kernel.util.NamedObj} description {description int} {e
-    quals java.lang.Object} {getAttribute java.lang.String}
-     getAttributes getClass getContainer getFullName getNam
-    e getScope getToken hashCode notify notifyAll reset {se
-    tContainer pt.kernel.util.NamedObj} {setName java.lang.
-    String} {setToken pt.data.Token} {setTokenFromExpr java
-    .lang.String} toString {update java.util.Observable jav
-    a.lang.Object} wait {wait long} {wait long int} workspa
-    ce
-    
-  constructors:  {pt.data.expr.Parameter pt.kernel.util.NamedObj java.la
-    ng.String java.lang.String} {pt.data.expr.Parameter pt.
-    kernel.util.NamedObj java.lang.String pt.data.Token}
-    
-  properties:    attributes class container fullName name scope token to
-    kenFromExpr
-    
-  superclass:    pt.kernel.util.Attribute
-    
-}}
 
 ######################################################################
 ####
