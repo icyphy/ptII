@@ -462,7 +462,8 @@ public class PlotBox extends Panel {
                     graphics.setColor(_foreground);
                 }
                 // NOTE: 3 pixel spacing between axis and labels.
-                graphics.drawString(label, _ulx - _labelFontMetrics.stringWidth(label) - 3,
+                graphics.drawString(label,
+                        _ulx - _labelFontMetrics.stringWidth(label) - 3,
                         yCoord1+offset);
             }
         }
@@ -558,13 +559,15 @@ public class PlotBox extends Panel {
         
         if (_title != null) {
             graphics.setFont(_titlefont);
-            int titlex = _ulx + (width - _titleFontMetrics.stringWidth(_title))/2;
+            int titlex = _ulx +
+                (width - _titleFontMetrics.stringWidth(_title))/2;
             graphics.drawString(_title,titlex,titley);
         }
         
         graphics.setFont(_labelfont);
         if (_xlabel != null) {
-            int labelx = _ulx + (width - _labelFontMetrics.stringWidth(_xlabel))/2;
+            int labelx = _ulx +
+                (width - _labelFontMetrics.stringWidth(_xlabel))/2;
             graphics.drawString(_xlabel,labelx,ySPos);
         }
         
