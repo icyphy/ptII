@@ -51,6 +51,8 @@ public class Render extends PlotBox {
     public Render() {
         setGrid(false);
         
+	 _setPadding(0.0);
+
         int[] rgb = new int[256];
         for (int i = 0; i <= 255; i++) {
             rgb[i] = i;
@@ -89,6 +91,36 @@ public class Render extends PlotBox {
 //         }
     }
 
+    /** Get the current colormap.
+    */
+    public synchronized int[][] getColormap() {
+        return _colormap;
+    }
+    
+    /** Get the x increment.
+     */
+    public synchronized double getXIncrement() {
+	return _xIncrement;
+    }
+
+    /** Get the x offset.
+     */
+    public synchronized double getXOffset() {
+	return _xOffset;
+    }
+
+    /** Get the y increment.
+     */
+    public synchronized double getYIncrement() {
+	return _yIncrement;
+    }
+
+    /** Get the y offset.
+     */
+    public synchronized double getYOffset() {
+	return _yOffset;
+    }
+
     /** Create a sample image.
      */
     public synchronized void samplePlot() {
@@ -102,9 +134,6 @@ public class Render extends PlotBox {
                     setGrid(false);
 
                     setTitle("Sample image");
-                    setXRange(0.0, 5.0);
-                    setYRange(0.0, 4000.0);
-
 
                     // I thought that this would remove the padding from the
                     // plot rectangle, but it didn't.
@@ -136,6 +165,25 @@ public class Render extends PlotBox {
                         addStripe((double)i - .33, stripe1);
                         addStripe((double)i + .33, stripe2);
                     }
+
+		    setXIncrement(0.5);
+		    setXOffset(0.0);
+		    setYIncrement(400.0);
+		    setYOffset(0.0);
+
+		    // Set the x and y ranges according to the data.  The
+		    // x-range start value is getXOffset().  Similarly for the
+		    // y-range start value.  To calculate the high end of the 
+		    // x-range take the number of stripes in the data 
+		    // structure and multiply it by the horizontal increment.
+		    // For the high value of the y-range take the number of
+		    // data elements per stripe and multiply it by the
+		    // verticle increment.
+                    setXRange(getXOffset(), 
+			      _imageData.size() * getXIncrement());
+                    setYRange(getYOffset(),
+			      ((int[])_imageData.getFirst()).length *
+			      getYIncrement());
                 }
             }
         };
@@ -150,25 +198,42 @@ public class Render extends PlotBox {
         _colormap = colormap;
     }
 
+    /** Set the x increment.
+     */
+    public synchronized void setXIncrement(double xIncrement) {
+	_xIncrement = xIncrement;
+    }
 
-    // The thought here is to override setYRange() then just call the super method
-    // with slightly smaller ranges that take into account the extra padding that
-    // will be added.  The complications I foresee
-    // are the getYRange() method will have to be overridden as well, and the values
-    // might be a little off by having to multiply a smaller number by a padding
-    // factor to get the slightly larger desired size plot rectangle.  I left this
-    // unfinished because of the complications.
+    /** Set the x offset.
+     */
+    public synchronized void setXOffset(double xOffset) {
+	_xOffset = xOffset;
+    }
+
+    /** Set the y increment.
+     */
+    public synchronized void setYIncrement(double yIncrement) {
+	_yIncrement = yIncrement;
+    }
+
+    /** Set the y offset.
+     */
+    public synchronized void setYOffset(double yOffset) {
+	_yOffset = yOffset;
+    }
+
+    // The thought here is to override setYRange() then just call the super
+    // method with slightly smaller ranges that take into account the extra
+    // padding that will be added.  The complications I foresee are the
+    // getYRange() method will have to be overridden as well, and the values
+    // might be a little off by having to multiply a smaller number by a
+    // padding factor to get the slightly larger desired size plot rectangle.
+    // I left this unfinished because of the complications.
     // Instead I uncommented some code in PlotBox that disallows padding if
     // the ranges have been specified by the setYRange().
     //    public synchronized void setYRange(double min, double max) {
     //	      super.setYRange( ) 
     //    }
-
-    /** Get current colormap.
-    */
-    public synchronized int[][] getColormap() {
-        return _colormap;
-    }
 
 
     ///////////////////////////////////////////////////////////////////
@@ -185,7 +250,8 @@ public class Render extends PlotBox {
         // so that _xscale and _yscale are set.
         super._drawPlot(graphics, clearfirst);
 
-        double x = (double)_ulx + (double)((_originalXlow - _xMin) * _xscale) + 1.0;
+        double x = (double)_ulx + (double)((_originalXlow - _xMin) * _xscale) +
+	    1.0;
         //(_ulx + 1);
 
         double width = (double)((_originalXhigh - _originalXlow) * _xscale) / 
@@ -241,10 +307,11 @@ public class Render extends PlotBox {
 
  
          // Draw the stripe one patch (data element) at a time.
-         double y = _lry - (int)((_originalYhigh - _yMin) * _yscale) + 1; //(_uly + 1);
+         double y = _lry - (int)((_originalYhigh - _yMin) * _yscale) + 1;
+	 //(_uly + 1);
 
-         double height = (double)((_originalYhigh - _originalYlow) * _yscale) / 
-	     (double)length; 
+         double height = (double)((_originalYhigh - _originalYlow) * _yscale) /
+ 	     (double)length;
 
          for (int i = 0; i < length; i++) {
              _drawPatch(graphics, (int)x, (int)y, (int)width, (int)height,
@@ -259,7 +326,8 @@ public class Render extends PlotBox {
 
     /** Draw a rectangular piece of an image.
      *  @param graphics The graphics context.
-     *  @param x The x coordinate of the left edge of the rectangle to be drawn.
+     *  @param x The x coordinate of the left edge of the rectangle to be
+     *  drawn.
      *  @param y The y coordinate of the top edge of the rectangle to be drawn.
      *  @param width The width of the rectangle to be drawn.
      *  @param height The height of the rectangle to be drawn.
@@ -287,23 +355,10 @@ public class Render extends PlotBox {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** @serial Set by _drawPlot(), and reset by clear(). */
-    private boolean _showing = false;
-
-    /** Stores the image data to be rendered. */
-    private LinkedList _imageData = new LinkedList();
 
     /** The colormap used in rendering the image.
     */
     private int[][] _colormap = new int[3][256];
-
-    /** A test color value.
-    */
-    private static final int _HIGHCOLOR = 225;
-
-    /** A test color value.
-    */
-    private static final int _LOWCOLOR = 175;
 
     /** The given height of the stripes in units of the y axis.
     */
@@ -311,14 +366,40 @@ public class Render extends PlotBox {
     // application.
     // private double _height = _yhighgiven - _ylowgiven;
 
-    // I discovered that _height is already used in PlotBox.  I'm waitng on
+    // I discovered that _height is already used in PlotBox.  I'm waiting on
     // this (commenting it out) to see what i need to do.
 
+    /** A test color value from 0 through 255.
+    */
+    private static final int _HIGHCOLOR = 225;
+
+    /** Stores the image data to be rendered. */
+    private LinkedList _imageData = new LinkedList();
+
+    /** A test color value from 0 through 255.
+    */
+    private static final int _LOWCOLOR = 175;
+
+    /** @serial Set by _drawPlot(), and reset by clear(). */
+    private boolean _showing = false;
+
+    /** The increment in units of the x-axis of each stripe along the x-axis.
+     * Each stripe will be _xIncrement wide.
+     */
+    private double _xIncrement = 0.0;
+
+    /** The starting point of the x-axis.  The x-axis will start counting from
+     * _xOffset.
+     */
+    private double _xOffset = 0.0;
+
+    /** The increment in units of the y-axis of each patch within the stripe.
+     * Each patch will be _yIncrement tall.
+     */
+    private double _yIncrement = 0.0;
+
+    /** The starting point of the y-axis.  The y-axis will start counting from
+     * _yOffset.
+     */
+    private double _yOffset = 0.0;
 }
-
-
-
-
-
-
-
