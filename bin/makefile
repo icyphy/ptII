@@ -129,9 +129,11 @@ all: ptinvoke
 	rm -f vergil
 	ln -s ptinvoke vergil
 
+
 install: all
 	-chmod a+x $(SHELL_FILES) $(BAT_FILES)
 
+fast: install
 demo: all
 
 ptinvoke: ptinvoke.in ../config.status
