@@ -277,8 +277,8 @@ public class Workspace implements Nameable, Serializable {
                 wait();
             } catch(InterruptedException ex) {
                 throw new InternalErrorException(
-                    "Thread interrupted while waiting for read access!"
-                    + ex.getMessage());
+                        "Thread interrupted while waiting for read access!"
+                        + ex.getMessage());
             }
         }
     }
@@ -330,8 +330,8 @@ public class Workspace implements Nameable, Serializable {
                 wait();
             } catch(InterruptedException ex) {
                 throw new InternalErrorException(
-                    "Thread interrupted while waiting for write access!"
-                    + ex.getMessage());
+                        "Thread interrupted while waiting for write access!"
+                        + ex.getMessage());
             }
         }
     }

@@ -176,8 +176,8 @@ public class Attribute extends NamedObj {
      *  of the container have been created, so interdependencies can be
      *  resolved.  In this base class, the method does nothing.
      */
-     public void update() {
-     }
+    public void update() {
+    }
 
     ///////////////////////////////////////////////////////////////////////
     ////                      private variables                        ////

@@ -178,11 +178,11 @@ public class NamedList implements Cloneable, Serializable {
             throws IllegalActionException, NameDuplicationException {
         int index = _getIndexOf(name);
         if (index == -1) {
-             // name doesn't exist in list
-             append(element);
+            // name doesn't exist in list
+            append(element);
         } else {
-             // name exists in list
-             _insertAt((index+1), element);
+            // name exists in list
+            _insertAt((index+1), element);
         }
     }
 

@@ -134,8 +134,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         } catch (IllegalActionException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(
-                "Internal error in NamedObj constructor!"
-                + ex.getMessage());
+                    "Internal error in NamedObj constructor!"
+                    + ex.getMessage());
         }
         setName(name);
     }
@@ -457,8 +457,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
             } catch (IllegalActionException ex) {
                 // This exception should not be thrown.
                 throw new InternalErrorException(
-                    "Internal error in NamedObj _addAttribute() method!"
-                    + ex.getMessage());
+                        "Internal error in NamedObj _addAttribute() method!"
+                        + ex.getMessage());
             }
         } finally {
             workspace().doneWriting();
