@@ -4,7 +4,7 @@
 <DNHA name="SwimmingPool">
 	<HybridAutomaton name="switch">
 		<DiscreteState _id="id3" dst="id4 ide" src="id4 ide" name="empty" initialState="false"/>
-		<BooleanVariable kind="Input" name="toggle" defaultValue="false"/>
+		<BooleanVariable kind="Controlled" name="toggle" defaultValue="false"/>
 	    <RealVariable kind="Input" name="level" maxValue="0.000000" minValue="0.000000" initialMaxValue="0.000000" initialMinValue="0.000000"/>
 		<Transition _id="id4" dst_end_="id3" src_end_="id3">
 			<UpdateAction>
@@ -81,7 +81,6 @@
 	</HybridAutomaton>
 	<HybridAutomaton name="pump">
 	    <RealVariable kind="Controlled" name="level" maxValue="0.000000" minValue="0.000000" initialMaxValue="0.000000" initialMinValue="0.000000"/>
-		<BooleanVariable kind="Controlled" name="toggle" defaultValue="false"/>
 		<DiscreteState _id="id3d" dst="id4f id6b" src="id3c id59" name="steadyMode" initialState="true">
 			<UpdateAction __child_as="exitAction">
 				<Var ix="55" name="timer" unOp="NOP"/>
@@ -176,6 +175,36 @@
 						</AExpr>
 					</RExpr>
 				</LExpr>
+				<LExpr ix="84">
+					<RExpr ix="85">
+						<AExpr ix="86">
+							<MExpr ix="87">
+								<ExprCall ix="88" unOp="NOP">
+									<Expr>
+										<LExpr ix="90">
+											<RExpr ix="91">
+												<AExpr ix="98">
+													<MExpr ix="99">
+														<Var ix="100" name="level" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<RExpr ix="92">
+												<AExpr ix="93">
+													<MExpr ix="94">
+														<Var ix="95" name="high" unOp="NOP"/>
+													</MExpr>
+												</AExpr>
+											</RExpr>
+											<ROp ix="103" relOp=" &lt;= "/>
+										</LExpr>
+									</Expr>
+								</ExprCall>
+							</MExpr>
+						</AExpr>
+					</RExpr>
+				</LExpr>
+				<LOp ix="131" logicOp=" and "/>
 				<LOp ix="131" logicOp=" and "/>
 			</Expr>
 		</DiscreteState>

@@ -1,4 +1,9 @@
 <!DOCTYPE DNHA SYSTEM "HSIF.dtd">
+<!-- Needs configurations:
+1. make the states of different refinements consistent;
+2. make the invariant have error tolerance;
+3. set proper initial states
+-->
 
 <DNHA name="Thermo">
 	<HybridAutomaton name="Thermostat">
@@ -36,25 +41,6 @@
 				</RExpr>
 			</DiffEquation>
 			<Expr name="haha">
-				<LExpr ix="26">
-					<RExpr ix="27">
-						<AExpr ix="34">
-							<MExpr ix="35">
-								<Var ix="36" name="x" unOp="NOP"/>
-							</MExpr>
-						</AExpr>
-					</RExpr>
-					<RExpr ix="28">
-						<AExpr ix="29">
-							<MExpr ix="30">
-								<Const ix="31" unOp="NOP" value="25"/>
-							</MExpr>
-						</AExpr>
-					</RExpr>
-					<ROp ix="39" relOp=" &lt;= "/>
-				</LExpr>
-			</Expr>
-			<Expr name="hehe">
 				<LExpr ix="26">
 					<RExpr ix="27">
 						<AExpr ix="34">
