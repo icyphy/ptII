@@ -94,8 +94,8 @@ public class CSPManager extends CSPActor {
             br = chooseBranch(reqBrchs);
             
             if( br != -1 ) {
-                ScheduleToken sToken = (ScheduleToken)requestIn.get(br);
-                code = sToken.getCode(); 
+                IntToken token = (IntToken)requestIn.get(br);
+                code = token.intValue(); 
                 _winningPortChannelCode = 
                         new PortChannelCode(requestIn, br, code);
             }
@@ -125,8 +125,8 @@ public class CSPManager extends CSPActor {
                 
                 // Contention Occurred...and might happen again
                 if( br >= 0 || br < _numRequestInChannels ) {
-                    ScheduleToken sToken = (ScheduleToken)requestIn.get(br);
-                    code = sToken.getCode(); 
+                    IntToken token = (IntToken)requestIn.get(br);
+                    code = token.intValue(); 
                     if( code > _winningPortChannelCode.getCode() ) {
                         _losingPortChannelCodes.
                                 insertFirst(_winningPortChannelCode);
