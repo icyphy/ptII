@@ -88,7 +88,6 @@ JSRCS = \
 	ModelScope.java \
         NamedConstantsScope.java \
         NestedScope.java \
-	NotEditableParameter.java \
 	Parameter.java \
 	ParseTreeDumper.java \
 	ParseTreeEvaluator.java \
