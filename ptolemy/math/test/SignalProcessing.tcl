@@ -42,6 +42,19 @@ if {[string compare test [info procs test]] == 1} then {
 
 set PI [java::field java.lang.Math PI]
 
+# Complex numbers to be used
+set c1 [java::new ptolemy.math.Complex 1 2]
+set c2 [java::new ptolemy.math.Complex 3 -4]
+set c3 [java::new ptolemy.math.Complex -4.9 -6]
+set c4 [java::new ptolemy.math.Complex -7 8]
+set c5 [java::new ptolemy.math.Complex -0.25 +0.4]
+
+# Complex array of length 0
+set ca0 [java::new {ptolemy.math.Complex[]} 0]
+
+# Complex array
+set ca1 [java::new {ptolemy.math.Complex[]} 4 [list $c1 $c2 $c3 $c4]]
+
 proc javaPrintArray {javaArrayObj} {
     set result {}
     for {set i 0} {$i < [$javaArrayObj length]} {incr i} {
@@ -100,6 +113,38 @@ test SignalProcessing-1.1 {close} {
 } {{1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 1 1}}
 
 ####################################################################
+test SignalProcessing-2.1 {convolve double: empty array} {
+    set da0 [java::new {double[]} 0]
+    set da2 [java::call ptolemy.math.SignalProcessing \
+	    {convolve double[] double[]} $da0 $da0]
+    $da2 getrange 0
+} {}
+
+####################################################################
+test SignalProcessing-2.2 {convolve double} {
+    set da1 [java::new {double[]} 4 {1 2 -3 4.1}]
+    set da2 [java::call ptolemy.math.SignalProcessing \
+	    {convolve double[] double[]} $da1 $da1]
+    epsilonDiff [$da2 getrange 0] {1.0 4.0 -2.0 -3.8 25.4 -24.6 16.81}
+} {}
+
+####################################################################
+test SignalProcessing-3.1 {convolve Complex} {
+    set ca2 [java::call ptolemy.math.SignalProcessing \
+	    {convolve ptolemy.math.Complex[] ptolemy.math.Complex[]} $ca0 $ca0]
+    jdkPrintArray $ca2
+} {}
+
+####################################################################
+test SignalProcessing-3.2 {convolve Complex} {
+    set ca2 [java::call ptolemy.math.SignalProcessing \
+	    {convolve ptolemy.math.Complex[] ptolemy.math.Complex[]} $ca1 $ca1]
+    epsilonDiff [jdkPrintArray $ca2] \
+	    {{-3.0 + 4.0i} {22.0 + 4.0i} {7.2 - 55.6i} {-123.4 - 8.8} \
+	    {10.01 + 162.8i} {164.6 + 5.6i} {-15.0 - 112.0i}}
+} {}
+
+####################################################################
 test SignalProcessing-2.1 {decibel} {
     epsilonDiff \
 	    [list \
@@ -110,6 +155,7 @@ test SignalProcessing-2.1 {decibel} {
 	    [java::call ptolemy.math.SignalProcessing {decibel double} 10.0] \
 	    ] {-Infinity -Infinity -106.03796221 0.0 106.03796221}
 } {}
+
 
 ####################################################################
 test SignalProcessing-3.1 {decibel array: empty array} {
