@@ -133,7 +133,8 @@ public class VariableDelay extends TimedDelay {
     ///////////////////////////////////////////////////////////////////
     ////                       protected method                    ////
 
-    /** Initialize the value for parameter.
+    /** Override the method of the super class to initialize the 
+     *  parameter values.
      */
     protected void _init() 
         throws NameDuplicationException, IllegalActionException  {

@@ -156,7 +156,8 @@ public class Server extends VariableDelay {
     }
 
     /** If there are delayed input events that are not processed and the
-     *  server is not busy, schedule future firings to process them.
+     *  server is ready, begin process the earliest input event and schedule 
+     *  future firings to produce them.
      *  @exception IllegalActionException If there is no director or can not
      *  schedule future firings to handle delayed input events.
      */
@@ -185,8 +186,9 @@ public class Server extends VariableDelay {
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected method                    ////
-
-    // Initialize parameters.
+    
+    /** Override the method of the super class to initialize parameters.
+     */
     protected void _init() 
         throws NameDuplicationException, IllegalActionException  {
         // FIXME: can not call super._init() and delay.setName(newName).
@@ -200,17 +202,15 @@ public class Server extends VariableDelay {
         cardinality.setExpression("SOUTH");
         output.setTypeSameAs(input);
     }
-
-    // Update the private states and schedule future firings.
-    protected void _updateStates() throws IllegalActionException {
-    }
     
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables                 ////
 
-    // Next time the server becomes free.
-    private Time _nextTimeFree;
+    /** Next time the server becomes free.
+     */
+    protected Time _nextTimeFree;
     
-    // List of delayed input tokens, whose finishing times can not be decided.
-    private LinkedList _delayedInputTokensList;
+    /** List of delayed input tokens, whose finishing times can not be decided.
+     */
+    protected LinkedList _delayedInputTokensList;
 }

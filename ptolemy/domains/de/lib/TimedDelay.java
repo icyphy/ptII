@@ -44,27 +44,27 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// TimedDelay
 /**
-   This actor delays the input by a specified amount of time.
-   The time delay is required to be non-negative and has default value 1.0.
+   This actor delays the input by a specified amount of time. The amount 
+   of the time is required to be non-negative and has a default value 1.0.
    The input and output types are unconstrained, except that the
    output type must be at least that of the input.
    <p>
-   The behavior on each firing is to read a token from the input,
+   The behavior of this actor on each firing is to read a token from the input,
    if there is one, and to produce the token on the corresponding output
-   channel with the appropriate time delay. Note that if the value of delay
+   channel after the appropriate time delay. Note that if the value of delay
    is 0.0, the output is procduced immediately. If there is no input token, 
-   then no output token is produced. The output is produced in the fire() 
+   then no output token is produced. NOTE: The output is produced in the fire() 
    method. 
    <p>
    Occasionally, this actor is used inside a feedback loop just for scheduling
-   perpose, where the delay parameter is set to zero. This implies that no 
+   perpose, where the delay parameter is set to zero. This implies that no
    output token is produced earlier than the time its trigger input arrives.
    Therefore the actor declares that there is a delay between the input 
    and the output, and the DE director will leverage this when 
    determining the precedences of the actors. It is sometimes useful to think 
    of this zero-valued delay as an infinitesimal delay.
-    
-   <p> The output may have the same microstep with the input, if there is
+   <p> 
+   The output may have the same microstep with the input, if there is
    no queued event scheduled to produce at the same time the input arrives. 
    Otherwise, the output is produced one microstep later. This guarantees that
    a DE signal is functional in the sense that there for any tag, there is 
@@ -78,7 +78,7 @@ import ptolemy.kernel.util.Workspace;
    @author Edward A. Lee, Lukito Muliadi, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
+   @Pt.ProposedRating Red (hyzheng)
    @Pt.AcceptedRating Red (hyzheng)
 */
 public class TimedDelay extends DETransformer {
@@ -117,6 +117,9 @@ public class TimedDelay extends DETransformer {
 
     /** If the attribute is <i>delay</i>, then check that the value
      *  is non-negative.
+     *  NOTE: the newDelay may be 0.0, which may change the causality 
+     *  property of the model. We leave the model designers to decide 
+     *  whether the zero delay is really what they want. 
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If the delay is negative.
      */
@@ -156,8 +159,9 @@ public class TimedDelay extends DETransformer {
     }
 
     /** Read one token from the input and send one output
-     *  which is scheduled to produce at the current time. 
-     *  @exception IllegalActionException If there is no director.
+     *  that is scheduled to produce at the current time. 
+     *  @exception IllegalActionException If there is no director, or the
+     *  input can not be read, or the output can not be sent.
      */
     public void fire() throws IllegalActionException {
         // consume input
@@ -168,7 +172,7 @@ public class TimedDelay extends DETransformer {
         }
         // produce output
         // NOTE: the delay may be zero. however, if there is some other event 
-        // scheduled to produce at current time before the current iteration, 
+        // scheduled to produce at current time before the current firing, 
         // the current input is delayed to the next firing to produce.
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
@@ -205,14 +209,18 @@ public class TimedDelay extends DETransformer {
     public boolean postfire() throws IllegalActionException {
        Time currentTime = getDirector().getModelTime();
        Time delayToTime = currentTime.add(_delay);
-       // Remove the token that is scheduled to be sent 
+       // Remove the token that is already sent 
        // at the current time.
        if (_delayedTokens.size() > 0 && 
            _currentOutput != null) {
            _delayedTokens.remove(currentTime);
+           // Schedule refiring at current time if the multiple tokens
+           // are scheduled to produce at the current time.
+           if (_delayedTokens.get(currentTime) != null) {
+               getDirector().fireAtCurrentTime(this);
+           }
        }
-       // Store the not handled token that is scheduled to 
-       // be sent in future.
+       // Schedule the not handled current input for future firing.
        if (_currentInput != null) {
            _delayedTokens.put(delayToTime, _currentInput);
            getDirector().fireAt(this, delayToTime);
@@ -258,4 +266,6 @@ public class TimedDelay extends DETransformer {
     /** Current output.
      */
     protected Token _currentOutput;    
+
+
 }

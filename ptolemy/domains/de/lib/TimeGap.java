@@ -44,11 +44,11 @@ import ptolemy.kernel.util.NameDuplicationException;
    at the output.  The output is always a DoubleToken.
    @see WaitingTime
 
-   @author Jie Liu and Edward A Lee
+   @author Jie Liu, Edward A Lee, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (liuj)
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
 */
 public class TimeGap extends DETransformer {
 
@@ -69,10 +69,10 @@ public class TimeGap extends DETransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Beginning with the second iteration, produce an output that is
-     *  the elapsed time since the previous iteration.  On the first
-     *  iteration, nothing is produced.  This method consumes at most
-     *  one token from the input each time it is fired.
+    /** Beginning with the second input, produce an output that is
+     *  the elapsed time since the previous input is received.  When the 
+     *  first input is received, nothing is produced.  This method 
+     *  consumes at most one token from the input each time it is fired.
      *  @exception IllegalActionException If get() or send() throws it.
      */
     public void fire() throws IllegalActionException {
@@ -89,9 +89,10 @@ public class TimeGap extends DETransformer {
         }
     }
 
-    /** Record the time of the current iteration for use in the next.
+    /** Record the time when the current input arrives. 
      *  @return True to continue firing.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If there is no director or thrown
+     *  in the super class.
      */
     public boolean postfire() throws IllegalActionException {
         _previousTime = getDirector().getModelTime();
@@ -108,6 +109,6 @@ public class TimeGap extends DETransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The time observed in the previous iteration.
+    // The time when the previous input arrives.
     private Time _previousTime;
 }
