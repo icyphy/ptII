@@ -30,11 +30,14 @@
 
 package ptolemy.domains.de.kernel;
 
-import ptolemy.actor.*;
-import ptolemy.domains.de.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.PtolemyThread;
+
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
@@ -147,8 +150,8 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
 
     /** Wait for new inputs on the specified array of ports.
      *  @param ports The array of ports whose inputs we're interested in.
-     *  @exception IllegalActionException The specified array of ports is not
-     *  all input ports.
+     *  @exception IllegalActionException If the specified array of ports
+     *  is not all input ports.
      */
     public void waitForNewInputs(IOPort[] ports)
             throws IllegalActionException {
@@ -178,9 +181,6 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    private PtolemyThread _thread;
-    private boolean _isWaiting = true;
-
     protected static Object _monitor = new Object();
 
     ///////////////////////////////////////////////////////////////////
@@ -204,4 +204,10 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
             }
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables               ////
+
+    private PtolemyThread _thread;
+    private boolean _isWaiting = true;
 }
