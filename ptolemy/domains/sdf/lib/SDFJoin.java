@@ -33,7 +33,12 @@ import ptolemy.actor.*;
 import java.util.Enumeration;
 import ptolemy.domains.sdf.kernel.*;
 
- 
+//////////////////////////////////////////////////////////////////////////
+//// SDFJoin
+/**
+@author Stephen Neuendorffer
+@version $Id$
+*/ 
 
 public class SDFJoin extends SDFAtomicActor {
     public IOPort inputport1;
