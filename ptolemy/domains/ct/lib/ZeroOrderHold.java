@@ -35,6 +35,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.actor.lib.Transformer;
 
 //////////////////////////////////////////////////////////////////////////
@@ -72,8 +73,9 @@ public class ZeroOrderHold extends Transformer
             throws IllegalActionException, NameDuplicationException {
         super(container, name);        
         // FIXME: Are they always DOUBLE? 
-        input.setTypeEquals(BaseType.DOUBLE);
-        output.setTypeEquals(BaseType.DOUBLE);
+        //input.setTypeEquals(BaseType.DOUBLE);
+        //output.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeAtLeast(input);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -89,8 +91,9 @@ public class ZeroOrderHold extends Transformer
      public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         ZeroOrderHold newobj = (ZeroOrderHold)super.clone(ws);
-        newobj.input.setTypeEquals(BaseType.DOUBLE);
-        newobj.output.setTypeEquals(BaseType.DOUBLE);
+        // newobj.input.setTypeEquals(BaseType.DOUBLE);
+        // newobj.output.setTypeEquals(BaseType.DOUBLE);
+        newobj.output.setTypeAtLeast(newobj.input);
         return newobj;
     }
 
@@ -124,7 +127,16 @@ public class ZeroOrderHold extends Transformer
      */
     public void initialize() throws IllegalActionException{
         super.initialize();
-        _lastToken = new DoubleToken(0.0);
+        Type outtype = output.getType();
+        if (outtype.equals(BaseType.BOOLEAN)) {
+            _lastToken = new BooleanToken(false);
+        } else if(outtype.equals(BaseType.DOUBLE)) {
+            _lastToken = new DoubleToken(0.0);
+        } else if(outtype.equals(BaseType.INT)) {
+            _lastToken = new IntToken(0);
+        } else {
+            _lastToken = new StringToken("");
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////
