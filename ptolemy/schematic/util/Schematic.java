@@ -83,7 +83,7 @@ public class Schematic extends PTMLObject
     public void addEntity (SchematicEntity entity) 
             throws IllegalActionException, NameDuplicationException {
         _entities.append(entity);
-	//	entity.setContainer(this);
+	entity.setContainer(this);
     }
 
     /**
@@ -97,6 +97,7 @@ public class Schematic extends PTMLObject
     public void addPort (SchematicPort port) 
             throws IllegalActionException, NameDuplicationException {
         _ports.append(port);
+	port.setContainer(this);
     }
 
    /**
@@ -110,6 +111,7 @@ public class Schematic extends PTMLObject
     public void addRelation (SchematicRelation relation) 
             throws IllegalActionException, NameDuplicationException {
         _relations.append(relation);
+	relation.setContainer(this);
     }
 
     /**
@@ -123,7 +125,7 @@ public class Schematic extends PTMLObject
     public void addTerminal (SchematicTerminal terminal) 
             throws IllegalActionException, NameDuplicationException {
         _terminals.append(terminal);
-	//	terminal.setContainer(this);
+	terminal.setContainer(this);
     }
 
     /**
@@ -319,21 +321,16 @@ public class Schematic extends PTMLObject
      */
     public void removeEntity(SchematicEntity entity) {
  	_entities.remove(entity);
-	//	entity.setContainer(null);
+	entity.setContainer(null);
     }
 
     /**
      * Remove a port from the schematic. Throw an exception if
      * a port with this name is not contained in the schematic.
      */
-    public void removePort (SchematicPort port) throws IllegalActionException {
-        try {
-	    _ports.remove(port);
-	}
-        catch (NoSuchElementException e) {
-            throw new IllegalActionException("Entity does not contain a " +
-                    "port with name " + port.getName());
-        }
+    public void removePort (SchematicPort port) {
+	_ports.remove(port);
+	port.setContainer(null);
     }
 
     /**
@@ -343,6 +340,7 @@ public class Schematic extends PTMLObject
      */
     public void removeRelation(SchematicRelation relation) {
         _relations.remove(relation);
+	relation.setContainer(null);
     }
 
     /**
@@ -352,7 +350,7 @@ public class Schematic extends PTMLObject
      */
     public void removeTerminal(SchematicTerminal terminal) {
         _terminals.remove(terminal);
-	//	terminal.setContainer(null);
+	terminal.setContainer(null);
     }
 
     /**

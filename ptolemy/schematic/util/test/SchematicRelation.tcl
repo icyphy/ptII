@@ -117,7 +117,7 @@ test SchematicRelation-3.1 {addTerminal} {
     $e0 description
 } {ptolemy.schematic.util.SchematicRelation {relation} parameters {
 } terminals {
-    {ptolemy.schematic.util.SchematicTerminal {Terminal1} parameters {
+    {ptolemy.schematic.util.SchematicTerminal {relation.Terminal1} parameters {
     } template {
         ptolemy.schematic.util.Terminal {ToTemplate} parameters {
         } X {0.0} Y {0.0}
@@ -139,7 +139,7 @@ test SchematicRelation-3.4 {removeTerminal} {
     $e0 description
 } {ptolemy.schematic.util.SchematicRelation {relation} parameters {
 } terminals {
-    {ptolemy.schematic.util.SchematicTerminal {Terminal2} parameters {
+    {ptolemy.schematic.util.SchematicTerminal {relation.Terminal2} parameters {
     } template {
         ptolemy.schematic.util.Terminal {FromTemplate} parameters {
         } X {0.0} Y {0.0}
@@ -154,7 +154,7 @@ test SchematicRelation-3.5 {addLink} {
     $e0 description
 } {ptolemy.schematic.util.SchematicRelation {relation} parameters {
 } terminals {
-    {ptolemy.schematic.util.SchematicTerminal {Terminal2} parameters {
+    {ptolemy.schematic.util.SchematicTerminal {relation.Terminal2} parameters {
     } template {
         ptolemy.schematic.util.Terminal {FromTemplate} parameters {
         } X {0.0} Y {0.0}
@@ -168,7 +168,7 @@ test SchematicRelation-3.5 {addLink} {
             } X {0.0} Y {0.0}
         } X {0.0} Y {0.0}
     } from {
-        ptolemy.schematic.util.SchematicTerminal {Terminal2} parameters {
+        ptolemy.schematic.util.SchematicTerminal {relation.Terminal2} parameters {
         } template {
             ptolemy.schematic.util.Terminal {FromTemplate} parameters {
             } X {0.0} Y {0.0}
@@ -191,7 +191,7 @@ test SchematicRelation-3.8 {removeLink} {
     $e0 description
 } {ptolemy.schematic.util.SchematicRelation {relation} parameters {
 } terminals {
-    {ptolemy.schematic.util.SchematicTerminal {Terminal2} parameters {
+    {ptolemy.schematic.util.SchematicTerminal {relation.Terminal2} parameters {
     } template {
         ptolemy.schematic.util.Terminal {FromTemplate} parameters {
         } X {0.0} Y {0.0}

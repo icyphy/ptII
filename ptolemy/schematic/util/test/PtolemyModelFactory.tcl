@@ -75,5 +75,73 @@ test PtolemyModelFactory-2.1 {Constructor tests} {
     set model [$modelfactory createPtolemyModel $schematic]
     
     $model description
-} {}
+} {ptolemy.actor.TypedCompositeActor {.hello world} attributes {
+    {ptolemy.data.expr.Parameter {.hello world.domain} ptolemy.data.StringToken(SDF)}
+    {ptolemy.data.expr.Parameter {.hello world.starttime} ptolemy.data.DoubleToken(1.0)}
+    {ptolemy.data.expr.Parameter {.hello world.endtime} ptolemy.data.DoubleToken(7.0)}
+} ports {
+} entities {
+    {ptolemy.actor.lib.Ramp {.hello world.Ramp1} attributes {
+        {ptolemy.data.expr.Parameter {.hello world.Ramp1.firingCountLimit} ptolemy.data.IntToken(0)}
+        {ptolemy.data.expr.Parameter {.hello world.Ramp1.init} ptolemy.data.IntToken(0)}
+        {ptolemy.data.expr.Parameter {.hello world.Ramp1.step} ptolemy.data.IntToken(4)}
+    } ports {
+        {ptolemy.actor.TypedIOPort {.hello world.Ramp1.output} attributes {
+        } links {
+            {ptolemy.actor.TypedIORelation {.hello world.R1} attributes {
+            } configuration {width 1 fixed}}
+        } insidelinks {
+        } configuration {output opaque {width 1}} receivers {
+        } remotereceivers {
+            {
+            }
+        } type {declared null resolved null}}
+        {ptolemy.actor.TypedIOPort {.hello world.Ramp1.trigger} attributes {
+        } links {
+        } insidelinks {
+        } configuration {input multiport opaque {width 0}} receivers {
+        } remotereceivers {
+        } type {declared ptolemy.data.Token resolved ptolemy.data.Token}}
+    }}
+    {ptolemy.actor.lib.Recorder {.hello world.Recorder1} attributes {
+    } ports {
+        {ptolemy.actor.TypedIOPort {.hello world.Recorder1.input} attributes {
+        } links {
+            {ptolemy.actor.TypedIORelation {.hello world.R1} attributes {
+            } configuration {width 1 fixed}}
+        } insidelinks {
+        } configuration {input multiport opaque {width 1}} receivers {
+            {
+            }
+        } remotereceivers {
+        } type {declared ptolemy.data.StringToken resolved ptolemy.data.StringToken}}
+    }}
+} relations {
+    {ptolemy.actor.TypedIORelation {.hello world.R1} attributes {
+    } links {
+        {ptolemy.actor.TypedIOPort {.hello world.Recorder1.input} attributes {
+        } configuration {input multiport opaque {width 1}} receivers {
+            {
+            }
+        } remotereceivers {
+        } type {declared ptolemy.data.StringToken resolved ptolemy.data.StringToken}}
+        {ptolemy.actor.TypedIOPort {.hello world.Ramp1.output} attributes {
+        } configuration {output opaque {width 1}} receivers {
+        } remotereceivers {
+            {
+            }
+        } type {declared null resolved null}}
+    } configuration {width 1 fixed}}
+} director {
+    {ptolemy.domains.sdf.kernel.SDFDirector {.hello world.director} attributes {
+        {ptolemy.data.expr.Parameter {.hello world.director.iterations} ptolemy.data.IntToken(3)}
+    }}
+} executivedirector {
+}}
 
+test PtolemyModelFactory-2.2 {Constructor tests} {
+    set manager [$model getManager]
+    $manager run
+    set recorder [java::cast ptolemy.actor.lib.Recorder [$model getEntity Recorder1]]
+    enumToTokenValues [$recorder getRecord 0]
+} {0 4 8}

@@ -195,7 +195,7 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
     {ptolemy.schematic.util.SchematicParameter {endtime} parameters {
     } type {double} value {7.0}}
 } entities {
-    {ptolemy.schematic.util.SchematicEntity {Load BMP File} parameters {
+    {ptolemy.schematic.util.SchematicEntity {SDF.Load BMP File} parameters {
         {ptolemy.schematic.util.SchematicParameter {filename} parameters {
         } type {string} value {test}}
     } template {
@@ -210,8 +210,8 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
                 {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
                 {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=30 20 60 20}} label {}}
             }
-	} implementation {
-	    null
+        } implementation {
+            null
         } terminalstyle {
             ptolemy.schematic.util.TerminalStyle {1out} parameters {
             } terminals {
@@ -236,13 +236,13 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
         null
     } ports {
     } terminals {
-        {ptolemy.schematic.util.SchematicTerminal {output} parameters {
+        {ptolemy.schematic.util.SchematicTerminal {SDF.Load BMP File.output} parameters {
         } template {
             ptolemy.schematic.util.Terminal {output} parameters {
             } X {64.0} Y {20.0}
         } X {64.0} Y {20.0}}
     }}
-    {ptolemy.schematic.util.SchematicEntity {Save BMP File} parameters {
+    {ptolemy.schematic.util.SchematicEntity {SDF.Save BMP File} parameters {
         {ptolemy.schematic.util.SchematicParameter {filename} parameters {
         } type {string} value {test}}
     } template {
@@ -257,8 +257,8 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
                 {ptolemy.schematic.util.GraphicElement {ellipse} attributes { {fill=yellow} {coords=25 15 10 10} {color=black}} label {}}
                 {ptolemy.schematic.util.GraphicElement {line} attributes { {coords=0 20 30 20}} label {}}
             }
-	} implementation {
-	    null
+        } implementation {
+            null
         } terminalstyle {
             ptolemy.schematic.util.TerminalStyle {1in} parameters {
             } terminals {
@@ -283,7 +283,7 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
         null
     } ports {
     } terminals {
-        {ptolemy.schematic.util.SchematicTerminal {input} parameters {
+        {ptolemy.schematic.util.SchematicTerminal {SDF.Save BMP File.input} parameters {
         } template {
             ptolemy.schematic.util.Terminal {input} parameters {
             } X {-4.0} Y {20.0}
@@ -292,18 +292,18 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
 } ports {
 } terminals {
 } relations {
-    {ptolemy.schematic.util.SchematicRelation {R1} parameters {
+    {ptolemy.schematic.util.SchematicRelation {SDF.R1} parameters {
     } terminals {
     } links {
         {ptolemy.schematic.util.SchematicLink
          to {
-            ptolemy.schematic.util.SchematicTerminal {output} parameters {
+            ptolemy.schematic.util.SchematicTerminal {SDF.Load BMP File.output} parameters {
             } template {
                 ptolemy.schematic.util.Terminal {output} parameters {
                 } X {64.0} Y {20.0}
             } X {64.0} Y {20.0}
         } from {
-            ptolemy.schematic.util.SchematicTerminal {input} parameters {
+            ptolemy.schematic.util.SchematicTerminal {SDF.Save BMP File.input} parameters {
             } template {
                 ptolemy.schematic.util.Terminal {input} parameters {
                 } X {-4.0} Y {20.0}

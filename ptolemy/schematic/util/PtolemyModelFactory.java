@@ -79,16 +79,27 @@ public class PtolemyModelFactory {
 		(SchematicEntity)entities.nextElement();
 	    _addPtolemyEntity(container, entity);
 	}
-    /*
-	Enumeration relations = schematic.relations();
-	while(relations.hasMoreElements()) {
-	    SchematicRelation relation = 
-		(SchematicRelation)relations.nextElement();
-	    container.addRelation(_createPtolemyRelation(relation));
-	}
-    */
-        System.out.println("creating entities");
+
+	System.out.println("Creating relations");
+	Enumeration relations = schematic.relations(); 
+	while(relations.hasMoreElements()) { 
+	    SchematicRelation relation =  
+		(SchematicRelation)relations.nextElement(); 
+	    _addPtolemyRelation(container, relation);
+	} 
+    
+        System.out.println("creating parameters");
 	_addParameters(container, schematic);
+
+	Manager manager = new Manager("manager");
+	container.setManager(manager);
+	// FIXME get director from domain library.
+	Director director = new ptolemy.domains.sdf.kernel.SDFDirector();
+	container.setDirector(director);
+	director.setName("director");
+	Parameter iterations = (Parameter)director.getAttribute("iterations");
+	iterations.setToken(new IntToken(3));
+
 	return container;
     }
 
@@ -98,7 +109,6 @@ public class PtolemyModelFactory {
         while(parameters.hasMoreElements()) {
             SchematicParameter parameter =
 		(SchematicParameter)parameters.nextElement();
-            System.out.println("parameter = " + parameter.description());
             // If a parameter with the given name already exists, then
             // use that, otherwise create a new parameter
             Attribute foundAttribute = 
@@ -138,7 +148,6 @@ public class PtolemyModelFactory {
     private void _addPtolemyEntity(TypedCompositeActor container, 
             SchematicEntity entity) 
             throws IllegalActionException, NameDuplicationException {
-        System.out.println("entity = " + entity.description());
     
         String implementation = entity.getImplementation();
         if(implementation == null) {
@@ -166,20 +175,54 @@ public class PtolemyModelFactory {
             actualArgs[0] = container;
             actualArgs[1] = entity.getName();
             newEntity = 
-                (Entity)entityConstructor.newInstance(actualArgs);
+                (Entity)entityConstructor.newInstance(actualArgs);	    
         } catch (Exception ex) {
             throw new IllegalActionException("Error creating actor: " + ex);
         }
         //}	    
+	entity.setSemanticObject(newEntity);
         _addParameters(newEntity, entity);
-        
-        System.out.println("entity = " + newEntity.description());
     }
 
     private void _addPtolemyRelation(TypedCompositeActor container, 
-            SchematicRelation relation) {
+            SchematicRelation relation) 
+	throws IllegalActionException, NameDuplicationException {
+	TypedIORelation newRelation =
+	    new TypedIORelation(container, relation.getName());
+	Enumeration links = relation.links();
+	while(links.hasMoreElements()) {
+	    SchematicLink link = (SchematicLink) links.nextElement();
+	    _addPtolemyLink(newRelation, link.getTo());
+	    _addPtolemyLink(newRelation, link.getFrom());
+	}
+	relation.setSemanticObject(newRelation);
     }
-
+ 
+    /** Find the port in the model that corresponds to the given terminal
+     *  and link it to the relation.   This method assumes that the port
+     *  already exists in the model.
+     */
+    private void _addPtolemyLink(TypedIORelation modelRelation, 
+				 SchematicTerminal terminal) 
+	throws IllegalActionException {
+	Nameable terminalContainer = terminal.getContainer();	    
+	if(terminalContainer instanceof SchematicRelation) {
+	    //Ignore.  This is graphical info only.
+	} else if(terminalContainer instanceof SchematicEntity) {
+	    SchematicEntity entity = (SchematicEntity) terminalContainer;
+	    Terminal templateTerminal = (Terminal) terminal.getTemplate();
+	    EntityTemplate templateEntity = (EntityTemplate)
+		entity.getTemplate();
+	    TerminalMap terminalMap = templateEntity.getTerminalMap();
+	    String portName =
+		terminalMap.getPort(templateTerminal.getName());
+	    // crap...  how do you get the port.
+	    Entity modelEntity = (Entity) entity.getSemanticObject();
+	    TypedIOPort modelPort = 
+		(TypedIOPort) modelEntity.getPort(portName);
+	    modelPort.link(modelRelation);
+	}
+    }
 
 //    private Port _createPtolemyPort(SchematicPort port) {
 	

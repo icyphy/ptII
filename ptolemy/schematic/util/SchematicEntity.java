@@ -97,6 +97,7 @@ public class SchematicEntity extends PTMLTemplateObject
     public void addPort (SchematicPort port) 
             throws IllegalActionException, NameDuplicationException {
         _ports.append(port);
+	port.setContainer(this);
     }
 
     /**
@@ -111,6 +112,7 @@ public class SchematicEntity extends PTMLTemplateObject
     public void addTerminal (SchematicTerminal terminal) 
             throws IllegalActionException, NameDuplicationException {
         _terminals.append(terminal);
+	terminal.setContainer(this);
     }
 
     /**
@@ -249,6 +251,7 @@ public class SchematicEntity extends PTMLTemplateObject
     public void removePort (SchematicPort port) throws IllegalActionException {
         try {
 	    _ports.remove(port);
+	    port.setContainer(null);
 	}
         catch (NoSuchElementException e) {
             throw new IllegalActionException("Entity does not contain a " +
@@ -264,6 +267,7 @@ public class SchematicEntity extends PTMLTemplateObject
 	throws IllegalActionException {
         try {
 	    _terminals.remove(terminal);
+	    terminal.setContainer(null);
 	}
         catch (NoSuchElementException e) {
             throw new IllegalActionException("Entity does not contain a " +

@@ -248,37 +248,12 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
         _parameters.remove(t);
     }
 
-   /** Specify the container, adding the entity to the list
-     *  of entities in the container.  If the container already contains
-     *  an entity with the same name, then throw an exception and do not make
-     *  any changes.  Similarly, if the container is not in the same
-     *  workspace as this entity, throw an exception.
-     *  If the entity is already contained by the container, do nothing.
-     *  If this entity already has a container, remove it
-     *  from that container first.  Otherwise, remove it from
-     *  the directory of the workspace, if it is present.
-     *  If the argument is null, then unlink the ports of the entity
-     *  from any relations and remove it from its container.
-     *  It is not added to the workspace directory, so this could result in
-     *  this entity being garbage collected.
-     *  Derived classes may override this method to constrain the container
-     *  to subclasses of CompositeEntity. This method is write-synchronized
-     *  to the workspace and increments its version number.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the action would result in a
-     *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace..
-     *  @exception NameDuplicationException If the name of this entity
-     *   collides with a name already in the container.
+    /** 
+     * Specify the container of this object.  In general you should not
+     * call this method directly, but call an add method on the container.
+     * @param container The container.
      */
-    public void setContainer(PTMLObject container)
-            throws  NameDuplicationException {
-        if(container == _container) return;
-        //        PTMLObject other = container.getObject(getName());
-        //if(other != null)
-        //        throw new NameDuplicationException(
-        //                container, "PTMLObject already contains an " +
-        //                "object with name " + getName());
+    public void setContainer(PTMLObject container) {
         _container = container;
     }
 

@@ -75,6 +75,8 @@ public class SchematicRelation extends PTMLObject
      */
     public void addLink (SchematicLink link) {
         _links.insertLast(link);
+	// Links do not have names, 
+	// and do not have references to their containers.
     }
 
     /**
@@ -87,6 +89,7 @@ public class SchematicRelation extends PTMLObject
     public void addTerminal (SchematicTerminal terminal) 
         throws IllegalActionException, NameDuplicationException {
         _terminals.append(terminal);
+	terminal.setContainer(this);
     }
 
     /**
@@ -160,6 +163,7 @@ public class SchematicRelation extends PTMLObject
      */
     public void removeTerminal(SchematicTerminal terminal) {
         _terminals.remove(terminal);
+	terminal.setContainer(null);
     }
 
     /**
