@@ -65,14 +65,16 @@ port.
 @version $Id$
  */
 public class PtolemyGraphModel extends AbstractGraphModel 
-    implements MutableGraphModel {
+    implements MutableGraphModel, Nameable{
     
     /**
      * Construct an empty graph model whose
      * root is a new CompositeEntity.
      */
     public PtolemyGraphModel() {
+	_changeListener = new GraphChangeListener();
 	_root = new CompositeEntity();
+	_root.addChangeListener(_changeListener);
 	_visualObjectMap = new HashMap();
     }
 
@@ -86,7 +88,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * represent it.
      */
     public PtolemyGraphModel(CompositeEntity toplevel) {
+	_changeListener = new GraphChangeListener();
 	_root = toplevel;
+	_root.addChangeListener(_changeListener);
 	_visualObjectMap = new HashMap();
     }
     	
@@ -147,7 +151,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	ComponentRelation relation = 
 	    (ComponentRelation)vertex.getContainer();
 	try {
-	    _doChangeRequest(new PlaceRelation(vertex, relation, parent));
+	    _doChangeRequest(new PlaceRelation(this, relation, parent));
 	} catch (Exception ex) {
             throw new GraphException(ex);
 	}
@@ -164,7 +168,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 			CompositeEntity parent) {
 	ComponentEntity entity = (ComponentEntity)icon.getContainer();
 	try {
-	    _doChangeRequest(new PlaceEntity(icon, entity, parent));
+	    _doChangeRequest(new PlaceEntity(this, entity, parent));
 	} catch (Exception ex) {
             throw new GraphException(ex);
 	}
@@ -180,7 +184,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
     public void addNode(Object eventSource, ComponentPort port, 
 			CompositeEntity parent) {
 	try {
-	    _doChangeRequest(new PlacePort(port, port, parent));
+	    _doChangeRequest(new PlacePort(this, port, parent));
 	} catch (Exception ex) {
             throw new GraphException(ex);
 	}
@@ -253,6 +257,11 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	setEdgeHead(eventSource, link, vertex);
     }
 
+    /** Return the container. */
+    public Nameable getContainer() {
+	return null;
+    }
+
     /**
      * Return true if this composite node contains the given node.
      */
@@ -273,6 +282,13 @@ public class PtolemyGraphModel extends AbstractGraphModel
      */
     public boolean containsNode(NamedObj composite, NamedObj node) {
         return composite.equals(getParent(node));
+    }
+
+    /** 
+     * Return a string representation of this graph model.
+     */
+    public String description() {
+	return "PtolemyGraphModel {" + _root.description() + "}";
     }
 
     /**
@@ -298,7 +314,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
     public void disconnectEdge(Object eventSource, final Link link) {
 	Object head = link.getHead();
 	Object tail = link.getTail();
-	_doChangeRequest(new ChangeRequest(link, 
+	_doChangeRequest(new ChangeRequest(this, 
 		"disconnect link" + link.getFullName()) {
 	    public void execute() throws ChangeFailedException {
 		try {
@@ -328,6 +344,16 @@ public class PtolemyGraphModel extends AbstractGraphModel
         return _root;
     }
 
+    /** Return the full name, which reflects the container object, if there
+     *  is one. For example the implementation in NamedObj concatenates the
+     *  full name of the container objects with the name of the this object,
+     *  separated by periods.
+     *  @return The full name of the object.
+     */
+    public String getFullName() {
+	return "PtolemyGraphModel." + _root.getFullName();
+    }
+
     /**
      * Return the head node of the given edge.
      */
@@ -347,7 +373,14 @@ public class PtolemyGraphModel extends AbstractGraphModel
     public Object getHead(Link link) {
 	return link.getHead();
     }
-		
+	
+    /** Return the name of the object.
+     *  @return The name of the object.
+     */
+    public String getName() {
+	return "PtolemyGraphModel";
+    }
+	
     /**
      * Return the number of nodes contained in
      * this graph or composite node.
@@ -668,6 +701,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 		// FIXME this is pretty minimal
 		try {
 		    Icon icon = new EditorIcon(entity, "_icon");
+		    nodes.add(icon);
 		}
 		catch (Exception e) {
 		    throw new InternalErrorException("Failed to create " +
@@ -833,7 +867,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	_removeConnectedEdges(eventSource, port);
 	
 	
-	_doChangeRequest(new RemovePort(port, port));
+	_doChangeRequest(new RemovePort(this, port));
     }
 	
     /**
@@ -848,7 +882,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}
 	
 	final ComponentEntity entity = (ComponentEntity)icon.getContainer();
-	_doChangeRequest(new RemoveActor(icon, entity));
+	_doChangeRequest(new RemoveActor(this, entity));
 
     }  
 
@@ -859,7 +893,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
     public void removeNode(Object eventSource, final Vertex vertex) {
 	final ComponentRelation relation =
 	    (ComponentRelation)vertex.getContainer();
-	_doChangeRequest(new RemoveRelation(vertex, relation));
+	_doChangeRequest(new RemoveRelation(this, relation));
     }
 
     /**
@@ -885,7 +919,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
      */
     public void setEdgeHead(Object eventSource, 
 			    final Link link, final Object head) {
-	_doChangeRequest(new ChangeRequest(link, "move head of link" + 
+	_doChangeRequest(new ChangeRequest(this, "move head of link" + 
 					   link.getFullName()) {
 	    public void execute() throws ChangeFailedException {
 		System.out.println("executing change request");
@@ -932,7 +966,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
      */
     public void setEdgeTail(Object eventSource, final Link link,
 			    final NamedObj tail) {
-	_doChangeRequest(new ChangeRequest(link, "move head of link" + 
+	_doChangeRequest(new ChangeRequest(this, "move head of link" + 
 					   link.getFullName()) {
 	    public void execute() throws ChangeFailedException {
 		System.out.println("executing change request");
@@ -955,6 +989,19 @@ public class PtolemyGraphModel extends AbstractGraphModel
         dispatchGraphEvent(e);
     }
 
+    /** Set or change the name. By convention, if the argument is null,
+     *  the name should be set to an empty string rather than to null.
+     *  @param name The new name.
+     *  @exception IllegalActionException If the name contains a period.
+     *  @exception NameDuplicationException If the container already
+     *   contains an object with this name.
+     */
+    public void setName(String name)
+	throws IllegalActionException, NameDuplicationException {
+	throw new IllegalActionException(
+	     "The name of a graph model cannot be changed");
+    }
+
     /**
      * Set the semantic object correspoding
      * to the given node, edge, or composite.
@@ -964,6 +1011,28 @@ public class PtolemyGraphModel extends AbstractGraphModel
                 "PtolemyGraphModel does not support" + 
                 " setting semantic objects.");
     }
+
+    /** Mutations may happen to the ptolemy model without the knowledge of
+     * this model.  This change listener listens for those changes
+     * and when they occur, issues a GraphEvent so that any views of
+     * this graph model can come back and update themselves.
+     */
+    public class GraphChangeListener implements ChangeListener {
+        /** Notify the listener that a change has been successfully executed.
+	 *  @param change The change that has been executed.
+	 */
+	public void changeExecuted(ChangeRequest change) {
+	    // Ignore anything that comes from this graph model.  
+	    // the other methods take care of issuing the graph event in
+	    // that case.
+	    if(change.getOriginator() == PtolemyGraphModel.this) return;
+	    // Otherwise notify any graph listeners that the graph might have
+	    // completely changed.
+	    dispatchGraphEvent(new GraphEvent(this, 
+				  GraphEvent.STRUCTURE_CHANGED,
+				  getRoot()));
+	}
+    }    
 
     // Perform the specified change request.  Queue the request with the
     // root entity.  If the change fails, then throw a graph exception. 
@@ -1096,5 +1165,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
     private CompositeEntity _root = null;
 
     private Map _visualObjectMap;
+
+    private GraphChangeListener _changeListener;
 }
 
