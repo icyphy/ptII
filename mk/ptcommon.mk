@@ -609,7 +609,7 @@ htmlchek:
 # Script used to find files that shold not be shipped
 CHKEXTRA =	$(PTII)/util/testsuite/chkextra
 checkjunk:
-	@$(CHKEXTRA) $(SRCS) $(HDRS) $(EXTRA_SRCS) $(MISC_FILES) \
+	@"$(CHKEXTRA)" $(SRCS) $(HDRS) $(EXTRA_SRCS) $(MISC_FILES) \
 		$(OPTIONAL_FILES) $(JSRCS) makefile SCCS CVS \
 		$(JCLASS) $(OBJS) $(LIBR) $(PTDISTS) \
 		$(PTCLASSJAR) $(PTCLASSALLJAR) $(PTAUXALLJAR)
