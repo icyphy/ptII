@@ -15,19 +15,9 @@
         </property>
         <property name="scale" class="ptolemy.data.expr.Parameter" value="50.0">
         </property>
-        <property name="_controllerFactory" class="ptolemy.vergil.icon.ImageAttributeControllerFactory">
+        <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="870.0, 20.0">
-        </property>
-    </property>
-    <property name="line" class="ptolemy.vergil.actor.lib.LineAttribute">
-        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
-        </property>
-        <property name="horizontal" class="ptolemy.data.expr.Parameter" value="1024.0">
-        </property>
-        <property name="vertical" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="53.0, 130.0">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
@@ -48,6 +38,20 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 65.0">
+        </property>
+    </property>
+    <property name="line" class="ptolemy.vergil.actor.lib.LineAttribute">
+        <property name="_hideName" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="4.0">
+        </property>
+        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.2,1.0}">
+        </property>
+        <property name="x" class="ptolemy.data.expr.Parameter" value="1024.0">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 125.0">
         </property>
     </property>
 </entity>

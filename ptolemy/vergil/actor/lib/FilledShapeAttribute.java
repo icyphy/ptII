@@ -42,6 +42,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.icon.ResizableAttributeControllerFactory;
 
 //////////////////////////////////////////////////////////////////////////
 //// FilledShapeAttribute
@@ -88,10 +89,9 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
                 
         fillColor = new ColorAttribute(this, "fillColor");
         fillColor.setExpression("none");
-
-        // FIXME: controller for resizing.
+        
         // Create a custom controller.
-        // new ImageAttributeControllerFactory(this, "_controllerFactory");
+        new ResizableAttributeControllerFactory(this, "_controllerFactory");
     }
 
     ///////////////////////////////////////////////////////////////////
