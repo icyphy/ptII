@@ -38,7 +38,7 @@ An exception used to indicate an IO error during interpretation of a
 CAL actor in Ptolemy.  This can occur during the getting/putting of a
 {@link ptolemy.data.Token caltrop.data.Token} on a channel.
 
-@author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+@author J&#246;rn W. Janneck <janneck@eecs.berkeley.edu>
 @version $Id$
 @since Ptolemy II 3.1
 */

@@ -79,7 +79,7 @@ import java.lang.reflect.Field;
  particular, it contains a context and a method that creates the global
  environment to be used with Ptolemy.
 
- @author Jörn W. Janneck <janneck@eecs.berkeley.edu>, Christopher Chang <cbc@eecs.berkeley.edu>
+@author J&#246;rn W. Janneck <janneck@eecs.berkeley.edu>, Christopher Chang <cbc@eecs.berkeley.edu>
  @version $Id$
  @since Ptolemy II 3.1
  */
