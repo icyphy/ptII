@@ -56,8 +56,9 @@ public interface ExecutionListener {
      *  when an Exeception is caught at the top level of execution.  Instead
      *  of allowing the exception to propagate out the user interface,
      *  it is caught
-     *  here and encapsulated within an event.   The event will also report the
-     *  iteration during which the exception was caught, if possible.
+     *  here and encapsulated within an event.   The event will also report 
+     *  the toplevel iteration during which the exception was caught, 
+     *  if possible.
      *
      *  @param event An ExecutionEvent that contains a valid exception.
      */
@@ -96,16 +97,19 @@ public interface ExecutionListener {
 
     /** Called to report a successful start of execution.   This method
      *  indicates that it was valid for execution to begin, and that any
-     *  initialization performed by the manager has completed successfully.
-     *  It does not imply that initialize completed sucessfully.
+     *  initialization performed within the manager thread, such as 
+     *  creating a thread for the simulation, has completed successfully.
+     *  It does not imply that the initialize method was succesfully 
+     *  called on all the actors, only that the manager thread is ready
+     *  begin execution of the model.
      *
      *  @param event an ExecutionEvent with iterations set equal to zero.
      */
     public void executionStarted(ExecutionEvent event);
 
     /** Called to report termination of execution.   This method is called
-     *  when the Manager has done everything it can to stop a
-     *  running execution.
+     *  when the Manager has completed terminating execution of a model
+     *  via the terminate() method.
      *
      *  @param event an ExecutionEvent.
      */
