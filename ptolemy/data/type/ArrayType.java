@@ -236,17 +236,15 @@ public class ArrayType extends StructuredType {
     }
 
     /** Return true if the specified type is a substitution instance of this
-     *  type. For the argument to be a substitution instance, this type must
-     *  be a variable, and the argument must be a type that can be obtained
-     *  by replacing the BaseType.NAT component of the declared type by
-     *  another type.
+     *  type.
      *  @param type A Type.
      *  @return True if the argument is a substitution instance of this type.
+     *  @see Type#isSubstitutionInstance
      */
     public boolean isSubstitutionInstance(Type type) {
-        if (isConstant() || ( !(type instanceof ArrayType))) {
-            return false;
-        }
+        if ( !(type instanceof ArrayType)) {
+	    return false;
+	}
 
         Type argElemType = ((ArrayType)type).getElementType();
         return _declaredElementType.isSubstitutionInstance(argElemType);
