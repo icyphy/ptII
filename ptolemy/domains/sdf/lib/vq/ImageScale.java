@@ -64,12 +64,12 @@ public final class ImageScale extends SDFAtomicActor {
 
         SDFIOPort outputport = (SDFIOPort) newPort("contrast");
         outputport.setOutput(true);
-        setTokenProductionRate(outputport, 1);
+        outputport.setTokenProductionRate(1);
         outputport.setTypeEquals(IntMatrixToken.class);
 
         SDFIOPort inputport = (SDFIOPort) newPort("figure");
         inputport.setInput(true);
-        setTokenConsumptionRate(inputport, 1);
+        inputport.setTokenConsumptionRate(1);
         inputport.setTypeEquals(IntMatrixToken.class);
     }
 

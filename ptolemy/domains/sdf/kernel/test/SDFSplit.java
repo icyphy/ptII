@@ -46,19 +46,19 @@ public class SDFSplit extends SDFAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         try{
-            input = (TypedIOPort)newPort("input");
+            input = (SDFIOPort)newPort("input");
             input.setInput(true);
-            setTokenConsumptionRate(input, 2);
+            input.setTokenConsumptionRate(2);
             input.setTypeEquals(IntToken.class);
 
-            output1 = (TypedIOPort)newPort("output1");
+            output1 = (SDFIOPort)newPort("output1");
             output1.setOutput(true);
-            setTokenProductionRate(output1, 1);
+            output1.setTokenProductionRate(1);
             output1.setTypeEquals(IntToken.class);
 
-            output2 = (TypedIOPort)newPort("output2");
+            output2 = (SDFIOPort)newPort("output2");
             output2.setOutput(true);
-            setTokenProductionRate(output2, 1);
+            output2.setTokenProductionRate(1);
             output2.setTypeEquals(IntToken.class);
         }
         catch (IllegalActionException e1) {
@@ -69,9 +69,9 @@ public class SDFSplit extends SDFAtomicActor {
     ////                         public methods                    ////
 
 
-    public TypedIOPort input;
-    public TypedIOPort output1;
-    public TypedIOPort output2;
+    public SDFIOPort input;
+    public SDFIOPort output1;
+    public SDFIOPort output2;
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
@@ -82,9 +82,9 @@ public class SDFSplit extends SDFAtomicActor {
     public Object clone(Workspace ws) {
         try {
             SDFSplit newobj = (SDFSplit)(super.clone(ws));
-            newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.output1 = (TypedIOPort)newobj.getPort("output1");
-            newobj.output2 = (TypedIOPort)newobj.getPort("output2");
+            newobj.input = (SDFIOPort)newobj.getPort("input");
+            newobj.output1 = (SDFIOPort)newobj.getPort("output1");
+            newobj.output2 = (SDFIOPort)newobj.getPort("output2");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...

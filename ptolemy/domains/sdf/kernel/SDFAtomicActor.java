@@ -33,8 +33,7 @@ package ptolemy.domains.sdf.kernel;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.actor.*;
+import ptolemy.data.expr.*;import ptolemy.actor.*;
 
 import java.util.Enumeration;
 import collections.HashedMap;
@@ -130,6 +129,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  @return The number of tokens consumed on the port, as specified in
      *  the TokenConsumptionRate Parameter, or DEFAULT_CONSUMPTION_RATE if the
      *  parameter does not exist.
+     *  @deprecated
      */
     public int getTokenConsumptionRate(IOPort p)
             throws IllegalActionException {
@@ -157,6 +157,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  @return The number of tokens produced on the port, as specified in
      *  the TokenInitProduction Parameter, or DEFAULT_INIT_PRODUCTION if the
      *  parameter does not exist.
+     *  @deprecated
      */
     public int getTokenInitProduction(IOPort p)
             throws IllegalActionException {
@@ -185,6 +186,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  @return The number of tokens produced on the port, as specified in
      *  the TokenProductionRate Parameter, or DEFAULT_PRODUCTION_RATE if the
      *  parameter does not exist.
+     *  @deprecated
      */
     public int getTokenProductionRate(IOPort p)
             throws IllegalActionException {
@@ -234,6 +236,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  @exception IllegalActionException If port is not contained
      *  in this actor, the rate is less than zero, or the port is
      *  not an input port.
+     *  @deprecated
      */
     public void setTokenConsumptionRate(IOPort p, int r)
             throws IllegalActionException {
@@ -270,6 +273,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  @exception IllegalActionException If port is not contained
      *  in this actor, the rate is less than zero, or the port is
      *  not an output port.
+     *  @deprecated
      */
     public void setTokenInitProduction(IOPort p, int r)
             throws IllegalActionException {
@@ -302,6 +306,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  @exception IllegalActionException If port is not contained
      *  in this actor, the rate is less than zero, or the port is
      *  not an output port.
+     *  @deprecated
      */
     public void setTokenProductionRate(IOPort p, int r)
             throws IllegalActionException {

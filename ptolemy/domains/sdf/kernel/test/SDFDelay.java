@@ -74,7 +74,7 @@ public class SDFDelay extends SDFAtomicActor {
          */
         try{
             /* Create a new port */
-	    input = (TypedIOPort)newPort("input");
+	    input = (SDFIOPort)newPort("input");
             /* Make it an input port */
             input.setInput(true);
             /* Set the Consumption rate on the port.  A good way to think of
@@ -83,10 +83,10 @@ public class SDFDelay extends SDFAtomicActor {
              * then Ptolemy will always guarantee that there will be a token
              * ready when you are fired.
              */
-	    setTokenConsumptionRate(input, 1);
+	    input.setTokenConsumptionRate(1);
 	    /* The getPort method (in ptolemy.kernel.Entity) finds a port by
 	     * name.  It returns a Port object, but all the ports in the
-	     * actor package are of type TypedIOPort,
+	     * actor package are of type SDFIOPort,
 	     * which extends Port.   So, we
 	     * have to upcast the return value to the appropriate type.
 	     * The setDeclaredType calls use the type system to define what
@@ -95,9 +95,9 @@ public class SDFDelay extends SDFAtomicActor {
 	    input.setTypeEquals(IntToken.class);
 
 	    /* Similarly for the output port */
-	    output = (TypedIOPort)newPort("output");
+	    output = (SDFIOPort)newPort("output");
             output.setOutput(true);
-            setTokenProductionRate(output, 1);
+            output.setTokenProductionRate(1);
 	    output.setTypeEquals(IntToken.class);
         }
         catch (IllegalActionException e1) {
@@ -107,8 +107,8 @@ public class SDFDelay extends SDFAtomicActor {
         }
     }
 
-    public TypedIOPort input;
-    public TypedIOPort output;
+    public SDFIOPort input;
+    public SDFIOPort output;
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
@@ -119,8 +119,8 @@ public class SDFDelay extends SDFAtomicActor {
     public Object clone(Workspace ws) {
         try {
             SDFDelay newobj = (SDFDelay)(super.clone(ws));
-            newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.output = (TypedIOPort)newobj.getPort("output");
+            newobj.input = (SDFIOPort)newobj.getPort("input");
+            newobj.output = (SDFIOPort)newobj.getPort("output");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -155,8 +155,8 @@ public class SDFDelay extends SDFAtomicActor {
         /* Figure out how many tokens should be copied from the input to the
          * output.
          */
-        int tokens = getTokenConsumptionRate(input);
-        if(getTokenProductionRate(output) != tokens)
+        int tokens = input.getTokenConsumptionRate();
+        if(output.getTokenProductionRate() != tokens)
             throw new IllegalActionException(
                     "SDFDelay: Rates on input port and output port " +
                     "must match!");

@@ -62,12 +62,12 @@ public final class ImageContrast extends SDFAtomicActor {
 
         SDFIOPort outputport = (SDFIOPort) newPort("outcontrast");
         outputport.setOutput(true);
-        setTokenProductionRate(outputport, 1);
+        outputport.setTokenProductionRate(1);
         outputport.setTypeEquals(IntMatrixToken.class);
 
         SDFIOPort inputport = (SDFIOPort) newPort("incontrast");
         inputport.setInput(true);
-        setTokenConsumptionRate(inputport, 1);
+        inputport.setTokenConsumptionRate(1);
         inputport.setTypeEquals(IntMatrixToken.class);
     }
 

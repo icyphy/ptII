@@ -51,9 +51,9 @@ public class SDFRamp extends SDFAtomicActor {
             NameDuplicationException {
         super(container, name);
         try{
-            output = (TypedIOPort) newPort("output");
+            output = (SDFIOPort) newPort("output");
             output.setOutput(true);
-            setTokenProductionRate(output, 1);
+            output.setTokenProductionRate(1);
             output.setTypeEquals(IntToken.class);
         }
         catch (IllegalActionException e1) {
@@ -66,7 +66,7 @@ public class SDFRamp extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public TypedIOPort output;
+    public SDFIOPort output;
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.  The new
@@ -77,7 +77,7 @@ public class SDFRamp extends SDFAtomicActor {
     public Object clone(Workspace ws) {
         try {
             SDFRamp newobj = (SDFRamp)(super.clone(ws));
-            newobj.output = (TypedIOPort)newobj.getPort("output");
+            newobj.output = (SDFIOPort)newobj.getPort("output");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -96,7 +96,7 @@ public class SDFRamp extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
         int i;
 
-        int tokens = getTokenProductionRate(output);
+        int tokens = output.getTokenProductionRate();
         for(i = 0; i < tokens; i++) {
             Token message = new IntToken(_value);
             _value = _value + 1;

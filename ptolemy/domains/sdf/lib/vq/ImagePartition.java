@@ -63,12 +63,12 @@ public final class ImagePartition extends SDFAtomicActor {
 
         partition = (SDFIOPort) newPort("partition");
         partition.setOutput(true);
-        setTokenProductionRate(partition, 3168);
+        partition.setTokenProductionRate(3168);
         partition.setTypeEquals(IntMatrixToken.class);
 
         image = (SDFIOPort) newPort("image");
         image.setInput(true);
-        setTokenConsumptionRate(image, 1);
+        image.setTokenConsumptionRate(1);
         image.setTypeEquals(IntMatrixToken.class);
 
     }

@@ -64,17 +64,17 @@ public final class SNR extends SDFAtomicActor {
 
         SDFIOPort outputport = (SDFIOPort) newPort("SNRvalue");
         outputport.setOutput(true);
-        setTokenProductionRate(outputport, 1);
+        outputport.setTokenProductionRate(1);
         outputport.setTypeEquals(DoubleToken.class);
 
         SDFIOPort inputport1 = (SDFIOPort) newPort("inoriginal");
         inputport1.setInput(true);
-        setTokenConsumptionRate(inputport1, 1);
+        inputport1.setTokenConsumptionRate(1);
         inputport1.setTypeEquals(IntMatrixToken.class);
 
         SDFIOPort inputport2 = (SDFIOPort) newPort("inmodified");
         inputport2.setInput(true);
-        setTokenConsumptionRate(inputport2, 1);
+        inputport2.setTokenConsumptionRate(1);
         inputport2.setTypeEquals(IntMatrixToken.class);
 
     }

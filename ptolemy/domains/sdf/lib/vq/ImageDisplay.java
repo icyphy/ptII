@@ -61,9 +61,9 @@ public final class ImageDisplay extends SDFAtomicActor {
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-        TypedIOPort inputport = (TypedIOPort) newPort("image");
+        SDFIOPort inputport = (SDFIOPort) newPort("image");
         inputport.setInput(true);
-        setTokenConsumptionRate(inputport, 1);
+        inputport.setTokenConsumptionRate(1);
         inputport.setTypeEquals(IntMatrixToken.class);
 
         _oldxsize = 0;
@@ -83,7 +83,7 @@ public final class ImageDisplay extends SDFAtomicActor {
     public Object clone(Workspace ws) {
         try {
             ImageDisplay newobj = (ImageDisplay)(super.clone(ws));
-            newobj.image = (TypedIOPort)newobj.getPort("image");
+            newobj.image = (SDFIOPort)newobj.getPort("image");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
