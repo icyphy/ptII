@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/rtos/demo/SimpleTasks
+ME =		ptolemy/domains/tm/demo/SimpleTasks
 
 # Root of the Java directory
 ROOT =		../../../../../
@@ -48,7 +48,9 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	SimpleTasks.xml
+	SimpleTasks.htm \
+	SimpleTasks.xml \
+	SimpleTasksVergil.htm
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)

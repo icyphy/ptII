@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/rtos/demo/Controllers
+ME =		ptolemy/domains/tm/demo/Controllers
 
 # Root of the Java directory
 ROOT =		../../../../../
@@ -48,7 +48,9 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	Controllers.xml
+	Controllers.htm \
+	Controllers.xml \
+	ControllersVergil.htm \
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)

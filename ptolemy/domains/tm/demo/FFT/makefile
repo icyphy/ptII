@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/rtos/demo/FFT
+ME =		ptolemy/domains/tm/demo/FFT
 
 # Root of the Java directory
 ROOT =		../../../../../
@@ -48,7 +48,9 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	FFT.xml
+	FFT.htm \
+	FFT.xml \
+	FFTVergil.htm
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED)
