@@ -110,7 +110,7 @@ public class NonStrictTest extends Sink {
         super(container, name);
 
         correctValues = new Parameter(this, "correctValues");
-        correctValues.setExpression("[true]");
+        correctValues.setExpression("{true}");
         correctValues.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         tolerance = new Parameter(this, "tolerance");
