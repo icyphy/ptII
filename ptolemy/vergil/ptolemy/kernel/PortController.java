@@ -211,8 +211,9 @@ public class PortController extends LocatableNodeController {
         public NameWrapper (Figure f, String label) {
             _child = f;
             f.setParent(this);
+            
+            _label = new LabelFigure(label, _labelFont);
 
-            _label = new LabelFigure(label);
             _label.setPadding(0);
             _label.setAnchor(_anchor);
             Rectangle2D bounds = _child.getBounds();
@@ -275,6 +276,7 @@ public class PortController extends LocatableNodeController {
     }
 
     private MenuCreator _menuCreator;
+    private static Font _labelFont = new Font("SansSerif", Font.PLAIN, 12);
 }
 
 
