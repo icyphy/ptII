@@ -205,10 +205,6 @@ PTII_LOCALURL = @PTII_LOCALURL@
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 PTJAVA3D_DIR = @PTJAVA3D_DIR@
 
-# Set to javasound and used in
-# $PTII/ptolemy/actor/lib/makefile if javasound was found
-PTJAVASOUND_DIR = @PTJAVASOUND_DIR@
-
 # Set to jspaces and used in $PTII/ptolemy/actor/lib/makefile if jini
 # was found
 PTJSPACES_DIR =	@PTJSPACES_DIR@

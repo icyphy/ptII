@@ -882,37 +882,6 @@ fi
 
 
 #--------------------------------------------------------------------
-#	Test for javax.sound
-#--------------------------------------------------------------------
-# We need only loo for javax.sound if actor/lib/javasound is present
-PTJAVASOUND_USER_DIR="$PTII/ptolemy/actor/lib/javasound"
-# PTJAVASOUND_DIR is set to javasound and used in
-# $PTII/ptolemy/actor/lib/makefile if javasound was found
-PTJAVASOUND_DIR=
-
-if test ! -d "$PTJAVASOUND_USER_DIR"; then
-    AC_MSG_RESULT([$PTJAVASOUND_USER_DIR is not present,
-	so we need not find javax.sound.])
-else
-    AC_MSG_CHECKING([for javax.sound])
-    # We need to run javac in the config directory so that javac from jdk1.1.6
-    # under NT and cygwin works properly
-    startdir=`pwd`
-    cd "$srcdir/config"
-    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if "$JAVAC" javasoundTest.java ; then
-	AC_MSG_RESULT(ok)
-	PTJAVASOUND_DIR=javasound
-    else
-	AC_MSG_WARN(['"$JAVAC" javasoundTest.java' failed.
-	Perhaps you are running under JDK1.2?
-	javasound is used in actor.lib, but you can probably
-	get away without it.])
-    fi
-    cd "$startdir"
-fi
-
-#--------------------------------------------------------------------
 #       Jini is connection technology from Sun, see http://www.sun.com/jini/
 #       See if there was a command-line option for where Jini is
 #       If not, look in $PTII/vendors/sun/jini/jini1_0_1
@@ -1530,10 +1499,6 @@ AC_SUBST(PTJAVA_DIR)
 # Set to gr and used in
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 AC_SUBST(PTJAVA3D_DIR)
-
-# Set to javasound and used in
-# $PTII/ptolemy/actor/lib/makefile if javasound was found
-AC_SUBST(PTJAVASOUND_DIR)
 
 # Set to jhdl if JDHL.jar was found
 AC_SUBST(PTJHDL_DIR)
