@@ -1015,7 +1015,7 @@ public class DTDirector extends SDFDirector {
      *  TypedCompositeActor that holds this director.
      */
     private void _debugViewContainerOutputPorts()
-            hrows IllegalActionException {
+            throws IllegalActionException {
 
         List list = ((TypedCompositeActor)getContainer()).outputPortList();
         Iterator listIterator = list.iterator();
