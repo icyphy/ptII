@@ -36,7 +36,7 @@ DIRS = filtermodel view controller applet
 ROOT =		../..
 
 # $(ME) is used in ptdir.mk
-ME =		ptolemy/filter.mk
+ME =		ptolemy/filter
 
 # True source directory
 VPATH =		$(ROOT)/$(ME)
