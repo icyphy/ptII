@@ -143,12 +143,14 @@ create refinements for the states.</text></svg></configure></property>
   <!-- Execution control library is modified. -->
   <entity name="execution control" class="ptolemy.moml.EntityLibrary">
           <doc>Actors that stop execution of the model.</doc>
+          <entity name="Assertion"
+                  class="ptolemy.actor.lib.assertion"/>
           <entity name="Stop"
                   class="ptolemy.actor.lib.Stop"/>
           <entity name="ThrowException"
                   class="ptolemy.actor.lib.ThrowException"/>
-          <entity name="Assertion"
-                  class="ptolemy.actor.lib.assertion"/>
+          <entity name="ThrowModelError"
+                  class="ptolemy.actor.lib.ThrowModelError"/>
   </entity>
 </entity>
 

@@ -7,7 +7,9 @@
       <group>
         <doc>Actors that stop execution of the model.</doc>
         <entity name="Stop" class="ptolemy.actor.lib.Stop"/>
-        <entity name="ThrowException" class="ptolemy.actor.lib.ThrowException"/>
+        <entity name="ThrowException"
+	class="ptolemy.actor.lib.ThrowException"/>
+        <entity name="ThrowModelError" class="ptolemy.actor.lib.ThrowModelError"/>
       </group>
     ?>
   </configure>

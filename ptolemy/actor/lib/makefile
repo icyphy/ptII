@@ -158,6 +158,7 @@ JSRCS = \
 	Synchronizer.java \
 	Test.java \
 	ThrowException.java \
+	ThrowModelError.java \
 	TimedActor.java \
 	TimedSource.java \
 	Transformer.java \
