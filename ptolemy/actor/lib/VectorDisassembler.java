@@ -30,17 +30,12 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.DoubleToken;
 import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.lib.Transformer;
-
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// VectorDisassembler

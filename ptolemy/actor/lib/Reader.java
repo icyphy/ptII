@@ -30,21 +30,24 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
-import ptolemy.data.StringToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
-import ptolemy.actor.lib.javasound.AudioReader; // javadoc requires this.
 
-import java.io.IOException;
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.StringTokenizer;
+
+//import java.io.Reader;
 
 //////////////////////////////////////////////////////////////////////////
 //// Reader

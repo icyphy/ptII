@@ -30,42 +30,30 @@
 
 package ptolemy.actor.lib;
 
-// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
 import diva.gui.toolbox.FocusMouseListener;
+import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import java.awt.BorderLayout;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-//import java.awt.event.MouseListener;
-
-// Imports from ptolemy/actor/lib/net/DatagramReceiver.java (not pruned)
-//import ptolemy.actor.AtomicActor;
-//import ptolemy.actor.IOPort;
-  import ptolemy.actor.TypedAtomicActor;
-  import ptolemy.actor.TypedIOPort;
-  import ptolemy.data.ArrayToken;
-//import ptolemy.data.BooleanToken;
-  import ptolemy.data.IntToken;
-  import ptolemy.data.StringToken;
-  import ptolemy.data.Token;
-//import ptolemy.data.expr.Parameter;
-  import ptolemy.data.type.ArrayType;
-  import ptolemy.data.type.BaseType;
-//import ptolemy.data.type.Type;
-  import ptolemy.kernel.CompositeEntity;
-//import ptolemy.kernel.util.Attribute;
-  import ptolemy.kernel.util.IllegalActionException;
-  import ptolemy.kernel.util.NameDuplicationException;
-//import ptolemy.kernel.util.StringAttribute;
+import java.awt.event.MouseListener;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrowKeySensor

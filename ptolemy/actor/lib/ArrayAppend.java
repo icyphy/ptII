@@ -30,19 +30,13 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.graph.InequalityTerm;
-import ptolemy.data.Token;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.type.BaseType;
+import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
-
-import java.util.LinkedList;
-import java.util.List;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayAppend

@@ -29,12 +29,13 @@
 */
 
 package ptolemy.actor.lib;
-import ptolemy.kernel.*;
+
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import ptolemy.actor.*;
-import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// Commutator

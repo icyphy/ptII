@@ -30,16 +30,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib;
 
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
-import ptolemy.data.StringToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.Writer;
 
-// Java imports.
 import java.io.IOException;
 
 /**
@@ -50,7 +48,7 @@ is given, then the values are written to the standard output.
 @author  Yuhong Xiong, Edward A. Lee
 @version $Id$
  */
-public class FileWriter extends Writer {
+public class FileWriter extends ptolemy.actor.lib.Writer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.

@@ -30,11 +30,13 @@
 
 package ptolemy.actor.lib;
 
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// Remainder
@@ -45,7 +47,7 @@ This is implemented using the IEEEremainder() method of the java Math
 class, which computes the remainder as prescribed by the IEEE 754
 standard. The method documentation states:
 <quote>
-"The remainder value is mathematically equal to f1 - f2 × n, where n
+"The remainder value is mathematically equal to f1 - f2 ? n, where n
 is the mathematical integer closest to the exact mathematical value
 of the quotient f1/f2, and if two mathematical integers are equally
 close to f1/f2, then n is the integer that is even. If the

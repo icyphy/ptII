@@ -31,24 +31,26 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib;
 
+import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
-import ptolemy.data.StringToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////

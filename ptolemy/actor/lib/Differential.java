@@ -30,9 +30,9 @@
 
 package ptolemy.actor.lib;
 
+import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////
 //// Differential

@@ -30,10 +30,9 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.lib.Transformer;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.data.Token;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Synchronizer

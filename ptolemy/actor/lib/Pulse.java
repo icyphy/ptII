@@ -30,14 +30,17 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.*;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.*;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.Variable;
-import ptolemy.graph.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Pulse

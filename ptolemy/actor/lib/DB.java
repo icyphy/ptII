@@ -30,18 +30,14 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.*;
-import ptolemy.actor.lib.*;
-
-import ptolemy.math.SignalProcessing;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
-
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DB

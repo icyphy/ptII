@@ -30,18 +30,23 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
-import ptolemy.kernel.Port;
-import ptolemy.data.*;
-import ptolemy.data.type.*;
+import ptolemy.actor.AtomicActor;
+import ptolemy.actor.Director;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.*;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// Expression

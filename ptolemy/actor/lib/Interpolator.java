@@ -30,18 +30,16 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 import ptolemy.math.Interpolation;
 
 //////////////////////////////////////////////////////////////////////////

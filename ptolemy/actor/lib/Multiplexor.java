@@ -30,13 +30,14 @@
 
 package ptolemy.actor.lib;
 
-import ptolemy.actor.*;
-import ptolemy.actor.lib.Transformer;
-import ptolemy.data.*;
-import ptolemy.data.type.*;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.IntToken;
+import ptolemy.data.Token;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// Multiplexor
