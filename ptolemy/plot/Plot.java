@@ -472,11 +472,16 @@ public class Plot extends PlotBox {
     /**
      * Read in a pxgraph format binary file.
      */	
-    protected void convertBinaryStream(DataInputStream in) throws
-	PlotDataException,  IOException {
+    protected void convertBinaryStream(DataInputStream in) 
+	throws PlotDataException,  IOException
+	{
 	int c;
 	boolean printedDataSet = false;
-	final int MAX_DATASETS = 63; // Maximum number of datasets	
+
+	// FIXME: The 'final' in the line below causes problems with jdk1.0.2
+	// which we compile under for compatibility with Netscape3.x
+	/*final*/ int MAX_DATASETS = 63; // Maximum number of datasets	
+
 	String datasets[] = new String[MAX_DATASETS];
 	int currentdataset = 0;
 	try {
