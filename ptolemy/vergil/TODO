@@ -27,7 +27,8 @@ Need more control points for arcs in FSMNotation.
 NoStoragePolicy for Applet
 Persistence of user libraries.
 Infinite Canvas.
-reordering of parameters
+reordering of parameters.
+Explicitly describe what a well-formed model entails.
 
 DONE:
 Direct connections from Ports to Ports.
