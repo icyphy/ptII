@@ -35,6 +35,13 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.Typeable;
+import ptolemy.data.type.TypeLattice;
+import ptolemy.graph.CPO;
+import ptolemy.graph.InequalityTerm;
 
 //////////////////////////////////////////////////////////////////////////
 //// Scale
@@ -42,8 +49,11 @@ import ptolemy.data.expr.Parameter;
 Produce an output token on each firing with a value that is
 equal to a scaled version of the input.  The actor is polymorphic
 in that it can support any token type that supports multiplication
-by the <i>factor</i> parameter.  The output type is constrained to be at least
-as general as both the input and the <i>factor</i> parameter.
+by the <i>factor</i> parameter.  If the input type is a scalar, the output
+type is constrained to be at least as general as both the input and the
+<i>factor</i> parameter; if the input is an array, the output is also
+an array with the elements scaled. The input can be an array of array,
+in which case the elements of the inner most array will be scaled.
 For data types where multiplication is not commutative (such
 as matrices), the parameter is multiplied on the left, and the input
 on the right.
@@ -68,8 +78,7 @@ public class Scale extends Transformer {
         factor = new Parameter(this, "factor", new IntToken(1));
 
 	// set the type constraints.
-	output.setTypeAtLeast(input);
-	output.setTypeAtLeast(factor);
+	output.setTypeAtLeast(new PortParamFunction(input, factor));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,8 +103,9 @@ public class Scale extends Transformer {
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
         Scale newObject = (Scale)super.clone(workspace);
-	newObject.output.setTypeAtLeast(newObject.input);
-	newObject.output.setTypeAtLeast(newObject.factor);
+	PortParamFunction function = new PortParamFunction(newObject.input,
+	                                                   newObject.factor);
+        newObject.output.setTypeAtLeast(function);
         return newObject;
     }
 
@@ -107,8 +117,128 @@ public class Scale extends Transformer {
         if (input.hasToken(0)) {
             Token in = input.get(0);
             Token factorToken = factor.getToken();
-            Token result = factorToken.multiply(in);
+            Token result = in.multiply(factorToken);
             output.send(0, result);
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    // This class implements a monotonic function of the type of a
+    // port and a parameter. 
+    // The function value is determined by:
+    // f(portType, paramType) =
+    //     UNKNOWN,                  if portType=UNKNOWN
+    //     LUB(portType, paramType), if portType is a BaseType
+    //     {f(elemType(portType), paramType)}, if portType is an array type.
+    //            
+    // The last case is a recursive one. If portType is an array type, the
+    // function value is also an array. The element type of the function value
+    // array is the result of a recursive call to this function. This allows
+    // the port type to be an array or array, for example.
+    private class PortParamFunction implements InequalityTerm {
+
+	private PortParamFunction(TypedIOPort port, Parameter param) {
+	    _port = port;
+	    _param = param;
+	}
+
+	///////////////////////////////////////////////////////////////
+	////                       public inner methods            ////
+
+	/** Return null.
+	 *  @return null.
+	 */
+	public Object getAssociatedObject() {
+	    return null;
+	}
+
+	/** Return the function result.
+	 *  @return A Type.
+	 */
+	public Object getValue() {
+	    Type portType = _port.getType();
+	    Type paramType = _param.getType();
+	    return compute(portType, paramType);
+        }
+
+        /** Return a one element array containing the InequalityTerm
+	 *  representing the type of the port.
+	 *  @return An array of InequalityTerm.
+         */
+        public InequalityTerm[] getVariables() {
+	    InequalityTerm[] variable = new InequalityTerm[1];
+	    variable[0] = _port.getTypeTerm();
+	    return variable;
+        }
+
+        /** Throw an Exception. This method cannot be called on a function
+	 *  term.
+         *  @exception IllegalActionException Always thrown.
+         */
+        public void initialize(Object e)
+		throws IllegalActionException {
+	    throw new IllegalActionException(getClass().getName()
+                    + ": Cannot initialize a function term.");
+        }
+
+        /** Return false.
+         *  @return false.
+         */
+        public boolean isSettable() {
+	    return false;
+        }
+
+        /** Return true.
+         *  @return True.
+         */
+        public boolean isValueAcceptable() {
+            return true;
+        }
+
+        /** Throw an Exception. The value of a function term cannot be set.
+         *  @exception IllegalActionException Always thrown.
+         */
+        public void setValue(Object e) throws IllegalActionException {
+	    throw new IllegalActionException(getClass().getName() 
+                    + ": The type is not settable.");
+        }
+
+        /** Override the base class to give a description of this term.
+         *  @return A description of this term.
+         */
+        public String toString() {
+            return "(" + getClass().getName() + ", " + getValue() + ")";
+        }
+
+	///////////////////////////////////////////////////////////////
+	////                      private inner methods            ////
+	
+	// compute the function value based on the types of the port
+	// and the parameter.
+	private Object compute(Type portType, Type paramType) {
+	    if (portType == BaseType.UNKNOWN) {
+	        return BaseType.UNKNOWN;
+	    } else if (portType instanceof BaseType) {
+	        CPO lattice = TypeLattice.lattice();
+		return lattice.leastUpperBound(portType, paramType);
+	    } else if (portType instanceof ArrayType) {
+	        Type elementType = ((ArrayType)portType).getElementType();
+                Type newElementType = (Type)compute(elementType, paramType);
+		return new ArrayType(newElementType);
+	    } else {
+	        throw new InvalidStateException("Type resolution finds that "
+		        + "the type of the port " + _port.getFullName()
+			+ " is " + portType.toString() + ", which is not "
+			+ "supported.");
+	    }
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                       private inner variable          ////
+
+	private TypedIOPort _port;
+	private Parameter _param;
     }
 }
