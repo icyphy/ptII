@@ -98,7 +98,7 @@ public class Graph {
      *  equal to an object associated with the nodes in this graph, as
      *  determined by the <code>equals</code> method.
      */ 
-     public void addEdge(Object o1, Object o2) {        
+    public void addEdge(Object o1, Object o2) {        
         int id1 = _getNodeId(o1);
         int id2 = _getNodeId(o2);
         
@@ -143,7 +143,7 @@ public class Graph {
     public Object[] allNodes() {
 
 	// FIXME: restore this line for jdk1.2
-//	return _backRef.toArray();
+        //	return _backRef.toArray();
 
 	// FIXME: delete the following code for jdk1.2
 	Object[] arr = new Object[numNodes()];
@@ -177,7 +177,7 @@ public class Graph {
             for (Enumeration e = re.elements(); e.hasMoreElements(); ) {
                 int i2 = ((Integer)e.nextElement()).intValue();
                 result = result.concat(" " +
-			  _backRef.elementAt(i2).toString());
+                        _backRef.elementAt(i2).toString());
             }
             result = result.concat("}\n");
         }
@@ -232,7 +232,7 @@ public class Graph {
         Integer v = (Integer)(_nodeIdTable.get(o));
         if (v == null) {
             throw new IllegalArgumentException("Argument: " + o.toString()
-			+ " not associated with a node in graph.");
+                    + " not associated with a node in graph.");
         }
         
         return v.intValue();

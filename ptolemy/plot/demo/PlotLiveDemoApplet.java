@@ -105,11 +105,11 @@ public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
      */
     public void run () {
         if (_debug > 8) System.out.println("PlotLiveDemoApplet: run");
-// 	while (true) {
-// 	    try {
-// 		Thread.currentThread().sleep(speed);
-// 	    } catch (InterruptedException e) {
-// 	    }
+        // 	while (true) {
+        // 	    try {
+        // 		Thread.currentThread().sleep(speed);
+        // 	    } catch (InterruptedException e) {
+        // 	    }
         if (_debug > 10)
             System.out.println("PlotLiveDemoApplet: run calling repaint");
 	repaint();
@@ -133,11 +133,11 @@ public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
         super.stop();
     }
 
-//     public void update (Graphics graphics) {
-//         if (_debug > 8) System.out.println("PlotLiveDemoApplet: update");
-//         paint(graphics);
-//         super.update(graphics);
-//     }
+    //     public void update (Graphics graphics) {
+    //         if (_debug > 8) System.out.println("PlotLiveDemoApplet: update");
+    //         paint(graphics);
+    //         super.update(graphics);
+    //     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

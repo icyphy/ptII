@@ -95,7 +95,7 @@ public class DirectedGraph extends Graph {
      *  equal to an object associated with the nodes in this graph, as
      *  determined by the <code>equals</code> method.
      */ 
-     public void addEdge(Object o1, Object o2) {
+    public void addEdge(Object o1, Object o2) {
         super.addEdge(o1, o2);
 
         int id2 = _getNodeId(o2);
@@ -145,7 +145,7 @@ public class DirectedGraph extends Graph {
 	}
 
         // FIXME: restore the following line when moving to jdk1.2
-//	return nodes.toArray();
+        //	return nodes.toArray();
  
         // FIXME: remove the following lines when moving to jdk1.2
         Object[] arr = new Object[nodes.size()];
@@ -225,7 +225,7 @@ public class DirectedGraph extends Graph {
             }
 
             Vector edge = (Vector)(_graph.elementAt(i));
-                for (int j = 0; j < edge.size(); j++) {
+            for (int j = 0; j < edge.size(); j++) {
                 int k = ((Integer)edge.elementAt(j)).intValue();
                 _tranClosure[i][k] = true;
             }
@@ -238,7 +238,7 @@ public class DirectedGraph extends Graph {
             for (int i=0; i<size; i++) {
                 for (int j=0; j<size; j++) {
                     _tranClosure[i][j] |= _tranClosure[i][k] &
-                    _tranClosure[k][j];
+                        _tranClosure[k][j];
                 }
             }
         }

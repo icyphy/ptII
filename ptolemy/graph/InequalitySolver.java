@@ -127,8 +127,8 @@ public class InequalitySolver {
 	Object bottom = _cpo.bottom();
 	if (bottom == null) {
 	    throw new InvalidStateException("InequalitySolver.bottomVariables:"
-			+ " The underlining CPO does not have a bottom"
-			+ " element.");
+                    + " The underlining CPO does not have a bottom"
+                    + " element.");
 	}
 
 	LinkedList result = new LinkedList();
@@ -165,7 +165,7 @@ public class InequalitySolver {
 	Object init = least ? _cpo.bottom() : _cpo.top();
 	if (init == null) {
 	    throw new InvalidStateException("InequalitySolver.solve: " +
-			"The underlining CPO is not a lattice.");
+                    "The underlining CPO is not a lattice.");
 	}
 
 	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
@@ -192,14 +192,14 @@ public class InequalitySolver {
 	for (int i = 0; i < _Ilist.size(); i++) {
 	    Info info = (Info)_Ilist.elementAt(i);
 	    info._inCvar = least ? info._ineq.greaterTerm().settable()
-				 : info._ineq.lesserTerm().settable();
+                : info._ineq.lesserTerm().settable();
 
 	    if (info._inCvar) {
 	    	if (info._ineq.satisfied(_cpo)) {
 		    info._inserted = false;
 		} else { 	// insert to _NS
 		    // FIXME: restore this line for jdk1.2
-//                  _NS.addLast(new Integer(i));
+                    //                  _NS.addLast(new Integer(i));
 
 		    // FIXME: delete this line for jdk1.2
                     _NS.insertLast(new Integer(i));
@@ -213,7 +213,7 @@ public class InequalitySolver {
         while (_NS.size() > 0) {
 
 	    // FIXME: restore this line for jdk1.2
-//            int index = ((Integer)(_NS.removeFirst())).intValue();
+            //            int index = ((Integer)(_NS.removeFirst())).intValue();
 
 	    // FIXME: delete the following 2 lines for jdk1.2
             int index = ((Integer)(_NS.first())).intValue();
@@ -227,16 +227,16 @@ public class InequalitySolver {
 	    if (least) {
 		updateTerm = info._ineq.greaterTerm();
 	        value = _cpo.lub(info._ineq.lesserTerm().value(),
-                                 updateTerm.value());
+                        updateTerm.value());
 	    } else {
 		updateTerm = info._ineq.lesserTerm();
 	        value = _cpo.glb(updateTerm.value(),
-                                 info._ineq.greaterTerm().value());
+                        info._ineq.greaterTerm().value());
 	    }
 
             if (value == null) {
                 throw new InvalidStateException("The CPO over which " +
-                          "the inequalities are defined is not a lattice.");
+                        "the inequalities are defined is not a lattice.");
             }
 
 	    try {
@@ -258,7 +258,7 @@ public class InequalitySolver {
                         if (affectedInfo._inserted) {
 
 			    // FIXME: restore this line for jdk1.2
-//                            _NS.remove(index1Wrap);
+                            //                            _NS.remove(index1Wrap);
 
 			    // FIXME: delete this line for jdk1.2
                             _NS.removeOneOf(index1Wrap);
@@ -268,7 +268,7 @@ public class InequalitySolver {
                         if ( !affectedInfo._inserted) {
 
 			    // FIXME: restore this line for jdk1.2
-//                            _NS.addFirst(index1Wrap);
+                            //                            _NS.addFirst(index1Wrap);
 
 			    // FIXME: delete this line for jdk1.2
                             _NS.insertFirst(index1Wrap);
@@ -302,7 +302,7 @@ public class InequalitySolver {
 	Object top = _cpo.top();
 	if (top == null) {
 	    throw new InvalidStateException("InequalitySolver.topVariables:"
-			+ " The underlining CPO does not have a top element.");
+                    + " The underlining CPO does not have a top element.");
 	}
 
 	LinkedList result = new LinkedList();

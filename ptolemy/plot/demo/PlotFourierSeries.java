@@ -77,7 +77,7 @@ public class PlotFourierSeries extends PlotApplet {
             double approximation = 0.0;
             for (int j=1; j <= 10; j++) {
                 double sig = 4.0*Math.sin(i*2.0*Math.PI*(2*j-1)/400.0)/
-                       (Math.PI*(2*j-1));
+                    (Math.PI*(2*j-1));
                 approximation += sig;
                 plot().addPoint(j, (double)i, approximation, !first);
             }
@@ -90,5 +90,5 @@ public class PlotFourierSeries extends PlotApplet {
             }
         }
         plot().addPoint(0, 400.0, 0.0, true);
-   }
+    }
 }

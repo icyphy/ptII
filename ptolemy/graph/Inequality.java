@@ -57,7 +57,7 @@ public class Inequality {
     public Inequality(InequalityTerm lesserTerm, InequalityTerm greaterTerm) {
 	if (lesserTerm == null || greaterTerm == null) {
 	    throw new IllegalArgumentException("Inequality.Inequality: " +
-		"lesserTerm of greaterTerm is null.");
+                    "lesserTerm of greaterTerm is null.");
 	}
 
         _lesserTerm = lesserTerm;
@@ -76,7 +76,7 @@ public class Inequality {
     public void addVariable(InequalityTerm variable) {
 	if (variable == null) {
 	    throw new IllegalArgumentException("Inequality.addVariable: " +
-			"the variable is null.");
+                    "the variable is null.");
 	}
 	_variables.addElement(variable);
     }
@@ -103,7 +103,7 @@ public class Inequality {
      */
     public boolean satisfied(CPO cpo) {
         int result = cpo.compare(_lesserTerm.value(),
-				 _greaterTerm.value());
+                _greaterTerm.value());
         return (result == CPO.STRICT_LESS || result == CPO.EQUAL);
     }
     

@@ -97,28 +97,28 @@ public class PlotLiveDemo extends PlotLive {
         super.init();
     }
 
-   /**
-    * Run as an application for testing.  Run with:
-    * <pre>
-java -classpath ../../..:/opt/jdk1.1.4/lib/classes.zip ptolemy.plot.demo.PlotLiveDemo
-    * </pre>
-    */
+    /**
+     * Run as an application for testing.  Run with:
+     * <pre>
+     java -classpath ../../..:/opt/jdk1.1.4/lib/classes.zip ptolemy.plot.demo.PlotLiveDemo
+     * </pre>
+     */
     public static void main(String args[]) {
-         PlotLiveDemo pld;
-         Frame f=new Frame("PlotLiveDemo");
-         f.setLayout(new BorderLayout());
-         f.setBackground(Color.lightGray);
-         f.resize(400, 400);     // FIXME: resize() is deprecated in 1.1,
-         // but we need to compile under 1.0.2 for netscape3.x compatibility.
-         pld= new PlotLiveDemo();
-         f.add("Center",pld);
-         f.pack();
-         f.show();
+        PlotLiveDemo pld;
+        Frame f=new Frame("PlotLiveDemo");
+        f.setLayout(new BorderLayout());
+        f.setBackground(Color.lightGray);
+        f.resize(400, 400);     // FIXME: resize() is deprecated in 1.1,
+        // but we need to compile under 1.0.2 for netscape3.x compatibility.
+        pld= new PlotLiveDemo();
+        f.add("Center",pld);
+        f.pack();
+        f.show();
 
-         pld.resize(400, 400);   // FIXME: resize() is deprecated.
-         pld.init();
-         pld.start();
-     }
+        pld.resize(400, 400);   // FIXME: resize() is deprecated.
+        pld.init();
+        pld.start();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
