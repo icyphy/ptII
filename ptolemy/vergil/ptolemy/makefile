@@ -1,4 +1,4 @@
-# Makefile for the Vergil graph support package
+# Makefile for the Vergil/ptolemy package
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/vergil/graph
+ME =		ptolemy/vergil/ptolemy
 
-DIRS = 		
+DIRS =		fsm
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
@@ -43,22 +43,15 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	graph
+PTPACKAGE = 	vergil
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	EditorDropTarget.java \
-	EditorGraphController.java \
-	EntityController.java \
-	EntityPortController.java \
-	LinkController.java \
-	LocatableNodeController.java \
-	LocatableNodeDragInteractor.java \
-	PortController.java \
-	RelationController.java \
-	VergilGraphImpl.java \
-	ViewerGraphController.java
+	CompaanNotation.java \
+	PtolemyDocument.java \
+	PtolemyNotation.java \
+	PtolemyModule.java
 
 EXTRA_SRCS =	$(JSRCS)
 

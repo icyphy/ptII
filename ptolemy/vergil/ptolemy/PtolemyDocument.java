@@ -28,8 +28,9 @@
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
-package ptolemy.vergil;
+package ptolemy.vergil.ptolemy;
 
+import ptolemy.vergil.*;
 import ptolemy.vergil.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;

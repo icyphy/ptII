@@ -29,6 +29,8 @@
 */
 
 package ptolemy.vergil.ptolemy.fsm;
+
+import ptolemy.vergil.ptolemy.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import diva.gui.*;

@@ -145,7 +145,7 @@ public class VergilApplication extends MDIApplication {
         setCurrentDocument(null);
 
 	// FIXME read this out of resources somehow.
-	new PtolemyPackage(this);
+	new ptolemy.vergil.ptolemy.PtolemyModule(this);
 
 	// Start with a new document.
 	// This is kindof

@@ -34,6 +34,7 @@ import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.vergil.*;
+import ptolemy.vergil.ptolemy.*;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.gui.*;
 import ptolemy.moml.*;
@@ -226,7 +227,7 @@ public class EntityController extends LocatableNodeController {
 			    app.setCurrentDocument(doc);}
 		    };
 		    add(action, "Look Inside");
-		}
+                }
 	    }
 	}
     }

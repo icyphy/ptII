@@ -28,7 +28,9 @@
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
-package ptolemy.vergil;
+package ptolemy.vergil.ptolemy;
+
+import ptolemy.vergil.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import diva.gui.*;
@@ -36,55 +38,17 @@ import diva.graph.*;
 import diva.graph.model.*;
 import ptolemy.vergil.graph.*;
 
+
 /**
- * A visual notation creates views for a ptolemy document in Vergil.
+ * A visual notation that creates views for a ptolemy document in Vergil.
  *
  * @author Steve Neuendorffer
  * @version $Id$
  */
-public class PtolemyFSMNotation extends Attribute implements VisualNotation {
-    /** Construct an attribute in the default workspace with an empty string
-     *  as its name.
-     *  The object is added to the directory of the workspace.
-     *  Increment the version number of the workspace.
-     */
-    public PtolemyFSMNotation() {
-	super();
-    }
+public class PtolemyNotation extends Attribute implements VisualNotation {
 
-    /** Construct an attribute in the specified workspace with an empty
-     *  string as a name. You can then change the name with setName().
-     *  If the workspace argument
-     *  is null, then use the default workspace.
-     *  The object is added to the directory of the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the attribute.
-     */
-    public PtolemyFSMNotation(Workspace workspace) {
-	super(workspace);
-        setMoMLElementName("notation");
-    }
-
-    /** Construct an attribute with the given name contained by the specified
-     *  entity. The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This attribute will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  The object is added to the directory of the workspace
-     *  if the container is null.
-     *  Increment the version of the workspace.
-     *  @param container The container.
-
-     *  @param name The name of this attribute.
-     *  @exception IllegalActionException If the attribute is not of an
-     *   acceptable class for the container, or if the name contains a period.
-     *  @exception NameDuplicationException If the name coincides with
-     *   an attribute already in the container.
-     */
-    public PtolemyFSMNotation(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Construct a graph document that is owned by the given
      *  application
@@ -96,7 +60,7 @@ public class PtolemyFSMNotation extends Attribute implements VisualNotation {
 	}
 
 	// These two things control the view of a ptolemy model.
-	GraphController controller = new FSMGraphController();
+	GraphController controller = new EditorGraphController();
 	GraphImpl impl = new VergilGraphImpl();
 
 	GraphPane pane = new GraphPane(controller, impl);

@@ -28,7 +28,7 @@
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
-package ptolemy.vergil;
+package ptolemy.vergil.ptolemy;
 
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
@@ -39,6 +39,7 @@ import ptolemy.data.IntToken;
 import ptolemy.gui.*;
 import ptolemy.moml.Vertex;
 import ptolemy.moml.MoMLParser;
+import ptolemy.vergil.*;
 import ptolemy.vergil.graph.*;
 import ptolemy.vergil.toolbox.*;
 
@@ -104,9 +105,9 @@ import ptolemy.domains.fsm.kernel.FSMDirector;
  * @author Steve Neuendorffer
  * @version $Id$
  */
-public class PtolemyPackage implements Module {
+public class PtolemyModule implements Module {
     /**
-     * Create a new package that will extend the functionality of the given
+     * Create a new module that will extend the functionality of the given
      * Vergil application.  Create a new "Ptolemy II" menu and add it to
      * the application's menu bar.  Create and add an action for viewing a 
      * MoML description of the current document.  Create and add an action for
@@ -116,7 +117,7 @@ public class PtolemyPackage implements Module {
      * application.  Create and add a button to the toolbar which will 
      * trigger layout of the current document.
      */
-    public PtolemyPackage(VergilApplication application) {
+    public PtolemyModule(VergilApplication application) {
 	_application = application;
 	Action action;
 
@@ -785,5 +786,5 @@ public class PtolemyPackage implements Module {
 
     // The resources for this module.
     private RelativeBundle _moduleResources =
-	new RelativeBundle("ptolemy.vergil.Library", getClass(), null);
+	new RelativeBundle("ptolemy.vergil.ptolemy.Ptolemy", getClass(), null);
 }

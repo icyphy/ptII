@@ -31,7 +31,7 @@
 
 ME =		ptolemy/vergil
 
-DIRS = 		graph toolbox ptolemy/fsm
+DIRS = 		graph toolbox ptolemy
 
 # Root of the Java directory
 ROOT =		../../
@@ -48,15 +48,10 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	CompaanNotation.java \
 	DeletionListener.java \
 	JModelViewer.java \
 	MoMLViewerApplet.java \
 	Module.java \
-	PtolemyDocument.java \
-	PtolemyFSMNotation.java \
-	PtolemyNotation.java \
-	PtolemyPackage.java \
 	VergilApplication.java \
 	VergilDocument.java \
 	VergilDocumentFactory.java \

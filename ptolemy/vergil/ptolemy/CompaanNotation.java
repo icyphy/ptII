@@ -28,8 +28,9 @@
 @AcceptedRating Red (johnr@eecs.berkeley.edu)
 */
 
-package ptolemy.vergil;
+package ptolemy.vergil.ptolemy;
 
+import ptolemy.vergil.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
@@ -133,11 +134,12 @@ public class CompaanNotation extends Attribute implements VisualNotation {
         Manager manager = entity.getManager();
         if(manager == null) {
             try {
+                // FIXME manager creation sucks.
                 manager =
                     new Manager(entity.workspace(), "Manager");
                 entity.setManager(manager);
                 manager.addExecutionListener(
-                        new PtolemyPackage.VergilExecutionListener(
+                        new PtolemyModule.VergilExecutionListener(
                                 d.getApplication())); 
             }                
             catch (Exception e) {
