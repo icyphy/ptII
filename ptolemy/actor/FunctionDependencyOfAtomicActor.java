@@ -29,11 +29,8 @@
 
 package ptolemy.actor;
 
-import java.util.Iterator;
-
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
-import ptolemy.graph.Node;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfAtomicActor
@@ -41,21 +38,15 @@ import ptolemy.graph.Node;
    An instance of FunctionDependencyOfAtomicActor describes the function
    dependence relation of an atomic actor. 
    <p>
-   Because an atomic actor does not contain other actors, its abstract
-   graph is the same with the detailed graph.
-   <p> 
-   For most atomic actors, usually, all the input ports and
-   output ports are dependent. E.g, the Scale actor. (For
-   definition of dependent, see {@link FunctionDependency}.) Thus, the
-   input and output ports in the port graph are fully connected. for
-   some atomic actors, such as the TimedDelay actor, its input and output
-   ports are not dependent. We use the removeDependence() method to 
-   declare that there is no dependency between its input and output ports. 
-   See the {@link ptolemy.domains.de.lib.TimedDelay} actor for usage 
-   pattern.
-   <p> 
-   Note, for the Multiplexer, Demultiplexer actors, their output port 
-   depends on the the boolean control input.
+   Most atomic actors have all their output ports depend on their input 
+   ports. For some atomic actors, such as the TimedDelay actor, its output 
+   does not depend on its input port. See {@link FunctionDependency} for 
+   accurate definition of dependency. Therefore, this class provides a
+   removeDependence() method to specify this special cases.  
+   <p>
+   Take the {@link ptolemy.domains.de.lib.TimedDelay} actor as an example,
+   to declare that its output is independent of its input, specify 
+   removeDependency(input, output) inside the removeDependencies() method. 
 
    @see FunctionDependency
    @see ptolemy.domains.de.lib.TimedDelay
@@ -68,89 +59,52 @@ import ptolemy.graph.Node;
 */
 public class FunctionDependencyOfAtomicActor extends FunctionDependency {
 
-    /** Construct a FunctionDependencyOfAtomicActor in the given container.
-     *  @param container The container.
+    /** Construct a FunctionDependencyOfAtomicActor in the given actor.
+     *  @param actor The actor.
      */
-    public FunctionDependencyOfAtomicActor(Actor container) {
-        super(container);
+    public FunctionDependencyOfAtomicActor(Actor actor) {
+        super(actor);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Remove the dependence between the input and output ports.
+    /** Declares that an output port does not depend on an input port.
      *
      *  @param inputPort An input port.
      *  @param outputPort An output Port.
      */
     public void removeDependency(IOPort inputPort, IOPort outputPort) {
-        // local variables setup
-        //DirectedGraph detailedPortGraph = getDetailedPortGraph();
-        DirectedGraph detailedPortGraph = _detailedPortGraph;
-        // FIXME: do we need to check the validity of the
-        // FunctionDependence here?
-        // Since this method is always called from the 
-        // _constructDirectedGraph() method (defined below), 
-        // where the validity is checked, we may not need the check.
-        // _validate();
-        Iterator inputPorts = detailedPortGraph.nodes(inputPort).iterator();
-        while (inputPorts.hasNext()) {
-            Node input = (Node) inputPorts.next();
-            Iterator outputPorts =
-                detailedPortGraph.nodes(outputPort).iterator();
-            while (outputPorts.hasNext()) {
-                Node output = (Node) outputPorts.next();
-                Object[] incidentEdgeArray =
-                    detailedPortGraph.incidentEdges(input).toArray();
-                for (int i = 0; i < incidentEdgeArray.length; i++) {
-                    Edge edge = (Edge)(incidentEdgeArray[i]);
-                    if (edge.sink().equals(output)) {
-                        detailedPortGraph.removeEdge(edge);
-                    }
-                }
+        // We do not need the validity checking because this method is 
+        // only called from the _constructDependencyGraph() method, which 
+        // again can only be accessed from the _validate() method. 
+        // The _validate() method does the validity checking already 
+        // and gets the read access of workspace. 
+
+        DirectedGraph dependencyGraph = _dependencyGraph;
+
+        // Note we can not use iterator here because the edges() method
+        // returns an unmodifiableList. The removeEdge() method will cause
+        // a concurrentModification exception.
+        Object[] edges = dependencyGraph.edges().toArray();
+        for (int i = 0; i < edges.length; i++) {
+            Edge edge = (Edge) edges[i];
+            if (edge.source().getWeight().equals(inputPort) &&
+                edge.sink().getWeight().equals(outputPort)) {
+                dependencyGraph.removeEdge(edge); 
             }
         }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                   ////
+    ////                       protected methods                   ////
 
-    /** Construct an abstract port graph from a detailed port graph by 
-        excluding the internal ports. For atomic actor, the abstract
-        graph is the same with the detailed graph.
+    /** Construct a dependency graph. This method calls the 
+     *  {@link #removeDependency} method. 
      */
-    protected void _constructAbstractPortGraph() {
-        //DirectedGraph abstractPortGraph = getAbstractPortGraph();
-        //abstractPortGraph = getDetailedPortGraph();
-        _abstractPortGraph = _detailedPortGraph;
+    protected void _constructDependencyGraph() {
+        super._constructDependencyGraph();
+        ((AtomicActor)getActor()).removeDependencies();
     }
     
-    /** Construct a directed graph with the nodes representing input and
-     *  output ports, and directed edges representing dependencies.
-     */
-    protected void _constructDetailedPortGraph() {
-        // local variables setup
-        AtomicActor container = (AtomicActor)getContainer();
-        //DirectedGraph directedGraph = getDetailedPortGraph();
-        DirectedGraph directedGraph = _detailedPortGraph;
-
-        // Construct a fully connected ports graph
-        // that the inputs and outputs are all dependent.
-        Iterator inputs = container.inputPortList().listIterator();
-        while (inputs.hasNext()) {
-            IOPort inputPort = (IOPort) inputs.next();
-            Iterator outputs = 
-                container.outputPortList().listIterator();
-            while (outputs.hasNext()) {
-                // connected the inputs and outputs
-                directedGraph.addEdge(inputPort, outputs.next());
-            }
-        }
-
-        // If the atomic actor declares some dependencies do not
-        // exist, remove the according edges from the graph.
-        // Note: the following method calls the
-        // removeDependence(input, output) method defined above.
-        ((AtomicActor)container).removeDependencies();
-    }
 }

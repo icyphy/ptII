@@ -29,20 +29,18 @@
 
 package ptolemy.domains.fsm.kernel;
 
-import java.util.Iterator;
-
 import ptolemy.actor.Actor;
 import ptolemy.actor.FunctionDependency;
-import ptolemy.actor.IOPort;
-import ptolemy.graph.DirectedGraph;
 
 //////////////////////////////////////////////////////////////////////////
 //// FunctionDependencyOfFSMActor
 /** An instance of FunctionDependencyOfFSMActor describes the function
-    dependence relation of an FSM actor. Both the abstract and detailed 
-    port graph include the container ports only, and they are the same.
+    dependency relation between the externally visible ports of an FSM 
+    actor. 
     <p>
-    For an FSM actor, all the input ports and output ports are dependent.
+    This class makes a conservative approximation of the dependency 
+    relation by assuming that all the output ports depend on all the 
+    input ports.
 
     @see FunctionDependency
     @author Haiyang Zheng
@@ -53,46 +51,10 @@ import ptolemy.graph.DirectedGraph;
 */
 public class FunctionDependencyOfFSMActor extends FunctionDependency {
 
-    /** Construct a FunctionDependencyOfFSMActor in the given container.
-     *  @param container The container has this FunctionDependency object.
+    /** Construct a FunctionDependencyOfFSMActor in the given actor.
+     *  @param actor The associated actor.
      */
-    public FunctionDependencyOfFSMActor(Actor container) {
-        super(container);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected methods                   ////
-
-    /** Construct an abstract port graph from a detailed port graph by 
-        excluding the internal ports. For FSM actor, the abstract
-        graph is the same with the detailed graph.
-     */
-    protected void _constructAbstractPortGraph() {
-        //DirectedGraph abstractPortGraph = getAbstractPortGraph();
-        //abstractPortGraph = getDetailedPortGraph();
-        _abstractPortGraph = _detailedPortGraph;
-    }
-    
-    /** Construct a directed graph with the nodes representing input and
-     *  output ports, and directed edges representing dependencies.
-     */
-    protected void _constructDetailedPortGraph() {
-        // local variables setup
-        FSMActor container = (FSMActor)getContainer();
-        //DirectedGraph detailedPortGraph = getDetailedPortGraph();
-        DirectedGraph detailedPortGraph = _detailedPortGraph;
-
-        // Construct a fully connected ports graph
-        // that the inputs and outputs are all directly dependent.
-
-        Iterator inputs = container.inputPortList().listIterator();
-        while (inputs.hasNext()) {
-            IOPort inputPort = (IOPort) inputs.next();
-            Iterator outputs = container.outputPortList().listIterator();
-            while (outputs.hasNext()) {
-                // connected the inputs and outputs
-                detailedPortGraph.addEdge(inputPort, outputs.next());
-            }
-        }
+    public FunctionDependencyOfFSMActor(Actor actor) {
+        super(actor);
     }
 }
