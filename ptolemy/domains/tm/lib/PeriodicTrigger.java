@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Workspace;
 //// PeriodicTrigger
 
 /**
-   This actor produces a ramp at 2 Hz.
+   Produce a ramp at 2 Hz.
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 4.0
@@ -56,6 +56,16 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Red (eal)
 */
 public class PeriodicTrigger extends TypedAtomicActor {
+
+    /** Construct an actor in the specified container with the specified
+     *  name.
+     *  @param container The container.
+     *  @param name The name.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an actor already in the container.
+     */
     public PeriodicTrigger(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
@@ -135,11 +145,21 @@ public class PeriodicTrigger extends TypedAtomicActor {
     }
 
     // Inner class
+    /** A Trigger thread. 
+     *  The trigger sleeps for the amount of time named by the
+     *  <i>periodValue</i> parameter.
+     */
     public class Trigger implements Runnable {
+        /** Construct a trigger.  
+         *  @param container The container of this trigger.
+         */ 
         public Trigger(Actor container) {
             _container = container;
         }
 
+        /** Run the thread by sleeping for the amount of time in ms
+         *  named by the <i>periodValue</i> parameter.
+         */    
         public void run() {
             while (true) {
                 try {
