@@ -100,7 +100,8 @@ public class DEDelay extends DEActor {
         for(int i = 0; i < input.getWidth(); i++) {
             Token inputToken;
             inputToken = input.get(i);
-            output.send(i, inputToken, ((DoubleToken)_delay.getToken()).doubleValue());
+            output.send(i, inputToken,
+                    ((DoubleToken)_delay.getToken()).doubleValue());
         }
     }
 
