@@ -1,6 +1,6 @@
 /* Validates a received MPDU (MAC Protocol Data Unit).
 
-Copyright (c) 2004 The Regents of the University of California.
+Copyright (c) 2004-2005 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    RTS packet.
 
    @author Charlie Zhong, Xiaojun Liu and Yang Zhao
-   @version $Id$
+   @version ValidateMpdu.java,v 1.18 2005/02/28 17:10:01 cxh Exp
    @since Ptolemy II 4.0
    @Pt.ProposedRating Red (czhong)
    @Pt.AcceptedRating Red (reviewmoderator)

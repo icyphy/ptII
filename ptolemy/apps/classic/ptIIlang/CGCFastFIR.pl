@@ -11,7 +11,7 @@ coefficients with "fileName".
 	version {@(#)CGCFastFIR.pl	1.6 04/08/97}
 	author { Soonhoi Ha, Bill Chen, and John Reekie }
 	copyright {
-Copyright (c) 1990-1997 The Regents of the University of California.
+Copyright (c) 1990-2005 The Regents of the University of California.
 All rights reserved.
 See the file $PTOLEMY/copyright for copyright notice,
 limitation of liability, and disclaimer of warranty provisions.

@@ -1,9 +1,9 @@
 # Makefile for PtolemyII CHIC demos
 #
-# @Version: $Id$
+# @Version: makefile,v 1.5 2004/04/12 16:09:37 cxh Exp
 # @Author: Christopher Hylands (makefile only)
 #
-# @Copyright (c) 2002-2004 The Regents of the University of California.
+# @Copyright (c) 2002-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without

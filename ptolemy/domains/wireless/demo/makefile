@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Hylands Brooks (makefile only)
 #
-# @Copyright (c) 2003-2004 The Regents of the University of California.
+# @Copyright (c) 2003-2005 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without

@@ -3,7 +3,7 @@
   throws an Exception of type java.io.IOException and catches anything of
   type java.lang.Exception.
 
-  Copyright (c) 2001-2004 The University of Maryland
+  Copyright (c) 2001-2005 The University of Maryland
   All rights reserved.
 
   Permission is hereby granted, without written agreement and without

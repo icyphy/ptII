@@ -818,7 +818,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
     protected String TCfuncImplString; // Contains the skeleton code for the task functions
 
     protected String copyrightString = "/*" + _endLine + _endLine+
-        " Copyright (c) 2001 The Regents of the University of California." + _endLine +
+        " Copyright (c) 2001-2005 The Regents of the University of California." + _endLine +
         " All rights reserved." + _endLine +
         " Permission is hereby granted, without written agreement and without" + _endLine +
         " license or royalty fees, to use, copy, modify, and distribute this" + _endLine +
