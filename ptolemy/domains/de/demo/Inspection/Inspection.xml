@@ -69,7 +69,7 @@ order.</text>
     </property>
     <property name="passengerArrivalRate" class="ptolemy.data.expr.Parameter" value="1.0">
     </property>
-    <entity name="Poisson Bus Arrivals" class="ptolemy.actor.lib.Poisson">
+    <entity name="Poisson Bus Arrivals" class="ptolemy.actor.lib.PoissonClock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="poissonBusArrivalRate">
@@ -86,7 +86,7 @@ order.</text>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Passenger Arrivals" class="ptolemy.actor.lib.Poisson">
+    <entity name="Passenger Arrivals" class="ptolemy.actor.lib.PoissonClock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="meanTime" class="ptolemy.data.expr.Parameter" value="passengerArrivalRate">
