@@ -52,15 +52,15 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test Entity-1.1 {Get information about an instance of Entity} {
     # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.test.EntityTest]
+    set n [java::new pt.kernel.Entity]
     list [getJavaInfo $n]
 } {{
-  class:         pt.kernel.test.EntityTest
+  class:         pt.kernel.Entity
   fields:        
   methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait getName {setName java.lang.String} getParams enumEntities {enumEntities java.lang.String} enumRelations {enumRelations java.lang.String} getPortList numberOfConnectedEntities {numberOfConnectedEntities java.lang.String}
-  constructors:  pt.kernel.test.EntityTest {pt.kernel.test.EntityTest java.lang.String}
+  constructors:  pt.kernel.Entity {pt.kernel.Entity java.lang.String}
   properties:    portList class params name
-  superclass:    pt.kernel.Entity
+  superclass:    pt.kernel.NamedObj
 }}
 
 
@@ -68,8 +68,8 @@ test Entity-1.1 {Get information about an instance of Entity} {
 ####
 # 
 test Entity-2.1 {Construct Entities} {
-    set e1 [java::new pt.kernel.test.EntityTest]
-    set e2 [java::new pt.kernel.test.EntityTest "My Entity"]
+    set e1 [java::new pt.kernel.Entity]
+    set e2 [java::new pt.kernel.Entity "My Entity"]
     list [$e1 getName] [$e2 getName] 
 } {{} {My Entity}}
 
@@ -77,8 +77,8 @@ test Entity-2.1 {Construct Entities} {
 ####
 # 
 test Entity-2.2 {Construct Entities, call getPortList} {
-    set e1 [java::new pt.kernel.test.EntityTest]
-    set e2 [java::new pt.kernel.test.EntityTest "My Entity"]
+    set e1 [java::new pt.kernel.Entity]
+    set e2 [java::new pt.kernel.Entity "My Entity"]
     list [expr {[java::null] == [$e1 getPortList]}] \
 	    [expr {[java::null] == [$e2 getPortList]}] \
 } {1 1}
@@ -87,8 +87,8 @@ test Entity-2.2 {Construct Entities, call getPortList} {
 ####
 # 
 test Entity-2.3 {Construct Entities, call numberOfConnectedEntities} {
-    set e1 [java::new pt.kernel.test.EntityTest]
-    set e2 [java::new pt.kernel.test.EntityTest "My Entity"]
+    set e1 [java::new pt.kernel.Entity]
+    set e2 [java::new pt.kernel.Entity "My Entity"]
     list [$e1 numberOfConnectedEntities] [$e2 numberOfConnectedEntities] 
 } {0 0}
 
@@ -96,8 +96,8 @@ test Entity-2.3 {Construct Entities, call numberOfConnectedEntities} {
 ####
 # 
 test Entity-2.4 {Test numberOfConnectedEntities(portname)} {
-    set e1 [java::new pt.kernel.test.EntityTest]
-    set e2 [java::new pt.kernel.test.EntityTest "My Entity"]
+    set e1 [java::new pt.kernel.Entity]
+    set e2 [java::new pt.kernel.Entity "My Entity"]
     list [$e1 numberOfConnectedEntities "Not a PortName"] \
 	    [$e2 numberOfConnectedEntities "Not a PortName"] 
 } {0 0}
@@ -108,7 +108,7 @@ test Entity-2.4 {Test numberOfConnectedEntities(portname)} {
 # 
 test Entity-3.1 {Test enumEntities. Note that since Entity is abstract,
 	the Entity enum code is better covered in the derived classes.} {
-    set e1 [java::new pt.kernel.test.EntityTest "My Entity"]
+    set e1 [java::new pt.kernel.Entity "My Entity"]
     set enum [$e1 enumEntities]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
@@ -118,7 +118,7 @@ test Entity-3.1 {Test enumEntities. Note that since Entity is abstract,
 ####
 # 
 test Entity-3.2 {Test enumEntities(portName)} {
-    set e1 [java::new pt.kernel.test.EntityTest "My Entity"]
+    set e1 [java::new pt.kernel.Entity "My Entity"]
     set enum [$e1 enumEntities "Not a Port"]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
@@ -128,7 +128,7 @@ test Entity-3.2 {Test enumEntities(portName)} {
 ####
 # 
 test Entity-3.3 {Test enumRelations()} {
-    set e1 [java::new pt.kernel.test.EntityTest "My Entity"]
+    set e1 [java::new pt.kernel.Entity "My Entity"]
     set enum [$e1 enumRelations]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
@@ -138,7 +138,7 @@ test Entity-3.3 {Test enumRelations()} {
 ####
 # 
 test Entity-3.4 {Test enumRelations()} {
-    set e1 [java::new pt.kernel.test.EntityTest "My Entity"]
+    set e1 [java::new pt.kernel.Entity "My Entity"]
     set enum [$e1 enumRelations "Not a PortName"]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
