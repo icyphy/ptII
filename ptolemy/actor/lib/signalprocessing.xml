@@ -28,6 +28,7 @@
 <entity name="LineCoder" class="ptolemy.domains.sdf.lib.LineCoder"/>
 <entity name="RaisedCosine" class="ptolemy.domains.sdf.lib.RaisedCosine"/>
 <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
+<entity name="SmoothedSpectrum" class="ptolemy.domains.sdf.lib.SmoothedSpectrum"/>
 <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum"/>
 <entity name="Unwrap" class="ptolemy.actor.lib.Unwrap"/>
 <entity name="UpSample" class="ptolemy.domains.sdf.lib.UpSample"/>
