@@ -1,15 +1,38 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="19200_3" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+<entity name="SerialPort" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 129]">
     </property>
-    <property name="DE" class="ptolemy.domains.de.kernel.DEDirector">
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This serial communication demo is a continuity tester!
+While runnig, bridge pins 2 and 3 on your serial 
+port (such as with a pencil tip or paper clip) and 
+watch the display change!</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="170.0, 50.0">
+        </property>
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.7976931348623E308">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -21,48 +44,20 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 35.0">
+        <property name="_location" class="ptolemy.moml.Location" value="80.0, 45.0">
         </property>
     </property>
-    <entity name="SerialComm" class="ptolemy.actor.lib.comm.SerialComm">
-        <property name="serialPortName" class="ptolemy.data.expr.Parameter" value="&quot;COM1&quot;">
-        </property>
-        <property name="baudRate" class="ptolemy.data.expr.Parameter" value="19200">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="341.0, 54.5">
-        </property>
-        <port name="dataToSend" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="dataReceived" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="period" class="ptolemy.data.expr.Parameter" value="0.2">
         </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 0}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;U&quot;}">
         </property>
         <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="60.0, 104.5">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="435235423">
-        </property>
-        <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="45.0, 384.5">
+        <property name="_location" class="ptolemy.moml.Location" value="95.0, 135.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -79,283 +74,50 @@
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="511.5, 53.5">
+        <property name="_location" class="ptolemy.moml.Location" value="460.0, 135.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor">
-        <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="state">
-        </property>
-        <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
-        </property>
-        <property name="_library" class="ptolemy.moml.LibraryAttribute">
-            <configure>
-    <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/annotation.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity>
-  </configure>
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="75.0, 494.5">
-        </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
-        </property>
-        <port name="in" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
-            </property>
-            <property name="_location" class="ptolemy.moml.Location">
-            </property>
-        </port>
-        <port name="out" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
-            </property>
-            <property name="_location" class="ptolemy.moml.Location">
-            </property>
-        </port>
-        <entity name="state" class="ptolemy.domains.fsm.kernel.State">
-            <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="_centerName" class="ptolemy.kernel.util.Attribute">
-            </property>
-            <property name="_location" class="ptolemy.moml.Location" value="315.0, 95.0">
-            </property>
-            <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-            </port>
-            <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-            </port>
-        </entity>
-        <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
-            <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="true">
-            </property>
-            <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = { 128 + ( (in &amp; (-16777216)) + 128 * (-16777216) ) / 16777216, (in &amp; (255*65536)) / 65536, (in &amp; (255*256)) / 256, in &amp; 255}">
-            </property>
-            <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-            </property>
-            <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="1.0471975511965976">
-            </property>
-            <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-        </relation>
-        <link port="state.incomingPort" relation="relation"/>
-        <link port="state.outgoingPort" relation="relation"/>
-    </entity>
-    <entity name="ArrayAppend" class="ptolemy.actor.lib.ArrayAppend">
-        <property name="_location" class="ptolemy.moml.Location" value="293.0, 493.5">
+    <entity name="StringToIntArray" class="ptolemy.actor.lib.conversions.StringToIntArray">
+        <property name="_location" class="ptolemy.moml.Location" value="180.0, 135.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="multiport"/>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Const5" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{65,66}">
+    <entity name="SerialComm" class="ptolemy.actor.lib.comm.SerialComm">
+        <property name="serialPortName" class="ptolemy.data.expr.Parameter" value="&quot;COM2&quot;">
         </property>
-        <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="180.0, 454.5">
+        <property name="baudRate" class="ptolemy.data.expr.Parameter" value="19200">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+        <property name="_location" class="ptolemy.moml.Location" value="350.0, 180.0">
+        </property>
+        <port name="dataToSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="multiport"/>
         </port>
-    </entity>
-    <entity name="Const6" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{87,88}">
-        </property>
-        <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="175.0, 534.5">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
+        <port name="dataReceived" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
-    <entity name="0x2_Define_Status" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{170,0,18,1,19}">
-        </property>
-        <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="195.5, 53.5">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="0x4_Load_Trajectory-Position" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{170,0,84,145,0,0,0,0,229}">
-        </property>
-        <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="225.0, 118.5">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="0x6_Set_Gain" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{170,0,230, 0,0, 236,16 , 0,0 ,0,0, 255,0,0,2,1,0,228}">
-        </property>
-        <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="181.5, 263.5">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="0xA_Set_Baud_Rate_115200" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{170,0,26,10,36}">
-        </property>
-        <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="361.0, 313.5">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="0x4_Load_Trajectory-VelocityAndAcceleration" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{170,0,148,22,127,255,255,255,127,255,255,255,162}">
-        </property>
-        <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="276.5, 183.5">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="0xA_Set_Baud_Rate_19200" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{170,0,26,63,89}">
-        </property>
-        <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="357.5, 378.5">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="0x7_Stop_And_Enable_Amplifier" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{170,0,23,5,28}">
-        </property>
-        <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="376.0, 213.5">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="0x7_Stop_Here" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{170,0,87,17, 0,0,0,0 ,104}">
-        </property>
-        <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="410.5, 243.5">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="0xB_Clear_Stickey_Bits" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{170,0,11,11}">
-        </property>
-        <doc>Create a constant sequence</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="419.5, 108.5">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="285.0, 135.0">
+        </vertex>
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="135.0, 500.0">
-        </vertex>
-    </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="115.0, 105.0">
-        </vertex>
-    </relation>
-    <relation name="relation32" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation54" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="SerialComm.dataToSend" relation="relation54"/>
-    <link port="SerialComm.dataReceived" relation="relation22"/>
-    <link port="Clock.output" relation="relation18"/>
-    <link port="Const.output" relation="relation"/>
-    <link port="Display.input" relation="relation22"/>
-    <link port="fsm actor.in" relation="relation"/>
-    <link port="fsm actor.out" relation="relation12"/>
-    <link port="ArrayAppend.input" relation="relation13"/>
-    <link port="ArrayAppend.input" relation="relation12"/>
-    <link port="ArrayAppend.input" relation="relation14"/>
-    <link port="Const5.output" relation="relation13"/>
-    <link port="Const5.trigger" relation="relation12"/>
-    <link port="Const6.output" relation="relation14"/>
-    <link port="Const6.trigger" relation="relation12"/>
-    <link port="0x2_Define_Status.trigger" relation="relation18"/>
-    <link port="0x4_Load_Trajectory-Position.trigger" relation="relation18"/>
-    <link port="0x6_Set_Gain.trigger" relation="relation18"/>
-    <link port="0xA_Set_Baud_Rate_115200.trigger" relation="relation18"/>
-    <link port="0x4_Load_Trajectory-VelocityAndAcceleration.trigger" relation="relation18"/>
-    <link port="0xA_Set_Baud_Rate_19200.trigger" relation="relation18"/>
-    <link port="0xA_Set_Baud_Rate_19200.trigger" relation="relation32"/>
-    <link port="0xA_Set_Baud_Rate_19200.trigger" relation="relation32"/>
-    <link port="0x7_Stop_And_Enable_Amplifier.trigger" relation="relation18"/>
-    <link port="0x7_Stop_Here.output" relation="relation54"/>
-    <link port="0x7_Stop_Here.trigger" relation="relation18"/>
-    <link port="0xB_Clear_Stickey_Bits.trigger" relation="relation18"/>
+    <link port="Clock.output" relation="relation4"/>
+    <link port="Display.input" relation="relation5"/>
+    <link port="Display.input" relation="relation"/>
+    <link port="StringToIntArray.input" relation="relation4"/>
+    <link port="StringToIntArray.output" relation="relation5"/>
+    <link port="SerialComm.dataToSend" relation="relation5"/>
+    <link port="SerialComm.dataReceived" relation="relation"/>
 </entity>

@@ -64,10 +64,27 @@ import ptolemy.kernel.util.NameDuplicationException;
 Sends and receive bytes via the serial port.  Which serial port and
 baud rate to use are set by parameters.  If the specified serial port
 is not successfully opened, then another one will automatically be
-chosen if available.  FIXME: Does not find any ports from which to 
+chosen if available.  
+<p>
+FIXME: Does not find any ports from which to 
 choose!  Find out why & fix.  If problem is that laptop may not have 
 any ports, then find a way to list other kinds of ports with serial 
 ports in the mix.  That way at least, one would know it is working.
+<p>
+Aha!  Was getting (& failing to notice) this error printed to console!  
+This error shows up when the comm library is opened to reveal the 
+SerialComm actor.  Error loading win32com: java.lang.UnsatisfiedLinkError: 
+no win32com in java.library.path
+<p>
+ptII/vendors/sun/commapi/PlatformSpecific.html describes (maybe) how 
+to activate win32com.
+<p>
+Cool!  Problem was resolved when I copied the file win32com.dll to yet 
+another directory, my c:\jdk1.4\bin directory.  Now it DOES choose an 
+available serial port (not necessarily the lowest numbered one!).  And,
+when I start with a silly port name like COM7, listen to the actor, 
+and then run, I get a list of available ports!!
+
 <p>
 This actor is designed for use in DE.  It can be used in other domains, 
 such as SDF, with interesting behavior.  This actor does not block in 
@@ -300,26 +317,29 @@ public class SerialComm extends TypedAtomicActor
 
         } catch (Exception ex) {
 	    // Maybe the port was the problem, _debug() the available ports.
-	    // FIXME: Enumeration is empty, yet ports DO exits!
-	    // FIXME: When enumaration works, uncomment line in catch clause.
 	    if (_debugging) _debug("Enumarating available ports."
-	            + "  Testing which, if any, are serial ports.");
+	            + "  Testing which, if any, are serial ports. {");
 	    Enumeration allPorts = CommPortIdentifier.getPortIdentifiers();
 	    while(allPorts.hasMoreElements()) {
 		CommPortIdentifier id = (CommPortIdentifier)
                         allPorts.nextElement();
-		if (_debugging) _debug("-------");
-		if (_debugging) _debug(id.toString());
-		if(id.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-		    if (_debugging) _debug(id.getName()
-                            + " is a serial port");
+		if (_debugging) {
+		    _debug("    {");
+		    _debug("        id.toString()=" + id.toString());
+		    _debug("        id.getName()=" + id.getName());
+		    _debug("        id.getPortType()=" + id.getPortType());
+		    _debug("        (id.getPortType() =="
+                        + " CommPortIdentifier.PORT_SERIAL)=" 
+			+ (id.getPortType() == 
+                        CommPortIdentifier.PORT_SERIAL));
+		    _debug("    }");
 		}
 	    }
-	    if (_debugging) _debug("-----------");
+	    if (_debugging) _debug("}");
 
             throw new IllegalActionException(this,
                     "Communication port initialization failed: "
-		    // + " for available ports, 'listen' to actor & rerun "
+		    + " for available ports, 'listen' to actor & rerun "
                     + ex);
         }
     }
