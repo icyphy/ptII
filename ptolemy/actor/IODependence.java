@@ -166,7 +166,7 @@ public class IODependence extends Attribute {
         if (_dgValid != workspace().getVersion()){
             // construct a directed graph
             _dg = _constructDirectedGraph();
-            System.out.println(_dg.toString());
+            // System.out.println(_dg.toString());
             // FIXME: how to show the following debugging information
             // when listening to director?
             if (_debugging){ 
