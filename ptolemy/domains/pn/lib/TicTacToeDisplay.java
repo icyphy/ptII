@@ -198,7 +198,7 @@ public final class TicTacToeDisplay extends AtomicActor {
     //private Picture _panel;
     private boolean _notdone = true;
     private boolean _nomove = true;
-    private boolean _playermove = true;
+    private boolean _playermove = false;
     private int[][] _moves = new int[3][3];
     private Picture _picture;
     private _PictureFrame _frame;
