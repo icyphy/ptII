@@ -45,7 +45,6 @@ TCL_SRCS = \
 
 
 JSRCS = \
-	SDFApplet.java \
 	TypeApplet.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
