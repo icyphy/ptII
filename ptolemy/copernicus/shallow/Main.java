@@ -69,7 +69,7 @@ import java.util.Map;
 //////////////////////////////////////////////////////////////////////////
 //// Main
 /**
-Read in a MoML model and generate a Java class that creates the 
+Read in a MoML model and generate a Java class that creates the
 same model.  (i.e. shallow code generation)
 No attempt is made to analyze actor code.  This is primarily
 useful for using the Java compiler to find bugs, and removing
@@ -98,17 +98,17 @@ public class Main extends KernelMain {
      */
     public void addTransforms() {
 	super.addTransforms();
-       
+
         // Set up a watch dog timer to exit after a certain amount of time.
         // For example, to time out after 5 minutes, or 300000 ms:
 	// -p wjtp.watchDog time:30000
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
                 WatchDogTimer.v()));
-        
+
         // Create a class for the composite actor of the model
         Scene.v().getPack("wjtp").add(new Transform("wjtp.mt",
                 ShallowModelTransformer.v(_toplevel)));
-        
+
         Scene.v().getPack("wjtp").add(new Transform("wjtp.writeJimple1",
                 JimpleWriter.v()));
 
@@ -128,9 +128,9 @@ public class Main extends KernelMain {
      *  to the given pack.
      */
     private void _addStandardOptimizations(Pack pack) {
-        pack.add(new Transform("jop.cse", 
+        pack.add(new Transform("jop.cse",
                 new TransformerAdapter(CommonSubexpressionEliminator.v())));
-        pack.add(new Transform("jop.cp", 
+        pack.add(new Transform("jop.cp",
                 new TransformerAdapter(CopyPropagator.v())));
         pack.add(new Transform("jop.cpf",
                 new TransformerAdapter(ConstantPropagatorAndFolder.v())));
@@ -142,11 +142,11 @@ public class Main extends KernelMain {
                 new TransformerAdapter(UnreachableCodeEliminator.v())));
         pack.add(new Transform("jop.ubf1",
                 new TransformerAdapter(UnconditionalBranchFolder.v())));
-        pack.add(new Transform("jop.uce2", 
+        pack.add(new Transform("jop.uce2",
                 new TransformerAdapter(UnreachableCodeEliminator.v())));
         pack.add(new Transform("jop.ubf2",
                 new TransformerAdapter(UnconditionalBranchFolder.v())));
-        pack.add(new Transform("jop.ule", 
+        pack.add(new Transform("jop.ule",
                 new TransformerAdapter(UnusedLocalEliminator.v())));
     }
 
@@ -155,7 +155,7 @@ public class Main extends KernelMain {
      *  @exception IllegalActionException If the model cannot be parsed.
      *  @exception NameDuplicationException If the name of the
      *  model cannot be changed to a Java identifier String.
-     */ 
+     */
     public static void main(String[] args)
             throws IllegalActionException, NameDuplicationException {
 
@@ -171,8 +171,8 @@ public class Main extends KernelMain {
 
 	// Add Transforms to the Scene.
 	main.addTransforms();
-	    
-	main.generateCode(args); 
+
+	main.generateCode(args);
 
         // Print out memory usage info
 	System.out.println(ptolemy.actor.Manager.timeAndMemory(startTime));
