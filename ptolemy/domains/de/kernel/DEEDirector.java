@@ -320,6 +320,10 @@ public class DEEDirector extends DEDirector {
                 // Check whether the next event has equal tag.
                 // If so, the destination actor should
                 // be the same, but check anyway.
+                
+                // FIXME: the same ioPort requirement is not correct.
+                // Consider the multi-input atomic actors, e.g. the 
+                // BooleanSelect and Inhibit.
                 if ((nextEvent.timeStamp() == Double.NEGATIVE_INFINITY ||
                         nextEvent.isSimultaneousWith(currentEvent)) &&
                         nextEvent.actor() == currentEvent.actor() &&
@@ -493,10 +497,12 @@ public class DEEDirector extends DEDirector {
         // director. If there is no such attribute, construct one.
         IODependency ioDependency = castContainer.getIODependencies();
          
-        // The IODependence attribute is used to construct
-        // the schedule. If the schedule needs recalculation,
-        // the IODependence also needs recalculation.
-        ioDependency.invalidate();
+//        Since the ioDependency is synchronized to workspace, 
+//        there is no need to invalidate ioDependency here.
+//        // The IODependence attribute is used to construct
+//        // the schedule. If the schedule needs recalculation,
+//        // the IODependence also needs recalculation.
+//        ioDependency.invalidate();
       
         // FIXME: The following may be a very costly test. 
         // -- from the comments of former implementation. 
@@ -528,6 +534,9 @@ public class DEEDirector extends DEDirector {
     // time this method is called.
     private void _computeDepth() throws IllegalActionException {
         DirectedAcyclicGraph portsGraph = _constructDirectedGraph();
+        if (_debugging) {
+            _debug("## ports graph is:" + portsGraph.toString());
+        }
         Object[] sort = (Object[]) portsGraph.topologicalSort();
         if (_debugging) {
             _debug("## Result of topological sort (highest depth to lowest):");
