@@ -118,6 +118,10 @@ LEJOS_DIR = @LEJOS_DIR@
 
 ########## You should not have to change anything below this line ######
 
+# Directory that contains the CaffeineMark Java Benchmark kit
+# used by C code generation in copernicus/c
+CMKIT_DIR = @CMKIT_DIR@
+
 # The 'javac' compiler.
 JAVAC = 	$(PTJAVA_DIR)/bin/javac
 
