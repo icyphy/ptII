@@ -152,9 +152,11 @@ to another. Then delete this annotation.</text></svg></configure></property>
 <!-- Sinks list is custom. -->
 <input source="ptolemy/configs/hyvisual/sinks.xml"/>
 
+<!-- Math list is custom. -->
+<input source="ptolemy/configs/hyvisual/math.xml"/>
+
 <!---------------------------------------------------------------------------->
 <!-- Standard libraries. -->
-  <input source="ptolemy/actor/lib/math.xml"/>
   <input source="ptolemy/actor/lib/logic/logic.xml"/>
   <input source="ptolemy/actor/lib/conversions/conversions.xml"/>
 
@@ -165,33 +167,16 @@ to another. Then delete this annotation.</text></svg></configure></property>
 <input source="ptolemy/domains/ct/lib/wavegenerators.xml"/>
 
 <!---------------------------------------------------------------------------->
-<!-- Flow control library is modified. -->
-<!-- FIXME: For some incomprehensible reason, the following library -->
-<!-- cannot be deferred with a configure element.  Bug in MoMLParser? -->
-<entity name="flow control" class="ptolemy.moml.EntityLibrary">
-  <doc>Actors that route tokens or otherwise affect the flow of control.</doc>
-  <input source="ptolemy/actor/lib/aggregators.xml"/>
-  <input source="ptolemy/actor/lib/booleanflowcontrol.xml"/>
-  <!-- Execution control library is modified. -->
-  <entity name="execution control" class="ptolemy.moml.EntityLibrary">
-          <doc>Actors that stop execution of the model.</doc>
-          <entity name="Stop"
-                  class="ptolemy.actor.lib.Stop"/>
-          <entity name="ThrowException"
-                  class="ptolemy.actor.lib.ThrowException"/>
-          <entity name="ThrowModelError"
-                  class="ptolemy.actor.lib.ThrowModelError"/>
-  </entity>
-</entity>
+<!-- Modified libraries -->
+<input source="ptolemy/configs/hyvisual/flowcontrol.xml"/>
+<input source="ptolemy/configs/hyvisual/io.xml"/>
+<!-- OMIT: input source="ptolemy/actor/lib/realtime.xml"/-->
+<input source="ptolemy/configs/hyvisual/array.xml"/>
+<input source="ptolemy/configs/hyvisual/random.xml"/>
 
-<!---------------------------------------------------------------------------->
-<!-- Standard libraries. -->
+<!-- Discrete library is added to include a few useful actors. -->
+<input source="ptolemy/configs/hyvisual/discrete.xml"/>
 
-  <input source="ptolemy/actor/lib/io/io.xml"/>
-  <input source="ptolemy/actor/lib/realtime.xml"/>
-  <input source="ptolemy/actor/lib/array.xml"/>
-  <input source="ptolemy/actor/lib/random.xml"/>
-  <input source="ptolemy/actor/lib/signalprocessing.xml"/>
           </group>
         ?>
       </configure>
