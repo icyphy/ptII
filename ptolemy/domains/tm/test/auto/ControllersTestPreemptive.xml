@@ -681,7 +681,7 @@ preemptive ones can.
         </port>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="eval(readFile(findFile(&quot;ControllersTestPreemptiveData2.txt&quot;)))">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="eval(readFile(findFile(&quot;ptolemy/domains/tm/test/auto/ControllersTestPreemptiveData2.txt&quot;)))">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -695,7 +695,7 @@ preemptive ones can.
         </port>
     </entity>
     <entity name="Test1" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="eval(readFile(findFile(&quot;ControllersTestPreemptiveData1.txt&quot;)))">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="eval(readFile(findFile(&quot;ptolemy/domains/tm/test/auto/ControllersTestPreemptiveData1.txt&quot;)))">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
