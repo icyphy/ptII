@@ -190,7 +190,7 @@ public class PlotApplet extends Applet implements Runnable {
     ////                         protected variables                      ////
 
     // If non-zero, print out debugging messages.
-    protected int _debug = 9;
+    protected int _debug = 0;
 
     // The Plot component we are running.
     protected Plot _myPlot;

@@ -108,7 +108,7 @@ public class PlotLiveDemoApplet extends Applet implements Runnable {
 //         super.update(graphics);
 //     }
 
-    protected int _debug = 9;
+    protected int _debug = 0;
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 

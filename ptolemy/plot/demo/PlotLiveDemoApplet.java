@@ -139,7 +139,7 @@ public class PlotLiveDemoApplet extends Applet implements Runnable {
     ////                         protected variables                      ////
 
     // The higher the number, the more debugging
-    protected int _debug = 9;
+    protected int _debug = 0;
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
@@ -151,4 +151,3 @@ public class PlotLiveDemoApplet extends Applet implements Runnable {
     private Thread _plotLiveDemoAppletThread;
 
 }
-
