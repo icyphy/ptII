@@ -106,11 +106,11 @@ public class CSPReceiver implements ProcessReceiver {
                     _checkAndWait();
                 }
 
-                _getDirector().actorBlocked();
+                _registerBlocked();
                 while (isGetWaiting()) {
                     _checkAndWait();
                 }
-                _getDirector().actorUnblocked();
+                _registerUnblocked();
                 tmp = _token;
                 _setGetDone(true);
                 notifyAll();
@@ -118,8 +118,6 @@ public class CSPReceiver implements ProcessReceiver {
         } catch (InterruptedException ex) {
             System.out.println("get interrupted: " + ex.getMessage());
             /* FIXME */
-        } catch (NoSuchItemException ex) {
-            System.out.println("aaarrrggghhh!");
         }
         return tmp;
     }
@@ -159,11 +157,11 @@ public class CSPReceiver implements ProcessReceiver {
                     _checkAndWait();
                 }
 
-                _getDirector().actorBlocked();
+                _registerBlocked();
                 while(isPutWaiting()) {
                     _checkAndWait();
                 }
-                _getDirector().actorUnblocked();
+                _registerUnblocked();
                 _setPutDone(true);
                 notifyAll();
                 return;
@@ -171,9 +169,6 @@ public class CSPReceiver implements ProcessReceiver {
         } catch (InterruptedException ex) {
             System.out.println("put interrupted :" + ex.getMessage());
             // FIXME: what should be done here?
-        } catch (NoSuchItemException ex) {
-            //FIXME: this should not be caught here, should be in signature of put
-            System.out.println("ERROR in CSPReceiver.");
         }
     }
 
@@ -258,24 +253,12 @@ public class CSPReceiver implements ProcessReceiver {
         return _putWaiting;
     }
 
-    /** FIXME: this method not good???
-     *  Set the container of this CSPReceiver to the specified IOPort.
-     *  A receiver can only ever have one container. If the argument is
-     *  null, this CSPReceiver is removed from the list of receivers
-     *  in its container.
-     *  FIXME: should this method be write synchronized on the workspace?
+    /** Set the container of this CSPReceiver to the specified IOPort.
      *  FIXME: a null argument should remove it from the IOPort it
      *  currently belongs to.
-     *  @exception IllegalActionException If this receiver has
-     *   already been placed into an IOPort. A receiver can only ever
-     *   be contained by ne IOPort during its life.
      *  @param parent The IOPort this receiver is to be contained by.
      */
-    public void setContainer(IOPort parent) throws IllegalActionException {
-        if (parent == null) {
-            _container = null;
-            // FIXME: remove receiver from list of IOPorts receivers
-        }
+    public void setContainer(IOPort parent) {
         _container = parent;
     }
 
@@ -323,6 +306,7 @@ public class CSPReceiver implements ProcessReceiver {
     public synchronized void setFinish() {
         System.out.println(getContainer().getName() + ": receiver finished.");
         _simulationFinished = true;
+        _simulationPaused = false; // needed?
     }
 
     /** Returns a String description of this CSPReceiver.
@@ -354,38 +338,58 @@ public class CSPReceiver implements ProcessReceiver {
      */
     protected synchronized void _checkAndWait() throws
               TerminateProcessException, InterruptedException {
-        if (_simulationFinished) {
-            throw new TerminateProcessException(getContainer().getName() + 
-                    ": terminated1");
-        } else if (_simulationPaused) {
-            ProcessThread thread = (ProcessThread)Thread.currentThread();
-            ProcessDirector dir = (ProcessDirector)thread.getDirector();
-            dir.increasePausedCount();
-            // FIXME: what goes here?
-        }
-            
+        _checkFlags();
         wait();
-        if (_simulationFinished) {
-            throw new TerminateProcessException(getContainer().getName() + 
-                    ": terminated2");
-        } 
+        _checkFlags();
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private methods                        ////
 
-    /** Return the director that is controlling this simulation.
+    /* Check the flags controlling the state of the receiver and 
+     * hence the actor process trying to rendezvous with it. If the 
+     * simulation has been finished the _simulationFinished flag will 
+     * have been set and a TerminateProcessException will be thrown 
+     * which will cause the actor process to finish.
+     * <p>
+     * If the simulation has been paused, register the the current 
+     * thread as being paused with director, and after the pause 
+     * reset the simulationPaused flag.
+     *  @exception TerminateProcessException If the actor to
+     *   which this receiver belongs has been terminated while still
+     *   running i.e. it was not allowed to run to completion.
+     *  @exception InterruptedException If the thread is
+     *   interrupted while waiting.
+     */
+    private synchronized void _checkFlags() throws InterruptedException {
+        if (_simulationFinished) {
+            throw new TerminateProcessException(getContainer().getName() + 
+                    ": terminated1");
+        } else if (_simulationPaused) {
+            _getDirector().increasePausedCount();
+            while (_simulationPaused) {
+                wait();
+            }
+            // The simulation may have ended while we were paused...
+            // Need to do this as wait is used above.
+            if (_simulationFinished) {
+                throw new TerminateProcessException(getContainer().getName() + 
+                        ": terminated1");
+            }
+        }
+    }
+
+    /* Return the director that is controlling this simulation.
      *  The director is cached as it is accessed often.
-     *  @exception NoSuchItemException If this receiver does
-     *   not have a container. In order to get or put to a CSPReceiver,
-     *   it must have a container. If it does not it indicates that
-     *   either the receiver was removed (container set to null) or
-     *   it has not been placed in an IOPort yet.
      *  @return The CSPDirector controlling this simulation.
      */
-    private CSPDirector _getDirector() throws NoSuchItemException{
+    private CSPDirector _getDirector() {
         if (getContainer() == null) {
-	    throw new NoSuchItemException("CSPReceiver: needs a container");
+            // If a thread has a reference to a receiver with no container it 
+            // is an error so terminate the process.
+	    throw new TerminateProcessException("CSPReceiver: trying to " +
+                    " rendezvous with a receiver with no " +
+                    "container => terminate.");
 	}
         long workversion = ((NamedObj)getContainer()).workspace().getVersion();
 	if ((_director == null) || (_directorVersion != workversion)) {
@@ -394,6 +398,26 @@ public class CSPReceiver implements ProcessReceiver {
 	    _director = (CSPDirector)cont.getDirector();
 	}
 	return _director;
+    }
+
+    /* Register with the director that an actor has blocked while
+     * trying to rendezvous at this receiver.
+     *  @exception InterruptedException If the thread is
+     *   interrupted while waiting.
+     */
+    private void _registerBlocked() throws InterruptedException {
+        _checkFlags();
+        _getDirector().actorBlocked();
+    }
+
+    /* Register with the director that an actor has unblocked after
+     * rendezvousing at this receiver.
+     *  @exception InterruptedException If the thread is
+     *   interrupted while waiting.
+     */
+    private void _registerUnblocked() throws InterruptedException {
+        _checkFlags();
+        _getDirector().actorUnblocked();
     }
 
     /* Called only by the get and put methods of this class to indicate
@@ -478,6 +502,12 @@ public class CSPReceiver implements ProcessReceiver {
 
     // The token being transferred during the rendezvous.
     private Token _token;
+
+    // Flags for controlling whether or not the receiver should register 
+    // with the director as being block waiting to rendezvous.
+    private boolean _registerBlock = false;
+    private boolean _registerUnblock = false;
+    private boolean _blockRegistered = false;
 
 }
 
