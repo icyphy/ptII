@@ -59,6 +59,7 @@ JSRCS = \
 	Plotter.java \
 	Print.java \
 	PtolemyApplet.java \
+	PtolemyApplication.java \
 	PtolemyQuery.java \
 	SequencePlotter.java \
 	SketchedSource.java \
