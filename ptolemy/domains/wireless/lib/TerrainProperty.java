@@ -184,7 +184,12 @@ public class TerrainProperty extends TypedAtomicActor
                     + getName()
                     + ".");
         }
-        _offset = location.getLocation();
+        double[] center = _polygonCenter();
+        //Note: the polygon is not centered, but the location
+        //refers to the center of the polygon. We adjust the
+        //offset here.
+        _offset[0] = location.getLocation()[0] + center[0];
+        _offset[1] = location.getLocation()[1] + center[1];
 
         CompositeEntity container = (CompositeEntity) getContainer();
         _channelName = channelName.stringValue();
@@ -293,6 +298,36 @@ public class TerrainProperty extends TypedAtomicActor
         return location.getLocation();
     }
 
+    /** Return the center coordinates of the polygon icon.
+     *  @return The location of the polygon center.
+     */
+    private double[] _polygonCenter() {
+        double xMax = Double.NEGATIVE_INFINITY;
+        double xMin = Double.POSITIVE_INFINITY;
+        double yMax = Double.NEGATIVE_INFINITY;
+        double yMin = Double.POSITIVE_INFINITY;
+        double[] center = new double[2];
+            
+        // First, read vertex values and find the bounds.
+        for (int j = 0; j < _numberOfPoints; j++) {
+            if (_xPoints[j] > xMax) {
+                xMax = _xPoints[j];
+            }
+            if (_xPoints[j] < xMin) {
+                xMin = _xPoints[j];
+            }
+            if (_yPoints[j] > yMax) {
+                yMax = _yPoints[j];
+            }
+            if (_yPoints[j] < yMin) {
+                yMin = _yPoints[j];
+            }
+        }
+        center[0] = (xMin - xMax)/2;
+        center[1] = (yMin - yMax)/2;
+
+        return center;
+    }
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
     private WirelessChannel _channel;
