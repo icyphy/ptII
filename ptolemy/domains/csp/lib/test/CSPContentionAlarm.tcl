@@ -54,8 +54,7 @@ test CSPContentionAlarm-2.1 {Check that port names are correct} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
-    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
-    $topLevel setDirector $dir
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $topLevel "director"]
     set cntrllr [java::new ptolemy.domains.csp.lib.CSPController $topLevel "cntrllr"] 
     set proc [java::new ptolemy.domains.csp.lib.CSPProcessor $topLevel "proc"] 
     set mem [java::new ptolemy.domains.csp.lib.CSPMemory $topLevel "mem"] 
@@ -96,8 +95,7 @@ test CSPContentionAlarm-2.2 {Does alarm work right?} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
-    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
-    $topLevel setDirector $dir
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $toplevel "director"]
     set cntrllr [java::new ptolemy.domains.csp.lib.CSPController $topLevel "cntrllr"] 
     set proc [java::new ptolemy.domains.csp.lib.CSPProcessor $topLevel "proc"] 
     set mem [java::new ptolemy.domains.csp.lib.CSPMemory $topLevel "mem"] 
