@@ -141,7 +141,8 @@ public class CompositeActorApplication implements ExecutionListener {
      */
     public static void main(String args[]) {
         try {
-            CompositeActorApplication plot = new CompositeActorApplication(args);
+            CompositeActorApplication plot =
+                new CompositeActorApplication(args);
         } catch (Exception ex) {
             System.err.println(ex.toString());
             ex.printStackTrace();
