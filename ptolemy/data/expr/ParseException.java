@@ -88,33 +88,8 @@ public class ParseException extends Exception {
         specialConstructor = false;
     }
 
-    /**
-     * This variable determines which constructor was used to create
-     * this object and thereby affects the semantics of the
-     * "getMessage" method (see below).
-     */
-    protected boolean specialConstructor;
-
-    /**
-     * This is the last token that has been consumed successfully.  If
-     * this object has been created due to a parse error, the token
-     * following this token will (therefore) be the first error token.
-     */
-    public Token currentToken;
-
-    /**
-     * Each entry in this array is an array of integers.  Each array
-     * of integers represents a sequence of tokens (by their ordinal
-     * values) that is expected at this point of the parse.
-     */
-    public int[][] expectedTokenSequences;
-
-    /**
-     * This is a reference to the "tokenImage" array of the generated
-     * parser within which the parse error occurred.  This array is
-     * defined in the generated ...Constants interface.
-     */
-    public String[] tokenImage;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * This method has the standard behavior when this object has been
@@ -155,7 +130,8 @@ public class ParseException extends Exception {
             retval += add_escapes(tok.image);
             tok = tok.next; 
         }
-        retval += "\" at line " + currentToken.next.beginLine + ", column " + currentToken.next.beginColumn + "." + eol;
+        retval += "\" at line " + currentToken.next.beginLine + 
+            ", column " + currentToken.next.beginColumn + "." + eol;
         if (expectedTokenSequences.length == 1) {
             retval += "Was expecting:" + eol + "    ";
         } else {
@@ -165,11 +141,35 @@ public class ParseException extends Exception {
         return retval;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
     /**
-     * The end of line string for this machine.
+     * @serial This is the last token that has been consumed
+     * successfully.  If this object has been created due to a parse
+     * error, the token following this token will (therefore) be the
+     * first error token.
      */
-    protected String eol = System.getProperty("line.separator", "\n");
- 
+    public Token currentToken;
+
+    /**
+     * @serial Each entry in this array is an array of integers.  Each
+     * array of integers represents a sequence of tokens (by their
+     * ordinal values) that is expected at this point of the parse.
+     */
+    public int[][] expectedTokenSequences;
+
+    /**
+     * @serial This is a reference to the "tokenImage" array of the
+     * generated parser within which the parse error occurred.  This
+     * array is defined in the generated ...Constants interface.
+     */
+    public String[] tokenImage;
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /**
      * Used to convert raw characters to their escaped version
      * when these raw version cannot be used as part of an ASCII
@@ -210,7 +210,8 @@ public class ParseException extends Exception {
                 default:
                     if ((ch = str.charAt(i)) < 0x20 || ch > 0x7e) {
                         String s = "0000" + Integer.toString(ch, 16);
-                        retval.append("\\u" + s.substring(s.length() - 4, s.length()));
+                        retval.append("\\u" + s.substring(s.length() - 4,
+                                s.length()));
                     } else {
                         retval.append(ch);
                     }
@@ -219,5 +220,21 @@ public class ParseException extends Exception {
         }
         return retval.toString();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /**
+     * @serial The end of line string for this machine.
+     */
+    protected String eol = System.getProperty("line.separator", "\n");
+
+    /**
+     * @serial This variable determines which constructor was used to create
+     * this object and thereby affects the semantics of the
+     * "getMessage" method (see below).
+     */
+    protected boolean specialConstructor;
+
 
 }
