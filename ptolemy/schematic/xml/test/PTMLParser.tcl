@@ -51,83 +51,79 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test PTMLParser-2.1 {parser tests} {
-    set e0 [java::new ptolemy.schematic.xml.PTMLParser]
-    set schematic [$e0 parse "file:/users/neuendor/ptII/ptolemy/schematic/test/exampleschematic.ptml"]
-    list [$schematic toString]
+    set parser [java::new ptolemy.schematic.xml.PTMLParser]
+    set fileend [file join $PTII ptolemy schematic util test exampleIconLibrary.ptml]
+    set filename "file:"
+    append filename $fileend
+    set tree [$parser parse $filename]
+    list [$tree toString]
+} {{<iconlibrary version="1.0" name="SDF">
+<description>Icons for use within SDF</description>
+<icon name="LoadImage">
+<description>Load an image from a file</description>
+<xmlgraphic>
+<rectangle coords="0 0 60 40" fill="pink" color="red"></rectangle>
+<polygon color="black" fill="blue" coords="10 10 50 30 10 30 50 10"></polygon>
+<ellipse color="black" coords="25 15 10 10" fill="yellow"></ellipse>
+<line coords="30 20 60 20"></line>
+</xmlgraphic>
+</icon>
+<icon name="SaveImage">
+<xmlgraphic>
+<rectangle coords="0 0 60 40" fill="orange" color="red"></rectangle>
+<polygon color="black" fill="blue" coords="10 10 50 30 10 30 50 10"></polygon>
+<ellipse color="black" coords="25 15 10 10" fill="yellow"></ellipse>
+<line coords="0 20 30 20"></line>
+</xmlgraphic>
+</icon>
+<terminalstyle name="1out">
+<terminal y="20" x="64" name="output"></terminal>
+</terminalstyle>
+<terminalstyle name="1in">
+<terminal y="20" x="-4" name="input"></terminal>
+</terminalstyle>
+</iconlibrary>
+}}
+
+
+######################################################################
+####
+#
+test PTMLParser-2.2 {Constructor tests} {
+    set fileend [file join $PTII ptolemy schematic util test exampleschematic.ptml]
+    set filename "file:"
+    append filename $fileend
+    set tree [$parser parse $filename]
+    list [$tree toString]
 } {{<schematic version="1.0" name="SDF">
 <description>Icons for use within SDF</description>
-<entity icon="examplelibrary.LoadImage" name="Load BMP File">
+<entity terminalstyle="default" icon="default" template="SDF.LoadImage" name="Load BMP File">
 <description>Load the Image that will be transmitted and stored.</description>
 <parameter value="" type="string" name="filename"></parameter>
-<port multiport="false" input="false" type="doubleArray" output="true" name="image"></port>
+<port input="false" multiport="false" type="doubleArray" output="true" name="image"></port>
 </entity>
-<entity icon="examplelibrary.SaveImage" name="Save BMP File">
+<entity terminalstyle="default" icon="default" template="SDF.SaveImage" name="Save BMP File">
 <parameter value="" type="string" name="filename"></parameter>
-<port multiport="false" output="false" type="doubleArray" input="true" name="image"></port>
+<port output="false" multiport="false" type="doubleArray" input="true" name="image"></port>
 </entity>
 <relation name="R1">
-<link name="Load BMP File.image"></link>
-<link name="Save BMP File.image"></link>
+<link from="Save BMP File.input" to="Load BMP File.output"></link>
 </relation>
 <parameter type="string" value="SDF" name="domain"></parameter>
 <parameter type="double" value="1.0" name="starttime"></parameter>
 <parameter type="double" value="7.0" name="endtime"></parameter>
 </schematic>
 }}
-
-
-######################################################################
-####
-#
-test PTMLParser-3.1 {Constructor tests} {
-    set e0 [java::new ptolemy.schematic.xml.PTMLParser]
-    set library [$e0 parse "file:/users/neuendor/ptII/ptolemy/schematic/test/examplelibrary.ptml"]
-    list [$library toString]
-} {{<iconlibrary version="1.0" name="SDF">
-<header>
-<description>Icons for use within SDF</description>
-<sublibrary url="../../domains/sdf/lib/icons/htvq.ptml" name="VQ"></sublibrary>
-<sublibrary url="../../domains/sdf/lib/icons/communication.ptml" name="comm"></sublibrary>
-</header>
-<icon name="LoadImage">
-<description>Load an image from a file</description>
-<entitytype ports="2" name="loadimage"></entitytype>
-<graphic format="tcl">
-<tclscript>
-
-</tclscript>
-</graphic>
-<parameter value="" type="string" name="filename"></parameter>
-<port multiport="false" input="false" type="doubleArray" output="true" name="image"></port>
-</icon>
-<icon name="SaveImage">
-<entitytype ports="2" name="saveimage"></entitytype>
-<port multiport="false" output="false" type="string" input="true" name="filename"></port>
-<port multiport="false" output="false" type="doubleArray" input="true" name="image"></port>
-<graphic format="xml">
-<line points="0 0 10 10" width="5" style="dotted"></line>
-<rect points="0 0 10 10" fill="hatch" color="blue"></rect>
-<ellipse points="0 0 10 10" fill="blue"></ellipse>
-<polygon points="0 0 10 10 15 10 15 0"></polygon>
-<textline points="0 0" font="helvetica">
-Hello!
-</textline>
-<textbox points="0 0 100 100" alignY="top" alignX="center">
-Hello! This is a nice big text box in a ptolemy icon.
-</textbox>
-<image points="0 0 100 100" file="icon.gif" compression="zip" format="gif"></image>
-</graphic>
-</icon>
-</iconlibrary>
-}}
     
 ######################################################################
 ####
 #
-test PTMLParser-4.1 {Constructor tests} {
-    set e0 [java::new ptolemy.schematic.xml.PTMLParser]
-    set library [$e0 parse "file:/users/neuendor/ptII/ptolemy/schematic/lib/ptII.ptml"]
-    list [$library toString]
+test PTMLParser-3.1 {Constructor tests} {
+    set fileend [file join $PTII ptolemy schematic lib ptII.ptml]
+    set filename "file:"
+    append filename $fileend
+    set tree [$parser parse $filename]
+    list [$tree toString]
 } {{<domainlibrary version="1.0" name="Dataflow">
 <actorpackage package="ptolemy.lib" name="domain polymorphic"></actorpackage>
 <domain name="CT">
@@ -136,43 +132,22 @@ test PTMLParser-4.1 {Constructor tests} {
 <director class="ptolemy.domains.ct.kernel.CTSingleSolverDirector" name="Single solver"></director>
 <director class="ptolemy.domains.ct.kernel.CTMultiSolverDirector" name="Multiple solver"></director>
 <director class="ptolemy.domains.ct.kernel.CTMixedSignalDirector" name="Mixed-signal"></director>
-
-
-
-
-
-
-
-    </domain>
+</domain>
 <domain name="DE">
 <description>Discrete Event</description>
 <actorpackage package="ptolemy.domains.de.lib" name="DE default"></actorpackage>
 <director class="ptolemy.domains.de.kernel.DECQDirector" name="Calendar queue"></director>
-
-        
-        
-
-        
-    </domain>
+</domain>
 <domain name="PN">
 <description>Process networks</description>
 <actorpackage package="ptolemy.domains.pn.lib" name="PN default"></actorpackage>
 <director class="ptolemy.domains.pn.kernel.PNDirector" name="Bounded memory"></director>
-
-
-
-
-
-    </domain>
+</domain>
 <domain name="SDF">
 <description>Static dataflow</description>
 <actorpackage package="ptolemy.domains.sdf.lib" name="SDF default"></actorpackage>
 <director class="ptolemy.domains.sdf.kernel.SDFDirector" name="Multirate"></director>
-
-
-
-
-
-    </domain>
+</domain>
 </domainlibrary>
-}} {KNOWN}
+}}
+\
