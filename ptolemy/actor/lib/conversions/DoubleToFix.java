@@ -62,14 +62,16 @@ public class DoubleToFix extends Transformer {
         input.setTypeEquals(BaseType.DOUBLE);
 	output.setTypeEquals(BaseType.FIX);
    
-	precision = new Parameter(this, "precision", new StringToken(""));
+        
+	precision = new Parameter(this, "precision", new StringToken("(2.1)"));
         precision.setTypeEquals(BaseType.STRING);
    
-	mode = new Parameter(this, "mode", new StringToken("SATURATE"));
+	mode = new Parameter(this, "mode", new StringToken("Saturate"));
         mode.setTypeEquals(BaseType.STRING);
 
-	_precision = ((StringToken) precision.getToken()).toString();
-	_mode = ((StringToken) mode.getToken()).toString();
+        attributeChanged( precision );
+        attributeChanged( mode );            
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,7 +101,6 @@ public class DoubleToFix extends Transformer {
 	    if (attribute == mode) {
 		System.out.println(" ---- Attribute Changed For Mode");
 		_mode = ((StringToken)mode.getToken()).toString();
-		
 		System.out.println(" ---- Mode: " + _mode );
 	    } else {
 		super.attributeChanged(attribute);
@@ -116,9 +117,9 @@ public class DoubleToFix extends Transformer {
     public void fire() throws IllegalActionException {
 	if (input.hasToken(0)) {
     	    DoubleToken in = (DoubleToken)input.get(0);
-	    FixToken result = new FixToken(_precision, in.doubleValue() );    
-	    result.setRoundingMode( _mode );
-	    result.print();
+	    FixToken result = new FixToken(_precision, in.doubleValue(), 
+                    _mode );    
+	    // result.print();
             output.send(0, result);
         }
     }
