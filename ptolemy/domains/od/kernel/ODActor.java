@@ -69,7 +69,45 @@ order based on the call to port.getReceivers().
 
 Note that currently setPriorities() calls the method port.getPriority().
 This requires the port to be of type ODIOPort and hence precludes 
-polymorphic actors. A later version of this class will not have this constraint.
+polymorphic actors. A later version of this class will not have this 
+constraint.
+
+Synchronization Notes:
+This domain observes a hierarchy of synchronization locks. When multiple
+synchronization locks are required, they must be obtained in an order that
+is consistent with this hierarchy. Adherence to this hierarchical ordering
+ensures that deadlock can not occur due to circular lock dependencies.
+ 
+The following synchronization hierarchy is utilized:
+ 
+        1. read/write access on the workspace
+        2. synchronization on the receiver
+        3. synchronization on the director
+        4. synchronization on the actor
+        5. (other) synchronization on the workspace
+ 
+We say that lock #1 is at the highest level in the hierarchy and lock #5
+is at the lowest level.
+
+As an example, a method that synchronizes on a receiver can not contain
+read/write access on the workspace; such accesses must occur outside of
+the receiver synchronization. Similarly, a method which synchronizes on a
+director must not synchronize on the receiver or contain read/write
+accesses on the workspace; it can contain synchronizations on actors or
+the workspace.
+ 
+The justification of the chosen ordering of this hierarchy is based on
+the access a method has to the fields of its object versus the fields of
+other objects. The more (less) a method focuses on the internal state of
+its object and non-synchronized methods of external objects, the lower
+(higher) the method is placed in the synchronization hierarchy. In the
+case of read/write access on the workspace, the corresponding methods,
+i.e, getReadAccess() and getWriteAccess(), access the current thread
+running in the JVM. This external access deems these methods as being at
+the top of the hierarchy. All other synchronizations on the workspace only
+focus on the internal state of the workspace and hence are at the bottom
+of the synchronization hierarchy.
+
 
 
 @author John S. Davis II
@@ -135,10 +173,19 @@ public class ODActor extends AtomicActor {
 	return true;
     }
     
+    /** Initialize this actor
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        // System.out.println("ODActor.initialize is beginning.");
+	setPriorities();
+        // System.out.println("Priorities have been set");
+    }
+
     /** 
      */
-    public void updateRcvrTable(RcvrTimeTriple triple) {
-        System.out.println("Update ODActor RcvrTimeTable");
+    public synchronized void updateRcvrTable(RcvrTimeTriple triple) {
+        // System.out.println("Update ODActor RcvrTimeTable");
 	_removeRcvrTable( triple );
 	_addRcvrTriple( triple );
     }
@@ -188,43 +235,61 @@ public class ODActor extends AtomicActor {
 	}
 	return highPriorityTriple;
     }
-    
+   
     /** Get the next token which has the minimum rcvrTime and highest
      *  priority. The returned token will have the lowest time stamp of 
      *  all pending tokens for this actor. If there are multiple tokens 
      *  with the lowest time stamp, then the returned token will also 
      *  have the highest priority.
      */
-    public synchronized Token getNextToken() {
+    public Token getNextToken() {
         
+        Workspace workSpc = workspace();
         ODDirector director = (ODDirector)getDirector();
         
-        System.out.println("\nEntered getNextToken()");
-        printRcvrTable();
+        String name = getName();
+        
+        /*
+        if( name.equals("printer") ) {
+            System.out.println("\n"+name+": Entered getNextToken()");
+        }
+        */
+        //printRcvrTable();
         
         if( _rcvrTimeTable.size() == 0 ) {
-            System.out.println("No receivers. Return from getNextToken()");
+            // System.out.println("No receivers. Return from getNextToken()");
             return null;
         }
         
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
-        System.out.println("Checking triple");
-        
         ODReceiver lowestRcvr = (ODReceiver)triple.getReceiver();
         _currentTime = triple.getTime();
         _lastPort = (ODIOPort)triple.getReceiver().getContainer();
         
-        System.out.println("Preparing to get from port: " + _lastPort.getName());
+        if( name.equals("printer") ) {
+            System.out.println("preparing to call get");
+            printRcvrTable();
+        }
         Token token = lowestRcvr.get();
-        
+        //if( name.equals("printer") ) {
+            //System.out.println("just finished calling get");
+            //}
         
         if( token != null ) {
-            System.out.println("We returned a token: 1st non-null");
+            /*
+            if( name.equals("printer") ) {
+                System.out.println(name+" returned a token: 1st non-null");
+            }
+            */
             // updateRcvrTable( triple );
             return token;
         } else {
             if( this.hasMinRcvrTime() ) {
-                System.out.println("Has minimum receiver time.");
+                if( name.equals("printer") ) {
+                    System.out.println(name+" has minimum receiver time.");
+                }
+                /*
+                */
                 // This means that there must be a different
                 // receiver which has the minimum arc time
                 // after the token was actually received -
@@ -235,7 +300,11 @@ public class ODActor extends AtomicActor {
                 return getNextToken();
                 
             } else {
-                System.out.println("Does not have minimum receiver time.");
+                if( name.equals("printer") ) {
+                    System.out.println(name+" has no minimum receiver time.");
+                }
+                /*
+                */
                 // This means that multiple arcs have the 
                 // the same minimum arc time. Find the arc
                 // with the lowest time and priority.
@@ -249,10 +318,20 @@ public class ODActor extends AtomicActor {
                 
                 if( token != null ) {
                     // updateRcvrTable( priorityTriple );
-                    System.out.println("We returned a token: 2nd non-null");
+                    if( name.equals("printer") ) {
+                        System.out.println(name+
+                                " returned a token: 2nd non-null.");
+                    }
+                    /*
+                    */
                     return token;
                 } else {
-                    System.out.println("Minimum rcvrTime must have changed.");
+                    if( name.equals("printer") ) {
+                        System.out.println(name+ 
+                                " minimum rcvrTime must have changed.");
+                    }
+                    /*
+                    */
                     // This means that although originally there was 
                     // a receiver with highest priority, it must have
                     // blocked and upon receiving a token no longer
@@ -272,6 +351,13 @@ public class ODActor extends AtomicActor {
         return _lastPort;
     }
 
+    /** FIXME
+     */
+    public boolean postfire() {
+        System.out.println(getName()+" is calling postfire()");
+        return false;
+    }
+    
     /** Set the priorities of the receivers contained in the input 
      *  ports of this actor. This method does not require the 
      *  priorities of the ports to be set. 
@@ -284,8 +370,8 @@ public class ODActor extends AtomicActor {
         LinkedList listOfPorts = new LinkedList();
         Enumeration enum = inputPorts();
 	if( !enum.hasMoreElements() ) {
-            // FIXME: Eventually remove the print statement
-	    System.out.println("No ports in enumeration");
+            // FIXME: Eventually remove the print statement 
+            // System.out.println("No ports in enumeration");
             return;
 	}
         
@@ -318,10 +404,11 @@ public class ODActor extends AtomicActor {
             }
         } 
         
-        System.out.println("Number of Ports = " + listOfPorts.size());
+        // System.out.println("Number of Ports = " + listOfPorts.size());
         
         //
         // Now Set The Priorities Of Each Port's Receiver
+        // And Initialize RcvrTable
         //
         int cnt = 0;
         int currentPriority = 0;
@@ -330,9 +417,13 @@ public class ODActor extends AtomicActor {
             Receiver[][] rcvrs = port.getReceivers();
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
-                    System.out.println("Port "+port.getName()+": " + cnt +
-                            "  rcvr["+i+"]["+j+"] priority = "+currentPriority);
+                    // System.out.println("Port "+port.getName()+": " + cnt +
+                    //         "  rcvr["+i+"]["+j+"] priority = "+currentPriority);
                     ((ODReceiver)rcvrs[i][j]).setPriority(currentPriority); 
+                    RcvrTimeTriple triple = new RcvrTimeTriple( 
+                            (ODReceiver)rcvrs[i][j], _currentTime, 
+                            currentPriority );
+                    updateRcvrTable( triple );
                     currentPriority++;
                 }
             }
@@ -349,36 +440,45 @@ public class ODActor extends AtomicActor {
      *  specified in the argument.
      */
     private void _addRcvrTriple(RcvrTimeTriple newTriple) {
-        System.out.println("Entered _addRcvrTriple");
-        printRcvrTable();
+        // System.out.println("Entered _addRcvrTriple");
+        // printRcvrTable();
 	int cnt = 0;
         boolean notAddedYet = true;
 
         if( _rcvrTimeTable.size() == 0 ) {
+            /* These checks are just for debugging but they
+               violate the synchronization lock hierarchy.
             String portName = newTriple.getReceiver().getContainer().getName();
-            System.out.println(portName + " inserted at position " + cnt);
+            // System.out.println(portName + " inserted at position " + cnt);
+            */
             _rcvrTimeTable.insertAt( 0, newTriple );
-            printRcvrTable();
+            // printRcvrTable();
             return;
         }
         
-        System.out.println("Preparing to add triple to table of size "
-                + _rcvrTimeTable.size() );
+        // System.out.println("Preparing to add triple to table of size "
+        //        + _rcvrTimeTable.size() );
 	while( cnt < _rcvrTimeTable.size() ) {
 	    RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.at(cnt);
             
+            /* These checks are just for debugging but they
+               violate the synchronization lock hierarchy.
             String portName1 = triple.getReceiver().getContainer().getName();
-            System.out.println(portName1 + " being checked.");
+            // System.out.println(portName1 + " being checked.");
             String portName2 = newTriple.getReceiver().getContainer().getName();
-            System.out.println(portName2 + " to be added.");
+            // System.out.println(portName2 + " to be added.");
             
-            System.out.println(portName1+" has time of " +triple.getTime());
-            System.out.println(portName2+" has time of " +newTriple.getTime());
+            //System.out.println(portName1+" has time of "+triple.getTime());
+            //System.out.println(portName2+" has time of "+newTriple.getTime());
+            */
             
 	    if( newTriple.getTime() < triple.getTime() ) {
+                /* These checks are just for debugging but they
+                   violate the synchronization lock hierarchy.
                 String portName = 
                         newTriple.getReceiver().getContainer().getName();
-                System.out.println(portName + " inserted at position " + cnt);
+                // System.out.println(portName + " inserted at position " + cnt);
+                */
 	        _rcvrTimeTable.insertAt( cnt, newTriple );
 		cnt = _rcvrTimeTable.size();
                 // return;
@@ -391,15 +491,15 @@ public class ODActor extends AtomicActor {
             _rcvrTimeTable.insertLast( newTriple );
         }
         
-        System.out.println("Additions are complete. Now check elements");
-        printRcvrTable();
+        // System.out.println("Additions are complete. Now check elements");
+        // printRcvrTable();
     }
     
     /** FIXME: This is only for testing purposes.
      *  Remove this eventually
      */
     public void printRcvrTable() {
-        System.out.println("Print RcvrTable.");
+        System.out.println("Print "+getName()+"'s RcvrTable.");
         System.out.println("\tRcvrTable size = " + _rcvrTimeTable.size() );
         if( _rcvrTimeTable.size() == 0 ) {
             System.out.println("\tTable is empty");
@@ -407,17 +507,20 @@ public class ODActor extends AtomicActor {
         for( int i = 0; i < _rcvrTimeTable.size(); i++ ) {
 	    RcvrTimeTriple testTriple = (RcvrTimeTriple)_rcvrTimeTable.at(i);
 	    Receiver testRcvr = testTriple.getReceiver(); 
+            double time = testTriple.getTime();
             String testPort = testRcvr.getContainer().getName();
-            System.out.println("\t" + testPort + " is in the rcvrTimeTable.");
+            System.out.println("\t"+getName()+"'s Receiver " 
+                    + i + " has a time of " + time);
+            // System.out.println("\tReceiver " + testPort + " is in the rcvrTimeTable.");
         }
     }
 
     /** Remove the specified RcvrTimeTriple based on the _Receiver_. 
      */
     private void _removeRcvrTable(RcvrTimeTriple triple) {
-        System.out.println("Entered _removeRcvrTriple");
+        // System.out.println("Entered _removeRcvrTriple");
         
-        printRcvrTable();
+        // printRcvrTable();
         
         Receiver rcvrToBeRemoved = triple.getReceiver();
         
@@ -425,23 +528,29 @@ public class ODActor extends AtomicActor {
 	    RcvrTimeTriple nextTriple = (RcvrTimeTriple)_rcvrTimeTable.at(cnt);
 	    Receiver nextRcvr = nextTriple.getReceiver(); 
             
+            /* These checks are just for debugging but they
+               violate the synchronization lock hierarchy.
             String portName1 = nextRcvr.getContainer().getName();
-            System.out.println(portName1 + " being checked.");
+            // System.out.println(portName1 + " being checked.");
             String portName2 = rcvrToBeRemoved.getContainer().getName();
-            System.out.println(portName2 + " to be removed.");
+            // System.out.println(portName2 + " to be removed.");
+            */
             
 	    if( rcvrToBeRemoved == nextRcvr ) {
+                /* These checks are just for debugging but they
+                   violate the synchronization lock hierarchy.
                 String portName = nextRcvr.getContainer().getName();
-                System.out.println(portName + " removed from position " + cnt);
+                // System.out.println(portName+" removed from position "+cnt);
+                */
 	        _rcvrTimeTable.removeAt( cnt );
 		cnt = _rcvrTimeTable.size();
                 // return;
 	    }
 	}
         
-        System.out.println("Removal is complete. Now check remaining elements.");
+        // System.out.println("Removal is complete. Now check remaining elements.");
         
-        printRcvrTable();
+        // printRcvrTable();
     }
 
     ///////////////////////////////////////////////////////////////////
