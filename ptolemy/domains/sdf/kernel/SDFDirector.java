@@ -287,7 +287,8 @@ public class SDFDirector extends StaticSchedulingDirector {
 
 	    int channel;
 	    for(channel = 0; channel < inputPort.getWidth(); channel++) {
-		if(!receivers[channel][0].hasToken(threshold)) {
+		if(threshold > 0
+                        && !receivers[channel][0].hasToken(threshold)) {
 		    if(_debugging) {
                         _debug("Channel " + channel +
                                 " does not have enough tokens." +
