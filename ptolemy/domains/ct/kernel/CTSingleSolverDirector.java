@@ -130,7 +130,7 @@ public class CTSingleSolverDirector extends CTDirector {
     public void attributeChanged(Attribute param)
             throws IllegalActionException {
         if(param == ODESolver) {
-            _debug(getFullName() + " solver updating...");
+            if(_debugging) _debug(getFullName() + " solver updating...");
             _solverclassname =
                 ((StringToken)((Parameter)param).getToken()).stringValue();
             _defaultSolver = _instantiateODESolver(_solverclassname);
@@ -180,7 +180,7 @@ public class CTSingleSolverDirector extends CTDirector {
         //Refine step size
         setCurrentStepSize(getSuggestedNextStepSize());
         _processBreakpoints();
-        _debug("execute the system from "+
+        if(_debugging) _debug("execute the system from "+
                 getCurrentTime() +" step size" + getCurrentStepSize()
                 + " using solver " + getCurrentODESolver().getName());
         _fireOneIteration();
@@ -207,30 +207,31 @@ public class CTSingleSolverDirector extends CTDirector {
      *      director.
      */
     public void initialize() throws IllegalActionException {
-        _debug(getFullName(), "initializing:");
+        if(_debugging) _debug(getFullName(), "initializing:");
         // Instantiate ODE solver
-        _debug(getFullName(), " instantiating ODE solver ", _solverclassname);
+        if(_debugging) _debug(getFullName(), " instantiating ODE solver ",
+                _solverclassname);
         _defaultSolver = _instantiateODESolver(_solverclassname);
         _setCurrentODESolver(_defaultSolver);
-        _debug(getFullName(), " assert the current ODE solver ", 
+        if(_debugging) _debug(getFullName(), "assert the current ODE solver ", 
                 getCurrentODESolver().getName());
         // set step sizes
         setCurrentStepSize(getInitialStepSize());
-        _debug(getFullName(), " set current step size to "
+        if(_debugging) _debug(getFullName(), " set current step size to "
                 + getCurrentStepSize());  
         setSuggestedNextStepSize(getInitialStepSize());
-        _debug(getFullName(), " set suggested next step size to "
+        if(_debugging) _debug(getFullName(), " set suggested next step size to "
                 + getSuggestedNextStepSize()); 
-        _debug(getFullName(), " set the current time as a break point: " + 
+        if(_debugging) _debug(getFullName(), " set the current time as a break point: " + 
                 getCurrentTime());
         fireAt(null, getCurrentTime());
-        _debug(getFullName(), " set the stop time as a break point: " + 
+        if(_debugging) _debug(getFullName(), " set the stop time as a break point: " + 
                 getStopTime());
         fireAt(null, getStopTime());
         _first = true;
-        _debug(getFullName() + " initialize directed actors: ");
+        if(_debugging) _debug(getFullName() + " initialize directed actors: ");
         super.initialize();  
-        _debug(getFullName() + " End of Initialization.");
+        if(_debugging) _debug(getFullName() + " End of Initialization.");
     }
 
     /** Return false if the simulation stop time is reached.
@@ -264,7 +265,7 @@ public class CTSingleSolverDirector extends CTDirector {
      *  @exception IllegalActionException Never thrown in this director.
      */
     public boolean prefire() throws IllegalActionException {
-        _debug(this.getFullName() + "prefire.");
+        if(_debugging) _debug(this.getFullName() + "prefire.");
         if(STAT) {
             NSTEP++;
         }
@@ -294,14 +295,14 @@ public class CTSingleSolverDirector extends CTDirector {
         Enumeration integrators = scheduler.dynamicActorSchedule();
         while(integrators.hasMoreElements()) {
             CTDynamicActor dyn =(CTDynamicActor)integrators.nextElement();
-            _debug("Excite State..."+
+            if(_debugging) _debug("Excite State..."+
                     ((Nameable)dyn).getName());
             dyn.emitTentativeOutputs();
         }
         Enumeration outputactors = scheduler.outputSchedule();
         while(outputactors.hasMoreElements()) {
             Actor nextoutputactor = (Actor)outputactors.nextElement();
-            _debug("Fire output..."+
+            if(_debugging) _debug("Fire output..."+
                     ((Nameable)nextoutputactor).getName());
             nextoutputactor.fire();
         }
@@ -331,10 +332,12 @@ public class CTSingleSolverDirector extends CTDirector {
      */
     public void wrapup() throws IllegalActionException{
         if(STAT) {
-            _debug("################STATISTICS################");
-            _debug(getName() + ": Total # of STEPS "+NSTEP);
-            _debug(getName() + ": Total # of Function Evaluation "+NFUNC);
-            _debug(getName() + ": Total # of Failed Steps "+NFAIL);
+            if(_debugging) {
+                _debug("################STATISTICS################");
+                _debug(getName() + ": Total # of STEPS "+NSTEP);
+                _debug(getName() + ": Total # of Function Evaluation "+NFUNC);
+                _debug(getName() + ": Total # of Failed Steps "+NFAIL);
+            }
         }
         super.wrapup();
     }
@@ -365,19 +368,20 @@ public class CTSingleSolverDirector extends CTDirector {
      *  current step size.
      */
     protected void _fireOneIteration() throws IllegalActionException {
-        _debug(getFullName() +"Fire one iteration from " +
-                getCurrentTime() + " step size" +
-                getCurrentStepSize());
+        if(_debugging) _debug(getFullName(), 
+                "Fire one iteration from " + getCurrentTime(),
+                "Using step size" + getCurrentStepSize());
         ODESolver solver = getCurrentODESolver();
+        if(_debugging) _debug( "Using ODE solver", solver.getName());
         while (true) {
             while (_prefireSystem()) {
                 if (solver.resolveStates()) {
-                    _debug("state resolved.");
+                    if(_debugging) _debug("state resolved.");
                     // ask if this step is acceptable
                     if (!_isStateAcceptable()) {
                         setCurrentTime(getIterationBeginTime());
                         setCurrentStepSize(_refinedStepWRTState());
-                        _debug("execute the system from "+
+                        if(_debugging) _debug("execute the system from "+
                                 getCurrentTime() +" step size" +
                                 getCurrentStepSize());
                         if(STAT) {
@@ -399,7 +403,7 @@ public class CTSingleSolverDirector extends CTDirector {
             }
             produceOutput();
             if (!_isOutputAcceptable()) {
-                //_debug("Output not satisfied.");
+                //if(_debugging) _debug("Output not satisfied.");
                 setCurrentTime(getIterationBeginTime());
                 setCurrentStepSize(_refinedStepWRTOutput());
                 if(STAT) {
@@ -479,7 +483,7 @@ public class CTSingleSolverDirector extends CTDirector {
         while(actors.hasMoreElements()) {
             Actor a = (Actor) actors.nextElement();
             ready = ready && a.prefire();
-            _debug("Prefire "+((Nameable)a).getName() +
+            if(_debugging) _debug("Prefire "+((Nameable)a).getName() +
                     " returns" + ready);
         }
         return ready;
@@ -526,7 +530,7 @@ public class CTSingleSolverDirector extends CTDirector {
             CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.nextElement();
             double pre = a.predictedStepSize();
-            _debug(((NamedObj)a).getName(), "predict step " + pre);
+            if(_debugging) _debug(((NamedObj)a).getName(), "predict step " + pre);
             predictedstep = Math.min(predictedstep, pre);
         }
         sscs = sched.outputSSCActors();
@@ -534,7 +538,7 @@ public class CTSingleSolverDirector extends CTDirector {
             CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.nextElement();
             double pre = a.predictedStepSize();
-            _debug(((NamedObj)a).getName(), "predict step " + pre);
+            if(_debugging) _debug(((NamedObj)a).getName(), "predict step " + pre);
             predictedstep = Math.min(predictedstep, pre);
         }
         return predictedstep;
@@ -548,14 +552,14 @@ public class CTSingleSolverDirector extends CTDirector {
      *  @exception IllegalActionException If the scheduler throws it.
      */
     protected double _refinedStepWRTState() throws IllegalActionException {
-        _debug(getFullName() + "refine step wrt state.");
+        if(_debugging) _debug(getFullName() + "refine step wrt state.");
         double refinedstep = getCurrentStepSize();
         CTScheduler sched = (CTScheduler)getScheduler();
         Enumeration sscs = sched.stateTransitionSSCActors();
         while (sscs.hasMoreElements()) {
             CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.nextElement();
-            _debug(((Nameable)a).getName() + "refine..."
+            if(_debugging) _debug(((Nameable)a).getName() + "refine..."
                     + a.refinedStepSize());
             refinedstep = Math.min(refinedstep, a.refinedStepSize());
         }

@@ -72,9 +72,9 @@ public class HelicopterApplet extends CTApplet {
         add(controlpanel);
         Panel progresspanel = new Panel();
         //progresspanel.setLayout(new BorderLayout());
-        add(progresspanel);
-        _currentTimeCanvas = new ProgressBar();
-        controlpanel.add(_currentTimeCanvas);
+        //add(progresspanel);
+        //_currentTimeCanvas = new ProgressBar();
+        //controlpanel.add(_currentTimeCanvas);
 
 
         _query = new Query();
@@ -322,15 +322,19 @@ public class HelicopterApplet extends CTApplet {
             //CTPlot ctPlot = new CTPlot(_toplevel, "CTPlot", ctPanel);
             XYPlotter xzPlot = new XYPlotter(_toplevel, "Helicopter Position");
             xzPlot.setPanel(xzPanel);
+            xzPlot.plot.setTitle("Helicopter Position");
+            xzPlot.plot.setButtons(false);
             xzPlot.plot.setGrid(true);
             xzPlot.plot.setXRange(-1.0, 100.0);
             xzPlot.plot.setYRange(1.0, 12.0);
             xzPlot.plot.setSize(200, 200);
-            xzPlot.plot.addLegend(0,"(Px,Pz)");
+            xzPlot.plot.addLegend(0,"x,z");
 
             TimedPlotter vxPlot = new TimedPlotter(_toplevel,
                     "Horizontal Speed");
             vxPlot.setPanel(vxPanel);
+            vxPlot.plot.setTitle("Horizontal Speed");
+            vxPlot.plot.setButtons(false);
             vxPlot.plot.setGrid(true);
             vxPlot.plot.setXRange(0.0, 70.0);
             vxPlot.plot.setYRange(0.0, 6.0);
@@ -340,6 +344,8 @@ public class HelicopterApplet extends CTApplet {
             TimedPlotter pzPlot = new TimedPlotter(_toplevel,
                     "Vertical Position");
             pzPlot.setPanel(pzPanel);
+            pzPlot.plot.setTitle("Vertical Position");
+            pzPlot.plot.setButtons(false);
             pzPlot.plot.setGrid(true);
             pzPlot.plot.setXRange(0.0, 70.0);
             pzPlot.plot.setYRange(0.0, 12.0);
@@ -349,6 +355,8 @@ public class HelicopterApplet extends CTApplet {
             TimedPlotter thPlot = new TimedPlotter(_toplevel,
                     "Pitch Angle");
             thPlot.setPanel(thPanel);
+            thPlot.plot.setTitle("Pitch Angle");
+            thPlot.plot.setButtons(false);
             thPlot.plot.setGrid(true);
             thPlot.plot.setXRange(0.0, 70.0);
             thPlot.plot.setYRange(-0.05, 0.05);
@@ -710,8 +718,8 @@ public class HelicopterApplet extends CTApplet {
                     _query.doubleValue("stopT")));
             super._go();
             // Start the CurrentTimeThread.
-            Thread ctt = new CurrentTimeThread();
-            ctt.start();
+            //Thread ctt = new CurrentTimeThread();
+            //ctt.start();
         } catch (Exception ex) {
             report(ex);
         }

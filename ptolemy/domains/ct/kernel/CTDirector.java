@@ -223,7 +223,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public void attributeChanged(Attribute attr)
             throws IllegalActionException {
-        _debug(attr.getName() + " updating.");
+        if(_debugging) _debug(attr.getName() + " updating.");
         if(attr == StopTime) {
             Parameter param = (Parameter)attr;
             setStopTime(((DoubleToken)param.getToken()).doubleValue());
@@ -445,7 +445,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      *  Set the current time. And preinitialize all the directed actors.
      */
     public void preinitialize() throws IllegalActionException {
-        _debug(getFullName(), " preinitializing.");
+        if(_debugging) _debug(getFullName(), "preinitializing.");
         //from here
         CompositeActor ca = (CompositeActor) getContainer();
         if (ca == null) {
@@ -474,8 +474,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
         // invalidate schedule
         sch.setValid(false);
-        _debug(getFullName(), " initialize current time");
-        _debug(getFullName(), " _init get State Time " +  getStartTime());
+        if(_debugging) _debug(getFullName(), "initialize current time");
+        if(_debugging) _debug(getFullName(), "_init get State Time " +  getStartTime());
         CompositeActor containersContainer =
             (CompositeActor)ca.getContainer();
         if( containersContainer == null ) {
@@ -486,8 +486,9 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             setStartTime(time);
             setCurrentTime(time);
         }
-        _debug(getFullName(), " init current time to " + getCurrentTime());
-        _debug(getFullName(), " clear break point table.");
+        if(_debugging) _debug(getFullName(), 
+                " init current time to " + getCurrentTime());
+        if(_debugging) _debug(getFullName(), " clear break point table.");
         TotallyOrderedSet bps = getBreakPoints();
         if(bps != null) {
             bps.clear();
@@ -495,11 +496,11 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             _breakPoints = new TotallyOrderedSet(
                     new FuzzyDoubleComparator(_timeResolution));
         }
-        _debug(getName(), " preinitialize actors");
+        if(_debugging) _debug(getName(), " preinitialize actors");
         Enumeration allactors = ca.deepGetEntities();
         while (allactors.hasMoreElements()) {
             Actor actor = (Actor)allactors.nextElement();
-            _debug("Invoking preinitialize(): ",
+            if(_debugging) _debug("Invoking preinitialize(): ",
                     ((NamedObj)actor).getFullName());
             actor.preinitialize();
         }
@@ -614,7 +615,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     protected ODESolver _instantiateODESolver(String solverclass)
             throws IllegalActionException {
         ODESolver newsolver;
-        _debug("instantiating solver..."+solverclass);
+        if(_debugging) _debug("instantiating solver..."+solverclass);
         try {
             Class solver = Class.forName(solverclass);
             newsolver = (ODESolver)solver.newInstance();

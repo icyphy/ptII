@@ -121,7 +121,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
             throws IllegalActionException {
         Parameter param = (Parameter)attr;
         if (param == BreakpointODESolver) {
-            _debug(getName() + "breakpoint solver updating.");
+            if(_debugging) _debug(getName() + "breakpoint solver updating.");
             _bpsolverclassname =
                 ((StringToken)param.getToken()).stringValue();
             _breakpointsolver =
@@ -147,7 +147,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _debug(getFullName(), " instantiate breakpoint solver.");
+        if(_debugging) _debug(getFullName(), "instantiate breakpoint solver.");
         _breakpointsolver =
             _instantiateODESolver(_bpsolverclassname);
     }
@@ -199,7 +199,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
                 _setIsBPIteration(true);
                 _setCurrentODESolver(_breakpointsolver);
                 setCurrentStepSize(getMinStepSize());
-                _debug(getFullName(), 
+                if(_debugging) _debug(getFullName(), 
                         "IN BREAKPOINT iteration.");
             }else { 
                 // adjust step size according to the first break point.

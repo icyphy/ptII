@@ -31,6 +31,8 @@
 
 ME =		ptolemy/domains/ct/demo/Saber
 
+DIRS =		Accel
+
 # Root of the Java directory
 ROOT =		../../../../../
 

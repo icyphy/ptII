@@ -108,10 +108,10 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
      *  @exception IllegalActionException If thrown by the super class.
      */
     public void initialize() throws IllegalActionException {
-        _debug(this.getFullName(), " initialize.");
+        if(_debugging) _debug(getFullName(), " initialize.");
         CompositeActor ca = (CompositeActor) getContainer();
         _first = true;
-        _debug(getName(), " _first is set to true.");
+        if(_debugging) _debug(getName(), " _first is set to true.");
         Director exe = ca.getExecutiveDirector();
         double tnow = exe.getCurrentTime();
         setStartTime(tnow);
@@ -131,10 +131,10 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         ODESolver solver = getCurrentODESolver();
         if(!solver.resolveStates()) {
             _stateAcceptable = false;
-            //_debug(getFullName() + "resolve state failed.");
+            //if(_debugging) _debug(getFullName() + "resolve state failed.");
         }
 
-        _debug(getFullName() + " current time after" +
+        if(_debugging) _debug(getFullName() + " current time after" +
                 " solver.resolveStates() is " + getCurrentTime());
         produceOutput();
     }
@@ -170,12 +170,12 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
     public boolean isThisStepSuccessful() {
         try {
             if (!_isStateAcceptable()) {
-                //_debug(getFullName() +
+                //if(_debugging) _debug(getFullName() +
                 //        " current step not successful because of STATE.");
                 _stateAcceptable = false;
                 return false;
             } else if(!_isOutputAcceptable()) {
-                //_debug(getFullName() +
+                //if(_debugging) _debug(getFullName() +
                 //        " current step not successful because of OUTPUT.");
                 _outputAcceptable = false;
                 return false;
@@ -199,7 +199,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
      */
     public boolean postfire() throws IllegalActionException {
         //super.postfire();
-        _debug(getFullName(), " postfire.");
+        if(_debugging) _debug(getFullName(), " postfire.");
         _eventPhaseExecution();
         updateStates();
         
@@ -233,7 +233,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
      */
     public double predictedStepSize() {
         try {
-            _debug(getName(), "at " + getCurrentTime(),
+            if(_debugging) _debug(getName(), "at " + getCurrentTime(),
                     "predict next step size" + _predictNextStepSize());
             return _predictNextStepSize();
         } catch (IllegalActionException ex) {
@@ -246,7 +246,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
     /** prefire,
      */
     public boolean prefire() throws IllegalActionException {
-        _debug(this.getFullName() + "prefire.");
+        if(_debugging) _debug(this.getFullName() + "prefire.");
         if(STAT) {
             NSTEP++;
         }
@@ -264,9 +264,9 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         double timeAcc = getTimeResolution();
         Director exe = ca.getExecutiveDirector();
         _outsideTime = exe.getCurrentTime();
-        _debug(getName(), "Outside Time = "+ _outsideTime);
+        if(_debugging) _debug(getName(), "Outside Time = "+ _outsideTime);
         double nextIterTime = exe.getNextIterationTime();
-        _debug(getName(), "Next Iter Time = " + nextIterTime);
+        if(_debugging) _debug(getName(), "Next Iter Time = " + nextIterTime);
         setCurrentTime(_outsideTime);
         // if break point now, change solver.
         double bp;
@@ -275,7 +275,7 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         if(breakPoints != null && !breakPoints.isEmpty()) {
             breakPoints.removeAllLessThan(tnow);
             if(breakPoints.contains(tnow)) {
-                _debug(getName(), " Break point now at" + _outsideTime);
+                if(_debugging) _debug(getName(), " Break point now at" + _outsideTime);
                 // now is the break point.
                 // The break point will be removed in the next iteration
                 // if this iteration is successful. Otherwise, the break
@@ -291,8 +291,8 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         }
         _outsideStepSize = nextIterTime - _outsideTime;
         setCurrentStepSize(_outsideStepSize);
-        _debug(getName(), "at" + getCurrentTime(), "breakpt table contains ", 
-                getBreakPoints().toString());
+        if(_debugging) _debug(getName(), "at" + getCurrentTime(), 
+                "breakpt table contains ", getBreakPoints().toString());
         return true;
     }
 

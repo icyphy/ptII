@@ -131,7 +131,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
     public void attributeChanged(Parameter param)
             throws IllegalActionException {
         if(param == RunAheadLength) {
-            _debug("run ahead time updating.");
+            if(_debugging) _debug("run ahead time updating.");
             _runAheadLength = ((DoubleToken)param.getToken()).doubleValue();
         } else {
             super.attributeChanged(param);
@@ -191,7 +191,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         Director exe = ca.getExecutiveDirector(); // it may be null.
         double timeAcc = getTimeResolution();
         if (_isEventPhase()) {
-            _debug(this.getFullName() +
+            if(_debugging) _debug(this.getFullName() +
                     "In event phase execution.");
             _eventPhaseExecution();
             _setEventPhase(false);
@@ -210,11 +210,11 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             //Refine step size
             setCurrentStepSize(getSuggestedNextStepSize());
             _processBreakpoints();
-            _debug("Resolved stepsize: "+getCurrentStepSize() +
+            if(_debugging) _debug("Resolved stepsize: "+getCurrentStepSize() +
                     " One iteration from " + getCurrentTime());
             _fireOneIteration();
             if (_isStoppedByEvent()) {
-                _debug( this.getFullName() + " stop by event.");
+                if(_debugging) _debug( this.getFullName() + " stop by event.");
                 exe.fireAt(ca, getCurrentTime());
                 _setEventPhase(true);
                 return;
@@ -246,7 +246,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *       no scheduler, or thrown by a contained actor.
      */
     public void initialize() throws IllegalActionException {
-        _debug(getFullName() + " initialize.");
+        if(_debugging) _debug(getFullName() + " initialize.");
         super.initialize();
         if(!_isTopLevel()) {
             TypedCompositeActor ca = (TypedCompositeActor)getContainer();
@@ -312,7 +312,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // ca should have beed checked in _isTopLevel()
             Director exe = ca.getExecutiveDirector();
             _outsideTime = exe.getCurrentTime();
-            _debug("Outside Time = " + _outsideTime);
+            if(_debugging) _debug("Outside Time = " + _outsideTime);
             double timeAcc = getTimeResolution();
             double nextIterTime = exe.getNextIterationTime();
             double runlength = nextIterTime - _outsideTime;
@@ -322,7 +322,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                         + " current time " + _outsideTime
                         + " next iteration time " + nextIterTime);
             }
-            _debug( "Current Time " + getCurrentTime()
+            if(_debugging) _debug( "Current Time " + getCurrentTime()
                     + "Outside domain current time " + _outsideTime
                     + " next iteration time " + nextIterTime
                     + "run length "+ runlength);
@@ -330,12 +330,12 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // Synchronization, handle round up error.
             if(runlength < timeAcc) {
                 exe.fireAt(ca, nextIterTime);
-                _debug("Next iteration is too near" +
+                if(_debugging) _debug("Next iteration is too near" +
                         " (but not sync). Request a refire at:"+nextIterTime);
                 return false;
             }
             if(Math.abs (_outsideTime -getCurrentTime()) < timeAcc) {
-                _debug("Round up current time " +
+                if(_debugging) _debug("Round up current time " +
                         getCurrentTime() + " to outside time " +_outsideTime);
                 setCurrentTime(_outsideTime);
             }
@@ -345,7 +345,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             }
             // Check for roll back.
             if (_outsideTime < getCurrentTime()) {
-                _debug(getName() + " rollback from: " +
+                if(_debugging) _debug(getName() + " rollback from: " +
                         getCurrentTime() + " to: " +_knownGoodTime +
                         "due to outside time " +_outsideTime );
                 if(STAT) {
@@ -365,7 +365,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
             // fireAt(null, _outsideTime);
             // fireAt(null, getIterationEndTime());
             // Now it's guaranteed that the current time is the outside time.
-            _debug("Iteration end time = " + getIterationEndTime());
+            if(_debugging) _debug("Iteration end time = " + getIterationEndTime());
         }
         return true;
     }
@@ -382,12 +382,13 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         if (getCurrentTime() >= getOutsideTime()) {
             return;
         }
-        // Don't need to consider breakpoint.
         _setIterationBeginTime(getCurrentTime());
         while(getCurrentTime() < (getOutsideTime()-getTimeResolution())) {
+            setCurrentStepSize(getSuggestedNextStepSize());
+            _processBreakpoints();
             _fireOneIteration();
         }
-        _debug(getFullName() + " Catch up time"+getCurrentTime());
+        if(_debugging) _debug(getFullName() + " Catch up time"+getCurrentTime());
     }
 
     /** Initialize parameters in addition to the parameters inherited
@@ -483,7 +484,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         Enumeration memactors = scheduler.statefulActors();
         while(memactors.hasMoreElements()) {
             CTStatefulActor mem = (CTStatefulActor)memactors.nextElement();
-            _debug("Save State..."+
+            if(_debugging) _debug("Save State..."+
                     ((Nameable)mem).getName());
             mem.markState();
         }
@@ -502,7 +503,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
         Enumeration memactors = scheduler.statefulActors();
         while(memactors.hasMoreElements()) {
             CTStatefulActor mem = (CTStatefulActor)memactors.nextElement();
-            _debug("Restore State..."+
+            if(_debugging) _debug("Restore State..."+
                     ((Nameable)mem).getName());
             mem.goToMarkedState();
         }
