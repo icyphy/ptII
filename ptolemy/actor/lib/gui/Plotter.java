@@ -83,7 +83,7 @@ the same plot object.
 
 @author  Edward A. Lee
 @version $Id$
- */
+*/
 public class Plotter extends TypedAtomicActor
     implements Configurable, Placeable {
 

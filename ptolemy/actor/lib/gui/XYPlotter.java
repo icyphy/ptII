@@ -60,7 +60,7 @@ input from <i>inputX</i> and vertical axis is given by <i>inputY</i>.
 
 @author Jie Liu
 @version $Id$
- */
+*/
 public class XYPlotter extends Plotter {
 
     /** Construct an actor with the given container and name.

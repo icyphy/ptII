@@ -41,6 +41,8 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.plot.Plot;
 
+//////////////////////////////////////////////////////////////////////////
+//// RealTimePlotter
 /**
 This plotter plots input data as a function of elapsed real time in seconds.
 Elapsed time is set to zero when the initialize() method is invoked.
@@ -48,12 +50,12 @@ The resolution of time depends on the implementation of the Java
 virtual machine, but with Sun's JDK 1.3 under Windows 2000, it is
 10 milliseconds.
 
-This plotter contains an instance of the Plot class
-from the Ptolemy plot package as a public member.
+<p>This plotter contains an instance of the Plot class from the
+Ptolemy plot package as a public member.
 
 @author  Edward A. Lee
 @version $Id$
- */
+*/
 public class RealTimePlotter extends Plotter {
 
     /** Construct an actor with the given container and name.
@@ -84,7 +86,7 @@ public class RealTimePlotter extends Plotter {
     ////                         public methods                    ////
 
     /** Record the start time.
-     *  @throws IllegalActionException If the base class throws it.
+     *  @exception IllegalActionException If the base class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();

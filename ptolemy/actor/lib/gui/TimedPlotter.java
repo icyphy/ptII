@@ -53,7 +53,7 @@ The horizontal axis represents time.
 
 @author  Edward A. Lee
 @version $Id$
- */
+*/
 public class TimedPlotter extends Plotter implements TimedActor {
 
     /** Construct an actor with the given container and name.

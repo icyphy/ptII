@@ -84,7 +84,7 @@ not use the same dataset numbers.
 
 @author  Edward A. Lee
 @version $Id$
- */
+*/
 public class SketchedSource extends Source
     implements Placeable, SequenceActor {
 

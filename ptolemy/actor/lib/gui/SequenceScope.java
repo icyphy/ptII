@@ -61,7 +61,7 @@ Its default value is 0.0. The input is of type DoubleToken.
 
 @author  Edward A. Lee
 @version $Id$
- */
+*/
 public class SequenceScope extends SequencePlotter {
 
     /** Construct an actor with the given container and name.

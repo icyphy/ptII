@@ -69,7 +69,7 @@ The plot is always updated in the wrapup() method.
 
 @author  Edward A. Lee
 @version $Id$
- */
+*/
 public class BarGraph extends Plotter implements SequenceActor {
 
     /** Construct an actor with the given container and name.

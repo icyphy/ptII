@@ -59,8 +59,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-// Java imports.
-
 //////////////////////////////////////////////////////////////////////////
 //// HistogramPlotter
 /**
@@ -91,7 +89,7 @@ is not enforced.
 
 @author  Edward A. Lee
 @version $Id$
- */
+*/
 public class HistogramPlotter extends Sink implements Configurable, Placeable {
 
     /** Construct an actor with the given container and name.

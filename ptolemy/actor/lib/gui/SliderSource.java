@@ -63,7 +63,7 @@ The range of the output is specified by two parameters, <i>minimum</i> and
 
 @author Xiaojun Liu
 @version $Id$
- */
+*/
 public class SliderSource extends Source implements ChangeListener, Placeable {
 
     /** Construct an actor with an input multiport of type GENERAL.

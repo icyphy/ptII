@@ -59,7 +59,7 @@ Its default value is 0.0. The input is of type DoubleToken.
 
 @author  Edward A. Lee, Bart Kienhuis
 @version $Id$
- */
+*/
 public class SequencePlotter extends Plotter implements SequenceActor {
 
     /** Construct an actor with the given container and name.
