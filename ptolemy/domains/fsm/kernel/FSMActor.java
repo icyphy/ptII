@@ -965,7 +965,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     }
 
     /** Set the value of the shadow variables for the channel of the port.
-     *  If the speicified port is not an input port, then do nothing.
+     *  If the specified port is not an input port, then do nothing.
      *  @see #_createInputVariables(IOPort port)
      *  @param port An input port of this actor.
      *  @param channel A channel of the input port.
