@@ -338,20 +338,23 @@ public class FSMDirector extends Director {
     public void setCurrentTime(double newTime) throws IllegalActionException {
     }
 
-    /** Transfer data from an input port of the container to the
+    /** Return true if it
+     *  transfers data from an input port of the container to the
      *  ports it is connected to on the inside.  The port argument must
      *  be an opaque input port.  If any channel of the input port
      *  has no data, then that channel is ignored.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
+     *  @return True if data are transfered.
      */
-    public void transferInputs(IOPort port) throws IllegalActionException {
+    public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferInputs: port argument is not an opaque input port.");
         }
         // do not handle multiple tokens, multiple channels now
+        boolean trans = false;
         Entity refine = (Entity)_controller.currentRefinement();
         IOPort p;
         Receiver rec;
@@ -377,6 +380,7 @@ public class FSMDirector extends Director {
                     }
                     rec.put(t);
                 }
+                trans = true;
             } catch (NoTokenException ex) {
                 // this shouldn't happen.
                 throw new InternalErrorException(
@@ -384,22 +388,26 @@ public class FSMDirector extends Director {
                         ex.getMessage());
             }
         }
+        return trans;
     }
 
-    /** Transfer data from an output port of the container to the
+    /** Return true if it
+     *  transfers data from an output port of the container to the
      *  ports it is connected to on the outside.  The port argument must
      *  be an opaque output port.  If any channel of the output port
      *  has no data, then that channel is ignored.
      *
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
+     *  @return True if data are transfered.
      */
-    public void transferOutputs(IOPort port) throws IllegalActionException {
+    public boolean transferOutputs(IOPort port) throws IllegalActionException {
 
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferOutputs: port argument is not an opaque output port.");
         }
+        boolean trans = false;
         // do not handle multiple tokens, multiple channels now
         Receiver insideReceiver = (port.getInsideReceivers())[0][0];
 
@@ -418,6 +426,7 @@ public class FSMDirector extends Director {
                     Receiver rec = (p.getInsideReceivers())[0][0];
                     rec.put(t);
                 }
+                trans = true;
             } catch (NoTokenException ex) {
                 throw new InternalErrorException(
                         "Director.transferOutputs: " +
@@ -425,6 +434,7 @@ public class FSMDirector extends Director {
                         ex.getMessage());
             }
         }
+        return trans;
     }
 
     /** Indicate whether this director would like to have write access

@@ -365,7 +365,8 @@ public class DDEDirector extends ProcessDirector {
 	return _notDone;
     }
 
-    /** Transfer data from an input port of the container to the
+    /** Return true if it
+     *  transfer data from an input port of the container to the
      *  ports it is connected to on the inside. The port argument must
      *  be an opaque input port. If any channel of the input port
      *  has no data, then that channel is ignored.
@@ -374,13 +375,15 @@ public class DDEDirector extends ProcessDirector {
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      *  @param port The port to transfer tokens from.
+     *  @return True if data are transfered.
      */
-    public void transferInputs(IOPort port) throws IllegalActionException {
+    public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferInputs: port argument is not an opaque" +
                     "input port.");
         }
+        boolean trans = false;
         Token token = null;
         Receiver[][] insiderecs = port.deepGetReceivers();
         for (int i = 0; i < port.getWidth(); i++) {
@@ -395,13 +398,16 @@ public class DDEDirector extends ProcessDirector {
                         } else {
                             insiderecs[i][j].put(token);
                         }
+                        trans = true;
                     }
                 }
             }
         }
+        return trans;
     }
 
-    /** Transfer data from an output port of the container to the
+    /** Return true if it
+     *  transfers data from an output port of the container to the
      *  ports it is connected to on the outside.  The port argument must
      *  be an opaque output port. If any channel of the output port
      *  has no data, then that channel is ignored.
@@ -410,13 +416,15 @@ public class DDEDirector extends ProcessDirector {
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
      *  @param port The port to transfer tokens from.
+     *  @return True if data are transfered.
      */
-    public void transferOutputs(IOPort port) throws IllegalActionException {
+    public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferOutputs: port argument is not " +
                     "an opaque output port.");
         }
+        boolean trans = false;
         Receiver[][] insiderecs = port.getInsideReceivers();
         if (insiderecs != null) {
             for (int i = 0; i < insiderecs.length; i++) {
@@ -428,6 +436,7 @@ public class DDEDirector extends ProcessDirector {
                                     Token t = insiderecs[i][j].get();
                                     port.send(i, t);
                                 } 
+                                trans = true;
                             } catch (NoTokenException ex) {
                                 throw new InternalErrorException(
                                         "Director.transferOutputs: " +
@@ -439,6 +448,7 @@ public class DDEDirector extends ProcessDirector {
                 }
             }
         }
+        return trans;
     }
 
     ///////////////////////////////////////////////////////////////////

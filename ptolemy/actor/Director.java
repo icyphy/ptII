@@ -539,7 +539,8 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
-    /** Transfer data from an input port of the container to the
+    /** Return true if it 
+     *  transfers data from an input port of the container to the
      *  ports it is connected to on the inside.  The port argument must
      *  be an opaque input port.  If any channel of the input port
      *  has no data, then that channel is ignored.
@@ -547,22 +548,27 @@ public class Director extends NamedObj implements Executable {
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      *  @param port The port to transfer tokens from.
+     *  @return True if data are tranfered.
      */
-    public void transferInputs(IOPort port) throws IllegalActionException {
+    public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferInputs: port argument is not an opaque" +
                     "input port.");
         }
+        boolean trans = false; 
         Receiver[][] insiderecs = port.deepGetReceivers();
         for (int i = 0; i < port.getWidth(); i++) {
             if (port.hasToken(i)) {
                 try {
                     Token t = port.get(i);
                     if (insiderecs != null && insiderecs[i] != null) {
+                        if(_debugging) _debug(getName(),
+                                "transfering input from " + port.getName());
                         for (int j = 0; j < insiderecs[i].length; j++) {
                             insiderecs[i][j].put(t);
                         }
+                        trans = true;
                     }
                 } catch (NoTokenException ex) {
                     // this shouldn't happen.
@@ -572,9 +578,11 @@ public class Director extends NamedObj implements Executable {
                 }
             }
         }
+        return trans;
     }
 
-    /** Transfer data from an output port of the container to the
+    /** Return true if it 
+     *  transfers data from an output port of the container to the
      *  ports it is connected to on the outside.  The port argument must
      *  be an opaque output port.  If any channel of the output port
      *  has no data, then that channel is ignored.
@@ -582,13 +590,16 @@ public class Director extends NamedObj implements Executable {
      *  @exception IllegalActionException If the port is not an opaque
      *   output port.
      *  @param port The port to transfer tokens from.
+     *  @return True if data are transfered.
      */
-    public void transferOutputs(IOPort port) throws IllegalActionException {
+    public boolean transferOutputs(IOPort port) 
+            throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferOutputs: port argument is not " +
                     "an opaque output port.");
         }
+        boolean trans = false;
         Receiver[][] insiderecs = port.getInsideReceivers();
         if (insiderecs != null) {
             for (int i = 0; i < insiderecs.length; i++) {
@@ -598,6 +609,7 @@ public class Director extends NamedObj implements Executable {
                             try {
                                 Token t = insiderecs[i][j].get();
                                 port.send(i, t);
+                                trans = true;
                             } catch (NoTokenException ex) {
                                 throw new InternalErrorException(
                                         "Director.transferOutputs: " +
@@ -609,6 +621,7 @@ public class Director extends NamedObj implements Executable {
                 }
             }
         }
+        return trans;
     }
 
     /** Invoke the wrapup() method of all the actors contained in the
