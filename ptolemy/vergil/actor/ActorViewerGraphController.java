@@ -74,7 +74,7 @@ nodes to be moved and context menus to be created.  It does
 not provide interaction for adding or removing nodes; those are provided
 by a derived class.  If does provide toolbar buttons for executing
 the model (or if this is not the top level, delegating to the top
-level to exectue). Right-clicking on the background will
+level to execute). Right-clicking on the background will
 create a context-sensitive menu for the graph.
 
 @author Steve Neuendorffer, Contributor: Edward A. Lee
