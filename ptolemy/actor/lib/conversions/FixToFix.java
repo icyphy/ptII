@@ -174,7 +174,8 @@ public class FixToFix extends Transformer {
             switch(_quantization) {
             case 1:
                 result = new FixToken(
-                        Quantizer.truncate(in.fixValue(), _precision, _overflow));
+                        Quantizer.truncate(in.fixValue(),
+                                _precision, _overflow));
                 break;
             default:
                 result = new FixToken(
