@@ -83,6 +83,7 @@ PTTMPDIST =	$(PTMPDIR)/$(PTDIST)
 
 # Files to ship in the top level directory
 TOPFILES = config/confTest.java config/install-sh \
+	config/JavaHome.java \
 	configure configure.in copyright.txt \
 	.classpath.in \
 	mk/ptII.mk.in mk/ptcommon.mk mk/ptdir.mk mk/ptno-compile.mk \
