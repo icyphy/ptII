@@ -31,6 +31,7 @@ package ptolemy.util;
 // Note that classes in ptolemy.util do not depend on any
 // other ptolemy packages.
 
+import java.io.IOException;
 import java.io.File;
 import java.net.URL;
 
@@ -56,6 +57,47 @@ public class ClassUtilities {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Given a jar url of the format jar:<url>!/{entry}, return
+     *  the resource, if any of the {entry}.
+     *  If the string does not contain <code>!/</code>, then return null.
+     *  Web Start uses jar URL, and there are some cases where
+     *  if we have a jar URL, then we may need to strip off the jar:<url>!/
+     *  part so that we can search for the {entry} as a resource.
+     *
+     *  @param spec The string containing the jar url.
+     *  @exception IOException If it cannot convert the specification to
+     *   a URL.
+     *  @see java.net.JarURLConnection
+     */
+    public static URL jarURLEntryResource(String spec) throws IOException {
+        // At first glance, it would appear that this method could appear
+        // in specToURL(), but the problem is that specToURL() creates
+        // a new URL with the spec, so it only does further checks if
+        // the URL is malformed.  Unfortunately, in Web Start applications
+        // the URL will often refer to a resource in another jar file,
+        // which means that the jar url is not malformed, but there is
+        // no resource by that name.  Probably specToURL() should return
+        // the resource after calling new URL().
+        int jarEntry = spec.indexOf("!/");
+        if (jarEntry == -1) {
+            return null;
+        } else {
+            try {
+                // !/ means that this could be in a jar file.
+                String entry = spec.substring(jarEntry + 2);
+                // We might be in the Swing Event thread, so
+                // Thread.currentThread().getContextClassLoader()
+                // .getResource(entry) probably will not work.
+                Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
+                URL entryURL = refClass.getClassLoader().getResource(entry);
+                return entryURL;
+            } catch (Exception ex) {
+                throw new IOException("File not found: " + spec + ": "
+                        + ex);
+            }
+        }
+    }
 
     /** Given a dot separated classname, return the jar file or directory
      *  where the class can be found.
