@@ -64,10 +64,8 @@ If the argument is NaN, then the result is NaN.
 @author C. Fong
 @version $Id$
 @see AbsoluteValue
-@see MathFunction
 @see TrigFunction
 @see Scale
-@see conversions.RectangularToPolar
 */
 
 public class RoundingFunction extends Transformer {
