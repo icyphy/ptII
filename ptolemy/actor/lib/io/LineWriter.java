@@ -148,7 +148,7 @@ public class LineWriter extends Sink {
                     if (!MessageHandler.yesNoQuestion(
                             "OK to overwrite " + file + "?")) {
                         throw new IllegalActionException(this,
-                        "Please select another file name.");
+                                "Please select another file name.");
                     }
                 }
                 _writer = new PrintWriter(fileName.openForWriting());
