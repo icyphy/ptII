@@ -1054,10 +1054,14 @@ public class DEDirector extends Director implements TimedDirector {
         return defaultSuggestions;
     }
     
-    // FIXME: Why do we need an overridden transferOutputs method?
-    // transfer all tokens at boundaries of hierarchies.
-    // Do we need an overridden transferInputs method?
-    // TESTIT: Use the Repeat actor as either source or sink to test.
+    // NOTE: Why do we need an overridden transferOutputs method?
+    // This director needs to transfer ALL output tokens at boundary of 
+    // hierarchy to outside. Without this overriden method, only one 
+    // output token is produced. See de/test/auto/transferInputsandOutputs.xml.
+    // Do we need an overridden transferInputs method? 
+    // No. Because the DEDirector will keep firing an actor until it returns 
+    // false from its prefire() method, meaning that the actor has not enough
+    // input tokens.
 
     /** Override the base class method to transfer all the available
      *  tokens at the boundary output port to outside.
@@ -1323,15 +1327,7 @@ public class DEDirector extends Director implements TimedDirector {
             _debug("## adjusting port depths based " +
                     "on the strictness constraints.");
         }
-        // FIXME: how to adjust the depths of parameter ports??
-        // One solution is to iterate each output port and find all the 
-        // parameter ports that affect it. Note that a parameter may depend
-        // on another parameter at the same level of hierarchy, which makes
-        // the analysis harder. 
-        // Check the context analysis by Steve. I prefer to leave the parameter
-        // analysis independent of the function dependency analysis. 
-        // 02/2005 hyzheng
-        
+
         LinkedList actorsWithPortDepthsAdjusted = new LinkedList();
         
         // The rule is simple. If an output depends on several inputs directly,
@@ -1347,24 +1343,48 @@ public class DEDirector extends Director implements TimedDirector {
             // However, if this input port belongs to a sink actor, and 
             // the sink actor has more than one input ports, adjust the depths
             // of all the input ports to their maximum value.
+            // For exmaple, the XYPlotter in the WirelessSoundDetection demo.
+
             // By default, all composite actors are non-strict. However, if 
             // a composite actor declares its strictness with an attribute,
             // we adjust its input ports depths to their maximum. One example 
             // is the ModalModel.
+            
+            // A third case is that if a composite actor has some of its input
+            // ports as parameter ports and the others as reguler IO ports, 
+            // we need to adjust the depths of paramter ports also.
+            
+            // The TimedSinewave (with SDF implementation) is an example. 
+            // Since this actor is supposed to be a strict actor, we need to
+            // add a strictness marker such that the depths of all its inputs
+            // are adjusted to their maximum value.
+
+            // For non-strict composite actors, one solution is to iterate 
+            // each output port and find all the parameter ports that affect 
+            // that output port. Note that a parameter may depend on another 
+            // parameter at the same level of hierarchy, which makes the 
+            // analysis harder. One reference will be the context analysis by 
+            // Steve. 
+            
+            // I prefer to leave the parameter analysis to be independent of the 
+            // function dependency analysis. 02/2005 hyzheng
+            
             if (ioPort.isInput()) {
-                boolean needAdjust = false;
-                // TESTIT: with the WirelessSoundDetection demo.
+                boolean depthNeedsAdjusted = false;
                 int numberOfOutputPorts = portContainer.outputPortList().size();
                 // If an actor has no output ports, adjustment is necessary. 
                 if (numberOfOutputPorts == 0) {
-                    needAdjust = true;
+                    depthNeedsAdjusted = true;
                 }
                 // If the actor declares itself as a strict actor, 
                 // adjustment is necessary.
                 if (strictnessAttribute != null) {
-                    needAdjust = true;
+                    depthNeedsAdjusted = true;
                 } 
-                if (needAdjust) {
+                // If the port is a parameter port, adjustment is necessary.
+                
+                // If depth needs adjusted:
+                if (depthNeedsAdjusted) {
                     List inputPorts = portContainer.inputPortList();
                     if (inputPorts.size() <= 1) {
                         // If the sink actor has only one input port, there is
@@ -1402,7 +1422,8 @@ public class DEDirector extends Director implements TimedDirector {
                     }
                 }
             }
-            // we skip the ports of the container.
+            // we skip the ports of the container and their depths are handled
+            // by the upper level executive director of this container.
             if (portContainer.equals(getContainer())) {
                 continue;
             }
@@ -1759,9 +1780,11 @@ public class DEDirector extends Director implements TimedDirector {
                 // obtained here, since a new event could have been enqueued
                 // into the queue while the queue was waiting. For example,
                 // an IO interrupt event.
-                // FIXME: The newly inserted event may happen earlier than the
-                // previously first event in the queue. Will this cause
-                // problems, such as setting time backwards?
+                // FIXME: The above statement is misleading. How could the 
+                // newly inserted event happen earlier than the previously 
+                // first event in the queue? It may be possible in the 
+                // distributed DE models, but should not happen in DE models. 
+                // Will this cause problems, such as setting time backwards?
                 // TESTIT How to??
                 synchronized(_eventQueue) {
                     lastFoundEvent = (DEEvent) _eventQueue.take();
