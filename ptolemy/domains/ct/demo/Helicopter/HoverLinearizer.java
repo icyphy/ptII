@@ -202,7 +202,7 @@ public class HoverLinearizer extends CTActor{
         int tokencount = stokens.countTokens();
         while(stokens.hasMoreTokens() && index < 5) {
             String valueToken = stokens.nextToken();
-          _alphaP[index++] = (new Double(valueToken)).doubleValue();
+            _alphaP[index++] = (new Double(valueToken)).doubleValue();
         }
         _cPx = ((DoubleToken)paramCPx.getToken()).doubleValue();
         _cPz = ((DoubleToken)paramCPz.getToken()).doubleValue();     
