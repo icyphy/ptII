@@ -197,7 +197,7 @@ test Add-3.1 {Add another source that generates type conflict} {
     $director initialize
     catch {$manager resolveTypes} msg
     list $msg
-} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0 on the following ports:
+} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .E0 on the following Typeables:
   .E0.Adder.output: ptolemy.data.StringToken
 }}
 
