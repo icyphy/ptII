@@ -73,9 +73,9 @@ public class SigmaDeltaApplet extends Applet {
 
         // Initialization
 
-        _stopTimeBox = new TextField("30.0", 10);
-        _mstBox = new TextField("0.9", 10);
-        _istBox = new TextField("0.1", 10);
+        _stopTimeBox = new TextField("15.0", 10);
+        _mstBox = new TextField("0.01", 10);
+        _istBox = new TextField("0.001", 10);
         _lambdaBox = new TextField("2.0", 10);
         _currentTimeLabel = new Label("Current time = 0.0      ");
         _goButton = new Button("Go");
@@ -196,7 +196,9 @@ public class SigmaDeltaApplet extends Applet {
             CTGain gain2 = new CTGain(ctsub, "Gain2");
             CTGain gain3 = new CTGain(ctsub, "Gain3");
 
-            CTPlot plot = new CTPlot(ctsub, "Plot", ctPanel);
+            CTPlot ctPlot = new CTPlot(ctsub, "CTPlot", ctPanel);
+            String[] ctLegends = {"","",""};
+            //ctPlot.setLegend(ctLegends);
             CTPeriodicalSampler sampler = 
                 new CTPeriodicalSampler(ctsub, "Sample");
             
@@ -217,7 +219,7 @@ public class SigmaDeltaApplet extends Applet {
             IOPort gain2out = (IOPort)gain2.getPort("output");
             IOPort gain3in = (IOPort)gain3.getPort("input");
             IOPort gain3out = (IOPort)gain3.getPort("output");
-            IOPort plotin = (IOPort)plot.getPort("input");
+            IOPort plotin = (IOPort)ctPlot.getPort("input");
             IOPort sampin = (IOPort)sampler.getPort("input");
             IOPort sampout = (IOPort)sampler.getPort("output");
             IOPort holdin = (IOPort)hold.getPort("input");
@@ -256,8 +258,13 @@ public class SigmaDeltaApplet extends Applet {
             DEStatistics accu = new DEStatistics(sys, "Accumulator");
             DEClock clk = new DEClock(sys, "ADClock", 1, 1);
             DEPlot deplot = new DEPlot(sys, "DEPlot", dePanel);
+            String[] deLegends = {"Accumulator output", "Quantizer output"};
+            deplot.setLegend(deLegends);
             DEFIRfilter mav = new DEFIRfilter(sys, "MAV", "0.1 0.1 0.1 0.1" + 
                     " 0.1 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05 0.05");
+            DEProcessor processor = new DEProcessor(sys, "processor",
+                    0.8, 0.1, 3.0);
+
             
             // DE ports
             IOPort firin = (IOPort)fir.getPort("input");
@@ -272,9 +279,12 @@ public class SigmaDeltaApplet extends Applet {
             IOPort mavin = (IOPort)mav.getPort("input");
             IOPort mavout = (IOPort)mav.getPort("output");
             IOPort deplotin = (IOPort)deplot.getPort("input");
+            IOPort processorIn = processor.input;
+            IOPort processorOut = processor.output;
             
             // DE connections.
-            Relation dr1 = sys.connect(subout, firin, "DR1");
+            Relation dr0 = sys.connect(subout, processorIn, "DR0");
+            Relation dr1 = sys.connect(processorOut, firin, "DR1");
             Relation dr2 = sys.connect(firout, quanin, "DR2");
             Relation dr3 = sys.connect(quanout, subin, "DR3");
             Relation dr4 = sys.connect(clkout, demand, "DR4");
@@ -309,7 +319,7 @@ public class SigmaDeltaApplet extends Applet {
             // CTActorParameters
             
             Parameter freq = (Parameter)sine.getAttribute("AngleFrequency");
-            freq.setExpression("0.05");
+            freq.setExpression("0.5");
             freq.parameterChanged(null);
             
             Parameter g0 = (Parameter)gain0.getAttribute("Gain");
@@ -331,6 +341,11 @@ public class SigmaDeltaApplet extends Applet {
             Parameter ts = (Parameter)sampler.getAttribute("SamplePeriod");
             ts.setExpression("0.02");
             ts.parameterChanged(null);
+            
+            // Setting up parameters.
+            _minimumServiceTime = (Parameter)processor.getAttribute("MST");
+            _interruptServiceTime = (Parameter)processor.getAttribute("IST");
+            _lambda = (Parameter)processor.getAttribute("lambda");
 
 
         } catch (Exception ex) {
@@ -420,8 +435,7 @@ public class SigmaDeltaApplet extends Applet {
                     System.err.println("Invalid stop time: " + ex.getMessage());
                     return;
                 }
-
-                /*
+                
                 // Set the minimum service time.
                 try {
                     String s = _mstBox.getText();
@@ -454,7 +468,7 @@ public class SigmaDeltaApplet extends Applet {
                     System.err.println("Invalid lambda: " + 
                                        ex.getMessage());
                 }
-                */
+                
 
                 _localDirector.setStopTime(_stopTime);
 

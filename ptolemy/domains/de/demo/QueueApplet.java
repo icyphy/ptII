@@ -99,17 +99,6 @@ public class QueueApplet extends Applet {
         add(controlPanel, "South");
         // Done adding a control panel.
 
-
-        /*
-        // Adding A and B in the control panel.
-        Panel checkboxPanel = new Panel();
-        checkboxPanel.setLayout(new GridLayout(2,1));
-        checkboxPanel.add(_ATextField);
-        checkboxPanel.add(_BTextField);
-        controlPanel.add(checkboxPanel);
-        // Done adding A and B
-        */
-
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
         simulationParam.setLayout(new GridLayout(2,1));

@@ -11,17 +11,20 @@ Demo of DE simulation applet</H1></CENTER>
 
 <H3>
 DE Simulation:</H3>
-The following applet uses Ptolemy II DE domain architecture to simulate
-the behaviour of an interruptible processor. Without interrupts, each demand
+The following applet uses Ptolemy II DE domain and CT domain architectures to
+simulate a digital feedback system with interruptible processor model.
+This demo is an extension from 
+<A HREF="../../ct/demo/SigmaDelta.html">a CT domain demo</A> 
+ by Jie Liu. The extension
+emphasizes on the effect of the random delay caused by the interruptible
+processor model.
+<p>
+The processor behaves as follows. Without interrupts, each demand
 takes a fixed minimum service time to serve. With interrupts, the service
 time is increased by the number of interrupt events during the service period
 multiplied by a fixed interrupt service time.
 <p>
-The plot shows the sampled processor output. The input to the processor is
-a sequence of DoubleToken starting at 0.0 at time 0.0 and incremented by 1.0
-every unit time. The output are sampled to model a latched output. If there
-is no loss of events, then the plot is a straight line. Otherwise, there will
-be flag regions. 
+FIXME: What does the plot mean, help me out Jie ....
 <p>
 Different parameters for the processor model can be chosen. MST (Minimum
 Service Time) indicate the amount of time needed to process an event, if there
