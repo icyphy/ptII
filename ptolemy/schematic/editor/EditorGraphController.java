@@ -72,66 +72,14 @@ import javax.swing.event.*;
  * @author Steve Neuendorffer 
  * @version $Id$
  */
-public class EditorGraphController extends CompositeGraphController {
- 
-    /**
-     * The graph that is being displayed.
-     */
-    private Graph _graph;
-
-    /** The selection interactor for drag-selecting nodes
-     */
-    private SelectionDragger _selectionDragger;
-
-    /** The interactor for creating new relations
-     */
-    private RelationCreator _relationCreator;
-
-    /** The interactor for creating new vertecies connected
-     *  to an existing relation
-     */
-    private ConnectedVertexCreator _connectedVertexCreator;
-
-    /** The interactor for creating new terminals
-     */
-    private PortCreator _portCreator;
-
-    /** The interactor for creating context sensitive menus.
-     */
-    private MenuCreator _menuCreator;
-
-    /** The interactor that interactively creates edges
-     */
-    private LinkCreator _linkCreator;
-
-    /** The controllers
-     */
-    private PortController _portController;
-    private RelationController _relationController;
-    private EntityController _entityController;
-    private LinkController _linkController;
-
-    /** The filter for control operations
-     */
-    private MouseFilter _controlFilter = new MouseFilter (
-            InputEvent.BUTTON1_MASK,
-            InputEvent.CTRL_MASK);
-
-    /** The filter for shift operations 
-     */
-    private MouseFilter _shiftFilter = new MouseFilter (
-            InputEvent.BUTTON1_MASK,
-            InputEvent.SHIFT_MASK);
+public class EditorGraphController extends ViewerGraphController {
 
     /**
      * Create a new basic controller with default 
      * terminal and edge interactors.
      */
     public EditorGraphController () {
-	_portController = new PortController(this);
-	_entityController = new EntityController(this);
-	_relationController = new RelationController(this);
-	_linkController = new LinkController(this);
+	super();
     }
 
     /** Add an edge to this graph editor and render it
@@ -162,10 +110,6 @@ public class EditorGraphController extends CompositeGraphController {
     }
     */
 
-    public NodeController getEntityController() {
-	return _entityController;
-    }
-
     /**
      * Initialize all interaction on the graph pane. This method
      * is called by the setGraphPane() method of the superclass.
@@ -174,18 +118,8 @@ public class EditorGraphController extends CompositeGraphController {
      * at that time.
      */
     protected void initializeInteraction () {
+        super.initializeInteraction();
         GraphPane pane = getGraphPane();
-
-        // Create and set up the selection dragger
-	SelectionDragger _selectionDragger = new SelectionDragger(pane);
-	_selectionDragger.addSelectionInteractor(
-	    (SelectionInteractor)_entityController.getNodeInteractor());
-	_selectionDragger.addSelectionInteractor(
-	    (SelectionInteractor)_relationController.getNodeInteractor());
-	_selectionDragger.addSelectionInteractor(
-	    (SelectionInteractor)_portController.getNodeInteractor());
-	_selectionDragger.addSelectionInteractor(
-	    (SelectionInteractor)_linkController.getEdgeInteractor());
 
         // Create a listener that creates new relations
         _relationCreator = new RelationCreator();
@@ -200,48 +134,22 @@ public class EditorGraphController extends CompositeGraphController {
         // Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
 	_linkCreator.setMouseFilter(_controlFilter);
-	((CompositeInteractor)_portController.getNodeInteractor()).addInteractor(_linkCreator);
-        ((CompositeInteractor)_entityController.getPortController().getNodeInteractor()).addInteractor(_linkCreator);
-	((CompositeInteractor)_relationController.getNodeInteractor()).addInteractor(_linkCreator);
+	((CompositeInteractor)getPortController().getNodeInteractor()).addInteractor(_linkCreator);
+        ((CompositeInteractor)getEntityController().getPortController().getNodeInteractor()).addInteractor(_linkCreator);
+	((CompositeInteractor)getRelationController().getNodeInteractor()).addInteractor(_linkCreator);
 
 	//LinkCreator linkCreator2 = new LinkCreator();
 	//linkCreator2.setMouseFilter(new MouseFilter(InputEvent.BUTTON1_MASK,0));
-	//((CompositeInteractor)_entityController.getPortController().getNodeInteractor()).addInteractor(_linkCreator);
+	//((CompositeInteractor)getEntityController().getPortController().getNodeInteractor()).addInteractor(_linkCreator);
 
 	
         /*        // Create the interactor that drags new edges.
 	_connectedVertexCreator = new ConnectedVertexCreator();
         _connectedVertexCreator.setMouseFilter(_shiftFilter);
         getNodeInteractor().addInteractor(_connectedVertexCreator);
-        */
-        // MenuCreator 	
-        _menuCreator = new MenuCreator(new SchematicContextMenuFactory());
-	pane.getBackgroundEventLayer().addInteractor(_menuCreator);
-
-	pane.getBackgroundEventLayer().setConsuming(false);         
+        */      
     }
     
-    public NodeController getNodeController(Node node) {
-        Object object = node.getSemanticObject();
-        if(object instanceof Vertex) {
-            return _relationController;
-        } else if(object instanceof ptolemy.moml.Icon) {
-            return _entityController;  
-	} else if(object instanceof Port) {
-            return _portController;
-        } else 
-            throw new RuntimeException(
-                    "Node with unknown semantic object: " + object);
-    }
-
-    public EdgeController getEdgeController(Edge edge) {
-        return _linkController;
-    }
-
-    public void setEntityController(NodeController controller) {
-	_entityController = (EntityController)controller;
-    }
-
     ///////////////////////////////////////////////////////////////
     //// PortCreator
 
@@ -267,7 +175,7 @@ public class EditorGraphController extends CompositeGraphController {
 		    throw new RuntimeException(ex.getMessage());
 		}
 	    }
-            _portController.addNode(port, e.getLayerX(), e.getLayerY());
+            getPortController().addNode(port, e.getLayerX(), e.getLayerY());
         }
     }
 
@@ -296,7 +204,7 @@ public class EditorGraphController extends CompositeGraphController {
                 ex.printStackTrace();
                 throw new RuntimeException(ex.getMessage());
             }
-            _relationController.addNode(vertex, e.getLayerX(), e.getLayerY());
+            getRelationController().addNode(vertex, e.getLayerX(), e.getLayerY());
         }
     }
 
@@ -321,7 +229,7 @@ public class EditorGraphController extends CompositeGraphController {
 		(CompositeEntity)getGraph().getSemanticObject();
 	    
 	    // Add it to the editor
-	    Edge edge = _linkController.addEdge(null,
+	    Edge edge = getLinkController().addEdge(null,
 				    sourcenode,
 				    ConnectorEvent.TAIL_END,
 				    e.getLayerX(),
@@ -384,57 +292,6 @@ public class EditorGraphController extends CompositeGraphController {
 	}
     }
 	
-    public class SchematicContextMenuFactory extends MenuFactory {
-	public JPopupMenu create(Figure figure) {
-	    Graph graph = getGraph();
-	    CompositeEntity object = 
-		(CompositeEntity) graph.getSemanticObject();
-	    return new Menu(object);		
-	}
-
-        public class Menu extends BasicContextMenu {
-	    public Menu(CompositeEntity target) {
-		super(target);
-		
-		// FIXME this action is similar to one in the application.
-		// Merge them (GUIActions?)
-		Action action;
-		action = new AbstractAction ("Edit Director Parameters") {
-		    public void actionPerformed(ActionEvent e) {
-			// Create a dialog and attach the dialog values 
-			// to the parameters of the schematic's director
-			CompositeActor object = 
-			(CompositeActor) getValue("target");
-			Director director = object.getDirector();
-			JFrame frame =
-			new JFrame("Parameters for " + director.getName());
-			JPanel pane = (JPanel) frame.getContentPane();
-			Query query;
-			try {
-			    query = new ParameterEditor(director);
-			} catch (Exception ex) {
-			    ex.printStackTrace();
-			    throw new RuntimeException(ex.getMessage());
-			}
-			
-			pane.add(query);
-			frame.setVisible(true);
-			frame.pack();
-		    }
-		};
-
-		add(action, "Edit Director Parameters");
-		
-		//FIXME
-		JLabel domain = new JLabel("Domain");
-		add(domain);
-		JLabel director = new JLabel("Director");
-		add(director);
-		
-	    }
-	}
-    }
-
     public String createUniqueName(String root) {
 	String name = root + _uniqueID++;
 	return name;
@@ -445,5 +302,38 @@ public class EditorGraphController extends CompositeGraphController {
     }
     
     private int _uniqueID = 1;
+
+    /** The interactor for creating new relations
+     */
+    private RelationCreator _relationCreator;
+
+    /** The interactor for creating new vertecies connected
+     *  to an existing relation
+     */
+    private ConnectedVertexCreator _connectedVertexCreator;
+
+    /** The interactor for creating new terminals
+     */
+    private PortCreator _portCreator;
+
+    /** The interactor for creating context sensitive menus.
+     */
+    private MenuCreator _menuCreator;
+
+    /** The interactor that interactively creates edges
+     */
+    private LinkCreator _linkCreator;
+
+    /** The filter for control operations
+     */
+    private MouseFilter _controlFilter = new MouseFilter (
+            InputEvent.BUTTON1_MASK,
+            InputEvent.CTRL_MASK);
+
+    /** The filter for shift operations 
+     */
+    private MouseFilter _shiftFilter = new MouseFilter (
+            InputEvent.BUTTON1_MASK,
+            InputEvent.SHIFT_MASK);
 }
 

@@ -108,7 +108,7 @@ public class EditorIcon extends Icon {
      */
     protected Figure _createDefaultBackgroundFigure() {
 	// FIXME better default.
-	return new BasicRectangle(-10, -10, 20, 20, Color.green);
+	return new BasicRectangle(0, 0, 20, 20, Color.green);
     }
 
 }

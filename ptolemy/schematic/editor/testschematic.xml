@@ -3,6 +3,10 @@
     "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
 <model name="hello world" class="ptolemy.actor.TypedCompositeActor">
     <doc>ramp-recorder...  a good first start</doc>
+    <director class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="25">
+        </property>
+    </director>
     <entity name="Ramp1" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -10,9 +14,8 @@
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+        <rendition name="_icon" class="ptolemy.schematic.util.EditorIcon">
             <location x="50" y="50"/>
-            <configure>generic.source</configure>
         </rendition>
         <port name="output" class="ptolemy.actor.TypedIOPort">
         </port>
@@ -24,9 +27,8 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <rendition name="_icon" class="ptolemy.schematic.util.LibraryIcon">
+        <rendition name="_icon" class="ptolemy.schematic.util.EditorIcon">
             <location x="150" y="50"/>
-            <configure>generic.sink</configure>
         </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
         </port>

@@ -76,32 +76,6 @@ import javax.swing.filechooser.FileFilter;
  * @version $Id$
  */
 public class GraphEditor extends MDIApplication {
-
-    /** A mapping from documents to content panes
-     */
-    private HashMap _contentPanes = new HashMap();
-
-    /** A mapping from content panes to documents
-     */
-    private HashMap _documents = new HashMap();
-
-    /** The director selection combobox
-     */
-    private JComboBox _directorComboBox;
-
-    /** The layout selection combobox
-     */
-    private JComboBox _layoutComboBox;
-
-    /** The layout engine
-     */
-    private GlobalLayout _globalLayout;
-
-    /** The application specific resources
-     */
-    private RelativeBundle _guiResources = 
-    new RelativeBundle("ptolemy.schematic.editor.GUI", getClass(), null);;
-
     /** Construct a new graph editing application. The application
      * will not have any open graph documents, until they are opened
      * by getting the "Open" action an invoking its actionPerformed()
@@ -172,6 +146,7 @@ public class GraphEditor extends MDIApplication {
      * document. This class creates a JGraph.
      */
     public JComponent createView (Document d) {
+        //FIXME
 	GraphPane pane = new GraphPane(new EditorGraphController(), 
 				       new EditorGraphImpl());
 	JGraph jgraph = new JGraph(pane);
@@ -270,7 +245,7 @@ public class GraphEditor extends MDIApplication {
     /** Get the title of this application
      */
     public String getTitle() {
-        return "PtolemyII";
+        return "Vergil Editor";
     }
 
     /** Initialize the palette in the.
@@ -303,39 +278,11 @@ public class GraphEditor extends MDIApplication {
 	    setPreferredSize(new Dimension(150,150));
 	splitPane.validate();	
     }
-    /*
-    public void createTreeNodes(JTreePane pane,
-            String parent, CompositeEntity library) {
-	SchematicPalette palette = new SchematicPalette();
-	Enumeration enum = library.getEntities();
-        int i = 0;
-	pane.addEntry(parent, library.getFullName(), palette);
- 
-        while(enum.hasMoreElements()) {
-            Entity entity = 
-                (Entity) enum.nextElement();
-            if(!(entity instanceof CompositeEntity)) {
-		ptolemy.moml.Icon icon = 
-		    (ptolemy.moml.Icon) entity.getAttribute("_icon");
-                palette.addNode(icon, 
-                        60, 50 + (i++) * 50);     
-            }
-
-            if(entity instanceof CompositeEntity) {
-		createTreeNodes(pane, library.getFullName(),
-                        (CompositeEntity)entity);
-            }
-        }	
-	palette.setMinimumSize(new Dimension(200, 200));
-	//palette.triggerLayout();
-    }*/
 
     public void createTreeNodes(JTreePane pane,
             String parent, CompositeEntity library) {
 	Enumeration enum = library.getEntities();
         int i = 0;
-	//	pane.addEntry(parent, library.getFullName(), palette);
- 
         while(enum.hasMoreElements()) {
             Entity entity = 
                 (Entity) enum.nextElement();
@@ -349,9 +296,7 @@ public class GraphEditor extends MDIApplication {
             }
 
             if(entity instanceof CompositeEntity) {
-		System.out.println("parent = " + parent);
-		System.out.println("entity = " + entity.getFullName());
-		SchematicPalette palette = new SchematicPalette();
+                SchematicPalette palette = new SchematicPalette();
 		pane.addEntry(parent, entity.getFullName(), palette);
 		createTreeNodes(pane, entity.getFullName(),
                         (CompositeEntity)entity);
@@ -632,7 +577,30 @@ public class GraphEditor extends MDIApplication {
             
     }
 
-    IconLibrary _iconLibrary;
-    CompositeEntity _entityLibrary;
+
+    /** The director selection combobox
+     */
+    private JComboBox _directorComboBox;
+
+    /** The layout selection combobox
+     */
+    private JComboBox _layoutComboBox;
+
+    /** The layout engine
+     */
+    private GlobalLayout _globalLayout;
+
+    /** The application specific resources
+     */
+    private RelativeBundle _guiResources = 
+    new RelativeBundle("ptolemy.schematic.editor.GUI", getClass(), null);;
+
+    /** The Icon Library
+     */
+    private IconLibrary _iconLibrary;
+    
+    /** The Entity Library
+     */
+    private CompositeEntity _entityLibrary;
 }
 

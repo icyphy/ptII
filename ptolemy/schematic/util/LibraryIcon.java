@@ -97,8 +97,8 @@ public class LibraryIcon extends PatternIcon implements Configurable {
 	    throw new RuntimeException("buffer overrun");
 	}
 	String name = new String(b, 0, bytesread);
-	System.out.println(name);
         IconLibrary library = LibraryIcon.getIconLibrary();
+        if(library == null) return;
 	EditorIcon icon = (EditorIcon)library.findIcon(name);
 	// if it is found
 	if(icon != null) {
