@@ -30,10 +30,12 @@ package ptolemy.actor.lib.comm;
 
 import java.util.LinkedList;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
@@ -47,11 +49,14 @@ import ptolemy.math.SignalProcessing;
 
 //////////////////////////////////////////////////////////////////////////
 //// HuffmanCoder
-/** Given a probability distribution, encode the input using Huffman code
-    and send the result in booleans to the output port. The probability
-    distribution is given by the <i>pmf</i> parameter. The corresponding
-    alphabet is given by the <i>alphabet</i> parameter.
-
+/** 
+   Given a probability distribution, encode the input using Huffman code
+   and send the result in booleans to the output port. The probability
+   distribution is given by the <i>pmf</i> parameter. The corresponding
+   alphabet is given by the <i>alphabet</i> parameter.
+   FIXME: It would be nice that the decoder can grab the codebook generated
+   by this encoder in some way.
+    
    @author Rachel Zhou
    @version $Id$
    @since Ptolemy II 3.0
@@ -86,8 +91,11 @@ public class HuffmanCoder extends Transformer {
         InequalityTerm elementTerm = alphabetArrayType.getElementTypeTerm();
         input.setTypeAtLeast(elementTerm);
         output.setTypeEquals(BaseType.BOOLEAN);
+        
+        //TypedIOPort huffmanCodeBook = 
+          //  new TypedIOPort(this, "huffmanCodeBook", false, true);
+        //huffmanCodeBook.setTypeEquals(new ArrayType(BaseType.STRING));
     }
-
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
@@ -102,6 +110,8 @@ public class HuffmanCoder extends Transformer {
      *  Its default value is {0, 1}.
      */
     public Parameter alphabet;
+    
+    //public TypedIOPort huffmanCodeBook;
     
     ////////////////////////////////////////////////////////////////////
     ////                  public inner classes                      ////
@@ -165,8 +175,8 @@ public class HuffmanCoder extends Transformer {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
+        _parametersInvalid = true;
         if (attribute == pmf) {
-            _parametersInvalid = true;
             ArrayToken pmfValue = (ArrayToken)pmf.getToken();
             _pmf = new double[pmfValue.length()];
             double sum = 0.0;
@@ -202,34 +212,23 @@ public class HuffmanCoder extends Transformer {
         }
         if (_parametersInvalid) {
             _parametersInvalid = false;
-            _codeBook = new String[_pmf.length];
-            // Generate the huffman code book.
-            for (int i = 0; i < _pmf.length; i ++) {
-                // Create a list of nodes;
-                Node node = new Node(_pmf[i], i);
-                _list.add(node);   
-            }
-            // Construct the binary tree.
-            while (_list.size() > 1) {
-                Node node1 = _findMinNode(_list);
-                _list.remove(node1);
-                Node node2 = _findMinNode(_list);
-                _list.remove(node2);
-                // node2 has larger prob than node1.
-                Node newNode = new Node(node2, node1);
-                _list.add(newNode);
-            }
-            // Now there is only one element in the list,
-            // and its probability should be 1.
-            Node root = (Node)_list.get(0);
-            root.huffmanCode = "";
-            _setCode(root);
+            _codeBook = generateCodeBook(_pmf);
         }
         // Get the input token. Ready for output.
         Token inputToken = (Token)input.get(0);
+        
+        /*
+        StringToken[] codeBookTokens = new StringToken[_pmf.length];
+        for (int i = 0; i < _pmf.length; i ++) {
+            System.out.println("codeBook[" + i + "] is " + _codeBook[i]);
+            codeBookTokens[i] = new StringToken(_codeBook[i]);
+        }
+        huffmanCodeBook.send(0, new ArrayToken(codeBookTokens));
+        */
+        
         // Find the token in the alphabet;
         boolean validInput = false;
-        for (int i = 0; i < _pmf.length; i++) {
+        for (int i = 0; i < _pmf.length; i ++) {
             if (inputToken.equals(alphabetTokens[i])) {
                 validInput = true;
                 _sendBooleans(_codeBook[i]);
@@ -241,6 +240,40 @@ public class HuffmanCoder extends Transformer {
                 "Input is not matched to the alphabet");
         }
     }
+    
+    /** Generate the Huffman code book given the probability
+     *  mass function.
+     * @param pmf The probability mass function.
+     * @return The code book, where each codeword is a string
+     *  of '0' and '1'.
+     */
+    public String[] generateCodeBook(double[] pmf) {
+        String[] codeBook = new String[pmf.length];
+        LinkedList list = new LinkedList();
+        // Generate the huffman code book.
+        for (int i = 0; i < _pmf.length; i ++) {
+        // Create a list of nodes;
+            Node node = new Node(_pmf[i], i);
+            list.add(node);   
+        }
+        // Construct the binary tree.
+        while (list.size() > 1) {
+            Node node1 = _findMinNode(list);
+            list.remove(node1);
+            Node node2 = _findMinNode(list);
+            list.remove(node2);
+            // node2 has larger prob than node1.
+            Node newNode = new Node(node2, node1);
+            list.add(newNode);
+        }
+        // Now there is only one element in the list,
+        // and its probability should be 1.
+        Node root = (Node)list.get(0);
+        root.huffmanCode = "";
+        _setCode(root, codeBook);
+        return codeBook;
+    }
+
 
     /** Initialize the actor by resetting the _parametersInvalid to true.
      *  Creat a linked list to store the nodes for the binary tree.
@@ -248,7 +281,6 @@ public class HuffmanCoder extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _list = new LinkedList();
         _parametersInvalid = true;
     }
 
@@ -290,26 +322,27 @@ public class HuffmanCoder extends Transformer {
     
     /** Set the Huffman codeword for the given node and all its children.
      * @param node The given node.
+     * @param codeBook The code book to be generated.
      */
-    private void _setCode(Node node) {
+    private void _setCode(Node node, String[] codeBook) {
         String parentCode = node.huffmanCode;
         Node left, right;
         if ((left = node.leftChild) != null) {
             String leftCode = parentCode + "0";
             left.huffmanCode = leftCode;
             if (left.indexInArray >= 0) {
-                _codeBook[left.indexInArray] = leftCode; 
+                codeBook[left.indexInArray] = leftCode; 
             } else {
-                _setCode(left);
+                _setCode(left, codeBook);
             }
         }
         if ((right = node.rightChild) != null) {
             String rightCode = parentCode + "1";
             right.huffmanCode = rightCode;
             if (right.indexInArray >= 0) {
-                _codeBook[right.indexInArray] = rightCode;
+                codeBook[right.indexInArray] = rightCode;
             } else {
-                _setCode(right);
+                _setCode(right, codeBook);
             }
         }
     }
@@ -319,10 +352,6 @@ public class HuffmanCoder extends Transformer {
 
     // The huffman code book.    
     private String[] _codeBook;
-    
-    // Linked list used to store nodes of binary tree, which is
-    // used to construct the Huffman code book.
-    private LinkedList _list;
     
     // Flag that indicates if the parameters are invalid. If it is
     // true, then a new code book needs to be generated.
