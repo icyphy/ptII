@@ -66,7 +66,8 @@ PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII1.0
 # 1.12 can be found at ftp://gatekeeper.dec.com/pub/GNU/tar/
 # make USER=cxh PTIIHOME=/cygdrive/c/users/cxh/ptII COMPRESS=gzip TAR=/usr/local/bin/tar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
-# make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII2.0alpha PTIIADM=/home/eecs/cxh/ptII/adm
+# make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII2.0alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
+# make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # Run this command on a JDK1.3 machine so we get javasound documentation
 # 
 
@@ -127,7 +128,7 @@ rebuild: clean all installshield_app build_unixPtII
 
 clean:
 	@echo "#"
-	@echo "# Now cleaning old tar files in ~ptII/adm/gen-latest"
+	@echo "# Now cleaning old tar files"
 	@echo "#"
 	rm -f $(PTII_FULL) $(PTII_FULL_ZIP) $(PTII_DEVEL_SRC) $(PTII_SRC)
 	rm -rf $(PTIIDIST) src installshield/*
@@ -147,7 +148,7 @@ $(PTIIDIST):
 	@echo "Be sure that ptolemy/actor/lib/javasound/javasound.jar exists"
 	(cd $(PTIIHOME)/ptolemy/actor/lib/javasound; make jars)
 	(cd $(PTIIHOME); \
-		$(TAR) -c -v -X $(GENDIR)/src.ex  -X $(GENDIR)/src1.ex \
+		$(TAR) -c -X $(GENDIR)/src.ex  -X $(GENDIR)/src1.ex \
 		$ -f - $(PTII_TOPDIR) )| \
 		(cd $@; $(TAR) -xpf -)
 	@echo "Removing codeDoc directories and other documentation"
