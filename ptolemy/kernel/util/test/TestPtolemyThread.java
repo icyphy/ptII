@@ -30,24 +30,25 @@
 
 package ptolemy.kernel.util.test;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import ptolemy.kernel.util.DebugEvent;
+import ptolemy.kernel.util.PtolemyThread;
 
 //////////////////////////////////////////////////////////////////////////
-////
-/** TestPtolemyThread
+//// TestPtolemyThread
+/** This class is used to test the protected _debug() method in
+kernel.util.PtolemyThread.
 @author Christopher Hylands
 @version $Id$
 @since Ptolemy II 2.3
 */
 public class TestPtolemyThread extends PtolemyThread {
 
-    /** Construct a new TestPtolemyThread object. This constructor has the
-     *  same effect as TestPtolemyThread(null, null, <i>generatedName</i>), where
-     *  <i>generatedName</i> is a newly generated name. Automatically generated
-     *  names are of the form "Thread-"+n, where n is an integer.
+
+    /** Construct a new TestPtolemyThread object. This constructor has
+     *  the same effect as TestPtolemyThread(null, null,
+     *  <i>generatedName</i>), where <i>generatedName</i> is a newly
+     *  generated name. Automatically generated names are of the form
+     *  "Thread-"+n, where n is an integer.
      */
     public TestPtolemyThread() {
         super();
@@ -123,7 +124,22 @@ public class TestPtolemyThread extends PtolemyThread {
      *  _debug() is protected
      *  @param event The event. 
      */ 
-    protected void debug(DebugEvent event) {
+    public void debug(DebugEvent event) {
        _debug(event);
+    }
+
+    /** Send a debug message to all debug listeners that have registered.
+     *  By convention, messages should not include a newline at the end.
+     *  The newline will be added by the listener, if appropriate.
+     *  Note that using this method could be fairly expensive if the
+     *  message is constructed from parts, and that this expense will
+     *  be incurred regardless of whether there are actually any debug
+     *  listeners.  Thus, you should avoid, if possible, constructing
+     *  the message from parts.
+     *  @param message The message.
+     *  @since Ptolemy II 2.3
+     */
+    public void debug(String message) {
+        _debug(message);
     }
 }

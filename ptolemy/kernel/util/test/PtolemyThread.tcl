@@ -1,6 +1,6 @@
 # Tests for the PtolemyThread class 
 #
-# @Author: Lukito Muliadi
+# @Author: Lukito Muliadi, Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -80,3 +80,39 @@ test PtolemyThread-1.1 {Test the constructor} {
     }
     list $results [$threadGroup activeCount]
 } {{{0 Thread-xxx} {0 Thread-xxx} {0 pthread2} {0 pthread4} {0 Thread-xxx} {0 pthread6} {0 pthread7}} 3}
+
+test PtolemyThread-2.1 {Test addDebugListener} {
+    set pthread1 [java::new ptolemy.kernel.util.test.TestPtolemyThread]
+    set listener [java::new ptolemy.kernel.util.RecorderListener]
+    $pthread1 addDebugListener $listener
+
+    # Try to add it again to increase code coverage
+    $pthread1 addDebugListener $listener
+
+    set source [java::new ptolemy.kernel.util.NamedObj "event source"]
+    set debugEvent [java::new ptolemy.kernel.util.test.TestDebugEvent $source]
+    $pthread1 debug $debugEvent 	
+    $pthread1 debug "This is a string"	
+    $listener getMessages
+} {ptolemy.kernel.util.NamedObj {.event source}
+This is a string
+}
+
+test PtolemyThread-2.2 {Test removeDebugListener} {
+    # Uses 2.1 above	
+    $pthread1 removeDebugListener $listener
+
+    # Try to remove it again to increase code coverage
+    $pthread1 removeDebugListener $listener
+
+    set source [java::new ptolemy.kernel.util.NamedObj "event source2"]
+    set debugEvent [java::new ptolemy.kernel.util.test.TestDebugEvent $source]
+
+    # There are no listeners, but calling _debug() anyway
+    $pthread1 debug $debugEvent 	
+    $pthread1 debug "This is a string2"	
+
+    $listener getMessages
+} {ptolemy.kernel.util.NamedObj {.event source}
+This is a string
+}
