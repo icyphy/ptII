@@ -316,5 +316,5 @@ public class QueueReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private FIFOQueue _queue = new FIFOQueue();
+    protected FIFOQueue _queue = new FIFOQueue();
 }
