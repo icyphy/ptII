@@ -4,7 +4,7 @@
 <entity name="DifferentFrequency" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[100, 17]">
     </property>
     <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector">
         <property name="Scheduler" class="ptolemy.domains.giotto.kernel.GiottoScheduler">
@@ -37,7 +37,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="24.0, 181.0">
+        <property name="_location" class="ptolemy.moml.Location" value="15.0, 225.0">
         </property>
     </property>
     <property name="1:annotation" class="ptolemy.kernel.util.Attribute">
@@ -57,7 +57,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="365.0, 136.0">
+        <property name="_location" class="ptolemy.moml.Location" value="375.0, 80.0">
         </property>
     </property>
     <property name="2:annotation" class="ptolemy.kernel.util.Attribute">
@@ -88,7 +88,7 @@
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="130.0, 150.0">
+        <property name="_location" class="ptolemy.moml.Location" value="160.0, 240.0">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -100,30 +100,24 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1,3}">
         </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="340.0, 155.0">
-        </property>
-        <property name="frequency" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="_location" class="ptolemy.moml.Location" value="340.0, 90.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 1, 1, 2, 2, 3, 3}">
         </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="340.0, 239.0">
+        <property name="_location" class="ptolemy.moml.Location" value="345.0, 240.0">
         </property>
         <property name="frequency" class="ptolemy.data.expr.Parameter" value="4">
         </property>
@@ -131,22 +125,12 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="0.27499999999999997"/>
-<yRange min="-1.0" max="4.0"/>
-<default connected="no" marks="dots"/>
-</plot>?>
-                </configure>    </entity>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="241.0, 196.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="240.0, 240.0">
         </vertex>
     </relation>
     <link port="Ramp.output" relation="relation2"/>
-    <link port="Display.input" relation="relation2"/>
-    <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
+    <link port="NonStrictTest2.input" relation="relation2"/>
 </entity>

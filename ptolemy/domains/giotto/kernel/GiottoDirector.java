@@ -1109,7 +1109,44 @@ public class GiottoDirector extends StaticSchedulingDirector {
             _iterationCount++;
         }
 
-	Iterator scheduleIterator = unitSchedule.iterator();
+        // Find the actors that will be invoked in this minor cycle (unit)
+        // and update the receivers that are their destinations.
+        // The reason that the destinations are updated is that any
+        // actor that is to be run in this unit is also presumably
+        // just completing a run from the previous iteration (because
+        // of the periodic semantics of Giotto).
+        // Of course, in the first iteration, the actors are not
+        // (obviously) completing any previous cycle.  However, according
+        // to Giotto semantics, the first unit always involves a firing
+        // of every actor.  Hence, the first unit schedule will include
+        // every actor.  Thus, in the first iteration, we will be
+        // committing the outputs of every actor.  This has the effect
+        // of committing any data values that the actor may have produced
+        // in its initialize() method.
+        Iterator scheduleIterator = unitSchedule.iterator();
+        while (scheduleIterator.hasNext()) {
+            Actor actor = ((Firing) scheduleIterator.next()).getActor();
+            if (_debugging) {
+                _debug("Updating destination receivers of "
+                         + ((NamedObj)actor).getFullName());
+            }
+            List outputPortList = actor.outputPortList();
+            Iterator outputPorts = outputPortList.iterator();
+            while (outputPorts.hasNext()) {
+                IOPort port = (IOPort) outputPorts.next();
+                Receiver[][] channelArray = port.getRemoteReceivers();
+                for (int i = 0; i < channelArray.length; i++) {
+                    Receiver[] receiverArray = channelArray[i];
+                    for (int j = 0; j < receiverArray.length; j++) {
+                        GiottoReceiver receiver = 
+                                (GiottoReceiver) receiverArray[j];
+                        receiver.update();
+                    }
+                }
+            }
+	}
+
+        scheduleIterator = unitSchedule.iterator();
         while (scheduleIterator.hasNext()) {
             Actor actor = ((Firing) scheduleIterator.next()).getActor();
             int actorFrequency = GiottoScheduler.getFrequency(actor);
@@ -1150,32 +1187,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
 		}
 	    }
 	}
-
-        // Find the actors that will be invoked in the next minor cycle
-        // and update the receivers that are their destinations.
-        Schedule nextTimeSchedule = (Schedule)_schedule.get(_unitIndex);
-        Iterator nextTimeIterator = nextTimeSchedule.iterator();
-        while (nextTimeIterator.hasNext()) {
-            Actor actor = ((Firing) nextTimeIterator.next()).getActor();
-            if (_debugging) {
-                _debug("Updating destination receivers of "
-                         + ((NamedObj)actor).getFullName());
-            }
-            List outputPortList = actor.outputPortList();
-            Iterator outputPorts = outputPortList.iterator();
-            while (outputPorts.hasNext()) {
-                IOPort port = (IOPort) outputPorts.next();
-                Receiver[][] channelArray = port.getRemoteReceivers();
-                for (int i = 0; i < channelArray.length; i++) {
-                    Receiver[] receiverArray = channelArray[i];
-                    for (int j = 0; j < receiverArray.length; j++) {
-                        GiottoReceiver receiver = 
-                                (GiottoReceiver) receiverArray[j];
-                        receiver.update();
-                    }
-                }
-            }
-	}
     }
 
     /** Initialize the actors associated with this director.
@@ -1208,22 +1219,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
                 Parameter initialValueParameter = (Parameter)
                         ((NamedObj) port).getAttribute("initialValue");
                 if (initialValueParameter != null) {
-                    Receiver[][] insideReceivers = port.getRemoteReceivers();
-                    for (int i = 0; i < port.getWidth(); i++) {
-                        Token token = initialValueParameter.getToken();
-                        
-                        if (insideReceivers != null &&
-                                insideReceivers[i] != null) {
-                            if(_debugging) {
-                                _debug(getFullName(),
-                                       ": has initial token with value "
-                                       + initialValueParameter.getExpression());
-                            }
-                            for (int j = 0; j < insideReceivers[i].length; j++){                                insideReceivers[i][j].put(token);
-                                ((GiottoReceiver)insideReceivers[i][j]).update();
-                            }
-                        }
-                    }
+                    port.broadcast(initialValueParameter.getToken());
                 }
             }
         }
