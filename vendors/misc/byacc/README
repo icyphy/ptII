@@ -19,6 +19,10 @@ remains the same)
  
    where jparser.y is the definition file.
 
+4) If yydebug is set and yyrule.tbl is not present then
+   you will get a NullPointerException because a debug() call
+   dereferences yyrule[], which is null. (cxh)
+
 The BYACC/J page can be found at:
 
 http://www.lincom-asg.com/~rjamison/byacc/

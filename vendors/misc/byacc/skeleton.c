@@ -545,7 +545,11 @@ char *jbody[] =
     "      continue;      //skip action",
     "    yym = yylen[yyn];          //get count of terminals on rhs",
     "    if (yydebug)",
-    "      debug(\"state \"+yystate+\", reducing \"+yym+\" by rule \"+yyn+\" (\"+yyrule[yyn]+\")\");",
+    "      if (yyrule == null) {",
+    "        debug(\"state \"+yystate+\", reducing \"+yym+\" by rule \"+yyn+\" yyrule is null, perhaps yyrule.tbl was not read in?\");",
+    "      } else {",     
+    "        debug(\"state \"+yystate+\", reducing \"+yym+\" by rule \"+yyn+\" (\"+yyrule[yyn]+\")\");",
+    "      }",     
     "    if (yym>0) { //if count of rhs not 'nil'",
     0
 };
