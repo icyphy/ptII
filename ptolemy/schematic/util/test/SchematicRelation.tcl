@@ -79,7 +79,7 @@ proc _testEnums {enummethod args} {
 ####
 #
 test SchematicRelation-2.1 {Constructor tests} {
-    set e0 [java::new ptolemy.schematic.util.SchematicRelation]
+    set e0 [java::new ptolemy.schematic.util.SchematicRelation "relation"]
     set e1 [java::new ptolemy.schematic.util.SchematicRelation "TestSchematicRelation"]
     list [$e0 description] [$e1 description]
 } {{ptolemy.schematic.util.SchematicRelation {relation} parameters {

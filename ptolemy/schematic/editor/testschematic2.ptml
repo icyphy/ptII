@@ -12,12 +12,10 @@
 <terminalmap ports="output"/>
 <parameter name="init" value="0" type="ptolemy.data.IntToken"/>
 <parameter name="step" value="4" type="ptolemy.data.IntToken"/>
-<port name="output" output="true" type="double"/>
 </entity>
 
 <entity name="Recorder1" icon="generic.sink" terminalstyle="generic.sink" implementation="ptolemy.actor.lib.Recorder">
 <terminalmap ports="input"/>
-<port name="input" input="true" type="double"/>
 </entity>
 
 <relation name="R1">

@@ -30,12 +30,16 @@
 
 package ptolemy.schematic.util;
 
+import ptolemy.kernel.*;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.*;
+import ptolemy.actor.*;
 import java.util.*;
 import collections.*;
 import java.io.*;
 import ptolemy.schematic.xml.*;
 import java.net.*;
+import java.lang.reflect.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PTMLObjectFactory
@@ -91,6 +95,7 @@ public class PTMLObjectFactory {
                     ptmlobject.addSubLibrary(sublib);
                 }
                 catch (Exception ex) {
+                    ex.printStackTrace();
                     System.out.println("Couldn't parse entitylibrary " +
                             "from url " + url);
                     System.out.println(ex.getMessage());
@@ -320,85 +325,6 @@ public class PTMLObjectFactory {
         }
     }
 
-    /*
-    private static EntityPort _createEntityPort(XMLElement e)
-        throws IllegalActionException, NameDuplicationException {
-
-        _verifyElement(e, "port");
-
-        EntityPort ptmlobject = new EntityPort();
-        Enumeration children = e.childElements();
-        while(children.hasMoreElements()) {
-            XMLElement child = (XMLElement)children.nextElement();
-            _unknownElementType(ptmlobject, child);
-        }
-        Enumeration attributes = e.attributeNames();
-        while(attributes.hasMoreElements()) {
-            String n = (String) attributes.nextElement();
-            if (n.equals("name")) {
-                ptmlobject.setName(_getString(e, n));
-            } else if (n.equals("type")) {
-                ptmlobject.setType(_getString(e, n));
-            } else if (n.equals("input")) {
-                ptmlobject.setInput(_getBoolean(e, n));
-            } else if (n.equals("output")) {
-                ptmlobject.setOutput(_getBoolean(e, n));
-            } else if (n.equals("multiport")) {
-                ptmlobject.setMultiport(_getBoolean(e, n));
-            } else {
-                _unknownAttribute(ptmlobject, e, n);
-            }
-        }
-        return ptmlobject;
-    }
-    
-
-    private static EntityTemplate _createEntityTemplate(XMLElement e, 
-            IconLibrary iconroot)
-        throws IllegalActionException, NameDuplicationException {
-
-        _verifyElement(e, "entity");
-
-        EntityTemplate ptmlobject = new EntityTemplate();
-        Enumeration attributes = e.attributeNames();
-        while(attributes.hasMoreElements()) {
-            String n = (String) attributes.nextElement();
-            if (n.equals("implementation")) {
-                ptmlobject.setImplementation(_getString(e, n));
-            } else if (n.equals("name")) {
-                ptmlobject.setName(_getString(e, n));
-            } else if (n.equals("icon")) {
-                Icon icon = iconroot.findIcon(_getString(e, n));
-                ptmlobject.setIcon(icon);
-            } else if (n.equals("terminalstyle")) {
-                TerminalStyle terminalstyle =
-                    iconroot.findTerminalStyle(_getString(e, n));
-                ptmlobject.setTerminalStyle(terminalstyle);
-            } else {
-                _unknownAttribute(ptmlobject, e, n);
-            }
-        }
-        Enumeration children = e.childElements();
-        while(children.hasMoreElements()) {
-            XMLElement child = (XMLElement)children.nextElement();
-            String etype = child.getElementType();
-            if(etype.equals("description")) {
-                ptmlobject.setDocumentation(child.getPCData());
-	    } else if(etype.equals("parameter")) {
-               ptmlobject.addParameter(_createSchematicParameter(child));
-            } else if(etype.equals("port")) {
-                ptmlobject.addPort(_createEntityPort(child));
-            } else if(etype.equals("terminalmap")) {
-                ptmlobject.setTerminalMap(_createTerminalMap(child, 
-                        ptmlobject.getTerminalStyle()));
-            } else {
-                _unknownElementType(ptmlobject, child);
-            }    
-        }
-        return ptmlobject;
-    }
-    */
-
     private static GraphicElement _createGraphicElement(XMLElement e)
         throws IllegalActionException {
 
@@ -516,7 +442,7 @@ public class PTMLObjectFactory {
 
         _verifyElement(e, "entity");
 
-	//	System.out.println("creating entity:" + e);
+        // System.out.println("creating entity:" + e);
  
         SchematicEntity ptmlobject = 
             new SchematicEntity();
@@ -553,6 +479,65 @@ public class PTMLObjectFactory {
                 _unknownAttribute(ptmlobject, e, n);
             }
         }
+
+        // If we have an implementation, then extract any information we
+        // can from the implementation.
+        if(ptmlobject.getImplementation() != null) {
+            // Reflection could be really slow.
+            Class entityClass = null;
+            boolean found = true;
+            try {
+                entityClass = Class.forName(ptmlobject.getImplementation());
+            }
+            catch (ClassNotFoundException ex) {
+                found = false;
+            }
+            if(found) {
+                try {
+                    Class formalArgs[] = new Class[2];
+                    formalArgs[0] = Class.forName("ptolemy.actor.TypedCompositeActor");
+                    formalArgs[1] = Class.forName("java.lang.String");
+                    Constructor entityConstructor = 
+                        entityClass.getConstructor(formalArgs);
+                    Object actualArgs[] = new Object[2];
+                    actualArgs[0] = new ptolemy.actor.TypedCompositeActor();
+                    actualArgs[1] = "bogusname";
+                    Entity instance =
+                        (Entity)entityConstructor.newInstance(actualArgs);
+
+                    Enumeration attribs = instance.getAttributes();
+                    while(attribs.hasMoreElements()) {
+                        Attribute attrib = (Attribute) attribs.nextElement();
+                        if(attrib instanceof Parameter) {
+                            Parameter param = (Parameter) attrib;
+                            SchematicParameter model = 
+                                new SchematicParameter();
+                            model.setName(param.getName());
+                            model.setValue(param.getToken().stringValue());
+                            model.setType(param.getToken().getClass().getName());
+                            ptmlobject.addParameter(model);
+                        }
+                    }
+
+                    Enumeration ports = instance.getPorts();
+                    while(ports.hasMoreElements()) {
+                        TypedIOPort port = (TypedIOPort) ports.nextElement();
+                        SchematicPort model = 
+                            new SchematicPort();
+                        model.setName(port.getName());
+                        model.setMultiport(port.isMultiport());
+                        model.setInput(port.isInput());
+                        model.setOutput(port.isOutput());
+                        ptmlobject.addPort(model);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    throw new IllegalActionException(
+                            "Error creating actor: " + ex);
+                }
+            }
+        }
+
         Enumeration children = e.childElements();
         while(children.hasMoreElements()) {
             XMLElement child = (XMLElement)children.nextElement();
@@ -562,7 +547,14 @@ public class PTMLObjectFactory {
             } else if(etype.equals("description")) {
                 ptmlobject.setDocumentation(child.getPCData());
             } else if(etype.equals("port")) {
-                ptmlobject.addPort(_createSchematicPort(child));
+                SchematicPort newPort = _createSchematicPort(child);
+                SchematicPort oldPort = ptmlobject.getPort(newPort.getName());
+                if(oldPort == null) {
+                    ptmlobject.addPort(_createSchematicPort(child));
+                } else {
+                    throw new IllegalActionException("Port exists with " + 
+                            "same name as " + child + " in " + ptmlobject);
+                }
             } else if(etype.equals("terminalmap")) {
                 ptmlobject.setTerminalMap(_createTerminalMap(child, 
                         ptmlobject.getTerminalStyle()));

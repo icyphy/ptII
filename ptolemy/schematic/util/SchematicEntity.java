@@ -229,25 +229,16 @@ public class SchematicEntity extends PTMLTemplateObject
 
     /**
      * Return the port contained in this object with the given name.
-     *
-     * @throw IllegalActionException if no port exists with the given name.
      */
-    /*   public SchematicPort getPort(String name)
-	throws IllegalActionException {
-	_template.getPort(name);
-	}*/
+    public SchematicPort getPort(String name) {
+        return (SchematicPort) _ports.get(name);
+    }
  
     /**
      * Return the schematic terminal that has the given name.
-     * Throw an exception if there is no terminal with the
-     * given name in this relation.
      */
-    public SchematicTerminal getTerminal (String name)         
-            throws IllegalActionException {
-        SchematicTerminal terminal = (SchematicTerminal) _terminals.get(name);
-        if(terminal == null) throw new IllegalActionException(
-                "Terminal not found with name " + name);
-        return terminal;
+    public SchematicTerminal getTerminal (String name) {        
+        return (SchematicTerminal) _terminals.get(name);
     }     
 
     /**

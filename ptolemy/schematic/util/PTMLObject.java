@@ -70,24 +70,34 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
 
     /**
      * Add a new Parameter to the object.  The Parameter will be 
-     * added at the end of the current parameters.
+     * added at the end of the current parameters.  If a parameter with the 
+     * same name already exists, then update the type and value of that
+     * parameter, instead of appending the new one.
      *  @exception IllegalActionException If the parameter has no name.
-     *  @exception NameDuplicationException If the name of the parameter
-     *  coincides with the name of another parameter
-     *  contained in this object.
-     *
      */
     public void addParameter (SchematicParameter t)
-        throws IllegalActionException, NameDuplicationException {
-        if(_parameters == null) {            
-            // This is rather convoluted, since we don't want to
-            // save the NamedList if the append is just going to throw
-            // an exception.
-            NamedList newparameters = new NamedList();
-            newparameters.append(t);
-            _parameters = newparameters;
-        } else {
-            _parameters.append(t);
+        throws IllegalActionException {
+        try {
+            if(_parameters == null) {            
+                // This is rather convoluted, since we don't want to
+                // save the NamedList if the append is just going to throw
+                // an exception.
+                NamedList newparameters = new NamedList();
+                newparameters.append(t);
+                _parameters = newparameters;
+            } else {
+                SchematicParameter oldParam = getParameter(t.getName());
+                if(oldParam == null) {
+                    _parameters.append(t);
+                } else {
+                    oldParam.setType(t.getType());
+                    oldParam.setValue(t.getValue());
+                }
+            }
+        } 
+        catch (NameDuplicationException ex) {
+            ex.printStackTrace();
+            throw new InternalErrorException(ex.getMessage());
         }
     }
 
