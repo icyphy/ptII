@@ -442,10 +442,10 @@ src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
 		src_jar/hyvisual$(VERSION)/doc/makefile
 	# Fix up actor/lib/test/makefile
 	egrep -v OrderedMerge.tcl \
-		src_jar/hyvisual$(VERSION)/actor/lib/test/makefile \
-		> src_jar/hyvisual$(VERSION)/actor/lib/test/makefile.tmp
-	mv src_jar/hyvisual$(VERSION)/actor/lib/test/makefile.tmp \
-		src_jar/hyvisual$(VERSION)/actor/lib/test/makefile
+		src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/test/makefile \
+		> src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/test/makefile.tmp
+	mv src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/test/makefile.tmp \
+		src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/test/makefile
 	# Fix up makefile
 	egrep -v "actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|thales" \
 		src_jar/hyvisual$(VERSION)/makefile | \
