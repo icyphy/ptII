@@ -574,6 +574,11 @@ For more help, choose Help from the upper menu bar.</text>
             <xsl:call-template name="DiffEquation"/>
         </xsl:for-each>
 
+        <!-- Algebraic Equations -->
+        <xsl:for-each select="AlgEquation">
+            <xsl:call-template name="AlgEquation"/>
+        </xsl:for-each>
+
         <!-- Construct the internal links in refinements. -->
 
         <!-- Construct and link the relations based on I/O ports -->
@@ -604,6 +609,14 @@ For more help, choose Help from the upper menu bar.</text>
                     <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
                 </xsl:element>
             </xsl:for-each>
+            <xsl:for-each select="../../AlgEquation/AExpr[descendant::VarRef/@var=$varID]">
+                <xsl:variable name="outputName"><xsl:value-of select="key('nodeID',../VarRef/@var)/@name"/></xsl:variable>
+                <xsl:variable name="expressionName"><xsl:value-of select="concat($outputName, 'AlgEquation')"/></xsl:variable>
+                <xsl:element name="link">
+                    <xsl:attribute name="port"><xsl:value-of select="concat($expressionName, '.', $varName)"/></xsl:attribute>
+                    <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
+                </xsl:element>
+            </xsl:for-each>
         </xsl:for-each>
 
         <!-- Link the relations to the input ports of Differential Equations -->
@@ -615,6 +628,21 @@ For more help, choose Help from the upper menu bar.</text>
                 <xsl:if test="$counts!=0">
                     <xsl:element name="link">
                         <xsl:attribute name="port"><xsl:value-of select="concat($prefix, 'FlowEquation.', $varName)"/></xsl:attribute>
+                        <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
+                    </xsl:element>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:for-each>
+
+        <!-- Link the relations to the input ports of Algebraic Equations -->
+        <xsl:for-each select="AlgEquation">
+            <xsl:variable name="prefix"><xsl:value-of select="key('nodeID',VarRef/@var)/@name"/></xsl:variable>
+            <xsl:for-each select="AExpr/descendant::VarRef">
+                <xsl:variable name="varName" select="key('nodeID',@var)/@name"/>
+                <xsl:variable name="counts" select="count(//DNHA/HybridAutomaton/IntegerVariable[@name=$varName]|//DNHA/HybridAutomaton/RealVariable[@name=$varName]|//DNHA/HybridAutomaton/BooleanVariable[@name=$varName])"/>
+                <xsl:if test="$counts!=0">
+                    <xsl:element name="link">
+                        <xsl:attribute name="port"><xsl:value-of select="concat($prefix, 'AlgEquation.', $varName)"/></xsl:attribute>
                         <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
                     </xsl:element>
                 </xsl:if>
@@ -811,7 +839,7 @@ For more help, choose Help from the upper menu bar.</text>
 </xsl:template>
 
 <!-- ==========================================================
-     Expressions, Invariants, DiffEquations, UpdateActions
+     Expressions, Invariants, DiffEquations, AlgEquations, UpdateActions
      ========================================================== -->
 
 <!-- Expression -->
@@ -950,10 +978,14 @@ For more help, choose Help from the upper menu bar.</text>
     <xsl:param name="stateName" select="'Default StateName'"/>
     <xsl:for-each select="../IntegerVariable[@kind='Output']|../RealVariable[@kind='Output']|../BooleanVariable[@kind='Output']">
         <xsl:variable name="temp"><xsl:value-of select="@name"/></xsl:variable>
-        <xsl:choose>
-            <xsl:when test="$temp!=''"><xsl:value-of select="concat($stateName, '.', $temp, '.initialState=', $temp)"/></xsl:when>
-        </xsl:choose>
-        <xsl:value-of select="';'"/>
+        <xsl:variable name="stateID"><xsl:value-of select="@_id"/></xsl:variable>
+        <xsl:variable name="counts" select="count(../Location/DiffEquation/VarRef[@var=$stateID])"/>
+        <xsl:if test="$counts!=0">
+            <xsl:choose>
+                <xsl:when test="$temp!=''"><xsl:value-of select="concat($stateName, '.', $temp, '.initialState=', $temp)"/></xsl:when>
+            </xsl:choose>
+            <xsl:value-of select="';'"/>
+        </xsl:if>
     </xsl:for-each>
 </xsl:template>
 
@@ -1074,6 +1106,70 @@ For more help, choose Help from the upper menu bar.</text>
         </xsl:element>
         <xsl:element name="link">
             <xsl:attribute name="port"><xsl:value-of select="concat($varName, '.output')"/></xsl:attribute>
+            <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
+        </xsl:element>
+
+    </xsl:for-each>
+
+</xsl:template>
+
+<!-- AlgEquation -->
+<xsl:template name="AlgEquation">
+    <!-- equation -->
+    <xsl:for-each select="AExpr">
+        <xsl:element name="entity">
+            <xsl:variable name="outputName"><xsl:value-of select="key('nodeID',../VarRef/@var)/@name"/></xsl:variable>
+            <xsl:attribute name="name"><xsl:value-of select="concat($outputName, 'AlgEquation')"/></xsl:attribute>
+            <xsl:attribute name="class">ptolemy.actor.lib.Expression</xsl:attribute>
+            <xsl:element name="property">
+                <xsl:attribute name="name">expression</xsl:attribute>
+                <!--xsl:attribute name="class">ptolemy.data.expr.Parameter</xsl:attribute-->
+                <xsl:attribute name="value"><xsl:apply-templates select="."/></xsl:attribute>
+            </xsl:element>
+
+            <xsl:element name="port">
+                <xsl:attribute name="name">output</xsl:attribute>
+                <xsl:attribute name="class">ptolemy.actor.TypedIOPort</xsl:attribute>
+                <xsl:element name="property">
+                    <xsl:attribute name="name">output</xsl:attribute>
+                </xsl:element>
+                <xsl:element name="property">
+                    <xsl:attribute name="name">_type</xsl:attribute>
+                    <xsl:attribute name="class">ptolemy.actor.TypeAttribute</xsl:attribute>
+                    <xsl:attribute name="value"><xsl:value-of select="'double'"/></xsl:attribute>
+                </xsl:element>
+            </xsl:element>
+
+            <xsl:for-each select="descendant::VarRef">
+                <xsl:variable name="varName" select="key('nodeID',@var)/@name"/>
+                <xsl:variable name="counts" select="count(//DNHA/HybridAutomaton/IntegerVariable[@name=$varName]|//DNHA/HybridAutomaton/RealVariable[@name=$varName]|//DNHA/HybridAutomaton/BooleanVariable[@name=$varName])"/>
+                <xsl:if test="$counts!=0">
+                    <xsl:element name="port">
+                        <xsl:attribute name="name"><xsl:value-of select="$varName"/></xsl:attribute>
+                        <xsl:attribute name="class">ptolemy.actor.TypedIOPort</xsl:attribute>
+                        <xsl:element name="property">
+                            <xsl:attribute name="name">input</xsl:attribute>
+                        </xsl:element>
+                    </xsl:element>
+                </xsl:if>
+            </xsl:for-each>
+
+        </xsl:element>
+    </xsl:for-each>
+
+    <xsl:for-each select="VarRef">
+        <xsl:variable name="varName"><xsl:value-of select="key('nodeID',@var)/@name"/></xsl:variable>
+        <xsl:variable name="varID"><xsl:value-of select="@var"/></xsl:variable>
+        <xsl:element name="relation">
+            <xsl:attribute name="name"><xsl:value-of select="$varName"/></xsl:attribute>
+            <xsl:attribute name="class">ptolemy.actor.TypedIORelation</xsl:attribute>
+        </xsl:element>
+        <xsl:element name="link">
+            <xsl:attribute name="port"><xsl:value-of select="$varName"/></xsl:attribute>
+            <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
+        </xsl:element>
+        <xsl:element name="link">
+            <xsl:attribute name="port"><xsl:value-of select="concat($varName, 'AlgEquation', '.output')"/></xsl:attribute>
             <xsl:attribute name="relation"><xsl:value-of select="$varName"/></xsl:attribute>
         </xsl:element>
 

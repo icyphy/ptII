@@ -156,9 +156,9 @@ invariants or the expressions to be integrated, they are mapped into inputs of t
 				<xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
 			</xsl:for-each>
 
-			<!--  Variables referred by actions or controlled by differential equations 
-				 are mapped into inputs. -->
-			<xsl:for-each select="descendant::Action/VarRef|descendant::DiffEquation/VarRef">
+			<!--  Variables referred by invariants or the expressions to be integrated 
+				 are mapped into outputs.-->
+			<xsl:for-each select="descendant::Action/VarRef|descendant::DiffEquation/VarRef|descendant::AlgEquation/VarRef">
 				<xsl:for-each select="key('nodeID',@var)">
 					<xsl:copy>
 						<xsl:for-each select="@*">
@@ -174,8 +174,8 @@ invariants or the expressions to be integrated, they are mapped into inputs of t
 				</xsl:for-each>
 			</xsl:for-each>
 
-			<!--  Variables referred by invariants or the expressions to be integrated 
-				 are mapped into outputs.-->
+			<!--  Variables referred by actions or controlled by differential equations 
+				 are mapped into inputs. -->
 			<xsl:for-each select="descendant::Expr/descendant::VarRef|descendant::AExpr/descendant::VarRef">
 				<xsl:for-each select="key('nodeID',@var)">
 					<xsl:copy>

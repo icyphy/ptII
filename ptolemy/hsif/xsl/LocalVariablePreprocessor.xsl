@@ -106,7 +106,7 @@ a local parameter.
 	     	    treated as local parameters, if yes, they are treated as the local output variables. -->
             <xsl:for-each select="IntegerVariable[@kind='Controlled']|IntegerVariable[@kind='Observable']">
                 <xsl:variable name="id" select="@_id"/>
-                <xsl:variable name="counts"  select="count(..//DiffEquation/VarRef[@var=$id])"/>
+                <xsl:variable name="counts"  select="count(..//DiffEquation/VarRef[@var=$id]|..//AlgEquation/VarRef[@var=$id])"/>
 
 	         <!-- No referrence is found. -->
                 <xsl:if test="$counts=0">
@@ -137,7 +137,7 @@ a local parameter.
 
             <xsl:for-each select="RealVariable[@kind='Controlled']|RealVariable[@kind='Observable']">
                 <xsl:variable name="id" select="@_id"/>
-                <xsl:variable name="counts"  select="count(..//DiffEquation/VarRef[@var=$id])"/>
+                <xsl:variable name="counts"  select="count(..//DiffEquation/VarRef[@var=$id]|..//AlgEquation/VarRef[@var=$id])"/>
                 
                 <xsl:if test="$counts=0">
                     <xsl:comment> This variable is actually a parameter. </xsl:comment>
@@ -166,7 +166,7 @@ a local parameter.
 
             <xsl:for-each select="BooleanVariable[@kind='Controlled']|BooleanVariable[@kind='Observable']">
                 <xsl:variable name="id" select="@_id"/>
-                <xsl:variable name="counts"  select="count(..//DiffEquation/VarRef[@var=$id])"/>
+                <xsl:variable name="counts"  select="count(..//DiffEquation/VarRef[@var=$id]|..//AlgEquation/VarRef[@var=$id])"/>
 
                 <xsl:if test="$counts=0">
                     <xsl:comment> This variable is actually a parameter. </xsl:comment>
