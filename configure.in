@@ -205,6 +205,8 @@ PTII_LOCALURL=`echo "file:///$PTII_DIR" | sed 's/ /%20/g'`
 #       NOTE: If your javac compiler is in /usr/bin, then PTJAVA_DIR is
 #       likely to be set to /usr.  Consider using PTJAVA_HOME if
 #       you are looking for Java jar files.
+#       Note that PTJAVA_HOME is set to the jre/ directory, wheras
+#       PTJAVA_DIR is set to the directory above the jre/ directory.
 #--------------------------------------------------------------------
 
 AC_ARG_WITH(java, [  --with-java=DIR         use Java binaries from DIR,
