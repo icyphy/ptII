@@ -204,10 +204,11 @@ public class ProcessThread extends PtolemyThread {
                     // Process was terminated by call to stop();
                     _debug("-- Thread was interrupted: " + thrownWhenIterate);
                 } else if (
-                        thrownWhenIterate instanceof InterruptedIOException
-                        || thrownWhenIterate.getCause() instanceof
-                        InterruptedIOException
-                        ) {
+                    thrownWhenIterate instanceof InterruptedIOException
+                    || (thrownWhenIterate != null && 
+                        thrownWhenIterate.getCause() instanceof 
+                        InterruptedIOException)
+                ) {
                     // PSDF has problems here when run with JavaScope
                     _debug("-- IO was interrupted: " + thrownWhenIterate);
 
