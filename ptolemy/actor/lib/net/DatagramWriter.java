@@ -139,7 +139,7 @@ public class DatagramWriter extends TypedAtomicActor {
         defaultRemoteAddress.setToken(new StringToken("localhost"));
 
         defaultRemoteSocketNumber =
-                new Parameter(this, "defaultRemoteSocketNumber");
+            new Parameter(this, "defaultRemoteSocketNumber");
         defaultRemoteSocketNumber.setTypeEquals(BaseType.INT);
         defaultRemoteSocketNumber.setExpression("4004"); //setExpression works
 
@@ -162,16 +162,16 @@ public class DatagramWriter extends TypedAtomicActor {
          *  taking the least significant 8 bits from each integer.
          */
 	/*
-	encodeForPtolemyParser = new Parameter(this, "encodeForPtolemyParser");
-	encodeForPtolemyParser.setTypeEquals(BaseType.BOOLEAN);
-	encodeForPtolemyParser.setExpression("true");
+          encodeForPtolemyParser = new Parameter(this, "encodeForPtolemyParser");
+          encodeForPtolemyParser.setTypeEquals(BaseType.BOOLEAN);
+          encodeForPtolemyParser.setExpression("true");
         */
 
 	// Added for SDF usability.  Empty Token() is output, just a trigger.
   	triggerOutput = new TypedIOPort(this, "triggerOutput");
-	 // Had had ', true, false' before ');' above.
+        // Had had ', true, false' before ');' above.
         triggerOutput.setTypeEquals(BaseType.GENERAL);
-	 // 'INT' works too in place of 'GENERAL'.
+        // 'INT' works too in place of 'GENERAL'.
         triggerOutput.setOutput(true);
     }
 
@@ -255,7 +255,7 @@ public class DatagramWriter extends TypedAtomicActor {
             synchronized(this) {
                 if (_socket != null) {
                     if (_debugging) _debug("Current socket port is "
-                                       + _socket.getLocalPort());
+                            + _socket.getLocalPort());
 
                     _localSocketNumber =
                         ((IntToken)(localSocketNumber.getToken())).intValue();
@@ -265,7 +265,7 @@ public class DatagramWriter extends TypedAtomicActor {
                         if (_debugging) _debug("Try create socket for port "
                                 + _localSocketNumber);
                         DatagramSocket newSocket =
-                                new DatagramSocket(_localSocketNumber);
+                            new DatagramSocket(_localSocketNumber);
                         if (_debugging) _debug("A socket is created!!");
                         _socket.close();
                         _socket = newSocket;
@@ -280,8 +280,8 @@ public class DatagramWriter extends TypedAtomicActor {
 
 	} else if (attribute == defaultRemoteAddress) {
 	    String address =
-                    ((StringToken)defaultRemoteAddress.getToken())
-                    .stringValue();
+                ((StringToken)defaultRemoteAddress.getToken())
+                .stringValue();
 	    //System.out.println("address = " + address + address + " phew!");
 	    try {
 		_address = InetAddress.getByName(address);
@@ -293,12 +293,12 @@ public class DatagramWriter extends TypedAtomicActor {
 
 	} else if (attribute == defaultRemoteSocketNumber) {
 	    _remoteSocketNumber =
-                    ((IntToken)defaultRemoteSocketNumber.getToken())
-                    .intValue();
+                ((IntToken)defaultRemoteSocketNumber.getToken())
+                .intValue();
 	    _remoteSocketNumber &= 65535; // Truncate to 16 bits.
 
-	// This is a 'ChoiceStyle' i.e. drop-menu-choose parameter.
-        // See also ../io.xml for other half of this mechanism.
+            // This is a 'ChoiceStyle' i.e. drop-menu-choose parameter.
+            // See also ../io.xml for other half of this mechanism.
 	} else if (attribute == encoding) {
 	    _encoding = encoding.getExpression();
 	    if (_encoding.equals("for_Ptolemy_parser")) {
@@ -354,7 +354,7 @@ public class DatagramWriter extends TypedAtomicActor {
 		// Valid socket numbers are 0..65535,
 		// so keep only lower 16 bits.
 		_remoteSocketNumber = 65535 &
-                        ((IntToken)remoteSocketNumber.get(jj)).intValue();
+                    ((IntToken)remoteSocketNumber.get(jj)).intValue();
 	    }
 	}
 
@@ -367,7 +367,7 @@ public class DatagramWriter extends TypedAtomicActor {
 	    } else if (_encodeFromIntegerArray) {
 		ArrayToken dataIntArrayToken = (ArrayToken) data.get(0);
 		int dataLengthInBytes =
-		        _encodedBytesPerInteger * dataIntArrayToken.length();
+                    _encodedBytesPerInteger * dataIntArrayToken.length();
 		dataBytes = new byte[dataLengthInBytes];
                 for (int j = 0; j < dataIntArrayToken.length(); j++) {
 		    if (false) {
@@ -378,7 +378,7 @@ public class DatagramWriter extends TypedAtomicActor {
 			System.out.println("j " + j);
 		    }
                     IntToken dataIntOneToken =
-                            (IntToken)dataIntArrayToken.getElement(j);
+                        (IntToken)dataIntArrayToken.getElement(j);
 		    int oneIntValue = dataIntOneToken.intValue();
 		    if (_encodedBytesPerInteger/*(N)*/ == 1) {
 			dataBytes[j] = (byte)oneIntValue;
@@ -402,8 +402,8 @@ public class DatagramWriter extends TypedAtomicActor {
 
 
 	    DatagramPacket packet = new
-                    DatagramPacket(dataBytes, dataBytes.length,
-                    _address, _remoteSocketNumber);
+                DatagramPacket(dataBytes, dataBytes.length,
+                        _address, _remoteSocketNumber);
             try {
                 _socket.send(packet);
             }
@@ -442,7 +442,7 @@ public class DatagramWriter extends TypedAtomicActor {
 
         super.initialize();
         _localSocketNumber =
-                ((IntToken)(localSocketNumber.getToken())).intValue();
+            ((IntToken)(localSocketNumber.getToken())).intValue();
         if (_localSocketNumber < 0 || _localSocketNumber > 65535) {
             throw new IllegalActionException(this, "Local socket number "
 		    + _localSocketNumber
@@ -460,7 +460,7 @@ public class DatagramWriter extends TypedAtomicActor {
         }
 
 	String address =
-                ((StringToken)defaultRemoteAddress.getToken()).stringValue();
+            ((StringToken)defaultRemoteAddress.getToken()).stringValue();
         try {
             _address = InetAddress.getByName(address);
         }
@@ -471,7 +471,7 @@ public class DatagramWriter extends TypedAtomicActor {
         }
 
         _remoteSocketNumber =
-                ((IntToken)defaultRemoteSocketNumber.getToken()).intValue();
+            ((IntToken)defaultRemoteSocketNumber.getToken()).intValue();
         if (_remoteSocketNumber < 0 || _remoteSocketNumber > 65535) {
             //System.out.println(this + " defaultRemoteSocketNumber is "
 	    //        + _remoteSocketNumber + " .  Must be in 0..65535.");
