@@ -229,7 +229,13 @@ public class MoMLParser extends HandlerBase {
                 _parser.getLineNumber(),
                 _parser.getColumnNumber());
         // If we have a non-default namespace, then prepend the namespace.
-        if (_namespace != DEFAULT_NAMESPACE && name.equals("name")) {
+        // This needs to be done for every attribute whose value is a name.
+        if (_namespace != DEFAULT_NAMESPACE &&
+                (name.equals("name") 
+                || name.equals("port")
+                || name.equals("relation")
+                || name.equals("vertex")
+                || name.equals("pathTo"))) {
             value = _namespace + ":" + value;
         }
         // NOTE: value may be null if attribute default is #IMPLIED.
