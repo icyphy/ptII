@@ -68,7 +68,7 @@ public class VectorizableTransformer extends Transformer implements Vectorizable
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set the vector length. The vector length of an acotor is
+    /** Set the vector length. The vector length of an actor is
      *  defined as the number of tokens that are consumed and/or
      *  produced when the actor is fired. If a vectorizable actor
      *  is used in a domain that supports vectorized actors, then
@@ -85,7 +85,14 @@ public class VectorizableTransformer extends Transformer implements Vectorizable
      */
     public void setVectorLength(int vectorLength) 
 	throws IllegalActionException {
-	_vectorLength = vectorLength;
+	if (vectorLength > 0) {
+	    _vectorLength = vectorLength;
+	} else {
+	    throw new IllegalActionException(this,
+		     "Attemp to set an invalid vector length. The " +
+		     "vector length must be a positive integer. " +
+                     "Attempted to set vector length = " + vectorLength);
+	}
     }
 
     ///////////////////////////////////////////////////////////////////

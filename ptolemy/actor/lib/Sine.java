@@ -149,6 +149,24 @@ public class Sine extends VectorizableTransformer {
 	_resultArray = new DoubleToken[_vectorLength];
     }
 
+    /** Set the vector length. The vector length of an actor is
+     *  defined as the number of tokens that are consumed and/or
+     *  produced when the actor is fired. 
+     *  An exception will occur if the requested vector length is
+     *  less than 1.
+     *  @param vectorLength The requested vector length to use for
+     *   the actor.
+     *
+     *  @exception IllegalActionException If the requested vector length
+     *   is invalid or cannot be set.
+     */
+    public void setVectorLength(int vectorLength) 
+	throws IllegalActionException {
+	super.setVectorLength(vectorLength);
+	_inArray = new DoubleToken[_vectorLength];
+	_resultArray = new DoubleToken[_vectorLength];
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
