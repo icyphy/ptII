@@ -43,8 +43,10 @@ import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.PortConfigurerDialog;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.toolbox.MenuItemFactory;
+
 import diva.gui.toolbox.JContextMenu;
 
 //////////////////////////////////////////////////////////////////////////
@@ -87,21 +89,27 @@ public class PortDialogFactory implements MenuItemFactory {
         // Note, this uses the "new" way of doing dialogs.
         Action action = new AbstractAction(name) {
             public void actionPerformed(ActionEvent e) {
-                Component parent = menu.getInvoker();
-                while (parent.getParent() != null) {
-                    parent = parent.getParent();
-                }
-                if (parent instanceof Frame) {
-                    DialogTableau dialogTableau =
-                        DialogTableau.createDialog(
-                            (Frame) parent,
-                            _configuration,
-                            ((BasicGraphFrame) parent).getEffigy(),
-                            PortConfigurerDialog.class,
-                            (Entity) target);
-                    if (dialogTableau != null) {
-                        dialogTableau.show();
+                try {
+                    Component parent = menu.getInvoker();
+                    while (parent.getParent() != null) {
+                        parent = parent.getParent();
                     }
+                    if (parent instanceof Frame) {
+                        DialogTableau dialogTableau =
+                            DialogTableau.createDialog(
+                                    (Frame) parent,
+                                    _configuration,
+                                    ((BasicGraphFrame) parent).getEffigy(),
+                                    PortConfigurerDialog.class,
+                                    (Entity) target);
+                        if (dialogTableau != null) {
+                            dialogTableau.show();
+                        }
+                    }
+                } catch (Throwable throwable) {
+                    // If we get a ClassCastException, display the error.
+                    MessageHandler.error("Failed to perform action" + e,
+                            throwable);
                 }
             }
         };
