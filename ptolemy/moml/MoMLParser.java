@@ -2306,7 +2306,7 @@ public class MoMLParser extends HandlerBase {
             if (protocol != null
                     && protocol.trim().toLowerCase().equals("http")) {
                 SecurityManager security = System.getSecurityManager();
-                boolean withinApplet = false;
+                boolean withinUntrustedApplet = false;
                 if (security != null) {
                     try {
                         // This is sort of arbitrary, but seems to be the
@@ -2318,10 +2318,16 @@ public class MoMLParser extends HandlerBase {
                         // and we can rely on the Applet protection
                         // mechanism to protect the user against
                         // a wayward model.
-                        withinApplet = true;
+
+                        // Note that if the jar files were signed
+                        // for use with Web Start, then we are in a trusted
+                        // applet, so the SecurityException will _not_
+                        // be thrown and withinUntrustedApplet will be false.
+
+                        withinUntrustedApplet = true;
                     }
                 }
-                if ((security == null || withinApplet == false)
+                if ((security == null || withinUntrustedApplet == false)
                         && !_approvedRemoteXmlFiles.contains(xmlFile)) {
 		    // If the user invoked file -> Open URL
 		    // then do not warn for any URLS below the URL
