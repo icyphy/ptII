@@ -110,8 +110,14 @@ proc jdkStackTrace {} {
 	$printWriter flush
 
 	puts "[$exception getMessage]"
+
 	puts "    while executing"
-	puts "[$stream toString]"
+	set stack [$stream toString]
+	if { [string length $stack] > 250 } {
+	    puts "[string range $stack 0 250] . . ."
+	} else {
+	    puts "$stack"
+	}
 	puts "    while executing"
     }
     puts $errorInfo

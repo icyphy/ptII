@@ -434,9 +434,14 @@ proc jdkStackTrace {} {
 	$exception {printStackTrace java.io.PrintWriter} $printWriter
 	$printWriter flush
 
-	puts "[$exception getMessage]"
+	set exceptionMessage [$exception getMessage]
 	puts "    while executing"
-	puts "[$stream toString]"
+	set stack [$stream toString]
+	if { [string length $stack] > 1024 } {
+	    puts "[string range $stack 0 1024] . . ."
+	} else {
+	    puts "$stack"
+	}
 	puts "    while executing"
     }
     puts $errorInfo
