@@ -162,7 +162,7 @@ public class InterfaceLookupGenerator {
 
     /** Finds out whether a class needs a lookup function.
      * @param source The class.
-     * @return True if the class has atleast one required method (@see
+     * @return True if the class has at least one required method (@see
      * RequiredFileGenerator.isRequired) that is defined in an
      * interface implemented by the class.
      */
