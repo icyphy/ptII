@@ -33,6 +33,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Vector;
 import java.util.Enumeration;
@@ -46,18 +47,27 @@ import ptolemy.lang.StringManip;
 /** A vector containing paths to search for when resolving an import or
 package.
 
+This class is used by the code generation system to find class
+definitions.  The codegen system uses reflection to find definitions
+of some classes and parses .java files for other classes.  This
+class provides functionality to find classes in both categories.
+This class can be thought of as an augmentation to the CLASSPATH
+facility.  Note that we can't use the ClassLoader because
+not all of the .java files we are interested in will have been compiled.
+
+This class also defines Sets of classes and packages to help find
+System classes and packages as well as Ptolemy core classes and
+packages.
+
 <p>There are three ways that classes are read in.
 <ol>
-<li> The class is a System classes (such as java.lang.Object),
+<li> The class is a System class (such as java.lang.Object),
 and it is read in using reflection.
 <li> The class is a Ptolemy core class (such as ptolemy.kernel.util.NamedObj)
 and it is read in using reflection.
-<li> The class is read in as a filel and parsed.
+<li> The class is read in as a file and parsed.
 </ol>
 
-This class also defines sets of classes and packages to help find
-System classes and packages as well as Ptolemy Core classes and
-packages.
 
 
 <p>
@@ -100,12 +110,16 @@ public class SearchPath extends Vector {
     ////                         public methods                    ////
 
     /** Open the Java source file with the qualified class name.
-     *  @param The qualified class name, which may either be qualified
+     *  @param target The qualified class name, which may either be qualified
      *  by the '.' character or by the value of File.pathSeparatorChar.
      *  @return an instance of File associated with the path of the
-     *  source code. If the source code cannot be found, return null.
+     *  source code.
+     *  @exception IOException If there is a problem getting the 
+     *  canonical name of the file.
+     *  @exception FileNotFoundException If the source file cannot be found
      */
-    public File openSource(String target) {
+    public File openSource(String target)
+            throws IOException, FileNotFoundException {
 
 	// Convert a Java qualified name into a partial path name, without the
 	// file extension. For example, "ptolemy.lang.java.SearchPath" is
@@ -120,30 +134,32 @@ public class SearchPath extends Vector {
             File file = new File(fullName);
 
             if (file.isFile()) {
-                try {
-                    file = file.getCanonicalFile();
-                } catch (IOException e) {
-                    throw new RuntimeException(
-                            "cannot get canonical filename: " + e);
-                }
-                return file;
+                // This might throw IOException if we can't get the
+                // canonical name.
+                return file.getCanonicalFile();
             }
         }
-        return null;
+        throw new FileNotFoundException("Could not find source for " +
+                target);
     }
 
     /** Return a Set that contains an entry for each class in the
      * in the Ptolemy II core as listed in ptolemyCorePackages.
-     * The entry will be of the form ptolemy/kernel/util/NamedObj
+     * The entry will be a String of the form "ptolemy.kernel.util.NamedObj".
+     * As a side effect, this method also updates the public variable
+     * ptolemyCorePackageSet, which contains the names of the Ptolemy
+     * core Packages.
+     * @returns A set of Strings where each element is a fully
+     * qualified class name.
      */
     public static Set ptolemyCoreClasses() {
         // Create a HashSet with a size of 373
         // The number of .class files in the Ptolemy core is 186
-        // Determine that the number of .class files in rt.jar with:
+        // Determine that the number of .class files in the Ptolemy core with:
         // find . -name "*.class" -print | egrep 'ptolemy/kernel|ptolemy/actor/util|ptolemy/actor/sched|ptolemy/data|ptolemy/graph|ptolemy/math' | grep -v test | wc
         // The Collections tutorial suggests a prime number slightly
         // larger than twice the size of the Set.
-        Set classSet = new HashSet(273);
+        Set classSet = new HashSet(373);
 
         // Array of names of packages that are in the Ptolemy core.
         // We don't parse java files in these packages, we use
@@ -170,23 +186,21 @@ public class SearchPath extends Vector {
             for(int p = 0; p < ptolemyCorePackages.length &&
                     !foundPackages[p];
                     p++) {
-                String dirName = path + ptolemyCorePackages[p];
-                File dir = new File(dirName);
-                if (dir.isDirectory()) {
-                    String[] nameList = dir.list();
+                String directoryName = path + ptolemyCorePackages[p];
+                File directory = new File(directoryName);
+                if (directory.isDirectory()) {
+                    String[] nameList = directory.list();
                     foundPackages[p] = true;
                     for (int j = 0; j < nameList.length; j++) {
                         String name = nameList[j];
                         int length = name.length();
-                        String className = null;
-                            if ((length > 6) &&
-                                    name.substring(length - 6).
-                                    equals(".class")) {
-                                className = name.substring(0, length - 6);
-                            }
-                        classSet.add(
-                                ptolemyCorePackages[p].replace('/', '.') +
-                                "." + className);
+                        if (StringManip.unqualifiedPart(name).
+                                equals("class")) {
+                            classSet.add(
+                                    ptolemyCorePackages[p].replace('/', '.') +
+                                    "." + 
+                                    StringManip.partBeforeLast(name, '.'));
+                        }
                     }
                 }
             }
@@ -208,8 +222,13 @@ public class SearchPath extends Vector {
 
     /** Return a Set that contains an entry for each class in the
      * system jar file.
-     * Note that classes will have entries like java.lang.Object, they
+     * Note that classes will have entries like "java.lang.Object", they
      * will not have extension like .class or .java
+     * As a side effect, this method also updates the public variable
+     * systemPackageSet, which contains the names of the Java runtime
+     * system Packages.
+     * @returns A set of Strings where each element is a fully
+     * qualified class name.
      */
     public static Set systemClasses() {
         // We use class names because they are . separated,
