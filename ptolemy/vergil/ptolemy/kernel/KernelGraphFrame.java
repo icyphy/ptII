@@ -288,7 +288,24 @@ public class KernelGraphFrame extends GraphFrame {
 	    // Figure out what entity.
 	    super.actionPerformed(e);
 	    NamedObj object = getTarget();
-	    if(!(object instanceof CompositeEntity)) return;
+	    if(!(object instanceof CompositeEntity)) {
+                // Open the source code, if possible.
+                String filename = object.getClass()
+                        .getName().replace('.', '/') + ".java";
+                try {
+                    URL toRead = getClass().getClassLoader()
+                           .getResource(filename);
+                    if (toRead != null) {
+                        getConfiguration().openModel(null,
+                               toRead, toRead.toExternalForm());
+                    } else {
+                        MessageHandler.error("Cannot find inside definition.");
+                    }
+                } catch (Exception ex) {
+                    MessageHandler.error("Cannot find inside definition.", ex);
+                }
+                return;
+            }
 	    CompositeEntity entity = (CompositeEntity)object;
 
             // If the entity defers its MoML definition to another,
