@@ -44,8 +44,10 @@ package ptolemy.plot;
 // given, unfortunately, in pixels.  This means that as resolutions
 // get better, this program may need to be adjusted.
 
+import java.awt.BasicStroke;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStream;
@@ -957,6 +959,7 @@ public class Plot extends PlotBox {
             double zeroypos = _lry - (long) ((0-_yMin) * _yscale);
             if (_lry < zeroypos) zeroypos = _lry;
             if (_uly > zeroypos) zeroypos = _uly;
+            _setWidth(graphics, 1f);
             graphics.drawLine((int)xpos, (int)ypos, (int)xpos,
                     (int)zeroypos);
         }
@@ -965,7 +968,7 @@ public class Plot extends PlotBox {
     /** Draw a line from the specified starting point to the specified
      *  ending point.  The current color is used.  If the <i>clip</i> argument
      *  is true, then draw only that portion of the line that lies within the
-     *  plotting rectangle.
+     *  plotting rectangle. This method draws a line one pixel wide.
      *  This method should be called only from the event dispatch thread.
      *  It is not synchronized, so its caller should be.
      *  @param graphics The graphics context.
@@ -979,7 +982,30 @@ public class Plot extends PlotBox {
     protected void _drawLine(Graphics graphics,
             int dataset, long startx, long starty, long endx, long endy,
             boolean clip) {
+        _drawLine(graphics, dataset, startx, starty, endx, endy, clip, 1f);
+    }
 
+    /** Draw a line from the specified starting point to the specified
+     *  ending point.  The current color is used.  If the <i>clip</i> argument
+     *  is true, then draw only that portion of the line that lies within the
+     *  plotting rectangle.  The width argument is ignored if the graphics
+     *  argument is not an instance of Graphics2D.
+     *  This method should be called only from the event dispatch thread.
+     *  It is not synchronized, so its caller should be.
+     *  @param graphics The graphics context.
+     *  @param dataset The index of the dataset.
+     *  @param startx The starting x position.
+     *  @param starty The starting y position.
+     *  @param endx The ending x position.
+     *  @param endy The ending y position.
+     *  @param clip If true, then do not draw outside the range.
+     *  @param width The thickness of the line.
+     */
+    protected void _drawLine(Graphics graphics,
+            int dataset, long startx, long starty, long endx, long endy,
+            boolean clip, float width) {
+
+        _setWidth(graphics, width);
         if (clip) {
             // Rule out impossible cases.
             if (!((endx <= _ulx && startx <= _ulx) ||
@@ -1463,6 +1489,27 @@ public class Plot extends PlotBox {
         return false;
     }
 
+    /** If the graphics argument is an instance of Graphics2D, then set
+     *  the current stroke to the specified width.  Otherwise, do nothing.
+     *  @param graphics The graphics object.
+     *  @param width The width.
+     */
+    protected void _setWidth(Graphics graphics, float width) {
+        // For historical reasons, the API here only assumes Graphics
+        // objects, not Graphics2D.
+        if (graphics instanceof Graphics2D) {
+            // We cache the two most common cases.
+            if (width == 1f) {
+                ((Graphics2D)graphics).setStroke(_lineStroke1);
+            } else if (width == 2f) {
+                ((Graphics2D)graphics).setStroke(_lineStroke2);
+            } else {
+                ((Graphics2D)graphics).setStroke(new BasicStroke(
+                        width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+            }
+        }
+    }
+
     /** Write plot information to the specified output stream in
      *  the "old syntax," which predates PlotML.
      *  Derived classes should override this method to first call
@@ -1863,7 +1910,7 @@ public class Plot extends PlotBox {
         long prevy = ((Long)_prevy.elementAt(dataset)).longValue();
         // MIN_VALUE is a flag that there has been no previous x or y.
         if (pt.connected) {
-            _drawLine(graphics, dataset, xpos, ypos, prevx, prevy, true);
+            _drawLine(graphics, dataset, xpos, ypos, prevx, prevy, true, 2f);
         }
 
         // Save the current point as the "previous" point for future
@@ -1941,7 +1988,7 @@ public class Plot extends PlotBox {
                 int nexty = _lry - (int) ((nextp.y - _yMin) * _yscale);
                 // NOTE: I have no idea why I have to give this point backwards.
                 if (nextp.connected) _drawLine(graphics, dataset,
-                        nextx, nexty,  xpos, ypos, true);
+                        nextx, nexty,  xpos, ypos, true, 2f);
                 nextp.connected = false;
             }
 
@@ -2092,6 +2139,18 @@ public class Plot extends PlotBox {
     // NOTE: There are 11 colors in the base class.  Combined with 10
     // marks, that makes 110 unique signal identities.
     private static final int _MAX_MARKS = 10;
+
+    // A stroke of width 1.
+    private static final BasicStroke _lineStroke1 = new BasicStroke(
+            1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
+
+    // A stroke of width 2.
+    private static final BasicStroke _lineStroke2 = new BasicStroke(
+            2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
+
+    // The stroke to use for thin lines in the plot.
+    private static final BasicStroke _thinStroke = new BasicStroke(
+            1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
 
     /** @serial Flag indicating validity of _xBottom, _xTop,
      *  _yBottom, and _yTop.
