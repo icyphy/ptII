@@ -99,6 +99,37 @@ test PNDirector-5.1 {Test action methods} {
     
 } {.E0.A1.fire .E0.A1.initialize .E0.A1.postfire .E0.A1.prefire .E0.A1.wrapup .E0.A2.fire .E0.A2.initialize .E0.A2.postfire .E0.A2.prefire .E0.A2.wrapup}
 
+test PNDirector-5.2.1 {cover debug basic block} {
+    # NOTE: Uses the setup above
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set debugListener \
+	[java::new ptolemy.kernel.util.StreamListener $printStream]
+    $d3 addDebugListener $debugListener
+
+    $a1 clear
+    $manager run
+    $printStream flush
+    $d3 removeDebugListener $debugListener
+
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" debugOutput
+    list $debugOutput
+} {{Invoking preinitialize():  .E0.A1
+Invoking preinitialize():  .E0.A2
+Finished preinitialize().
+Invoking initialize():  .E0.A1
+initializing A1
+Invoking initialize():  .E0.A2
+initializing A2
+Detected Deadlock
+D3: calling wrapup()
+D3: finished deactivating branches
+D3: calling wrapup()
+}}
+
 ######################################################################
 ####
 #
@@ -146,3 +177,4 @@ broadcast new token 1
 received new token 0
 received new token 1
 }}
+
