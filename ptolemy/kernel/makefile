@@ -44,7 +44,10 @@ include $(CONFIG)
 CLASSPATH = ../..
 
 JSRCS = \
+	CentralizedExecutive.java \
+	DistributedExecutive.java \
 	Entity.java \
+	Executive.java \
 	Galaxy.java \
 	GenericPort.java \
 	GenericPortForTcl.java \
@@ -55,10 +58,18 @@ JSRCS = \
 	ObservableParameter.java \
 	Param.java \
 	Parameter.java \
+	Particle.java \
+	POElement.java \
 	Port.java \
 	Relation.java \
+	SampleTarget.java \
+	SampleSDFExecutive.java \
+	Scheduler.java \
+	SDFStar.java \
 	Star.java \
 	StatusArray.java \
+	Target.java \
+	ThreadedEntity.java \
 	Universe.java
 
 EXTRA_SRCS =	$(JSRCS)
