@@ -30,6 +30,10 @@
 */
 
 package ptolemy.data.expr;
+import ptolemy.kernel.util.IllegalActionException;
+import java.util.Vector;
+import java.io.ByteArrayInputStream;
+import java.io.FileReader;
 
 public class MatrixParserTokenManager implements MatrixParserConstants
 {
@@ -267,7 +271,7 @@ static private final int jjMoveNfa_0(int startState, int curPos)
                   break;
                default : break;
             }
-         } while (i != startsAt);
+         } while(i != startsAt);
       }
       else if (curChar < 128)
       {
@@ -300,7 +304,7 @@ static private final int jjMoveNfa_0(int startState, int curPos)
                   break;
                default : break;
             }
-         } while (i != startsAt);
+         } while(i != startsAt);
       }
       else
       {
@@ -316,7 +320,7 @@ static private final int jjMoveNfa_0(int startState, int curPos)
                   break;
                default : break;
             }
-         } while (i != startsAt);
+         } while(i != startsAt);
       }
       if (kind != 0x7fffffff)
       {
@@ -332,22 +336,22 @@ static private final int jjMoveNfa_0(int startState, int curPos)
    }
 }
 static final int[] jjnextStates = {
-   13, 14, 15, 8, 17, 18, 20, 21, 14, 15, 8, 4, 5, 9, 10,
+   13, 14, 15, 8, 17, 18, 20, 21, 14, 15, 8, 4, 5, 9, 10, 
 };
 public static final String[] jjstrLiteralImages = {
-"", null, null, null, null, null, null, null, null, null, null, null, null,
+"", null, null, null, null, null, null, null, null, null, null, null, null, 
 "\133", "\73", "\135", "\54", };
 public static final String[] lexStateNames = {
-   "DEFAULT",
+   "DEFAULT", 
 };
 static final long[] jjtoToken = {
-   0x1ee21L,
+   0x1ee21L, 
 };
 static final long[] jjtoSkip = {
-   0x101eL,
+   0x101eL, 
 };
 static final long[] jjtoSpecial = {
-   0x1000L,
+   0x1000L, 
 };
 static protected SimpleCharStream input_stream;
 static private final int[] jjrounds = new int[23];
@@ -411,7 +415,7 @@ static int jjround;
 static int jjmatchedPos;
 static int jjmatchedKind;
 
-public static Token getNextToken()
+public static Token getNextToken() 
 {
   int kind;
   Token specialToken = null;
@@ -420,13 +424,13 @@ public static Token getNextToken()
 
   EOFLoop :
   for (;;)
-  {
-   try
-   {
+  {   
+   try   
+   {     
       curChar = input_stream.BeginToken();
-   }
+   }     
    catch(java.io.IOException e)
-   {
+   {        
       jjmatchedKind = 0;
       matchedToken = jjFillToken();
       matchedToken.specialToken = specialToken;
