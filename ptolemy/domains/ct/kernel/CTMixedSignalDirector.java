@@ -219,7 +219,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
                             + " at time "
                             + getCurrentTime());
                 }
-                generator.postfire();
+                _postfireReturns = _postfireReturns && generator.postfire();
             }
         }
         _setDiscretePhase(false);

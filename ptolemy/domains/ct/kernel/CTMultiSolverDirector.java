@@ -251,6 +251,10 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @exception IllegalActionException If thrown by the ODE solver.
      */
     public void fire() throws IllegalActionException {
+
+        // Reset this, since we may be at a new time.
+        _postfireReturns = true;
+
         // If the _refireActors list is not empty, then
         // prefire, fire, and post fire these actors immediately.
         // This may happen when there are discrete event composite
@@ -493,7 +497,7 @@ public class CTMultiSolverDirector extends CTDirector {
                                 + " at time "
                                 + getCurrentTime());
                     }
-                    actor.postfire();
+                    _postfireReturns = _postfireReturns && actor.postfire();
                 }
                 // If the actor requires a refire at the current time,
                 // then we fire it immediately.
@@ -522,7 +526,7 @@ public class CTMultiSolverDirector extends CTDirector {
                                     + " at time "
                                     + getCurrentTime());
                         }
-                        actor.postfire();
+                        _postfireReturns = _postfireReturns && actor.postfire();
                     }
                     _refireActors.clear();
                 }
@@ -901,7 +905,4 @@ public class CTMultiSolverDirector extends CTDirector {
 
     // The default solver.
     private ODESolver _breakpointSolver = null;
-
-    // Flag for postfire.
-    private boolean _postfireReturns = true;
 }
