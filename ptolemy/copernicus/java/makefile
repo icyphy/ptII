@@ -128,10 +128,10 @@ JVM_SIZE = -Xmx256m
 SOOT_USER_ARGS =
 
 compileShallowDemo: $(JCLASS)
-	@echo "generate shallow code for $(SOURCECLASS)"
+	@echo "generate shallow code for '$(SOURCECLASS)'"
 	$(JAVA) $(JVM_SIZE) \
 	 -classpath "$(CLASSPATH)" \
-	ptolemy.copernicus.java.Main $(SOURCECLASS) -d "$(ROOT)"  \
+	ptolemy.copernicus.java.Main "$(SOURCECLASS)" -d "$(ROOT)"  \
 		-p wjtp.at targetPackage:$(SHALLOWTARGETPACKAGE) \
 		-p wjtp.mt targetPackage:$(SHALLOWTARGETPACKAGE) \
 		-p wjtp.umr disabled \
