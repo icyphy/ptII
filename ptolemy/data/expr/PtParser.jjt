@@ -99,9 +99,10 @@ please consult the Ptolemy II design document (or contact nsmyth@eecs)
 @version $Id$
 
 @see ptolemy.data.expr.ASTPtFunctionNode
+@see ptolemy.data.expr.ASTPtFunctionalIfNode
 @see ptolemy.data.expr.ASTPtLeafNode
 @see ptolemy.data.expr.ASTPtLogicalNode
-@see ptolemy.data.expr.ASTPtMiscNode
+@see ptolemy.data.expr.ASTPtMethodCallNode
 @see ptolemy.data.expr.ASTPtProductNode
 @see ptolemy.data.expr.ASTPtRelationalNode
 @see ptolemy.data.expr.ASTPtRootNode
@@ -311,7 +312,7 @@ void funcIf() #void :
 {
    (
            logicalOr() ( "?" logicalOr() ":" logicalOr() )?
-   ) #PtMiscNode(>1)
+   ) #PtFunctionalIfNode(>1)
 }
 
 void logicalOr() #void :
@@ -320,7 +321,7 @@ void logicalOr() #void :
    (
            logicalAnd() ( 
                    x = <COND_OR> logicalAnd()
-                   {  jjtThis._tokenList.insertLast(x); }
+                   {  jjtThis._lexicalTokens.insertLast(x); }
            )*
    ) #PtLogicalNode(>1)
 }
@@ -331,7 +332,7 @@ void logicalAnd() #void :
    (
            bitwiseOr() ( 
                    x = <COND_AND> bitwiseOr()
-                   {  jjtThis._tokenList.insertLast(x); }
+                   {  jjtThis._lexicalTokens.insertLast(x); }
            )*
    ) #PtLogicalNode(>1)
 }
@@ -342,7 +343,7 @@ void bitwiseOr() #void :
    (
            bitwiseXor() ( 
                    x = <OR> bitwiseXor()
-                   {  jjtThis._tokenList.insertLast(x); }
+                   {  jjtThis._lexicalTokens.insertLast(x); }
            )*
    ) #PtBitwiseOpNode(>1)
 }
@@ -353,7 +354,7 @@ void bitwiseXor() #void :
    (
            bitwiseAnd() ( 
                    x = <XOR> bitwiseAnd()
-                   {  jjtThis._tokenList.insertLast(x); }
+                   {  jjtThis._lexicalTokens.insertLast(x); }
            )*
    ) #PtBitwiseOpNode(>1)
 }
@@ -364,7 +365,7 @@ void bitwiseAnd() #void :
    (
            logicalEquals() ( 
                    x = <AND> logicalEquals()
-                   {  jjtThis._tokenList.insertLast(x); }
+                   {  jjtThis._lexicalTokens.insertLast(x); }
            )*
    ) #PtBitwiseOpNode(>1)
 }
@@ -376,7 +377,7 @@ void logicalEquals() #void :
            relational() ( 
                    ( x = <EQUALS> | x = <NOTEQUALS> ) relational()
                    {
-                       jjtThis._tokenList.insertLast(x);
+                       jjtThis._lexicalTokens.insertLast(x);
                    }
            )?
    ) #PtRelationalNode(>1)
@@ -390,7 +391,7 @@ void relational() #void :
            sum() ( 
                    ( x = <GT> | x = <GTE> | x = <LT> | x = <LTE> ) sum()
                    {
-                       jjtThis._tokenList.insertLast(x);
+                       jjtThis._lexicalTokens.insertLast(x);
                    }
            )?
    ) #PtRelationalNode(>1)
@@ -403,7 +404,7 @@ void sum() #void :
            term() ( 
                    ( x = <PLUS> | x = <MINUS> ) term()
                    {
-                       jjtThis._tokenList.insertLast(x);
+                       jjtThis._lexicalTokens.insertLast(x);
                    }
            )*
    ) #PtSumNode(>1)
@@ -416,7 +417,7 @@ void term() #void :
            unary() ( 
                    ( x = <MULTIPLY> | x = <DIVIDE> | x = <MODULO> ) unary()
                    {
-                       jjtThis._tokenList.insertLast(x);
+                       jjtThis._lexicalTokens.insertLast(x);
                    }
            )*
    ) #PtProductNode(>1)
@@ -528,7 +529,7 @@ String tidied, x;
           |            
             ")"
          )
-     ) #PtMiscNode(>1)
+     ) #PtMethodCallNode(>1)
  
   |   LOOKAHEAD( <ID> "(" )
       function()
