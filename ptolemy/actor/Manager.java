@@ -75,7 +75,7 @@ the workspace <i>write protected</i> during an iteration, if all
 relevant directors permit this.  This removes some of the overhead
 of obtaining read and write permission on the workspace.
 By default, directors do not permit this, but
-many directors explicitly relenquish write access to allow faster execution.
+many directors explicitly relinquish write access to allow faster execution.
 Such directors are declaring that they will not make changes to the
 topology during execution.  Instead, any desired changes are delegated
 to the director via the requestChange() method.
