@@ -69,6 +69,7 @@ JSIMPLE_TESTS = \
 	NamedObj.tcl \
 	NoSuchItemException.tcl \
 	PtolemyThread.tcl \
+	StringUtilities.tcl \
 	Workspace.tcl
 
 # Graphical Java tests that use Tcl.
