@@ -383,7 +383,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  object, instead of giving a detailed description, refer to the
      *  specified other object.  The name of that other object goes
      *  into the "class" or "extends" attribute of the MoML element
-     *  definining this object.  Normally, this object is a clone
+     *  defining this object.  Normally, this object is a clone
      *  of the referred to object, or the generated MoML may not
      *  make much sense.  In addition, calling this method
      *  suppresses description of the contents of the contents
