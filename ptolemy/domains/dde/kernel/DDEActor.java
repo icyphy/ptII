@@ -40,7 +40,7 @@ import ptolemy.data.*;
 /**
 An optional base class for DDE actors. DDEActors are intended to
 execute as autonomous processes that maintain a distributed notion
-of time. In an DDE model, each actor is controlled by a unique
+of time. In a DDE model, each actor is controlled by a unique
 DDEThread. Each DDEThread maintains its actor's local notion of
 time. Local time information is dependent on the time stamps
 associated with tokens that are consumed by an actor. More
@@ -99,7 +99,7 @@ public class DDEActor extends TypedAtomicActor {
 
     /** Return the last port through which a token was consumed by
      *  this actor. If no tokens have ever been consumed through any
-     *  ports of this actr, then return null.
+     *  ports of this actor, then return null.
      * @return TypedIOPort The last port through which a token was
      *  consumed by this actor.
      */
@@ -156,10 +156,6 @@ public class DDEActor extends TypedAtomicActor {
 	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
             DDEReceiver lowestRcvr = (DDEReceiver)timeKeeper.getFirstRcvr();
 
-
-	    // System.out.println("_getNextInput() called on "+calleeName);
-
-
             if( lowestRcvr.hasToken() ) {
                 _lastPort = (TypedIOPort)lowestRcvr.getContainer();
                 return lowestRcvr.get();
@@ -175,7 +171,6 @@ public class DDEActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private double _currentTime = 0.0;
     private TypedIOPort _lastPort = null;
 
 }

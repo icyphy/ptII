@@ -52,14 +52,14 @@ import java.util.Iterator;
 A DDEDirector governs the execution of actors operating according
 to the DDE model of computation (MoC). The DDE MoC incorporates
 a distributed notion of time into a dataflow style communication
-semantic. Much of the functionality of the DDEDirector is consistent
-with the Process Networks director PNDirector. In particular, the
-mechanism for dealing with blocking due to empty or full queues is
-functionally identical for the DDEDirector and PNDirector.
+semantic. Blocking reads occur if attempts to consume data are
+made when the corresponding receiver is empty and blocking writes
+occur if attempts to produce data are made when the corresponding
+receiver is full.
 <P>
-The DDE domain's use of time serves as the point of divergence in
-the respective designs of the DDE and PN directors. In a network of
-actors governed by a DDEDirector each actor has a local notion of
+In conjunction with the blocking read/write facilities, the DDE
+domain uses a distributed, local notion of time. In a network of 
+actors governed by a DDEDirector each actor has a local notion of 
 time. Several features of the DDEDirector are intended to facilitate
 these local notions of time.
 <P>
@@ -79,7 +79,7 @@ Deadlock due to feedback loops is dealt with via NullTokens. When an
 actor in a DDE model receives a NullToken, it may advance its local
 time value even though no computation results directly from
 consumption of the NullToken. For models with feedback topologies,
-the actor FeedBackDelay should be used.
+the FeedBackDelay actor should be used in the feedback loop.
 <P>
 The DDE model of computation assumes that valid time stamps have
 non-negative values. Three special purpose negative time values
@@ -147,7 +147,7 @@ public class DDEDirector extends CompositeProcessDirector {
     }
 
     /** Construct a director in the given container with the
-     *  given name. If the container argument must not be null,
+     *  given name. The container argument must not be null,
      *  or a NullPointerException will be thrown. The given
      *  name must be unique with respect to the container. If
      *  the name argument is null, then the name is set to the
@@ -175,6 +175,13 @@ public class DDEDirector extends CompositeProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** The stopTime parameter specifies the completion time of a
+     *  model's execution. During the initialize() method the
+     *  value of this parameter is passed to all receivers governed
+     *  by this director. The default value of stopTime is
+     *  <I>PrioritizedTimedQueue.ETERNITY</I> indicating that
+     *  execution will continue indefinitely.
+     */
     public Parameter stopTime;
 
     ///////////////////////////////////////////////////////////////////
@@ -197,50 +204,6 @@ public class DDEDirector extends CompositeProcessDirector {
 	}
     }
 
-    /** Wait until a deadlock is detected. Then handle the deadlock
-     *  (by calling the protected method _handleDeadlock()) and return.
-     *  This method is synchronized on the director.
-     *  @exception IllegalActionException If a derived class throws it.
-    public void fire() throws IllegalActionException {
-	Workspace workspace = workspace();
-        synchronized (this) {
-            while( !_areActorsDeadlocked() ) {
-            // while( !_areActorsStopped() && !_areActorsDeadlocked() ) {
-		workspace.wait(this);
-            }
-            if( _areActorsDeadlocked() ) {
-                if( _isInternallyReadDeadlocked() ) {
-
-                    _notDone = _resolveInternalReadDeadlock();
-
-                } else if( _isInternallyWriteDeadlocked() ) {
-
-                    _notDone = _resolveInternalWriteDeadlock();
-
-                } else if( _isExternallyReadDeadlocked() ) {
-
-                    _notDone = _resolveExternalReadDeadlock();
-
-                } else if( _isExternallyWriteDeadlocked() ) {
-
-                    _notDone = _resolveExternalWriteDeadlock();
-
-                } else {
-                    throw new IllegalActionException("Actor is "
-                            + "deadlocked but not of one of the "
-                            + "four internal/external deadlock "
-                            + "types.");
-                }
-            } else {
-                // Processes Are Stopped; Continued Execution
-                // Is Allowed 
-                // FIXME: We shouldn't get here.
-		_notDone = true;
-	    }
-        }
-    }
-     */
-
     /** Schedule an actor to be fired at the specified time.
      *  If the thread that calls this method is an instance
      *  of DDEThread, then the specified actor must be
@@ -262,6 +225,7 @@ public class DDEDirector extends CompositeProcessDirector {
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
 
+	double ETERNITY = PrioritizedTimedQueue.ETERNITY;
         DDEThread ddeThread;
         Thread thread = Thread.currentThread();
         if( thread instanceof DDEThread ) {
@@ -275,7 +239,7 @@ public class DDEDirector extends CompositeProcessDirector {
             return;
         }
 
-	if( _completionTime != -5.0 && time > _completionTime ) {
+	if( _completionTime != ETERNITY && time > _completionTime ) {
 	    return;
 	}
 
@@ -296,11 +260,11 @@ public class DDEDirector extends CompositeProcessDirector {
         }
     }
 
-    /** Return true if one of the actors governed by this
-     *  director has a pending mutation; return false
-     *  otherwise.
-     * @return True if a pending mutation exists; return
-     *  false otherwise.
+    /** Return false indicating that none of the actors governed by
+     *  this director have a mutation. Note that the DDE domain is
+     *  not equipped to properly handle mutations.
+     *
+     *  @return False.
      */
     public boolean hasMutation() {
         return false;
@@ -316,7 +280,7 @@ public class DDEDirector extends CompositeProcessDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-	_completionTime = -5.0;
+	_completionTime = PrioritizedTimedQueue.ETERNITY;
         // _internalReadBlocks = 0;
         // _externalReadBlocks = 0;
         // _writeBlocks = 0;
@@ -364,98 +328,17 @@ public class DDEDirector extends CompositeProcessDirector {
 	return _notDone;
     }
 
-    /** Return true if it
-     *  transfer data from an input port of the container to the
-     *  ports it is connected to on the inside. The port argument must
-     *  be an opaque input port. If any channel of the input port
-     *  has no data, then that channel is ignored.
-     *  <P>
-     *  NOTE: This method is preliminary and will likely change.
-     *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   input port.
-     *  @param port The port to transfer tokens from.
-     *  @return True if data are transferred.
-    public boolean transferInputs(IOPort port) throws IllegalActionException {
-        if (!port.isInput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque" +
-                    "input port.");
-        }
-        boolean trans = false;
-        Token token = null;
-        Receiver[][] insiderecs = port.deepGetReceivers();
-        for (int i = 0; i < port.getWidth(); i++) {
-            if (insiderecs != null && insiderecs[i] != null) {
-            	for (int j = 0; j < insiderecs[i].length; j++ ) {
-                    if( insiderecs[i][j].hasRoom() ) {
-                        if( token == null ) {
-                            if( port.hasToken(i) ) {
-                                token = port.get(i);
-                                insiderecs[i][j].put(token);
-                            }
-                        } else {
-                            insiderecs[i][j].put(token);
-                        }
-                        trans = true;
-                    }
-                }
-            }
-        }
-        return trans;
-    }
-     */
-
-    /** Return true if it
-     *  transfers data from an output port of the container to the
-     *  ports it is connected to on the outside.  The port argument must
-     *  be an opaque output port. If any channel of the output port
-     *  has no data, then that channel is ignored.
-     *  <P>
-     *  NOTE: This method is preliminary and will likely change.
-     *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   output port.
-     *  @param port The port to transfer tokens from.
-     *  @return True if data are transferred.
-    public boolean transferOutputs(IOPort port) throws IllegalActionException {
-        if (!port.isOutput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "transferOutputs: port argument is not " +
-                    "an opaque output port.");
-        }
-        boolean trans = false;
-        Receiver[][] insiderecs = port.getInsideReceivers();
-        if (insiderecs != null) {
-            for (int i = 0; i < insiderecs.length; i++) {
-                if (insiderecs[i] != null) {
-                    for (int j = 0; j < insiderecs[i].length; j++) {
-                        if (insiderecs[i][j].hasToken()) {
-                            try {
-                                if( port.hasRoom(i) ) {
-                                    Token t = insiderecs[i][j].get();
-                                    port.send(i, t);
-                                }
-                                trans = true;
-                            } catch (NoTokenException ex) {
-                                throw new InternalErrorException(
-                                        "Director.transferOutputs: " +
-                                        "Internal error: " +
-                                        ex.getMessage());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return trans;
-    }
-     */
-
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 
-    /**
+    /** Apply an algorithm to resolve an internal deadlock and return
+     *  true if the algorithm is successful. If the algorithm is 
+     *  unsuccessful then return false. The algorithm applied was
+     *  created by Thomas Parks for resolving internal deadlocks in
+     *  which one or more actors are write blocked. 
+     *
+     *  @return True if an internal deadlock has been resolved;
+     *   otherwise return false.
      */
     protected synchronized boolean _resolveInternalDeadlock() 
 	 throws IllegalActionException {
@@ -467,7 +350,7 @@ public class DDEDirector extends CompositeProcessDirector {
     }
 
     /** Implementations of this method must be synchronized.
-     * @param internal True if internal read block.
+     *  @param internal True if internal read block.
      */
     protected synchronized void _actorUnBlocked(LinkedList rcvrs) {
         Iterator rcvrIterator = rcvrs.iterator();
@@ -478,36 +361,28 @@ public class DDEDirector extends CompositeProcessDirector {
         notifyAll();
     }
 
-    /** Increment the count of actors blocked on an internal read.
+    /** Register the receiver that instigated the newly blocked actor
+     *  and increment the count of blocked actors by one. 
+     *  Note whether the receiver is read blocked or write blocked. 
+     * 
+     *  @param rcvr The receiver whose data transfer is blocked. 
      */
     protected synchronized void _actorBlocked(DDEReceiver rcvr) {
-	/*
-        if( rcvr.isReadBlocked() ) {
-            if( rcvr.isConnectedToBoundary() ) {
-                _externalReadBlocks++;
-            }
-            _internalReadBlocks++;
-        }
-	*/
         if( rcvr.isWriteBlocked() ) {
 	    if( _writeBlockedQs == null ) {
 	        _writeBlockedQs = new LinkedList();
 	    }
 	    _writeBlockedQs.addFirst(rcvr);
-            // _writeBlocks++;
         }
 	super._actorBlocked(rcvr);
 	notifyAll();
-
-	/*
-	if( _areActorsDeadlocked() ) {
-	    notifyAll();
-	}
-	*/
     }
 
-    /** Implementations of this method must be synchronized.
-     * @param internal True if internal read block.
+    /** Register the receivers that instigated the newly blocked actor.
+     *  and increment the count of blocked actors by one. 
+     *  Note whether the receivers are read blocked or write blocked. 
+     * 
+     *  @param rcvr The receivers whose data transfer is blocked. 
      */
     protected synchronized void _actorBlocked(LinkedList rcvrs) {
 	Iterator rcvrIterator = rcvrs.iterator();
@@ -518,27 +393,18 @@ public class DDEDirector extends CompositeProcessDirector {
 	notifyAll();
     }
 
-    /** Increment the count of actors blocked on an internal read.
+    /** Unregister the specified receiver that was previously blocked
+     *  and decrement the count of blocked actors by one. 
+     * 
+     *  @param rcvr The receiver whose data transfer was 
+     *   previously blocked. 
      */
     protected synchronized void _actorUnBlocked(DDEReceiver rcvr) {
-	/*
-        if( rcvr.isReadBlocked() ) {
-            if( rcvr.isConnectedToBoundary() ) {
-                _externalReadBlocks--;
-            }
-            _internalReadBlocks--;
-        }
-	*/
         if( rcvr.isWriteBlocked() ) {
 	    if( _writeBlockedQs == null ) {
                 // FIXME: throw exception???
 	    }
-            _writeBlockedQs.remove(rcvr);
-	    /*
-            if( _writeBlocks > 0 ) {
-                _writeBlocks--;
-            }
-	    */
+            _writeBlockedQs.remove(rcvr); 
         }
 	super._actorUnBlocked(rcvr);
 	notifyAll();
@@ -549,7 +415,7 @@ public class DDEDirector extends CompositeProcessDirector {
     ////                  package friendly methods                 ////
 
     /** Return the initial time table of this director.
-     * @return The initial time table of this actor.
+     *  @return The initial time table of this director.
      */
     Hashtable _getInitialTimeTable() {
 	if( _initialTimeTable == null ) {
@@ -563,12 +429,12 @@ public class DDEDirector extends CompositeProcessDirector {
 
     /** Return a new ProcessThread of a type compatible with this
      *  director.
-     * @param actor The actor that the new ProcessThread will
-     *  control.
-     * @param director The director that manages the new
-     *  ProcessThread.
-     * @exception IllegalActionException If an error occurs while
-     *  instantiating the new ProcessThread.
+     *  @param actor The actor that the new ProcessThread will
+     *   control.
+     *  @param director The director that manages the new
+     *   ProcessThread.
+     *  @exception IllegalActionException If an error occurs while
+     *   instantiating the new ProcessThread.
      */
     protected ProcessThread _getProcessThread(Actor actor,
 	    ProcessDirector director) throws IllegalActionException {
@@ -587,7 +453,7 @@ public class DDEDirector extends CompositeProcessDirector {
             return;
 	}
         Collections.sort( _writeBlockedQs,
-                new RcvrCapacityComparator() );
+                new ReceiverCapacityComparator() );
         DDEReceiver smallestQueue;
         smallestQueue = (DDEReceiver)_writeBlockedQs.getFirst();
 
@@ -603,39 +469,26 @@ public class DDEDirector extends CompositeProcessDirector {
         }
     }
 
-    /** Mutate the model that this director controls.
-     */
-    protected void _performMutations() {
-        ;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     private double _completionTime = PrioritizedTimedQueue.ETERNITY;
-    // private int _internalReadBlocks = 0;
-    // private int _externalReadBlocks = 0;
-    // private int _writeBlocks = 0;
-    // private LinkedList _extReadBlockedQs;
     private boolean _pendingMutations = false;
     private LinkedList _writeBlockedQs;
     private Hashtable _initialTimeTable;
 
-    // private int _readBlocks = 0;
-    // private int _writeBlocks = 0;
-
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner class			   ////
 
-    private class RcvrCapacityComparator implements Comparator {
+    private class ReceiverCapacityComparator implements Comparator {
 
-        /**
-         * @exception ClassCastException If fst and scd are
-         *  not instances of DDEReceiver.
+        /** Compare two objects (specified as arguments) according to 
+	 *  their respective capacities and return 1 if the second
+	 *  object (argument) is larger than the first object; return
+	 *  0 if the capacities are equal and return -1 if the first
+	 *  object's capacity is larger than the second. 
+         *  @exception ClassCastException If fst and scd are
+         *   not instances of DDEReceiver.
          */
         public int compare(Object fst, Object scd) {
             DDEReceiver first = null;
@@ -643,10 +496,16 @@ public class DDEDirector extends CompositeProcessDirector {
 
             if( fst instanceof DDEReceiver ) {
                 first = (DDEReceiver)fst;
-            }
+            } else {
+		throw new ClassCastException("fst must be an " +
+			"instance of DDEReceiver");
+	    }
             if( scd instanceof DDEReceiver ) {
                 second = (DDEReceiver)scd;
-            }
+            } else {
+		throw new ClassCastException("scd must be an " +
+			"instance of DDEReceiver");
+	    }
 
             if( first.getCapacity() < second.getCapacity() ) {
                 return 1;
@@ -659,84 +518,3 @@ public class DDEDirector extends CompositeProcessDirector {
     }
 }
 
-    /** Increment the count of actors blocked on an internal read.
-    protected synchronized void _actorReadBlocked(DDEReceiver rcvr) {
-        boolean internal = true;
-        if( rcvr.isConnectedToBoundary() ) {
-            internal = false;
-        }
-        if( internal ) {
-            _internalReadBlocks++;
-        } else {
-            _externalReadBlocks++;
-        }
-	if( _areActorsDeadlocked() ) {
-	    notifyAll();
-	}
-    }
-     */
-
-    /** Decrement the count of actors externally blocked on a read.
-    protected synchronized void _actorReadUnBlocked(DDEReceiver rcvr) {
-        boolean internal = true;
-        if( rcvr.isConnectedToBoundary() ) {
-            internal = false;
-        }
-        if( internal ) {
-            if( _internalReadBlocks > 0 ) {
-                _internalReadBlocks--;
-            }
-        } else {
-            if( _externalReadBlocks > 0 ) {
-            	_externalReadBlocks--;
-            }
-        }
-    }
-     */
-
-    /** Increment the count of actors blocked on a write.
-     * @param rcvr The DDEReceiver that has a write block.
-    protected synchronized void _actorWriteBlocked(DDEReceiver rcvr) {
-	if( _writeBlockedQs == null ) {
-	    _writeBlockedQs = new LinkedList();
-	}
-	_writeBlockedQs.addFirst(rcvr);
-        _writeBlocks++;
-        if( _areActorsDeadlocked() ) {
-            notifyAll();
-        }
-    }
-     */
-
-    /** Increment the count of actors blocked on a write.
-    protected synchronized void _actorWriteBlocked(DDEReceiver rcvr) {
-        _writeBlocks++;
-        if( _areActorsDeadlocked() ) {
-            notifyAll();
-        }
-    }
-     */
-
-    /** Decrement the count of actors blocked on a write.
-     *  @param rcvr The DDEReceiver that is no longer
-     *   write blocked.
-    protected synchronized void _actorWriteUnBlocked(DDEReceiver rcvr) {
-	if( _writeBlockedQs == null ) {
-	    _writeBlockedQs = new LinkedList();
-	}
-	_writeBlockedQs.remove(rcvr);
-        if( _writeBlocks > 0 ) {
-            _writeBlocks--;
-        }
-    }
-     */
-
-    /** Decrement the count of actors blocked on a write.
-     *  @param rcvr The DDEReceiver that is no longer
-     *   write blocked.
-    protected synchronized void _actorWriteUnBlocked(DDEReceiver) {
-        if( _writeBlocks > 0 ) {
-            _writeBlocks--;
-        }
-    }
-     */

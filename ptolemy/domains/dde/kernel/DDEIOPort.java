@@ -40,7 +40,7 @@ import ptolemy.data.*;
 //// DDEIOPort
 /**
 A DDEIOPort is a timed input/output port used in the DDE domain.
-DDEIOPorts are used to send tokens between actor, and in so
+DDEIOPorts are used to send tokens between actors, and in so
 doing, associate time with the tokens as they are placed in
 DDEReceivers.
 <P>
