@@ -43,14 +43,14 @@ EXTRA_SRCS = \
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =	internals #usersGuides #codeDoc
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =	codeDoc
 
 # Sub directories to run make in.
-DIRS =		internals #usersGuides
+DIRS =
 
 ALLJSRCS = 	*.java
 
