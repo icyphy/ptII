@@ -613,16 +613,20 @@ proc diffText {texta textb} {
 set isRunningNightlyBuild \
    [java::call System getProperty ptolemy.ptII.isRunningNightlyBuild]
 
+# To test the time out in another fashion, try:
+# make JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=10
+if ![info exists timeOutSeconds] {
+    set timeOutSeconds \
+	    [java::call System getProperty ptolemy.ptII.timeOutSeconds]
+}
 
-if {"$isRunningNightlyBuild" == "true"} {
-   if ![info exists timeOutSeconds] {
-       set timeOutSeconds
-	       [java::call System getProperty ptolemy.ptII.timeOutSeconds]
-       if {"$timeOutSeconds" == ""} {
+if {"$isRunningNightlyBuild" == "true" \
+	|| "$timeOutSeconds" != "" } {
+    if {"$timeOutSeconds" == ""} {
        set timeOutSeconds 1200
-   }
-   puts "testDefs.tcl: setting time out to\
+    }
+    puts "testDefs.tcl: setting time out to\
 	$timeOutSeconds seconds"
-   java::new util.testsuite.WatchDog [expr {$timeOutSeconds * 1000}]
+    java::new util.testsuite.WatchDog [expr {$timeOutSeconds * 1000}]
 }
 
