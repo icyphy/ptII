@@ -343,7 +343,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
          * @return The root of this graph model.
          */
         public Object getParent(Object node) {
-            return getRoot();
+	    return ((Location)node).getContainer().getContainer();
         }
         
         /**
