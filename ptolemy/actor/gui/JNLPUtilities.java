@@ -33,6 +33,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
@@ -117,35 +118,12 @@ public class JNLPUtilities {
      *  @param spec The string containing the jar url.
      *  @exception IOException If it cannot convert the specification to
      *   a URL.
+     *  @deprecated Use ptolemy.util.ClassUtilities#jarURLEntryResource(String)
+     *  @see ptolemy.util.ClassUtilities#jarURLEntryResource(String)
      *  @see java.net.JarURLConnection
      */
     public static URL jarURLEntryResource(String spec) throws IOException {
-        // At first glance, it would appear that this method could appear
-        // in specToURL(), but the problem is that specToURL() creates
-        // a new URL with the spec, so it only does further checks if
-        // the URL is malformed.  Unfortunately, in Web Start applications
-        // the URL will often refer to a resource in another jar file,
-        // which means that the jar url is not malformed, but there is
-        // no resource by that name.  Probably specToURL() should return
-        // the resource after calling new URL().
-        int jarEntry = spec.indexOf("!/");
-        if (jarEntry == -1) {
-            return null;
-        } else {
-            try {
-                // !/ means that this could be in a jar file.
-                String entry = spec.substring(jarEntry + 2);
-                // We might be in the Swing Event thread, so
-                // Thread.currentThread().getContextClassLoader()
-                // .getResource(entry) probably will not work.
-                Class refClass = Class.forName("ptolemy.kernel.util.NamedObj");
-                URL entryURL = refClass.getClassLoader().getResource(entry);
-                return entryURL;
-            } catch (Exception ex) {
-                throw new IOException("File not found: " + spec + ": "
-                        + ex);
-            }
-        }
+        return ClassUtilities.jarURLEntryResource(spec);
     }
 
     /** Given a jar URL, read in the resource and save it as a file.
