@@ -258,7 +258,7 @@ test PNQueueReceiver-5.1 {Check is...Boundary() methods for single layer boundar
     set vala [$rcvr isInsideBoundary]
     set valb [$rcvr isConnectedToBoundary]
     set valc [$rcvr isOutsideBoundary]
-    if { $vala == 0  && $valb == 0 && $valc == 0 } {
+    if { $vala == 0  && $valb == 1 && $valc == 0 } {
         set val3 1
     } else {
         set val3 0
