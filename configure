@@ -823,11 +823,14 @@ cd $startdir
 #--------------------------------------------------------------------
 #	Figure out which separator to use for CLASSPATH
 #	So much for write once, run everywhere.
+#       Find NT4 and Windows 2000 (CYGWIN_NT-4.0 and
+#       CYGWIN_NT-5.0 respectively)
 #--------------------------------------------------------------------
 echo $ac_n "checking for the proper CLASSPATH separator""... $ac_c" 1>&6
-echo "configure:829: checking for the proper CLASSPATH separator" >&5
+echo "configure:831: checking for the proper CLASSPATH separator" >&5
+
 case "`uname -s`" in
-    CYGWIN_NT-4.0) CLASSPATHSEPARATOR=";";;
+    CYGWIN_NT-) CLASSPATHSEPARATOR=";";;
     *) CLASSPATHSEPARATOR=":";;
 esac
 echo "$ac_t""'$CLASSPATHSEPARATOR'" 1>&6
@@ -847,7 +850,7 @@ find JavaCC" 1>&6
     JJTREE=jjtree
 else
     echo $ac_n "checking for JavaCC""... $ac_c" 1>&6
-echo "configure:851: checking for JavaCC" >&5
+echo "configure:854: checking for JavaCC" >&5
     # Check whether --with-javacc or --without-javacc was given.
 if test "${with_javacc+set}" = set; then
   withval="$with_javacc"
@@ -857,7 +860,8 @@ else
 fi
 
 
-    if test "`uname -s`" = "CYGWIN_NT-4.0"; then
+    if test "`uname -s`" = "CYGWIN_NT-4.0" -o \
+		"`uname -s`" = "CYGWIN_NT-5.0" ; then
 	JJTREE='\$(JAVA) COM.sun.labs.jjtree.Main'
 	JAVACC='\$(JAVA) COM.sun.labs.javacc.Main'
 	echo "configure: warning: Be sure that your CLASSPATH includes JavaCC.zip" 1>&2;
@@ -868,7 +872,7 @@ so we search for the jjtree command." 1>&2
 	    # Extract the first word of "jjtree", so it can be a program name with args.
 set dummy jjtree; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:872: checking for $ac_word" >&5
+echo "configure:876: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JJTREE'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -907,7 +911,7 @@ fi
 	if test -d "$JAVACC_DIR"; then
 	    echo "$ac_t""$JAVACC_DIR" 1>&6
 	    echo $ac_n "checking for jjtree""... $ac_c" 1>&6
-echo "configure:911: checking for jjtree" >&5
+echo "configure:915: checking for jjtree" >&5
 	    if test -x "$JAVACC_DIR/bin/jjtree"; then
 		# Note that we don't substitute in the $(JAVACC_DIR) here
 		JJTREE='$(JAVACC_DIR)/bin/jjtree'
@@ -916,7 +920,7 @@ echo "configure:911: checking for jjtree" >&5
 		echo "configure: warning: Failed to find jjtree in '$JAVACC_DIR/bin'" 1>&2;
 	    fi    
 	    echo $ac_n "checking for javacc""... $ac_c" 1>&6
-echo "configure:920: checking for javacc" >&5
+echo "configure:924: checking for javacc" >&5
 	    if test -x "$JAVACC_DIR/bin/javacc"; then
 		# Note that we don't substitute in the $(JAVACC_DIR) here
 		JAVACC='$(JAVACC_DIR)/bin/javacc'
@@ -955,7 +959,7 @@ if test ! -d "$PTII/util/testsuite"; then
 find Jacl" 1>&6
 else
     echo $ac_n "checking for ptjacl.jar""... $ac_c" 1>&6
-echo "configure:959: checking for ptjacl.jar" >&5
+echo "configure:963: checking for ptjacl.jar" >&5
     # Check whether --with-ptjacl_jar or --without-ptjacl_jar was given.
 if test "${with_ptjacl_jar+set}" = set; then
   withval="$with_ptjacl_jar"
@@ -968,7 +972,7 @@ fi
     if test -f "$PTJACL_JAR"; then
 	echo "$ac_t""$PTJACL_JAR" 1>&6
 	echo $ac_n "checking for how to run jacl""... $ac_c" 1>&6
-echo "configure:972: checking for how to run jacl" >&5
+echo "configure:976: checking for how to run jacl" >&5
 	# This command starts up Jacl
 	if echo "set java::jdkVersion; exit" | CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell; then
 		echo "$ac_t""CLASSPATH=$PTJACL_JAR $JAVA $PTJACL_JFLAG tcl.lang.Shell" 1>&6
@@ -1003,7 +1007,7 @@ find the PalmOS kvm" 1>&6
     KVM_CLASSES='$(KVM_DIR)/tools/classes.zip'
 else
     echo $ac_n "checking for kvm directory""... $ac_c" 1>&6
-echo "configure:1007: checking for kvm directory" >&5
+echo "configure:1011: checking for kvm directory" >&5
     # Check whether --with-kvm or --without-kvm was given.
 if test "${with_kvm+set}" = set; then
   withval="$with_kvm"
@@ -1016,7 +1020,7 @@ fi
     if test -d "$KVM_DIR"; then
 	echo "$ac_t""$KVM_DIR" 1>&6
         echo $ac_n "checking for \$KVM_DIR/tools/classes.zip""... $ac_c" 1>&6
-echo "configure:1020: checking for \$KVM_DIR/tools/classes.zip" >&5
+echo "configure:1024: checking for \$KVM_DIR/tools/classes.zip" >&5
 	if test -f "$KVM_DIR/tools/classes.zip"; then
 	    KVM_CLASSES='$(KVM_DIR)/tools/classes.zip'
 	    echo "$ac_t""$KVM_CLASSES" 1>&6
