@@ -92,7 +92,7 @@ public class BrowserTableau extends Tableau {
 
         // FIXME: Probably the following could make better use of URI
         // facilities (used to be URL based).
-	String url = ((Effigy)getContainer()).uri.toString();
+	String url = ((Effigy)getContainer()).uri.getURI().toString();
 	try {
 
 	    if (url.startsWith("jar:")) {
