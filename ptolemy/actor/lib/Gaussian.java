@@ -68,6 +68,7 @@ public class Gaussian extends RandomSource {
         output.setTypeEquals(BaseType.DOUBLE);
 
         mean = new Parameter(this, "mean", new DoubleToken(0.0));
+        mean.setTypeEquals(BaseType.DOUBLE);
         standardDeviation = new Parameter(this,
                 "standardDeviation", new DoubleToken(1.0));
     }

@@ -87,3 +87,14 @@ test Gaussian-2.2 {test with seed set} {
     set second [enumToTokenValues [$rec getRecord 0]]
     expr {$first == $second}
 } {1}
+
+test Gaussian-2.3 {test set mean to an int} {
+    set mean [getParameter $g mean]
+    $mean setExpression {42}   
+    [$e0 getManager] execute
+    set first [enumToTokenValues [$rec getRecord 0]]
+    [$e0 getManager] execute
+    set second [enumToTokenValues [$rec getRecord 0]]
+    expr {$first == $second}
+} {1}
+
