@@ -234,12 +234,42 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  return false. 
      *  <P>
      *  This method is not synchronized so the caller
-     *  @return True if this receiver is contained on the inside of
+     *  @return True if this receiver is connected to the inside of
      *   a boundary port; return false otherwise.
      *  @see ptolemy.actor.process.BoundaryDetector
      */
     public boolean isConnectedToBoundary() {
 	return _boundaryDetector.isConnectedToBoundary();
+    }
+
+    /** Return true if this receiver is connected to the inside of a 
+     *  boundary port. A boundary port is an opaque port that is
+     *  contained by a composite actor. If this receiver is connected
+     *  to the inside of a boundary port, then return true; otherwise
+     *  return false. 
+     *  <P>
+     *  This method is not synchronized so the caller
+     *  @return True if this receiver is connected to the inside of
+     *   a boundary port; return false otherwise.
+     *  @see ptolemy.actor.process.BoundaryDetector
+     */
+    public boolean isConnectedToBoundaryInside() {
+	return _boundaryDetector.isConnectedToBoundaryInside();
+    }
+
+    /** Return true if this receiver is connected to the outside of a 
+     *  boundary port. A boundary port is an opaque port that is
+     *  contained by a composite actor. If this receiver is connected
+     *  to the outside of a boundary port, then return true; otherwise
+     *  return false. 
+     *  <P>
+     *  This method is not synchronized so the caller
+     *  @return True if this receiver is connected to the outside of
+     *   a boundary port; return false otherwise.
+     *  @see ptolemy.actor.process.BoundaryDetector
+     */
+    public boolean isConnectedToBoundaryOutside() {
+	return _boundaryDetector.isConnectedToBoundaryOutside();
     }
 
     /** Return true if this receiver is contained on the inside of a
