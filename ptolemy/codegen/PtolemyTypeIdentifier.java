@@ -215,6 +215,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         }
         for (int i = 0; i < _KNOWN_TOKEN_TYPES.length; i++) {
             if (type.isEqualTo(_KNOWN_TOKEN_TYPES[i])) {
+		System.err.println("kindOfTokenType(): isEqualTo() found one");
                 return i + TYPE_KIND_TOKEN;
             }
         }
@@ -262,8 +263,11 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final int TYPE_KIND_STRING_TOKEN         = TYPE_KIND_OBJECT_TOKEN + 1;
 
     //public static final int TYPE_KIND_ARRAY_TOKEN         = TYPE_KIND_STRING_TOKEN + 1;
-    public static final int TYPE_KIND_INT_ARRAY_TOKEN         = TYPE_KIND_STRING_TOKEN + 1;
-    public static final int TYPE_KIND_MATRIX_TOKEN         = TYPE_KIND_INT_ARRAY_TOKEN + 1;
+    //public static final int TYPE_KIND_DOUBLE_ARRAY_TOKEN         = TYPE_KIND_INT_ARRAY_TOKEN + 1;
+    public static final int TYPE_KIND_INT_ARRAY_TOKEN      = TYPE_KIND_STRING_TOKEN + 1;
+    public static final int TYPE_KIND_DOUBLE_ARRAY_TOKEN   = TYPE_KIND_INT_ARRAY_TOKEN + 1;
+    public static final int TYPE_KIND_MATRIX_TOKEN         = TYPE_KIND_DOUBLE_ARRAY_TOKEN + 1;
+    //public static final int TYPE_KIND_MATRIX_TOKEN         = TYPE_KIND_INT_ARRAY_TOKEN + 1;
 
     //public static final int TYPE_KIND_MATRIX_TOKEN         = TYPE_KIND_STRING_TOKEN + 1;
 
@@ -305,13 +309,14 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final int TYPE_KIND_NO_ROOM_EXCEPTION
     = TYPE_KIND_NOT_SCHEDULABLE_EXCEPTION + 1;
     public static final int TYPE_KIND_NO_TOKEN_EXCEPTION
-    = TYPE_KIND_NO_ROOM_EXCEPTION + 1;
+	= TYPE_KIND_NO_ROOM_EXCEPTION + 1;
 
     // Actor interface kind.
-    public static final int TYPE_KIND_ACTOR
-    = TYPE_KIND_NO_TOKEN_EXCEPTION + 1;
+    public static final int TYPE_KIND_ACTOR = TYPE_KIND_NO_TOKEN_EXCEPTION + 1;
 
-    public static final int LAST_PTOLEMY_TYPE_KIND = TYPE_KIND_ACTOR;
+    public static final int TYPE_KIND_SEQUENCE_ACTOR = TYPE_KIND_ACTOR + 1;
+
+    public static final int LAST_PTOLEMY_TYPE_KIND = TYPE_KIND_SEQUENCE_ACTOR;
 
     // Atomic actor type.
     public static final ClassDecl TYPED_ATOMIC_ACTOR_DECL;
@@ -360,6 +365,9 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
     public static final ClassDecl INT_ARRAY_TOKEN_DECL;
     public static final TypeNameNode INT_ARRAY_TOKEN_TYPE;
+
+    public static final ClassDecl DOUBLE_ARRAY_TOKEN_DECL;
+    public static final TypeNameNode DOUBLE_ARRAY_TOKEN_TYPE;
 
     public static final ClassDecl MATRIX_TOKEN_DECL;
     public static final TypeNameNode MATRIX_TOKEN_TYPE;
@@ -462,6 +470,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         TYPE_KIND_COMPLEX_TOKEN, TYPE_KIND_FIX_TOKEN, TYPE_KIND_OBJECT_TOKEN,
         TYPE_KIND_STRING_TOKEN,
         /*TYPE_KIND_ARRAY_TOKEN,*/ TYPE_KIND_INT_ARRAY_TOKEN,
+	TYPE_KIND_DOUBLE_ARRAY_TOKEN,
         TYPE_KIND_MATRIX_TOKEN,
         TYPE_KIND_BOOLEAN_MATRIX_TOKEN, TYPE_KIND_INT_MATRIX_TOKEN,
         TYPE_KIND_DOUBLE_MATRIX_TOKEN, TYPE_KIND_LONG_MATRIX_TOKEN,
@@ -475,7 +484,10 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         TYPE_KIND_NO_SUCH_ITEM_EXCEPTION, TYPE_KIND_TYPE_CONFLICT_EXCEPTION,
         TYPE_KIND_INTERNAL_ERROR_EXCEPTION, TYPE_KIND_INVALID_STATE_EXCEPTION,
         TYPE_KIND_NOT_SCHEDULABLE_EXCEPTION, TYPE_KIND_NO_ROOM_EXCEPTION,
-        TYPE_KIND_NO_TOKEN_EXCEPTION, TYPE_KIND_ACTOR };
+        TYPE_KIND_NO_TOKEN_EXCEPTION,
+	TYPE_KIND_ACTOR,
+	TYPE_KIND_SEQUENCE_ACTOR
+    };
 
     /** An array indexed by (kind - TYPE_KIND_TOKEN) that is the corresponding
      *  Ptolemy type of the kind of token.
@@ -488,7 +500,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
             // FIXME: we need to either generalize this to handle all
             // types, or add in each type by hand.
             // Array???,
-            ArrayType.INT_ARRAY_TYPE,
+	    ArrayType.INT_ARRAY_TYPE,
+	    ArrayType.DOUBLE_ARRAY_TYPE,
             BaseType.MATRIX,
             BaseType.BOOLEAN_MATRIX, BaseType.INT_MATRIX,
             BaseType.DOUBLE_MATRIX, BaseType.LONG_MATRIX,
@@ -502,6 +515,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         false, true, false,
         true, true, true,
         true, true, true,
+	// FIXME: we should add and Array abstract token??
+        true, true,
         true, false,
         true, true,
         true, true,
@@ -636,6 +651,12 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                     "ArrayToken", CG_CLASS);
         INT_ARRAY_TOKEN_TYPE = INT_ARRAY_TOKEN_DECL.getDefType();
 
+        CompileUnitNode doubleArrayTokenUnit =
+            StaticResolution.loadClassName("ptolemy.data.ArrayToken", 1);
+        DOUBLE_ARRAY_TOKEN_DECL =
+            (ClassDecl) StaticResolution.findDecl(doubleArrayTokenUnit,
+                    "ArrayToken", CG_CLASS);
+        DOUBLE_ARRAY_TOKEN_TYPE = DOUBLE_ARRAY_TOKEN_DECL.getDefType();
 
         CompileUnitNode matrixTokenUnit =
             StaticResolution.loadClassName("ptolemy.data.MatrixToken", 1);
@@ -842,7 +863,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 INT_TOKEN_DECL, DOUBLE_TOKEN_DECL, LONG_TOKEN_DECL,
                 COMPLEX_TOKEN_DECL, FIX_TOKEN_DECL, OBJECT_TOKEN_DECL,
                 STRING_TOKEN_DECL,
-                INT_ARRAY_TOKEN_DECL,
+	        /*ARRAY_TOKEN_DECL,*/ INT_ARRAY_TOKEN_DECL,
+	        DOUBLE_ARRAY_TOKEN_DECL,
                 MATRIX_TOKEN_DECL,
                 BOOLEAN_MATRIX_TOKEN_DECL, INT_MATRIX_TOKEN_DECL,
                 DOUBLE_MATRIX_TOKEN_DECL, LONG_MATRIX_TOKEN_DECL,
@@ -868,7 +890,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 INT_TOKEN_TYPE, DOUBLE_TOKEN_TYPE, LONG_TOKEN_TYPE,
                 COMPLEX_TOKEN_TYPE, FIX_TOKEN_TYPE, OBJECT_TOKEN_TYPE,
                 STRING_TOKEN_TYPE,
-                INT_ARRAY_TOKEN_TYPE,
+	        INT_ARRAY_TOKEN_TYPE,
+	        DOUBLE_ARRAY_TOKEN_TYPE,
                 MATRIX_TOKEN_TYPE,
                 BOOLEAN_MATRIX_TOKEN_TYPE, INT_MATRIX_TOKEN_TYPE,
                 DOUBLE_MATRIX_TOKEN_TYPE, LONG_MATRIX_TOKEN_TYPE,
@@ -895,8 +918,11 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 LongTypeNode.instance,
                 COMPLEX_TYPE, FIX_POINT_TYPE, StaticResolution.OBJECT_TYPE,
                 StaticResolution.STRING_TYPE,
+	        // FIXME: is this right? we are making matrices with dim 1?
                 // IntArray
                 TypeUtility.makeArrayType(IntTypeNode.instance, 1),
+	        // DoubleArray
+                TypeUtility.makeArrayType(DoubleTypeNode.instance, 1),
                 // Hack for MatrixToken
                 TypeUtility.makeArrayType(IntTypeNode.instance, 2),
                 TypeUtility.makeArrayType(BoolTypeNode.instance, 2),
@@ -907,6 +933,61 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 TypeUtility.makeArrayType(FIX_POINT_TYPE, 2),
                 IntTypeNode.instance // hack for DummyToken
                 };
+
+	// OK, do some sanity checks on array lengths.
+
+	System.out.println("PtolemyTypeIdentifier.<static>: "
+			   + "\n _KNOWN_KINDS.length: "
+			   + _KNOWN_KINDS.length
+			   + "\n _KNOWN_TOKEN_TYPES.length: "
+			   + _KNOWN_TOKEN_TYPES.length
+			   + "\n _IS_CONCRETE_TOKEN.length: "
+			   + _IS_CONCRETE_TOKEN.length
+			   + "\n _MATRIX_ELEMENT_TOKEN_KINDS.length: "
+			   + _MATRIX_ELEMENT_TOKEN_KINDS.length
+			   + "\n _KNOWN_CLASS_DECLS.length: "
+			   + _KNOWN_CLASS_DECLS.length
+			   + "\n _KNOWN_TYPENAMENODES.length: "
+			   + _KNOWN_TYPENAMENODES.length
+			   + "\n _TOKEN_CONTAINED_TYPES.length: "
+			   + _TOKEN_CONTAINED_TYPES.length
+			   );
+
+	if ( _KNOWN_KINDS.length != _KNOWN_CLASS_DECLS.length ) {
+	    throw new
+		RuntimeException("PtolemyTypeIdentifier.<static>"
+				 + " _KNOWN_KINDS.length '"
+				 + _KNOWN_KINDS.length
+				 + "' != _KNOWN_CLASS_DECLS.length '"
+				 + _KNOWN_CLASS_DECLS.length + "'");
+	}
+
+	if ( _KNOWN_KINDS.length != _KNOWN_TYPENAMENODES.length ) {
+	    throw new
+		RuntimeException("PtolemyTypeIdentifier.<static>"
+				 + " _KNOWN_KINDS.length '"
+				 + _KNOWN_KINDS.length
+				 + "' != _KNOWN_TYPENAMENODES.length '"
+				 + _KNOWN_TYPENAMENODES.length + "'");
+	}
+
+	if ( _KNOWN_TOKEN_TYPES.length != _IS_CONCRETE_TOKEN.length ) {
+	    throw new
+		RuntimeException("PtolemyTypeIdentifier.<static>"
+				 + " _KNOWN_TOKEN_TYPES.length '"
+				 + _KNOWN_TOKEN_TYPES.length
+				 + "' != _IS_CONCRETE_TOKEN.length '"
+				 + _IS_CONCRETE_TOKEN.length + "'");
+	}
+
+	if ( _KNOWN_TOKEN_TYPES.length != _TOKEN_CONTAINED_TYPES.length ) {
+	    throw new
+		RuntimeException("PtolemyTypeIdentifier.<static>"
+				 + " _KNOWN_TOKEN_TYPES.length '"
+				 + _KNOWN_TOKEN_TYPES.length
+				 + "' != _TOKEN_CONTAINED_TYPES.length '"
+				 + _TOKEN_CONTAINED_TYPES.length + "'");
+	}
 
         System.out.println("PtolemyTypeIdentifier<static>: end");
     }
