@@ -94,7 +94,6 @@ JSRCS = \
 	Commutator.java \
 	Const.java \
 	Counter.java \
-	CTAssertion.java \
 	CurrentTime.java \
 	Differential.java \
 	DoubleReader.java \
