@@ -1008,7 +1008,7 @@ public class PortConfigurerDialog
                 .getColumnModel()
                 .getColumn(PortTableModel.COL_NAME)));
         JTextField nameTextField = new JTextField();
-        nameTextField.setBackground(Color.red);
+        nameTextField.setBackground(Color.yellow);
         final DefaultCellEditor portNameEditor =
             new DefaultCellEditor(nameTextField);
         portNameEditor.setClickCountToStart(1);
@@ -1033,7 +1033,7 @@ public class PortConfigurerDialog
                 .getColumnModel()
                 .getColumn(PortTableModel.COL_TYPE)));
         JTextField typeTextField = new JTextField();
-        typeTextField.setBackground(Color.red);
+        typeTextField.setBackground(Color.yellow);
         final DefaultCellEditor portTypeEditor =
             new DefaultCellEditor(typeTextField);
         portTypeEditor.setClickCountToStart(1);
