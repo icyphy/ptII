@@ -76,6 +76,30 @@ test SDFIOPort-1.2 {Construct Ports} {
     list [$p1 getFullName] [$p2 getFullName]
 } {..E1.P1 ..E1.P2}
 
+
+test SDFIOPort-1.3 {Construct Ports using Workspace constructor} {
+    set w [java::new ptolemy.kernel.util.Workspace "myWorkspace"]
+    set p3 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $w]
+    $p3 setName "p3"
+    set p4 [java::new ptolemy.domains.sdf.kernel.SDFIOPort [java::null]]
+    $p4 setName "p4"
+    list [$p3 getFullName] \
+	    [expr {[$p3 workspace] == $w}] \
+	    [$w description] \
+	    [[$p4 workspace] getName] \
+} {.p3 1 {ptolemy.kernel.util.Workspace {myWorkspace} directory {
+    {ptolemy.domains.sdf.kernel.SDFIOPort {.p3} attributes {
+        {ptolemy.data.expr.Parameter {.p3.tokenConsumptionRate} 0}
+        {ptolemy.data.expr.Parameter {.p3.tokenInitProduction} 0}
+        {ptolemy.data.expr.Parameter {.p3.tokenProductionRate} 0}
+    } links {
+    } insidelinks {
+    } configuration {opaque {width 0}} receivers {
+    } remotereceivers {
+    } type {declared unknown resolved unknown}}
+}} {}}
+
+
 test SDFIOPort-1.3 {Attempt to set erroneous container} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
