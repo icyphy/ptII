@@ -59,6 +59,8 @@ public class EditablePlotMLApplet extends PlotMLApplet {
     public void init() {
         super.init();
         JPanel controlPanel = new JPanel();
+        // Make the panel transparent so that the background shows through.
+        controlPanel.setOpaque(false);
         getContentPane().add(controlPanel, BorderLayout.SOUTH);
 
         controlPanel.add(new JLabel("Data set to edit:"));
