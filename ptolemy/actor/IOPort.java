@@ -228,7 +228,6 @@ public class IOPort extends ComponentPort {
             message += " on opaque input ports.";
             throw new IllegalActionException(this, message);
         }
-        System.out.println("in create receivers in IOPort");
         int portWidth = getWidth();
         if (portWidth <= 0) return;
 
@@ -271,7 +270,6 @@ public class IOPort extends ComponentPort {
                     // Create a new set of receivers compatible with the
                     // executive director.
                     for (int i = 0; i< width; i++) {
-                        System.out.println("crerateing a newreceiver");
                         // This throws an exception if there is no director.
                         result[i][0] = _newReceiver();
                     }
