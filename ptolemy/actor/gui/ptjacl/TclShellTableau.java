@@ -40,6 +40,7 @@ import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.util.KernelException;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -169,10 +170,10 @@ public class TclShellTableau extends Tableau {
 				      (PtolemyEffigy)effigy,
 				      "TclShellTableau");
 		    } catch (NoClassDefFoundError noClassDefFoundError) {
-			// Catch the error here  Perhaps
+			// Catch the error here.
 			RuntimeException runtimeException =
-			    new RuntimeException(noClassDefFoundError.toString());
-			runtimeException.fillInStackTrace();
+			    new RuntimeException(KernelException
+                                    .stackTraceToString(noClassDefFoundError));
 			// MessageHandler.error() does not take an Error
 			// argument as the second argument, so we create
 			// a RuntimeException.
