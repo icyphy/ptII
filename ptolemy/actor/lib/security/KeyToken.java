@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.security;
@@ -50,12 +50,6 @@ Tokens that contain java.security.Keys.
 */
 public class KeyToken extends Token {
 
-    /** Construct an empty token.
-     */
-    public KeyToken() {
-        super();
-    }
-
     /** Construct a token with a specified java.security.Key.
      *  @param value The specified java.security.Key type to construct
      *  the token with.
@@ -67,6 +61,10 @@ public class KeyToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the type of this token.
+     *  @return {@link #KEY}, the least upper bound of all the cryptographic
+     *  key types.
+     */
     public Type getType() {
         return KEY;
     }
@@ -79,11 +77,16 @@ public class KeyToken extends Token {
     }
 
     /** Test for equality of the values of this Token and the argument
-     *  Token.
+     *  Token.  Two KeyTokens are considered equals if the strings
+     *  that name their corresponding algorithms and formats are the same
+     *  and the byte arrays that contain the encoding have the same contents.
+     *  Consult the java.security.Key documentation for the meaning of these
+     *  terms.
+     *  
      *  @param rightArgument The Token to test against.
      *  @exception IllegalActionException Not thrown in this base class.
      *  @return A boolean token that contains the value true if the
-     *  values and units of this token and the argument token are the same.
+     *  algorithms, formats and encodings are the same.
      */
     public final BooleanToken isEqualTo(Token rightArgument)
             throws IllegalActionException {
@@ -117,9 +120,13 @@ public class KeyToken extends Token {
      *  the value of the algorithm, format and encoding.
      */
     public String toString() {
-        StringBuffer result =  new StringBuffer("KeyToken( Algorithm:");
-        result.append(_value.getAlgorithm() + " \n");
-        result.append(" Format: " + _value.getFormat() + " \n");
+        // FIXME: we print this token in a format similar to RecordToken.
+        // Perhaps this token should be a RecordToken?
+        // FIXME: Should we have a constructor that reads in string?
+        StringBuffer result =  new StringBuffer(
+                "{ algorithm = " + _value.getAlgorithm()
+                + ", format = " + _value.getFormat()
+                + ", encoded = ");
         result.append(" Encoded: ");
         byte [] encoded = _value.getEncoded();
         for(int i = 0; i < encoded.length -1; i++) {
@@ -129,14 +136,25 @@ public class KeyToken extends Token {
         return result.toString();
     }
 
-    /** The cryptographic key type. */
+    /** The cryptographic key type.
+     */
     public static class KeyType implements Type, Serializable {
+
+        // FIXME: should this extend BaseType?
+
+        ///////////////////////////////////////////////////////////////////
+        ////                         constructors                      ////
+
+        // The constructor is private to make a type safe enumeration.
+        private KeyType() {
+            super();
+        }
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
 
         /** Return this, that is, return the reference to this object.
-         *  @return A BaseType.
+         *  @return A KeyType
          */
         public Object clone() {
             return this;
@@ -183,16 +201,6 @@ public class KeyToken extends Token {
          */
         public boolean isConstant() {
             return true;
-        }
-
-        /** Determine if the argument represents the same BaseType as this
-         *  object.
-         *  @param t A Type.
-         *  @return True if the argument represents the same BaseType as
-         *   this object; false otherwise.
-         */
-        public boolean equals(Type t) {
-            return this == t;
         }
 
         /** Return this type's node index in the (constant) type lattice.
