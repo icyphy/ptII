@@ -58,7 +58,7 @@ proc _testGetCrossRefList {args} {
 	    return $results
 	} 
 	set lresults {}
-	for {set crossrefenum [$crossreflist enumerate]} \
+	for {set crossrefenum [$crossreflist elements]} \
 		{$crossrefenum != [java::null] && \
 		[$crossrefenum hasMoreElements] == 1} \
 		{} {
@@ -86,7 +86,7 @@ test CrossRefList-1.1 {Get information about an instance of CrossRefList} {
 } {{
   class:         pt.kernel.CrossRefList
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait {associate pt.kernel.CrossRefList} dissociate {dissociate java.lang.Object} {isMember java.lang.Object} isEmpty enumerate size {copyList pt.kernel.CrossRefList}
+  methods:       getClass hashCode {equals java.lang.Object} toString notify notifyAll {wait long} {wait long int} wait {associate pt.kernel.CrossRefList} dissociate {dissociate java.lang.Object} {isMember java.lang.Object} isEmpty elements size {copyList pt.kernel.CrossRefList}
   constructors:  {pt.kernel.CrossRefList java.lang.Object} {pt.kernel.CrossRefList java.lang.Object pt.kernel.CrossRefList}
   properties:    empty class
   superclass:    java.lang.Object
@@ -109,10 +109,10 @@ test CrossRefList-2.1 {Create a CrossRefList, copy it} {
 test CrossRefList-2.2 {Create a CrossRefList, try to enumerate it} {
     set owner [java::new Object]
     set crlone [java::new pt.kernel.CrossRefList $owner]
-    set enum [$crlone enumerate]
+    set enum [$crlone elements]
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
-} {{java.util.NoSuchElementException: exhausted enumeration} 0}
+} {{java.util.NoSuchElementException: List is empty.} 0}
 
 ######################################################################
 ####
