@@ -32,7 +32,6 @@ package pt.kernel;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
-import pt.domains.pn.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// IOPort
