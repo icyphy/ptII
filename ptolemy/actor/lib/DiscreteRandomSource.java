@@ -70,14 +70,14 @@ public class DiscreteRandomSource extends RandomSource {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         pmf = new Parameter(this, "pmf", new DoubleMatrixToken(
-                            new double[][] {{0.5, 0.5}}));
+                new double[][] {{0.5, 0.5}}));
         pmf.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
         // initialize cache of pmf
         attributeChanged(pmf);
 
         values = new Parameter(this, "values", new IntMatrixToken(
-                               new int[][] {{0, 1}}));
+                new int[][] {{0, 1}}));
 
         //values.setTypeAtLeast(new IntMatrixToken());
 
@@ -116,27 +116,27 @@ public class DiscreteRandomSource extends RandomSource {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == pmf) {
-           try {
-               DoubleMatrixToken pmfMatrixToken =
-                   (DoubleMatrixToken) pmf.getToken();
-               double[][] temp = pmfMatrixToken.doubleMatrix();
-               // get first (and only) row of the matrix
-               _pmfDoubleArray = temp[0];
+            try {
+                DoubleMatrixToken pmfMatrixToken =
+                    (DoubleMatrixToken) pmf.getToken();
+                double[][] temp = pmfMatrixToken.doubleMatrix();
+                // get first (and only) row of the matrix
+                _pmfDoubleArray = temp[0];
 
-           } catch (ClassCastException cce) {
-               throw new IllegalActionException(
-                       "pmf parameter is not a double matrix");
-           }
+            } catch (ClassCastException cce) {
+                throw new IllegalActionException(
+                        "pmf parameter is not a double matrix");
+            }
         } else if (attribute == values) {
-           try {
-               _valuesMatrixToken = (MatrixToken) values.getToken();
-           } catch (ClassCastException cce) {
-               throw new IllegalActionException(
-                       "values parameter is not a matrix");
-           }
+            try {
+                _valuesMatrixToken = (MatrixToken) values.getToken();
+            } catch (ClassCastException cce) {
+                throw new IllegalActionException(
+                        "values parameter is not a matrix");
+            }
 
         } else {
-           super.attributeChanged(attribute);
+            super.attributeChanged(attribute);
         }
     }
 
@@ -150,23 +150,23 @@ public class DiscreteRandomSource extends RandomSource {
      */
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
-       if (attribute == values) {
+        if (attribute == values) {
 
-           // set the output type to be the type of the element at values[0][0]
-           Token value =
-               ((MatrixToken) values.getToken()).getElementAsToken(0, 0);
+            // set the output type to be the type of the element at values[0][0]
+            Token value =
+                ((MatrixToken) values.getToken()).getElementAsToken(0, 0);
 
-           output.setTypeEquals(value.getType());
+            output.setTypeEquals(value.getType());
 
-           Director dir = getDirector();
+            Director dir = getDirector();
 
-           if (dir != null) {
-              dir.invalidateResolvedTypes();
-           }
+            if (dir != null) {
+                dir.invalidateResolvedTypes();
+            }
 
-       } else {
-          super.attributeTypeChanged(attribute);
-       }
+        } else {
+            super.attributeTypeChanged(attribute);
+        }
     }
 
     /** Clone the actor into the specified workspace. This calls the
@@ -197,7 +197,7 @@ public class DiscreteRandomSource extends RandomSource {
             cdf += _pmfDoubleArray[i];
 
             if (randomValue <= cdf) {
-               output.send(0, _valuesMatrixToken.getElementAsToken(0, i));
+                output.send(0, _valuesMatrixToken.getElementAsToken(0, i));
             }
         }
     }
