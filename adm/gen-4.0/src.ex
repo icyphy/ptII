@@ -6,6 +6,7 @@
 */,*
 *~
 *.a
+.classpath
 *.epsi
 .netscape
 *.o
@@ -28,6 +29,8 @@ ant
 bin/comm.policy
 bin/makebat
 bin/makebat.lnk
+bin/ptinvoke
+ptinvoke
 bin/startjini.gui
 brass
 collections
