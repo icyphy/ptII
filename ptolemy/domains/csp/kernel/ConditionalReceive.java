@@ -188,7 +188,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         // of the loop until this branch successfully
                         // rendezvous or dies.
                         while (true) {
-                            if (getParent()._amIFirst(getID())) {
+                            if (getParent()._isBranchFirst(getID())) {
                                 // I am the branch that succeeds
                                 _token = getReceiver().get();
                                 getParent()._branchSucceeded(getID());
@@ -208,11 +208,11 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                         // A ConditionalSend can "disappear" so this
                         // part of the loop can exit & return to the top of
                         // main loop.
-                        if (getParent()._amIFirst(getID())) {
+                        if (getParent()._isBranchFirst(getID())) {
                             // receive side ok, need to check that send
                             // side also ok
                             CSPReceiver rec = getReceiver();
-                            if (rec._getOtherParent()._amIFirst(getID())) {
+                            if (rec._getOtherParent()._isBranchFirst(getID())) {
                                 _token = getReceiver().get();
                                 rec._setConditionalSend(false, null);
                                 getParent()._branchSucceeded(getID());
@@ -238,7 +238,7 @@ public class ConditionalReceive extends ConditionalBranch implements Runnable {
                                 getReceiver().notifyAll();
                                 return;
                             } else if (getReceiver()._isPutWaiting()) {
-                                if (getParent()._amIFirst(getID())) {
+                                if (getParent()._isBranchFirst(getID())) {
                                     // I am the branch that succeeds
                                     // Note that need to reset condSend
                                     // flag BEFORE doing put.

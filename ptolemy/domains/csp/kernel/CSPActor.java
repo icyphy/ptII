@@ -217,10 +217,10 @@ public class CSPActor extends AtomicActor {
      *  are not first.
      *  @param branchNumber The ID assigned to the calling branch
      *   upon creation.
-     *  @return Boolean indicating whether or not the calling branch is the
+     *  @return boolean indicating whether or not the calling branch is the
      *   first branch to try to rendezvous.
      */
-    protected boolean _amIFirst(int branchNumber) {
+    protected boolean _isBranchFirst(int branchNumber) {
         synchronized(_getInternalLock()) {
             if ((_branchTrying == -1) || (_branchTrying == branchNumber)) {
                 // store branchNumber

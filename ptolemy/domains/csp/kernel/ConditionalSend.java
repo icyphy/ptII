@@ -190,7 +190,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         // part of the loop stay here until branch
                         // successfully rendezvous or dies.
                        while (true) {
-                            if (getParent()._amIFirst(getID())) {
+                            if (getParent()._isBranchFirst(getID())) {
                                 // I am the branch that succeeds
                                 getReceiver().put(_token);
                                 getParent()._branchSucceeded(getID());
@@ -211,12 +211,12 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                         // A ConditionalReceive may dissappear,
                         // so if fail to rendezvous, go back to top
                         // of main loop.
-                        if (getParent()._amIFirst(getID())) {
+                        if (getParent()._isBranchFirst(getID())) {
                             // send side ok, need to check that receive
                             // side also ok
                             CSPReceiver rec = getReceiver();
                             CSPActor side2 = getReceiver()._getOtherParent();
-                            if (side2._amIFirst(getID())) {
+                            if (side2._isBranchFirst(getID())) {
                                 rec.put(_token);
                                 rec._setConditionalReceive(false, null);
                                 getParent()._branchSucceeded(getID());
@@ -244,7 +244,7 @@ public class ConditionalSend extends ConditionalBranch implements Runnable {
                                 getReceiver().notifyAll();
                                 return;
                             } else if (getReceiver()._isGetWaiting()) {
-                                if (getParent()._amIFirst(getID())) {
+                                if (getParent()._isBranchFirst(getID())) {
                                     // I am the branch that succeeds
                                     // Note that need to reset condSend
                                     // flag BEFORE doing put.
