@@ -54,11 +54,11 @@ public class PtolemyTypeVisitor extends TypeVisitor
      implements JavaStaticSemanticConstants {
 
     public PtolemyTypeVisitor(ActorCodeGeneratorInfo actorInfo) {
-        this(actorInfo, new TypePolicy(new PtolemyTypeIdentifier()));
+        this(actorInfo, new PtolemyTypePolicy(new PtolemyTypeIdentifier()));
     }
 
     public PtolemyTypeVisitor(ActorCodeGeneratorInfo actorInfo, 
-     TypePolicy typePolicy) {
+     PtolemyTypePolicy typePolicy) {
         super(typePolicy);
         _actorInfo = actorInfo;    
         

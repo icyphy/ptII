@@ -55,6 +55,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
     public ActorCodeGenerator(CodeGeneratorClassFactory factory) {
         _factory = factory;
+        _typeID = factory.createPtolemyTypeIdentifier();                
     }
     
     public String generateCode(ActorCodeGeneratorInfo actorInfo) {
@@ -80,19 +81,18 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         String filename = sourceFile.toString();
 
         ApplicationUtility.trace("acg : parsing " + filename);        
-        
-        PtolemyTypeVisitor typeVisitor = _factory.createPtolemyTypeVisitor(actorInfo);
-        PtolemyTypeIdentifier typeID = _factory.createPtolemyTypeIdentifier();
-                
+                        
         // make a list of the compile unit node and compile unit nodes that 
         // contain superclasses
         List[] listArray = _makeUnitList(filename, 
-         StringManip.unqualifiedPart(actorClass.getName()), typeID);
+         StringManip.unqualifiedPart(actorClass.getName()));
          
         List unitList = listArray[0];
         List classNameList = listArray[1]; 
 
         ApplicationUtility.trace("acg : specializing tokens " + filename);        
+        
+        PtolemyTypeVisitor typeVisitor = _factory.createPtolemyTypeVisitor(actorInfo);                
                 
         Map declToTypeMap = SpecializeTokenVisitor.specializeTokens(unitList, 
          actorInfo, typeVisitor);
@@ -126,13 +126,9 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         
         ApplicationUtility.trace("pass2() : sourceName = " + sourceName + 
          ", filename = " + filename);
-                        
-        PtolemyTypeVisitor typeVisitor = _factory.createPtolemyTypeVisitor(actorInfo);                        
-        PtolemyTypeIdentifier typeID = 
-         (PtolemyTypeIdentifier) typeVisitor.typePolicy().typeIdentifier();
-                        
+                                                
         List[] listArray = 
-         _makeUnitList(filename, StringManip.unqualifiedPart(sourceName), typeID);
+         _makeUnitList(filename, StringManip.unqualifiedPart(sourceName));
        
         List unitList = listArray[0];
         
@@ -226,8 +222,7 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
      *  SDFAtomicActor. The CompileUnitNodes are cloned from those
      *  returned by StaticResolution so that they may be modified.
      */     
-    protected List[] _makeUnitList(String fileName, String className, 
-                                   PtolemyTypeIdentifier typeID) {
+    protected List[] _makeUnitList(String fileName, String className) {
         LinkedList retval = new LinkedList();
                     
         CompileUnitNode unitNode = 
@@ -255,9 +250,9 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
                             
            } else {
 
-              int superKind = typeID.kindOfClassDecl(superDecl);
+              int superKind = _typeID.kindOfClassDecl(superDecl);
               
-              if (typeID.isSupportedActorKind(superKind)) {
+              if (_typeID.isSupportedActorKind(superKind)) {
                  ApplicationUtility.trace("_makeUnitList() : super class = " + superDecl +
                   " stopping.");
                                                 
@@ -349,6 +344,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         
         JavaCodeGenerator.writeCompileUnitNodeList(unitList, filenameList);                
     }
+        
+    protected PtolemyTypeIdentifier _typeID;   
         
     /** A JavaVisitor that finds the declaration of the superclass of a
      *  given type. The AST must have already gone through pass 1

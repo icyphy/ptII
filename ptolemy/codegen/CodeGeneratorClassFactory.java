@@ -56,8 +56,12 @@ public class CodeGeneratorClassFactory {
        return new PtolemyTypeIdentifier();
     }
 
+    public PtolemyTypePolicy createPtolemyTypePolicy() {
+       return new PtolemyTypePolicy(createPtolemyTypeIdentifier());
+    }
+
     public PtolemyTypeVisitor createPtolemyTypeVisitor(ActorCodeGeneratorInfo actorInfo) {
-       return new PtolemyTypeVisitor(actorInfo);
+       return new PtolemyTypeVisitor(actorInfo, createPtolemyTypePolicy());
     }
     
     public static CodeGeneratorClassFactory getInstance() {

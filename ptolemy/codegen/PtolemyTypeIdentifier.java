@@ -238,11 +238,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
      *  If the argument type is BaseType.NAT, return a clone of 
      *  DUMMY_LOWER_BOUND_TYPE. The argument should not be null. 
      */    
-    public TypeNameNode typeNodeForTokenType(Type type) {           
-        if (type == BaseType.NAT) {
-           return (TypeNameNode) DUMMY_LOWER_BOUND_TYPE.clone();        
-        }         
-    
+    public TypeNameNode typeNodeForTokenType(Type type) {               
         return typeNodeForKind(kindOfTokenType(type));        
     }
     
@@ -280,8 +276,10 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final int TYPE_KIND_COMPLEX_MATRIX_TOKEN = TYPE_KIND_LONG_MATRIX_TOKEN + 1;
     public static final int TYPE_KIND_FIX_MATRIX_TOKEN     = TYPE_KIND_COMPLEX_MATRIX_TOKEN + 1;
 
+    public static final int TYPE_KIND_DUMMY_TOKEN          = TYPE_KIND_FIX_MATRIX_TOKEN + 1;
+
     // parameter kind
-    public static final int TYPE_KIND_PARAMETER            = TYPE_KIND_FIX_MATRIX_TOKEN + 1;
+    public static final int TYPE_KIND_PARAMETER            = TYPE_KIND_DUMMY_TOKEN + 1;
     
     // port kind    
     public static final int TYPE_KIND_TYPED_IO_PORT        = TYPE_KIND_PARAMETER + 1;
@@ -379,23 +377,55 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     /** An array indexed by (kind - TYPE_KINDS) containing kinds of types in 
      *  Ptolemy. 
      */
-    protected static final int[] _KNOWN_KINDS;
+    protected static final int[] _KNOWN_KINDS = new int[] { 
+         TYPE_KIND_COMPLEX, TYPE_KIND_FIX_POINT, 
+         TYPE_KIND_TYPED_ATOMIC_ACTOR, 
+         TYPE_KIND_TOKEN, TYPE_KIND_BOOLEAN_TOKEN, TYPE_KIND_SCALAR_TOKEN, 
+         TYPE_KIND_INT_TOKEN, TYPE_KIND_DOUBLE_TOKEN, TYPE_KIND_LONG_TOKEN, 
+         TYPE_KIND_COMPLEX_TOKEN, TYPE_KIND_FIX_TOKEN, TYPE_KIND_OBJECT_TOKEN, 
+         TYPE_KIND_STRING_TOKEN, TYPE_KIND_MATRIX_TOKEN, 
+         TYPE_KIND_BOOLEAN_MATRIX_TOKEN, TYPE_KIND_INT_MATRIX_TOKEN, 
+         TYPE_KIND_DOUBLE_MATRIX_TOKEN, TYPE_KIND_LONG_MATRIX_TOKEN, 
+         TYPE_KIND_COMPLEX_MATRIX_TOKEN, TYPE_KIND_FIX_MATRIX_TOKEN, 
+         TYPE_KIND_DUMMY_TOKEN,
+         TYPE_KIND_PARAMETER, 
+         TYPE_KIND_TYPED_IO_PORT };
     
     /** An array indexed by (kind - TYPE_KIND_TOKEN) that is the corresponding
      *  Ptolemy type of the kind of token.
      */   
-    protected static final Type[] _KNOWN_TOKEN_TYPES;
+    protected static final Type[] _KNOWN_TOKEN_TYPES = new Type[] { 
+         BaseType.GENERAL, BaseType.BOOLEAN, BaseType.SCALAR, 
+         BaseType.INT, BaseType.DOUBLE, BaseType.LONG, 
+         BaseType.COMPLEX, BaseType.FIX, BaseType.OBJECT, 
+         BaseType.STRING, BaseType.MATRIX, 
+         BaseType.BOOLEAN_MATRIX, BaseType.INT_MATRIX, 
+         BaseType.DOUBLE_MATRIX, BaseType.LONG_MATRIX, 
+         BaseType.COMPLEX_MATRIX, BaseType.FIX_MATRIX, 
+         BaseType.NAT };
 
     /** An array indexed by (kind - TYPE_KIND_TOKEN) that indicates whether
      *  or not the token kind is concrete.
      */    
-    protected static final boolean[] _IS_CONCRETE_TOKEN;
+    protected static final boolean[] _IS_CONCRETE_TOKEN = new boolean[] {
+         false, true, false, 
+         true, true, true, 
+         true, true, true, 
+         true, false, 
+         true, true,
+         true, true, 
+         true, true, 
+         true };  
     
     /** An array indexed by (kind - TYPE_KIND_MATRIX_TOKEN) that gives the
      *  the kind of the token that would be returned by getElementAsToken()
      *  on a token of the index kind.
      */     
-    protected static final int[] _MATRIX_ELEMENT_TOKEN_KINDS;
+    protected static final int[] _MATRIX_ELEMENT_TOKEN_KINDS = new int[] {
+         TYPE_KIND_TOKEN, TYPE_KIND_INT_TOKEN, 
+         TYPE_KIND_BOOLEAN_TOKEN, TYPE_KIND_INT_TOKEN, 
+         TYPE_KIND_DOUBLE_TOKEN, TYPE_KIND_LONG_TOKEN, 
+         TYPE_KIND_COMPLEX_TOKEN, TYPE_KIND_FIX_TOKEN };
     
     /** An array indexed by (kind - TYPE_KIND_TOKEN) that is the corresponding
      *  type of the data encapsulated by the kind of token.
@@ -595,6 +625,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
          BOOLEAN_MATRIX_TOKEN_DECL, INT_MATRIX_TOKEN_DECL, 
          DOUBLE_MATRIX_TOKEN_DECL, LONG_MATRIX_TOKEN_DECL, 
          COMPLEX_MATRIX_TOKEN_DECL, FIX_MATRIX_TOKEN_DECL, 
+         DUMMY_LOWER_BOUND,
          PARAMETER_DECL, 
          TYPED_IO_PORT_DECL };
          
@@ -608,46 +639,11 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
          BOOLEAN_MATRIX_TOKEN_TYPE, INT_MATRIX_TOKEN_TYPE, 
          DOUBLE_MATRIX_TOKEN_TYPE, LONG_MATRIX_TOKEN_TYPE, 
          COMPLEX_MATRIX_TOKEN_TYPE, FIX_MATRIX_TOKEN_TYPE, 
+         DUMMY_LOWER_BOUND_TYPE,
          PARAMETER_TYPE, 
          TYPED_IO_PORT_TYPE };
          
-        _KNOWN_KINDS = new int[] { 
-         TYPE_KIND_COMPLEX, TYPE_KIND_FIX_POINT, 
-         TYPE_KIND_TYPED_ATOMIC_ACTOR, 
-         TYPE_KIND_TOKEN, TYPE_KIND_BOOLEAN_TOKEN, TYPE_KIND_SCALAR_TOKEN, 
-         TYPE_KIND_INT_TOKEN, TYPE_KIND_DOUBLE_TOKEN, TYPE_KIND_LONG_TOKEN, 
-         TYPE_KIND_COMPLEX_TOKEN, TYPE_KIND_FIX_TOKEN, TYPE_KIND_OBJECT_TOKEN, 
-         TYPE_KIND_STRING_TOKEN, TYPE_KIND_MATRIX_TOKEN, 
-         TYPE_KIND_BOOLEAN_MATRIX_TOKEN, TYPE_KIND_INT_MATRIX_TOKEN, 
-         TYPE_KIND_DOUBLE_MATRIX_TOKEN, TYPE_KIND_LONG_MATRIX_TOKEN, 
-         TYPE_KIND_COMPLEX_MATRIX_TOKEN, TYPE_KIND_FIX_MATRIX_TOKEN, 
-         TYPE_KIND_PARAMETER, 
-         TYPE_KIND_TYPED_IO_PORT };
-         
-        _KNOWN_TOKEN_TYPES = new Type[] { 
-         BaseType.GENERAL, BaseType.BOOLEAN, BaseType.SCALAR, 
-         BaseType.INT, BaseType.DOUBLE, BaseType.LONG, 
-         BaseType.COMPLEX, BaseType.FIX, BaseType.OBJECT, 
-         BaseType.STRING, BaseType.MATRIX, 
-         BaseType.BOOLEAN_MATRIX, BaseType.INT_MATRIX, 
-         BaseType.DOUBLE_MATRIX, BaseType.LONG_MATRIX, 
-         BaseType.COMPLEX_MATRIX, BaseType.FIX_MATRIX };
-   
-        _IS_CONCRETE_TOKEN = new boolean[] {
-         false, true, false, 
-         true, true, true, 
-         true, true, true, 
-         true, false, 
-         true, true,
-         true, true, 
-         true, true };  
-        
-        _MATRIX_ELEMENT_TOKEN_KINDS = new int[] {
-         TYPE_KIND_TOKEN, TYPE_KIND_INT_TOKEN, 
-         TYPE_KIND_BOOLEAN_TOKEN, TYPE_KIND_INT_TOKEN, 
-         TYPE_KIND_DOUBLE_TOKEN, TYPE_KIND_LONG_TOKEN, 
-         TYPE_KIND_COMPLEX_TOKEN, TYPE_KIND_FIX_TOKEN };
-         
+            
         _TOKEN_CONTAINED_TYPES = new TypeNode[] {
          // the first and third entries are hacks to allow for unresolved token types         
          IntTypeNode.instance, BoolTypeNode.instance, IntTypeNode.instance,
@@ -660,7 +656,8 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
          TypeUtility.makeArrayType(DoubleTypeNode.instance, 2),
          TypeUtility.makeArrayType(LongTypeNode.instance, 2),
          TypeUtility.makeArrayType(COMPLEX_TYPE, 2),
-         TypeUtility.makeArrayType(FIX_POINT_TYPE, 2)
+         TypeUtility.makeArrayType(FIX_POINT_TYPE, 2),
+         IntTypeNode.instance // hack for DummyToken
         };
     }  
 }

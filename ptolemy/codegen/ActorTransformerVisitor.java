@@ -61,7 +61,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
        _actorName = actorInfo.actor.getName();
               
        _typeVisitor = typeVisitor;
-       _typePolicy = typeVisitor.typePolicy();
+       _typePolicy = (PtolemyTypePolicy) typeVisitor.typePolicy();
        _typeID = (PtolemyTypeIdentifier) _typePolicy.typeIdentifier();       
     }
 
@@ -76,6 +76,14 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     }
                               
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {            
+        // bring in imports for Complex and FixPoint (remove unnecessary ones later)
+        List importList = node.getImports();
+        
+        importList.add(new ImportNode((NameNode)
+         StaticResolution.makeNameNode("ptolemy.math.Complex")));
+        importList.add(new ImportNode((NameNode)
+         StaticResolution.makeNameNode("ptolemy.math.FixPoint")));
+            
         return _defaultVisit(node, args);
     }
 
@@ -87,45 +95,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         // Ptolemy name of the actor are actor classes created in the first pass 
         // to be modified with the code generator        
         if (className.startsWith("CG_") && className.endsWith("_" + _actorName)) {
-           
-           // if the class derives from TypedAtomicActor or SDFAtomicActor,
-           // replace the superclass with Object
-                      
-           TypeNameNode superTypeNode = (TypeNameNode) node.getSuperClass();
-           
-           ClassDecl superClassDecl = 
-            (ClassDecl) JavaDecl.getDecl((NamedNode) superTypeNode);
-           
-           int superKind = _typeID.kindOfClassDecl(superClassDecl);
-           
-           if (_typeID.isSupportedActorKind(superKind)) {
-              node.setSuperClass((TypeNameNode) StaticResolution.OBJECT_TYPE.clone());                 
-              _isBaseClass = true;
-           } 
-                                 
-           List memberList = node.getMembers();
-                               
-           memberList = TNLManip.traverseList(this, node, args, memberList);                             
-           node.setMembers(memberList);
-                                            
-           Iterator memberItr = memberList.iterator();
-        
-           // remove unwanted fields and methods
-           LinkedList newMemberList = new LinkedList();
-        
-           while (memberItr.hasNext()) {
-              Object memberObj = memberItr.next();
-           
-              if (memberObj != NullValue.instance) {
-                 newMemberList.add(memberObj);           
-              }        
-           }
-
-           if (_isBaseClass) {
-              _addDefaultExecutionMethods(newMemberList);                                
-           } 
-        
-           node.setMembers(newMemberList);                      
+           return _actorClassDeclNode(node, args);           
         }
         
         return node;
@@ -157,7 +127,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
               return node;                              
            }
         } else if (_typeID.isSupportedPortKind(kind)) {
-           Object retval = _portFieldDeclNode(node);
+           Object retval = _portFieldDeclNode(node, args);
            
            if (retval != null) return retval;        
         }               
@@ -190,12 +160,14 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
     public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
         String methodName = node.getName().getIdent();
-                        
-        if (methodName.equals("clone") || methodName.equals("attributeChanged") ||
-            methodName.equals("attributeTypeChanged")) {
-           // get rid of this method
+           
+        // get rid of the following methods                
+        if (methodName.equals("clone") ||
+            methodName.equals("attributeChanged") ||
+            methodName.equals("attributeTypeChanged")) {           
            return NullValue.instance;        
         }         
+        
         return _defaultVisit(node, args);   
     }
 
@@ -245,64 +217,53 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitBlockNode(BlockNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitIfStmtNode(IfStmtNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitReturnNode(ReturnNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitExprStmtNode(ExprStmtNode node, LinkedList args) {
-        // eliminate unwanted method calls and assigments
-        // also eliminate expressions that are not statement expressions
+        List retList = TNLManip.traverseList(this, node, args, node.getStmts());        
         
-        Object exprObj = node.getExpr().accept(this, args);
-        
-        if ((exprObj == NullValue.instance)) { 
-           return new EmptyStmtNode();
-        }
-        
-        ExprNode exprNode = (ExprNode) exprObj;
-        
-        if (!ExprUtility.isStatementExpression(exprNode)) {
-           return new EmptyStmtNode();
-        }
-        
-        node.setExpr((ExprNode) exprObj);
+        node.setStmts(_makeStmtList(retList));                        
         
         return node;
     }
+    
+    public Object visitLabeledStmtNode(LabeledStmtNode node, LinkedList args) {
+        Object stmtReturn = node.getStmt().accept(this, args);
 
-    public Object visitThrowNode(ThrowNode node, LinkedList args) {
-        return _defaultVisit(node, args);
+        if (stmtReturn instanceof StatementNode) {
+           node.setStmt((StatementNode) stmtReturn);
+        } else if (stmtReturn == NullValue.instance) {
+           node.setStmt(new EmptyStmtNode());
+        } else if (stmtReturn instanceof ExprNode) {
+           ExprNode exprNode = (ExprNode) stmtReturn;
+              
+           if (ExprUtility.isStatementExpression(exprNode)) {
+              node.setStmt(new ExprStmtNode(exprNode));
+           } else {
+              node.setStmt(new EmptyStmtNode());            
+           }                       
+        } else if (stmtReturn instanceof List) {
+           List transformedStmtList = _makeStmtList((List) stmtReturn);
+           
+           if (transformedStmtList.size() > 0) {
+              // label the first statement
+              node.setStmt((StatementNode) transformedStmtList.get(0));
+              
+              transformedStmtList.set(0, node);
+              
+              return transformedStmtList;           
+           } else {
+              node.setStmt(new EmptyStmtNode());            
+           }                     
+        }
+        return node;        
     }
+               
+    public Object visitExprStmtNode(ExprStmtNode node, LinkedList args) {
+        // let visitBlockNode() handle the return value of the expression node
+        // accepting the visitor
+        return node.getExpr().accept(this, args);  
+    } 
 
     // try and catch were here
-
-    public Object visitArrayInitNode(ArrayInitNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
       
-    public Object visitNullPntrNode(NullPntrNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitThisNode(ThisNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitArrayAccessNode(ArrayAccessNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitObjectNode(ObjectNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
     public Object visitObjectFieldAccessNode(ObjectFieldAccessNode node, LinkedList args) {
         return _defaultVisit(node, args);
     }
@@ -315,27 +276,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         return _defaultVisit(node, args);
     }
 
-    public Object visitTypeClassAccessNode(TypeClassAccessNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitOuterThisAccessNode(OuterThisAccessNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitOuterSuperAccessNode(OuterSuperAccessNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
     public Object visitMethodCallNode(MethodCallNode node, LinkedList args) {    
-        // transform the arguments
-        List oldMethodArgs = node.getArgs();
-        TypeNode[] oldMethodArgTypes = _typeVisitor.typeArray(oldMethodArgs);
-        
-        List methodArgs = 
-         TNLManip.traverseList(this, null, args, oldMethodArgs);                
-         
-        node.setArgs(methodArgs);
                                
         FieldAccessNode fieldAccessNode = (FieldAccessNode) node.getMethod();
         
@@ -348,56 +289,47 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         ExprNode accessedObj = (ExprNode) ExprUtility.accessedObject(fieldAccessNode);   
 
         // save the kind of the old accessed object    
-        int accessedObjKind = _typeID.kind(_typeVisitor.type(accessedObj));        
+        TypeNode accessedObjType = _typeVisitor.type(accessedObj);
         
-        fieldAccessNode = (FieldAccessNode) fieldAccessNode.accept(this, args);
-         
-        node.setMethod(fieldAccessNode); 
-        
-        accessedObj = (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
-                            
-        MethodDecl methodDecl = (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);        
-        String methodName = methodDecl.getName();        
-        
-        // eliminate the following method calls no matter what
-        if (methodName.equals("attributeTypeChanged") || 
-            methodName.equals("attributeChanged")) {
-           return NullValue.instance;        
-        }
-        
-        // eliminate the following method calls if this is the most basic actor class
-        // and an invocation of super.XXX() occurs
-        if (_isBaseClass && (fieldAccessNode.classID() == SUPERFIELDACCESSNODE_ID)) {         
-           if (methodName.equals("initialize") || methodName.equals("fire") ||
-               methodName.equals("preinitialize") || methodName.equals("wrapup")) {
-              return NullValue.instance;                                             
-           }
+        int accessedObjKind = _typeID.kind(accessedObjType);        
+                        
+        if (_typePolicy.isSubClassOfSupportedActor(accessedObjType)) {           
+           Object retval = _actorMethodCallNode(node, args);        
            
-           // return true for prefire() and postfire() which is the default
-           if (methodName.equals("prefire") || methodName.equals("postfire")) {
-              return new BoolLitNode("true");
-           }           
-        }
-                                                
-        ExprNode firstArg = null;
-        TypeNode firstArgType = null;
-        boolean firstArgTypeIsScalarToken = false;
-        boolean firstArgTypeIsStringToken = false;        
+           if (retval != null) return retval;
+           
+        } else if (_typeID.isSupportedTokenKind(accessedObjKind)) {
+           MethodDecl methodDecl = (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);                
         
-        if (oldMethodArgs.size() > 0) {
-           firstArg = (ExprNode) methodArgs.get(0);
-           firstArgType = oldMethodArgTypes[0];
-           firstArgTypeIsScalarToken = _typeID.isScalarTokenKind(
-            _typeID.kind(firstArgType));
-           firstArgTypeIsStringToken = _typePolicy.compareTypes(firstArgType, 
-            PtolemyTypeIdentifier.STRING_TOKEN_TYPE);           
-        }
-                                                                           
-        if (_typeID.isSupportedTokenKind(accessedObjKind)) {
-            boolean accessedObjIsMatrix = _typeID.isMatrixTokenKind(accessedObjKind);     
-            boolean accessedObjIsScalar = _typeID.isScalarTokenKind(accessedObjKind);     
-            boolean accessedObjIsBoolean = 
-             (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN);
+           fieldAccessNode = (FieldAccessNode) fieldAccessNode.accept(this, args);
+         
+           node.setMethod(fieldAccessNode); 
+        
+           accessedObj = (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
+                                       
+           String methodName = methodDecl.getName();        
+            
+           // transform the arguments
+           List oldMethodArgs = node.getArgs();
+           TypeNode[] oldMethodArgTypes = _typeVisitor.typeArray(oldMethodArgs);
+        
+           List methodArgs = 
+            TNLManip.traverseList(this, null, args, oldMethodArgs);                
+         
+           node.setArgs(methodArgs);
+                                                                                
+           ExprNode firstArg = null;
+           TypeNode firstArgType = null;
+        
+           if (oldMethodArgs.size() > 0) {
+              firstArg = (ExprNode) methodArgs.get(0);
+              firstArgType = oldMethodArgTypes[0];
+           }
+                
+           boolean accessedObjIsMatrix = _typeID.isMatrixTokenKind(accessedObjKind);     
+           boolean accessedObjIsScalar = _typeID.isScalarTokenKind(accessedObjKind);     
+           boolean accessedObjIsBoolean = 
+            (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN);
         
            if (methodName.equals("booleanValue")) {
               return new CastNode(BoolTypeNode.instance, accessedObj);
@@ -492,32 +424,43 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                   
            // method not supported, create a new Token, and call the method
            // with new (converted) args. This may be a problem.
-            return new MethodCallNode(
+           return new MethodCallNode(
              new ObjectFieldAccessNode(fieldAccessNode.getName(),
               new AllocateNode(_typeID.typeNodeForKind(accessedObjKind),
                TNLManip.cons(accessedObj), AbsentTreeNode.instance)),
-              methodArgs);
+             methodArgs);
           
         } else if (accessedObjKind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER) {
-            if (accessedObj.classID() == THISFIELDACCESSNODE_ID) {
-                if (methodName.equals("getToken")) {
-                   return accessedObj;
-                } else if (methodName.equals("removeFromScope") || 
-                           methodName.equals("removeValueListener") || 
-                           methodName.equals("reset") || 
-                           methodName.equals("setContainer") || 
-                           methodName.equals("setExpression") ||
-                           methodName.equals("setToken") || 
-                           methodName.equals("setTypeAtLeast") || 
-                           methodName.equals("setTypeAtMost") ||               
-                           methodName.equals("setTypeEquals") ||
-                           methodName.equals("setTypeSameAs")) {                           
-                   return NullValue.instance; // must be eliminated by ExprStmtNode                                           
-                }
-            }
+           MethodDecl methodDecl = (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);        
+                
+           fieldAccessNode = (FieldAccessNode) fieldAccessNode.accept(this, args);
+                 
+           accessedObj = (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
+                                     
+           String methodName = methodDecl.getName();        
+                
+           if (accessedObj.classID() == THISFIELDACCESSNODE_ID) {
+              if (methodName.equals("getToken")) {
+                 return accessedObj; // return the value of the parameter
+              } else if (methodName.equals("removeFromScope") || 
+                         methodName.equals("removeValueListener") || 
+                         methodName.equals("reset") || 
+                         methodName.equals("setContainer") || 
+                         methodName.equals("setExpression") ||
+                         methodName.equals("setToken") || 
+                         methodName.equals("setTypeAtLeast") || 
+                         methodName.equals("setTypeAtMost") ||               
+                         methodName.equals("setTypeEquals") ||
+                         methodName.equals("setTypeSameAs")) {  
+                 // return a list of the transformed arguments
+                 // so that side effects are preserved          
+                 // the list will be processed by visitBlockNode()               
+                 return TNLManip.traverseList(this, null, args, node.getArgs());               
+              }
+           }
         } else if (_typeID.isSupportedPortKind(accessedObjKind)) {
-            Object retval = _portMethodCall(node, methodDecl, accessedObj);            
-            if (retval != null) return retval;
+           Object retval = _portMethodCallNode(node, args);            
+           if (retval != null) return retval;
         }
                 
         return node;
@@ -798,11 +741,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
-        return _defaultVisit(node, args);
-    }
-
-    public Object visitAllocateArrayNode(AllocateArrayNode node, LinkedList args) {
-        return _defaultVisit(node, args);
+        // do not modify anonymous class declarations
+        return node;
     }
 
     public Object visitCastNode(CastNode node, LinkedList args) {
@@ -824,28 +764,42 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitInstanceOfNode(InstanceOfNode node, LinkedList args) {
+        TypeNode rightType = node.getDtype();
+        
+        if (rightType.classID() == TYPENAMENODE_ID) {
+        
+           TypeNode leftType = _typeVisitor.type(node.getExpr());
+           int leftKind = _typeID.kind(leftType);
+        
+           if (_typeID.isSupportedTokenKind(leftKind)) {
+              if (_typePolicy.isSubClass(leftType, rightType)) {
+                 return new BoolLitNode("true");
+              } else {
+                return new BoolLitNode("false");
+              }
+           } 
+        }
+        
         return _defaultVisit(node, args);
     }
 
     public Object visitEQNode(EQNode node, LinkedList args) {
-    
-        // warn on comparison to null
-        return _defaultVisit(node, args);
+        return _visitEqualityNode(node, args);
     }
 
     public Object visitNENode(NENode node, LinkedList args) {
-        return _defaultVisit(node, args);
+        return _visitEqualityNode(node, args);
     }
 
     public Object visitAssignNode(AssignNode node, LinkedList args) {
         ExprNode leftExpr = node.getExpr1();
         TypeNode leftType = _typeVisitor.type(leftExpr);        
         int kind = _typeID.kind(leftType);
-
+        
         // prevent assignment to ports and parameters
         if (_typeID.isSupportedPortKind(kind) || 
             (kind == PtolemyTypeIdentifier.TYPE_KIND_PARAMETER)) {
-           return NullValue.instance; // must be eliminated by ExprStmtNode         
+           return new NullPntrNode(); // must be eliminated by visitBlockNode()
         }                        
                 
         node.setExpr1((ExprNode) leftExpr.accept(this, args));
@@ -937,48 +891,86 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         }    
         return null;
     }
-    
-    /** Return an expression to substitute for null, when null is assigned to
-     *  a Token of the given type.
-     */
-    protected ExprNode _dummyValue(TypeNode type) {
-        switch (_typeID.kind(type)) {
-    
-          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:       
-          return new BoolLitNode("false");
-    
-          case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
-          return new IntLitNode("-1");
-
-          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
-          return new DoubleLitNode("-1.0");           
-
-          case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
-          return new LongLitNode("-1L");
-
-          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:                   
-          case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:                             
-          case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:           
-          case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:          
-          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:          
-          case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:                    
-          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:          
-          case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:    
-          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:                 
-          case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:                           
-          return new NullPntrNode();           
-          
-          // remove this later
-          case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
-          case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:                                         
-          case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:                                         
-          return new IntLitNode("-1");                    
+        
+    protected Object _actorClassDeclNode(ClassDeclNode node, LinkedList args) {
+        // if the class derives from TypedAtomicActor or SDFAtomicActor,
+        // replace the superclass with Object
+                      
+        TypeNameNode superTypeNode = (TypeNameNode) node.getSuperClass();
+           
+        ClassDecl superClassDecl = 
+         (ClassDecl) JavaDecl.getDecl((NamedNode) superTypeNode);
+           
+        int superKind = _typeID.kindOfClassDecl(superClassDecl);
+           
+        if (_typeID.isSupportedActorKind(superKind)) {
+           node.setSuperClass((TypeNameNode) StaticResolution.OBJECT_TYPE.clone());                 
+           _isBaseClass = true;
+        } 
+                                 
+        List memberList = node.getMembers();
+                               
+        memberList = TNLManip.traverseList(this, node, null, memberList);                                     
+                                            
+        Iterator memberItr = memberList.iterator();
+        
+        // remove unwanted fields and methods
+        LinkedList newMemberList = new LinkedList();
+        
+        while (memberItr.hasNext()) {
+           Object memberObj = memberItr.next();
+           
+           if (memberObj != NullValue.instance) {
+              newMemberList.add(memberObj);           
+           }        
         }
 
-        ApplicationUtility.error("unexpected type for dummy() : " + type);        
-        return null;        
-    }       
+        if (_isBaseClass) {
+           _addDefaultExecutionMethods(newMemberList);                                
+        } 
+        
+        node.setMembers(newMemberList);                      
     
+        return node;     
+    }    
+    
+    public Object _actorMethodCallNode(MethodCallNode node, LinkedList args) {
+        FieldAccessNode fieldAccessNode = (FieldAccessNode) node.getMethod();
+
+        MethodDecl methodDecl = (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);        
+                                                                                                         
+        String methodName = methodDecl.getName();        
+                        
+        // eliminate the following method calls no matter what
+        if (methodName.equals("attributeTypeChanged") || 
+            methodName.equals("attributeChanged")) {
+           return NullValue.instance;        
+        }
+        
+        ExprNode accessedObj = 
+         (ExprNode) ExprUtility.accessedObject(fieldAccessNode);        
+        
+        // for the remaining methods,
+        // we can only handle actor calls to the actor itself
+        if (accessedObj.classID() != THISFIELDACCESSNODE_ID) return null;
+                
+        // eliminate the following method calls if this is the most basic actor class
+        // and an invocation of super.XXX() occurs
+        if (_isBaseClass && (fieldAccessNode.classID() == SUPERFIELDACCESSNODE_ID)) {         
+           if (methodName.equals("initialize") || methodName.equals("fire") ||
+               methodName.equals("preinitialize") || methodName.equals("wrapup")) {
+              return NullValue.instance;                                             
+           }
+           
+           // return true for prefire() and postfire() which is the default
+           if (methodName.equals("prefire") || methodName.equals("postfire")) {
+              return new BoolLitNode("true");
+           }           
+        }
+    
+        return null;
+    }
+
     
     /** Given a list of members of the most basic actor class, add 
      *  preinitialize(), initialize(), prefire(), fire(), postfire(), and
@@ -1018,59 +1010,162 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         }
         
         if (!foundPreinit) {
-           memberList.add(new MethodDeclNode(PUBLIC_MOD, 
-            new NameNode(AbsentTreeNode.instance, "preinitialize"),
-            new LinkedList(), new LinkedList(),
-            new BlockNode(new LinkedList()), VoidTypeNode.instance));
+           memberList.add(_makeDefaultPreinitializeMethod());
         }
 
         if (!foundInit) {
-           memberList.add(new MethodDeclNode(PUBLIC_MOD, 
-            new NameNode(AbsentTreeNode.instance, "initialize"),
-            new LinkedList(), new LinkedList(),
-            new BlockNode(new LinkedList()), VoidTypeNode.instance));
+           memberList.add(_makeDefaultInitializeMethod());
         }
         
         if (!foundPrefire) {
-           List blockList = TNLManip.cons(
-            new ReturnNode(new BoolLitNode("true")));        
-           memberList.add(new MethodDeclNode(PUBLIC_MOD, 
-            new NameNode(AbsentTreeNode.instance, "prefire"),
-            new LinkedList(), new LinkedList(),
-            new BlockNode(blockList), BoolTypeNode.instance));
+           memberList.add(_makeDefaultPrefireMethod());
         }
 
         if (!foundFire) {
-           memberList.add(new MethodDeclNode(PUBLIC_MOD, 
-            new NameNode(AbsentTreeNode.instance, "fire"),
-            new LinkedList(), new LinkedList(),
-            new BlockNode(new LinkedList()), VoidTypeNode.instance));
+           memberList.add(_makeDefaultFireMethod());
         }
         
         if (!foundPostfire) {
-           List blockList = TNLManip.cons(
-            new ReturnNode(new BoolLitNode("true")));        
-           memberList.add(new MethodDeclNode(PUBLIC_MOD, 
-            new NameNode(AbsentTreeNode.instance, "postfire"),
-            new LinkedList(), new LinkedList(),
-            new BlockNode(blockList), BoolTypeNode.instance));
+           memberList.add(_makeDefaultPostfireMethod());        
         }
         
         if (!foundWrapup) {
-           memberList.add(new MethodDeclNode(PUBLIC_MOD, 
-            new NameNode(AbsentTreeNode.instance, "wrapup"),
-            new LinkedList(), new LinkedList(),
-            new BlockNode(new LinkedList()), VoidTypeNode.instance));
+           memberList.add(_makeDefaultWrapupMethod());
         }                            
     }
+    
+    /** Return an expression to substitute for null, when null is assigned to
+     *  a Token of the given type.
+     */
+    protected ExprNode _dummyValue(TypeNode type) {
+        switch (_typeID.kind(type)) {
+    
+          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_TOKEN:       
+          return new BoolLitNode("false");
+    
+          case PtolemyTypeIdentifier.TYPE_KIND_INT_TOKEN:
+          return new IntLitNode("-777777");
+
+          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_TOKEN:
+          return new DoubleLitNode("-777777.77");           
+
+          case PtolemyTypeIdentifier.TYPE_KIND_LONG_TOKEN:
+          return new LongLitNode("-777777777777L");
+
+          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_TOKEN:                   
+          case PtolemyTypeIdentifier.TYPE_KIND_FIX_TOKEN:                             
+          case PtolemyTypeIdentifier.TYPE_KIND_OBJECT_TOKEN:           
+          case PtolemyTypeIdentifier.TYPE_KIND_STRING_TOKEN:          
+          case PtolemyTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX_TOKEN:          
+          case PtolemyTypeIdentifier.TYPE_KIND_INT_MATRIX_TOKEN:                    
+          case PtolemyTypeIdentifier.TYPE_KIND_DOUBLE_MATRIX_TOKEN:          
+          case PtolemyTypeIdentifier.TYPE_KIND_LONG_MATRIX_TOKEN:    
+          case PtolemyTypeIdentifier.TYPE_KIND_COMPLEX_MATRIX_TOKEN:                 
+          case PtolemyTypeIdentifier.TYPE_KIND_FIX_MATRIX_TOKEN:                   
+          // remove this later        
+          case PtolemyTypeIdentifier.TYPE_KIND_MATRIX_TOKEN:                                                   
+          return new NullPntrNode();           
+          
+          // remove this later
+          case PtolemyTypeIdentifier.TYPE_KIND_TOKEN:
+          case PtolemyTypeIdentifier.TYPE_KIND_SCALAR_TOKEN:                                         
+          return new IntLitNode("-777777");                    
+          
+          // needed for default port behavior
+          case PtolemyTypeIdentifier.TYPE_KIND_DUMMY_TOKEN:
+          return new IntLitNode("-777777");
+        }
+
+        ApplicationUtility.error("unexpected type for _dummyValue() : " + type);        
+        return null;        
+    }       
        
-    protected Object _portFieldDeclNode(FieldDeclNode node) {
+    protected Object _makeDefaultPreinitializeMethod() {
+        return new MethodDeclNode(PUBLIC_MOD, 
+         new NameNode(AbsentTreeNode.instance, "preinitialize"), new LinkedList(), 
+         new LinkedList(), new BlockNode(new LinkedList()), VoidTypeNode.instance);    
+    }    
+
+    protected Object _makeDefaultInitializeMethod() {
+        return new MethodDeclNode(PUBLIC_MOD, 
+         new NameNode(AbsentTreeNode.instance, "initialize"), new LinkedList(), 
+         new LinkedList(), new BlockNode(new LinkedList()), VoidTypeNode.instance);    
+    }    
+    
+    protected Object _makeDefaultPrefireMethod() {
+        List blockList = TNLManip.cons(new ReturnNode(new BoolLitNode("true")));        
+        return new MethodDeclNode(PUBLIC_MOD, 
+         new NameNode(AbsentTreeNode.instance, "prefire"), new LinkedList(), 
+         new LinkedList(), new BlockNode(blockList), BoolTypeNode.instance);    
+    }    
+
+    protected Object _makeDefaultFireMethod() {
+        return new MethodDeclNode(PUBLIC_MOD, 
+         new NameNode(AbsentTreeNode.instance, "fire"), new LinkedList(), 
+         new LinkedList(), new BlockNode(new LinkedList()), VoidTypeNode.instance);    
+    }    
+
+    protected Object _makeDefaultPostfireMethod() {
+        List blockList = TNLManip.cons(new ReturnNode(new BoolLitNode("true")));        
+        return new MethodDeclNode(PUBLIC_MOD, 
+         new NameNode(AbsentTreeNode.instance, "postfire"), new LinkedList(), 
+         new LinkedList(), new BlockNode(blockList), BoolTypeNode.instance);    
+    }    
+
+    protected Object _makeDefaultWrapupMethod() {
+        return new MethodDeclNode(PUBLIC_MOD, 
+         new NameNode(AbsentTreeNode.instance, "wrapup"),
+         new LinkedList(), new LinkedList(),
+         new BlockNode(new LinkedList()), VoidTypeNode.instance);
+    }    
+
+    protected List _makeStmtList(List retvalList) {
+        LinkedList newStmtList = new LinkedList();
+
+        Iterator retvalItr = retvalList.iterator();
+        
+        while (retvalItr.hasNext()) {
+           Object obj = retvalItr.next();
+           
+           if (obj instanceof List) {
+              newStmtList.addAll(_makeStmtList((List) obj));           
+           } else if (obj instanceof ExprNode) {
+              ExprNode exprNode = (ExprNode) obj;
+              
+              if (ExprUtility.isStatementExpression(exprNode)) {
+                 newStmtList.addLast(new ExprStmtNode(exprNode));
+              }              
+           } else if (obj == NullValue.instance) {
+              // do not add the object
+           } else if (obj instanceof StatementNode) {
+              newStmtList.addLast(obj);           
+           } else {
+              throw new IllegalArgumentException("unknown object in list : " + obj);
+           }                                                                    
+        }            
+        
+        return newStmtList;
+    }
+       
+    protected Object _portFieldDeclNode(FieldDeclNode node, LinkedList args) {
         // by default, get rid of the port field declaration 
         return NullValue.instance;              
     }
        
-    protected Object _portMethodCall(MethodCallNode node, MethodDecl methodDecl,
-     ExprNode accessedObj) {
+    protected Object _portMethodCallNode(MethodCallNode node, LinkedList args) {        
+        FieldAccessNode fieldAccessNode = (FieldAccessNode) node.getMethod();
+
+        MethodDecl methodDecl = (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);        
+                  
+        fieldAccessNode = (FieldAccessNode) fieldAccessNode.accept(this, args);
+         
+        node.setMethod(fieldAccessNode); 
+        
+        ExprNode accessedObj = 
+         (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
+         
+        node.setArgs(TNLManip.traverseList(this, node, args, node.getArgs())); 
+                                                           
         // we can only handle ports that are fields of the actor
         if (accessedObj.classID() != THISFIELDACCESSNODE_ID) return null;
             
@@ -1132,23 +1227,67 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         }       
         return null;
     }
+
+    protected Object _visitEqualityNode(EqualityNode node, LinkedList args) {
+        ExprNode leftExpr = node.getExpr1();
+        TypeNode leftType = _typeVisitor.type(leftExpr);        
+        ExprNode rightExpr = node.getExpr2();                  
+        TypeNode rightType = _typeVisitor.type(rightExpr);        
+        
+        int leftKind = _typeID.kind(leftType);
+        int rightKind = _typeID.kind(rightType);
+ 
+        if (_typeID.isSupportedTokenKind(leftKind)) {
+                   
+           ApplicationUtility.warn("comparison of Token found : " + leftExpr +
+            " with " + rightExpr);
+           
+           if (rightExpr.classID() == NULLPNTRNODE_ID) {
+              ApplicationUtility.warn("comparison with null replaced with dummy value");
+              
+              node.setExpr2(_dummyValue(leftType));
+              
+              node.setExpr1((ExprNode) leftExpr.accept(this, args));
+              
+              return node;
+           }        
+        }
+        
+        if (_typeID.isSupportedTokenKind(rightKind)) {
+                   
+           ApplicationUtility.warn("comparison of Token found : " + leftExpr +
+            " with " + rightExpr + "(may be a duplicate message)");
+           
+           if (leftExpr.classID() == NULLPNTRNODE_ID) {
+              ApplicationUtility.warn("comparison with null replaced with dummy value");
+              
+              node.setExpr1(_dummyValue(rightType));
+              
+              node.setExpr2((ExprNode) rightExpr.accept(this, args));
+              
+              return node;
+           }        
+        }
+                                
+        return _defaultVisit(node, args);    
+    }
                  
     protected ActorCodeGeneratorInfo _actorInfo = null;    
     
     protected PtolemyTypeVisitor _typeVisitor = null;
-    protected TypePolicy _typePolicy = null;    
+    protected PtolemyTypePolicy _typePolicy = null;    
     protected PtolemyTypeIdentifier _typeID = null;
         
     /** The Ptolemy name of the instance of the actor. */
     protected final String _actorName;
     
-    /** A count of how many constructors in the "actor" class that have been
+    /** A count of how many constructors in the actor class that have been
      *  found so far.
      */
     protected int _constructorCount = 0;
     
-    /** A flag indicating that actor class inherits from object, so super.XXX()
-     *  method calls must be eliminated.
+    /** A flag indicating that the actor class inherits from object, so 
+     *  super.XXX() method calls must be eliminated.
      */      
     protected boolean _isBaseClass = false;                                 
 }
