@@ -74,7 +74,7 @@ public class ThalesGraphFrame extends BasicGraphFrame {
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
      *  This is typically done by calling show() on the controlling tableau.
-     *  @see Tableau#show()
+     *  @see ptolemy.actor.gui.Tableau#show()
      *  @param entity The model to put in this frame.
      *  @param tableau The tableau responsible for this frame.
      */
