@@ -276,10 +276,13 @@ public class Clock extends TimedSource {
                 // Schedule the first firing in the next period.
                 _tentativeCycleStartTime += periodValue;
             }
+
+            
             if (_offsets[_tentativePhase] >= periodValue) {
+
                 throw new IllegalActionException(this,
                         "Offset number " + _tentativePhase + " with value "
-                        + _offsets[_tentativePhase] + " must be less than the "
+                        + _offsets[_tentativePhase] + " must be strictly less than the "
                         + "period, which is " + periodValue);
             }
             // NOTE: In the RTOS domain, this may not occur if we have
