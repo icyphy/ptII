@@ -510,7 +510,12 @@ public class Variable extends Attribute implements Typeable {
 
     /** Remove the items in the enumeration from the scope of this variable.
      *  Any item in the enumeration that is not an instance of Variable
-     *  is ignored.
+     *  is ignored.  Also, variables that are in the scope because they
+     *  are contained by the container of this variables (or its containter)
+     *  cannot be removed.  An attempt to do so will be ignored.
+     *  Note also that if any of the removed variables are shadowing
+     *  another variable with the same name, the shadowed variable <i>does
+     *  not</i> reappear in the scope.  It has to be specifically added again.
      *  @param variables An enumeration of variables to be removed from scope.
      */
     public void removeFromScope(Enumeration variables) {
@@ -523,6 +528,12 @@ public class Variable extends Attribute implements Typeable {
     }
 
     /** Remove the argument from the scope of this variable.
+     *  Also, variables that are in the scope because they
+     *  are contained by the container of this variables (or its containter)
+     *  cannot be removed.  An attempt to do so will be ignored.
+     *  Note also that if the removed variables is shadowing
+     *  another variable with the same name, the shadowed variable <i>does
+     *  not</i> reappear in the scope.  It has to be specifically added again.
      *  @param The variable to be removed from scope.
      */
     public void removeFromScope(Variable var) {
@@ -834,13 +845,14 @@ public class Variable extends Attribute implements Typeable {
         _valueDependents.insertFirst(var);
     }
 
-    /** Return a description of this variable.
+    /** Return a description of this variable.  This returns the same
+     *  information returned by toString(), but with optional indenting
+     *  and brackets.
      *  @param detail The level of detail.
      *  @param indent The amount of indenting.
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A string describing this variable.
      */
-    // FIXME: this is just a prototype.
     protected String _description(int detail, int indent, int bracket) {
         try {
             workspace().getReadAccess();
