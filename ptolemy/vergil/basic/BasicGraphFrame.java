@@ -70,9 +70,16 @@ import ptolemy.util.StringUtilities;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.MoMLParser;
+import ptolemy.moml.MoMLUndoChangeRequest;
+import ptolemy.moml.MoMLUndoEntry;
+import ptolemy.moml.UndoInfoAttribute;
 import ptolemy.vergil.tree.EntityTreeModel;
 import ptolemy.vergil.tree.PTree;
 import ptolemy.vergil.tree.VisibleTreeModel;
@@ -127,6 +134,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -444,45 +452,176 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     /** Delete the currently selected objects from this document.
      */
     public void delete() {
+// This code was commented out so that we could get undo/redo working.
+        
+//         GraphPane graphPane = _jgraph.getGraphPane();
+//         GraphController controller =
+// 		(GraphController)graphPane.getGraphController();
+// 	AbstractBasicGraphModel graphModel =
+// 		(AbstractBasicGraphModel)controller.getGraphModel();
+//         // Note that we turn off event dispatching so that each individual
+//         // removal does not trigger graph redrawing.
+//         try {
+//             graphModel.setDispatchEnabled(false);
+//             SelectionModel model = controller.getSelectionModel();
+//             Object selection[] = model.getSelectionAsArray();
+//             Object userObjects[] = new Object[selection.length];
+//             // First remove the selection.
+//             for (int i = 0; i < selection.length; i++) {
+//                 userObjects[i] = ((Figure)selection[i]).getUserObject();
+//                 model.removeSelection(selection[i]);
+//             }
+
+//             // Remove all the edges first,
+//             // since if we remove the nodes first,
+//             // then removing the nodes might remove some of the edges.
+//             for (int i = 0; i < userObjects.length; i++) {
+//                 Object userObject = userObjects[i];
+//                 if (graphModel.isEdge(userObject)) {
+//                     graphModel.disconnectEdge(this, userObject);
+//                 }
+//             }
+//             for (int i = 0; i < selection.length; i++) {
+//                 Object userObject = userObjects[i];
+//                 if (graphModel.isNode(userObject)) {
+//                     graphModel.removeNode(this, userObject);
+//                 }
+//             }
+//         } finally {
+//             graphModel.setDispatchEnabled(true);
+//             graphModel.dispatchGraphEvent(new GraphEvent(
+//                     this,
+//                     GraphEvent.STRUCTURE_CHANGED,
+//                     graphModel.getRoot()));
+//         }
+
+        // Note that we previously a delete was handled at the model level.
+        // Now a delete is handled by generating MoML to carry out the delete
+        // and handing that MoML to the parser
+
         GraphPane graphPane = _jgraph.getGraphPane();
         GraphController controller =
-		(GraphController)graphPane.getGraphController();
-	AbstractBasicGraphModel graphModel =
-		(AbstractBasicGraphModel)controller.getGraphModel();
-        // Note that we turn off event dispatching so that each individual
-        // removal does not trigger graph redrawing.
-        try {
-            graphModel.setDispatchEnabled(false);
-            SelectionModel model = controller.getSelectionModel();
-            Object selection[] = model.getSelectionAsArray();
-            Object userObjects[] = new Object[selection.length];
-            // First remove the selection.
-            for (int i = 0; i < selection.length; i++) {
-                userObjects[i] = ((Figure)selection[i]).getUserObject();
-                model.removeSelection(selection[i]);
-            }
+                (GraphController)graphPane.getGraphController();
+        SelectionModel model = controller.getSelectionModel();
+        // AbstractPtolemyGraphModel graphModel =
+        //    (AbstractPtolemyGraphModel)controller.getGraphModel();
+        AbstractBasicGraphModel graphModel =
+            (AbstractBasicGraphModel)controller.getGraphModel();
+        Object selection[] = model.getSelectionAsArray();
 
-            // Remove all the edges first,
-            // since if we remove the nodes first,
-            // then removing the nodes might remove some of the edges.
-            for (int i = 0; i < userObjects.length; i++) {
-                Object userObject = userObjects[i];
-                if (graphModel.isEdge(userObject)) {
-                    graphModel.disconnectEdge(this, userObject);
+        Object userObjects[] = new Object[selection.length];
+        // First remove the selection.
+        for (int i = 0; i < selection.length; i++) {
+            userObjects[i] = ((Figure)selection[i]).getUserObject();
+            model.removeSelection(selection[i]);
+        }
+
+        // Holds a set of those elements whose deletion goes through MoML.
+        // This is the large majority of deleted objects.
+        // Currently the only exception are links from a port to nowhere.
+        HashSet namedObjNodeSet = new HashSet();
+        HashSet namedObjEdgeSet = new HashSet();
+        // Holds those elements whose deletion does no go through MoML. This
+        // is only links which are no connected to another port or a relation.
+        HashSet edgeSet = new HashSet();
+        // First make a set of all the semantic objects as they may
+        // appear more than once
+        for (int i = 0; i < selection.length; i++) {
+            if (selection[i] instanceof Figure) {
+                Object userObject = ((Figure)selection[i]).getUserObject();
+                if (graphModel.isEdge(userObject) ||
+                        graphModel.isNode(userObject)) {
+                    NamedObj actual =
+                            (NamedObj)graphModel.getSemanticObject(userObject);
+                    if (actual != null) {
+                        if (graphModel.isEdge(userObject)) {
+                            namedObjEdgeSet.add(actual);
+                        } else {
+                            namedObjNodeSet.add(actual);
+                        }
+                    }
+                    else {
+                        // Special case, do not handle through MoML but
+                        // simply delete which means this deletion is not
+                        // undoable
+                        edgeSet.add(userObject);
+                    }
                 }
             }
-            for (int i = 0; i < selection.length; i++) {
-                Object userObject = userObjects[i];
-                if (graphModel.isNode(userObject)) {
-                    graphModel.removeNode(this, userObject);
+        }
+        // Merge the two hashsets so that any edges get deleted first.
+        // This is need to avoid problems with relations not existing due to
+        // the way some relations are hidden and ports are shown directly
+        // connected
+        ArrayList namedObjList = new ArrayList(namedObjEdgeSet);
+        namedObjList.addAll(namedObjNodeSet);
+        // Generate the MoML to carry out the deletion
+        StringBuffer moml = new StringBuffer();
+        moml.append("<group>\n");
+        Iterator elements = namedObjList.iterator();
+        while (elements.hasNext()) {
+            NamedObj element = (NamedObj)elements.next();
+            String deleteElemName = "";
+            if (element instanceof Relation) {
+                deleteElemName = "deleteRelation";
+            }
+            else if (element instanceof Entity) {
+                deleteElemName = "deleteEntity";
+            }
+            else if (element instanceof Attribute) {
+                deleteElemName = "deleteProperty";
+            }
+            else if (element instanceof Port) {
+                deleteElemName = "deletePort";
+            }
+            else {
+                // What else is there?
+            }
+            if (deleteElemName.length() > 0) {
+                moml.append("<" + deleteElemName + " name=\"" +
+                        element.getName() + "\" />\n");
+            }
+        }
+        moml.append("</group>\n");
+
+        // Have both MoML to perform deletion and set of objects whose
+        // deletion does not go through MoML. This set of objects
+        // should be very small and so far consists of only links that are not
+        // connected to a relation
+        try {
+            // First manually delete any objects whose deletion does not go
+            // through MoML and so are not undoable
+            // Note that we turn off event dispatching so that each individual
+            // removal does not trigger graph redrawing.
+            graphModel.setDispatchEnabled(false);
+            Iterator edges = edgeSet.iterator();
+            while (edges.hasNext()) {
+                Object nextEdge = edges.next();
+                if (graphModel.isEdge(nextEdge)) {
+                    graphModel.disconnectEdge(this, nextEdge);
                 }
             }
-        } finally {
+        }
+        finally {
             graphModel.setDispatchEnabled(true);
-            graphModel.dispatchGraphEvent(new GraphEvent(
+            /*graphModel.dispatchGraphEvent(new GraphEvent(
                     this,
                     GraphEvent.STRUCTURE_CHANGED,
-                    graphModel.getRoot()));
+                    graphModel.getRoot()));*/
+        }
+
+        // Next process the deletion MoML. This should be the large majority
+        // of most deletions.
+        try {
+            // Finally create and request the change
+            CompositeEntity toplevel = (CompositeEntity)graphModel.getRoot();
+            MoMLChangeRequest change =
+                    new MoMLChangeRequest(this, toplevel, moml.toString());
+            change.setUndoable(true);
+            toplevel.requestChange(change);
+        }
+        catch (Exception ex) {
+            MessageHandler.error("Delete failed", ex);
         }
     }
 
@@ -558,10 +697,52 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	GraphController controller =
                  _jgraph.getGraphPane().getGraphController();
         LayoutTarget target = new PtolemyLayoutTarget(controller);
-        GraphModel model = controller.getGraphModel();
+        //GraphModel model = controller.getGraphModel();
+        AbstractBasicGraphModel model =
+            (AbstractBasicGraphModel)controller.getGraphModel();
         PtolemyLayout layout = new PtolemyLayout(target);
 	layout.setOrientation(LevelLayout.HORIZONTAL);
 	layout.setRandomizedPlacement(false);
+
+        // Before doing the layout, need to take a copy of all the current
+        // node locations  which can be used to undo the effects of the move.
+        try {
+            CompositeEntity composite = model.getPtolemyModel();
+            StringBuffer moml = new StringBuffer();
+            moml.append("<group>\n");
+            // NOTE: this gives at iteration over locations.
+            Iterator nodes = model.nodes(composite);
+            while (nodes.hasNext()) {
+                Location location = (Location)nodes.next();
+                // Get the containing element
+                NamedObj element = (NamedObj)location.getContainer();
+                // Give default values in case the previous locations value
+                // has not yet been set
+                String expression = location.getExpression();
+                if (expression == null) {
+                    expression = "0, 0";
+                }
+                // Create the MoML, wrapping the location attribute
+                // in an element refering to the container
+                String containingElementName = element.getMoMLInfo().elementName;
+                moml.append("<" + containingElementName + " name=\"" +
+                    element.getName() + "\" >\n");
+                // NOTE: use the moml info element name here in case the
+                // location is a vertex
+                moml.append("<" + location.getMoMLInfo().elementName + " name=\"" +
+                    location.getName() + "\" value=\"" + expression + "\" />\n");
+                moml.append("</" + containingElementName + ">\n");
+            }
+            moml.append("</group>\n");
+
+            // Push the undo entry onto the stack
+            MoMLUndoEntry undoEntry = new MoMLUndoEntry(composite, moml.toString());
+            UndoInfoAttribute undoInfo = UndoInfoAttribute.getUndoInfo(composite);
+            undoInfo.pushUndoEntry(undoEntry);
+        } catch (Exception e) {
+            // operation not undoable
+        }
+
         // Perform the layout and repaint
 	layout.layout(model.getRoot());
         _jgraph.repaint();
@@ -637,6 +818,26 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         }
     }
 
+    /**
+     *  Redo the last undone change on the model
+     */
+    public void redo() {
+        GraphPane graphPane = _jgraph.getGraphPane();
+        GraphController controller =
+                (GraphController)graphPane.getGraphController();
+        GraphModel model = controller.getGraphModel();
+        try {
+            CompositeEntity toplevel = (CompositeEntity)model.getRoot();
+            MoMLUndoChangeRequest change =
+                    new MoMLUndoChangeRequest(this, toplevel);
+            change.setRedoable();
+            toplevel.requestChange(change);
+        }
+        catch (Exception ex) {
+            MessageHandler.error("Redo failed", ex);
+        }
+    }
+
     /** Set the center location of the visible part of the pane.
      *  This will cause the panner to center on the specified location
      *  with the current zoom factor.
@@ -651,6 +852,25 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 visibleRect.getCenterY() - center.getY());
         
         _jgraph.getCanvasPane().setTransform(newTransform);
+    }
+
+    /**
+     *  Undo the last undoable change on the model
+     */
+    public void undo() {
+        GraphPane graphPane = _jgraph.getGraphPane();
+        GraphController controller =
+                (GraphController)graphPane.getGraphController();
+        GraphModel model = controller.getGraphModel();
+        try {
+            CompositeEntity toplevel = (CompositeEntity)model.getRoot();
+            MoMLUndoChangeRequest change =
+                    new MoMLUndoChangeRequest(this, toplevel);
+            toplevel.requestChange(change);
+        }
+        catch (Exception ex) {
+            MessageHandler.error("Undo failed", ex);
+        }
     }
 
     /** Zoom in or out to magnify by the specified factor, from the current
@@ -709,6 +929,12 @@ public abstract class BasicGraphFrame extends PtolemyFrame
        	_editMenu = new JMenu("Edit");
         _editMenu.setMnemonic(KeyEvent.VK_E);
 	_menubar.add(_editMenu);
+        // Add the undo action, followed by a separator then the editing actions
+        diva.gui.GUIUtilities.addHotKey(_jgraph, _undoAction);
+        diva.gui.GUIUtilities.addMenuItem(_editMenu, _undoAction);
+        diva.gui.GUIUtilities.addHotKey(_jgraph, _redoAction);
+        diva.gui.GUIUtilities.addMenuItem(_editMenu, _redoAction);
+        _editMenu.addSeparator();
 	GUIUtilities.addHotKey(_jgraph, _cutAction);
 	GUIUtilities.addMenuItem(_editMenu, _cutAction);
 	GUIUtilities.addHotKey(_jgraph, _copyAction);
@@ -912,6 +1138,17 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     protected Action _layoutAction;
     protected Action _saveInLibraryAction;
     protected Action _importLibraryAction;
+
+    /**
+     *  Action to undo the last MoML change
+     */
+    private Action _undoAction = new UndoAction();
+
+    /**
+     *  Action to redo the last undone MoML change
+     */
+    private Action _redoAction = new RedoAction();
+
 
     // Flag indicating that the current save action is "save as" rather than
     // "save".
@@ -1159,6 +1396,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	}
     }
 
+
     ///////////////////////////////////////////////////////////////////
     //// PtolemyLayout
 
@@ -1346,6 +1584,39 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	}
     }
 
+    /////////////////////////////////////////////////////////////////////
+    //// RedoAction
+
+    /**
+     *  Undo the last undoable MoML change on the current current model.
+     */
+    private class RedoAction extends AbstractAction {
+
+        /**
+         *  Create a new action to paste the current contents of the clipboard
+         *  into the current model.
+         */
+        public RedoAction() {
+            super("Redo");
+            putValue("tooltip",
+                    "Redo the last change undone.");
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_Z,
+                    (java.awt.Event.CTRL_MASK | java.awt.Event.SHIFT_MASK)));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    new Integer(KeyEvent.VK_R));
+        }
+
+        /**
+         *  Paste the current contents of the clipboard into the current model.
+         *
+         * @param  e  Description of Parameter
+         */
+        public void actionPerformed(ActionEvent e) {
+            redo();
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     //// SaveInLibraryAction
 
@@ -1383,6 +1654,39 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 		// Ignore.
 	    }
 	}
+    }
+
+    /////////////////////////////////////////////////////////////////////
+    //// UndoAction
+
+    /**
+     *  Undo the last undoable MoML change on the current current model.
+     */
+    private class UndoAction extends AbstractAction {
+
+        /**
+         *  Create a new action to paste the current contents of the clipboard
+         *  into the current model.
+         */
+        public UndoAction() {
+            super("Undo");
+            putValue("tooltip",
+                    "Undo the last change.");
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_Z,
+                    java.awt.Event.CTRL_MASK));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    new Integer(KeyEvent.VK_U));
+        }
+
+        /**
+         *  Paste the current contents of the clipboard into the current model.
+         *
+         * @param  e  Description of Parameter
+         */
+        public void actionPerformed(ActionEvent e) {
+            undo();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
