@@ -47,10 +47,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS) \
 	VariableDelay.xml
 
 EXTRA_SRCS = \
+	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
 	VariableDelay.htm \
 	VariableDelayVergil.htm
