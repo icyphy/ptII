@@ -100,7 +100,7 @@ REALCLEAN_STUFF =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: sources jclass suball $(TYZIP) $(JARFILE) ptolemy.plotapplet.jar
+all: sources jclass $(TYZIP) $(JARFILE) ptolemy.plotapplet.jar
 	-chmod a+x pxgraph
 install: sources jclass javadocs subinstall $(JARFILE) $(TYZIP) ptolemy.plotapplet.jar
 	-chmod a+x pxgraph
