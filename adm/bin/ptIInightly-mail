@@ -66,6 +66,8 @@ echo "" >> $mailmsg
 echo "To see the complete build and test log, see:" >> $mailmsg
 if [ "`hostname`" = "gigasource.eecs.berkeley.edu" ]; then
     echo "http://chess.eecs.berkeley.edu/ptolemy/src/ptII/adm/logs/ptIInightly.txt" >> $mailmsg
+    echo " or, if you have a full account on gigascale, do" >> $mailmsg
+    echo "scp gigasource:/home/bldmastr/ptII/adm/logs/ptIInightly.txt /tmp" >> $mailmsg
 else
     echo "$ptbuildlog on `hostname`" >> $mailmsg
 fi
