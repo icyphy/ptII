@@ -84,7 +84,69 @@ If these rules are violated, the actor will throw an exception.
 However, these rules do not guarantee the codeword can be decoded
 successfully, and it is not always true that larger polynomials
 yield better codes. Users should check tables for convolutional
-codes from professional references.
+codes from professional references. For convenience, we list here
+some convolutional codes that have large distance property. 
+<pre>
+Rate = 1/2
+polynomialArray
+{05, 07}
+{013, 017}
+{031, 027}
+{065, 057}
+{0155, 0117}
+<p>
+Rate = 1/3
+polynomialArray
+{05, 07, 07}    
+{015, 013, 017}
+{025, 033, 037}
+{071, 065, 057}
+{0155, 0123, 0137}
+<p>
+Rate = 1/4
+polynomialArray
+{05, 07, 07, 07}
+{015, 013, 013, 017}
+{025, 035, 033, 037}
+{065, 073, 047, 057}
+{0135, 0135, 0163, 0147}
+<p>
+Rate = 1/5
+polynomialArray
+{07, 07, 07, 05, 05}
+{017, 017, 015, 013, 013}
+{037, 035, 033, 025, 027}
+{057, 047, 067, 053, 075}
+<p>
+Rate = 1/6
+polynomialArray
+{07, 07, 07, 07, 05, 05}
+{017, 017, 015, 015, 013, 013}
+{037, 027, 035, 033, 025, 027}
+{067, 057, 055, 053, 071, 075}
+<p>
+Rate = 2/3
+polynomialArray
+{017, 06, 013} 
+{072, 057, 027}
+{0171, 0166, 0273}
+<p>
+Rate = k/5
+k     polynomialArray
+2     {017, 016, 011, 05, 02}
+2     {072, 047, 025, 053, 075}
+3     {056, 062, 057, 043, 071}
+<p>
+Rate = k/7
+k     polynomialArray
+2     {012, 06, 05, 013, 013, 015, 017}
+2     {066, 055, 027, 071, 052, 056, 057}
+3     {051, 042, 036, 023, 075, 061, 047}
+<p>
+Rate  polynomialArray
+3/4   {064, 052, 043, 071}
+3/8   {054, 021, 062, 043, 045, 036, 057, 071}
+</pre>
 <p>
 Note that this implementation is limited to a shift register
 length of 32 because of the specification of the polynomials and
