@@ -144,24 +144,20 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
                 // We can't use instanceof here because we don't actually
                 // have an instance of the object to call instanceof on.
                 // getType() returns a Class.
-                if (fields[i].getType() == _TYPED_IO_PORT_CLASS) {
+                if (fields[i].get(newObject) instanceof TypedIOPort) {
                         fields[i].set(newObject,
                                 newObject.getPort(fields[i].getName()));
                 } else {
                     // We need to check for both Parameter and StringAttribute,
                     // both of which implement UserSettable.
                     // A faster way would be to check to see if the
-                    // type of the field was wither Parameter or
+                    // type of the field was either Parameter or
                     // StringAttribute, but if we ever extended UserSettable
                     // with another class, then clone() would not clone
                     // the new class.
-                    Class interfaces[] = fields[i].getType().getInterfaces();
-                    for(int j = 0; j < interfaces.length; j++) {
-                        if (interfaces[j] == _USER_SETTABLE_CLASS) {
-                            fields[i].set(newObject,
-                                    newObject.
-                                    getAttribute(fields[i].getName()));
-                        }
+                    if (fields[i].get(newObject) instanceof UserSettable) {
+                        fields[i].set(newObject,
+                                newObject.getAttribute(fields[i].getName()));
                     }
                 }
             } catch (IllegalAccessException e) {
@@ -302,21 +298,5 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
                     "Incompatible port class for this actor.");
         }
         super._addPort(port);
-    }
-
-
-    private static final Class _TYPED_IO_PORT_CLASS;
-    private static final Class _USER_SETTABLE_CLASS;
-
-
-    static {
-        try {
-            _USER_SETTABLE_CLASS =
-                Class.forName("ptolemy.kernel.util.UserSettable");
-            _TYPED_IO_PORT_CLASS = Class.forName("ptolemy.actor.TypedIOPort");
-
-        } catch (Exception e) {
-            throw new ExceptionInInitializerError(e);
-        }
     }
 }
