@@ -54,6 +54,7 @@ test ASTFormatter-1.1 {Convert the SwimmingPool example} {
     list $stdout
 } {{package ptolemy.backtrack.ast.test;
 
+
 public class ASTTest {
 
     public ASTTest() {
