@@ -39,6 +39,7 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.gui.MessageHandler;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -163,8 +164,24 @@ public class TclShellTableau extends Tableau {
                 TclShellTableau tableau =
                     (TclShellTableau)effigy.getEntity("TclShellTableau");
                 if (tableau == null) {
-                    tableau = new TclShellTableau(
-                            (PtolemyEffigy)effigy, "TclShellTableau");
+		    try {
+			tableau = new TclShellTableau(
+				      (PtolemyEffigy)effigy,
+				      "TclShellTableau");
+		    } catch (NoClassDefFoundError noClassDefFoundError) {
+			// Catch the error here  Perhaps
+			RuntimeException runtimeException =
+			    new RuntimeException(noClassDefFoundError.toString());
+			runtimeException.fillInStackTrace();
+			// MessageHandler.error() does not take an Error
+			// argument as the second argument, so we create
+			// a RuntimeException.
+                        MessageHandler.error("Cannot create TclShellTableau. "
+					     + "Perhaps $PTII/lib/ptjacl.jar "
+					     + "is not in your path?: ",
+					     runtimeException);
+
+		    }
                 }
                 return tableau;
 	    } else {
