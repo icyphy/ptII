@@ -83,6 +83,9 @@ public class PtolemyDocument extends AbstractDocument
         super(a);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Close the document. This method doesn't do anything, as
      * the model doesn't change.
      */
@@ -134,11 +137,7 @@ public class PtolemyDocument extends AbstractDocument
 
     /** Open the document from its current file.
      *
-<<<<<<< PtolemyDocument.java
-     * @exception Exception  If there is no file, or if the I/O operation failed.
-=======
      * @exception Exception If there is no file, or if the I/O operation failed.
->>>>>>> 1.6
      */
     public void open() throws Exception {
         if (getFile() == null) {
@@ -156,11 +155,7 @@ public class PtolemyDocument extends AbstractDocument
 
     /** Save the document to the current file.
      *
-<<<<<<< PtolemyDocument.java
-     * @exception Exception  If there is no file, or if the I/O operation failed.
-=======
      * @exception Exception If there is no file, or if the I/O operation failed.
->>>>>>> 1.6
      */
     public void save() throws Exception {
         if (getFile() == null) {
@@ -173,11 +168,7 @@ public class PtolemyDocument extends AbstractDocument
     /** Save the document to the given file. Do not change the file
      * attribute to the new File object.
      *
-<<<<<<< PtolemyDocument.java
-     * @exception Exception  If the I/O operation failed.
-=======
      * @exception Exception If the I/O operation failed.
->>>>>>> 1.6
      */
     public void saveAs(File file) throws Exception {
         String filename = file.getName();
@@ -213,44 +204,8 @@ public class PtolemyDocument extends AbstractDocument
             + "]\n" + _model.exportMoML();
     }
 
-    /** Delete any nodes or edges from the graph that are currently selected.
-     * In addition, delete any edges that are connected to any deleted nodes.
-     */
-    public class DeletionListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            JGraph jgraph = (JGraph) e.getSource();
-            GraphPane graphPane = jgraph.getGraphPane();
-            GraphController controller =
-                (GraphController)graphPane.getGraphController();
-            GraphImpl impl = controller.getGraphImpl();
-            SelectionModel model = controller.getSelectionModel();
-            Object selection[] = model.getSelectionAsArray();
-            // Remove all the edges first, since if we remove the nodes first,
-            // then removing the nodes might remove some of the edges.
-            for(int i = 0; i < selection.length; i++) {
-		if(selection[i] instanceof Figure) {
-		    Object userObject =
-                        ((Figure)selection[i]).getUserObject();
-		    if(userObject instanceof Edge) {
-                        model.removeSelection(selection[i]);
-                        Edge edge = (Edge) userObject;
-                        controller.removeEdge(edge);
-		    }
-                }
-            }
-	    for(int i = 0; i < selection.length; i++) {
-		if(selection[i] instanceof Figure) {
-		    Object userObject =
-                        ((Figure)selection[i]).getUserObject();
-                    if(userObject instanceof Node) {
-                        model.removeSelection(selection[i]);
-			Node node = (Node) userObject;
-			controller.removeNode(node);
-                    }
-                }
-            }
-	}
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                     public inner classes                  ////
 
     /**
      * The factory for Ptolemy documents.
@@ -295,6 +250,9 @@ public class PtolemyDocument extends AbstractDocument
 	    return "Ptolemy II";
 	}
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     /** The document's model.
      */

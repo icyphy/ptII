@@ -126,8 +126,7 @@ public class VergilApplication extends MDIApplication {
         _initializeMenuBar(frame.getJMenuBar());
         _initializeToolBar(frame.getJToolBar());
 	JPanel toolBarPane = frame.getToolBarPane();
-	toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-	SwingUtilities.invokeLater(new PaletteInitializer());
+	toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
 
         Icon icon = getResources().getImageIcon("GraphIconImage");
         Image iconImage = getResources().getImage("GraphIconImage");
@@ -260,27 +259,6 @@ public class VergilApplication extends MDIApplication {
     }
 
     /** 
-     * Return the entity library for this application.
-     */
-    public CompositeEntity getEntityLibrary() {
-        return _entityLibrary;
-    }
-
-    /** 
-     * Return the resources for this application.
-     */
-    public RelativeBundle getGUIResources() {
-        return _guiResources;
-    }
-
-    /** 
-     * Return the icon library associated with this Vergil.
-     */
-    public CompositeEntity getIconLibrary() {
-	return _iconLibrary;
-    }
-
-    /** 
      * Get the title of this application.  This class returns
      * the string "Vergil", although subclasses may override this.
      */
@@ -329,8 +307,10 @@ public class VergilApplication extends MDIApplication {
 
     /** 
      * Set the given document to be the current document, and raise
-     * the internal window that corresponds to that document.
-     * If given document is not null, then ensure that the "Save" and "Save As"
+     * the internal window that corresponds to that document and give it
+     * the keyboard focus.
+     * If given document is not null, 
+     * then ensure that the "Save" and "Save As"
      * actions are enabled.  If the given document is null, then disable
      * those actions.
      * @param document The document to set as the current document, or
@@ -338,12 +318,17 @@ public class VergilApplication extends MDIApplication {
      */
     public void setCurrentDocument(Document document) {
         super.setCurrentDocument(document);
+
         if(document == null) {
             Action saveAction = getAction(DefaultActions.SAVE);
             saveAction.setEnabled(false);
             Action saveAsAction = getAction(DefaultActions.SAVE_AS);
             saveAsAction.setEnabled(false);
         } else {
+	    JComponent view = getView(document);
+	    if (!view.hasFocus()) {
+		view.requestFocus();
+	    }
             Action saveAction = getAction(DefaultActions.SAVE);
             saveAction.setEnabled(true);
             Action saveAsAction = getAction(DefaultActions.SAVE_AS);
@@ -365,11 +350,12 @@ public class VergilApplication extends MDIApplication {
     ///////////////////////////////////////////////////////////////////
     ////                    private inner classes                  ////
 
-    /**
-     * A mouse listener that is attached to the view that is created for
-     * every document.  It ensures that keyboard focus is properly passed
-     * to each view.
-     */
+    // A mouse listener that is attached to the view that is created for
+    // every document.  It ensures that keyboard focus is properly passed
+    // to each view.
+    // Note that we use a mouse listener instead of a document listener, since
+    // the focus could be changed to a component that is not associated with
+    // a document without the current document changing.
     private class MouseFocusMover extends MouseAdapter {        
 	/**
 	 * Grab the keyboard focus when the component that this listener is
@@ -382,52 +368,6 @@ public class VergilApplication extends MDIApplication {
                 component.requestFocus();
             }
         }
-    }
-
-    /** 
-     * A Runnable object that is responsible for initializing the 
-     * design palette.  This is done in a separate
-     * thread, because loading the libraries can take quite a while.
-     */
-    private class PaletteInitializer implements Runnable {
-	/** 
-	 * Parse the icon and entity libraries and populate the 
-	 * design palette.
-	 */
-	public void run() {
-	    DesktopFrame frame = ((DesktopFrame) getApplicationFrame());
-	    JTreePane pane = (JTreePane)frame.getPalettePane();
-
-	    JSplitPane splitPane = frame.getSplitPane();
-
-	    // There are differences in the way swing acts in JDK1.2 and 1.3
-	    // The way to get it to work with both is to set
-	    // the preferred size along with the minimum size.   JDK1.2 has a
-	    // bug where the preferred size may be inferred to be less than the
-	    // minimum size when the pane is first created.
-	    pane.setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-		setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-		setPreferredSize(new Dimension(150, 150));
-	    _parseLibraries();
-
-	    //System.out.println("Icons = " + _iconLibrary.description());
-
-	    CompositeEntity lib = getEntityLibrary();
-
-	    // We have "" because that is the name that was given in the
-	    // treepane constructor.
-	    //System.out.println("lib = " + lib.description());
-	    createTreeNodes(pane, lib.getFullName(), lib);
-
-	    pane.setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-	    setMinimumSize(new Dimension(150, 150));
-	    ((JComponent)pane.getTopComponent()).
-		setPreferredSize(new Dimension(150, 150));
-	    splitPane.validate();
-	}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -501,35 +441,6 @@ public class VergilApplication extends MDIApplication {
 			 resources.getImageIcon("SaveImage"));
     }
 
-    /** 
-     * Parse the entity and icon XML libraries.  Set the entity and icon
-     * libraries for this application.
-     */
-    private void _parseLibraries() {
-        URL iconlibURL = null;
-        URL entitylibURL = null;
-        try {
-            iconlibURL = getGUIResources().getResource("rootIconLibrary");
-            entitylibURL = getGUIResources().getResource("rootEntityLibrary");
-
-            MoMLParser parser;
-            parser = new MoMLParser();
-	    _iconLibrary =
-                (CompositeEntity) parser.parse(iconlibURL,
-                        iconlibURL.openStream());
-            LibraryIcon.setIconLibrary(_iconLibrary);
-
-            //FIXME: this is bogus  The parser should be reusable.
-            parser = new MoMLParser();
-            _entityLibrary =
-                (CompositeEntity) parser.parse(entitylibURL,
-                        entitylibURL.openStream());
-        }
-        catch (Exception e) {
-            System.out.println(e);
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -538,16 +449,6 @@ public class VergilApplication extends MDIApplication {
 
     // The layout selection combobox.
     private JComboBox _layoutComboBox;
-
-    // The application specific resources.
-    private RelativeBundle _guiResources =
-	new RelativeBundle("ptolemy.vergil.Library", getClass(), null);
-
-    // The Icon Library.
-    private CompositeEntity _iconLibrary;
-
-    // The Entity Library.
-    private CompositeEntity _entityLibrary;
 
     // The list of factories that create graph documents.
     private List _documentFactoryList = new LinkedList();

@@ -44,6 +44,10 @@ import ptolemy.vergil.graph.*;
  * @version $Id$
  */
 public class PtolemyNotation extends Attribute implements VisualNotation {
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Construct a graph document that is owned by the given
      *  application
      */

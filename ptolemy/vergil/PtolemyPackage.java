@@ -48,6 +48,7 @@ import diva.graph.toolbox.GraphParser;
 import diva.graph.toolbox.GraphWriter;
 import diva.gui.*;
 import diva.gui.toolbox.*;
+import diva.resource.RelativeBundle;
 import java.util.*;
 
 import java.io.File;
@@ -61,6 +62,7 @@ import java.awt.Component;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -72,15 +74,15 @@ import ptolemy.domains.dde.kernel.*;
 import ptolemy.domains.csp.kernel.*;
 
 /**
- * A modular package that can be plugged into Vergil that adds support for
+ * A module that can be plugged into Vergil that adds support for
  * Ptolemy II.  This package adds a Ptolemy II menu to the menu bar, which
  * allows access to the model of the currently selected document, if that
  * document is a Ptolemy document.  It also adds a new tool bar that contains
  * a pulldown menu for selecting directors and a pulldown menu for executing a
  * graph layout algorithm.
  * <p>
- * This package contains a list of Directors which are placed in the
- * appropriate toolbar menu.
+ * This package contains a list of Directors which are placed in a
+ * toolbar menu.
  * <p>
  * This package contains a list of Visual notations.  Each notation is
  * capable of creating a view on a Ptolemy Document.  In some cases,
@@ -89,17 +91,24 @@ import ptolemy.domains.csp.kernel.*;
  * and arc diagram.  However, bubble and arc diagrams are not usually used
  * for dataflow diagrams.
  * <p>
- * Currently the only access to the model that is allowed is executing the
+ * Currently the only access to the model that is provided is execution of the
  * model.  When the model is executed, this package listens to the state of
- * the model's manager and updates the status bar.
+ * the model's manager and updates the Vergil status bar.
  *
  * @author Steve Neuendorffer
  * @version $Id$
  */
-public class PtolemyPackage implements Package {
+public class PtolemyPackage implements Module {
     /**
-     * Create a new package that will register itself with the given
-     * Vergil application.
+     * Create a new package that will extend the functionality of the given
+     * Vergil application.  Create a new "Ptolemy II" menu and add it to
+     * the application's menu bar.  Create and add an action for viewing a 
+     * MoML description of the current document.  Create and add an action for
+     * executing the model of the current document.  Both of these actions
+     * are only enabled if the current document is an instance of
+     * PtolemyDocument.  Also create a new toolbar and add it to the 
+     * application.  Create and add a button to the toolbar which will 
+     * trigger layout of the current document.
      */
     public PtolemyPackage(VergilApplication application) {
 	_application = application;
@@ -155,7 +164,6 @@ public class PtolemyPackage implements Package {
                         manager =
                             new Manager(toplevel.workspace(), "Manager");
                         toplevel.setManager(manager);
-                        // manager.addDebugListener(new StreamListener());
 			manager.addExecutionListener(
 			    new VergilExecutionListener());
                     }
@@ -189,8 +197,6 @@ public class PtolemyPackage implements Package {
                         _executionFrame.setVisible(true);
                     }
 
-                    //                    manager.startRun();
-
 		    final JFrame packframe = _executionFrame;
 		    Action packer = new AbstractAction() {
 			public void actionPerformed(ActionEvent event) {
@@ -212,33 +218,24 @@ public class PtolemyPackage implements Package {
         };
 	_application.addMenuItem(menuDevel, action, 'E', "Execute System");
 
+	action = new AbstractAction("Automatic Layout") {
+            public void actionPerformed(ActionEvent e) {
+		VergilDocument d = (VergilDocument)
+		    _application.getCurrentDocument();
+		JGraph jg = (JGraph) _application.getView(d);
+		_redoLayout(jg);
+	    }
+        };
+	_application.addMenuItem(menuDevel, action, 'L', 
+				 "Automatically layout the model");
+	
 	JToolBar tb = new JToolBar();
 	Container pane =
 	    ((DesktopFrame)_application.getApplicationFrame()).getToolBarPane();
 	pane.add(tb);
-
+	
 	String dflt = "";
-        // Layout combobox
-        _layoutComboBox = new JComboBox();
-        dflt = "Random layout";
-        _layoutComboBox.addItem(dflt);
-        _layoutComboBox.setSelectedItem(dflt);
-        _layoutComboBox.addItem("Levelized layout");
-        _layoutComboBox.addItem("Grid layout");
-        _layoutComboBox.setMaximumSize(_layoutComboBox.getMinimumSize());
-        _layoutComboBox.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    VergilDocument d = (VergilDocument)
-			_application.getCurrentDocument();
-                    JGraph jg = (JGraph) _application.getView(d);
-                    redoLayout(jg, (String) e.getItem());
-                }
-            }
-        });
-
-	tb.add(_layoutComboBox);
-
+	
 	_directorModel = new DefaultComboBoxModel();
 	_directorModel.addElement(new SDFDirector());
 	_directorModel.addElement(new PNDirector());
@@ -247,14 +244,17 @@ public class PtolemyPackage implements Package {
 	_directorModel.addElement(new DDEDirector());
 	//FIXME find these names somehow.
 	_directorComboBox = new JComboBox(_directorModel);
-	_directorComboBox.setRenderer(new DirectorCellRenderer());
+	_directorComboBox.setRenderer(new NamedObjCellRenderer());
 	_directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());
         _directorComboBox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
+		    // When a director is selected, update the 
+		    // director of the model in the current document.
 		    Director director = (Director) e.getItem();
 		    PtolemyDocument d = (PtolemyDocument)
 			_application.getCurrentDocument();
+		    if(d == null) return;
 		    CompositeEntity entity =
 			d.getModel();
 		    if(entity instanceof Actor) {
@@ -274,8 +274,48 @@ public class PtolemyPackage implements Package {
         });
         tb.add(_directorComboBox);
 
+	ListDataListener ldl = new ListDataListener() {
+	    public void contentsChanged(ListDataEvent event) {		
+		// When the current document is changed, set the 
+		// director menu to whatever director is currently associated
+		// with the model in the document.
+		PtolemyDocument d = 
+		(PtolemyDocument)_application.getCurrentDocument();
+		if(d == null) {
+		    _directorModel.setSelectedItem(null);
+		    return;
+		}
+		CompositeActor actor = (CompositeActor)d.getModel();
+		Director director = actor.getDirector();
+		if(director == null) {
+		    _directorModel.setSelectedItem(null);
+		    return;
+		}
+		Director foundDirector = null;
+		for(int i = 0; foundDirector == null && i < _directorModel.getSize(); i++) {
+		    if(director.getClass().isInstance(_directorModel.getElementAt(i))) {
+		    	foundDirector = 
+		    	(Director)_directorModel.getElementAt(i);
+		    }
+		}
+		_directorModel.setSelectedItem(foundDirector);
+	    }
+	    public void intervalAdded(ListDataEvent event) {
+		contentsChanged(event);
+	    }
+	    public void intervalRemoved(ListDataEvent event) {
+		contentsChanged(event);
+	    }
+	};
+	application.addDocumentListener(ldl);
         application.addDocumentFactory(new PtolemyDocument.Factory());
+
+	SwingUtilities.invokeLater(new PaletteInitializer());
+
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /**
      * Add a visual notation to the list of visual notations.
@@ -302,8 +342,29 @@ public class PtolemyPackage implements Package {
 	return list;
     }
 
+    /** 
+     * Return the entity library for this application.
+     */
+    public CompositeEntity getEntityLibrary() {
+        return _entityLibrary;
+    }
+
+    /** 
+     * Return the icon library associated with this Vergil.
+     */
+    public CompositeEntity getIconLibrary() {
+	return _iconLibrary;
+    }
+
+    /** 
+     * Return the resources for this module.
+     */
+    public RelativeBundle getModuleResources() {
+        return _moduleResources;
+    }
+
     /**
-     * Return a list of the notations in the notatin list.
+     * Return a list of the notations in the notation list.
      */
     public List notationList() {
 	List list = new LinkedList();
@@ -311,30 +372,6 @@ public class PtolemyPackage implements Package {
 	    list.add(_notationModel.getElementAt(i));
 	}
 	return list;
-    }
-
-    /** Redo the layout of the given JGraph.
-     */
-    public void redoLayout(JGraph jgraph, String type) {
-        GraphController controller = jgraph.getGraphPane().getGraphController();
-        LayoutTarget target = new BasicLayoutTarget(controller);
-        Graph graph = controller.getGraph();
-        GlobalLayout layout;
-
-        if (type.equals("Random layout")) {
-            layout = new RandomLayout();
-        } else if(type.equals("Grid layout")) {
-	    layout = new GridAnnealingLayout();
-	} else {
-            layout = new LevelLayout();
-        }
-        // Perform the layout and repaint
-        try {
-            layout.layout(target, graph);
-        } catch (Exception e) {
-            _application.showError("layout", e);
-        }
-        jgraph.repaint();
     }
 
     /**
@@ -345,23 +382,73 @@ public class PtolemyPackage implements Package {
     }
 
     /**
-     * Remove a notation from the list of notations
+     * Remove a notation from the list of notations.
      */
     public void removeNotation(PtolemyNotation notation) {
 	_notationModel.removeElement(notation);
     }
 
-    /**
-     * An execution listener that updates the message bar.
-     */
-    public class VergilExecutionListener implements ExecutionListener {
+    ///////////////////////////////////////////////////////////////////
+    ////                     private inner classes                 ////
+
+    // A Runnable object that is responsible for initializing the 
+    // design palette.  This is done in a separate
+    // thread, because loading the libraries can take quite a while.
+    private class PaletteInitializer implements Runnable {
+	/** 
+	 * Parse the icon and entity libraries and populate the 
+	 * design palette.
+	 */
+	public void run() {
+	    DesktopFrame frame = 
+		((DesktopFrame) _application.getApplicationFrame());
+	    JTreePane pane = (JTreePane)frame.getPalettePane();
+
+	    JSplitPane splitPane = frame.getSplitPane();
+
+	    // There are differences in the way swing acts in JDK1.2 and 1.3
+	    // The way to get it to work with both is to set
+	    // the preferred size along with the minimum size.   JDK1.2 has a
+	    // bug where the preferred size may be inferred to be less than the
+	    // minimum size when the pane is first created.
+	    pane.setMinimumSize(new Dimension(150, 150));
+	    ((JComponent)pane.getTopComponent()).
+		setMinimumSize(new Dimension(150, 150));
+	    ((JComponent)pane.getTopComponent()).
+		setPreferredSize(new Dimension(150, 150));
+	    _parseLibraries();
+
+	    //System.out.println("Icons = " + _iconLibrary.description());
+
+	    CompositeEntity lib = getEntityLibrary();
+
+	    // We have "" because that is the name that was given in the
+	    // treepane constructor.
+	    //System.out.println("lib = " + lib.description());
+	    _application.createTreeNodes(pane, lib.getFullName(), lib);
+
+	    pane.setMinimumSize(new Dimension(150, 150));
+	    ((JComponent)pane.getTopComponent()).
+	    setMinimumSize(new Dimension(150, 150));
+	    ((JComponent)pane.getTopComponent()).
+		setPreferredSize(new Dimension(150, 150));
+	    splitPane.validate();
+	}
+    }
+
+    // An execution listener that displays the status of the current
+    // document.
+    private class VergilExecutionListener implements ExecutionListener {
+	// Defer to the application to display the error to the user.
 	public void executionError(Manager manager, Exception exception) {
 	    _application.showError(manager.getName(), exception);
 	}
-
+	
+	// Do nothing when execution finishes
 	public void executionFinished(Manager manager) {
 	}
 
+	// Display the new manager state in the application's status bar.
 	public void managerStateChanged(Manager manager) {
 	    DesktopFrame frame = (DesktopFrame)
 		_application.getApplicationFrame();
@@ -370,15 +457,15 @@ public class PtolemyPackage implements Package {
 	}
     }
 
-    public class DirectorCellRenderer extends JLabel
+    // A class that renders named objects in a combobox.
+    private class NamedObjCellRenderer extends JLabel
 	implements ListCellRenderer {
-	public DirectorCellRenderer() {
+	public NamedObjCellRenderer() {
 	    setOpaque(true);
 	}
 	public Component getListCellRendererComponent(
 	    JList list, Object value, int index,
-	    boolean isSelected, boolean cellHasFocus)
-	{
+	    boolean isSelected, boolean cellHasFocus) {
 	    setText(((NamedObj)value).getClass().getName());
 	    setBackground(isSelected ? Color.blue : Color.white);
 	    setForeground(isSelected ? Color.white : Color.black);
@@ -386,33 +473,88 @@ public class PtolemyPackage implements Package {
 	}
     }
 
-    /** The application that this package is associated with.
-     */
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Parse the entity and icon XML libraries.  Set the entity and icon
+    // libraries for this application.
+    private void _parseLibraries() {
+        URL iconlibURL = null;
+        URL entitylibURL = null;
+        try {
+            iconlibURL = 
+		getModuleResources().getResource("rootIconLibrary");
+            entitylibURL = 
+		getModuleResources().getResource("rootEntityLibrary");
+
+            MoMLParser parser;
+            parser = new MoMLParser();
+	    _iconLibrary =
+                (CompositeEntity) parser.parse(iconlibURL,
+                        iconlibURL.openStream());
+            LibraryIcon.setIconLibrary(_iconLibrary);
+
+            //FIXME: this is bogus  The parser should be reusable.
+            parser = new MoMLParser();
+            _entityLibrary =
+                (CompositeEntity) parser.parse(entitylibURL,
+                        entitylibURL.openStream());
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    // Redo the layout of the given JGraph.
+    private void _redoLayout(JGraph jgraph) {
+	GraphController controller = 
+	    jgraph.getGraphPane().getGraphController();
+        LayoutTarget target = new BasicLayoutTarget(controller);
+        Graph graph = controller.getGraph();
+        GlobalLayout layout = new GridAnnealingLayout();
+
+        // Perform the layout and repaint
+        try {
+            layout.layout(target, graph);
+        } catch (Exception e) {
+            _application.showError("layout", e);
+        }
+        jgraph.repaint();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The application that this package is associated with.
     private VergilApplication _application;
 
-    /** The frame in which any placeable objects create their output.
-     *  This will be null until a model with something placeable is
-     *  executed.
-     */
+    // The frame in which any placeable objects create their output.
+    //  This will be null until a model with something placeable is
+    //  executed.
     private JFrame _executionFrame = null;
-
-    /** The director selection combobox
-     */
+    
+    // The director selection combobox
     private JComboBox _directorComboBox;
 
-    /** The layout selection combobox
-     */
-    private JComboBox _layoutComboBox;
+    // The layout button
+    private JButton _layoutButton;
 
-    /** The list of directors.
-     */
+    // The list of directors.
     private DefaultComboBoxModel _directorModel;
 
-    /** The list of notations.
-     */
+    // The list of notations.
     private DefaultComboBoxModel _notationModel;
 
-    /** The layout engine
-     */
+    // The layout engine
     private GlobalLayout _globalLayout;
+
+    // The Icon Library.
+    private CompositeEntity _iconLibrary;
+
+    // The Entity Library.
+    private CompositeEntity _entityLibrary;
+
+    // The resources for this module.
+    private RelativeBundle _moduleResources =
+	new RelativeBundle("ptolemy.vergil.Library", getClass(), null);
 }
