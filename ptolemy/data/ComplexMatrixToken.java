@@ -437,7 +437,7 @@ public class ComplexMatrixToken extends MatrixToken {
         ComplexMatrixToken convertedArgument =
             (ComplexMatrixToken)rightArgument;
         return BooleanToken.getInstance(
-                ComplexMatrixMath.arePartsWithin(_value,
+                ComplexMatrixMath.within(_value,
                         convertedArgument._getInternalComplexMatrix(),
                         epsilon));
     }
