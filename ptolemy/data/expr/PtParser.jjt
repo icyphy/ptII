@@ -9,8 +9,7 @@ STATIC = false;
 }
 
 PARSER_BEGIN(PtParser)
-/* PtSimpleNode is the basic node type used in the parse tree
-
+/* 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -89,11 +88,12 @@ Created : May 1998
  * @version $Id$
  
  * @see pt.data.parser.ASTPtFunctionNode
+ * @see pt.data.parser.ASTPtLeafNode
  * @see pt.data.parser.ASTPtLogicalNode
  * @see pt.data.parser.ASTPtMiscNode
  * @see pt.data.parser.ASTPtProductNodeI
  * @see pt.data.parser.ASTPtRelationalNode
- * @see pt.data.parser.ASTPtSimpleNode
+ * @see pt.data.parser.ASTPtRootNode
  * @see pt.data.parser.ASTPtSumNode
  * @see pt.data.parser.ASTPtUnaryNode
  * @see pt.data.Token 
