@@ -224,6 +224,15 @@ runStaticDemo:
 # -iterations 50
 
 
+TREESHAKE_JAR = treeshake.jar
+treeShakeDemo:
+	@echo "Create the minimal jar file and run it" 
+	sh -x $(ROOT)/util/testsuite/treeshake $(TREESHAKE_JAR) \
+		$(JAVA) -verbose \
+		-Xfuture -classpath "$(CLASSPATH)" \
+		$(TARGETPACKAGE).Main 
+	ls -l $(TREESHAKE_JAR)
+
 # Class to disassemble
 JADTARGETCLASS =		Main
 
