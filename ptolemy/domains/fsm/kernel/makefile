@@ -59,8 +59,11 @@ JSRCS = \
         FSMTransition.java \
         FSMController.java \
         FSMDirector.java \
-	TransitionAction.java
-
+	TransitionAction.java \
+	HDFFSMDirector.java \
+	HDFFSMController.java \
+	HDFFSMTransition.java \
+	HDFFSMState.java
 EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
