@@ -252,7 +252,7 @@ public class XmlApplet extends Applet implements XmlHandler {
   void displayText (String text)
   {
     if (isApplet) {
-      textArea.appendText(text + '\n');
+      textArea.append(text + '\n');
     } else {
       System.out.println(text);
     }

@@ -9,15 +9,26 @@ package com.microstar.xml.driver;
 // because SAXDriver uses SAX, which we do not ship.
 
 
-import org.xml.sax.Parser;
+//import org.xml.sax.Parser;
+import org.xml.sax.XMLReader;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
-import org.xml.sax.AttributeList;
+
+//import org.xml.sax.AttributeList;
+import org.xml.sax.Attributes;
+
 import org.xml.sax.EntityResolver;
 import org.xml.sax.DTDHandler;
-import org.xml.sax.DocumentHandler;
+
+//import org.xml.sax.DocumentHandler;
+import org.xml.sax.ContentHandler;
+
 import org.xml.sax.ErrorHandler;
-import org.xml.sax.HandlerBase;
+
+//import org.xml.sax.HandlerBase;
+import org.xml.sax.helpers.DefaultHandler;
+
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -30,7 +41,7 @@ import java.util.Enumeration;
 import java.util.Stack;
 import java.util.Locale;
 import java.util.Vector;
-
+import java.util.Hashtable;
 
 /**
   * A SAX driver for Microstar's &AElig;lfred XML parser.
@@ -58,7 +69,8 @@ import java.util.Vector;
   * @see XmlParser
   */
 public class SAXDriver
-  implements XmlHandler, Locator, AttributeList, Parser
+  implements XmlHandler, Locator, Attributes, XMLReader
+  //implements XmlHandler, Locator, AttributeList, Parser
 {
 
 
@@ -66,7 +78,8 @@ public class SAXDriver
   // Variables.
   //
 
-  private HandlerBase base = new HandlerBase();
+  //private HandlerBase base = new HandlerBase();
+  private DefaultHandler base = new DefaultHandler();
   private XmlParser parser;
 
   private boolean seenDTDEvents = false;
@@ -75,7 +88,7 @@ public class SAXDriver
 				// from HandlerBase
   private EntityResolver entityResolver = base;
   private DTDHandler dtdHandler = base;
-  private DocumentHandler documentHandler = base;
+  private ContentHandler documentHandler = base;
   private ErrorHandler errorHandler = base;
 
   private String elementName = null;
@@ -84,6 +97,8 @@ public class SAXDriver
   private Vector attributeNames = new Vector();
   private Vector attributeValues = new Vector();
 
+  private Hashtable properties = new Hashtable();
+  private Hashtable features = new Hashtable();
 
 
   //
@@ -134,7 +149,7 @@ public class SAXDriver
     * Set the document handler for this parser.
     * @param handler The object to receive document events.
     */
-  public void setDocumentHandler (DocumentHandler handler) 
+  public void setDocumentHandler (ContentHandler handler) 
   {
     this.documentHandler = handler;
   }
@@ -368,7 +383,8 @@ public class SAXDriver
     }
 
     elementName = elname;
-    documentHandler.startElement(elname, this);
+    //documentHandler.startElement(elname, this);
+    documentHandler.startElement("", elname, "", this);
     elementName = null;
     attributeNames.removeAllElements();
     attributeValues.removeAllElements();
@@ -385,7 +401,8 @@ public class SAXDriver
   public void endElement (String elname)
     throws SAXException
   {
-    documentHandler.endElement(elname);
+    //documentHandler.endElement(elname);
+    documentHandler.endElement("", elname, "");
   }
 
 
@@ -580,6 +597,87 @@ public class SAXDriver
   public int getColumnNumber ()
   {
     return parser.getColumnNumber();
+  }
+
+  public boolean getFeature(String name) {
+      // Not Yet Implemented
+      if ( features.containsKey(name) ) {
+          return ((Boolean)features.get(name)).booleanValue();
+      }
+      return false;
+  }
+
+  public void setFeature(String name, boolean value) {
+      // Not Yet Implemented
+      features.put(name, new Boolean(value));
+  }
+
+  public Object getProperty( String name ) {
+      // Not Yet Implemented
+      if ( properties.containsKey(name) ) {
+          return properties.get(name);
+      }
+      return null;
+  }
+
+  public void setProperty( String name, Object value ) {
+      // Not Yet Implemented
+      properties.put(name, value);
+  }
+
+  public EntityResolver getEntityResolver() {
+      // Not Yet Implemented
+      return null;
+  }
+
+  public DTDHandler getDTDHandler() {
+      // Not Yet Implemented
+      return null;
+  }
+
+  public void setContentHandler( ContentHandler handler ) {
+    this.documentHandler = handler;
+  }
+
+  public ContentHandler getContentHandler() {
+    return this.documentHandler;
+  }
+
+  public ErrorHandler getErrorHandler() {
+    return this.errorHandler;
+  }
+
+  public String getURI(int index) {
+      // Not Yet Implemented
+      return "";
+  }
+
+  public String getLocalName(int index) {
+      // Not Yet Implemented
+      return "";
+  }
+  
+  public String getQName(int index) {
+      // Not Yet Implemented
+      return "";
+  }
+
+  public int getIndex(String uri, String localPart) {
+      // Not Yet Implemented
+      return -1;
+  }
+
+  public int getIndex(String qName) {
+      // Not Yet Implemented
+      return -1;
+  }
+
+  public String getType(String uri, String localName) {
+      return "";
+  }
+
+  public String getValue(String uri, String localName) {
+      return "";
   }
 
 }
