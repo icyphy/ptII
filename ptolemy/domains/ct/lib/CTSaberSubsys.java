@@ -50,6 +50,8 @@ For each output port, there is one parameter, the nodeId.
 @author Jie Liu, William Wu
 @version $Id$
 */
+
+//FIXME: need to move to demo...
 public class CTSaberSubsys extends CTActor 
     implements IPCInterface, CTDynamicActor{
     

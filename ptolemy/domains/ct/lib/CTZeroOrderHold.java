@@ -27,12 +27,10 @@
 
 package ptolemy.domains.ct.lib;
 import ptolemy.domains.ct.kernel.*;
-//import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.data.*;
-import ptolemy.data.expr.*;
-import java.util.Enumeration;
+//import ptolemy.data.expr.*;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -41,27 +39,26 @@ import java.util.Enumeration;
 An actor that convert event into continuous signal. This class act
 as the zero order hold. It consume the token when the consumeCurrentEvent()
 is called. This value will be hold and emitted every time it is
-fired.
+fired, until the next consumeCurrentEvent() is called. This actor has one 
+single input port of type DoubleToken, one single output port of type
+DoubleToken, and no parameter. 
 
 @author Jie Liu
 @version $Id$
 */
+
+//FIXME: Consider make it type polimorphic.
+
 public class CTZeroOrderHold extends TypedAtomicActor 
     implements CTEventInterpreter{
-
-    public static final boolean DEBUG = false;
 
     /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
-     *  The actor can be either dynamic, or not.  It must be set at the
-     *  construction time and can't be changed thereafter.
-     *  A dynamic actor will produce a token at its initialization phase.
      *
-     *  @param CTSubSystem The subsystem that this actor is lived in
+     *  @param container The subsystem that this actor is lived in
      *  @param name The actor's name
-     *  @param isDynamic True if the actor is a dynamic actor
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException Name coincides with
@@ -80,49 +77,48 @@ public class CTZeroOrderHold extends TypedAtomicActor
         output.setInput(false);
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
-
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Read the input receiver, if there is an event, remember the
-     *  value.
-     *  @return true Always.
-     *  @exception IllegalActionException Never thrown.
+    /** The input port. Single port with type DoubleToken.
      */
-    public boolean postfire() throws IllegalActionException {
-        return true;
-    }
+    public TypedIOPort input;
 
-    /** consume event.
+    /** The output port. Single port with type DoubleToken.
+     */
+    public TypedIOPort output;
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public methods                         ////
+
+    /** consume the input event if there is any. This event will be
+     *  hold for further firings until this method is called for the
+     *  next time. If there is no input event, do nothing and 
+     *  the old token will be held.
      */
     public void consumeCurrentEvents() throws IllegalActionException{
         if(input.hasToken(0)) {
-            _lasteventvalue = ((DoubleToken)input.get(0)).doubleValue();
-            if(DEBUG) {
-                CTDirector dir = (CTDirector) getDirector();
-                System.out.println("Receive an event at: " +
-                    dir.getCurrentTime());
-                System.out.println("Event value="+_lasteventvalue);
-            }
+            _lastToken = input.get(0);
+            CTDirector dir = (CTDirector) getDirector();
+            _debug(getFullName() + " receives an event at: " +
+                    dir.getCurrentTime() + 
+                    " with token " + _lastToken.toString());
         }
     }
 
-    /** Output a doubleToken of the last event value.
-     *
-     *  @exception IllegalActionException Never thrown.
+    /** Output a doubleToken of the last event token.
+     *  @exception IllegalActionException If the token cannot be
+     *  broadcasted.
      */
-    public void fire()  throws IllegalActionException{
-        output.broadcast(new DoubleToken(_lasteventvalue));
+    public void fire() throws IllegalActionException{
+        output.broadcast(_lastToken);
     }
 
-    public TypedIOPort input;
-    public TypedIOPort output;
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
-    private double _lasteventvalue;
+    // Saved token.
+    private Token _lastToken;
 }

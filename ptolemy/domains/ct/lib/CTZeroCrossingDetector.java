@@ -1,4 +1,4 @@
-/* One line description of file.
+/* A CT actor that detects zero crossing of input signal.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -32,18 +32,18 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
-import java.util.Enumeration;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// CTZeroCrossingDetector
 /**
-This is a event detector that monitors the signal coming from "trigger"
-input. If the trigger is zero, then output the token from "input."
+This is a event detector that monitors the signal coming in from the 
+"trigger" input. If the trigger is zero, then output the token from
+the "input." port.
 This actor controls the integration step size to accurately resolve 
 the time that the zero crossing happens.
 It has a parameter "ErrorTolerance," which controls how accurate the 
-zero 
+zero crossing is defined.
 @author Jie Liu
 @version $Id$
 */
@@ -55,9 +55,10 @@ public class CTZeroCrossingDetector extends CTActor
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
      *  The actor has two input, "trigger" and "input", and one output,
-     *  "output." Both of them are single ports.
+     *  "output." Both of them are single ports. All the ports has type 
+     *  DoubleToken.
      *
-     *  @param CompositeActor The subsystem that this actor is lived in
+     *  @param container The subsystem that this actor is lived in
      *  @param name The actor's name
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
@@ -83,65 +84,98 @@ public class CTZeroCrossingDetector extends CTActor
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
         _errorTolerance = (double)1e-4;
-        _paramErrorTolerance = new Parameter(this, "ErrorTolerance", 
+        ErrorTolerance = new Parameter(this, "ErrorTolerance", 
                 new DoubleToken(_errorTolerance));
 
     }
 
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public variables                       ////
+
+    /** The input port. Single port with type DoubleToken.
+     */
+    public TypedIOPort input;
+
+    /** The output port. Single port with type DoubleToken.
+     */
+    public TypedIOPort output;
+
+    /** The trigger port. Single port with type DoubleToken.
+     */
+    public TypedIOPort trigger;
+
+    /** The parameter of error tolerance
+     */
+    public Parameter ErrorTolerance;
+
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Initilaize, chech if the director is a CTMixedSignalDirector.
-     *  
-     *  If the director is not a CTMixedSignalDirector throw an exception.
+    /** Emit the event at current time id there is any. There will be no
+     *  current event after emitting it. If there is no current event,
+     *  do nothing.
+     *  @exception IllegalActionExceptin If the event cannot be broadcasted.
      */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        /*
-        if(!(getDirector() instanceof CTMixedSignalDirector)) {
-            throw new IllegalActionException(this,
-                " Must be executed after a CTMixedSignalDirector.");
+    public void emitCurrentEvents() throws IllegalActionException{
+        _debug(this.getFullName() + " checking for currrent event...");
+    
+        if(_eventNow) {
+            _debug(getFullName() + " Emitting event: " + 
+                    _inputToken.stringValue());
+            output.broadcast(_inputToken);
+            _eventNow = false;
         }
-        */
-        updateParameters();
-        _first = true;
-        _debug(getFullName() + "initialize");
     }
 
-    /** Fire: if the current time is the event time, request the end
-     *  of this fire.
+    /** Consume the input token and the trigger token. The trigger token
+     *  will be used for finding the zero crossing in isThisStepSuccessful() 
+     *  method.
+     *  @exception IllegalActionException If no token is available.
      */
     public void fire() throws IllegalActionException {
         _thisTrg = ((DoubleToken) trigger.get(0)).doubleValue();
         _debug(getFullName() + "consumming trigger Token" +  _thisTrg);
         _inputToken = input.get(0);
     }
-
-    /** Postfire: if this is the sampling point, output a token with the
-     *  input signal as the value. Otherwise output no token.
-     *  register the next sampling time as the next break point.
+                            
+    /** Return true if there is an event at the current time.
+     *  @return True if there is an event at the current time.
      */
-    public boolean postfire() throws IllegalActionException {
-        if(!_eventMissed) {
-            _lastTrg = _thisTrg;
-        }
-        return true;
+    public boolean hasCurrentEvent() {
+        return _eventNow;
     }
 
-    /** Return true if this step did not cross zero.
+    /** Set up parameters and internal state, so that it has no history
+     *  before the first firing.
+     *  
+     *  @exceptin IllegalActionException If thrown by the super class.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        updateParameters();
+        _first = true;
+        _debug(getFullName() + "initialize");
+    }
+
+    /** Return true if this step does not cross zero. The current trigger 
+     *  token will be compared to the history trigger token. If they 
+     *  cross the zero threshold, this step is not successful. 
+     *  A special case is taken care such that if the history trigger
+     *  and the current trigger are both zero, then no new event is
+     *  tiggered. If this step crosses zero, then the refined integration
+     *  step size is computed.
      */
     public boolean isThisStepSuccessful() {
         if (_first) {
             _first = false;
             return true;
         }
-        _debug(this.getFullName() + "This Trigger " + _thisTrg);
-        _debug(this.getFullName() + "last Trigger " + _lastTrg);
+        _debug(this.getFullName() + " This trigger " + _thisTrg);
+        _debug(this.getFullName() + " The last trigger " + _lastTrg);
 
         if (Math.abs(_thisTrg) < _errorTolerance) {
             if (_enabled) {
-                //double tnow = dir.getCurrentTime(); 
-                //dir.setFireEndTime(tnow);
                 _eventNow = true;
                 _debug(getFullName() + " detected event at " 
                         + getDirector().getCurrentTime());
@@ -168,9 +202,21 @@ public class CTZeroCrossingDetector extends CTActor
             return true;
         }
     }
+
+    /** Make the current trigger token the history tigger token. Prepare
+     *  for the next iteration.
+     *  @return True always.
+     */
+    public boolean postfire() {
+        if(!_eventMissed) {
+            _lastTrg = _thisTrg;
+        }
+        return true;
+    }
     
     /** Return the maximum Double, since this actor does not predict 
      *  step size.
+     *  @return java.Double.MAX_VALUE.
      */
     public double predictedStepSize() {
         return java.lang.Double.MAX_VALUE;
@@ -178,6 +224,7 @@ public class CTZeroCrossingDetector extends CTActor
 
     /** Return the refined step size if there is a missed event,
      *  otherwise return the current step size.
+     *  @return The refined step size.
      */
     public double refinedStepSize() {
         if(_eventMissed) {
@@ -185,31 +232,12 @@ public class CTZeroCrossingDetector extends CTActor
         } 
         return ((CTDirector)getDirector()).getCurrentStepSize();
     }
-                             
-    /** Return true if there is an event at the current time.
-     */
-    public boolean hasCurrentEvent() {
-        return _eventNow;
-    }
-
-    /** Emit the event. There's no current event after emitting it.
-     */
-    public void emitCurrentEvents() throws IllegalActionException{
-        _debug(this.getFullName() + " checking for currrent event...");
-    
-        if(_eventNow) {
-            _debug(this.getFullName() + " Emitting event: " + 
-                    _inputToken.stringValue());
-            output.broadcast(_inputToken);
-            _eventNow = false;
-        }
-    }
 
     /** Update the parameter if it has been changed.
      *  The new parameter will be used only after this method is called.
      */
     public void updateParameters() throws IllegalActionException{
-        double p = ((DoubleToken)_paramErrorTolerance.getToken()
+        double p = ((DoubleToken)ErrorTolerance.getToken()
                     ).doubleValue();
         if(p <= 0) {
             throw new IllegalActionException(this,
@@ -218,32 +246,33 @@ public class CTZeroCrossingDetector extends CTActor
         _errorTolerance = p;
     }
 
-
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
-    public TypedIOPort input;
-    public TypedIOPort output;
-    public TypedIOPort trigger;
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
-
-
-
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    // Parameter, the sample period.
-    private Parameter _paramErrorTolerance;
+    // Parameter, the error tolerance, local copy
     private double _errorTolerance;
 
+    // flag for indicating a missed event
     private boolean _eventMissed = false;
+    
+    // refined step size.
     private double _refineStep;
+
+    // last trigger input.
     private double _lastTrg;
+
+    // this trigger input.
     private double _thisTrg;
+
+    // flag indicating if the event detection is enable for this step
     private boolean _enabled;
+
+    // flag indicating if there is an event at the current time. 
     private boolean _eventNow = false;
+
+    // flag indicating if this is the firt iteration in the execution,
     private boolean _first = true;
+
+    // the current input token.
     private  Token _inputToken;
 }

@@ -48,27 +48,15 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	CTAdd.java \
-	CTAdd2.java \
 	CTButtonEvent.java \
-	CTConst.java \
-	CTGain.java \
 	CTIntegrator.java \
-	CTMultiply.java \
 	CTPeriodicSampler.java \
-	CTPlot.java \
-	CTPrintln.java \
-	CTRamp.java \
 	CTSaberSubsys.java \
-	CTSin.java \
-	CTSink.java \
-	CTSquareWave.java \
 	CTThresholdMonitor.java \
-	CTXYPlot.java \
 	CTZeroCrossingDetector.java \
 	CTZeroOrderHold.java \
-        GeneralFunctionActor.java \
-	IPCInterface.java
+	IPCInterface.java \
+	GeneralFunctionActor.java
 
 EXTRA_SRCS =	$(JSRCS)
 

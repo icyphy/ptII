@@ -34,7 +34,7 @@ import java.io.*;
 //////////////////////////////////////////////////////////////////////////
 //// IPCInterface
 /** 
-Description of the class
+Interface for actors that support inter-process communication. 
 @author  Jie Liu, William Wu
 @version $Id$
 */

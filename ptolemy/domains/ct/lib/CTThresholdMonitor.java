@@ -35,19 +35,34 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
-import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTThresholdMonitor
 /** 
 Minitor integration steps so that the threshold is not crossed in one step.
+This actor has one input port, but no output port. If functionality is
+solely devoted to controlling the integration step size. It has two 
+parameters "ThresholdWidth" and "ThresholdCenter", which have default
+value 1e-2 and 0, respectively.
 @author  Jie Liu
 @version $Id$
 */
+//FIXME: need to use the new parameter machanism.
+
 public class CTThresholdMonitor extends CTActor 
-        implements CTStepSizeControlActor {
-    /** Constructor
-     */	
+        implements CTStepSizeControlActor{ 
+    /** Construct an actor in the specified container with the specified
+     *  name.  The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *
+     *  @param container The subsystem that this actor is lived in
+     *  @param name The actor's name
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException Name coincides with
+     *   an entity already in the container.
+     */
     public CTThresholdMonitor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -58,11 +73,11 @@ public class CTThresholdMonitor extends CTActor
         input.setTypeEquals(DoubleToken.class);
         
         _thWidth = (double)1e-2;
-        paramThWidth = new Parameter(this, "ThresholdWidth", 
+        ThresholdWidth = new Parameter(this, "ThresholdWidth", 
                 new DoubleToken(_thWidth));
 
         _thCenter = (double)0.0;
-        paramThCenter = new Parameter(this, "ThresholdCenter", 
+        ThresholdCenter = new Parameter(this, "ThresholdCenter", 
                 new DoubleToken(_thCenter));
 
         _lowerBound = -5e-3;
@@ -70,34 +85,41 @@ public class CTThresholdMonitor extends CTActor
 
     }
 
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public variables                       ////
+    /** The input port, single port with type double.
+     */
+    public TypedIOPort input;
+
+    /** The parameter for the width of the threshold.
+     */
+    public Parameter ThresholdWidth;
+    
+    /** The parameter for the center of the threshold.
+     */ 
+    public  Parameter ThresholdCenter;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** prepare for the first step.
+    /** Consume the current input.
+     *  @exception IllegalActionException If there is no input token.
+     */
+    public void fire() throws IllegalActionException {
+        _debug("Monitor" + getFullName() + " fired.");
+        _thisInput = ((DoubleToken) input.get(0)).doubleValue();
+    }
+
+    /** Setup the internal variables so that there is no history.
+     *  @exception IllegalActionException If throen by the super class.
      */	
     public void initialize() throws IllegalActionException {
         super.initialize();
         _first = true;
     }
 
-    /** consume this input.
-     */
-    public void fire() throws IllegalActionException {
-        _debug("Monitor" + getFullName() + " fired.");
-        _thisInput = ((DoubleToken) input.get(0)).doubleValue();
-        //_success = true;
-    }
-
-    /** Return true always. Set this input to last input.
-     */
-    public boolean postfire() throws IllegalActionException {
-        super.postfire();
-        _lastInput = _thisInput;
-        _first = false;
-        return true;
-    }
-
     /** Return true if this step did not cross the threshold.
+     *  @return True if this step did not cross the threshold.
      */
     public boolean isThisStepSuccessful() {
         if (!_first) {
@@ -113,16 +135,14 @@ public class CTThresholdMonitor extends CTActor
         return true;
     }
 
-    /** Return half the current step size if the step is not successful.
-     *  Otherwise, return the current step size.
-     *  @return Half the current step size if the step is not successful.
+    /** Return true always. Make this input the history.
+     *  @return True always.
      */
-    public double refinedStepSize() {
-        CTDirector dir = (CTDirector)getDirector();
-        if(!_success) {
-            return 0.5*dir.getCurrentStepSize();
-        }
-        return dir.getCurrentStepSize();
+    public boolean postfire() throws IllegalActionException {
+        super.postfire();
+        _lastInput = _thisInput;
+        _first = false;
+        return true;
     }
 
     /** Return java.lang.Double.MAX_VALUE, since this actor does not predict 
@@ -133,49 +153,56 @@ public class CTThresholdMonitor extends CTActor
         return java.lang.Double.MAX_VALUE;
     }
 
+    /** Return half the current step size if the step is not successful.
+     *  Otherwise, return the current step size. 
+     *  @return Half the current step size if the step is not successful.
+     */
+    public double refinedStepSize() {
+        CTDirector dir = (CTDirector)getDirector();
+        if(!_success) {
+            return 0.5*dir.getCurrentStepSize();
+        }
+        return dir.getCurrentStepSize();
+    }
+
     /** Update the parameter if they have been changed.
      *  The new parameter will be used only after this method is called.
-     *  @exception IllegalActionException Never thrown.*
+     *  @exception IllegalActionException If there is no token in the 
+     *  parameter.
      */
     public void updateParameters() throws IllegalActionException {
-        _thCenter = ((DoubleToken)paramThCenter.getToken()).doubleValue();
+        _thCenter = ((DoubleToken)ThresholdCenter.getToken()).doubleValue();
         _thWidth = Math.abs(
-            ((DoubleToken)paramThWidth.getToken()).doubleValue());
+            ((DoubleToken)ThresholdWidth.getToken()).doubleValue());
 
         _lowerBound = _thCenter - _thWidth/(double)2.0;
         _upperBound = _thCenter + _thWidth/(double)2.0;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
-    /** The input port, single port with type double.
-     */
-    public TypedIOPort input;
-
-    /** The parameter for the width of the threshold.
-     */
-    public Parameter paramThWidth;
-    
-    /** The parameter for the center of the threshold.
-     */ 
-    public  Parameter paramThCenter;
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Private variables should not have doc comments, they should
-    // have regular C++ comments.
-
+    // local copy of the threshold width
     private double _thWidth;
 
+    // local copy of the threshold center.
     private double _thCenter;
 
+    // flag indicting if this is the first iteration in an execution.
     private boolean _first;
+
+    // flag indicating if the current step is successful
     private boolean _success;
 
+    // upper bound of the input value, = thCenter + thWidth/2
     private double _upperBound;
+
+    // lower bound of the input value, = thCenter - thWidth/2
     private double _lowerBound;
 
+    // last input token value
     private double _lastInput;
+    
+    // this input token value.
     private double _thisInput;
 }

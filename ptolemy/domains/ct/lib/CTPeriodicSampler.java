@@ -1,4 +1,4 @@
-/* One line description of file.
+/* Generate discrete events by periodically sampling a CT signal.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -32,14 +32,14 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
-import java.util.Enumeration;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// CTPeriodicSampler
 /**
-This actor periodically sample the input signal and generate an event
-which has the value of the input signal.
+This actor periodically sample the input signal and generate events
+which has the value of the input signal. The sampling rate is given by
+parameter "SamplePeriod", which has default value 0.1.
 @author Jie Liu
 @version $Id$
 */
@@ -75,110 +75,9 @@ public class CTPeriodicSampler extends CTActor
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
 
-        _samplePeriod = (double)1.0;
+        _samplePeriod = (double)0.1;
         SamplePeriod = new Parameter(this,
             "SamplePeriod", new DoubleToken(_samplePeriod));
-    }
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
-    /** prefire. If the current time is greater than the next sample
-     *  time, increase the next sample time until it is 
-     *  greater than the current time.
-     */
-    public boolean prefire() throws IllegalActionException {
-        /*
-        if(!(getDirector() instanceof CTMixedSignalDirector)) {
-            throw new IllegalActionException(this,
-                " Must be executed after a CTMixedSignalDirector.");
-        }
-        */
-        updateParameters();
-        CTDirector dir = (CTDirector) getDirector();
-        boolean hasjump = false;
-        while (_nextSamplingTime < 
-                (dir.getCurrentTime()-dir.getTimeResolution())) {
-            hasjump = true;
-            _nextSamplingTime += _samplePeriod;
-        }
-        if(hasjump) {
-            dir.fireAt(this, _nextSamplingTime);
-        }
-        _debug(getFullName() + ": next sampling time= "
-                + _nextSamplingTime);
-        return true;
-    }
-    /** Fire: if the current time is the event time, request the end
-     *  of this fire.
-     */
-    public void fire() throws IllegalActionException {
-        CTDirector dir = (CTDirector)getDirector();
-        double tnow = dir.getCurrentTime();
-         _hasCurrentEvent = false;
-        if(Math.abs(tnow - _nextSamplingTime)<dir.getTimeResolution()) {
-            _hasCurrentEvent = true;
-        }
-    }
-
-    /** Postfire: if this is the sampling point, output a token with the
-     *  input signal as the value. Otherwise output no token.
-     *  register the next sampling time as the next break point.
-     */
-    public boolean postfire() throws IllegalActionException {
-        return true;
-    }
-
-    /** Initialize, check if the director is a CTMixedSignalDirector.
-     *  If the director is not a CTMixedSignalDirector throw an exception.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        //if(!(getDirector() instanceof CTMixedSignalDirector)) {
-        //    throw new IllegalActionException(this,
-        //        " Must be executed after a CTMixedSignalDirector.");
-        //}
-        updateParameters();
-        CTDirector dir = (CTDirector) getDirector();
-        _nextSamplingTime = dir.getCurrentTime() + _samplePeriod;
-        dir.fireAt(this, _nextSamplingTime);
-        _debug(getFullName() + ": next sampling time= "
-                + _nextSamplingTime);
-    }
-
-    /** Update the parameter if it has been changed.
-     *  The new parameter will be used only after this method is called.
-     */
-    public void updateParameters() throws IllegalActionException{
-        double p = ((DoubleToken)SamplePeriod.getToken()).doubleValue();
-        if(p <= 0) {
-            throw new IllegalActionException(this,
-                    " Sample period must be greater than 0.");
-        }
-        _samplePeriod = p;
-    }
-
-    /** Return true if there is defintly an event missed in the
-     *  last step.
-     */
-    public boolean hasCurrentEvent() {
-        return _hasCurrentEvent;
-    }
-
-    /** If there is a missed event return the expected sample time
-     *  - current time; else return the current step size.
-     */
-    public void emitCurrentEvents() {
-        CTDirector dir = (CTDirector)getDirector();
-        if(_hasCurrentEvent) {
-            try {
-                if(input.hasToken(0)) {
-                    output.broadcast(input.get(0));
-                    _hasCurrentEvent = false;
-                }
-            }catch (IllegalActionException e) {
-                throw new InvalidStateException("No input Token.");
-            }
-        }
     }
 
 
@@ -200,17 +99,103 @@ public class CTPeriodicSampler extends CTActor
 
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ////                         public methods                         ////
 
+    /** Return true always. If the current time is greater than the next
+     *  sampling time, increase the next sample time until it is 
+     *  greater than the current time. Request a director refire at the 
+     *  next sampling time.
+     *  @return True always.
+     *  @exceptoin IllegalActionException If parameter update throws it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        updateParameters();
+        CTDirector dir = (CTDirector) getDirector();
+        boolean hasjump = false;
+        while (_nextSamplingTime < 
+                (dir.getCurrentTime()-dir.getTimeResolution())) {
+            hasjump = true;
+            _nextSamplingTime += _samplePeriod;
+        }
+        if(hasjump) {
+            dir.fireAt(this, _nextSamplingTime);
+        }
+        _debug(getFullName() + ": next sampling time= "
+                + _nextSamplingTime);
+        return true;
+    }
 
+    /** If the current time is the event time, set the flag indicating
+     *  that there is a current event.
+     */
+    public void fire() {
+        CTDirector dir = (CTDirector)getDirector();
+        double tnow = dir.getCurrentTime();
+         _hasCurrentEvent = false;
+        if(Math.abs(tnow - _nextSamplingTime)<dir.getTimeResolution()) {
+            _hasCurrentEvent = true;
+        }
+    }
+
+    /** Request the first sampling time as a director refire.
+     *  @exception IllegalActionException If thrown by the supper class.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        updateParameters();
+        CTDirector dir = (CTDirector) getDirector();
+        _nextSamplingTime = dir.getCurrentTime() + _samplePeriod;
+        dir.fireAt(this, _nextSamplingTime);
+        _debug(getFullName() + ": next sampling time= "
+                + _nextSamplingTime);
+    }
+
+    /** Update the parameter if it has been changed.
+     *  The new parameter will be used only after this method is called.
+     *  @exception IllegalActionException If the sampling rate set is
+     *  less than or equal to 0.
+     */
+    public void updateParameters() throws IllegalActionException{
+        double p = ((DoubleToken)SamplePeriod.getToken()).doubleValue();
+        if(p <= 0) {
+            throw new IllegalActionException(this,
+                    " Sample period must be greater than 0.");
+        }
+        _samplePeriod = p;
+    }
+
+    /** Return true if there is a current event.
+     */
+    public boolean hasCurrentEvent() {
+        return _hasCurrentEvent;
+    }
+
+    /** Emmit the current event, which has the token of the latest input 
+     *  token.
+     */
+    public void emitCurrentEvents() {
+        CTDirector dir = (CTDirector)getDirector();
+        if(_hasCurrentEvent) {
+            try {
+                if(input.hasToken(0)) {
+                    output.broadcast(input.get(0));
+                    _hasCurrentEvent = false;
+                }
+            }catch (IllegalActionException e) {
+                throw new InternalErrorException("Token missmatch.");
+            }
+        }
+    }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    // Parameter, the sample period.
+    // the local copy of the sample period.
     private double _samplePeriod;
-    private double _eventTime;
+
+    // flag indicating if there is a current event.
     private boolean _hasCurrentEvent = false;
-    private double _refineStep;
+
+    // the next sampling time.
     private double _nextSamplingTime;
 }
