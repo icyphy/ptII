@@ -40,7 +40,9 @@ AC_ARG_WITH(java, [  --with-java=DIR           use Java binaries from DIR, defau
     JAVA_DIR=$withval, JAVA_DIR=$JAVA_HOME)
 
 if test ! -d "$JAVA_DIR"; then
-    AC_MSG_WARN(['${JAVA_DIR}' is not a directory, so we search for the java compiler.])
+    AC_MSG_WARN([JAVA_DIR environment variable is set to
+  '${JAVA_DIR}', which is not a directory,
+  so we search for the java compiler.])
     AC_PATH_PROG(JAVAC, javac)
     if test -x "$JAVAC"; then	
 	JAVABIN=`dirname $JAVAC`
