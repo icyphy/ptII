@@ -551,7 +551,7 @@ public class ComplexMatrixMath {
     }
 
     /** Replace the first matrix argument elements with the values of
-     *  the second matrix argument. The second matrix argument must be
+     *  the second matrix argument. The first matrix argument must be
      *  large enough to hold all the values of second matrix argument.
      *  @param destMatrix A matrix of complex numbers, used as the destination.
      *  @param srcMatrix A matrix of complex numbers, used as the source.
@@ -964,3 +964,5 @@ public class ComplexMatrixMath {
         return matrix;
     }
 }
+
+

@@ -133,6 +133,26 @@ test ComplexArrayMath-4.4 {append with 2 non-empty arrays} {
 } {}
 
 ####################################################################
+test ComplexArrayMath-4.5 {append(Complex[] array1, int idx1,
+            int length1, Complex[] array2, int idx2, int length2) } {
+
+    set array1 [java::new {ptolemy.math.Complex[]} {2} \
+	[list $c1 $c2]]
+    set idx1 0
+    set length1 2
+    set array2 [java::new {ptolemy.math.Complex[]} {2} \
+	[list $c3 $c4]]
+    set idx2 1
+    set length2 1
+
+    set mr [java::call ptolemy.math.ComplexArrayMath \
+	    append $array1 $idx1 $length1 $array2 $idx2 $length2]
+    set s [java::call ptolemy.math.ComplexArrayMath toString $mr]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{1.0 + 2.0i 3.0 - 4.0i -7.0 + 8.0i}}
+} {}
+
+####################################################################
 test DoubleArrayMath-4.8.1 {areMagnitudesWithin true} {
     # Within 0.0001
     set r1 [java::call ptolemy.math.ComplexArrayMath areMagnitudesWithin \

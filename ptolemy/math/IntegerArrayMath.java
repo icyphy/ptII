@@ -425,6 +425,25 @@ public class IntegerArrayMath {
         return returnValue;
     }
 
+    /** Return a new array that is constructed from the argument by
+     *  multiplying each element in the array by the second argument, which is
+     *  an int.
+     *  If the sizes of the array is 0, return a new array of size 0.
+     *  @param array An array of ints.
+     *  @param factor An int.
+     *  @return A new array of ints.
+     */
+    public static final int[] multiply(int[] array, int factor) {
+        int length = array.length;
+        int[] returnValue = new int[length];
+
+        for (int i = 0; i < length; i++) {
+            returnValue[i] = array[i]*factor;
+        }
+
+        return returnValue;
+    }
+
     /** Return a new array that is the formed by the additive inverse of each
      *  element of the input array (-array[i]).
      */

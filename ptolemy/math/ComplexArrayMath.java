@@ -86,8 +86,25 @@ public class ComplexArrayMath {
      *  If the length of the array is 0, return a new array of length 0.
      */
     public static final Complex[] applyBinaryOperation(
-            ComplexBinaryOperation op, final Complex z,
+             ComplexBinaryOperation op, final Complex z,
             final Complex[] array) {
+        int length = array.length;
+        Complex[] returnValue = new Complex[length];
+        for (int i = 0; i < length; i++) {
+            returnValue[i] = op.operate(array[i], z);
+        }
+        return returnValue;
+    }
+
+    /** Return a new array that is formed by applying an instance of a
+     *  ComplexBinaryOperation to each element in the input array,
+     *  using z as the left operand in all cases and the array elements
+     *  as the right operands (op.operate(z, array[i])).
+     *  If the length of the array is 0, return a new array of length 0.
+     */
+    public static final Complex[] applyBinaryOperation(
+            ComplexBinaryOperation op, final Complex[] array,
+	    final Complex z) {
         int length = array.length;
         Complex[] returnValue = new Complex[length];
         for (int i = 0; i < length; i++) {
@@ -213,6 +230,36 @@ public class ComplexArrayMath {
         return true;
     }
 
+    /** Return true if the first argument is greater than the second argument 
+     *  (both complex numbers):
+     *  (a+ib) > (c+id) provided either a > c or a=c and b > d. 
+     */
+    public static final boolean ifgreater(Complex num1,
+            Complex num2) {
+        
+	if (((num1.real > num2.real) || (num1.real == num2.real)) && (num1.imag > num2.imag)) {
+	    return true;
+	}
+	else {
+	    return false;
+	}
+    }
+
+    /** Return true if the first argument is less than the second argument 
+     *  (both complex numbers):
+     *  (a+ib) < (c+id) provided either a < c or a=c and b < d. 
+     */
+    public static final boolean ifless(Complex num1,
+            Complex num2) {
+        
+	if (((num1.real < num2.real) || (num1.real == num2.real)) && (num1.imag < num2.imag)) {
+	    return true;
+	}
+	else {
+	    return false;
+	}
+    }
+
     /** Return a new array of complex numbers that is formed by taking the
      *  complex-conjugate of each element in the argument array.
      *  If the argument has length 0, return a new array of complex numbers,
@@ -245,6 +292,21 @@ public class ComplexArrayMath {
         return returnValue;
     }
 
+    /** Return a new array that is the element-by-element division of
+     *  the first array by the given value.
+     *  @param array The array of complex numbers.
+     *  @param num The complex number.
+     *  @return A new array of complex numbers.
+     */
+    public static final Complex[] divide(Complex[] array, Complex num) {
+	int length = array.length;
+        Complex[] returnValue = new Complex[length];
+	for (int i = 0; i < length; i++) {
+            returnValue[i] = array[i].divide(num);
+        }
+        return returnValue;
+    }
+     
     /** Return a Complex number that is the dot product of the two argument
      *  arrays. The dot product is computed by the sum of the
      *  element-by-element products of the first argument and the complex
@@ -265,6 +327,44 @@ public class ComplexArrayMath {
         }
         return returnValue;
     }
+
+    /** Return a new array that is a copy of the argument except that the
+     *  elements are limited to lie within the specified range.
+     *  If any value is infinite or NaN (not a number),
+     *  then it is replaced by either the top or the bottom, depending on
+     *  its sign.  To leave either the bottom or the top unconstrained,
+     *  specify Complex.NEGATIVE_INFINITY or Complex.POSITIVE_INFINITY.
+     *
+     *  If the length of the array is 0, return a new array of length 0.
+     *  @param array An array of complex numbers.
+     *  @param bottom The bottom limit.
+     *  @param top The top limit.
+     *  @return A new array with values in the range [bottom, top].
+     */
+    public static final Complex[] limit(final Complex[] array,
+            final Complex bottom, final Complex top) {
+        Complex[] returnValue = new Complex[array.length];
+	
+        for (int i = 0; i < array.length; i++) {
+            if (ifgreater(array[i], top) ||
+                    (array[i].real == Double.NaN) ||
+                    (array[i].real == Double.POSITIVE_INFINITY)) {
+
+                returnValue[i] = top;
+
+            } else if (ifless(array[i],bottom) ||
+                    (array[i].real == -Double.NaN) ||
+                    (array[i].real == Double.NEGATIVE_INFINITY)) {
+
+                returnValue[i] = bottom;
+
+            } else {
+                returnValue[i] = array[i];
+            }
+        }
+        return returnValue;
+    }
+
 
 
     /** Return a new array of doubles with the imaginary parts of the array of
@@ -379,6 +479,20 @@ public class ComplexArrayMath {
 
         return returnValue;
     }
+
+
+    /** Return a new array that is the formed by the additive inverse of each
+     *  element of the input array (-array[i]).
+     */
+    public static final Complex[] negative(final Complex[] array) {
+        int length = array.length;
+        Complex[] returnValue = new Complex[length];
+        for (int i = 0; i < length; i++) {
+            returnValue[i] = new Complex(-array[i].real, -array[i].imag);
+        }
+        return returnValue;
+    }
+
 
     /** Return a double that is the L2-norm of the array.If the
      *  length of the array is zero, return 0.0.
@@ -621,6 +735,23 @@ public class ComplexArrayMath {
         return returnValue;
     }
 
+    /** Return a new array that is constructed from the argument by
+     *  scaling each element in the array by factor, which is a
+     *  complex number. If the array argument is of length 0, return a new
+     *  array of length 0.
+     *
+     * public static final Complex[] scale(
+     *        final Complex[] array, final Complex factor) {
+     *   int len = array.length;
+     *   Complex[] returnValue = new Complex[len];
+     *
+     *  for (int i = 0; i < len; i++) {
+     *      returnValue[i] = array[i].multiply(factor);
+     *  }
+     *
+     *  return returnValue;
+     * }
+     */
     /** Return a new array that is constructed by subtracting the complex
      *  number z from every element in the first array. If the array argument
      *  is of length 0, return a new array of length 0.

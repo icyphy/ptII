@@ -126,6 +126,22 @@ test DoubleArrayMath-4.4 {append with 2 non-empty arrays} {
 } {}
 
 ####################################################################
+test DoubleArrayMath-4.5 {append(Double array1, int idx1,
+            int length1, Double array2, int idx2, int length2) } {
+   
+    set idx1 0
+    set length1 2
+    set idx2 1
+    set length2 1
+
+    set mr [java::call ptolemy.math.DoubleArrayMath \
+	    append $a1 $idx1 $length1 $a2 $idx2 $length2]
+    set s [java::call ptolemy.math.DoubleArrayMath toString $mr]
+    regsub -all {,} $s {} stmp
+    epsilonDiff $stmp {{3.7 -6.6 236.1}}
+} {}
+
+####################################################################
 test DoubleArrayMath-11.1 {divide} {
     set ar [java::call ptolemy.math.DoubleArrayMath divide $a1 $a2]
     # jdkPrintArray is defined in $PTII/util/testsuite/testDefs.tcl

@@ -668,7 +668,7 @@ public class DoubleMatrixMath {
         return transpose((double[][]) orthoInfo[0]);
     }
 
-    /** Return a new matrix that is formed by orthogonalizing the
+    /** Return a new matrix that is formed by orthonormalizing the
      *  columns of the input matrix (the column vectors are orthogonal
      *  and have norm 1). If not all columns are linearly independent,
      *  the output matrix will contain a column of zeros for all

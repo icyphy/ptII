@@ -418,6 +418,25 @@ public class LongArrayMath {
         return returnValue;
     }
 
+    /** Return a new array that is constructed from the argument by
+     *  multiplying each element in the array by the second argument, which is
+     *  a long.
+     *  If the sizes of the array is 0, return a new array of size 0.
+     *  @param array An array of longs.
+     *  @param factor A long.
+     *  @return A new array of longs.
+     */
+    public static final long[] multiply(long[] array, long factor) {
+        int length = array.length;
+        long[] returnValue = new long[length];
+
+        for (int i = 0; i < length; i++) {
+            returnValue[i] = array[i]*factor;
+        }
+
+        return returnValue;
+    }
+
     /** Return a new array that is the formed by the additive inverse of each
      *  element of the input array (-array[i]).
      */

@@ -213,6 +213,20 @@ public class FloatArrayMath {
         return returnValue;
     }
 
+    /** Return a new array that is the element-by-element division of
+     *  the first array by the given value.
+     *  @param array The array of float numbers.
+     *  @param num The float scalar.
+     *  @return A new array of float numbers.
+     */
+    public static final float[] divide(float[] array, float num) {
+        float[] returnValue = new float[array.length];
+	for (int i = 0; i < array.length; i++) {
+            returnValue[i] = array[i]/num;
+        }
+        return returnValue;
+    }
+
     /** Return the dot product of the two arrays.
      *  If the lengths of the array are both 0, return 0.0f.
      *  If the two arrays do not have the same length, throw an
@@ -291,6 +305,25 @@ public class FloatArrayMath {
         for (int i = 0; i < length; i++) {
             returnValue[i] = array1[i] * array2[i];
         }
+        return returnValue;
+    }
+
+    /** Return a new array that is constructed from the argument by
+     *  multiplying each element in the array by the second argument, which is
+     *  a float.
+     *  If the sizes of the array is 0, return a new array of size 0.
+     *  @param array An array of floats.
+     *  @param factor A float.
+     *  @return A new array of floats.
+     */
+    public static final float[] multiply(float[] array, float factor) {
+        int length = array.length;
+        float[] returnValue = new float[length];
+
+        for (int i = 0; i < length; i++) {
+            returnValue[i] = array[i]*factor;
+        }
+
         return returnValue;
     }
 

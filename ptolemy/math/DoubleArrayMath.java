@@ -93,7 +93,7 @@ public class DoubleArrayMath {
     }
 
     /** Return a new array that is the result of appending length2
-     *  elements of array2, starting from the array1[idx2] to length1
+     *  elements of array2, starting from the array2[idx2] to length1
      *  elements of array1, starting from array1[idx1].  Appending
      *  empty arrays is supported. In that case, the corresponding idx
      *  may be any number. Allow System.arraycopy() to throw array
@@ -217,6 +217,20 @@ public class DoubleArrayMath {
         return returnValue;
     }
 
+    /** Return a new array that is the element-by-element division of
+     *  the first array by the given value.
+     *  @param array The array of double numbers.
+     *  @param num The double scalar.
+     *  @return A new array of double numbers.
+     */
+    public static final double[] divide(double[] array, double num) {
+        double[] returnValue = new double[array.length];
+	for (int i = 0; i < array.length; i++) {
+            returnValue[i] = array[i]/num;
+        }
+        return returnValue;
+    }
+
     /** Return the dot product of the two arrays.
      *  If the lengths of the array are both 0, return 0.0.
      *  If the two arrays do not have the same length, throw an
@@ -297,6 +311,26 @@ public class DoubleArrayMath {
         }
         return returnValue;
     }
+
+    /** Return a new array that is constructed from the argument by
+     *  multiplying each element in the array by the second argument, which is
+     *  a double.
+     *  If the sizes of the array is 0, return a new array of size 0.
+     *  @param array An array of doubles.
+     *  @param factor A double.
+     *  @return A new array of doubles.
+     */
+    public static final double[] multiply(double[] array, double factor) {
+        int length = array.length;
+        double[] returnValue = new double[length];
+
+        for (int i = 0; i < length; i++) {
+            returnValue[i] = array[i]*factor;
+        }
+
+        return returnValue;
+    }
+
 
     /** Return a new array that is the formed by the additive inverse of each
      *  element of the input array (-array[i]).
