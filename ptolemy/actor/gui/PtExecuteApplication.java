@@ -35,6 +35,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
@@ -70,10 +71,6 @@ public class PtExecuteApplication extends MoMLApplication
      */
     public PtExecuteApplication(String args[]) throws Exception {
 	super(args);
-        // If _activeCount is initialized in the declaration,
-        // then we have problems because it is constantly being set to 0,
-        // so we set it in the constructor instead.
-        _activeCount = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -110,7 +107,8 @@ public class PtExecuteApplication extends MoMLApplication
      */
     public static void main(String args[]) {
 	try {
-	    new PtExecuteApplication(args);
+	    PtExecuteApplication app = new PtExecuteApplication(args);
+            app.runModels();
         } catch (Exception ex) {
             MessageHandler.error("Command failed", ex);
             System.exit(0);
@@ -149,6 +147,29 @@ public class PtExecuteApplication extends MoMLApplication
             }
         }
         return result;
+    }
+
+    /** Start the models running, each in a new thread, then return.
+     *  @exception IllegalActionException If the manager throws it.
+     */
+    public void runModels() throws IllegalActionException {
+        Iterator models = models().iterator();
+        while(models.hasNext()) {
+            NamedObj model = (NamedObj)models.next();
+            if (model instanceof CompositeActor) {
+                CompositeActor actor = (CompositeActor)model;
+                // Create a manager if necessary.
+                Manager manager = actor.getManager();
+                if (manager == null) {
+                    manager = new Manager(actor.workspace(), "manager");
+                    actor.setManager(manager);
+                }
+                manager.addExecutionListener(this);
+                _activeCount++;
+               // Run the model in a new thread.
+                manager.startRun();
+            }
+        }
     }
 
     /** Wait for all executing runs to finish, then return.
@@ -199,24 +220,6 @@ public class PtExecuteApplication extends MoMLApplication
         _commandTemplate = "ptexecute [ options ] file ...";
 
         super._parseArgs(args);
-
-        Iterator models = models().iterator();
-        while(models.hasNext()) {
-            NamedObj model = (NamedObj)models.next();
-            if (model instanceof CompositeActor) {
-                CompositeActor actor = (CompositeActor)model;
-                // Create a manager if necessary.
-                Manager manager = actor.getManager();
-                if (manager == null) {
-                    manager = new Manager(actor.workspace(), "manager");
-                    actor.setManager(manager);
-                }
-                manager.addExecutionListener(this);
-                _activeCount++;
-                // Run the model in a new thread.
-                manager.startRun();
-            }
-        }
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -226,5 +229,5 @@ public class PtExecuteApplication extends MoMLApplication
     private Configuration _configuration;
 
     // The count of currently executing runs.
-    private int _activeCount;
+    private int _activeCount = 0;
 }

@@ -49,6 +49,7 @@ test PtExecuteApplication-1.0 {test reading MoML file} {
 } {{}}
 
 test PtExecuteApplication-1.1 {check result of running the model} {
+    $app runModels
     $app waitForFinish
     set models [listToObjects [$app models]]
     set result {}
@@ -61,12 +62,13 @@ test PtExecuteApplication-1.1 {check result of running the model} {
     list $result
 } {{{0 1 2}}}
 
-test PtExecuteApplication-1.3 {check parameter handling} {
+test PtExecuteApplication-1.2 {check parameter handling} {
     set cmdArgs [java::new {java.lang.String[]} 3 \
             {{-step} {4} {test.xml}}]
     set app [java::new ptolemy.actor.gui.PtExecuteApplication $cmdArgs]
     set models [listToObjects [$app models]]
     set result {}
+    $app runModels
     $app waitForFinish
     foreach model $models {
         set modelc [java::cast ptolemy.actor.CompositeActor $model]
@@ -77,12 +79,13 @@ test PtExecuteApplication-1.3 {check parameter handling} {
     list $result
 } {{{0 4 8}}}
 
-test PtExecuteApplication-1.2 {check parameter handling} {
+test PtExecuteApplication-1.3 {check parameter handling} {
     set cmdArgs [java::new {java.lang.String[]} 3 \
             {{-director.iterations} {5} {test.xml}}]
     set app [java::new ptolemy.actor.gui.PtExecuteApplication $cmdArgs]
     set models [listToObjects [$app models]]
     set result {}
+    $app runModels
     $app waitForFinish
     foreach model $models {
         set modelc [java::cast ptolemy.actor.CompositeActor $model]

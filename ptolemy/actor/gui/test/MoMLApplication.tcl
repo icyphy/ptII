@@ -42,7 +42,8 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test MoMLApplication-1.0 {test reading MoML file} {
-    set cmdArgs [java::new {java.lang.String[]} 1 {test.xml}]
+    set cmdArgs [java::new {java.lang.String[]} 2 \
+            {{ptolemy/configs/runConfiguration.xml} {test.xml}}]
     set app [java::new ptolemy.actor.gui.MoMLApplication $cmdArgs]
     list {}
     # success is just not throwing an exception.

@@ -56,7 +56,7 @@ set testCase {<?xml version="1.0" standalone="no"?>
 ######################################################################
 ####
 #
-test PtolemyApplication-1.0 {test constructor} {
+test PtolemyApplication-1.0 {test constructor with no arguments} {
     set empty [java::new {java.lang.String[]} 0]
     # If we are running without a display then creating a PtolemyApplication
     # will fail.  We set app here to null so that we can detect the problem
@@ -66,37 +66,15 @@ test PtolemyApplication-1.0 {test constructor} {
     # success is just not throwing an exception.
 } {{}}
 
-test PtolemyApplication-1.1 {test add} {
-    set parser [java::new ptolemy.moml.MoMLParser]
-    set top [java::cast ptolemy.actor.CompositeActor [$parser parse $testCase]]
-    # If we are running without a display, then we might hang forever 
-    # on the next line
-    $app add $top
+test PtolemyApplication-1.1 {test constructor with one file argument} {
+    set empty [java::new {java.lang.String[]} 1 {test.xml}]
+    # If we are running without a display then creating a PtolemyApplication
+    # will fail.  We set app here to null so that we can detect the problem
+    set app [java::null]
+    set app [java::new ptolemy.actor.gui.PtolemyApplication $empty]
     list {}
     # success is just not throwing an exception.
 } {{}}
-
-test PtolemyApplication-1.2 {execute it} {
-    $app startRun $top
-    list {}
-    # success is just not throwing an exception.
-} {{}}
-
-test PtolemyApplication-1.3 {wait for execution to finish} {
-    $app waitForFinish
-    set rec [java::cast ptolemy.actor.lib.Recorder [$top getEntity rec]]
-    listToStrings [$rec getHistory 0]
-} {0 1}
-
-test PtolemyApplication-1.4 {test stopRun} {
-    set iter [java::cast ptolemy.data.expr.Parameter \
-            [[$top getDirector] getAttribute iterations]]
-    $iter setExpression {-1}
-    $app startRun $top
-    $app stopRun $top
-    $app waitForFinish
-    # success here is returning (not hanging).
-} {}
 
 #########################################################################
 
@@ -113,31 +91,3 @@ test PtolemyApplication-2.1 {test invalid command line options} {
             msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Unrecognized option: -foo}}
-
-test PtolemyApplication-2.2 {test invalid class name} {
-    set cmdArgs [java::new {java.lang.String[]} 2 \
-            {{-class} {ptolemy.actor.gui.test.bogon}}]
-    catch {set app [java::new ptolemy.actor.gui.PtolemyApplication $cmdArgs]} \
-            msg
-    list $msg
-} {{java.lang.ClassNotFoundException: ptolemy.actor.gui.test.bogon}}
-
-test PtolemyApplication-2.3 {test valid class name} {
-    set cmdArgs [java::new {java.lang.String[]} 4 \
-            {{-class} {ptolemy.actor.gui.test.TestModel} \
-            {-class} {ptolemy.actor.gui.test.TestModel}}]
-    # The model execution is started in the constructor below...
-    set app [java::new ptolemy.actor.gui.PtolemyApplication $cmdArgs]
-    set models [listToObjects [$app models]]
-    set result {}
-    foreach model $models {
-        set modelc [java::cast ptolemy.actor.gui.test.TestModel $model]
-        $app startRun $modelc
-    }
-    $app waitForFinish
-    foreach model $models {
-        set modelc [java::cast ptolemy.actor.gui.test.TestModel $model]
-        lappend result [listToStrings [$modelc getResults]]
-    }
-    list $result
-} {{{0 1 2} {0 1 2}}}
