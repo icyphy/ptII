@@ -88,6 +88,15 @@ public class DDEReceiver extends TimedQueueReceiver
         super(container);
     }
 
+    /** Construct an empty queue with the specified IOPort container
+     *  and priority.
+     * @param container The IOPort that contains this receiver.
+     * @param priority The priority of this receiver.
+     */
+    public DDEReceiver(IOPort container, int priority) {
+        super(container, priority);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -285,8 +294,11 @@ public class DDEReceiver extends TimedQueueReceiver
 	} else if( !timeKeeper.hasMinRcvrTime() && !_terminate ) {
 	    // System.out.println("Time is minimum but not unique");
             if( this != timeKeeper.getHighestPriorityReceiver() ) {
+		/*
                 timeKeeper.updateRcvrList( this, getRcvrTime(), 
 			getPriority() );
+		*/
+                timeKeeper.updateRcvrList(this);
 		return false;
 	    }
 	}
