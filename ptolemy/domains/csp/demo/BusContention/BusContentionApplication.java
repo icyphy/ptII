@@ -145,15 +145,15 @@ public class BusContentionApplication implements ActionListener {
      */
     public void constructPtolemyModel () {
         try {
-	    Director director = new CSPDirector(_toplevel, "Director");
+	    Director director = new CSPDirector(_topLevel, "Director");
 	    
             // Instantiate Actors 
-	    _contentionActor = new CSPController( _topLevel, "controller" ); 
-	    _alarmActor = new CSPContentionAlarm( _topLevel, "alarm" );
-            _memoryActor = new CSPMemory( _topLevel, "memory" ); 
-	    _processActor1 = new CSPProcessor( _topLevel, "proc1", 1 ); 
-	    _processActor2 = new CSPProcessor( _topLevel, "proc2", 2 ); 
-	    _processActor3 = new CSPProcessor( _topLevel, "proc3", 3 ); 
+	    _contentionActor = new Controller( _topLevel, "controller" ); 
+	    _alarmActor = new ContentionAlarm( _topLevel, "alarm" );
+            _memoryActor = new Memory( _topLevel, "memory" ); 
+	    _processActor1 = new Processor( _topLevel, "proc1", 1 ); 
+	    _processActor2 = new Processor( _topLevel, "proc2", 2 ); 
+	    _processActor3 = new Processor( _topLevel, "proc3", 3 ); 
 
 	    // Set up ports, relation 
 	    TypedIOPort reqOut = 
@@ -390,12 +390,12 @@ public class BusContentionApplication implements ActionListener {
     private Panel _appletPanel;
 
     // The Actors
-    CSPController _contentionActor;
-    CSPContentionAlarm _alarmActor;
-    CSPMemory _memoryActor;
-    CSPProcessor _processActor1;
-    CSPProcessor _processActor2;
-    CSPProcessor _processActor3;
+    Controller _contentionActor;
+    ContentionAlarm _alarmActor;
+    Memory _memoryActor;
+    Processor _processActor1;
+    Processor _processActor2;
+    Processor _processActor3;
 
     // Top Level Actor
     TypedCompositeActor _topLevel;
@@ -489,9 +489,9 @@ public class BusContentionApplication implements ActionListener {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
             boolean isEllipse = 
-                   actor instanceof CSPController 
-                || actor instanceof CSPMemory 
-                || actor instanceof CSPContentionAlarm;
+                   actor instanceof Controller 
+                || actor instanceof Memory 
+                || actor instanceof ContentionAlarm;
 
             
             BasicFigure f;
