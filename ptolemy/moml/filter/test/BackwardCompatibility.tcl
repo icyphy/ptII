@@ -686,6 +686,7 @@ The affected actors are:
 Below are original class names followed by the new class names.
 	ptolemy.kernel.util.VersionAttribute	 -> ptolemy.kernel.attributes.VersionAttribute
 	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location
+	ptolemy.actor.lib.comm.SerialComm	 -> ptolemy.actor.lib.io.comm.SerialComm
 } {ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
 'annotation1', then add _hideName if necessary.
 } {ptolemy.moml.filter.PortNameChanges: Update any actor port names that have been
@@ -762,6 +763,7 @@ ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
 Below are original class names followed by the new class names.
 	ptolemy.kernel.util.VersionAttribute	 -> ptolemy.kernel.attributes.VersionAttribute
 	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location
+	ptolemy.actor.lib.comm.SerialComm	 -> ptolemy.actor.lib.io.comm.SerialComm
 
 ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
 'annotation1', then add _hideName if necessary.
