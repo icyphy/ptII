@@ -37,7 +37,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
-//// DimentionTypeLattice
+//// DimensionTypeLattice
 /**
 A class representing the order of dimension types.
 
@@ -46,16 +46,21 @@ $Id$
 
 */
 
-public class DimensionTypeLattice implements CPO
+public final class DimensionTypeLattice implements CPO
 {
-     ///////////////////////////////////////////////////////////////////
+    /**
+     *  Override the default public constructor.
+     */
+    private DimensionTypeLattice() {
+    }
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Return the bottom element of this CPO.
      *  The bottom element is the element in the CPO that is lower than
      *  all the other elements.
-     *  @return an Object representing the bottom element, or
-     *   <code>null</code> if the bottom does not exist.
+     *  @return DimensionType.BOTTOM
      */
     public Object bottom() {
 	return DimensionType.BOTTOM;
@@ -69,7 +74,14 @@ public class DimensionTypeLattice implements CPO
      *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
      */
-    public int compare(Object e1, Object e2);
+    public int compare(Object e1, Object e2) {
+        if(e1.isEqualTo(e2)) return CPO.SAME;
+        if(e1.isEqualTo(top())) return CPO.HIGHER;
+        if(e1.isEqualTo(bottom())) return CPO.LOWER;
+        if(e2.isEqualTo(top())) return CPO.LOWER;
+        if(e2.isEqualTo(bottom())) return CPO.HIGHER;
+        return CPO.INCOMPARABLE;
+    }
 
     /** Compute the down-set of an element in this CPO.
      *  The down-set of an element is the subset consisting of
@@ -78,10 +90,23 @@ public class DimensionTypeLattice implements CPO
      *  @return an array of Objects representing the elements in the
      *   down-set of the specified element.
      *  @exception IllegalArgumentException If the specified Object is not
-     *   an element in this CPO.
+     *   an element in this CPO, or the set is infinite.
      */
-    public Object[] downSet(Object e);
-
+    public Object[] downSet(Object e) {
+        if(e.isEqualTo(top())) throw new IllegalArgumentException(
+                "The object has an infinite downset.");
+        Object[] obj;
+        if(e.isEqualTo(bottom())) {
+            obj = new Object[1];
+            obj[0] = bottom();
+        } else {
+            obj = new Object[2];
+            obj[0] = bottom();
+            obj[1] = e;
+        }
+        return obj;
+    }
+            
     /** Compute the greatest lower bound (GLB) of two elements.
      *  The GLB of two elements is the greatest element in the CPO
      *  that is lower than or the same as both of the two elements.
@@ -95,15 +120,16 @@ public class DimensionTypeLattice implements CPO
     public Object greatestLowerBound(Object e1, Object e2) {
 	if(!(e1 instanceof DimensionType))
 	    throw new IllegalActionException(e1, "Object must be an " +
-					     "instance of DimensionType");	       DimensionType t1 = (DimensionType) e1;
+					     "instance of DimensionType");
+        DimensionType t1 = (DimensionType) e1;
 
 	if(!(e2 instanceof DimensionType))
 	    throw new IllegalActionException(e2, "Object must be an " +
 					     "instance of DimensionType");
 	DimensionType t2 = (DimensionType) e2;
 
-	if(t1 isEqualTo top()) return t2;
-	if(t2 isEqualTo top()) return t1;
+	if(t1.isEqualTo(top())) return t2;
+	if(t2.isEqualTo(top())) return t1;
 	return bottom();
     }
 
@@ -137,18 +163,26 @@ public class DimensionTypeLattice implements CPO
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the greatest element of the subset,
      *   or <code>null</code> if the greatest element does not exist.
-     *  @exception IllegalArgumentException If at least one Object in the
+     *  @exception IllegalArgumentException If at least one object in the
      *   specified array is not an element of this CPO.
      */
-    public Object greatestElement(Object[] subset);
+    public Object greatestElement(Object[] subset) {
+        Object lub = leastUpperBound(subset);
+        int i;
+        for(i = 0; i < subset.length; i++) {
+            if(lub.isEqualTo(subset[i])) return lub;
+        }
+        return null;
+    }
 
     /** Test if this CPO is a lattice.
      *  A lattice is a CPO where the LUB and GLB of any pair of elements
      *  exist.
-     *  @return <code>true</code> if this CPO is a lattice;
-     *   <code>false</code> otherwise.
+     *  @return true.
      */
-    public boolean isLattice();
+    public boolean isLattice() {
+        return true;
+    }
 
     /** Compute the least element of a subset.
      *  The least element of a subset is an element in the
@@ -157,10 +191,17 @@ public class DimensionTypeLattice implements CPO
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the least element of the subset,
      *   or <code>null</code> if the least element does not exist.
-     *  @exception IllegalArgumentException If at least one Object in the
+     *  @exception IllegalArgumentException If at least one object in the
      *   specified array is not an element of this CPO.
      */
-    public Object leastElement(Object[] subset);
+    public Object leastElement(Object[] subset) {
+        Object glb = greatestLowerBound(subset);
+        int i;
+        for(i = 0; i < subset.length; i++) {
+            if(glb.isEqualTo(subset[i])) return glb;
+        }
+        return null;
+    }
 
     /** Compute the least upper bound (LUB) of two elements.
      *  The LUB of two elements is the least element in the CPO
@@ -172,7 +213,21 @@ public class DimensionTypeLattice implements CPO
      *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
      */
-    public Object leastUpperBound(Object e1, Object e2);
+    public Object leastUpperBound(Object e1, Object e2) {
+	if(!(e1 instanceof DimensionType))
+	    throw new IllegalActionException(e1, "Object must be an " +
+					     "instance of DimensionType");
+        DimensionType t1 = (DimensionType) e1;
+
+	if(!(e2 instanceof DimensionType))
+	    throw new IllegalActionException(e2, "Object must be an " +
+					     "instance of DimensionType");
+	DimensionType t2 = (DimensionType) e2;
+
+	if(t1.isEqualTo(bottom())) return t2;
+	if(t2.isEqualTo(bottom())) return t1;
+	return top();
+    }
 
     /** Compute the least upper bound (LUB) of a subset.
      *  The LUB of a subset is the least element in the CPO that
@@ -181,18 +236,28 @@ public class DimensionTypeLattice implements CPO
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the LUB of the subset, or
      *   <code>null</code> if the LUB does not exist.
-     *  @exception IllegalArgumentException If at least one Object
+     *  @exception IllegalArgumentException If at least one object
      *   in the specified array is not an element of this CPO.
      */
-    public Object leastUpperBound(Object[] subset);
+    public Object leastUpperBound(Object[] subset) {
+	DimensionType lub = bottom();
+	int i;
+	for(i = 0; i < subset.length; i++) {
+	    lub = leastUpperBound(lub, subset[i]);
+	    if(lub.isEqualTo(top()))
+		return lub;
+	}
+	return lub;
+    }
 
     /** Return the top element of this CPO.
      *  The top element is the element in the CPO that is higher than
      *  all the other elements.
-     *  @return an Object representing the top element, or
-     *   <code>null</code> if the top does not exist.
+     *  @return DimensionType.TOP
      */
-    public Object top();
+    public Object top() {
+        return DimensionType.TOP;
+    }
 
     /** Compute the up-set of an element in this CPO.
      *  The up-set of an element is the subset consisting of
@@ -201,57 +266,22 @@ public class DimensionTypeLattice implements CPO
      *  @return an array of Objects representing the elements in the
      *   up-set of the specified element.
      *  @exception IllegalArgumentException If the specified Object is not
-     *   an element of this CPO.
+     *   an element of this CPO, or the set is infinite.
      */
-    public Object[] upSet(Object e);
-
-   /** Return true if the given type is equal to this type.   In other words, 
-     *  an object with this type can be expressed as an object of Type t with 
-     *  no conversion.
-     */
-    public boolean isEqualTo(Type t) {
-        if(_numDimensions != t._numDimensions) return false;
-        int i;
-        for(i = 0; i < _numDimensions; i++) {
-            if(_dimensions[i] != t._dimensions[i]) return false;
+    public Object[] upSet(Object e) {
+        if(e.isEqualTo(bottom())) throw new IllegalArgumentException(
+                "The object has an infinite upset.");
+        Object[] obj;
+        if(e.isEqualTo(top())) {
+            obj = new Object[1];
+            obj[0] = top();
+        } else {
+            obj = new Object[2];
+            obj[0] = top();
+            obj[1] = e;
         }
-        return true;
+        return obj;
     }
-
-
-    /** Return true if this type can be converted into an object of the given
-     *  type, with some possible conversion.   If the two types are equal,
-     *  then this method will return true.
-     */
-    public boolean isConvertibleTo(Type t) {
-        return isEqualTo(t);
-    }
-
-    /** Return true if the given type can be converted into an object of this
-     *  type, with some possible conversion.   If the two types are equal, 
-     *  then this method will return true.
-     */
-    public boolean isConvertibleFrom(Type t) {
-        return isEqualTo(t);
-    }
-
-    /** Return true if the given type can be instantiated as a token.
-     */
-    public boolean isInstantiable() {
-        if (_numDimensions <= 2) return true;
-        return false;
-    }
-
-    /** The number of dimensions of an object of this type.
-     *  0 = scalar, 1 = 1D array, 2 = 2D array, etc.
-     */
-    private int _numDimensions;
-   
-    /** The dimensions of an object of this type.
-     *  The array has a length given by _numDimensions
-     */
-    private int _dimensions[];
-
 
     private static final _instance = new DimensionTypeLattice();
 }

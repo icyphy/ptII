@@ -57,15 +57,15 @@ public interface Type
     /** Return true if this type can be converted into an object of the given
      *  type.
      */
-    public boolean isConvertibleTo(Type t);
+    //public boolean isConvertibleTo(Type t);
 
     /** Return true if the given type can be converted into an object of this
      *  type.
      */
-    public boolean isConvertibleFrom(Type t);
+    //public boolean isConvertibleFrom(Type t);
 
     /** Return true if the given type can be instantiated as a token.
      */
-    public boolean isInstantiable(Type t);
+    //public boolean isInstantiable(Type t);
 }
 
