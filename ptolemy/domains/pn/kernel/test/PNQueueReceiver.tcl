@@ -92,6 +92,24 @@ test PNQueueReceiver-3.2 {Check hasRoom} {
     list [expr {[$rec hasToken] == 1} ]
 } {1}
 
+######################################################################
+####
+#
+test PNQueueReceiver-3.3 {Test the setting of the blocking flags} {
+    $rec setReadPending true
+    list [$rec isReadPending] [$rec isWritePending]
+} {1 0}
+
+######################################################################
+####
+#
+test PNQueueReceiver-3.4 {Test the setting of the blocking flags} {
+    $rec setWritePending true
+    list [$rec isReadPending] [$rec isWritePending]
+} {1 1}
+
+
+
 
 ######################################################################
 ####
@@ -120,19 +138,37 @@ test PNQueueReceiver-4.2 {Put and get tokens when more than one token} {
     list [$tok1 intValue] [$tok2 intValue] [$tok3 intValue]
 } {4 5 6}
 
-
+######################################################################
+####
+#FIXME: How do you check for setFinish and setPause?
+test PNQueueReceiver-4.3 {Test for initialize} {
+    $rec setCapacity 3
+    $rec put [java::new {ptolemy.data.IntToken int} 4]
+    $rec put [java::new {ptolemy.data.IntToken int} 5]
+    $rec put [java::new {ptolemy.data.IntToken int} 6]
+    $rec setReadPending true
+    $rec setWritePending true
+    $rec setPause true
+    $rec setFinish
+    $rec initialize
+    set elem [$rec elements]
+    set ans1 [$elem hasMoreElements]
+    set ans2 [$rec isReadPending]
+    set ans3 [$rec isWritePending]
+    list $ans1 $ans2 $ans3
+} {0 0 0}
 
 ######################################################################
 ####
 #
-test PNQueueReceiver-5.1 {Test the setting of the blocking flags} {
-    $rec setReadPending true
-    list [$rec isReadPending] [$rec isWritePending]
-} {1 0}
-
-
-
-
-
-
+test PNQueueReceiver-4.4 {Test for initialize} {
+    $rec setCapacity 3
+    $rec put [java::new {ptolemy.data.IntToken int} 4]
+    $rec put [java::new {ptolemy.data.IntToken int} 5]
+    $rec put [java::new {ptolemy.data.IntToken int} 6]
+    $rec clear
+    set elem [$rec elements]
+    set ans1 [$elem hasMoreElements]
+    list $ans1
+} {0}
 
