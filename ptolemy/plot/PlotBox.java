@@ -680,13 +680,13 @@ public class PlotBox extends JPanel implements Printable {
      *  Currently (JDK 1.3), only BoxLayout pays any attention to this.
      *  @return The maximum desired size.
      */
-    public synchronized Dimension getMaximumSize() {
-        if (_sizeHasBeenSet) {
-            return new Dimension(_preferredWidth, _preferredHeight);
-        } else {
-            return super.getMaximumSize();
-        }
-    }
+//     public synchronized Dimension getMaximumSize() {
+//         if (_sizeHasBeenSet) {
+//             return new Dimension(_preferredWidth, _preferredHeight);
+//         } else {
+//             return super.getMaximumSize();
+//         }
+//     }
 
     /** Get the minimum size of this component.
      *  This is simply the dimensions specified by setSize(),
@@ -694,13 +694,14 @@ public class PlotBox extends JPanel implements Printable {
      *  class returns, which is undocumented.
      *  @return The minimum size.
      */
-    public synchronized Dimension getMinimumSize() {
-        if (_sizeHasBeenSet) {
-            return new Dimension(_preferredWidth, _preferredHeight);
-        } else {
-            return super.getMinimumSize();
-        }
-    }
+//     public synchronized Dimension getMinimumSize() {
+//         if (_sizeHasBeenSet) {
+//             return new Dimension(_preferredWidth, _preferredHeight);
+//         } else {
+//             return super.getMinimumSize();
+//         }
+//     }
+
 
     /** Get the current plot rectangle.
      *  Note that Rectangle returned by this method is calculated
@@ -1436,7 +1437,7 @@ public class PlotBox extends JPanel implements Printable {
         _height = height;
         _preferredWidth = width;
         _preferredHeight = height;
-        _sizeHasBeenSet = true;
+        //_sizeHasBeenSet = true;
         super.setSize(width, height);
     }
 
@@ -2942,7 +2943,7 @@ public class PlotBox extends JPanel implements Printable {
     protected int _preferredHeight = 300;
 
     /** @serial Indicator that size has been set. */
-    protected boolean _sizeHasBeenSet = false;
+    //protected boolean _sizeHasBeenSet = false;
 
     /** @serial The document base we use to find the _filespec.
      * NOTE: Use of this variable is deprecated.  But it is made available
