@@ -32,6 +32,7 @@ package ptolemy.actor.lib;
 
 import ptolemy.actor.Director;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
@@ -66,7 +67,8 @@ Thus, the default output value is always 1 or 0.
 <p>
 In the initialize() method and in each invocation of the fire() method,
 the actor uses the fireAt() method of the director to request
-the next firing.  The first firing is always at time zero.
+the next firing.  The first firing is always at the start time, unless
+the parameter <i>fireAtStart</i> is changed to <i>false</i>.
 It may in addition fire at any time in response to a trigger
 input.  On such firings, it simply repeats the most recent output
 (or generate a new output if the time is suitable.)
@@ -119,10 +121,19 @@ public class PoissonClock extends TimedSource {
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
+
+        fireAtStart = new Parameter(this, "fireAtStart", BooleanToken.TRUE);
+        fireAtStart.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
+    /** If true, then this actor will request a firing at the start time.
+     *  Otherwise, the first firing will be requested at the first random
+     *  time. This is a boolean-valued parameter that defaults to <i>true</i>.
+     */
+    public Parameter fireAtStart;
 
     /** The mean time between events, where the output value transitions.
      *  This parameter must contain a DoubleToken.
@@ -213,7 +224,16 @@ public class PoissonClock extends TimedSource {
         _currentOutputIndex = 0;
         double currentTime = getDirector().getCurrentTime();
         _nextFiringTime = currentTime;
-        getDirector().fireAt(this, currentTime);
+        if (((BooleanToken)fireAtStart.getToken()).booleanValue()) {
+            getDirector().fireAt(this, currentTime);
+        } else {
+            double meanTimeValue =
+                    ((DoubleToken)meanTime.getToken()).doubleValue();
+            double exp = -Math.log((1-Math.random()))*meanTimeValue;
+            Director director = getDirector();
+            _nextFiringTime = director.getCurrentTime() + exp;
+            director.fireAt(this, _nextFiringTime);
+        }
     }
 
     /** Update the state of the actor and schedule the next firing,
