@@ -48,6 +48,13 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
+	expressions2.gif \
+	expressions3.gif \
+	expressions4.gif \
+	expressions5.gif \
+	expressions6.gif \
+	expressions7.gif \
+	expressionsa.gif \
 	usingVergil10.gif \
 	usingVergil11.gif \
 	usingVergil12.gif \
