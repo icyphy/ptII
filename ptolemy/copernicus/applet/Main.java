@@ -73,6 +73,7 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.appletWriter",
                 AppletWriter.v(_toplevel),
                 "targetPackage:" + _targetPackage + 
+                " modelPath:" + _modelPath +
                 " outDir:" + _outputDirectory);
     }
 
@@ -80,21 +81,25 @@ public class Main extends KernelMain {
      */ 
     protected String[] _parseArgs(GeneratorAttribute attribute) 
             throws Exception {
+
+        _generatorAttributeFileName = 
+            attribute.getParameter("generatorAttributeFileName");
+        _modelPath = attribute.getParameter("modelPath");
+        _outputDirectory = attribute.getParameter("outputDirectory");
         _targetPackage = attribute.getParameter("targetPackage");
         _templateDirectory = attribute.getParameter("templateDirectory");
         _watchDogTimeout = attribute.getParameter("watchDogTimeout");
-        _outputDirectory = attribute.getParameter("outputDirectory");
-        _generatorAttributeFileName = 
-            attribute.getParameter("generatorAttributeFileName");
         //String sootArgs = attribute.getParameter("sootArgs");
         return new String[1];
     }
 
     private static String _generatorAttributeFileName = "unsetParameter";
-    private static String _watchDogTimeout = "unsetParameter";
+    private static String _modelPath = "unsetParameter";
+    private static String _outputDirectory = "unsetParameter";
     private static String _targetPackage = "unsetParameter";
     private static String _templateDirectory = "ptolemy/copernicus/java";
-    private static String _outputDirectory = "unsetParameter";
+    private static String _watchDogTimeout = "unsetParameter";
+
 }
 
 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- JNLP is the Java Network Launching Protocol
+     This file is derived from a *jnlp.in file by running
+     sed on the *.jnlp.in file and substituting 
+     @PTII_LOCALURL@.
+-->
+<!-- href is needed so that web start can cache the app and
+     it will appear in the desktop icon
+-->
+<jnlp codebase="@PTII_LOCALURL@"
+      href="@PTII_LOCALURL@/softwalls.jnlp"> 
+  <information>
+	  <title>Softwalls </title>
+	  <vendor>Ptolemy Project, UC Berkeley</vendor>
+	  <description kind="tooltip">Softwalls</description>
+	  <icon href="doc/img/PtolemyIISmall.gif"/>
+	  <homepage href="@PTII_LOCALURL@"/>
+	  <offline-allowed/>
+  </information>
+  <security> 
+        <all-permissions/> 
+  </security> 
+  <resources>
+        <!-- Bump maximum heap size to 128Mb, use JVM Props. to confirm -->
+  	<j2se version="1.4+" max-heap-size="128m" />
+
+        <!-- There is a bug under JDK1.4.1 XP with Radeon display cards
+        that causes XP to hang when exiting.  For details, see
+        http://developer.java.sun.com/developer/bugParade/bugs/4713003.html
+        The workaround is to start the java interpreter with 
+        -Dsun.java2d.d3d=false 
+        or
+        -Dsun.java2d.noddraw=true
+        T30's seem to be happier with noddraw than with only d3d, at least
+	under 1.4.1-beta-b14 -->
+	
+        <!-- NO NEED FOR THIS: there is no GR
+	   property name="sun.java2d.noddraw" value="true"/ -->
+
+	<!-- Start Jars -->
+	<!-- End Jars -->
+  </resources>
+  <application-desc main-class="JNLPApplication">
+	<argument>softwalls.xml</argument>
+  </application-desc>
+  <!-- Need to deal with Java 3D -->
+</jnlp>

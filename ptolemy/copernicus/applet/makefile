@@ -49,12 +49,14 @@ DIRS =		test
 # Keep this list alphabetized.
 JSRCS = \
 	AppletWriter.java \
+	JNLPApplication.java \
 	Main.java
 
 OTHER_FILES_TO_BE_JARED = \
 	default.css \
 	makefile.in \
 	model.htm.in \
+	model.jnlp.in \
 	modelVergil.htm.in \
 	runCommandTemplate.txt
 
@@ -76,6 +78,7 @@ all: jclass
 	@echo "To run the demo, run 'make demo'"
 
 install: all $(PTPACKAGE).jar
+	@echo "To run a demo that uses self contained jars: 'make test1'"
 
 demo: compileDemo runDemo
 
@@ -148,18 +151,16 @@ runDemo:
 
 # Test writing in a separate directory
 test1: $(JCLASS)
-	@echo "generate an applet for '$(MODELPATH)'"
-	"$(JAVA)" \
-		-classpath "$(ROOT)" \
-		ptolemy.copernicus.kernel.Copernicus \
+	@echo "generate an applet for '$(MODELPATH)' using jar files"
+	$(PTII)/bin/copernicus \
 		-verbose \
-		-codeGenerator   '"applet"' \
+		-codeGenerator   applet \
 		-compile	 true \
 		-java            "`echo '"$(JAVA)"' | sed 's@/cygdrive/\([a-z]\)@\1:@'`" \
-		-modelPath       '"$(MODELPATH)"' \
 		-run		 true \
-		-ptIIUserDirectory   '"d:/tmp/test directory"' \
-		-targetPackage   '"$(MODEL)"'
+		-ptIIUserDirectory   '"c:/tmp/test"' \
+		-targetPackage   '"$(MODEL)"' \
+		$(MODELPATH)
 
 
 

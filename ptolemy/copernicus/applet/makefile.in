@@ -107,31 +107,25 @@ NUMBER_OF_JARS_TO_LOAD_EAGERLY = 1
 # Jar file that contains the Main.main() method that runs the application
 JNLP_MAIN_JAR = jnlp_main.jar
 
-$(JNLP_MAIN_JAR): JNLPApplication.class ptolemy/actor/gui/jnlp/MenuApplication.class
-	"$(JAR)" -cf $@ $^ 
+$(JNLP_MAIN_JAR): JNLPApplication.class
+	"$(JAR)" -cf $@ JNLPApplication.class 'JNLPApplication$$1.class' \
+		@modelName@.xml
 	"$(JAR)" -i $@ 
 
-ptolemy/actor/gui/jnlp/MenuApplication.class:
-	mkdir -p ptolemy/actor/gui/jnlp
-	cp $(PTII)/ptolemy/actor/gui/jnlp/MenuApplication.class $@
-
-
 # Jar files to include.  $(JNLP_MAIN_JAR) must be first.
+# FIXME: Use @modelJarFiles@, but substitute the commas
 JNLP_JARS = \
 	$(JNLP_MAIN_JAR) \
 	lib/diva.jar \
 	ptolemy/apps/softwalls/softwalls.jar \
-	ptolemy/copernicus/gui/gui.jar \
-	ptolemy/copernicus/kernel/kernel.jar \
-	doc/img/img.jar \
 	ptolemy/domains/ct/ct.jar \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/gr/gr.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergilApplet.jar \
-	ptolemy/vergil/vergilApplet.jar \
 	surfacesCompressed.jar
 
+# FIXME: This is like ptIIUserDirectoryAsURL?
 PTII_LOCALURL = file:///C:/cxh/src/softwallsweb/demo/softwalls
 
 
@@ -181,11 +175,11 @@ sign_jar:
 		$(JARFILE) $(KEYALIAS)
 
 
-
-@modelName@.jnlp: model.jnlp.in $(JNLP_MAIN_JAR) jnlp_sign $(SIGNED_DIR) $(KEYSTORE)
+jnlp_all: $(JNLP_MAIN_JAR) $(KEYSTORE) jnlp_sign @modelName@.jnlp
+@modelName@.jnlp: $(JNLP_MAIN_JAR) @modelName@.jnlp.in $(KEYSTORE)
 	sed 	-e 's#@PTII_LOCALURL@#$(PTII_LOCALURL)#' \
 		-e 's#@PTVERSION@#$(PTVERSION)#' \
-			$< > $@
+			@modelName@.jnlp.in > $@
 	@echo "# Adding jar files to $@"
 	-chmod a+x "$(MKJNLP)"
 	"$(MKJNLP)" $@ \
