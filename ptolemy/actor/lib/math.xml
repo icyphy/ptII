@@ -30,6 +30,26 @@
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
+  
+  <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+    <property name="function">
+        <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+            <property name="exp" value="&quot;exp&quot;"
+	              class="ptolemy.data.expr.Parameter"/>
+            <property name="log" value="&quot;log&quot;"
+	              class="ptolemy.data.expr.Parameter"/>
+            <property name="square" value="&quot;square&quot;"
+	              class="ptolemy.data.expr.Parameter"/>
+            <property name="sqrt" value="&quot;sqrt&quot;"
+	              class="ptolemy.data.expr.Parameter"/>
+            <property name="remainder" value="&quot;remainder&quot;"
+	              class="ptolemy.data.expr.Parameter"/>
+        </property>
+     </property>
+  </entity>
 
   <entity name="Maximum" class="ptolemy.actor.lib.Maximum">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
