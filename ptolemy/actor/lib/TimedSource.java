@@ -95,8 +95,10 @@ public class TimedSource extends Source implements TimedActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** If greater than zero, then this parameter gives the time at which
-     *  postfire() should return false.
+    /** The time at which postfire() should return false. This is a
+     *  double that defaults to Infinity, which means that postfire()
+     *  never returns false (or at least, doesn't do so due to stopTime
+     *  having been exceeded).
      */
     public Parameter stopTime;
 
@@ -173,7 +175,7 @@ public class TimedSource extends Source implements TimedActor {
 
         Time currentTime = director.getModelTime();
 
-        if (_stopTime.compareTo(currentTime) > 0) {
+        if (!_stopTime.isInfinite() && _stopTime.compareTo(currentTime) > 0) {
             director.fireAt(this, _stopTime);
             _executing = true;
         }
