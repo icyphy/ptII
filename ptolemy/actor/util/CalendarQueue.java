@@ -93,13 +93,16 @@ CalendarQueue.cc</i>
 
 public class CalendarQueue {
 
+    public static final boolean DEBUG = false;
+    public static final boolean VERBOSE = false;
+
     /** Construct an empty queue with a given CQComparator object
      *  for arranging entries into bins.
      * @param comparator The CQComparator implementation.
      */
     public CalendarQueue(CQComparator comparator) {
+
         _cqComparator = comparator;
-        _entryComparator = new EntryComparator(comparator);
         // initialization is already done using
         // field initialiation during the
         // declaration of variables
@@ -159,6 +162,7 @@ public class CalendarQueue {
                     "CalendarQueue.put() can't accept null key"
                     );
 
+
         // if this is the first put since the queue creation,
         // then do initialization.
         // The initialization is deferred until this stage because
@@ -170,6 +174,7 @@ public class CalendarQueue {
         // the getBinWidth() method.
         if (_zeroRef == null) {
             _zeroRef = key;
+            _qSize = 0;
             _localInit(_minNumBucket, _cqComparator.getBinWidth(null), key);
         }
 
@@ -182,7 +187,7 @@ public class CalendarQueue {
         // 2. calculate the modulo with respect to nBuckets.
         // 3. add nBuckets if necessary to get a positive modulo.
 
-        long i = _cqComparator.getBinIndex(key, _zeroRef, _width);
+        long i = _getBinIndex(key);
         i = i % _nBuckets;
         if (i < 0)
             i += _nBuckets;
@@ -192,8 +197,7 @@ public class CalendarQueue {
         // smallest key) then update.
         if (_minKey == null || _cqComparator.compare(key, _minKey) < 0) {
             _minKey = key;
-            _minVirtualBucket = _cqComparator.getBinIndex(_minKey,
-                    _zeroRef, _width);
+            _minVirtualBucket = _getBinIndex(_minKey);
             _minBucket = (int)(_minVirtualBucket % _nBuckets);
             if (_minBucket < 0) _minBucket += _nBuckets;
         }
@@ -228,6 +232,7 @@ public class CalendarQueue {
             throw new IllegalAccessException("Invoking take() on empty"+
                     " queue is not allowed.");
         }
+        
         // Search buckets starting from index: _minBucket
         //   analogy: starting from the current page(month) of the calendar
         for (int i = _minBucket, j = 0; ; )
@@ -252,8 +257,7 @@ public class CalendarQueue {
 
                 if (    !_bucket[i].isEmpty()
                         &&
-                        _cqComparator.getBinIndex(_bucket[i].peekKey(),
-                                _zeroRef, _width)
+                        _getBinIndex(_bucket[i].peekKey())
                         == _minVirtualBucket + j
                         ) {
 
@@ -263,22 +267,24 @@ public class CalendarQueue {
 
                     // Update position on calendar
                     _minBucket = i;
-                    _minKey = linkFound.key();
-                    _minVirtualBucket = _cqComparator.getBinIndex(_minKey,
-                            _zeroRef, _width);
+                    _minKey = linkFound.key;
+                    _minVirtualBucket = _getBinIndex(_minKey);
                     --_qSize;
 
                     // Halve calendar size if needed.
                     if (_qSize < _botThreshold) {
-                        if (_nBuckets/_thresholdFactor > _minNumBucket) {
-                            _resize (_nBuckets/_thresholdFactor);
-                        } else {
-                            _resize (_minNumBucket);
+                        // if it's already minimum, then do nothing.
+                        if (_nBuckets != _minNumBucket) {
+                            if (_nBuckets/_thresholdFactor > _minNumBucket) {
+                                _resize (_nBuckets/_thresholdFactor);
+                            } else {
+                                _resize (_minNumBucket);
+                            }
                         }
                     }
                     // Return the item found.
-                    _takenKey = linkFound.key();
-                    return linkFound.value();
+                    _takenKey = linkFound.key;
+                    return linkFound.value;
                 }
                 else {
                     // Prepare to check next bucket or
@@ -311,15 +317,13 @@ public class CalendarQueue {
                 if (!startComparing) {
                     minBucket = i;
                     minKey = _bucket[i].peekKey();
-                    minVirtualBucket = _cqComparator.getBinIndex(minKey,
-                            _zeroRef, _width);
+                    minVirtualBucket = _getBinIndex(minKey);
                     startComparing = true;
                 } else {
                     Object maybeMinKey = _bucket[i].peekKey();
                     if (_cqComparator.compare(maybeMinKey, minKey) < 0) {
                         minKey = maybeMinKey;
-                        minVirtualBucket = _cqComparator.getBinIndex(minKey,
-                                _zeroRef, _width);
+                        minVirtualBucket = _getBinIndex(minKey);
                         minBucket = i;
                     }
                 }
@@ -400,8 +404,7 @@ public class CalendarQueue {
 
                 if (    !_bucket[i].isEmpty()
                         &&
-                        _cqComparator.getBinIndex(_bucket[i].peekKey(),
-                                _zeroRef, _width)
+                        _getBinIndex(_bucket[i].peekKey())
                         == _minVirtualBucket + j
                         ) {
 
@@ -410,7 +413,7 @@ public class CalendarQueue {
                     CQEntry linkFound = (CQEntry)_bucket[i].first();
 
                     // Return the item found.
-                    return linkFound.key();
+                    return linkFound.key;
                 }
                 else {
                     // Prepare to check next bucket or
@@ -444,15 +447,13 @@ public class CalendarQueue {
                 if (!startComparing) {
                     minBucket = i;
                     minKey = _bucket[i].peekKey();
-                    minVirtualBucket = _cqComparator.getBinIndex(minKey,
-                            _zeroRef, _width);
+                    minVirtualBucket = _getBinIndex(minKey);
                     startComparing = true;
                 } else {
                     Object maybeMinKey = _bucket[i].peekKey();
                     if (_cqComparator.compare(maybeMinKey, minKey) < 0) {
                         minKey = maybeMinKey;
-                        minVirtualBucket = _cqComparator.getBinIndex(minKey,
-                                _zeroRef, _width);
+                        minVirtualBucket = _getBinIndex(minKey);
                         minBucket = i;
                     }
                 }
@@ -464,7 +465,7 @@ public class CalendarQueue {
                     "Direct search error in CalendarQueue.getNextKey"
                     );
         // Return the smallest key of minBucket
-        return ((CQEntry)_bucket[minBucket].first()).key();
+        return ((CQEntry)_bucket[minBucket].first()).key;
 
     }
 
@@ -495,13 +496,13 @@ public class CalendarQueue {
         CQEntry cqEntry = new CQEntry(value, key);
 
         // calculate i, the index into the queue array
-        long i = _cqComparator.getBinIndex(key, _zeroRef, _width);
+        long i = _getBinIndex(key);
         i = i % _nBuckets;
         if (i < 0)
             i += _nBuckets;
 
         // Remove the object by calling the method in
-        // inner class SortedLinkedList
+        // inner class CQLinkedList
         boolean result = _bucket[(int)i].removes(cqEntry);
 
         // if the operation succeeded then reduces the number of
@@ -528,13 +529,13 @@ public class CalendarQueue {
         CQEntry cqEntry = new CQEntry(value, key);
 
         // calculate i, the index into the queue array
-        long i = _cqComparator.getBinIndex(key, _zeroRef, _width);
+        long i = _getBinIndex(key);
         i = i % _nBuckets;
         if (i < 0)
             i += _nBuckets;
 
         // call the includes method in private
-        // class SortedLinkedList.
+        // class CQLinkedList.
         return _bucket[(int)i].includes(cqEntry);
     }
 
@@ -562,21 +563,17 @@ public class CalendarQueue {
 
         _width = bwidth;
         _nBuckets = nbuckets;
-        _bucket = new SortedLinkedList[_nBuckets];
-        // Initialize as empty
-        _qSize = 0;
+        _bucket = new CQLinkedList[_nBuckets];
 
         for (int i = 0; i < _nBuckets; ++i) {
-            // intialize each bucket with an empty SortedLinkedList
+            // intialize each bucket with an empty CQLinkedList
             // that uses _cqComparator for sorting.
-            _bucket[i] = new SortedLinkedList(_entryComparator);
+            _bucket[i] = new CQLinkedList();
         }
-
 
         // Set up initial position in queue
         _minKey = startkey;
-        _minVirtualBucket = _cqComparator.getBinIndex(startkey,
-                _zeroRef, _width);
+        _minVirtualBucket = _getBinIndex(startkey);
         _minBucket = (int)(_minVirtualBucket % _nBuckets);
         if (_minBucket < 0) _minBucket += _nBuckets;
 
@@ -599,11 +596,16 @@ public class CalendarQueue {
     // 4. Do transfer of all elements in the old queue into the new queue
     private void _resize(int newsize) {
         Object new_width;
-        int i;
         int old_nbuckets;
-        SortedLinkedList[] old_bucket;
+        CQLinkedList[] old_bucket;
 
         if (!_resizeEnabled) return;
+
+        if (DEBUG) {
+            System.out.println("Resize method is called with old size = " +
+                    _nBuckets + " and new size = " + newsize + 
+                    " and queue size = " + _qSize);
+        }
 
         // Find new bucket width
         new_width = _computeNewWidth();
@@ -612,19 +614,171 @@ public class CalendarQueue {
         // for use when copying calendar
         old_bucket = _bucket;
         old_nbuckets = _nBuckets;
-
+ 
         // Initialize new calendar
         _localInit(newsize, new_width, _minKey);
 
-        // Copy queue elements into new calendar
-        for (i = old_nbuckets - 1; i >= 0; --i) {
-            // Transfer elements from bucket i to new calendar by putting them
-            CollectionEnumeration enum = old_bucket[i].elements();
-            while (enum.hasMoreElements()) {
-                CQEntry cqEntry = (CQEntry)(enum.nextElement());
-                put(cqEntry.key(), cqEntry.value());
+        // Note that the old buckets already contain sorted linked list. So,
+        // what I do here is to do a merge sort on them, and at the same time
+        // passing iteration, place each element into the appropriate location
+        // in the new buckets.
+        // I checked with a profiler tool that this extra complexity sped up
+        // the put() and take() operation.
+        do {
+            // at each iteration, pick the smallest element among all elements
+            // that the old buckets 'head pointer' pointed to.
+
+            // initialize the mininum cell and minimum index.
+            LLCell minCell = null;
+            int minIndex = -1;
+
+            // go through each of the old buckets.
+            for (int i = 0; i < old_nbuckets; i++) {
+
+                // Useful debugging stuff.. you can ignore this..
+                if (DEBUG && VERBOSE) {
+                    for (int j = 0; j < _nBuckets; j++) {
+                        System.out.print("Bucket" + j + " : ");
+                        LLCell curr = _bucket[j].head;
+                        while (curr != null) {
+                            CQEntry entry = (CQEntry)curr.element();
+                            System.out.print(((Double)entry.key).doubleValue());
+                            System.out.print(" , ");
+                            curr = curr.next();
+                        }
+                        System.out.println("");
+                    }
+                }
+                if (DEBUG && VERBOSE) {
+                    
+                    for (int j = 0; j < old_nbuckets; j++) {
+                        System.out.print("old Bucket" + j + " : ");
+                        LLCell curr = old_bucket[j].head;
+                        while (curr != null) {
+                            CQEntry entry = (CQEntry)curr.element();
+                            System.out.print(((Double)entry.key).doubleValue());
+                            System.out.print(" , ");
+                            curr = curr.next();
+                        }
+                        System.out.println("");
+                    }
+                }
+                
+                // check if this particular old bucket is non-empty.
+                if (old_bucket[i].head != null) {
+                    LLCell cell = old_bucket[i].head;
+                    // if minCell has never been updated (still equal to the
+                    // initialized value, i.e. null), then always
+                    // accept this cell (one that belong to the
+                    // current old bucket)as the minimum.
+                    if (minCell == null) {
+                        minCell = cell;
+                        minIndex = i;
+                    } else {
+                        // Useful debugging information, you can ignore it.
+                        if (DEBUG) {
+                            if (_cqComparator.compare(
+                                    ((CQEntry)cell.element()).key, 
+                                    ((CQEntry)minCell.element()).key
+                                    ) == 0) {
+                                System.out.println("Different bucket has "+
+                                "equal element.. no way!");
+                            }                       
+                        }
+                        // minCell is a valid value, so we can compare it with
+                        // the current old bucket 'head cell'. Then update
+                        // minCell if minCell is not less than the 'head cell'.
+                        if (_cqComparator.compare(
+                            ((CQEntry)cell.element()).key, 
+                            ((CQEntry)minCell.element()).key
+                        ) < 0) {
+                            minCell = cell;
+                            minIndex = i;
+                        }
+                    } // if (minCell == null) with the else case.
+                    // finished with this bucket.
+
+                } // if (old_bucket[i].head != null)
+                // since old_bucket[i].head == null then skip this empty bucket.
+
+            } // for (int i = 0; i < old_nbuckets; i++)
+            // this is the end of one iteration through the whole old buckets
+            // set.
+
+            // up to this point, it's either minCell still null, or minCell
+            // equal to the minimum cell of this iteration.
+            if (minCell == null) {
+                // Since minCell is still equal to the initialized value,
+                // that means no more of the old buckets is non-empty..
+                // This means that we finished emptying the old buckets
+                // and moving it into the new buckets.. Yipee... done!
+                break;
+            } else {
+                // minCell is obtained, we update old_bucket[minIndex] by
+                // removing its head of the list. (because that's the minimum,
+                // remember that all buckets are internally sorted already)
+                
+                // update old_bucket[minIndex].
+                // Make the head pointer to point to the next link.
+                old_bucket[minIndex].head = minCell.next();       
+                // If minCell happen to be old_bucket[minIndex] tail, then
+                // set tail to be null, because it just got removed.
+                if (old_bucket[minIndex].tail == minCell) {
+                    old_bucket[minIndex].tail = null;
+                }
+
+                // Now that I finished updating the old_bucket, let's put
+                // the minCell into the new queue. The minCell will be put
+                // at the tail of a bucket in the new queue.
+                
+                // First calculate the index, using cqComparator methods.
+                long newindex = _getBinIndex(((CQEntry)minCell.element()).key);
+                newindex = newindex % _nBuckets;
+                if (newindex < 0) {
+                    newindex += _nBuckets;
+                }
+                
+                // Zero in on the targetted bucket in the new buckets set.
+                CQLinkedList targetLL = _bucket[(int)newindex];
+                
+                // Since minCell is being put at tail position, make sure
+                // its next field point to null.
+                // BTW, removing this will result in a bug that will take hours
+                // to find! Ask the author (lmuliadi) :-)
+                minCell.next(null);
+                // Check if targetLL is an empty list.. Note that empty list
+                // will have both head and tail fields to be null.
+                if (targetLL.tail != null) { 
+                    // targetLL is not an empty list, so append minCell to
+                    // the end of the list.
+                    targetLL.tail.next(minCell);
+                    // Debugging stuff.. ignore..
+                    if (DEBUG) {
+                        if (targetLL.tail == minCell) {
+                            System.out.println("Circular dependency!");
+                        }
+                    }
+                    // Update the tail field.
+                    targetLL.tail = minCell;
+                } else {
+                    // Debugging stuff.. ignore...
+                    if (DEBUG) {
+                        if (targetLL.head != null) {
+                            System.out.println("Tail equal to null, but head's not ???");
+                        }
+                    }
+                    // targedLL is an empty list, so after updating it will
+                    // have one element which is minCell.
+                    // Both tail and head field should point to this sole
+                    // 'new' element.
+                    targetLL.tail = minCell;
+                    targetLL.head = minCell;
+                }
             }
-        }
+            // keep iterating until a break is issued when the old buckets
+            // are all empty.
+        } while (true); 
+        
     }
 
     // This function calculates the width to use for buckets
@@ -697,6 +851,234 @@ public class CalendarQueue {
         return _cqComparator.getBinWidth(sampledKey);
     }
 
+    // FIXME: This is only a macro...
+    private long _getBinIndex(Object key) {
+        return _cqComparator.getBinIndex(key, _zeroRef, _width);
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                 private inner class                            ////
+
+    // CQEntry: encapsulate both the objects and it's priority
+    // to be inserted into the queue.
+    private class CQEntry {
+        // Construct a CQEntry with the supplied content (obj)
+        // and priority (priority)
+        public CQEntry(Object v, Object k) {
+            value = v;
+            key = k;
+        }
+
+        // override Object.equal() method
+        // This is needed, because 2 CQEntry object being equal
+        // doesn't mean cqEntry_a == cqEntry_b, but instead
+        // that both their members (object and priority) are equals.
+        public boolean equals(Object obj) {
+            if (!(obj instanceof CQEntry)) {
+                return false;
+            } else {
+                CQEntry snd = (CQEntry) obj;
+                boolean sameValue = false;
+                boolean sameKey = false;
+
+                if (value == null && snd.value == null) {
+                    sameValue = true;
+                } else if (value == null && snd.value != null) {
+                    sameValue = false;
+                } else if (value.equals(snd.value)) {
+                    sameValue = true;
+                }
+
+                if (this.key == null || snd.key == null) {
+                    throw new IllegalStateException(
+                            "Bug in CalendarQueue.CQEntry.equals"
+                            );
+                } else if (this.key.equals(snd.key)){
+                    sameKey = true;
+                }
+
+                if (sameValue && sameKey) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        // I want to make this public, so it'll be more efficient 
+        // than using method call to access these fields.
+        // FIXME: good enough reasons ?
+        public Object value;
+        public Object key;
+
+    }
+
+    // CQLinkedList
+    // This class implement a function ( insertAndSort) that does
+    // both the insertion of entry into the linked list and then call sort
+    // Note that for efficiency, this class just uses the Comparator object
+    // from CalendarQueue class. I.e. it uses _cqComparator field for sorting.
+    private class CQLinkedList {
+
+        // Construct an empty CQLinkedList.
+        public CQLinkedList() {
+            head = null;
+            tail = null;
+        }
+
+        public Object first() {
+            return head.element();
+        }
+
+        public boolean includes(Object obj) {
+            return (head.find(obj) != null);
+        }
+
+        public boolean isEmpty() {
+            return (head == null);
+        }
+
+        // Insert and sort into the linked list.
+        // Use FIFO behaviour when objects with the same weight are
+        // encountered.
+        public void insertAndSort(Object obj) {
+ 
+            // Special cases:
+            // Linked list is empty.
+            if (head == null) {
+                head = new LLCell(obj, null);
+                tail = head;
+                return;
+            } 
+            
+            // LinkedList is not empty.
+            // I assert that by construction, when head != null, tail != null
+            // as well.
+            
+            // Check if obj is greater than or equal to tail.
+            
+            if ( _cqComparator.compare( 
+                ((CQEntry)obj).key,
+                ((CQEntry)tail.element()).key) >= 0
+            ) {
+                // obj becomes new tail.
+                LLCell newTail = new LLCell(obj, null);
+                tail.next(newTail);
+                tail = newTail;
+                return;
+            }
+            
+            // Check if head is strictly greater than obj
+            if ( _cqComparator.compare(
+                ((CQEntry)head.element()).key,
+                ((CQEntry)obj).key) > 0
+            ) {
+                // obj becomes the new head
+                head = new LLCell(obj, head);
+                return;
+            }
+            
+            // No more special cases..
+            // Iterate from head of queue and progresses..
+            LLCell prevCell = head;
+            LLCell currCell = prevCell.next();
+            // Note that this loop will always terminate via the return
+            // statement. This is because tail is made sure to be strictly
+            // greater than obj.
+            do {
+                // check if currCell is strictly greater than obj
+                if ( _cqComparator.compare(
+                    ((CQEntry)currCell.element()).key,
+                    ((CQEntry)obj).key) > 0
+                ) {
+                    // insert obj between prevCell and currCell
+                    LLCell newcell = new LLCell(obj, currCell);
+                    prevCell.next(newcell);
+                    return;
+                }
+                prevCell = currCell;
+                currCell = prevCell.next();
+            } while (currCell != null);
+            
+        }
+        
+
+        // basically a macro, to shorten typing
+        public Object peekKey() {
+            if (head != null)
+                return ((CQEntry)head.element()).key;
+            else
+                return null;
+        }
+
+        // removes a specific element from the queeu.
+        // NOTE: it only removed the first element found from the linked list.
+        // More specifically, this element would be the one closest to the
+        // head of the linked list.
+        // returns true if succeed, false otherwise
+        public boolean removes(CQEntry cqEntry) {
+            
+            // two special cases:
+            // Case 1: linked-list is empty.. always return false
+            if (head == null) return false;
+            // Case 2: The element I want is at head of linked-list
+            if (head.element().equals(cqEntry)) {
+                // Remove the 'head' cell.
+                if (head != tail) {
+                    // Linked list has at least two cells.
+                    head = head.next();
+                } else {
+                    // Linked list contains only one cell
+                    head = null;
+                    tail = null;
+                }
+                return true;
+            }
+ 
+            // non-special case that requires looping...
+            LLCell prevCell = head;
+            LLCell currCell = prevCell.next();
+
+            do {
+                // FIXME: look at equals operation.. is it expensive ?
+                if (currCell.element().equals(cqEntry)) {
+                    // Cool! currCell contains the entry to be removed.
+                    // Remove that link and the return true.
+                    if (tail == currCell) {
+                        // Removing tail.. need to update
+                        tail = prevCell;
+                    }
+                    prevCell.next(currCell.next());
+                    return true;
+                }
+                // Too bad.. currCell doesn't contain cqEntry. Iterate one link
+                // down.
+                prevCell = currCell;
+                currCell = currCell.next();
+            } while (currCell != null);
+            
+            // Out of the loop, which means currCell == null, i.e. entry
+            // not found.
+            return false;
+        }
+
+        public Object take() {
+            // removes the head
+            LLCell oldhead = head;
+            head = head.next();
+            if (head == null) {
+                tail = null;
+            }
+            return oldhead.element();
+        }
+        
+        // FIXME: this is bad.. leaving this to be public.
+        // head
+        public LLCell head;
+        // tail
+        public LLCell tail;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -713,7 +1095,7 @@ public class CalendarQueue {
     // _zeroRef: the point zero needed to quantize a Object object
     private Object _zeroRef = null;
     // _bucket: an array of nBuckets buckets
-    private SortedLinkedList[] _bucket;
+    private CQLinkedList[] _bucket;
 
     // _minNumBucket: the number of buckets to start with and the lower bound
     //  on the number of buckets.
@@ -729,9 +1111,6 @@ public class CalendarQueue {
     // _cqComparator: Comparator to determine how entries are put into bins.
     /* private */ CQComparator _cqComparator;
 
-    // _entryComparator: Comparator implementation for SortedLinkedList
-    private EntryComparator _entryComparator;
-
     // _takenKey: save the key corresponding to the entry removed by the
     //  take() method.
     private Object _takenKey = null;
@@ -746,138 +1125,6 @@ public class CalendarQueue {
     //    _minKey with _nBuckets.
     private int _minBucket;
 
-    // CQEntry: encapsulate both the objects and it's priority
-    // to be inserted into the queue.
-    private class CQEntry {
-        // Construct a CQEntry with the supplied content (obj)
-        // and priority (priority)
-        public CQEntry(Object value, Object key) {
-            _value = value;
-            _key = key;
-        }
-
-        // get the object content and the priority from a CQEntry, respectively
-        public Object value() {
-            return _value;
-        }
-        public Object key() {
-            return _key;
-        }
-
-        // override Object.equal() method
-        // This is needed, because 2 CQEntry object being equal
-        // doesn't mean cqEntry_a == cqEntry_b, but instead
-        // that both their members (object and priority) are equals.
-        public boolean equals(Object obj) {
-            if (!(obj instanceof CQEntry)) {
-                return false;
-            } else {
-                CQEntry snd = (CQEntry) obj;
-                boolean sameValue = false;
-                boolean sameKey = false;
-
-                if (_value == null && snd._value == null) {
-                    sameValue = true;
-                } else if (_value == null && snd._value != null) {
-                    sameValue = false;
-                } else if (_value.equals(snd._value)) {
-                    sameValue = true;
-                }
-
-                if (_key == null || snd._key == null) {
-                    throw new IllegalStateException(
-                            "Bug in CalendarQueue.CQEntry.equals"
-                            );
-                } else if (_key.equals(snd._key)){
-                    sameKey = true;
-                }
-
-                if (sameValue && sameKey) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        }
-
-        // Private variables
-        private Object _value;
-        private Object _key;
-
-    }
-
-    // SortedLinkedList
-    // This is derived from LinkedList. Linked List is chosen because it
-    // provides higher flexibility in manipulating individual links
-    // (i.e. elements) as opposed to RBTree. But, the drawback is LinkedList
-    // is only a Object structure (as opposed to RBTree being Sorted
-    // structure). This means we need to explicitly invoke sort() method to
-    // tell the LinkedList to sort itself.
-    ///////////////////////////////////////////////////////////////////
-    // This derived class implement a function ( insertAndSort) that does
-    // both the insertion of entry into the linked list and then call sort
-    private class SortedLinkedList extends LinkedList {
-
-        // the argument c is the comparator object that'll be used for
-        // doing the ordering comparison
-        public SortedLinkedList(Comparator c) {
-            super();
-            _comp = c;
-        }
-
-        // insert and then sort
-        public void insertAndSort(Object obj) {
-            // use insertLast to gives the queue FIFO behaviour
-            // when we have two objects of the same priority
-            insertLast(obj);
-            sort(_comp);
-        }
-
-        // basically a macro, to shorten typing
-        public Object peekKey() {
-            if (!this.isEmpty())
-                return ((CQEntry)(first())).key();
-            else
-                return null;
-        }
-
-        // removes a specific element from the queeu.
-        // returns true if succeed, false otherwise
-        public boolean removes(CQEntry cqEntry) {
-            CollectionEnumeration e = elements();
-            int i = 0;
-            while (e.hasMoreElements()) {
-                if (cqEntry.equals(e.nextElement())) {
-                    removeAt(i);
-                    return true;
-                }
-                i++;
-            }
-            return false;
-        }
-        // _comp: a implementation of Comparator interface used for
-        // sorting the Queue
-        private Comparator _comp;
-    }
-    private class EntryComparator implements Comparator {
-        public EntryComparator(CQComparator cqComparator) {
-            _cqComparator = cqComparator;
-        }
-
-        // this compare method implements compare method
-        // defined in Sortable interface. It is used by
-        // SortedLinkedList to mantain the entry sorted increasingly
-        // with the smallest element (with respect to this compare method)
-        // at head of the list.
-        // Note that this method returns negative number if fst is of
-        // smaller than snd, and correspondingly for positive number.
-        public int compare(Object fst, Object snd) {
-            Object fstKey = ((CQEntry)fst).key();
-            Object sndKey = ((CQEntry)snd).key();
-
-            return _cqComparator.compare(fstKey, sndKey);
-        }
-    }
 }
 
 
