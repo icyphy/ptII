@@ -107,7 +107,7 @@ public class InlineTokenTransformer extends SceneTransformer {
 
         // Loop over all the actor instance classes.
         for (Iterator i = _model.deepEntityList().iterator();
-            i.hasNext();) {
+             i.hasNext();) {
             Entity entity = (Entity)i.next();
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
@@ -119,7 +119,7 @@ public class InlineTokenTransformer extends SceneTransformer {
             // Inline calls to token methods that can be statically
             // evaluated.
             for (Iterator methods = entityClass.getMethods().iterator();
-                methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
 
                 // What about static methods?
@@ -157,7 +157,7 @@ public class InlineTokenTransformer extends SceneTransformer {
                         new TokenConstructorAnalysis(body, localDefs);
 
                     for (Iterator units = body.getUnits().snapshotIterator();
-                        units.hasNext();) {
+                         units.hasNext();) {
                         Unit unit = (Unit)units.next();
                         Iterator boxes = unit.getUseBoxes().iterator();
                         while (boxes.hasNext()) {
@@ -180,7 +180,7 @@ public class InlineTokenTransformer extends SceneTransformer {
                                     Value argValues[] = new Value[r.getArgCount()];
                                     int argCount = 0;
                                     for (Iterator args = r.getArgs().iterator();
-                                        args.hasNext();) {
+                                         args.hasNext();) {
                                         Value arg = (Value)args.next();
                                         //      System.out.println("arg = " + arg);
                                         if (Evaluator.isValueConstantValued(arg)) {
@@ -228,13 +228,13 @@ public class InlineTokenTransformer extends SceneTransformer {
                                                 } else if (returnClass.getName().equals("java.lang.String")) {
                                                     if (debug) System.out.println("handling as string type");
                                                     Constant constant = StringConstant.v((String)object);
-                                                box.setValue(constant);
-                                                doneSomething = true;
+                                                    box.setValue(constant);
+                                                    doneSomething = true;
                                                 }
                                             } else if (returnType instanceof BaseType &&
                                                     !(returnType instanceof VoidType)) {
                                                 if (debug) System.out.println("handling as base type");
-                                            // Must be a primitive type...
+                                                // Must be a primitive type...
                                                 Constant constant =
                                                     SootUtilities.convertArgumentToConstantValue(object);
                                                 box.setValue(constant);
@@ -270,7 +270,7 @@ public class InlineTokenTransformer extends SceneTransformer {
         if (definitionList.size() == 1) {
             DefinitionStmt stmt = (DefinitionStmt)definitionList.get(0);
             Value value = (Value)stmt.getRightOp();
-             if (value instanceof Local) {
+            if (value instanceof Local) {
                 return getTokenValue(entity, (Local)value,
                         stmt, localDefs, tokenAnalysis);
             } else if (value instanceof CastExpr) {
@@ -296,10 +296,10 @@ public class InlineTokenTransformer extends SceneTransformer {
             }
         } else {
             /*System.out.println("more than one definition of = " + local);
-            for (Iterator i = definitionList.iterator();
-                i.hasNext();) {
-                System.out.println(i.next().toString());
-                }*/
+              for (Iterator i = definitionList.iterator();
+              i.hasNext();) {
+              System.out.println(i.next().toString());
+              }*/
         }
         return null;
     }

@@ -105,15 +105,15 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
 
         // Loop over all the actor instance classes.
         for (Iterator entities = _model.deepEntityList().iterator();
-            entities.hasNext();) {
+             entities.hasNext();) {
             Entity entity = (Entity)entities.next();
             String className =
                 ActorTransformer.getInstanceClassName(entity, options);
             SootClass entityClass =
-                        Scene.v().loadClassAndSupport(className);
+                Scene.v().loadClassAndSupport(className);
 
             for (Iterator methods = entityClass.getMethods().iterator();
-                methods.hasNext();) {
+                 methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
                 _eliminateComparisons(entityClass, method, entity, debug);
             }
@@ -133,10 +133,10 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
 
         for (Iterator units = body.getUnits().snapshotIterator();
-            units.hasNext();) {
+             units.hasNext();) {
             Stmt stmt = (Stmt)units.next();
             for (Iterator boxes = stmt.getUseBoxes().iterator();
-                boxes.hasNext();) {
+                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
 
@@ -158,7 +158,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
                         SootClass leftClass = leftType.getSootClass();
                         SootClass rightClass = rightType.getSootClass();
                         if (SootUtilities.derivesFrom(leftClass,
-                                   PtolemyUtilities.namedObjClass) &&
+                                PtolemyUtilities.namedObjClass) &&
                                 SootUtilities.derivesFrom(rightClass,
                                         PtolemyUtilities.namedObjClass)) {
                             try {
@@ -237,15 +237,15 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
                         DefinitionStmt useStmt =
                             (DefinitionStmt)pair.getUnit();
                         if (useStmt.getLeftOp() instanceof FieldRef) {
-                             SootField field =
-                                 ((FieldRef)useStmt.getLeftOp()).getField();
-                             ValueTag tag = (ValueTag)field.getTag("_CGValue");
-                             if (tag == null) {
-                                 System.out.println("Failed usage: " +
-                                         useStmt);
-                             } else {
-                                 return (NamedObj)tag.getObject();
-                             }
+                            SootField field =
+                                ((FieldRef)useStmt.getLeftOp()).getField();
+                            ValueTag tag = (ValueTag)field.getTag("_CGValue");
+                            if (tag == null) {
+                                System.out.println("Failed usage: " +
+                                        useStmt);
+                            } else {
+                                return (NamedObj)tag.getObject();
+                            }
                         }
                     }
                 }
@@ -262,7 +262,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer {
         } else {
             String string = "More than one definition of = " + local + "\n";
             for (Iterator i = definitionList.iterator();
-                i.hasNext();) {
+                 i.hasNext();) {
                 string += "Definition = " + i.next().toString();
             }
             throw new RuntimeException(string);

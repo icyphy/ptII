@@ -67,7 +67,7 @@ public class TokenConstructorAnalysis {
         _constructorToValue = new HashMap();
 
         for (Iterator units = body.getUnits().iterator();
-                units.hasNext();) {
+             units.hasNext();) {
             Stmt unit = (Stmt)units.next();
             if (unit.containsInvokeExpr() &&
                     unit.getInvokeExpr() instanceof InstanceInvokeExpr) {

@@ -234,86 +234,86 @@ public class ModelTransformer extends SceneTransformer {
         _links(body, composite);
         _linksOnPortsContainedByContainedEntities(body, composite);
 
-       /*
-        SootMethod clinitMethod;
-        Body clinitBody;
-        if (modelClass.declaresMethodByName("<clinit>")) {
-            clinitMethod = modelClass.getMethodByName("<clinit>");
-            clinitBody = clinitMethod.retrieveActiveBody();
-        } else {
-            clinitMethod = new SootMethod("<clinit>", new LinkedList(),
-                    VoidType.v(), Modifier.PUBLIC | Modifier.STATIC);
-            modelClass.addMethod(clinitMethod);
-            clinitBody = Jimple.v().newBody(clinitMethod);
-            clinitMethod.setActiveBody(clinitBody);
-            clinitBody.getUnits().add(Jimple.v().newReturnVoidStmt());
-        }
-        Chain clinitUnits = clinitBody.getUnits();
+        /*
+          SootMethod clinitMethod;
+          Body clinitBody;
+          if (modelClass.declaresMethodByName("<clinit>")) {
+          clinitMethod = modelClass.getMethodByName("<clinit>");
+          clinitBody = clinitMethod.retrieveActiveBody();
+          } else {
+          clinitMethod = new SootMethod("<clinit>", new LinkedList(),
+          VoidType.v(), Modifier.PUBLIC | Modifier.STATIC);
+          modelClass.addMethod(clinitMethod);
+          clinitBody = Jimple.v().newBody(clinitMethod);
+          clinitMethod.setActiveBody(clinitBody);
+          clinitBody.getUnits().add(Jimple.v().newReturnVoidStmt());
+          }
+          Chain clinitUnits = clinitBody.getUnits();
 
-        // If we're doing deep (SDF) codegen, then create a
-        // queue for every type of every channel of every relation.
-        for (Iterator relations = composite.relationList().iterator();
-            relations.hasNext();) {
-            TypedIORelation relation = (TypedIORelation)relations.next();
-            Parameter bufferSizeParameter =
-                (Parameter)relation.getAttribute("bufferSize");
-            int bufferSize;
-            try {
-                bufferSize =
-                    ((IntToken)bufferSizeParameter.getToken()).intValue();
-            } catch (Exception ex) {
-                System.out.println("No bufferSize parameter for " +
-                        relation);
-                continue;
-            }
+          // If we're doing deep (SDF) codegen, then create a
+          // queue for every type of every channel of every relation.
+          for (Iterator relations = composite.relationList().iterator();
+          relations.hasNext();) {
+          TypedIORelation relation = (TypedIORelation)relations.next();
+          Parameter bufferSizeParameter =
+          (Parameter)relation.getAttribute("bufferSize");
+          int bufferSize;
+          try {
+          bufferSize =
+          ((IntToken)bufferSizeParameter.getToken()).intValue();
+          } catch (Exception ex) {
+          System.out.println("No bufferSize parameter for " +
+          relation);
+          continue;
+          }
 
-            // Determine the types that the relation is connected to.
-            Map typeMap = new HashMap();
-            List destinationPortList =
-                relation.linkedDestinationPortList();
-            for (Iterator destinationPorts = destinationPortList.iterator();
-                destinationPorts.hasNext();) {
-                TypedIOPort port = (TypedIOPort)destinationPorts.next();
-                ptolemy.data.type.Type type = port.getType();
-                typeMap.put(type.toString(), type);
-            }
+          // Determine the types that the relation is connected to.
+          Map typeMap = new HashMap();
+          List destinationPortList =
+          relation.linkedDestinationPortList();
+          for (Iterator destinationPorts = destinationPortList.iterator();
+          destinationPorts.hasNext();) {
+          TypedIOPort port = (TypedIOPort)destinationPorts.next();
+          ptolemy.data.type.Type type = port.getType();
+          typeMap.put(type.toString(), type);
+          }
 
-            for (Iterator types = typeMap.keySet().iterator();
-                types.hasNext();) {
-                ptolemy.data.type.Type type =
-                    (ptolemy.data.type.Type)typeMap.get(types.next());
-                BaseType tokenType =
-                    PtolemyUtilities.getSootTypeForTokenType(type);
-                Type arrayType = ArrayType.v(tokenType, 1);
-                String fieldName = relation.getName() + "_bufferLocal";
-                Local arrayLocal =
-                    Jimple.v().newLocal(fieldName, arrayType);
-                clinitBody.getLocals().add(arrayLocal);
+          for (Iterator types = typeMap.keySet().iterator();
+          types.hasNext();) {
+          ptolemy.data.type.Type type =
+          (ptolemy.data.type.Type)typeMap.get(types.next());
+          BaseType tokenType =
+          PtolemyUtilities.getSootTypeForTokenType(type);
+          Type arrayType = ArrayType.v(tokenType, 1);
+          String fieldName = relation.getName() + "_bufferLocal";
+          Local arrayLocal =
+          Jimple.v().newLocal(fieldName, arrayType);
+          clinitBody.getLocals().add(arrayLocal);
 
-                for (int i = 0; i < relation.getWidth(); i++) {
-                    SootField field = new SootField(
-                            getBufferFieldName(relation, i, type),
-                            arrayType,
-                            Modifier.PUBLIC | Modifier.STATIC);
-                    modelClass.addField(field);
-                    // System.out.println("creating field = " + field);
+          for (int i = 0; i < relation.getWidth(); i++) {
+          SootField field = new SootField(
+          getBufferFieldName(relation, i, type),
+          arrayType,
+          Modifier.PUBLIC | Modifier.STATIC);
+          modelClass.addField(field);
+          // System.out.println("creating field = " + field);
 
-                    // Tag the field with the type.
-                    field.addTag(new TypeTag(type));
+          // Tag the field with the type.
+          field.addTag(new TypeTag(type));
 
-                    // Create the new buffer
-                    // Note: reverse order!
-                    clinitUnits.addFirst(Jimple.v().newAssignStmt(
-                            Jimple.v().newStaticFieldRef(field),
-                            arrayLocal));
-                    clinitUnits.addFirst(
-                            Jimple.v().newAssignStmt(arrayLocal,
-                                    Jimple.v().newNewArrayExpr(tokenType,
-                                            IntConstant.v(bufferSize))));
+          // Create the new buffer
+          // Note: reverse order!
+          clinitUnits.addFirst(Jimple.v().newAssignStmt(
+          Jimple.v().newStaticFieldRef(field),
+          arrayLocal));
+          clinitUnits.addFirst(
+          Jimple.v().newAssignStmt(arrayLocal,
+          Jimple.v().newNewArrayExpr(tokenType,
+          IntConstant.v(bufferSize))));
 
-                }
-            }
-        }
+          }
+          }
+          }
         */
     }
 
@@ -332,12 +332,12 @@ public class ModelTransformer extends SceneTransformer {
 	body.getLocals().add(settableLocal);
 
         /*    NamedObj classObject = _findDeferredInstance(namedObj);
-        System.out.println("Class object for " + namedObj.getFullName());
-        System.out.println(classObject.exportMoML());
+              System.out.println("Class object for " + namedObj.getFullName());
+              System.out.println(classObject.exportMoML());
         */
 
         for (Iterator attributes = namedObj.attributeList().iterator();
-	    attributes.hasNext();) {
+             attributes.hasNext();) {
 	    Attribute attribute = (Attribute)attributes.next();
 
             // FIXME: This is horrible...  I guess we need an attribute for
@@ -438,7 +438,7 @@ public class ModelTransformer extends SceneTransformer {
         body.getLocals().add(entityLocal);
 
 	for (Iterator entities = composite.deepEntityList().iterator();
-	    entities.hasNext();) {
+             entities.hasNext();) {
 	    Entity entity = (Entity)entities.next();
 	    System.out.println("ModelTransformer: entity: " + entity);
             Local local;
@@ -504,7 +504,7 @@ public class ModelTransformer extends SceneTransformer {
         body.getLocals().add(tempPortLocal);
 
 	for (Iterator ports = entity.portList().iterator();
-	    ports.hasNext();) {
+             ports.hasNext();) {
 	    Port port = (Port)ports.next();
 	    String className = port.getClass().getName();
             String fieldName = getFieldNameForPort(port, container);
@@ -517,72 +517,72 @@ public class ModelTransformer extends SceneTransformer {
             // We do not need to create ports here, because the actor
             // transformer will do that.
             //          if (classObject.getPort(port.getName()) != null) {
-                // If the class for the object already creates the
-                // attribute, then get a reference to the existing attribute.
+            // If the class for the object already creates the
+            // attribute, then get a reference to the existing attribute.
 
-                // First assign to temp
-                body.getUnits().add(Jimple.v().newAssignStmt(tempPortLocal,
-                        Jimple.v().newVirtualInvokeExpr(entityLocal,
-                                PtolemyUtilities.getPortMethod,
-                                StringConstant.v(port.getName()))));
-                // and then cast to portLocal
-                body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
-                        Jimple.v().newCastExpr(tempPortLocal,
-                                PtolemyUtilities.portType)));
+            // First assign to temp
+            body.getUnits().add(Jimple.v().newAssignStmt(tempPortLocal,
+                    Jimple.v().newVirtualInvokeExpr(entityLocal,
+                            PtolemyUtilities.getPortMethod,
+                            StringConstant.v(port.getName()))));
+            // and then cast to portLocal
+            body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
+                    Jimple.v().newCastExpr(tempPortLocal,
+                            PtolemyUtilities.portType)));
                                 /* } else {
-                // If the class does not create the attribute,
-                // then create a new attribute with the right name.
-                Local local = PtolemyUtilities.createNamedObjAndLocal(
-                        body, className,
-                        entityLocal, port.getName());
-                if (port instanceof TypedIOPort) {
-                    TypedIOPort ioport = (TypedIOPort)port;
-                    if (ioport.isInput()) {
-                        body.getUnits().add(Jimple.v().newInvokeStmt(
-                                Jimple.v().newVirtualInvokeExpr(local,
-                                        PtolemyUtilities.setInputMethod,
-                                        IntConstant.v(1))));
-                    }
-                    if (ioport.isOutput()) {
-                        body.getUnits().add(Jimple.v().newInvokeStmt(
-                                Jimple.v().newVirtualInvokeExpr(local,
-                                        PtolemyUtilities.setOutputMethod,
-                                        IntConstant.v(1))));
-                    }
-                    if (ioport.isMultiport()) {
-                        body.getUnits().add(Jimple.v().newInvokeStmt(
-                                Jimple.v().newVirtualInvokeExpr(local,
-                                        PtolemyUtilities.setMultiportMethod,
-                                        IntConstant.v(1))));
-                    }
-                }
-                // and then cast to portLocal
-                body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
-                        Jimple.v().newCastExpr(local,
-                                PtolemyUtilities.portType)));
+                                   // If the class does not create the attribute,
+                                   // then create a new attribute with the right name.
+                                   Local local = PtolemyUtilities.createNamedObjAndLocal(
+                                   body, className,
+                                   entityLocal, port.getName());
+                                   if (port instanceof TypedIOPort) {
+                                   TypedIOPort ioport = (TypedIOPort)port;
+                                   if (ioport.isInput()) {
+                                   body.getUnits().add(Jimple.v().newInvokeStmt(
+                                   Jimple.v().newVirtualInvokeExpr(local,
+                                   PtolemyUtilities.setInputMethod,
+                                   IntConstant.v(1))));
+                                   }
+                                   if (ioport.isOutput()) {
+                                   body.getUnits().add(Jimple.v().newInvokeStmt(
+                                   Jimple.v().newVirtualInvokeExpr(local,
+                                   PtolemyUtilities.setOutputMethod,
+                                   IntConstant.v(1))));
+                                   }
+                                   if (ioport.isMultiport()) {
+                                   body.getUnits().add(Jimple.v().newInvokeStmt(
+                                   Jimple.v().newVirtualInvokeExpr(local,
+                                   PtolemyUtilities.setMultiportMethod,
+                                   IntConstant.v(1))));
+                                   }
+                                   }
+                                   // and then cast to portLocal
+                                   body.getUnits().add(Jimple.v().newAssignStmt(portLocal,
+                                   Jimple.v().newCastExpr(local,
+                                   PtolemyUtilities.portType)));
 
-                                }*/
+                                   }*/
 
 
-           //   // Set the type of the port if we need to.
-//              if (Options.getBoolean(options, "deep") &&
-//                      (port instanceof TypedIOPort)) {
-//                  TypedIOPort typedPort = (TypedIOPort)port;
+            //   // Set the type of the port if we need to.
+            //              if (Options.getBoolean(options, "deep") &&
+            //                      (port instanceof TypedIOPort)) {
+            //                  TypedIOPort typedPort = (TypedIOPort)port;
 
-//                          // Build a type expression.
-//                  Local typeLocal =
-//                      _buildConstantTypeLocal(body, typedPort.getType());
-//                  Local ioportLocal =
-//                      Jimple.v().newLocal("typed_" + port.getName(),
-//                              ioportType);
-//                  body.getLocals().add(ioportLocal);
-//                  body.getUnits().add(Jimple.v().newAssignStmt(ioportLocal,
-//                          Jimple.v().newCastExpr(portLocal,
-//                                  ioportType)));
-//                  body.getUnits().add(Jimple.v().newInvokeStmt(
-//                          Jimple.v().newVirtualInvokeExpr(ioportLocal,
-//                                  portSetTypeMethod, typeLocal)));
-//              }
+            //                          // Build a type expression.
+            //                  Local typeLocal =
+            //                      _buildConstantTypeLocal(body, typedPort.getType());
+            //                  Local ioportLocal =
+            //                      Jimple.v().newLocal("typed_" + port.getName(),
+            //                              ioportType);
+            //                  body.getLocals().add(ioportLocal);
+            //                  body.getUnits().add(Jimple.v().newAssignStmt(ioportLocal,
+            //                          Jimple.v().newCastExpr(portLocal,
+            //                                  ioportType)));
+            //                  body.getUnits().add(Jimple.v().newInvokeStmt(
+            //                          Jimple.v().newVirtualInvokeExpr(ioportLocal,
+            //                                  portSetTypeMethod, typeLocal)));
+            //              }
 
             _portLocalMap.put(port, portLocal);
 	    SootUtilities.createAndSetFieldFromLocal(body,
@@ -597,7 +597,7 @@ public class ModelTransformer extends SceneTransformer {
 	// we read the links from the ports, not from the relations.
 	// First, produce the inside links on contained ports.
         for (Iterator ports = composite.portList().iterator();
-	    ports.hasNext();) {
+             ports.hasNext();) {
 	    ComponentPort port = (ComponentPort)ports.next();
 	    Iterator relations = port.insideRelationList().iterator();
 	    int index = -1;
@@ -629,10 +629,10 @@ public class ModelTransformer extends SceneTransformer {
             JimpleBody body, CompositeEntity composite) {
 
         for (Iterator entities = composite.deepEntityList().iterator();
-            entities.hasNext();) {
+             entities.hasNext();) {
             ComponentEntity entity =(ComponentEntity)entities.next();
             for (Iterator ports = entity.portList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 ComponentPort port = (ComponentPort)ports.next();
 
                 Local portLocal;
@@ -692,7 +692,7 @@ public class ModelTransformer extends SceneTransformer {
             CompositeEntity composite, EntitySootClass modelClass) {
 	_relationLocalMap = new HashMap();
 	for (Iterator relations = composite.relationList().iterator();
-	    relations.hasNext();) {
+             relations.hasNext();) {
 	    Relation relation = (Relation)relations.next();
 	    String className = relation.getClass().getName();
             String fieldName = getFieldNameForRelation(relation, composite);
@@ -713,11 +713,11 @@ public class ModelTransformer extends SceneTransformer {
         // Loop through all the methods
 
         for (Iterator methods = theClass.getMethods().iterator();
-            methods.hasNext();) {
+             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-             for (Iterator units = body.getUnits().snapshotIterator();
-                units.hasNext();) {
+            for (Iterator units = body.getUnits().snapshotIterator();
+                 units.hasNext();) {
                 Unit unit = (Unit)units.next();
                 Iterator boxes = unit.getUseBoxes().iterator();
                 while (boxes.hasNext()) {
@@ -728,7 +728,7 @@ public class ModelTransformer extends SceneTransformer {
                         if (PtolemyUtilities.executableInterface.declaresMethod(
                                 r.getMethod().getSubSignature())) {
                             if (r.getMethod().getName().equals("prefire") ||
-                               r.getMethod().getName().equals("postfire")) {
+                                    r.getMethod().getName().equals("postfire")) {
                                 box.setValue(IntConstant.v(1));
                             } else {
                                 body.getUnits().remove(unit);
@@ -879,12 +879,12 @@ public class ModelTransformer extends SceneTransformer {
         if (object instanceof CompositeEntity) {
             CompositeEntity composite = (CompositeEntity) object;
             for (Iterator entities = composite.deepEntityList().iterator();
-                entities.hasNext();) {
+                 entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
                 updateCreatedSet(prefix, context, entity, set);
             }
             for (Iterator relations = composite.relationList().iterator();
-                relations.hasNext();) {
+                 relations.hasNext();) {
                 Relation relation = (Relation) relations.next();
                 updateCreatedSet(prefix, context, relation, set);
             }
@@ -892,13 +892,13 @@ public class ModelTransformer extends SceneTransformer {
         if (object instanceof Entity) {
             Entity entity= (Entity) object;
             for (Iterator ports = entity.portList().iterator();
-                ports.hasNext();) {
+                 ports.hasNext();) {
                 Port port = (Port)ports.next();
                 updateCreatedSet(prefix, context, port, set);
             }
         }
         for (Iterator attributes = object.attributeList().iterator();
-            attributes.hasNext();) {
+             attributes.hasNext();) {
             Attribute attribute = (Attribute)attributes.next();
             updateCreatedSet(prefix, context, attribute, set);
         }

@@ -75,7 +75,7 @@ public class NamedObjConstructorAnalysis {
 
         _newExprToConstructor = new HashMap();
         for (Iterator units = body.getUnits().iterator();
-                units.hasNext();) {
+             units.hasNext();) {
             Stmt unit = (Stmt)units.next();
             if (unit.containsInvokeExpr() &&
                     unit.getInvokeExpr() instanceof NewExpr) {
@@ -89,7 +89,7 @@ public class NamedObjConstructorAnalysis {
         _nameToConstructor = new HashMap();
 
         for (Iterator units = body.getUnits().iterator();
-                units.hasNext();) {
+             units.hasNext();) {
             Stmt unit = (Stmt)units.next();
             if (unit.containsInvokeExpr() &&
                     unit.getInvokeExpr() instanceof InstanceInvokeExpr) {
@@ -164,7 +164,7 @@ public class NamedObjConstructorAnalysis {
 
         // Remap the containers and the names.
         for (Iterator constructors = _constructorToName.keySet().iterator();
-                constructors.hasNext();) {
+             constructors.hasNext();) {
             Unit constructor = (Unit)constructors.next();
             String fullName = _getFullName(constructor);
             System.out.println("fullName = " + fullName);
@@ -196,7 +196,7 @@ public class NamedObjConstructorAnalysis {
         System.out.println("aliases = " + aliasSet);
         NewExpr newExpr = null;
         for (Iterator aliases = aliasSet.iterator();
-            aliases.hasNext();) {
+             aliases.hasNext();) {
             Object alias = aliases.next();
             if (alias instanceof NewExpr) {
                 if (newExpr == null) {

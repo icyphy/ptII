@@ -327,10 +327,10 @@ public class Main extends KernelMain {
 
         // Remove references to named objects.
         /*Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.ee",
-                        ExceptionEliminator.v(_toplevel)));
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.noe",
+          new Transform("wjtp.ee",
+          ExceptionEliminator.v(_toplevel)));
+          Scene.v().getPack("wjtp").add(
+          new Transform("wjtp.noe",
           NamedObjEliminator.v(_toplevel)));*/
 
         // We REALLY need to cleanup here or the code is not correct..
@@ -411,7 +411,7 @@ public class Main extends KernelMain {
                     + ptolemy.actor.Manager.timeAndMemory(startTime));
         } catch (Exception ex) {
 	    System.err.println("Code generation of '" + args[0]
-			       + "' failed:");
+                    + "' failed:");
             ex.printStackTrace(System.err);
 	    System.exit(2);
         }

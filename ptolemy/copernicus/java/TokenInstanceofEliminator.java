@@ -85,11 +85,11 @@ public class TokenInstanceofEliminator extends BodyTransformer
             new TokenTypeAnalysis(body.getMethod(),
                     new CompleteUnitGraph(body));
 
-         for (Iterator units = body.getUnits().iterator();
-            units.hasNext();) {
+        for (Iterator units = body.getUnits().iterator();
+             units.hasNext();) {
             Unit unit = (Unit)units.next();
             for (Iterator boxes = unit.getUseBoxes().iterator();
-                boxes.hasNext();) {
+                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
 
