@@ -258,7 +258,6 @@ public class DTReceiver extends SDFReceiver {
     // -get-
 
         Actor actor = (Actor) super.getContainer().getContainer();
-        IOPort currentPort = (IOPort) super.getContainer();
         Director director =  ((Actor) actor).getDirector();
 
         // FIXME: need to consider different cases for
@@ -267,9 +266,6 @@ public class DTReceiver extends SDFReceiver {
             DTDirector dtDirector = (DTDirector) director;
             dtDirector.setActorLocalTime(_localTime, actor);
         }
-
-        String sourceName = ((Nameable) _to).getName();
-        String destinationName = ((Nameable) _from).getName();
 
         // FIXME: timing has bugs for DT inside DT
         _localTime = _localTime + _deltaTime;
@@ -416,8 +412,7 @@ public class DTReceiver extends SDFReceiver {
     // The cached value of the destination token consumption rate
     private int _inRate;
 
-    // The director that directs this receiver; should be a DTDirector
-    private DTDirector _localDirector;
+
 
     // The local cached time
     private double _localTime;

@@ -271,8 +271,8 @@ public class DTDirector extends SDFDirector {
      *  director returns false in its prefire().
      */
     public void fire() throws IllegalActionException {
-        TypedCompositeActor container = (TypedCompositeActor) getContainer();
-        Director outsideDirector = _getOutsideDirector();
+        //TypedCompositeActor container = (TypedCompositeActor) getContainer();
+        //Director outsideDirector = _getOutsideDirector();
         // Some timed directors (such as CT) increment time after prefire()
         // and during fire(), so time may not be properly updated
         // before this stage of the execution.
@@ -460,7 +460,6 @@ public class DTDirector extends SDFDirector {
             IOPort currentPort = currentReceiver.getContainer();
             int rate = 0;
             Actor actor = (Actor) currentPort.getContainer();
-            String name = ((Nameable)actor).getFullName();
 
             DTActor dtActor = (DTActor) _allActorsTable.get(actor);
             if (_debugging) {
@@ -488,7 +487,7 @@ public class DTDirector extends SDFDirector {
 
             TypedIOPort currentPort =
                 (TypedIOPort) currentReceiver.getContainer();
-            Actor toActor = (Actor) currentPort.getContainer();
+
             TypedIOPort fromPort = currentReceiver.getSourcePort();
             Type fromType = fromPort.getType();
             Actor fromActor = (Actor) fromPort.getContainer();
@@ -498,16 +497,12 @@ public class DTDirector extends SDFDirector {
             if ((param != null) && (fromPort.isOutput())) {
                 outrate = ((IntToken)param.getToken()).intValue();
             }
-            SDFScheduler currentScheduler = (SDFScheduler) getScheduler();
 
-            String name = ((Nameable)fromActor).getFullName();
 
             DTActor dtFromActor = (DTActor) _allActorsTable.get(fromActor);
 
             if (dtFromActor != null) {
                 if (dtFromActor._shouldGenerateInitialTokens) {
-                    int numberInitialTokens =
-                        SDFScheduler.getTokenInitProduction(currentPort);
                     if (_debugging) {
                         _debug("initial port: " + fromType
                                 + " to " + currentPort.getType());
@@ -1018,58 +1013,12 @@ public class DTDirector extends SDFDirector {
     }
 
 
-    /** For debugging purposes.  Display the list of attributes
-     *  inside a given named object
-     *
-     *  @param object The named object that has a list of attributes
-     */
-    private void _debugViewAttributesList(NamedObj object)
-    {
-        List list = object.attributeList();
-        Iterator listIterator = list.iterator();
-
-        _debug("attribute List:");
-        while (listIterator.hasNext()) {
-            Attribute attribute = (Attribute) listIterator.next();
-            _debug(attribute.toString());
-        }
-    }
-
-    /** For debugging purposes.  Display the list of output ports in the
-     *  TypedCompositeActor that holds this director.
-     */
-    private void _debugViewContainerOutputPorts()
-            throws IllegalActionException {
-
-        List list = ((TypedCompositeActor)getContainer()).outputPortList();
-        Iterator listIterator = list.iterator();
-
-        _debug("\ndirector container output port list:");
-        while (listIterator.hasNext()) {
-            IOPort port = (IOPort) listIterator.next();
-            _debug(" ->"+port);
-            _debugViewPortInsideReceivers(port);
-        }
-        _debug("\n");
-    }
 
 
-    /** For debugging purposes.  Display the list of contained entities
-     *  inside the composite object
-     *
-     *  @param object The composite entity with a list of contained entities.
-     */
-    private void _debugViewEntityList(CompositeEntity object) {
 
-        List list = object.entityList();
-        Iterator listIterator = list.iterator();
 
-        _debug("entity List:");
-        while (listIterator.hasNext()) {
-            Entity entity = (Entity) listIterator.next();
-            _debug(entity.toString());
-        }
-    }
+
+
 
     /** For debugging purposes.  Display the list of inside receivers
      *  connected to a port.
@@ -1087,18 +1036,7 @@ public class DTDirector extends SDFDirector {
     }
 
 
-    /** For debugging purposes.  Display the list of remote receivers
-     *  receivers connected to a port.
-     */
-    private void _debugViewPortRemoteReceivers(IOPort port) {
-        Receiver[][] remoteReceivers = port.getRemoteReceivers();
 
-        for (int i = 0; i < port.getWidth(); i++) {
-            for (int j = 0; j<remoteReceivers[i].length; j++) {
-                _debug("  -->" + remoteReceivers[i][j]);
-            }
-        }
-    }
 
     /** For debugging purposes.  Display the list of contained receivers
      *  and other pertinent information about them.
@@ -1117,21 +1055,7 @@ public class DTDirector extends SDFDirector {
         _debug("\n");
     }
 
-    /** For debugging purposes. Display the schedule.
-     */
-    private void _debugViewSchedule() throws IllegalActionException {
-        Scheduler scheduler = getScheduler();
-        if (scheduler == null)
-            throw new InternalErrorException("Attempted to use " +
-                    "DT system with no scheduler");
-        Schedule schedule = scheduler.getSchedule();
-        _debug("--------SCHEDULE for "+getName()+"-----------------");
-        Iterator actors = schedule.actorIterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            _debug(" --> " + ((Nameable)actor).getName());
-        }
-    }
+
 
 
 
@@ -1147,41 +1071,11 @@ public class DTDirector extends SDFDirector {
         return outsideDirector;
     }
 
-    /** Get the time of the outside director.
-     *  If this is a top-level director, then return current time.
-     *  @return The time of the executive director
-     */
-    private double _getOutsideTime() throws IllegalActionException{
-        TypedCompositeActor container = (TypedCompositeActor) getContainer();
-        Director outsideDirector = container.getExecutiveDirector();
-        if (outsideDirector != null) {
-            return outsideDirector.getCurrentTime();
-        } else {
-            return _currentTime;
-        }
-    }
 
 
 
-    /** Convenience method for getting the token consumption rate of a
-     *  specified port. If the port does not have the attribute
-     *  "tokenConsumptionRate" then return a rate of 1.
-     *  @param ioPort The port to be queried
-     *  @return The token consumption rate of the port.
-     *  @exception IllegalActionException If getting an attribute from
-     *  this port fails.
-     */
-    private int _getTokenConsumptionRate(IOPort ioPort)
-            throws IllegalActionException {
-        int rate;
-        Parameter param
-            = (Parameter) ioPort.getAttribute("tokenConsumptionRate");
-        if (param != null) {
-            rate = ((IntToken)param.getToken()).intValue();
-        } else rate = 1;
 
-        return rate;
-    }
+
 
     /** Request the outside non-DT director to fire this TypedCompositeActor
      *  at time intervals equal to when the output tokens should be produced.
@@ -1323,9 +1217,7 @@ public class DTDirector extends SDFDirector {
     // The time when the previous valid or invalid prefire() was called
     private double _formerTimeFired;
 
-    // The director of a non-DT internal model for which faking time
-    // might be need. This variable is useful for mixed DT hierarchies
-    private Director _insideDirector;
+
 
     // used to keep track of whether firing can be done at current time
     private boolean _isFiringAllowed;
@@ -1333,9 +1225,7 @@ public class DTDirector extends SDFDirector {
     // ArrayList to keep track of all container output ports
     private ArrayList _outputPortTable;
 
-    // Flag to specify whether time should be faked for non-DT internal
-    // models (like DE, CT) in the hierarchy
-    private boolean _pseudoTimeEnabled = false;
+
 
     // used to determine whether the director should call transferOutputs()
     private boolean _shouldDoInternalTransferOutputs;
