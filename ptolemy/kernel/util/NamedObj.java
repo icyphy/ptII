@@ -31,10 +31,10 @@ package pt.kernel;
 //// NamedObj
 /** 
 
-// NamedObj (named object) is the baseclass for most of the common
-// Ptolemy objects. In addition to a name, a NamedObj has a reference
-// to a container object, which is always an Entity (derived from Node
-// and then, in turn, from NamedObj). This reference can be null.
+NamedObj (named object) is the baseclass for most of the common
+Ptolemy objects. In addition to a name, a NamedObj has a reference
+to a container object, which is always an Entity (derived from Node
+and then, in turn, from NamedObj). This reference can be null.
 
 @author Richard Stevens
 <P>  Richard Stevens is an employee of the U.S. Government, whose
