@@ -5,7 +5,7 @@
     <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
+        <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
         </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
             <location value="36.0, 25.25"/>
@@ -153,7 +153,7 @@
         <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
+            <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
             </property>
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="15.0, -2.75"/>
@@ -241,7 +241,7 @@
             <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
+                <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -973,7 +973,7 @@
             <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
+                <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -1889,7 +1889,7 @@
             <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
+                <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -2637,7 +2637,7 @@
             <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
+                <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -3494,7 +3494,7 @@
             <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
+                <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
@@ -3743,7 +3743,7 @@
             <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
-                <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
+                <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>

@@ -44,7 +44,7 @@
         <property name="GR0" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="150">
+            <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="150">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="686.0, 449.0">
             </property>
