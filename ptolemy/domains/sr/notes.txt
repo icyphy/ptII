@@ -11,6 +11,8 @@ talk to xiaojun
 
 FIXMEs
 
+outline
+
 add SRDirector and srentities to vergil library
 verify that sr tests are running in the nightly build
 
