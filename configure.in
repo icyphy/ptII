@@ -755,13 +755,18 @@ fi
 # PTJODE_DIR is set to jode and used in
 # $PTII/ptolemy/apps/makefile if jode was found
 #PTJODE_DIR=
-#
+
+# Note that we don't substitute in the ${PTII} or $(JODE_DIR) here
+# Defaults for ptII.mk and bin/ptinvoke.in
+# Use {} here instead of () because bin/ptinvoke uses JODE_DIR and JODE_CLASSES
+# and under /bin/sh $(FOO) does not work, but ${FOO} does
+JODE_DIR='${PTII}/vendors/jode/1.0.93'
+JODE_CLASSES='$(JODE_DIR)/jode.jar'
+
 # We only need to look for jode if $PTII/ptolemy/apps/jode exists
 if test ! -d "$PTII/vendors/jode"; then
     AC_MSG_RESULT([$PTII/vendors/jode is not present,
 	so we need not find Jode, which is a java disassembler.])
-    JODE_DIR='${PTII}/vendors/jode/1.0.93'
-    JODE_CLASSES='$(JODE_DIR)/jode.jar'
 else
     AC_MSG_CHECKING([for jode directory])
     AC_ARG_WITH(jode, [  --with-jode=DIR       use JODE from DIR,
@@ -883,13 +888,14 @@ PTCOPERNICUS_DIR=
 SOOT_DIR='${PTII}/vendors/soot/1.2.2'
 
 # Soot needs to find java.lang.Object	
-JAVA_SYSTEM_JAR='$(PTJAVA_DIR)/jre/lib/rt.jar'
+# Use {} here instead of () because bin/ptinvoke uses JAVA_SYSTEM_JAR
+# and under /bin/sh $(FOO) does not work, but ${FOO} does
+JAVA_SYSTEM_JAR='${PTJAVA_DIR)}jre/lib/rt.jar'
 
 # We don't bother overriding this below so that something close
 # to the right default is in ptII.mk and the user can just change
 # SOOT_DIR or JAVA_SYSTEM_JAR	
 # Use {} here instead of () because bin/ptinvoke uses SOOT_CLASSES
-# and under /bin/sh $(FOO) does not work, but ${FOO} does
 SOOT_CLASSES='${SOOT_DIR}/sootclasses.jar${CLASSPATHSEPARATOR}${SOOT_DIR}/jasminclasses.jar${CLASSPATHSEPARATOR}${JAVA_SYSTEM_JAR}'
 
 # We only need to look for soot if $PTII/ptolemy/copernicus exists
