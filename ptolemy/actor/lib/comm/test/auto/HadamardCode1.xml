@@ -53,7 +53,7 @@
         </property>
         <property name="log2Length" class="ptolemy.data.expr.Parameter" value="order">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 325.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 175.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -64,78 +64,6 @@
         </port>
         <port name="index" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-        </port>
-    </entity>
-    <entity name="DoubleToMatrix" class="ptolemy.domains.sdf.lib.DoubleToMatrix">
-        <property name="rows" class="ptolemy.data.expr.Parameter" value="codeLength">
-        </property>
-        <property name="columns" class="ptolemy.data.expr.Parameter" value="codeLength">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 325.0">
-        </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="256">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
-    </entity>
-    <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="repeat(codeLength, in)">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 185.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
-            </property>
-        </port>
-        <port name="in" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
-    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
-        <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="codeLength">
-        </property>
-        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 185.0">
-        </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
-            <property name="output"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="16">
-            </property>
         </port>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -168,7 +96,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 325.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 215.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -188,7 +116,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="585.0, 325.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="690.0, 215.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -197,30 +125,78 @@
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
+        <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="16">
+        </property>
+        <property name="blockSize" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 185.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="16">
+            </property>
+        </port>
+    </entity>
+    <entity name="SequenceToMatrix" class="ptolemy.domains.sdf.lib.SequenceToMatrix">
+        <property name="rows" class="ptolemy.data.expr.Parameter" value="codeLength">
+        </property>
+        <property name="columns" class="ptolemy.data.expr.Parameter" value="codeLength">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 175.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="256">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="590.0, 215.0">
+        </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="485.0, 325.0">
-        </vertex>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="HadamardCode.output" relation="relation3"/>
-    <link port="HadamardCode.index" relation="relation6"/>
-    <link port="DoubleToMatrix.input" relation="relation3"/>
-    <link port="DoubleToMatrix.output" relation="relation"/>
-    <link port="Expression.output" relation="relation5"/>
-    <link port="Expression.in" relation="relation2"/>
-    <link port="ArrayToSequence.input" relation="relation5"/>
-    <link port="ArrayToSequence.output" relation="relation6"/>
+    <link port="HadamardCode.output" relation="relation"/>
+    <link port="HadamardCode.index" relation="relation5"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Expression2.output" relation="relation4"/>
-    <link port="Expression2.in" relation="relation"/>
+    <link port="Expression2.in" relation="relation3"/>
     <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="Repeat.input" relation="relation2"/>
+    <link port="Repeat.output" relation="relation5"/>
+    <link port="SequenceToMatrix.input" relation="relation"/>
+    <link port="SequenceToMatrix.output" relation="relation3"/>
 </entity>
