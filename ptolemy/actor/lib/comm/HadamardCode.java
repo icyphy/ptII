@@ -115,7 +115,8 @@ public class HadamardCode extends Source {
 
     /** If the attribute being changed is <i>log2Length</i>, then
      *  calculate the new Hadamard sequence; if it is <i>index</i>,
-     *  then verify that is non-negative.
+     *  then verify that is non-negative and check if it is different
+     *  from the previous value.
      *  @exception IllegalActionException If <i>index</i> is negative
      *   or <i>log2Length</i> is not strictly positive.
      */
@@ -130,7 +131,9 @@ public class HadamardCode extends Source {
             // Set a flag indicating that the private variable _row
             // is invalid, but don't recompute the value until all
             // parameters have been set.
-            _rowValueInvalid = true;
+            if (indexValue != _previousIndex){
+                _rowValueInvalid = true;
+            }
         } else if (attribute == log2Length) {
             int log2LengthValue = ((IntToken)log2Length.getToken()).intValue();
             if (log2LengthValue <= 0) {
@@ -165,8 +168,8 @@ public class HadamardCode extends Source {
     public void fire() throws IllegalActionException {
         super.fire();
         index.update();
-        _latestIndex = ((IntToken)index.getToken()).intValue();
-        if (_rowValueInvalid && _latestIndex != _previousIndex) {
+        if (_rowValueInvalid) {
+            _latestIndex = ((IntToken)index.getToken()).intValue();
             int log2LengthValue = ((IntToken)log2Length.getToken()).intValue();
             // Power of two calculated using a shift.
             int matrixDimension = 1 << log2LengthValue;
