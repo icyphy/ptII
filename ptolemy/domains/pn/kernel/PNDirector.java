@@ -123,18 +123,20 @@ public class PNDirector extends ProcessDirector {
         double newfiringtime = getCurrentTime()+delay;
         _eventQueue.insert(new Double(newfiringtime));
         //FIXME: Blocked on a delay
+        delayBlock();
         try {
             while (getCurrentTime() < newfiringtime) {
                 wait(); //Should I call workspace().wait(this) ?
             }
         } catch (InterruptedException e) {}
+        delayUnblock();
         //FIXME: Unblocked on a delay
     }
 
     /** Return the current time of the simulation. 
      *  @return the current time of the simulation
      */
-    public double getCurrentTime() {
+    public synchronized double getCurrentTime() {
         return _currenttime;
     }
 
@@ -144,7 +146,8 @@ public class PNDirector extends ProcessDirector {
      *  @param newTime The new current simulation time.
      */
     // FIXME: complete this.
-    public void setCurrentTime(double newTime) throws IllegalActionException {
+    public synchronized void setCurrentTime(double newTime) 
+            throws IllegalActionException {
         _currenttime = newTime;
     }
 
@@ -385,7 +388,7 @@ public class PNDirector extends ProcessDirector {
     protected synchronized void _checkForDeadlock() {
 	if (_readBlockCount + _writeBlockCount + _delayBlockCount >= _actorsActive) {
 	    _deadlock = true;
-            //System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" **************************");
+            //System.out.println("aac ="+_actorsActive+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" db = "+ _delayBlockCount);
             
 	    notifyAll();
 	}
@@ -455,6 +458,7 @@ public class PNDirector extends ProcessDirector {
 	boolean urgentmut;
 	boolean deadl;
 	int writebl;
+        int delaybl;
         Workspace worksp = workspace();
 	synchronized (this) {
 	    while (!_deadlock && !_urgentMutations) {
@@ -465,6 +469,7 @@ public class PNDirector extends ProcessDirector {
 	    _urgentMutations = false;
 	    deadl = _deadlock;
 	    writebl = _writeBlockCount;
+            delaybl = _delayBlockCount;
 	}
 	//System.out.println(" deadlock = "+deadl+" and mut ="+urgentmut);
 	if (urgentmut) {
@@ -493,15 +498,21 @@ public class PNDirector extends ProcessDirector {
 	}
         if (writebl==0 && deadl) {
             //Check if there are any events in the future.
-            if (_eventQueue.isEmpty()) {
+            //if (_eventQueue.isEmpty()) {
+            //FIXME: Is this the right way?
+            if (delaybl ==0) {
                 System.out.println("real deadlock. Everyone would be erased");
                 _notdone = false;
                 return true;
             } else {
                 //Advance time to next possible time.
-                _currenttime = ((Double)_eventQueue.take()).doubleValue();
                 synchronized(this) {
-                    notifyAll();
+                    _deadlock = false;
+                    if (!_eventQueue.isEmpty()) {
+                        _currenttime = ((Double)_eventQueue.take()).doubleValue();
+                        //System.out.println("Currenttime is "+_currenttime);
+                        notifyAll();
+                    }
                 }
             }
         } else {
