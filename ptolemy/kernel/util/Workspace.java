@@ -214,9 +214,15 @@ public class Workspace implements Nameable, Serializable {
      */
     public synchronized void doneWriting() {
         _writeReq--;
-        _writer = null;
-        incrVersion();
-        notifyAll();
+        _writeDepth--;
+        if (_writeDepth == 0) {
+            _writer = null;
+            incrVersion();
+            notifyAll();
+        } else if (_writeDepth < 0) {
+            throw new InvalidStateException(this,
+                    "Workspace: doneWriting called before write().");
+        }
     }
 
     /** Get the container.  Always return null since a workspace
@@ -342,6 +348,7 @@ public class Workspace implements Nameable, Serializable {
             Thread current = Thread.currentThread();
             if (current == _writer) {
                 // already have write permission
+                _writeDepth++;
                 return;
             }
             if ( _writer == null) {
@@ -349,11 +356,13 @@ public class Workspace implements Nameable, Serializable {
                 if (_readers.isEmpty()) {
                     // No readers
                     _writer = Thread.currentThread();
+                    _writeDepth = 1;
                     return;
                 }
                 if (_readers.size() == 1 && _readers.get(current) != null) {
                     // Sole reader is this thread.
                     _writer = Thread.currentThread();
+                    _writeDepth = 1;
                     return;
                 }
             }
@@ -422,8 +431,11 @@ public class Workspace implements Nameable, Serializable {
     // The currently writing thread (if any).
     private Thread _writer;
 
-    // The number of pending write requests.
+    // The number of pending write requests plus active write permissions.
     private int _writeReq = 0;
+
+    // The number of active write permissions (all to the same thread).
+    private int _writeDepth = 0;
 
     // A table by readers (threads) of how many times they have gotten
     // read permission.
@@ -438,15 +450,15 @@ public class Workspace implements Nameable, Serializable {
     // incr() or decr() methods.  These methods save creating new instances
     // every time a read permission is granted.
     private class ReadCount implements Serializable {
-        public ReadCount() {
+        private ReadCount() {
         }
-        public void decr() {
+        private void decr() {
             _count--;
         }
-        public void incr() {
+        private void incr() {
             _count++;
         }
-        public boolean zero() {
+        private boolean zero() {
             return _count <= 0;
         }
         private int _count = 0;
