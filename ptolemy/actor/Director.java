@@ -96,7 +96,6 @@ public class Director extends Attribute implements Executable {
      */
     public Director() {
         super();
-        setMoMLElementName("director");
     }
 
     /** Construct a director in the  workspace with an empty name.
@@ -106,7 +105,6 @@ public class Director extends Attribute implements Executable {
      */
     public Director(Workspace workspace) {
         super(workspace);
-        setMoMLElementName("director");
     }
 
     /** Construct a director in the given container with the given name.
@@ -125,7 +123,6 @@ public class Director extends Attribute implements Executable {
     public Director(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        setMoMLElementName("director");
     }
 
     ///////////////////////////////////////////////////////////////////

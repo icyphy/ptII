@@ -2,7 +2,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="test" class="ptolemy.actor.TypedCompositeActor">
 	<doc>Sample model from chapter 2 of the Ptolemy II Design doc</doc>
-	<director class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+	<property name="director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
 	<entity name="ramp" class="ptolemy.actor.lib.Ramp"/>
 	<entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter"/>
 	<relation name="r" class="ptolemy.actor.TypedIORelation"/>
