@@ -100,8 +100,8 @@ public class XSLTUtilities {
     public static void main(String []args) throws Exception {
         if (args.length < 3) {
             System.err.println("Usage: java -classpath $PTII "
-                               + "ptolemy.util.XSLTUtilities inputFile "
-                               + "xslFile1 [xslFile2 . . .] outputFile");
+                    + "ptolemy.util.XSLTUtilities inputFile "
+                    + "xslFile1 [xslFile2 . . .] outputFile");
             System.exit(2);
         }
         // Make sure we can write the output first
@@ -151,7 +151,7 @@ public class XSLTUtilities {
             .getDefaultMethodProperties("xml");
         format.setProperty("indent", "yes");
         format.setProperty("{http://xml.apache.org/xslt}indent-amount",
-                           "4");
+                "4");
         Serializer serializer = SerializerFactory.getSerializer(format);
         OutputStream outputStream = new ByteArrayOutputStream();
         serializer.setOutputStream(outputStream);
@@ -223,8 +223,8 @@ public class XSLTUtilities {
      * @exception Thrown if there is a problem with the transformation.
      */
     public static void transform (String xsltFileName,
-                                  String sourceFileName,
-                                  String resultFileName) throws Exception {
+            String sourceFileName,
+            String resultFileName) throws Exception {
         OutputStream resultStream = new FileOutputStream(resultFileName);
         StreamSource source = new StreamSource(sourceFileName);
         StreamResult result = new StreamResult(resultStream);

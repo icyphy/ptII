@@ -121,20 +121,20 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
         diva.gui.GUIUtilities.addMenuItem(menu, _newInputPortAction);
-               diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputPortAction);
+        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputPortAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newOutputPortAction);
-               diva.gui.GUIUtilities.addToolBarButton(toolbar, _newOutputPortAction);
+        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newOutputPortAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newInoutPortAction);
-               diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInoutPortAction);
+        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInoutPortAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
-               diva.gui.GUIUtilities.addToolBarButton(
-                   toolbar, _newInputMultiportAction);
+        diva.gui.GUIUtilities.addToolBarButton(
+                toolbar, _newInputMultiportAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newOutputMultiportAction);
-               diva.gui.GUIUtilities.addToolBarButton(
-                   toolbar, _newOutputMultiportAction);
+        diva.gui.GUIUtilities.addToolBarButton(
+                toolbar, _newOutputMultiportAction);
         diva.gui.GUIUtilities.addMenuItem(menu, _newInoutMultiportAction);
-               diva.gui.GUIUtilities.addToolBarButton(
-                   toolbar, _newInoutMultiportAction);
+        diva.gui.GUIUtilities.addToolBarButton(
+                toolbar, _newInoutMultiportAction);
 
         menu.addSeparator();
 
@@ -169,13 +169,13 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      */
     protected void _createControllers() {
         _attributeController = new AttributeController(this,
-                 AttributeController.FULL);
+                AttributeController.FULL);
         _entityController = new ActorController(this,
-                 AttributeController.FULL);
+                AttributeController.FULL);
         _entityPortController = new IOPortController(this,
-                 AttributeController.FULL);
+                AttributeController.FULL);
         _portController = new ExternalIOPortController(this,
-                 AttributeController.FULL);
+                AttributeController.FULL);
         _relationController = new RelationController(this);
         _linkController = new LinkController(this);
     }
@@ -220,23 +220,23 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         // still in the constructor, and that method is overloaded in
         // derived classes.
         ((CompositeInteractor)_portController.getNodeInteractor())
-                .addInteractor(_linkCreator);
+            .addInteractor(_linkCreator);
         ((CompositeInteractor)_entityPortController.getNodeInteractor())
-                .addInteractor(_linkCreator);
+            .addInteractor(_linkCreator);
         ((CompositeInteractor)_relationController.getNodeInteractor())
-                .addInteractor(_linkCreator);
+            .addInteractor(_linkCreator);
         ((CompositeInteractor)_portController.getNodeInteractor())
-                .addInteractor(_linkCreator2);
+            .addInteractor(_linkCreator2);
         ((CompositeInteractor)_entityPortController.getNodeInteractor())
-                .addInteractor(_linkCreator2);
+            .addInteractor(_linkCreator2);
         ((CompositeInteractor)_relationController.getNodeInteractor())
-                .addInteractor(_linkCreator2);
+            .addInteractor(_linkCreator2);
 
         LinkCreator linkCreator2 = new LinkCreator();
         linkCreator2.setMouseFilter(
                 new MouseFilter(InputEvent.BUTTON1_MASK,0));
         ((CompositeInteractor)_entityPortController.getNodeInteractor())
-                .addInteractor(linkCreator2);
+            .addInteractor(linkCreator2);
     }
 
     /** Initialize interactions for the specified controller.  This
@@ -359,11 +359,11 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                         event.getLayerY());
                 // Render the edge.
                 Connector c = getEdgeController(link)
-                        .render(link, layer, tailSite, headSite);
+                    .render(link, layer, tailSite, headSite);
                 // get the actual attach site.
                 tailSite =
                     getEdgeController(link).getConnectorTarget()
-                            .getTailSite(c, source,
+                    .getTailSite(c, source,
                             event.getLayerX(),
                             event.getLayerY());
                 if (tailSite == null) {
@@ -450,7 +450,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                     getSourceType() == MENUBAR_TYPE) {
                 // No location in the action, so put it in the middle.
                 BasicGraphFrame frame
-                       = ActorEditorGraphController.this.getFrame();
+                    = ActorEditorGraphController.this.getFrame();
                 Point2D center;
                 if (frame != null) {
                     // Put in the middle of the visible part.
@@ -508,19 +508,19 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
 
             MoMLChangeRequest request =
                 new MoMLChangeRequest(this, container, moml.toString()) {
-                protected void _execute() throws Exception {
-                    super._execute();
-                    // Set the location of the icon.
-                    // Note that this really needs to be done after
-                    // the change request has succeeded, which is why
-                    // it is done here.  When the graph controller
-                    // gets around to handling this, it will draw
-                    // the icon at this location.
-                    NamedObj newObject = toplevel.getRelation(relationName);
-                    Vertex vertex = (Vertex) newObject.getAttribute(vertexName);
-                    vertex.setLocation(point);
-                }
-            };
+                        protected void _execute() throws Exception {
+                            super._execute();
+                            // Set the location of the icon.
+                            // Note that this really needs to be done after
+                            // the change request has succeeded, which is why
+                            // it is done here.  When the graph controller
+                            // gets around to handling this, it will draw
+                            // the icon at this location.
+                            NamedObj newObject = toplevel.getRelation(relationName);
+                            Vertex vertex = (Vertex) newObject.getAttribute(vertexName);
+                            vertex.setLocation(point);
+                        }
+                    };
             request.setUndoable(true);
             container.requestChange(request);
             try {

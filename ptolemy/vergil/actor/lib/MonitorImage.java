@@ -86,7 +86,7 @@ public class MonitorImage extends Sink {
             Object value = token.getValue();
             if (!(value instanceof Image)) {
                 throw new IllegalActionException(this,
-                "Received a token that does not contain an image.");
+                        "Received a token that does not contain an image.");
             }
             _icon.setImage((Image)value);
         }

@@ -140,8 +140,8 @@ public class StringUtilities {
         if (!preferencesDirectory.isDirectory()) {
             if (preferencesDirectory.mkdirs() == false) {
                 throw new IOException("Could not create user preferences "
-                                      + "directory '"
-                                      + preferencesDirectoryName + "'");
+                        + "directory '"
+                        + preferencesDirectoryName + "'");
 
             }
         }
@@ -231,8 +231,8 @@ public class StringUtilities {
                     namedObjFileName = namedObjFileName.substring(6);
                 }
                 String abnormalHome = namedObjFileName.substring(0,
-                                                  namedObjFileName.length()
-                                                  - namedObjPath.length());
+                        namedObjFileName.length()
+                        - namedObjPath.length());
 
                 // abnormalHome will have values like: "/C:/ptII/"
                 // which cause no end of trouble, so we construct a File
@@ -253,7 +253,7 @@ public class StringUtilities {
                 if (home.endsWith(ptsupportJarName)) {
                     home =
                         home.substring(0, home.length()
-                                       - ptsupportJarName.length());
+                                - ptsupportJarName.length());
                 }
 
                 ptsupportJarName = File.separator + "ptolemy"
@@ -261,19 +261,19 @@ public class StringUtilities {
                 if (home.endsWith(ptsupportJarName)) {
                     home =
                         home.substring(0, home.length()
-                                       - ptsupportJarName.length());
+                                - ptsupportJarName.length());
                 }
             }
 
             if (home == null) {
                 throw new RuntimeException(
-                     "Could not find "
-                    + "'ptolemy.ptII.dir'"
-                    + " property.  Also tried loading '"
-                    + namedObjPath + "' as a resource and working from that. "
-                    + "Vergil should be "
-                    + "invoked with -Dptolemy.ptII.dir"
-                    + "=\"$PTII\"");
+                        "Could not find "
+                        + "'ptolemy.ptII.dir'"
+                        + " property.  Also tried loading '"
+                        + namedObjPath + "' as a resource and working from that. "
+                        + "Vergil should be "
+                        + "invoked with -Dptolemy.ptII.dir"
+                        + "=\"$PTII\"");
             }
             System.setProperty("ptolemy.ptII.dir", home);
             return home;
@@ -309,12 +309,12 @@ public class StringUtilities {
      */
     public static String sanitizeName(String name) {
         char [] nameArray = name.toCharArray();
-               for (int i = 0; i < nameArray.length; i++) {
+        for (int i = 0; i < nameArray.length; i++) {
             if (!Character.isJavaIdentifierPart(nameArray[i])) {
                 nameArray[i] = '_';
             }
         }
-              if (!Character.isJavaIdentifierStart(nameArray[0])) {
+        if (!Character.isJavaIdentifierStart(nameArray[0])) {
             return "_" + new String(nameArray);
         } else {
             return new String(nameArray);
@@ -437,7 +437,7 @@ public class StringUtilities {
         boolean inDoubleQuotedString = false;
 
         while (streamTokenizer.nextToken()
-               != StreamTokenizer.TT_EOF) {
+                != StreamTokenizer.TT_EOF) {
             switch (streamTokenizer.ttype) {
             case StreamTokenizer.TT_WORD:
                 if (inDoubleQuotedString) {

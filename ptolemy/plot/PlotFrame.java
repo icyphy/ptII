@@ -311,7 +311,7 @@ public class PlotFrame extends JFrame {
         }
 
         fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                                            "plot.eps"));
+                "plot.eps"));
 
         int returnVal = fileDialog.showDialog(this, "Export");
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -479,7 +479,7 @@ public class PlotFrame extends JFrame {
         }
 
         fileDialog.setSelectedFile(new File(fileDialog.getCurrentDirectory(),
-                                            "plot.xml"));
+                "plot.xml"));
 
         int returnVal = fileDialog.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -643,7 +643,7 @@ public class PlotFrame extends JFrame {
 
             if (extension != null) {
                 if (extension.equalsIgnoreCase(".plt")
-                    || extension.equalsIgnoreCase(".xml")) {
+                        || extension.equalsIgnoreCase(".xml")) {
                     return true;
                 } else {
                     return false;

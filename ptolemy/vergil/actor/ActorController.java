@@ -126,7 +126,7 @@ public class ActorController extends AttributeController {
             _portDialogFactory = new PortDialogFactory();
             _menuFactory.addMenuItemFactory(_portDialogFactory);
             _menuFactory.addMenuItemFactory(
-                     new MenuActionFactory(new SetIconAction()));
+                    new MenuActionFactory(new SetIconAction()));
         }
 
         if (_configuration != null) {
@@ -166,16 +166,16 @@ public class ActorController extends AttributeController {
         // entity. This returns true only if the argument is a Port
         // and the parent implements Locatable.
         Filter portFilter = new Filter() {
-            public boolean accept(Object candidate) {
-                GraphModel model = getController().getGraphModel();
-                if (candidate instanceof Locatable &&
-                   model.getSemanticObject(candidate) instanceof Entity) {
-                    return true;
-                } else {
-                    return false;
+                public boolean accept(Object candidate) {
+                    GraphModel model = getController().getGraphModel();
+                    if (candidate instanceof Locatable &&
+                            model.getSemanticObject(candidate) instanceof Entity) {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
-            }
-        };
+            };
 
         // Anytime we add a port to an entity, we want to layout all the
         // ports within that entity.
@@ -183,10 +183,10 @@ public class ActorController extends AttributeController {
         controller.addGraphViewListener(
                 new IncrementalLayoutListener(
                         new IncrLayoutAdapter(layout) {
-                            public void nodeDrawn(Object node) {
-                                layout(node);
-                            }
-                        }, portFilter));
+                                public void nodeDrawn(Object node) {
+                                    layout(node);
+                                }
+                            }, portFilter));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -333,48 +333,48 @@ public class ActorController extends AttributeController {
         }
 
         // FIXME: Old pre-cardinal direction layout
-//         public void layout(Object node) {
-//             GraphModel model = getController().getGraphModel();
-//             Iterator nodes = model.nodes(node);
-//             LinkedList inputs = new LinkedList();
-//             LinkedList outputs = new LinkedList();
-//             LinkedList inputOutputs = new LinkedList();
-//             int inCount = 0;
-//             int outCount = 0;
-//             int inputOutputCount = 0;
+        //         public void layout(Object node) {
+        //             GraphModel model = getController().getGraphModel();
+        //             Iterator nodes = model.nodes(node);
+        //             LinkedList inputs = new LinkedList();
+        //             LinkedList outputs = new LinkedList();
+        //             LinkedList inputOutputs = new LinkedList();
+        //             int inCount = 0;
+        //             int outCount = 0;
+        //             int inputOutputCount = 0;
 
-//             while (nodes.hasNext()) {
-//                 Port port = (Port) nodes.next();
-//                 if (!(port instanceof IOPort)) {
-//                     inputOutputCount++;
-//                     inputOutputs.addLast(port);
-//                 } else {
-//                     IOPort ioport = (IOPort) port;
-//                     if (ioport.isInput() && ioport.isOutput()) {
-//                         inputOutputCount++;
-//                         inputOutputs.addLast(port);
-//                     } else if (ioport.isInput()) {
-//                         inCount++;
-//                         inputs.addLast(port);
-//                     } else if (ioport.isOutput()) {
-//                         outCount++;
-//                         outputs.addLast(port);
-//                     } else {
-//                         inputOutputCount++;
-//                         inputOutputs.addLast(port);
-//                     }
-//                 }
-//             }
-//             CompositeFigure figure =
-//                 (CompositeFigure)getLayoutTarget().getVisualObject(node);
+        //             while (nodes.hasNext()) {
+        //                 Port port = (Port) nodes.next();
+        //                 if (!(port instanceof IOPort)) {
+        //                     inputOutputCount++;
+        //                     inputOutputs.addLast(port);
+        //                 } else {
+        //                     IOPort ioport = (IOPort) port;
+        //                     if (ioport.isInput() && ioport.isOutput()) {
+        //                         inputOutputCount++;
+        //                         inputOutputs.addLast(port);
+        //                     } else if (ioport.isInput()) {
+        //                         inCount++;
+        //                         inputs.addLast(port);
+        //                     } else if (ioport.isOutput()) {
+        //                         outCount++;
+        //                         outputs.addLast(port);
+        //                     } else {
+        //                         inputOutputCount++;
+        //                         inputOutputs.addLast(port);
+        //                     }
+        //                 }
+        //             }
+        //             CompositeFigure figure =
+        //                 (CompositeFigure)getLayoutTarget().getVisualObject(node);
 
-//             _placePortFigures(figure, inputs, inCount,
-//                     SwingConstants.WEST);
-//             _placePortFigures(figure, outputs, outCount,
-//                     SwingConstants.EAST);
-//             _placePortFigures(figure, inputOutputs, inputOutputCount,
-//                     SwingConstants.SOUTH);
-//        }
+        //             _placePortFigures(figure, inputs, inCount,
+        //                     SwingConstants.WEST);
+        //             _placePortFigures(figure, outputs, outCount,
+        //                     SwingConstants.EAST);
+        //             _placePortFigures(figure, inputOutputs, inputOutputCount,
+        //                     SwingConstants.SOUTH);
+        //        }
 
         ///////////////////////////////////////////////////////////////
         ////                     private methods                   ////
@@ -470,7 +470,7 @@ public class ActorController extends AttributeController {
                         label.translateTo(x, y - 5);
                         // Rotate the label.
                         AffineTransform rotate = AffineTransform
-                                .getRotateInstance(Math.PI/2.0, x, y + 5);
+                            .getRotateInstance(Math.PI/2.0, x, y + 5);
                         label.transform(rotate);
                     } else if (port.isOutput()) {
                         // The 1.0 argument is the padding.
@@ -589,13 +589,13 @@ public class ActorController extends AttributeController {
             if (!(object instanceof CompositeEntity)) {
                 // Open the source code, if possible.
                 String filename = object.getClass()
-                        .getName().replace('.', '/') + ".java";
+                    .getName().replace('.', '/') + ".java";
                 try {
                     URL toRead = getClass().getClassLoader()
-                           .getResource(filename);
+                        .getResource(filename);
                     if (toRead != null) {
                         _configuration.openModel(null,
-                               toRead, toRead.toExternalForm());
+                                toRead, toRead.toExternalForm());
                     } else {
                         MessageHandler.error(_CANNOT_FIND_MESSAGE);
                     }
@@ -652,8 +652,8 @@ public class ActorController extends AttributeController {
 
     // Error message used when we can't find the inside definition.
     private static String _CANNOT_FIND_MESSAGE
-             = "Cannot find inside definition. "
-             + "Perhaps source code is not installed? "
-             + "You can obtain source code for Berkeley actors at: "
-             + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
+    = "Cannot find inside definition. "
+    + "Perhaps source code is not installed? "
+    + "You can obtain source code for Berkeley actors at: "
+    + "http://ptolemy.eecs.berkeley.edu/ptolemyII";
 }

@@ -201,8 +201,8 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                             Effigy textEffigy = new TextEffigy(effigy,
                                     effigy.uniqueName("debug listener"));
                             DebugListenerTableau tableau =
-                                    new DebugListenerTableau(textEffigy,
-                                    textEffigy.uniqueName("debugListener"));
+                                new DebugListenerTableau(textEffigy,
+                                        textEffigy.uniqueName("debugListener"));
                             tableau.setDebuggable(director);
                             success = true;
                         }
@@ -234,7 +234,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                                         query.getStringValue("delay"));
                                 _controller.setAnimationDelay(_lastDelayTime);
                                 Director director
-                                        = ((Actor)model).getDirector();
+                                    = ((Actor)model).getDirector();
                                 while (director == null
                                         && model instanceof Actor) {
                                     model = (NamedObj)model.getContainer();
@@ -264,7 +264,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                         }
                     } else {
                         MessageHandler.error(
-                               "Model is not an actor. Cannot animate.");
+                                "Model is not an actor. Cannot animate.");
                     }
                 } else if (actionCommand.equals("Stop Animating")) {
                     if (_listeningTo != null) {
