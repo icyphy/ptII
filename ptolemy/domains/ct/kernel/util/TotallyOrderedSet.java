@@ -102,9 +102,13 @@ public class TotallyOrderedSet {
     }
 
     /** Return the firstelement, ie. the <i>"smallest"</i> element.
+     *  If the set is empty, then return null.
      *  @return The smallest element.
      */
     public Object first() {
+        if(isEmpty()) {
+            return null;
+        }
         return _set.first();
     }
 
@@ -169,7 +173,6 @@ public class TotallyOrderedSet {
     public int size() {
         return _set.size();
     }
-
 
     /** Return the firstelement, ie. the <i>"smallest"</i> element and
      *  remove it from the set.
