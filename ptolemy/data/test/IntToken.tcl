@@ -1,6 +1,6 @@
 # Tests for the IntToken class
 #
-# @Author: Mudit Goel
+# @Author: Mudit Goel, Neil Smyth
 #
 # @Version $Id$
 #
@@ -52,21 +52,25 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test IntToken-1.1 {Get information about the class} {
     # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.IntToken]
+    set n [java::new pt.data.IntToken]
     list [getJavaInfo $n]
 } {{
-  class:         pt.kernel.IntToken
+  class:         pt.data.IntToken
   fields:        
-  methods:       byteValue clone doubleValue {equals java.lang.Object} {
-    fromString java.lang.String} getClass hashCode intValue
-     longValue notify notifyAll toString wait {wait long} {
-    wait long int}
+  methods:       {add pt.data.Token} byteValue clone {divide pt.data.Tok
+    en} doubleValue {equality pt.data.Token} {equals java.l
+    ang.Object} {fromString java.lang.String} getClass getP
+    ublisher getValue hashCode intValue isArray longValue {
+    modulo pt.data.Token} {multiply pt.data.Token} notify n
+    otifyAll notifySubscribers {setPublisher pt.data.TokenP
+    ublisher} {setValue int} {subtract pt.data.Token} toStr
+    ing wait {wait long} {wait long int}
     
-  constructors:  pt.kernel.IntToken {pt.kernel.IntToken int}
+  constructors:  pt.data.IntToken {pt.data.IntToken int}
     
-  properties:    class
+  properties:    array class publisher value
     
-  superclass:    pt.kernel.ScalarToken
+  superclass:    pt.data.ScalarToken
     
 }}
 
@@ -74,15 +78,15 @@ test IntToken-1.1 {Get information about the class} {
 ####
 # 
 test IntToken-2.1 {Create an empty instance} {
-    set p [java::new pt.kernel.IntToken]
+    set p [java::new pt.data.IntToken]
     $p toString
-} {pt.kernel.IntToken}
+} {0}
 
 ######################################################################
 ####
 # 
 test IntToken-2.2 {Create an empty instance and query its value as int} {
-    set p [java::new pt.kernel.IntToken]
+    set p [java::new pt.data.IntToken]
     $p intValue
 } {0}
 
@@ -90,7 +94,7 @@ test IntToken-2.2 {Create an empty instance and query its value as int} {
 ####
 # 
 test IntToken-2.3 {Create a non-empty instance and query its value as int} {
-    set p [java::new {pt.kernel.IntToken int} 12]
+    set p [java::new {pt.data.IntToken int} 12]
     $p intValue
 } {12}
 
@@ -98,40 +102,33 @@ test IntToken-2.3 {Create a non-empty instance and query its value as int} {
 ####
 # 
 test IntToken-3.1 {Create an non-empty instance and read it as double} {
-    set p [java::new {pt.kernel.IntToken int} 12]
-    $p doubleValue
+    set p [java::new {pt.data.IntToken int} 12]
+    list [$p doubleValue]
 } {12.0}
 
 ######################################################################
 ####
 # 
 test IntToken-3.2 {Create an non-empty instance and read it as long} {
-    set p [java::new {pt.kernel.IntToken int} 12]
-    $p longValue
+    set p [java::new {pt.data.IntToken int} 12]
+    list [$p longValue]
 } {12}
 
-######################################################################
-####
-# 
-test IntToken-3.3 {Create an non-empty instance and read it as byte} {
-    set p [java::new {pt.kernel.IntToken int} 12]
-    $p byteValue
-} {12}
 
 ######################################################################
 ####
 # 
 test IntToken-4.1 {Create an empty instance and clone} {
-    set p [java::new pt.kernel.IntToken]
+    set p [java::new pt.data.IntToken]
     set q [$p clone]
-    $q intValue
+    list [$q intValue]
 } {0}
 
 ######################################################################
 ####
 # 
 test IntToken-4.2 {Create a non empty instance and clone} {
-    set p [java::new {pt.kernel.IntToken int} 10]
+    set p [java::new {pt.data.IntToken int} 10]
     set q [$p clone]
     list [$p intValue] [$q intValue]
 } {10 10}

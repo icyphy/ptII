@@ -1,6 +1,6 @@
 # Tests for the ObjectToken class
 #
-# @Author: Edward A. Lee
+# @Author: Edward A. Lee, Neil Smyth
 #
 # @Version: $Id$
 #
@@ -52,22 +52,26 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test ObjectToken-1.1 {Get information about the class} {
     # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.ObjectToken]
+    set n [java::new pt.data.ObjectToken]
     list [getJavaInfo $n]
 } {{
-  class:         pt.kernel.ObjectToken
+  class:         pt.data.ObjectToken
   fields:        
-  methods:       clone {equals java.lang.Object} {fromString java.lang.S
-    tring} getClass getValue hashCode notify notifyAll {set
-    Value java.lang.Object} toString wait {wait long} {wait
-     long int}
+  methods:       {add pt.data.Token} clone {divide pt.data.Token} {equal
+    ity pt.data.Token} {equals java.lang.Object} {fromStrin
+    g java.lang.String} getClass getObject getPublisher has
+    hCode isArray {modulo pt.data.Token} {multiply pt.data.
+    Token} notify notifyAll notifySubscribers {setPublisher
+     pt.data.TokenPublisher} {setValue java.lang.Object} {s
+    ubtract pt.data.Token} toString wait {wait long} {wait 
+    long int}
     
-  constructors:  pt.kernel.ObjectToken {pt.kernel.ObjectToken java.lang.
-    Object}
+  constructors:  pt.data.ObjectToken {pt.data.ObjectToken java.lang.Obje
+    ct}
     
-  properties:    class value
+  properties:    array class object publisher value
     
-  superclass:    pt.kernel.Token
+  superclass:    pt.data.Token
     
 }}
 
@@ -75,34 +79,34 @@ test ObjectToken-1.1 {Get information about the class} {
 ####
 # 
 test ObjectToken-2.1 {Create an empty instance} {
-    set p [java::new pt.kernel.ObjectToken]
+    set p [java::new pt.data.ObjectToken]
     $p toString
-} {pt.kernel.ObjectToken}
+} {pt.data.ObjectToken}
 
 ######################################################################
 ####
 # 
 test ObjectToken-2.2 {Create an empty instance and query its value} {
-    set p [java::new pt.kernel.ObjectToken]
-    expr { [$p getValue] == [java::null] }
+    set p [java::new pt.data.ObjectToken]
+    expr { [$p getObject] == [java::null] }
 } {1}
 
 ######################################################################
 ####
 # 
 test ObjectToken-3.1 {Create an empty instance and attempt to init from string} {
-    set p [java::new pt.kernel.ObjectToken]
+    set p [java::new pt.data.ObjectToken]
     catch {$p fromString foo} msg
     list $msg
-} {{pt.kernel.IllegalActionException: Tokens of class pt.kernel.ObjectToken cannot be initialized from a string.}}
+} {{pt.kernel.IllegalActionException: Tokens of class pt.data.ObjectToken cannot be initialized from a string.}}
 
 ######################################################################
 ####
 # 
 test ObjectToken-4.1 {Create an empty instance and clone} {
-    set p [java::new pt.kernel.ObjectToken]
+    set p [java::new pt.data.ObjectToken]
     set q [$p clone]
-    expr { [$q getValue] == [java::null] }
+    expr { [$q getObject] == [java::null] }
 } {1}
 
 ######################################################################
@@ -110,7 +114,7 @@ test ObjectToken-4.1 {Create an empty instance and clone} {
 # 
 test ObjectToken-4.2 {Create a non empty instance and clone} {
     set n [java::new {java.lang.StringBuffer String} foo]
-    set p [java::new pt.kernel.ObjectToken $n]
+    set p [java::new pt.data.ObjectToken $n]
     set q [$p clone]
     list [$p toString] [$q toString]
 } {foo foo}
@@ -120,7 +124,7 @@ test ObjectToken-4.2 {Create a non empty instance and clone} {
 # 
 test ObjectToken-4.3 {Create a non empty instance, modify object, and clone} {
     set n [java::new {java.lang.StringBuffer String} foo]
-    set p [java::new pt.kernel.ObjectToken $n]
+    set p [java::new pt.data.ObjectToken $n]
     set q [$p clone]
     $n {append String} " bar"
     list [$p toString] [$q toString]
