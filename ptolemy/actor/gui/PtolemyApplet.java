@@ -87,11 +87,12 @@ then controls for the director parameters are also included.
 <i>modelClass</i>: The fully qualified class name of a Java class
 that extends CompositeActor.  This class defines the model.
 <li>
-<i>orientation</i>: This can have value "horizontal"
-or "vertical" (case insensitive).  If it is "vertical", then the
+<i>orientation</i>: This can have value "horizontal", "vertical", or
+"controls_only" (case insensitive).  If it is "vertical", then the
 controls are placed above the visual elements of the Placeable actors.
 This is the default.  If it is "horizontal", then the controls
-are placed to the left of the visual elements.
+are placed to the left of the visual elements.  If it is "controls_only"
+then no visual elements are placed.
 </ul>
 <p>
 To create a model in a different way, say without a <i>modelClass</i>
@@ -162,7 +163,8 @@ public class PtolemyApplet extends BasicJApplet
     public String[][] getParameterInfo() {
         String newinfo[][] = {
             {"modelClass", "", "Classname for an instance of CompositeActor"},
-            {"orientation", "", "Orientation: vertical or horixontal"},
+            {"orientation", "",
+                     "Orientation: vertical, horixontal, or controls_only"},
             {"controls", "", "List of on-screen controls"},
         };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
@@ -295,7 +297,12 @@ public class PtolemyApplet extends BasicJApplet
         }
         // If result is still null, then there was no modelClass given.
         if (result == null) {
-            throw new Exception("Applet does not specify a modelClass.");
+            // Historical applets might directly define a model.
+            if (_toplevel == null) {
+                throw new Exception("Applet does not specify a model.");
+            } else {
+                return _toplevel;
+            }
         }
         return result;
     }
@@ -339,6 +346,9 @@ public class PtolemyApplet extends BasicJApplet
         if (orientationSpec != null) {
             if (orientationSpec.trim().toLowerCase().equals("horizontal")) {
                 orientation = ModelPane.HORIZONTAL;
+            } else if (orientationSpec.trim().toLowerCase()
+                    .equals("controls_only")) {
+                orientation = ModelPane.CONTROLS_ONLY;
             }
         }
 
