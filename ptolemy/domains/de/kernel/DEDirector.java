@@ -277,7 +277,7 @@ public class DEDirector extends Director {
             boolean refire = false;
             do {
                 _debug("Iterating actor", ((Entity)actorToFire).getName(),
-                        "at time " + getCurrentTime());
+                        "at time ", Double.toString(getCurrentTime()));
                 if (!actorToFire.prefire()) {
                     _debug("Prefire returned false.");
                     break;
