@@ -320,9 +320,7 @@ test Schematic-12.1 {addEntity tests} {
     $e0 toString
 } {<schematic version="" name="">
 <description></description>
-<entity name="testEntity">
-<entitytype name=""></entitytype>
-</entity>
+<entity name="testEntity" icon="default"></entity>
 </schematic>
 }
 
@@ -343,13 +341,9 @@ test Schematic-12.3 {getEntity tests} {
     list [$e0 toString] [$g1 toString]
 } {{<schematic version="" name="">
 <description></description>
-<entity name="testEntity">
-<entitytype name=""></entitytype>
-</entity>
+<entity name="testEntity" icon="default"></entity>
 </schematic>
-} {<entity name="testEntity">
-<entitytype name=""></entitytype>
-</entity>
+} {<entity name="testEntity" icon="default"></entity>
 }}
 
 
@@ -374,9 +368,7 @@ test Schematic-12.5 {removeEntity tests} {
     list $s [$e0 toString] [$genum hasMoreElements]
 } {{<schematic version="" name="">
 <description></description>
-<entity name="testEntity">
-<entitytype name=""></entitytype>
-</entity>
+<entity name="testEntity" icon="default"></entity>
 </schematic>
 } {<schematic version="" name="">
 <description></description>
