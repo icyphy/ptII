@@ -154,7 +154,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
     /** Get the number of tokens that are produced
      *  on the designated port of this Actor during initialization.
      *
-     *  @exception IllegalActionException if port is not contained
+     *  @exception IllegalActionException If port is not contained
      *  in this actor, or the port is not an output port.
      *  @return The number of tokens produced on the port, as specified in
      *  the TokenInitProduction Parameter, or DEFAULT_INIT_PRODUCTION if the
