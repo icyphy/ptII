@@ -24,6 +24,9 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
+ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+AcceptedRating Yellow (liuj@eecs.berkeley.edu)
+
 */
 
 package ptolemy.graph;
@@ -41,7 +44,7 @@ The variables are <code>Inequalityterms</code> that consist of a single
 variable.
 
 @author Yuhong Xiong
-$Id$
+@version $Id$
 @see InequalityTerm
 */
 

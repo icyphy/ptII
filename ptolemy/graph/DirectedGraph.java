@@ -24,6 +24,9 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
+ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+AcceptedRating Yellow (liuj@eecs.berkeley.edu)
+
 */
 
 package ptolemy.graph;
@@ -43,7 +46,7 @@ NOTE: This class is a starting point for implementing graph algorithms,
 more methods will be added.
 
 @author Yuhong Xiong, Jie Liu
-$Id$
+@version $Id$
 */
 
 public class DirectedGraph extends Graph {

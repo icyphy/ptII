@@ -23,6 +23,8 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+AcceptedRating Yellow (liuj@eecs.berkeley.edu)
 
 */
 
@@ -44,7 +46,7 @@ infinite set, in which case, the class implementing those operations
 can throw an Exception.
 
 @author Yuhong Xiong
-$Id$
+@version $Id$
 */
 
 public interface CPO

@@ -23,6 +23,8 @@
  
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
+ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+AcceptedRating Yellow (liuj@eecs.berkeley.edu)
 
 */
 
@@ -57,7 +59,7 @@ NOTE: This class is a starting point for implementing graph algortihms,
 more methods will be added.
 
 @author Yuhong Xiong
-$Id$
+@version $Id$
 */
 
 // The methods greatestLowerBound, downSet, greatestElement share the

@@ -24,6 +24,9 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
+ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+AcceptedRating Yellow (liuj@eecs.berkeley.edu)
+
 */
 
 package ptolemy.graph;
@@ -54,7 +57,7 @@ lattice, but it does not verify it.  If the algorithm finds that the
 LUB or GLB of some elements does not exist, an Exception is thrown.
 
 @author Yuhong Xiong
-$Id$
+@version $Id$
 */
 
 // Note: To make it easier to reference the above paper, some of the

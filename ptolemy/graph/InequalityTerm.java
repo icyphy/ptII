@@ -24,6 +24,9 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
+ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+AcceptedRating Yellow (liuj@eecs.berkeley.edu)
+
 */
 
 package ptolemy.graph;
@@ -36,7 +39,7 @@ An interface for a term in an inequality over a CPO.
 A term is either a constant, a variable, or a function.
 
 @author Yuhong Xiong
-$Id$
+@version $Id$
 @see CPO
 */
 
