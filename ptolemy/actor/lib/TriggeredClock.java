@@ -226,31 +226,12 @@ public class TriggeredClock extends TimedSource {
 
         return newObject;
     }
-      /** Fire on a rise in trigger, don't on a fall. Fire on equal
-       * consecutive values
-     * Perform initialization for clock cycle
-     */ 
+      
+     
       public boolean  prefire() throws IllegalActionException {
-      //Check to see if trigger is true
-                     double currentTime = getDirector().getCurrentTime();
-	             System.out.println("currenttime in pf"+currentTime);
-         if(trigger.hasToken(0)){System.out.println("trigger has token");   
-	   _trigger  = ((BooleanToken)trigger.get(0)).booleanValue();
-                                }
-                 System.out.println("_trigger"+_trigger);            
-          if (!_oldTrigger&&_trigger){
-	                 _tentativeCycleStartTime = currentTime;
-                          _tentativePhase = 0;
-                          _tentativeCurrentValue =_getValue(_phase); 
-	                  System.out.println("trigger true");
-			  return super.prefire();
-	                             }
-	  else if (_oldTrigger&&!_trigger){_oldTrigger=_trigger;
-                    System.out.println("nf1");return false;
-			                   }         
-           else    { System.out.println("f1"); return  super.prefire();
-	            }                                                                 
-        }
+             return  super.prefire();
+	                                                                             
+                                      }
     /** Output the current value of the clock.
      *  @exception IllegalActionException If the <i>values</i> and
      *   <i>offsets</i> parameters do not have the same length, or if
@@ -264,16 +245,29 @@ public class TriggeredClock extends TimedSource {
              double periodValue = ((DoubleToken)period.getToken()).doubleValue();
              double currentTime = getDirector().getCurrentTime();
 	     System.out.println("current time"+currentTime);
-                 if(_trigger==false){//no current trigger
-	            
+                 
+	   if(!_trigger){
+                  if(trigger.hasToken(0)){
+                   System.out.println("trigger has token"); 
+                  _trigger  = ((BooleanToken)trigger.get(0)).booleanValue();
+                   System.out.println("_trigger"+_trigger);            
+                       if (_trigger){
+	                  _tentativeCycleStartTime = currentTime;
+                          _tentativePhase = 0;
+                          _tentativeCurrentValue =_getValue(_phase); 
+	                  System.out.println("trigger true");
+                          _trigger = true;
+                                     }   
+                                         }
+                           }else
                      // In case time has gone backwards since the last call to fire()
                      // (something that can occur within an iteration), reinitialize
                      // these from the last known good state.
-                     System.out.println("current time"+ currentTime);
-                     _tentativeCycleStartTime = _cycleStartTime;
-                     _tentativePhase = _phase;
-                    _tentativeCurrentValue =_currentValue;     
-	                              }     
+                         {   System.out.println("current time"+ currentTime);
+                           _tentativeCycleStartTime = _cycleStartTime;
+                           _tentativePhase = _phase;
+                          _tentativeCurrentValue =_currentValue;     
+	                 }     
                        
         // In case current time has reached or crossed a boundary between
         // periods, update it.  Note that normally it will not
@@ -322,13 +316,12 @@ public class TriggeredClock extends TimedSource {
 	System.out.println( _tentativeCurrentValue);
     }
 
-    /** Initialize trigger and oldtriggger.
+    /** Initialize trigger
     
      */
     public void initialize() throws IllegalActionException {
           _trigger = false;
-          _oldTrigger = false;
-       	  super.initialize(); 
+            super.initialize(); 
                           	     }
    
  
@@ -341,7 +334,7 @@ public class TriggeredClock extends TimedSource {
         _cycleStartTime = _tentativeCycleStartTime;
         _currentValue = _tentativeCurrentValue;
         _phase = _tentativePhase;
-         _oldTrigger = _trigger;
+         
         // Used to use any negative number here to indicate
         // that no future firing should be scheduled.
         // Now, we leave it up to the director, unless the value
