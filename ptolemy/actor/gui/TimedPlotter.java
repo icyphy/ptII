@@ -49,7 +49,7 @@ import java.awt.Panel;
  *  @author  Edward A. Lee
  *  @version $Id$
  */
-public class TimedPlotter extends Plotter implements Placeable, TimedActor {
+public class TimedPlotter extends Plotter implements TimedActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.

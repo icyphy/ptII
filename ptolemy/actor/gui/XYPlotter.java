@@ -57,7 +57,7 @@ import java.awt.Panel;
  *  @author Jie Liu
  *  @version $Id$
  */
-public class XYPlotter extends Plotter implements Placeable {
+public class XYPlotter extends Plotter {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
