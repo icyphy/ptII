@@ -74,11 +74,9 @@
 <relation name="Relation11" width="1">
 <link name="Out0"></link>
 <link name="PeriodicalSampler0.output"></link>
-<link name="Plot0.input"></link>
 <layout coords="727 116.0" name="junction2" type="junction"></layout>
 <layout to="junction2 w" from="PeriodicalSampler0 output" coords="" name="edge15" type="edge"></layout>
 <layout to="Out0 input" from="junction2 e" coords="" name="edge16" type="edge"></layout>
-<layout to="Plot0 input" from="junction2 s" coords="" name="edge17" type="edge"></layout>
 </relation>
 <relation name="Relation0" width="1">
 <link name="Gain3.input"></link>
@@ -113,10 +111,12 @@
 <link name="Gain1.input"></link>
 <link name="PeriodicalSampler0.input"></link>
 <link name="Integrator0.output"></link>
+<link name="Plot0.input"></link>
 <layout coords="626.5 78" name="junction1" type="junction"></layout>
 <layout to="Gain1 input" from="junction1 w" coords="" name="edge14" type="edge"></layout>
 <layout to="PeriodicalSampler0 input" from="junction1 e" coords="" name="edge13" type="edge"></layout>
 <layout to="junction1 s" from="Integrator0 output" coords="" name="edge5" type="edge"></layout>
+<layout to="Plot0 input" from="junction1 n" coords="" name="edge17" type="edge"></layout>
 </relation>
 <relation name="Relation6" width="1">
 <link name="ZeroOrderHold0.input"></link>

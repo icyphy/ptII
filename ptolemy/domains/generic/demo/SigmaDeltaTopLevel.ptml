@@ -17,7 +17,7 @@
 </entity>
 <entity coords="280.0 102.0" name="FIRfilter1" icon="Filters.FIRfilter">
 <entitytype location="" ports="?" name="FIRfilter" type="actor"></entitytype>
-<parameter value="0.7" name="taps" type="DoubleToken"></parameter>
+<parameter value="0.7 0.3" name="taps" type="StringToken"></parameter>
 <parameter value="0.0" name="Delay" type="DoubleToken"></parameter>
 </entity>
 <entity coords="116.0 110.0" name="CTSigmaDelta0" icon="Composites.CTSigmaDelta">
@@ -31,9 +31,9 @@
 <entity coords="345.0 241.0" name="Stats0" icon="Filters.Statistics">
 <entitytype location="" ports="?" name="Stats" type="actor"></entitytype>
 </entity>
-<entity coords="175.0 245.0" name="FIRfilter0" icon="Filters.FIRfilter">
+<entity coords="175.0 252.0" name="FIRfilter0" icon="Filters.FIRfilter">
 <entitytype location="" ports="?" name="FIRfilter" type="actor"></entitytype>
-<parameter value="0.1" name="taps" type="DoubleToken"></parameter>
+<parameter value="0.1 0.1" name="taps" type="StringToken"></parameter>
 <parameter value="0.0" name="Delay" type="DoubleToken"></parameter>
 </entity>
 <relation name="Relation2" width="1">
@@ -46,8 +46,8 @@
 <link name="FIRfilter0.input"></link>
 <link name="TestLevel0.output"></link>
 <layout coords="194 175.0" name="junction0" type="junction"></layout>
-<layout to="CTSigmaDelta0 In0" from="junction0 n" coords="" name="edge5" type="edge"></layout>
-<layout to="FIRfilter0 input" from="junction0 w" coords="" name="edge4" type="edge"></layout>
+<layout to="CTSigmaDelta0 In0" from="junction0 e" coords="" name="edge5" type="edge"></layout>
+<layout to="FIRfilter0 input" from="junction0 s" coords="" name="edge4" type="edge"></layout>
 <layout to="junction0 w" from="TestLevel0 output" coords="" name="edge3" type="edge"></layout>
 </relation>
 <relation name="Relation0" width="1">

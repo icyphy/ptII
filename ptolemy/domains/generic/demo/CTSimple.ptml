@@ -17,10 +17,10 @@
 <entity coords="303.0 146.0" name="Integrator2" icon="Filters.Integrator">
 <entitytype location="" ports="?" name="Integrator" type="actor"></entitytype>
 </entity>
-<entity coords="100.0 144.0" name="In1" icon="Pins.In">
+<entity coords="100.0 144.0" name="In0" icon="Pins.In">
 <entitytype location="" name="In" type="port"></entitytype>
 </entity>
-<entity coords="557.0 134.0" name="Out1" icon="Pins.Out">
+<entity coords="557.0 134.0" name="Out0" icon="Pins.Out">
 <entitytype location="" name="Out" type="port"></entitytype>
 </entity>
 <relation name="Relation2" width="1">
@@ -34,13 +34,13 @@
 </relation>
 <relation name="Relation3" width="1">
 <link name="PeriodicalSampler1.output"></link>
-<link name="Out1"></link>
-<layout to="Out1 input" from="PeriodicalSampler1 output" coords="" name="edge3" type="edge"></layout>
+<link name="Out0"></link>
+<layout to="Out0 input" from="PeriodicalSampler1 output" coords="" name="edge3" type="edge"></layout>
 </relation>
 <relation name="Relation0" width="1">
-<link name="In1"></link>
+<link name="In0"></link>
 <link name="ZeroOrderHold1.input"></link>
-<layout to="ZeroOrderHold1 input" from="In1 output" coords="" name="edge0" type="edge"></layout>
+<layout to="ZeroOrderHold1 input" from="In0 output" coords="" name="edge0" type="edge"></layout>
 </relation>
 <relation name="Relation1" width="1">
 <link name="ZeroOrderHold1.output"></link>
