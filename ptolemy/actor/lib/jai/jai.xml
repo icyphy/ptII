@@ -22,6 +22,8 @@
 	</entity>
 	<entity name="JAIBMPWriter" class="ptolemy.actor.lib.jai.JAIBMPWriter">
 	</entity>
+	<entity name="JAIConvolve" class="ptolemy.actor.lib.jai.JAIConvolve">
+	</entity>
 	<entity name="JAICrop" class="ptolemy.actor.lib.jai.JAICrop">
 	</entity>	
 	<entity name="JAIDataCaster" class="ptolemy.actor.lib.jai.JAIDataCaster">
