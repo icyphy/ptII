@@ -655,7 +655,7 @@ public class IOPort extends ComponentPort {
                 if(_localReceiversTable.containsKey(relation) ) {
                     // Get the list of receivers for this relation.
                     result = (Receiver[][])_localReceiversTable.get(relation);
-                    if (result.length !=width)  {
+                    if (result.length != width)  {
                         String s = "getReceivers(IORelation): Invalid ";
                         s += "receivers. Need to call createReceivers().";
                         throw new InvalidStateException(this, s);
