@@ -168,18 +168,20 @@ public class ViewerGraphController extends GraphController {
      * Return the node controller appropriate for the given node.
      */
     public NodeController getNodeController(Object object) {
-        if(object instanceof Vertex) {
+	//return _controllerMap.get(getGraphModel().getNodeModel(object));
+	if(object instanceof Vertex) {
             return _relationController;
-        } else if(object instanceof ptolemy.moml.Icon &&
+        } else if(object instanceof Location &&
 		  getGraphModel().getSemanticObject(object) 
 		  instanceof Entity) {
             return _entityController;
-	} else if(object instanceof ptolemy.moml.Icon &&
+	} else if(object instanceof Location &&
 		  getGraphModel().getSemanticObject(object) 
 		  instanceof Attribute) {
             return _attributeController;
 	} else if(object instanceof Location && 
-		  getGraphModel().getSemanticObject(object) instanceof Port) {
+		  getGraphModel().getSemanticObject(object) 
+		  instanceof Port) {
 	    return _portController;
 	} else if(object instanceof Port) {
 		return _entityPortController;

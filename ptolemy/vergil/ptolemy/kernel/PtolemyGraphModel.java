@@ -40,7 +40,6 @@ import ptolemy.data.expr.Variable;
 import ptolemy.data.Token;
 import ptolemy.data.ObjectToken;
 import ptolemy.vergil.ptolemy.AbstractPtolemyGraphModel;
-import ptolemy.vergil.toolbox.EditorIcon;
 
 import diva.graph.AbstractGraphModel;
 import diva.graph.GraphEvent;
@@ -144,7 +143,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     public CompositeModel getCompositeModel(Object composite) {
 	if(composite.equals(getRoot())) {
 	    return _toplevelModel;
-	} else if(composite instanceof Icon) {
+	} else if(composite instanceof Location &&
+		  ((Location)composite).getContainer() instanceof Entity) {
 	    return _iconModel;
 	} else {
 	    return null;
@@ -177,15 +177,20 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
      * VertexModel for vertexes.  Otherwise return null.
      */
     public NodeModel getNodeModel(Object node) {
-	if(node instanceof Icon) {
-	    return _iconModel;
-	} else if(node instanceof Location && 
-		  ((Location)node).getContainer() instanceof Port) {
-	    return _externalPortModel;
-	} else if(node instanceof Port) {
+	if(node instanceof Port) {
 	    return _portModel;
 	} else if(node instanceof Vertex) {
 	    return _vertexModel;
+	} else if(node instanceof Location) {
+	    Location location = (Location)node;
+	    if(location.getContainer() instanceof Port) {
+		return _externalPortModel;
+	    } else if(location.getContainer() instanceof Entity) {
+		return _iconModel;
+	    } else if(location.getContainer() instanceof Attribute) {
+		return _attributeModel;
+	    } else 
+		return null;
 	} else {
 	    return null;
 	}
@@ -223,15 +228,20 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     public Object getSemanticObject(Object element) {
 	if(element instanceof Port) {
 	    return element;
-	} else if(element instanceof Location && 
-		  ((Location)element).getContainer() instanceof Port) {
-	    return ((Location)element).getContainer();
 	} else if(element instanceof Vertex) {
 	    return ((Vertex)element).getContainer();
-	} else if(element instanceof Icon) {
-	    return ((Icon)element).getContainer();
 	} else if(element instanceof Link) {
 	    return ((Link)element).getRelation();
+	} else if(element instanceof Location) {
+	    Location location = (Location)element;
+	    if(location.getContainer() instanceof Port) {
+		return location.getContainer();
+	    } else if(location.getContainer() instanceof Entity) {
+		return location.getContainer();
+	    } else if(location.getContainer() instanceof Attribute) {
+		return location.getContainer();
+	    } else 
+		return null;
 	} else {
 	    return null;
 	}       
@@ -278,6 +288,64 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
+    /** The model for visible attributes
+     */
+    public class AttributeModel implements RemoveableNodeModel {
+	/**
+	 * Return the graph parent of the given node.
+	 * @param node The node, which is assumed to be an icon.
+	 * @return The container of the Icon's container, which should be
+	 * the root of the graph.
+	 */
+	public Object getParent(Object node) {
+            return ((Location)node).getContainer().getContainer();
+	}
+	
+	/**
+	 * Return an iterator over the edges coming into the given node.
+	 * @param node The node, which is assumed to be an icon.
+	 * @return A NullIterator, since no edges are attached to icons.
+	 */
+	public Iterator inEdges(Object node) {
+	    return new NullIterator();
+	}
+	
+	/**
+	 * Return an iterator over the edges coming out of the given node.
+	 * @param node The node, which is assumed to be an icon.
+	 * @return A NullIterator, since no edges are attached to icons.
+	 */
+	public Iterator outEdges(Object node) {
+	    return new NullIterator();
+	}
+	
+	/** Remove the given node from the model.  The node is assumed
+	 *  to be an icon.
+	 */
+	public void removeNode(Object node) {
+	    Nameable deleteObj = ((Location)node).getContainer();
+            String elementName = null;
+	    if (deleteObj instanceof Attribute) {
+                // Object is an attribute.
+                elementName = "deleteProperty";
+            } else {
+		throw new InternalErrorException(
+     		    "Attempt to remove a node that is not an Attribute. " +
+		    "node = " + node);
+            }
+	    
+            String moml = "<" + elementName + " name=\""
+		+ deleteObj.getName() + "\"/>\n";
+	    
+            // Make the request in the context of the container.
+            NamedObj container = (NamedObj)deleteObj.getContainer();
+            ChangeRequest request = 
+		new MoMLChangeRequest(
+				      PtolemyGraphModel.this, container, moml);
+            container.requestChange(request);
+	}
+    }
+    
     /** The model for ports that make external connections to this graph.
      *  These ports are always contained by the root of this graph model.
      */
@@ -386,7 +454,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 			port.getName(container) + 
 			"\"/>\n");
 	    ChangeRequest request = 
-    new MoMLChangeRequest(PtolemyGraphModel.this, 
+		new MoMLChangeRequest(PtolemyGraphModel.this, 
 			  container,
 			  moml.toString());
 	    container.requestChange(request);
@@ -403,8 +471,8 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 * @return The number of ports contained in the container of the icon.
 	 */
 	public int getNodeCount(Object composite) {
-	    Icon icon = (Icon) composite;
-	    return ((ComponentEntity)icon.getContainer()).portList().size();
+	    Location location = (Location) composite;
+	    return ((ComponentEntity)location.getContainer()).portList().size();
 	}
 	
 	/**
@@ -414,7 +482,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 * the root of the graph.
 	 */
 	public Object getParent(Object node) {
-	    return ((Icon)node).getContainer().getContainer();
+	    return ((Location)node).getContainer().getContainer();
 	}
 	
 	/**
@@ -437,13 +505,13 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 * of the icon.
 	 */
 	public Iterator nodes(Object composite) {
-	    Icon icon = (Icon) composite;
-            Nameable container = icon.getContainer();
-            if (container instanceof Entity) {
-                ComponentEntity entity = (ComponentEntity)icon.getContainer();
+	    Location location = (Location) composite;
+            Nameable container = location.getContainer();
+            if (container instanceof ComponentEntity) {
+                ComponentEntity entity = (ComponentEntity)container;
                 return entity.portList().iterator();
             } else {
-                return (new LinkedList()).iterator();
+                return new NullIterator();
             }
 	}
 
@@ -460,22 +528,19 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 *  to be an icon.
 	 */
 	public void removeNode(Object node) {
-            // NOTE: Have to know what this is. This seems awkward.
-            Nameable deleteObj = ((Icon)node).getContainer();
+	    Nameable deleteObj = ((Location)node).getContainer();
             String elementName = null;
             if (deleteObj instanceof ComponentEntity) {
                 // Object is an entity.
                 elementName = "deleteEntity";
-            } else if (deleteObj instanceof Attribute) {
-                // Object is an attribute.
-                elementName = "deleteProperty";
             } else {
-		throw new UnsupportedOperationException(
-		    "Unrecognized node to remove.");
+		throw new InternalErrorException(
+		    "Attempt to remove a node that is not an Entity. " +
+		    "node = " + node);
             }
 
             String moml = "<" + elementName + " name=\""
-                    + ((NamedObj)deleteObj).getName() + "\"/>\n";
+                    + deleteObj.getName() + "\"/>\n";
 
             // Make the request in the context of the container.
             NamedObj container = (NamedObj)deleteObj.getContainer();
@@ -485,7 +550,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
             container.requestChange(request);
 	}
     }
-
+    
     /** The model for links that connect two ports, or a port and a vertex.
      */
     public class LinkModel implements MutableEdgeModel {
@@ -604,7 +669,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		// No unlinking to do.
 	    }
 	}
-
+    
 	/** Append moml to the given buffer that connects a link with the
 	 *  given head, tail, and relation.  This may require addinging an
 	 *  anonymous relation to the ptolemy model.  If this is required,
@@ -685,8 +750,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	 *  to make this modification.
 	 *  @param edge The edge, which is assumed to be a link.
 	 *  @param head The new head for the edge, which is assumed to
-	 *  be a location representing a port, a port or a vertex.
-	 */
+	 *  be a location representing a port, a port or a vertex.	 */
 	public void setHead(final Object edge, final Object newLinkHead) {
 	    final Link link = (Link)edge;
 	    NamedObj linkHead = (NamedObj)link.getHead();
@@ -866,9 +930,9 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    ComponentPort port = (ComponentPort)node;
 	    Entity entity = (Entity)port.getContainer();
 	    if(entity == null) return null;
-	    List iconList = entity.attributeList(Icon.class);
-	    if(iconList.size() > 0) {
-		return iconList.get(0);
+	    List locationList = entity.attributeList(Location.class);
+	    if(locationList.size() > 0) {
+		return locationList.get(0);
 	    } else {
 		throw new InternalErrorException(
 		    "Found an entity that does not contain an icon.");
@@ -1012,21 +1076,7 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	    Iterator entities = toplevel.entityList().iterator();
 	    while(entities.hasNext()) {
 		ComponentEntity entity = (ComponentEntity)entities.next();
-		List icons = entity.attributeList(Icon.class);
-		if(icons.size() > 0) {
-		    nodes.add(icons.get(0));
-		} else {
-		    // Create a default icon.
-		    try {
-			// FIXME change request.
-			Icon icon = new EditorIcon(entity, "_icon");
-			nodes.add(icon);
-		    } catch (Exception e) {
-			throw new InternalErrorException("Failed to create " +
-			    "an icon, even though one does not exist: " +
-                            e.getMessage());
-		    }
-		}
+		nodes.add(_getLocation(entity));
 	    }
 	    
 	    // Add a location for every external port.
@@ -1077,24 +1127,11 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		Attribute attribute = (Attribute)attributes.next();
 
 		if (attribute instanceof Director) {
-                    List icons = attribute.attributeList(Icon.class);
-                    if(icons.size() > 0) {
-                        nodes.add(icons.get(0));
-                    } else {
-                        // Create a default icon.
-                        try {
-                            Icon icon = new EditorIcon(attribute, "_icon");
-                            nodes.add(icon);
-                        } catch (Exception e) {
-                            throw new InternalErrorException(
-                                    "Failed to create an icon! " +
-                                    e.getMessage());
-                        }
-		    }
+		    nodes.add(_getLocation(attribute));
                 } else {
-		    // The icon is not a director, so only add an icon
+		    // The icon is not a director, so only give a locaiton
 		    // if one exists already.
-		    List icons = attribute.attributeList(Icon.class);
+		    List icons = attribute.attributeList(Location.class);
                     if(icons.size() > 0) {
                         nodes.add(icons.get(0));
                     }
@@ -1331,15 +1368,15 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 	}	
     }
 	
-    // Return the location contained in the given port, or
-    // a new location contained in the given port if there was no location.
-    private Location _getLocation(Port port) {
-	List locations = port.attributeList(Location.class);
+    // Return the location contained in the given object, or
+    // a new location contained in the given object if there was no location.
+    private Location _getLocation(NamedObj object) {
+	List locations = object.attributeList(Location.class);
 	if(locations.size() > 0) {
 	    return (Location)locations.get(0);
 	} else {
 	    try {
-		Location location = new Location(port, "_location");
+		Location location = new Location(object, "_location");
 		return location;
 	    }
 	    catch (Exception e) {
@@ -1363,10 +1400,11 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
     private Set _linkSet;
 
     // The models of the different types of nodes and edges.
-    private LinkModel _linkModel = new LinkModel();
-    private ToplevelModel _toplevelModel = new ToplevelModel();
-    private IconModel _iconModel = new IconModel();
-    private PortModel _portModel = new PortModel();
-    private VertexModel _vertexModel = new VertexModel();
+    private AttributeModel _attributeModel = new AttributeModel();
     private ExternalPortModel _externalPortModel = new ExternalPortModel();
-}
+    private IconModel _iconModel = new IconModel();
+    private LinkModel _linkModel = new LinkModel();
+    private PortModel _portModel = new PortModel();
+    private ToplevelModel _toplevelModel = new ToplevelModel();
+    private VertexModel _vertexModel = new VertexModel();
+    }

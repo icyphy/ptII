@@ -42,6 +42,8 @@ import diva.canvas.toolbox.*;
 import diva.gui.toolbox.*;
 import java.awt.*;
 import java.awt.geom.*;
+import java.io.Writer;
+import java.io.IOException;
 import javax.swing.SwingConstants;
 
 //////////////////////////////////////////////////////////////////////////
@@ -75,7 +77,7 @@ This visual representation created by this base class is just a simple white
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class EditorIcon extends Icon {
+public class EditorIcon extends Attribute {
 
     /**
      * Create a new icon with the given name in the given container.
@@ -151,6 +153,17 @@ public class EditorIcon extends Icon {
 	Figure figure = createBackgroundFigure();
 	_iconCache = new FigureIcon(figure, 20, 15);
 	return _iconCache;
+    }
+
+    /** Write a MoML description of this object, which in this case is
+     *  empty.  Nothing is written.
+     *  MoML is an XML modeling markup language.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @param name The name to use instead of the current name.
+     */
+    public void exportMoML(Writer output, int depth, String name)
+             throws IOException {
     }
 
     ///////////////////////////////////////////////////////////////////

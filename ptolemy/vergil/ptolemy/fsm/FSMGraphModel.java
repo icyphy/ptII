@@ -154,7 +154,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
      * Otherwise return null.
      */
     public NodeModel getNodeModel(Object node) {
-	if(node instanceof Icon) {
+	if(node instanceof Location) {
 	    return _stateModel;
 	} else {
 	    return null;
@@ -171,8 +171,8 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
      *  if the object is not recognized.
      */
     public Object getSemanticObject(Object element) {
-	if(element instanceof Icon) {
-	    return ((Icon)element).getContainer();
+	if(element instanceof Location) {
+	    return ((Location)element).getContainer();
 	} else if(element instanceof Arc) {
 	    return ((Arc)element).getRelation();
 	} else {
@@ -231,7 +231,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 *  @return True if the node is an icon.
 	 */
 	public boolean acceptHead(Object edge, Object node) {
-	    if (node instanceof Icon) {
+	    if (node instanceof Location) {
 		return true;
 	    } else
 		return false;
@@ -244,7 +244,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 *  @return True if the node is an icon.
 	 */
 	public boolean acceptTail(Object edge, Object node) {
-	    if (node instanceof Icon) {
+	    if (node instanceof Location) {
 		return true;
 	    } else
 		return false;
@@ -568,7 +568,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 * be the root of this graph model.
 	 */
 	public Object getParent(Object node) {
-	    return ((Icon)node).getContainer().getContainer();
+	    return ((Location)node).getContainer().getContainer();
 	}
 	
 	/**
@@ -583,7 +583,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 * the given node as their head.
 	 */
 	public Iterator inEdges(Object node) {
-	    Icon icon = (Icon)node;
+	    Location icon = (Location)node;
 	    Entity entity = (Entity)icon.getContainer();
 	    // make sure that the links to relations that we are connected to
 	    // are up to date.
@@ -627,7 +627,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 * the given node as their tail.
 	 */
 	public Iterator outEdges(Object node) {
-	    Icon icon = (Icon)node;
+	    Location icon = (Location)node;
 	    Entity entity = (Entity)icon.getContainer();
 	    // make sure that the links to relations that we are connected to
 	    // are up to date.
@@ -664,7 +664,7 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 */
 	public void removeNode(Object node) {
             // NOTE: Have to know what this is. This seems awkward.
-            Nameable deleteObj = ((Icon)node).getContainer();
+            Nameable deleteObj = ((Location)node).getContainer();
             String elementName = null;
             if (deleteObj instanceof ComponentEntity) {
                 // Object is an entity.
@@ -714,25 +714,12 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	 * @return An iterator containing icons.
 	 */
 	public Iterator nodes(Object composite) {
+	    // FIXME visible attributes?
 	    Set nodes = new HashSet();
 	    Iterator entities = getToplevel().entityList().iterator();
 	    while(entities.hasNext()) {
 		ComponentEntity entity = (ComponentEntity)entities.next();
-		List icons = entity.attributeList(Icon.class);
-		if(icons.size() > 0) {
-		    nodes.add(icons.get(0));
-		} else {
-		    // FIXME this is pretty minimal for an icon.
-		    try {
-			Icon icon = new EditorIcon(entity, "_icon");
-			nodes.add(icon);
-		    }
-		    catch (Exception e) {
-			throw new InternalErrorException("Failed to create " +
-			    "icon, even though one does not exist:" +
-							 e.getMessage());
-		    }
-		}
+		nodes.add(_getLocation(entity));
 	    }
 	    
 	    return nodes.iterator();
@@ -765,10 +752,10 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 				     + "than two states.");
 	}
 	Port port1 = (Port)linkedPortList.get(0);
-	Icon icon1 = _getIcon(port1);
+	Location location1 = _getLocation((NamedObj)port1.getContainer());
 	Port port2 = (Port)linkedPortList.get(1);
-	Icon icon2 = _getIcon(port2);
-
+	Location location2 = _getLocation((NamedObj)port2.getContainer());
+	
 	Arc link;
 	try {
 	    link = new Arc();
@@ -782,23 +769,30 @@ public class FSMGraphModel extends AbstractPtolemyGraphModel {
 	link.setRelation(relation);
 	// We have to get the direction of the arc correct.
 	if(((State)port1.getContainer()).incomingPort.equals(port1)) {	    
-	    link.setHead(icon1);
-	    link.setTail(icon2);
+	    link.setHead(location1);
+	    link.setTail(location2);
 	} else {
-	    link.setHead(icon2);
-	    link.setTail(icon1);
+	    link.setHead(location2);
+	    link.setTail(location1);
 	}
     }
 
-    // Return the icon for the state that contains the given port.
-    public Icon _getIcon(Port port) {
-	Entity entity = (Entity)port.getContainer();
-	List iconList = entity.attributeList(Icon.class);
-	if(iconList.size() > 0) {
-	    return (Icon)iconList.get(0);
+    // Return the location contained in the given object, or
+    // a new location contained in the given object if there was no location.
+    private Location _getLocation(NamedObj object) {
+	List locations = object.attributeList(Location.class);
+	if(locations.size() > 0) {
+	    return (Location)locations.get(0);
 	} else {
-	    throw new InternalErrorException(
-		"Found an entity that does not contain an icon.");
+	    try {
+		Location location = new Location(object, "_location");
+		return location;
+	    }
+	    catch (Exception e) {
+		throw new InternalErrorException("Failed to create " +
+		    "location, even though one does not exist:" +
+		    e.getMessage());
+	    }
 	}
     }
 

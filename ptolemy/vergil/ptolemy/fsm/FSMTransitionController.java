@@ -116,7 +116,7 @@ public class FSMTransitionController extends EdgeController {
     public class LinkTarget extends PerimeterTarget {
         public boolean accept(Figure f) {
             Object object = f.getUserObject();
-	    if(object instanceof Icon) return true;
+	    if(object instanceof Location) return true;
 	    return false;
         }
 

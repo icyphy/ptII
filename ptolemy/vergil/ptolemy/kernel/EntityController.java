@@ -117,7 +117,7 @@ public class EntityController extends LocatableNodeController {
 	    public boolean accept(Object o) {
 		GraphModel model = getController().getGraphModel();
 		if(o instanceof Port &&
-		   model.getParent(o) instanceof Icon) {
+		   model.getParent(o) instanceof Location) {
 		    return true;
 		} else {
 		    return false;
@@ -219,10 +219,24 @@ public class EntityController extends LocatableNodeController {
 
     public static class EntityRenderer implements NodeRenderer {
 	public Figure render(Object n) {
-	    Figure figure;
-	    EditorIcon icon = (EditorIcon)n;
-	    figure = icon.createFigure();
-            NamedObj object = (NamedObj) icon.getContainer();
+	    Location location = (Location)n;
+	    NamedObj object = (NamedObj) location.getContainer();
+
+	    // FIXME: may want to use another type of icon
+	    // FIXME: this code is the same as in PtolemyTreeCellRenderer.
+	    EditorIcon icon;
+		try {
+		    icon = (EditorIcon)object.getAttribute("_icon");
+		if(icon == null) {
+		    icon = new XMLIcon(object, "_icon");
+		}
+	    } catch (KernelException ex) {
+		throw new InternalErrorException("could not create icon " +
+						 "in " + object + " even " + 
+						 "though one did not exist");
+	    }
+
+	    Figure figure = icon.createFigure();
             figure.setToolTipText(object.getName());
 	    return figure;
 	}

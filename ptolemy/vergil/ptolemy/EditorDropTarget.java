@@ -49,7 +49,7 @@ import java.util.Iterator;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.gui.MessageHandler;
-import ptolemy.moml.Icon;
+import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.toolbox.EditorIcon;
 import ptolemy.vergil.toolbox.PtolemyTransferable;
@@ -242,16 +242,17 @@ public class EditorDropTarget extends DropTarget {
                 throw new InternalErrorException(
                     "Dropped object not found after change completed!");
             }
-            Icon icon = (Icon) newObject.getAttribute("_icon");
-            // If there is no icon, then manufacture one.
-            if(icon == null) {
-                icon = new EditorIcon(newObject, "_icon");
+
+            Location location = (Location) newObject.getAttribute("_location");
+            // If there is no location, then manufacture one.
+            if(location == null) {
+                location = new Location(newObject, "_location");
             }
 			
-            double location[] = new double[2];
-            location[0] = ((int)point.x);
-            location[1] = ((int)point.y);
-            icon.setLocation(location);
+            double coords[] = new double[2];
+            coords[0] = ((int)point.x);
+            coords[1] = ((int)point.y);
+            location.setLocation(coords);
         }
     }
 }

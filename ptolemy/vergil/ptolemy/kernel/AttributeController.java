@@ -114,10 +114,18 @@ public class AttributeController extends LocatableNodeController {
 
     public static class AttributeRenderer implements NodeRenderer {
 	public Figure render(Object n) {
-	    Figure figure;
+	    Location location = (Location)n;
+	    NamedObj object = (NamedObj) location.getContainer();
+
+            Figure figure = new CompositeFigure(new BasicRectangle(0, 0, 60, 40, 
+					       java.awt.Color.white, 1));
+	    // FIXME get XML from the Icon description.
+	    
+	    /*
 	    EditorIcon icon = (EditorIcon)n;
 	    figure = icon.createFigure();
-            NamedObj object = (NamedObj) icon.getContainer();
+	    */
+
             figure.setToolTipText(object.getName());
 	    return figure;
 	}

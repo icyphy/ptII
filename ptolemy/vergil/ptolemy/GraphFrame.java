@@ -64,7 +64,6 @@ import ptolemy.vergil.icon.IconEditor;
 import ptolemy.vergil.toolbox.EditParametersFactory;
 import ptolemy.vergil.toolbox.EditParameterStylesFactory;
 import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.toolbox.LibraryIcon;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.toolbox.PtolemyListCellRenderer;
@@ -172,12 +171,6 @@ public abstract class GraphFrame extends PtolemyFrame
 
         entity.addChangeListener(this);
 
-	// ensure that the icons are loaded
-	Configuration configuration = (Configuration)tableau.toplevel();
-	CompositeEntity iconLibrary = 
-	    (CompositeEntity)configuration.getEntity("iconLibrary");
-	LibraryIcon.setIconLibrary(iconLibrary);
-	
 	getContentPane().setLayout(new BorderLayout());
 	
 	GraphPane pane = _createGraphPane();

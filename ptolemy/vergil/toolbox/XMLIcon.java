@@ -55,7 +55,7 @@ be created.
 @author Steve Neuendorffer, John Reekie
 @version $Id$
 */
-public class XMLIcon extends EditorIcon implements Configurable {
+public class XMLIcon extends EditorIcon {
 
     /**
      * Create a new icon with the given name in the given container.
@@ -76,56 +76,6 @@ public class XMLIcon extends EditorIcon implements Configurable {
         _graphics.add(g);
     }
 
-    /** Configure the icon with XML data.  The XML data is given by
-     *  either a URL (the <i>source</i> argument), or by text
-     *  (the <i>text</i> argument), or both.
-     *  @param base The base relative to which references within the input
-     *   are found, or null if this is not known, or there is none.
-     *  @param source The input source, which specifies a URL, or null
-     *   if none.
-     *  @param text Configuration information given as text, or null if
-     *   none.
-     *  @exception Exception If the stream cannot be read or its syntax
-     *   is incorrect.
-     */
-    public void configure(URL base, String source, String text)
-            throws Exception {
-        _graphics.clear();
-        if (source != null && !source.equals("")) {
-            URL xmlFile = new URL(base, source);
-            InputStream in = xmlFile.openStream();
-
-            XmlDocument document = new XmlDocument(base);
-            XmlReader reader = new XmlReader();
-            reader.parse(document, in);
-            XmlElement root = document.getRoot();
-
-            // FIXME this should be a little nicer, but it will work for now.
-            Iterator graphics = root.elements();
-            while(graphics.hasNext()) {
-                XmlElement graphic = (XmlElement)graphics.next();
-                GraphicElement g = _createGraphicElement(graphic);
-                addGraphicElement(g);
-            }
-        }
-        if (text != null && !text.equals("")) {
-            Reader in = new StringReader(text);
-
-            XmlDocument document = new XmlDocument(base);
-            XmlReader reader = new XmlReader();
-            reader.parse(document, in);
-            XmlElement root = document.getRoot();
-
-            // FIXME this should be a little nicer, but it will work for now.
-            Iterator graphics = root.elements();
-            while(graphics.hasNext()) {
-                XmlElement graphic = (XmlElement)graphics.next();
-                GraphicElement g = _createGraphicElement(graphic);
-                addGraphicElement(g);
-            }
-        }
-    }
-
     /**
      * Test if this icon contains a graphic in the
      * given format.
@@ -139,6 +89,24 @@ public class XMLIcon extends EditorIcon implements Configurable {
      * will be painted with each graphic element that this icon contains.
      */
     public Figure createBackgroundFigure() {
+	// FIXME what happens if the description changes?
+	NamedObj container = (NamedObj)getContainer();
+	ProcessedString description =
+	    (ProcessedString)container.getAttribute("iconDescription");
+	if(description == null) {
+	    return _createDefaultBackgroundFigure();
+	}
+	
+	// Check to see that we got the right instruction
+	if(!description.getInstruction().equals("graphml"))
+	    return _createDefaultBackgroundFigure();
+	try {
+	    _update(null, description.getString());
+	} catch (Exception ex) {
+	    ex.printStackTrace();
+	    return _createDefaultBackgroundFigure();
+	}
+	
         Enumeration graphics = graphicElements();
         PaintedFigure figure = new PaintedFigure();
         while(graphics.hasMoreElements()) {
@@ -226,36 +194,33 @@ public class XMLIcon extends EditorIcon implements Configurable {
         return result;
     }
 
-    /** Write a MoML description of the contents of this object, which
-     *  in this base class is the attributes.  This method is called
-     *  by _exportMoML().  If there are attributes, then
-     *  each attribute description is indented according to the specified
-     *  depth and terminated with a newline character.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @exception IOException If an I/O error occurs.
-     *  @see NamedObj#_exportMoMLContents
+    /** Configure the icon with XML data.  The XML data is given by
+     *  either a URL (the <i>source</i> argument), or by text
+     *  (the <i>text</i> argument), or both.
+     *  @param base The base relative to which references within the input
+     *   are found, or null if this is not known, or there is none.
+     *  @param source The input source, which specifies a URL, or null
+     *   if none.
+     *  @param text Configuration information given as text, or null if
+     *   none.
+     *  @exception Exception If the stream cannot be read or its syntax
+     *   is incorrect.
      */
-    protected void _exportMoMLContents(Writer output, int depth)
-            throws IOException {
-	super._exportMoMLContents(output, depth);
-	output.write(_getIndentPrefix(depth));
-	output.write("<configure>\n");
-	output.write(_getIndentPrefix(depth));
-	output.write("<![CDATA[\n");
-	output.write(_getIndentPrefix(depth + 1));
-	output.write("<xmlgraphic>\n");
-	Iterator i = _graphics.iterator();
-	while(i.hasNext()) {
-	    GraphicElement element = (GraphicElement) i.next();
-	    element.exportMoML(output, _getIndentPrefix(depth + 1));
+    private void _update(URL base, String text) throws Exception {
+        _graphics.clear();
+	
+	Reader in = new StringReader(text);
+	XmlDocument document = new XmlDocument(base);
+	XmlReader reader = new XmlReader();
+	reader.parse(document, in);
+	XmlElement root = document.getRoot();
+	
+	Iterator graphics = root.elements();
+	while(graphics.hasNext()) {
+	    XmlElement graphic = (XmlElement)graphics.next();
+	    GraphicElement g = _createGraphicElement(graphic);
+	    addGraphicElement(g);
 	}
-	output.write(_getIndentPrefix(depth + 1));
-	output.write("</xmlgraphic>\n");
-	output.write(_getIndentPrefix(depth));
-	output.write("]]>\n");
-	output.write(_getIndentPrefix(depth));
-	output.write("</configure>\n");
     }
 
     // Create a new graphic element from the given XML element.

@@ -215,15 +215,13 @@ public class FSMGraphController extends FSMViewerController {
 	    final CompositeEntity toplevel = graphModel.getToplevel();
 	 		
 	    final String stateName = toplevel.uniqueName("state");
-	    final String iconName = "_icon";
 	    // Create the state.
 	    StringBuffer moml = new StringBuffer();
-	    moml.append("<entity name=\"" + stateName + 
+	    final String locationName = "location1";
+	   moml.append("<entity name=\"" + stateName + 
 			"\" class=\"ptolemy.domains.fsm.kernel.State\">\n");
-	    moml.append("<rendition name=\"" + iconName + 
-	    		"\" class=\"ptolemy.vergil.toolbox.LibraryIcon\">\n");
-	    moml.append("<configure>generic.state</configure>\n");
-	    moml.append("</rendition>\n");
+	    moml.append("<property name=\"" + locationName + 
+	    		"\" class=\"ptolemy.moml.Location\"/>\n");
 	    moml.append("</entity>\n");
 		    
 	    
@@ -242,13 +240,13 @@ public class FSMGraphController extends FSMViewerController {
 			// port, etc. For now, assuming it is an entity.
 			NamedObj newObject =
 			toplevel.getEntity(stateName);
-			Icon icon = 
-			(Icon) newObject.getAttribute(iconName);
+			Location location = 
+			(Location) newObject.getAttribute(locationName);
 						
 			double point[] = new double[2];
 			point[0] = ((int)finalX);
 			point[1] = ((int)finalY);
-			icon.setLocation(point);
+			location.setLocation(point);
 		    }
                 };
 	    toplevel.requestChange(request);

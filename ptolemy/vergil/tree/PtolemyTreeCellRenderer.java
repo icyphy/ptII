@@ -34,7 +34,11 @@ import ptolemy.actor.gui.Documentation;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.moml.EntityLibrary;
+import ptolemy.vergil.toolbox.EditorIcon;
+import ptolemy.vergil.toolbox.XMLIcon;
 
 import java.awt.Component;
 import javax.swing.JTree;
@@ -83,16 +87,29 @@ public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
             // because this will trigger evaluation, defeating deferred
             // evaluation.
             if (!(object instanceof EntityLibrary)) {
-                NamedObj iconObject = object.getAttribute("_icon");
-                if(iconObject != null && 
-                        iconObject instanceof ptolemy.moml.Icon) {
-                    ptolemy.vergil.toolbox.EditorIcon icon = 
-                            (ptolemy.vergil.toolbox.EditorIcon) iconObject;
-
-                    // Wow.. this is a confusing line of code.. :)
-                    component.setIcon(icon.createIcon());
-                }
-
+		// Only if an object has an icon description is it
+		// rendered in the tree.
+		if(object.getAttribute("iconDescription") != null) {
+		    // FIXME: may want to use another type of icon
+		    // FIXME: this code is the same as in 
+		    // EntityController.
+		    EditorIcon icon;
+		    try {
+			icon = (EditorIcon)object.getAttribute("_icon");
+			if(icon == null) {
+			    icon = new XMLIcon(object, "_icon");
+			}
+		    } catch (KernelException ex) {
+			throw new InternalErrorException("could not create icon " +
+							 "in " + object + 
+							 " even " + 
+							 "though one did " + 
+							 "not exist");
+		    }
+		    // Wow.. this is a confusing line of code.. :)
+		    component.setIcon(icon.createIcon());
+		}
+                
                 Attribute tooltipAttribute = object.getAttribute("tooltip");
                 if (tooltipAttribute != null
                         && tooltipAttribute instanceof Documentation) {

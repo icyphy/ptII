@@ -54,10 +54,8 @@ JSRCS = \
 	EditParameterStylesFactory.java \
 	FigureAction.java \
 	GraphicElement.java \
-	LibraryIcon.java \
 	MenuActionFactory.java \
 	MenuItemFactory.java \
-	PatternIcon.java \
 	PtolemyListCellRenderer.java \
 	PtolemyMenuFactory.java \
 	PtolemyTransferable.java \
