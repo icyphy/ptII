@@ -1,39 +1,68 @@
 package doc.tutorial;
-import ptolemy.domains.de.gui.DEApplet;
+
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.actor.lib.Clock;
 import ptolemy.actor.lib.gui.TimedPlotter;
+import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
-import java.awt.Panel;
-import java.awt.Dimension;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
-public class TutorialApplet extends DEApplet implements QueryListener {
-    private Query _query = new Query();
-    private Clock _clock;
-    public void init() {
-        super.init();
-        try {
-            _clock = new Clock(_toplevel,"clock");
-            TimedPlotter plotter = new TimedPlotter(_toplevel,"plotter");
-            plotter.place(getContentPane());
-            Dimension size = getSize();
-            plotter.plot.setSize(700, 250);
-            _toplevel.connect(_clock.output, plotter.input);
-            add(_createRunControls(2));
-            _query.setBackground(getBackground());
-            _query.addLine("period", "Period", "2.0");
-            _query.addQueryListener(this);
-            add(_query);
-        } catch (Exception ex) {
-            report("Error constructing model.", ex);
-        }
+import java.awt.BorderLayout;
+
+public class TutorialApplet5 extends PtolemyApplet implements QueryListener {
+    public NamedObj _createModel(Workspace workspace) 
+	throws Exception {
+        TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
+        _toplevel = toplevel;
+
+	// Create the director.
+	DEDirector director = new DEDirector(toplevel, "director");
+	director.stopTime.setExpression("30.0");
+
+	// Create two actors.
+	Clock _clock = new Clock(toplevel,"clock");
+	TimedPlotter plotter = new TimedPlotter(toplevel,"plotter");
+
+	// Configure the plotter.
+	plotter.place(getContentPane());
+	plotter.plot.setBackground(getBackground());
+	plotter.plot.setTitle("clock signal");
+        plotter.plot.setXLabel("time");
+        plotter.plot.setImpulses(true);
+        plotter.plot.setConnected(false);
+        plotter.plot.setMarksStyle("dots");
+
+	// Connect them.
+	toplevel.connect(_clock.output, plotter.input);
+	return toplevel;
     }
+
+    protected void _createView() {
+	super._createView();
+	_query.setBackground(getBackground());
+	_query.addLine("period", "Period", "2.0");
+	_query.addQueryListener(this);
+	getContentPane().add( _query, BorderLayout.SOUTH );
+    }
+
     public void changed(String name) {
+        System.out.println("changed: " + name);
+        System.out.println("changed2: " + _query.stringValue("period"));
+        System.out.println("changed2.5: " + _clock);
+        System.out.println("changed2.7: " + _clock.period);
         _clock.period.setExpression(_query.stringValue("period"));
+        System.out.println("changed3: " + _clock.period);
         try {
             _go();
         } catch (Exception ex) {
             report("Error executing model.", ex);
         }
     }
+
+    private Clock _clock;
+    private Query _query = new Query();
+
 }

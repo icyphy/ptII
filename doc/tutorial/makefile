@@ -61,18 +61,19 @@ JSRCS = \
 	TutorialApplet1.java \
 	TutorialApplet2.java \
 	TutorialApplet3.java \
-	TutorialApplet4.java
+	TutorialApplet4.java \
+	TutorialApplet5.java
 
 # Note that the TutorialApplet*.java files get copied to
 # TutorialApplet.java and then made
 EXTRA_SRCS =	$(JSRCS) \
 	README \
-	TutorialApplet5.java \
 	TutorialApplet6.java \
 	TutorialApplet1.htm \
 	TutorialApplet2.htm \
 	TutorialApplet3.htm \
-	TutorialApplet4.htm
+	TutorialApplet4.htm \
+	TutorialApplet5.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
