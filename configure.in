@@ -140,10 +140,59 @@ else
   Try --with-java=DIR, or set the JAVA_HOME environment variable.])
 fi
 
+
 #--------------------------------------------------------------------
-#	See if there was a command-line option for where Java is;  if
-#	not, check to see if the PTJAVA_DIR environment variable is set;
-#       if it is not, look for javac on the path.
+#	Figure out whether to use javac -depend or javac -Xdepend
+#--------------------------------------------------------------------
+JFLAGSINIT=-g
+
+AC_MSG_CHECKING([the Java compiler with a simple compile])
+if env $JAVAC -d . $srcdir/mk/confTest.java ; then
+    AC_MSG_RESULT(ok)
+    JFLAGS="$JFLAGSINIT -depend"
+    AC_MSG_CHECKING([javac $JFLAGS])
+    if env $JAVAC -d . $JFLAGS $srcdir/mk/confTest.java ; then
+	AC_MSG_RESULT(yes)
+    else
+	AC_MSG_RESULT(no)
+	JFLAGS="$JFLAGSINIT -Xdepend"
+	AC_MSG_CHECKING([javac $JFLAGS])
+	if env $JAVAC -d . $JFLAGS $srcdir/mk/confTest.java ; then
+	    AC_MSG_RESULT(yes)
+	else
+	    AC_MSG_RESULT(no)
+	    AC_MSG_WARN(['$JAVAC -d . -depend $srcdir/mk/confTest.java' and
+'$JAVAC -d . -Xdepend $srcdir/mk/confTest.java' both failed, so we don't
+know how to build with dependencies taken into account.  This could
+cause problems later if you modify .java files that other .java
+files depend on])
+	    AC_MSG_RESULT($JFLAGS)
+	fi
+    fi
+else
+    JFLAGS="$JFLAGSINIT -depend"
+   AC_MSG_WARN(['$JAVAC -d . $srcdir/mk/confTest.java' failed,
+so we can't figure out whether to use -depend or -Xdepend.
+Defaulting to $JFLAGS]);
+fi
+
+
+
+#--------------------------------------------------------------------
+#	Figure out which separator to use for CLASSPATH
+#	So much for write once, run everywhere.
+#--------------------------------------------------------------------
+AC_MSG_CHECKING([for the proper CLASSPATH separator])
+case "`uname -s`" in
+    CYGWIN32_NT) CLASSPATHSEPARATOR=";";;
+    *) CLASSPATHSEPARATOR=":";;
+esac
+AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
+
+#--------------------------------------------------------------------
+#	See if there was a command-line option for where javacc is;  if
+#	not, check to see if $PTOLEMY/vendors/sun/JavaCC exists
+#       if it is does not, look for javacc on the path.
 #--------------------------------------------------------------------
 
 AC_MSG_CHECKING([for JavaCC])
@@ -217,19 +266,6 @@ See http://www.scriptics.com/java for Tcl Blend sources and binaries.])
 fi 
 
 
-#--------------------------------------------------------------------
-#	Figure out which separator to use for CLASSPATH
-#	So much for write once, run everywhere.
-#--------------------------------------------------------------------
-AC_MSG_CHECKING([for the proper CLASSPATH separator])
-case "`uname -s`" in
-    CYGWIN32_NT) CLASSPATHSEPARATOR=";";;
-    *) CLASSPATHSEPARATOR=":";;
-esac
-AC_MSG_RESULT(['$CLASSPATHSEPARATOR'])
-
-
-
 # Keep these substitutions alphabetical, with a description
 
 # Separator in CLASSPATH,  For Unix, this should be :, for Cygwin, use ;
@@ -240,6 +276,9 @@ AC_SUBST(JAVACC)
 
 # Directory that contains JavaCC, which is used in ptolemy/data/expr
 AC_SUBST(JAVACC_DIR)
+
+# Arguments to pass to javac.  Usually something like '-g -depend'
+AC_SUBST(JFLAGS)
 
 # jtclsh script, used for test suites
 AC_SUBST(JTCLSH)
