@@ -115,7 +115,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  method of the contained tokens.
      *  @param object An instance of Object.
      *  @return True if the argument is equal to this token.
-     *  @see hashCode()
+     *  @see #hashCode()
      */
     public boolean equals(Object object) {
         // This test rules out instances of a subclass.
