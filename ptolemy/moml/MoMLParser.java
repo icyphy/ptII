@@ -170,7 +170,7 @@ public class MoMLParser extends HandlerBase {
     }
 
     /** End an element. This method pops the current container from
-     *  the stack, if appropriate, and also adds specialized attributes
+     *  the stack, if appropriate, and also adds specialized properties
      *  to the container, such as <i>_doc</i>, if appropriate.
      *  &AElig;lfred will call this method at the end of each element
      *  (including EMPTY elements).
@@ -185,8 +185,9 @@ public class MoMLParser extends HandlerBase {
             ((Configurable)_current).configure(_base, stream);
 
         } else if (elementName.equals("doc")) {
-            // Use a special attribute to contain the text.
-            // Note that an object may contain several documentation attributes.
+            // Use a special property to contain the text.
+            // Note that an object may contain several documentation
+            // properties.
             _checkClass(_current, NamedObj.class,
                     "Element \"doc\" found inside an element that "
                     + "is not a NamedObj. It is: "
@@ -196,7 +197,7 @@ public class MoMLParser extends HandlerBase {
             Documentation doc = new Documentation(current, name);
             doc.setValue(_currentCharData.toString());
         } else if (
-                elementName.equals("attribute")
+                elementName.equals("property")
                 || elementName.equals("class")
                 || elementName.equals("director")
                 || elementName.equals("entity")
@@ -352,17 +353,17 @@ public class MoMLParser extends HandlerBase {
             // intended to be called, simply by putting in an element
             // whose name matches the method name.  So instead, we do
             // a dumb if...then...elseif... chain with string comparisons.
-            if (elementName.equals("attribute")) {
-                String attributeName = (String)_attributes.get("name");
-                _checkForNull(attributeName,
-                        "No name for element \"attribute\"");
+            if (elementName.equals("property")) {
+                String propertyName = (String)_attributes.get("name");
+                _checkForNull(propertyName,
+                        "No name for element \"property\"");
                 String value = (String)_attributes.get("value");
                 _checkClass(_current, NamedObj.class,
-                        "Element \"attribute\" found inside an element that "
+                        "Element \"property\" found inside an element that "
                         + "is not a NamedObj. It is: "
                         + _current);
-                Object attribute = (Attribute)
-                        ((NamedObj)_current).getAttribute(attributeName);
+                Object property = (Attribute)
+                        ((NamedObj)_current).getAttribute(propertyName);
 
                 String className = (String)_attributes.get("class");
                 Class newClass = null;
@@ -370,48 +371,48 @@ public class MoMLParser extends HandlerBase {
                     newClass = Class.forName(className);
                 }
 
-                if (attribute == null) {
+                if (property == null) {
                     // No previously existing attribute with this name.
                     _checkForNull(newClass,
-                            "Cannot create attribute without a class name.");
+                            "Cannot create property without a class name.");
 
                     // Invoke the constructor.
                     Object[] arguments = new Object[2];
                     arguments[0] = _current;
-                    arguments[1] = attributeName;
-                    attribute = _createInstance(newClass, arguments);
+                    arguments[1] = propertyName;
+                    property = _createInstance(newClass, arguments);
 
                     if (value != null) {
-                        if (!(attribute instanceof Variable)) {
-                            throw new XmlException("Attribute is not an "
+                        if (!(property instanceof Variable)) {
+                            throw new XmlException("Property is not an "
                             + "instance of Variable, so can't set value.",
                             _currentExternalEntity(),
                             _parser.getLineNumber(),
                             _parser.getColumnNumber());
                         }
-                        ((Variable)attribute).setExpression(value);
+                        ((Variable)property).setExpression(value);
                     }
                 } else {
-                    // Previously existing attribute with this name.
+                    // Previously existing property with this name.
                     if (newClass != null) {
                         // Check that it has the right class.
-                        _checkClass(attribute, newClass,
-                                "attribute named \"" + attributeName
+                        _checkClass(property, newClass,
+                                "property named \"" + propertyName
                                 + "\" exists and is not an instance of "
                                 + className);
                     }
-                    // If value is null and the attribute already
+                    // If value is null and the property already
                     // exists, then there is nothing to do.
                     if (value != null) {
-                        _checkClass(attribute, Variable.class,
-                               "attribute named \"" + attributeName
+                        _checkClass(property, Variable.class,
+                               "property named \"" + propertyName
                                + "\" is not an instance of Variable,"
                                + " so its value cannot be set.");
-                        ((Variable)attribute).setExpression(value);
+                        ((Variable)property).setExpression(value);
                     }
                  }
                  _containers.push(_current);
-                 _current = attribute;
+                 _current = property;
 
              } else if (elementName.equals("class")) {
                 String className = (String)_attributes.get("extends");

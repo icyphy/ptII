@@ -1,27 +1,22 @@
-<!ELEMENT model (attribute | class | configure | doc | director |
+<!ELEMENT model (property | class | configure | doc | director |
                 entity | import | link | relation)*>
 <!ATTLIST model name CDATA #REQUIRED
                 class CDATA #REQUIRED>
 
-<!ELEMENT attribute (doc | configure)*>
-<!ATTLIST attribute class CDATA #IMPLIED
-                    name CDATA #REQUIRED
-                    value CDATA #IMPLIED>
-
-<!ELEMENT class (attribute | configure | director | doc | entity | link)*>
+<!ELEMENT class (property | configure | director | doc | entity | link)*>
 <!ATTLIST class name CDATA #REQUIRED
                 extends CDATA #REQUIRED>
 
 <!ELEMENT configure (#PCDATA)>
 <!ATTLIST configure source CDATA #IMPLIED>
 
-<!ELEMENT director (attribute | configure)*>
+<!ELEMENT director (property | configure)*>
 <!ATTLIST director name CDATA "director"
                    class CDATA #REQUIRED>
 
 <!ELEMENT doc (#PCDATA)>
 
-<!ELEMENT entity (attribute | class | configure | doc |
+<!ELEMENT entity (property | class | configure | doc |
                   director | entity | rendition | relation)*>
 <!ATTLIST entity name CDATA #REQUIRED
                  class CDATA #IMPLIED>
@@ -43,6 +38,11 @@
 <!ATTLIST port name CDATA #REQUIRED
                class CDATA #IMPLIED
                direction (input | output | both) #IMPLIED>
+
+<!ELEMENT property (doc | configure)*>
+<!ATTLIST property class CDATA #IMPLIED
+                    name CDATA #REQUIRED
+                    value CDATA #IMPLIED>
 
 <!ELEMENT relation (vertex*)>
 <!ATTLIST relation name CDATA #REQUIRED

@@ -4,31 +4,31 @@
     <doc>
     This composite actor generates a sine wave.
     </doc>
-    <attribute name="samplingFrequency"
+    <property name="samplingFrequency"
                value="8000.0"
                class="ptolemy.data.expr.Parameter">
       <doc>The sampling frequency, in the same units as the frequency.</doc>
-    </attribute>
-    <attribute name="frequency"
+    </property>
+    <property name="frequency"
                value="440.0"
                class="ptolemy.data.expr.Parameter">
       <doc>
       The frequency of the sinusoid, in the same units as the
       sampling frequency.
       </doc>
-    </attribute>
-    <attribute name="phase"
+    </property>
+    <property name="phase"
                value="0.0"
                class="ptolemy.data.expr.Parameter">
       <doc>The phase, in radians.</doc>
-    </attribute>
+    </property>
 
     <!-- Define the actors. -->
     <entity name="ramp" class="ptolemy.actor.lib.Ramp">
-      <attribute name="step"
+      <property name="step"
                  value="frequency*2*PI/samplingFrequency">
-      </attribute>
-      <attribute name="init" value="phase"></attribute>
+      </property>
+      <property name="init" value="phase"></property>
       <port name="output"></port>
     </entity>
     <entity name="sine" class="ptolemy.actor.lib.Sine">

@@ -5,7 +5,7 @@
     <parameter name="iterations" value="100"/>
   </director>
   <entity name="ramp" class="ptolemy.actor.lib.Ramp">
-    <attribute name="step" value="0.1"/>
+    <property name="step" value="0.1"/>
     <port name="output"></port>
     <rendition class="ptolemy.moml.Icon">
       <!-- FIXME: How can configure info avoid absolute URLs??? -->

@@ -4,21 +4,21 @@
   <doc>Multiply a low-frequency sine wave by a higher frequency one.</doc>
 
   <director class="ptolemy.domains.sdf.kernel.SDFDirector">
-    <attribute name="iterations" value="100"></attribute>
+    <property name="iterations" value="100"></property>
   </director>
 
   <import source="sinewave.xml"/>
 
   <!-- Define the actors -->
   <entity name="carrier" class=".sinewave">
-    <attribute name="samplingFrequency" value="2*PI"></attribute>
-    <attribute name="frequency" value="PI*0.2"></attribute>
+    <property name="samplingFrequency" value="2*PI"></property>
+    <property name="frequency" value="PI*0.2"></property>
     <port name="output"></port>
   </entity>
 
   <entity name="signal" class=".sinewave">
-    <attribute name="samplingFrequency" value="2*PI"></attribute>
-    <attribute name="frequency" value="PI*0.02"></attribute>
+    <property name="samplingFrequency" value="2*PI"></property>
+    <property name="frequency" value="PI*0.02"></property>
     <port name="output"></port>
   </entity>
 

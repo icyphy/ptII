@@ -65,6 +65,7 @@ set moml_3 {<class name="top" extends="ptolemy.actor.TypedCompositeActor">
 </class>
 }
 
+#----------------------------------------------------------------------
 test MoMLParser-1.1 {parse incorrect MoML} {
     set parser [java::new ptolemy.moml.MoMLParser]
     catch {$parser parse $moml_1} msg
@@ -82,4 +83,20 @@ test MoMLParser-1.3 {parse simple class with doc only} {
     set toplevel [$parser parse $moml_3]
     $toplevel exportMoML
 } $moml_3
+
+#----------------------------------------------------------------------
+set moml_4 {<<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model SYSTEM "../moml.dtd">
+<class name="top" extends="ptolemy.actor.TypedCompositeActor">
+    <doc>xxx</doc>
+</class>
+}
+#----------------------------------------------------------------------
+
+test MoMLParser-1.3 {parse simple class with doc only} {
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [$parser parse $moml_3]
+    $toplevel exportMoML
+} $moml_3
+
 
