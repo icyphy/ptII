@@ -91,7 +91,7 @@ public class Units extends Attribute implements Settable {
     public void exportMoML(Writer output, int depth, String name)
         throws IOException {
             
-        if (!isPersistent() || isClassElement()) {
+        if (_suppressMoML()) {
             return;
         }
         String value = getExpression();
@@ -178,7 +178,7 @@ public class Units extends Attribute implements Settable {
             }
         }
         // Make sure the new value is exported in MoML.  EAL 12/03.
-        setClassElement(false);
+        _setModifiedFromClass();
     }
 
     /** Set the visibility of this attribute.  The argument should be one

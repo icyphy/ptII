@@ -547,6 +547,14 @@ public class Entity extends NamedObj {
     protected void _removePort(Port port) {
         _portList.remove(port);
     }
+    
+    /** Specify that this object has been modified.  This overrides
+     *  the base class only to expose this protected method in this
+     *  package so that other kernel classes can call it.
+     */
+    protected void _setModifiedFromClass() {
+        super._setModifiedFromClass();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

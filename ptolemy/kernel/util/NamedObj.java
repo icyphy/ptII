@@ -676,7 +676,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     public final String exportMoML(String name) {
         try {
             // If the object is not persistent, return null.
-            if (!isPersistent() || isClassElement()) {
+            if (_suppressMoML()) {
                 return "";
             }
             StringWriter buffer = new StringWriter();
@@ -707,7 +707,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      */
     public final void exportMoML(Writer output) throws IOException {
         // If the object is not persistent, do nothing.
-        if (!isPersistent() || isClassElement()) {
+        if (_suppressMoML()) {
             return;
         }
         exportMoML(output, 0);
@@ -730,7 +730,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      */
     public final void exportMoML(Writer output, int depth) throws IOException {
         // If the object is not persistent, do nothing.
-        if (!isPersistent() || isClassElement()) {
+        if (_suppressMoML()) {
             return;
         }
         exportMoML(output, depth, getName());
@@ -804,7 +804,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
         // If the object is not persistent, do nothing.
-        if (!isPersistent() || isClassElement()) {
+        if (_suppressMoML()) {
             return;
         }
         String momlElement = getMoMLInfo().elementName;
@@ -1128,7 +1128,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @return True if the object is a class element.
      *  @see #setPersistent(boolean)
      */
-    public boolean isClassElement() {
+    public final boolean isClassElement() {
         // NOTE: New method added. EAL 12/03
         return _isClassElement;
     }
@@ -1251,8 +1251,8 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     }
     
     /** Set whether this object is a class element.  If an object
-     *  is a class element, then it exports no MoML and cannot have
-     *  its name or container changed.
+     *  is a class element, then it exports no MoML (unless it is
+     *  changed) and cannot have its name or container changed.
      *  By default, instances of NamedObj are not class elements.
      *  If this method is called with a <i>false</i> argument, then
      *  it will call setClassElement(false) on the container as
@@ -1261,8 +1261,9 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  @param classElement True to mark this object as a class element.
      *  @see #isClassElement()
      */
-    public void setClassElement(boolean classElement) {
+    public final void setClassElement(boolean classElement) {
         _isClassElement = classElement;
+        _modifiedFromClass = false;
     }
 
     /** Specify whether change requests made by calls to requestChange()
@@ -1368,7 +1369,9 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         // be changed.  EAL 12/03.
         if (isClassElement()) {
             throw new IllegalActionException(this,
-            "Cannot change the name of a class element.");
+            "Cannot change the name to "
+            + name
+            + ". The name is fixed by the class definition.");
         }
         int period = name.indexOf(".");
         if (period >= 0) {
@@ -1823,6 +1826,30 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             _workspace.doneWriting();
         }
     }
+    
+    /** Specify that this object has been modified.  This has an effect
+     *  only if setClassElement() has been called with a true argument.
+     *  In that case, if this method is called, then this object will
+     *  export MoML despite the fact that it is a class element. I.e.,
+     *  call this to specify that this class element has been modified.
+     *  To reverse the effect of this call, you need to call setClassElement()
+     *  again with a true argument.  This method will also pass the call
+     *  to its container, if there is one.
+     *  This method is protected because its usage is rather specialized
+     *  and exposing it at the public interface will undoubtedly lead to
+     *  misuse.  To make this available in other packages, simply
+     *  override this method with a call to this superclass method.
+     *  @see #setClassElement(boolean)
+     */
+    protected void _setModifiedFromClass() {
+        if (_isClassElement) {
+            _modifiedFromClass = true;
+            NamedObj container = (NamedObj)getContainer();
+            if (container != null) {
+                container._setModifiedFromClass();
+            }
+        }
+    }
 
     /** Split the specified name at the first period and return the
      *  two parts as a two-element array.  If there is no period, the second
@@ -1881,6 +1908,16 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
             return string;
         }
     }
+    
+    /** Return true if this class should not export a MoML description.
+     *  This will return true if either setPersistent() has been called
+     *  with argument true, or setClassElement() has been called with
+     *  argument true and the class has not been modified.
+     *  @boolean Return true to suppress MoML export.
+     */
+    protected boolean _suppressMoML() {
+        return !isPersistent() || (_isClassElement && !_modifiedFromClass);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -1893,6 +1930,10 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  never be reset to null after the first list is created.
      */
     protected LinkedList _debugListeners = null;
+    
+    /** Flag indicating that this class element has been modified.
+     */
+    protected boolean _modifiedFromClass = false;
     
     /** @serial The workspace for this object.
      * This should be set by the constructor and never changed.

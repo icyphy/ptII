@@ -139,7 +139,7 @@ public class Location extends SingletonAttribute
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (!isPersistent() || isClassElement()) {
+        if (_suppressMoML()) {
             return;
         }
         String value = getExpression();
@@ -221,7 +221,7 @@ public class Location extends SingletonAttribute
         _expression = expression;
         _expressionSet = true;
         // Make sure the new value is exported in MoML.  EAL 12/03.
-        setClassElement(false);
+        _setModifiedFromClass();
     }
 
     /** Set the location in some cartesian coordinate system, and notify
@@ -251,7 +251,7 @@ public class Location extends SingletonAttribute
         }
         
         // Make sure the new value is exported in MoML.  EAL 12/03.
-        setClassElement(false);
+        _setModifiedFromClass();
 
         // Copying location array into member array _location
         // Just referencing _location to location isn't enough, we need

@@ -749,7 +749,7 @@ public class Variable extends Attribute
         
         // Make sure the new value is exported in MoML.  EAL 12/03.
         if (changed) {
-            setClassElement(false);
+            _setModifiedFromClass();
         }
 
         _notifyValueListeners();
@@ -848,7 +848,7 @@ public class Variable extends Attribute
             _currentExpression = null;
             
             // Make sure the new value is exported in MoML.  EAL 12/03.
-            setClassElement(false);
+            _setModifiedFromClass();
 
             _parseTree = null;
             _parseTreeValid = false;

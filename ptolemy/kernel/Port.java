@@ -381,10 +381,12 @@ public class Port extends NamedObj {
             // the object is being removed.
             if (entity == null) {
                 throw new IllegalActionException(this,
-                "Cannot delete a class element.");
+                        "Cannot delete. This port is part of the class definition.");
             }
             throw new IllegalActionException(this,
-            "Cannot change the container of a class element.");
+                    "Cannot change the container to "
+                    + entity.getFullName()
+                    + ". The container is fixed by the class definition.");
         }
         try {
             _workspace.getWriteAccess();
@@ -410,7 +412,7 @@ public class Port extends NamedObj {
                 // object. Ensure that the container is now marked as
                 // not being a class element, and hence will export MoML.
                 // EAL 12/03
-                entity.setClassElement(false);
+                entity._setModifiedFromClass();
             }
             if (previousContainer != null) {
                 previousContainer._removePort(this);

@@ -125,18 +125,18 @@ public class ExternalIOPortController extends AttributeController {
 
     // Static initializer.
     static {
-        _GENERIC_INPUT.setInput(true);
-        _GENERIC_OUTPUT.setOutput(true);
-        _GENERIC_INOUT.setInput(true);
-        _GENERIC_INOUT.setOutput(true);
-        _GENERIC_INPUT_MULTIPORT.setInput(true);
-        _GENERIC_OUTPUT_MULTIPORT.setOutput(true);
-        _GENERIC_INOUT_MULTIPORT.setInput(true);
-        _GENERIC_INOUT_MULTIPORT.setOutput(true);
-        _GENERIC_INPUT_MULTIPORT.setMultiport(true);
-        _GENERIC_OUTPUT_MULTIPORT.setMultiport(true);
-        _GENERIC_INOUT_MULTIPORT.setMultiport(true);
         try {
+            _GENERIC_INPUT.setInput(true);
+            _GENERIC_OUTPUT.setOutput(true);
+            _GENERIC_INOUT.setInput(true);
+            _GENERIC_INOUT.setOutput(true);
+            _GENERIC_INPUT_MULTIPORT.setInput(true);
+            _GENERIC_OUTPUT_MULTIPORT.setOutput(true);
+            _GENERIC_INOUT_MULTIPORT.setInput(true);
+            _GENERIC_INOUT_MULTIPORT.setOutput(true);
+            _GENERIC_INPUT_MULTIPORT.setMultiport(true);
+            _GENERIC_OUTPUT_MULTIPORT.setMultiport(true);
+            _GENERIC_INOUT_MULTIPORT.setMultiport(true);
             // Need location attributes for these ports in order to
             // be able to render them.
             new Location(_GENERIC_INPUT, "_location");

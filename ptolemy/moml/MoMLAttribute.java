@@ -129,7 +129,7 @@ public class MoMLAttribute extends Attribute {
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
-        if (!isPersistent() || isClassElement()) {
+        if (_suppressMoML()) {
             return;
         }
         writeMoMLDescription(output, depth);
