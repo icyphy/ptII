@@ -64,8 +64,8 @@ class CEImpl implements CollectionEnumeration {
     }
 
     /**
-     * Implements collections.CollectionEnumeration.numberOfRemaingingElements.
-     * @see collections.CollectionEnumeration#numberOfRemaingingElements
+     * Implements collections.CollectionEnumeration.numberOfRemainingElements.
+     * @see collections.CollectionEnumeration#numberOfRemainingElements
      **/
     public int numberOfRemainingElements() {
         return remaining_;
