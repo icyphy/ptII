@@ -4,7 +4,7 @@
 <entity name="CarTracking" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 592]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[182, 159]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[54, 31]">
     </property>
     <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -1236,7 +1236,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter</title>
+<title>Second Car Acceleration</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="99.99999999999862"/>
@@ -1584,7 +1584,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter</title>
+<title>Positions of Cars</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="99.99999999999862"/>
