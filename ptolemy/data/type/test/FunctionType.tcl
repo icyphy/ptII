@@ -256,7 +256,7 @@ test FunctionType-9.1 {Test updateType} {
 test FunctionType-9.2 {Test updateType} {
     catch {$sdRT updateType $varRT} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: FunctionType.updateType: This type is a constant and the argument is not the same as this type. This type: (string, double) -> double argument: (string, unknown) -> unknown}}}
+} {{ptolemy.kernel.util.IllegalActionException: FunctionType.updateType: This type is a constant and the argument is not the same as this type. This type: (string, double) -> double argument: (string, unknown) -> unknown}}
 
 ######################################################################
 ####
