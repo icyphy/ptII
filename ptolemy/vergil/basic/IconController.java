@@ -52,7 +52,7 @@ of the node, and a context menu containing a command to edit parameters
 ("Configure"). This adds to the base class the ability to render an
 icon for the object being controlled, where the icon is specified
 by a contained attribute of class EditorIcon (typically, but not
-necessily named "_icon").
+necessarily named "_icon").
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
