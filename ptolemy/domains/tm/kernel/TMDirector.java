@@ -444,19 +444,6 @@ public class TMDirector extends Director {
         }
     }
 
-    /** Return the system time at which the model began executing.
-     *  That is, the system time (in milliseconds) when the initialize()
-     *  method of the director is called.
-     *  The time is in the form of milliseconds counting
-     *  from 1/1/1970 (UTC).
-     *  If this method is called before initialize() method
-     *  is called, then the return value may be meaningless.
-     *  @return The real start time of the model.
-     */
-    public long getRealStartTimeMillis() {
-        return _realStartTime;
-    }
-
     /** Set the starting time of execution and initialize all the
      *  actors. If this is director is not at the top level and
      *  the interrupt event queue is not empty, the request a refire from
@@ -618,6 +605,17 @@ public class TMDirector extends Director {
         return true;
 
     }
+
+    /** Remove a schedule listener from this director.  If the listener is
+     *  not attached to this director, do nothing.
+     *  @param listener The ScheduleListener to be removed.
+     */
+    public void removeScheduleListener(ScheduleListener listener) {
+        if (_scheduleListeners != null
+                && _scheduleListeners.contains(listener))
+            _scheduleListeners.remove(listener);
+    }
+
 
     /** Set the current time of this director. This method override the
      *  default implementation, since time is allowed to go backward.
