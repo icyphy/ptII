@@ -52,17 +52,16 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test PTMLParser-2.1 {parser tests} {
     set e0 [java::new ptolemy.schematic.PTMLParser]
-    set element [$e0 parse "file:/users/neuendor/ptII/ptolemy/schematic/test/exampleschematic.ptml"]
-    list [$element toString]
-} {{<Document>
-<schematic version="1.0" name="SDF">
+    set schematic [$e0 parse "file:/users/neuendor/ptII/ptolemy/schematic/test/exampleschematic.ptml"]
+    list [$schematic toString]
+} {{<schematic version="1.0" name="SDF">
 <description>Icons for use within SDF</description>
 <entity name="Load BMP File" icon="examplelibrary.LoadImage">
 <description>Load the Image that will be transmitted and stored.</description>
 <parameter value="" name="filename" type="string"></parameter>
 <port multiport="false" name="image" input="false" type="doubleArray" output="true"></port>
 </entity>
-<entity name="Save BMP file" icon="examplelibrary.SaveImage">
+<entity name="Save BMP File" icon="examplelibrary.SaveImage">
 <parameter value="" name="filename" type="string"></parameter>
 <port multiport="false" name="image" input="true" type="doubleArray" output="false"></port>
 </entity>
@@ -74,7 +73,6 @@ test PTMLParser-2.1 {parser tests} {
 <parameter value="1.0" name="starttime" type="double"></parameter>
 <parameter value="7.0" name="endtime" type="double"></parameter>
 </schematic>
-</Document>
 }}
 
 ######################################################################
@@ -82,8 +80,6 @@ test PTMLParser-2.1 {parser tests} {
 #
 test PTMLParser-2.2 {semantic tests:schematic} {
     # uses setup above.
-    set children [$element childElements]
-    set schematic [$children nextElement]
     set name [$schematic getName]
     set version [$schematic getVersion]
     set description [$schematic getDescription]
@@ -114,7 +110,8 @@ test PTMLParser-2.4 {semantic tests:schematic.entity} {
     set ports [$e ports]
     list [$e getName]\
 [$p getName] [$p getType] [$p getValue]  [$e getIcon]
-} {{Load BMP File} filename string {} examplelibrary.LoadImage}
+} {{Save BMP File} filename string {} examplelibrary.SaveImage}
+
 
 ######################################################################
 ####
@@ -136,21 +133,20 @@ test PTMLParser-2.6 {semantic tests:schematic.port} {
     # uses setup above.
     set p [$ports nextElement]
     list [$p getName] [$p isInput] [$p isOutput] [$p isMultiport] [$p getType]
-} {image 0 1 0 doubleArray}
+} {image 1 0 0 doubleArray}
 
 ######################################################################
 ####
 #
 test PTMLParser-3.1 {Constructor tests} {
     set e0 [java::new ptolemy.schematic.PTMLParser]
-    set element [$e0 parse "file:/users/neuendor/ptII/ptolemy/schematic/test/examplelibrary.ptml"]
-    list [$element toString]
-} {{<Document>
-<iconlibrary version="1.0" name="SDF">
+    set library [$e0 parse "file:/users/neuendor/ptII/ptolemy/schematic/test/examplelibrary.ptml"]
+    list [$library toString]
+} {{<iconlibrary version="1.0" name="SDF">
 <header>
 <description>Icons for use within SDF</description>
-<sublibrary file="domains/sdf/lib/icons/htvq.pti"></sublibrary>
-<sublibrary file="domains/sdf/lib/icons/communication.pti"></sublibrary>
+<sublibrary url="../../domains/sdf/lib/icons/htvq.ptml" name="VQ"></sublibrary>
+<sublibrary url="../../domains/sdf/lib/icons/communication.ptml" name="comm"></sublibrary>
 </header>
 <icon name="LoadImage">
 <description>Load an image from a file</description>
@@ -182,7 +178,6 @@ Hello! This is a nice big text box in a ptolemy icon.
 </graphic>
 </icon>
 </iconlibrary>
-</Document>
 }}
     
         
@@ -191,8 +186,6 @@ Hello! This is a nice big text box in a ptolemy icon.
 #
 test PTMLParser-3.2 {semantic tests:library} {
     # uses setup above.
-    set children [$element childElements]
-    set library [$children nextElement]
     set name [$library getName]
     set version [$library getVersion]
     set description [$library getDescription]
@@ -205,7 +198,8 @@ test PTMLParser-3.2 {semantic tests:library} {
 #
 test PTMLParser-3.3 {semantic tests:library.icon} {
     # uses setup above.
-    set i [$icons nextElement]
+    set iconname [$icons nextElement]
+    set i [$library getIcon $iconname]
     set entitytype [$i getEntityType]
     set graphicformats [$i graphicFormats]
     set ports [$i ports]

@@ -131,6 +131,13 @@ public class IconLibrary extends XMLElement{
     }
 
     /**
+     * Return a long description string of the the Icons in thie Library.
+     */
+    public String getDescription() {
+        return _description.getPCData();
+    }
+
+    /**
      * Get the Icon that is stored in this IconLibrary with the specified
      * type signature
      */
@@ -139,13 +146,6 @@ public class IconLibrary extends XMLElement{
     //}
     public Icon getIcon(String s) {
         return (Icon) _icons.at(s);
-    }
-
-    /**
-     * Return a long description string of the the Icons in thie Library.
-     */
-    public String getDescription() {
-        return _description.getPCData();
     }
 
     /**

@@ -302,12 +302,12 @@ test IconLibrary-9.3 {set/getVersion tests} {
 #
 test IconLibrary-10.1 {sublibrary tests} {
     set e0 [java::new ptolemy.schematic.IconLibrary]
-    $e0 addSubLibrary testlibrary
-    list [$e0 toString] [$e0 containsSubLibrary testlibrary]
+    $e0 addSubLibrary testlibraryname testlibraryclass
+    list [$e0 toString] [$e0 containsSubLibrary testlibraryname]
 } {{<iconlibrary version="" name="">
 <header>
 <description></description>
-<sublibrary>testlibrary</sublibrary>
+<sublibrary url="testlibraryclass" name="testlibraryname"></sublibrary>
 </header>
 </iconlibrary>
 } 1}
@@ -329,9 +329,9 @@ test IconLibrary-10.2 {remove sublibrary tests} {
 #
 test IconLibrary-10.3 {remove sublibrary tests} {
     # uses configuration above
-    $e0 removeSubLibrary testlibrary
+    $e0 removeSubLibrary testlibraryname
     set enumlib [$e0 subLibraries]
-    list [$e0 toString] [$e0 containsSubLibrary testLibrary]\
+    list [$e0 toString] [$e0 containsSubLibrary testLibraryname]\
 [$enumlib hasMoreElements]
 } {{<iconlibrary version="" name="">
 <header>
