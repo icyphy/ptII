@@ -176,7 +176,8 @@ public class Tableau extends CompositeEntity {
     public String getTitle() {
         if (_title == null) {
             Effigy effigy = (Effigy)getContainer();
-            return effigy.identifier.getExpression();
+	    // Abbreviate the title to 80 chars for use on the Mac.
+            return Top.abbreviate(effigy.identifier.getExpression());
         } else {
             return _title;
         }
@@ -264,6 +265,9 @@ public class Tableau extends CompositeEntity {
         _frame = frame;
 
         _setSize();
+
+	// Truncate the name so that dialogs under Web Start on the Mac
+	// work better.
 	frame.setTitle(getTitle());
 
         // Set up a listener for window closing events.
@@ -300,7 +304,7 @@ public class Tableau extends CompositeEntity {
      *  @param title The title to put on the window.
      */
     public void setTitle(String title) {
-        _title = title;
+        _title = Top.abbreviate(title);
         if (_frame != null) {
             _frame.setTitle(getTitle());
         }
