@@ -111,7 +111,7 @@ public class Poisson extends TimedSource {
 
         meanTime = new Parameter(this, "meanTime", new DoubleToken(1.0));
 
-        int defaultValues[][] = {{1,0}};
+        int defaultValues[][] = {{1, 0}};
         IntMatrixToken defaultValueToken = new IntMatrixToken(defaultValues);
         values = new Parameter(this, "values", defaultValueToken);
         // Call this so that we don't have to copy its code here...
@@ -139,7 +139,7 @@ public class Poisson extends TimedSource {
 
     /** If the argument is the meanTime parameter, check that it is
      *  positive.
-     *  @exception IllegalActionException If the meanTime value is 
+     *  @exception IllegalActionException If the meanTime value is
      *   not positive.
      */
     public void attributeChanged(Attribute attribute)
@@ -246,7 +246,7 @@ public class Poisson extends TimedSource {
         super.initialize();
         _tentativeCurrentOutputIndex = 0;
         _nextFiringTime = 0;
-        getDirector().fireAt(this,0.0);
+        getDirector().fireAt(this, 0.0);
     }
 
     /** Update the state of the actor to the correspond to that tentatively
