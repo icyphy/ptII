@@ -29,6 +29,7 @@
 
 package pt.kernel;
 
+import pt.data.*;
 import java.io.Serializable;
 import collections.LinkedList;
 
@@ -122,6 +123,22 @@ public class NamedObj implements Nameable, Serializable {
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
+    /** Add a Param. this causes the version number of the workspace
+     *  to be incremented.
+     *  @param The param to be added
+     */
+    public void addParam(Param p) throws NameDuplicationException, IllegalActionException {
+        if (((NamedObj)p.getContainer()) != this) {
+            throw new IllegalActionException("Trying to attach a param to a namedObj that is not its container");
+        }
+        try {
+            _params.append(p);
+        } catch (IllegalActionException ex) {
+            // cannot happen as every Param must have a name
+        }
+        workspace().incrVersion();
+    }
+
     /** Return a description of the object.
      *  @param verbosity The level of verbosity.
      */
@@ -200,6 +217,12 @@ public class NamedObj implements Nameable, Serializable {
         return _name; 
     }
 
+    /** Get a NamedList of the Params attached to this object
+     */
+    public NamedList getParams() {
+        return _params;
+    }
+
     /** Set or change the name.  If a null argument is given the
      *  name is set to an empty string.
      *  Increment the version of the workspace.
@@ -243,6 +266,9 @@ public class NamedObj implements Nameable, Serializable {
 
     // The name
     private String _name;
+
+    // The Params attached to this object.
+    private NamedList _params;
 
     // The workspace for this object.
     // This should be set by the constructor and never changed.
