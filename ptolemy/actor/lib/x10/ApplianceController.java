@@ -41,14 +41,15 @@ import x10.Command;
 
 //////////////////////////////////////////////////////////////////////////
 //// ApplianceController
-/** This x10 actor will broadcast appliance-module commands to the x10 network.
- * An appliance module is an x10 device that can turn an appliance on and off.
- * This is a specialized x10 broadcaster actor that will only transmit the 
+/**
+ * This x10 actor will broadcast appliance-module commands to the X10 network.
+ * An appliance module is an X10 device that can turn an appliance on and off.
+ * This is a specialized X10 broadcaster actor that will only transmit the 
  * following commands:
- *<ul>
- *<li> <b>On</b>: Turn on an appliance module.
- *<li> <b>Off</b>: Turn off an appliance module.
- *</ul>
+ * <ul>
+ * <li> <b>ON</b>: Turn on an appliance module.
+ * <li> <b>OFF</b>: Turn off an appliance module.
+ * </ul>
  *@author Colin Cochran (contributor: Edward A. Lee)
  *@version $Id$
  */
@@ -85,24 +86,24 @@ public class ApplianceController extends Sender {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
        
-   /** 
-    * When this port has a true input, the actor will send an <i>on</i> 
-    * command. Its type is boolean.
+   /** When this port has a true input, the actor will send an ON X10 
+    *  command. Its type is boolean.
     */
     public TypedIOPort on;
     
-   /** 
-    * When this port has a true input, the actor will send an <i>off</i> 
-    * command. Its type is boolean.
+   /** When this port has a true input, the actor will send an OFF X10 
+    *  command. Its type is boolean.
     */
     public TypedIOPort off;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Broadcast an appliance-module command on the x10 network.
-     *  @exception IllegalActionException Is super throws exception.
-     *  @exception RuntimeException If more than one input port is true.
+    /** If a true is received on the <i>on</i> input, then send an ON
+     *  command on the X10 network; if a true is received on the <i>off</i>
+     *  input, then send an OFF command on the X10 network.  If both are
+     *  received, then send the ON before the OFF.
+     *  @exception IllegalActionException Is an error occurs reading the inputs.
      */
     public void fire() throws IllegalActionException {
         // Must call super to get command destination.
@@ -111,15 +112,11 @@ public class ApplianceController extends Sender {
         boolean isOn = _hasTrueInput(on);
         boolean isOff = _hasTrueInput(off);
             
-        if (isOn & ! isOff) {
+        if (isOn) {
             _transmit(new Command((_destination), x10.Command.ON));
-        } else if (isOff & !isOn) {
+        }
+        if (isOff) {
             _transmit(new Command((_destination), x10.Command.OFF));
-        } else if (! isOn & ! isOff) {
-            // Do not send output if no commands are triggered. 
-        } else {
-            throw new RuntimeException("Appliance Controller: More than one " 
-                    + "input port is true.");
-        }	
+        }
     }
 }

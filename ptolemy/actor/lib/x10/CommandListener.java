@@ -37,12 +37,11 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.ChoiceAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
 import x10.Command;
 
 //////////////////////////////////////////////////////////////////////////
-//// CommandSensor
+//// CommandListener
 /** 
  * This actor will output a <i>true</i> whenever a specified command with the
  * specified house and unit code is detected.  Only commands that are present
@@ -59,12 +58,18 @@ import x10.Command;
  * will broadcast an on command and after some time an off command for that
  * house and unit code.  This actor, however, only reacts to the on command
  * by producing an output <i>true</i>.
+ * <p>
+ * Note also that the CM17A wireless interface is unidirectional, only sending
+ * commands to the X10 network, and not receiving from it.  Thus, this
+ * actor will not work with it (or more precisely, it will only report
+ * commands that are sent out from the same serial port).
  * 
  * @author Colin Cochran and Edward A. Lee
  * @version $Id$
+ * @see LevelSensor
  */
 
-public class CommandSensor extends Receiver {
+public class CommandListener extends Receiver {
 
 	/** Construct an actor with the given container and name.
 	 *  @param container The container.
@@ -74,13 +79,12 @@ public class CommandSensor extends Receiver {
 	 *  @exception NameDuplicationException If the container already has an
 	 *   actor with this name.
 	 */
-	public CommandSensor(CompositeEntity container, String name)
+	public CommandListener(CompositeEntity container, String name)
 			throws NameDuplicationException, IllegalActionException  {
 		super(container, name);
 
 		// Create output port.    
 		detected = new TypedIOPort(this, "detected", false, true);
-        new SingletonAttribute(detected, "_showName");
         // Output true if detected is detected.
         detected.setTypeEquals(BaseType.BOOLEAN);
         
@@ -137,15 +141,23 @@ public class CommandSensor extends Receiver {
         
         // Check whether a command is ready
         if (_commandReady()){
-        
-            Command command = _getCommand();
-       
-            byte function = command.getFunctionByte(); 
-       
-            String code = "" + command.getHouseCode() + command.getUnitCode();
-        
+            Command sensedCommand = _getCommand();
+            byte function = sensedCommand.getFunctionByte();
+            byte functionOfInterest = Command.ON;
+            String commandValue = command.getExpression();
+            if (commandValue.equals("OFF")) {
+                functionOfInterest = Command.OFF;
+            } else if (commandValue.equals("ALL_LIGHTS_ON")) {
+                functionOfInterest = Command.ALL_LIGHTS_ON;
+            } else if (commandValue.equals("ALL_LIGHTS_OFF")) {
+                functionOfInterest = Command.ALL_LIGHTS_OFF;
+            } else if (commandValue.equals("ALL_UNITS_OFF")) {
+                functionOfInterest = Command.ALL_UNITS_OFF;
+            }
+            // String comparison seems easiest here...
+            String code = "" + sensedCommand.getHouseCode() + sensedCommand.getUnitCode();
             if((houseCode.getExpression() + unitCode.getExpression()).equals(code)
-                    & (function == x10.Command.ON)){
+                    & (function == functionOfInterest)){
                 detected.send(0, new BooleanToken(true));
             } else {
                 detected.send(0, new BooleanToken(false));
@@ -154,7 +166,7 @@ public class CommandSensor extends Receiver {
         
         // Check the command queue for more commands to send.
         if(_commandReady()){
-            getDirector().fireAtCurrentTime(CommandSensor.this); 
+            getDirector().fireAtCurrentTime(CommandListener.this); 
         }
 	}	
 }

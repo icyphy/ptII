@@ -4,7 +4,7 @@
 <entity name="OnOff" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={105, 15, 815, 509}}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
@@ -109,7 +109,7 @@ on and off every 5 seconds.</text></svg></configure>
         </property>
         <property name="serialPort" class="ptolemy.kernel.attributes.ChoiceAttribute" value="COM1">
         </property>
-        <property name="houseCode" class="ptolemy.kernel.util.StringAttribute" value="E">
+        <property name="houseCode" class="ptolemy.kernel.util.StringAttribute" value="A">
         </property>
         <property name="unitCode" class="ptolemy.kernel.util.StringAttribute" value="1">
         </property>
@@ -129,15 +129,47 @@ on and off every 5 seconds.</text></svg></configure>
             </property>
         </port>
     </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={670, 386, 292, 222}}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 275.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Listener" class="ptolemy.actor.lib.x10.Listener">
+        <property name="x10Interface" class="ptolemy.kernel.attributes.ChoiceAttribute" value="CM17A">
+        </property>
+        <property name="serialPort" class="ptolemy.kernel.attributes.ChoiceAttribute" value="COM1">
+        </property>
+        <doc>Serial-port command listener for x10 devices</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 275.0">
+        </property>
+        <port name="receivedCommand" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="185.0, 150.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="TimedDelay.input" relation="relation2"/>
     <link port="TimedDelay.output" relation="relation"/>
     <link port="Clock.output" relation="relation2"/>
     <link port="ApplianceController.on" relation="relation2"/>
     <link port="ApplianceController.off" relation="relation"/>
+    <link port="Display.input" relation="relation3"/>
+    <link port="Listener.receivedCommand" relation="relation3"/>
 </entity>

@@ -10,16 +10,20 @@
       <entity name="ApplianceController" class="ptolemy.actor.lib.x10.ApplianceController">
        <doc>Serial-port command dispatcher for x10 Appliance devices</doc>
       </entity>
-      
+
+      <entity name="CommandListener" class="ptolemy.actor.lib.x10.CommandListener">
+       <doc>Serial-port command listener for x10 devices</doc>
+      </entity>
+            
       <entity name="LampController" class="ptolemy.actor.lib.x10.LampController">
        <doc>Serial-port command dispatcher for x10 Lamp devices</doc>
       </entity>
       
-      <entity name="Listener" class="ptolemy.actor.lib.x10.Listener">
-       <doc>Serial-port command listener for x10 devices</doc>
+      <entity name="LevelListener" class="ptolemy.actor.lib.x10.LevelListener">
+       <doc>Serial-port level command listener for x10 devices</doc>
       </entity>
-
-      <entity name="CommandSensor" class="ptolemy.actor.lib.x10.CommandSensor">
+      
+      <entity name="Listener" class="ptolemy.actor.lib.x10.Listener">
        <doc>Serial-port command listener for x10 devices</doc>
       </entity>
 

@@ -1,4 +1,4 @@
-/* A LampController actor sends x10-light-module commands to the x10 network.
+/* A LampController actor sends X10-light-module commands to the X10 network.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (ptolemy@ptolemy.eecs.berkeley.edu)
+@ProposedRating Green (eal@ptolemy.eecs.berkeley.edu)
 @AcceptedRating Yellow (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
@@ -32,7 +32,6 @@ package ptolemy.actor.lib.x10;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -42,20 +41,21 @@ import x10.Command;
 
 //////////////////////////////////////////////////////////////////////////
 //// LampController
-/** This x10 actor will broadcast lamp module commands to the x10 network.
+/**
+ * This x10 actor will broadcast lamp module commands to the X10 network
+ * based on the inputs that are provided when it fires.
  * A lamp module is an x10 device that can turn a lamp on and off or control 
  * a lamp's brightness level. This is a specialized x10 broadcaster actor 
  * that will only transmit the following commands:
  * <ul>
- * <li> <b>Bright</b>: Increase a lamp module's brightness level.
- * <li> <b>Dim</b>: Decrease a lamp module's brightness level.
+ * <li> <b>Bright</b>: Set a lamp module's brightness level.
+ * <li> <b>Dim</b>: Set a lamp module's dimness level.
  * <li> <b>Off</b>: Turn off a lamp module.
  * <li> <b>On</b>: Turn on a lamp module.
  * </ul>
- * @author Colin Cochran (contributor: Edward A. Lee)
+ * @author Colin Cochran and Edward A. Lee
  * @version $Id$
  */
-
 public class LampController extends Sender {
 
     /** Construct an actor with the given container and name.
@@ -69,9 +69,6 @@ public class LampController extends Sender {
     public LampController(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
-        // Create input ports and port parameters.
-        lightLevel = new Parameter(this, "lightLevel");
         
         bright = new TypedIOPort(this, "bright", true, false);
         dim = new TypedIOPort(this, "dim", true, false);
@@ -84,16 +81,8 @@ public class LampController extends Sender {
         new SingletonAttribute(on, "_showName");
         new SingletonAttribute(off, "_showName");
         
-        // lightLevel is the aboslute percentage amount to either dim or 
-        // brighten a light. It can be an integer between 1 and 100 
-        // inclusively and its default value is 15.
-		lightLevel.setExpression("15");
-        lightLevel.setTypeEquals(BaseType.INT);
-        
-        bright.setTypeEquals(BaseType.BOOLEAN);
-        bright.setMultiport(true);
-        dim.setTypeEquals(BaseType.BOOLEAN);
-        dim.setMultiport(true);
+        bright.setTypeEquals(BaseType.INT);
+        dim.setTypeEquals(BaseType.INT);
         on.setTypeEquals(BaseType.BOOLEAN);
         on.setMultiport(true);
         off.setTypeEquals(BaseType.BOOLEAN);
@@ -103,84 +92,68 @@ public class LampController extends Sender {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
      
-   /** When true, the actor will send a <i>bright</i> command.
+   /** When provided with an integer between 0 and 100, inclusive,
+    *  on this port, this actor will issue an X10 BRIGHT command.
     */
     public TypedIOPort bright;
    
-   /** When true, the actor will send a <i>dim</i> command.
+   /** When provided with an integer between 0 and 100, inclusive,
+    *  on this port, this actor will issue an X10 DIM command.
     */
     public TypedIOPort dim;  
          
-   /** When true, the actor will send an <i>on</i> command.
+   /** When provided with a true token on this input port,
+    *  this actor will send an ON X10 command.
     */
     public TypedIOPort on;
     
-   /** When true, the actor will send an <i>off</i> command.
+   /** When provided with a true token on this input port,
+    *  this actor will send an OFF X10 command.
     */
     public TypedIOPort off;
-
-	/** lightLevel is the absolute percentage amount to either dim or brighten 
-	 * a light connected to a lamp module. It is set to a value on a scale from
-	 * 1 to 100, inclusively, where 1 would change the brightness level by 1% 
-	 * of the lamp module's full power. Its default value is 15 percent of full 
-     * power. 
-	 */
-	public Parameter lightLevel;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Broadcast a light-module command on the x10 network. Only one 
-     * instruction-input port may have a <i>true</i> input. All other 
-     * instruction-input ports must be false or not have a connection. Each 
-     * port is a multiport.
-     * @exception IllegalActionException If super class throws.
-     * @exception RuntimeException If more than one instruction input port has
-     * a <i>true</i> value.
+    /** Broadcast a light-module command on the X10 network depending
+     *  on the input values. If <i>bright</i> or <i>dim</i> provide values
+     *  outside the range 0 to 100, inclusive, or if there is no input,
+     *  then no BRIGHT or DIM command is issued.  If <i>off</i> or <i>on</i>
+     *  are provided with a true input, then issue an OFF or ON command.
+     *  Normally it is not useful to provide more than one of these commands
+     *  per firing, but this actor will happily issue the commands if that
+     *  is what is requested.
+     *  @exception IllegalActionException If reading from the ports fails.
      */
     public void fire() throws IllegalActionException {
         // Must call super fire here to get the destination for this command. 
         super.fire();
 
-		_lightLevel = ((IntToken)lightLevel.getToken()).intValue();
+		int brightLevel = -1;
+        int dimLevel = -1;
+        if (bright.getWidth() > 0 && bright.hasToken(0)) {
+            brightLevel = ((IntToken)bright.get(0)).intValue();
+        }
+        if (dim.getWidth() > 0 && dim.hasToken(0)) {
+            dimLevel = ((IntToken)dim.get(0)).intValue();
+        }
 
-        boolean isBright = _hasTrueInput(bright);
-        boolean isDim = _hasTrueInput(dim);
         boolean isOff = _hasTrueInput(off);
         boolean isOn = _hasTrueInput(on);
         
-        if (isBright & ! (isDim | isOff | isOn )){
-            
-            _transmit(new Command((_destination), x10.Command.BRIGHT
-                    , _lightLevel));
-                    
-        } else if (isDim & ! (isBright | isOff | isOn)) {
-           
-            _transmit(new Command((_destination), x10.Command.DIM
-                    , _lightLevel));
-                    
-        } else if (isOn & ! (isBright | isDim | isOff)) {
-            
+        if (brightLevel >= 0 && brightLevel <= 100){
+            _transmit(new Command((_destination), x10.Command.BRIGHT,
+                    brightLevel));
+        }
+        if (dimLevel >= 0 && dimLevel <= 100) {
+            _transmit(new Command((_destination), x10.Command.DIM,
+                    dimLevel));
+        }
+        if (isOn) {
             _transmit(new Command((_destination), x10.Command.ON));
-            
-        } else if (isOff & ! (isBright | isDim | isOn)) {
-            
-            _transmit(new Command((_destination), x10.Command.OFF));
-            
-        } else if (! (isBright | isDim | isOff | isOn)) {
-            // Do not send output if no commands are triggered. 
-        } else {
-            throw new RuntimeException( "Lamp Controller: More than one input " 
-                    + "port is true.");
+        }
+        if (isOff) {
+            _transmit(new Command((_destination), x10.Command.OFF));  
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-	/** This is the amount to brighten or dim the lamp module. Its type is
-	 * int.
-	 */
-	protected int _lightLevel;
-
 }

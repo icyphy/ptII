@@ -1,5 +1,4 @@
-/* This x10 receiver actor receives any and all commands and outputs them as a
-string. 
+/* Output X10 commands detected on the X10 network.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -25,7 +24,7 @@ string.
 										PT_COPYRIGHT_VERSION_2
 										COPYRIGHTENDKEY
 
-@ProposedRating Green (ptolemy@ptolemy.eecs.berkeley.edu)
+@ProposedRating Green (eal@ptolemy.eecs.berkeley.edu)
 @AcceptedRating Yellow (ptolemy@ptolemy.eecs.berkeley.edu)
 */
 
@@ -41,8 +40,8 @@ import x10.Command;
 
 //////////////////////////////////////////////////////////////////////////
 //// Listener
-/** Receive any and all commands from the x10 network and subsequently 
- *  output each one as a string.
+/** Monitor the X10 network for any and all commands and output a string
+ *  description of the command.
  * 
  *  @author Colin Cochran (contributor: Edward A. Lee)
  *  @version $Id$
@@ -64,18 +63,15 @@ public class Listener extends Receiver {
 
 		// Create output port.    
 		receivedCommand = new TypedIOPort(this, "receivedCommand", false, true);
-        
-		// The command received.
 		receivedCommand.setTypeEquals(BaseType.STRING);
 	}
 	
 	///////////////////////////////////////////////////////////////////
 	////                     ports and parameters                  ////
     
-	/** Output the command received as a string.
+	/** Port on which to output the command received as a string.
 	 */
 	public TypedIOPort receivedCommand;
-
 
 	///////////////////////////////////////////////////////////////////
 	////                         public methods                    ////
@@ -87,35 +83,10 @@ public class Listener extends Receiver {
 	public void fire() throws IllegalActionException {
 		super.fire();
         
-        // Check if a command is ready. 
+        // Check whether a command is ready. 
         if(_commandReady()){
             Command command = _getCommand();
-        
-            byte function = command.getFunctionByte(); 
-        
-            String functionString = "";
-
-            if (function == x10.Command.ALL_LIGHTS_OFF){
-                functionString = "ALL_LIGHTS_OFF";
-            } else if (function == x10.Command.ALL_LIGHTS_ON){
-                functionString = "ALL_LIGHTS_ON";
-            } else if (function == x10.Command.ALL_UNITS_OFF){
-                functionString = "ALL_UNITS_OFF";
-            } else if (function == x10.Command.BRIGHT){
-                functionString = "BRIGHT";
-            } else if (function == x10.Command.DIM){
-                functionString = "DIM";
-            } else if (function == x10.Command.OFF){
-                functionString = "OFF";
-            } else if (function == x10.Command.ON){
-                functionString = "ON";
-            }
-        
-            String commandString = "<" + command.getHouseCode() 
-                    + command.getUnitCode() + "-" + functionString + "-" 
-                    + command.getLevel() + ">";
-        
-            receivedCommand.send(0, new StringToken(commandString));
+            receivedCommand.send(0, new StringToken(_commandToString(command)));
         }
         
         // Check the command queue for more commands to send.

@@ -42,7 +42,7 @@ import x10.Command;
 //////////////////////////////////////////////////////////////////////////
 //// Sender
 /** 
- * Add broadcast functionality to the x10 interface. Derived classes need to
+ * Add broadcast functionality to the X10 interface. Derived classes need to
  * implement logic for sending commands.
  * 
  * @author Colin Cochran (contributor: Edward A. Lee)

@@ -41,16 +41,12 @@ import x10.UnitListener;
 
 //////////////////////////////////////////////////////////////////////////
 //// Receiver
-/** Receive x10 commands propagating through an x10 network. As x10 
- * commands propagate through an x10 network, the interface device will listen
- * for any activity. If activity is detected, a callback method is invoked by a 
- * listening thread that is constantly blocking and reading the serial port. 
- * This listening thread runs if a <i>UnitListener</i> has been registered to a 
- * <i>Controller</i>. For more information pertaining to UnitListeners, refer 
- * to the x10 API: 
- * <a href="http://x10.homelinux.org/docs/"> http://x10.homelinux.org/docs/</a>
- * 
- * @author Colin Cochran (contributor: Edward A. Lee)
+/** 
+ * Listen for X10 commands propagating through an X10 network. When a
+ * command is detected, this actor requests a firing by calling
+ * fireAtCurrentTime() on its director. On the next firing, it produces
+ * a string description of the command.
+ * @author Colin Cochran and Edward A. Lee
  * @version $Id$
  */
 
@@ -72,48 +68,40 @@ public class Receiver extends X10Interface {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-	/** A <i>UnitListener</i> is registered to the x10 controller to receive
-     * commands from the x10 network.
-     * @exception IllegalActionException If the super class throws an 
-     * exception.
+	/** Begin listening for X10 commands.
+     *  @exception IllegalActionException If the super class throws it. 
      */
 	public void initialize() throws IllegalActionException {
 		super.initialize();
-        
-        _listener = new CommandListener();
-                
         _interface.addUnitListener(_listener);
 	}
     
     /** Remove the <i>UnitListener</i> from the x10 interface.
-     * @exception IllegalActionException If the super class throws an 
-     * exception.
+     *  @exception IllegalActionException If the super class throws it. 
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        
         _interface.removeUnitListener(_listener);
     }
     
 	///////////////////////////////////////////////////////////////////
 	////                         protected methods                 ////
     
-    /**Remove and then return the first command from the </i>commandQueue<i>.
-     * @return Command 
+    /** Remove and then return the first command from the command queue.
+     *  @return The first command in the command queue, or null if there
+     *   is none. 
      */
     protected Command _getCommand (){
-        
         synchronized (_commandQueue){
             return (Command) _commandQueue.removeFirst();   
         }       
     }
     
     /** Return true if the </i>commandQueue<i> is not empty; return false 
-     * otherwise.
-     * @return boolean
+     *  otherwise.
+     *  @return True if there is a command in the command queue.
      */
     protected boolean _commandReady (){
-
         synchronized (_commandQueue){
             if (_commandQueue.size() != 0){
                 return(true);
@@ -122,33 +110,62 @@ public class Receiver extends X10Interface {
             }
         }
     }
+    
+    /** Return a string description of the command.
+     *  @return A string description of the command.
+     */
+    protected static String _commandToString(Command command) {
+        byte function = command.getFunctionByte(); 
+        
+        String functionString = "UNRECOGNIZED_COMMAND";
+
+        if (function == x10.Command.ALL_LIGHTS_OFF){
+            functionString = "ALL_LIGHTS_OFF";
+        } else if (function == x10.Command.ALL_LIGHTS_ON){
+            functionString = "ALL_LIGHTS_ON";
+        } else if (function == x10.Command.ALL_UNITS_OFF){
+            functionString = "ALL_UNITS_OFF";
+        } else if (function == x10.Command.BRIGHT){
+            functionString = "BRIGHT";
+        } else if (function == x10.Command.DIM){
+            functionString = "DIM";
+        } else if (function == x10.Command.OFF){
+            functionString = "OFF";
+        } else if (function == x10.Command.ON){
+            functionString = "ON";
+        }
+        
+        String commandString = "<" + command.getHouseCode() 
+                + command.getUnitCode() + "-" + functionString + "-" 
+                + command.getLevel() + ">";
+        
+        return commandString;
+    }
 	
 	///////////////////////////////////////////////////////////////////
 	////                       private variables                   ////
 	
 	/** This is a linked list that stores any and all received commands from 
-     * a registered </i>CommandListener<i>. 
+     *  a registered </i>CommandListener<i>. 
 	 */
     private LinkedList _commandQueue = new LinkedList();
     
-	/** This is the </i>unitListener<i> that will be listening for commands 
-     * from the x10 network
+	/** This is the </i>UnitListener<i> that will be listening for commands 
+     *  from the x10 network
 	 */
-    private CommandListener _listener;
+    private CommandListener _listener = new CommandListener();
 
-    
     ///////////////////////////////////////////////////////////////////
     ////                        private inner class                ////
     
    /** This is an implementation of the <i>UnitListener</i> interface. One 
-    * callback function exists for each instruction. Refer to the x10 API
-    * for additional information concerning the <i>UntiListener</i> class:
-    * <a href="http://x10.homelinux.org/docs/"> 
-    * http://x10.homelinux.org/docs/</a>
+    *  callback function exists for each instruction. Refer to the x10 API
+    *  for additional information concerning the <i>UntiListener</i> class:
+    *  <a href="http://x10.homelinux.org/docs/"> 
+    *  http://x10.homelinux.org/docs/</a>
     */
     private class CommandListener implements UnitListener {
-        
-        
+
         ///////////////////////////////////////////////////////////////////
         ///                       public methods                       ////
         
@@ -181,13 +198,15 @@ public class Receiver extends X10Interface {
          * @return void
          */
         private void _appendCommand (UnitEvent event){
-        
+            if (_debugging) {
+                _debug("Detected X10 command: " + _commandToString(event.getCommand()));
+            }
             synchronized (_commandQueue){
                 _commandQueue.addLast(event.getCommand());
             }
-    
             try {
-               getDirector().fireAtCurrentTime(Receiver.this);
+                // FIXME: Should offer alternative semantics, like blocking.
+                getDirector().fireAtCurrentTime(Receiver.this);
             } catch (IllegalActionException ex) {
                 throw new RuntimeException("fireAtCurrentTime() "
                         + "threw an exception", ex);

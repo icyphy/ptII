@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Superb x10 Actors
+# Makefile for Ptolemy II x10 Actors
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = ApplianceController.java \
 	LampController.java \
+	LevelSensor.java \
 	Listener.java \
 	CommandSensor.java \
 	Receiver.java \
