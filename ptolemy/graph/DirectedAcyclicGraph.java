@@ -219,6 +219,34 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
         return _leastElementShared(subset);
     }
 
+    /** Test if this CPO is a lattice.
+     *  By a theorem in Davey and Priestley, only the LUB or the GLB
+     *  need to be checked, but not both. The implementation tests the
+     *  existence of the LUB of any pair of elements, as well as the
+     *  existence of the bottom and top elements. The complexity is
+     *  O(|N|*|N|) where N for elements, and an individual computation
+     *  is the LUB of two elements.
+     *  @return <code>true</code> if this CPO is a lattice;
+     *   <code>false</code> otherwise.
+     */
+    public boolean isLattice() {
+	_check();
+
+	if (bottom() == null || top() == null) {
+	    return false;
+	}
+
+	Object[] nodes = getNodes();
+	for (int i = 0; i < nodes.length-1; i++) {
+	    for (int j = i+1; j < nodes.length; j++) {
+		if (leastUpperBound(nodes[i], nodes[j]) == null) {
+		    return false;
+		}
+	    }
+	}
+	return true;
+    }
+
     /** Compute the least element of a subset.
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the least element of the subset,

@@ -119,6 +119,14 @@ public interface CPO
      */
     public Object greatestElement(Object[] subset);
 
+    /** Test if this CPO is a lattice.
+     *  A lattice is a CPO where the LUB and GLB of any pair of elements
+     *  exist.
+     *  @return <code>true</code> if this CPO is a lattice;
+     *   <code>false</code> otherwise.
+     */
+    public boolean isLattice();
+
     /** Compute the least element of a subset.
      *  The least element of a subset is an element in the
      *  subset that is lower than all the other element in the
