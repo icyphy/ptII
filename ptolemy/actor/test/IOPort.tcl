@@ -94,8 +94,8 @@ test IOPort-2.3 {Attempt to set erroneous container} {
     set p1 [java::new ptolemy.actor.IOPort]
     catch {$p1 setContainer $e1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object names: .<Unnamed Object> and .<Unnamed Object>:
-IOPort can only be contained by objects implementing the Actor interface.}}
+} {{ptolemy.kernel.util.IllegalActionException: IOPort can only be contained by objects implementing the Actor interface.
+  in .<Unnamed Object> and .<Unnamed Object>}}
 
 ######################################################################
 ####
@@ -248,8 +248,8 @@ test IOPort-6.1 {Make sure multiple links not allowed on single ports} {
     $p1 liberalLink $r1
     catch {$p1 liberalLink $r2} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object names: .<Unnamed Object>.E1.P1 and .<Unnamed Object>.R2:
-Attempt to link more than one relation to a single port.}}
+} {{ptolemy.kernel.util.IllegalActionException: Attempt to link more than one relation to a single port.
+  in .<Unnamed Object>.E1.P1 and .<Unnamed Object>.R2}}
 
 ######################################################################
 ####
@@ -273,8 +273,8 @@ test IOPort-7.2 {Check getReceivers} {
     set r1 [java::new ptolemy.actor.IORelation $e0 R1]
     catch {$p1 getReceivers $r1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object names: .<Unnamed Object>.E1.P1 and .<Unnamed Object>.R1:
-getReceivers: Relation argument is not linked to me.}}
+} {{ptolemy.kernel.util.IllegalActionException: getReceivers: Relation argument is not linked to me.
+  in .<Unnamed Object>.E1.P1 and .<Unnamed Object>.R1}}
 
 ######################################################################
 ####
@@ -412,11 +412,11 @@ test IOPort-9.1.1 {Check hasRoom and hasToken methods} {
     catch {$p2 hasRoom 0} res7
     set res8 [$p2 hasToken 0]
     list $res1 $res2 $res3 $res4 $res5 $res6 $res7 $res8
-} {1 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.E1.P1:
-hasToken: channel index is out of range.} {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.E2.P2:
-hasRoom: channel index is out of range.} 0 0 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.E1.P1:
-hasToken: channel index is out of range.} {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.E2.P2:
-hasRoom: channel index is out of range.} 1}
+} {1 {ptolemy.kernel.util.IllegalActionException: hasToken: channel index is out of range.
+  in .<Unnamed Object>.E1.P1} {ptolemy.kernel.util.IllegalActionException: hasRoom: channel index is out of range.
+  in .<Unnamed Object>.E2.P2} 0 0 {ptolemy.kernel.util.IllegalActionException: hasToken: channel index is out of range.
+  in .<Unnamed Object>.E1.P1} {ptolemy.kernel.util.IllegalActionException: hasRoom: channel index is out of range.
+  in .<Unnamed Object>.E2.P2} 1}
 
 test IOPort-9.2 {Check unlink and send to dangling relation} {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -441,8 +441,8 @@ test IOPort-9.2 {Check unlink and send to dangling relation} {
     $p1 {send int ptolemy.data.Token} 0 $token
     catch {$p2 get 0} msg
     list [$p2 getWidth] $msg
-} {0 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.E2.P2:
-get: channel index is out of range.}}
+} {0 {ptolemy.kernel.util.IllegalActionException: get: channel index is out of range.
+  in .<Unnamed Object>.E2.P2}}
 
 test IOPort-9.3 {Check unlink and get from unlinked port} {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -473,9 +473,9 @@ test IOPort-9.3 {Check unlink and get from unlinked port} {
     catch {$p1 hasRoom 0} msg1
     catch {$p2 get 0} msg2
     list [$p2 getWidth] $msg1 $msg2
-} {1 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.E1.P1:
-hasRoom: channel index is out of range.} {ptolemy.actor.NoTokenException: Object name: .<Unnamed Object>.E2.P2:
-Attempt to get data from an empty mailbox.}}
+} {1 {ptolemy.kernel.util.IllegalActionException: hasRoom: channel index is out of range.
+  in .<Unnamed Object>.E1.P1} {ptolemy.actor.NoTokenException: Attempt to get data from an empty mailbox.
+  in .<Unnamed Object>.E2.P2}}
 
 test IOPort-9.4 {Check loopback send} {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -893,8 +893,8 @@ test IOPort-11.3 {Check liberalLink multi-*-relation from inside } {
     $r2 setWidth 0
     catch {$p0 link $r2} msg1
     list $msg1
-} {{ptolemy.kernel.util.IllegalActionException: Object names: .<Unnamed Object>.P0 and .<Unnamed Object>.R2:
-Attempt to link a second bus relation with unspecified width to the inside of a port.}}
+} {{ptolemy.kernel.util.IllegalActionException: Attempt to link a second bus relation with unspecified width to the inside of a port.
+  in .<Unnamed Object>.P0 and .<Unnamed Object>.R2}}
 
 test IOPort-11.4 {Check liberalLink multi-*-relation from outside } {
     set e0 [java::new ptolemy.actor.CompositeActor]
@@ -916,8 +916,8 @@ test IOPort-11.4 {Check liberalLink multi-*-relation from outside } {
     $r3 setWidth 0
     catch {$p0 link $r3} msg1
     list $msg1
-} {{ptolemy.kernel.util.IllegalActionException: Object names: .<Unnamed Object>.P0 and .R3:
-Attempt to link a second bus relation with unspecified width to the outside of a port.}}
+} {{ptolemy.kernel.util.IllegalActionException: Attempt to link a second bus relation with unspecified width to the outside of a port.
+  in .<Unnamed Object>.P0 and .R3}}
 
 test IOPort-11.5 {Check liberalLink *-relation from both inside and outside } {
     set e0 [java::new ptolemy.actor.CompositeActor]

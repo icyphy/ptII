@@ -60,5 +60,5 @@ test NoTokenException-2.2 {Constructor that takes a Nameable and a String} {
 	    $n \
 	     "Detail Message"]
     $ex getMessage
-} {Object name: .My NMamedObj:
-Detail Message}
+} {Detail Message
+  in .My NMamedObj}
