@@ -52,7 +52,10 @@ JSRCS = \
 	PrepopulatedTutorial.java \
 	SimpleTutorial.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	graph.dtd \
+	graph.xml \
+	package.html 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -63,7 +66,19 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
-	$(PTCLASSALLJAR)
+	$(PTCLASSALLJAR) \
+	'EditorTutorial$$1.class' \
+	'EditorTutorial$$LayoutActionListener.class' \
+	'EditorTutorial$$LayoutWidget.class' \
+	'EditorTutorial$$LayoutWidget$LayoutActionListener.class' \
+	'EditorTutorial$$LayoutWidget$SelectionListener.class' \
+	'NestedTutorial$$1.class' \
+	'NestedTutorial$$2.class' \
+	'NodeRendererTutorial$$1.class' \
+	'NodeRendererTutorial$$2.class' \
+	'PrepopulatedTutorial$$1.class' \
+	'PrepopulatedTutorial$$2.class' \
+	'SimpleTutorial$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
