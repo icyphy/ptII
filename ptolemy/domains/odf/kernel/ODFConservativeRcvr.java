@@ -174,6 +174,13 @@ public class ODFConservativeRcvr extends TimedQueueReceiver
         return token;
     }
 
+    /** Reset local flags.
+     */
+    public void initialize() {
+        _simulIgnoreFlag = false; 
+	_terminate = false;
+    }
+
     /** Do a blocking write on the queue. If at any point during this 
      *  method this receiver is scheduled for termination, then throw 
      *  a TerminateProcessException which will cease activity for the 
