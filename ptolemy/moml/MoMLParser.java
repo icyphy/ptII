@@ -1715,31 +1715,65 @@ public class MoMLParser extends HandlerBase {
             if (reference == null) {
                 // No previously defined class with this name.
                 // First attempt to instantiate a Java class.
+
+                // If we throw an error or exception be sure to save the
+                // original error message before we go off and try to fix the
+                // error.  Sometimes, the original error message is the true
+                // cause of the problem, and we should always provide the user
+                // with the cause of the original error in the unlikely event
+                // that our error correction fails
+                StringBuffer errorMessage = new StringBuffer();
                 try {
                     newClass = Class.forName(className, true, _classLoader);
                 } catch (Exception ex) {
                     // NOTE: Java sometimes throws ClassNotFoundException
                     // and sometimes NullPointerException when the class
                     // does not exist.  Hence the broad catch here.
+                    errorMessage.append("\n-- "
+                            + className + ": " + ex.getMessage() + "\n");
+
 		    try {
 			reference = _attemptToFindMoMLClass(className, source);
 		    } catch (Exception ex2) {
 			throw new Exception(
                                 "-- "
-                                + className
+                                + errorMessage.toString()
+                                + className + ": "
                                 + ": not found as a Java class.\n"
                                 + ex2.getMessage());
 		    }
                 } catch (Error error) {
-                    // Java might throw a ClassFormatError.
+                    // Java might throw a ClassFormatError, but
+                    // we usually get and XmlException
+                    errorMessage.append("\n-- "
+                            + className + ": " + error.getMessage()
+                            + "\n   If there is an error in the code "
+                            + "generator, "
+                            + "then an Error might be thrown here.\n");
 		    try {
 			reference = _attemptToFindMoMLClass(className, source);
-		    } catch (Exception ex2) {
+		    } catch (XmlException ex2) {
 			throw new Exception(
                                 "-- "
+                                + errorMessage.toString()
                                 + className
-                                + ": found invalid Java class file.\n"
+                                + ": XmlException:\n"
                                 + ex2.getMessage());
+		    } catch (ClassFormatError ex3) {
+			throw new Exception(
+                                "-- :"
+                                + errorMessage.toString()
+                                + className
+                                + ": ClassFormatError: "
+                                + "found invalid Java class file.\n"
+                                + ex3.getMessage());
+		    } catch (Exception ex4) {
+			throw new Exception(
+                                "-- "
+                                + errorMessage.toString()
+                                + className
+                                + ": Exception:\n" 
+                                + ex4.getMessage());
 		    }
                 }
             }
