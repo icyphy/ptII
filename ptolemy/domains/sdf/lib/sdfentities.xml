@@ -7,6 +7,8 @@
       <group>
 <doc>Synchronous dataflow actors</doc>
 
+<entity name="DoubleToMatrix" class="ptolemy.domains.sdf.lib.DoubleToMatrix"/>
+<entity name="MatrixToDouble" class="ptolemy.domains.sdf.lib.MatrixToDouble"/>
 <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
 <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
 </entity>
