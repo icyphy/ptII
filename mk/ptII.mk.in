@@ -88,6 +88,13 @@ KVM_DIR = @KVM_DIR@
 # Directory the Palm Pilot Hot Sync program looks for downloads
 PALM_ADD_ON_DIR = /Program\ Files/Palm/Add-on
 
+# Waba is another JDK for PalmOS, see
+# http://www.wabasoft.clom
+WABA_CLASSES = @WABA_CLASSES@
+
+# Directory that contains the waba used by PalmOS
+WABA_DIR = @WABA_DIR@
+
 ########## You should not have to change anything below this line ######
 
 # The 'javac' compiler.
