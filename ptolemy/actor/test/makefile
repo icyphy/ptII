@@ -58,6 +58,7 @@ JSIMPLE_TESTS = \
 	CompositeActor.tcl \
 	Director.tcl \
 	Manager.tcl \
+	NoRoomException.tcl \
 	IOPort.tcl \
 	IORelation.tcl \
 	TypedIOPort.tcl \
