@@ -106,12 +106,6 @@ director dependent.
 */
 public abstract class CTDirector extends StaticSchedulingDirector {
 
-    public static boolean STAT = false;
-    public  int NSTEP = 0;
-    public  int NFUNC = 0;
-    public  int NFAIL = 0;
-    public  int NROLL = 0;
-
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -173,6 +167,31 @@ public abstract class CTDirector extends StaticSchedulingDirector {
                 "setting scheduler error");
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** Static public variable indicating whether the statistics
+     *  is to be collected.
+     */
+    public static boolean STAT = false;
+    
+    /** The number of integration steps.
+     */
+    public  int NSTEP = 0;
+
+    /** The number of function evaluations, which is the same as the
+     *  total number of rounds.
+     */
+    public  int NFUNC = 0;
+
+    /** The number of failed steps.
+     */
+    public  int NFAIL = 0;
+
+    /** The number of rollbacks. Needed by mixed-signal directors.
+     */
+    public  int NROLL = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -317,7 +336,10 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         return _stopTime;
     }
 
-    /** Return the suggested next step size.
+    /** Return the suggested next step size. The suggested step size is
+     *  the step size that the step-size-control actors suggested 
+     *  at the end of last integration step. It is the prediction 
+     *  of the new step size.
      *  @return The suggested next step size.
      */
     public final double getSuggestedNextStepSize() {
@@ -345,7 +367,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
 
     /** Register a break point at a future time. This requests the
      *  Director to fire exactly at each registered time.
-     *  Override the fireAt() method in Director.
+     *  Note: The first argument is ignored unless for reporting
+     *  the exception.
      *  @param actor The actor that requested the fire
      *  @param time The fire time
      *  @exception IllegalActionException If the time if before
@@ -379,19 +402,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public Receiver newReceiver() {
         return new CTReceiver();
-    }
-
-    /** set the given solver to be the current ODE Solver. If the solver
-     *  can not be served as the current ODE solver then an
-     *  exception should be thrown.
-     *  @param solver The solver to be set.
-     *  @exception  IllegalActionException Never thrown in this base class.
-     *     It may be thrown by the direved classes if the solver is not
-     *     appropriate.
-     */
-    public void setCurrentODESolver(ODESolver solver)
-            throws IllegalActionException {
-        _currentSolver = solver;
     }
 
     /** Set the current step size. This variable is very import during
@@ -517,6 +527,19 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
         newsolver._makeSolverOf(this);
         return newsolver;
+    }
+
+    /** set the given solver to be the current ODE Solver. If the solver
+     *  can not be served as the current ODE solver then an
+     *  exception should be thrown.
+     *  @param solver The solver to be set.
+     *  @exception  IllegalActionException Never thrown in this base class.
+     *     It may be thrown by the direved classes if the solver is not
+     *     appropriate.
+     */
+    protected void _setCurrentODESolver(ODESolver solver)
+            throws IllegalActionException {
+        _currentSolver = solver;
     }
 
     /** Set whether this is a breakpoint processing iteration.

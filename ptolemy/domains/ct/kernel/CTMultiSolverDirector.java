@@ -186,7 +186,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
         double tnow = getCurrentTime();
         _setIsBPIteration(false);
         //choose ODE solver
-        setCurrentODESolver(getODESolver());
+        _setCurrentODESolver(getODESolver());
         // If now is a break point, remove the break point from table;
         if(breakPoints != null) {
             while (!breakPoints.isEmpty()) {
@@ -197,7 +197,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
                 } else if(Math.abs(bp-tnow) < getTimeResolution()){
                     // break point now!
                     breakPoints.removeFirst();
-                    setCurrentODESolver(_breakpointSolver);
+                    _setCurrentODESolver(_breakpointSolver);
                     setCurrentStepSize(getMinStepSize());
                     _debug(getFullName() + 
                                 "IN BREAKPOINT iteration.");

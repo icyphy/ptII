@@ -257,7 +257,7 @@ public class CTEmbeddedNRDirector  extends CTMultiSolverDirector
             while (!breakPoints.isEmpty()) {
                 bp = ((Double)breakPoints.first()).doubleValue();
                 if(Math.abs(bp - getCurrentTime()) < getTimeResolution()) {
-                    setCurrentODESolver(getBreakpointSolver());
+                    _setCurrentODESolver(getBreakpointSolver());
                     //_debug(getFullName() + 
                     //        " Change to break point solver " + 
                     //        getCurrentODESolver().getFullName());

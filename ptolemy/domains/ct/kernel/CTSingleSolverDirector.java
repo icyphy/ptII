@@ -125,7 +125,7 @@ public class CTSingleSolverDirector extends CTDirector {
             _solverclass = 
                 ((StringToken)((Parameter)param).getToken()).stringValue();
             _defaultSolver = _instantiateODESolver(_solverclass);
-            setCurrentODESolver(_defaultSolver);
+            _setCurrentODESolver(_defaultSolver);
         } else {
             super.attributeChanged(param);
         }
@@ -467,7 +467,7 @@ public class CTSingleSolverDirector extends CTDirector {
         setCurrentTime(getStartTime());
         setSuggestedNextStepSize(getInitialStepSize());
         setCurrentStepSize(getInitialStepSize());
-        setCurrentODESolver(_defaultSolver);
+        _setCurrentODESolver(_defaultSolver);
         TotallyOrderedSet bps = getBreakPoints();
         if(bps != null) {
             bps.clear();
