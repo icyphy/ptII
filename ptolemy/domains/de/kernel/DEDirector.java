@@ -523,7 +523,7 @@ public class DEDirector extends Director {
             _enqueueEvent(actor, time + getCurrentTime());
             _eventQueue.notifyAll();
             if (_debugging) {
-                _debug("Notify was done in fireAtReletiveTime (winthrop).");
+                _debug("Notify was done in fireAtRelativeTime (winthrop).");
             }
         }
     }
