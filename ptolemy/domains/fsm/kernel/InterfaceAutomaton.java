@@ -286,7 +286,7 @@ public class InterfaceAutomaton extends FSMActor {
 
         // compute the product automaton
         InterfaceAutomaton composition = _computeProduct(automaton,
-                                                         considerTransient);
+                considerTransient);
 
         // prune illegal states
         _pruneIllegalStates();
@@ -337,7 +337,7 @@ public class InterfaceAutomaton extends FSMActor {
             while (subStates.hasNext()) {
                 State subState = (State)subStates.next();
                 if (_condition1Satisfied(this, superState, subAutomaton,
-                                        subState)) {
+                        subState)) {
                     StatePair pair = new StatePair(superState, subState);
                     simulation.add(pair);
                 }
@@ -357,7 +357,7 @@ public class InterfaceAutomaton extends FSMActor {
                 State subState = pair.second();
 
                 if (_condition2Satisfied(this, superState, subAutomaton,
-                                        subState, simulation) == false) {
+                        subState, simulation) == false) {
                     toBeRemoved.add(pair);
                 }
             }
@@ -436,7 +436,7 @@ public class InterfaceAutomaton extends FSMActor {
                     (InterfaceAutomatonTransition)transitions.next();
                 int transitionType = transition.getType();
                 if (transitionType ==
-                            InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
+                        InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
                     State destinationState = transition.destinationState();
                     if ( !closure.contains(destinationState)) {
                         closure.add(destinationState);
@@ -460,7 +460,7 @@ public class InterfaceAutomaton extends FSMActor {
      *  @return A set of instances of State.
      */
     public Set externallyEnabledDestinations(State sourceState,
-                                                 String transitionLabel) {
+            String transitionLabel) {
         Set destinations = new HashSet();
         Set closure = epsilonClosure(sourceState);
         Iterator sources = closure.iterator();
@@ -470,7 +470,7 @@ public class InterfaceAutomaton extends FSMActor {
             Iterator transitions = outPort.linkedRelationList().iterator();
             while (transitions.hasNext()) {
                 InterfaceAutomatonTransition transition =
-                        (InterfaceAutomatonTransition)transitions.next();
+                    (InterfaceAutomatonTransition)transitions.next();
                 if (transition.getLabel().equals(transitionLabel)) {
                     State destination = transition.destinationState();
                     destinations.add(destination);
@@ -489,7 +489,7 @@ public class InterfaceAutomaton extends FSMActor {
      */
     public Set externallyEnabledInputTransitionLabels(State state) {
         Set transitionLabels = _transitionLabelsFrom(state,
-                        InterfaceAutomatonTransition._INPUT_TRANSITION);
+                InterfaceAutomatonTransition._INPUT_TRANSITION);
 
         Set closure = epsilonClosure(state);
         closure.remove(state);
@@ -497,7 +497,7 @@ public class InterfaceAutomaton extends FSMActor {
         while (states.hasNext()) {
             State nextState = (State)states.next();
             Set labels = _transitionLabelsFrom(nextState,
-                            InterfaceAutomatonTransition._INPUT_TRANSITION);
+                    InterfaceAutomatonTransition._INPUT_TRANSITION);
             transitionLabels.retainAll(labels);
         }
         return transitionLabels;
@@ -512,7 +512,7 @@ public class InterfaceAutomaton extends FSMActor {
      */
     public Set externallyEnabledOutputTransitionLabels(State state) {
         Set transitionLabels = _transitionLabelsFrom(state,
-                        InterfaceAutomatonTransition._OUTPUT_TRANSITION);
+                InterfaceAutomatonTransition._OUTPUT_TRANSITION);
 
         Set closure = epsilonClosure(state);
         closure.remove(state);
@@ -520,7 +520,7 @@ public class InterfaceAutomaton extends FSMActor {
         while (states.hasNext()) {
             State nextState = (State)states.next();
             Set labels = _transitionLabelsFrom(nextState,
-                        InterfaceAutomatonTransition._OUTPUT_TRANSITION);
+                    InterfaceAutomatonTransition._OUTPUT_TRANSITION);
             transitionLabels.addAll(labels);
         }
         return transitionLabels;
@@ -709,7 +709,7 @@ public class InterfaceAutomaton extends FSMActor {
             if (nameDifference.contains(name)) {
                 int type = transition.getType();
                 if ((type == InterfaceAutomatonTransition._INPUT_TRANSITION) ||
-                    (type == InterfaceAutomatonTransition._OUTPUT_TRANSITION)) {
+                        (type == InterfaceAutomatonTransition._OUTPUT_TRANSITION)) {
                     transition.label.setExpression(name + ";");
                 }
             }
@@ -806,34 +806,34 @@ public class InterfaceAutomaton extends FSMActor {
 
             ComponentPort superPort = superState.outgoingPort;
             Iterator superTransitions =
-                                    superPort.linkedRelationList().iterator();
+                superPort.linkedRelationList().iterator();
             while (superTransitions.hasNext()) {
                 InterfaceAutomatonTransition superTransition =
-                        (InterfaceAutomatonTransition)superTransitions.next();
+                    (InterfaceAutomatonTransition)superTransitions.next();
                 State superDestination = superTransition.destinationState();
                 String superLabel = superTransition.getLabel();
 
                 int transitionType = superTransition.getType();
                 if ((transitionType ==
                         InterfaceAutomatonTransition._INPUT_TRANSITION) ||
-                    (transitionType ==
-                        InterfaceAutomatonTransition._OUTPUT_TRANSITION)) {
+                        (transitionType ==
+                                InterfaceAutomatonTransition._OUTPUT_TRANSITION)) {
 
                     // check whether sub automaton has same transition
                     ComponentPort subPort = subState.outgoingPort;
                     Iterator subTransitions =
-                                    subPort.linkedRelationList().iterator();
+                        subPort.linkedRelationList().iterator();
                     while (subTransitions.hasNext()) {
                         InterfaceAutomatonTransition subTransition =
                             (InterfaceAutomatonTransition)subTransitions.next();
                         String subLabel = subTransition.getLabel();
                         if (superLabel.equals(subLabel)) {
                             State subDestination =
-                                            subTransition.destinationState();
+                                subTransition.destinationState();
                             StatePair newPair = new StatePair(superDestination,
-                                                              subDestination);
+                                    subDestination);
                             if (alternatingSimulation.contains(newPair) &&
-                                ( !reacheableSimulation.contains(newPair))) {
+                                    ( !reacheableSimulation.contains(newPair))) {
                                 reacheableSimulation.add(newPair);
                                 frontier.add(newPair);
                             }
@@ -842,9 +842,9 @@ public class InterfaceAutomaton extends FSMActor {
                 } else {
                     // internal transition in super automaton
                     StatePair newPair = new StatePair(superDestination,
-                                                          subState);
+                            subState);
                     if (alternatingSimulation.contains(newPair) &&
-                        ( !reacheableSimulation.contains(newPair))) {
+                            ( !reacheableSimulation.contains(newPair))) {
                         reacheableSimulation.add(newPair);
                         frontier.add(newPair);
                     }
@@ -856,16 +856,16 @@ public class InterfaceAutomaton extends FSMActor {
             Iterator subTransitions = subPort.linkedRelationList().iterator();
             while (subTransitions.hasNext()) {
                 InterfaceAutomatonTransition subTransition =
-                        (InterfaceAutomatonTransition)subTransitions.next();
+                    (InterfaceAutomatonTransition)subTransitions.next();
 
                 int transitionType = subTransition.getType();
                 if ((transitionType ==
                         InterfaceAutomatonTransition._INTERNAL_TRANSITION)) {
                     State subDestination = subTransition.destinationState();
                     StatePair newPair = new StatePair(superState,
-                                                          subDestination);
+                            subDestination);
                     if (alternatingSimulation.contains(newPair) &&
-                        ( !reacheableSimulation.contains(newPair))) {
+                            ( !reacheableSimulation.contains(newPair))) {
                         reacheableSimulation.add(newPair);
                         frontier.add(newPair);
                     }
@@ -1244,7 +1244,7 @@ public class InterfaceAutomaton extends FSMActor {
     //      end when frontier is empty
     //
     private InterfaceAutomaton _computeProduct(InterfaceAutomaton automaton,
-                                                   boolean considerTransient)
+            boolean considerTransient)
             throws IllegalActionException {
         try {
             // init
@@ -1281,12 +1281,12 @@ public class InterfaceAutomaton extends FSMActor {
                 boolean isStateInProductIllegal = false;
 
                 if ((!considerTransient) ||
-                    ((!_isTransient(stateInThis)) &&
-                    (!_isTransient(stateInArgument)))) {
+                        ((!_isTransient(stateInThis)) &&
+                                (!_isTransient(stateInArgument)))) {
                     // extend frontier from state in this automaton
                     ComponentPort outPort = stateInThis.outgoingPort;
                     Iterator transitions =
-                                    outPort.linkedRelationList().iterator();
+                        outPort.linkedRelationList().iterator();
                     while (transitions.hasNext() && !isStateInProductIllegal) {
                         InterfaceAutomatonTransition transition =
                             (InterfaceAutomatonTransition)transitions.next();
@@ -1303,7 +1303,7 @@ public class InterfaceAutomaton extends FSMActor {
                         // switch depending on type of transition
                         int transitionType = transition.getType();
                         if (transitionType ==
-                            InterfaceAutomatonTransition._INPUT_TRANSITION) {
+                                InterfaceAutomatonTransition._INPUT_TRANSITION) {
                             // case 1
                             if (_inputNames.contains(transitionName)) {
                                 // case 1A. Add transition to product as input
@@ -1319,8 +1319,8 @@ public class InterfaceAutomaton extends FSMActor {
                                 // case 1B. transition is shared in product
                                 String outName = transitionName + "!";
                                 Set destinationsInArgument =
-                                        _getDestinationStates(stateInArgument,
-                                                              outName);
+                                    _getDestinationStates(stateInArgument,
+                                            outName);
                                 if ( !destinationsInArgument.isEmpty()) {
                                     // case 1Ba. q has T output. Add T to
                                     // product as internal transition
@@ -1328,18 +1328,18 @@ public class InterfaceAutomaton extends FSMActor {
                                         destinationsInArgument.iterator();
                                     while (destinations.hasNext()) {
                                         State destinationInArgument =
-                                                (State)destinations.next();
+                                            (State)destinations.next();
                                         State destinationInProduct = _addState(
-                                                        product,
-                                                        destinationInThis,
-                                                        destinationInArgument,
-                                                        frontier);
+                                                product,
+                                                destinationInThis,
+                                                destinationInArgument,
+                                                frontier);
                                         _addTransition(product,
-                                            this.getName() + NAME_CONNECTOR
-                                            + automaton.getName(),
-                                            stateInProduct,
-                                            destinationInProduct,
-                                            transitionName + ";");
+                                                this.getName() + NAME_CONNECTOR
+                                                + automaton.getName(),
+                                                stateInProduct,
+                                                destinationInProduct,
+                                                transitionName + ";");
                                     }
                                 } else {
                                     // case 1Bb. q does not have T output.
@@ -1348,7 +1348,7 @@ public class InterfaceAutomaton extends FSMActor {
                             }
                         }
                         else if (transitionType ==
-                            InterfaceAutomatonTransition._OUTPUT_TRANSITION) {
+                                InterfaceAutomatonTransition._OUTPUT_TRANSITION) {
                             // case 2. T is output for p.
                             if (_outputNames.contains(transitionName)) {
                                 // case 2A. T is output of product. Add T to
@@ -1364,8 +1364,8 @@ public class InterfaceAutomaton extends FSMActor {
                                 // case 2B. transition is shared in product
                                 String inName = transitionName + "?";
                                 Set destinationsInArgument =
-                                        _getDestinationStates(stateInArgument,
-                                                              inName);
+                                    _getDestinationStates(stateInArgument,
+                                            inName);
                                 if ( !destinationsInArgument.isEmpty()) {
                                     // case 2Ba. q has T input. Need to add T
                                     // to product as internal transition.
@@ -1380,7 +1380,7 @@ public class InterfaceAutomaton extends FSMActor {
                                 }
                             }
                         } else if (transitionType ==
-                            InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
+                                InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
                             // case 3. T is internal for p. Add T to product
                             State destinationInProduct = _addState(product,
                                     destinationInThis, stateInArgument,
@@ -1403,7 +1403,7 @@ public class InterfaceAutomaton extends FSMActor {
                             (InterfaceAutomatonTransition)transitions.next();
 
                         State destinationInArgument =
-                                                transition.destinationState();
+                            transition.destinationState();
 
                         // get transitionLabel, transitionName and relation name
                         // for later use
@@ -1415,7 +1415,7 @@ public class InterfaceAutomaton extends FSMActor {
                         // switch depending on type of transition
                         int transitionType = transition.getType();
                         if (transitionType ==
-                            InterfaceAutomatonTransition._INPUT_TRANSITION) {
+                                InterfaceAutomatonTransition._INPUT_TRANSITION) {
                             // case 1
                             if (_inputNames.contains(transitionName)) {
                                 // case 1A. Add transition to product as input
@@ -1441,16 +1441,16 @@ public class InterfaceAutomaton extends FSMActor {
                                         State destinationInThis =
                                             (State)destinations.next();
                                         State destinationInProduct = _addState(
-                                                    product,
-                                                    destinationInThis,
-                                                    destinationInArgument,
-                                                    frontier);
+                                                product,
+                                                destinationInThis,
+                                                destinationInArgument,
+                                                frontier);
                                         _addTransition(product,
-                                            this.getName() + NAME_CONNECTOR
-                                            + automaton.getName(),
-                                            stateInProduct,
-                                            destinationInProduct,
-                                            transitionName + ";");
+                                                this.getName() + NAME_CONNECTOR
+                                                + automaton.getName(),
+                                                stateInProduct,
+                                                destinationInProduct,
+                                                transitionName + ";");
                                     }
                                 } else {
                                     // case 1Bb. p does not have T output.
@@ -1459,7 +1459,7 @@ public class InterfaceAutomaton extends FSMActor {
                             }
                         }
                         else if (transitionType ==
-                            InterfaceAutomatonTransition._OUTPUT_TRANSITION) {
+                                InterfaceAutomatonTransition._OUTPUT_TRANSITION) {
                             // case 2. T is output for q.
                             if (_outputNames.contains(transitionName)) {
                                 // case 2A. T is output of product. Add T to
@@ -1490,7 +1490,7 @@ public class InterfaceAutomaton extends FSMActor {
                                 }
                             }
                         } else if (transitionType ==
-                            InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
+                                InterfaceAutomatonTransition._INTERNAL_TRANSITION) {
                             // case 3. T is internal for q. Add T to product
                             State destinationInProduct = _addState(product,
                                     stateInThis, destinationInArgument,
@@ -1509,7 +1509,7 @@ public class InterfaceAutomaton extends FSMActor {
                     // one or both of stateInThis and stateInArgument are
                     // transient
                     if (_isTransient(stateInThis) &&
-                        _isTransient(stateInArgument)) {
+                            _isTransient(stateInArgument)) {
                         throw new IllegalActionException("Cannot compute "
                                 + "product since both states are transient: "
                                 + stateInThis.getName() + " and "
@@ -1520,35 +1520,35 @@ public class InterfaceAutomaton extends FSMActor {
                         // extend frontier from transient state in this
                         // automaton
                         ComponentPort outPort = stateInThis.outgoingPort;
-                            Iterator transitions =
-                                    outPort.linkedRelationList().iterator();
+                        Iterator transitions =
+                            outPort.linkedRelationList().iterator();
                         while (transitions.hasNext() &&
-                               !isStateInProductIllegal) {
+                                !isStateInProductIllegal) {
                             InterfaceAutomatonTransition transition =
-                            (InterfaceAutomatonTransition)transitions.next();
+                                (InterfaceAutomatonTransition)transitions.next();
 
                             State destinationInThis =
-                                                transition.destinationState();
+                                transition.destinationState();
 
                             // get transitionLabel, transitionName and
                             // relation name for later use
                             String transitionLabel = transition.getLabel();
                             // remove ending "?", "!", or ";"
                             String transitionName = transitionLabel.substring(
-                                            0, transitionLabel.length()-1);
+                                    0, transitionLabel.length()-1);
 
                             // switch depending on type of transition
                             int transitionType = transition.getType();
                             if (transitionType == InterfaceAutomatonTransition.
-                                                  _INPUT_TRANSITION) {
+                                    _INPUT_TRANSITION) {
                                 // case 1
                                 throw new IllegalActionException("Transient "
                                         + "state " + stateInThis.getName()
                                         + " in " + getName() + " has input "
                                         + "transition " + transitionLabel);
                             } else if (transitionType ==
-                                                InterfaceAutomatonTransition.
-                                                _OUTPUT_TRANSITION) {
+                                    InterfaceAutomatonTransition.
+                                    _OUTPUT_TRANSITION) {
                                 // case 2. T is output for p.
                                 if (_outputNames.contains(transitionName)) {
                                     // case 2A. T is output of product. Add T
@@ -1556,17 +1556,17 @@ public class InterfaceAutomaton extends FSMActor {
                                     State destinationInProduct = _addState(
                                             product,
                                             destinationInThis, stateInArgument,
-                                        frontier);
+                                            frontier);
                                     _addTransition(product,
-                                        this.getName(),
-                                        stateInProduct, destinationInProduct,
-                                        transitionLabel);
+                                            this.getName(),
+                                            stateInProduct, destinationInProduct,
+                                            transitionLabel);
                                 } else {
                                     // case 2B. transition is shared in product
                                     String inName = transitionName + "?";
                                     Set destinationsInArgument =
                                         _getDestinationStates(stateInArgument,
-                                                             inName);
+                                                inName);
                                     if ( !destinationsInArgument.isEmpty()) {
                                         // case 2Ba. q has T input. Add T to
                                         // product as internal transition.
@@ -1577,16 +1577,16 @@ public class InterfaceAutomaton extends FSMActor {
                                                 (State)destinations.next();
                                             State destinationInProduct =
                                                 _addState(
-                                                    product,
-                                                    destinationInThis,
-                                                    destinationInArgument,
-                                                    frontier);
+                                                        product,
+                                                        destinationInThis,
+                                                        destinationInArgument,
+                                                        frontier);
                                             _addTransition(product,
-                                                this.getName() + NAME_CONNECTOR
-                                                + automaton.getName(),
-                                                stateInProduct,
-                                                destinationInProduct,
-                                                transitionName + ";");
+                                                    this.getName() + NAME_CONNECTOR
+                                                    + automaton.getName(),
+                                                    stateInProduct,
+                                                    destinationInProduct,
+                                                    transitionName + ";");
                                         }
                                     } else {
                                         // case 2Bb. q does not have T input.
@@ -1596,15 +1596,15 @@ public class InterfaceAutomaton extends FSMActor {
                                     }
                                 }
                             } else if (transitionType ==
-                                        InterfaceAutomatonTransition.
-                                        _INTERNAL_TRANSITION) {
+                                    InterfaceAutomatonTransition.
+                                    _INTERNAL_TRANSITION) {
                                 // case 3. T is internal for p. Add T to product
                                 State destinationInProduct = _addState(product,
-                                            destinationInThis, stateInArgument,
-                                            frontier);
+                                        destinationInThis, stateInArgument,
+                                        frontier);
                                 _addTransition(product, this.getName(),
-                                    stateInProduct, destinationInProduct,
-                                    transitionLabel);
+                                        stateInProduct, destinationInProduct,
+                                        transitionLabel);
                             } else {
                                 throw new InternalErrorException(
                                         "InterfaceAutomaton._computeProduct: "
@@ -1616,35 +1616,35 @@ public class InterfaceAutomaton extends FSMActor {
                         // extend frontier from state in the argument automaton
                         ComponentPort outPort = stateInArgument.outgoingPort;
                         Iterator transitions =
-                                        outPort.linkedRelationList().iterator();
+                            outPort.linkedRelationList().iterator();
                         while (transitions.hasNext() &&
-                               !isStateInProductIllegal) {
+                                !isStateInProductIllegal) {
                             InterfaceAutomatonTransition transition =
-                              (InterfaceAutomatonTransition)transitions.next();
+                                (InterfaceAutomatonTransition)transitions.next();
 
                             State destinationInArgument =
-                                                transition.destinationState();
+                                transition.destinationState();
 
                             // get transitionLabel, transitionName and
                             // relation name for later use
                             String transitionLabel = transition.getLabel();
                             // remove ending "?", "!", or ";"
                             String transitionName = transitionLabel.substring(
-                                            0, transitionLabel.length()-1);
+                                    0, transitionLabel.length()-1);
 
                             // switch depending on type of transition
                             int transitionType = transition.getType();
                             if (transitionType ==
-                                        InterfaceAutomatonTransition.
-                                        _INPUT_TRANSITION) {
+                                    InterfaceAutomatonTransition.
+                                    _INPUT_TRANSITION) {
                                 throw new IllegalActionException("Transient "
                                         + "state " + stateInArgument.getName()
                                         + " in " + automaton.getName()
                                         + " has input transition "
                                         + transitionLabel);
                             } else if (transitionType ==
-                                            InterfaceAutomatonTransition.
-                                        _OUTPUT_TRANSITION) {
+                                    InterfaceAutomatonTransition.
+                                    _OUTPUT_TRANSITION) {
                                 // case 2. T is output for q.
                                 if (_outputNames.contains(transitionName)) {
                                     // case 2A. T is output of product. Add T to
@@ -1654,15 +1654,15 @@ public class InterfaceAutomaton extends FSMActor {
                                             stateInThis, destinationInArgument,
                                             frontier);
                                     _addTransition(product,
-                                        automaton.getName(),
-                                        stateInProduct, destinationInProduct,
-                                        transitionLabel);
+                                            automaton.getName(),
+                                            stateInProduct, destinationInProduct,
+                                            transitionLabel);
                                 } else {
                                     // case 2B. transition is shared in product
                                     String inName = transitionName + "?";
                                     Set destinationsInThis =
                                         _getDestinationStates(stateInThis,
-                                                             inName);
+                                                inName);
                                     if ( !destinationsInThis.isEmpty()) {
                                         // case 2Ba. p has T input. Add T
                                         // to product as internal transition.
@@ -1678,11 +1678,11 @@ public class InterfaceAutomaton extends FSMActor {
                                                         destinationInArgument,
                                                         frontier);
                                             _addTransition(product,
-                                                this.getName() + NAME_CONNECTOR
-                                                        + automaton.getName(),
-                                                stateInProduct,
-                                                destinationInProduct,
-                                                transitionName + ";");
+                                                    this.getName() + NAME_CONNECTOR
+                                                    + automaton.getName(),
+                                                    stateInProduct,
+                                                    destinationInProduct,
+                                                    transitionName + ";");
                                         }
                                     } else {
                                         // case 2Bb. p does not have T input.
@@ -1692,8 +1692,8 @@ public class InterfaceAutomaton extends FSMActor {
                                     }
                                 }
                             } else if (transitionType ==
-                                        InterfaceAutomatonTransition.
-                                        _INTERNAL_TRANSITION) {
+                                    InterfaceAutomatonTransition.
+                                    _INTERNAL_TRANSITION) {
                                 // case 3. T is internal for q. Add T to product
                                 State destinationInProduct = _addState(product,
                                         stateInThis, destinationInArgument,
@@ -1704,8 +1704,8 @@ public class InterfaceAutomaton extends FSMActor {
                                         transitionLabel);
                             } else {
                                 throw new InternalErrorException(
-                                    "InterfaceAutomaton._computeProduct: "
-                                    + "unrecognized transition type.");
+                                        "InterfaceAutomaton._computeProduct: "
+                                        + "unrecognized transition type.");
                             }
                         } // end explore from transient state q
                     }
@@ -1761,8 +1761,8 @@ public class InterfaceAutomaton extends FSMActor {
     // a subset of the externally enabled output transitions of the super
     // automaton.
     private static boolean _condition1Satisfied(
-                    InterfaceAutomaton superAutomaton, State superState,
-                    InterfaceAutomaton subAutomaton, State subState) {
+            InterfaceAutomaton superAutomaton, State superState,
+            InterfaceAutomaton subAutomaton, State subState) {
 
         Set inputLabelsInSuper =
             superAutomaton.externallyEnabledInputTransitionLabels(superState);
@@ -1783,9 +1783,9 @@ public class InterfaceAutomaton extends FSMActor {
     // paper is satisfied. That is, return true if the super automaton can
     // match the move of the sub automaton at the specified states.
     private static boolean _condition2Satisfied(
-                    InterfaceAutomaton superAutomaton, State superState,
-                    InterfaceAutomaton subAutomaton, State subState,
-                    Set currentSimulation) {
+            InterfaceAutomaton superAutomaton, State superState,
+            InterfaceAutomaton subAutomaton, State subState,
+            Set currentSimulation) {
         // consideredTransitions are the union of the externally enabled
         // input transitions at the super state and the externally enabled
         // output transitions at the sub state.
@@ -1799,10 +1799,10 @@ public class InterfaceAutomaton extends FSMActor {
         while (transitionLabels.hasNext()) {
             String label = (String)transitionLabels.next();
             Set destinationsInSub = subAutomaton.externallyEnabledDestinations(
-                                                        subState, label);
+                    subState, label);
             Set destinationsInSuper =
-                                superAutomaton.externallyEnabledDestinations(
-                                                superState, label);
+                superAutomaton.externallyEnabledDestinations(
+                        superState, label);
 
             // check that for each destination in the sub automaton, there is
             // an destination in the super automaton such that the two
@@ -1815,7 +1815,7 @@ public class InterfaceAutomaton extends FSMActor {
                 while (superStates.hasNext()) {
                     State destinationInSuper = (State)superStates.next();
                     StatePair pair = new StatePair(destinationInSuper,
-                                                       destinationInSub);
+                            destinationInSub);
                     if (currentSimulation.contains(pair)) {
                         inCurrentSimulation = true;
                         break;
@@ -2086,7 +2086,7 @@ public class InterfaceAutomaton extends FSMActor {
         Iterator transitions = outPort.linkedRelationList().iterator();
         while (transitions.hasNext()) {
             InterfaceAutomatonTransition transition =
-                    (InterfaceAutomatonTransition)transitions.next();
+                (InterfaceAutomatonTransition)transitions.next();
             int type = transition.getType();
             if (type == transitionType) {
                 String label = transition.getLabel();

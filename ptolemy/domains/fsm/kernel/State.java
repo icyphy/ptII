@@ -272,12 +272,12 @@ public class State extends ComponentEntity {
                         // to this refinement, then we will remove it.
                         boolean removeIt = true;
                         Iterator states
-                                = master.entityList(State.class).iterator();
+                            = master.entityList(State.class).iterator();
                         while (removeIt && states.hasNext()) {
                             State state = (State)states.next();
                             if (state == this) continue;
                             TypedActor[] statesRefinements
-                                   = state.getRefinement();
+                                = state.getRefinement();
                             if (statesRefinements == null) continue;
                             for (int j = 0; j < statesRefinements.length; j++) {
                                 if (statesRefinements[j] == refinement) {
@@ -292,11 +292,11 @@ public class State extends ComponentEntity {
                             Relation transition = (Relation)transitions.next();
                             if (!(transition instanceof Transition)) continue;
                             TypedActor[] transitionsRefinements
-                                   = ((Transition)transition).getRefinement();
+                                = ((Transition)transition).getRefinement();
                             if (transitionsRefinements == null) continue;
                             for (int j = 0;
-                                    j < transitionsRefinements.length;
-                                    j++) {
+                                 j < transitionsRefinements.length;
+                                 j++) {
                                 if (transitionsRefinements[j] == refinement) {
                                     removeIt = false;
                                     break;
