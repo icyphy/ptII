@@ -63,53 +63,25 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+	<property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+	</property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
-        <property name="act1" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
-            </property>
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp1.init">
-            </property>
-        </property>
-        <property name="act2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
-            </property>
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp2.init">
-            </property>
-        </property>
-        <property name="act4" class="ptolemy.domains.fsm.kernel.ResetRefinement">
-        </property>
+	<property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="mode0.ramp1.init = 0; mode0.ramp2.init = 0">
+	</property>
     </relation>
     <relation name="t1" class="ptolemy.domains.fsm.kernel.Transition">
         <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="in_isPresent &amp;&amp; (in % 4 == 0)">
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+	<property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+	</property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
-        <property name="act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="1">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="out">
-            </property>
-        </property>
-        <property name="act2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn1_isPresent ? (refIn1 + 1) : 0">
-            </property>
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp1.init">
-            </property>
-        </property>
-        <property name="act3" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn2_isPresent ? (refIn2 + 1) : 0">
-            </property>
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp2.init">
-            </property>
-        </property>
-        <property name="act4" class="ptolemy.domains.fsm.kernel.ResetRefinement">
+	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 1">
+	</property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="mode1.ramp1.init = refIn1_isPresent ? (refIn1 + 1) : 0; mode1.ramp2.init = refIn2_isPresent ? (refIn2 + 1) : 0">
         </property>
     </relation>
     <relation name="t2" class="ptolemy.domains.fsm.kernel.Transition">
@@ -117,29 +89,13 @@
         </property>
         <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
         </property>
+	<property name="reset" class="ptolemy.data.expr.Parameter" value="true">
+	</property>
         <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="actions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-        </property>
-        <property name="act1" class="ptolemy.domains.fsm.kernel.BroadcastOutput">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0">
-            </property>
-            <property name="portName" class="ptolemy.kernel.util.StringAttribute" value="out">
-            </property>
-        </property>
-        <property name="act2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn1_isPresent ? (refIn1 + 1) : 0">
-            </property>
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp1.init">
-            </property>
-        </property>
-        <property name="act3" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
-            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="refIn2_isPresent ? (refIn2 + 1) : 0">
-            </property>
-            <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="ramp2.init">
-            </property>
-        </property>
-        <property name="act4" class="ptolemy.domains.fsm.kernel.ResetRefinement">
+	<property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="out = 0">
+	</property>
+        <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="mode0.ramp1.init = refIn1_isPresent ? (refIn1 + 1) : 0; mode0.ramp2.init = refIn2_isPresent ? (refIn2 + 1) : 0">
         </property>
     </relation>
     <link port="Init.outgoingPort" relation="t0"/>

@@ -24,7 +24,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (cm@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.giotto.kernel;
