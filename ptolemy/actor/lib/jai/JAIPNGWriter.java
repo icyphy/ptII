@@ -1,6 +1,6 @@
 /* An actor that writes to a PNG file.
 
-@Copyright (c) 1998-2002 The Regents of the University of California.
+@Copyright (c) 2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -57,20 +57,20 @@ import com.sun.media.jai.codec.PNGEncodeParam;
 //////////////////////////////////////////////////////////////////////////
 //// JAIPNGWriter
 /**
-   Write a javax.media.jai.RenderedOp to a specified PNG file.
-   <p>
-   The file is specified by the <i>fileName</i> attribute
-   using any form acceptable to FileAttribute.
-   <p>
-   If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
-   then this actor will overwrite the specified file if it exists
-   without asking.  If <i>true</i> (the default), then if the file
-   exists, then this actor will ask for confirmation before overwriting.
+Write a javax.media.jai.RenderedOp to a specified PNG file.
 
-   @see FileAttribute
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
+<p>The file is specified by the <i>fileName</i> attribute
+using any form acceptable to FileAttribute.
+
+<p>If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
+then this actor will overwrite the specified file if it exists without
+asking.  If <i>true</i> (the default), then if the file exists, then
+this actor will ask for confirmation before overwriting.
+
+@see ptolemy.kernel.attributes.FileAttribute
+@author James Yeh
+@version $Id$
+@since Ptolemy II 3.1
 */
 
 public class JAIPNGWriter extends Sink {

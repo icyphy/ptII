@@ -1,6 +1,6 @@
 /* Converts a matrix of doubles into a single-banded JAIImageToken.
 
-@Copyright (c) 2002-2003 The Regents of the University of California.
+@Copyright (c) 2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -61,22 +61,21 @@ import javax.media.jai.TiledImage;
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixToJAI
 /**
-   Converts a DoubleMatrix to a JAIImageToken.  This JAIImageToken is a
-   single-banded grayscale image.  To assemble multiple band's into one
-   image, use the BandCombine operator on each image and add them 
-   together.  
+Converts a DoubleMatrix to a JAIImageToken.  This JAIImageToken is a
+single-banded grayscale image.  To assemble multiple band's into one
+image, use the BandCombine operator on each image and add them 
+together.  
 
-   If the data was previously normalized, then the data can be rescaled
-   to whichever non-floating data type is chosen.
+<p> If the data was previously normalized, then the data can be rescaled
+to whichever non-floating data type is chosen.
 
-   @see JAIBandCombine
-   @see JAIDataCaster
-   @see JAIToDoubleMatrix
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
- */
-
+@see JAIBandCombine
+@see JAIDataConvertern
+@see JAIToDoubleMatrix
+@author James Yeh
+@version $Id$
+@since Ptolemy II 3.1
+*/
 public class DoubleMatrixToJAI extends Transformer {
 
     /** Construct an actor with the given container and name.
@@ -193,11 +192,10 @@ public class DoubleMatrixToJAI extends Transformer {
                 _maxValue = (double)Double.MAX_VALUE;
                 break;
             default:
-                throw new InternalErrorException(
+                throw new InternalErrorException(this, 
                         "Invalid value for _dataFormat private variable. "
-                        + "JAIDataCaster actor (" + getFullName()
-                        + ")"
-                        + " on data type " + _dataFormat);
+                        + "DoubleMatrixToJAI actor (" + getFullName()
+                        + ") on data type " + _dataFormat);
             }
             if (_dataFormat == _DOUBLE || _dataFormat == _FLOAT) {
                 for (int i = 0; i < width; i++) {
@@ -279,11 +277,10 @@ public class DoubleMatrixToJAI extends Transformer {
             parameters.add(DataBuffer.TYPE_USHORT);
             break;
         default:
-            throw new InternalErrorException(
+            throw new InternalErrorException(this, 
                     "Invalid value for _dataFormat private variable. "
-                    + "JAIDataCaster actor (" + getFullName()
-                    + ")"
-                    + " on data type " + _dataFormat);
+                    + "DoubleMatrixToJAI actor (" + getFullName()
+                    + ") on data type " + _dataFormat);
         }
         RenderedOp newImage = JAI.create("format", parameters);
         output.send(0, new JAIImageToken(newImage));

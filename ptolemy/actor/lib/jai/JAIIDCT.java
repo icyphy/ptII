@@ -1,6 +1,6 @@
 /* Calculate the inverse discrete cosine transform of a RenderedOp.
 
-@Copyright (c) 2002-2003 The Regents of the University of California.
+@Copyright (c) 003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -45,24 +45,23 @@ import javax.media.jai.RenderedOp;
 //////////////////////////////////////////////////////////////////////////
 //// JAIIDCT
 /**
-   Calculate the inverse discrete cosine transform of an image.  The output
-   image data is of a high resolution (doubles), not suitable for
-   displaying or saving.  To display or save the output of this image,
-   use the JAIDataCaster actor to cast the data to an appropriate type
-   (for instance, byte).  The output is zero-padded in each dimension to
-   the next power of two (unless it already is a power of two in which case
-   nothing happens).
-   <p>
-   No JAIDataCaster actors should be used in between a JAIDCT and JAIIDCT
-   actor, unless if loss of spectral information is okay (or even desired).
+Calculate the inverse discrete cosine transform of an image.  The output
+image data is of a high resolution (doubles), not suitable for
+displaying or saving.  To display or save the output of this image,
+use the {@link JAIDataConvert} actor to cast the data to an appropriate type
+(for instance, byte).  The output is zero-padded in each dimension to
+the next power of two (unless it already is a power of two in which case
+nothing happens).
 
-   @see JAIDataCaster
-   @see JAIDCT
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
+<p>No JAIDataConvert actors should be used in between a JAIDCT and JAIIDCT
+ actor, unless if loss of spectral information is okay (or even desired).
+
+@see JAIDataConvert
+@see JAIDCT
+@author James Yeh
+@version $Id$
+@since Ptolemy II 3.1
 */
-
 public class JAIIDCT extends Transformer {
 
     /** Construct an actor with the given container and name.

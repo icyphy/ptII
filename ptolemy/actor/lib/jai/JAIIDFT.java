@@ -1,6 +1,6 @@
 /* Calculates the inverse discrete Fourier transform of a RenderedOp.
 
-@Copyright (c) 2002-2003 The Regents of the University of California.
+@Copyright (c) 2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -48,34 +48,33 @@ import javax.media.jai.operator.DFTDescriptor;
 //////////////////////////////////////////////////////////////////////////
 //// JAIIDFT
 /**
-   Calculate the inverse discrete Fourier transform of an image.  If the
-   input is complex, there are two options.  One is to set the dataNature
-   parameter to <i>complexToReal</i> (the default).  The output would have
-   half the bands of the input (bands 0 and 1 get transformed into band 0,
-   bands 2 and 3 would get transformed into band 1, etc.), and could be
-   display or saved after passing through a JAIDataCaster actor.
-   <p>
-   The other option would be to set it to <i>complexToComplex</i>, in which
-   case the output would have the same number of bands as the input.
-   <p>
-   If the input is real, the only option is to set the dataNature parameter
-   to <i>realToComplex</i>.  An alternative to this would be to create a
-   complex image from this real image by using the real image as a magnitude
-   image, and creating a phase image of all 0's, and making a complex image
-   using the JAIPolarToComplex actor.
-   <p>
-   The data of the output is of a high resolution (doubles), not suitable
-   for displaying or saving.  To display or save the output of this image,
-   use the JAIDataCaster Actor to cast the data to an appropriate type
-   (for instance, byte).
+Calculate the inverse discrete Fourier transform of an image.  If the
+input is complex, there are two options.  One is to set the dataNature
+parameter to <i>complexToReal</i> (the default).  The output would have
+half the bands of the input (bands 0 and 1 get transformed into band 0,
+bands 2 and 3 would get transformed into band 1, etc.), and could be
+display or saved after passing through a {@link JAIDataConvert} actor.
 
-   @see JAIDataCaster
-   @see JAIDFT
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
+<p>The other option would be to set it to <i>complexToComplex</i>, in which
+case the output would have the same number of bands as the input.
+
+<p>If the input is real, the only option is to set the dataNature parameter
+to <i>realToComplex</i>.  An alternative to this would be to create a
+complex image from this real image by using the real image as a magnitude
+image, and creating a phase image of all 0's, and making a complex image
+using the JAIPolarToComplex actor.
+
+<p>The data of the output is of a high resolution (doubles), not suitable
+for displaying or saving.  To display or save the output of this image,
+use the JAIDataConvert Actor to cast the data to an appropriate type
+(for instance, byte).
+
+@see JAIDataConvert
+@see JAIDFT
+@author James Yeh
+@version $Id$
+@since Ptolemy II 3.1
 */
-
 public class JAIIDFT extends Transformer {
 
     /** Construct an actor with the given container and name.
@@ -108,9 +107,9 @@ public class JAIIDFT extends Transformer {
     /** A parameter that describes the nature of the input and output
      *  data.  The default is <i>complexToReal</i> (so that the output
      *  can be saved and/or displayed after putting it through the
-     *  JAIDataCaster actor).  The setting <i>complexToComplex</i> can
-     *  also be used.  The setting <i>realToComplex</i> should probably
-     *  not be used.
+     *  {@link JAIDataConvert actor).  The setting
+     *  <i>complexToComplex</i> can also be used.  The setting
+     *  <i>realToComplex</i> should probably not be used.
      */
     public StringAttribute dataNature;
 
@@ -186,7 +185,7 @@ public class JAIIDFT extends Transformer {
             idftParameters.add(DFTDescriptor.SCALING_UNITARY);
             break;
         default:
-            throw new IllegalActionException(
+            throw new IllegalActionException(this,
                     "Invalid value for scaling type");
         }
 
@@ -201,7 +200,7 @@ public class JAIIDFT extends Transformer {
             idftParameters.add(DFTDescriptor.REAL_TO_COMPLEX);
             break;
         default:
-            throw new IllegalActionException(
+            throw new IllegalActionException(this,
                     "Invalid data natures");
         }
         RenderedOp newImage = JAI.create("idft", idftParameters);

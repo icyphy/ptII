@@ -1,7 +1,7 @@
 /* An actor that outputs the a complex image from a magnitude and
 phase input.
 
-@Copyright (c) 2002-2003 The Regents of the University of California.
+@Copyright (c) 2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -45,19 +45,19 @@ import javax.media.jai.RenderedOp;
 //////////////////////////////////////////////////////////////////////////
 //// JAIPolarToComplex
 /**
-   Output a complex image with alternating real and imaginary bands.  This
-   actor takes two inputs, an image representing the magnitude of the
-   bands, and an image representing the phase of the bands.  The two
-   inputs must have the same number of bands.
-   <p>
-   The output of this actor may not be suitable for displaying or saving
-   because of the increase in the number of bands, as well as the high
-   resolution of the data (doubles).
+Output a complex image with alternating real and imaginary bands.  This
+actor takes two inputs, an image representing the magnitude of the
+bands, and an image representing the phase of the bands.  The two
+inputs must have the same number of bands.
 
-   @see JAIDataCaster
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
+<p> The output of this actor may not be suitable for displaying or saving
+because of the increase in the number of bands, as well as the high
+resolution of the data (doubles).
+
+@see JAIDataConvert
+@author James Yeh
+@version $Id$
+@since Ptolemy II 3.1
 */
 
 public class JAIPolarToComplex extends TypedAtomicActor {

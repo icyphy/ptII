@@ -1,6 +1,6 @@
 /* An actor that outputs the logarithm of an image.
 
-@Copyright (c) 2002-2003 The Regents of the University of California.
+@Copyright (c) 2003 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -45,27 +45,27 @@ import javax.media.jai.RenderedOp;
 //////////////////////////////////////////////////////////////////////////
 //// JAILog
 /**
-   Output the logarithm of an image.  This actor can be used to reduce the
-   dynamic range of an image.  For instance, the magnitude of a dft can
-   have a large dynamic range not suitable for display.  Taking the
-   logarithm of this image and then casting it using JAIDataCaster could
-   produce a better image for displaying.
-   <p>
-   For integral image data types, the result is rounded and clamped.  For
-   all integral image data types, the log of 0 is 0.  For signed image
-   data types (shorts and ints), the log of a negative pixel is -1.  For
-   floats and doubles, the log of 0 is set to -Infinity, and the log of a
-   negative pixel is NaN.
-   <p>
-   The output of this actor may not be suitable for display because of the
-   high resolution of the data.  To display or save the output of this
-   image, use the JAIDataCaster Actor to cast the data to an appropriate
-   type (for instance, byte).
+Output the logarithm of an image.  This actor can be used to reduce the
+dynamic range of an image.  For instance, the magnitude of a dft can
+have a large dynamic range not suitable for display.  Taking the
+logarithm of this image and then casting it using {@link JAIDataConvert} could
+produce a better image for displaying.
 
-   @see JAIDataCaster
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
+<p> For integral image data types, the result is rounded and clamped.  For
+all integral image data types, the log of 0 is 0.  For signed image
+data types (shorts and ints), the log of a negative pixel is -1.  For
+floats and doubles, the log of 0 is set to -Infinity, and the log of a
+negative pixel is NaN.
+
+<p> The output of this actor may not be suitable for display because of the
+high resolution of the data.  To display or save the output of this
+image, use the {@link JAIDataConvert} actor to cast the data to an appropriate
+type (for instance, byte).
+
+@see JAIDataConvert
+@author James Yeh
+@version $Id$
+@since Ptolemy II 3.1
 */
 
 public class JAILog extends Transformer {
