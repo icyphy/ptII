@@ -56,7 +56,8 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 JSRCS = \
-	ZeroBias.java
+	ZeroBias.java \
+	Bias.java
 
 EXTRA_SRCS =	$(JSRCS)
 
