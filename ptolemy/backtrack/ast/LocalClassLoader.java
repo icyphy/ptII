@@ -101,6 +101,7 @@ public class LocalClassLoader extends URLClassLoader {
      */
     public LocalClassLoader(String[] classPaths) {
         super(_stringsToUrls(classPaths), null, null);
+        _urlClassLoader = new URLClassLoader(getURLs(), null, null);
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -188,6 +189,29 @@ public class LocalClassLoader extends URLClassLoader {
      */
     public void setCurrentPackage(String packageName) {
         _packageName = packageName;
+    }
+    
+    /** Set the enclosing class of an anonymous class (a class without
+     *  a name that subclasses another one at instantiation time). In
+     *  Java 1.4, enclosing class information cannot obtained from
+     *  the anonymous class object. This problem is solved by extending
+     *  the functionality of the {@link Class} class in Java 1.5.
+     *  <p>
+     *  While {@link TypeAnalyzer} analyzes an AST, it registers the
+     *  enclosing class of each anonymous class that it sees. This
+     *  helps the class loader to resolve enclosing classes.
+     *  <p>
+     *  The same problem is solved in {@link TypeAnalyzer} by using
+     *  a stack to record all the classes entered so far.
+     *  
+     *  @param anonymousClass The internal name of an anonymous class
+     *   (using a number to identify it), which is used at run-time by
+     *   the Java virtual machine.
+     *  @param enclosingClass The {@link Class} object representing the
+     *   enclosing class.
+     */
+    public void setEnclosingClass(String anonymousClass, Class enclosingClass) {
+        _enclosingClasses.put(anonymousClass, enclosingClass);
     }
     
     /** Load a class from the specified class. This function is
@@ -309,6 +333,9 @@ public class LocalClassLoader extends URLClassLoader {
     // Not supporting anonymous classes like "Class$1".
     protected Class searchForClass(StringBuffer name, boolean resolve, Class currentClass)
             throws ClassNotFoundException {
+        if (name.toString().equals("IteratePort")) {
+            int i = 0;
+        }
         // Nested classes requires "$" separator between classes.
         StringBuffer dollarName = new StringBuffer(name.toString().replace('.', '$'));
 
@@ -353,6 +380,7 @@ public class LocalClassLoader extends URLClassLoader {
                     try {
                         c = super.loadClass(name.toString(), resolve);
                     } catch (ClassNotFoundException e) {
+                    } catch (NoClassDefFoundError e) {
                     }
                 }
             }
@@ -419,7 +447,7 @@ public class LocalClassLoader extends URLClassLoader {
             // FIXME: Class.forName uses the default ClassLoader, not the
             // bootstrap one.
             String typeName = Type.toArrayType(name.toString());
-            c = Class.forName(typeName);
+            c = Class.forName(typeName, true, _urlClassLoader);
             _loadedClasses.put(typeName, c);
             return c;
         }
@@ -453,6 +481,8 @@ public class LocalClassLoader extends URLClassLoader {
                 return c;
             } catch (ClassNotFoundException e) {
                 return null;
+            } catch (NoClassDefFoundError e) {
+                return null;
             } finally {
                 dollarName.delete(0, importedClass.packageName.length() + 1);
             }
@@ -485,6 +515,8 @@ public class LocalClassLoader extends URLClassLoader {
             return c;
         } catch (ClassNotFoundException e) {
             return null;
+        } catch (NoClassDefFoundError e) {
+            return null;
         } finally {
             dollarName.delete(0, packageName.length() + 1);
         }
@@ -506,6 +538,8 @@ public class LocalClassLoader extends URLClassLoader {
             _loadedClasses.put(nameString, c);
             return c;
         } catch (ClassNotFoundException e) {
+            return null;
+        } catch (NoClassDefFoundError e) {
             return null;
         }
     }
@@ -552,10 +586,17 @@ public class LocalClassLoader extends URLClassLoader {
             
             handledSet.add(c);
             
-            Class declaring = c.getDeclaringClass();
-            if (declaring != null && !handledSet.contains(declaring))
-                workList.add(declaring);
+            try {
+                Class declaring = c.getDeclaringClass();
+                if (declaring != null && !handledSet.contains(declaring))
+                    workList.add(declaring);
+            } catch (ClassCircularityError e) {
+            }
             
+            if (_enclosingClasses.containsKey(c.getName()))
+                // An enclosing class is registered for an anonymous class.
+                workList.add(_enclosingClasses.get(c.getName()));
+
             Class superClass = c.getSuperclass();
             if (superClass != null && !handledSet.contains(superClass))
                 workList.add(superClass);
@@ -646,4 +687,14 @@ public class LocalClassLoader extends URLClassLoader {
      *  values are {@link Class} objects.
      */
     private static Hashtable _loadedClasses = new Hashtable();
+    
+    /** The table of enclosing classes of anonymous classes met during
+     *  AST analysis.
+     */
+    private static Hashtable _enclosingClasses = new Hashtable();
+    
+    /** The {@link URLClassLoader} that is not extended with the
+     *  searching of this class. It is used to load array types.
+     */
+    private URLClassLoader _urlClassLoader;
 }

@@ -45,6 +45,7 @@ import net.sourceforge.jrefactory.ast.ASTAndExpression;
 import net.sourceforge.jrefactory.ast.ASTArgumentList;
 import net.sourceforge.jrefactory.ast.ASTArguments;
 import net.sourceforge.jrefactory.ast.ASTArrayDimsAndInits;
+import net.sourceforge.jrefactory.ast.ASTAssignmentOperator;
 import net.sourceforge.jrefactory.ast.ASTBlock;
 import net.sourceforge.jrefactory.ast.ASTBooleanLiteral;
 import net.sourceforge.jrefactory.ast.ASTCastExpression;
@@ -451,9 +452,11 @@ public class TypeAnalyzer extends ASTVisitor {
                 className = className.substring(0, dollarPos);
             className += "$" + _anonymousNumber++;
             try {
-                _currentClass = _loader.loadClass(className);
-                Type.setType(node, Type.createType(_currentClass.getName()));
-                _loader.setCurrentClass(_currentClass);
+                Class newCurrentClass = _loader.loadClass(className);
+                _loader.setCurrentClass(newCurrentClass);
+                _loader.setEnclosingClass(newCurrentClass.getName(), _currentClass);
+                Type.setType(node, Type.createType(newCurrentClass.getName()));
+                _currentClass = newCurrentClass;
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException("Cannot load class \"" + className + "\".");
             }
@@ -971,6 +974,10 @@ public class TypeAnalyzer extends ASTVisitor {
     /** Visit an <tt>Expression</tt> node in the AST, and set the type
      *  of this node to be the same as that of its first child.
      *  <p>
+     *  If the expression is an assignment, this function check the
+     *  type compatibility for the assignment to detect if any error
+     *  occur in a previous step in type analysis.
+     *  <p>
      *  Grammar: <tt>Expression ::= ConditionalExpression [AssignmentOperator Expression]</tt>
      *  
      *  @param node The node to be visited.
@@ -979,11 +986,45 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @return The return value of the superclass.
      */
     public Object visit(ASTExpression node, Object data) {
-        return visitExpressionWithChildren(node, data, false);
+        int nChildren = node.jjtGetNumChildren();
+        if (nChildren == 1)
+            // Propagate the type if only one child (ConditionalExpression).
+            return visitSingleChild(node, data);
+        else if (nChildren == 3) {
+            ASTConditionalExpression child1 =
+                (ASTConditionalExpression)node.jjtGetFirstChild();
+            ASTAssignmentOperator child2 =
+                (ASTAssignmentOperator)node.jjtGetChild(1);
+            ASTExpression child3 =
+                (ASTExpression)node.jjtGetChild(2);
+            
+            visit(child1, data);
+            visit(child3, data);
+            
+            Type type1 = Type.getType(child1);
+            Type type3 = Type.getType(child3);
+            
+            try {
+                if (type3.compatibility(type1, _loader) == -1)
+                    // Incompatible types in an assignments means something goes
+                    // wrong in some previous steps.
+                    throw new UnknownASTException();
+            } catch (ClassNotFoundException e) {
+                throw new UnknownASTException();
+            }
+            
+            Type.setType(node, type1);
+            return null;
+        } else
+            throw new UnknownASTException();
     }
     
     /** Visit a <tt>StatementExpression</tt> node in the AST, and set the type
      *  of this node to be the same as that of its first child.
+     *  <p>
+     *  If the expression is an assignment, this function check the
+     *  type compatibility for the assignment to detect if any error
+     *  occur in a previous step in type analysis.
      *  <p>
      *  Grammar: <tt>StatementExpression ::= PreIncrementExpression | PreDecrementExpression |
      *    PrimaryExpression ["++" | "--" | AssignmentOperator Expression]</tt>
@@ -994,7 +1035,37 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @return The return value of the superclass.
      */
     public Object visit(ASTStatementExpression node, Object data) {
-        return visitExpressionWithChildren(node, data, false);
+        int nChildren = node.jjtGetNumChildren();
+        if (nChildren == 1)
+            // Propagate the type if only one child (ConditionalExpression).
+            return visitSingleChild(node, data);
+        else if (nChildren == 3) {
+            ASTPrimaryExpression child1 =
+                (ASTPrimaryExpression)node.jjtGetFirstChild();
+            ASTAssignmentOperator child2 =
+                (ASTAssignmentOperator)node.jjtGetChild(1);
+            ASTExpression child3 =
+                (ASTExpression)node.jjtGetChild(2);
+            
+            visit(child1, data);
+            visit(child3, data);
+            
+            Type type1 = Type.getType(child1);
+            Type type3 = Type.getType(child3);
+            
+            try {
+                if (type3.compatibility(type1, _loader) == -1)
+                    // Incompatible types in an assignments means something goes
+                    // wrong in some previous steps.
+                    throw new UnknownASTException();
+            } catch (ClassNotFoundException e) {
+                throw new UnknownASTException();
+            }
+
+            Type.setType(node, type1);
+            return null;
+        } else
+            throw new UnknownASTException();
     }
     
     /** Visit a <tt>CastExpression</tt> node in the AST, and set the type
@@ -1191,6 +1262,11 @@ public class TypeAnalyzer extends ASTVisitor {
             }
             
             handledSet.add(topClass);
+            Class superClass = topClass.getSuperclass();
+            if (superClass == null && !topClass.getName().equals("java.lang.Object"))
+                superClass = Object.class;
+            if (superClass != null)
+                workList.add(superClass);
             Class[] interfaces = topClass.getInterfaces();
             for (int i=0; i<interfaces.length; i++)
                 if (!handledSet.contains(interfaces[i]))
@@ -1267,6 +1343,11 @@ public class TypeAnalyzer extends ASTVisitor {
                 break;
             
             handledSet.add(topClass);
+            Class superClass = topClass.getSuperclass();
+            if (superClass == null && !topClass.getName().equals("java.lang.Object"))
+                superClass = Object.class;
+            if (superClass != null)
+                workList.add(superClass);
             Class[] interfaces = topClass.getInterfaces();
             for (int i=0; i<interfaces.length; i++)
                 if (!handledSet.contains(interfaces[i]))
@@ -1484,6 +1565,10 @@ public class TypeAnalyzer extends ASTVisitor {
             ASTIdentifier id = (ASTIdentifier)name.jjtGetChild(i);
             String currentName = remainingName + id.getImage();
             
+            if (currentName.equals("ODESolver")) {
+                int x = 0;
+            }
+            
             if (currentName.equals("this")) {
                 Type.setType(id, Type.createType(owner.getName()));
                 continue;
@@ -1509,11 +1594,20 @@ public class TypeAnalyzer extends ASTVisitor {
                 }
             }
             
+            // Lookup enclosing classes.
             Type idType;
-            if (i < length - 1) // No argument if not the last part.
-                idType = resolveNameFromClass(owner, currentName, null);
-            else
-                idType = resolveNameFromClass(owner, currentName, arguments);
+            Type[] argumentsForResolution = i < length - 1 ? null : arguments;
+            idType = resolveNameFromClass(owner, currentName, argumentsForResolution);
+            if (idType == null && lastType == null && i == 0) {
+                int previousClassNum = _previousClasses.size() - 1;
+                while (idType == null && previousClassNum >= 0) {
+                    Class previousClass = (Class)_previousClasses.get(previousClassNum);
+                    if (previousClass != null)
+                        idType = resolveNameFromClass(previousClass, currentName, argumentsForResolution);
+                    previousClassNum--;
+                }
+            }
+
             Type.setType(id, idType);
             if (idType != null) {
                 remainingName = "";
@@ -1546,8 +1640,6 @@ public class TypeAnalyzer extends ASTVisitor {
      *  @see #resolveName(ASTName, Type, ASTArguments)
      */
     private Type resolveNameFromClass(Class owner, String name, Type[] args) {
-        //System.out.println("resolve " + name + " in " + owner);
-        
         // Try to resolve special members of arrays.
         if (owner.isArray()) {
             if (name.equals("length") && args == null)
@@ -1582,25 +1674,8 @@ public class TypeAnalyzer extends ASTVisitor {
             if (result != null)
                 return result;
         }
-        
-        // Check enclosing classes.
-        Type t = null;
-        if (previousClassCount < 0) {
-            previousClassCount = _previousClasses.size() - 1;
-            Class previous = (Class)_previousClasses.get(previousClassCount);
-            if (previous != null)
-                t = resolveNameFromClass(previous, name, args);
-        } else if (previousClassCount > 0) {
-            previousClassCount--;
-            Class previous = (Class)_previousClasses.get(previousClassCount);
-            if (previous != null)
-                t = resolveNameFromClass(previous, name, args);
-        }
-        previousClassCount = -1;
-        return t;
+        return null;
     }
-    
-    private int previousClassCount = -1;
     
     /** Visit an <tt>UnmodifiedClassDeclaration</tt> or
      *  <tt>UnmodifiedInterfaceDeclaration</tt>, and set the current
