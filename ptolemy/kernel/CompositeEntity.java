@@ -222,6 +222,27 @@ public class CompositeEntity extends ComponentEntity {
             }
         }
 
+        // Clone the inside links from the ports of this entity.
+        Enumeration ports = getPorts();
+        while (ports.hasMoreElements()) {
+            ComponentPort port = (ComponentPort)ports.nextElement();
+            relations = port.insideRelations();
+            while (relations.hasMoreElements()) {
+                Relation relation = (Relation)relations.nextElement();
+                ComponentRelation newrel =
+                        newentity.getRelation(relation.getName());
+                Port newport =
+                        newentity.getPort(port.getName());
+                try {
+                    newport.link(newrel);
+                } catch (IllegalActionException ex) {
+                    throw new CloneNotSupportedException(
+                        "Failed to clone a CompositeEntity: " +
+                        ex.getMessage());
+                }
+            }
+        }
+
         return newentity;
     }
 
