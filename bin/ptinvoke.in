@@ -201,7 +201,17 @@ if [ "$PTCALTROP_DIR" = "caltrop" ]; then
     # Directory that contains the Cal jar file ptCal.jar
     # used by bin/ptinvoke.in
     CALTROP_DIR="@CALTROP_DIR@"
-    CALTROP_JARS="${CLASSPATHSEPARATOR}${CALTROP_DIR}/ptCal.jar${CLASSPATHSEPARATOR}${CALTROP_DIR}/saxon7.jar${CLASSPATHSEPARATOR}${CALTROP_DIR}/java_cup.jar"
+    CALTROP_JARS="${CLASSPATHSEPARATOR}${CALTROP_DIR}/ptCal.jar${CLASSPATHSEPARATOR}${CALTROP_DIR}/java_cup.jar"
+fi
+
+#### Chic stuff
+# The Chic jar file.
+# PTCHIC_DIR is set to chic if configure found chic
+PTCHIC_DIR=@PTCHIC_DIR@
+CHIC_JARS=""
+if [ "$PTCHIC_DIR" = "chic" ]; then
+    CHIC_DIR="@CHIC_DIR@"
+    CHIC_JARS="${CLASSPATHSEPARATOR}${CHIC_DIR}/chic.jar"
 fi
 
 #### Serial port stuff
@@ -355,6 +365,10 @@ if [ "$PTPSDF_DIR" = "psdf" ]; then
     PSDF_JARS="${CLASSPATHSEPARATOR}${PSDF_DIR}/synthesis.jar"
 fi
 
+#### Saxon is the XSLT and XQuery Processor (http://saxon.sourceforge.net/)
+# At runtime, ptolemy.util.XSLTUtilities, caltrop and hsif use Saxon.
+SAXON_JAR={CLASSPATHSEPARATOR}${PTII}/lib/saxon7.jar
+
 #### X10 is the interface library for power line communication, see
 # http://x10.homelinux.org/download.html
 # PTX10_DIR is set to x10 if configure found x10
@@ -365,23 +379,13 @@ if [ "$PTX10_DIR" = "x10" ]; then
     X10_JARS="${CLASSPATHSEPARATOR}@X10_CLASSES@"
 fi
 
-#### Chic stuff
-# The Chic jar file.
-# PTCHIC_DIR is set to chic if configure found chic
-PTCHIC_DIR=@PTCHIC_DIR@
-CHIC_JARS=""
-if [ "$PTCHIC_DIR" = "chic" ]; then
-    CHIC_DIR="@CHIC_DIR@"
-    CHIC_JARS="${CLASSPATHSEPARATOR}${CHIC_DIR}/chic.jar"
-fi
-
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
 # arbitrary files
 #
 # Note that CALTROP_JARS should be before SOOT_JARS because
 # CALTROP_JARS contains java_cup.jar and jasminclasses.jar contains
 # a version of java cup
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${CALTROP_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${X10_JARS}${CHIC_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${CALTROP_JARS}${CHIC_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${SAXON_JAR}${X10_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} -Xmx256M"
 
 #### Sandbox
