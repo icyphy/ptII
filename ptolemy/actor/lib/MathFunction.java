@@ -70,10 +70,14 @@ If the argument is NaN, then the result is NaN.
 If the argument is NaN, then the result is NaN.
 </ul>
 <p>
-NOTE: Some functions like exp, log, square, and sqrt act on a single
+
+NOTES:
+1. Some functions like exp, log, square, and sqrt act on a single
 operand only.  Other functions like modulo act on two operands.
 The actor acquires a second input when the function is changed to
 modulo, and loses the input when the function is changed back.
+2. There is an alternative to using the MathFunction:Modulo function.
+If you want to use the IEEE remainder standard, use the Remainder actor.
 
 @author C. Fong
 @version $Id$
