@@ -37,6 +37,9 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs jdkCapture] == "" } then { 
+    source [file join $PTII util testsuite jdktools.tcl]
+}
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -87,23 +90,30 @@ test Commutator-3.1 {run with two inputs} {
 } {0 0 1 1 2 2}
 
 test Commutator-4.1 {run with mutations} {
-    $m addChangeListener \
-            [java::new ptolemy.kernel.util.StreamChangeListener]
-    set dir [$e0 getDirector]
-    #$dir addDebugListener \
-    #        [java::new ptolemy.kernel.util.StreamListener]
-    $m initialize
-    $m iterate
-    set c1 [java::new ptolemy.moml.MoMLChangeRequest $e0 $e0 \
-            {<deleteEntity name="ramp1"/>}]
-    set c2 [java::new ptolemy.moml.MoMLChangeRequest $e0 $e0 \
-            {<deleteRelation name="r1"/>}]
-    $e0 requestChange $c1
-    $e0 requestChange $c2
-    $m iterate
-    $m wrapup
-    enumToTokenValues [$rec getRecord 0]
-} {0 0 1}
+    # Grab stdout and put it into results
+    jdkCapture {
+	$m addChangeListener \
+		[java::new ptolemy.kernel.util.StreamChangeListener]
+
+	set dir [$e0 getDirector]
+	#	$dir addDebugListener \
+	#		[java::new ptolemy.kernel.util.StreamListener]
+	$m initialize
+	$m iterate
+	set c1 [java::new ptolemy.moml.MoMLChangeRequest $e0 $e0 \
+		{<deleteEntity name="ramp1"/>}]
+	set c2 [java::new ptolemy.moml.MoMLChangeRequest $e0 $e0 \
+		{<deleteRelation name="r1"/>}]
+	$e0 requestChange $c1
+	$e0 requestChange $c2
+	$m iterate
+	$m wrapup
+    } results
+    list $results \
+	    [enumToTokenValues [$rec getRecord 0]]
+} {{StreamChangeRequest.changeExecuted(): <deleteEntity name="ramp1"/> succeeded
+StreamChangeRequest.changeExecuted(): <deleteRelation name="r1"/> succeeded
+} {0 0 1}}
 
 test Commutator-5.1 {test under DE} {
     set e0 [deModel 6.0]
