@@ -4,7 +4,7 @@
 <entity name="directory" class="ptolemy.actor.gui.ModelDirectory">
   <entity name="doc" class="ptolemy.actor.gui.HTMLEffigy">
     <entity name="tableau" class="ptolemy.actor.gui.HTMLViewerTableau">
-      <property name="url" value="ptolemy/configs/intro.htm"/>
+      <property name="url" value="ptolemy/configs/full/intro.htm"/>
       <property name="size" value="[650, 350]"/>
     </entity>
   </entity>
