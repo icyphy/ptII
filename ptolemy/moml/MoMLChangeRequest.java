@@ -166,6 +166,22 @@ public class MoMLChangeRequest extends ChangeRequest {
         }
     }
 
+    /** Set whether or not this change is undoable
+     *  @param undoable whether or not this change should be treated
+     *   as an incremental change that is undoable
+     */
+     public void setUndoable(boolean undoable) {
+        _undoable = undoable;
+     }
+
+     /** Set whether or not the undo from this change should be merged with
+      *  the previous undoable change
+      *  @param mergeWithPrevious whether or not this change should be merged
+      */
+     public void setMergeWithPreviousUndo(boolean mergeWithPrevious) {
+        _mergeWithPreviousUndo = mergeWithPrevious;
+     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -205,9 +221,19 @@ public class MoMLChangeRequest extends ChangeRequest {
                 _parser.setContext(_context);
 
             }
+            // Tell the parser if this change is undoable
+            if (_undoable) {
+                _parser.setUndoable(true);
+            }
             _parser.parse(_base, getDescription());
         } finally {
             _parser._propagating = false;
+        }
+
+        // Merge the undo entry created if needed
+        if (_undoable && _mergeWithPreviousUndo) {
+            UndoInfoAttribute undoInfo = UndoInfoAttribute.getUndoInfo(_context);
+            undoInfo.mergeTopTwoUndos();
         }
 
         // Apply the same change to any object that defers its MoML
@@ -237,6 +263,8 @@ public class MoMLChangeRequest extends ChangeRequest {
                     // changes, so that it does not need to record them
                     // using MoMLAttribute.
                     newChange._propagating = true;
+                    newChange._undoable = _undoable;
+                    newChange._mergeWithPreviousUndo = _mergeWithPreviousUndo;
                     other.requestChange(newChange);
                 }
             }
@@ -257,4 +285,12 @@ public class MoMLChangeRequest extends ChangeRequest {
 
     // Indicator of whether this request is the result of a propagating change.
     private boolean _propagating = false;
+
+    // Flag indicating if this change is undoable or not
+    private boolean _undoable = false;
+
+    // Indicates that the undo MoML from this change request should be merged
+    // in with the undo MoML from the previos undoable change request if they
+    // both have the same context.
+    private boolean _mergeWithPreviousUndo = false;
 }

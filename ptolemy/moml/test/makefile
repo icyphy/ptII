@@ -58,6 +58,19 @@ JSIMPLE_TESTS = \
 	MoMLChangeRequest.tcl \
 	MoMLParser.tcl \
 	StreamErrorHandler.tcl \
+	UndoDeleteEntity.tcl \
+	UndoDeletePort.tcl \
+	UndoDeleteProperty.tcl \
+	UndoDeleteRelation.tcl \
+	UndoDoc.tcl \
+	UndoEntity.tcl \
+	UndoLink.tcl \
+	UndoPort.tcl \
+	UndoProperty.tcl \
+	UndoRelation.tcl \
+	UndoRename.tcl \
+	UndoUnlink.tcl \
+	UndoVertex.tcl \
 	Vertex.tcl
 
 # Graphical Java tests that use Tcl.

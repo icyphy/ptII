@@ -421,6 +421,43 @@ public class MoMLParser extends HandlerBase {
         if (_handler != null) {
             _handler.enableErrorSkipping(false);
         }
+        // Tidy up the undo entry
+        if (_undoEnabled && _undoContext != null && _undoContext.hasUndoMoML()) {
+            String undoMoML = _undoContext.getUndoMoML();
+            if (_undoDebug) {
+                // Print out what has been gnerated
+                System.out.println("=======================");
+                if (!_undoIsRedo) {
+                    System.out.println("Generated UNDO MoML: ");
+                }
+                else {
+                    System.out.println("Generated REDO MoML: ");
+                }
+                System.out.print(undoMoML);
+                System.out.println("=======================");
+            }
+
+            // Create a new undo entry!
+            // NOTE: we use the current context to undo the change. This is
+            // because a change request sets the context before applying
+            // some incremental MoML.
+            NamedObj context = _current;
+            if (context == null) {
+                context = _toplevel;
+            }
+            MoMLUndoEntry newEntry = new MoMLUndoEntry(context, undoMoML);
+            UndoInfoAttribute undoInfo = UndoInfoAttribute.getUndoInfo(context);
+            if (!_undoIsRedo) {
+                // Is an undo...
+                undoInfo.pushUndoEntry(newEntry);
+            }
+            else {
+                // Just carried out an undo, need to store for a redo
+                undoInfo.pushRedoEntry(newEntry);
+            }
+            // Clear up the various MoML variables.
+            _resetUndo();
+        }
         // If there were any unrecognized elements, warn the user.
         if (_unrecognized != null) {
             StringBuffer warning = new StringBuffer(
@@ -528,72 +565,109 @@ public class MoMLParser extends HandlerBase {
                 // is not in the classpath, then we may get"
                 // "java.lang.NoClassDefFoundError: diva/canvas/Figure"
             }
-        } else if (elementName.equals("doc")) {
-            if (_currentDocName == null && _docNesting == 0) {
-                _currentDocName = "_doc";
-            }
-            // Create a new doc element only if there is character data.
-            // NOTE: This will replace any preexisting doc element with the
-            // same name, since Documentation is a SingletonAttribute.
-            if (_currentCharData.length() > 0) {
-                Documentation doc
-                    = new Documentation(_current, _currentDocName);
-                doc.setValue(_currentCharData.toString());
-            } else {
-                // Empty doc tag.  Remove previous doc element, if
-                // there is one.
-                Attribute previous = _current.getAttribute(_currentDocName);
+        }
+        else {
+            // The doc and group used to be part of "else if" above but had
+            // to move into here to handle undo
+            if (elementName.equals("doc")) {
+                // NOTE: for the undo of a doc element, all work is done here
+                if (_currentDocName == null && _docNesting == 0) {
+                    _currentDocName = "_doc";
+                }
+                // For undo need to know if a previous doc attribute with this
+                // name existed
+                Documentation previous =
+                        (Documentation)_current.getAttribute(_currentDocName);
+                String previousValue = null;
                 if (previous != null) {
-                    previous.setContainer(null);
+                    previousValue = previous.getValue();
+                }
+
+                // Create a new doc element only if there is character data.
+                // NOTE: This will replace any preexisting doc element with the
+                // same name, since Documentation is a SigletonAttribute.
+                if (_currentCharData.length() > 0) {
+                    Documentation doc
+                             = new Documentation(_current, _currentDocName);
+                    doc.setValue(_currentCharData.toString());
+                }
+                else {
+                    // Empty doc tag.  Remove previous doc element, if
+                    // there is one.
+                    if (previous != null) {
+                        previous.setContainer(null);
+                    }
+                }
+                if (_undoEnabled && _undoContext.isUndoable()) {
+                    _undoContext.appendUndoMoML("<doc name=\"" +
+                            _currentDocName + "\">");
+                    if (previous != null) {
+                        _undoContext.appendUndoMoML(previousValue);
+                    }
+                    _undoContext.appendUndoMoML("</doc>\n");
+                }
+                _currentDocName = null;
+            }
+            else if (elementName.equals("group")) {
+                try {
+                    _namespace = (String)_namespaces.pop();
+                }
+                catch (EmptyStackException ex) {
+                    _namespace = _DEFAULT_NAMESPACE;
                 }
             }
-            _currentDocName = null;
-        } else if (elementName.equals("group")) {
-            try {
-                _namespace = (String)_namespaces.pop();
-            } catch (EmptyStackException ex) {
-                _namespace = _DEFAULT_NAMESPACE;
+            else if (
+                    elementName.equals("property")
+                     || elementName.equals("class")
+                     || elementName.equals("deleteEntity")
+                     || elementName.equals("deletePort")
+                     || elementName.equals("deleteProperty")
+                     || elementName.equals("deleteRelation")
+                     || elementName.equals("director")
+                     || elementName.equals("entity")
+                     || elementName.equals("model")
+                     || elementName.equals("port")
+                     || elementName.equals("relation")
+                     || elementName.equals("rendition")
+                     || elementName.equals("vertex")) {
+                try {
+                    _current = (NamedObj)_containers.pop();
+                    _namespace = (String)_namespaces.pop();
+                }
+                catch (EmptyStackException ex) {
+                    // We are back at the top level.
+                    _current = null;
+                    _namespace = _DEFAULT_NAMESPACE;
+                }
             }
+        }
+
+        // Handle the undoable aspect, skipping if undo is not enabled
+        if (_undoEnabled && _isUndoableElement(elementName)) {
             try {
-                _namespaceTranslationTable = (Map)_namespaceTranslations.pop();
-            } catch (EmptyStackException ex) {
-                _namespaceTranslationTable = null;
+                // Get the result from this element, as we'll be pushing
+                // it onto the stack of children MoML for the parent context
+                String undoMoML = _undoContext.generateUndoEntry();
+                if (_undoDebug) {
+                    System.out.println("Completed element: " + elementName +
+                            "\n" + _undoContext.getUndoMoML());
+                }
+                // Reset the undo context to the parent.
+                // NOTE: if this is the top context, then doing a pop here
+                // will cause the EmptyStackException
+                _undoContext = (UndoContext)_undoContexts.pop();
+                // Push the child's undo MoML on the stack of child
+                // undo entries.
+                _undoContext.pushUndoEntry(undoMoML);
             }
-	} else if (
-                elementName.equals("property")
-                || elementName.equals("class")
-                || elementName.equals("deleteEntity")
-                || elementName.equals("deletePort")
-                || elementName.equals("deleteProperty")
-                || elementName.equals("deleteRelation")
-                || elementName.equals("director")
-                || elementName.equals("entity")
-                || elementName.equals("model")
-                || elementName.equals("port")
-                || elementName.equals("relation")
-                || elementName.equals("rendition")
-                || elementName.equals("vertex")) {
-            // The following are done in separate try-catch blocks
-            // to ensure that they are all tried even an exception
-            // occurs in one of them.  This is probably not necessary,
-            // but it is defensive coding.
-            try {
-                _current = (NamedObj)_containers.pop();
-            } catch (EmptyStackException ex) {
-                // We are back at the top level.
-                _current = null;
-            }
-            try {
-                _namespace = (String)_namespaces.pop();
-            } catch (EmptyStackException ex) {
-                // We are back at the top level.
-                _namespace = _DEFAULT_NAMESPACE;
-            }
-            try {
-                _namespaceTranslationTable = (Map)_namespaceTranslations.pop();
-            } catch (EmptyStackException ex) {
-                // We are back at the top level.
-                _namespaceTranslationTable = null;
+            catch (EmptyStackException ex) {
+                // If get here typically means that we are back at the top
+                // level, and the current _undoContext has the undo MoML
+                // we want. Do nothing.
+                if (_undoDebug) {
+                    System.out.println("Reached top level of undo " +
+                            "context stack");
+                }
             }
         }
     }
@@ -861,6 +935,44 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
+    /**
+     *  Redo the last undoable change carried out by this parser. If there are
+     *  no redoable entries available, then simply do nothing.
+     *
+     *  @throws  Exception  if something goes wrong with
+     *  @since Ptolemy II 2.1
+     */
+    public void redo() throws Exception {
+        // NOTE: _current cannot be null, so the MoMLUndoChangeReequest
+        // class uses the context it was given to set _current, but it is the
+        // context from the undo entry that is used to carry out the undo in
+        NamedObj named = _current;
+        if (named == null) {
+            named = _toplevel;
+        }
+        UndoInfoAttribute undoInfo = UndoInfoAttribute.getUndoInfo(named);
+        MoMLUndoEntry redoable = undoInfo.popRedoEntry();
+        if (redoable == null) {
+            // Redo called with nothing to redo, do nothing
+            return;
+        }
+
+        // First set the context, then carry out the undo
+        NamedObj context = redoable.getUndoContext();
+        setContext(context);
+        String redoableMoML = redoable.getUndoMoML();
+        // Mark this parse as being redone via a redo
+        _undoIsRedo = false;
+        try {
+            /// Carry out the undo(), making sure it is redoable
+            setUndoable(true);
+            parse(null, redoableMoML);
+        }
+        finally {
+            _resetUndo();
+        }
+    }
+
     /** Reset the MoML parser, forgetting about any previously parsed
      *  models.
      */
@@ -879,6 +991,8 @@ public class MoMLParser extends HandlerBase {
 	_skipElementIsNew = false;
         _skipElement = 0;
         _toplevel = null;
+        // Reset undo specific members
+        _resetUndo();
     }
 
     /** Resolve an external entity.  If the first argument is the
@@ -1017,6 +1131,17 @@ public class MoMLParser extends HandlerBase {
         _toplevel = toplevel;
     }
 
+    /**
+     *  Set the current context as undoable. If set to true, the next MoML
+     *  parsed will be able to be undone via a call to undo().
+     *
+     * @param  undoable  The new Undoable value
+     * @since Ptolemy II 2.1
+     */
+    public void setUndoable(boolean undoable) {
+        _undoEnabled = undoable;
+    }
+
     /** Start a document.  This method is called just before the parser
      *  attempts to read the first entity (the root of the document).
      *  It is guaranteed that this will be the first method called.
@@ -1066,6 +1191,22 @@ public class MoMLParser extends HandlerBase {
 	    if (_skipRendition) {
 		return;
             }
+
+            // Handle the undo aspect of the parsing if enabled
+            if (_undoEnabled && _isUndoableElement(elementName)) {
+                // First push the current undo context if there is one.
+                boolean childNodesUndoable = true;
+                if (_undoContext != null) {
+                    _undoContexts.push(_undoContext);
+                    childNodesUndoable = _undoContext.hasUndoableChildren();
+                }
+                // Create a new current context
+                _undoContext = new UndoContext(childNodesUndoable);
+                if (_undoDebug) {
+                    System.out.println("Current start element: " + elementName);
+                }
+            }
+
             if (_skipElement > 0) {
                 if (elementName.equals(_skipElementName)) {
 		    // If attribute() found an element to skip, then
@@ -1148,7 +1289,13 @@ public class MoMLParser extends HandlerBase {
                 String entityName = (String)_attributes.get("name");
                 _checkForNull(entityName,
                         "No name for element \"deleteEntity\"");
+
+                // NOTE: this also takes care of creating the undo
+                // MoML is needed. This is because the deletion has side
+                // effects so its not enough to generate the MoML after
+                // the entity is deleted.
                 NamedObj deletedEntity = _deleteEntity(entityName);
+
                 // NOTE: This could occur at a top level, although it's
                 // not clear what it means to delete a top-level entity.
                 if (_current != null) {
@@ -1161,7 +1308,10 @@ public class MoMLParser extends HandlerBase {
                 }
                 _current = deletedEntity;
                 _namespace = _DEFAULT_NAMESPACE;
-
+                if (_undoEnabled && _undoContext.isUndoable()) {
+                    // Note that nothing below a deleteEntity is undoable
+                    _undoContext.setChildrenUndoable(false);
+                }
             } else if (elementName.equals("deletePort")) {
                 String portName = (String)_attributes.get("name");
                 _checkForNull(portName,
@@ -1169,6 +1319,10 @@ public class MoMLParser extends HandlerBase {
                 // The entity attribute is optional
                 String entityName = (String)_attributes.get("entity");
 
+                // NOTE: this also takes care of creating the undo
+                // MoML is needed. This is because the deletion has side
+                // effects so its not enough to generate the MoML after
+                // the port is deleted.
                 NamedObj deletedPort = _deletePort(portName, entityName);
                 if (_current != null) {
                     // Although there is not supposed to be anything inside
@@ -1180,7 +1334,10 @@ public class MoMLParser extends HandlerBase {
                 }
                 _current = deletedPort;
                 _namespace = _DEFAULT_NAMESPACE;
-
+                if (_undoEnabled && _undoContext.isUndoable()) {
+                    // Note that nothing below a deletePort is undoable
+                    _undoContext.setChildrenUndoable(false);
+                }
             } else if (elementName.equals("deleteProperty")) {
                 String propName = (String)_attributes.get("name");
                 _checkForNull(propName,
@@ -1196,11 +1353,25 @@ public class MoMLParser extends HandlerBase {
                 }
                 _current = deletedProp;
                 _namespace = _DEFAULT_NAMESPACE;
-
+                if (_undoEnabled && _undoContext.isUndoable()) {
+                    // NOTE: do not need to move context as property deletions
+                    // are with immedaitely contained properties
+                    // NOTE: deleting a property does not have side effects,
+                    // so it is ok to generate the undo MoML after the
+                    // property has been deleted.
+                    _undoContext.appendUndoMoML(deletedProp.exportMoML());
+                    // Note that nothing below a deleteProperty is undoable
+                    _undoContext.setChildrenUndoable(false);
+                }
             } else if (elementName.equals("deleteRelation")) {
                 String relationName = (String)_attributes.get("name");
                 _checkForNull(relationName,
                         "No name for element \"deleteRelation\"");
+
+                // NOTE: this also takes care of creating the undo
+                // MoML is needed. This is because the deletion has side
+                // effects so its not enough to generate the MoML after
+                // the relation is deleted.
                 NamedObj deletedRelation = _deleteRelation(relationName);
                 if (_current != null) {
                     // Although there is not supposed to be anything inside
@@ -1213,6 +1384,10 @@ public class MoMLParser extends HandlerBase {
                 _current = deletedRelation;
                 _namespace = _DEFAULT_NAMESPACE;
 
+                if (_undoEnabled && _undoContext.isUndoable()) {
+                    // Note that nothing below a deleteEntity is undoable
+                    _undoContext.setChildrenUndoable(false);
+                }
             } else if (elementName.equals("director")) {
                 // NOTE: The director element is deprecated.
                 // Use a property instead.  This is kept here so that
@@ -1257,6 +1432,13 @@ public class MoMLParser extends HandlerBase {
                 String entityName = (String)_attributes.get("name");
                 _checkForNull(entityName, "No name for element \"entity\"");
                 String source = (String)_attributes.get("source");
+                // For undo purposes need to know if the entity existed
+                // already
+                ComponentEntity previous = _searchForEntity(entityName);
+                boolean existedAlready = false;
+                if (previous != null) {
+                    existedAlready = true;
+                }
                 NamedObj newEntity = _createEntity(
                         className, entityName, source);
                 // NOTE: The entity may be at the top level.
@@ -1283,6 +1465,24 @@ public class MoMLParser extends HandlerBase {
                 _current = newEntity;
                 _namespace = _DEFAULT_NAMESPACE;
 
+                if (_undoEnabled && _undoContext.isUndoable()) {
+                    // Handle the undo aspect.
+                    if (existedAlready) {
+                        _undoContext.appendUndoMoML("<entity name=\"" + entityName +
+                                "\" >\n");
+                        // Need to continue undoing and use an end tag
+                        _undoContext.appendClosingUndoMoML("</entity>\n");
+                        _undoContext.setChildrenUndoable(true);
+                    }
+                    else {
+                        _undoContext.appendUndoMoML("<deleteEntity name=\"" + entityName +
+                                "\" />\n");
+                        // Do not need to continue generating undo MoML
+                        // as the deleteEntity takes care of all
+                        // contained MoML
+                        _undoContext.setChildrenUndoable(false);
+                    }
+                }
             } else if (elementName.equals("group")) {
                 String groupName = (String)_attributes.get("name");
                 if (groupName != null) {
@@ -1299,6 +1499,17 @@ public class MoMLParser extends HandlerBase {
                     _namespaces.push(_DEFAULT_NAMESPACE);
                     _namespaceTranslations.push(_namespaceTranslationTable);
                     _namespace = _DEFAULT_NAMESPACE;
+                }
+
+                // Handle the undo aspect.
+                if (_undoEnabled && _undoContext.isUndoable()) {
+                    // NOTE: for groups with namespaces, rely on the names
+                    // already being part of undo MoML names instead of
+                    // tracking the namespace prefix
+                    _undoContext.appendUndoMoML("<group>\n");
+                    // Need to continue undoing and use an end tag
+                    _undoContext.appendClosingUndoMoML("</group>\n");
+                    _undoContext.setChildrenUndoable(true);
                 }
 
             } else if (elementName.equals("input")) {
@@ -1361,6 +1572,9 @@ public class MoMLParser extends HandlerBase {
 
                 // Parse port
                 ComponentPort port = _getPort(portName, context);
+                // Save to help generate undo MoML
+                int origNumOutsideLinks = port.numLinks();
+                int origNumInsideLinks = port.numInsideLinks();
 
                 // Get relation if given
                 ComponentRelation relation = null;
@@ -1391,6 +1605,57 @@ public class MoMLParser extends HandlerBase {
                     port.link(relation);
                 }
 
+                // Handle the undo aspect.
+                if (_undoEnabled && _undoContext.isUndoable()) {
+                    // NOTE: always unlink using an index
+                    // NOTE: do not use a relation name as that unlinks
+                    // all links to that relation from the given port
+                    if (relation == null) {
+                        // Handle null links insertion first. Either an
+                        // insertAt or an insertInsideAt must have been used.
+                        // NOTE: we need to check if the number of links
+                        // actually changed as a null link beyond the index of
+                        // the first real link has no effect
+                        if (insertAt != -1) {
+                            if (port.numLinks() != origNumOutsideLinks) {
+                                _undoContext.appendUndoMoML("<unlink port=\"" +
+                                        portName + "\" index=\"" +
+                                        insertAtSpec + "\" />\n");
+                            }
+                        }
+                        else {
+                            if (port.numInsideLinks() != origNumInsideLinks) {
+                                _undoContext.appendUndoMoML("<unlink port=\"" +
+                                        portName + "\" insideIndex=\"" +
+                                        insertInsideAtSpec + "\" />\n");
+                            }
+                        }
+                    }
+                    else {
+                        // The relation name was given, see if the link was
+                        // added inside or outside
+                        if (port.numInsideLinks() != origNumInsideLinks) {
+                            if (insertInsideAt == -1) {
+                                insertInsideAt = port.numInsideLinks() - 1;
+                            }
+                            _undoContext.appendUndoMoML("<unlink port=\"" +
+                                    portName + "\" insideIndex=\"" +
+                                    insertInsideAt + "\" />\n");
+                        }
+                        else if (port.numLinks() != origNumOutsideLinks) {
+                            if (insertAt == -1) {
+                                insertAt = port.numLinks() - 1;
+                            }
+                            _undoContext.appendUndoMoML("<unlink port=\"" +
+                                    portName + "\" index=\"" +
+                                    insertAt + "\" />\n");
+                        }
+                        else {
+                            // No change so do not need to generate any undo MoML
+                        }
+                    }
+                }
+
                 // If the container is cloned from something, then
                 // add to it a MoML description of the new link, so that
                 // this new link will be persistent.
@@ -1412,6 +1677,8 @@ public class MoMLParser extends HandlerBase {
                     newClass = Class.forName(className, true, _classLoader);
                 }
                 Port port = container.getPort(portName);
+                // Flag used to generate correct undo MoML
+                boolean alreadyExisted = (port != null);
                 if (port != null) {
                     if (newClass != null) {
                         // Previously existing port with the specified name.
@@ -1443,6 +1710,34 @@ public class MoMLParser extends HandlerBase {
                 _current = port;
                 _namespace = _DEFAULT_NAMESPACE;
 
+                // Handle the undo aspect if needed
+                if (_undoEnabled && _undoContext.isUndoable()) {
+                    if (alreadyExisted) {
+                        // Simply create in the undo MoML the same port
+                        _undoContext.appendUndoMoML("<port name=\"" +
+                                portName + "\" ");
+                        // Also add in the class if given
+                        if (className != null) {
+                            _undoContext.appendUndoMoML("class=\"" +
+                                    className + "\" ");
+                        }
+                        _undoContext.appendUndoMoML(">\n");
+
+                        // Need to continue undoing and use an end tag
+                        _undoContext.appendClosingUndoMoML("</port>\n");
+                        _undoContext.setChildrenUndoable(true);
+                    }
+                    else {
+                        // Need to delete the port in the undo MoML
+                        _undoContext.appendUndoMoML("<deletePort name=\"" +
+                                portName + "\" />\n");
+                        // Do not need to continue generating undo MoML
+                        // as the deletePort takes care of all
+                        // contained MoML
+                        _undoContext.setChildrenUndoable(false);
+                    }
+                }
+
                 // NOTE: The direction attribute is deprecated, but
                 // supported nonetheless.
                 if (port instanceof IOPort) {
@@ -1470,9 +1765,20 @@ public class MoMLParser extends HandlerBase {
                 // An xml version of the FSM ABP demo tickled this bug
                 boolean isIOPort = (_current instanceof IOPort);
                 if (propertyName.equals("multiport") && isIOPort) {
+                    // FIXME: UNDO: Consider refactoring these clauses
+                    // to remove the duplicate values
+                    // The previous value is needed to generate undo MoML
+                    boolean previousValue = false;
+                    // Special properties that affect the behaviour of a port
+                    IOPort currentIOPort = (IOPort)_current;
+
                     // The mere presense of a named property "multiport"
                     // makes the enclosing port a multiport, unless it
                     // has value false.
+
+                    // Get the previous value to use when generating the
+                    // undo MoML
+                    previousValue = currentIOPort.isMultiport();
                     if (value == null
                             || value.trim().toLowerCase().equals("true")) {
                         ((IOPort)_current).setMultiport(true);
@@ -1483,7 +1789,30 @@ public class MoMLParser extends HandlerBase {
                     _current =  (Attribute)
                         _current.getAttribute(propertyName);
                     _namespace = _DEFAULT_NAMESPACE;
+
+                    // Handle undo
+                    if (_undoEnabled && _undoContext.isUndoable()) {
+                        _undoContext.appendUndoMoML("<property name=\"" +
+                                propertyName +
+                                "\" value=\"");
+                        // Use what was there before
+                        _undoContext.appendUndoMoML(previousValue + "\" >\n");
+                        // Continue undoing and also use an end tag as a
+                        // property can contain other properties
+                        _undoContext.setChildrenUndoable(true);
+                        _undoContext.appendClosingUndoMoML("</property>\n");
+                    }
                 } else if (propertyName.equals("output") && isIOPort) {
+                    // FIXME: UNDO: Consider refactoring these clauses
+                    // to remove the duplicate values
+                    // The previous value is needed to generate undo MoML
+                    boolean previousValue = false;
+                    // Special properties that affect the behaviour of a port
+                    IOPort currentIOPort = (IOPort)_current;
+
+                    // Get the previous value to use when generating the
+                    // undo MoML
+                    previousValue = currentIOPort.isOutput();
                     if (value == null
                             || value.trim().toLowerCase().equals("true")) {
                         ((IOPort)_current).setOutput(true);
@@ -1494,7 +1823,30 @@ public class MoMLParser extends HandlerBase {
                     _current =  (Attribute)
                         _current.getAttribute(propertyName);
                     _namespace = _DEFAULT_NAMESPACE;
+
+                    // Handle undo
+                    if (_undoEnabled && _undoContext.isUndoable()) {
+                        _undoContext.appendUndoMoML("<property name=\"" +
+                                propertyName +
+                                "\" value=\"");
+                        // Use what was there before
+                        _undoContext.appendUndoMoML(previousValue + "\" >\n");
+                        // Continue undoing and also use an end tag as a
+                        // property can contain other properties
+                        _undoContext.setChildrenUndoable(true);
+                        _undoContext.appendClosingUndoMoML("</property>\n");
+                    }
                 } else if (propertyName.equals("input") && isIOPort) {
+                    // FIXME: UNDO: Consider refactoring these clauses
+                    // to remove the duplicate values
+                    // The previous value is needed to generate undo MoML
+                    boolean previousValue = false;
+                    // Special properties that affect the behaviour of a port
+                    IOPort currentIOPort = (IOPort)_current;
+
+                    // Get the previous value to use when generating the
+                    // undo MoML
+                    previousValue = currentIOPort.isInput();
                     if (value == null
                             || value.trim().toLowerCase().equals("true")) {
                         ((IOPort)_current).setInput(true);
@@ -1505,6 +1857,19 @@ public class MoMLParser extends HandlerBase {
                     _current =  (Attribute)
                             _current.getAttribute(propertyName);
                     _namespace = _DEFAULT_NAMESPACE;
+
+                    // Handle undo
+                    if (_undoEnabled && _undoContext.isUndoable()) {
+                        _undoContext.appendUndoMoML("<property name=\"" +
+                                propertyName +
+                                "\" value=\"");
+                        // Use what was there before
+                        _undoContext.appendUndoMoML(previousValue + "\" >\n");
+                        // Continue undoing and also use an end tag as a
+                        // property can contain other properties
+                        _undoContext.setChildrenUndoable(true);
+                        _undoContext.appendClosingUndoMoML("</property>\n");
+                    }
                 } else {
                     // Ordinary attribute.
                     NamedObj property = (Attribute)
@@ -1524,8 +1889,6 @@ public class MoMLParser extends HandlerBase {
 			}
                     }
 
-                    boolean createdNew = false;
-
                     // If there is a previous property with this name
                     // (property is not null), then we check that the
                     // property is an instance of the specified class.
@@ -1533,7 +1896,20 @@ public class MoMLParser extends HandlerBase {
                     // Otherwise, we try to replace it, something that
                     // will only work if it is a singleton (it might throw
                     // NameDuplicationException).
+                    boolean createdNew = false;
 
+                    // Also need the previous value, if any, to generate undo
+                    // MoML. Also need to know if the property already existed
+                    boolean previouslyExisted = (property != null);
+                    String oldClassName = null;
+                    String oldValue = null;
+                    if (previouslyExisted) {
+                        oldClassName = property.getClass().getName();
+                        if (property instanceof Settable) {
+                            Settable settable = (Settable)property;
+                            oldValue = settable.getExpression();
+                        }
+                    }
                     // NOTE: This used to use the following code to
                     // match _exactly_ the specified class, rather
                     // than checking that it be an instance of it.
@@ -1611,6 +1987,39 @@ public class MoMLParser extends HandlerBase {
                     _pushContext();
                     _current = property;
                     _namespace = _DEFAULT_NAMESPACE;
+
+                    // Handle the undo aspect if needed
+                    if (_undoEnabled && _undoContext.isUndoable()) {
+                        if (!previouslyExisted) {
+                            // Need to delete the property in the undo MoML
+                            _undoContext.appendUndoMoML("<deleteProperty name=\"" +
+                                    propertyName + "\" />\n");
+                            // Do not need to continue generating undo MoML
+                            // as the deleteProperty takes care of all
+                            // contained MoML
+                            _undoContext.setChildrenUndoable(false);
+                        }
+                        else {
+                            // Simply generate the same as was there before
+                            // FIXME: this may have subtle issues which may
+                            // require the use of the "createdNew" variable
+                            _undoContext.appendUndoMoML("<property name=\"" +
+                                    property.getName() + "\" ");
+                            _undoContext.appendUndoMoML("class=\"" +
+                                    oldClassName + "\" ");
+                            if (oldValue != null) {
+                                _undoContext.appendUndoMoML("value=\"" +
+                                        oldValue + "\" ");
+                            }
+                            _undoContext.appendUndoMoML(">\n");
+                            // Add the closing element
+                            _undoContext.appendClosingUndoMoML("</property>\n");
+
+                            // Need to continue generating undo MoML as a
+                            // property can have other children
+                            _undoContext.setChildrenUndoable(true);
+                        }
+                    }
                 }
 
             } else if (elementName.equals("relation")) {
@@ -1627,6 +2036,8 @@ public class MoMLParser extends HandlerBase {
                     newClass = Class.forName(className, true, _classLoader);
                 }
                 Relation relation = container.getRelation(relationName);
+                // Flag used to generate correct undo MoML
+                boolean alreadyExisted = (relation != null);
                 if (relation == null) {
                     // No previous relation with this name.
                     NamedObj newRelation = null;
@@ -1661,11 +2072,65 @@ public class MoMLParser extends HandlerBase {
                     _namespace = _DEFAULT_NAMESPACE;
                 }
 
+                // Handle the undo aspect if needed
+                if (_undoEnabled && _undoContext.isUndoable()) {
+                    if (alreadyExisted) {
+                        // Simply create in the undo MoML the same relation
+                        _undoContext.appendUndoMoML("<relation name=\"" +
+                                relationName + "\" ");
+                        // Also add in the class if given
+                        if (className != null) {
+                            _undoContext.appendUndoMoML("class=\"" +
+                                    className + "\" ");
+                        }
+                        _undoContext.appendUndoMoML(">\n");
+
+                        // Need to continue undoing and use an end tag
+                        _undoContext.appendClosingUndoMoML("</relation>\n");
+                        _undoContext.setChildrenUndoable(true);
+                    }
+                    else {
+                        // Need to delete the realtion in the undo MoML
+                        _undoContext.appendUndoMoML("<deleteRelation name=\"" +
+                                relationName + "\" />\n");
+                        // Do not need to continue generating undo MoML
+                        // as the deleteRelation takes care of all
+                        // contained MoML
+                        _undoContext.setChildrenUndoable(false);
+                    }
+                }
+
             } else if (elementName.equals("rename")) {
                 String newName = (String)_attributes.get("name");
                 _checkForNull(newName, "No new name for element \"rename\"");
                 if (_current != null) {
+                    String oldName = _current.getName();
                     _current.setName(newName);
+
+                    // Handle the undo aspect if needed
+                    if (_undoEnabled && _undoContext.isUndoable()) {
+                        // First try and rename in the parent context.
+                        // NOTE: this is a bit of a hack but is the only way
+                        // I could see of doing the rename without having to
+                        // change the semantics or location of the rename
+                        // element
+                        try {
+                            UndoContext parentContext =
+                                    (UndoContext)_undoContexts.peek();
+                            parentContext.applyRename(newName);
+                            // Simply create in the undo MoML another rename
+                            _undoContext.appendUndoMoML("<rename name=\"" +
+                                    oldName + "\" />\n");
+                            // Do not need to continue generating undo MoML
+                            // as rename does not have any child elements
+                            _undoContext.setChildrenUndoable(false);
+                        }
+                        catch (Exception e) {
+                            // FIXME: update to use a better exception
+                            // Do nothing, should mean that no undo for this
+                            // element is generated
+                        }
+                    }
                 }
 
             } else if (elementName.equals("rendition")) {
@@ -1704,22 +2169,77 @@ public class MoMLParser extends HandlerBase {
                             _parser.getColumnNumber());
                 }
 
+                CompositeEntity container = (CompositeEntity)_current;
                 if (relationName != null) {
                     // Get relation
                     Relation tmpRelation = context.getRelation(relationName);
                     _checkForNull(tmpRelation, "No relation named \"" +
                             relationName + "\" in " + context.getFullName());
                     ComponentRelation relation = (ComponentRelation)tmpRelation;
+
+                    // Handle the undoable aspect
+                    if (_undoEnabled && _undoContext.isUndoable()) {
+                        ArrayList filter = new ArrayList(2);
+                        filter.add(relation);
+                        filter.add(port);
+                        String replicaLinkMoML = container.exportLinks(0,
+                                filter);
+                        _undoContext.appendUndoMoML(replicaLinkMoML);
+                    }
                     port.unlink(relation);
                 } else if (indexSpec != null) {
                     // index is given.
                     int index = Integer.parseInt(indexSpec);
+
+                    // Handle the undoable aspect  before doing the unlinking
+                    if (_undoEnabled && _undoContext.isUndoable()) {
+                        // Get the relation at the given index
+                        List linkedRelations = port.linkedRelationList();
+                        Relation r = (Relation)linkedRelations.get(index);
+                        // FIXME: need to worry about vertex?
+                        _undoContext.appendUndoMoML("<link port=\"" +
+                                portName + "\" insertAt=\"" +
+                                indexSpec + "\" ");
+                        // Only need to specify the relation if there was
+                        // a relation at that index. Otherwise a null
+                        // link is inserted
+                        if (r != null) {
+                            _undoContext.appendUndoMoML("relation=\"" +
+                                    r.getName() + "\" ");
+                        }
+                        _undoContext.appendUndoMoML(" />\n");
+                    }
                     port.unlink(index);
                 } else {
                     // insideIndex is given.
                     int index = Integer.parseInt(insideIndexSpec);
+                    // Handle the undoable aspect  before doing the unlinking
+                    if (_undoEnabled && _undoContext.isUndoable()) {
+                        // Get the relation at the given index
+                        List linkedRelations = port.insideRelationList();
+                        Relation r = (Relation)linkedRelations.get(index);
+                        // FIXME: need to worry about vertex?
+                        _undoContext.appendUndoMoML("<link port=\"" +
+                                portName + "\" insertInsideAt=\"" +
+                                index + "\" ");
+                        // Only need to specify the relation if there was
+                        // a relation at that index. Otherwise a null
+                        // link is inserted
+                        if (r != null) {
+                            _undoContext.appendUndoMoML("relation=\"" +
+                                    r.getName() + "\" ");
+                        }
+                        _undoContext.appendUndoMoML(" />\n");
+                    }
                     port.unlinkInside(index);
+
                 }
+
+                // Do not need to worry about child elements
+                if (_undoEnabled && _undoContext.isUndoable()) {
+                    _undoContext.setChildrenUndoable(false);
+                }
+
                 // If the container is cloned from something, then
                 // add to it a MoML description of the unlink, so that
                 // this new entity will be persistent.
@@ -1734,6 +2254,15 @@ public class MoMLParser extends HandlerBase {
                         "Element \"vertex\" found inside an element that "
                         + "is not a Relation. It is: "
                         + _current);
+
+                // For undo need to know if a previous vertex attribute
+                // with this name existed, and if so its expression
+                Vertex previous =
+                        (Vertex)_current.getAttribute(vertexName);
+                String previousValue = null;
+                if (previous != null) {
+                    previousValue = previous.getExpression();
+                }
 
                 // Note that vertexes are settable, but they are handled
                 // separately.  This is probably the wrong way to do this.
@@ -1752,6 +2281,20 @@ public class MoMLParser extends HandlerBase {
                 _pushContext();
                 _current = vertex;
                 _namespace = _DEFAULT_NAMESPACE;
+
+                if (_undoEnabled && _undoContext.isUndoable()) {
+                    _undoContext.appendUndoMoML("<vertex name=\"" +
+                            vertexName + "\" ");
+                    if (previousValue != null) {
+                        _undoContext.appendUndoMoML("value=\""  +
+                        previousValue + "\" ");
+                    }
+                    _undoContext.appendUndoMoML(">\n");
+
+                    // The Vertex element can have children
+                    _undoContext.setChildrenUndoable(true);
+                    _undoContext.appendClosingUndoMoML("</vertex>\n");
+                }
             } else {
                 // Unrecognized element name.  Collect it.
                 if (_unrecognized == null) {
@@ -1792,6 +2335,7 @@ public class MoMLParser extends HandlerBase {
                     _currentExternalEntity(),
                     _parser.getLineNumber(),
                     _parser.getColumnNumber(), ex.getTargetException());
+
         } catch (Exception ex) {
             if (_handler != null) {
                 int reply = _handler.handleError(
@@ -1839,6 +2383,45 @@ public class MoMLParser extends HandlerBase {
         // HTML file for the first external entity, rather than
         // XML file.  So error messages typically refer to the wrong file.
         _externalEntities.push(systemId);
+    }
+
+    /**
+     *  Undo the last undoable change carried out by this parser If
+     *  there are no undoable entries available, then simply do
+     *  nothing.
+     *
+     *  @exception  Exception  Description of Exception
+     *  @since Ptolemy II 2.1
+     */
+    public void undo() throws Exception {
+        // NOTE: _current cannot be null, so the MoMLUndoChangeReequest
+        // class uses the context it was given to set _current, but it is the
+        // context from the undo entry that is used to carry out the undo in
+        NamedObj named = _current;
+        if (named == null) {
+            named = _toplevel;
+        }
+        UndoInfoAttribute undoInfo = UndoInfoAttribute.getUndoInfo(named);
+        MoMLUndoEntry undoable = undoInfo.popUndoEntry();
+        if (undoable == null) {
+            // Undo called with nothing to undo, do nothing
+            return;
+        }
+
+        // First set the context, then carry out the undo
+        NamedObj context = undoable.getUndoContext();
+        setContext(context);
+        String undoableMoML = undoable.getUndoMoML();
+        // Mark this parse as being undone via a redo
+        _undoIsRedo = true;
+        try {
+            // Carry out the undo(), making sure it is redoable
+            setUndoable(true);
+            parse(null, undoableMoML);
+        }
+        finally {
+            _resetUndo();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2297,6 +2880,35 @@ public class MoMLParser extends HandlerBase {
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
         }
+
+        // NOTE: not enough to simply record the MoML of the deleted entity
+        // as any links connected to its ports will also be deleted.
+        if (_undoEnabled && _undoContext.isUndoable()) {
+            _undoContext.appendUndoMoML("<group>\n");
+            // May need to move context if the entity name given is not
+            // immediate
+            _undoContext.moveContextStart(_current, toDelete);
+
+            // Add in the description
+            _undoContext.appendUndoMoML(toDelete.exportMoML());
+
+            // NOTE: cannot use the relationlist as returned as it is
+            // unmodifiable and we need to add in the entity being deleted.
+            ArrayList filter = new ArrayList(toDelete.linkedRelationList());
+            filter.add(toDelete);
+
+            // The parent container can do the filtering and generate the
+            // MoML
+            CompositeEntity container = (CompositeEntity)toDelete.getContainer();
+            String replicaLinkMoML = container.exportLinks(0, filter);
+            _undoContext.appendUndoMoML(replicaLinkMoML);
+
+            // Finally move back to context if needed
+            _undoContext.moveContextEnd(_current, toDelete);
+            _undoContext.appendUndoMoML("</group>\n");
+
+        }
+
         toDelete.setContainer(null);
 
         // If the container is cloned from something, then
@@ -2351,6 +2963,72 @@ public class MoMLParser extends HandlerBase {
                     _parser.getColumnNumber());
         }
 
+        // NOTE: not enough to simply record the MoML of the deleted port
+        // as any links connected to it will also be deleted.
+        if (_undoEnabled && _undoContext.isUndoable()) {
+            _undoContext.appendUndoMoML("<group>\n");
+            // Need to work out the entity context to use if any
+            if (!entityAttrUsed) {
+                _undoContext.moveContextStart(_current, toDelete);
+            }
+            else {
+                _undoContext.moveContextStart(_current, portContainer);
+            }
+
+            // Move to the entity context if the entity attribute was used.
+            // NOTE: only the local name is used.
+            if (entityAttrUsed) {
+                _undoContext.appendUndoMoML("<entity name=\"" +
+                        portContainer.getName() + "\" >\n");
+            }
+
+            // Add in the MoML description of the port
+            _undoContext.appendUndoMoML(toDelete.exportMoML());
+
+            // NOTE: only generate undo MoML for deleted links if the entity
+            // attribute is used
+            if (entityAttrUsed) {
+                // First need to generate replicaLinkMoML for the internal
+                // links if the port is a component port, then close of the
+                // local entity MoML, then generate replicaLinkMoML for
+                // the outside links.
+                if (portContainer instanceof CompositeEntity) {
+                    // Get the containing compositeEntity as this is needed for the
+                    // generating the link MoML and level crossing links below
+                    CompositeEntity composite = (CompositeEntity)portContainer;
+                    ComponentPort compPort = (ComponentPort)toDelete;
+                    List insideRelationsList = compPort.insideRelationList();
+                    ArrayList filter = new ArrayList(insideRelationsList);
+                    filter.add(compPort);
+                    String replicaLinkMoML = composite.exportLinks(0, filter);
+                    _undoContext.appendUndoMoML(replicaLinkMoML);
+                }
+
+                // Close off the local entity
+                _undoContext.appendUndoMoML("</entity>\n");
+
+                // Add in the replica links for outside
+                List relationsList = toDelete.linkedRelationList();
+                ArrayList filter = new ArrayList(relationsList);
+                filter.add(toDelete);
+                // Get the containing compositeEntity as this is needed for the
+                // generating the link MoML and level crossing links below
+                CompositeEntity composite =
+                        (CompositeEntity)portContainer.getContainer();
+                String replicaLinkMoML = composite.exportLinks(0, filter);
+                _undoContext.appendUndoMoML(replicaLinkMoML);
+            }
+
+
+            // Finally move back to context if needed
+            if (!entityAttrUsed) {
+                _undoContext.moveContextEnd(_current, toDelete);
+            }
+            else {
+                _undoContext.moveContextEnd(_current, portContainer);
+            }
+            _undoContext.appendUndoMoML("</group>\n");
+        }
         toDelete.setContainer(null);
 
         // If the container is cloned from something, then
@@ -2395,6 +3073,34 @@ public class MoMLParser extends HandlerBase {
                     _currentExternalEntity(),
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
+        }
+        // NOTE: not enough to simply record the MoML of the deleted entity
+        // as any links connected to its ports will also be deleted.
+        if (_undoEnabled && _undoContext.isUndoable()) {
+            _undoContext.appendUndoMoML("<group>\n");
+            // May need to move context if the entity name given is not
+            // immediate
+            _undoContext.moveContextStart(_current, toDelete);
+
+            // Add in the relation description
+            _undoContext.appendUndoMoML(toDelete.exportMoML());
+
+            // NOTE: cannot use the relationlist as returned as it is
+            // unmodifiable and we need to add in the entity being deleted.
+            ArrayList filter = new ArrayList(toDelete.linkedPortList());
+            filter.add(toDelete);
+
+            // The parent container can do the filtering and generate the
+            // MoML
+            CompositeEntity container = (CompositeEntity)toDelete.getContainer();
+            String replicaLinkMoML = container.exportLinks(0, filter);
+
+            // Append it to the current element undo MoML
+            _undoContext.appendUndoMoML(replicaLinkMoML.toString());
+
+            // Finally move back to context if needed
+            _undoContext.moveContextEnd(_current, toDelete);
+            _undoContext.appendUndoMoML("</group>\n");
         }
         toDelete.setContainer(null);
 
@@ -2443,6 +3149,38 @@ public class MoMLParser extends HandlerBase {
         _checkForNull(port, "No port named \"" + portspec
                 + "\" in " + context.getFullName());
         return (ComponentPort)port;
+    }
+
+    /**
+     *  Return whether or not the given element name is undoable. NOTE: we need
+     *  this method as the list of actions on namespaces and _current does not
+     *  apply to elements such as "link"
+     *
+     * @param  elementName  Description of Parameter
+     * @return              Description of the Returned Value
+     * @since Ptolemy 2.1
+     */
+    private boolean _isUndoableElement(String elementName) {
+        // The following serves as documentation of sorts for which
+        // elements usage is undoable
+        // NOTE: property appears first for reasons of efficency.
+        if (elementName.equals("property")
+                 || elementName.equals("doc")
+                 || elementName.equals("deleteEntity")
+                 || elementName.equals("deletePort")
+                 || elementName.equals("deleteProperty")
+                 || elementName.equals("deleteRelation")
+                 || elementName.equals("entity")
+                 || elementName.equals("group")
+                 || elementName.equals("link")
+                 || elementName.equals("port")
+                 || elementName.equals("relation")
+                 || elementName.equals("rename")
+                 || elementName.equals("unlink")
+                 || elementName.equals("vertex")) {
+            return true;
+        }
+        return false;
     }
 
     /** Use the specified parser to parse the file or URL,
@@ -2699,6 +3437,18 @@ public class MoMLParser extends HandlerBase {
                         "Unable to record extension to class!");
             }
         }
+    }
+
+
+    //  Reset the undo information to give a fresh setup for the next
+    //  incremental change. NOTE: this resets all the undo information except
+    //  for the undoInfoAttribute which is associated with the model.
+    //  @since Ptolemy II 2.1
+    private void _resetUndo() {
+        _undoContext = null;
+        _undoContexts = new Stack();
+        _undoEnabled = false;
+        _undoIsRedo = false;
     }
 
     // Given a name that is either absolute (with a leading period)
@@ -2983,6 +3733,24 @@ public class MoMLParser extends HandlerBase {
     // Top-level entity.
     private NamedObj _toplevel = null;
 
+    // Holds information needed to generate undo MoML at this level
+    private Stack _undoContexts = new Stack();
+    // The current undo context. This contains information about the
+    // the current undo environment
+    private UndoContext _undoContext = null;
+
+    // Set this to true to get debugging information for incremental parsing
+    private boolean _undoDebug = false;
+
+    // Flag indicating if the MoML currently being parsed should be
+    // undoable. Primarily for incremental parsing.
+    private boolean _undoEnabled = false;
+
+    // Set this to true to get debugging information for incremental parsing
+    // Whether or not the undo is actally a redo
+    private boolean _undoIsRedo = false;
+
+    // The workspace for this model.
     // List of unrecognized elements.
     private List _unrecognized;
 
