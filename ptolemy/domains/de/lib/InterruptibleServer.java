@@ -47,7 +47,7 @@ amount of interrupt processing time needed.
 */
 public class InterruptibleServer extends DEActor {
 
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     /** Construct a DEServer star with the default service time equal to 1.0.
      *
