@@ -64,7 +64,7 @@ test VariableClock-2.1 {test with the default output value} {
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     set manager [$e0 getManager]
     $manager addExecutionListener \
-            [java::new ptolemy.actor.DefaultExecutionListener]
+            [java::new ptolemy.actor.StreamExecutionListener]
     $manager execute
     enumToTokenValues [$rec getRecord 0]
 } {1 1 1 1 1 1 1 1 1 1 1}

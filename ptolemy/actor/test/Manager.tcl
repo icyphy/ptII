@@ -249,7 +249,7 @@ test Manager-10.0 {Test execution listener} {
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-    set listener [java::new ptolemy.actor.DefaultExecutionListener]
+    set listener [java::new ptolemy.actor.StreamExecutionListener]
     $manager addExecutionListener $listener
     $manager run
     puts "------- result: [enumToTokenValues [$rec getRecord 0]]"
