@@ -60,7 +60,8 @@ JSRCS = \
 	BubblePane.java \
 	BubbleRenderer.java
 
-EXTRA_SRCS =	$(JSRCS)
+EXTRA_SRCS =	$(JSRCS) \
+	graph.dtd graph.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -72,6 +73,18 @@ OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
 	$(PTCLASSALLJAR)
+	'BasicGraphController$$1.class' \
+	'BasicGraphController$$NodeCreator.class' \
+	'BasicGraphModel$$1.class' \
+	'BasicGraphModel$$2.class' \
+	'BasicGraphModel$$BasicCompositeNode.class' \
+	'BasicGraphModel$$BasicEdge.class' \
+	'BasicGraphModel$$BasicNode.class' \
+	'BasicGraphModel$$Intermediate.class' \
+	'BasicLayoutTarget$$1.class' \
+	'BasicLayoutTarget$$2.class' \
+	'BasicLayoutTarget$$3.class' \
+	'BasicLayoutTarget$$4.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
