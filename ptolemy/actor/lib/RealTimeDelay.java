@@ -132,9 +132,11 @@ public class RealTimeDelay extends Transformer {
      */
     private void  _transferTokens() throws IllegalActionException {
         for (int i = 0; i < input.getWidth(); i++) {
-            Token inToken = input.get(i);
-            if( i < output.getWidth()) {
-                output.send(i, inToken);
+            if(input.hasToken(i)) {
+                Token inToken = input.get(i);
+                if( i < output.getWidth()) {
+                    output.send(i, inToken);
+                }
             }
         }
     }

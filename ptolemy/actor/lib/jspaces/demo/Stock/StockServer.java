@@ -32,12 +32,12 @@
 
 package ptolemy.actor.lib.jspaces.demo.Stock;
 
-import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIORelation;
 import ptolemy.data.Token;
 import ptolemy.data.IntToken;
 import ptolemy.data.LongToken;
@@ -49,6 +49,7 @@ import ptolemy.domains.sdf.kernel.SDFAtomicActor;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
 import ptolemy.actor.lib.jspaces.Publisher;
+import ptolemy.actor.lib.RealTimeDelay; 
 
 
 import java.util.StringTokenizer;
@@ -157,10 +158,12 @@ public class StockServer extends TypedCompositeActor {
 	    removeAllEntities();
 	    removeAllRelations();
 
-	    // create a dummy sink that will be connected to all the
-	    // StockQuote actors so that the SDF graph is connected.
-	    DummySink sink = new DummySink(this, "sink");
-
+	    // create a RealTimeDelay that will be connected to all the
+	    // StockQuote actors so that the SDF graph is connected,
+            // and a real time delay
+	    RealTimeDelay sink = new RealTimeDelay(this, "sink");
+            sink.delay.setToken(new LongToken(30000));
+            
 	    String allTickers = ((StringToken)tickers.getToken()).stringValue();
 	    StringTokenizer st = new StringTokenizer(allTickers);
 	    int numQuotes = 0;
@@ -171,8 +174,8 @@ public class StockServer extends TypedCompositeActor {
 						"publisher" + numQuotes);
 	        numQuotes++;
 
-	        ComponentRelation relation = connect(quote.output,
-						publisher.input);
+	        TypedIORelation relation = 
+                    (TypedIORelation)connect(quote.output, publisher.input);
 	        sink.input.link(relation);
 
 	        StringToken symbolToken = new StringToken(symbol);
@@ -183,7 +186,7 @@ public class StockServer extends TypedCompositeActor {
 	        publisher.leaseTime.setToken(new LongToken(60*1000));
 	    }
 
-	    sink.input.tokenConsumptionRate.setToken(new IntToken(numQuotes));
+	    //sink.input.tokenConsumptionRate.setToken(new IntToken(numQuotes));
 	    super.preinitialize();
 
         } catch (NameDuplicationException nde) {
