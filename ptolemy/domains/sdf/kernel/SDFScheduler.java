@@ -562,7 +562,7 @@ public class SDFScheduler extends Scheduler {
             }
                 
             // Fill AllActors with the list of things that we can schedule
-            // CHECKME: What if other things can be scheduled than actors?
+            // FIXME: What if other things can be scheduled than actors?
             if(a instanceof Actor) AllActors.insertLast(a);
         }
 
