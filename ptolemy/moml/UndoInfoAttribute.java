@@ -1,29 +1,31 @@
-/*
- * An attribute that holds the undo/redo information about a model.
- *
- * Copyright (c) 2000-2003 The Regents of the University of California.
- * All rights reserved.
- * Permission is hereby granted, without written agreement and without
- * license or royalty fees, to use, copy, modify, and distribute this
- * software and its documentation for any purpose, provided that the above
- * copyright notice and the following two paragraphs appear in all copies
- * of this software.
- * IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- * FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- * ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- * THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- * THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- * PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- * CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- * ENHANCEMENTS, OR MODIFICATIONS.
- * PT_COPYRIGHT_VERSION_2
- * COPYRIGHTENDKEY
- * @ProposedRating Yellow (eal@eecs.berkeley.edu)
- * @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
- */
+/* An attribute that holds the undo/redo information about a model.
+
+ Copyright (c) 2000-2003 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
+*/
 
 package ptolemy.moml;
 
@@ -38,40 +40,41 @@ import java.util.EmptyStackException;
 //////////////////////////////////////////////////////////////////////////
 //// UndoInfoAttribute
 /**
- *  An attribute that holds the undo/redo information about a models change
- *  history. This attribute is not persistent. This makes sense because a user
- *  commonly expects a models undo/redo information to disappear once the
- *  application that is being worked on is closed. It is also a singleton,
- *  meaning that it will replace any previous attribute that has the same name
- *  and is an instance of the base class, SingletonAttribute.
- *  <p>
- *  Two stacks of information are maintained - one for undo information and
- *  one for redo information. The information in the redo stack is placed there
- *  whenever an undo is carried out, and can be used to reverse the effect
- *  of the undo.
- *  <p>
- *  NOTE: the information in the redo stack is emptied when a new undo entry is
- *  pushed onto the undo stack that was not the result of a redo being
- *  requested. This situation arises when a user requests a series of undo
- *  and redo operations, and then performs some normal undoable action. At this
- *  point the information in the redo stack is not relevant to the state of
- *  the model and so must be cleared.
- *
- * @author     Neil Smyth
- * @version    $Id$
- * @since Ptolemy II 2.1
- */
+An attribute that holds the undo/redo information about a models change
+history. This attribute is not persistent. This makes sense because a user
+commonly expects a models undo/redo information to disappear once the
+application that is being worked on is closed. It is also a singleton,
+meaning that it will replace any previous attribute that has the same name
+and is an instance of the base class, SingletonAttribute.
+
+<p>Two stacks of information are maintained - one for undo information and
+one for redo information. The information in the redo stack is placed there
+whenever an undo is carried out, and can be used to reverse the effect
+of the undo.
+
+<p>NOTE: the information in the redo stack is emptied when a new undo entry is
+pushed onto the undo stack that was not the result of a redo being
+requested. This situation arises when a user requests a series of undo
+and redo operations, and then performs some normal undoable action. At this
+point the information in the redo stack is not relevant to the state of
+the model and so must be cleared.
+
+@author     Neil Smyth
+@version    $Id$
+@since Ptolemy II 2.1
+*/
 public class UndoInfoAttribute extends SingletonAttribute
          implements NotPersistent {
 
     /**
-     *  Construct an attribute with the given name contained by the specified
-     *  container. The container argument must not be null, or a
-     *  NullPointerException will be thrown. This attribute will use the
-     *  workspace of the container for synchronization and version counts. If
-     *  the name argument is null, then the name is set to the empty string. The
-     *  object is added to the directory of the workspace if the container is
-     *  null. Increment the version of the workspace.
+     *  Construct an attribute with the given name contained by the
+     *  specified container. The container argument must not be null,
+     *  or a NullPointerException will be thrown. This attribute will
+     *  use the workspace of the container for synchronization and
+     *  version counts. If the name argument is null, then the name is
+     *  set to the empty string. The object is added to the directory
+     *  of the workspace if the container is null. Increment the
+     *  version of the workspace.
      *
      * @param  container                     The container.
      * @param  name                          The name of this attribute.
@@ -126,7 +129,8 @@ public class UndoInfoAttribute extends SingletonAttribute
         combinedMoML.append(entryLast.getUndoMoML());
         combinedMoML.append(entryFirst.getUndoMoML());
         combinedMoML.append("</group>\n");
-        pushUndoEntry(new MoMLUndoEntry(contextFirst, combinedMoML.toString()));
+        pushUndoEntry(new MoMLUndoEntry(contextFirst,
+                combinedMoML.toString()));
      }
 
 
@@ -278,5 +282,4 @@ public class UndoInfoAttribute extends SingletonAttribute
     // Flag to indicate if the inforamtion in the redo stack needs to
     // be cleared
     private boolean _clearRedoInfo;
-
 }
