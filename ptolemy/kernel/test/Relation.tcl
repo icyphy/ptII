@@ -66,8 +66,8 @@ test Relation-1.1 {Get information about an instance of Relation} {
     tContainer getFullName getLinkedEntities getName hashCo
     de linkedPorts {linkedPortsExcept pt.kernel.Port} notif
     y notifyAll numLinks {setName java.lang.String} toStrin
-    g {unlink pt.kernel.Relation} unlinkAll wait {wait long
-    } {wait long int} workspace
+    g {unlink pt.kernel.Port} unlinkAll wait {wait long} {w
+    ait long int} workspace
     
   constructors:  pt.kernel.Relation {pt.kernel.Relation java.lang.String
     } {pt.kernel.Relation pt.kernel.Workspace java.lang.Str
@@ -185,3 +185,33 @@ test Relation-10.1 {getLinkedEntities with two named ports, distinct entities} {
     $p2 link $r1
     list [$r1 numLinks] [_testRelationGetLinkedEntities $r1]
 } {2 {{{my entity} {other entity}}}}
+
+######################################################################
+####
+# 
+test Relation-11.1 {unlink a port} {
+    set r1 [java::new pt.kernel.Relation "my relation"]
+    set e1 [java::new pt.kernel.Entity "my entity"]
+    set e2 [java::new pt.kernel.Entity "other entity"]
+    set p1 [java::new pt.kernel.Port $e1 "my port"]
+    set p2 [java::new pt.kernel.Port $e2 "my other port"]
+    $p1 link $r1
+    $p2 link $r1
+    $r1 unlink $p1
+    list [$r1 numLinks] [_testRelationGetLinkedEntities $r1]
+} {1 {{{other entity}}}}
+
+######################################################################
+####
+# 
+test Relation-12.1 {unlinkALL ports} {
+    set r1 [java::new pt.kernel.Relation "my relation"]
+    set e1 [java::new pt.kernel.Entity "my entity"]
+    set e2 [java::new pt.kernel.Entity "other entity"]
+    set p1 [java::new pt.kernel.Port $e1 "my port"]
+    set p2 [java::new pt.kernel.Port $e2 "my other port"]
+    $p1 link $r1
+    $p2 link $r1
+    $r1 unlinkAll 
+    list [$r1 numLinks] [_testRelationGetLinkedEntities $r1]
+} {0 {{}}}
