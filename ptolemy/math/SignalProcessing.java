@@ -1344,7 +1344,7 @@ public class SignalProcessing {
         return 20.0 * Math.log(value) * _LOG10SCALE;
     }
 
-    /** Return a new array that is consturcted from the specified
+    /** Return a new array that is constructed from the specified
      *  array by unwrapping the angles.  That is, if
      *  the difference between successive values is greater than
      *  <em>PI</em> in magnitude, then the second value is modified by
