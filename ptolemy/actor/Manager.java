@@ -449,6 +449,7 @@ public final class Manager extends NamedObj implements Runnable {
             _changeRequests = new LinkedList();
         }
         _changeRequests.insertLast(change);
+        CompositeActor container = (CompositeActor) getContainer();
         container.stopFire();
     }
 
