@@ -313,8 +313,8 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector {
      *       or thrown by a directed actor.
      */
     public boolean prefire() throws IllegalActionException {
-        System.out.println(getName() + " currrent director time " +
-                getCurrentTime());
+        //System.out.println(getName() + " currrent director time " +
+        //        getCurrentTime());
 
         super.prefire(); // always returns true.
         if(!_isTopLevel()) {

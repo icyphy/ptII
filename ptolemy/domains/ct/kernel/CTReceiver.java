@@ -23,7 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 
 */
@@ -57,7 +57,6 @@ public class CTReceiver extends Mailbox {
      */
     public CTReceiver(IOPort container) {
         super(container);
-        System.out.println(container.getFullName() + " CT receiver created"); 
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -82,7 +81,7 @@ public class CTReceiver extends Mailbox {
             get();
         }
         super.put(token);
-        System.out.println(getContainer().getFullName() + 
-                " received " + token);
+        //System.out.println(getContainer().getFullName() + 
+        //        " received " + token);
     }
 }
