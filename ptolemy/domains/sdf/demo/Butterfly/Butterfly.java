@@ -135,17 +135,16 @@ public class Butterfly {
 	toplevel.connect(mpy3.output, add1.plus);
 	toplevel.connect(cos2.output, add1.plus);
 
-	toplevel.connect(add1.output, polarToRect1.magnitudeInput);
+	toplevel.connect(add1.output, polarToRect1.magnitude);
 
 	TypedIORelation node9 = new TypedIORelation(toplevel, "node9");
 	ramp.output.link(node9);
 	scale1.input.link(node9);
 	scale2.input.link(node9);
-	polarToRect1.angleInput.link(node9);
+	polarToRect1.angle.link(node9);
 	cos2Input.link(node9);
 
-	toplevel.connect(polarToRect1.xOutput, xyPlotter.inputX);
-	toplevel.connect(polarToRect1.yOutput, xyPlotter.inputY);
-        System.out.println(toplevel.exportMoML());
+	toplevel.connect(polarToRect1.x, xyPlotter.inputX);
+	toplevel.connect(polarToRect1.y, xyPlotter.inputY);
     }
 }
