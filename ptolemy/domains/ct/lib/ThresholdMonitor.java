@@ -68,11 +68,13 @@ public class ThresholdMonitor extends TypedAtomicActor
     public ThresholdMonitor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        input = new TypedIOPort(this, "input");
+        input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(false);
-        input.setInput(true);
-        input.setOutput(false);
         input.setTypeEquals(BaseType.DOUBLE);
+
+        output = new TypedIOPort(this, "output", false, true);
+        input.setMultiport(false);
+        input.setTypeEquals(BaseType.BOOLEAN);
 
         _thWidth = (double)1e-2;
         thresholdWidth = new Parameter(this, "thresholdWidth",
@@ -92,6 +94,11 @@ public class ThresholdMonitor extends TypedAtomicActor
     /** The input port, single port with type double.
      */
     public TypedIOPort input;
+
+    /** The output port, single port with type boolean. The output is true
+     *  if the input is in the threshold.
+     */
+    public TypedIOPort output;
 
     /** The parameter for the width of the threshold.
      */
@@ -118,12 +125,36 @@ public class ThresholdMonitor extends TypedAtomicActor
         _upperBound = _thCenter + _thWidth/(double)2.0;
     }
 
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the type constraints.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace ws)
+	    throws CloneNotSupportedException {
+        ThresholdMonitor newobj = (ThresholdMonitor)super.clone(ws);
+        newobj.input = (TypedIOPort) newobj.getPort("input");
+        newobj.output = (TypedIOPort) newobj.getPort("output");
+        newobj.thresholdWidth= 
+            (Parameter)newobj.getAttribute("thresholdWidth");
+        newobj.thresholdCenter = 
+            (Parameter)newobj.getAttribute("thrsholdCentor");
+        return newobj;
+    }
+
     /** Consume the current input.
      *  @exception IllegalActionException If there is no input token.
      */
     public void fire() throws IllegalActionException {
         _debug("Monitor" + getFullName() + " fired.");
         _thisInput = ((DoubleToken) input.get(0)).doubleValue();
+        if ((_thisInput <= _upperBound) && (_thisInput >= _lowerBound)) {
+            output.send(0, new BooleanToken(true));
+        } else {
+            output.send(0, new BooleanToken(false));
+        }
     }
 
     /** Setup the internal variables so that there is no history.
@@ -157,6 +188,14 @@ public class ThresholdMonitor extends TypedAtomicActor
      */
     public boolean postfire() throws IllegalActionException {
         super.postfire();
+        if (input.hasToken(0)) {
+            _thisInput = ((DoubleToken) input.get(0)).doubleValue();
+        }
+        if ((_thisInput <= _upperBound) && (_thisInput >= _lowerBound)) {
+            output.send(0, new BooleanToken(true));
+        } else {
+            output.send(0, new BooleanToken(false));
+        }
         _lastInput = _thisInput;
         _first = false;
         return true;
