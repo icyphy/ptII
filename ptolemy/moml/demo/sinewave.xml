@@ -5,50 +5,66 @@
     <doc>
     This composite actor generates a sine wave.
     </doc>
-    <property name="samplingFrequency"
-               value="8000.0"
-               class="ptolemy.data.expr.Parameter">
-      <doc>The sampling frequency, in the same units as the frequency.</doc>
+    <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
+        <doc>The sampling frequency, in the same units as the frequency.</doc>
     </property>
-    <property name="frequency"
-               value="440.0"
-               class="ptolemy.data.expr.Parameter">
-      <doc>
+    <property name="frequency" class="ptolemy.data.expr.Parameter" value="440.0">
+        <doc>
       The frequency of the sinusoid, in the same units as the
       sampling frequency.
       </doc>
     </property>
-    <property name="phase"
-               value="0.0"
-               class="ptolemy.data.expr.Parameter">
-      <doc>The phase, in radians.</doc>
+    <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
+        <doc>The phase, in radians.</doc>
     </property>
-
-    <!-- Define the actors. -->
+    <port name="output" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <doc>Sinusoidal waveform output.</doc>
+        <property name="_location" class="ptolemy.moml.Location">
+            <location value="460.0, 224.99999237060547"/>
+        </property>
+    </port>
     <entity name="ramp" class="ptolemy.actor.lib.Ramp">
-      <property name="step"
-                 value="frequency*2*PI/samplingFrequency">
-      </property>
-      <property name="init" value="phase"></property>
-      <port name="output"></port>
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="phase">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="frequency*2*PI/samplingFrequency">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="146.0, 172.0"/>
+        </rendition>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
     </entity>
     <entity name="sine" class="ptolemy.actor.lib.Sine">
-      <port name="input"></port>
-      <port name="output"></port>
+        <property name="amplitude" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="omega" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="phase" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+            <location value="300.0, 225.0"/>
+        </rendition>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
-
-    <!-- Define the ports. -->
-    <port name="output" class="ptolemy.actor.TypedIOPort">
-      <property name="output"/>
-      <doc>Sinusoidal waveform output.</doc>
-    </port>
-
-    <!-- Make the connections -->
-    <relation name="r1" class="ptolemy.actor.TypedIORelation"></relation>
+    <relation name="r1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="r2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="output" relation="r2"/>
     <link port="ramp.output" relation="r1"/>
     <link port="sine.input" relation="r1"/>
-
-    <relation name="r2" class="ptolemy.actor.TypedIORelation"></relation>
     <link port="sine.output" relation="r2"/>
-    <link port="output" relation="r2"/>
 </class>

@@ -158,27 +158,30 @@ public class RunTableau extends Tableau {
             public void actionPerformed(ActionEvent e) {
                 JMenuItem target = (JMenuItem)e.getSource();
                 String actionCommand = target.getActionCommand();
-                try {
-                    Debuggable debug;
-                    if (actionCommand.equals("Listen to Manager")) {
-                        debug = getModel().getManager();
-                    } else if (actionCommand.equals("Listen to Director")) {
-                        debug = getModel().getDirector();
-                    } else {
-                        debug = null;
-                    }
-                    if(debug != null) {
-                        Effigy proxy = (Effigy)getContainer();
-                        DebugListenerTableau tableau =
-                                new DebugListenerTableau(proxy,
-                        proxy.uniqueName("debugListener"));
-                        tableau.setDebuggable(debug);
-                    }
-                } catch (KernelException ex) {
+                CompositeEntity model = getModel();
+                if (model instanceof CompositeActor) {
                     try {
-                        MessageHandler.warning(
-                               "Failed to create debug listener: " + ex);
-                    } catch (CancelException exception) {}
+                        Debuggable debug;
+                        if (actionCommand.equals("Listen to Manager")) {
+                            debug = ((CompositeActor)model).getManager();
+                        } else if (actionCommand.equals("Listen to Director")) {
+                            debug = ((CompositeActor)model).getDirector();
+                        } else {
+                            debug = null;
+                        }
+                        if(debug != null) {
+                            Effigy proxy = (Effigy)getContainer();
+                            DebugListenerTableau tableau =
+                                    new DebugListenerTableau(proxy,
+                                    proxy.uniqueName("debugListener"));
+                            tableau.setDebuggable(debug);
+                        }
+                    } catch (KernelException ex) {
+                        try {
+                            MessageHandler.warning(
+                                    "Failed to create debug listener: " + ex);
+                        } catch (CancelException exception) {}
+                    }
                 }
             }
         }

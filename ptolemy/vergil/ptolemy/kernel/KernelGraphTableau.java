@@ -30,6 +30,7 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
+import ptolemy.gui.Top;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -43,7 +44,6 @@ import ptolemy.vergil.ptolemy.EditorDropTarget;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.PtolemyTop;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 
@@ -130,22 +130,6 @@ public class KernelGraphTableau extends Tableau {
 	KernelGraphFrame frame = new KernelGraphFrame(entity, this);
 	setFrame(frame);
 	frame.setBackground(BACKGROUND_COLOR);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Make this tableau visible by raising or deiconifying its window, or
-     *  making it visible if it has not been previously made visible.
-     *  This overrides the base class to center the Tableau on the screen.
-     *  If no frame has been set, then do nothing.
-     */
-    public void show() {
-        PtolemyTop frame = (PtolemyTop)getFrame();
-        // Have to pack before centering.
-        frame.pack();
-        frame.centerOnScreen();
-        super.show();
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -4,8 +4,6 @@
 <class name="ctrl" extends="ptolemy.domains.fsm.kernel.FSMActor">
     <property name="initialStateName" class="ptolemy.data.expr.Parameter" value="&quot;State0&quot;">
     </property>
-    <property name="notation" class="ptolemy.vergil.ptolemy.fsm.PtolemyFSMNotation">
-    </property>
     <port name="in" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
     </port>

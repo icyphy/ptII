@@ -84,8 +84,6 @@ public class ModelPane extends JPanel {
         _controlPanel.setLayout(new BoxLayout(_controlPanel, BoxLayout.Y_AXIS));
         _controlPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        setModel(model);
-
         _buttonPanel = new JPanel();
         _buttonPanel.setLayout(new BoxLayout(_buttonPanel, BoxLayout.X_AXIS));
         // Padding top and bottom...
@@ -133,6 +131,10 @@ public class ModelPane extends JPanel {
         });
         _controlPanel.add(_buttonPanel);
         add(_controlPanel);
+
+        // Do this last so that the display pane for placeable objects
+        // goes on the right.
+        setModel(model);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -303,6 +305,7 @@ public class ModelPane extends JPanel {
 
 	    add(_displays);
 	    _displays.setLayout(new BoxLayout(_displays, BoxLayout.Y_AXIS));
+	    _displays.setBackground(getBackground());
     
 	    // Put placeable objects in a reasonable place
 	    for(Iterator i = _model.deepEntityList().iterator();
@@ -312,7 +315,6 @@ public class ModelPane extends JPanel {
 		    ((Placeable) o).place(_displays);
 		}
 	    }
-	    _displays.setBackground(getBackground());
 
             // Why they call this glue is beyond me, but what it does
             // is make extra space to fill in the bottom.

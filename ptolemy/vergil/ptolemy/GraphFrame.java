@@ -50,7 +50,7 @@ import ptolemy.actor.gui.DocumentationViewerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.PtolemyTop;
+import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.RunTableau;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.style.EditableChoiceStyle;
@@ -163,14 +163,13 @@ notation as a a factory
 @contributor Edward A. Lee
 @version $Id$
 */
-public abstract class GraphFrame extends PtolemyTop
+public abstract class GraphFrame extends PtolemyFrame
     implements Printable, ClipboardOwner, ChangeListener {
    
     public GraphFrame(CompositeEntity entity, Tableau tableau) {
-        super(tableau);
+        super(entity, tableau);
 
-	_model = entity;
-        _model.addChangeListener(this);
+        entity.addChangeListener(this);
 
 	// ensure that the icons are loaded
 	Configuration configuration = (Configuration)tableau.toplevel();
@@ -219,7 +218,7 @@ public abstract class GraphFrame extends PtolemyTop
 
 	// Create the library of actors.
         // FIXME: How do we make this topLibrary persistent?
-        Workspace workspace = _model.workspace();
+        Workspace workspace = entity.workspace();
         _topLibrary = new CompositeEntity(workspace);
         try {
             _topLibrary.setName("topLibrary");
@@ -494,15 +493,78 @@ public abstract class GraphFrame extends PtolemyTop
      */
     protected abstract GraphPane _createGraphPane();
 
-    /** Write the model to the specified file.
+    /** Query the user for a filename and save the model to that file.
+     *  This overrides the base class so that if we are in
+     *  an inside composite actor, then only that composite actor is
+     *  saved.  In addition, since the superclass clones the model,
+     *  we need to clear and reconstruct the model.
+     *  @return True if the save succeeds.
+     */
+    protected boolean _saveAs() {
+        try {
+            _saveAsFlag = true;
+            if (super._saveAs()) {
+                // FIXME: the model returned by getModel() is now a clone
+                // of the previous one.  Need to clear and redraw so that
+                // targets of actions refer to the cloned objects and not
+                // the original ones.
+                return true;
+            } else {
+                return false;
+            }
+        } finally {
+            _saveAsFlag = false;
+        }
+    }
+
+    /** Write the model to the specified file.  This overrides the base
+     *  class to yield different behavior if the save action is "save as"
+     *  vs. a simple "save".  If the action is "save as" and we are in
+     *  an inside composite actor, then only that composite actor is
+     *  saved.  Otherwise, the entire model is saved by delegating to
+     *  the parent class.
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
      */
     protected void _writeFile(File file) throws IOException {
-        java.io.FileWriter fout = new java.io.FileWriter(file);
-        _model.exportMoML(fout);
-        fout.close();
+        if (_saveAsFlag) {
+            java.io.FileWriter fout = new java.io.FileWriter(file);
+            getModel().exportMoML(fout);
+            fout.close();
+        } else {
+            super._writeFile(file);
+        }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // FIXME: should be somewhere else?
+    // Default background color is a light grey.
+    protected static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
+
+    protected JGraph _jgraph;
+    protected JScrollPane _graphScrollPane;
+    protected JPanner _graphPanner;
+    protected JTree _library;
+    protected JScrollPane _libraryScrollPane;
+    protected JPanel _palettePane;
+    protected JSplitPane _splitPane;
+	
+    protected JToolBar _toolbar;
+    protected JMenu _editMenu;
+    protected Action _cutAction;
+    protected Action _copyAction;
+    protected Action _pasteAction;
+    protected Action _layoutAction;
+    protected Action _saveInLibraryAction;
+
+    // Flag indicating that the current save action is "save as" rather than
+    // "save".
+    private boolean _saveAsFlag = false;
+
+    // The library.
+    protected CompositeEntity _topLibrary;
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
@@ -804,31 +866,4 @@ public abstract class GraphFrame extends PtolemyTop
  	    }
 	}
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // FIXME: should be somewhere else?
-    // Default background color is a light grey.
-    protected static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
-
-    // The model that this window controls, if any.
-    protected CompositeEntity _model;
-    protected CompositeEntity _topLibrary;
-
-    protected JGraph _jgraph;
-    protected JScrollPane _graphScrollPane;
-    protected JPanner _graphPanner;
-    protected JTree _library;
-    protected JScrollPane _libraryScrollPane;
-    protected JPanel _palettePane;
-    protected JSplitPane _splitPane;
-	
-    protected JToolBar _toolbar;
-    protected JMenu _editMenu;
-    protected Action _cutAction;
-    protected Action _copyAction;
-    protected Action _pasteAction;
-    protected Action _layoutAction;
-    protected Action _saveInLibraryAction;
 }

@@ -88,11 +88,23 @@ public class ModelReader extends CompositeEntity {
      *   is malformed in some way.
      */
     public Effigy read(URL base, URL in) throws Exception {
+        // FIXME: Currently this only reads MoML files.  Need to use
+        // MIME types to determine how to read this.
         MoMLParser parser = new MoMLParser();
         NamedObj toplevel = parser.parse(base, in.openStream());
+
         // Create an effigy for the model.
         PtolemyEffigy effigy = new PtolemyEffigy(workspace());
         effigy.setModel(toplevel);
+
+        // Identify the URL from which the model was read by inserting
+        // an attribute into both the model and the effigy.
+        URLAttribute url
+                = new URLAttribute(toplevel, toplevel.uniqueName("url"));
+        url.setURL(in);
+        // This is used by TableauFrame in its _save() method.
+        effigy.url.setURL(in);
+
         return effigy;
     }
 }

@@ -33,27 +33,12 @@ package ptolemy.vergil.ptolemy.kernel;
 import ptolemy.vergil.ptolemy.GraphFrame;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.*;
+import ptolemy.kernel.*;
 import ptolemy.gui.MessageHandler;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.DocumentationViewerTableau;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.MoMLApplication;
-import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.PtolemyTop;
-import ptolemy.actor.gui.RunTableau;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.style.EditableChoiceStyle;
+import ptolemy.actor.gui.*;
 import ptolemy.moml.Locatable;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLParser;
@@ -183,7 +168,7 @@ public class KernelGraphFrame extends GraphFrame {
 	// create the graph editor
 	// These two things control the view of a ptolemy model.
 	_controller = new EditorGraphController();
-	PtolemyGraphModel graphModel = new PtolemyGraphModel(_model);
+	PtolemyGraphModel graphModel = new PtolemyGraphModel(getModel());
 	
 	GraphPane pane = new GraphPane(_controller, graphModel);
 	_newPortAction = _controller.getNewPortAction();
@@ -344,6 +329,9 @@ public class KernelGraphFrame extends GraphFrame {
 	    NamedObj object = getTarget();
 	    if(!(object instanceof CompositeEntity)) return;
 	    CompositeEntity entity = (CompositeEntity)object;
+
+            // If the entity defers its MoML definition to another,
+            // then open that other.
 	    NamedObj deferredTo = entity.getDeferMoMLDefinitionTo();
 	    if(deferredTo != null) {
 		entity = (CompositeEntity)deferredTo;
@@ -353,19 +341,84 @@ public class KernelGraphFrame extends GraphFrame {
             // refers to this model.
             PtolemyEffigy effigy = getEffigy(entity);
             if (effigy != null) {
+
+                // Found one.  Display all open tableaux.
                 effigy.showTableaux();
-            } else if(false) {
-                // FIXME get the URL from the entity, which has to
-                // be inserted by MoMLParser.  Then use the openModel()
-                // method of the Configuration.
+
             } else {
-                // If all else fails, create a new PtolemyEffigy
-                // and open a tableau for it.
-                effigy = new PtolemyEffigy(getTableau().workspace());
-                effigy.setModel(entity);
                 try {
-                    effigy.setContainer(getDirectory());
-                    getConfiguration().createPrimaryTableau(effigy);
+
+                    // There is no pre-existing effigy.  Create one.
+                    effigy = new PtolemyEffigy(getTableau().workspace());
+                    effigy.setModel(entity);
+                    
+                    // Look to see whether the model has a URLAttribute.
+                    List attributes = entity.attributeList(URLAttribute.class);
+                    if (attributes.size() > 0) {
+                        // The entity has a URL, which was probably
+                        // inserted by MoMLParser.
+
+                        URL url = ((URLAttribute)attributes.get(0)).getURL();
+                        
+                        // Set the url and identifier of the effigy.
+                        effigy.url.setURL(url);
+                        effigy.identifier.setExpression(url.toExternalForm());
+
+                        // Put the effigy into the directory
+                        ModelDirectory directory = getDirectory();
+                        effigy.setName(directory.uniqueName(entity.getName()));
+                        effigy.setContainer(directory);
+                        
+                        // Create a default tableau.
+                        getConfiguration().createPrimaryTableau(effigy);
+
+                    } else {
+
+                        // If we get here, then we are looking inside a model
+                        // that is defined within the same file as the parent,
+                        // probably.  Create a new PtolemyEffigy
+                        // and open a tableau for it.
+
+                        // Put the effigy inside the effigy of the parent,
+                        // rather than directly into the directory.
+                        CompositeEntity parent =
+                                (CompositeEntity)entity.getContainer();
+                        boolean isContainerSet = false;
+                        if (parent != null) {
+                            PtolemyEffigy parentEffigy = getEffigy(parent);
+                            if (parentEffigy != null) {
+                                // OK, we can put it into this other effigy.
+                                effigy.setName(parentEffigy.uniqueName(
+                                        entity.getName()));
+                                        effigy.setContainer(parentEffigy);
+                                    
+                                // Set the identifier of the effigy to be that
+                                // of the parent with the model name appended.
+                                effigy.identifier.setExpression(
+                                        parentEffigy.identifier.getExpression()
+                                        + "#" + entity.getName());
+                                        
+                                // Set the url of the effigy to that of
+                                // the parent.
+                                effigy.url.setURL(parentEffigy.url.getURL());
+                                        
+                                // Indicate success.
+                                isContainerSet = true;
+                            }
+                        }
+                        // If the above code did not find an effigy to put
+                        // the new effigy within, then put it into the directory.
+                        if (!isContainerSet) {
+                            CompositeEntity directory = getDirectory();
+                            effigy.setName(
+                                    directory.uniqueName(entity.getName()));
+                            effigy.setContainer(directory);
+                            effigy.identifier.setExpression(
+                                    entity.getFullName());
+                        }
+                                
+                        getConfiguration().createPrimaryTableau(effigy);
+                    }
                 } catch (Exception ex) {
                     MessageHandler.error("Look inside failed: ", ex);
                 }

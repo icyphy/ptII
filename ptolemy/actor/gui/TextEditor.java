@@ -54,7 +54,7 @@ TextEditor is a top-level window containing a simple text editor or viewer.
 @author Edward A. Lee
 @version $Id$
 */
-public class TextEditor extends PtolemyTop {
+public class TextEditor extends TableauFrame {
 
     /** Construct an empty text editor with no name.
      *  After constructing this, it is necessary
@@ -161,6 +161,9 @@ public class TextEditor extends PtolemyTop {
      *  @exception IOException If the write fails.
      */
     protected void _writeFile(File file) throws IOException {
+        // FIXME: This should probably delegate to the effigy.
+        // To do this, we need to create a TextEffigy.  Then just
+        // delete this method.  There is a starting point for the TextEffigy.
         java.io.FileWriter fout = new java.io.FileWriter(file);
         fout.write(text.getText());
         fout.close();
@@ -168,7 +171,4 @@ public class TextEditor extends PtolemyTop {
 
     // FIXME: Listen for edit changes.
     // FIXME: Listen for window closing.
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 }

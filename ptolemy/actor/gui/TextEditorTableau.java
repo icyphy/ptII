@@ -29,6 +29,7 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.gui.Top;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -69,16 +70,4 @@ public class TextEditorTableau extends Tableau {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Make this tableau visible by raising or deiconifying its window, or
-     *  making it visible if it has not been previously made visible.
-     *  This overrides the base class to center the Tableau on the screen.
-     *  If no frame has been set, then do nothing.
-     */
-    public void show() {
-        PtolemyTop frame = (PtolemyTop)getFrame();
-        // Have to pack before centering.
-        frame.pack();
-        frame.centerOnScreen();
-        super.show();
-    }
 }

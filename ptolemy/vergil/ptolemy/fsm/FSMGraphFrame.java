@@ -51,7 +51,6 @@ import ptolemy.actor.gui.DocumentationViewerTableau;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.PtolemyTop;
 import ptolemy.actor.gui.RunTableau;
 import ptolemy.actor.gui.style.EditableChoiceStyle;
 import ptolemy.actor.gui.Tableau;
@@ -180,7 +179,7 @@ public class FSMGraphFrame extends GraphFrame {
 	// create the graph editor
 	// These two things control the view of a ptolemy model.
 	_controller = new FSMGraphController();
-	FSMGraphModel graphModel = new FSMGraphModel(_model);
+	FSMGraphModel graphModel = new FSMGraphModel(getModel());
 	
 	GraphPane pane = new GraphPane(_controller, graphModel);
 	_newStateAction = _controller.getNewStateAction();

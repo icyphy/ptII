@@ -395,25 +395,39 @@ public class PtolemyGraphModel extends AbstractPtolemyGraphModel {
 		throw new UnsupportedOperationException(
 		    "Only node removal is supported by this graph model.");
 	    }
-	    ComponentEntity entity = 
-		(ComponentEntity)((Icon)node).getContainer();
-	    NamedObj container = (NamedObj)entity.getContainer();
-	    try {
-		// Delete the entity.
-		String moml = "<deleteEntity name=\"" + 
-                        entity.getName(container) +
-                        "\"/>\n";
-		ChangeRequest request = 
-                        new MoMLChangeRequest(
-                        PtolemyGraphModel.this, container, moml);
-		container.requestChange(request);
-                // NOTE: This is not a good idea...
-		// request.waitForCompletion();
-	    } catch (Exception ex) {
-		ex.printStackTrace();
-		throw new GraphException(ex);
-	    }
-	
+            // NOTE: Have to know whether this is an entity,
+            // port, etc. This seems awkward.
+            Nameable deleteObj = ((Icon)node).getContainer();
+            String elementName = null;
+            if (deleteObj instanceof ComponentEntity) {
+                // Object is an entity.
+                elementName = "deleteEntity";
+            } else if (deleteObj instanceof Port) {
+                // Object is a port.
+                elementName = "deletePort";
+            } else if (deleteObj instanceof Relation) {
+                // Object is a relation.
+                elementName = "deleteRelation";
+            } else if (deleteObj instanceof Attribute) {
+                // Object is an attribute.
+                elementName = "deleteProperty";
+            } else {
+		throw new UnsupportedOperationException(
+		    "Unrecognized node to remove.");
+            }
+
+            String moml = "<" + elementName + " name=\""
+                    + ((NamedObj)deleteObj).getName() + "\"/>\n";
+
+            // Make the request in the context of the container.
+            NamedObj container = (NamedObj)deleteObj.getContainer();
+            ChangeRequest request = 
+                    new MoMLChangeRequest(
+                    PtolemyGraphModel.this, container, moml);
+            container.requestChange(request);
+
+            // NOTE: This is not a good idea...
+            // request.waitForCompletion();
 	}
     }
 

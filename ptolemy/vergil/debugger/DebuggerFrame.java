@@ -58,7 +58,7 @@ import diva.resource.RelativeBundle;
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
 
-import ptolemy.actor.gui.PtolemyTop;
+import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.data.expr.Parameter;
@@ -100,7 +100,7 @@ import ptolemy.vergil.ptolemy.*;
 @see DebuggerUI
 @see ptolemy.vergil.debugger.MMI.DebuggerUI
 */
-public class DebuggerFrame extends PtolemyTop
+public class DebuggerFrame extends PtolemyFrame
                       implements ActionListener, ItemListener {
     JTextArea output;
     JScrollPane scrollPane;
@@ -120,9 +120,8 @@ public class DebuggerFrame extends PtolemyTop
     /** Constructor
      */    
     public DebuggerFrame(CompositeActor actor, Tableau tableau) {
-	super(tableau);
+	super(actor, tableau);
 
-	_model = actor;
 	_controller = new DebugController(this);
 	_toolbar = new JToolBar();
 
@@ -574,7 +573,7 @@ public class DebuggerFrame extends PtolemyTop
      */
     protected void _writeFile(File file) throws IOException {
         java.io.FileWriter fout = new java.io.FileWriter(file);
-        _model.exportMoML(fout);
+        getModel().exportMoML(fout);
         fout.close();
     }
 
@@ -627,7 +626,6 @@ public class DebuggerFrame extends PtolemyTop
 
     private String _cmd; // store the user command
     private DebugController _controller;
-    private CompositeActor _model;
     private JToolBar _toolbar;
 }
 

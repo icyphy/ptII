@@ -41,6 +41,9 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.gui.MessageHandler;
 
+// FIXME: This needs to be moved to the MoML package
+import ptolemy.actor.gui.URLAttribute;
+
 // Java imports.
 import java.awt.Container;
 import java.util.EmptyStackException;
@@ -1670,7 +1673,15 @@ public class MoMLParser extends HandlerBase {
                    _parser.getLineNumber(),
                    _parser.getColumnNumber());
         }
-        return parser.parse(xmlFile, xmlFile.openStream());
+        NamedObj toplevel = parser.parse(xmlFile, xmlFile.openStream());
+
+        // Add a URL attribute to the toplevel to indicate where it was
+        // read from.
+        URLAttribute attribute =
+                new URLAttribute(toplevel, toplevel.uniqueName("url"));
+        attribute.setURL(xmlFile);
+
+        return toplevel;
     }
 
     // If an object is deleted from a container, and this is not the

@@ -114,7 +114,7 @@ public class Configuration extends CompositeEntity {
      */
     public void newModel() {
 	final ModelDirectory directory = 
-	    (ModelDirectory)getEntity("directory");
+	        (ModelDirectory)getEntity("directory");
 	if(directory == null) return;
 	List factoryList = entityList(EffigyFactory.class);
 	Box panel = new Box(BoxLayout.Y_AXIS);
@@ -123,9 +123,9 @@ public class Configuration extends CompositeEntity {
 	Iterator factories = factoryList.iterator();
 	while(factories.hasNext()) {
 	    final EffigyFactory factory = 
-		(EffigyFactory)factories.next();
+		    (EffigyFactory)factories.next();
 	    Documentation doc = 
-		(Documentation)factory.getAttribute("description");
+		    (Documentation)factory.getAttribute("description");
 	    String buttonName;
 	    if(doc != null) {
 		buttonName = doc.getValue();

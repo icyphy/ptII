@@ -61,7 +61,7 @@ The url that is viewed can be changed by calling the <i>setPage</i> method.
 @version $Id$
 */
 
-public class HTMLViewer extends PtolemyTop implements Printable {
+public class HTMLViewer extends TableauFrame implements Printable {
 
     /** Construct a blank viewer.
      */

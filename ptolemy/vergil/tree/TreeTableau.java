@@ -32,7 +32,7 @@ package ptolemy.vergil.tree;
 
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.PtolemyTop;
+import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.kernel.util.LibraryMarkerAttribute;
@@ -92,15 +92,14 @@ public class TreeTableau extends Tableau {
     /** This is a top-level window containing a tree-view of a composite
      *  entity.
      */
-    public static class TreeFrame extends PtolemyTop {
+    public static class TreeFrame extends PtolemyFrame {
 
         /** Construct a TreeFrame containing a tree view of the specified
          *  composite entity.
          *  @param entity The composite entity to view as a tree.
          */
 	public TreeFrame(CompositeEntity entity) {
-            super();
-	    _model = entity;
+            super(entity);
 	    PTree pane = new PTree(new FullTreeModel(entity));
 	    getContentPane().add(pane, BorderLayout.CENTER);
 	}
@@ -114,15 +113,9 @@ public class TreeTableau extends Tableau {
 	 */
 	protected void _writeFile(File file) throws IOException {
 	    java.io.FileWriter fout = new java.io.FileWriter(file);
-	    _model.exportMoML(fout);
+	    getModel().exportMoML(fout);
 	    fout.close();
 	}
-
-        ///////////////////////////////////////////////////////////////
-        ////                     private variables                 ////
-
-        // The model being viewed.
-	private CompositeEntity _model;
     }
 
     /** This is a factory that creates tree-view tableaux for Ptolemy models.

@@ -31,6 +31,7 @@ package ptolemy.actor.gui;
 
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.CancelException;
+import ptolemy.gui.Top;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
@@ -116,15 +117,21 @@ public class Tableau extends ComponentEntity {
     
     /** Return the title of this tableau.  Subclasses can override this to
      *  provide a better description of themselves.  This base class
-     *  returns the identifier of the effigy containing this tableau,
+     *  returns the value set by a call to setTitle(), if it has been
+     *  called, or an identifier of the effigy containing this tableau,
+     *  if it has not been called,
      *  or the string "Unnamed Tableau" if there is no such identifier.
      *  The title is used as the title of the top-level window in
      *  the setFrame() method.
      *  @return The title to put on the window.
      */
     public String getTitle() {
-        Effigy effigy = (Effigy)getContainer();
-        return effigy.identifier.getExpression();
+        if (_title == null) {
+            Effigy effigy = (Effigy)getContainer();
+            return effigy.identifier.getExpression();
+        } else {
+            return _title;
+        }
     }
 
     /** Return true if this tableau is a master, which means that
@@ -215,8 +222,21 @@ public class Tableau extends ComponentEntity {
         _master = flag;
     }
 
+    /** Set the title of this tableau, changing the title of the
+     *  associated top-level window.  Call this with a null argument
+     *  to use the identifier of the containing effigy as a title.
+     *  @param title The title to put on the window.
+     */
+    public void setTitle(String title) {
+        _title = title;
+        if (_frame != null) {
+            _frame.setTitle(getTitle());
+        }
+    }
+
     /** Make this tableau visible by calling setVisible(true), and
-     *  raising or deiconifying its window.
+     *  raising or deiconifying its window.  If the frame has not previously
+     *  been made visible, then center it on the screen.
      *  If no frame has been set, then do nothing.
      */
     public void show() {
@@ -224,8 +244,12 @@ public class Tableau extends ComponentEntity {
         if (frame != null) {
             if (!frame.isVisible()) {
                 frame.pack();
+                if (frame instanceof Top) {
+                    ((Top)frame).centerOnScreen();
+                }
                 frame.setVisible(true);
             }
+            // FIXME: need to deiconify the window.  How to do that?
             frame.toFront();
         }
     }
@@ -239,11 +263,21 @@ public class Tableau extends ComponentEntity {
      *  size spec consists only of white space, then do nothing.
      */
     private void _setSize() {
+        // FIXME: Need to support positioning as well.
+        // Syntax is nxm+y+z, where + can be replaced by -.
         String sizeSpec = size.getExpression();
         if (_frame != null && !sizeSpec.trim().equals("")) {
-            _frame.getRootPane().setPreferredSize(new Dimension(500,330));
-            // FIXME: As usual with Swing, the following has no effect :-(
-            _frame.getContentPane().setSize(500,330);
+            int xIndex = sizeSpec.indexOf("x");
+            if (xIndex > 0) {
+                String xSpec = sizeSpec.substring(0,xIndex).trim();
+                String ySpec = sizeSpec.substring(xIndex+1).trim();
+                int x = Integer.decode(xSpec).intValue();
+                int y = Integer.decode(ySpec).intValue();
+                // NOTE: As usual with swing, it's not obvious what the
+                // right way to do this is.
+                _frame.getRootPane().setPreferredSize(new Dimension(x,y));
+                _frame.getContentPane().setSize(x,y);
+            }
         }
     }
 
@@ -257,5 +291,8 @@ public class Tableau extends ComponentEntity {
     /** True if this tableau is a master tableau.  Default value is false.
      */
     private boolean _master = false;
+
+    /** The title set by setTitle(). */
+    private String _title;
 }
 

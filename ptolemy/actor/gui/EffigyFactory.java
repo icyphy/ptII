@@ -71,7 +71,7 @@ public class EffigyFactory extends CompositeEntity {
     ////                         public methods                    ////
 
     /** Create a new effigy in the given model directory 
-     *  The new Effigy should be
+     *  The new effigy should be
      *  of a type appropriate for this factory.  Subclasses will
      *  override this method to create an effigy of an appropriate type.
      *  @return A new effigy.

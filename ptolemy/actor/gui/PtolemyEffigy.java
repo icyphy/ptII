@@ -36,6 +36,8 @@ import ptolemy.kernel.util.*;
 import ptolemy.gui.MessageHandler;
 
 import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -49,17 +51,17 @@ An effigy for a Ptolemy II model.
 */
 public class PtolemyEffigy extends Effigy implements ChangeListener {
 
-    /** Create a new proxy in the specified workspace with an empty string
+    /** Create a new effigy in the specified workspace with an empty string
      *  for its name.
-     *  @param workspace The workspace for this proxy.
+     *  @param workspace The workspace for this effigy.
      */
     public PtolemyEffigy(Workspace workspace) {
 	super(workspace);
     }
 
-    /** Create a new proxy in the given directory with the given name.
-     *  @param container The directory that contains this proxy.
-     *  @param name The name of this proxy.
+    /** Create a new effigy in the given directory with the given name.
+     *  @param container The directory that contains this effigy.
+     *  @param name The name of this effigy.
      */
     public PtolemyEffigy(ModelDirectory container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -88,7 +90,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
         }
     }
 
-    /** Return the ptolemy model proxied by this object.
+    /** Return the ptolemy model that this is an effigy of.
      *  @return The model, or null if none has been set.
      */
     public NamedObj getModel() {
@@ -108,6 +110,48 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
             _model.addChangeListener(this);
         }
     }
+
+    /** Write the model associated with the top effigy (returned by
+     *  topEffigy()) to the specified file in MoML format.
+     *  @param file The file to write to.
+     *  @exception IOException If the write fails.
+     */
+    public void writeFile(File file) throws IOException {
+        java.io.FileWriter fout = new java.io.FileWriter(file);
+        // NOTE: The following cast is safe because of the check
+        // in _checkContainer().
+        ((PtolemyEffigy)topEffigy()).getModel().exportMoML(fout);
+        fout.close();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Check that the specified container is of a suitable class for
+     *  this entity, i.e., ModelDirectory or PtolemyEffigy.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the container is not of
+     *   an acceptable class.
+     */
+    protected void _checkContainer(CompositeEntity container)
+             throws IllegalActionException {
+	if(container != null
+                && !(container instanceof ModelDirectory)
+                && !(container instanceof PtolemyEffigy)) {
+	    throw new IllegalActionException(this, container, 
+		    "The container can only be set to an " + 
+                    "instance of ModelDirectory or PtolemyEffigy.");
+	}
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    // The model associated with this effigy.
+    private NamedObj _model;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     /** A factory for creating new ptolemy effigies.
      */
@@ -137,11 +181,5 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 	    return effigy;
 	}		
     }
-	
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-
-    // The model associated with this proxy.
-    private NamedObj _model;
 }
 

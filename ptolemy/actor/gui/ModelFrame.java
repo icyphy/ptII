@@ -42,6 +42,7 @@ import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NamedObj;
 
 // Java imports
 import javax.swing.JOptionPane;
@@ -66,7 +67,7 @@ message reporting.
 @author Edward A. Lee
 @version $Id$
 */
-public class ModelFrame extends PtolemyTop implements ExecutionListener {
+public class ModelFrame extends PtolemyFrame implements ExecutionListener {
 
     /** Construct a frame to control the specified Ptolemy II model.
      *  After constructing this, it is necessary
@@ -90,15 +91,11 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
      *  @param tableau The tableau responsible for this frame, or null if none.
      */
     public ModelFrame(CompositeActor model, Tableau tableau) {
-        super(tableau);
-        _model = model;
+        super(model, tableau);
 
         // Create first with no model to avoid duplicating work when
         // we next call setModel().
-        _pane = new ModelPane(null);
-
-        setModel(model);
-
+        _pane = new ModelPane(model);
         getContentPane().add(_pane, BorderLayout.CENTER);
 
         // Make the go button the default.
@@ -124,13 +121,6 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
      */
     public synchronized void executionFinished(Manager manager) {
         report("execution finished.");
-    }
-
-    /** Get the associated model.
-     *  @return The associated model.
-     */
-    public CompositeActor getModel() {
-        return _model;
     }
 
     /** Report that a manager state has changed.
@@ -168,9 +158,11 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
      *  @param model The associated model.
      */
     public void setModel(CompositeActor model) {
-        _model = model;
+        super.setModel(model);
         if (model != null) {
-            _pane.setModel(model);
+            // This is called in a base class constructor, before
+            // this variable has been set. Hence the test against null.
+            if (_pane != null) _pane.setModel(model);
             Manager manager = model.getManager();
             if (manager != null) {
                 manager.addExecutionListener(this);
@@ -215,8 +207,9 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
      */
     protected void _close() {
         super._close();
-        if (_model != null) {
-            Manager manager = _model.getManager();
+        CompositeEntity model = getModel();
+        if (model instanceof CompositeActor) {
+            Manager manager = ((CompositeActor)model).getManager();
             if (manager != null) {
                 manager.removeExecutionListener(this);
             }
@@ -227,8 +220,9 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
      */
     protected void _help() {
         String message = "Ptolemy II model.";
-        if (_model != null) {
-            String tip = Documentation.consolidate(_model);
+        CompositeEntity model = getModel();
+        if (model != null) {
+            String tip = Documentation.consolidate(model);
             if (tip != null) {
                 message = "Ptolemy II model:\n" + tip;
             }
@@ -237,21 +231,8 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
                 "About " + getTitle(), JOptionPane.INFORMATION_MESSAGE);
     }
 
-    /** Write the model to the specified file.
-     *  @param file The file to write to.
-     *  @exception IOException If the write fails.
-     */
-    protected void _writeFile(File file) throws IOException {
-        java.io.FileWriter fout = new java.io.FileWriter(file);
-        _model.exportMoML(fout);
-        fout.close();
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The model that this window controls, if any.
-    private CompositeActor _model;
 
     // The pane in which the model data is displayed.
     private ModelPane _pane;

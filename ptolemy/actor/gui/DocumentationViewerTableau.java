@@ -32,6 +32,7 @@ package ptolemy.actor.gui;
 // FIXME: Trim this.
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
+import ptolemy.gui.Top;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -156,7 +157,7 @@ public class DocumentationViewerTableau extends Tableau {
      *  If no frame has been set, then do nothing.
      */
     public void show() {
-        PtolemyTop frame = (PtolemyTop)getFrame();
+        Top frame = (Top)getFrame();
         // Have to pack before centering.
         frame.pack();
         frame.centerOnScreen();
