@@ -151,6 +151,19 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
         return false;
     }
 
+    /** Get the parameter with the given name in this object.  If no
+     * such parameter exists, then check recursively check all of this
+     * associated objects.  These associated objects
+     * are usually "templates" which provide some default parameters shared 
+     * between many objects. In this base class, this is the same as calling 
+     * getParameter().  If no such parameter exists in this object, or 
+     * any of it's templates, then return null.
+     */
+    public SchematicParameter deepGetParameter(String name) {
+        SchematicParameter param = getParameter(name);
+        return param;
+    }
+
     /**
      * Return an enumeration over the parameters in this object, and all the 
      * parameters in any objects associated with it.  These associated objects
@@ -239,6 +252,9 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
      * exists.
      */
     public SchematicParameter getParameter(String name) {
+        if(_parameters == null) {
+            return null;
+        }
         return (SchematicParameter)_parameters.get(name);
     }
 
@@ -306,6 +322,27 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
             // }
         }
         _name = name;
+    }
+
+    /** 
+     * Set a parameter in this object with the given name, and value.
+     * If a parameter already exists with the name, then alter that parameter
+     * to have the new value, but leave the type unchanged.  If no parameter
+     * exists in this object with the given name, but some associated template
+     * does have such a parameter, then add a new parameter with the given name
+     * and value and type inferred from the template's parameter.
+     *
+     * @exception IllegalActionException If name is null, or no valid
+     * parameter exists.
+     */
+    public void setParameter(String name, String value) 
+        throws IllegalActionException {
+        SchematicParameter parameter = deepGetParameter(name);
+        if(parameter == null) {
+            throw new IllegalActionException("No parameter found with name " +
+                    name);
+        }
+        setParameter(name, value, parameter.getType());
     }
 
     /** 

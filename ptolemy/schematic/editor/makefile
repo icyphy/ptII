@@ -53,6 +53,7 @@ JSRCS = \
 	EditorNodeRenderer.java \
 	GraphDocument.java \
 	GraphEditor.java \
+	ParameterQuery.java \
 	SchematicPalette.java
 
 EXTRA_SRCS =	$(JSRCS)

@@ -43,6 +43,7 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.IntToken;
+import ptolemy.gui.*;
 import diva.graph.*;
 import diva.graph.editor.*;
 import diva.graph.layout.*;
@@ -344,6 +345,32 @@ public class GraphEditor extends AbstractApplication {
         addAction(action);
         addMenuItem(menuDevel, action, 'P', "Print current document info");
 
+        action = new AbstractAction ("Edit Director Parameters") {
+            public void actionPerformed(ActionEvent e) {
+                // Create a dialog and attach the dialog values 
+                // to the parameters of the object                    
+                Document d = getCurrentDocument();
+                if (d == null) {
+                    return;
+                } 
+                Schematic schematic =
+                    (Schematic) d.getCurrentSheet().getModel();
+                SchematicDirector object = schematic.getDirector();
+
+                System.out.println(object);
+                JFrame frame = new JFrame("Parameters for " + object);
+                JPanel pane = (JPanel) frame.getContentPane();
+                
+                Query query = new ParameterQuery(object);
+                Enumeration parameters = object.deepParameters();
+                pane.add(query);
+                frame.setVisible(true);
+                frame.pack();
+            }
+        };
+        addAction(action);
+        addMenuItem(menuDevel, action, 'P', "Edit Director Parameters");
+
         action = new AbstractAction ("Execute System") {
             public void actionPerformed(ActionEvent e) {
                 Document d = getCurrentDocument();
@@ -434,37 +461,6 @@ public class GraphEditor extends AbstractApplication {
             }
         });
         tb.add(_directorComboBox);
-
-        action = new AbstractAction ("Director Parameters") {
-            public void actionPerformed(ActionEvent e) {
-                Document d = getCurrentDocument();
-                if (d == null) {
-                    return;
-                } 
-                try {
-                    Schematic schematic = 
-                        (Schematic) d.getCurrentSheet().getModel();
-                    SchematicDirector director = 
-                        schematic.getDirector();
-                    // FIXME open a window containing 
-                    // the director's parameters.
-                    // For right now, just give the iterations parameter
-                    // something useful.
-                    SchematicParameter param =
-                        director.getParameter("iterations");
-                    if(param == null)
-                        param = new SchematicParameter("iterations");
-                    param.setType("ptolemy.data.IntToken");
-                    param.setValue("256");                    
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                    throw new GraphException(ex.getMessage());
-                }
-                 
-            }
-        };
-        addAction(action);
-        addToolBarButton(tb, action, "Set Director Parameters", resources.getImageIcon("New"));
     }
 
     /** Create and run a new graph application

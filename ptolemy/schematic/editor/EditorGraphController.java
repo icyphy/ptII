@@ -462,16 +462,31 @@ ef.route();
                     new ObjectContextMenu((PTMLObject)sourcenode);
                 menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
             }
+            if(sourcenode instanceof SchematicTerminal) {
+                // FIXME find the right port to set parameters on.
+                JPopupMenu menu = 
+                    new ObjectContextMenu((PTMLObject)sourcenode);
+                menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
+            }
         }
     }
 
-    /** A Context Sensitive menu for PTMLObjects
+    /**
+     * This is a base class for popup menus used to manipulate various
+     * PTMLObjects within the editor.  It contains an entry for parameter
+     * editing that opens a dialog box in a new frame for 
+     * editing the parameters
+     * of an object.  
      */
-    public class ObjectContextMenu extends JPopupMenu {
-        JFrame _frame;
-        Query _query;
+    public class ObjectContextMenu extends JPopupMenu{
+        private JFrame _frame;
+        private Query _query;
+        private PTMLObject _target;
+        
         public ObjectContextMenu(PTMLObject target) {
             super(target.getName());
+            _target = target;
+            
             Action action;
             action = new AbstractAction ("Get Parameters") {
                 public void actionPerformed(ActionEvent e) {
@@ -481,18 +496,10 @@ ef.route();
                     System.out.println(object);
                     _frame = new JFrame("Parameters for " + object);
                     JPanel pane = (JPanel) _frame.getContentPane();
-
-                    _query = new Query();
-                    Enumeration parameters = object.deepParameters();
-                    while(parameters.hasMoreElements()) {
-                        SchematicParameter param = 
-                            (SchematicParameter) parameters.nextElement();
-                        _query.addLine(param.getName(), param.getName(), 
-                                param.getValue());
-                    }
+                    
+                    _query = new ParameterQuery(object);
+                    
                     pane.add(_query);
-                    _query.setTextWidth(20);                   
-                    pane.layout();
                     _frame.setVisible(true);
                     _frame.pack();
                 }
