@@ -139,6 +139,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="240.0, 20.0">
         </property>
     </property>
+    <property name="tNavEnd" class="ptolemy.data.expr.Parameter" value="0.0">
+    </property>
+    <property name="mBkIP" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
     <port name="toPHY" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
