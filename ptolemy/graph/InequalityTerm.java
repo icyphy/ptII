@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -69,7 +69,7 @@ public interface InequalityTerm {
      *   <code>false</code> otherwise.
      */
     public boolean isSettable();
- 
+
     /** Set the value of this term to the specified CPO element.
      *  Only terms consisting of a single variable can have their
      *  values set.

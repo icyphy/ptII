@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -67,7 +67,7 @@ public class Inequality {
         _lesserTerm = lesserTerm;
         _greaterTerm = greaterTerm;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -77,7 +77,7 @@ public class Inequality {
     public InequalityTerm getGreaterTerm() {
         return _greaterTerm;
     }
- 
+
     /** Return the lesser term of this inequality.
      *  @return an <code>InequalityTerm</code>
      */
@@ -96,7 +96,7 @@ public class Inequality {
                 _greaterTerm.getValue());
         return (result == CPO.LOWER || result == CPO.SAME);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private InequalityTerm _lesserTerm = null;

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -38,7 +38,7 @@ import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DirectedGraph
-/** 
+/**
 A directed graph and some graph algorithms.
 This class is evolved from the StaticGraph class written by Jie Liu.
 <p>
@@ -62,11 +62,11 @@ public class DirectedGraph extends Graph {
      *  efficient with this constructor if the number of nodes is
      *  known.
      *  @param nodeCount the integer specifying the number of nodes
-     */ 
+     */
     public DirectedGraph(int nodeCount) {
         super(nodeCount);
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -93,7 +93,7 @@ public class DirectedGraph extends Graph {
         _inDegree.addElement(new Integer(0));
 	_transitiveClosure = null;
     }
- 
+
     /** Add a directed edge to connect two nodes. The first argument
      *  is the lower node and the second the higher.  Multiple connections
      *  between two nodes are allowed, and are considered different
@@ -105,7 +105,7 @@ public class DirectedGraph extends Graph {
      *   is not a graph node, i.e., the argument is not equal to an Object
      *   specified in a successful <code>add</code> call. Equality
      *   is determined by the <code>equals</code> method.
-     */ 
+     */
     public void addEdge(Object o1, Object o2) {
         super.addEdge(o1, o2);
 
@@ -126,12 +126,12 @@ public class DirectedGraph extends Graph {
      */
     public boolean isAcyclic() {
         _computeTransitiveClosure();
- 
+
         return _isAcyclic;
     }
 
     /** Find all the nodes that can be reached from the specified node.
-     *  The reachable nodes do not include the specific one unless 
+     *  The reachable nodes do not include the specific one unless
      *  there is a loop from the specified node back to itself.
      *  The implementation computes the transitive closure of the
      *  graph, if it is not already computed after the last graph
@@ -157,7 +157,7 @@ public class DirectedGraph extends Graph {
 
         // FIXME: restore the following line when moving to jdk1.2
         //	return nodes.toArray();
- 
+
         // FIXME: remove the following lines when moving to jdk1.2
         Object[] arr = new Object[nodes.size()];
         for (int i = 0; i < nodes.size(); i++) {
@@ -165,7 +165,7 @@ public class DirectedGraph extends Graph {
         }
         return arr;
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -176,7 +176,7 @@ public class DirectedGraph extends Graph {
      *  found in chapter 6 of "Discrete Mathematics and Its
      *  Applications", 3rd Ed., by Kenneth H. Rosen.  The complexity
      *  of this algorithm is O(|N|^3), where N for nodes.
-     */ 
+     */
     // This method also checks if the graph is acyclic and set
     // _isAcyclic.
     protected void _computeTransitiveClosure() {
@@ -209,7 +209,7 @@ public class DirectedGraph extends Graph {
                 }
             }
         }
- 
+
         // check for cycles.
         _isAcyclic = true;
         for (int i = 0; i < size; i++) {

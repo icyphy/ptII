@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -34,7 +34,7 @@ import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Graph
-/** 
+/**
 A basic graph.
 This class is evolved from the staticGraph class written by Jie Liu.
 Each node in the graph is represented by an Object. To construct a graph,
@@ -44,7 +44,7 @@ edges between nodes.
 NOTE: This class is a starting point for implementing graph algorithms,
 more methods will be added.
 
-@author Yuhong Xiong, Jie Liu 
+@author Yuhong Xiong, Jie Liu
 @version $Id$
 */
 
@@ -57,19 +57,19 @@ public class Graph {
         _nodeObject = new Vector();
         _nodeIdTable = new Hashtable();
     }
-    
+
     /** Construct an empty graph with enough storage allocated for the
      *  specified number of nodes.  Memory management is more
      *  efficient with this constructor if the number of nodes is
      *  known.
      *  @param nodeCount the integer specifying the number of nodes
-     */ 
+     */
     public Graph(int nodeCount) {
         _graph = new Vector(nodeCount);
         _nodeObject = new Vector(nodeCount);
         _nodeIdTable = new Hashtable(nodeCount);
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -99,7 +99,7 @@ public class Graph {
         _graph.addElement(new Vector());
         _nodeIdTable.put(o, new Integer(_graph.size() - 1));
     }
- 
+
     /** Add an edge between two nodes.  Multiple edges
      *  between the same nodes are allowed, and are considered different
      *  edges.  Self loop is also allowed.
@@ -110,11 +110,11 @@ public class Graph {
      *   arguments is not a graph node, i.e., the argument is not equal
      *   to an Object specified in a successful <code>add</code> call.
      *   Equality is determined by the <code>equals</code> method.
-     */ 
-    public void addEdge(Object o1, Object o2) {        
+     */
+    public void addEdge(Object o1, Object o2) {
         int id1 = _getNodeId(o1);
         int id2 = _getNodeId(o2);
-        
+
         ((Vector)(_graph.elementAt(id1))).addElement(new Integer(id2));
 	_edgeCount++;
     }
@@ -238,7 +238,7 @@ public class Graph {
             throw new IllegalArgumentException("Graph._getNodeId: " +
 		"the specified Object is not a node in this graph.");
         }
-        
+
         return v.intValue();
     }
 
@@ -271,9 +271,9 @@ public class Graph {
      *  call of <code>addEdge</code> adds the node ID of the second
      *  argument to the Vector at the entry of _graph indexed by
      *  the node ID of the first argument.
-     */ 
+     */
     protected Vector _graph;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

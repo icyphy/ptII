@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -73,7 +73,7 @@ public class InequalitySolver {
     public InequalitySolver(CPO cpo) {
         _cpo = cpo;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -235,7 +235,7 @@ public class InequalitySolver {
         private Info(Inequality ineq) {
             _ineq = ineq;
         }
- 
+
         private Inequality _ineq;
 
 	// If this ineq. is in Cvar, i.e., if looking for least solution
@@ -276,7 +276,7 @@ public class InequalitySolver {
     // If the argument is true, solve for the least solution;
     // otherwise, solve for the greatest solution.
     private boolean _solve(boolean least) {
- 
+
         // initialize all variables
 	Object init = least ? _cpo.bottom() : _cpo.top();
 	if (init == null) {
@@ -295,7 +295,7 @@ public class InequalitySolver {
 	    }
 	}
 
-	// initialize _NS(not satisfied) list; set _inCvar and _inserted flags. 
+	// initialize _NS(not satisfied) list; set _inCvar and _inserted flags.
 
         // Not Satisfied list.  Each entry is an Integer storing index to
 	// _Ilist.
@@ -363,7 +363,7 @@ public class InequalitySolver {
 			"Can't set variable value(when update variable). " +
 			ex.getMessage());
 	    }
-            
+
             // insert or drop the inequalities affected
             Vector affected = (Vector)_Clist.get(updateTerm);
             for (int i = 0; i < affected.size(); i++) {
@@ -395,7 +395,7 @@ public class InequalitySolver {
                 }
             }
         }
-        
+
         // check if the inequalities in Ccnst are satisfied
         for (int i = 0; i < _Ilist.size(); i++) {
 	    Info info = (Info)_Ilist.elementAt(i);
@@ -412,12 +412,12 @@ public class InequalitySolver {
     ////                         private variables                 ////
 
     private CPO _cpo = null;
- 
+
     // Vector representation of Ilist. Each entry is an instance of the
     // inner class Info. This vector effectively gives each inequality an
     // index, _Clist and _NS use that index.
     private Vector _Ilist = new Vector();
-    
+
     // Mapping from variable to the Inequalities containing them.
     // Each entry in _Clist is a vector of Integers containing the
     // index of inequalities in _Ilist.

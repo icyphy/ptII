@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 ProposedRating Yellow (yuhong@eecs.berkeley.edu)
@@ -67,7 +67,7 @@ public interface CPO
      *  @param e2 an Object representing a CPO element.
      *  @return one of <code>CPO.LOWER, CPO.SAME,
      *   CPO.HIGHER, CPO.INCOMPARABLE</code>.
-     *  @exception IllegalArgumentException If at least one of the 
+     *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
      */
     public int compare(Object e1, Object e2);
@@ -81,7 +81,7 @@ public interface CPO
      *  @exception IllegalArgumentException If the specified Object is not
      *   an element in this CPO.
      */
-    public Object[] downSet(Object e);    
+    public Object[] downSet(Object e);
 
     /** Compute the greatest lower bound (GLB) of two elements.
      *  The GLB of two elements is the greatest element in the CPO
@@ -90,11 +90,11 @@ public interface CPO
      *  @param e2 an Object representing an element in this CPO.
      *  @return an Object representing the GLB of the two specified
      *   elements, or <code>null</code> if the GLB does not exist.
-     *  @exception IllegalArgumentException If at least one of the 
+     *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
      */
     public Object greatestLowerBound(Object e1, Object e2);
-    
+
     /** Compute the greatest lower bound (GLB) of a subset.
      *  The GLB of a subset is the greatest element in the CPO that
      *  is lower than or the same as all the elements in the
@@ -130,7 +130,7 @@ public interface CPO
      *   specified array is not an element of this CPO.
      */
     public Object leastElement(Object[] subset);
-    
+
     /** Compute the least upper bound (LUB) of two elements.
      *  The LUB of two elements is the least element in the CPO
      *  that is greater than or the same as both of the two elements.
@@ -142,7 +142,7 @@ public interface CPO
      *   specified Objects is not an element of this CPO.
      */
     public Object leastUpperBound(Object e1, Object e2);
-    
+
     /** Compute the least upper bound (LUB) of a subset.
      *  The LUB of a subset is the least element in the CPO that
      *  is greater than or the same as all the elements in the
@@ -154,7 +154,7 @@ public interface CPO
      *   in the specified array is not an element of this CPO.
      */
     public Object leastUpperBound(Object[] subset);
- 
+
     /** Return the top element of this CPO.
      *  The top element is the element in the CPO that is higher than
      *  all the other elements.
@@ -173,7 +173,7 @@ public interface CPO
      *   an element of this CPO.
      */
     public Object[] upSet(Object e);
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -182,7 +182,7 @@ public interface CPO
      *  @see #compare
      */
     public static final int HIGHER = 1;
-    
+
     /** One of the return values of <code>compare</code>, indicating
      *  that the two elements are incomparable.
      *  @see #compare
@@ -194,7 +194,7 @@ public interface CPO
      *  @see #compare
      */
     public static final int LOWER = -1;
-    
+
     /** One of the return values of <code>compare</code>, indicating
      *  that the two elements are the same.
      *  @see #compare
