@@ -97,6 +97,18 @@ OPTIONAL_FILES = \
 	'TestDE$$1.class' \
 	'TestDE$$2.class'
 
+# Unfortunately, some of the tests require classes outside of
+# ptolemy/kernel and ptolemy/kernel/util.  This is not good
+# since it means that the tests depend on more packages 
+# than the source code under test, which makes reuse outside
+# of Ptolemy difficult.  As a workaround, we introduce
+# a variable that lists classes that are runtime dependencies
+# that don't get compiled when we compile the test .java files
+# in this directory
+JCLASS_DEPENDENCIES = \
+	$(ROOT)/ptolemy/data/expr/UtilityFunctions.class \
+	$(ROOT)/ptolemy/data/expr/FixPointFunctions.class
+
 JCLASS=	$(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
@@ -110,8 +122,14 @@ test_java: jclass
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
+				$(JCLASS_DEPENDENCIES)
 	$(JTCLSH) alljtests.tcl
+
+$(ROOT)/ptolemy/data/expr/UtilityFunctions.class:
+	(cd $(ROOT)/ptolemy/data/expr; $(MAKE) UtilityFunctions.class)
+$(ROOT)/ptolemy/data/expr/FixPointFunctions.class:
+	(cd $(ROOT)/ptolemy/data/expr; $(MAKE) FixPointFunctions.class)
 
 depend:
 	@echo "no dependencies in this directory"
