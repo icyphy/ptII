@@ -238,7 +238,7 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     $e2 setDirector $wormdir
 
     # inside actor
-    set e4 [java::new ptolemy.actor.AtomicActor $e2 E4]
+    set e4 [java::new ptolemy.actor.test.IdentityActor $e2 IDEN]
 
     # ports of outside actors
     set p1 [java::new ptolemy.actor.IOPort $e1 P1 false true]
@@ -247,8 +247,8 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     set p4 [java::new ptolemy.actor.IOPort $e3 P4 true false]
 
     # ports inside the wormhole
-    set p5 [java::new ptolemy.actor.IOPort $e4 P5 true false]
-    set p6 [java::new ptolemy.actor.IOPort $e4 P6 false true]
+    set p5 [$e4 getPort input]
+    set p6 [$e4 getPort output]
 
     # connections at the top level
     $e0 connect $p1 $p2
@@ -274,9 +274,9 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     set res4 [$p5 hasToken 0]
 
     
-    # Emulate a firing of e2.
+    # Emulate a fire of e2
     # Manually transfer the token via the output p6, as actor e2 would do.
-    $p6 send 0 [$p5 get 0]
+    $e2 fire
 
     set res5 [$p5 hasToken 0]
     catch {$p6 hasToken 0} res6
@@ -289,6 +289,6 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
     set res9 [[$p4 get 0] toString]
     
     list $res1 $res2 $res3 $res4 $res5 $res6 $res7 $res8 $res9
-} {1 0 0 1 0 {ptolemy.kernel.util.IllegalActionException: .E0.E2.E4.P6: hasToken: Tokens can only be retrieved from an input port.} {ptolemy.kernel.util.IllegalActionException: .E0.E2.P3: hasToken: Tokens can only be retrieved from an input port.} 1 ptolemy.data.StringToken(foo)}
+} {1 0 1 0 0 {ptolemy.kernel.util.IllegalActionException: .E0.E2.IDEN.output: hasToken: Tokens can only be retrieved from an input port.} {ptolemy.kernel.util.IllegalActionException: .E0.E2.P3: hasToken: Tokens can only be retrieved from an input port.} 1 ptolemy.data.StringToken(foo)}
 
 #FIXME: test _removeEntity (using setContainer null).
