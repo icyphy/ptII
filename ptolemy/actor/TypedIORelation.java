@@ -116,7 +116,7 @@ public class TypedIORelation extends IORelation {
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (!(container instanceof TypedCompositeActor) &&
-	    (container != null)) {
+                (container != null)) {
             throw new IllegalActionException (this, container,
                     "TypedIORelation can only be contained by " +
 		    "TypedCompositeActor.");

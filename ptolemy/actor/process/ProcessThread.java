@@ -58,7 +58,7 @@ public class ProcessThread extends PtolemyThread {
         super();
 	_actor = actor;
         _director = director;
-         _manager = ((CompositeActor)_director.getContainer()).getManager();
+        _manager = ((CompositeActor)_director.getContainer()).getManager();
     }
 
     /** Construct a thread to be used for the execution of the

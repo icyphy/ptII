@@ -146,7 +146,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (!(container instanceof TypedCompositeActor) &&
-             (container != null)) {
+                (container != null)) {
             throw new IllegalActionException(container, this,
                     "TypedAtomicActor can only be contained by instances of " +
                     "TypedCompositeActor.");
@@ -178,13 +178,13 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 		    Enumeration outPorts = outputPorts();
 	    	    while (outPorts.hasMoreElements()) {
 		    	TypedIOPort outport =
-				 (TypedIOPort)outPorts.nextElement();
+                            (TypedIOPort)outPorts.nextElement();
 
 		    	if (outport.getDeclaredType() == null &&
-			    inport != outport) {
+                                inport != outport) {
 			    // output also undeclared, not bi-directional port,
 		            Inequality ineq = new Inequality(
-				inport.getTypeTerm(), outport.getTypeTerm());
+                                    inport.getTypeTerm(), outport.getTypeTerm());
 			    result.insertLast(ineq);
 			}
 		    }

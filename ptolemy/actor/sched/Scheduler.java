@@ -161,7 +161,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
      * The <b>relation</b> and <b>port</b> fields of the
      * passed event will be valid.
      *
-      * @param event The mutation event
+     * @param event The mutation event
      */
     public void portLinked (TopologyEvent event){
         setValid(false);
@@ -193,7 +193,7 @@ public class Scheduler extends NamedObj implements TopologyListener{
      * passed event will be valid.
      *
      * @param event The mutation event
-    */
+     */
     public void relationAdded (TopologyEvent event){
         setValid(false);
     }

@@ -147,7 +147,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	        TypedActor actor = (TypedActor)e.nextElement();
 		if (actor instanceof TypedCompositeActor) {
 		    result.appendElements(
-			((TypedCompositeActor)actor).checkTypes());
+                            ((TypedCompositeActor)actor).checkTypes());
 		}
 
 	        // type check from all the ports on the contained actor
@@ -159,7 +159,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
 		    Enumeration destPorts = _receiverToPort(receivers);
 		    result.appendElements(
-				_checkTypesFromTo(srcport, destPorts));
+                            _checkTypesFromTo(srcport, destPorts));
 		}
 	    }
 
@@ -246,7 +246,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
         if (!(container instanceof TypedCompositeActor) &&
-	    (container != null)) {
+                (container != null)) {
             throw new IllegalActionException(container, this,
                     "TypedCompositeActor can only be contained by instances "
 		    + "of TypedCompositeActor.");
@@ -301,7 +301,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
                     Enumeration destPorts = _receiverToPort(receivers);
                     result.appendElements(
-				_typeConstraintsFromTo(srcport, destPorts));
+                            _typeConstraintsFromTo(srcport, destPorts));
 		}
             }
 
@@ -313,7 +313,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 Receiver[][] receivers = srcport.deepGetReceivers();
                 Enumeration destPorts = _receiverToPort(receivers);
                 result.appendElements(
-				_typeConstraintsFromTo(srcport, destPorts));
+                        _typeConstraintsFromTo(srcport, destPorts));
             }
 
 	    return result.elements();
@@ -411,7 +411,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // group of destination ports.  Return an Enumeration of
     // TypedIOPorts that have type conflicts.
     private Enumeration _checkTypesFromTo(TypedIOPort srcport,
-					  Enumeration destPorts) {
+            Enumeration destPorts) {
 	LinkedList result = new LinkedList();
 
 	Class srcDeclared = srcport.getDeclaredType();
@@ -423,7 +423,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	    	if (destDeclared != null) {
 	    	    // both source/destination ports are declared, check type
 		    int compare = TypeLattice.compare(srcDeclared,
-						      destDeclared);
+                            destDeclared);
 		    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
 		    	result.insertLast(srcport);
 		    	result.insertLast(destport);
@@ -453,7 +453,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // specified source port to all the ports in a group of destination
     // ports.
     private Enumeration _typeConstraintsFromTo(TypedIOPort srcport,
-					       Enumeration destPorts) {
+            Enumeration destPorts) {
 	LinkedList result = new LinkedList();
 
         Class srcDeclared = srcport.getDeclaredType();
@@ -465,7 +465,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	    	// at least one of the source/destination ports does not have
 		// declared type, form type constraint.
 		Inequality ineq = new Inequality(srcport.getTypeTerm(),
-						 destport.getTypeTerm());
+                        destport.getTypeTerm());
 		result.insertLast(ineq);
 	    }
 	}

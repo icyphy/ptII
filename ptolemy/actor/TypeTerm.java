@@ -155,7 +155,7 @@ public class TypeTerm implements InequalityTerm {
 	}
 
 	throw new IllegalActionException("TypeTerm.setValue: Cannot set "
-		    + "the value of a type constant.");
+                + "the value of a type constant.");
     }
 
     ///////////////////////////////////////////////////////////////////

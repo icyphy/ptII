@@ -98,7 +98,7 @@ public final class Manager extends NamedObj implements Runnable {
      *  @param name Name of this Manager.
      */
     public Manager(String name) {
-       super(name);
+        super(name);
         _ExecutionListeners = new HashedSet();
     }
 
@@ -157,17 +157,17 @@ public final class Manager extends NamedObj implements Runnable {
      *
      *  @param e The Exception
      **/
-     public void fireExecutionError(Exception e) {
-     // if any exceptions get up to this level, then we have to tell
-     // the gui by enscapsulating in an event.
-            ExecutionEvent event = new ExecutionEvent(this,_iteration,e);
-            Enumeration listeners = _ExecutionListeners.elements();
-            // if nobody is listening, then just dump the stack trace.
-            if(!listeners.hasMoreElements()) {
-                e.printStackTrace();
-            }
-            _fireExecutionEvent(ExecutionEventType.EXECUTIONERROR, event);
-     }
+    public void fireExecutionError(Exception e) {
+        // if any exceptions get up to this level, then we have to tell
+        // the gui by enscapsulating in an event.
+        ExecutionEvent event = new ExecutionEvent(this,_iteration,e);
+        Enumeration listeners = _ExecutionListeners.elements();
+        // if nobody is listening, then just dump the stack trace.
+        if(!listeners.hasMoreElements()) {
+            e.printStackTrace();
+        }
+        _fireExecutionEvent(ExecutionEventType.EXECUTIONERROR, event);
+    }
 
 
     /** Return the toplevel composite actor for which this manager
@@ -220,14 +220,14 @@ public final class Manager extends NamedObj implements Runnable {
 
 	    LinkedList conflicts = new LinkedList();
 	    conflicts.appendElements(
-			((TypedCompositeActor)toplevel).checkTypes());
+                    ((TypedCompositeActor)toplevel).checkTypes());
 
             Enumeration constraints =
-                	((TypedCompositeActor)toplevel).typeConstraints();
+                ((TypedCompositeActor)toplevel).typeConstraints();
 
 	    if (constraints.hasMoreElements()) {
                 InequalitySolver solver = new InequalitySolver(
-						TypeLattice.lattice());
+                        TypeLattice.lattice());
 	        while (constraints.hasMoreElements()) {
                     Inequality ineq = (Inequality)constraints.nextElement();
                     solver.addInequality(ineq);
@@ -239,7 +239,7 @@ public final class Manager extends NamedObj implements Runnable {
 		    Enumeration unsatisfied = solver.unsatisfiedInequalities();
 		    while (unsatisfied.hasMoreElements()) {
 		        Inequality ineq =
-				 (Inequality)unsatisfied.nextElement();
+                            (Inequality)unsatisfied.nextElement();
 		        TypeTerm term = (TypeTerm)ineq.getLesserTerm();
 		        TypedIOPort port = term.getPort();
 		        if (port != null) {
@@ -267,7 +267,7 @@ public final class Manager extends NamedObj implements Runnable {
 
 	    if (conflicts.size() > 0) {
 		throw new TypeConflictException(conflicts.elements(),
-		    "Type conflicts occurred in " + toplevel.getFullName());
+                        "Type conflicts occurred in " + toplevel.getFullName());
 	    }
 	} catch (IllegalActionException iae) {
 	    // this should not happen.
@@ -351,7 +351,7 @@ public final class Manager extends NamedObj implements Runnable {
 
                 // Figure out the appropriate write access.
                 _needWriteAccessDuringIteration =
-                       _checkIfWriteAccessNeededDuringIteration();
+                    _checkIfWriteAccessNeededDuringIteration();
 
                 // Call _iterate() until:
                 // _keepIterating is set to false (presumably by stop())
@@ -432,15 +432,15 @@ public final class Manager extends NamedObj implements Runnable {
         // after the first one ends.. Is this what you want ? (lmuliadi)
 
         if(_simulationThread!=null) {
-             _simulationThread.stop();
-             try {
-                 _simulationThread.join();
-             }
-             catch (InterruptedException e) {
-                 // Well, if we bothered to kill it, then this should
-                 // always get thrown, so just ignore it.
-             }
-             _simulationThread = null;
+            _simulationThread.stop();
+            try {
+                _simulationThread.join();
+            }
+            catch (InterruptedException e) {
+                // Well, if we bothered to kill it, then this should
+                // always get thrown, so just ignore it.
+            }
+            _simulationThread = null;
         }
         Thread futureRunningThread = new PtolemyThread(this);
         futureRunningThread.start();
@@ -565,7 +565,7 @@ public final class Manager extends NamedObj implements Runnable {
 
     /** Check if write access in the workspace will be needed during an
      *  iteration.
-s     *  An iteration is defined to be one invocation of prefire(), fire(), and
+     s     *  An iteration is defined to be one invocation of prefire(), fire(), and
      *  postfire() methods of the top level composite actor.
      *  <p>
      *  This method recursively call the needWriteAccess() method of all lower
@@ -590,7 +590,7 @@ s     *  An iteration is defined to be one invocation of prefire(), fire(), and
      * Propagate the execution event to all the execution listeners.
      */
     private void _fireExecutionEvent(ExecutionEventType type,
-        ExecutionEvent event) {
+            ExecutionEvent event) {
         Enumeration listeners = _ExecutionListeners.elements();
         while(listeners.hasMoreElements()) {
             ExecutionListener l =

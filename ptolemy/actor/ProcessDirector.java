@@ -83,7 +83,7 @@ public class ProcessDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-        /** Clone the director into the specified workspace. The new object is
+    /** Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
      *  The result is a new director with no container, no pending mutations,
@@ -225,7 +225,7 @@ public class ProcessDirector extends Director {
             while (allMyActors.hasMoreElements()) {
                 // Obtaining all the ports of each actor
                 Actor actor = (Actor)allMyActors.nextElement();
-                 actorPorts = actor.inputPorts();
+                actorPorts = actor.inputPorts();
                 while (actorPorts.hasMoreElements()) {
                     IOPort port = (IOPort)actorPorts.nextElement();
                     // Setting paused flag in the receivers..
@@ -235,7 +235,7 @@ public class ProcessDirector extends Director {
                             nextRec = (ProcessReceiver)receivers[i][j];
                             nextRec.setPause(true);
                             _pausedReceivers.insertFirst(receivers[i][j]);
-                       }
+                        }
 		    }
 		}
 	    }
@@ -359,7 +359,7 @@ public class ProcessDirector extends Director {
                         nextRec = (ProcessReceiver)receivers[i][j];
                         nextRec.setFinish();
                         recs.insertFirst(nextRec);
-                        }
+                    }
                 }
             }
 
@@ -380,7 +380,7 @@ public class ProcessDirector extends Director {
      */
     protected synchronized void _checkForDeadlock() {
 	System.out.println("_checkForDeadlock: No default implementation, " +
-               "should be overridden in derived classes.");
+                "should be overridden in derived classes.");
         return;
 
     }
@@ -403,9 +403,9 @@ public class ProcessDirector extends Director {
      */
     protected boolean _handleDeadlock()
 	    throws IllegalActionException {
-       System.out.println("_handleDeadlock: No default implementation, " +
-               "should be overridden in derived classes.");
-       return true;
+        System.out.println("_handleDeadlock: No default implementation, " +
+                "should be overridden in derived classes.");
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -205,7 +205,7 @@ public class TypedIOPort extends IOPort {
             }
 	    int compare = TypeLattice.compare(token.getClass(), _resolvedType);
 	    if (compare == CPO.HIGHER ||
-		compare == CPO.INCOMPARABLE) {
+                    compare == CPO.INCOMPARABLE) {
 		throw new IllegalArgumentException("send: token cannot be " +
 			"converted to the resolved type of this port.");
 	    }
@@ -223,7 +223,7 @@ public class TypedIOPort extends IOPort {
 	try {
             for (int j = 0; j < farRec[channelindex].length; j++) {
 	        TypedIOPort port =
-			(TypedIOPort)farRec[channelindex][j].getContainer();
+                    (TypedIOPort)farRec[channelindex][j].getContainer();
 	        Class farType = port.getResolvedType();
 
 		// farType might be "Token", since the base class Token
@@ -242,10 +242,10 @@ public class TypedIOPort extends IOPort {
             }
         } catch (IllegalAccessException iae) {
 	    throw new InternalErrorException("TypedIOPort.send: " +
-		"IllegalAccessException: " + iae.getMessage());
+                    "IllegalAccessException: " + iae.getMessage());
 	} catch (InvocationTargetException ite) {
             throw new InternalErrorException("TypedIOPort.send: " +
-                "InvocationTargetException: " + ite.getMessage());
+                    "InvocationTargetException: " + ite.getMessage());
         }
     }
 
@@ -458,7 +458,7 @@ public class TypedIOPort extends IOPort {
 
 	} catch (NoSuchMethodException nsme) {
             throw new InternalErrorException("TypedIOPort._getConvertMethod: "
-                + "NoSuchMethodException: " + nsme.getMessage());
+                    + "NoSuchMethodException: " + nsme.getMessage());
         }
     }
 
