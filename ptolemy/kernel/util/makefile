@@ -77,7 +77,6 @@ JSRCS = \
 	NotPersistent.java \
 	PtolemyThread.java \
 	RecorderListener.java \
-	RequireVersion.java \
 	Settable.java \
 	SingletonAttribute.java \
 	SingletonConfigurableAttribute.java \
@@ -87,7 +86,6 @@ JSRCS = \
 	StringUtilities.java \
 	TransientSingletonConfigurableAttribute.java \
 	ValueListener.java \
-	VersionAttribute.java \
 	Workspace.java
 
 EXTRA_SRCS =	$(JSRCS)
