@@ -1,4 +1,4 @@
-# Makefile for GR domain actors library
+# Makefile for GR domain quicktime actors library
 #
 # @Authors: Christopher Hylands (makefile only)
 #
@@ -32,61 +32,29 @@
 ME =		ptolemy/domains/gr/lib
 
 # Rule for index.xml uses this
-TITLE = 	"3D actors"
+TITLE = 	"Quicktime 3D actors"
 
-# $PTII/configure looks for Quicktime for Java  and sets PTQUICKTIME_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTQUICKTIME_DIR is empty.
-DIRS =	$(PTQUICKTIME_DIR)
+DIRS =
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)c:/j2sdk1.4.1_02/jre/lib/ext/QTJava.zip
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(QTJAVA_ZIP)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
+PTPACKAGE = 	quicktime
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
-
-# Don't include nrl.jar
-#		nrl/nrl.jar
-
-#PTCLASSALLJAR = $(PTPACKAGE).jar
-
 JSRCS = \
-	Box2D.java \
-	Rotate3D.java \
-	Scale3D.java \
-	Translate2D.java \
-	Translate3D.java \
-	GRTransform.java \
-	GRTransform2D.java \
-	Box3D.java \
-	CircularSweep3D.java \
-	Cone3D.java \
-	Cylinder3D.java \
-	GRShadedShape.java \
-	GRShape2D.java \
-	PolyCylinder3D.java \
-	Sphere3D.java \
-	TextString3D.java \
-	Torus3D.java \
-	KeyInput3D.java \
-	MouseInput3D.java \
-	ViewScreen.java \
-	ViewScreen2D.java
-
+	MovieViewScreen2D.java
 
 OTHER_FILES_TO_BE_JARED = \
-	grentities.xml \
-	java3d-copyright.htm
+	quicktimeentities.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -97,13 +65,6 @@ MISC_FILES = 	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	'KeyInput3D$$_React.class' \
-	'MouseInput3D$$_React.class' \
-	'KeyInput3D$$1.class' \
-	'KeyInput3D$$React.class' \
-	'MouseInput3D$$1.class' \
-	'MouseInput3D$$React.class' \
-	'ViewScreen$$MouseRotateView.class' \
 	doc \
 	index.xml
 
