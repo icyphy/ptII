@@ -76,7 +76,7 @@ public class SDFDelay extends SDFAtomicActor {
          */
         super(container, name);
         /* This construct is called a "try-catch block".  It is used to
-         * detect exceptions that occured during the execution of some
+         * detect exceptions that occurred during the execution of some
          * other code.  In this case, we detect IllegalActionException and
          * print a reasonable error message.  This is convenient under
          * some environments which can destroy the debugging information from
