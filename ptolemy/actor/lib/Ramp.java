@@ -83,6 +83,8 @@ public class Ramp extends SequenceSource {
                 "<polygon points=\"10,30 50,10 50,30\" "
                 + "style=\"fill:blue\"/>\n" +
                 "</svg>\n");
+        _resultArray = new Token[1];
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -130,6 +132,7 @@ public class Ramp extends SequenceSource {
 	// set the type constraints.
 	newObject.output.setTypeAtLeast(newObject.init);
 	newObject.output.setTypeAtLeast(newObject.step);
+        _resultArray = new Token[1];
         return newObject;
     }
 
@@ -225,6 +228,6 @@ public class Ramp extends SequenceSource {
 
     private Token _stateToken = null;
     private Token _step = null;
-    private Token[] _resultArray = new Token[1];
+    private Token[] _resultArray;
 }
 
