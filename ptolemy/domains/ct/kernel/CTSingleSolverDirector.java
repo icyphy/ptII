@@ -118,7 +118,7 @@ public class CTSingleSolverDirector extends CTDirector {
      */
     public void attributeChanged(Attribute param)
             throws IllegalActionException {
-        if(param == _paramODESolver) {
+        if(param == ODESolver) {
             _debug(getFullName() + "solver updating...");
             _solverclass = ((StringToken)((Parameter)param).getToken()).stringValue();
             _defaultSolver = _instantiateODESolver(_solverclass);
@@ -164,6 +164,13 @@ public class CTSingleSolverDirector extends CTDirector {
         _debug("execute the system from "+
                     getCurrentTime() +" step size" + getCurrentStepSize());
         _fireOneIteration();
+    }
+    
+    /** Return the ODE solver.
+     *  @return The default ODE solver
+     */
+    public ODESolver getODESolver() {
+        return _defaultSolver;
     }
 
     /** Initialization for the entire system. This
@@ -472,7 +479,7 @@ public class CTSingleSolverDirector extends CTDirector {
         try {
             _solverclass=
                 "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver";
-            _paramODESolver = new Parameter(
+            ODESolver = new Parameter(
                 this, "ODESolver", new StringToken(_solverclass));
         } catch (IllegalActionException e) {
             //Should never happens. The parameters are always compatible.
@@ -589,7 +596,7 @@ public class CTSingleSolverDirector extends CTDirector {
     ////                         private variables                 ////
 
     // parameter of ODE solver
-    private Parameter _paramODESolver;
+    public Parameter ODESolver;
     // The classname of the ODE solver
     private String _solverclass;
 

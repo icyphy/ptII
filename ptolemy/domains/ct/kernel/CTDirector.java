@@ -187,31 +187,31 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public void attributeChanged(Attribute attr) 
             throws IllegalActionException {
         _debug(attr.getName() + " updating.");
-        if(attr == _paramStopTime) {
+        if(attr == StopTime) {
             Parameter param = (Parameter)attr;
             setStopTime(((DoubleToken)param.getToken()).doubleValue());
-        } else if(attr == _paramInitStepSize) {
+        } else if(attr == InitStepSize) {
             Parameter param = (Parameter)attr;
             _initStepSize = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(attr == _paramStartTime) {
+        } else if(attr == StartTime) {
             Parameter param = (Parameter)attr;
             _startTime = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(attr == _paramLTETolerance) {
+        } else if(attr == ErrorTolerance) {
             Parameter param = (Parameter)attr;
             _lteTolerance = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(attr == _paramMinStepSize) {
+        } else if(attr == MinStepSize) {
             Parameter param = (Parameter)attr;
             _minStepSize = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(attr == _paramMaxStepSize) {
+        } else if(attr == MaxStepSize) {
             Parameter param = (Parameter)attr;
             _maxStepSize = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(attr == _paramValueResolution) {
+        } else if(attr == ValueResolution) {
             Parameter param = (Parameter)attr;
             _valueResolution = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(attr == _paramTimeResolution) {
+        } else if(attr == TimeResolution) {
             Parameter param = (Parameter)attr;
             _timeResolution = ((DoubleToken)param.getToken()).doubleValue();
-        } else if(attr == _paramMaxIterations) {
+        } else if(attr == MaxIterations) {
             Parameter param = (Parameter)attr;
             _maxIterations = ((IntToken)param.getToken()).intValue();
         }
@@ -470,26 +470,26 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             _timeResolution = 1e-10;
 
 
-            _paramStartTime = new Parameter(
+            StartTime = new Parameter(
                 this, "StartTime", new DoubleToken(_startTime));
-            _paramStopTime = new Parameter(
+            StopTime = new Parameter(
                 this, "StopTime", new DoubleToken(_stopTime));
-            _paramInitStepSize = new Parameter(
+            InitStepSize = new Parameter(
                 this, "InitialStepSize", new DoubleToken(_initStepSize));
-            _paramMinStepSize = new Parameter(
+            MinStepSize = new Parameter(
                 this, "MinimumStepSize", new DoubleToken(_minStepSize));
-             _paramMaxStepSize = new Parameter(
+            MaxStepSize = new Parameter(
                 this, "MaximumStepSize", new DoubleToken(_maxStepSize));
-            _paramMaxIterations = new Parameter(
+            MaxIterations = new Parameter(
                 this, "MaximumIterationsPerStep", 
                 new IntToken(_maxIterations));
-            _paramLTETolerance =  new Parameter(
+            ErrorTolerance =  new Parameter(
                 this, "LocalTrancationErrorTolerance",
                 new DoubleToken(_lteTolerance));
-            _paramValueResolution =  new Parameter(
+            ValueResolution =  new Parameter(
                 this, "ConvergeValueResolution", 
                 new DoubleToken(_valueResolution));
-            _paramTimeResolution= new Parameter(
+            TimeResolution= new Parameter(
                 this, "TimeResolution", new DoubleToken(_timeResolution));
 
         } catch (IllegalActionException e) {
@@ -562,15 +562,15 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     private ODESolver _currentSolver = null;
 
     // parameters.
-    private Parameter _paramStartTime;
-    private Parameter _paramStopTime;
-    private Parameter _paramInitStepSize;
-    private Parameter _paramMinStepSize;
-    private Parameter _paramMaxStepSize;    
-    private Parameter _paramMaxIterations;
-    private Parameter _paramLTETolerance;
-    private Parameter _paramValueResolution;
-    private Parameter _paramTimeResolution;
+    public Parameter StartTime;
+    public Parameter StopTime;
+    public Parameter InitStepSize;
+    public Parameter MinStepSize;
+    public Parameter MaxStepSize;    
+    public Parameter MaxIterations;
+    public Parameter ErrorTolerance;
+    public Parameter ValueResolution;
+    public Parameter TimeResolution;
 
 
     //values

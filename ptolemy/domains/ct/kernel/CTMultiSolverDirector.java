@@ -113,11 +113,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     public void attributeChanged(Attribute attr)
             throws IllegalActionException {
         Parameter param = (Parameter)attr;
-        if(param == _paramDefaultODESolver) {
-            _debug("default solver updating.");
-            _defaultsolverclass = ((StringToken)param.getToken()).stringValue();
-            _defaultSolver = _instantiateODESolver(_defaultsolverclass);
-        } else if (param == _paramBreakpointODESolver) {
+        if (param == BreakpointODESolver) {
             _debug("breakpoint solver updating.");
             _breakpointsolverclass =
                     ((StringToken)param.getToken()).stringValue();
@@ -126,13 +122,6 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
         } else {
             super.attributeChanged(param);
         }
-    }
-
-    /** Return the default ODE solver.
-     *  @return The default ODE solver
-     */
-    public ODESolver getDefaultSolver() {
-        return _defaultSolver;
     }
 
     /** Return the breakpoint ODE solver.
@@ -163,14 +152,13 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     protected void _initParameters() {
         super._initParameters();
         try {
-            _defaultsolverclass=
+            String defaultsolverclass=
                 "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver";
-            _paramDefaultODESolver = (Parameter)getAttribute("ODESolver");
-            _paramDefaultODESolver.setToken(
-                    new StringToken(_defaultsolverclass));
+            ODESolver.setToken(
+                    new StringToken(defaultsolverclass));
             _breakpointsolverclass=
                 "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver";
-            _paramBreakpointODESolver = new Parameter(
+            BreakpointODESolver = new Parameter(
                 this, "BreakpointODESolver",
                 new StringToken(_breakpointsolverclass));
         } catch (IllegalActionException e) {
@@ -194,7 +182,7 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
         double tnow = getCurrentTime();
         _setIsBPIteration(false);
         //choose ODE solver
-        setCurrentODESolver(_defaultSolver);
+        setCurrentODESolver(getODESolver());
         // If now is a break point, remove the break point from table;
         if(breakPoints != null) {
             while (!breakPoints.isEmpty()) {
@@ -253,14 +241,14 @@ public class CTMultiSolverDirector extends CTSingleSolverDirector {
     ////                         private variables                 ////
 
     // parameter of default ODE solver
-    private Parameter _paramDefaultODESolver;
+    //public Parameter DefaultODESolver;
     // The classname of the default ODE solver
-    private String _defaultsolverclass;
+    //private String _defaultsolverclass;
     // The default solver.
-    private ODESolver _defaultSolver = null;
+    //private ODESolver _defaultSolver = null;
 
     // parameter of breakpoint ODE solver
-    private Parameter _paramBreakpointODESolver;
+    public Parameter BreakpointODESolver;
     // The classname of the default ODE solver
     private String _breakpointsolverclass;
     // The default solver.

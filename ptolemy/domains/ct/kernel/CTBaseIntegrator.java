@@ -109,7 +109,7 @@ public class CTBaseIntegrator extends CTActor
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
         _initState = 0.0;
-        _paramInitState = new Parameter(this, "InitialState",
+        InitialState = new Parameter(this, "InitialState",
             new DoubleToken(_initState));
     }
 
@@ -136,7 +136,7 @@ public class CTBaseIntegrator extends CTActor
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
-        _paramInitState = new Parameter(this, "InitialState",
+        InitialState = new Parameter(this, "InitialState",
             new DoubleToken(_initState));
     }
 
@@ -164,13 +164,13 @@ public class CTBaseIntegrator extends CTActor
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
         output.setTypeEquals(DoubleToken.class);
-        _paramInitState = new Parameter(this, "InitialState",
+        InitialState = new Parameter(this, "InitialState",
             new DoubleToken(_initState));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
     /** Fire() method in the execution sequence. It in turn calls
      *  the integratorFire() of the current ODE solver.
      *
@@ -261,7 +261,7 @@ public class CTBaseIntegrator extends CTActor
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _initState = ((DoubleToken)_paramInitState.getToken()).doubleValue();
+        _initState = ((DoubleToken)InitialState.getToken()).doubleValue();
         _potentialState = _initState;
     }
 
@@ -448,7 +448,7 @@ public class CTBaseIntegrator extends CTActor
     ////                         private variables                 ////
 
     // Parameter initial state.
-    private Parameter _paramInitState;
+    public Parameter InitialState;
     private double _initState;
 
     private boolean _successful = false;
