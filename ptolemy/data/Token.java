@@ -28,7 +28,7 @@
 package pt.data;
 
 import pt.kernel.*;
-import pt.data.parser.*;
+//import pt.data.parser.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Token
@@ -44,7 +44,7 @@ so the default implementation here triggers an exception.
 @author Edward A. Lee, Neil Smyth
 @version $Id$
 @see java.lang.Object
-@see pt.parser.PtSimpleParser
+//@see pt.parser.PtSimpleParser
 */
 public abstract class Token implements Cloneable {
 
@@ -110,9 +110,10 @@ public abstract class Token implements Cloneable {
       * FIXME: This method is not final, but perhaps should be?
       * FIXME: this currently only implements a simple version of
       * parsing, more functionality will be added later
+      * @param value The string to be parsed to get the tokens value
       */
 
-      public void setValue(String value) throws IllegalArgumentException {
+  /*    public void setValue(String value) throws IllegalArgumentException {
           if (_parser == null) {
               _parser = new PtSimpleParser();
           }
@@ -120,11 +121,31 @@ public abstract class Token implements Cloneable {
               double result = _parser.parse(value);
               this.fromString(String.valueOf(result));
           } catch (Exception ex) {
+              throw new IllegalArgumentException("Cannot parse argument " + value);
+          }               
+      } */
+
+      /* This method is used to set the value of the token from a 
+      * String. It relies on each derived class having an appropriate 
+      * definition of fromString(). 
+      * FIXME: This method is not final, but perhaps should be?
+      * FIXME: this currently only implements a simple version of
+      * parsing, more functionality will be added later
+      * @param value The string to be parsed to get the tokens value
+      * @param params The params that this tokens value can depend on
+      */
+
+  /*    public void setValue(String value, NamedList params) throws IllegalArgumentException {
+          if (_parser == null) {
+              _parser = new PtSimpleParser();
+          }
+          try {
+              double result = _parser.parse(value, params);
+              this.fromString(String.valueOf(result));
+          } catch (Exception ex) {
               throw new IllegalArgumentException("Cannot parse argument "+value);
           }               
-      }
-
-              
+      } */        
           
      /** This method should be overridden where appropriate in subclasses
      */
@@ -145,5 +166,5 @@ public abstract class Token implements Cloneable {
     // the associated TokenPublisher
     private TokenPublisher _publisher;
     // the associated Parser
-    private PtSimpleParser _parser;
+   // private PtSimpleParser _parser;
 }
