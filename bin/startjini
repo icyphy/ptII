@@ -1,0 +1,35 @@
+#!/bin/sh
+# Need to have d: here?
+#PTII=d:/users/cxh/ptII
+JINI_DIR=$PTII/vendors/sun/jini/jini1_0_1	
+PORT=4444
+
+# http daemon
+java -jar $JINI_DIR/lib/tools.jar -port $PORT -dir $JINI_DIR/lib -trees -verbose &
+
+sleep 2
+
+TMP_DIR="c:\\tmp"
+rm -rf $TMP_DIR/rmid_log
+rmid -log $TMP_DIR\\rmid_log &
+
+sleep 2
+
+rm -rf $TMP_DIR/reggie_log
+java -jar $JINI_DIR/lib/reggie.jar http://`hostname`:$PORT/reggie-dl.jar  $PTII/bin/policy.all $TMP_DIR\\reggie_log public &
+
+sleep 2
+rm -rf $TMP_DIR/txn_log
+java -jar -Djava.security.policy=$PTII/bin/policy.all  -Dcom.sun.jini.mahalo.managerName=TransactionManager  $JINI_DIR/lib/mahalo.jar http://`hostname`:$PORT/mahalo-dl.jar   $PTII/bin/policy.all $TMP_DIR\\txn_log public &
+
+sleep 2
+#http://`hostname`:$PORT/outrigger-dl.jar
+
+java -jar -Djava.security.policy=$PTII/bin/policy.all \
+     -Djava.rmi.server.codebase=http://`hostname`:$PORT/outrigger-dl.jar \
+     -Dcom.sun.jini.outrigger.spaceName=JavaSpaces \
+     $JINI_DIR/lib/transient-outrigger.jar public 
+
+
+
+echo "Ok, done"
