@@ -73,9 +73,9 @@ public final class ArrayMath {
     }
 
     /** Modify the array argument by
-     *  adding argument to every element.
+     *  adding the second argument to every element.
      *  @param array An array of complex numbers.
-     *  @param z The complex number to add
+     *  @param z The complex number to add.
      */
     public static void addR(Complex[] array, Complex z) {
         for (int i = array.length-1; i >= 0; i--) {
