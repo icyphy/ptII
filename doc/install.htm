@@ -185,8 +185,16 @@ the Environment tab of the System control panel
 <CODE>Control Panels</CODE> -&gt; <CODE>System</CODE> -&gt; Environment)
 
 <li> In the Environment tab, you should also set your path to include the location of the JDK bin directory (i.e. <CODE>C:\jdk1.1.6\bin</CODE>)
-(You may also need to add the Cygwin bin directory
-<CODE>\cygnus\cygwin-b20\H-i586-cygwin32\bin</CODE>)
+ <p>When you run /cygnus/cygwin-b20/cygnus.bat, your path
+should be set to include the Cygwin tools.  You can test this
+by typing <CODE>type make</CODE>, which should return
+<pre>
+make is /cygnus/CYGWIN~1/H-I586~1/bin/make
+</pre>
+If <CODE>make</CODE> cannot be found, then 
+you may also need to add the Cygwin bin directory 
+<CODE>\cygnus\cygwin-b20\H-i586-cygwin32\bin</CODE> 
+to your path
 
 <li> Optional: Install Jacl, see the instructions
 <a href="#Jacl">above</a>.
