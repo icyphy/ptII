@@ -56,17 +56,20 @@ actors governed by an ODFDirector each actor has a local notion of
 time. Several features of the ODFDirector are intended to facilitate
 these local notions of time. 
 <P>
-In the case of feedforward systems, the role that the ODFDirector plays
-with respect to time is limited to the completion time. The completion 
-time of an ODF execution is a preset time after which all execution ceases. 
-The completion time for an ODFDirector is specified via setCompletionTime() 
-and this information is passed to the receivers of all actors that the
-ODFDirector governs via newReceiver().
+All ODF models have a completion time. The completion time is a preset time 
+after which all execution ceases. The completion time for an ODFDirector is 
+specified via setCompletionTime() and this information is passed to the 
+receivers of all actors that the ODFDirector governs via newReceiver().
 <P>
-Coming Soon: Feedback Systems!!!
+Deadlock due to feedback loops is dealt with via NullTokens. When an
+actor in an ODF model receivers a NullToken, it may advance its local
+time value even though it does not consume the NullToken.
 <P>
-FIXME: Mention that time must be nonnegative.
-<P>
+The ODF model of computation assumes that valid time stamps have non-negative 
+values. A time stamp value of -1.0 is reserved to indicate the termination of 
+a receiver. A time stamp value of -5.0 is reserved to indicate that a 
+receiver has not begun to participate in a model's execution.
+
 
 @author John S. Davis II
 @version @(#)ODFDirector.java	1.3	11/16/98
@@ -114,7 +117,6 @@ public class ODFDirector extends ProcessDirector {
     synchronized void addReadBlock() {
         _readBlocks++;
 	notifyAll();
-        // System.out.println(_readBlocks + " actors are blocked on reads.");
     }
     
     /** Increment the count of actors blocked on a write.
@@ -122,7 +124,6 @@ public class ODFDirector extends ProcessDirector {
     synchronized void addWriteBlock() {
         _writeBlocks++;
 	notifyAll();
-        // System.out.println(_writeBlocks + " actors are blocked on writes.");
     }
 
     /** Execute all deeply contained actors that are governed by this
@@ -213,7 +214,6 @@ public class ODFDirector extends ProcessDirector {
      */
     protected synchronized boolean _checkForDeadlock() {
         if( _getActiveActorsCount() == _readBlocks + _writeBlocks ) {
-	    // System.out.println("All actors blocked - Deadlock!");
             return true;
         }
         return false;
@@ -241,7 +241,7 @@ public class ODFDirector extends ProcessDirector {
         return true;
     }
     
-    /** FIXME
+    /** 
      */
     protected void _performMutations() {
         ;
