@@ -212,7 +212,7 @@ public class RecordToken extends Token {
     }
 
     /** Return the labels of this token as a Set.
-     *  @return A Set containing strings.
+     *  @return A Set containing labels.
      */
     public Set labelSet() {
         return _fields.keySet();
@@ -221,10 +221,10 @@ public class RecordToken extends Token {
     /** Returns a new RecordToken representing the multiplicative identity.
      *  The returned token has the same set of labels as this one, and
      *  each field contains the multiplicative identity of the corresponding
-     *  field of this one.
+     *  field of this token.
      *  @return A RecordToken.
      *  @exception IllegalActionException If multiplicative identity is not
-     *   supported by the element token.
+     *   supported by any element token.
      */
     public Token one() throws IllegalActionException {
         Object[] labelsObjects = _fields.keySet().toArray();
@@ -319,10 +319,10 @@ public class RecordToken extends Token {
     /** Returns a new RecordToken representing the additive identity.
      *  The returned token has the same set of labels as this one, and
      *  each field contains the additive identity of the corresponding
-     *  field of this one.
+     *  field of this token.
      *  @return A RecordToken.
      *  @exception IllegalActionException If additive identity is not
-     *   supported by the element token.
+     *   supported by any element token.
      */
     public Token zero() throws IllegalActionException {
         Object[] labelsObjects = _fields.keySet().toArray();
