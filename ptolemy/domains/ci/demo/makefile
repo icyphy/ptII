@@ -46,7 +46,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	Router.jar
+	Router/Router.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
