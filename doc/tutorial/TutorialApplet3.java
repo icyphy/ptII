@@ -22,7 +22,7 @@ public class TutorialApplet3 extends TypedCompositeActor {
         stopTime.setExpression("10.0");
         clockPeriod.setExpression("2.0");
 
-	// Create the director
+	// Create the director.
 	DEDirector director = new DEDirector(this, "director");
 	setDirector(director);
 
