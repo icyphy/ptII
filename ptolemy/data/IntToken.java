@@ -36,68 +36,56 @@ instance of an integer. The reference is never null, the default being 0.
 @author Mudit Goel
 @version $Id$
 */
-public class IntToken extends ObjectToken {
+public class IntToken extends ScalarToken {
 
     /** Construct a token with integer 0
      */	
     public IntToken() {
-	_value = new Integer(0);
+	_value = 0;
     }
 
     /** Construct a token with the specified integer
      */
     public IntToken(int value) {
-        _value = new Integer(value);
-    }
-
-    /** Construct a token with the specified integer in the form of a string
-     */
-    public IntToken(String value) {
-        if (value != null) {
-            _value = new Integer(value);
-        } else {
-            _value = new Integer(0);
-        }
+        _value = value;
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Set the value of the token to the specified string which should refer
-     *  to a valid integer. If the value is null, then the value is set to 0, 
-     *  rather than null.
-     */	
-    public void fromString(String value) {
-        if (value != null) {
-            _value = new Integer(value);
-        } else {
-            _value = new Integer(0);
-        }
+
+    /** Converts value to byte and returns it
+     */
+    public byte byteValue() {
+        return (byte)_value;
     }
 
-    /** Return the value of the token.
-     * @returns A reference to an Integer
+    /** Converts value to double and returns it
      */
-    public Object getvalue() {
-	return _value;
+    public double doubleValue() {
+        return (double)_value;
     }
 
-    /** Set the value of the token to be a reference to the specified integer.
-     *  If the argument is null, then the value is set to 0 rather than null.
-     * @exceptions IllegalActionException Argument is not an integer.
+    /** Converts value to int and returns it
      */
-    public void setValue(Object value)
-            throws IllegalActionException {
-        if (value != null) {
-            if (!(value instanceof Integer)) {
-                throw new IllegalActionException(
-                        "IntToken value must be an integer, not a "
-                        + value.getClass().getName());
-            }
-            _value = value;
-        } else {
-            _value = new Integer(0);
-        }
+    public int intValue() {
+        return (int)_value;
     }
+
+    /** Converts value to long and returns it
+     */
+    public long longValue() {
+        return (long)_value;
+    }
+    
+
+    /////////////////////////////////////////////////////////////////////////
+    ////                        private variables                        ////
+ 
+    private int _value = 0;
 
 }
+
+
+
+
