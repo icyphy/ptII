@@ -53,7 +53,7 @@ set manager [java::new ptolemy.actor.Manager $w M]
 ######################################################################
 ####
 #
-test ProcessDirector-2.1 {Constructor tests} {
+test TestProcessDirector-2.1 {Constructor tests} {
     set d1 [java::new ptolemy.actor.process.ProcessDirector]
     $d1 setName D1
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
@@ -66,7 +66,7 @@ test ProcessDirector-2.1 {Constructor tests} {
 ######################################################################
 ####
 #
-test ProcessDirector-3.1 {Test clone} {
+test TestProcessDirector-3.1 {Test clone} {
     # NOTE: Uses the setup above
     set d4 [java::cast ptolemy.actor.process.ProcessDirector [$d3 clone $w]]
     $d4 setName D4
@@ -77,7 +77,7 @@ test ProcessDirector-3.1 {Test clone} {
 ######################################################################
 ####
 #
-test ProcessDirector-4.1 {Test _makeDirectorOf} {
+test TestProcessDirector-4.1 {Test _makeDirectorOf} {
     # NOTE: Uses the setup above
     set e0 [java::new ptolemy.actor.CompositeActor $w]
     $e0 setName E0
@@ -89,7 +89,7 @@ test ProcessDirector-4.1 {Test _makeDirectorOf} {
 ######################################################################
 ####
 #
-test ProcessDirector-5.1 {Test action methods} {
+test TestProcessDirector-5.1 {Test action methods} {
     # NOTE: Uses the setup above
     set a1 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A1]
     set a2 [java::new ptolemy.actor.process.test.TestProcessActor $e0 A2]
