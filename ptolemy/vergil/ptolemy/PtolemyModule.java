@@ -524,9 +524,35 @@ public class PtolemyModule implements Module {
 	    // FIXME this should probably be one frame for each class.
 	    super.actionPerformed(e);		
 	    NamedObj target = getTarget();
-	    DocumentationViewer viewer = 
+	    final DocumentationViewer viewer = 
 		new DocumentationViewer(target);	
 	    JFrame frame = new JFrame();
+	    JMenuBar mb = new JMenuBar();
+	    frame.setJMenuBar(mb);
+	    JMenu menu = new JMenu("File");
+	    mb.add(menu);
+
+	    menu.add(new AbstractAction ("Print") {
+		public void actionPerformed(ActionEvent e) {
+		    java.awt.print.PrinterJob job = 
+			java.awt.print.PrinterJob.getPrinterJob();
+		    java.awt.print.PageFormat format = job.defaultPage();
+		    java.awt.print.Paper p = format.getPaper();
+		    // 1/2 inch margins.
+		    p.setImageableArea(36, 36,
+				       p.getWidth() - 72, p.getHeight() - 72);
+		    format.setPaper(p);
+		    job.pageDialog(format);
+		    job.setPrintable(viewer, format);
+		    if (job.printDialog()) {
+                        try {
+                            job.print();
+                        } catch (Exception ex) {
+                            getApplication().showError("PrintingFailed", ex);
+                        }
+                    }
+                }
+	    });
 	    frame.getContentPane().add(viewer);
 	    frame.setTitle(target.getClass().getName());
 	    frame.show();
