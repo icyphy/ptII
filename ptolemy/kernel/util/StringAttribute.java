@@ -28,9 +28,9 @@
 */
 
 package ptolemy.kernel.util;
+
 import java.io.IOException;
 import java.io.Writer;
-import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,8 +65,7 @@ and you do not want to type a leading a trailing double quote.
 @version $Id$
 @since Ptolemy II 1.0
 */
-public class StringAttribute extends Attribute
-    implements Settable, Configurable {
+public class StringAttribute extends Attribute implements Settable {
 
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
@@ -115,26 +114,6 @@ public class StringAttribute extends Attribute
         }
     }
 
-    /** Configure the object with data from the specified input source
-     *  (a URL) and/or textual data.  The input source, if any, is assumed
-     *  to contain textual data as well.  Note that the URL is not read
-     *  until the value() method is called.
-     *  @param base The base relative to which references within the input
-     *   are found, or null if this is not known, or there is none.
-     *   This argument is ignored in this method.
-     *  @param source The input source, which specifies a URL.
-     *  @param text Configuration information given as text.
-     *  @exception Exception Not thrown in this base class.
-     */
-    public void configure(URL base, String source, String text)
-            throws Exception {
-        _base = base;
-        _source = source;
-        setExpression(text);
-        // FIXME: Do we really want to call this right away?
-        validate();
-    }
-    
     /** Write a MoML description of this object.
      *  MoML is an XML modeling markup language.
      *  In this class, the object is identified by the "property"
@@ -156,50 +135,24 @@ public class StringAttribute extends Attribute
             throws IOException {
         String value = getExpression();
         String valueTerm = "";
- 
-        output.write(_getIndentPrefix(depth)
-                     + "<"
-                     + getMoMLInfo().elementName
-                     + " name=\""
-                     + name
-                     + "\" class=\""
-                     + getMoMLInfo().className
-                     + "\"");
-        if (!_isTextStyle) {
-            // LineStyle:
-            if (value != null && !value.equals("")) {
-                valueTerm = " value=\"" +
-                    StringUtilities.escapeForXML(value) + "\"";
-            }
-            output.write(valueTerm + ">\n");
-        } else {
-            // TextStyle:
-            output.write(">\n");
-            if (_source != null && !_source.trim().equals("")) {
-                valueTerm = " source=\"" + _source + "\"";
-                if (value == null || value.trim().equals("")) {
-                    output.write(_getIndentPrefix(depth+1)
-                                 + "<configure" + valueTerm + "/>\n");
-                }
-            } else if (value != null && !value.trim().equals("")) {
-                output.write(_getIndentPrefix(depth+1)
-                             + "<configure" + valueTerm + ">"
-                             + StringUtilities.escapeForXML(value)
-                             + "</configure>\n");
-            }
+        if (value != null && !value.equals("")) {
+            valueTerm = " value=\"" +
+                StringUtilities.escapeForXML(value) + "\"";
         }
+
+        output.write(_getIndentPrefix(depth)
+                + "<"
+                + getMoMLInfo().elementName
+                + " name=\""
+                + name
+                + "\" class=\""
+                + getMoMLInfo().className
+                + "\""
+                + valueTerm
+                + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</"
                 + getMoMLInfo().elementName + ">\n");
-    }
-
-    /** Return the base specified in the most recent call to the
-     *  configure() method, or null if none.
-     *  @return The base with respect to which the relative references
-     *   in the source file should be interpreted.
-     */
-    public URL getBase() {
-        return _base;
     }
 
     /** Get the value that has been set by setExpression(),
@@ -208,23 +161,6 @@ public class StringAttribute extends Attribute
      */
     public String getExpression() {
         return _value;
-    }
-
-    /** Return the source specified in the most recent call to the
-     *  configure() method, or null if none.
-     *  @return A URL specifying an external source for configure
-     *   information.
-     */
-    public String getSource() {
-        return _source;
-    }
-
-    /** Return the text specified in the most recent call to the
-     *  configure() method, or null if none.
-     *  @return Text giving configure information.
-     */
-    public String getText() {
-        return getExpression();
     }
 
     /** Get the visibility of this attribute, as set by setVisibility().
@@ -256,9 +192,6 @@ public class StringAttribute extends Attribute
     public void setExpression(String expression)
             throws IllegalActionException {
         _value = expression;
-        if (expression.indexOf("\n") >= 0)
-            _isTextStyle = true;
-
         // Notify the container and any value listeners immediately,
         // rather than deferring to validate().
         NamedObj container = (NamedObj)getContainer();
@@ -308,12 +241,4 @@ public class StringAttribute extends Attribute
 
     // The visibility of this attribute, which defaults to FULL.
     private Settable.Visibility _visibility = Settable.FULL;
-
-    // The base specified in the configure() method.
-    private URL _base;
-
-    // The URL from which configure data is read.
-    private String _source;
-
-    private boolean _isTextStyle = false;
 }
