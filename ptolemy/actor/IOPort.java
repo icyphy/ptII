@@ -1640,7 +1640,7 @@ public class IOPort extends ComponentPort {
      */
     private void _checkMultiportLink(IORelation relation)
             throws IllegalActionException {
-        if (_outside(relation.getContainer())) {
+        if (_isInsideLinkable(relation.getContainer())) {
             // An inside link
             if(!isInsideLinked(relation)) {
                 // Check for existing inside links
