@@ -236,7 +236,6 @@ public class StringUtilities {
                         + "is occurs when one does PTII=`pwd`.  Instead, do "
                         + "PTII=c:/foo/ptII");
             }
-
             return property;
         }
         if (propertyName.equals("ptolemy.ptII.dirAsURL")) {
@@ -268,13 +267,18 @@ public class StringUtilities {
                 String namedObjFileName = namedObjURL.getFile().toString();
                 // FIXME: How do we get from a URL to a pathname?
                 if (namedObjFileName.startsWith("file:")) {
-                    // We get rid of either file:/ or file:\
-                    namedObjFileName = namedObjFileName.substring(6);
+                    if (namedObjFileName.startsWith("file:/")
+                            || namedObjFileName.startsWith("file:\\")) {
+                        // We get rid of either file:/ or file:\
+                        namedObjFileName = namedObjFileName.substring(6);
+                    } else {
+                        // Get rid of file:
+                        namedObjFileName = namedObjFileName.substring(5);
+                    }
                 }
                 String abnormalHome = namedObjFileName.substring(0,
                         namedObjFileName.length()
                         - namedObjPath.length());
-
                 // abnormalHome will have values like: "/C:/ptII/"
                 // which cause no end of trouble, so we construct a File
                 // and call toString().
@@ -288,23 +292,26 @@ public class StringUtilities {
                         home.substring(0, home.length() - 1);
                 }
 
-                // Web Start
+                // Web Start, we might have
+                // RMptsupport.jar or 
+                // XMptsupport.jar1088483703686
                 String ptsupportJarName = File.separator + "DMptolemy"
                     + File.separator + "RMptsupport.jar";
                 if (home.endsWith(ptsupportJarName)) {
                     home =
                         home.substring(0, home.length()
                                 - ptsupportJarName.length());
-                }
 
-                ptsupportJarName = File.separator + "ptolemy"
-                    + File.separator + "ptsupport.jar";
-                if (home.endsWith(ptsupportJarName)) {
-                    home =
-                        home.substring(0, home.length()
-                                - ptsupportJarName.length());
+                } else {
+                    ptsupportJarName = "/DMptolemy/XMptsupport.jar";
+                    if (home.lastIndexOf(ptsupportJarName) != -1) {
+                        home.substring(0, home.lastIndexOf(ptsupportJarName));
+                    }
                 }
             }
+
+            // Convert %20 to spaces
+            home = StringUtilities.substitute(home, "%20", " ");
 
             if (home == null) {
                 throw new RuntimeException(
@@ -506,12 +513,28 @@ public class StringUtilities {
             // The +1 is to skip over the delimitter after $CLASSPATH.
             String trimmedName = name.substring(_CLASSPATH_VALUE.length() + 1);
             if (classLoader == null) {
-                classLoader = ClassLoader.getSystemClassLoader();
+                try {
+                    // WebStart: We might be in the Swing Event thread, so
+                    // Thread.currentThread().getContextClassLoader()
+                    // .getResource(entry) probably will not work so we
+                    // use a marker class.
+                    Class refClass =
+                        Class.forName("ptolemy.kernel.util.NamedObj");
+                    classLoader = refClass.getClassLoader();
+                } catch (Exception ex) {
+                    // IOException constructor does not take a cause  
+                    IOException ioException =
+                        new IOException("Cannot find file '" + trimmedName 
+                                + "' in classpath");
+                    ioException.initCause(ex);
+                    throw ioException;
+                }
             }
+            // Use Thread.currentThread()... for Web Start.
             URL result = classLoader.getResource(trimmedName);
             if (result == null) {
-                throw new IOException(
-                        "Cannot find file in classpath: " + name);
+                new IOException("Cannot find file '" + trimmedName 
+                        + "' in classpath");
             }
             return result;
         }
