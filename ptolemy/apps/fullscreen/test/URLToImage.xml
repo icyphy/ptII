@@ -118,7 +118,7 @@ in full screen mode.</text></svg></configure>
             <property name="output"/>
         </port>
     </entity>
-    <entity name="URLToImage" class="ptolemy.actor.lib.image.URLToImage>">
+    <entity name="URLToImage" class="ptolemy.actor.lib.image.URLToImage">
         <property name="_location" class="ptolemy.moml.Location" value="251.5859375, 227.203125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">

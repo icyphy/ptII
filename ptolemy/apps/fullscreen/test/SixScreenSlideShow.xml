@@ -71,7 +71,7 @@ six displays</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="URLToImage" class="ptolemy.actor.lib.image.URLToImage>">
+    <entity name="URLToImage" class="ptolemy.actor.lib.image.URLToImage">
         <property name="_location" class="ptolemy.moml.Location" value="276.5859375, 92.203125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -91,7 +91,7 @@ six displays</text></svg></configure>
         <property name="screen" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </entity>
-    <entity name="1:URLToImage" class="ptolemy.actor.lib.image.URLToImage>">
+    <entity name="1:URLToImage" class="ptolemy.actor.lib.image.URLToImage">
         <property name="_location" class="ptolemy.moml.Location" value="286.5859375, 152.1875">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -111,7 +111,7 @@ six displays</text></svg></configure>
         <property name="screen" class="ptolemy.data.expr.Parameter" value="2">
         </property>
     </entity>
-    <entity name="2:URLToImage" class="ptolemy.actor.lib.image.URLToImage>">
+    <entity name="2:URLToImage" class="ptolemy.actor.lib.image.URLToImage">
         <property name="_location" class="ptolemy.moml.Location" value="286.5859375, 207.1875">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -131,7 +131,7 @@ six displays</text></svg></configure>
         <property name="screen" class="ptolemy.data.expr.Parameter" value="3">
         </property>
     </entity>
-    <entity name="3:URLToImage" class="ptolemy.actor.lib.image.URLToImage>">
+    <entity name="3:URLToImage" class="ptolemy.actor.lib.image.URLToImage">
         <property name="_location" class="ptolemy.moml.Location" value="286.5859375, 272.1875">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -151,7 +151,7 @@ six displays</text></svg></configure>
         <property name="screen" class="ptolemy.data.expr.Parameter" value="4">
         </property>
     </entity>
-    <entity name="4:URLToImage" class="ptolemy.actor.lib.image.URLToImage>">
+    <entity name="4:URLToImage" class="ptolemy.actor.lib.image.URLToImage">
         <property name="_location" class="ptolemy.moml.Location" value="291.5859375, 332.203125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -171,7 +171,7 @@ six displays</text></svg></configure>
         <property name="screen" class="ptolemy.data.expr.Parameter" value="5">
         </property>
     </entity>
-    <entity name="5:URLToImage" class="ptolemy.actor.lib.image.URLToImage>">
+    <entity name="5:URLToImage" class="ptolemy.actor.lib.image.URLToImage">
         <property name="_location" class="ptolemy.moml.Location" value="296.5859375, 397.203125">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
