@@ -124,11 +124,6 @@ public class JAIInterpolation extends Transformer {
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** The type of Interpolation being used is specified using this
-     *  variable.
-     */
-    private Interpolation _interp;
     
     /** The horizontal scaling factor. */
     private double _xScaleFactor;

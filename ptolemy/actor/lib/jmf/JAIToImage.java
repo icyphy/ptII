@@ -1,4 +1,4 @@
-/* Load a sequence of binary images from files.
+/* Convert a RenderedOp into a java.awt.Image.
 
 @Copyright (c) 1998-2002 The Regents of the University of California.
 All rights reserved.
@@ -40,24 +40,50 @@ import java.awt.image.BufferedImage;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.RenderedOp;
 
-    public class JAIToImage extends Transformer {
+//////////////////////////////////////////////////////////////////////////
+//// JAIToImage
+/**
+Convert a RenderedOp into a java.awt.image
 
-	public JAIToImage(CompositeEntity container, String name)
-	         throws IllegalActionException, NameDuplicationException {
-	    super(container, name);
+@author James Yeh
+@version $Id$
+*/
 
-	    input.setTypeEquals(BaseType.OBJECT);
-	    output.setTypeEquals(BaseType.OBJECT);
-	}
-	
-	public void fire() throws IllegalActionException {
-	    
-	    ObjectToken objectToken = (ObjectToken) input.get(0);
-	    RenderedOp renderedOp = (RenderedOp) objectToken.getValue();
-	    PlanarImage planarImage = renderedOp.getRendering();
-	    BufferedImage bufferedImage = planarImage.getAsBufferedImage();
-	    Image image = (Image) bufferedImage;
-	    output.send(0, new ObjectToken(image));
-	}
+
+public class JAIToImage extends Transformer {
+    
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */    
+    public JAIToImage(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+        
+        input.setTypeEquals(BaseType.OBJECT);
+        output.setTypeEquals(BaseType.OBJECT);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Fire this actor.
+     *  Output the java.awt.Image.
+     *  @exception IllegalActionException If a contained method throws it,
+     *   or if a token is received that contains a null image.
+     */    
+    public void fire() throws IllegalActionException {
+        super.fire();
+        ObjectToken objectToken = (ObjectToken) input.get(0);
+        RenderedOp renderedOp = (RenderedOp) objectToken.getValue();
+        PlanarImage planarImage = renderedOp.getRendering();
+        BufferedImage bufferedImage = planarImage.getAsBufferedImage();
+        Image image = (Image) bufferedImage;
+        output.send(0, new ObjectToken(image));
+    }
+}
 
