@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
@@ -38,7 +38,7 @@ import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Icon
-/** 
+/**
 An attribute that represents a rendarable form of the container.
 It represents a visual depiction that can be placed on the screen.
 
@@ -56,7 +56,7 @@ public class Icon extends Attribute implements Locatable {
      *   acceptable class for the container.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
-     */	
+     */
     public Icon(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -69,14 +69,14 @@ public class Icon extends Attribute implements Locatable {
 
     /** Get the location in some cartesian coordinate system.
      *  @return The location.
-     */	
+     */
     public double[] getLocation() {
         return _location;
     }
 
     /** Set the location in some cartesian coordinate system.
      *  @param location The location.
-     */	
+     */
     public void setLocation(double[] location) {
         _location = location;
     }
@@ -95,7 +95,7 @@ public class Icon extends Attribute implements Locatable {
             if (i > 0) location.append(", ");
             location.append("" +_location[i]);
         }
-        
+
         return "(" + className + ", Location = (" + location.toString() + "))";
     }
 

@@ -121,7 +121,7 @@ public class AudioViewer extends PlotApplication {
     /** Display some help.
      */
     protected void _help() {
-        JOptionPane.showMessageDialog(this, 
+        JOptionPane.showMessageDialog(this,
                 "Use Control-P to play the sound",
                 "Usage of Ptolemy AudioViewer",
                 JOptionPane.INFORMATION_MESSAGE);
@@ -182,7 +182,7 @@ public class AudioViewer extends PlotApplication {
                 FileOutputStream fout = new FileOutputStream(_file);
                 _sound.write(new DataOutputStream(fout));
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, 
+                JOptionPane.showMessageDialog(this,
                 "Error writing file: " + ex,
                 "AudioViewer error",
                 JOptionPane.ERROR_MESSAGE);

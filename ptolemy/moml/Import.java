@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
@@ -38,7 +38,7 @@ import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Import
-/** 
+/**
 This attribute identifies an external file that the container of the
 attribute depends on.  When exported to MoML, this attribute becomes
 an "import" element rather than the usual attribute.
@@ -55,7 +55,7 @@ public class Import extends Attribute {
      *   acceptable class for the container, or if the name contains a period.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
-     */	
+     */
     public Import(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -81,14 +81,14 @@ public class Import extends Attribute {
     /** Get the base with respect to which this import source can be opened.
      *  @return The base with respect to which this import source
      *   can be opened.
-     */	
+     */
     public URL getBase() {
         return _base;
     }
 
     /** Get the file that this import refers to.
      *  @return The file referred to.
-     */	
+     */
     public String getSource() {
         return _source;
     }
@@ -96,7 +96,7 @@ public class Import extends Attribute {
     /** Set the base with respect to which this import source can be opened.
      *  @param source The base with respect to which this import source can
      *   be opened.
-     */	
+     */
     public void setBase(URL base) {
         _base = base;
     }
@@ -104,7 +104,7 @@ public class Import extends Attribute {
     /** Set the file that this import refers to.
      *  The argument is interpreted as a URL, relative or absolute.
      *  @param source The file that this import refers to.
-     */	
+     */
     public void setSource(String source) {
         _source = source;
     }

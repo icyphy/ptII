@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
@@ -43,7 +43,7 @@ import java.io.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Vertex
-/** 
+/**
 This attribute represents a waypoint in a relation. It implements
 Locatable, meaning that can be associated with a physical location
 in a visual rendition.  It can optionally be associated with another
@@ -63,8 +63,8 @@ public class Vertex extends Attribute implements Locatable {
      *   acceptable class for the container.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
-     */	
-    public Vertex(Relation container, String name) 
+     */
+    public Vertex(Relation container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 	setLocation(null);
@@ -95,7 +95,7 @@ public class Vertex extends Attribute implements Locatable {
 
     /** Get the location in some cartesian coordinate system.
      *  @return The location.
-     */	
+     */
     public double[] getLocation() {
         return _location;
     }
@@ -128,7 +128,7 @@ public class Vertex extends Attribute implements Locatable {
 
     /** Set the location in some cartesian coordinate system.
      *  @param location The location.
-     */	
+     */
     public void setLocation(double[] location) {
         _location = location;
     }

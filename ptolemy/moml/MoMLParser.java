@@ -532,7 +532,7 @@ public class MoMLParser extends HandlerBase {
                 _imports.add(0, reference);
 
                 Import attr = new Import(_current,
-                       _current.uniqueName("_import")); 
+                       _current.uniqueName("_import"));
                 attr.setSource(source);
                 attr.setBase(_base);
 
@@ -1012,7 +1012,7 @@ public class MoMLParser extends HandlerBase {
             // Clone it.
             ComponentEntity newEntity = (ComponentEntity)reference.clone();
             newEntity.deferMoMLDefinitionTo(reference);
-            
+
             // Set the name of the clone.
             // NOTE: The container is null, so there will be no
             // name conflict here.  If we were to set the name after
@@ -1152,7 +1152,7 @@ public class MoMLParser extends HandlerBase {
             return null;
         }
     }
-           
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 

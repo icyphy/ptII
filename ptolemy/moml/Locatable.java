@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
@@ -34,7 +34,7 @@ import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Locatable
-/** 
+/**
 An interface for objects that have locations on the screen.
 In particular, such objects support the MoML <code>location</code>
 element.
@@ -49,11 +49,11 @@ public interface Locatable {
 
     /** Get the location in some cartesian coordinate system.
      *  @return The location.
-     */	
+     */
     public double[] getLocation();
 
     /** Set the location in some cartesian coordinate system.
      *  @param location The location.
-     */	
+     */
     public void setLocation(double[] location);
 }

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -39,7 +39,7 @@ import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// Documentation
-/** 
+/**
 An attribute that contains documentation for the container.
 
 @author  Edward A. Lee
@@ -56,7 +56,7 @@ public class Documentation extends Attribute {
      *   acceptable class for the container.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
-     */	
+     */
     public Documentation(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -110,21 +110,21 @@ public class Documentation extends Attribute {
 
     /** Get the documentation as a string.
      *  @return The documentation.
-     */	
+     */
     public String getValue() {
         return _value;
     }
 
     /** Set the documentation string.
      *  @param value The documentation.
-     */	
+     */
     public void setValue(String value) {
         _value = value;
     }
 
     /** Get the documentation as a string, with the class name prepended.
      *  @return A string describing the object.
-     */	
+     */
     public String toString() {
         return "(" + getClass().getName() + ", " + _value + ")";
     }
