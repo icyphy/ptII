@@ -48,7 +48,7 @@ An FSMDirector governs the execution of a *charts model.
 
 Note:  The name of a refining state's input port must have the same 
 name as the input port (of this director's container) to which it
-is connected. It the names don't match, then token transfer will
+is connected. If the names don't match, then token transfer will
 silently fail when transferInputs() is called on the input port.
 The same holds for output ports (in this case transferOutputs() will
 silently fail if the names are not the same).
