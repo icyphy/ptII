@@ -132,3 +132,11 @@ test FractionArrayMath-14.3.1 {sum} {
     set r [java::call ptolemy.math.FractionArrayMath sum $a]
     set s [$r toString]
 } {5/1}
+
+####################################################################
+test FractionArrayMath-14.3.2 {equals} {
+	set b1 [java::call ptolemy.math.FractionArrayMath equals $a $a]
+	set b2 [java::call ptolemy.math.FractionArrayMath equals $a $b]
+	set b3 [java::call ptolemy.math.FractionArrayMath equals $a $c]
+	concat $b1 $b2 $b3
+} {1 0 0}
