@@ -2670,6 +2670,7 @@ else
 	       PTX10_PACKAGES=
 	       X10_CLASSES=
 	       AC_MSG_RESULT([no])
+           fi
         fi
     fi
 
