@@ -104,6 +104,8 @@ public class FlowFifoQ extends NamedObj implements Receiver {
      *  the object on the queue and return false.
      *  @param element An object to put on the queue.
      *  @return A boolean indicating success.
+     *  @exception TokenHolderFullException The size of the queue is greater
+     *  than the capacity.  
      */	
     public void put(Token element) throws TokenHolderFullException {
         synchronized (workspace()){
