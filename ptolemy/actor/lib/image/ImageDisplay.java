@@ -123,25 +123,6 @@ public class ImageDisplay extends Sink implements Placeable {
         return newObject;
     }
 
-    /** Initialize this actor.
-     *  If place has not been called, then create a frame to display the
-     *  image in.
-     *  @exception IllegalActionException If a contained method throws it.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
-        _oldxsize = 0;
-        _oldysize = 0;
-        if (_container == null) {
-            _frame = new ImageWindow();
-            _container = _frame.getContentPane();
-        }
-        if (_frame != null) {
-            _frame.setVisible(true);
-        }
-    }
-
     /** Fire this actor.
      *  Consume an IntMatrixToken from the input port.  If the image is
      *  not the same size as the previous image, or this is the first
@@ -228,9 +209,24 @@ public class ImageDisplay extends Sink implements Placeable {
     public Color getBackground() {
         return _container.getBackground();
     }
-    /** Set the background */
-    public void setBackground(Color background) {
-        _container.setBackground(background);
+
+    /** Initialize this actor.
+     *  If place has not been called, then create a frame to display the
+     *  image in.
+     *  @exception IllegalActionException If a contained method throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+
+        _oldxsize = 0;
+        _oldysize = 0;
+        if (_container == null) {
+            _frame = new ImageWindow();
+            _container = _frame.getContentPane();
+        }
+        if (_frame != null) {
+            _frame.setVisible(true);
+        }
     }
 
     /** Set the container that this actor should display data in.  If place
@@ -247,6 +243,11 @@ public class ImageDisplay extends Sink implements Placeable {
         if (c instanceof JFrame) {
             _frame = (JFrame)c;
         }
+    }
+
+    /** Set the background */
+    public void setBackground(Color background) {
+        _container.setBackground(background);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -205,6 +205,13 @@ public class Display extends Sink implements Placeable {
         return newObject;
     }
 
+    /** Get the background color.
+     *  @return The background color of the text area.
+     */
+    public Color getBackground() {
+        return textArea.getBackground();
+    }
+
     /** Initialize this display.  If place() has not been called
      *  with a container into which to place the display, then create a
      *  new frame into which to put it.
@@ -259,13 +266,6 @@ public class Display extends Sink implements Placeable {
           // NOTE: As of jdk 1.3beta the following is ignored.
           textArea.setTabSize(tab);
         */
-    }
-
-    /** Get the background color.
-     *  @return The background color of the text area.
-     */
-    public Color getBackground() {
-        return textArea.getBackground();
     }
 
     /** Specify the container in which the data should be displayed.

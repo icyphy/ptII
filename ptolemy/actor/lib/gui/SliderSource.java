@@ -159,6 +159,13 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         return _panel.getBackground();
     }
 
+    /** Output the value of the slider recorded when prefire() is last called.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
+        output.send(0, _outputVal);
+    }
+
     /** Create a slider on the screen, if necessary. If a graphical container
      *  has not been specified, place the slider into its own frame.
      *  Otherwise, place it in the specified container.
@@ -172,13 +179,6 @@ public class SliderSource extends Source implements ChangeListener, Placeable {
         if (_frame != null) {
             _frame.setVisible(true);
         }
-    }
-
-    /** Output the value of the slider recorded when prefire() is last called.
-     */
-    public void fire() throws IllegalActionException {
-        super.fire();
-        output.send(0, _outputVal);
     }
 
     /** Specify the container in which the slider should be displayed.

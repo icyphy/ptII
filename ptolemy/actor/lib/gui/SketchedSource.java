@@ -346,6 +346,19 @@ public class SketchedSource extends SequencePlotter implements EditListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    // Set the X and Y ranges of the plot.
+    private void _setRanges() throws IllegalActionException {
+        if (plot == null) return;
+        double xInitValue = ((DoubleToken)xInit.getToken()).doubleValue();
+        double xUnitValue = ((DoubleToken)xUnit.getToken()).doubleValue();
+        int lengthValue = ((IntToken)length.getToken()).intValue();
+        plot.setXRange(xInitValue, xUnitValue * lengthValue);
+
+        double yBottomValue = ((DoubleToken)yBottom.getToken()).doubleValue();
+        double yTopValue = ((DoubleToken)yTop.getToken()).doubleValue();
+        plot.setYRange(yBottomValue, yTopValue);
+    }
+
     // Show the initial value on the plot.
     // If the plot is null, return without doing anything.
     private void _showInitialTrace() throws IllegalActionException {
@@ -372,19 +385,6 @@ public class SketchedSource extends SequencePlotter implements EditListener {
         } finally {
             _settingInitialTrace = false;
         }
-    }
-
-    // Set the X and Y ranges of the plot.
-    private void _setRanges() throws IllegalActionException {
-        if (plot == null) return;
-        double xInitValue = ((DoubleToken)xInit.getToken()).doubleValue();
-        double xUnitValue = ((DoubleToken)xUnit.getToken()).doubleValue();
-        int lengthValue = ((IntToken)length.getToken()).intValue();
-        plot.setXRange(xInitValue, xUnitValue * lengthValue);
-
-        double yBottomValue = ((DoubleToken)yBottom.getToken()).doubleValue();
-        double yTopValue = ((DoubleToken)yTop.getToken()).doubleValue();
-        plot.setYRange(yBottomValue, yTopValue);
     }
 
     // Update the initial trace parameter if the sketch on screen has
