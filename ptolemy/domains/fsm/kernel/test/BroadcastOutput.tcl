@@ -52,7 +52,8 @@ test BroadcastOutput-1.1 {test creating a BroadcastOutput action} {
     set v0 [java::field $act0 expression]
     set v1 [java::field $act0 portName]
     set v2 [java::cast ptolemy.data.expr.Variable [$t0 getAttribute _act0]]
-    list [$act0 getFullName] [$v0 getFullName] [$v1 getFullName] [$v2 getFullName]
+    list [$act0 getFullName] [$v0 getFullName] [$v1 getFullName] \
+            [$v2 getFullName]
 } {.e0.fsm.t0.act0 .e0.fsm.t0.act0.expression .e0.fsm.t0.act0.portName .e0.fsm.t0._act0}
 
 test BroadcastOutput-1.2 {container must be a transition or null} {
