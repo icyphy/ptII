@@ -16,8 +16,11 @@ int main(void) {
     float output[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     float data[20];
     float taps[NUM_TAPS] = TAP_VALUES;
-    struct i69615_FIR fir;
     int i;
+
+    /* An instance of an FIR filter */
+    struct i69615_FIR fir;
+
 
     /* Configure the filter with the desired paramters */
     f0651603000_initialize(&fir, taps, NUM_TAPS, data, INTERP, DEC, DECPHASE);

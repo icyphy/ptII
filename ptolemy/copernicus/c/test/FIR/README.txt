@@ -28,3 +28,15 @@ an equivalent FIR filter with an equivalent input stream. Thus, one can compare
 the output of the generated C code with the output of what a corresponding
 Ptolemy II actor would produce.
 
+The correct output for this demo is:
+
+11.000000
+4.000000
+9.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
+0.000000
