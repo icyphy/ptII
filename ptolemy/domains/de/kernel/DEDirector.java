@@ -1176,6 +1176,7 @@ public class DEDirector extends Director implements TimedDirector {
 
     // Based on the depths of IO ports, calculate the depths of actors.
     // The results are cached in a hashtable _actorToDepth.
+    // Update the depths of existing events in the event queue.
     private void _computeActorDepth() throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
         LinkedList actors = (LinkedList)container.deepEntityList();
@@ -1264,15 +1265,10 @@ public class DEDirector extends Director implements TimedDirector {
         }
 
         // Allocate a new hash table with the equal to the
-        // number of IO ports sorted + 1. The extra entry is
-        // for the composite actor that contains this director.
+        // number of IO ports sorted.
         // This composite actor is set to the highest depth
         // (the lowest priority).
-        _portToDepth = new Hashtable(sort.length+1);
-        if (_debugging) {
-            _debug(getContainer().getFullName(), "depth: " + sort.length);
-        }
-        _portToDepth.put(getContainer(), new Integer(sort.length));
+        _portToDepth = new Hashtable(sort.length);
 
         // assign depths to ports based on the topological sorting result.
         LinkedList ports = new LinkedList();
