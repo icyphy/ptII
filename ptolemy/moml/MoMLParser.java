@@ -102,7 +102,7 @@ public class MoMLParser extends HandlerBase {
      *  the Placeable interface, then places the entity in the specified
      *  panel.  If the workspace argument is null, then
      *  create a new workspace with an empty name.
-     *  If the panel argument is null, then entities implenting Placeable
+     *  If the panel argument is null, then entities implementing Placeable
      *  are not placed.
      *  @param workspace The workspace into which to place entities.
      *  @param panel The panel into which to place Placeable entities.
