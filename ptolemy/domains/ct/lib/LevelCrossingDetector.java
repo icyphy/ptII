@@ -34,6 +34,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Transformer;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
@@ -56,7 +57,9 @@ A event detector that converts continuous signals to discrete events when
 the continuous signal crosses a level threshold.
 When the <i>trigger</i> equals to the level threshold (within the specified
 <i>errorTolerance</i>), this actor outputs a discrete event with the value as
-<i>defaultEventValue</i>. This actor controls the integration step size to
+<i>defaultEventValue</i> if <i>useEventValue</i> is selected. Otherwise, the actor
+outputs a discrete event with the value as the level threshold.
+This actor controls the integration step size to
 accurately resolve the time at which the level crossing occurs.
 
 @author Jie Liu, Haiyang Zheng
@@ -98,6 +101,11 @@ public class LevelCrossingDetector extends Transformer
         defaultEventValue = new Parameter(this, "defaultEventValue",
                 new DoubleToken(0.0));
         output.setTypeAtLeast(defaultEventValue);
+
+        useEventValue = new Parameter(this, "useDefaultEventValue");
+        useEventValue.setTypeEquals(BaseType.BOOLEAN);
+        useEventValue.setToken(BooleanToken.FALSE);
+
         _errorTolerance = (double)1e-4;
         errorTolerance = new Parameter(this, "errorTolerance",
                 new DoubleToken(_errorTolerance));
@@ -129,6 +137,11 @@ public class LevelCrossingDetector extends Transformer
      *  By default, it contains a DoubleToken of value 0.0.
      */
     public Parameter defaultEventValue;
+
+    /** The parameter that indicates whether to use the default event
+     *  value.
+     */
+    public Parameter useEventValue;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -173,12 +186,12 @@ public class LevelCrossingDetector extends Transformer
         return newObject;
     }
 
-    /** Consume the trigger token. The trigger token will be used 
+    /** Consume the trigger token. The trigger token will be used
      *  for finding the level crossing in the isThisStepAccurate()
      *  method to control the step size. If it is discrete phase,
      *  and if the trigger equals the level (within the
      *  given error tolerance), output a discrete event with the value
-     *  of specified level. 
+     *  of specified level.
      *  @exception IllegalActionException If no token is available.
      */
     public void fire() throws IllegalActionException {
@@ -205,7 +218,11 @@ public class LevelCrossingDetector extends Transformer
                                     : "inputToken == null, sending "
                                     + "defaultEventValue.getToken()"));
                 }
-		output.send(0, new DoubleToken(_level));
+		if (((BooleanToken)useEventValue.getToken()).booleanValue()) {
+            output.send(0, defaultEventValue.getToken());
+        } else {
+            output.send(0, new DoubleToken(_level));
+        }
                 _eventNow = false;
             }
         }

@@ -85,7 +85,7 @@
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 2, 2, 1, 1, 2, 2, 1, 1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2, 1, 1, 2, 2, 1, 1, 2, 2, 1, 1}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>

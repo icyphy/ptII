@@ -111,7 +111,7 @@ Caution: the test results depend on the step size...</text></svg></configure>
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>

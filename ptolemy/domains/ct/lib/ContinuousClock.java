@@ -342,6 +342,11 @@ public class ContinuousClock extends TimedSource {
 
         // If we are beyond the number of cycles requested, then
         // change the output value to zero.
+
+        // FIXME: If the current time is bigger than the stop time, the super class of
+        // clock, the TimedSource will return false at its postfire mathod. And the
+        // model will stop firing all its components. So, the following code does not
+        // get called.
         int cycleLimit  = ((IntToken)numberOfCycles.getToken()).intValue();
         if (cycleLimit > 0
                 && currentTime
@@ -354,15 +359,9 @@ public class ContinuousClock extends TimedSource {
         // Now, we leave it up to the director, unless the value
         // explicitly indicates no firing with Double.NEGATIVE_INFINITY.
 
-	// At t_minus of _tentativeStartTime, the clock doesn't produce output.
-	// Note that the variables _tPlus and _tMinus indicate the next break
-	// point phase. So, if _tPlus is true, we are in _tMinus break point 
-	// phase.
-	if (!(_cycleCount == 1 && _tentativePhase == 0 && _tPlus)) {
-	    output.send(0, _tentativeCurrentValue);
-	    if (_debugging)_debug("Output: " + _tentativeCurrentValue + ".");
-	}  
-    }
+        output.send(0, _tentativeCurrentValue);
+        if (_debugging)_debug("Output: " + _tentativeCurrentValue + ".");
+ }
 
     /** Schedule the first firing and initialize local variables.
      *  @exception IllegalActionException If the parent class throws it,
@@ -376,7 +375,9 @@ public class ContinuousClock extends TimedSource {
         double currentTime = getDirector().getCurrentTime();
         _cycleStartTime = currentTime;
         _startTime = currentTime;
-        _currentValue = _getValue(0).zero();
+        // The Clock always starts with the value of the former phase
+        // according to the offsets.
+        _currentValue = _getValue(_offsets.length - 1);
         _phase = 0;
 
         _tMinus = true;

@@ -212,34 +212,10 @@
             </property>
         </port>
     </entity>
-    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 0.5877852522925, 0.9510565162952, 0.9510565162952, 0.5877852522925, 1.2246467991474E-16, -0.5877852522925, -0.9510565162952, -0.9510565162952, -0.5877852522925, -2.4492935982947E-16, 0.8090169943749, 0.3090169943749, -0.3090169943749, -0.8090169943749, -1.0, -0.8090169943749, -0.3090169943749, 0.3090169943749, 0.809016994375, 1.0}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 205.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
-                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-                </property>
-            </property>
-        </port>
-    </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 150.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -262,18 +238,42 @@
             </property>
         </port>
     </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 0.5877852522925, 0.9510565162952, 0.9510565162952, 0.5877852522925, 1.2246467991474E-16, -0.5877852522925, -0.9510565162952, -0.9510565162952, -0.5877852522925, -2.4492935982947E-16, 0.8090169943749, 0.3090169943749, -0.3090169943749, -0.8090169943749, -1.0, -0.8090169943749, -0.3090169943749, 0.3090169943749, 0.809016994375, 1.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 150.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
+        </port>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="250.0, 150.0">
         </vertex>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="ContinuousSinewave.phase" relation="relation3"/>
     <link port="ContinuousSinewave.output" relation="relation"/>
     <link port="ContinuousClock.output" relation="relation3"/>
-    <link port="NonStrictTest.input" relation="relation4"/>
     <link port="PeriodicSampler.input" relation="relation"/>
-    <link port="PeriodicSampler.output" relation="relation4"/>
+    <link port="PeriodicSampler.output" relation="relation2"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
 </entity>
