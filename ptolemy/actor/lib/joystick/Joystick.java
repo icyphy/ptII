@@ -75,7 +75,7 @@ vergil will include <code>joystick.jar<code> in the classpath.
 @version $Id$
 @since Ptolemy II 3.0
 @see ptolemy.actor.lib.io.comm.SerialComm
- */
+*/
 public class Joystick extends TypedAtomicActor implements JoystickListener {
     // The com.centralnexus.input.Joystick says that there are two
     // ways to update the axis and button values: 1) use JoystickListener
@@ -147,7 +147,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *  is deadZone and initialized() has not yet been called, then do
      *  nothing.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException Maybe thrown (?)
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -246,7 +246,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
     }
 
     /** Wrap up deallocates resources, specifically the serial port.
-     *  @exception IllegalActionException Maybe thrown (?).
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void wrapup() throws IllegalActionException {
         if (_joy != null && !_isPollingValue) {
