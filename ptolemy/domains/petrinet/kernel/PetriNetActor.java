@@ -153,10 +153,9 @@ public class PetriNetActor extends TypedCompositeActor  {
     }
 
 
-    /**   It is assumed that the top level of the hierarchy is a PetiNetDirector.
-     *
+    /** It is assumed that the top level of the hierarchy is a
+     *  PetiNetDirector.
      */
-
     public void fire() throws IllegalActionException {
         Nameable container = getContainer();
         System.out.println("inside the _PetriNetActor.fire, the actors is"
@@ -175,7 +174,6 @@ public class PetriNetActor extends TypedCompositeActor  {
      *  If there is one transition ready to fire, then the container
      *  PetriNetActor is ready to fire.
      */
-
     public boolean prefire() throws IllegalActionException {
         System.out.println("inside the PetriNetActor.prefire, the actors is"
                 +  getFullName() );
@@ -195,13 +193,4 @@ public class PetriNetActor extends TypedCompositeActor  {
         return false;
 
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-
 }
