@@ -296,7 +296,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     String expression = identifier + "::tokenProductionRate * " + entity.getName() + "::firingCount";
 
                     SDFUtilities.setExpressionIfNotDefined(
-                            port, "tokenProductionRateRate",
+                            port, "tokenProductionRate",
                             expression);
                     if (_debugging && VERBOSE) {
                         _debug("Setting tokenProductionRate to "
