@@ -276,7 +276,7 @@ public class TimedPNDirector extends BasePNDirector {
     public synchronized void fireAt(Actor actor, double newfiringtime)
             throws IllegalActionException {
         _eventQueue.put(new Double(newfiringtime), actor);
-        _delayBlock();
+        _informOfDelayBlock();
         try {
             while (getCurrentTime() < newfiringtime) {
                 wait(); //Should I call workspace().wait(this) ?
@@ -344,7 +344,7 @@ public class TimedPNDirector extends BasePNDirector {
 	super.queueTopologyChangeRequest(request);
 	synchronized(this) {
 	    _timedMutations = true;
-	    _mutationBlock();
+	    _informOfMutationBlock();
 	    //notifyAll();
 	    while(_timedMutations) {
 		try {
@@ -394,7 +394,7 @@ public class TimedPNDirector extends BasePNDirector {
      *  execution. If either of them is detected, then notify the directing 
      *  thread of the same.
      */
-    protected synchronized void _delayBlock() {
+    protected synchronized void _informOfDelayBlock() {
 	_delayBlockCount++;
 	//System.out.println("Readblocked with count "+_readBlockCount);
 	if (_checkForDeadlock() || _checkForPause()) {
@@ -405,7 +405,7 @@ public class TimedPNDirector extends BasePNDirector {
 
     /** Decrease the count of processes blocked on a delay.
      */
-    protected synchronized void _delayUnblock() {
+    protected synchronized void _informOfDelayUnblock() {
 	_delayBlockCount--;
 	return;
     }
@@ -432,7 +432,7 @@ public class TimedPNDirector extends BasePNDirector {
 		try {
 		    _eventQueue.take();
 		    _currenttime = ((Double)(_eventQueue.getPreviousKey())).doubleValue();
-		    _delayUnblock();
+		    _informOfDelayUnblock();
 		} catch (IllegalAccessException e) {
 		    throw new InternalErrorException("Inconsistency"+
 			    " in number of actors blocked on delays count"+
@@ -447,7 +447,7 @@ public class TimedPNDirector extends BasePNDirector {
 			    
 			    double newtime = ((Double)(_eventQueue.getPreviousKey())).doubleValue();
 			    if (newtime == _currenttime) {
-				_delayUnblock();
+				_informOfDelayUnblock();
 			    } else {
 				_eventQueue.put(new Double(newtime), actor);
 				sametime = false;
