@@ -151,13 +151,14 @@ invariants or the expressions to be integrated, they are mapped into inputs of t
 	
       -->
 	<xsl:template match="HybridAutomaton">
+		<xsl:variable name="HAName" select="@name"/>
 		<xsl:copy>
 			<xsl:for-each select="@*">
 				<xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
 			</xsl:for-each>
 
-			<!--  Variables referred by invariants or the expressions to be integrated 
-				 are mapped into outputs.-->
+			<!--  Variables referred by actions or controlled by differential equations 
+				 are mapped into outputs. -->
 			<xsl:for-each select="descendant::Action/VarRef|descendant::DiffEquation/VarRef|descendant::AlgEquation/VarRef">
 				<xsl:for-each select="key('nodeID',@var)">
 					<xsl:copy>
@@ -174,22 +175,30 @@ invariants or the expressions to be integrated, they are mapped into inputs of t
 				</xsl:for-each>
 			</xsl:for-each>
 
-			<!--  Variables referred by actions or controlled by differential equations 
-				 are mapped into inputs. -->
-			<xsl:for-each select="descendant::Expr/descendant::VarRef|descendant::AExpr/descendant::VarRef">
-				<xsl:for-each select="key('nodeID',@var)">
-					<xsl:copy>
-						<xsl:for-each select="@*">
-							<xsl:attribute name="{name()}">
-							<xsl:variable name="kind"><xsl:value-of select="."/></xsl:variable>
-							<xsl:choose>
-								<xsl:when test="$kind='Observable'">Input</xsl:when>
-								<xsl:when test="$kind='Controlled'">Input</xsl:when>
-								<xsl:otherwise><xsl:value-of select="$kind"/></xsl:otherwise>									</xsl:choose>
-							</xsl:attribute>
-						</xsl:for-each>
-					</xsl:copy>
-				</xsl:for-each>
+			<!--  Variables referred by invariants or the expressions to be integrated 
+				 are mapped into inputs.-->
+
+			<!-- if the Variable is referred by Transition guard expression, and not classified as output in above,
+			 we treat it as input. -->
+			<xsl:for-each select="Location/descendant::Expr/descendant::VarRef|Location/descendant::AExpr/descendant::VarRef|Transition/Expr/descendant::VarRef"> 
+				<xsl:variable name="variable" select="@var"/>
+				<xsl:variable name="counts" 	select="count(//DNHA/HybridAutomaton[@name=$HAName]/descendant::Action/VarRef[@var=$variable]|//DNHA/HybridAutomaton[@name=$HAName]/descendant::DiffEquation/VarRef[@var=$variable]|//DNHA/HybridAutomaton[@name=$HAName]/descendant::AlgEquation/VarRef[@var=$variable])"/>
+				<xsl:if test="$counts=0">
+					<xsl:for-each select="key('nodeID',$variable)">
+						<xsl:copy>
+							<xsl:for-each select="@*">
+								<xsl:attribute name="{name()}">
+								<xsl:variable name="kind"><xsl:value-of select="."/></xsl:variable>
+								<xsl:choose>
+									<xsl:when test="$kind='Observable'">Input</xsl:when>
+									<xsl:when test="$kind='Input'">Input</xsl:when>
+									<xsl:otherwise><xsl:value-of select="$kind"/></xsl:otherwise>						
+								</xsl:choose>
+								</xsl:attribute>
+							</xsl:for-each>
+						</xsl:copy>
+					</xsl:for-each>
+				</xsl:if>
 			</xsl:for-each>
 
 			<xsl:apply-templates select="*"/>

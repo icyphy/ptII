@@ -76,9 +76,10 @@ GlobalVariablePreprocessor.xsl and LocalVariablePreprocessor.xsl.
     <!-- This template strips away redundant variables. -->
     <xsl:template match="IntegerVariable|RealVariable|BooleanVariable">
         <xsl:variable name="name" select="@name"/>
-        <xsl:if test="not(preceding-sibling::IntegerVariable[@name=$name]|
-                                  preceding-sibling::RealVariable[@name=$name]|
-                                  preceding-sibling::BooleanVariable[@name=$name])">
+        <xsl:variable name="kind" select="@kind"/>
+        <xsl:if test="not(preceding-sibling::IntegerVariable[@name=$name and @kind=$kind]|
+                                  preceding-sibling::RealVariable[@name=$name and @kind=$kind]|
+                                  preceding-sibling::BooleanVariable[@name=$name and @kind=$kind])">
             <xsl:copy>
                 <xsl:for-each select="@*">
                     <xsl:attribute name="{name()}"><xsl:value-of select="."/></xsl:attribute>
