@@ -110,7 +110,9 @@ public class Interpolation {
 		    " index array is not increasing and non-negative.");
             }
             prev = indexes[i];
-        }      
+        }
+
+	_indexes = indexes;
     } 
  
     /** Set the value repetition period.

@@ -57,6 +57,7 @@ JSIMPLE_TESTS = \
 	ExtendedMath.tcl \
 	FixPoint.tcl \
 	Fraction.tcl \
+	Interpolation.tcl \
         MatrixMath.tcl \
 	SignalProcessing.tcl
 
