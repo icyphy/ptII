@@ -77,7 +77,6 @@ JSRCS = \
 	ObservableParameter.java \
 	Param.java \
 	Parameter.java \
-	ParamList.java \
 	Particle.java \
 	POElement.java \
 	Port.java \
