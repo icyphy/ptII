@@ -519,11 +519,14 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
                     };
             request.setUndoable(true);
             container.requestChange(request);
-            try {
-                request.waitForCompletion();
-            } catch (Exception ex) {
-                throw new GraphException(ex);
-            }
+
+            //Note: this used to be here, but It causes deadlock...  I
+            //don't know why it was here in the first place
+       //      try {
+//                 request.waitForCompletion();
+//             } catch (Exception ex) {
+//                 throw new GraphException(ex);
+//             }
         }
     }
 
