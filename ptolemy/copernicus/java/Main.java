@@ -45,7 +45,7 @@ import ptolemy.copernicus.kernel.SideEffectFreeInvocationRemover;
 import ptolemy.copernicus.kernel.TransformerAdapter;
 import ptolemy.copernicus.kernel.UnusedFieldRemover;
 import ptolemy.copernicus.kernel.WatchDogTimer;
-import ptolemy.copernicus.c.CWriter;
+//import ptolemy.copernicus.c.CWriter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
