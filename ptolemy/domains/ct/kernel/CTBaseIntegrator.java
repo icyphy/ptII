@@ -319,7 +319,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
             // If it is NaN, or Infinity, an exception is thrown.
             double f_dot = ((DoubleToken)input.get(0)).doubleValue();
             if (Double.isNaN(f_dot) || Double.isInfinite(f_dot)) {
-                throw new InternalErrorException(" Input is not valid because" +
+                throw new InternalErrorException("The input of " +
+                    getName() + " is not valid because" +
                     " it is a result of divide-by-zero.");
             }
         } catch (IllegalActionException e) {        
