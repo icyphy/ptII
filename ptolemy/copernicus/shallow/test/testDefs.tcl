@@ -1,10 +1,10 @@
-# Ptolemy code generation using Soot 
+# Load test bed definitions
 #
-# @Authors: (makefile) Christopher Hylands- based on a file by Thomas M. Parks
+# @Author: Christopher Hylands
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2001 The Regents of the University of California.
+# @Copyright (c) 1997-2001 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,50 +28,30 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
+#######################################################################
 
-ME =		ptolemy/copernicus
+# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
-# PTJHDL_DIR is set by configure in $PTII/mk/ptII.mk if the jhdl jar file
-# was found
-DIRS =		kernel shallow $(PTJHDL_DIR)
+if [info exist env(PTOLEMY)] {
+    set PTII $env(PTOLEMY)/tycho/java
+}
 
-# Root of the Java directory
-ROOT =		../..
+if [info exist env(TYCHO)] {
+    set PTII $env(TYCHO)/java
+}
 
-CLASSPATH =	$(ROOT)
+if [info exist env(PTII)] {
+    set PTII $env(PTII)
+}
 
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
+set relativePathToPTII [file join .. .. .. ..]
+if {![info exist PTII]} {
+    # If we are here, then we are probably running jacl and we can't
+    # read environment variables
+    set PTII [file join [pwd] $relativePathToPTII]
+}
 
-# Used to build jar files
-PTPACKAGE = 	copernicus
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
-
-JSRCS =
-
-EXTRA_SRCS =	$(JSRCS) \
-		README.txt
-
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =
-
-JCLASS = $(JSRCS:%.java=%.class)
-
-all: jclass
-install: jclass $(PTCLASSJAR)
-
-depend:
-	@echo "no dependencies in this directory"
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
-
-
-
+# Load up the test definitions.
+if {[string compare test [info procs test]] == 1} then {
+    source [file join $PTII util testsuite testDefs.tcl]
+} {}

@@ -36,7 +36,7 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JHDL_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -47,7 +47,9 @@ PTPACKAGE = 	SimpleAdd
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 #PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS =
+JSRCS = \
+	SimpleAdd.java \
+	SimpleAddSystem.java
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -62,10 +64,33 @@ OPTIONAL_FILES =
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+	@echo "To run the demo, run 'make demo'"
+
+install: all $(PTCLASSJAR)
 
 depend:
 	@echo "no dependencies in this directory"
+
+TARGETPACKAGE = ptolemy.copernicus.jhdl.demo.SimpleAdd
+SOURCEPACKAGE = ptolemy.copernicus.jhdl.demo.SimpleAdd
+MODEL = SimpleAddSystem
+TARGETCLASS = $(TARGETPACKAGE).$(MODEL)
+SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
+
+demo: jclass
+	@echo "First we generate SimpleAdd.class"
+	$(JAVA) -Xmx128M -Xms128M \
+	 -classpath "$(CLASSPATH)" \
+	ptolemy.apps.soot.demo.SimpleAdd.Main $(SOURCECLASS) -d "$(ROOT)"
+	@echo "decompile the simpleAdd actor"
+	"$(PTII)/bin/jode" $(TARGETPACKAGE).SimpleAdd
+#	java -classpath $(ROOT) $(TARGETCLASS)
+interpret: jclass
+	@echo "Run as a Ptolemy system"
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTII)" \
+		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
+		-class $(TARGET CLASS)
+		-iterations 1
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

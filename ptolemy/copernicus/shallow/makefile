@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II JHDL code generation
+# Makefile for Ptolemy II shallow codegeneration 
 #
 # @Authors: Steve Neuendorffer, Christopher Hylands
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2001 The Regents of the University of California.
+# @Copyright (c) 1998-2001 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,35 +29,39 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/copernicus/jhdl
+ME =		ptolemy/copernicus/shallow
 
 # Root of the Java directory
 ROOT =		../../..
 
-CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JHDL_JAR)
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS =		demo
+DIRS =		test
 
 # Keep this list alphabetized.
 JSRCS = \
-	JHDLTransformer.java \
-	Main.java
+	CommandLineTransformer.java \
+	EntitySootClass.java \
+	InlineParameterTransformer.java \
+	Main.java \
+	MethodTools.java \
+	ModelTransformer.java
 
-EXTRA_SRCS =	$(JSRCS) \
-	'Main$$IgnoreAllApplicationClasses.class'
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	$(DIRS) cg
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	cg
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -69,8 +73,37 @@ install: all
 depend:
 	@echo "no dependencies in this directory"
 
-demo: jclass
-	(cd demo/SimpleAdd; $(MAKE) demo)
+demo: compileDemo runDemo
+deepDemo: compileDeepDemo runDeepDemo
+
+TARGETPACKAGE = ptolemy.copernicus.shallow.cg
+SOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
+MODEL = OrthogonalCom 
+TARGETCLASS = $(TARGETPACKAGE).ToplevelModel
+SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
+JVM_SIZE = -Xmx132m
+
+compileDemo: $(JCLASS)
+	@echo "generate code for ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom in cg/"
+	$(JAVA) $(JVM_SIZE) \
+	 -classpath "$(CLASSPATH)" \
+	ptolemy.copernicus.shallow.Main $(SOURCECLASS) -d "$(ROOT)"
+	@echo "Here is that javap output"
+	javap -verbose -l -s -classpath $(ROOT) $(TARGETCLASS)
+
+runDemo:
+	@echo "Run the model"
+	$(JAVA) \
+	-Xfuture -classpath "$(CLASSPATH)" \
+	ptolemy.actor.gui.CompositeActorApplication \
+	-director.iterations 50 \
+	-class $(TARGETCLASS)
+
+runDeepDemo:
+	@echo "Run the deep model"
+	$(JAVA) \
+	-Xfuture -classpath "$(CLASSPATH)" \
+	$(TARGETPACKAGE).Main
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II JHDL code generation
+# Makefile for Ptolemy II code generation kernle
 #
 # @Authors: Steve Neuendorffer, Christopher Hylands
 #
@@ -29,48 +29,43 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/copernicus/jhdl
+ME =		ptolemy/copernicus/kernel
 
 # Root of the Java directory
 ROOT =		../../..
 
-CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JHDL_JAR)
+CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS =		demo
+DIRS =
 
 # Keep this list alphabetized.
 JSRCS = \
-	JHDLTransformer.java \
-	Main.java
+	ActorTransformer.java \
+	SootUtilities.java
 
-EXTRA_SRCS =	$(JSRCS) \
-	'Main$$IgnoreAllApplicationClasses.class'
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+MISC_FILES =	$(DIRS) cg
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-	@echo "To run the demo, run 'make demo'"
 
 install: all
 
 depend:
 	@echo "no dependencies in this directory"
-
-demo: jclass
-	(cd demo/SimpleAdd; $(MAKE) demo)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
