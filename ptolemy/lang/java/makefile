@@ -107,6 +107,7 @@ MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
+# yyrule.tbl is only called if we set yydebug in JavaParser
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'ResolveFieldVisitor$$FieldContext.class' \
@@ -119,8 +120,9 @@ OPTIONAL_FILES = \
 	yylen.bin \
 	yylhs.bin \
 	yyrindex.bin \
+	yyrule.tbl \
 	yysindex.bin \
-	yytable.bin
+	yytable.bin \
 
 JCLASS = $(JSRCS:%.java=%.class) \
 	JavaVisitor.class \
