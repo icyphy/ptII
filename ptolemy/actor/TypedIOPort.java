@@ -62,7 +62,7 @@ interface.  Subclasses may further constrain the containers by overriding
 setContainer().
 
 @author Yuhong Xiong, Lukito Muliadi
-@version: $Id$
+@version $Id$
 */
 
 public class TypedIOPort extends IOPort implements InequalityTerm {
