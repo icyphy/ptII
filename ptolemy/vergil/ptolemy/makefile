@@ -55,7 +55,6 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = ptolemy.jar
 
 JSRCS = \
-	FrameAttribute.java \
 	GraphFrame.java
 
 EXTRA_SRCS =	$(JSRCS)
@@ -68,13 +67,7 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
-	'CompaanNotation$$1.class' \
-	'CompaanNotation$$CompaanEdgeRenderer.class' \
-	'CompaanNotation$$CompaanEntityRenderer.class' \
-	'CompaanNotation$$CompaanListener.class' \
-	'Ptolemy.properties PtolemyDocument$$FSMFactory.class' \
-	'PtolemyDocument$$Factory.class' \
-	'PtolemyDocument$$IsDirtyListener.class' \
+	'Ptolemy.properties' \
 	'GraphFrame$$CopyAction.class' \
 	'GraphFrame$$CutAction.class' \
 	'GraphFrame$$EditIconAction.class' \
@@ -82,9 +75,7 @@ OPTIONAL_FILES = \
 	'GraphFrame$$LayoutAction.class' \
 	'GraphFrame$$PasteAction.class' \
 	'GraphFrame$$PtolemyLayout.class' \
-	'GraphFrame$$PtolemyLayoutTarget.class' \
-	'PtolemyGraphView$$PtolemyLayout.class' \
-	'PtolemyGraphView$$PtolemyLayoutTarget.class' \
+	'GraphFrame$$PtolemyLayoutTarget.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

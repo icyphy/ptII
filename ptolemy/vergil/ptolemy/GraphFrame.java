@@ -60,7 +60,6 @@ import ptolemy.moml.Location;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.Vertex;
-import ptolemy.vergil.VisualNotation;
 import ptolemy.vergil.graph.EditorDropTarget;
 import ptolemy.vergil.graph.EditorGraphController;
 import ptolemy.vergil.graph.PtolemyGraphModel;
