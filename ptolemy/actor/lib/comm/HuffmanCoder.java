@@ -101,10 +101,10 @@ public class HuffmanCoder extends HuffmanBasic {
         // FIXME: If the input is not found in the alphabet,
         // which means it's probability of occurence is zero,
         // we might want to ignore it (or give a warning message.)
-        if (!validInput) {
-            throw new IllegalActionException(this,
-                "Input is not matched to the alphabet");
-        }
+        //if (!validInput) {
+          //  throw new IllegalActionException(this,
+            //    "Input is not matched to the alphabet");
+        //}
     }
     
 

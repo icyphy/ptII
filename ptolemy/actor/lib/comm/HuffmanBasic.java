@@ -186,9 +186,9 @@ public class HuffmanBasic extends Transformer {
                         "Probabilities must be positive!");
                 sum = sum + _pmf[i];
             }
-            if (!SignalProcessing.close(sum, 1.0))
-                throw new IllegalActionException(this,
-                    "Parameter values is required to sum to one.");
+            //if (!SignalProcessing.close(sum, 1.0))
+              //  throw new IllegalActionException(this,
+                //    "Parameter values is required to sum to one.");
         } else {
             super.attributeChanged(attribute);
         }
@@ -296,22 +296,6 @@ public class HuffmanBasic extends Transformer {
             }
         }
         return (Node)list.get(index);
-    }
-    
-    /** Given a codeword, which should be a string of '0' and '1',
-     *  converted it to a sequence of booleans and send them to the
-     *  output port.
-     * @param codeword The string of codeword.
-     * @throws IllegalActionException If the output receiver throws it.
-     */
-    private void _sendBooleans(String codeword)
-        throws IllegalActionException {
-        for(int i=0; i < codeword.length(); i ++) {
-            if (codeword.charAt(i) == '1')
-                output.send(0, new BooleanToken(true));
-            else
-                output.send(0, new BooleanToken(false));
-        }
     }
     
     /** Set the Huffman codeword for the given node and all its children.
