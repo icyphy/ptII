@@ -164,7 +164,7 @@ public class Unit implements UnitPresentation {
             return desc.substring(1);
         }
         // End up here if nothing works, so just return the formal description
-        System.out.println("Unit.descriptiveForm had to use " + toString());
+        //System.out.println("Unit.descriptiveForm had to use " + toString());
         return toString();
     }
 
