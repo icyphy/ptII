@@ -37,6 +37,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+if {[info procs _testEntityEnumEntities] == "" } then { 
+     source testEnums.tcl
+}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -89,3 +93,41 @@ test CompositeEntity-2.1 {Create a 3 level deep tree} {
     set child [java::new pt.kernel.HierEntity "child"]
     list {}
 } {{}}
+
+######################################################################
+####
+# 
+test CompositeEntity-8.1 {Build a simple tree consiting of a Ramp and a Print Entity} {
+    # Create objects
+    set ramp [java::new pt.kernel.CompositeEntity "Ramp"]
+    set print [java::new pt.kernel.CompositeEntity "Print"]
+    set out [java::new pt.kernel.Port "Ramp out"]
+    set in [java::new pt.kernel.Port "Print in"]
+    set arc [java::new pt.kernel.test.RelationTest "Arc"]
+
+    # Connect
+    $out setEntity $ramp
+    $in setEntity $print
+    $out connectToRelation $arc
+    $in connectToRelation $arc
+
+    list "\n\
+Entities are connected to these Entities: \
+[_testEntityEnumEntities $ramp $print]\n\
+Entities are connected to these Relations: \
+[_testEntityEnumRelations $ramp $print]\n\
+Relations are connected to these Entities: \
+[_testRelationEnumEntities $arc]\n\
+Relations are connected to these Ports: \
+[_testRelationEnumPorts $arc]\n\
+Ports are connected to these Relations: \
+[_testPortEnumRelations $in $out]\n\
+"
+} {{
+ Entities are connected to these Entities:  {Print} {Ramp}
+ Entities are connected to these Relations:  {Arc} {Arc}
+ Relations are connected to these Entities:  {Print Ramp}
+ Relations are connected to these Ports:  {{Print in} {Ramp out}}
+ Ports are connected to these Relations:  Arc Arc
+ }
+}
