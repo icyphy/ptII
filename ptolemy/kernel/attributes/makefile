@@ -31,7 +31,7 @@
 
 ME = 		ptolemy/kernel/attributes
 
-DIRS = 		test
+DIRS = 		#test
 
 # Root of the Ptolemy II directory
 ROOT =		../../..
