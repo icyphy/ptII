@@ -404,7 +404,7 @@ public class Director extends NamedObj implements Executable {
      *  Do nothing in this base class. Derived class should override this
      *  method.
      *  Note that this method is not made abstract to facilitate the use
-     *  of test suite.
+     *  of test suites.
      *  @exception IllegalActionException If time cannot be changed
      *   due to the state of the simulation. Only thrown in derived
      *   classes.
@@ -415,6 +415,15 @@ public class Director extends NamedObj implements Executable {
 
     }
 
+    /** Initiate the end of execution of the model controlled by this
+     *  Director. The default implementation of this method is a no op.
+     *  Domains may override this method and in particular, process 
+     *  domains should use this method to gracefully end the execution 
+     *  of threads that are operating in this model. This method is 
+     *  synchronized.
+     */
+    public synchronized void finish() throws IllegalActionException {
+    }
 
     /** Recursively terminate all of our actors.   Domains may need to
      *  override this to properly deal with any threads they've created.
