@@ -368,7 +368,7 @@ cd "$startdir"
 #	We require JDK1.4 or later
 #--------------------------------------------------------------------
 
-AC_MSG_CHECKING([ the JDK version])
+AC_MSG_CHECKING([the JDK version])
 JDOCSIZE=
 UPGRADE_JVM=no
 case "$JVERSION" in
@@ -464,6 +464,46 @@ else
 fi
 
 #--------------------------------------------------------------------
+#       Cal is an language used to define actors
+#	For more information, 
+#       see http://www.gigascale.org/cal
+#       See if there was a command-line option for where Cal is.
+#--------------------------------------------------------------------
+
+# PTCAL_DIR is set to cal and used in
+# $PTII/ptolemy/makefile if Cal was found.
+PTCAL_DIR=
+
+# Directory that contains the ptCal jar file
+CAL_DIR='${PTII}/lib'
+
+# We only need to look for on if $PTII/ptolemy/cal exists
+CAL_USER_DIR="$PTII/ptolemy/cal"
+if test ! -d "$CAL_USER_DIR"; then
+    AC_MSG_RESULT([$CAL_USER_DIR is not present,
+	so we need not find the Cal, the actor language.])
+else
+    AC_MSG_CHECKING([for Cal, the actor language])
+    AC_ARG_WITH(CAL_DIR, [  --with-cal=DIR       use ptCal.jar from DIR,
+                          defaults to \$PTII/lib],
+	CAL_DIR=$withval,
+	CAL_DIR=$PTII/lib)
+
+    if test -f "$CAL_DIR/ptCal.jar"; then
+	AC_MSG_RESULT([$CAL_DIR])
+	# We found cal
+	PTCAL_DIR=cal
+    else
+        AC_MSG_WARN([Failed to find PTII/lib/ptCal.jar
+    ptCal.jar should be present in your distribution.  
+    If it is not present, you will not be able to use the Cal actor
+    or run the demosntrations  in ptolemy/cal])
+	# Note that we don't substitute in the ${PTII} here
+	CAL_DIR='${PTII}/lib/'
+    fi
+fi
+
+#--------------------------------------------------------------------
 #       commapi is the Java serial interface, see
 #	http://java.sun.com/products/javacomm/
 #	See if there was a command-line option for commapi is
@@ -548,7 +588,7 @@ if test ! -d "$PTII/ptolemy/copernicus/c"; then
         so we need not find the Boehm GC])
 else
     AC_PATH_PROG(PTCC, gcc)
-    if test "${PTCC:-none}" == "none"; then
+    if test "${PTCC:-none}" = "none"; then
         AC_MSG_WARN([Failed to find gcc])
         AC_PATH_PROG(PTCC, cc)
         if test "${PTCC:-none}" != "none"; then
@@ -1746,6 +1786,10 @@ fi
 
 # Keep these substitutions alphabetical, with a description
 
+# Directory that contains the Cal jar file ptCal.jar
+# used by bin/ptinvoke.in
+AC_SUBST(CAL_DIR)
+
 # Separator in CLASSPATH,  For Unix, this should be :, for Cygwin use ;
 AC_SUBST(CLASSPATHSEPARATOR)
 
@@ -1834,6 +1878,9 @@ AC_SUBST(MATLAB_DIR)
 
 # Set the location of Matlab's engine libraries
 AC_SUBST(MATLAB_LIBDIR)
+
+# Set to cal and used in $PTII/ptoelmy/makefile if Cal was found.
+AC_SUBST(PTCAL_DIR)
 
 # Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
 AC_SUBST(PTCOPERNICUS_DIR)
