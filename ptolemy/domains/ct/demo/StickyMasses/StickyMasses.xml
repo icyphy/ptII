@@ -91,7 +91,7 @@ to see the modal behavior.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="10.0, 285.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 299, 819, 468}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 172, 819, 468}}">
     </property>
     <entity name="Plot Positions vs Time" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
@@ -100,7 +100,7 @@ to see the modal behavior.</text></svg></configure>
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={435, -10, 508, 355}}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 475]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -377,7 +377,7 @@ model (double click on that transition to see its actions).</text></svg></config
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="touched_isPresent">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="touched_isPresent &amp;&amp; (V1-V2) &gt; 0.0">
                 </property>
                 <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
                 </property>
@@ -560,6 +560,8 @@ of the two masses.</text></svg></configure>
             </port>
             <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
                 <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
