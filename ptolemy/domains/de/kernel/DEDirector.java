@@ -72,9 +72,8 @@ import java.util.Enumeration;
  *  inputs and the outputs. When an ordinary IOPort is used, the scheduler
  *  assumes, for the purpose of calculating priorities, that the delay
  *  across the actor is zero. On the other hand, when DEIOPort is used,
- *  the delay across the actor is assumed to be non-zero, by default. To
- *  override this default, making DEIOPort look like IOPort, you must
- *  use the triggers() method of DEIOPort.
+ *  the delay across the actor can be declared to be non-zero by calling
+ *  the delayTo() method.
  *  <p>
  *  Input ports in a DE model contain instances of DEReceiver.
  *  When a token is put into a DEReceiver, that receiver enqueues the
@@ -123,7 +122,7 @@ import java.util.Enumeration;
  *  The change should be queued with the director or manager using
  *  requestChange().  While invoking those changes, the method
  *  invalidateSchedule() is expected to be called, notifying the director
- *  that the topology it used to calculate the priorities of the ports
+ *  that the topology it used to calculate the priorities of the actors
  *  is no longer valid.  This will result in the priorities being
  *  recalculated the next time prefire() is invoked.
  *  <p>
@@ -717,8 +716,8 @@ public class DEDirector extends Director {
         return actorToFire;
     }
 
-    // Construct a directed graph with the nodes representing input ports and
-    // directed edges representing zero delay path.  The directed graph
+    // Construct a directed graph with the nodes representing actors and
+    // directed edges representing dependencies.  The directed graph
     // is returned.
     private DirectedAcyclicGraph _constructDirectedGraph()
             throws IllegalActionException {
@@ -727,96 +726,73 @@ public class DEDirector extends Director {
         // Clear the graph
         DirectedAcyclicGraph dag = new DirectedAcyclicGraph();
 
-        // First, include all input ports to be nodes in the graph.
         CompositeActor container = ((CompositeActor)getContainer());
-        if (container != null) {
-            // get all the contained actors.
-            Enumeration allactors = container.deepGetEntities();
-            while (allactors.hasMoreElements()) {
-		// get all the input ports in that actor
-		Actor actor = (Actor)allactors.nextElement();
-		Enumeration allports = actor.inputPorts();
-		while (allports.hasMoreElements()) {
-		    IOPort port = (IOPort)allports.nextElement();
-		    // create the nodes in the graph.
-		    dag.add(port);
-		    portList.insertLast(port);
-		}
-	    }
+
+        // If there is no container, there are no actors.
+        if (container == null) return dag;
+
+        // First, include all actors as nodes in the graph.
+        // get all the contained actors.
+        Enumeration actors = container.deepGetEntities();
+        while (actors.hasMoreElements()) {
+            dag.add(actors.nextElement());
         }
 
-        // Next, create the directed edges.
-        Enumeration copiedPorts = portList.elements();
-        while (copiedPorts.hasMoreElements()) {
-            IOPort ioPort = (IOPort)copiedPorts.nextElement();
+        // Next, create the directed edges by iterating again.
+        actors = container.deepGetEntities();
+        while (actors.hasMoreElements()) {
+            Actor actor = (Actor)actors.nextElement();
+            // get all the input ports in that actor
+            Enumeration ports = actor.inputPorts();
+            while (ports.hasMoreElements()) {
+                IOPort inputPort = (IOPort)ports.nextElement();
+                    
+                Set delayPorts = null;
+                if (inputPort instanceof DEIOPort) {
+                    DEIOPort dePort = (DEIOPort) inputPort;
+                    delayPorts = dePort.getDelayToPorts();
+                }
 
-	    // Find the successor of p
-            if (ioPort instanceof DEIOPort) {
-                DEIOPort p = (DEIOPort) ioPort;
-                Enumeration befores = p.beforePorts();
-                while (befores.hasMoreElements()) {
-                    IOPort after = (IOPort) befores.nextElement();
-                    // create an arc from p to after
-                    if (dag.contains(after)) {
-                        dag.addEdge(p, after);
-                    } else {
-                        // Note: Could this exception be triggered by
-                        // level-crossing transitions?  In this case,
-                        // we need a more reasonable way to handle it.
-                        throw new InternalErrorException(
-                                "Port missing from DAG.");
-		    }
-		}
-		Enumeration triggers = p.triggersPorts();
-		while (triggers.hasMoreElements()) {
-		    IOPort outPort = (IOPort) triggers.nextElement();
-		    // IOPort deltaInPort = _searchDeltaPort(outPort);
-		    // find the input ports connected to outPort
-		    Enumeration inPortEnum = outPort.deepConnectedInPorts();
-		    while (inPortEnum.hasMoreElements()) {
-                        IOPort pp = (IOPort)inPortEnum.nextElement();
-                        // create an arc from p to pp
-                        if (dag.contains(pp)) {
-			    //if (pp != deltaInPort)
-			    dag.addEdge(p, pp);
-                        } else {
-                            // Note: Could this exception be triggered by
-                            // level-crossing transitions?  In this case,
-                            // we need a more reasonable way to handle it.
-			    throw new InternalErrorException(
-                                    "Port missing from DAG.");
-			}
-		    }
-		}
-	    } else {
-		// It is not a DEIOPort, so assume zero delay actor.
-		// I.e., an input triggers immediate events on all outputs.
-		Enumeration triggers =
-                    ((Actor)ioPort.getContainer()).outputPorts();
+                // Find the successor of the port.
+                Enumeration triggers
+                        = ((Actor)inputPort.getContainer()).outputPorts();
                 while (triggers.hasMoreElements()) {
-		    IOPort outPort = (IOPort) triggers.nextElement();
-		    //IOPort deltaInPort = _searchDeltaPort(outPort);
-                    // find out the input ports connected to outPort
+                    IOPort outPort = (IOPort) triggers.nextElement();
+
+                    if (delayPorts != null && delayPorts.contains(outPort)) {
+                        // Skip this port since there is a declared delay.
+                        continue;
+                    }
+                    // find the input ports connected to outPort
                     Enumeration inPortEnum = outPort.deepConnectedInPorts();
                     while (inPortEnum.hasMoreElements()) {
                         IOPort pp = (IOPort)inPortEnum.nextElement();
-                        // create an arc from p to pp
-                        if (dag.contains(pp)) {
-			    //if (pp != deltaInPort)
-			    dag.addEdge(ioPort, pp);
+                        Actor destination = (Actor)(pp.getContainer());
+                        if(destination.equals(actor)) {
+                            throw new IllegalActionException(this,
+                            "Zero delay self-loop on actor: "
+                            + ((Nameable)actor).getFullName());
+                        }
+                        // create an arc from this actor to the successor.
+                        if (dag.contains(destination)) {
+                            dag.addEdge(actor, destination);
                         } else {
-                            // Note: Could this exception be triggered by
-                            // level-crossing transitions?  In this case,
-                            // we need a more reasonable way to handle it.
-			    throw new InternalErrorException(
-                                    "Port missing from DAG.");
+                            // This happens if there is a
+                            // level-crossing transition.
+                            throw new IllegalActionException(this,
+                            "Level-crossing transition from "
+                            + ((Nameable)actor).getFullName() + " to "
+                            + ((Nameable)destination).getFullName());
                         }
                     }
                 }
             }
+            // NOTE: The following may be a very costly test.
+            // Perhaps this should be done only at the end.
             if (!dag.isAcyclic()) {
                 throw new IllegalActionException(this,
-                        "Zero delay loop including port: " + ioPort.getFullName());
+                "Zero delay loop including actor: "
+                + ((Nameable)actor).getFullName());
             }
         }
         return dag;
@@ -829,25 +805,24 @@ public class DEDirector extends Director {
         Object[] sort = (Object[]) dag.topologicalSort();
         _debug("### Result of topological sort: ###");
 	for(int i = sort.length-1; i >= 0; i--) {
-            IOPort p = (IOPort)sort[i];
-            _debug(p.getFullName() + ":" + i);
-            // Set the fine levels of all DEReceiver instances in IOPort p
-            // to be i.
-            Receiver[][] r;
-	    try {
-                r = p.getReceivers();
-            } catch (IllegalActionException e) {
-                throw new InternalErrorException("Error while calculating "
-                        + "the topological sort.");
-            }
-	    if (r == null) {
-		// dangling input port..
-		continue;
-	    }
-	    for (int j = r.length-1; j >= 0; j--) {
-                for (int k = r[j].length-1; k >= 0; k--) {
-                    DEReceiver der = (DEReceiver)r[j][k];
-                    der._setDepth(i);
+            Actor actor = (Actor)sort[i];
+            _debug(((Nameable)actor).getFullName() + ":" + i);
+            // Set the fine levels of all DEReceiver instances in input
+            // ports of the actor to i.
+            Enumeration ports = actor.inputPorts();
+            while (ports.hasMoreElements()) {
+                IOPort inputPort = (IOPort)ports.nextElement();
+                Receiver[][] r;
+                r = inputPort.getReceivers();
+                if (r == null) {
+                    // dangling input port..
+                    continue;
+                }
+                for (int j = r.length-1; j >= 0; j--) {
+                    for (int k = r[j].length-1; k >= 0; k--) {
+                        DEReceiver der = (DEReceiver)r[j][k];
+                        der._setDepth(i);
+                    }
                 }
             }
 	}

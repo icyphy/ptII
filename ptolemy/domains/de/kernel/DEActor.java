@@ -39,11 +39,9 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEActor
-/** A base class for DE domain actor. An actor in DE simulation does not
- *  necessarily derive from this class. This class provides methods to access
- *  time (since DE is a timed domain) and methods for an actor to reschedule
- *  itself in the future. Actors specializing in DE domain should derive from
- *  this class and thus can be written more succinctly.
+/** A convenience base class for actors in the DE domain.  This class
+ *  provides methods that access features of the DEDirector.
+ *  Actors in DE models need not derive from this class.
  *
  *  @author Lukito Muliadi
  *  @version $Id$
@@ -70,12 +68,13 @@ public abstract class DEActor extends TypedAtomicActor implements TimedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the current time from the director.
+    /** Get the current time from the director.  This is a facade
+     *  for the director method of the same name.
      *  @return The current time.
      *  @exception IllegalActionException If there is no director.
      */
     public double getCurrentTime() throws IllegalActionException {
-        DEDirector dir = (DEDirector) getDirector();
+        Director dir = getDirector();
         if (dir == null) {
             throw new IllegalActionException(this, "No director.");
         }
@@ -94,27 +93,34 @@ public abstract class DEActor extends TypedAtomicActor implements TimedActor {
 	return dir.getStartTime();
     }
 
-    /** Get the stop time from the director.
+    /** Get the stop time from the director.  This is a facade for
+     *  a method by the same name of DEDirector.
      *  @return The stop time.
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If there is no director,
+     *   or if the director is not a DEDirector.
      */
     public double getStopTime() throws IllegalActionException {
-	DEDirector dir = (DEDirector)getDirector();
-	if (dir == null) {
-	    throw new IllegalActionException(this, "No director.");
+	Director dir = getDirector();
+	if (dir == null || !(dir instanceof DEDirector)) {
+	    throw new IllegalActionException(this,
+            "Director is not an instance of DEDirector.");
 	}
-	return dir.getStopTime();
+	return ((DEDirector)dir).getStopTime();
     }
 
     /** Schedule this actor to be fired at a specified time in the future.
      *  If the time is not in the future (i.e. is less than the current
      *  time), then throw an exception.  This is a facade for the fireAt()
      *  method of the director.
-     *  @param timeStamp The time at which the actor will be fired.
-     *  @exception IllegalActionException If the time is in the past.
+     *  @param time The time at which the actor will be fired.
+     *  @exception IllegalActionException If the time is in the past, or
+     *   if there is no director.
      */
-    public void fireAt(double timeStamp) throws IllegalActionException {
-        DEDirector dir = (DEDirector)getDirector();
-        dir.fireAt(this, timeStamp);
+    public void fireAt(double time) throws IllegalActionException {
+        Director dir = getDirector();
+	if (dir == null) {
+	    throw new IllegalActionException(this, "No director.");
+	}
+        dir.fireAt(this, time);
     }
 }
