@@ -283,7 +283,10 @@ $(TARGETPATH)/CGoutputBitDisplay.java:
 	@echo "gcj fails with stack underflow on CGoutputBitDisplay,"
 	@echo " so we regenerate"
 	cd $(ROOT)/$(TARGETPATH); \
-		$(PTII)/bin/jode -classpath $(PTII) ptolemy.copernicus.java.cg.OrthogonalCom.CGoutputBitDisplay | awk '{if ($$0 ~ /^package /) {printit=1}; if (printit == 1) { print $$0}} ' | sed 's@final@/* final */@g' > CGoutputBitDisplay.java
+		"$(PTII)/bin/jode" \
+		ptolemy.copernicus.java.cg.OrthogonalCom.CGoutputBitDisplay | \
+		awk '{if ($$0 ~ /^package /) {printit=1}; if (printit == 1) { print $$0}} ' | \
+		sed 's@final@/* final */@g' > CGoutputBitDisplay.java
 	@echo "Now edit $(ROOT)/$(TARGETPATH)/CGoutputBitDisplay.java"
 	@echo "and run make gcjFixCompile"
 
@@ -347,10 +350,11 @@ gcj3_2:
 # Unjar the treeshake_codegen jar file for use with gcj
 # Use $(PTII)/$(TARGETPATH)/treeshake_codegen.jar insetead of
 # $(TREESHAKE_PREFIX)_codegen.jar because of relative path name problems
+unjar_treeshake_codegen: $(ROOT)/$(TARGETPATH)/gcj
 $(ROOT)/$(TARGETPATH)/gcj: $(PTII)/$(TARGETPATH)/treeshake_codegen.jar
 	rm -rf $@
 	mkdir $@
-	cd $@; jar -xf $(PTII)/$(TARGETPATH)/treeshake_codegen.jar
+	cd $@; jar -xf "$(PTII)/$(TARGETPATH)/treeshake_codegen.jar"
 
 
 
