@@ -101,7 +101,7 @@ public class HTVQApplet extends SDFApplet {
 	    VQDecode decode = new VQDecode(_toplevel, "Decoder");
             decode.setBaseURL(getDocumentBase());
 
-	    ImageUnpartition unpart =
+	    ImageUnpartition unPartition =
 		new ImageUnpartition(_toplevel, "Unpart");
 
 	    ImageDisplay consumer = new ImageDisplay(_toplevel, "Compressed");
@@ -126,10 +126,10 @@ public class HTVQApplet extends SDFApplet {
 
             r = (TypedIORelation) _toplevel.connect(
                     (TypedIOPort)decode.getPort("imagepart"),
-                    (TypedIOPort)unpart.getPort("partition"), "R4");
+                    (TypedIOPort)unPartition.getPort("partition"), "R4");
 
             r = (TypedIORelation) _toplevel.connect(
-                    (TypedIOPort)unpart.getPort("image"),
+                    (TypedIOPort)unPartition.getPort("image"),
                     (TypedIOPort)consumer.getPort("image"), "R5");
 
         } catch (Exception ex) {
