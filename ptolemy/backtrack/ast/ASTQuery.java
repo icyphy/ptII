@@ -138,7 +138,7 @@ public class ASTQuery {
      *  @param fileName The name of the source file from which the
      *   AST is built.
      *  @param visitor The customized visitor, usually of a subclass
-     *   of {@link TraversalVisitor}.
+     *   of {@link org.acm.seguin.summary.TraversalVisitor}.
      *  @return The summary.
      */
     public static FileSummary summarize(ASTCompilationUnit root, String fileName, JavaParserVisitor visitor) {
