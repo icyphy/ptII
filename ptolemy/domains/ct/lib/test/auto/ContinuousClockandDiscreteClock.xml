@@ -167,7 +167,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 1, 2, 1}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -213,24 +213,20 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Clock.output" relation="relation6"/>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Clock.output" relation="relation3"/>
     <link port="ContinuousClock.output" relation="relation2"/>
     <link port="ContinuousClock2.output" relation="relation7"/>
-    <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
     <link port="NonStrictTest2.input" relation="relation"/>
     <link port="NonStrictTest3.input" relation="relation5"/>
     <link port="PeriodicSampler.input" relation="relation2"/>
-    <link port="PeriodicSampler.input" relation="relation6"/>
     <link port="PeriodicSampler.input" relation="relation7"/>
     <link port="PeriodicSampler.output" relation="relation"/>
-    <link port="PeriodicSampler.output" relation="relation4"/>
     <link port="PeriodicSampler.output" relation="relation5"/>
 </entity>
