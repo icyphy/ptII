@@ -434,6 +434,17 @@ public class Clock extends TimedSource {
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
+    /* Get the specified value, checking the form of the values parameter.
+     */
+    protected Token _getValue(int index) throws IllegalActionException {
+        ArrayToken val = (ArrayToken)(values.getToken());
+        if (val == null || val.length() <= index) {
+            throw new IllegalActionException(this,
+                    "Index out of range of the values parameter.");
+        }
+        return val.getElement(index);
+    }
+
     /** Initialize the cycle count and done flag.  These are done in a
      *  protected method so that derived classes can do something different
      *  here.
@@ -492,31 +503,20 @@ public class Clock extends TimedSource {
     protected transient double _tentativeStartTime;
     protected transient int _tentativePhase;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /* Get the specified value, checking the form of the values parameter.
-     */
-    private Token _getValue(int index) throws IllegalActionException {
-        ArrayToken val = (ArrayToken)(values.getToken());
-        if (val == null || val.length() <= index) {
-            throw new IllegalActionException(this,
-                    "Index out of range of the values parameter.");
-        }
-        return val.getElement(index);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
     // The following are all transient because they need not be cloned.
     // Either the clone method or the initialize() method sets them.
 
     // Cache of offsets array value.
-    private transient double[] _offsets;
+    protected transient double[] _offsets;
 
     // Following variables recall data from the fire to the postfire method.
-    private transient int _tentativeCycleCountIncrement;
-    private transient double _tentativeNextFiringTime;
+    protected transient int _tentativeCycleCountIncrement;
+    protected transient double _tentativeNextFiringTime;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
 }
