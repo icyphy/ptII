@@ -33,6 +33,10 @@ package ptolemy.domains.gr.kernel;
 import java.util.*;
 import javax.swing.*;
 
+/**
+@author C. Fong
+@version $Id$
+*/
 public class GRDebug {
 
     public GRDebug(boolean debugOn) {
@@ -40,21 +44,22 @@ public class GRDebug {
     }
 
 
-    public static final void println(Object obj) {
+    public static final void println(Object object) {
         if (_debugOn) {
-            System.out.println(obj.toString());
+            System.out.println(object.toString());
         }
     }
-    public static final void print(Object obj) {
+    public static final void print(Object object) {
         if (_debugOn) {
-            System.out.print(obj.toString());
+            System.out.print(object.toString());
         }
     }
 
-    public static final void prompt(String str) {
+    public static final void prompt(String string) {
         if (_debugOn) {
             JOptionPane.showMessageDialog(
-                      null,str,"MessageDialog",JOptionPane.ERROR_MESSAGE);
+                      null, string,
+                      "MessageDialog", JOptionPane.ERROR_MESSAGE);
         }
     }
 

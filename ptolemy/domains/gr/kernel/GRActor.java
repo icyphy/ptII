@@ -73,7 +73,7 @@ abstract public class GRActor extends TypedAtomicActor {
 
     /** Initialize the scene graph if it is not yet initialized.
      *
-     *  @exception IllegalActionException if an error occurs
+     *  @exception IllegalActionException If an error occurs
      *    during the scene graph initialization.
      */
     public void fire() throws IllegalActionException {
@@ -86,8 +86,8 @@ abstract public class GRActor extends TypedAtomicActor {
     /** Check whether the current director is a GRDirector. If not,
      *  throw an illegal action exception.
      *
-     *  @exception IllegalActionException if the current director
-     *    is not a GRDirector
+     *  @exception IllegalActionException If the current director
+     *    is not a GRDirector.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
@@ -100,7 +100,7 @@ abstract public class GRActor extends TypedAtomicActor {
     /** Reset this actor back to uninitialized state to prepare for
      *  the next execution.
      *
-     *  @exception IllegalActionException if the base class throws it
+     *  @exception IllegalActionException If the base class throws it.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
@@ -113,7 +113,7 @@ abstract public class GRActor extends TypedAtomicActor {
     /** Add the node argument as a child to the encapsulated Java3D node
      *  in this actor. Derived GR Actors should override this method
      *
-     *  @exception IllegalActionException always thrown for this base class
+     *  @exception IllegalActionException Always thrown for this base class.
      */
     protected void _addChild(Node node) throws IllegalActionException {
         throw new IllegalActionException(this,
@@ -131,9 +131,10 @@ abstract public class GRActor extends TypedAtomicActor {
     /** Setup the scene graph connections of this actor. Derived GR Actors
      *  should override this method.
      *
-     *  @exception IllegalActionException always thrown for thsi base class
+     *  @exception IllegalActionException Always thrown for this base class.
      */
-    abstract protected void _makeSceneGraphConnection() throws IllegalActionException ;
+    abstract protected void _makeSceneGraphConnection()
+            throws IllegalActionException;
 
     /** Start the Java3D renderer. This method will be overridden by some
      *  derived GR Actors.

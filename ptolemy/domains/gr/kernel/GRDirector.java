@@ -159,7 +159,8 @@ public class GRDirector extends StaticSchedulingDirector {
         Director outsideDirector = _getOutsideDirector();
 
         long currentTime = System.currentTimeMillis();
-        int frameRate = ((IntToken)iterationTimeLowerBound.getToken()).intValue();
+        int frameRate =
+            ((IntToken)iterationTimeLowerBound.getToken()).intValue();
         long timeElapsed = currentTime - _lastIterationTime;
         long timeRemaining = frameRate - timeElapsed;
         if (timeRemaining > 0) {
@@ -297,7 +298,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  Note that this does not call prefire() on the contained actors.
      *
      *  @return True.
-     *  @exception IllegalActionException will not be thrown..
+     *  @exception IllegalActionException Not thrown in this base class
      */
     public boolean prefire() throws IllegalActionException {
         // Note: Actors return false on prefire if they don't want to be
@@ -380,7 +381,7 @@ public class GRDirector extends StaticSchedulingDirector {
      */
     private void _buildActorTable() throws IllegalActionException {
         Scheduler currentScheduler = getScheduler();
-        if (currentScheduler== null)
+        if (currentScheduler == null)
             throw new IllegalActionException(this,"Attempted to fire " +
                     "GR system with no scheduler");
 
@@ -394,7 +395,7 @@ public class GRDirector extends StaticSchedulingDirector {
             String name = ((Nameable)actor).getFullName();
             ContainedGRActor grActor =
                          (ContainedGRActor) _allActorsTable.get(actor);
-            if (grActor==null) {
+            if (grActor == null) {
                 _allActorsTable.put(actor, new ContainedGRActor(actor));
                 grActor = (ContainedGRActor) _allActorsTable.get(actor);
                 _actorTable.add(grActor);
@@ -495,15 +496,17 @@ public class GRDirector extends StaticSchedulingDirector {
     /** For debugging purposes.  Display the list of contained actors
      *  and other pertinent information about them.
      *
-     *  @exception IllegalActionException if there is a problem in
+     *  @exception IllegalActionException If there is a problem in
      *   obtaining the number of initial token for delay actors
      */
     private void _debugViewActorTable() throws IllegalActionException {
-        debug.println("\nACTOR TABLE with "+_actorTable.size()+" unique actors");
+        debug.println("\nACTOR TABLE with " + _actorTable.size()
+                + " unique actors");
         debug.println("---------------------------------------");
         ListIterator actorIterator = _actorTable.listIterator();
         while(actorIterator.hasNext()) {
-            ContainedGRActor currentActor = (ContainedGRActor) actorIterator.next();
+            ContainedGRActor currentActor =
+                (ContainedGRActor) actorIterator.next();
             String actorName = ((Nameable) currentActor._actor).getName();
 
             if ( !((ComponentEntity) currentActor._actor).isAtomic() ) {
@@ -519,25 +522,26 @@ public class GRDirector extends StaticSchedulingDirector {
      */
     private void _debugViewReceiverTable() {
         //  -displayReceiverTable-
-        debug.print("\nARC RECEIVER table with "+_receiverTable.size());
+        debug.print("\nARC RECEIVER table with "
+                + _receiverTable.size());
         debug.println(" unique receivers");
 
         ListIterator receiverIterator = _receiverTable.listIterator();
 
         while(receiverIterator.hasNext()) {
             GRReceiver currentReceiver = (GRReceiver) receiverIterator.next();
-            debug.println(" receiver "+currentReceiver);
+            debug.println(" receiver "
+                    + currentReceiver);
         }
         debug.println("\n");
     }
 
     /** For debugging purposes.  Display the list of attributes
      *  inside a given named object
-     *  @param obj The named object that has a list of attributes
+     *  @param object The named object that has a list of attributes
      */
-    private void _debugViewAttributesList(NamedObj obj)
-        {
-            List list = obj.attributeList();
+    private void _debugViewAttributesList(NamedObj object) {
+            List list = object.attributeList();
             Iterator listIterator = list.iterator();
 
             debug.println("attribute List:");
@@ -550,11 +554,11 @@ public class GRDirector extends StaticSchedulingDirector {
 
     /** For debugging purposes.  Display the list of contained entities
      *  inside the composite object
-     *  @param obj The composite entity with a list of contained entities.
+     *  @param object The composite entity with a list of contained entities.
      */
-    private void _debugViewEntityList(CompositeEntity obj) {
+    private void _debugViewEntityList(CompositeEntity object) {
 
-        List list = obj.entityList();
+        List list = object.entityList();
     	Iterator listIterator = list.iterator();
 
     	debug.println("\nentity List:");
@@ -572,7 +576,8 @@ public class GRDirector extends StaticSchedulingDirector {
      *  Note: Output ports of actors inside the TypedCompositeActor
      *  container will not be listed.
      */
-    private void _debugViewContainerOutputPorts() throws IllegalActionException {
+    private void _debugViewContainerOutputPorts()
+            throws IllegalActionException {
 
         List list = ((TypedCompositeActor)getContainer()).outputPortList();
         Iterator listIterator = list.iterator();
@@ -580,7 +585,7 @@ public class GRDirector extends StaticSchedulingDirector {
         debug.println("\nTypedCompositeActor container output port list:");
         while(listIterator.hasNext()) {
             IOPort port = (IOPort) listIterator.next();
-            debug.println(" ->"+port);
+            debug.println(" ->" + port);
             _debugViewPortInsideReceivers(port);
             //_debugViewPortRemoteReceivers(port);
         }
@@ -595,10 +600,10 @@ public class GRDirector extends StaticSchedulingDirector {
     private void _debugViewPortRemoteReceivers(IOPort port) {
         Receiver[][] remoteReceivers = port.getRemoteReceivers();
 
-    	for(int i=0;i<port.getWidth();i++) {
-    	    for(int j=0;j<remoteReceivers[i].length;j++) {
-    	        debug.println("  -->"+remoteReceivers[i][j]);
-    	        debug.println("  ==>"+remoteReceivers[i][j].getContainer());
+    	for(int i = 0; i < port.getWidth(); i++) {
+    	    for(int j = 0; j < remoteReceivers[i].length; j++) {
+    	        debug.println("  -->" + remoteReceivers[i][j]);
+    	        debug.println("  == >" + remoteReceivers[i][j].getContainer());
     	    }
     	}
     }
@@ -611,13 +616,14 @@ public class GRDirector extends StaticSchedulingDirector {
      *  IMPORTANT: There are no receivers inside transparent
      *             TypedCompositeActors ports
      */
-    private void _debugViewPortInsideReceivers(IOPort port) throws IllegalActionException {
+    private void _debugViewPortInsideReceivers(IOPort port)
+            throws IllegalActionException {
         Receiver[][] portReceivers = port.getInsideReceivers();
 
-    	for(int i=0;i<port.getWidth();i++) {
-    	    for(int j=0;j<portReceivers[i].length;j++) {
-    	        debug.println("  ->"+portReceivers[i][j]);
-    	        debug.println("  =>"+portReceivers[i][j].getContainer());
+    	for(int i = 0; i < port.getWidth(); i++) {
+    	    for(int j = 0; j < portReceivers[i].length; j++) {
+    	        debug.println("  ->" + portReceivers[i][j]);
+    	        debug.println("  = >" + portReceivers[i][j].getContainer());
     	        // FIXME: remove comments when debugging
     	        // ((GRReceiver)portReceivers[i][j]).displayReceiverInfo();
     	    }
@@ -627,7 +633,7 @@ public class GRDirector extends StaticSchedulingDirector {
     /** Convenience method for getting the director of the container that
      *  holds this director.  If this director is inside a toplevel
      *  container, then the returned value is null.
-     *  @returns The executive director
+     *  @return The executive director.
      */
     private Director _getOutsideDirector() {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
