@@ -38,6 +38,7 @@
 # 6) Check for spaces after commas
 # 7) Check for FIXMEs
 # 8) Check for lines with trailing spaces
+# 9) Check the rating
 
 for file in $@
 do
@@ -179,6 +180,19 @@ do
 	if [ "x$results" != "x" ]; then
 	    echo "$file: contains an equal sign without a trailing space"
 	    echo "$results"
+	fi
+
+
+	# Check the rating
+	results=`egrep '^@AcceptedRating' $file`
+	if [ "x$results" != "x" ]; then
+	    rating=`echo $results | awk '{print $2}' `
+	    if [ "$rating" != "Green" ]; then
+		echo "$file: does not have an AcceptedRating of green"
+		echo "$results"
+	    fi	
+	else
+	    echo "$file: does not have an @AcceptedRating doc tag"
 	fi
 done
 
