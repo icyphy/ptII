@@ -188,16 +188,20 @@ PTINYPACKAGES = \
 # actor.lib.comm uses the Java comm api for communicating with
 # serial ports.  javacomm is not always available, so actor.lib.comm
 # is not part of the default build	
-#COMMPACKAGES =		ptolemy.actor.lib.io.comm
+COMMPACKAGES =		ptolemy.actor.lib.io.comm
 
 # GR domain uses Java 3D, which is not part of the default
 # JDK1.3 download, so we can't include the GR domain classes in
 # the default build.
-#GRPACKAGES =		ptolemy.domains.gr.kernel \
-#			ptolemy.domains.gr.lib
+GRPACKAGES =		ptolemy.domains.gr.kernel \
+			ptolemy.domains.gr.lib
+
+# ptoelmy.actor.lib.joystick.Joystick uses the Joystick API
+JOYSTICKPACKAGES =	ptolemy.actor.lib.joystick
 
 ALLPACKAGES =		$(COMMPACKAGES) \
 			$(COPERNICUSPACKAGES) \
+			$(JOYSTICKPACKAGES) \
 			$(PTINYPACKAGES) \
 			$(GRPACKAGES) \
 			jni \
