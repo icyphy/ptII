@@ -114,17 +114,9 @@ DSP_JNLP_JARS =	\
 #
 # Jar files that will appear in a HyVisual only JNLP Ptolemy II Runtime.
 # This list is used to create the ptII/signed directory, so each
+#
 # jar file should be named once in one of the *ONLY_JNLP_JARS
-HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
-	doc/design/hyvisual.jar \
-	doc/codeDocHyVisual.jar \
-	ptolemy/hsif/hsif.jar \
-	ptolemy/hsif/demo/demo.jar
-
-
-HYBRID_SYSTEMS_MAIN_JAR = \
-	ptolemy/actor/gui/jnlp/HyVisualApplication.jar
-
+#  - rather than including domains.jar, we include only ct.jar, fsm.jar
 #  - hybrid/configure.xml includes actor/lib/math.xml which includes
 #    sdf.lib.DotProduct
 #  - hybrid/configure.xml includes
@@ -132,21 +124,32 @@ HYBRID_SYSTEMS_MAIN_JAR = \
 #    which includes
 #    sdf.lib.BitsToInt
 #    sdf.lib.IntToBits
+#
+HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
+	doc/design/hyvisual.jar \
+	doc/codeDocHyVisual.jar \
+	ptolemy/hsif/hsif.jar \
+	ptolemy/hsif/demo/demo.jar \
+	ptolemy/domains/ct/ct.jar \
+	ptolemy/domains/fsm/fsm.jar \
+	ptolemy/domains/sdf/lib/lib.jar \
+	ptolemy/domains/sdf/kernel/kernel.jar \
+
+
+HYBRID_SYSTEMS_MAIN_JAR = \
+	ptolemy/actor/gui/jnlp/HyVisualApplication.jar
 
 HYBRID_SYSTEMS_JNLP_JARS =	\
 	$(HYBRID_SYSTEMS_MAIN_JAR) \
 	$(HYBRID_SYSTEMS_ONLY_JNLP_JARS) \
 	doc/docConfig.jar \
 	lib/diva.jar \
-	ptolemy/domains/ct/ct.jar \
-	ptolemy/domains/fsm/fsm.jar \
-	ptolemy/domains/sdf/lib/lib.jar \
-	ptolemy/domains/sdf/kernel/kernel.jar \
+	ptolemy/ptsupport.jar \
+	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/ct/demo/demo.jar \
 	ptolemy/domains/ct/doc/doc.jar \
-	ptolemy/domains/fsm/doc/doc.jar \
-	ptolemy/ptsupport.jar \
-	ptolemy/vergil/vergil.jar
+	ptolemy/domains/fsm/doc/doc.jar
+
 
 #######
 # Ptiny
