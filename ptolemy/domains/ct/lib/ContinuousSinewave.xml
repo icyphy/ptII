@@ -90,7 +90,7 @@
         </property>
         <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
         </property>
-        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0/(4.0 * frequency)">
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0/(10.0 * frequency)">
         </property>
         <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
         </property>
@@ -135,7 +135,8 @@
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Continuous sinewave generator. The director constrains
 the maximum step size so that the sine wave is assured
-of being sampled at least at twice the Nyquist frequency.</text></svg></configure>
+of being sampled at least at five times the Nyquist
+frequency (to yield a reasonably smooth sine wave).</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -153,12 +154,12 @@ of being sampled at least at twice the Nyquist frequency.</text></svg></configur
     </property>
     <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 250.0}">
         </property>
     </port>
     <port name="phase" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 290.0}">
         </property>
     </port>
     <port name="output" class="ptolemy.actor.TypedIOPort">
