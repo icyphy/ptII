@@ -248,7 +248,7 @@ public class SDFScheduler extends Scheduler {
 
     /** Set the <i>tokenConsumptionRate</i> parameter of the given port
      *  to the given rate.  If no parameter exists, then create a new one.
-     *  The new one is an instance of Variable, so it is not persisent.
+     *  The new one is an instance of Variable, so it is not persistent.
      *  That is, it will not be saved in the MoML file if the model is
      *  saved. The port is normally an input port, but this is not
      *  checked.
@@ -261,7 +261,7 @@ public class SDFScheduler extends Scheduler {
 
     /** Set the <i>tokenInitProduction</i> parameter of the given port to
      *  the given rate.  If no parameter exists, then create a new one.
-     *  The new one is an instance of Variable, so it is not persisent.
+     *  The new one is an instance of Variable, so it is not persistent.
      *  That is, it will not be saved in the MoML file if the model is
      *  saved. The port is normally an input port, but this is not
      *  checked.
