@@ -154,7 +154,7 @@ public class ViterbiDecoder extends Transformer {
     public Parameter uncodeBlockSize;
 
     /** Integer defining the trace back depth of the viterbi decoder.
-     *  It should be a posivitive integer. Its default value is the
+     *  It should be a positive integer. Its default value is the
      *  integer 10.
      */
     public Parameter delay;
