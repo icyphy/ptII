@@ -100,20 +100,26 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true if the current integration step is successful.
-     *  @return True if the current step is successful.
+    /** Return true if the current integration step is accurate with
+     *  the respect of all the enabled refinements, which are refinements
+     *  that returned true in their prefire() methods in this iteration.
+     *  Also return true if there 
+     *  are no refinements. If a refinement is not a 
+     *  CTStepSizeControlActor, we assume the refinement thinks this
+     *  step to be accurate.
+     *  @return True if the current step is accurate.
      */
     public boolean isThisStepAccurate() {
-        Actor ref = null;
-        try {
-            ref = getController().currentState().getRefinement();
-        } catch (IllegalActionException ex) {
-            ref = null;
-        }
-
         boolean result = true;
-        if (ref instanceof CTStepSizeControlActor) {
-            result = ((CTStepSizeControlActor)ref).isThisStepAccurate();
+        if (_enabledRefinements != null) {
+            Iterator refinements = _enabledRefinements.iterator();
+            while (refinements.hasNext()) {
+                Actor refinement = (Actor) refinements.next();
+                if (refinement instanceof CTStepSizeControlActor) {
+                    result = result && ((CTStepSizeControlActor)
+                            refinement).isThisStepAccurate();
+                }
+            }
         }
         return result;
     }
@@ -143,28 +149,34 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return new ptolemy.domains.ct.kernel.CTReceiver();
     }
 
-    /** Return the predicted next step size if this step is successful.
+    /** Return the smallest next step size predicted by the all the 
+     *  enabled refinements, which are refinements that returned true
+     *  in their prefire() methods in this iteration. 
+     *  If there are no refinements, then return Double.MAX_VALUE.
+     *  If a refinement is not a CTStepSizeControlActor, then
+     *  its prediction is Double.MAX_VALUE.
      *  @return The predicted next step size.
      */
     public double predictedStepSize() {
-        Actor ref = null;
-        try {
-            ref = getController().currentState().getRefinement();
-        } catch (IllegalActionException ex) {
-            ref = null;
-        }
-
         double result = Double.MAX_VALUE;
-        if (ref instanceof CTStepSizeControlActor) {
-            result = ((CTStepSizeControlActor)ref).predictedStepSize();
+        if (_enabledRefinements != null) {
+            Iterator refinements = _enabledRefinements.iterator();
+            while (refinements.hasNext()) {
+                Actor refinement = (Actor)refinements.next();
+                if (refinement instanceof CTStepSizeControlActor) {
+                    result = Math.min(result, ((CTStepSizeControlActor)
+                            refinement).predictedStepSize());
+                }
+            }
         }
         return result;
     }
 
     /** Return true if the mode controller wishes to be scheduled for
-     *  another iteration. Postfire the refinement of the current state
+     *  another iteration. Postfire the enabled refinements of the
+     *  current state
      *  of the mode controller and take out event outputs that the
-     *  refinement generates. Examine the outgoing transitions of the
+     *  refinements generate. Examine the outgoing transitions of the
      *  current state. Throw an exception if there is more than one
      *  transition enabled. If there is exactly one transition enabled
      *  then it is chosen and the choice actions contained by the
@@ -179,11 +191,13 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      */
     public boolean postfire() throws IllegalActionException {
         FSMActor ctrl = getController();
-        Actor ref = ctrl.currentState().getRefinement();
-        if (ref != null) {
-            ref.postfire();
+        // Actor ref = ctrl.currentState().getRefinement();
+        Iterator refinements = _enabledRefinements.iterator();
+        while (refinements.hasNext()) {
+            Actor refinement = (Actor)refinements.next();
+            refinement.postfire();
             // take out event outputs generated in ref.postfire()
-            Iterator outports = ref.outputPortList().iterator();
+            Iterator outports = refinement.outputPortList().iterator();
             while (outports.hasNext()) {
                 IOPort p = (IOPort)outports.next();
                 transferOutputs(p);
@@ -196,34 +210,33 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         if (_debugging && tr != null) {
             _debug(tr.getFullName(), "is chosen.");
         }
-        /*CompositeActor hs = (CompositeActor)getContainer();
-          CTDirector dir = (CTDirector)hs.getExecutiveDirector();
-          if (tr != null) {
-          // update current time so that the destination refinement can
-          // schedule its firing at the correct time.
-          setCurrentTime(dir.getNextIterationTime());
-          }*/
+        
         return super.postfire();
     }
 
-    /** Return the refined step size if this step is not successful.
+    /** Return the step size refined by all the enabled refinements, 
+     *  which are refinements that returned true
+     *  in their prefire() methods in this iteration. 
+     *  If there are no refinements, then return the current step size
+     *  of the executive director.
+     *  If a refinement is not a CTStepSizeControlActor, then
+     *  its refined step size is the current step size of the 
+     *  executive director..
      *  @return The refined step size.
      */
     public double refinedStepSize() {
-        Actor ref = null;
-        try {
-            ref = getController().currentState().getRefinement();
-        } catch (IllegalActionException ex) {
-            ref = null;
-        }
-
-        double result = 0.0;
-        if (ref instanceof CTStepSizeControlActor) {
-            result = ((CTStepSizeControlActor)ref).refinedStepSize();
-        } else {
-            CTDirector dir =
-                (CTDirector)(((Actor)getContainer()).getExecutiveDirector());
-            result = dir.getCurrentStepSize();
+        CTDirector dir =
+            (CTDirector)(((Actor)getContainer()).getExecutiveDirector());
+        double result = dir.getCurrentStepSize();
+        if (_enabledRefinements != null) {
+            Iterator refinements = _enabledRefinements.iterator();
+            while (refinements.hasNext()) {
+                Actor refinement = (Actor)refinements.next();
+                if (refinement instanceof CTStepSizeControlActor) {
+                    result = Math.min(result, ((CTStepSizeControlActor)
+                            refinement).refinedStepSize());
+                }
+            }
         }
         return result;
     }
