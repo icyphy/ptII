@@ -60,6 +60,9 @@ import ptolemy.kernel.util.NameDuplicationException;
    This actor loads a video file (MPEG, AVI, or Quicktime files only), and
    outputs each frame as a JMFImageToken.
 
+   <p>Note that not all formats are supported, for details, see the JMF faq at:
+<a href="http://java.sun.com/products/java-media/jmf/reference/faqs/index.html#in_browser" target="_top">http://java.sun.com/products/java-media/jmf/reference/faqs/index.html</a>
+
    @author James Yeh
    @version $Id$
    @since Ptolemy II 4.0
@@ -186,7 +189,9 @@ public class MovieReader extends Source implements ControllerListener {
         if (!_waitForState(Controller.Realized)) {
             throw new IllegalActionException(null,
                     "Failed to realize player, last controller event was: "
-                    + _stateTransitionEvent);
+                    + _stateTransitionEvent
+                    + "\nNote that not all formats are supported, see:\n"
+                    + "http://java.sun.com/products/java-media/jmf/reference/faqs/index.html");
         }
 
         _framePositioningControl =
