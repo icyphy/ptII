@@ -41,15 +41,23 @@ $Id$
 */
 
 public interface InequalityTerm {
-    /** Set the value of this term to the specified CPO element.
-     *  Only terms consisting of a single variable can have their
-     *  values set.
-     *  @param e an Object representing an element in the
-     *   underlining CPO.
-     *  @exception IllegalActionException this term is not a variable.
+    /** Return the value of this term.  If this term is a constant,
+     *  return that constant; if this term is a variable, return the
+     *  current value of that variable; if this term is a function,
+     *  return the evaluation of that function based on the current
+     *  value of variables in the function.
+     *  @return an Object representing an element in the underlining CPO.
      */
-    public void setValue(Object e)
-            throws IllegalActionException;
+    public Object getValue();
+
+    /** Return an array of variables contained in this term.
+     *  If this term is a constant, return an array of size zero;
+     *  if this term is a variable, return an array of size one that
+     *  contains this variable; if this term is a function, return an
+     *  array containing all the variables in the function.
+     *  @return an array of InequalityTerms
+     */
+    public InequalityTerm[] getVariables();
 
     /** Check if this term can be set to a specific element of the
      *  underlining CPO. Only variable terms are settable, constant
@@ -59,13 +67,14 @@ public interface InequalityTerm {
      */
     public boolean isSettable();
  
-    /** Return the value of this term.  If this term is a constant,
-     *  that constant is returned; if this term is a variable, the
-     *  current value of that variable is returned; if this term
-     *  is a function, the evaluation of the function based on the current
-     *  value of variables in the function is returned.
-     *  @return an Object representing an element in the underlining CPO.
+    /** Set the value of this term to the specified CPO element.
+     *  Only terms consisting of a single variable can have their
+     *  values set.
+     *  @param e an Object representing an element in the
+     *   underlining CPO.
+     *  @exception IllegalActionException this term is not a variable.
      */
-    public Object getValue();
+    public void setValue(Object e)
+            throws IllegalActionException;
 }
 

@@ -84,22 +84,15 @@ public class InequalitySolver {
 	_Ilist.addElement(info);
 
         // add var->ineq to Hashtable
-	InequalityTerm[] vars = ineq.variables();
-        for (int i = 0; i < vars.length; i++) {
-            Vector entry = (Vector)(_Clist.get(vars[i]));
-            if (entry == null) {	// variable not in Hashtable
-                entry = new Vector();
-                _Clist.put(vars[i], entry);
-	    }
-            entry.addElement(indexWrap);
-        }
+	_addToClist(ineq.getLesserTerm().getVariables(), indexWrap);
+	_addToClist(ineq.getGreaterTerm().getVariables(), indexWrap);
     }
 
-    /** Return an Enumeration of the variables whose current values are
-     *  the bottom of the underlining CPO. If none of the variables have
-     *  its current value set to the bottom, an empty Enumeration is
-     *  returned.
-     *  @return an <code>Enumeration</code> of <code>InequalityTerms</code>
+    /** Return an <code>Enumeration</code> of the variables whose current
+     *  values are the bottom of the underlining CPO. If none of the
+     *  variables have its current value set to the bottom, an empty
+     *  <code>Enumeration</code> is returned.
+     *  @return an Enumeration of InequalityTerms
      *  @exception InvalidStateException the underlining CPO does not have
      *   a bottom element.
      */
@@ -183,9 +176,10 @@ public class InequalitySolver {
 	return _solve(false);
     }
 
-    /** Return an Enumeration of the variables whose current values are
-     *  the top of the underlining CPO. If none of the variables have
-     *  the current value set to the top, an empty Enumeration is returned.
+    /** Return an <code>Enumeration</code> of the variables whose current
+     *  values are the top of the underlining CPO. If none of the
+     *  variables have the current value set to the top, an empty
+     *  <code>Enumeration</code> is returned.
      *  @return an Enumeration of InequalityTerms
      *  @exception InvalidStateException the underlining CPO does not have
      *   a top element.
@@ -218,7 +212,7 @@ public class InequalitySolver {
 
         for (int i = 0; i < _Ilist.size(); i++) {
 	    Info info = (Info)_Ilist.elementAt(i);
-            if ( !info._ineq.satisfied(_cpo)) {
+            if ( !info._ineq.isSatisfied(_cpo)) {
                 result.insertLast(info._ineq);
 	    }
         }
@@ -247,6 +241,28 @@ public class InequalitySolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                          private methods                  ////
+
+    // Add the InequalityTerms in the specified array as keys and the
+    // index as value to _Clist.  The InequalityTerms are variables
+    // and the index is the index of the Inequality in _Ilist that
+    // contains the variables.
+    private void _addToClist(InequalityTerm[] variables, Integer indexWrap) {
+        for (int i = 0; i < variables.length; i++) {
+	    if ( !variables[i].isSettable()) {
+		throw new InvalidStateException(
+		    "InequalitySolver._addToClist: An InequalityTerm returns "
+		    + "a variable that is not settable.");
+	    }
+
+            Vector entry = (Vector)(_Clist.get(variables[i]));
+            if (entry == null) {
+		// variable not in Hashtable
+                entry = new Vector();
+                _Clist.put(variables[i], entry);
+	    }
+            entry.addElement(indexWrap);
+        }
+    }
 
     // The solver used by solveLeast() and solveGreatest().
     // If the argument is true, solve for the least solution;
@@ -287,7 +303,7 @@ public class InequalitySolver {
                 : info._ineq.getLesserTerm().isSettable();
 
 	    if (info._inCvar) {
-	    	if (info._ineq.satisfied(_cpo)) {
+	    	if (info._ineq.isSatisfied(_cpo)) {
 		    info._inserted = false;
 		} else { 	// insert to _NS
 		    // FIXME: restore this line for jdk1.2
@@ -347,7 +363,7 @@ public class InequalitySolver {
                 int index1 = index1Wrap.intValue();
 		Info affectedInfo = (Info)_Ilist.elementAt(index1);
                 if (index1 != index && affectedInfo._inCvar) {
-                    if (affectedInfo._ineq.satisfied(_cpo)) {    // drop
+                    if (affectedInfo._ineq.isSatisfied(_cpo)) {    // drop
                         if (affectedInfo._inserted) {
 
 			    // FIXME: restore this line for jdk1.2
@@ -376,7 +392,7 @@ public class InequalitySolver {
         for (int i = 0; i < _Ilist.size(); i++) {
 	    Info info = (Info)_Ilist.elementAt(i);
 	    if ( !info._inCvar) {
-                if ( !info._ineq.satisfied(_cpo)) {
+                if ( !info._ineq.isSatisfied(_cpo)) {
                     return false;
 		}
             }
@@ -394,6 +410,7 @@ public class InequalitySolver {
     // index, _Clist and _NS use that index.
     private Vector _Ilist = new Vector();
     
+    // Mapping from variable to the Inequalities containing them.
     // Each entry in _Clist is a vector of Integers containing the
     // index of inequalities in _Ilist.
     private Hashtable _Clist = new Hashtable();
