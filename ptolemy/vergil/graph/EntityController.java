@@ -86,10 +86,22 @@ public class EntityController extends LocatableNodeController {
 	setPortController(new EntityPortController(controller));
 
 	SelectionModel sm = controller.getSelectionModel();
-        SelectionInteractor interactor =
-            (SelectionInteractor) getNodeInteractor();
+        NodeInteractor interactor =
+            (NodeInteractor) getNodeInteractor();
 	interactor.setSelectionModel(sm);
 
+
+	Action action = 
+	    VergilApplication.getInstance().getAction("Look Inside");
+	ActionInteractor actionInteractor = new ActionInteractor(action);
+	actionInteractor.setConsuming(false);
+	actionInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
+	interactor.addInteractor(actionInteractor);
+
+	// FIXME this is a horrible dance so that the actioninteractor gets
+	// the events first.
+	interactor.setDragInteractor(interactor.getDragInteractor());
+ 
 	_menuCreator = new MenuCreator(new EntityContextMenuFactory());
 	interactor.addInteractor(_menuCreator);
     }
@@ -215,19 +227,10 @@ public class EntityController extends LocatableNodeController {
 		super.initialize();
 		NamedObj target = getTarget();
 		if(target instanceof CompositeEntity) {
-		    Action action;
-		    final CompositeEntity entity = (CompositeEntity)target;
-		    action = new AbstractAction("Look Inside") {
-			public void actionPerformed(ActionEvent e) {
-			    Application app = getApplication();
-			    PtolemyDocument doc = new PtolemyDocument(app);
-			    doc.setModel(entity);
-			    app.addDocument(doc);
-			    app.displayDocument(doc);
-			    app.setCurrentDocument(doc);}
-		    };
+		    Action action;		    
+		    action = getApplication().getAction("Look Inside");
 		    add(action, "Look Inside");
-                }
+		}
 	    }
 	}
     }
