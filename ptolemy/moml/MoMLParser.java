@@ -556,7 +556,11 @@ public class MoMLParser extends HandlerBase {
                                 separator);
                         while (paths.hasMoreTokens()) {
                             String path = paths.nextToken();
-                            base = new URL(base, path);
+                            base = new URL("file", null, path);
+                            // FIXME: jdk 1.3beta, at least, has a bug in the
+                            // URL constructor invoked below.  It ignores
+                            // the base argument and uses the current working
+                            // directory!
                             xmlFile = new URL(base, source);
                             try {
                                 input = xmlFile.openStream();
