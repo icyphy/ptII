@@ -204,6 +204,12 @@ PTCOPERNICUS_DIR = @PTCOPERNICUS_DIR@
 # $PTII/ptolemy/matlab/makefile.
 PTDLLTOOL = @PTDLLTOOL@
 
+# PTGC_LD_DIRECTIVE is set to the values to pass to cc or ld if
+# GC_malloc() can be found either in the default compiler location
+# or in $PTII/lib.
+# PTGC_LD_DIRECTIVE is used in ptolemy/copernicus/c/
+PTGC_LD_DIRECTIVE = @PTGC_LD_DIRECTIVE@
+
 # Location of the local $PTII directory as a file:/// URL
 # This variable is used with the Java Network Launching Protocol files
 PTII_LOCALURL = @PTII_LOCALURL@

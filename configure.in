@@ -492,6 +492,69 @@ else
 fi
 
 #--------------------------------------------------------------------
+#       Garbage Collector (GC)
+#       The C code generator can use the Boehm Garbage Collector
+#       See http://www.hpl.hp.com/personal/Hans_Boehm/gc/
+#--------------------------------------------------------------------
+#
+# PTGC_LD_DIRECTIVE is set to the values to pass to cc or ld if
+# GC_malloc() can be found either in the default compiler location
+# or in $PTII/lib.
+# PTGC_LD_DIRECTIVE is used in ptolemy/copernicus/c/
+PTGC_LD_DIRECTIVE=
+
+if test ! -d "$PTII/ptolemy/copernicus/c"; then
+    AC_MSG_RESULT([$PTII/ptolemy/copernicus/c is not present,
+        so we need not find the Boehm GC])
+else
+    AC_PATH_PROG(PTCC, gcc)
+    if test "${PTCC:-none}" != "none"; then
+        AC_MSG_RESULT([$PTCC])
+        PTJNI_DIR=jni
+    else    
+        AC_MSG_WARN([Failed to find gcc])
+        AC_PATH_PROG(PTCC, cc)
+        if test "${PTCC:-none}" != "none"; then
+            AC_MSG_RESULT([$PTCC])
+            PTJNI_DIR=jni
+        else    
+            AC_MSG_WARN([Failed to find gcc or cc, so we will
+    not be able use GC in $PTII/ptolemy/copernicus/c]);
+        fi
+    fi
+
+    if test "${PTCC:-none}" != "none"; then
+       AC_MSG_CHECKING([for Garbage Collector])
+       AC_CHECK_LIB(gc, GC_malloc, PT_GC=yes, PT_GC=no)
+       if test "$PT_GC" = "yes"; then
+           AC_MSG_RESULT(yes)
+       else
+           if test -f "$PTII/lib/libgc.a"; then
+	      # FIXME: what about Windows?
+	      PTGC_LD_DIRECTIVE="\"-L$PTII/lib\" -lgc"
+	      AC_MSG_RESULT(use $PTGC_LD_DIRECTIVE)
+           else 
+	      if test -d "$PTII/vendors/gc/gc6.1"; then
+                  AC_MSG_WARN([Failed to find GC_malloc(), but 
+    \$PTII/vendors/gc/gc6.1 exists.  See the README.txt file in
+    that directory if you would like to use the Garbage Collector
+    with the C code generator])
+              else 
+	          AC_MSG_WARN([Failed to find GC_malloc(), and
+    \$PTII/vendors/gc/gc6.1 does not exist.  The Boehm Garbage Collector
+    can be downloaded from
+    http://www.hpl.hp.com/personal/Hans_Boehm/gc/
+    if you wish to use it with the C code generator])
+	      fi
+           fi 
+       fi
+
+    fi
+
+fi
+
+
+#--------------------------------------------------------------------
 #       JAI is the Java Advanced Imaging Framework
 #	For more information, 
 #       see http://java.sun.com/products/java-media/jai/
@@ -499,7 +562,7 @@ fi
 #--------------------------------------------------------------------
 
 # PTJAI_DIR is set to jai and used in
-# $PTII/ptolemy/codegen/makefile if jai was found
+# $PTII/ptolemy/actor/makefile if jai was found
 PTJAI_DIR=
 
 # We only need to look for JAI if the actor/lib/jai directory is present
@@ -537,7 +600,7 @@ fi
 #--------------------------------------------------------------------
 
 # PTJHDL_DIR is set to jhdl and used in
-# $PTII/ptolemy/codegen/makefile if jhdl was found
+# $PTII/ptolemy/actor/makefile if jhdl was found
 PTJHDL_DIR=
 
 # Directory that contains the jhdl jar files
@@ -1023,7 +1086,7 @@ fi
 #       Java Native Interface (JNI)
 #       Ptolemy II can interface to native code using JNI
 #--------------------------------------------------------------------
-# PTJNI_DIR is set to matlab and used in
+# PTJNI_DIR is set to jni and used in
 # $PTII/makefile if gcc or cc is found.
 PTJNI_DIR=
 
@@ -1031,14 +1094,12 @@ if test ! -d "$PTII/jni"; then
     AC_MSG_RESULT([$PTII/jni is not present,
         so we need not find gcc or cc])
 else
-    AC_MSG_CHECKING([for gcc])
     AC_PATH_PROG(PTCC, gcc)
     if test "${PTCC:-none}" != "none"; then
         AC_MSG_RESULT([$PTCC])
         PTJNI_DIR=jni
     else    
         AC_MSG_WARN([Failed to find gcc])
-        AC_MSG_CHECKING([for cc])
         AC_PATH_PROG(PTCC, cc)
         if test "${PTCC:-none}" != "none"; then
             AC_MSG_RESULT([$PTCC])
@@ -1257,7 +1318,6 @@ else
 	PTCC=gcc
 	PTDLLTOOL=dlltool
     else
-	AC_MSG_CHECKING([for matlab])
 	AC_PATH_PROG(MATLAB, matlab)
 	if test "${MATLAB:-none}" = "none"; then
 	    AC_MSG_WARN([Failed to find matlab executable in the path.
@@ -1291,14 +1351,12 @@ else
 	    else
 		if test -f "${MATLAB_DIR}/extern/include/libeng.def"; then
 		    AC_MSG_RESULT([$MATLAB_DIR])
-		    AC_MSG_CHECKING([for gcc])
 		    AC_PATH_PROG(PTCC, gcc)
 		    if test "${PTCC:-none}" != "none"; then
 			AC_MSG_RESULT([$PTCC])
 			PTMATLAB_DIR=matlab
 		    else    
 			AC_MSG_WARN([Failed to find gcc])
-			AC_MSG_CHECKING([for cc])
 			AC_PATH_PROG(PTCC, cc)
 			if test "${PTCC:-none}" != "none"; then
 			    AC_MSG_RESULT([$PTCC])
@@ -1308,7 +1366,6 @@ else
     not be able to compile the Matlab interface in ptolemy/matlab]);
 			fi
 		    fi
-		    AC_MSG_CHECKING([for dlltool])
 		    AC_PATH_PROG(PTDLLTOOL, dlltool)
 		    if test "${PTDLLTOOL:-none}" = "none"; then
 			PTMATLAB_DIR=
@@ -1677,6 +1734,12 @@ AC_SUBST(PTCOMM_DIR)
 # Set to dlltool if dlltool was found and used in
 # $PTII/ptolemy/matlab/makefile.
 AC_SUBST(PTDLLTOOL)
+
+# PTGC_LD_DIRECTIVE is set to the values to pass to cc or ld if
+# GC_malloc() can be found either in the default compiler location
+# or in $PTII/lib.
+# PTGC_LD_DIRECTIVE is used in ptolemy/copernicus/c/
+AC_SUBST(PTGC_LD_DIRECTIVE)
 
 # Location of the the PTII directory
 # $PTII/ptolemy/plot/ptplot.jnlp.in reads this
