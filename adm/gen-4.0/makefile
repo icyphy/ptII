@@ -32,10 +32,10 @@
 #  ptII/adm/bin/ptIInightly-mail
 #  ptII/adm/bin/ptIInightly
 #  buildmaster/web/adm/makefile
-MAJOR_VERSION = 	4.0.1
-MINOR_VERSION =
+MAJOR_VERSION = 	4.0
+MINOR_VERSION =		1
 
-VERSION=	$(MAJOR_VERSION)
+VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
 WINDOWS_VERSION =	4_0_1
 
@@ -259,7 +259,7 @@ $(PTII_SRC): $(PTII_FULL)
 		rm -rf doc/codeDoc*; \
 		cd ..; \
 		echo "#  Starting tar of $@"; \
-		$(TAR) -zcf $(PTII_SRC) ptII$(VERSION));
+		$(TAR) -zcf -X $(GENDIR)/src.ex $(PTII_SRC) ptII$(VERSION));
 
 ###############
 # Build a jar file for use inside the installer
