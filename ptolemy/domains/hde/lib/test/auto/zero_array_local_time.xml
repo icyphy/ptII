@@ -290,7 +290,7 @@
                 <property name="input"/>
             </port>
         </entity>
-        <entity name="1:ArrayMem" class="ptolemy.domains.hde.lib.ArrayMem">
+        <entity name="1:ArrayMem" class="ptolemy.domains.hde.lib.ArrayMemory">
             <property name="length" class="ptolemy.data.expr.Parameter" value="25">
             </property>
             <property name="_location" class="ptolemy.moml.Location" value="445.0, 300.0">
@@ -298,25 +298,25 @@
             <port name="index" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="dataInPar" class="ptolemy.actor.TypedIOPort">
+            <port name="dataInParallel" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                 </property>
             </port>
-            <port name="dataOutPar" class="ptolemy.actor.TypedIOPort">
+            <port name="dataOutParallel" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
                 </property>
             </port>
-            <port name="dataInSer" class="ptolemy.actor.TypedIOPort">
+            <port name="dataInSerial" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="dataOutSer" class="ptolemy.actor.TypedIOPort">
+            <port name="dataOutSerial" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
                 </property>
             </port>
-            <port name="serPar" class="ptolemy.actor.TypedIOPort">
+            <port name="serialOrParallel" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
             <port name="read" class="ptolemy.actor.TypedIOPort">
@@ -368,7 +368,7 @@
                 </property>
             </port>
         </entity>
-        <entity name="ArrayElementI" class="ptolemy.actor.lib.ArrayElementI">
+        <entity name="ArrayElementI" class="ptolemy.actor.lib.ArrayElement">
             <property name="_location" class="ptolemy.moml.Location" value="145.0, 145.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
@@ -515,10 +515,10 @@
         <link port="1:Multiplexor.output" relation="1:relation20"/>
         <link port="1:Multiplexor.select" relation="1:relation19"/>
         <link port="1:ArrayMem.index" relation="1:relation32"/>
-        <link port="1:ArrayMem.dataInPar" relation="1:relation"/>
-        <link port="1:ArrayMem.dataOutPar" relation="relation"/>
-        <link port="1:ArrayMem.dataInSer" relation="1:relation20"/>
-        <link port="1:ArrayMem.serPar" relation="1:relation6"/>
+        <link port="1:ArrayMem.dataInParallel" relation="1:relation"/>
+        <link port="1:ArrayMem.dataOutParallel" relation="relation"/>
+        <link port="1:ArrayMem.dataInSerial" relation="1:relation20"/>
+        <link port="1:ArrayMem.serialOrParallel" relation="1:relation6"/>
         <link port="1:ArrayMem.read" relation="1:relation16"/>
         <link port="1:ArrayMem.write" relation="1:relation6"/>
         <link port="1:Expression.output" relation="1:relation18"/>
