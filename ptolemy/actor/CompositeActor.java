@@ -383,7 +383,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-                    "CompositeActor.newPort: Internal error: " + ex.getMessage());
+                    "CompositeActor.newPort: Internal error: " +
+                    ex.getMessage());
         } finally {
             workspace().doneWriting();
         }
@@ -645,8 +646,8 @@ public class CompositeActor extends CompositeEntity implements Actor {
             throws IllegalActionException, NameDuplicationException {
         if (!(entity instanceof Actor)) {
             throw new IllegalActionException(this, entity,
-                    "CompositeActor can only contain entities that implement the "
-                    + "Actor interface.");
+                    "CompositeActor can only contain entities that " +
+                    " implement the Actor interface.");
         }
         super._addEntity(entity);
     }
