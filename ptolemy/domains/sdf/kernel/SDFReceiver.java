@@ -151,7 +151,7 @@ public class SDFReceiver extends AbstractReceiver {
      *  If there are not enough tokens in the receiver, throw an exception
      *  and remove none of the tokens from the receiver.
      *
-     *  @deprecated Use Token[] getArray(int) insntead.
+     *  @deprecated Use Token[] getArray(int) instead.
      *  @exception NoTokenException If there is no token in the receiver.
      */
     public void getArray(Token t[]) {
