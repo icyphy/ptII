@@ -45,6 +45,7 @@ import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.fsm.kernel.Action;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.State;
@@ -217,8 +218,34 @@ public class HDFFSMDirector extends FSMDirector {
                     }
                     FSMActor ctrl = getController();
                     State st = ctrl.currentState();
-                    _chooseTransition(st.nonpreemptiveTransitionList());
-                }
+                    Transition tr =
+                        _chooseTransition(st.nonpreemptiveTransitionList());
+                    if (tr != null) {
+                        Actor[] actors = tr.getRefinement();
+                        if (actors != null) {
+                            for (int i = 0; i < actors.length; ++i) {
+                                if (_stopRequested) break;
+                                    if (actors[i].prefire()) {
+                                        if (_debugging) {
+                                            _debug(getFullName(),
+                                            " fire transition refinement",
+                                            ((ptolemy.kernel.util.NamedObj)
+                                            actors[i]).getName());
+                                        }
+                                        actors[i].fire();
+                                        actors[i].postfire();
+                                    }
+                            }
+                            _readOutputsFromRefinement();
+                            //execute the output actions
+                            Iterator actions = tr.choiceActionList().iterator();
+                            while (actions.hasNext()) {
+                                Action action = (Action)actions.next();
+                                action.execute();
+                            }
+                        }
+                    }
+                }    
             };
             request.setPersistent(false);
             container.requestChange(request);
