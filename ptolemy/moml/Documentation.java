@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 
 */
 
@@ -43,6 +43,11 @@ import java.util.List;
 An attribute that contains documentation for the container.
 This is a singleton attribute.  If there is a pre-existing instance
 with the same name, then it is replaced.
+<p>
+The name of a documentation object can often be meaningful.  Many times
+the name can be used to specify important information about the type of 
+documentation.  Unfortunately, all documentation objects are currently
+treated the same.
 
 @author  Edward A. Lee
 @version $Id$
