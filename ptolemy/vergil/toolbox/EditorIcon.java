@@ -1,4 +1,4 @@
-/* An Icon is the graphical representation of a schematic entity.
+/* An Icon is the graphical representation of an entity.
 
  Copyright (c) 1999-2000 The Regents of the University of California.
  All rights reserved.
@@ -48,6 +48,8 @@ import javax.swing.SwingConstants;
 An icon is the graphical representation of a schematic entity.
 EditorIcons are stored hierarchically in icon libraries.   Every icon has a
 name, along with a graphical representation.
+EditorIcons are also capable of creating a visual representation representing
+the icon as either a swing icon, or as a diva figure.
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
@@ -98,6 +100,16 @@ public class EditorIcon extends Icon {
      */
     public Figure createBackgroundFigure() {
 	return _createDefaultBackgroundFigure();
+    }
+
+    /** 
+     * Create a new graphical icon that represents this class visually.
+     * @exception UnsupportedOperationException If this class does not support
+     * a visual rendition.  In practice, just about any subclass should not
+     * throw this exception.
+     */
+    public javax.swing.Icon createIcon() {
+        throw new UnsupportedOperationException();
     }
 
     /**

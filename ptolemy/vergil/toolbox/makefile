@@ -55,6 +55,10 @@ JSRCS = \
 	JDesignTree.java \
 	LibraryIcon.java \
 	PatternIcon.java \
+	PtolemyListCellRenderer.java \
+	PtolemyTransferable.java \
+	PtolemyTreeCellRenderer.java \
+	PtolemyTreeModel.java \
 	XMLIcon.java
 
 
