@@ -69,12 +69,11 @@ public abstract class IOPort extends ComponentPort {
      *  neither an input nor an output.
      *  @param container
      *  @param name
-     *  @exception IllegalActionException name argument is null.
      *  @exception NameDuplicationException Name coincides with
      *   an element already on the port list of the parent.
      */	
     public IOPort(ComponentEntity container, String name) 
-             throws IllegalActionException, NameDuplicationException {
+             throws NameDuplicationException {
 	super(container,name);
     }
 
@@ -85,13 +84,12 @@ public abstract class IOPort extends ComponentPort {
      *  @param name
      *  @param isinput
      *  @param isoutput
-     *  @exception IllegalActionException name argument is null.
      *  @exception NameDuplicationException Name coincides with
      *   an element already on the port list of the parent.
      */	
     public IOPort(ComponentEntity container, String name,
              boolean isinput, boolean isoutput) 
-             throws IllegalActionException, NameDuplicationException {
+             throws NameDuplicationException {
 	this(container,name);
         makeInput(isinput);
         makeOutput(isoutput);
