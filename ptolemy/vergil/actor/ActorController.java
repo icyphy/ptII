@@ -125,8 +125,6 @@ public class ActorController extends AttributeController {
             _portDialogFactory = new PortDialogFactory();
             _menuFactory.addMenuItemFactory(
                     _portDialogFactory);
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(new RemoveIconAction()));
         }
 
         if (_configuration != null) {
@@ -134,12 +132,14 @@ public class ActorController extends AttributeController {
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(_lookInsideAction));
-            _editIconAction.setConfiguration(_configuration);
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_editIconAction));
-            _removeIconAction.setConfiguration(_configuration);
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_removeIconAction));
+            if (access == FULL) {
+                _editIconAction.setConfiguration(_configuration);
+                _menuFactory.addMenuItemFactory(
+                        new MenuActionFactory(_editIconAction));
+                _removeIconAction.setConfiguration(_configuration);
+                _menuFactory.addMenuItemFactory(
+                        new MenuActionFactory(_removeIconAction));
+            }
         }
 
         // NOTE: This requires that the configuration be non null, or it
@@ -208,12 +208,14 @@ public class ActorController extends AttributeController {
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(
                     new MenuActionFactory(_lookInsideAction));
-            _editIconAction.setConfiguration(_configuration);
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_editIconAction));
-            _removeIconAction.setConfiguration(_configuration);
-            _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_removeIconAction));
+            if (_access == FULL) {
+                _editIconAction.setConfiguration(_configuration);
+                _menuFactory.addMenuItemFactory(
+                        new MenuActionFactory(_editIconAction));
+                _removeIconAction.setConfiguration(_configuration);
+                _menuFactory.addMenuItemFactory(
+                        new MenuActionFactory(_removeIconAction));
+            }
         }
     }
 
