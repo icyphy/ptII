@@ -21,35 +21,35 @@ applet is displayed on a XGA screen-->
  codebase="http://java.sun.com/products/plugin/1.2/jinstall-12-win32.cab#Version=1,2,0,0">
 <PARAM NAME=CODE VALUE=ptolemy.domains.de.demo.Inspection.InspectionApplet.class>
 <PARAM NAME=CODEBASE VALUE=../../../../..>
-<PARAM NAME=ARCHIVE VALUE="
-	ptolemy/ptsupport.jar,
-	ptolemy/domains/de/de.jar"
 <PARAM NAME=NAME VALUE="InspectionApplet">
 <PARAM NAME="type" VALUE="application/x-java-applet;version=1.2">
 <PARAM NAME="background" VALUE="#faf0e6">
+<PARAM NAME="defaultStopTime" VALUE="100">
+<PARAM NAME=ARCHIVE VALUE="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/de/de.jar">
 <COMMENT>
 <EMBED type="application/x-java-applet;version=1.2"
  code=ptolemy.domains.de.demo.Inspection.InspectionApplet
  codebase=../../../../..
- archive="
-	ptolemy/ptsupport.jar,
-	ptolemy/domains/de/de.jar"
-
- java_CODE=ptolemy.domains.de.demo.Inspection.InspectionApplet.class
- java_CODEBASE=../../../../..
  java_ARCHIVE="
 	ptolemy/ptsupport.jar,
 	ptolemy/domains/de/de.jar"
+ java_CODE=ptolemy.domains.de.demo.Inspection.InspectionApplet.class
+ java_CODEBASE=../../../../..
  name="InspectionApplet"
  width=700 height=500
  background="#faf0e6"
+ defaultStopTime="100"
+ archive="
+	ptolemy/ptsupport.jar,
+	ptolemy/domains/de/de.jar"
  pluginspage="http://java.sun.com/products/plugin/1.2/plugin-install.html">
 <NOEMBED></COMMENT>
 <I>If you were able to run applets, you would have a demo here.</I>
 </NOEMBED></EMBED>
 </OBJECT>
 </center>
-
 <P>
 The above applet uses the Ptolemy II Discrete Event (DE) domain
 to illustrate the inspection paradox.
@@ -102,19 +102,20 @@ bus arrivals.
 <!-- FIXME: The following info is wrong -->
 This applet is implemented by
 <TT><A HREF="InspectionApplet.java">InspectionApplet.java</A></TT>.
-<P>The simulation consists of a <A HREF="../../lib/DEClock.java">Clock</A>
+<P>The simulation consists of a
+<A HREF="../../../../actor/lib/Clock.java">Clock</A>
 Actor, a
 <A HREF="../../lib/DEPoisson.java">Poisson</A> Actor, and a
 <A HREF="../../lib/DEWaitingTime.java">WaitingTime</A>
-Actor connected to a <A HREF="../../lib/DEHistogram.java">Histogram</A> Actor,
-a
-<A HREF="../../lib/DEPlot.java">Plot</A> Actor, and a
+Actor connected to a <A HREF="../../../../actor/lib/HistogramPlotter.java">
+HistogramPlotter</A> Actor, a
+<A HREF="../../../../actor/lib/TimedPlotter.java">TimedPlotter</A> Actor, and a
 <A HREF="../../lib/DEStatistics.java">Statistics</A>
 Actor.
 <BR>
 <MAP Name="ActorsMap">
 <AREA Shape="rect" Coords="19,17,80,32"
-	Href="../../lib/DEClock.java">
+	Href="../../../../actor/lib/Clock.java">
 <AREA Shape="rect" Coords="20,43,81,59"
 	Href="../../lib/DEPoisson.java">
 <AREA Shape="rect" Coords="9,184,94,239"
@@ -124,9 +125,9 @@ Actor.
 <AREA Shape="rect" Coords="299,44,384,99"
 	Href="../../lib/DEStatistics.java">
 <AREA Shape="rect" Coords="299,144,384,199"
-	Href="../../lib/DEHistogram.java">
+	Href="../../../../actor/lib/HistogramPlotter.java">
 <AREA Shape="rect" Coords="469,9,554,64"
-	Href="../../lib/DEPlot.java">
+	Href="../../../../actor/lib/TimedPlotter.java">
 </MAP>
 <CENTER>
 <IMG SRC="../img/Histogram.gif" HEIGHT=251 WIDTH=566

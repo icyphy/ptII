@@ -36,8 +36,9 @@ import java.awt.event.*;
 import java.util.Enumeration;
 
 import ptolemy.kernel.*;
-import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.actor.Manager;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.gui.*;
 import ptolemy.gui.Query;
@@ -86,10 +87,35 @@ bus arrivals.
 @author Edward A. Lee and Lukito Muliadi
 @version $Id$
 */
-public class InspectionApplet extends DEApplet {
+public class InspectionApplet extends DEApplet implements QueryListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** If the argument is the string "regular", then set the
+     *  variable that controls whether bus arrivals will be regular
+     *  or Poisson.
+     *  @param name The name of the entry that changed.
+     */
+    public void changed(String name) {
+        if (name == "regular") {
+            _regular = _query.booleanValue("regular");
+        }
+        try {
+            if (_regular) {
+                _regularBus.period.setToken
+                        (new DoubleToken(_query.doubleValue("busmean")));
+            } else {
+                _poissonBus.meanTime.setToken
+                        (new DoubleToken(_query.doubleValue("busmean")));
+                _passenger1.meanTime.setToken
+                        (new DoubleToken(_query.doubleValue("passmean")));
+            }
+            _go();
+        } catch (IllegalActionException ex) {
+            throw new InternalErrorException(ex.toString());
+        }
+    }
 
     /** Initialize the applet.
      */
@@ -97,25 +123,43 @@ public class InspectionApplet extends DEApplet {
         super.init();
         try {
             _query = new Query();
-            _query.addQueryListener(new ParameterListener());
             _query.addLine("busmean", "Bus mean interarrival time", "1.0");
             _query.addLine("passmean",
                     "Passenger mean interarrival time", "1.0");
             _query.addCheckBox("regular", "Regular bus arrivals", false);
             add(_query);
+            _query.setBackground(_getBackground());
+            _query.addQueryListener(this);
 
             // The 2 argument requests a go and stop button.
             add(_createRunControls(2));
 
-            // Create and configure bus source
-            _bus = new DEPoisson(_toplevel, "bus");
-            _bus.outputvalue.setToken(new DoubleToken(1.0));
-            _bus.meantime.setToken(new DoubleToken(1.0));
+            if (_regular) {
+                // Create regular bus source.
+                _regularBus = new Clock(_toplevel, "regularBus");
+                // Create Poisson bus source, but then remove from container,
+                // since it won't be used unless the user toggles the button.
+                _poissonBus = new Poisson(_toplevel,"poissonBus");
+                _poissonBus.setContainer(null);
+            } else {
+                // Create Poisson bus source.
+                _poissonBus = new Poisson(_toplevel, "poissonBus");
+                // Create regular bus source, but then remove from container,
+                // since it won't be used unless the user toggles the button.
+                _regularBus = new Clock(_toplevel,"regularBus");
+                _regularBus.setContainer(null);
+            }
+            // Set default parameters for both sources.
+            _regularBus.values.setExpression("[2]");
+            _regularBus.period.setToken(new DoubleToken(1.0));
+            _regularBus.offsets.setExpression("[0.0]");
+            _poissonBus.values.setExpression("[2]");
+            _poissonBus.meanTime.setToken(new DoubleToken(1.0));
 
             // Create and configure passenger source
-            _passenger1 = new DEPoisson(_toplevel, "passenger");
-            _passenger1.outputvalue.setToken(new DoubleToken(0.5));
-            _passenger1.meantime.setToken(new DoubleToken(1.0));
+            _passenger1 = new Poisson(_toplevel, "passenger");
+            _passenger1.values.setExpression("[1]");
+            _passenger1.meanTime.setToken(new DoubleToken(1.0));
 
             // Waiting time
             _wait = new DEWaitingTime(_toplevel, "waitingTime");
@@ -139,7 +183,7 @@ public class InspectionApplet extends DEApplet {
             _eventplot.plot.setXLabel("Time");
             _eventplot.plot.setYLabel("Wait time");
             _eventplot.plot.setXRange(0.0, _getStopTime());
-            _eventplot.plot.setYRange(-1.0, 4.0);
+            _eventplot.plot.setYRange(0.0, 4.0);
             _eventplot.plot.setSize(450,200);
             _eventplot.plot.setConnected(false);
             _eventplot.plot.setImpulses(true);
@@ -153,27 +197,24 @@ public class InspectionApplet extends DEApplet {
             _histplot.histogram.setTitle("Histogram of Waiting Times");
             _histplot.histogram.setXLabel("Waiting Time");
             _histplot.histogram.setYLabel("Passengers");
-            _histplot.histogram.setXRange(0.0, 7.0);
-            _histplot.histogram.setYRange(0.0, 15.0);
+            _histplot.histogram.setXRange(0.0, 6.0);
+            _histplot.histogram.setYRange(0.0, 20.0);
             _histplot.histogram.setSize(450,200);
             _histplot.histogram.setBinWidth(0.2);
             _histplot.fillOnWrapup.setToken(new BooleanToken(false));
 
-            // Connections
-            ComponentRelation rel1 =
-                _toplevel.connect(_bus.output, _eventplot.input);
-            ComponentRelation rel2 =
+            // Connections, except the bus source, which is postponed.
+            _busRelation = 
+                _toplevel.connect(_wait.waitee, _eventplot.input);
+            ComponentRelation rel2 = 
                 _toplevel.connect(_passenger1.output, _eventplot.input);
-            _wait.waitee.link(rel1);
             _wait.waiter.link(rel2);
             ComponentRelation rel3 =
                 _toplevel.connect(_wait.output, _eventplot.input);
             _histplot.input.link(rel3);
             average.input.link(rel3);
             _toplevel.connect(average.output, show.input);
-
-            // Get one iteration right away.
-            _go();
+            _initCompleted = true;
         } catch (Exception ex) {
             report("Setup failed:", ex);
         }
@@ -184,36 +225,79 @@ public class InspectionApplet extends DEApplet {
 
     /** Execute the model.  This overrides the base class to read the
      *  values in the query box first and set parameters.
-     *  @exception IllegalActionException If type constraints of the
-     *   parameters have somehow been set.
+     *  @exception IllegalActionException If topology changes on the
+     *   model or parameter changes on the actors throw it.
      */
     protected void _go() throws IllegalActionException {
-        _bus.meantime.setToken
-            (new DoubleToken(_query.doubleValue("busmean")));
-        _passenger1.meantime.setToken
-            (new DoubleToken(_query.doubleValue("passmean")));
+        // If an exception occurred during initialization, then we don't
+        // want to run here.  The model is probably not complete.
+        if (!_initCompleted) return;
+
+        // If the manager is not idle then either a run is in progress
+        // or the model has been corrupted.  In either case, we do not
+        // want to run.
+        if (_manager.getState() != _manager.IDLE) return;
+
+        // Depending on the state of the radio button, we may want
+        // either regularly spaced bus arrivals, or Poisson arrivals.
+        // Here, we alter the model topology to implement one or the other.
+        if (_regular) {
+            try {
+                _poissonBus.setContainer(null);
+                _regularBus.setContainer(_toplevel);
+            } catch (NameDuplicationException ex) {
+                throw new InternalErrorException(ex.toString());
+            }
+            _regularBus.period.setToken
+                    (new DoubleToken(_query.doubleValue("busmean")));
+            _regularBus.output.link(_busRelation);
+        } else {
+            try {
+                _regularBus.setContainer(null);
+                _poissonBus.setContainer(_toplevel);
+            } catch (NameDuplicationException ex) {
+                throw new InternalErrorException(ex.toString());
+            }
+            _poissonBus.meanTime.setToken
+                    (new DoubleToken(_query.doubleValue("busmean")));
+            _passenger1.meanTime.setToken
+                    (new DoubleToken(_query.doubleValue("passmean")));
+            _poissonBus.output.link(_busRelation);
+        }
+
+        // The the X range of the plotter to show the full run.
+        // The method being called is a protected member of DEApplet.
         _eventplot.plot.setXRange(0.0, _getStopTime());
+
+        // The superclass sets the stop time of the director based on
+        // the value in the entry box on the screen.  Then it starts
+        // execution of the model in its own thread, leaving the user
+        // interface of this applet live.
         super._go();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // Actors in the model.
     private Query _query;
-    private DEPoisson _bus;
-    private DEPoisson _passenger1;
+    private Poisson _poissonBus;
+    private Clock _regularBus;
+    private Poisson _passenger1;
     private TimedPlotter _eventplot;
     private HistogramPlotter _histplot;
     private DEWaitingTime _wait;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
+    // An indicator of whether regular or Poisson bus arrivals are
+    // desired.
+    private boolean _regular = false;
 
-    /** Listener executes the system when any parameter is changed.
-     */
-    class ParameterListener implements QueryListener {
-        public void changed(String name) {
-            // _go();
-        }
-    }
+    // The relation to which links are made and unmade in response to
+    // changes in the radio button state that selects regular or Poisson
+    // bus arrivals.
+    private ComponentRelation _busRelation;
+
+    // Flag to prevent spurious exception being thrown by _go() method.
+    // If this flag is not true, the _go() method will not execute the model.
+    private boolean _initCompleted = false;
 }
