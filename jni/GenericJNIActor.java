@@ -266,7 +266,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                         port.setTypeEquals(BaseType.GENERAL);
                     } catch (Exception ex) {
                         MessageHandler.error("Unable to construct port", ex);
-                    } 
+                    }
                 else if (argument.isInput() && argument.isOutput()) {
                     try {
                         port = (TypedIOPort) this.newPort(argument.getName()
@@ -380,10 +380,10 @@ public class GenericJNIActor extends TypedAtomicActor {
      *  The class is searched for in the following locations in
      *  order
      *  <ol>
-     *  <li> The directory named by the value 
+     *  <li> The directory named by the value
      *  the <i>dllDir</i> parameter relative to the current directory.
      *  (The current directory is named by the user.dir property)
-     *  <li> The directory named by the value 
+     *  <li> The directory named by the value
      *  the <i>dllDir</i> parameter relative to $PTII, which is named
      *  by the ptolemy.ptII.dir property.
      *  <li> Elsewhere in the path named by the the java.library.path
@@ -421,7 +421,7 @@ public class GenericJNIActor extends TypedAtomicActor {
             MessageHandler.error("Interface C class not found : ", ex);
         }
 
-        // Add the value of dllDir to the java.library.path 
+        // Add the value of dllDir to the java.library.path
         // First, look relative to the current directory (user.dir)
         // Second, look relative to $PTII
         System.setProperty("java.library.path",
@@ -509,7 +509,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                 // FIXME: Rethrow the error as an exception
                 String libraryPath =
                     StringUtilities.getProperty("java.library.path");
-                        
+
                 throw new Exception("Class '" + _class
                         + "' cannot be instantiated.\n"
                         + "Be sure that the library "
@@ -520,7 +520,7 @@ public class GenericJNIActor extends TypedAtomicActor {
                         + "restart.\n"
                         + "For example, under Windows "
                         + "in a Cygwin bash shell:\n"
-                        + "PATH=c:/ptII/jni/dll\n" 
+                        + "PATH=c:/ptII/jni/dll\n"
                         + "export PATH\n"
                         + "vergil -jni foo.xml\n"
                         + "A common error is that "

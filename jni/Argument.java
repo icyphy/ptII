@@ -126,7 +126,7 @@ public class Argument extends Attribute implements Settable {
     }
 
     /** Set to true if the attribute is a return
-     *        @param returnFlag True if this is an input, false if it is not.        
+     *        @param returnFlag True if this is an input, false if it is not.
      */
     public void setReturn(boolean returnFlag) {
         _isReturn = returnFlag;
@@ -142,7 +142,7 @@ public class Argument extends Attribute implements Settable {
             this.setInput(true);
         } else {
             this.setInput(false);
-        } 
+        }
         if (selectedValues.equals("output")) {
             this.setOutput(true);
         } else {
@@ -235,7 +235,7 @@ public class Argument extends Attribute implements Settable {
         // so we use boolean which is 8 bits unsigned
         if (_cType.equals("char") || _cType.startsWith("char")) {
             returnJType = "boolean" + returnJType;
-        } else if (_cType.equals("short") || 
+        } else if (_cType.equals("short") ||
                    _cType.startsWith("short")) {
             // a C short is 16 bits unsigned, a java short is 16 bits
             // but not unsigned,
@@ -440,7 +440,7 @@ public class Argument extends Attribute implements Settable {
     /** Remove a listener to be notified when the value of
      *  this settable object changes.
      *  @param listener The listener to remove.
-     */ 
+     */
     public void removeValueListener(ptolemy.kernel.util.ValueListener
                                     listener) {
     }

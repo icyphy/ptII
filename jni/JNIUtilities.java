@@ -64,7 +64,7 @@ public class JNIUtilities {
     }
 
     public static void generateJNI(CompositeEntity model,
-            GenericJNIActor actor) 
+            GenericJNIActor actor)
             throws Exception {
         // V‰rification qu'il y a un return, place le return en void sinon
         if (actor.getArgumentReturn() == null) {
@@ -80,7 +80,7 @@ public class JNIUtilities {
         }
         actor.removeAllPorts();
         actor.createPorts();
-        
+
         //Nommage de l'acteur en fonction de ses parameters
         String nativeFuncName = "";
         String libName = "";
@@ -95,7 +95,7 @@ public class JNIUtilities {
                         .getAttribute("Native Library Name"))
                         .getToken())
                 .toString();
-            
+
         } catch (Exception ex) {
             MessageHandler.error(
                     "no lib or func name ! : ",
@@ -140,7 +140,7 @@ public class JNIUtilities {
             + "/Jni"
             + actor.getName()
             + ".java";
-        
+
         Runtime r = Runtime.getRuntime();
         Process compil = r.exec(cmd);
 
