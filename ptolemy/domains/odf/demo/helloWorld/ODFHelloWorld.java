@@ -71,24 +71,31 @@ public class ODFHelloWorld {
         topLevelActor.setDirector( director );
         
         // Set up next level actors
-        ODFPrintString printer = new ODFPrintString( topLevelActor, "printer" );
-        ODFConsonants consonants = new ODFConsonants( topLevelActor, "consonants" );
-        ODFVowels vowels = new ODFVowels( topLevelActor, "vowels" );
-        ODFPunctuation punctuation = new ODFPunctuation( topLevelActor, "punctuation" );
+        ODFPrintString printer = new 
+	    ODFPrintString( topLevelActor, "printer" );
+        ODFConsonants consonants = new 
+	    ODFConsonants( topLevelActor, "consonants" );
+        ODFVowels vowels = new 
+	    ODFVowels( topLevelActor, "vowels" );
+        ODFPunctuation punctuation = new 
+	    ODFPunctuation( topLevelActor, "punctuation" );
         // System.out.println("Actors have been instantiated.");
         
         // Set up ports, relation 
+        IOPort input = (IOPort)printer.getPort("input");
         IOPort output1 = (IOPort)consonants.getPort("output");
         IOPort output2 = (IOPort)vowels.getPort("output");
         IOPort output3 = (IOPort)punctuation.getPort("output");
-        IOPort input = (IOPort)printer.getPort("input");
         IORelation relation; 
         // System.out.println("Ports and relations are finished.");
         
         // Set up connections
-        relation = (IORelation)topLevelActor.connect( output1, input, "rel1" );
-        relation = (IORelation)topLevelActor.connect( output2, input, "rel2" );
-        relation = (IORelation)topLevelActor.connect( output3, input, "rel3" );
+        relation = (IORelation)
+	    topLevelActor.connect( output1, input, "rel1" );
+        relation = (IORelation)
+	    topLevelActor.connect( output2, input, "rel2" );
+        relation = (IORelation)
+	    topLevelActor.connect( output3, input, "rel3" );
         // System.out.println("Connections are complete.");
         
         
@@ -99,9 +106,11 @@ public class ODFHelloWorld {
         // int width = input.getWidth();
         // System.out.println("Width of input port is " + width);
         
-        // Start simulation
+        // Start simulation            System.out.println("\t"+token.stringValue()+"\tTime is " + time);
+
         manager.run();
         
+        System.out.println();
         System.out.println();
         System.out.println();
         System.out.println();
