@@ -49,7 +49,8 @@ JSRCS = \
 	DotProductSystem.java \
 	RampArraySystem.java \
 	RampSystem.java \
-	TwoArraysIn.java
+	TwoArraysIn.java \
+	TwoArraysInSystem.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
@@ -91,65 +92,56 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 depend:
 	@echo "no dependencies in this directory"
 
+demo:
+	make RampSystem RampArraySystem DotProductSystem
+
+# Directory to create code generation files in
+CGROOT=$(ROOT)
+
+# Generate code for a simple Ramp->FileWriter demo
+RampSystem: RampSystem.mk
+	make -f RampSystem.mk
+RampSystem.mk:
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." \
+	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+	-class  ptolemy.domains.sdf.codegen.test.RampSystem \
+	-makefileOnly \
+	-iterations 10 \
+	-outdir $(CGROOT)
 
 # Generate code for a Ramp->FileWriter demo that uses
 # array tokens
-# To generate code in the current directory:
-#   rm -rf ~/ptII/cg; make CGROOT=. ramp2
-CGROOT=$(ROOT)
-ramp2: interpret_ramp2 generate_ramp2 compile_ramp2 run_ramp2
-# Run using the standard Ptolemy infrastructure
-interpret_ramp2: jclass
-	CLASSPATH="$(CLASSPATH)" \
-		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
-		-class ptolemy.domains.sdf.codegen.test.RampArraySystem \
-		-iterations 10
-
-# Generate code in $CGROOT/RampArraySystem
-generate_ramp2:
+RampArraySystem: RampArraySystem.mk
+	make -f RampArraySystem.mk
+RampArraySystem.mk:
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." \
 	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 	-class  ptolemy.domains.sdf.codegen.test.RampArraySystem \
+	-makefileOnly \
 	-iterations 10 \
-	-outdir $(CGROOT) -outpkg cg.RampArraySystem
+	-outdir $(CGROOT)
 
-# Compile code in $CGROOT/RampArraySystem
-compile_ramp2:
-	(cd $(CGROOT)/cg/RampArraySystem; "$(JAVAC)" $(JFLAGS) -classpath ../.. CG_Main.java)
-
-# Run in $CGROOT/RampArraySystem
-run_ramp2:
-	(cd $(CGROOT)/cg/RampArraySystem; \
-		"$(JAVA)" -classpath ../.. cg.RampArraySystem.CG_Main)
-
-
+# Generate code for a trivial TwoArraysIn demo - much faster for testing
+TwoArraysInSystem: jclass TwoArraysInSystem.mk
+	make -f TwoArraysInSystem.mk
+TwoArraysInSystem.mk:
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." \
+	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+	-class  ptolemy.domains.sdf.codegen.test.TwoArraysInSystem \
+	-makefileOnly \
+	-iterations 10 \
+	-outdir $(CGROOT)
 
 # Generate code for a trivial dotproduct demo - much faster for testing
-# To generate code in the current directory:
-#   rm -rf ~/ptII/cg; make CGROOT=. dotproduct
-CGROOT=$(ROOT)
-dotproduct: interpret_dotproduct generate_dotproduct compile_dotproduct run_dotproduct
-interpret_dotproduct: jclass
-	CLASSPATH="$(CLASSPATH)" \
-		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
-		-class ptolemy.domains.sdf.codegen.test.DotProductSystem \
-		-iterations 10
-
-generate_dotproduct:
+DotProductSystem: DotProductSystem.mk
+	make -f DotProductSystem.mk
+DotProductSystem.mk:
 	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." \
 	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 	-class  ptolemy.domains.sdf.codegen.test.DotProductSystem \
+	-makefileOnly \
 	-iterations 10 \
-	-outdir $(CGROOT) -outpkg cg.DotProductSystem
-
-compile_dotproduct:
-	(cd $(CGROOT)/cg/DotProductSystem; "$(JAVAC)" $(JFLAGS) -classpath ../.. CG_Main.java)
-run_dotproduct:
-	(cd $(CGROOT)/cg/DotProductSystem; \
-		"$(JAVA)" -classpath ../.. cg.DotProductSystem.CG_Main)
-
-
-# Generate code for a trivial butterfly demo - much faster for testing
+	-outdir $(CGROOT)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
