@@ -65,9 +65,11 @@ public class Query extends JPanel {
         _grid = new GridBagLayout();
         _constraints = new GridBagConstraints();
         _constraints.fill = GridBagConstraints.HORIZONTAL;
-        // Currently, resizing the query does not change the size
-        // of the entries.  To change that, uncomment the following.
-        // _constraints.weightx = 1.0;
+	
+	// If the next line is commented out, then the PtolemyApplet
+	// model parameters will have an entry that is less than one
+	// character wide unless the window is made to be fairly large.
+        _constraints.weightx = 1.0;
         _constraints.anchor = GridBagConstraints.NORTHWEST;
         _entryPanel.setLayout(_grid);
         // It's not clear whether the following has any real significance...
