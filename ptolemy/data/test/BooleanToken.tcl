@@ -106,7 +106,7 @@ test BooleanToken-4.0 {Test addition of booleans} {
     set r3 [$falseToken add $trueToken]
     set r4 [$trueToken add $trueToken]
     list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
-} {false true true false}
+} {false true true true}
 
 test BooleanToken-4.1 {Test reverse addition of booleans} {
     set r1 [$falseToken addReverse $falseToken]
@@ -114,7 +114,7 @@ test BooleanToken-4.1 {Test reverse addition of booleans} {
     set r3 [$falseToken addReverse $trueToken]
     set r4 [$trueToken addReverse $trueToken]
     list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
-} {false true true false}
+} {false true true true}
 
 test BooleanToken-5.0 {Test division of booleans} {
     set r1 [$falseToken divide $trueToken]
@@ -184,7 +184,7 @@ test BooleanToken-10.0 {Test subtraction of booleans} {
     set r3 [$falseToken subtract $trueToken]
     set r4 [$trueToken subtract $trueToken]
     list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
-} {false true true false}
+} {false true true true}
 
 test BooleanToken-11.0 {Test reverse subtraction of booleans} {
     set r1 [$falseToken subtractReverse $falseToken]
@@ -192,7 +192,7 @@ test BooleanToken-11.0 {Test reverse subtraction of booleans} {
     set r3 [$falseToken subtractReverse $trueToken]
     set r4 [$trueToken subtractReverse $trueToken]
     list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
-} {false true true false}
+} {false true true true}
 
 ######################################################################
 ####
