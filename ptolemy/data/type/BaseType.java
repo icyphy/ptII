@@ -347,6 +347,10 @@ public class BaseType implements Type, Serializable {
 	_tokenClass = c;
 	_name = name;
 	_convertOp = op;
+        // For some reason, it doesn't work to initialize this statically.
+        if (_types == null) {
+            _types = new HashMap();
+        }
         _types.put(_name, this);
     }
 
@@ -358,7 +362,7 @@ public class BaseType implements Type, Serializable {
     private ConvertOperator _convertOp;
 
     // Table of types that have been created.
-    private static Map _types = new HashMap();
+    private static Map _types;
 
     ///////////////////////////////////////////////////////////////////
     ////                      private interface                    ////
