@@ -37,7 +37,7 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-test OrderedMerge-2.1 {a ramp with an PythonScript that doubles} {
+test PythonScript-2.1 {a ramp with an PythonScript that doubles} {
     # We use a tcl test here so that we can turn on the listeners
     # and look for deadlock problems		
 
@@ -168,7 +168,7 @@ Called wrapup()
 }
 
 
-test OrderedMerge-2.2 {a ramp with an PythonScript that doubles and calls stop} {
+test PythonScript-2.2 {a ramp with an PythonScript that doubles and calls stop} {
     # Uses test 2.1 above
     $script setExpression {
 class Main :
@@ -210,7 +210,7 @@ Called wrapup()
 }
 
 
-test OrderedMerge-2.3 {a ramp with an PythonScript that doubles and calls terminate} {
+test PythonScript-2.3 {a ramp with an PythonScript that doubles and calls terminate} {
     # Uses test 2.1 above
     $script setExpression {
 class Main :
@@ -253,7 +253,7 @@ Called wrapup()
 }
 
 
-test OrderedMerge-2.4 {a ramp with an PythonScript that doubles and calls debug} {
+test PythonScript-2.4 {a ramp with an PythonScript that doubles and calls debug} {
     # Uses test 2.1 above
     $script setExpression {
 class Main :
@@ -306,7 +306,7 @@ Called postfire()
 Called wrapup()
 }
 
-test OrderedMerge-2.5 {Bogus script, test _reportScriptError()} {
+test PythonScript-2.5 {Bogus script, test _reportScriptError()} {
     # Uses test 2.1 above
     $script setExpression {
 class Main :
