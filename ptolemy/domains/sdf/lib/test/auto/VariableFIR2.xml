@@ -11,12 +11,16 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 55.0">
         </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}}">
     </property>
     <entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
         <property name="decimation" class="ptolemy.data.expr.Parameter" value="1">
@@ -122,16 +126,37 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Assertion" class="ptolemy.actor.lib.Assertion">
-        <property name="assertion" class="ptolemy.data.expr.Parameter" value="static==varying">
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="!(static==varying)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 135.0">
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="370.0, 150.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+            </property>
+        </port>
         <port name="static" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
         <port name="varying" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+        </port>
+    </entity>
+    <entity name="ThrowModelError" class="ptolemy.actor.lib.ThrowModelError">
+        <property name="message" class="ptolemy.kernel.util.StringAttribute" value="A model error.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 150.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -140,17 +165,21 @@
         <vertex name="vertex1" value="120.0, 170.0">
         </vertex>
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="FIR.input" relation="relation3"/>
-    <link port="FIR.output" relation="relation6"/>
+    <link port="FIR.output" relation="relation4"/>
     <link port="VariableFIR.input" relation="relation3"/>
-    <link port="VariableFIR.output" relation="relation7"/>
+    <link port="VariableFIR.output" relation="relation5"/>
     <link port="VariableFIR.newTaps" relation="relation"/>
     <link port="Const.output" relation="relation"/>
     <link port="Pulse.output" relation="relation3"/>
-    <link port="Assertion.static" relation="relation6"/>
-    <link port="Assertion.varying" relation="relation7"/>
+    <link port="Expression.output" relation="relation2"/>
+    <link port="Expression.static" relation="relation4"/>
+    <link port="Expression.varying" relation="relation5"/>
+    <link port="ThrowModelError.input" relation="relation2"/>
 </entity>
