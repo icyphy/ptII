@@ -100,12 +100,15 @@ public final class ASTReflect {
     ////                         public methods                    ////
 
     /** Use reflection to set the members subtree of the AST asslociated with
-     *  a class declaration. This ensures so-called "deep loading" of a class's AST. 
-     *  @param myClass The class whose members we are adding by reflection.
+     *  a class or interface declaration. 
+     *  This ensures so-called "deep loading" of a class's AST
+     *  for a class that was originally loaded shallowly. 
+     *  @param declNode The shallowly-loaded AST for the class or interface whose members 
+     *  we are adding by reflection.
      */
-    public static void ASTAugmentWithMembers(ClassDeclNode classDeclNode) {
+    public static void ASTAugmentWithMembers(UserTypeDeclNode declNode) {
         Class myClass = ASTReflect.lookupClass(
-                ASTReflect.getFullyQualifiedName(classDeclNode));
+                ASTReflect.getFullyQualifiedName(declNode));
     
         if (StaticResolution.traceLoading)
             System.out.println("Starting shallow-->deep conversion on " + 
@@ -126,7 +129,7 @@ public final class ASTReflect {
         memberList.addAll(innerClassesOrInterfacesASTList(myClass));    
 
         // Fill in the members list of the given class declaration
-        classDeclNode.setMembers(memberList);
+        declNode.setMembers(memberList);
     }
  
     /** Use reflection to generate the ClassDeclNode of a class.
@@ -143,7 +146,6 @@ public final class ASTReflect {
 	NameNode className = (NameNode) _makeNameNode(myClass.getName());
 	List interfaceList = _typeNodeList(myClass.getInterfaces());
 
-    // FIXME: just use ASTAugmentWithMembers once that code stabilizes.
 	LinkedList memberList = new LinkedList();
 
 	// Get the AST for all the constructors.
@@ -207,12 +209,13 @@ public final class ASTReflect {
 
 	CompileUnitNode compileUnitNode = null;
 	if (myClass.isInterface()) {
-	    InterfaceDeclNode interfaceDeclNode =
-		ASTInterfaceDeclNode(myClass);
+	    InterfaceDeclNode interfaceDeclNode = null;
+        if (StaticResolution.shallowLoading && StaticResolution.enableShallowLoading) 
+		    interfaceDeclNode = ASTShallowInterfaceDeclNode(myClass);
+        else interfaceDeclNode = ASTInterfaceDeclNode(myClass);
 	    compileUnitNode =
-		new CompileUnitNode(packageName,
-                        /*imports*/ new LinkedList(),
-                        TNLManip.addFirst(interfaceDeclNode));
+		new CompileUnitNode(packageName, /*imports*/ new LinkedList(),
+                TNLManip.addFirst(interfaceDeclNode));
 	} else {
         ClassDeclNode classDeclNode = null;
         if (StaticResolution.shallowLoading && StaticResolution.enableShallowLoading)
@@ -227,16 +230,16 @@ public final class ASTReflect {
     }
 
 
-    /** Generate the a shallow version of the ClassDeclNode of a class. 
+    /** Generate the a shallow version of the declaration for a class.
      *  In particular, fill in only the super class subtree. 
      *  This is to facilitate demand-driven loading of AST subtrees.
-     *  FIXME: experimental (Shuvra).
      *  @param myClass The class to be analyzed.
-     *  @return The "shallow" ClassDeclNode of that class.
+     *  @return The "shallow" class declaration AST of that class.
      */
     public static ClassDeclNode ASTShallowClassDeclNode(Class myClass) {
     if (StaticResolution.traceLoading) 
-         System.out.println("Starting shallow loading of " + myClass.getName()); 
+         System.out.println("Starting shallow loading of class '" + 
+                 myClass.getName() + "'"); 
     
 	int modifiers =
 	    Modifier.convertModifiers(myClass.getModifiers());
@@ -265,6 +268,31 @@ public final class ASTReflect {
                     superClass);
 
 	return classDeclNode;
+    }
+
+
+    /** Generate the a shallow version of the declaration for an interface. 
+     *  In particular, fill in only the super class subtree. 
+     *  This is to facilitate demand-driven loading of AST subtrees.
+     *  @param myClass The interface to be analyzed.
+     *  @return The "shallow" interface declaration AST of that interface.
+     */
+    public static InterfaceDeclNode ASTShallowInterfaceDeclNode(Class myClass) {
+    if (StaticResolution.traceLoading) 
+         System.out.println("Starting shallow loading of interface '" + 
+                 myClass.getName() + "'"); 
+    
+	int modifiers =
+	    Modifier.convertModifiers(myClass.getModifiers());
+	NameNode className = (NameNode) _makeNameNode(myClass.getName());
+	List interfaceList = _typeNodeList(myClass.getInterfaces());
+	InterfaceDeclNode interfaceDeclNode =
+	    new InterfaceDeclNode(modifiers,
+                    className,
+                    interfaceList,
+                    null);
+
+	return interfaceDeclNode;
     }
 
     /** Return a list of constructors where each element contains
@@ -316,19 +344,18 @@ public final class ASTReflect {
      *  and scope building passes so that we can proceed with name/field resolution
      *  using the deeply-loaded AST. If the AST is already fully loaded, do
      *  nothing. 
-     *  @param declarationNode The AST node for the given class or interface declaration.
+     *  @param node The AST node for the given class or interface declaration.
      *  @exception A RunTimeException is thrown if the declaration is null, or
      *  if it does not correspond to a class or interface declaration.
      */
-    public static void ensureDeepLoading(TreeNode declarationNode) {
-        // FIXME: extend to include interfaces
-        if (!(declarationNode instanceof ClassDeclNode)) {
-            throw new RuntimeException("Invalid source node for class declaration ("
-                    + ((declarationNode == null) ? "null"  
-                    : declarationNode.getClass().getName()) + ")"); 
+    public static void ensureDeepLoading(TreeNode node) {
+        if (!(node instanceof UserTypeDeclNode)) {
+            throw new RuntimeException("Invalid source node for class or interface "
+                    + "declaration (" + ((node == null) ? "null"  : 
+                    node.getClass().getName()) + ")"); 
         }
-        ClassDeclNode classDeclNode = (ClassDeclNode)(declarationNode);
-        if (ASTReflect.isShallow(classDeclNode)) _loadDeeply(classDeclNode);
+        UserTypeDeclNode declarationNode = (UserTypeDeclNode)(node);
+        if (ASTReflect.isShallow(declarationNode)) _loadDeeply(declarationNode);
     }
 
     /** Return a list of fields where each element contains
@@ -808,29 +835,33 @@ public final class ASTReflect {
 	return defType;
     }
 
-    /** Given an AST that has been loaded in shallow mode, convert the loaded
+    /** Given an AST for an interface or class declaration that has been loaded 
+     *  in shallow mode, convert the loaded
      *  AST to its deep version, and perform all necessary resolution 
      *  and scope building passes so that we can proceed with name/field resolution
      *  using the deeply-loaded AST.
+     *  
+     *  @param declNode The AST of the interface or class declaration that is to
+     *  be loaded deeply.
      */
-    private static void _loadDeeply(ClassDeclNode classDeclNode) {
+    private static void _loadDeeply(UserTypeDeclNode declNode) {
         if (StaticResolution.traceLoading) 
             System.out.println("ASTReflect._loadDeeply called on "
-                    + classDeclNode.getName().getIdent());
+                    + declNode.getName().getIdent());
 
-        ASTAugmentWithMembers(classDeclNode);
+        ASTAugmentWithMembers(declNode);
         if (StaticResolution.traceLoading) 
             System.out.println("The deeply loaded AST follows\n."
-                    + classDeclNode.toString()); 
-        JavaDecl declaration = JavaDecl.getDecl((TreeNode)classDeclNode);
+                    + declNode.toString()); 
+        JavaDecl declaration = JavaDecl.getDecl((TreeNode)declNode);
         if (!(declaration instanceof ClassDecl)) {
 	        throw new RuntimeException("_loadDeeply: "
                     + "Could not find the class declaration (ClassDecl) "
-                    + "associated with class '" + classDeclNode.getName().getIdent()
+                    + "associated with class '" + declNode.getName().getIdent()
                     + ". The declaration's class is: " + ((declaration == null) ? "null"  
                     : declaration.getClass().getName()) 
                     + ".\nA dump of the offending AST subtree follows.\n"
-                    + classDeclNode.toString());
+                    + declNode.toString());
         }
         ClassDecl classDecl = (ClassDecl)declaration;
 
@@ -839,15 +870,15 @@ public final class ASTReflect {
                     classDecl.getScope().toString()); 
 
         // Perform static resolution on the deeply loaded AST
-        TreeNode parent = classDeclNode.getParent();
+        TreeNode parent = declNode.getParent();
         if (!(parent instanceof CompileUnitNode))  {
 	        throw new RuntimeException("_loadDeeply: "
                     + "Could not find the compilation unit (CompileUnitNode) "
-                    + "associated with class '" + classDeclNode.getName().getIdent()
+                    + "associated with class '" + declNode.getName().getIdent()
                     + ". The parent class is: " + ((parent == null) ? "null"  
                     : parent.getClass().getName()) 
                     + ".\nA dump of the offending AST subtree follows.\n"
-                    + classDeclNode.toString());
+                    + declNode.toString());
         }
         if (StaticResolution.traceLoading)
             System.out.println("_loadDeeply: building scopes");
