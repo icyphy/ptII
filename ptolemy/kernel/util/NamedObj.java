@@ -121,7 +121,9 @@ import ptolemy.util.StringUtilities;
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (eal)
-   @Pt.AcceptedRating Green (hyzheng)
+   @Pt.AcceptedRating Yellow (neuendor)
+
+   FIXME: Need to review move*() methods to get to green again.
 
    @see Attribute
    @see Workspace
@@ -1265,7 +1267,7 @@ public class NamedObj implements
             _debug(message);
         }
     }
-    
+
     /** Move this object down by one in the list of objects in
      *  its container. If this object is already
      *  last, do nothing.  In this base class, this method throws
@@ -1643,6 +1645,13 @@ public class NamedObj implements
         }
     }
 
+    /** Set the verbose flag to false such that only normal debugging
+     *  information is exposed.
+     */
+    public void setNormalDebugging() {
+        _verbose = false;
+    }
+
     /** Set the persistence of this object. If the persistence is not
      *  specified with this method, then by default the object will be
      *  persistent unless it is derivable by derivation from a class.
@@ -1677,6 +1686,13 @@ public class NamedObj implements
      */
     public void setSource(String source) {
         _source = source;
+    }
+
+    /** Set the verbose flag to true such that more debugging
+     *  information is shown.
+     */
+    public void setVerboseDebugging() {
+        _verbose = true;
     }
 
     /** Return an ordered list of contained objects filtered by the specified
@@ -2417,6 +2433,10 @@ public class NamedObj implements
      *  This should be set by the constructor and never changed.
      */
     protected Workspace _workspace;
+
+    /** Flag that is true if detailed debug information is necessary.
+     */
+    protected boolean _verbose = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
