@@ -277,7 +277,9 @@ public class SerialComm extends TypedAtomicActor
                 getDirector().fireAt(this, getDirector().getCurrentTime());
             }
         } catch (Exception ex) {
-            if (_debugging) _debug("Win2 " + ex.getMessage());
+            throw new IllegalActionException(this,
+                    "serialEvent's call to fireAt() failed: "
+                    + ex.toString());
         }
     }
 
