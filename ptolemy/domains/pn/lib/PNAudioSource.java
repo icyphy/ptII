@@ -84,7 +84,7 @@ public class PNAudioSource extends AtomicActor {
     /** Reads one block of data from file and writes it to output port.
      *  Assuming data in 16 bit, higher byte first format.
      */
-    //FIXME: CUrrently this is a BIIIIIG hack and should be changed ASA 
+    //FIXME: Currently this is a BIIIIIG hack and should be changed ASA 
     // the new kernel strategy is implemented
     public void fire() throws IllegalActionException {
         try {
