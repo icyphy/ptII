@@ -24,11 +24,12 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (celaine@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
+@ProposedRating Red (celaine@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
@@ -56,17 +57,19 @@ import java.util.List;
 Extract the ith element from an array.  This actor reads an array from the
 <i>input</i> port and sends one of its elements to the <i>output</i>
 port.  The element that is extracted is determined by the
-<i>index</i> input.  It is required that 0 &lt;= <i>index</i> &lt;
+<i>index</i> input, if one is provided, and by the <i>index</i>
+parameter, if not.  It is required that 0 &lt;= <i>index</i> &lt;
 <i>N</i>, where <i>N</i> is the length of the input array, or
 an exception will be thrown by the fire() method.
 
+@see ArrayElement
 @see LookupTable
 @see RecordDisassembler
-@author Edward A. Lee, Elaine Cheong,Jim Armstrong
+@author Edward A. Lee, Jim Armstrong
 @version $Id$
 */
 
-public class ArrayElementI extends Transformer {
+public class ArrayElementI extends ArrayElement {
     
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -80,75 +83,37 @@ public class ArrayElementI extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        index = new TypedIOPort(this, "index", true, false);
-        index.setTypeEquals(BaseType.INT);
+        indexPort = new TypedIOPort(this, "index", true, false);
+        indexPort.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         Input                      ////
+    ////                         Ports and Parameters              ////
 
-    /** The index into the input array.  This is an integer that is required to be less than or equal to the
-     *  length of the input array.
+    /** The port for providing the index into the input array.
+     *  This is an integer that is required to be less than or equal
+     *  to the length of the input array.
      */
-    public TypedIOPort index;
+    public TypedIOPort indexPort;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Consume at most one array from the input port and produce
-     *  its ith elements on the output port.  If there is no input index token
-     *  or token on the input, then no output is produced.
-     *  @exception IllegalActionException If the <i>index</i> input
+     *  its <i>i</i>-th element on the output port. If the <i>index</i>
+     *  input port has a token, then that token is used to set the
+     *  value of the <i>index</i> parameter.  The <i>index</i> parameter
+     *  is used to determine which element is the <i>i</i>-th element.
+     *  If there is no input token on the <i>input</i> port, then no
+     *  output is produced.
+     *  @exception IllegalActionException If the <i>index</i>
      *   is out of range.
      */
     public void fire() throws IllegalActionException {
-	if (index.hasToken(0)) {
-            _index = ((IntToken)index.get(0)).intValue();
+	if (indexPort.hasToken(0)) {
+            index.setToken(indexPort.get(0));
 	}
-	if(input.hasToken(0)) {
-	    ArrayToken token = (ArrayToken)input.get(0);
-	    if (_index < 0 || _index >= token.length()) {
-		throw new IllegalActionException(this,
-						 "index " + _index + " is out of range for the input "
-						 + "array, which has length " + token.length());
-	    }
-	    output.send(0, token.getElement(_index));
-	}
+        super.fire();
     }
-
-    /** Return the type constraints of this actor.
-     *  In this class, the constraints are that the type of the input port
-     *  is an array type, and the type of the output port is no less than
-     *  the type of the elements of the input array.
-     *  @return A list of instances of Inequality.
-     *  @see ptolemy.actor.TypedAtomicActor#typeConstraintList
-     */
-    public List typeConstraintList() {
-	LinkedList result = new LinkedList();
-
-	Type inputType = input.getType();
-        if (inputType == BaseType.UNKNOWN) {
-	    input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-        } else if ( !(inputType instanceof ArrayType)) {
-	    throw new IllegalStateException("ArrayElement.typeConstraintList: "
-	            + "The input type, " + inputType.toString() + " is not an "
-		    + "array type.");
-	}
-
-	ArrayType inputArrayType = (ArrayType)input.getType();
-	InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
-	Inequality inequality = new Inequality(elementTerm,
-			                       output.getTypeTerm());
-
-        result.add(inequality);
-	return result;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-    
-    // The most recently read index token.
-    private int _index = 0;
-    
 }
 
