@@ -2,7 +2,7 @@ adm
 #*
 #.??*
 core
-make.out
+*.out
 */codeDoc/*
 */\#*
 */*\~
