@@ -31,6 +31,26 @@
 	<entity name="JAIDCT" class="ptolemy.actor.lib.jai.JAIDCT">
 	</entity>
 	<entity name="JAIDFT" class="ptolemy.actor.lib.jai.JAIDFT">
+	  <property name="scalingType">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="dimensions" value="dimensions"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="unitary" value="unitary"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="none" value="none"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
+	  <property name="dataNature">
+	      <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+	          <property name="complexToComplex" value="complexToComplex"
+	      	            class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="complexToReal" value="complexToReal"
+			    class="ptolemy.kernel.util.StringAttribute"/>
+	          <property name="realToComplex" value="realToComplex"
+		            class="ptolemy.kernel.util.StringAttribute"/>
+	      </property>   
+	  </property>
 	</entity>
 	<entity name="JAIEdgeDetection" class="ptolemy.actor.lib.jai.JAIEdgeDetection">
 	</entity>
