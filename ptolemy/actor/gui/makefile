@@ -33,7 +33,9 @@
 
 ME =		ptolemy/actor/gui
 
-DIRS = 		doc jnlp style test
+# PTJACL_DIR is set to ptjacl by configure in $PTII/mk/ptII.mk if
+# ptjacl.jar was found and the Ptolemy Tcl implementation is available
+DIRS = 		doc jnlp style test $(PTJACL_DIR)
 
 # Root of the Java directory
 ROOT =		../../..
