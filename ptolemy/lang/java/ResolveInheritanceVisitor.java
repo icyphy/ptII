@@ -185,7 +185,7 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Given ClassDecls TO and FROM, add to TO's environ the members in
+    // Given ClassDecls TO and FROM, add to TO's scope the members in
     // CATEGORIES (a bitwise union of category values) that TO
     // inherits from FROM.
     private void _fillInInheritedMembers(ClassDecl to,

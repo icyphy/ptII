@@ -90,8 +90,8 @@ public class PackageDecl extends JavaDecl
         return _scope;
     }
 
-    public final void setScope(Scope environ) {
-        _scope = environ;
+    public final void setScope(Scope scope) {
+        _scope = scope;
     }
 
     public final boolean hasScope() { return true; }
@@ -107,7 +107,7 @@ public class PackageDecl extends JavaDecl
     ////                         private methods                   ////
 
 
-    // Initialize the environ by adding declarations for the package.
+    // Initialize the scope by adding declarations for the package.
     private void _initScope() {
 	/* SDFCodeGeneratorClassFactory.createPtolemyTypeIdentifier()
 	 * ptolemy.codegen.PtolemyTypeIdentifier has a static section

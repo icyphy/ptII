@@ -89,7 +89,7 @@ import ptolemy.lang.java.nodetypes.*;
  *     by Modifier.
  *  </p>
  *  <p>
- *   ATTRIBUTE environ
+ *   ATTRIBUTE scope
  *     Classes, interfaces, and packages define scopes:  mappings of
  *     names (of members, classes, interfaces, and subpackages) to
  *     JavaDecls of these entities.
@@ -166,7 +166,7 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
      *  JavaDecls of these entities.
      */
     public Scope getScope() {
-        throw new RuntimeException(getClass().getName() + " has no environ.");
+        throw new RuntimeException(getClass().getName() + " has no scope.");
     }
 
     /** Get an scope of types associated with this declaration. This
@@ -185,8 +185,8 @@ public abstract class JavaDecl extends Decl implements JavaStaticSemanticConstan
     }
 
     /** Set the scope associated with this declaration. */
-    public void setScope(Scope environ) {
-        throw new RuntimeException(getClass().getName() + " has no environ.");
+    public void setScope(Scope scope) {
+        throw new RuntimeException(getClass().getName() + " has no scope.");
     }
 
     /** Return true iff this declaration has an scope associated with it. */

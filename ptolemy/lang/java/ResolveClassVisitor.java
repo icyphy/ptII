@@ -79,7 +79,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
         LinkedList childArgs = new LinkedList();
         childArgs.add(NullValue.instance); // enclosing class decl
-        childArgs.add(NullValue.instance); // enclosing class environ
+        childArgs.add(NullValue.instance); // enclosing class scope
 
         TNLManip.traverseList(this, childArgs, node.getDefTypes());
 
@@ -226,7 +226,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         // expression
         LinkedList childArgs = new LinkedList();
         childArgs.addLast(NullTypeNode.instance); // enclosing class decl
-        childArgs.addLast(NullTypeNode.instance); // enclosing class environ
+        childArgs.addLast(NullTypeNode.instance); // enclosing class scope
         node.getInitExpr().accept(this, childArgs);
 
         return null;
@@ -339,7 +339,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
 
             LinkedList childArgs = new LinkedList();
             childArgs.addLast(NullTypeNode.instance); // enclosing class decl
-            childArgs.addLast(NullTypeNode.instance); // enclosing class environ
+            childArgs.addLast(NullTypeNode.instance); // enclosing class scope
             block.accept(this, childArgs);
         }
 
@@ -437,7 +437,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
         if (block != AbsentTreeNode.instance) {
             LinkedList childArgs = new LinkedList();
             childArgs.addLast(NullTypeNode.instance); // enclosing class decl
-            childArgs.addLast(NullTypeNode.instance); // enclosing class environ
+            childArgs.addLast(NullTypeNode.instance); // enclosing class scope
             block.accept(this, childArgs);
         }
 
@@ -502,7 +502,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         LinkedList childArgs = new LinkedList();
         childArgs.add(NullValue.instance); // no enclosing class decl
-        childArgs.add(NullValue.instance); // no enclosing class environ
+        childArgs.add(NullValue.instance); // no enclosing class scope
         TNLManip.traverseList(this, args, node.children());
         return null;
     }

@@ -88,8 +88,8 @@ public class PackageResolutionVisitor extends JavaVisitor
 
         pkgEnv.copyDeclList(thePkgDecl.getScope());
 
-        Scope environ = new Scope(pkgEnv); // the file level scope
-        node.setProperty(ENVIRON_KEY, environ);
+        Scope scope = new Scope(pkgEnv); // the file level scope
+        node.setProperty(ENVIRON_KEY, scope);
 
         node.accept(new ResolvePackageVisitor(), null);
 
