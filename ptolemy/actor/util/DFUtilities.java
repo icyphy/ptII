@@ -32,6 +32,7 @@ import java.util.Comparator;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.sched.NotSchedulableException;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -352,6 +353,30 @@ public class DFUtilities {
             }
         }
     }
+
+    /** Depending on the given flag, add an invisible, persistent
+     *  variable named "_showRate" with value true to the given port
+     *  that indicates to the user interface that rate parameters on
+     *  the given port should be displayed in the user interface.
+     *  @param port The port.
+     *  @param flag The flag.
+     */
+    public static void showRate(Port port, boolean flag)
+            throws IllegalActionException {
+        String name = "_showRate";
+        // Look for an existing parameter.
+        Variable variable = (Variable)port.getAttribute(name);
+        if (variable == null) {
+            try {
+                variable = new Parameter(port, name);
+                variable.setVisibility(Settable.EXPERT);
+            } catch (KernelException ex) {
+                throw new InternalErrorException(
+                        port, ex, "Should not occur");
+            }
+        }
+        variable.setToken(BooleanToken.getInstance(flag));
+    }    
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected classes                   ////
