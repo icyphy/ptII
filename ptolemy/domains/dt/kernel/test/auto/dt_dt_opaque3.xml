@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="dt_dt_transparent2" class="ptolemy.actor.TypedCompositeActor">
-    <property name="DT0" class="ptolemy.domains.dt.kernel.DTDirector">
+<entity name="test3 hierarchical opaque DT" class="ptolemy.actor.TypedCompositeActor">
+    <property name="Outside DT Director" class="ptolemy.domains.dt.kernel.DTDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="104.0, 50.0">
         </property>
     </property>
-    <entity name="OnePort1" class="ptolemy.domains.dt.kernel.test.OnePort">
+    <entity name="src__2" class="ptolemy.domains.dt.kernel.test.OnePort">
         <property name="inrate" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="outrate" class="ptolemy.data.expr.Parameter" value="2">
@@ -40,14 +40,14 @@
             </property>
         </port>
     </entity>
-    <entity name="OnePort4" class="ptolemy.domains.dt.kernel.test.OnePort">
+    <entity name="3__snk" class="ptolemy.domains.dt.kernel.test.OnePort">
         <property name="inrate" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="outrate" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="419.0, 152.0">
+        <property name="_location" class="ptolemy.moml.Location" value="439.0, 151.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -82,9 +82,9 @@
         </port>
     </entity>
     <entity name="opaque_dt" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.moml.Location" value="308.0, 151.0">
+        <property name="_location" class="ptolemy.moml.Location" value="280.0, 151.0">
         </property>
-        <property name="DT0" class="ptolemy.domains.dt.kernel.DTDirector">
+        <property name="Inside DT Director" class="ptolemy.domains.dt.kernel.DTDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -116,14 +116,14 @@
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
-        <entity name="OnePort2" class="ptolemy.domains.dt.kernel.test.OnePort">
+        <entity name="1__2" class="ptolemy.domains.dt.kernel.test.OnePort">
             <property name="inrate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="outrate" class="ptolemy.data.expr.Parameter" value="2">
             </property>
             <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="229.0, 164.0">
+            <property name="_location" class="ptolemy.moml.Location" value="228.0, 163.0">
             </property>
             <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
                 <property name="input"/>
@@ -144,14 +144,14 @@
                 </property>
             </port>
         </entity>
-        <entity name="OnePort3" class="ptolemy.domains.dt.kernel.test.OnePort">
+        <entity name="3__1" class="ptolemy.domains.dt.kernel.test.OnePort">
             <property name="inrate" class="ptolemy.data.expr.Parameter" value="3">
             </property>
             <property name="outrate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
             <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="[0, 0]">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="352.0, 164.0">
+            <property name="_location" class="ptolemy.moml.Location" value="352.0, 163.0">
             </property>
             <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
                 <property name="input"/>
@@ -180,10 +180,10 @@
         </relation>
         <link port="port0" relation="relation5"/>
         <link port="port1" relation="relation6"/>
-        <link port="OnePort2.input" relation="relation5"/>
-        <link port="OnePort2.output" relation="relation4"/>
-        <link port="OnePort3.input" relation="relation4"/>
-        <link port="OnePort3.output" relation="relation6"/>
+        <link port="1__2.input" relation="relation5"/>
+        <link port="1__2.output" relation="relation4"/>
+        <link port="3__1.input" relation="relation4"/>
+        <link port="3__1.output" relation="relation6"/>
     </entity>
     <entity name="CurrentTime1" class="ptolemy.actor.lib.CurrentTime">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -238,8 +238,8 @@
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="437.0, 69.0">
         </vertex>
     </relation>
-    <link port="OnePort1.output" relation="relation5"/>
-    <link port="OnePort4.input" relation="relation7"/>
+    <link port="src__2.output" relation="relation5"/>
+    <link port="3__snk.input" relation="relation7"/>
     <link port="CurrentTime8.output" relation="relation4"/>
     <link port="CurrentTime8.trigger" relation="relation5"/>
     <link port="opaque_dt.port0" relation="relation5"/>
