@@ -36,12 +36,13 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Iterator;
 import java.util.List;
 import javax.swing.JFrame;
-import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 //////////////////////////////////////////////////////////////////////////
 //// Tableau
@@ -249,7 +250,8 @@ public class Tableau extends ComponentEntity {
                 }
                 frame.setVisible(true);
             }
-            // FIXME: need to deiconify the window.  How to do that?
+            // Deiconify the window.
+            frame.setState(Frame.NORMAL);
             frame.toFront();
         }
     }
