@@ -55,7 +55,9 @@
         </property>
     </property>
     <class name="NoisySinewave" extends="ptolemy.actor.lib.Sinewave">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {184, 242, 811, 566}, maximized = false}">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 450]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {181, 220, 811, 566}, maximized = false}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 120.0">
         </property>
@@ -75,12 +77,18 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 50.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 30.0">
             </property>
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{298.0, 225.0}">
+        </property>
+        <property name="annotation_1_2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The objects highlighted in pink are&#10;defined in the superclass. Such objects&#10;cannot be removed in this derived class.&#10;Their parameters can be changed, however.&#10;This implies that they can be moved and&#10;can be assigned custom icons. To examine&#10;the superclass, right click on the&#10;background and select &quot;Open Base Class&quot;.">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 70.0">
+            </property>
         </property>
         <port name="noisy" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -132,6 +140,10 @@
         </property>
         <property name="noiseStandardDeviation" class="ptolemy.data.expr.Parameter" value="0.3">
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            </property>
+        </property>
+        <property name="annotation_1_2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 150.0">
             </property>
         </property>
     </entity>
