@@ -36,7 +36,8 @@ DIRS =
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/ptCal.jar$(CLASSPATHSEPARATOR)$(ROOT)/lib/saxon7.jar
+# FIXME: We use java_cup here, which is in jasminclasses.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/lib/ptCal.jar$(CLASSPATHSEPARATOR)$(ROOT)/lib/jasminclasses.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
