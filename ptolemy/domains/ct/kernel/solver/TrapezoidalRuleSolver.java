@@ -42,7 +42,7 @@ This class is under significant rework. Please don't use it!!!
 @author Jie Liu 
 @version $Id$
 */
-public class TrapezoidalRuleSolver extends VariableStepSolver{
+public class TrapezoidalRuleSolver extends ODESolver{
     
 
     /** Construct a solver in the default workspace with an empty

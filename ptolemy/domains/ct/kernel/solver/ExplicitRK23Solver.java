@@ -58,7 +58,7 @@ h' = 0.8*Math.pow((ErrorTolerance/LTE), 1.0/3.0)
 @author  Jie Liu
 @version $Id$
 */
-public class ExplicitRK23Solver extends VariableStepSolver{
+public class ExplicitRK23Solver extends ODESolver{
 
 
     /** Construct a solver in the default workspace with an empty
