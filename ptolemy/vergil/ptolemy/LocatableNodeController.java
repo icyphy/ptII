@@ -161,6 +161,7 @@ public class LocatableNodeController extends BasicNodeController {
 
     /** Set the desired location of this node.  Throw an exception if the
      *  node can not be given a desired location.
+     *  @exception IllegalActionExceptoin Not thrown in this base class.
      */
     public void setLocation(Object node, double[] location)
             throws IllegalActionException {
