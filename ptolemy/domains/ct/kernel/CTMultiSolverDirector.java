@@ -470,16 +470,6 @@ public class CTMultiSolverDirector extends CTDirector {
         if (_debugging) {
             _debug("----- End of Initialization of: " + getFullName());
         }
-
-        // Continuous signals must have values at the very beginning of 
-        // simulation. The following block of code is just for this purpose.
-        if (_firstIteration) {
-            // propagate the initial states with a breakpoint solver 
-            _propagateResolvedStates();
-            // Restore the solver to normal solver to make tests pass.
-            _setCurrentODESolver(_normalSolver);
-            _firstIteration = false;
-        }
     }
 
     /** Return true if this director wants to be fired again. Return false, if 
@@ -789,6 +779,16 @@ public class CTMultiSolverDirector extends CTDirector {
     protected void _discretePhaseExecution() throws IllegalActionException {
         _setDiscretePhase(true);
 
+        // Continuous signals must have values at the very beginning of 
+        // simulation. The following block of code is just for this purpose.
+        if (_firstIteration) {
+            // propagate the initial states with a breakpoint solver 
+            _propagateResolvedStates();
+            // Restore the solver to normal solver to make tests pass.
+            _setCurrentODESolver(_normalSolver);
+            _firstIteration = false;
+        }
+
         if (_debugging) {
             _debug("\n !!! discrete phase execution at " + getModelTime());
         }
@@ -797,7 +797,6 @@ public class CTMultiSolverDirector extends CTDirector {
         // of execution.
         // configure step sizes 
         setCurrentStepSize(0.0);
-        setSuggestedNextStepSize(getInitialStepSize());
         
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
 
@@ -1026,15 +1025,10 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @exception IllegalActionException If the scheduler throws it.
      */
     protected double _predictNextStepSize() throws IllegalActionException {
-        double predictedStep;
+        double predictedStep = getCurrentStepSize();
         // The assumption here is that if the current phase of execution is 
         // not discrete, it must be continuous. 
-        if (isDiscretePhase()) {
-            // FIXME: this may be unnecessary because breakpoint solvers do not
-            // use step size any way.
-            // Use the initial step size for breakpoint solver.
-            predictedStep = getInitialStepSize();
-        } else {
+        if (!isDiscretePhase()) {
             predictedStep = 10.0*getCurrentStepSize();
             boolean foundOne = false;
             CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
@@ -1230,9 +1224,6 @@ public class CTMultiSolverDirector extends CTDirector {
         _setExecutionPhase(CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE);
         updateContinuousStates();
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
-
-        // predict a guess of the next step size.
-        setSuggestedNextStepSize(_predictNextStepSize());
     }
 
     /** Resolve the initial states with a normal ODE solver at a futhre time. 
@@ -1325,8 +1316,9 @@ public class CTMultiSolverDirector extends CTDirector {
                 // resolved and returns false if the maximum iterations have 
                 // been reached but the states have not be resolved.
                 if (solver.resolveStates()) {
-                    if (_debugging && _verbose) 
+                    if (_debugging && _verbose) {
                         _debug("State resolved by solver.");
+                    }
                     // Check whether this step is acceptable
                     if (!_isStateAccurate()) {
                         setCurrentStepSize(_refinedStepWRTState());
