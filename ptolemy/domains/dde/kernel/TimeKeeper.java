@@ -280,8 +280,9 @@ public class TimeKeeper {
      *  decrease the value of current time to a nonnegative number.
      */
     public synchronized void setCurrentTime(double time) {
-	if( time < _currentTime && 
-		time != TimedQueueReceiver.INACTIVE ) {
+	if( time < _currentTime 
+		&& time != TimedQueueReceiver.INACTIVE 
+		&& time != TimedQueueReceiver.IGNORE ) {
 	    throw new IllegalArgumentException(
 		    ((NamedObj)_actor).getName() + " - Attempt to "
 		    + "set current time in the past.");
