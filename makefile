@@ -194,7 +194,7 @@ ChangeLog:
 	fi
 
 update:
-	-cvs update
+	-cvs update -P -d 
 	$(MAKE) -k clean fast
 
 # Include rules to build Web Start JNLP files
