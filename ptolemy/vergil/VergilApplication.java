@@ -187,6 +187,9 @@ public class VergilApplication extends MoMLApplication {
             // No previous libraryEffigy exists that is identified by this URL.
             // Parse the user library into the workspace of the actor library.
             MoMLParser parser = new MoMLParser(libraryContainer.workspace());
+            // Set the ErrorHandler so that if we have compatibility problems
+            // between devel and production versions, we can skip that element.
+            parser.setErrorHandler(new VergilErrorHandler());
             parser.parse(fileURL, fileURL);
 
             // Now create the effigy with no tableau.
