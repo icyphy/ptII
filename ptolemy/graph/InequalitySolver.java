@@ -239,20 +239,20 @@ public class InequalitySolver {
     ////                         inner class                       ////
 
     // Each instance of this class is an entry in _Ilist.
-    private class Info {
-        private Info(Inequality ineq) {
+    /*private*/ class Info {
+        /*private*/ Info(Inequality ineq) {
             _ineq = ineq;
         }
 
-        private Inequality _ineq;
+        /*private*/ Inequality _ineq;
 
 	// If this ineq. is in Cvar, i.e., if looking for least solution
 	// and greaterTerm is settable, or looking for greatest solution
 	// and lesserTerm is settable.
-	private boolean _inCvar = false;
+	/*private*/ boolean _inCvar = false;
 
 	// If this ineq. is in _NS
-        private boolean _inserted = false;
+        /*private*/ boolean _inserted = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -262,7 +262,7 @@ public class InequalitySolver {
     // index as value to _Clist.  The InequalityTerms are variables
     // and the index is the index of the Inequality in _Ilist that
     // contains the variables.
-    private void _addToClist(InequalityTerm[] variables, Integer indexWrap) {
+    /*private*/ void _addToClist(InequalityTerm[] variables, Integer indexWrap) {
         for (int i = 0; i < variables.length; i++) {
 	    if ( !variables[i].isSettable()) {
 		throw new InvalidStateException(
@@ -283,7 +283,7 @@ public class InequalitySolver {
     // The solver used by solveLeast() and solveGreatest().
     // If the argument is true, solve for the least solution;
     // otherwise, solve for the greatest solution.
-    private boolean _solve(boolean least) {
+    /*private*/ boolean _solve(boolean least) {
 
         // initialize all variables
 	Object init = least ? _cpo.bottom() : _cpo.top();
@@ -418,17 +418,19 @@ public class InequalitySolver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    private CPO _cpo = null;
+    
+    // FIXME: I changed thess because of a Netscape applet bug (lmuliadi)
+    // with inner class accessing private field of the outer class
+    /*private*/ CPO _cpo = null;
 
     // Vector representation of Ilist. Each entry is an instance of the
     // inner class Info. This vector effectively gives each inequality an
     // index, _Clist and _NS use that index.
-    private Vector _Ilist = new Vector();
+    /*private*/ Vector _Ilist = new Vector();
 
     // Mapping from variable to the Inequalities containing them.
     // Each entry in _Clist is a vector of Integers containing the
     // index of inequalities in _Ilist.
-    private Hashtable _Clist = new Hashtable();
+    /*private*/ Hashtable _Clist = new Hashtable();
 }
 
