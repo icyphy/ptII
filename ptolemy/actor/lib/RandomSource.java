@@ -83,7 +83,7 @@ public abstract class RandomSource extends Source {
      *  base class and then creates new ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
-     *  @throws CloneNotSupportedException If a derived class contains
+     *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws)

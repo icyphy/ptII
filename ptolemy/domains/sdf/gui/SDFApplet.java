@@ -180,7 +180,7 @@ public class SDFApplet extends PtolemyApplet {
 
     /** Execute the system for the number of iterations given by the
      *  _getIterations() method.
-     *  @throws IllegalActionException Not thrown.
+     *  @exception IllegalActionException Not thrown.
      */
     protected void _go() throws IllegalActionException {
         try {

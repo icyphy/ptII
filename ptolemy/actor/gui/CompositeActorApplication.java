@@ -272,7 +272,7 @@ public class CompositeActorApplication implements ExecutionListener {
 
     /** Parse a command-line argument.
      *  @return True if the argument is understood, false otherwise.
-     *  @throws Exception If something goes wrong.
+     *  @exception Exception If something goes wrong.
      */
     protected boolean _parseArg(String arg) throws Exception {
         if (arg.equals("-class")) {

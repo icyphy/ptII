@@ -94,7 +94,7 @@ public class DDESink extends TypedAtomicActor {
      *  iterating after 'k' real tokens have been consumed. If the
      *  value of numTokens is negative, then continue consuming real
      *  tokens as long as they are available.
-     * @throws IllegalActionException If there is an exception while
+     * @exception IllegalActionException If there is an exception while
      *  accessing the receivers of this actor.
      */
     public void fire() throws IllegalActionException {
@@ -123,7 +123,7 @@ public class DDESink extends TypedAtomicActor {
     /** Return true if this actor is enabled to proceed with additional
      *  iterations. Return false otherwise.
      * @return True if continued execution is enabled; false otherwise.
-     * @throws IllegalActionException Is not thrown but may be thrown
+     * @exception IllegalActionException Is not thrown but may be thrown
      *  in derived classes.
      * @see #fire
      */

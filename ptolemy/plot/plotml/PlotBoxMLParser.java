@@ -177,7 +177,7 @@ public class PlotBoxMLParser extends HandlerBase {
      *  A variety of exceptions might be thrown if the parsed
      *  data does not represent a valid PlotML file.
      *  @param input The stream from which to read XML.
-     *  @throws Exception If the parser fails.
+     *  @exception Exception If the parser fails.
      */
     public void parse(URL base, InputStream input) throws Exception {
         _parser.setHandler(this);

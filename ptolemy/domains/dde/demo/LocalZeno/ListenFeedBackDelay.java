@@ -147,7 +147,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
      *  is enabled to call fire(); return false otherwise.
      * @return True if this actor is enabled to call fire(); return
      *  false otherwise.
-     * @throws IllegalActionException if there is an exception
+     * @exception IllegalActionException if there is an exception
      *  with the thread activity of this method.
      */
     public boolean prefire() throws IllegalActionException {
@@ -174,7 +174,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
 
     /** Generate an ExecEvent with a state value of 3. Invoke the
      *  wrapup() method of this actor's superclass.
-     * @throws IllegalActionException If there is an exception in
+     * @exception IllegalActionException If there is an exception in
      *  the execution of the wrapup method of this actor's superclass.
      */
     public void wrapup() throws IllegalActionException {

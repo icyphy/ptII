@@ -54,7 +54,7 @@ public abstract class FixedStepSolver extends ODESolver{
      *  string. The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param name Name of this solver.
-     *  @throws IllegalActionException If the name has a period.
+     *  @exception IllegalActionException If the name has a period.
      */
     public FixedStepSolver(String name) throws IllegalActionException {
         super(name);
@@ -79,7 +79,7 @@ public abstract class FixedStepSolver extends ODESolver{
      *
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this solver.
-     *  @throws IllegalActionException If the name has a period.
+     *  @exception IllegalActionException If the name has a period.
      */
     public FixedStepSolver(Workspace workspace, String name)
             throws IllegalActionException {

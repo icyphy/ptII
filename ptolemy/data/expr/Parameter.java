@@ -141,7 +141,7 @@ public class Parameter extends Variable {
      *  terminated with a newline.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @throws IOException If an I/O error occurs.
+     *  @exception IOException If an I/O error occurs.
      */
     public void exportMoML(Writer output, int depth) throws IOException {
         String value = stringRepresentation();

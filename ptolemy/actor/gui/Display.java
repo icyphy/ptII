@@ -144,7 +144,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
      *  base class and then sets the textArea public variable to null.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
-     *  @throws CloneNotSupportedException If a derived class contains
+     *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace) throws CloneNotSupportedException {

@@ -105,7 +105,7 @@ public class FixToDouble extends Transformer {
      *  base class and sets the public variables to point to the new ports.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
-     *  @throws CloneNotSupportedException If a derived class contains
+     *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace ws)
