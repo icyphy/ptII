@@ -127,6 +127,7 @@ public class RunCompositeActor extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
     /** Execute requested changes. In this class,
      *  do not delegate the change request to the container, but
      *  execute the request immediately.  Listeners will be notified
@@ -202,7 +203,8 @@ public class RunCompositeActor extends TypedCompositeActor {
         }
         if (_isSubclassOfThis) {
             super.fire();
-        } else {
+            return;
+        }
         // Use the local director to transfer inputs.
         try {
             _workspace.getReadAccess();
@@ -247,7 +249,6 @@ public class RunCompositeActor extends TypedCompositeActor {
                 _debug("---- Firing of RunCompositeActor is complete.");
             }
         }
-        }//else
     }
     
     /** Initialize this actor, which in this case, does nothing. 
@@ -402,7 +403,8 @@ public class RunCompositeActor extends TypedCompositeActor {
     private int _lastIterateResult = NOT_READY; 
     
     ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                  ////
+    ////                        protected variables                ////
+    
     /** This flag is used to indicate whether to call corresponding
      *  method of the superclass. This is
      *  provided so that subclasses have a mechanism for doing
