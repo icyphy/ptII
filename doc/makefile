@@ -224,7 +224,7 @@ ALLPACKAGES =		$(CODEGENPACKAGES) \
 
 
 all: suball codeDoc/tree.html
-install: all
+install: all jars
 
 # Vergil gets special versions of the html files because the JDK1.3 Java
 # HTML viewer is not very functional.
