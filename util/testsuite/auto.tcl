@@ -41,6 +41,16 @@ proc createAndExecute {file} {
     java::new ptolemy.actor.gui.MoMLSimpleApplication $file
 }
 
+if [ file isdirectory auto/failed ] {
+    foreach file [glob auto/failed/*.xml] {
+	puts "------------------ testing $file (Known Failure) "
+	test "Auto" "Automatic test in file $file" {
+	    createAndExecute $file
+	    list {}
+	} {{}} {KNOWN_FAILURE}
+    }
+}
+
 foreach file [glob auto/*.xml] {
     puts "------------------ testing $file"
     test "Auto" "Automatic test in file $file" {
@@ -48,6 +58,7 @@ foreach file [glob auto/*.xml] {
         list {}
     } {{}}
 }
+
 
 # Print out stats
 doneTests
