@@ -54,7 +54,7 @@ to the scheduler that it should stop invocations of this actor.
 The default value of <i>firingCountLimit</i>
 is zero, which results in postfire always returning
 true.  Derived classes must call super.postfire() for this mechanism to
-work.
+work. 
 
 @author Edward A. Lee
 @version $Id$
@@ -91,6 +91,18 @@ public class SequenceSource extends Source implements SequenceActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+   /** Override the base class to determine which function is being
+     *  specified.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the function is not recognized.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+	if (attribute == firingCountLimit) {
+	    _firingCountLimit = ((IntToken)firingCountLimit.getToken()).intValue();
+	}
+    }
+
     /** Initialize the iteration counter.  A derived class must call
      *  this method in its initialize() method or the <i>firingCountLimit</i>
      *  feature will not work.
@@ -112,16 +124,23 @@ public class SequenceSource extends Source implements SequenceActor {
      *   an invalid expression.
      */
     public boolean postfire() throws IllegalActionException {
-        _iterationCount++;
-        if (_iterationCount ==
-                ((IntToken)firingCountLimit.getToken()).intValue()) {
-            return false;
-        }
-        return true;
+	if (_firingCountLimit != 0) {
+	    _iterationCount++;
+	    if (_iterationCount == _firingCountLimit) {
+		return false;
+	    }
+	}
+	return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // This is the value in parameter 
+    // firingCountLimit.
+    private int _firingCountLimit;
+
+    // The current number of elapsed iterations.
+    // 
     private int _iterationCount = 0;
 }
