@@ -130,7 +130,7 @@ public class WaveBERK23 {
              g3.setExpression("-2500.0");
              g3.parameterChanged(null);
              
-             man.blockingGo();
+             man.run();
          } catch (NameDuplicationException ex) {
              throw new InternalErrorException("NameDuplication");
          } catch (IllegalActionException ex) {
