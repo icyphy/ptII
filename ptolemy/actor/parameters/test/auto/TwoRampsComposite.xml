@@ -6,7 +6,7 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[129, -6]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
@@ -35,13 +35,16 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
     </entity>
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.moml.Location" value="240.0, 165.0">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
-        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
+        <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
@@ -67,9 +70,14 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="215.0, 50.0">
+            <property name="_location" class="ptolemy.moml.Location" value="185.0, 50.0">
             </property>
         </property>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="165.0, 50.0">
+            </property>
+        </port>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.moml.Location" value="310.0, 180.0">
@@ -87,7 +95,7 @@
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="step">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.moml.Location" value="145.0, 180.0">
+            <property name="_location" class="ptolemy.moml.Location" value="190.0, 150.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -95,6 +103,9 @@
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
+            </port>
+            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
             </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">

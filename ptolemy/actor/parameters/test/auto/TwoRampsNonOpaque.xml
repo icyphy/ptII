@@ -43,6 +43,9 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
     </entity>
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.moml.Location" value="340.0, 155.0">
@@ -68,6 +71,11 @@
             <property name="_location" class="ptolemy.moml.Location" value="215.0, 50.0">
             </property>
         </property>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="195.0, 50.0">
+            </property>
+        </port>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.moml.Location" value="310.0, 180.0">
@@ -93,6 +101,9 @@
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
+            </port>
+            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
             </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">

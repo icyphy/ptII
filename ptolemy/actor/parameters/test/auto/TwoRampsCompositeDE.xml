@@ -4,9 +4,9 @@
 <entity name="TwoRampsCompositeDE" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 295]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 350]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[56, 35]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 152]">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -43,6 +43,9 @@
             <property name="input"/>
             <property name="multiport"/>
         </port>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
     </entity>
     <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.moml.Location" value="340.0, 155.0">
@@ -78,6 +81,11 @@
             <property name="_location" class="ptolemy.moml.Location" value="215.0, 50.0">
             </property>
         </property>
+        <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.moml.Location" value="195.0, 50.0">
+            </property>
+        </port>
         <port name="port" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_location" class="ptolemy.moml.Location" value="310.0, 180.0">
@@ -103,6 +111,9 @@
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
+            </port>
+            <port name="step" class="ptolemy.actor.parameters.ParameterPort">
+                <property name="input"/>
             </port>
         </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">

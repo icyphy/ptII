@@ -29,6 +29,7 @@
 
 package ptolemy.actor.parameters;
 
+import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.data.IntToken;
@@ -46,12 +47,9 @@ import java.io.Writer;
 /**
 A specialized port for use with PortParameter.  This port is created
 by an instance of PortParameter and provides values to a parameter.
-The parameter value is updated whenever there a get() is called on
-this port.  This port is only useful if the container is opaque,
-however, this is not checked. The constructor is protected to ensure
-that the port is only created by instances of PortParameter.
-The port is not persistent (no MoML is written), so PortParameter
-must create a new instance of it each time it is created.
+The parameter's current value is updated whenever there a get() is
+called on this port.  This port is only useful if the container is
+opaque, however, this is not checked.
 
 @see PortParameter
 @author  Edward A. Lee
@@ -73,14 +71,11 @@ public class ParameterPort extends TypedIOPort {
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
-    protected ParameterPort(
-            ComponentEntity container, String name, PortParameter parameter)
+    public ParameterPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
         setInput(true);
         setMultiport(false);
-        _setContainer((ComponentEntity)parameter.getContainer());
-        _parameter = parameter;
         // Notify SDF scheduler that this port consumes one token,
         // despite not being connected on the inside.
         // NOTE: This is a Variable so it is transient.
@@ -90,16 +85,23 @@ public class ParameterPort extends TypedIOPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Write a MoML description of this object, which in this case is
-     *  empty.  Nothing is written, since it is up to the associated
-     *  parameter to create the port.
-     *  MoML is an XML modeling markup language.
-     *  @param output The output stream to write to.
-     *  @param depth The depth in the hierarchy, to determine indenting.
-     *  @param name The name to use instead of the current name.
+    /** Clone the port. This overrides the base class to remove
+     *  the current association with a parameter.  It is assumed that the
+     *  parameter will also be cloned, and when the containers are set of
+     *  this port and that parameter, whichever one is set second
+     *  will result in re-establishment of the association.
+     *  @param workspace The workspace in which to place the cloned port.
+     *  @exception CloneNotSupportedException Not thrown in this base class.
+     *  @see java.lang.Object#clone()
+     *  @return The cloned port.
      */
-    public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ParameterPort newObject = (ParameterPort)super.clone(workspace);
+        // Cannot establish an association with the cloned parameter until
+        // that parameter is cloned and the container of both is set.
+        newObject._parameter = null;
+        return newObject;
     }
 
     /** Get a token from the specified channel as done by the superclass,
@@ -115,7 +117,7 @@ public class ParameterPort extends TypedIOPort {
     public Token get(int channelIndex)
             throws NoTokenException, IllegalActionException {
         Token token = super.get(channelIndex);
-        _parameter.setToken(token);
+        _parameter.setCurrentValue(token);
         return token;
     }
 
@@ -140,6 +142,34 @@ public class ParameterPort extends TypedIOPort {
         return retArray;
     }
 
+    /** Set the container of this port and its associated parameter.
+     *  If there is no associated parameter (e.g. this port was cloned),
+     *  then check the container for a parameter with the same name and
+     *  establish an association.  If no parameter is found, then leave
+     *  this port with no associated parameter.
+     *  @param entity The container.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
+     */
+    public void setContainer(Entity entity)
+            throws IllegalActionException, NameDuplicationException {
+        super.setContainer(entity);
+        // If there is an associated parameter then change its container too.
+        // Otherwise, look for a parameter with the same name, and establish
+        // an association if there is one.
+        if (_parameter != null) {
+            _parameter._setContainer(entity);
+        } else if (entity instanceof TypedActor) {
+            // Establish association with port.
+            Attribute parameter = entity.getAttribute(getName());
+            if (parameter instanceof PortParameter) {
+                _parameter = (PortParameter)parameter;
+                _parameter._port = this;
+                _parameter.setTypeSameAs(this);
+            }
+        }
+    }
+
     /** Set the container to null, irrespective of the argument.
      *  The container of a ParameterPort is immutable, and is set
      *  in the constructor.  This method is called on a new
@@ -154,10 +184,13 @@ public class ParameterPort extends TypedIOPort {
      *  @exception NameDuplicationException If the superclass throws it
      *   (should not occur).
      */
+/* FIXME
+
     public void setContainer(Entity entity)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(null);
     }
+*/
 
     /** Set or change the name, and propagate the name change to the
      *  associated port.  If a null argument is given, then the
@@ -203,9 +236,6 @@ public class ParameterPort extends TypedIOPort {
     /** Indicator that we are in the midst of setting the name. */
     protected boolean _settingName = false;
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-
-    // The associated parameter
-    private PortParameter _parameter;
+    /** The associated parameter. */
+    protected PortParameter _parameter;
 }

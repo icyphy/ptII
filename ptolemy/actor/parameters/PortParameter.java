@@ -36,6 +36,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.data.Token;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -44,17 +45,22 @@ import ptolemy.data.expr.Parameter;
 //// PortParameter
 /**
 A parameter that creates an associated port that can be used to update
-the parameter value.  This parameter value can be set directly by the
-user, as with any other parameter, or it can be set by feeding data
-into the associated port.  Until the port receives data, the value
-of the parameter is that set by the user.  After the port has received
-data, then its value is that most recently received on the port.
-The value must be obtained by calling getToken().  The
-getExpression() method always returns the user-set expression,
-regardless of whether an override value has been received on the
+the current value of the parameter.  The "current value" is set by the
+setCurrentValue() method and read by getToken().  The current value
+is distinct from the persistent value, which is set by setExpression()
+or setToken(), and accessed by getExpression().  Note that getToken()
+returns the current value, which is not necessarily the persistent value.
+The current value can be set in the usual way for a parameter (calling
+setToken() or setExpression()), or by feeding data into the associated port.
+Until the port receives data, the current value of the parameter is
+the same as the persistent value.  After the port has received
+data, then the current value is that most recently received on the port
+since the last update of the persistent value.
+The getExpression() methods always return the persistent
+value, regardless of whether an override value has been received on the
 input port.  On each call to getToken(), this actor first checks
 to see whether an input has arrived at the associated port
-since the last setExpression(), and if so, returns a token
+since the last setExpression() or setToken(), and if so, returns a token
 read from that port.  Also, any call to get() on the associated
 port will result in the value of this parameter being updated.
 <p>
@@ -87,7 +93,8 @@ public class PortParameter extends Parameter {
         if (container instanceof TypedActor) {
             // If we get to here, we know the container is a ComponentEntity,
             // so the cast is safe.
-            _port = new ParameterPort((ComponentEntity)container, name, this);
+            _port = new ParameterPort((ComponentEntity)container, name);
+            _port._parameter = this;
             _port.setTypeSameAs(this);
         }
     }
@@ -114,26 +121,27 @@ public class PortParameter extends Parameter {
             NamedObj container, String name, ptolemy.data.Token token)
             throws IllegalActionException, NameDuplicationException {
         this(container, name);
-        // Use setExpression() since this is an initial value,
-        // not a value read from a port.
-        setExpression(token.toString());
+        setToken(token);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the parameter. This overrides the base class to create
-     *  a new associated port.
-     *  @param workspace The workspace in which to place the cloned variable.
+    /** Clone the parameter. This overrides the base class to remove
+     *  the current association with a port.  It is assumed that the
+     *  port will also be cloned, and when the containers are set of
+     *  this parameter and that port, whichever one is set second
+     *  will result in re-establishment of the association.
+     *  @param workspace The workspace in which to place the cloned parameter.
      *  @exception CloneNotSupportedException Not thrown in this base class.
      *  @see java.lang.Object#clone()
-     *  @return The cloned variable.
+     *  @return The cloned parameter.
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         PortParameter newObject = (PortParameter)super.clone(workspace);
-        // Do not create an associated port until there is a meaningful
-        // container.
+        // Cannot establish an association with the cloned port until
+        // that port is cloned and the container of both is set.
         newObject._port = null;
         return newObject;
     }
@@ -142,26 +150,35 @@ public class PortParameter extends Parameter {
      *  First, check to see whether an input has arrived at the
      *  associated port since the last call to setExpression().
      *  If one has, then return that token.  Otherwise, return the
-     *  result of evaluating the expression.
+     *  value returned by the superclass getToken() method.
+     *  <p>
+     *  NOTE: It was tempting in the design of this class to provide
+     *  a separate getCurrentValue() method, and to have getToken()
+     *  always return the persistent value.  However, this would mean
+     *  that this class would not function as a drop-in replacement
+     *  for a Parameter. In particular, if some other parameter were
+     *  to reference this one in an expression, it would not see the
+     *  current value. It would see the persisent value.
      *  @return The token contained by this variable converted to the
      *   type of this variable, or null if there is none.
      *  @exception IllegalActionException If the expression cannot
      *   be parsed or cannot be evaluated, or if the result of evaluation
      *   violates type constraints, or if the result of evaluation is null
-     *   and there are variables that depend on this one.
+     *   and there are variables that depend on this one, or if reading
+     *   data from the associated port throws it.
      */
     public ptolemy.data.Token getToken() throws IllegalActionException {
         if (_port != null && _port.getWidth() > 0 && _port.hasToken(0)) {
-            Token newToken = _port.get(0);
+            _port.get(0);
         }
         return super.getToken();
     }
 
     /** Set the container of this parameter and its associated port.
-     *  However, the clone() method of the associated PortParameter
-     *  will create a new ParameterPort, so the clone of the ParameterPort
-     *  should be removed.  Setting the container to null here
-     *  accomplishes that.
+     *  If there is no associated port (e.g. this parameter was cloned),
+     *  then check the container for a port with the same name and
+     *  establish an association.  If no port is found, then leave
+     *  this parameter with no associated port.
      *  @param entity The container.
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
@@ -170,15 +187,60 @@ public class PortParameter extends Parameter {
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(entity);
         // If there is an associated port, then change its container too.
-        // Otherwise, create an associated port.
+        // Otherwise, look for a port with the same name, and establish
+        // an association if there is one.
         if (_port != null) {
             _port._setContainer(entity);
         } else if (entity instanceof TypedActor) {
-            // If we get to here, the cast is safe.
-            _port = new ParameterPort(
-                    (ComponentEntity)entity, getName(), this);
-            _port.setTypeSameAs(this);
+            // Establish association with port.
+            Port port = entity.getPort(getName());
+            if (port instanceof ParameterPort) {
+                _port = (ParameterPort)port;
+                _port._parameter = this;
+                _port.setTypeSameAs(this);
+            }
         }
+    }
+
+    /** Set the current value of this parameter and notify the container and
+     *  and value listeners.  This does not erase the current expression,
+     *  but does update the value that will be returned by getToken().
+     *  If the type of this variable has been set with
+     *  setTypeEquals(), then convert the specified token into that
+     *  type, if possible, or throw an exception, if not.  If
+     *  setTypeAtMost() has been called, then verify that its type
+     *  constraint is satisfied, and if not, throw an exception.
+     *  Note that you can call this with a null argument regardless
+     *  of type constraints, unless there are other variables that
+     *  depend on its value.
+     *  @param token The new token to be stored in this variable.
+     *  @exception IllegalActionException If the token type is not
+     *   compatible with specified constraints, or if you are attempting
+     *   to set to null a variable that has value dependents, or if the
+     *   container rejects the change.
+     */
+    public void setCurrentValue(ptolemy.data.Token token)
+            throws IllegalActionException {
+        _setTokenAndNotify(token);
+        setUnknown(false);
+    }
+
+    /** Set the expression of this variable, and override the base class
+     *  to read and discard all pending inputs at the associated port.
+     *  Otherwise, the behavior is exactly like that of the base class.
+     *  @param expr The expression for this variable.
+     */
+    public void setExpression(String expr) {
+        // Clear all pending inputs.
+        try {
+            while (_port != null && _port.getWidth() > 0 && _port.hasToken(0)) {
+                _port.get(0);
+            }
+        } catch (IllegalActionException ex) {
+            // Ignore, since this will only occur if the port is not
+            // operational yet.
+        }
+        super.setExpression(expr);
     }
 
     /** Set or change the name, and propagate the name change to the
@@ -214,17 +276,10 @@ public class PortParameter extends Parameter {
         }
     }
 
-    /** Put a new token in this variable and notify the container and
-     *  and value listeners, but override the base class so as not to
-     *  erase the current expression.
-     *  If the type of this variable has been set with
-     *  setTypeEquals(), then convert the specified token into that
-     *  type, if possible, or throw an exception, if not.  If
-     *  setTypeAtMost() has been called, then verify that its type
-     *  constraint is satisfied, and if not, throw an exception.
-     *  Note that you can call this with a null argument regardless
-     *  of type constraints, unless there are other variables that
-     *  depend on its value.
+    /** Put a new token in this variable, notify the container and
+     *  and value listeners, and override the base class
+     *  to read and discard all pending inputs at the associated port.
+     *  Otherwise, the behavior is exactly like that of the base class.
      *  @param token The new token to be stored in this variable.
      *  @exception IllegalActionException If the token type is not
      *   compatible with specified constraints, or if you are attempting
@@ -233,8 +288,16 @@ public class PortParameter extends Parameter {
      */
     public void setToken(ptolemy.data.Token token)
             throws IllegalActionException {
-        _setTokenAndNotify(token);
-        setUnknown(false);
+        // Clear all pending inputs.
+        try {
+            while (_port != null && _port.getWidth() > 0 && _port.hasToken(0)) {
+                _port.get(0);
+            }
+        } catch (IllegalActionException ex) {
+            // Ignore, since this will only occur if the port is not
+            // operational yet.
+        }
+        super.setToken(token);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -255,11 +318,27 @@ public class PortParameter extends Parameter {
         }
     }
 
+    /** Set the container.  This should only be called by the associated
+     *  parameter.
+     *  @param entity The container.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
+     */
+    protected void _setContainer(Entity entity)
+            throws IllegalActionException, NameDuplicationException {
+        super.setContainer(entity);
+    }
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected members                 ////
+
+    /** The associated port. */
+    protected ParameterPort _port;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-
-    // The associated port.
-    private ParameterPort _port;
 
     // Indicator that we are in the midst of setting the name.
     private boolean _settingName = false;
