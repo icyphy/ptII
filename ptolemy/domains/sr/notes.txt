@@ -1,17 +1,7 @@
 
-checked in:
-
-ptolemy/actor/AbstractReceiver.java (removed exception from setAbsent())
-ptolemy/actor/Receiver.java (removed exception from setAbsent())
-ptolemy/actor/IOPort.java (made transferInputs/transferOutputs handle unknowns)
-srk
 
 To Do:
 
-fix bug where TimedPlotter inside composite doesn't get fired because receivers
-    are unknown
-test fix where actors with no outputs now get fired once
-test fix where IOPorts transfer known absent inputs/outputs
 5 FIXMEs (optimized Scheduler)
 5 code review
 9 write NonStrictSelect (prefire monotonicity, only needs known selected input)

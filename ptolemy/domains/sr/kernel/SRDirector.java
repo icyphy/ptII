@@ -209,19 +209,6 @@ public class SRDirector extends StaticSchedulingDirector {
             }
         } while (!_hasIterationConverged());
 
-        firingIterator = schedule.firingIterator();
-        while (firingIterator.hasNext()) {
-            Firing firing = (Firing) firingIterator.next();
-            Actor actor = firing.getActor();
-            if (_isIterationAllowed(actor)) {
-                if (_postfireActor(actor)) {
-                    _postfireReturns = true;
-                } else {
-                    _doNotAllowIterationOf(actor);
-                }
-            }
-        }
-
     }
 
     /** Return the number of iterations to be executed by the director, which 
@@ -263,6 +250,7 @@ public class SRDirector extends StaticSchedulingDirector {
         if (_receivers == null) _receivers = new LinkedList();
         Receiver receiver = new SRReceiver(this);
         _receivers.add(receiver);
+        _debug("Created and added new receiver, now has "+_receivers.size());
         return receiver;
     }
 
@@ -274,6 +262,23 @@ public class SRDirector extends StaticSchedulingDirector {
      *   not have a valid token.
      */
     public boolean postfire() throws IllegalActionException {
+
+        // Actors are postfired here since updating the state of contained
+        // actors inherently updates the state of a composite actor.
+
+        Schedule schedule = _getSchedule();
+        Iterator firingIterator = schedule.firingIterator();
+        while (firingIterator.hasNext()) {
+            Firing firing = (Firing) firingIterator.next();
+            Actor actor = firing.getActor();
+            if (_isIterationAllowed(actor)) {
+                if (_postfireActor(actor)) {
+                    _postfireReturns = true;
+                } else {
+                    _doNotAllowIterationOf(actor);
+                }
+            }
+        }
 
         int numberOfIterations = getIterations();
         _iteration++;
@@ -300,8 +305,6 @@ public class SRDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the superclass throws it.
      */
     public void preinitialize() throws IllegalActionException {
-
-        _receivers = new LinkedList();
 
         // Call the parent preinitialize method to create the receivers.
         super.preinitialize();
@@ -527,6 +530,8 @@ public class SRDirector extends StaticSchedulingDirector {
 	    throw new InternalErrorException(
                     "Cannot initialize SRDirector: " + ex.getMessage());
         }
+
+        _receivers = new LinkedList();
     }
 
     /** Initialize the firing of the director by resetting state variables
@@ -632,6 +637,7 @@ public class SRDirector extends StaticSchedulingDirector {
     /** Reset all receivers to allow a new firing of the director.
      */
     private void _resetAllReceivers() {
+        _debug("    SRDirector is resetting all receivers");
         _currentNumOfKnownReceivers = 0;
         Iterator i = _receivers.iterator();
         while (i.hasNext()) {
