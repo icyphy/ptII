@@ -220,9 +220,9 @@ public abstract class GraphFrame extends PtolemyTop
 	// Create the library of actors.
         // FIXME: How do we make this topLibrary persistent?
         Workspace workspace = _model.workspace();
-        CompositeEntity topLibrary = new CompositeEntity(workspace);
+        _topLibrary = new CompositeEntity(workspace);
         try {
-            topLibrary.setName("topLibrary");
+            _topLibrary.setName("topLibrary");
         } catch (Exception ex) {}
         if (false) {
             // The model contains a library.
@@ -241,7 +241,7 @@ public abstract class GraphFrame extends PtolemyTop
                         try {
                             EntityLibrary clone =
                                     (EntityLibrary)lib.clone(workspace);
-                            clone.setContainer(topLibrary);
+                            clone.setContainer(_topLibrary);
                         } catch (Exception ex) {
                             throw new InternalErrorException(
                             "Failed to add library to top library! " + ex);
@@ -251,7 +251,7 @@ public abstract class GraphFrame extends PtolemyTop
             }
         }
 
-        TreeModel treeModel = new VisibleTreeModel(topLibrary);
+        TreeModel treeModel = new VisibleTreeModel(_topLibrary);
         _library = new PTree(treeModel);
         _library.setRootVisible(false);
         _library.setBackground(BACKGROUND_COLOR);
@@ -292,6 +292,7 @@ public abstract class GraphFrame extends PtolemyTop
 	_copyAction = new CopyAction();
 	_pasteAction = new PasteAction();
 	_layoutAction = new LayoutAction();
+	_saveInLibraryAction = new SaveInLibraryAction();
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -484,6 +485,8 @@ public abstract class GraphFrame extends PtolemyTop
 	diva.gui.GUIUtilities.addMenuItem(_editMenu, _pasteAction);
 	diva.gui.GUIUtilities.addHotKey(_jgraph, _layoutAction);
 	diva.gui.GUIUtilities.addMenuItem(_editMenu, _layoutAction);
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _saveInLibraryAction);
+	diva.gui.GUIUtilities.addMenuItem(_editMenu, _saveInLibraryAction);
     }
 
     /** Create a new graph pane.  Subclasses will override this to change
@@ -564,6 +567,29 @@ public abstract class GraphFrame extends PtolemyTop
 		layoutGraph();
 	    } catch (Exception ex) {
 		MessageHandler.error("Layout failed", ex);
+	    }
+	}      
+    }
+
+    private class SaveInLibraryAction extends AbstractAction {
+	public SaveInLibraryAction() {
+	    super("Save In Library");
+	}
+	public void actionPerformed(ActionEvent e) {
+	    try {
+		PtolemyEffigy effigy = 
+		    (PtolemyEffigy)getTableau().getContainer();
+		NamedObj object = effigy.getModel();
+		if(object == null) return;
+		StringWriter buffer = new StringWriter();	   
+		object.exportMoML(buffer, 1);
+		NamedObj library = _topLibrary.getEntity("actor library");
+		if(library == null) return;
+		ChangeRequest request =
+		    new MoMLChangeRequest(this, library, buffer.toString()); 
+		library.requestChange(request);
+	    } catch (IOException ex) {
+		// Ignore.
 	    }
 	}      
     }
@@ -788,6 +814,7 @@ public abstract class GraphFrame extends PtolemyTop
 
     // The model that this window controls, if any.
     protected CompositeEntity _model;
+    protected CompositeEntity _topLibrary;
 
     protected JGraph _jgraph;
     protected JScrollPane _graphScrollPane;
@@ -803,4 +830,5 @@ public abstract class GraphFrame extends PtolemyTop
     protected Action _copyAction;
     protected Action _pasteAction;
     protected Action _layoutAction;
+    protected Action _saveInLibraryAction;
 }
