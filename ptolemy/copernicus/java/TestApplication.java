@@ -34,6 +34,7 @@ import java.net.URL;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.util.ChangeListener;
@@ -111,8 +112,18 @@ public class TestApplication implements ChangeListener {
         }
 
         SDFDirector director = (SDFDirector)toplevel.getDirector();
-        Parameter iterations = (Parameter) director.getAttribute("iterations");
-        //    iterations.setToken(new IntToken(10));
+        if(director != null) {
+            Parameter iterations = (Parameter) director.getAttribute("iterations");
+            Parameter copernicus_iterations = 
+                (Parameter) director.getAttribute("copernicus_iterations");
+            // Set to be a large number of iterations, unless
+            // copernicus_iterations is set.
+            if(copernicus_iterations != null) {
+                iterations.setToken(copernicus_iterations.getToken());
+            } else {
+                iterations.setToken(new IntToken(100000));
+            }
+        }
 
         Manager manager = new Manager(toplevel.workspace(),
                 "TestApplication");

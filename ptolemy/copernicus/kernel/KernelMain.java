@@ -35,6 +35,9 @@ import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -186,6 +189,20 @@ public abstract class KernelMain {
     public void initialize(CompositeActor toplevel)
             throws IllegalActionException, NameDuplicationException {
         _toplevel = toplevel;
+
+      SDFDirector director = (SDFDirector)toplevel.getDirector();
+      if(director != null) {
+            Parameter iterations = (Parameter) director.getAttribute("iterations");
+            Parameter copernicus_iterations = 
+                (Parameter) director.getAttribute("copernicus_iterations");
+            // Set to be a large number of iterations, unless
+            // copernicus_iterations is set.
+            if(copernicus_iterations != null) {
+                iterations.setToken(copernicus_iterations.getToken());
+            } else {
+                iterations.setToken(new IntToken(100000));
+            }
+        }
 
         // Initialize the model to ensure type resolution and scheduling
         // are done.
