@@ -286,6 +286,16 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
     /** Factory for listen to actor menu item. */
     private ListenToActorFactory _listenToActorFactory;
 
+    /** The filter for meta-click operations.  Under Mac OS X,
+     *  the command key is the meta key, or keycode 0x2318
+     *  For details, see the Apple java archive
+     *  http://lists.apple.com/archives/java-dev
+     *  User: archives, passwd: archives
+     */
+    private MouseFilter _metaFilter = new MouseFilter(
+            InputEvent.BUTTON1_MASK,
+            InputEvent.META_MASK);
+
     /** Action for creating a new input port. */
     private Action _newInputPortAction = new NewPortAction(
             ExternalIOPortController._GENERIC_INPUT, "New input port",
