@@ -87,21 +87,21 @@ STOREPASSWORD = -storepass this.is.not.secure,it.is.for.testing.only
 KEYPASSWORD = -keypass this.is.not.secure,it.is.for.testing.only
 KEYTOOL = $(PTJAVA_DIR)/bin/keytool
 $(KEYSTORE): 
-	$(KEYTOOL) -genkey \
+	"$(KEYTOOL)" -genkey \
 		-dname $(KEYDNAME) \
 		-keystore $(KEYSTORE) \
 		-alias $(KEYALIAS) \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD)
-	$(KEYTOOL) -selfcert \
+	"$(KEYTOOL)" -selfcert \
 		-keystore $(KEYSTORE) \
 		-alias $(KEYALIAS) \
 		$(STOREPASSWORD)
-	$(KEYTOOL) -list \
+	"$(KEYTOOL)" -list \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD)
 
-# vergil.jnlp is for Web Ramp.  For jar signing to work with Web Ramp,
+# vergil.jnlp is for Web Start.  For jar signing to work with Web Start,
 # the .jnlp file itself must be included in the signed jar file
 # and not be changed (See Section 5.4 of the JNLP specification).
 jnlp_sign: vergil.jnlp $(PTCLASSALLJAR) $(KEYSTORE)
@@ -109,10 +109,10 @@ jnlp_sign: vergil.jnlp $(PTCLASSALLJAR) $(KEYSTORE)
 	rm -rf JNLP-INF
 	mkdir JNLP-INF
 	cp vergil.jnlp JNLP-INF/APPLICATION.JNLP
-	$(JAR) -uf $(PTCLASSALLJAR) JNLP-INF/APPLICATION.JNLP
+	"$(JAR)" -uf $(PTCLASSALLJAR) JNLP-INF/APPLICATION.JNLP
 	rm -rf JNLP-INF
 	@echo "Signing the jar file"
-	$(PTJAVA_DIR)/bin/jarsigner \
+	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE) \
 		$(STOREPASSWORD) \
 		$(PTCLASSALLJAR) $(KEYALIAS)
