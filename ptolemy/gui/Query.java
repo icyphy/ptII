@@ -407,7 +407,9 @@ public class Query extends JPanel {
 
     /** Create a single-line password box with the specified name, label, and
      *  default value.  To control the width of the box, call setTextWidth()
-     *  first.
+     *  first. A value that is entered in the password box should be
+     *  accessed using getCharArrayValue().  The value returned by
+     *  stringValue() is whatever you specify as a defaultValue.
      *  @param name The name used to identify the entry (when accessing
      *   the entry).
      *  @param label The label to attach to the entry.
@@ -421,7 +423,7 @@ public class Query extends JPanel {
     /** Create a single-line password box with the specified name,
      *  label, and default value.  To control the width of the box,
      *  call setTextWidth() first.
-     *  <p>To get the value, call getCharArrayValue().
+     *  To get the value, call getCharArrayValue().
      *  Calling getStringValue() on a password entry will result in an
      *  error because it is less secure to pass around passwords as
      *  Strings than as arrays of characters.
@@ -931,19 +933,7 @@ public class Query extends JPanel {
             throw new NoSuchElementException(
                     "No item named \"" + name + " \" in the query box.");
         }
-        // FIXME: Surely there is a better way to do this...
-        // We should define a set of inner classes, one for each entry type.
-        // Currently, this has to be updated each time a new entry type
-        // is added.
-
-        if (result instanceof JPasswordField) {
-            // Note that JPasswordField extends JTextField, so
-            // we should check for JPasswordField first.
-            throw new IllegalArgumentException("For security reasons, "
-                    + "calling getStringValue() on a password fields is "
-                    + "not permitted.  Instead, call getCharArrayValue()");
-
-        } else if (result instanceof JTextField) {
+        if (result instanceof JTextField) {
             return ((JTextField) result).getText();
         } else if (result instanceof QueryColorChooser) {
             return ((QueryColorChooser) result).getSelectedColor();
