@@ -75,21 +75,21 @@ MISC_FILES =	$(DIRS) \
 OPTIONAL_FILES = \
 	doc
 
-STUB_JCLASS = \
-	ServiceFinderListener_Stub.class
+#STUB_JCLASS = \
+#	ServiceFinderListener_Stub.class
 
 .PRECIOUS: $(STUB_JCLASS)
 
-JCLASS = $(JSRCS:%.java=%.class) $(STUB_JCLASS)
+JCLASS = $(JSRCS:%.java=%.class) # $(STUB_JCLASS)
 
 all: jclass
 install: jclass jars
 
 # The -d $(ROOT) is necessary for the rmic that ships with JDK1.3
 
-ServiceFinderListener_Stub.class: ServiceFinderListener.java
-	$(RMIC) -d $(ROOT) -classpath "$(CLASSPATH)" \
-		ptolemy.actor.lib.jspaces.$(PTPACKAGE).ServiceFinderListener
+#ServiceFinderListener_Stub.class: ServiceFinderListener.java
+#	$(RMIC) -d $(ROOT) -classpath "$(CLASSPATH)" \
+#		ptolemy.actor.lib.jspaces.$(PTPACKAGE).ServiceFinderListener
 
 depend:
 	@echo "no dependencies in this directory"
