@@ -216,6 +216,7 @@ public class CommandLineTemplate {
         } catch (IllegalActionException ex) {
             // Model is already running.  Ignore.
             System.out.println("Exception = " + ex);
+            ex.printStackTrace();
         }
     }
 

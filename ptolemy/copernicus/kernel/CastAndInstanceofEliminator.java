@@ -38,11 +38,7 @@ import soot.toolkits.graph.*;
 import java.util.*;
 
 /** 
-An attempt to remove instance equality checks.  This is not strictly correct.  I think a better way to 
-formulate it is as a forward dataflow problem that colors all of the locals based on the
-set of objects that they can refer to.
-
-Namely, this is not correct because it assumes that all fields contain distinct objects.  It also depends on the fact that the values are defined at fields.
+An attempt to remove unnecessary casts and instanceof checks.
 
 */
 
@@ -62,6 +58,11 @@ public class CastAndInstanceofEliminator extends BodyTransformer
             System.out.println("[" + body.getMethod().getName() +
                 "] Eliminating unnecessary casts and instanceof...");
         
+        eliminateCastsAndInstanceOf(body, phaseName, new HashSet());
+    }
+ 
+    public static void eliminateCastsAndInstanceOf(Body body, String phaseName, 
+            Set unsafeLocalSet) {
         for(Iterator units = body.getUnits().iterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
@@ -78,7 +79,10 @@ public class CastAndInstanceofEliminator extends BodyTransformer
                     Type castType = expr.getCastType();
                     Value op = expr.getOp();
                     Type opType = op.getType();
-                    if(castType.equals(opType)) {
+ 
+                    // Skip locals that are unsafe.
+                    if(castType.equals(opType) &&
+                       !unsafeLocalSet.contains(op)) {
                         box.setValue(op);
                     }
                 } else if(value instanceof InstanceOfExpr) {
@@ -90,6 +94,11 @@ public class CastAndInstanceofEliminator extends BodyTransformer
                     Type checkType = expr.getCheckType();
                     Value op = expr.getOp();
                     Type opType = op.getType();
+
+                    // Skip locals that are unsafe.
+                    if(unsafeLocalSet.contains(op)) {
+                        continue;
+                    }
 
                     RefType checkRef, opRef;
                     if(checkType instanceof RefType && 

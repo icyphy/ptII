@@ -112,19 +112,19 @@ public class TypeSpecializer extends SceneTransformer {
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
             
-            specializeTypes(debug, theClass);
+            specializeTypes(debug, theClass, new HashSet());
         }
     }
 
     /** Specialize all token types that appear in the given class.
      *  Return a map from locals and fields in the class to their new specific
-     *  Ptolemy type.
+     *  Ptolemy type.  Exclude locals in the given set from the typing algorithm.
      */
-    public static Map specializeTypes(boolean debug, SootClass theClass) {
+    public static Map specializeTypes(boolean debug, SootClass theClass, Set unsafeLocals) {
         InequalitySolver solver = new InequalitySolver(TypeLattice.lattice());
         HashMap objectToInequalityTerm = new HashMap();
         
-        _collectConstraints(debug, theClass, solver, objectToInequalityTerm);
+        _collectConstraints(debug, theClass, solver, objectToInequalityTerm, unsafeLocals);
         
         boolean succeeded = solver.solveLeast();
         
@@ -155,7 +155,8 @@ public class TypeSpecializer extends SceneTransformer {
     }
 
     private static void _collectConstraints(boolean debug, 
-            SootClass theClass, InequalitySolver solver, Map objectToInequalityTerm) {
+            SootClass theClass, InequalitySolver solver, Map objectToInequalityTerm,
+            Set unsafeLocals) {
         if(debug) System.out.println("collecting constraints for " + theClass);
         // Loop through all the fields.
         for(Iterator fields = theClass.getFields().iterator();
@@ -210,6 +211,9 @@ public class TypeSpecializer extends SceneTransformer {
             for(Iterator locals = body.getLocals().iterator();
                 locals.hasNext();) {
                 Local local = (Local)locals.next();
+                if(unsafeLocals.contains(local)) {
+                    continue;
+                }
                 // Ignore things that aren't reference types.
                 Type type = local.getType();
                 _createInequalityTerm(debug, local, type, objectToInequalityTerm);

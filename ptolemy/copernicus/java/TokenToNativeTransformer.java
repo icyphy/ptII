@@ -96,6 +96,11 @@ public class TokenToNativeTransformer extends SceneTransformer {
             return;
         }
 
+        // Compute the set of locals that are tokens, but not safe to inline.
+        // For now, this includes any token that originates 
+        // from a call to evaluateParseTree.
+        Set unsafeLocalSet = new HashSet();
+
         boolean debug = Options.getBoolean(options, "debug");
         // Loop over all the actor instance classes.
         for(Iterator classes = Scene.v().getApplicationClasses().iterator();
@@ -121,7 +126,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     LocalSplitter.v().transform(body, phaseName + ".ls", "");
                     // Run some cleanup...  this will speedup the rest of the analysis.
                     // And prevent typing errors.
-                    CastAndInstanceofEliminator.v().transform(body, phaseName + ".cie", "");
+                    CastAndInstanceofEliminator.eliminateCastsAndInstanceOf(
+                            body, phaseName + ".cie", unsafeLocalSet);
                     CopyPropagator.v().transform(body, phaseName + ".cp", "");
                     ConstantPropagatorAndFolder.v().transform(body, phaseName + ".cpf", "");
                     ConditionalBranchFolder.v().transform(body, phaseName + ".cbf", "");
@@ -131,13 +137,17 @@ public class TokenToNativeTransformer extends SceneTransformer {
                 // Now run the type specialization algorithm...  This 
                 // allows us to resolve the methods that we are inlining
                 // with better precision.
-                Map objectToTokenType = TypeSpecializer.specializeTypes(debug, entityClass);
-
+                Map objectToTokenType = TypeSpecializer.specializeTypes(debug, entityClass, unsafeLocalSet);
+             
                 for(Iterator methods = entityClass.getMethods().iterator();
                     methods.hasNext();) {
                     SootMethod method = (SootMethod)methods.next();
 
                     JimpleBody body = (JimpleBody)method.retrieveActiveBody();
+                    
+                    CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
+                    SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
+                    SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
 
                     if(debug) System.out.println("method = " + method);
 
@@ -150,13 +160,29 @@ public class TokenToNativeTransformer extends SceneTransformer {
                         while(boxes.hasNext()) {
                             ValueBox box = (ValueBox)boxes.next();
                             Value value = box.getValue();
+
+                            // If we have a call to evaluateParseTree, then
+                            // we can't inline any of those locals.
+                            if(value instanceof InvokeExpr) {
+                                InvokeExpr r = (InvokeExpr)value;
+                                if(unit instanceof AssignStmt &&
+                                        r.getMethod().getName().equals("evaluateParseTree")) {
+                                    AssignStmt stmt = (AssignStmt)unit;
+                                    unsafeLocalSet.add(stmt.getLeftOp());
+                                    unsafeLocalSet.addAll(_computeTokenLocalsDefinedFrom(
+                                            localUses, stmt));
+                                    if(debug) System.out.println("unsafeLocalSet = " + unsafeLocalSet);
+                                }
+                            }
+
                             if(value instanceof VirtualInvokeExpr) {
                                 VirtualInvokeExpr r = (VirtualInvokeExpr)value;
                                 // System.out.println("invoking = " + r.getMethod());
                                 
-                                if(r.getBase().getType() instanceof RefType) {
+                                if(r.getBase().getType() instanceof RefType &&
+                                        !unsafeLocalSet.contains(r.getBase())) {
                                     RefType type = (RefType)r.getBase().getType();
-                                    
+                                                                               
                                     if(SootUtilities.derivesFrom(type.getSootClass(),
                                             PtolemyUtilities.tokenClass)) {
                                         List methodList = 
@@ -189,6 +215,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                                             inlinee, (Stmt)unit, method);
                                                     doneSomething = true;
                                                 }
+                                                
                                             }
                                         }
                                     }
@@ -329,10 +356,11 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     for(Iterator locals = body.getLocals().snapshotIterator();
                         locals.hasNext();) {
                         Local local = (Local)locals.next();
-                        if(!PtolemyUtilities.isConcreteTokenType(local.getType())) {
+                        if(!PtolemyUtilities.isConcreteTokenType(local.getType()) ||
+                           unsafeLocalSet.contains(local)) {
                             continue;
                         }
-
+                        
                         // If we've already created subfields for this field, then don't do 
                         // it again.
                         if(localToFieldToLocal.get(local) != null) {
@@ -497,7 +525,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
                 // Specialize the token types.  Any field we created above 
                 // should now have its correct concrete type.
-                TypeSpecializer.specializeTypes(debug, entityClass);
+                TypeSpecializer.specializeTypes(debug, entityClass, unsafeLocalSet);
         
                 // Now go through the methods again and handle all token assignments,
                 // replacing them with assignments on the native replacements.
@@ -888,7 +916,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
                         ValueBox box = (ValueBox)boxes.next();
                         Value value = box.getValue();
                         if(value instanceof Local &&
-                                PtolemyUtilities.isTokenType(value.getType())) {
+                                PtolemyUtilities.isTokenType(value.getType()) &&
+                                !unsafeLocalSet.contains(value)) {
                             System.out.println("Replacing " +
                                     value + " in " + method + " with null.");
                             body.getUnits().insertBefore(
@@ -899,7 +928,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
                         }
                     }
                 }
-                CastAndInstanceofEliminator.v().transform(body, phaseName + ".cie", "");
+                CastAndInstanceofEliminator.eliminateCastsAndInstanceOf(
+                        body, phaseName + ".cie", unsafeLocalSet);
                 CopyPropagator.v().transform(body, phaseName + ".cp", "");
                 ConstantPropagatorAndFolder.v().transform(body, phaseName + ".cpf", "");
                 ConditionalBranchFolder.v().transform(body, phaseName + ".cbf", "");
@@ -909,6 +939,27 @@ public class TokenToNativeTransformer extends SceneTransformer {
         
     }
     
+    // Compute all the locals with value type that depend on
+    // the local defined at the given stmt.
+    private static Set _computeTokenLocalsDefinedFrom(
+            SimpleLocalUses localUses, Stmt stmt) {
+        Set set = new HashSet();
+        List useList = localUses.getUsesOf(stmt);
+        for(Iterator uses = useList.iterator();
+            uses.hasNext();) {
+            UnitValueBoxPair pair = (UnitValueBoxPair)uses.next();
+            Stmt defStmt = (Stmt)pair.getUnit();
+            List defList = stmt.getDefBoxes();
+            if(defList.size() == 1) {
+                Value value = ((ValueBox)defList.get(0)).getValue();
+                if(PtolemyUtilities.isTokenType(value.getType())) {
+                    set.add(value);
+                    set.addAll(_computeTokenLocalsDefinedFrom(localUses, defStmt));
+                }
+            }
+        }
+        return set;
+    }
     
     public static Local _getInstanceLocal(Body body, Local baseLocal,
             SootField field, Map localToFieldToLocal, boolean debug) {
@@ -1037,7 +1088,6 @@ public class TokenToNativeTransformer extends SceneTransformer {
         } else {
             Map fieldToReplacementRightLocal = 
                 (Map)localToFieldToLocal.get(rightValue);
-       
             // We have an assignment from one local token to another.
             if(fieldToReplacementLeftLocal != null &&
                     fieldToReplacementRightLocal != null) {
