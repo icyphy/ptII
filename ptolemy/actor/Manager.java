@@ -438,9 +438,9 @@ public final class Manager extends NamedObj implements Runnable {
 
 	        // check whether resolved types are acceptable.
                 // They might be, for example, NaT.
-	        Enumeration var = solver.variables();
-	        while (var.hasMoreElements()) {
-		    InequalityTerm term = (InequalityTerm)var.nextElement();
+	        Iterator var = solver.variables();
+	        while (var.hasNext()) {
+		    InequalityTerm term = (InequalityTerm)var.next();
 		    if ( !term.isTypeAcceptable()) {
 		        conflicts.insertLast(term.getAssociatedObject());
 		    }
