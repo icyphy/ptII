@@ -38,6 +38,7 @@ import ptolemy.domains.sdf.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import ptolemy.media.Picture;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageDisplay
@@ -79,13 +80,18 @@ public final class ImageDisplay extends SDFAtomicActor {
             _oldxsize = xsize;
             _oldysize = ysize;
             _RGBbuffer = new int[xsize*ysize];
-            _imagesource = new MemoryImageSource(xsize, ysize, _RGBbuffer, 0, xsize);
+            /*            _imagesource = new MemoryImageSource(xsize, ysize, _RGBbuffer, 0, xsize);
             _imagesource.setAnimated(true);
+            */
             if(_frame != null) {
                 _frame.dispose();
             }
-            _frame = new _InputFrame("ImageDisplay", xsize, ysize);            
-            _image = _frame._panel.createImage(_imagesource);
+            _frame = new _InputFrame("ImageDisplay", xsize, ysize);   
+            _frame._panel.setImage(_RGBbuffer);
+            /*
+              _image = _frame._panel.createImage(_imagesource);
+            */
+            
 
             System.out.println("new buffer");
         }     
@@ -107,8 +113,9 @@ public final class ImageDisplay extends SDFAtomicActor {
          //       new MemoryImageSource(xsize, ysize, _RGBbuffer, 0, xsize));
         //        if(s == null) 
         
-        _imagesource.newPixels();
-        _frame._panel.BLTImage(_image);
+        _frame._panel.displayImage();
+        // _imagesource.newPixels();
+        //        _frame._panel.BLTImage(_image);
         
         //      System.out.println("image drawn");
     }
@@ -117,15 +124,16 @@ public final class ImageDisplay extends SDFAtomicActor {
         public _InputFrame(String title, int xsize, int ysize) {
             super(title);
             this.setLayout(new BorderLayout(15, 15));
-            _panel = new _VideoPanel(xsize, ysize);
+            _panel = new Picture(xsize, ysize);
             this.setVisible(true);
             add("Center",_panel);
             this.pack();
 
         }
-        private _VideoPanel _panel;        
+        private Picture _panel;        
      
     }
+    /*
 
     private class _VideoPanel extends Canvas {
         public _VideoPanel(int width, int height) {
@@ -156,11 +164,12 @@ public final class ImageDisplay extends SDFAtomicActor {
         
         private Image _buffer;
     }
+    */
     private _InputFrame _frame;
     private IOPort _port_image;
     private int _oldxsize, _oldysize;
-    private Image _image;
-    private MemoryImageSource _imagesource;
+    //  private Image _image;
+    // private MemoryImageSource _imagesource;
     private int _RGBbuffer[] = null;
 
 }
