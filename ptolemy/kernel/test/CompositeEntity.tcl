@@ -111,8 +111,8 @@ test CompositeEntity-2.3 {test setName for NameDuplicationException} {
     set d [java::new ptolemy.kernel.ComponentEntity $a D]
     catch {$d setName B} msg
     list $msg
-} {{ptolemy.kernel.util.NameDuplicationException: Object name: .A:
-already contains an entity with the name B.}}
+} {{ptolemy.kernel.util.NameDuplicationException: Name duplication: B
+  in .A}}
 
 ######################################################################
 ####
@@ -205,8 +205,8 @@ test CompositeEntity-5.2 {Test reparenting with an error} {
     set d [java::new ptolemy.kernel.CompositeEntity $c D]
     catch {$c setContainer $d} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object names: .A.C and .A.C.D:
-Attempt to construct recursive containment.}}
+} {{ptolemy.kernel.util.IllegalActionException: Attempt to construct recursive containment
+  in .A.C and .A.C.D}}
 
 ######################################################################
 ####

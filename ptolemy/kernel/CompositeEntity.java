@@ -992,7 +992,7 @@ public class CompositeEntity extends ComponentEntity {
             throws IllegalActionException, NameDuplicationException {
         if (entity.deepContains(this)) {
             throw new IllegalActionException(entity, this,
-                    "Attempt to construct recursive containment.");
+                    "Attempt to construct recursive containment");
         }
         _containedEntities.append(entity);
     }

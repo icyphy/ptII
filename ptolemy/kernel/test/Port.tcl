@@ -532,8 +532,8 @@ test Port-15.2 {Test for NameDuplicationException on setName} {
     set p2 [java::new ptolemy.kernel.Port $a P2]
     catch {$p2 setName P1} msg
     list $msg
-} {{ptolemy.kernel.util.NameDuplicationException: Object name: .A:
-already contains a port with the name P1.}}
+} {{ptolemy.kernel.util.NameDuplicationException: Name duplication: P1
+  in .A}}
 
 ######################################################################
 ####

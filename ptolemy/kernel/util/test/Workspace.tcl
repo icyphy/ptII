@@ -82,16 +82,16 @@ test Workspace-3.2 {Add objects to the wrong workspace} {
     set n1 [java::new ptolemy.kernel.util.NamedObj N1]
     catch {$w add $n1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object names: .W and .N1:
-Cannot add an item to the directory of a workspace that it is not in.}}
+} {{ptolemy.kernel.util.IllegalActionException: Cannot add an item to the directory of a workspace that it is not in.
+  in .W and .N1}}
 
 test Workspace-3.3 {Add objects twice to the workspace directory} {
     set w [java::new ptolemy.kernel.util.Workspace W]
     set n1 [java::new ptolemy.kernel.util.NamedObj $w N1]
     catch {$w add $n1} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Object names: .W and .N1:
-Object is already listed in the workspace directory.}}
+} {{ptolemy.kernel.util.IllegalActionException: Object is already listed in the workspace directory.
+  in .W and .N1}}
 
 test Workspace-3.4 {Test directoryList} {
     set w [java::new ptolemy.kernel.util.Workspace W]
@@ -289,8 +289,8 @@ test Workspace-7.1 {Test isReadOnly, setReadOnly} {
     set n3 [java::new ptolemy.kernel.util.NamedObj $w N3]
     list $readOnly1 $readOnly2 $errMsg $readOnly3 \
 	    [enumToFullNames [$w directory]]
-} {0 1 {ptolemy.kernel.util.InvalidStateException: Object name: .W:
-Trying to relinquish write access on a write-protected workspace.} 0 {.N1 .null .N2 .N3}}
+} {0 1 {ptolemy.kernel.util.InvalidStateException: Trying to relinquish write access on a write-protected workspace.
+  in .W} 0 {.N1 .null .N2 .N3}}
 
 ######################################################################
 #### The following assumptions are made for this test to work. 

@@ -735,7 +735,7 @@ public class ComponentPort extends Port {
             path = new LinkedList();
         } else {
             if (path.indexOf(this) >= 0) {
-                throw new InvalidStateException(path, "loop in topology!");
+                throw new InvalidStateException(path, "Loop in topology!");
             }
         }
         path.add(0, this);
@@ -830,7 +830,7 @@ public class ComponentPort extends Port {
             path = new LinkedList();
         } else {
             if (path.indexOf(this) >= 0) {
-                throw new InvalidStateException(path, "loop in topology!");
+                throw new InvalidStateException(path, "Loop in topology!");
             }
         }
         path.add(0, this);

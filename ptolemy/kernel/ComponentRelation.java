@@ -267,7 +267,7 @@ public class ComponentRelation extends Relation {
             ComponentRelation another = container.getRelation(name);
             if ((another != null) && (another != this)) {
                 throw new NameDuplicationException(container,
-                        "already contains a relation with the name "+name+".");
+                        "Name duplication: " + name);
             }
         }
         super.setName(name);

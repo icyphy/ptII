@@ -88,7 +88,7 @@ test IllegalActionException-4.1 {Create a IllegalActionException with a \
     set pe [java::new {ptolemy.kernel.util.IllegalActionException \
 	    ptolemy.kernel.util.Nameable} $n1]
     list [$pe getMessage]
-} {{Object name: .<Unnamed Object>}}
+} {{  in .<Unnamed Object>}}
 
 ######################################################################
 ####
@@ -99,7 +99,7 @@ test IllegalActionException-4.2 {Create a IllegalActionException with a \
     set pe [java::new {ptolemy.kernel.util.IllegalActionException \
 	    ptolemy.kernel.util.Nameable} $n1]
     list [$pe getMessage]
-} {{Object name: .n1}}
+} {{  in .n1}}
 
 ######################################################################
 ####
@@ -110,8 +110,8 @@ test IllegalActionException-5.1 {Create a IllegalActionException with a \
     set pe [java::new {ptolemy.kernel.util.IllegalActionException \
 	    ptolemy.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
-} {{Object name: .<Unnamed Object>:
-Detail String}}
+} {{Detail String
+  in .<Unnamed Object>}}
 
 ######################################################################
 ####
@@ -122,8 +122,8 @@ test IllegalActionException-5.2 {Create a IllegalActionException with a \
     set pe [java::new {ptolemy.kernel.util.IllegalActionException \
 	    ptolemy.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
-} {{Object name: .My NamedObj:
-Detail String}}
+} {{Detail String
+  in .My NamedObj}}
 
 ######################################################################
 ####
@@ -136,7 +136,7 @@ test IllegalActionException-6.1 {Create a IllegalActionException with an \
 	    ptolemy.kernel.util.Nameable ptolemy.kernel.util.Nameable} \
 	    $n1 $n2]
     list [$pe getMessage]
-} {{Object names: .<Unnamed Object> and .<Unnamed Object>}}
+} {{  in .<Unnamed Object> and .<Unnamed Object>}}
 
 ######################################################################
 ####
@@ -149,7 +149,7 @@ test IllegalActionException-6.2 {Create a IllegalActionException with a \
 	    ptolemy.kernel.util.Nameable ptolemy.kernel.util.Nameable} \
 	    $n1 $n2]
     list [$pe getMessage]
-} {{Object names: .NamedObj 1 and .<Unnamed Object>}}
+} {{  in .NamedObj 1 and .<Unnamed Object>}}
 
 ######################################################################
 ####
@@ -162,7 +162,7 @@ test IllegalActionException-6.3 {Create a IllegalActionException with an \
 	    ptolemy.kernel.util.Nameable ptolemy.kernel.util.Nameable} \
 	    $n1 $n2]
     list [$pe getMessage]
-} {{Object names: .<Unnamed Object> and .NamedObj 2}}
+} {{  in .<Unnamed Object> and .NamedObj 2}}
 
 ######################################################################
 ####
@@ -175,7 +175,7 @@ test IllegalActionException-6.4 {Create a IllegalActionException with a \
 	    ptolemy.kernel.util.Nameable ptolemy.kernel.util.Nameable} \
 	    $n1 $n2]
     list [$pe getMessage]
-} {{Object names: .NamedObj 1 and .NamedObj 2}}
+} {{  in .NamedObj 1 and .NamedObj 2}}
 
 
 ######################################################################
@@ -188,8 +188,8 @@ test IllegalActionException-7.1 {Create a IllegalActionException with an \
     set pe [java::new ptolemy.kernel.util.IllegalActionException \
 	    $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{Object names: .<Unnamed Object> and .<Unnamed Object>:
-Detail Message}}
+} {{Detail Message
+  in .<Unnamed Object> and .<Unnamed Object>}}
 
 ######################################################################
 ####
@@ -202,8 +202,8 @@ test IllegalActionException-7.2 {Create a IllegalActionException with a \
     set pe [java::new ptolemy.kernel.util.IllegalActionException \
 	    $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{Object names: .NamedObj 1 and .<Unnamed Object>:
-Detail Message}}
+} {{Detail Message
+  in .NamedObj 1 and .<Unnamed Object>}}
 
 ######################################################################
 ####
@@ -215,8 +215,8 @@ test IllegalActionException-7.3 {Create a IllegalActionException with an \
     set pe [java::new ptolemy.kernel.util.IllegalActionException \
 	    $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{Object names: .<Unnamed Object> and .NamedObj 2:
-Detail Message}}
+} {{Detail Message
+  in .<Unnamed Object> and .NamedObj 2}}
 
 ######################################################################
 ####
@@ -228,5 +228,5 @@ test IllegalActionException-7.4 {Create a IllegalActionException with a \
     set pe [java::new ptolemy.kernel.util.IllegalActionException \
 	    $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{Object names: .NamedObj 1 and .NamedObj 2:
-Detail Message}}
+} {{Detail Message
+  in .NamedObj 1 and .NamedObj 2}}

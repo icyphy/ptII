@@ -148,7 +148,7 @@ public class Attribute extends NamedObj {
             if (deepContains(container)) {
                 throw new IllegalActionException(this, container,
                         "Attempt to construct recursive containment " +
-                        "of attributes.");
+                        "of attributes");
             }
 
             NamedObj previousContainer = (NamedObj)getContainer();
@@ -186,8 +186,8 @@ public class Attribute extends NamedObj {
             Attribute another = container.getAttribute(name);
             if ((another != null) && (another != this)) {
                 throw new NameDuplicationException (container,
-                        "already contains an attribute with the name " +
-                        name + ".");
+                        "Name duplication: " +
+                        name);
             }
         }
         super.setName(name);

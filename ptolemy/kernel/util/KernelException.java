@@ -33,6 +33,8 @@ package ptolemy.kernel.util;
 import java.io.StringWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.Collection;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// KernelException
@@ -218,11 +220,6 @@ public class KernelException extends Exception {
 
         if (!object1String.equals("")) {
             if (!object2String.equals("")) {
-
-                // If you modify the formatting here, be sure to make
-                // a similar change to
-                // KernelRuntimeException(Collection, Throwable, String)
-
                 whereString = "  in "
                     + object1String + " and " + object2String;
             } else {
@@ -234,6 +231,41 @@ public class KernelException extends Exception {
             }
         }
         return generateMessage(whereString, cause, detail);
+    }
+
+    /** Generate a properly formatted exception message where the
+     *  origin of the error is a collection.
+     *  <p>This method is public static so that both
+     *  KernelException and KernelRuntimeException and any classes
+     *  derived from those classes can use it.
+     *  KernelRuntimeException must extend RuntimeException so that
+     *  the java compiler will allow methods that throw
+     *  KernelRuntimeException to not declare that they throw it, and
+     *  KernelException cannot extend RuntimeException for the same
+     *  reason.
+     *  @param objects The where objects.
+     *  @param cause The cause of this exception.
+     *  @param detail The detail message.
+     *  @return A properly formatted message
+     */
+    public static String generateMessage(Collection objects,
+            Throwable cause, String detail) {
+        StringBuffer prefixBuffer = new StringBuffer("  in ");
+        Iterator objectIterator = objects.iterator();
+        while (objectIterator.hasNext()) {
+            Object object = objectIterator.next();
+            if (object instanceof Nameable) {
+                prefixBuffer.append(
+                        KernelException.getFullName((Nameable)object));
+            } else {
+                prefixBuffer.append(
+                    "<Object of class " + object.getClass().getName() + ">");
+            }
+            if (objectIterator.hasNext()) {
+                prefixBuffer.append(", ");
+            }
+        }
+        return generateMessage(prefixBuffer.toString(), cause, detail);
     }
 
     /** Generate a properly formatted detail message.

@@ -116,8 +116,8 @@ public class KernelRuntimeException extends RuntimeException {
      */
     public KernelRuntimeException(Nameable object1, Nameable object2,
             Throwable cause, String detail) {
-        _setMessage(KernelException.generateMessage(object1, object2,
-                cause, detail));
+        _setMessage(KernelException.generateMessage(
+                object1, object2, cause, detail));
         _setCause(cause);
     }
 
@@ -129,45 +129,7 @@ public class KernelRuntimeException extends RuntimeException {
      */
     public KernelRuntimeException(Collection objects,
             Throwable cause, String detail) {
-        StringBuffer prefixBuffer = new StringBuffer();
-        String name;
-
-        // This method could be a static method in KernelException,
-        // but there are no constructors in KernelException or any of
-        // KernelException's derived classes that take a Collection
-        // as an argument, so we leave this constructor here since
-        // there is little point in adding features that are not used.
-
-        // If you make a formatting change here, be sure to update
-        // KernelException.generateMessage(Nameable, Nameable,
-        //  Throwable, String)
-
-        if (objects.size() == 1) {
-            prefixBuffer.append("Object name: ");
-        } else if (objects.size() > 1) {
-            prefixBuffer.append("Object names: ");
-        }
-        Iterator objectIterator = objects.iterator();
-        while (objectIterator.hasNext()) {
-            Object object = objectIterator.next();
-            if (object instanceof Nameable) {
-                name = KernelException.getFullName((Nameable)object);
-            } else {
-                name = "<Object of class " +
-                    object.getClass().getName() + ">";
-            }
-            prefixBuffer.append(name + ", ");
-        }
-
-        String prefix = prefixBuffer.toString();
-
-        if (prefix.endsWith(", ")) {
-            // Remove the trailing ", " which was added processing the
-            // last element of the collection.
-            prefix = prefix.substring(0, prefix.length()-2);
-        }
-
-        _setMessage(KernelException.generateMessage(prefix, cause, detail));
+        _setMessage(KernelException.generateMessage(objects, cause, detail));
         _setCause(cause);
     }
 
