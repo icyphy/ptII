@@ -55,11 +55,11 @@ public class DDEPut extends TypedAtomicActor {
      */
     public DDEPut(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-         outputPort = new TypedIOPort(this, "output", false, true);
-	 outputPort.setMultiport(true);
-	 outputPort.setTypeEquals(Token.class);
+        outputPort = new TypedIOPort(this, "output", false, true);
+        outputPort.setMultiport(true);
+        outputPort.setTypeEquals(Token.class);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -127,38 +127,38 @@ public class TimedQueueReceiver {
 	Thread thread = Thread.currentThread();
 	Token token = null;
 	// synchronized( this ) {
-            Event event = (Event)_queue.take();
-	    if (event == null) {
-                throw new NoTokenException(getContainer(),
-	                "Attempt to get token from an empty "
-                        + "TimedQueueReceiver.");
+        Event event = (Event)_queue.take();
+        if (event == null) {
+            throw new NoTokenException(getContainer(),
+                    "Attempt to get token from an empty "
+                    + "TimedQueueReceiver.");
+        }
+        token = event.getToken();
+        if( thread instanceof DDEThread ) {
+            TimeKeeper timeKeeper =
+                ((DDEThread)thread).getTimeKeeper();
+            timeKeeper.setCurrentTime( event.getTime() );
+        }
+
+        if( _queue.size() > 0 ) {
+            Event nextEvent = (Event)_queue.get(0);
+            _rcvrTime = nextEvent.getTime();
+        }
+
+        // Call updateRcvrList() even if _queue.size() == 0,
+        // so that the triple is no longer in front.
+        if( thread instanceof DDEThread ) {
+            TimeKeeper timeKeeper =
+                ((DDEThread)thread).getTimeKeeper();
+
+            if( !timeKeeper.searchingForIgnoredTokens() ) {
+                timeKeeper.setSearchForIgnoredTokens( true );
+                timeKeeper.updateIgnoredReceivers();
             }
-	    token = event.getToken();
-	    if( thread instanceof DDEThread ) {
-	        TimeKeeper timeKeeper =
-		        ((DDEThread)thread).getTimeKeeper();
-	        timeKeeper.setCurrentTime( event.getTime() );
-	    }
-
-	    if( _queue.size() > 0 ) {
-	        Event nextEvent = (Event)_queue.get(0);
-	        _rcvrTime = nextEvent.getTime();
+            if( !timeKeeper.searchingForIgnoredTokens() ) {
+                timeKeeper.updateRcvrList(this);
             }
-
-	    // Call updateRcvrList() even if _queue.size() == 0,
-	    // so that the triple is no longer in front.
-	    if( thread instanceof DDEThread ) {
-		TimeKeeper timeKeeper =
-		        ((DDEThread)thread).getTimeKeeper();
-
-		if( !timeKeeper.searchingForIgnoredTokens() ) {
-		    timeKeeper.setSearchForIgnoredTokens( true );
-		    timeKeeper.updateIgnoredReceivers();
-		}
-		if( !timeKeeper.searchingForIgnoredTokens() ) {
-	            timeKeeper.updateRcvrList(this);
-		}
-	    }
+        }
 	// }
         return token;
     }
@@ -245,17 +245,17 @@ public class TimedQueueReceiver {
 	}
         Event event;
         // synchronized(this) {
-            _lastTime = time;
-            event = new Event(token, _lastTime);
+        _lastTime = time;
+        event = new Event(token, _lastTime);
 
-            if( _queue.size() == 0 ) {
-                _rcvrTime = _lastTime;
-            }
+        if( _queue.size() == 0 ) {
+            _rcvrTime = _lastTime;
+        }
 
-            if (!_queue.put(event)) {
-                throw new NoRoomException (getContainer(),
-                        "Queue is at capacity. Cannot insert token.");
-            }
+        if (!_queue.put(event)) {
+            throw new NoRoomException (getContainer(),
+                    "Queue is at capacity. Cannot insert token.");
+        }
 	// }
     }
 

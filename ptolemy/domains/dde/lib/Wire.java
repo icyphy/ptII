@@ -63,14 +63,14 @@ public class Wire extends TypedAtomicActor {
      */
     public Wire(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-         output = new TypedIOPort(this, "output", false, true);
-	 output.setMultiport(true);
-	 output.setTypeEquals(Token.class);
-         input = new TypedIOPort(this, "input", true, false);
-	 input.setMultiport(true);
-	 input.setTypeEquals(Token.class);
+        output = new TypedIOPort(this, "output", false, true);
+        output.setMultiport(true);
+        output.setTypeEquals(Token.class);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+        input.setTypeEquals(Token.class);
     }
 
     ///////////////////////////////////////////////////////////////////

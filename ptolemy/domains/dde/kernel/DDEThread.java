@@ -99,7 +99,7 @@ public class DDEThread extends ProcessThread {
 	    while( outputPorts.hasMoreElements() ) {
 	        IOPort port = (IOPort)outputPorts.nextElement();
                 Receiver rcvrs[][] =
-                	(Receiver[][])port.getRemoteReceivers();
+                    (Receiver[][])port.getRemoteReceivers();
                 if( rcvrs == null ) {
 	            break;
 	        }

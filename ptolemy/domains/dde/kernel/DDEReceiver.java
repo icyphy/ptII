@@ -75,7 +75,7 @@ public attributes of TimedQueueReceiver.
 @see ptolemy.domains.dde.kernel.DDEThread
 */
 public class DDEReceiver extends TimedQueueReceiver
-        implements ProcessReceiver {
+    implements ProcessReceiver {
 
     /** Construct an empty receiver with no container.
      */
@@ -157,7 +157,7 @@ public class DDEReceiver extends TimedQueueReceiver
      */
     public Token get() throws NoTokenException {
         DDEDirector director = (DDEDirector)
-	        ((Actor)getContainer().getContainer()).getDirector();
+            ((Actor)getContainer().getContainer()).getDirector();
 	synchronized( this ) {
 	    if( _terminate ) {
 		throw new TerminateProcessException("");
@@ -171,7 +171,7 @@ public class DDEReceiver extends TimedQueueReceiver
 	    Thread thread = Thread.currentThread();
 	    if( thread instanceof DDEThread ) {
 		TimeKeeper timeKeeper =
-                        ((DDEThread)thread).getTimeKeeper();
+                    ((DDEThread)thread).getTimeKeeper();
 		timeKeeper.sendOutNullTokens();
 	    }
 	    return token;
@@ -198,11 +198,11 @@ public class DDEReceiver extends TimedQueueReceiver
     public boolean hasToken() {
 	Workspace workspace = getContainer().workspace();
         DDEDirector director = (DDEDirector)
-	        ((Actor)getContainer().getContainer()).getDirector();
+            ((Actor)getContainer().getContainer()).getDirector();
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
 	    TimeKeeper timeKeeper =
-            	    ((DDEThread)thread).getTimeKeeper();
+                ((DDEThread)thread).getTimeKeeper();
 	    return _hasToken( workspace, director,
             	    timeKeeper, _hideNullTokens );
 	}
@@ -250,7 +250,7 @@ public class DDEReceiver extends TimedQueueReceiver
     public void put(Token token, double time) {
         Workspace workspace = getContainer().workspace();
         DDEDirector director = (DDEDirector)
-                ((Actor)getContainer().getContainer()).getDirector();
+            ((Actor)getContainer().getContainer()).getDirector();
 	_put(token, time, workspace, director);
     }
 
@@ -287,9 +287,9 @@ public class DDEReceiver extends TimedQueueReceiver
     	_writePending = false;
     	_ignoreNotSeen = true;
         Director director =
-                ((Actor)getContainer().getContainer()).getDirector();
+            ((Actor)getContainer().getContainer()).getDirector();
         String name =
-                ((Nameable)getContainer().getContainer()).getName();
+            ((Nameable)getContainer().getContainer()).getName();
         setRcvrTime( 0.0 );
     }
 
@@ -367,7 +367,7 @@ public class DDEReceiver extends TimedQueueReceiver
 		    super.get();
 		    timeKeeper.sendOutNullTokens();
 		    return _hasToken(workspace, director,
-				timeKeeper, _hideNullTokens);
+                            timeKeeper, _hideNullTokens);
 		}
 		return true;
 	    }

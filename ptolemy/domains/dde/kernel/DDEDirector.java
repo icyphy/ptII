@@ -118,7 +118,7 @@ public class DDEDirector extends ProcessDirector {
 	try {
             double val = TimedQueueReceiver.ETERNITY;
 	    stopTime = new
-		    Parameter(this, "stopTime", new DoubleToken(val) );
+                Parameter(this, "stopTime", new DoubleToken(val) );
 	} catch( IllegalActionException e ) {
 	    throw new InternalErrorException( e.toString() );
         } catch (NameDuplicationException e) {
@@ -138,7 +138,7 @@ public class DDEDirector extends ProcessDirector {
 	try {
             double val = TimedQueueReceiver.ETERNITY;
 	    stopTime = new
-		    Parameter(this, "stopTime", new DoubleToken(val) );
+                Parameter(this, "stopTime", new DoubleToken(val) );
 	} catch( IllegalActionException e ) {
 	    throw new InternalErrorException( e.toString() );
         } catch (NameDuplicationException e) {
@@ -166,7 +166,7 @@ public class DDEDirector extends ProcessDirector {
 	try {
             double val = TimedQueueReceiver.ETERNITY;
 	    stopTime = new
-		    Parameter(this, "stopTime", new DoubleToken(val) );
+                Parameter(this, "stopTime", new DoubleToken(val) );
 	} catch( IllegalActionException e ) {
 	    throw new InternalErrorException( e.toString() );
         } catch (NameDuplicationException e) {
@@ -514,28 +514,28 @@ public class DDEDirector extends ProcessDirector {
 
     private class RcvrCapacityComparator implements Comparator {
 
-       /**
-        * @exception ClassCastException If fst and scd are
-        *  not instances of DDEReceiver.
-        */
-       public int compare(Object fst, Object scd) {
-           DDEReceiver first = null;
-           DDEReceiver second = null;
+        /**
+         * @exception ClassCastException If fst and scd are
+         *  not instances of DDEReceiver.
+         */
+        public int compare(Object fst, Object scd) {
+            DDEReceiver first = null;
+            DDEReceiver second = null;
 
-           if( fst instanceof DDEReceiver ) {
-               first = (DDEReceiver)fst;
-           }
-           if( scd instanceof DDEReceiver ) {
-               second = (DDEReceiver)scd;
-           }
+            if( fst instanceof DDEReceiver ) {
+                first = (DDEReceiver)fst;
+            }
+            if( scd instanceof DDEReceiver ) {
+                second = (DDEReceiver)scd;
+            }
 
-           if( first.getCapacity() < second.getCapacity() ) {
-               return 1;
-           } else if( first.getCapacity() > second.getCapacity() ) {
-               return -1;
-           } else {
-               return 0;
-           }
-       }
+            if( first.getCapacity() < second.getCapacity() ) {
+                return 1;
+            } else if( first.getCapacity() > second.getCapacity() ) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
     }
 }

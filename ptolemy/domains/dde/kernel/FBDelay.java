@@ -158,9 +158,9 @@ public class FBDelay extends DDEActor {
     public void fire() throws IllegalActionException {
 	Token token = _getNextInput();
         boolean delayNullVal =
-                ((BooleanToken)nullDelay.getToken()).booleanValue();
+            ((BooleanToken)nullDelay.getToken()).booleanValue();
         boolean delayRealVal =
-                ((BooleanToken)realDelay.getToken()).booleanValue();
+            ((BooleanToken)realDelay.getToken()).booleanValue();
 	Thread thread = Thread.currentThread();
 	if( thread instanceof DDEThread ) {
             DDEThread ddeThread = (DDEThread)thread;
@@ -228,7 +228,7 @@ public class FBDelay extends DDEActor {
      */
     private void _sendOutToken(Token token, double time) {
         Receiver[][] rcvrs =
-        	(Receiver[][])output.getRemoteReceivers();
+            (Receiver[][])output.getRemoteReceivers();
 	for( int i = 0; i < rcvrs.length; i++ ) {
 	    for( int j = 0; j < rcvrs[i].length; j++ ) {
             	DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
@@ -247,9 +247,9 @@ public class FBDelay extends DDEActor {
 	output.setTypeEquals(Token.class);
 
         nullDelay = new
-        	Parameter(this, "nullDelay", new BooleanToken(true));
+            Parameter(this, "nullDelay", new BooleanToken(true));
         realDelay = new
-        	Parameter(this, "realDelay", new BooleanToken(false));
+            Parameter(this, "realDelay", new BooleanToken(false));
     }
 
 }

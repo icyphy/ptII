@@ -58,14 +58,14 @@ public class FlowThru extends TypedAtomicActor {
      */
     public FlowThru(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-         output = new TypedIOPort(this, "output", false, true);
-	 output.setMultiport(true);
-	 output.setTypeEquals(Token.class);
-         input = new TypedIOPort(this, "input", true, false);
-	 input.setMultiport(true);
-	 input.setTypeEquals(Token.class);
+        output = new TypedIOPort(this, "output", false, true);
+        output.setMultiport(true);
+        output.setTypeEquals(Token.class);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+        input.setTypeEquals(Token.class);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -83,17 +83,17 @@ public class FlowThru extends TypedAtomicActor {
 	    for( int j = 0; j < inRcvrs[i].length; j++ ) {
 		DDEReceiver inRcvr = (DDEReceiver)inRcvrs[i][j];
 		/*
-		System.out.println("\n");
-		System.out.println("\n");
-		System.out.println("*****");
-		System.out.println(getName() + ":   receiver["+i+"]["+j+"];");
+                  System.out.println("\n");
+                  System.out.println("\n");
+                  System.out.println("*****");
+                  System.out.println(getName() + ":   receiver["+i+"]["+j+"];");
 		*/
 		/*
-		Thread aThread = Thread.currentThread();
-		if( aThread instanceof DDEThread ) {
-		    Actor actor = ((DDEThread)aThread).getActor();
-		    String name = ((Nameable)actor).getName();
-		}
+                  Thread aThread = Thread.currentThread();
+                  if( aThread instanceof DDEThread ) {
+                  Actor actor = ((DDEThread)aThread).getActor();
+                  String name = ((Nameable)actor).getName();
+                  }
 		*/
 		if( inRcvr.hasToken() ) {
 		    token = inRcvr.get();
@@ -110,14 +110,14 @@ public class FlowThru extends TypedAtomicActor {
 		    }
 		} else {
 		    /*
-		    System.out.println("actorThru: Weird error; hasToken = false");
-		    Thread thr = Thread.currentThread();
-		    if( thr instanceof DDEThread ) {
-			TimeKeeper kpr = ((DDEThread)thr).getTimeKeeper();
-                        if( kpr.getNextTime() == 0.0 ) {
-                            System.out.println("IGNORE Token not at front");
-                        }
-		    }
+                      System.out.println("actorThru: Weird error; hasToken = false");
+                      Thread thr = Thread.currentThread();
+                      if( thr instanceof DDEThread ) {
+                      TimeKeeper kpr = ((DDEThread)thr).getTimeKeeper();
+                      if( kpr.getNextTime() == 0.0 ) {
+                      System.out.println("IGNORE Token not at front");
+                      }
+                      }
 		    */
 		}
 	    }

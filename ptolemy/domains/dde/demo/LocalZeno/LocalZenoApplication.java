@@ -96,7 +96,7 @@ public class LocalZenoApplication implements ActionListener {
 	}
 
         LocalZenoApplication app =
-	        new LocalZenoApplication( manager, topLevel );
+            new LocalZenoApplication( manager, topLevel );
 
 	Panel nullAppletPanel = null;
 	app.initializeDemo(nullAppletPanel);
@@ -302,7 +302,7 @@ public class LocalZenoApplication implements ActionListener {
 		}
 	    });
 	    /*
-            displayGraph(_jgraph, _model);
+              displayGraph(_jgraph, _model);
 	    */
         }
         catch(Exception ex) {
@@ -310,7 +310,7 @@ public class LocalZenoApplication implements ActionListener {
             System.exit(0);
         }
         StateListener listener =
-	        new StateListener((GraphPane)_jgraph.getCanvasPane());
+            new StateListener((GraphPane)_jgraph.getCanvasPane());
 	_join1.addListeners(listener);
 	_join2.addListeners(listener);
 	_fork1.addListeners(listener);
@@ -485,7 +485,7 @@ public class LocalZenoApplication implements ActionListener {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
             boolean isEllipse =
-                   actor instanceof ListenWire
+                actor instanceof ListenWire
                 || actor instanceof ListenFork
 		|| actor instanceof ListenClock
 		|| actor instanceof ListenSink
@@ -516,28 +516,28 @@ public class LocalZenoApplication implements ActionListener {
      * LocalEdgeRenderer draws arrowheads on both ends of the connector
      */
     public class LocalEdgeRenderer implements EdgeRenderer {
-      /**
-       * Render the edge
-       */
-      public Connector render (Edge edge, Site tailSite, Site headSite) {
-	StraightConnector c = new StraightConnector(tailSite, headSite);
+        /**
+         * Render the edge
+         */
+        public Connector render (Edge edge, Site tailSite, Site headSite) {
+            StraightConnector c = new StraightConnector(tailSite, headSite);
 
-	// Create an arrow at the head
-	Arrowhead headArrow = new Arrowhead(
-					    headSite.getX(), headSite.getY(),
-					    headSite.getNormal());
-	c.setHeadEnd(headArrow);
+            // Create an arrow at the head
+            Arrowhead headArrow = new Arrowhead(
+                    headSite.getX(), headSite.getY(),
+                    headSite.getNormal());
+            c.setHeadEnd(headArrow);
 
-        /*
-	// Create an arrow at the tail
-	Arrowhead tailArrow = new Arrowhead(
-					    tailSite.getX(), tailSite.getY(),
-					    tailSite.getNormal());
-	c.setTailEnd(tailArrow);
-        */
+            /*
+              // Create an arrow at the tail
+              Arrowhead tailArrow = new Arrowhead(
+              tailSite.getX(), tailSite.getY(),
+              tailSite.getNormal());
+              c.setTailEnd(tailArrow);
+            */
 
-	c.setUserObject(edge);
-	return c;
-      }
+            c.setUserObject(edge);
+            return c;
+        }
     }
 }

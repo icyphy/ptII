@@ -59,11 +59,11 @@ public class DDEPutToken extends DDEPut {
      */
     public DDEPutToken(TypedCompositeActor cont, String name, int numTokens)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-	 _numTokens = numTokens;
-	 _tokens = new Token[_numTokens];
-	 _times = new double[_numTokens];
+        _numTokens = numTokens;
+        _tokens = new Token[_numTokens];
+        _times = new double[_numTokens];
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -80,8 +80,8 @@ public class DDEPutToken extends DDEPut {
 		for( int j = 0; j < rcvrs[i].length; j++ ) {
 		    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j];
 		    /*
-		    System.out.println("DDEPutToken receiver["+i+"]["+j+
-		    "]; cnt = "+cnt);
+                      System.out.println("DDEPutToken receiver["+i+"]["+j+
+                      "]; cnt = "+cnt);
 		    */
                     if( _oneArg ) {
                         rcvr.put( _tokens[cnt] );

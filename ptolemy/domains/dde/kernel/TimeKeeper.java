@@ -153,12 +153,12 @@ public class TimeKeeper {
 	}
 	while( cnt < _rcvrTimeList.size() ) {
 	    RcvrTimeTriple triple =
-		    (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+                (RcvrTimeTriple)_rcvrTimeList.at(cnt);
 	    if( time == -10.0 ) {
 	        time = triple.getTime();
 	        firstTime = time;
 		TimedQueueReceiver tmpRcvr =
-		        (TimedQueueReceiver)triple.getReceiver();
+                    (TimedQueueReceiver)triple.getReceiver();
 		if( tmpRcvr.hasNullToken() ) {
 		    maxPriority = triple.getPriority();
 		    highPriorityTriple = triple;
@@ -169,7 +169,7 @@ public class TimeKeeper {
 
 	    if( time > firstTime ||
 		    time == TimedQueueReceiver.INACTIVE ||
-			    time == TimedQueueReceiver.IGNORE ) {
+                    time == TimedQueueReceiver.IGNORE ) {
 		if( highPriorityTriple != null ) {
 		    return highPriorityTriple.getReceiver();
 		} else {
@@ -177,7 +177,7 @@ public class TimeKeeper {
 		}
 	    } else if( maxPriority < triple.getPriority() ) {
 		TimedQueueReceiver tmpRcvr =
-		        (TimedQueueReceiver)triple.getReceiver();
+                    (TimedQueueReceiver)triple.getReceiver();
 		if( tmpRcvr.hasNullToken() ) {
 		    maxPriority = triple.getPriority();
 		    highPriorityTriple = triple;
@@ -214,12 +214,12 @@ public class TimeKeeper {
 	}
 	while( cnt < _rcvrTimeList.size() ) {
 	    RcvrTimeTriple triple =
-		    (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+                (RcvrTimeTriple)_rcvrTimeList.at(cnt);
 	    if( time == -10.0 ) {
 	        time = triple.getTime();
 	        firstTime = time;
 		TimedQueueReceiver tmpRcvr =
-		        (TimedQueueReceiver)triple.getReceiver();
+                    (TimedQueueReceiver)triple.getReceiver();
 		if( !tmpRcvr.hasNullToken() ) {
 		    if( tmpRcvr.getRcvrTime() != TimedQueueReceiver.IGNORE ) {
 			maxPriority = triple.getPriority();
@@ -232,7 +232,7 @@ public class TimeKeeper {
 
 	    if( time > firstTime ||
 		    time == TimedQueueReceiver.INACTIVE ||
-			    time == TimedQueueReceiver.IGNORE ) {
+                    time == TimedQueueReceiver.IGNORE ) {
 		if( highPriorityTriple != null ) {
 		    return highPriorityTriple.getReceiver();
 		} else {
@@ -240,7 +240,7 @@ public class TimeKeeper {
 		}
 	    } else if( maxPriority < triple.getPriority() ) {
 		TimedQueueReceiver tmpRcvr =
-		        (TimedQueueReceiver)triple.getReceiver();
+                    (TimedQueueReceiver)triple.getReceiver();
 		if( !tmpRcvr.hasNullToken() ) {
 		    if( tmpRcvr.getRcvrTime() != TimedQueueReceiver.IGNORE ) {
 			maxPriority = triple.getPriority();
@@ -279,7 +279,7 @@ public class TimeKeeper {
 	}
 	while( cnt < _rcvrTimeList.size() ) {
 	    RcvrTimeTriple triple =
-		    (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+                (RcvrTimeTriple)_rcvrTimeList.at(cnt);
 	    if( time == -10.0 ) {
 	        time = triple.getTime();
 	        firstTime = time;
@@ -291,7 +291,7 @@ public class TimeKeeper {
 
 	    if( time > firstTime ||
 		    time == TimedQueueReceiver.INACTIVE ||
-			    time == TimedQueueReceiver.IGNORE ) {
+                    time == TimedQueueReceiver.IGNORE ) {
 		return highPriorityTriple.getReceiver();
 	    } else if( maxPriority < triple.getPriority() ) {
 		maxPriority = triple.getPriority();
@@ -346,9 +346,9 @@ public class TimeKeeper {
         }
 
         RcvrTimeTriple firstTriple =
-	        (RcvrTimeTriple)_rcvrTimeList.first();
+            (RcvrTimeTriple)_rcvrTimeList.first();
 	RcvrTimeTriple secondTriple =
-	        (RcvrTimeTriple)_rcvrTimeList.at(1);
+            (RcvrTimeTriple)_rcvrTimeList.at(1);
 
 	if( firstTriple.getTime() == secondTriple.getTime() ) {
 	    return false;
@@ -384,13 +384,13 @@ public class TimeKeeper {
      */
     public void sendOutNullTokens() {
 	String calleeName =
-		((Nameable)_actor).getName();
+            ((Nameable)_actor).getName();
 	Enumeration ports = _actor.outputPorts();
         double time = getCurrentTime();
         while( ports.hasMoreElements() ) {
             IOPort port = (IOPort)ports.nextElement();
 	    Receiver rcvrs[][] =
-		    (Receiver[][])port.getRemoteReceivers();
+                (Receiver[][])port.getRemoteReceivers();
             for (int i = 0; i < rcvrs.length; i++) {
                 for (int j = 0; j < rcvrs[i].length; j++) {
                     if( time >
@@ -483,7 +483,7 @@ public class TimeKeeper {
      * @param outputTime The output time of this time keeper.
      */
     public synchronized void setOutputTime(double outputTime)
-	     throws IllegalActionException {
+            throws IllegalActionException {
 	if( outputTime < _currentTime ) {
 	    throw new IllegalActionException(
 		    ((NamedObj)_actor).getName() + " - Attempt to "
@@ -555,7 +555,7 @@ public class TimeKeeper {
 	double time = tqr.getRcvrTime();
 	int priority = tqr.getPriority();
 	RcvrTimeTriple triple =
-	        new RcvrTimeTriple(tqr, time, priority);
+            new RcvrTimeTriple(tqr, time, priority);
 	_removeRcvrTriple( triple );
 	_addRcvrTriple( triple );
     }
@@ -583,7 +583,7 @@ public class TimeKeeper {
             double time = testTriple.getTime();
 	    Token token = null;
 	    String msg = "\t"+name+"'s Receiver "+i+
-		    " has a time of " +time+" and ";
+                " has a time of " +time+" and ";
 	    if( token instanceof NullToken ) {
 		msg += "contains a NullToken";
 	    } else if( token != null ) {
@@ -639,7 +639,7 @@ public class TimeKeeper {
 	    int cnt = 0;
 	    while( cnt < _rcvrTimeList.size() && notAddedYet ) {
 		RcvrTimeTriple triple =
-		        (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+                    (RcvrTimeTriple)_rcvrTimeList.at(cnt);
 	        if( triple.getTime() == TimedQueueReceiver.INACTIVE ) {
 		    _rcvrTimeList.insertAt( cnt, newTriple );
 		    cnt = _rcvrTimeList.size();
@@ -659,7 +659,7 @@ public class TimeKeeper {
 	    int cnt = 0;
 	    while( cnt < _rcvrTimeList.size() && notAddedYet ) {
 		RcvrTimeTriple triple =
-		        (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+                    (RcvrTimeTriple)_rcvrTimeList.at(cnt);
 	        if( triple.getTime() == TimedQueueReceiver.INACTIVE ) {
 		    _rcvrTimeList.insertAt( cnt, newTriple );
 		    cnt = _rcvrTimeList.size();
@@ -691,7 +691,7 @@ public class TimeKeeper {
 
 	for( int cnt = 0; cnt < _rcvrTimeList.size(); cnt++ ) {
 	    RcvrTimeTriple nextTriple =
-		    (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+                (RcvrTimeTriple)_rcvrTimeList.at(cnt);
 	    TimedQueueReceiver nextRcvr = nextTriple.getReceiver();
 
 	    if( rcvrToBeRemoved == nextRcvr ) {

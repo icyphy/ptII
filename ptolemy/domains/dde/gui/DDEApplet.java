@@ -129,8 +129,8 @@ public class DDEApplet extends PtolemyApplet {
 
             // Process the default iterations parameter.
             String defaultStopSpec =
-		    getParameter("defaultStopTime");
-            	    // getSingleParameter("defaultStopTime");
+                getParameter("defaultStopTime");
+            // getSingleParameter("defaultStopTime");
             if (defaultStopSpec == null) {
                 defaultStopSpec = "100.0";
             }
@@ -153,7 +153,7 @@ public class DDEApplet extends PtolemyApplet {
 	if( _director != null ) {
             try {
             	result =
-                        ((DoubleToken)_director.stopTime.getToken()).doubleValue();
+                    ((DoubleToken)_director.stopTime.getToken()).doubleValue();
             } catch (IllegalActionException ex) {
                 report("Error in stop time:\n", ex);
             }

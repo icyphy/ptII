@@ -63,7 +63,7 @@ public class ListenGet extends DDEGetNToken {
      */
     public ListenGet(TypedCompositeActor cont, String name, int numTokens)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name, numTokens);
+        super(cont, name, numTokens);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -87,7 +87,7 @@ public class ListenGet extends DDEGetNToken {
         Enumeration enum = _listeners.elements();
         while( enum.hasMoreElements() ) {
             ExecEventListener newListener =
-                    (ExecEventListener)enum.nextElement();
+                (ExecEventListener)enum.nextElement();
             newListener.stateChanged(event);
         }
     }

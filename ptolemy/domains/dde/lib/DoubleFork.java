@@ -64,17 +64,17 @@ public class DoubleFork extends TypedAtomicActor {
      */
     public DoubleFork(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-         output1 = new TypedIOPort(this, "output1", false, true);
-	 output1.setMultiport(true);
-	 output1.setTypeEquals(Token.class);
-         output2 = new TypedIOPort(this, "output2", false, true);
-	 output2.setMultiport(true);
-	 output2.setTypeEquals(Token.class);
-         input = new TypedIOPort(this, "input", true, false);
-	 input.setMultiport(true);
-	 input.setTypeEquals(Token.class);
+        output1 = new TypedIOPort(this, "output1", false, true);
+        output1.setMultiport(true);
+        output1.setTypeEquals(Token.class);
+        output2 = new TypedIOPort(this, "output2", false, true);
+        output2.setMultiport(true);
+        output2.setTypeEquals(Token.class);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+        input.setTypeEquals(Token.class);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -68,17 +68,17 @@ public class TimeAdvance extends DDEActor {
      */
     public TimeAdvance(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-         output = new TypedIOPort(this, "output", false, true);
-	 output.setMultiport(true);
-	 output.setTypeEquals(DoubleToken.class);
-         input = new TypedIOPort(this, "input", true, false);
-	 input.setMultiport(true);
-	 input.setTypeEquals(Token.class);
+        output = new TypedIOPort(this, "output", false, true);
+        output.setMultiport(true);
+        output.setTypeEquals(DoubleToken.class);
+        input = new TypedIOPort(this, "input", true, false);
+        input.setMultiport(true);
+        input.setTypeEquals(Token.class);
 
-	 outputValue = new
-	         Parameter(this, "outputValue", new DoubleToken(0.0));
+        outputValue = new
+            Parameter(this, "outputValue", new DoubleToken(0.0));
     }
 
     ///////////////////////////////////////////////////////////////////

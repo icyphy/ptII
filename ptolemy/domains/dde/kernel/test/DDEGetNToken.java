@@ -61,17 +61,17 @@ public class DDEGetNToken extends DDEGet {
      */
     public DDEGetNToken(TypedCompositeActor cont, String name, int numTokens)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
 
-	 _numTokens = numTokens;
-	 _tokens = new Token[_numTokens];
-	 _beforeTimes = new double[_numTokens];
-	 _afterTimes = new double[_numTokens];
+        _numTokens = numTokens;
+        _tokens = new Token[_numTokens];
+        _beforeTimes = new double[_numTokens];
+        _afterTimes = new double[_numTokens];
 
-	 for(int i = 0; i < _numTokens; i++ ) {
-	     _beforeTimes[i] = -1.0;
-	     _afterTimes[i] = -1.0;
-	 }
+        for(int i = 0; i < _numTokens; i++ ) {
+            _beforeTimes[i] = -1.0;
+            _afterTimes[i] = -1.0;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

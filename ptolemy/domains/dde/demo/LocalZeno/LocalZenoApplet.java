@@ -117,7 +117,7 @@ public class LocalZenoApplet extends DDEApplet {
         }
 
         StateListener listener =
-	        new StateListener((GraphPane)_jgraph.getCanvasPane());
+            new StateListener((GraphPane)_jgraph.getCanvasPane());
 	_join1.addListeners(listener);
 	_join2.addListeners(listener);
 	_fork1.addListeners(listener);
@@ -423,7 +423,7 @@ public class LocalZenoApplet extends DDEApplet {
             ComponentEntity actor = (ComponentEntity) n.getSemanticObject();
 
             boolean isEllipse =
-                   actor instanceof ListenWire
+                actor instanceof ListenWire
                 || actor instanceof ListenFork
 		|| actor instanceof ListenClock
 		|| actor instanceof ListenSink
@@ -454,19 +454,19 @@ public class LocalZenoApplet extends DDEApplet {
      * LocalEdgeRenderer draws arrowheads on both ends of the connector
      */
     public class LocalEdgeRenderer implements EdgeRenderer {
-      /**
-       * Render the edge
-       */
-      public Connector render (Edge edge, Site tailSite, Site headSite) {
-	StraightConnector c = new StraightConnector(tailSite, headSite);
+        /**
+         * Render the edge
+         */
+        public Connector render (Edge edge, Site tailSite, Site headSite) {
+            StraightConnector c = new StraightConnector(tailSite, headSite);
 
-	// Create an arrow at the head
-	Arrowhead headArrow = new Arrowhead(
-					    headSite.getX(), headSite.getY(),
-					    headSite.getNormal());
-	c.setHeadEnd(headArrow);
-	c.setUserObject(edge);
-	return c;
-      }
+            // Create an arrow at the head
+            Arrowhead headArrow = new Arrowhead(
+                    headSite.getX(), headSite.getY(),
+                    headSite.getNormal());
+            c.setHeadEnd(headArrow);
+            c.setUserObject(edge);
+            return c;
+        }
     }
 }

@@ -67,7 +67,7 @@ public class ListenFork extends DoubleFork {
      */
     public ListenFork(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -94,7 +94,7 @@ public class ListenFork extends DoubleFork {
         Enumeration enum = _listeners.elements();
         while( enum.hasMoreElements() ) {
             ExecEventListener newListener =
-                    (ExecEventListener)enum.nextElement();
+                (ExecEventListener)enum.nextElement();
             newListener.stateChanged(event);
         }
     }

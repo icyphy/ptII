@@ -106,7 +106,7 @@ public class ListenFBDelay extends FBDelay {
         Enumeration enum = _listeners.elements();
         while( enum.hasMoreElements() ) {
             ExecEventListener newListener =
-                    (ExecEventListener)enum.nextElement();
+                (ExecEventListener)enum.nextElement();
             newListener.stateChanged(event);
         }
     }

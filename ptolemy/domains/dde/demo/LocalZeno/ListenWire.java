@@ -65,7 +65,7 @@ public class ListenWire extends Wire {
      */
     public ListenWire(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(cont, name);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,7 +92,7 @@ public class ListenWire extends Wire {
         Enumeration enum = _listeners.elements();
         while( enum.hasMoreElements() ) {
             ExecEventListener newListener =
-                    (ExecEventListener)enum.nextElement();
+                (ExecEventListener)enum.nextElement();
             newListener.stateChanged(event);
         }
     }
