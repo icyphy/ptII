@@ -106,7 +106,7 @@ Note: Requires Java 2 v1.3.0 or later.
 @version $Id$
 @since Ptolemy II 1.0
 @see ptolemy.media.javasound.LiveSound
-@see ptolemy.media.javasound.AudioPlayer
+@see AudioPlayer
 @see ptolemy.media.javasound.SoundReader
 @see ptolemy.media.javasound.SoundWriter
 */
