@@ -67,6 +67,19 @@ not implement version-strings.
 @version $Id$ */
 public class VersionAttribute extends StringAttribute implements Settable, Comparable {
     
+    /** Construct an object in the default workspace with the given name.
+     *  If the name argument is null, then the name is set to the empty
+     *  string. The object is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param expression The initial expression.
+     *  @exception IllegalActionException If the expression is of the
+     *  incorrect format.
+     */
+    public VersionAttribute(String expression) throws IllegalActionException {
+	super();
+	setExpression(expression);
+    }
+
     /** Construct an attribute with the given name contained by the specified
      *  container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -86,12 +99,6 @@ public class VersionAttribute extends StringAttribute implements Settable, Compa
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _tupleList = new LinkedList();
-    }
-
-    public VersionAttribute(NamedObj container, String name, String expression)
-            throws IllegalActionException, NameDuplicationException {
-        super(container, name);
-	setExpression(expression);
     }
 
     /** Set the value of the string attribute and notify the container
@@ -207,16 +214,16 @@ public class VersionAttribute extends StringAttribute implements Settable, Compa
      *  </pre>
      */ 
     public static final VersionAttribute PTOLEMYII_VERSION;
+
     static {
 	try {
-	    NamedObj version = new NamedObj("PTOLEMYII_VERSION container");
-	    PTOLEMYII_VERSION = new VersionAttribute(version,
-						     "PTOLEMYII_VERSION",
-						     "2.0-devel");
+	    PTOLEMYII_VERSION = new VersionAttribute("2.0-devel");
+
 	} catch (Exception ex) {
 	    throw new ExceptionInInitializerError("Failed to create "
 						  + "PTOLEMYII_VERSION: "
-						  + KernelException.stackTraceToString(ex));
+						  + KernelException
+						  .stackTraceToString(ex));
 	}
     }
 
