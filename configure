@@ -1866,9 +1866,9 @@ echo "configure:1859: checking for the proper JNI architecture include directory
     echo $ac_n "checking for the proper shared library suffix""... $ac_c" 1>&6
 echo "configure:1868: checking for the proper shared library suffix" >&5
     case "`uname -s`" in
-        CYGWIN_ME-*) PTJNI_ARCHITECTURE=dll;;
-	CYGWIN_NT-*) PTJNI_ARCHITECTURE=dll;;
-	CYGWIN_98-*) PTJNI_ARCHITECTURE=dll;;
+        CYGWIN_ME-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
+	CYGWIN_NT-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
+	CYGWIN_98-*) PTJNI_SHAREDLIBRARY_SUFFIX=dll;;
 	SunOS)	 PTJNI_SHAREDLIBRARY_SUFFIX=so;;
 	*) PTJNI_SHAREDLIBRARY_SUFFIX=unknown;;
     esac
