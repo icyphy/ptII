@@ -26,7 +26,7 @@ associated with contenders in a resource contention scheme.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Red (davisj@eecs.berkeley.edu)
-
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.csp.demo.BusContention;
