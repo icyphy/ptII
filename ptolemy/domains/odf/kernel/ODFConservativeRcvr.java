@@ -109,7 +109,7 @@ public class ODFConservativeRcvr extends TimedQueueReceiver
      *  becomes available, determine if this queue has the unique oldest 
      *  rcvrTime with respect to all of the receivers contained by the 
      *  actor that contains this receiver. If so, return the token. If 
-     *  the rcvrTime is not a unique minimum but simultaneousIgnore is 
+     *  the rcvrTime is a non-unique minimum but simultaneousIgnore is 
      *  true, then return the token; otherwise return null. 
      * @return Token The oldest token on this queue.
      */
