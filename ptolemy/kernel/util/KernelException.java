@@ -115,8 +115,8 @@ public class KernelException extends Exception {
         }
     }
     
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////////
+    ////                      public methods                           ////
 
     /** Get the detail message.
      *  @return The error message.
@@ -125,8 +125,8 @@ public class KernelException extends Exception {
         return _message;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
+    ///////////////////////////////////////////////////////////////////////
+    ////                      protected methods                        ////
 
     /** Get the name of a Nameable object.
      *  If the argument is a null reference, return an empty string.

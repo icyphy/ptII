@@ -182,8 +182,8 @@ public class Attribute extends NamedObj {
         _container = null;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////////
+    ////                      private variables                        ////
 
     private NamedObj _container;
 }
