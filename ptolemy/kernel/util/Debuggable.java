@@ -33,7 +33,7 @@ package ptolemy.kernel.util;
 //////////////////////////////////////////////////////////////////////////
 //// Debuggable
 /**
-This is an interface for objects that can be attached debug listeners to.
+This is an interface for objects that debug listeners can be attached to.
 
 @author Jie Liu
 @version $Id$
