@@ -52,6 +52,7 @@ EXTRA_SRCS =	$(JSRCS) \
 	basicHelp.htm \
 	copyright.htm \
 	demos.htm \
+	demosRuntime.htm \
 	vergilFsmEditorHelp.htm \
 	vergilGraphEditorHelp.htm
 
