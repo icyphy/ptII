@@ -56,7 +56,8 @@ import java.util.HashMap;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.net.URL;
-import javax.swing.*;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingConstants;
 import javax.swing.event.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -72,7 +73,7 @@ import javax.swing.event.*;
  * @version $Id$
  */
 
-public class EntityController extends NodeController {
+public class EntityController extends LocatableNodeController {
     public EntityController(GraphController controller) {
 	super(controller);
 	setNodeRenderer(new EntityRenderer());
@@ -83,30 +84,8 @@ public class EntityController extends NodeController {
 	_menuCreator = new MenuCreator(interactor);
     }
     
-    public NodeController getPortController() {
-	return _portController;
-    }
-
-    public void setPortController(NodeController controller) {
-	_portController = (EntityPortController)controller;
-    }
-
-    public class EntityRenderer implements NodeRenderer {
-	public Figure render(Node n) {
-	    Figure figure;
-	    NamedObj object = (NamedObj)n.getSemanticObject();
-	    BasicCompositeNode node = (BasicCompositeNode) n;
-	    Entity entity = (Entity)object;
-            EditorIcon icon = (EditorIcon)entity.getAttribute("_icon");
-            //           Figure background = new BasicRectangle(-10, -10, 20, 20, Color.red);
-            //icon.createFigure();
-	    Figure background = icon.createFigure(); 
-	    figure = new CompositeFigure(background);	   
-	    return figure;
-	}
-    }
-
-    /** Draw the node and add it to the graph.
+    /** Create a new node with the given semantic object and
+     *  add it to the graph.  Draw the node at the given location.
      */
     public Node addNode(Object semanticObject, double x, double y) {
         GraphController controller = getController();
@@ -120,6 +99,8 @@ public class EntityController extends NodeController {
         return n;             
     }
 	
+    /** Draw the node and all the ports contained within the node.
+     */
     public Figure drawNode(Node n) {
         Figure nf = super.drawNode(n);
 	LinkedList inputs = new LinkedList();
@@ -160,8 +141,58 @@ public class EntityController extends NodeController {
 	_createPortFigures((CompositeNode)n, inouts, inOutCount, SwingConstants.SOUTH);
         return nf;
     }
-	
-    public void _createPortFigures(CompositeNode node,
+
+    /** Return true if the node is associated with a desired location.
+     *  In this base class, return true if the the node's semantic object is
+     *  an instance of Locatable.
+     */
+    public boolean hasLocation(Node n) {
+        NamedObj object = (NamedObj)n.getSemanticObject();
+        Icon icon = (Icon) object.getAttribute("_icon");
+        return (icon != null) && (icon.getLocation() != null);
+    }
+
+    /** Return the desired location of this node.  Throw an exception if the
+     *  node does not have a desired location.
+     */
+    public int[] getLocation(Node n) {
+        NamedObj object = (NamedObj)n.getSemanticObject();
+        Icon icon = (Icon) object.getAttribute("_icon");
+        if(icon != null) {
+            return icon.getLocation();         
+        } else throw new GraphException("The node " + n + 
+                "does not have a desired location");
+    }
+
+    /** Get the controller for the ports of this entity.
+     */
+    public NodeController getPortController() {
+	return _portController;
+    }
+
+    /** Set the desired location of this node.  Throw an exception if the
+     *  node can not be given a desired location.
+     */
+    public void setLocation(Node n, int[] location) {
+        NamedObj object = (NamedObj)n.getSemanticObject();
+        Icon icon = (Icon) object.getAttribute("_icon");
+        if(icon != null) {
+            icon.setLocation(location);
+        } else throw new GraphException("The node " + n + 
+                "can not have a desired location");
+    }
+    
+    /** Set the controller for the ports of this entity.
+     */
+    public void setPortController(NodeController controller) {
+	_portController = (EntityPortController)controller;
+    }
+
+    /** Create figures for each node in the node list.  Place them on the 
+     * side of the composite given by direction.
+     * Count must be the number of nodes in the list.
+     */
+    protected void _createPortFigures(CompositeNode node,
 				   LinkedList nodeList, int count, 
 				   int direction) {        
 	int nodeNumber = 0;
@@ -205,6 +236,21 @@ public class EntityController extends NodeController {
         public EntityContextMenu(NamedObj target) {
             super(target);
         }
+    }
+
+    public class EntityRenderer implements NodeRenderer {
+	public Figure render(Node n) {
+	    Figure figure;
+	    NamedObj object = (NamedObj)n.getSemanticObject();
+	    BasicCompositeNode node = (BasicCompositeNode) n;
+	    Entity entity = (Entity)object;
+            EditorIcon icon = (EditorIcon)entity.getAttribute("_icon");
+            //           Figure background = new BasicRectangle(-10, -10, 20, 20, Color.red);
+            //icon.createFigure();
+            // Figure background = icon.createFigure(); 
+	    //figure = new CompositeFigure(background);	   
+	    return icon.createFigure();
+	}
     }
 
     EntityPortController _portController;

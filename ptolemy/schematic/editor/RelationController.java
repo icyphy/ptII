@@ -68,7 +68,7 @@ import javax.swing.event.*;
  * @author Steve Neuendorffer 
  * @version $Id$
  */
-public class RelationController extends NodeController {
+public class RelationController extends LocatableNodeController {
     public RelationController(GraphController controller) {
 	super(controller);
 	setNodeRenderer(new RelationRenderer());

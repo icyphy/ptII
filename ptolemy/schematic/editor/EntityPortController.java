@@ -125,9 +125,10 @@ public class EntityPortController extends NodeController {
         CompositeFigure parentFigure = 
 	    (CompositeFigure)parentNode.getVisualObject();
 	BoundsSite site = 
-	    new BoundsSite(parentFigure, 0, direction, fraction);
+	    new BoundsSite(parentFigure.getBackgroundFigure(), 0, direction, fraction);
         //nf.setAttachSite(site);
-	nf.translate(site.getX(), site.getY());
+	nf.translate(site.getX() - parentFigure.getBackgroundFigure().getBounds().getX(),
+                site.getY() - parentFigure.getBackgroundFigure().getBounds().getY());
 	parentFigure.add(nf);
         
         // Add to the graph

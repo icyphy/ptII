@@ -177,7 +177,7 @@ public class GraphEditor extends MDIApplication {
      */
     public void redisplay (Document d, JComponent c) {
         JGraph jgraph = (JGraph) c;
-        redoLayout(jgraph, (String) _layoutComboBox.getSelectedItem());
+        //       redoLayout(jgraph, (String) _layoutComboBox.getSelectedItem());
     }
    
     /** Return the entity library associated with this GraphEditor
