@@ -81,7 +81,6 @@ called "test.txt", then <i>sourceURL</i> should be set to
        from there.
 <p>FIXME: Reader should read in expressions and serialized tokens
 
-@see ptolemy.actor.lib.javasound.AudioReader
 @author  Jie Liu
 @version $Id$
 @since Ptolemy II 1.0
