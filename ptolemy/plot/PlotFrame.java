@@ -382,8 +382,8 @@ public class PlotFrame extends JFrame {
     /** Print the plot.
      */
     protected void _print() {
-	//_printCrossPlatform();
-	_printNative();
+	_printCrossPlatform();
+	//_printNative();
     }
 
     /** Print using the cross platform dialog.
