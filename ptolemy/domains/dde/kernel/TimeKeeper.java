@@ -211,6 +211,71 @@ public class TimeKeeper {
 		TimedQueueReceiver tmpRcvr = 
 		        (TimedQueueReceiver)triple.getReceiver();
 		if( !tmpRcvr.hasNullToken() ) {
+		    if( tmpRcvr.getRcvrTime() != TimedQueueReceiver.IGNORE ) {
+			maxPriority = triple.getPriority();
+			highPriorityTriple = triple;
+		    }
+		}
+	    } else {
+	        time = triple.getTime();
+	    }
+
+	    if( time > firstTime || 
+		    time == TimedQueueReceiver.INACTIVE || 
+			    time == TimedQueueReceiver.IGNORE ) {
+		if( highPriorityTriple != null ) {
+		    return highPriorityTriple.getReceiver();
+		} else {
+		    return null;
+		}
+	    } else if( maxPriority < triple.getPriority() ) {
+		TimedQueueReceiver tmpRcvr = 
+		        (TimedQueueReceiver)triple.getReceiver();
+		if( !tmpRcvr.hasNullToken() ) {
+		    if( tmpRcvr.getRcvrTime() != TimedQueueReceiver.IGNORE ) {
+			maxPriority = triple.getPriority();
+			highPriorityTriple = triple;
+		    }
+		}
+	    }
+	    cnt++;
+	}
+	if( highPriorityTriple != null ) {
+	    return highPriorityTriple.getReceiver();
+	} else {
+	    return null;
+	}
+    }
+
+    /** Return the TimedQueueReceiver of this time keeper's list such that
+     *  the returned receiver has the highest priority given that it has 
+     *  the lowest nonnegative receiver time of all receivers managed by 
+     *  this TimeKeeper. Return null if this time keeper's list of receivers 
+     *  is empty.
+     * @return The TimedQueueReceiver with the highest priority 
+     *  and lowest nonnegative rcvrTime. If no receivers exist, 
+     *  return null.
+     */
+    public synchronized TimedQueueReceiver getHighestPriorityNull() {
+        double time = -10.0;
+	double firstTime = -10.0;
+        int maxPriority = -1;
+	int cnt = 0;
+	boolean rcvrNotFound = true;
+        RcvrTimeTriple highPriorityTriple = null;
+
+	if( _rcvrTimeList.size() == 0 ) {
+	    return null;
+	}
+	while( cnt < _rcvrTimeList.size() ) {
+	    RcvrTimeTriple triple = 
+		    (RcvrTimeTriple)_rcvrTimeList.at(cnt);
+	    if( time == -10.0 ) {
+	        time = triple.getTime();
+	        firstTime = time;
+		TimedQueueReceiver tmpRcvr = 
+		        (TimedQueueReceiver)triple.getReceiver();
+		if( tmpRcvr.hasNullToken() ) {
 		    maxPriority = triple.getPriority();
 		    highPriorityTriple = triple;
 		}
@@ -229,7 +294,7 @@ public class TimeKeeper {
 	    } else if( maxPriority < triple.getPriority() ) {
 		TimedQueueReceiver tmpRcvr = 
 		        (TimedQueueReceiver)triple.getReceiver();
-		if( !tmpRcvr.hasNullToken() ) {
+		if( tmpRcvr.hasNullToken() ) {
 		    maxPriority = triple.getPriority();
 		    highPriorityTriple = triple;
 		}
@@ -241,8 +306,7 @@ public class TimeKeeper {
 	} else {
 	    return null;
 	}
-    }
-
+    } 
     /** Return the earliest possible time stamp of the next token to be
      *  consumed by the actor managed by this time keeper. Consider 
      *  this returned time value as a greatest lower bound. The next 
@@ -444,7 +508,7 @@ public class TimeKeeper {
 	}
 	_searchingForIgnoredTokens = true;
 	if( _ignoredReceivers ) {
-	    // System.out.println("***Call to updateIgnoredReceivers()***");
+	    // System.out.println("###Call to updateIgnoredReceivers()###");
 	    RcvrTimeTriple triple; 
 	    DDEReceiver rcvr; 
 	    for( int i = 0; i < _rcvrTimeList.size(); i++ ) {
@@ -452,7 +516,7 @@ public class TimeKeeper {
 		rcvr = (DDEReceiver)triple.getReceiver(); 
 		if( rcvr.getRcvrTime() == 
 			TimedQueueReceiver.IGNORE ) {
-		    // System.out.println("***Ignore Token Found!!!***");
+		    // System.out.println("###Ignore Token Found!!!###");
 		    rcvr.clearIgnoredTokens();
 		}
 	    }
