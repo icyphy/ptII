@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Tycho system, lib/java/doc
+# Makefile for Ptolemy Tycho system, java/doc
 #
 # Version: $Id$
 # Makefile Author: Christopher Hylands
@@ -30,9 +30,9 @@
 ##########################################################################
 
 # Root of Tycho directory
-ROOT =		../../..
+ROOT =		../..
 # True source directory
-VPATH =		$(ROOT)/lib/java/doc
+VPATH =		$(ROOT)/java/doc
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
