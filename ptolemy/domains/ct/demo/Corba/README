@@ -81,8 +81,8 @@ To execute the model in an application:
    
    denon> tnameserv -ORBInitialPort 1050
    
-4. Possibly from another machine, say bennett.eecs.berkeley.edu
-   start the model server. (Don't forget the CLASSPATH)
+4. Possibly from another machine, say bennett.eecs.berkeley.edu running csh
+  start the model server. (Don't forget the CLASSPATH)
    
    bennett> setenv CLASSPATH=$PTII
    bennett> java ptolemy.domains.ct.demo.Corba.ModelServer -ORBInitialHost 
