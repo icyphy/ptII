@@ -137,7 +137,8 @@ public class RealSFactor extends RealFactor {
              Complex[] roots = new Complex[2];
              double a = _numerator[0];
              double b = _numerator[1];
-             boolean conjugate = MathWizard.realquadraticRoots(0.0,a,b,roots);
+             boolean conjugate =
+                 MathWizard.realquadraticRoots(0.0, a, b, roots);
              if (roots[0] != null) {
                  pole = new Complex(Double.POSITIVE_INFINITY);
                  singlepole.addElement(pole);
@@ -195,7 +196,8 @@ public class RealSFactor extends RealFactor {
              Complex[] roots = new Complex[2];
              double a = _denominator[0];
              double b = _denominator[1];
-             boolean conjugate = MathWizard.realquadraticRoots(0.0,a,b,roots);
+             boolean conjugate = 
+                 MathWizard.realquadraticRoots(0.0, a, b, roots);
              if (roots[0] != null) {
                  zero = new Complex(Double.POSITIVE_INFINITY);
                  singlezero.addElement(zero);
