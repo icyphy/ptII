@@ -57,17 +57,16 @@ test IntToken-1.1 {Get information about the class} {
 } {{
   class:         pt.kernel.IntToken
   fields:        
-  methods:       clone {equals java.lang.Object} {fromString java.lang.S
-    tring} getClass getValue getvalue hashCode notify notif
-    yAll {setValue java.lang.Object} toString wait {wait lo
-    ng} {wait long int}
+  methods:       byteValue clone doubleValue {equals java.lang.Object} {
+    fromString java.lang.String} getClass hashCode intValue
+     longValue notify notifyAll toString wait {wait long} {
+    wait long int}
     
-  constructors:  pt.kernel.IntToken {pt.kernel.IntToken int} {pt.kernel.
-    IntToken java.lang.String}
+  constructors:  pt.kernel.IntToken {pt.kernel.IntToken int}
     
-  properties:    class value
+  properties:    class
     
-  superclass:    pt.kernel.ObjectToken
+  superclass:    pt.kernel.ScalarToken
     
 }}
 
@@ -77,23 +76,46 @@ test IntToken-1.1 {Get information about the class} {
 test IntToken-2.1 {Create an empty instance} {
     set p [java::new pt.kernel.IntToken]
     $p toString
+} {pt.kernel.IntToken}
+
+######################################################################
+####
+# 
+test IntToken-2.2 {Create an empty instance and query its value as int} {
+    set p [java::new pt.kernel.IntToken]
+    $p intValue
 } {0}
 
 ######################################################################
 ####
 # 
-test IntToken-2.2 {Create an empty instance and query its value} {
-    set p [java::new pt.kernel.IntToken]
-    $p getValue
-} {0}
+test IntToken-2.3 {Create a non-empty instance and query its value as int} {
+    set p [java::new {pt.kernel.IntToken int} 12]
+    $p intValue
+} {12}
 
 ######################################################################
 ####
 # 
-test IntToken-3.1 {Create an empty instance and attempt to init from string} {
-    set p [java::new pt.kernel.IntToken]
-    $p fromString 12
-    $p toString
+test IntToken-3.1 {Create an non-empty instance and read it as double} {
+    set p [java::new {pt.kernel.IntToken int} 12]
+    $p doubleValue
+} {12.0}
+
+######################################################################
+####
+# 
+test IntToken-3.2 {Create an non-empty instance and read it as long} {
+    set p [java::new {pt.kernel.IntToken int} 12]
+    $p longValue
+} {12}
+
+######################################################################
+####
+# 
+test IntToken-3.3 {Create an non-empty instance and read it as byte} {
+    set p [java::new {pt.kernel.IntToken int} 12]
+    $p byteValue
 } {12}
 
 ######################################################################
@@ -102,7 +124,7 @@ test IntToken-3.1 {Create an empty instance and attempt to init from string} {
 test IntToken-4.1 {Create an empty instance and clone} {
     set p [java::new pt.kernel.IntToken]
     set q [$p clone]
-    $q getValue
+    $q intValue
 } {0}
 
 ######################################################################
@@ -111,6 +133,6 @@ test IntToken-4.1 {Create an empty instance and clone} {
 test IntToken-4.2 {Create a non empty instance and clone} {
     set p [java::new {pt.kernel.IntToken int} 10]
     set q [$p clone]
-    list [$p toString] [$q toString]
+    list [$p intValue] [$q intValue]
 } {10 10}
 
