@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Java Advanced Imaging
+# Makefile for Java Ptolemy II Java Advanced Imaging demos
 #
-# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2002-2004 The Regents of the University of California.
+# @Copyright (c) 2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jai
+ME =		ptolemy/actor/lib/jai/demo
 
-DIRS = 		demo test
+DIRS =		AdaptiveMedian ImageReconstruction
 
-# Root of the Java directory
-ROOT =		../../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,72 +43,39 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	jai
+PTPACKAGE = 	demo
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	AdaptiveMedian/AdaptiveMedian.jar \
+	ImageReconstruction/ImageReconstruction.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = AdaptiveMedian.java \
-	DoubleMatrixToJAI.java \
-	ImageToJAI.java \
-	JAIAffineTransform.java \
-	JAIBandCombine.java \
-	JAIBandSelect.java \
-	JAIBorder.java \
-	JAIBoxFilter.java \
-	JAIBMPWriter.java \
-	JAIConstant.java \
-	JAIConvolve.java \
-	JAICrop.java \
-	JAIDataConvert.java \
-	JAIDCT.java \
-	JAIDFT.java \
-	JAIEdgeDetection.java \
-	JAIIDCT.java \
-	JAIIDFT.java \
-	JAIImageReader.java \
-	JAIImageToken.java \
-	JAIInvert.java \
-	JAIJPEGWriter.java \
-	JAILog.java \
-	JAIMagnitude.java \
-	JAIMedianFilter.java \
-	JAIPeriodicShift.java \
-	JAIPhase.java \
-	JAIPolarToComplex.java \
-	JAIPNGWriter.java \
-	JAIPNMWriter.java \
-	JAIRotate.java \
-	JAIScale.java \
-	JAITIFFWriter.java \
-	JAIToDoubleMatrix.java \
-	JAITranslate.java \
-	JAITranspose.java \
-	JAIWriter.java \
-	SaltAndPepper.java
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	jai.xml \
-	jai-copyright.htm
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
-	$(PTCLASSJAR) \
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
+	@echo "To run the demos, run 'make demo'"
+
 install: jclass jars
 
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
