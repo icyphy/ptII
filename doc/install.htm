@@ -69,8 +69,12 @@ the <a href="#Unix">Unix</a> and <a href="#Windows">Windows</a>
 sections below.
 
 <h3><a name="java">Java</a></h3>
-Ptolemy II has been developed under JDK1.4.1_02, which is available from
-<a href="http://java.sun.com/j2se/1.4/" target="_top"><CODE>http://java.sun.com/j2se/1.4/</CODE></a>
+Ptolemy II has been developed under Java 1.4.2, which Sun calls
+J2SE 1.4.2.  Ptolemy II will also work under Java 1.5, which Sun
+calls J2SE 5.0.  J2SE 5.0
+is available from
+<a href="http://java.sun.com/j2se/1.5/" target="_top"><CODE>http://java.sun.com/j2se/1.5/</CODE></a>.
+Locally, we used Java 1.4.2_06 and Java 1.5.0_01.
 
 
 <p>The Java download is available in several formats.
@@ -95,7 +99,7 @@ in Mozilla 1.x, Netscape 4.7 or Internet Explorer 6.0 under Windows, you will ne
 the Java Plug-in from
 <a href="http://java.sun.com/products/plugin/" target="_top"><CODE>http://java.sun.com/products/plugin/</CODE></a>
 
- <p>Currently, the Java Plug-in 1.4 is included in the JRE and JDK downloads
+ <p>Currently, the Java Plug-in 1.5 is included in the JRE and JDK downloads
 for Windows.
  <p>If you are running under Solaris, you can
 <a href="http://www.sun.com/solaris/netscape/" target="_top">download</a>
@@ -204,6 +208,25 @@ cd $PTII/vendors/cm
 jar -xf embed.zip
 </pre>
 
+<h3>Colt</h3>
+ Colt is the 'Open Source Libraries for High Performance
+ Scientific and Technical Computing in Java'.
+ <br>For more information, see 
+<a href="http://hoschek.home.cern.ch/hoschek/colt/"><code>http://hoschek.home.cern.ch/hoschek/colt/</code>
+
+<p>You need not download Colt unless you are planning on using
+the Colt actors or running the demonstrations in ptolemy/actor/lib/colt.
+
+<p>We verified that Colt 1.0.3 works with these actors.
+
+<ol>
+<li> Download Colt from
+<a href="http://hoschek.home.cern.ch/hoschek/colt/download.htm"><code>http://hoschek.home.cern.ch/hoschek/colt/download.htm</code></a>
+<li> Unzip it in <code>$PTII/vendors/misc/colt</code>
+<li> Copy <code>$PTII/vendors/misc/colt/colt.jar</code>
+to <code>$PTII/lib/</code>
+</ol>
+
 <h3>GC</h3>
 The Copernicus C code generator uses the Boehm Garbarge Collector,
 which can be found at
@@ -235,7 +258,8 @@ else make will have problems.
 The <a name="codeDoc/ptolemy/actor/lib/jai/package-summary.html">Java Advanced Imaging (JAI) actors</a> require that JAI, which can be  downloaded from
 <a href="http://java.sun.com/products/java-media/jai/" target="_top"><code>http://java.sun.com/products/java-media/jai/</code></a>
 <p>You need not install JAI if you are not planning on using the JAI Actors.
-<p>We verified that JAI 1.1.2 works with these actors.
+<p>We verified that JAI 1.1.2_01 works with these actors.
+<p>You probably want to install the JAI "JDK Install".
 
 <p>Note that under Web Start, we had to install the JAI jar files
 by hand in
@@ -243,6 +267,8 @@ by hand in
 by copying <code>jai_codec.jar</code>, <code>jai_core.jar</code>,
 and <code>mlibwrapper_jai.jar</code> from the 
 <code>c:/j2sdk1.4.1_02/jre/lib/ext</code>
+Web Start users might want to try the
+"Windows Auto-installation for Java Plug-in"
 
 <h3>Java3d</h3>
 The 
@@ -255,9 +281,9 @@ You need not install Java3d if you are not planning on using GR domain.
  <p>If you plan on recompiling the GR domain, then install the Java 3D SDK
 and runtime.  If you plan on only running the GR domain demos, then
 installing only the Java 3D runtime should be sufficient.
-We have verified the demos with the Java 3D 1.2.1_04 SDK (DirectX Version).
+We have verified the demos with the Java 3D 1.3.1 SDK (DirectX Version).
 
-<p>Note that JDK1.4.0 requires Java 3D 1.2.1_04.  If you run
+<p>Note that JDK1.4.0 requires Java 3D 1.2.1_04 or later.  If you run
 with Java 3D 1.2.1_03 and JDK1.4.0, the GR demos will fail to initialize
 and you will see the message:
 <pre>
@@ -301,7 +327,7 @@ The <a name="codeDoc/ptolemy/actor/lib/jai/package-summary.html">Java Media Fram
 <p>The installer also looks for the USB camera, so you may find
 it helpful if you connect a USB camera before running the installer.
 To configure a USB camera after installation, run <code>c:/Program Files/JMF2.1.1e/bin/jmfinit.exe</code>
-<p>We verified that JMF 2.1.1c works with these actors.
+<p>We verified that JMF 2.1.1e works with these actors.
 
 
 <h3><a name="matlab">Matlab</a></h3>
@@ -356,6 +382,7 @@ option from
 <a href="http://developer.apple.com/quicktime/qtjava/" target="_top"><code>http://developer.apple.com/quicktime/qtjava/</code></a>
  <p>There is a standalone installer with QuickTime For Java at
  <a href="http://www.apple.com/quicktime/download/standalone/" target="_top"><CODE>http://www.apple.com/quicktime/download/standalone/</CODE></a>
+(This page seems to have problems with Firefox, try IE).
 <br>During installation, choose "custom" and then "select all".
 This drops <code>QTJava.zip</code> into the lib/ext of all your installed JREs.
 Then you have to copy this zip file to the jre/lib/ext directory
@@ -367,11 +394,12 @@ cp c:/Program\ Files/java/j2re1.4.2_04/lib/ext/QTJava.zip c:/j2sdk1.4.2_04/jre/l
 <h3>X10</h3>
 X10 is a protocol used to control household electrical devices. 
 
-<p>The <a name="codeDoc/ptolemy/actor/lib/x10/package-summary.html">X10 actors</a>
+<p>The
+<a name="codeDoc/ptolemy/actor/lib/x10/package-summary.html">X10 actors</a>
 require the Java serial port communcations package and the X10 package.
 
 <p>For installation instructions, see the 
-<a name="codeDoc/ptolemy/actor/lib/x10/X10Interface.htm">X10Interface class documentation</a>.
+<a name="codeDoc/ptolemy/actor/lib/x10/X10Interface.htm">X10Interface class documentation in <code>$PTII/ptolemy/actor/lib/x10/X10Interface.java</a>.
 
 
 <h2>Optional Packages not shipped with Ptolemy that are used
