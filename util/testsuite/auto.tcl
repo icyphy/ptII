@@ -43,8 +43,12 @@ proc createAndExecute {file} {
 
 if [ file isdirectory auto/knownFailedTests ] {
     foreach file [glob -nocomplain auto/knownFailedTests/*.xml] {
-	puts "------------------ testing $file (Known Failure) "
-	test "Auto" "Automatic test in file $file" {
+	# Get the name of the current directory relative to $PTII
+	set relativeFilename \
+		[java::call ptolemy.util.StringUtilities substituteFilePrefix \
+		$PTII [file join [pwd] $file] {$PTII}]
+	puts "------------------ testing $relativeFilename (Known Failure) "
+	test "Auto" "Automatic test in file $relativeFilename" {
 	    createAndExecute $file
 	    list {}
 	} {{}} {KNOWN_FAILURE}
@@ -52,9 +56,13 @@ if [ file isdirectory auto/knownFailedTests ] {
 }
 
 foreach file [glob auto/*.xml] {
-    puts "------------------ testing $file"
-    test "Auto" "Automatic test in file $file" {
-        set application [createAndExecute $file]
+    set relativeFilename \
+	    [java::call ptolemy.util.StringUtilities substituteFilePrefix \
+	    $PTII $file {$PTII}]
+
+    puts "------------------ testing $relativeFilename"
+    test "Auto" "Automatic test in file $relativeFilename" {
+        set application [createAndExecute file]
         list {}
     } {{}}
     test "Auto-rerun" "Automatic test rerun in file $file" {
