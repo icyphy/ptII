@@ -212,7 +212,7 @@ Yellow Circle - Wireless message Received
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="soundRange">
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=soundRange}">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
             </property>
@@ -335,7 +335,7 @@ Yellow Circle - Wireless message Received
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="soundRange">
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=soundRange}">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
             </property>
@@ -509,7 +509,7 @@ Yellow Circle - Wireless message Received
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="soundRange">
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=soundRange}">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
             </property>
@@ -788,7 +788,7 @@ Yellow Circle - Wireless message Received
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="soundRange">
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=soundRange}">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
             </property>
@@ -911,7 +911,7 @@ Yellow Circle - Wireless message Received
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="soundRange">
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=soundRange}">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
             </property>
@@ -1148,7 +1148,7 @@ has Y increasing upwards.</text></svg></configure>
         </property>
         <property name="propagationSpeed" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
-        <property name="defaultRange" class="ptolemy.data.expr.Parameter" value="100.0">
+        <property name="defaultRange" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 45.0">
         </property>
@@ -1160,7 +1160,7 @@ has Y increasing upwards.</text></svg></configure>
         </property>
         <property name="propagationSpeed" class="ptolemy.data.expr.Parameter" value="340.0">
         </property>
-        <property name="defaultRange" class="ptolemy.data.expr.Parameter" value="100.0">
+        <property name="defaultRange" class="ptolemy.data.expr.Parameter" value="Infinity">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 45.0">
         </property>

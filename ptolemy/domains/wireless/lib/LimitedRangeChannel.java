@@ -31,6 +31,7 @@
 package ptolemy.domains.wireless.lib;
 
 import ptolemy.data.DoubleToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -49,9 +50,11 @@ The transmission range can be specified in one of two ways.
 Either it is the value of the <i>defaultRange</i> parameter of this
 channel, or it is provided by the tranmitter on each call to
 transmit() as a property argument.  To use the latter mechanism,
-it is necessary that the property token be an instance of ScalarToken
-that can be converted to a double (i.e., it can be a double, an int,
-or a byte).
+it is necessary that the property token be an instance of RecordToken
+with a field named "range" that can be converted to a double
+(i.e., it can be a double, an int, or a byte).
+The default value for <i>defaultRange</i> is Infinity, which
+indicates that by default, there is no range limit.
 <p>
 Any receiver that is within the specified range when transmit()
 is called will receive the transmission.  The distance between
@@ -83,7 +86,7 @@ public class LimitedRangeChannel extends DelayChannel {
         
         defaultRange = new Parameter(this, "defaultRange");
         defaultRange.setTypeEquals(BaseType.DOUBLE);
-        defaultRange.setExpression("100.0");
+        defaultRange.setExpression("Infinity");
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -118,10 +121,17 @@ public class LimitedRangeChannel extends DelayChannel {
             WirelessIOPort source, WirelessIOPort destination, Token properties)
             throws IllegalActionException {
         double range;
-        if (properties instanceof ScalarToken) {
+        if (properties instanceof RecordToken) {
             // NOTE: This may throw a NotConvertibleException, if,
             // example, a Complex or a Long is given.
-            range = ((ScalarToken)properties).doubleValue();
+            Token field = ((RecordToken)properties).get("range");
+            if (field instanceof ScalarToken) {
+                range = ((ScalarToken)field).doubleValue();
+            } else {
+                throw new IllegalActionException(this,
+                "Properties token has a field called \"range\""
+                + " but that field does not have a double value.");
+            }
         } else {
             range = ((DoubleToken)defaultRange.getToken()).doubleValue();
         }

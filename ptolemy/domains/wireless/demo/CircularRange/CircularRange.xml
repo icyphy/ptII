@@ -523,7 +523,7 @@ require physical connectivity.</text></svg></configure>
             <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
-            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="range">
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="{range=range}">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
             </property>
