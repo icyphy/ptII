@@ -39,7 +39,7 @@ import soot.util.*;
 import soot.toolkits.graph.*;
 import java.util.*;
 import java.io.*;
-// import ptolemy.copernicus.kernel.MakeFileWriter;
+import ptolemy.copernicus.kernel.MakefileWriter;
 
 /** A transformer that writes C source code.
     @author Shuvra S. Bhattacharyya
@@ -106,6 +106,8 @@ public class CWriter extends SceneTransformer {
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
              classes.hasNext(); classList.add(classes.next()));
 
+        StringBuffer sourcesList = new StringBuffer();
+
         for (Iterator sootClasses = classList.iterator();
                 sootClasses.hasNext(); ) {
             SootClass sootClass = (SootClass)sootClasses.next();
@@ -151,7 +153,7 @@ public class CWriter extends SceneTransformer {
             FileHandler.write(fileName + ".h", code);
             code = cGenerator.generate(sootClass);
             FileHandler.write(fileName + ".c", code);
-            // sourcesList = 
+            sourcesList.append(" " + fileName + ".c");
 
             // Generate a main file, containing a C main function,
             // if this is the main class.
@@ -163,6 +165,8 @@ public class CWriter extends SceneTransformer {
             System.out.println("Done generating C code files for " + fileName);
 
         }
+        MakefileWriter.addMakefileSubstitution("@cFiles@", 
+                sourcesList.toString());
 
         _completedTransform = true;
     }

@@ -54,6 +54,17 @@ public class MakeFileGenerator {
     public void MakeFileGenerator() {
     }
 
+    /** Finds the filename corresponding to this class.
+     *  @param className The name of the class.
+     *  @return The corresponding filename as it should be written to the
+     *  makeFile.
+     */
+    public static String classNameToMakeFileName(String className) {
+        StringBuffer name = new StringBuffer(
+            CNames.classNameToFileName(className));
+        return name.toString();
+    }
+
     /** Create the MakeFile.
      *  @param classPath The classPath.
      *  @param className The class for which the Makefile is to be generated.
@@ -87,32 +98,7 @@ public class MakeFileGenerator {
                 + "$(RUNTIME)/pccg_array.c $(RUNTIME)/strings.c\\\n"
                 + "\t" + className + "_main.c\\\n");
 
-
-        HashSet libSources = new HashSet();
-
-        // Generate all source files for user classes.
-        Iterator i = RequiredFileGenerator.getRequiredClasses().iterator();
-        while (i.hasNext()) {
-            SootClass nextClass = (SootClass)i.next();
-
-            String name = _classNameToMakeFileName(nextClass.getName());
-
-            // Go over each name. If it is not a system class, add it to
-            // "sources" else add it to libSources.
-            if (!CNames.isSystemClass(nextClass.getName())) {
-                code.append("\t" + name + ".c\\\n");
-            }
-            else {
-                libSources.add(name);
-            }
-        }
-
-        // Generate all the source files for system(library) classes.
-        code.append("\n\nLIB_SOURCES = ");
-        i = libSources.iterator();
-        while (i.hasNext()) {
-            code.append("\t" + (String)i.next() + ".c\\\n");
-        }
+        HashSet libSources = RequiredFileGenerator.generateUserClasses(code);
 
         code.append("\n");// Takes care of blank line for last "\".
 
@@ -161,16 +147,6 @@ public class MakeFileGenerator {
 
     }
 
-    /** Finds the filename corresponding to this class.
-     *  @param className The name of the class.
-     *  @return The corresponding filename as it should be written to the
-     *  makeFile.
-     */
-    protected static String _classNameToMakeFileName(String className) {
-        StringBuffer name = new StringBuffer(
-            CNames.classNameToFileName(className));
-        return name.toString();
-    }
 }
 
 

@@ -177,6 +177,28 @@ public class RequiredFileGenerator {
         */
     }
 
+    public static HashSet generateUserClasses(StringBuffer code) {
+        HashSet libSources = new HashSet();
+
+        // Generate all source files for user classes.
+        Iterator i = RequiredFileGenerator.getRequiredClasses().iterator();
+        while (i.hasNext()) {
+            SootClass nextClass = (SootClass)i.next();
+
+            String name = MakeFileGenerator.classNameToMakeFileName(
+                    nextClass.getName());
+
+            // Go over each name. If it is not a system class, add it to
+            // "sources" else add it to libSources.
+            if (!CNames.isSystemClass(nextClass.getName())) {
+                code.append("\t" + name + ".c\\\n");
+            }
+            else {
+                libSources.add(name);
+            }
+        }
+        return libSources;
+    }
 
     /** Calculate which classes and methods are really needed.
         @param classPath The classpath.
