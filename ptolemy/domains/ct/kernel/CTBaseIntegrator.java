@@ -276,8 +276,6 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
      *  @see #setTentativeDerivative
      */
     public double getTentativeDerivative() {
-        // FIXME: this method is not called because the derivatives
-        // are calcuated based on the states.
         return _tentativeDerivative;
     }
 
@@ -383,15 +381,6 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
         ODESolver solver = ((CTDirector) getDirector()).getCurrentODESolver();
         _successful = solver.integratorIsAccurate(this);
         return _successful;
-    }
-
-    /** Return true if this integration step is accurate from this
-     *  integrator's point of view, where both the isStateAccurate() and
-     *  isOutputAccurate() methods return true.
-     *  @return True if the last integration step is accurate.
-     */
-    public boolean isThisStepAccurate() {
-        return isStateAccurate() && isOutputAccurate();
     }
 
     /** Mark and remember the current state. This remembered state can be

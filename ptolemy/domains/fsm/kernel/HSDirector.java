@@ -716,20 +716,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return result;
     }
 
-    /** Return true if there are no refinements, or if the current
-     *  integration step is accurate with the respect of all the enabled
-     *  refinements, which are refinements that returned true in their
-     *  prefire() methods in this iteration, or if a refinement is not a
-     *  CTStepSizeControlActor; and if the current time is exactly the same
-     *  time the transition is enabled.
-     *  @return True if the current step is accurate.
-     *  @deprecated As Ptolemy II 4.1, use the isOutputAccurate() and
-     *  isStateAccurate() methods instead.
-     */
-    public boolean isThisStepAccurate() {
-        return isOutputAccurate() && isStateAccurate();
-    }
-
     /** Make the current states of all the enabled refinements.
      */
     public void markState() {

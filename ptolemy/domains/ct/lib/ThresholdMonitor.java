@@ -166,13 +166,6 @@ public class ThresholdMonitor extends TypedAtomicActor
         _first = true;
     }
 
-    /** Return true if this step did not cross the threshold.
-     *  @return True if this step is accurate.
-     */
-    public boolean isThisStepAccurate() {
-        return isStateAccurate() && isOutputAccurate();
-    }
-
     /** Make this input to be the history input and return true.
      *  @return True.
      *  @exception IllegalActionException If token can not be read from or

@@ -221,7 +221,7 @@ public abstract class ODESolver extends NamedObj {
             throws IllegalActionException;
 
     /** Return true if the current integration step is accurate from the
-     *  argument integrator's point of view. The isThisStepAccurate() method
+     *  argument integrator's point of view. The integratorIsAccurate() method
      *  of integrators delegates to this method.
      *  Derived classes need to implement the details.
      *  @param integrator The integrator that calls this method.

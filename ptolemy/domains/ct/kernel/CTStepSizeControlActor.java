@@ -93,21 +93,6 @@ public interface CTStepSizeControlActor extends Actor {
     public boolean isStateAccurate();
 
     /** Implementations of this method should return
-     *  true if the current integration step is accurate
-     *  from this actor's point of view.
-     *  Actors that implement this interface will interpret "accurate"
-     *  themselves. For example, for integrators, "accurate" could
-     *  mean that the local truncation error is small enough; for
-     *  event detectors, "accurate" could mean that there is not event
-     *  missed during the integration step. The actor may only care
-     *  about one of these aspects.
-     *  @return True if the current integration step is accurate.
-     *  @deprecated As Ptolemy II 4.1, use the isOutputAccurate() and
-     *  isStateAccurate() methods instead.
-     */
-    public boolean isThisStepAccurate();
-
-    /** Implementations of this method should return
      *  the predicted next step size. If the current integration
      *  step is accurate, the actor will be asked for the prediction
      *  of the next step size. If the actor that implement this interface

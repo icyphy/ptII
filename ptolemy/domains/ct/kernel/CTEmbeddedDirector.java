@@ -312,30 +312,6 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         return _stateAcceptable;
     }
 
-    /** Return true if the current step size is accurate.
-     *  This is determined by asking all the step size control actors
-     *  in the state transition schedule and output schedule.
-     *  @return True if the current step is accurate.
-     */
-    public boolean isThisStepAccurate() {
-        if (_debugging && _verbose) {
-            _debug(getName() + ": Checking the accuracy of this step size:");
-        }
-
-        if (!_isStateAccurate()) {
-            _stateAcceptable = false;
-            return false;
-        } else if (!_isOutputAccurate()) {
-            _stateAcceptable = true;
-            _outputAcceptable = false;
-            return false;
-        } else {
-            _stateAcceptable = true;
-            _outputAcceptable = true;
-            return true;
-        }
-    }
-
     /** Mark the known good states. Including the iteration begin time
      *  and the states of the stateful actors.
      */

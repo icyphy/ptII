@@ -200,14 +200,6 @@ public class CTCompositeActor extends TypedCompositeActor
         return true;
     }
 
-    /** Return true if the current step size is true w.r.t. both states and
-     *  outputs.
-     *  @return True if this step is accurate w.r.t. both states and outputs.
-     */
-    public boolean isThisStepAccurate() {
-        return isStateAccurate() && isOutputAccurate();
-    }
-
     /** Call the markState() method of the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise, do nothing.
      */

@@ -113,7 +113,6 @@ public abstract class FixedStepSolver extends ODESolver {
     }
 
     /** Return true always, since no error control is performed.
-     *  @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isThisStepAccurate
      *  @param integrator The integrator that wants to do the test.
      *  @return True always.
      */

@@ -250,7 +250,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
         integrator.output.broadcast(new DoubleToken(tentativeState));
     }
 
-    /** Perform the isThisStepAccurate() test for the integrator under
+    /** Perform the integratorIsAccurate() test for the integrator under
      *  this solver. This method returns true if the local truncation error
      *  (an estimation of the local error) is less than the error tolerance.
      *  Otherwise, return false.

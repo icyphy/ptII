@@ -90,15 +90,6 @@ public interface CTTransparentDirector extends CTGeneralDirector {
      */
     public boolean isStateAccurate();
 
-    /** Implementations of this method should return
-     *  true if the current integration step is accurate from
-     *  this director's point of view.
-     *  @return True if the current step is accurate.
-     *  @deprecated As Ptolemy II 4.1, use the isOutputAccurate() and
-     *  isStateAccurate() methods instead.
-     */
-    public boolean isThisStepAccurate();
-
     /** Implementations of this method should mark the current state
      *  of the actors under the control of this director.
      */

@@ -395,25 +395,6 @@ public class LevelCrossingDetector extends TypedAtomicActor
         return true;
     }
 
-    /** Return true if this step does not cross the threshold.
-     *  The current trigger
-     *  token will be compared to the previous trigger token. If they
-     *  cross the level threshold, this step is not accurate.
-     *  A special case is taken care so that if the previous trigger
-     *  and the current trigger both equal to the level value,
-     *  then no new event is
-     *  detected. If this step crosses the level threshold,
-     *  then the refined integration
-     *  step size is computed by linear interpolation.
-     *  If this is the first iteration after initialize() is called,
-     *  then always return true, since there is no history to compare with.
-     *  @return True if the trigger input in this integration step
-     *          does not cross the level threshold.
-     */
-    public boolean isThisStepAccurate() {
-        return isOutputAccurate() && isStateAccurate();
-    }
-
     /** Prepare for the next iteration, by making the current trigger
      *  token to be the history trigger token.
      *  @return True always.
