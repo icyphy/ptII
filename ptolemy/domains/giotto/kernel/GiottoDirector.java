@@ -201,16 +201,20 @@ public class GiottoDirector extends StaticSchedulingDirector {
      */
 
     public boolean prefire () throws IllegalActionException{
+
+ 	if (_isEmbedded()) {
+
+	    // whatever, the currentTime should be updated by the director of upper container.
+	    setCurrentTime ((((CompositeActor) getContainer()).getExecutiveDirector()).getCurrentTime());
+	}
+
+	_expectedNextIterationTime = getCurrentTime();
+
         if (_debugging) {
             _debug("Giotto director prefiring!");
             _debug("_expectedNextIterationTime " + _expectedNextIterationTime);
         }
 
-	if (_isEmbedded()) {
-
-	    // whatever, the currentTime should be updated by the director of upper container.
-	    setCurrentTime ((((CompositeActor) getContainer()).getExecutiveDirector()).getCurrentTime());
-	}
 
 	Director upperDirector = ((CompositeActor) getContainer()).getExecutiveDirector();
 	if (upperDirector instanceof CTDirector) {
@@ -428,7 +432,11 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	if ((numberOfIterations > 0)
                 && (_iterationCount >= numberOfIterations)) {
 	    _iterationCount = 0;
-	    return false;
+	    if (_isEmbedded()) {
+	        return true;
+	    } else {
+	        return false;
+	    }
 	} else {
 
 	    if (_isEmbedded()) {
