@@ -10,6 +10,7 @@
 <property name="ellipse" class="ptolemy.vergil.kernel.attributes.EllipseAttribute"/>
 <property name="image" class="ptolemy.vergil.kernel.attributes.ImageAttribute"/>
 <property name="line" class="ptolemy.vergil.kernel.attributes.LineAttribute"/>
+<property name="polygon" class="ptolemy.vergil.kernel.attributes.PolygonAttribute"/>
 <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute"/>
       </group>
     ?>

@@ -1,4 +1,4 @@
-/* An attribute with a reference to a filled two-dimensional shape.
+/* An attribute with a reference to a polygon.
 
  Copyright (c) 2001-2003 The Regents of the University of California.
  All rights reserved.
@@ -30,33 +30,33 @@
 
 package ptolemy.vergil.kernel.attributes;
 
-import java.awt.Color;
+import java.awt.Polygon;
 import java.awt.Shape;
 
-import ptolemy.actor.gui.ColorAttribute;
-import ptolemy.data.BooleanToken;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.icon.ResizableAttributeControllerFactory;
 
 //////////////////////////////////////////////////////////////////////////
-//// FilledShapeAttribute
+//// PolygonAttribute
 /**
-This is an abstract attribute that is rendered as a filled shape.
-Concrete subclasses produce particular shapes, such as rectangles
-and circles. Derived classes need to react to changes in the
-<i>width</i> and <i>height</i> parameters in the attributeChanged()
-method by calling setShape() on the protected member _icon.
+This is an attribute that is rendered as a polygon.  The <i>vertices</i>
+parameter is an array of doubles that specify the vertices of the polygon
+in the form {x1, y1, x2, y2, ... }.
+The <i>width</i> and <i>height</i> parameters are percentages, allowing
+for easy scaling of the polygon.
 <p>
 @author Edward A. Lee
 @version $Id$
 */
-public abstract class FilledShapeAttribute extends ShapeAttribute {
+public class PolygonAttribute extends FilledShapeAttribute {
 
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
@@ -71,55 +71,25 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public FilledShapeAttribute(NamedObj container, String name)
+    public PolygonAttribute(NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        width = new Parameter(this, "width");
-        width.setTypeEquals(BaseType.DOUBLE);
-        width.setExpression("100.0");
-
-        height = new Parameter(this, "height");
-        height.setTypeEquals(BaseType.DOUBLE);
-        height.setExpression("100.0");
-
-        centered = new Parameter(this, "centered");
-        centered.setTypeEquals(BaseType.BOOLEAN);
-        centered.setExpression("false");
-                
-        fillColor = new ColorAttribute(this, "fillColor");
-        fillColor.setExpression("none");
-        
-        // Create a custom controller.
-        new ResizableAttributeControllerFactory(this, "_controllerFactory");
+        vertices = new Parameter(this, "vertices");
+        ArrayType type = new ArrayType(BaseType.DOUBLE);
+        vertices.setTypeEquals(type);
+        vertices.setExpression("{0.0, 0.0, 50.0, 0.0, 25.0, 50.0, -25.0, 50.0}");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** Indicator of whether the shape should be centered on the location.
-     *  This is a boolean that defaults to false, which means that the
-     *  location is the upper left corner.
+    /** The amount of vertices of the corners.
+     *  This is a double that defaults to 0.0, which indicates no vertices.
+     *  The default value specifies a rhombus.
      */
-    public Parameter centered;
-    
-    /** The line color.  This is a string representing an array with
-     *  four elements, red, green, blue, and alpha, where alpha is
-     *  transparency. The default is "{0.0, 0.0, 0.0, 1.0}", which
-     *  represents an opaque black.
-     */
-    public ColorAttribute fillColor;
-    
-    /** The vertical extent.
-     *  This is a double that defaults to 100.0.
-     */
-    public Parameter height;
+    public Parameter vertices;
 
-    /** The horizontal extent.
-     *  This is a double that defaults to 100.0.
-     */
-    public Parameter width;
-    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -131,7 +101,15 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if ((attribute == width || attribute == height) && !_inAttributeChanged) {
+        if (attribute == vertices || attribute == width || attribute == height
+                && !_inAttributeChanged) {
+            // Check that the length of the array is even.
+            ArrayToken verticesValue = (ArrayToken)vertices.getToken();
+            int length = verticesValue.length();
+            if (length/2 != (length + 1)/2)  {
+                throw new IllegalActionException(this,
+                "Length of the vertices array is required to be even.");           
+            }
             try {
                 // Prevent redundant actions here... When we evaluate the
                 // _other_ atribute here (whichever one did _not_ trigger
@@ -142,56 +120,73 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
                 double widthValue = ((DoubleToken) width.getToken()).doubleValue();
                 double heightValue =
                         ((DoubleToken) height.getToken()).doubleValue();
-                if (widthValue != _widthValue || heightValue != _heightValue) {
-                    _widthValue = widthValue;
-                    _heightValue = heightValue;
-                    _icon.setShape(_newShape());
-                }
+                _widthValue = widthValue;
+                _heightValue = heightValue;
+                _icon.setShape(_newShape());
             } finally {
                 _inAttributeChanged = false;
-            }
-        } else if (attribute == centered) {
-            boolean centeredValue
-                    = ((BooleanToken)centered.getToken()).booleanValue();
-            if (centeredValue != _centeredValue) {
-                _centeredValue = centeredValue;
-                _icon.setCentered(_centeredValue);
-            }
-        } else if (attribute == fillColor) {
-            Color fillColorValue = fillColor.asColor();
-            if (fillColorValue.getAlpha() == 0f) {
-                _icon.setFillColor(null);
-            } else {
-                _icon.setFillColor(fillColorValue);
             }
         } else {
             super.attributeChanged(attribute);
         }
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
     
-    /** Return the a new shape given a new width and height. This class
-     *  guarantees that the protected variables _centeredValue, _widthValue,
-     *  and _heightValue are up to date when this method is called.
-     *  Derived classes should override this to return an appropriate shape.
+    /** Return the a new polygon with the given vertices.
+     *  @param width The new width.
+     *  @param height The new height.
      *  @return A new shape. 
      */
-    protected abstract Shape _newShape();
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                        protected variables                ////
-
-    /** Most recently set value of the centered parameter. */
-    protected boolean _centeredValue = false;
-    
-    /** Most recently set value of the height parameter. */
-    protected double _heightValue;
-
-    /** Variable used to prevent re-entry into attributeChanged(). */
-    protected boolean _inAttributeChanged = false;
-
-    /** Most recently set value of the width parameter. */
-    protected double _widthValue;
+    protected Shape _newShape() {
+        
+        try {
+            ArrayToken verticesValue = (ArrayToken)vertices.getToken();
+            int length = verticesValue.length();
+            int[] xPoints = new int[length];
+            int[] yPoints = new int[length];
+            int xMax = Integer.MIN_VALUE;
+            int xMin = Integer.MAX_VALUE;
+            int yMax = Integer.MIN_VALUE;
+            int yMin = Integer.MAX_VALUE;
+            
+            // Scaling.
+            double width = _widthValue;
+            double height = _heightValue;
+            
+            for (int i = 0; i < length; i = i + 2) {
+                double x = ((DoubleToken)verticesValue.getElement(i)).doubleValue();
+                double y = ((DoubleToken)verticesValue.getElement(i + 1)).doubleValue();
+                int j = i/2;
+                xPoints[j] = (int)(Math.round(x * width/100.0));
+                yPoints[j] = (int)(Math.round(y * height/100.0));
+                if (xPoints[j] > xMax) {
+                    xMax = xPoints[j];
+                }
+                if (xPoints[j] < xMin) {
+                    xMin = xPoints[j];
+                }
+                if (yPoints[j] > yMax) {
+                    yMax = yPoints[j];
+                }
+                if (yPoints[j] < yMin) {
+                    yMin = yPoints[j];
+                }
+            }
+            if (_centeredValue) {
+                int xOffset = (xMin - xMax)/2;
+                int yOffset = (yMin - yMax)/2;
+                for (int i = 0; i < length/2; i++) {
+                    xPoints[i] += xOffset;
+                    yPoints[i] += yOffset;
+                }
+            }
+            return new Polygon(xPoints, yPoints, length/2);
+        } catch (IllegalActionException e) {
+            // This should not occur because attributeChanged()
+            // has accessed the token of vertices.
+            throw new InternalErrorException(e);
+        }
+    }
 }
