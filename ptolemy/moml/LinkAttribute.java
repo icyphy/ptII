@@ -39,6 +39,9 @@ import ptolemy.kernel.util.*;
 An attribute that represents a connection between a port and a vertex. 
 The attribute contains a reference to the port and to the vertex within the
 same relation that it graphically connects to.
+Normally links are only contained within a relation, but in the course of 
+manipulation, it is sometimes convenient for them to be contained within
+a composite entity, hence this is allowed.
 
 @author Steve Neuendorffer
 @version $Id$
@@ -46,22 +49,13 @@ same relation that it graphically connects to.
 public class LinkAttribute extends Attribute {
 
     /** Construct an attribute with the given name and the specified
-     *  contents for the the specified container.  If the container already
-     *  contains an attribute by that name, replace it.  If the container
-     *  rejects the attribute with an IllegalActionException, then
-     *  the attribute is not forced upon the container, but rather is
-     *  created with no container.
+     *  contents for the the specified container. 
      *  @param container The container.
      *  @param name The name of this link.
      */	
     public LinkAttribute(NamedObj container, String name) 
 	throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	if(!(container instanceof Relation)) {
-	    throw new IllegalActionException(container, this, 
-					     "Link can only be contained " + 
-					     "in a relation");
-	}
 	_vertex = null;
 	_port = null;
     }
@@ -86,25 +80,12 @@ public class LinkAttribute extends Attribute {
 	return _port;
     }
  
-    /** Set the container of this link.  
-     *  @exception IllegalActionException If the container is not a Relation.
-     */
-    public void setContainer(NamedObj container) 
-	throws IllegalActionException, NameDuplicationException {
-	if(!(container instanceof Relation)) {
-	    throw new IllegalActionException(container, this, 
-					     "Vertex can only be contained " + 
-					     "in a relation");
-	} else {
-	    super.setContainer(container);
-	}
-    }
-
     /** Set the vertex that this link is connected to.  If the given 
-     *  vertex is null, then disconnect the link from the vertex.
+     *  vertex is null, then disconnect the link from the vertex.  Update
+     *  the links associated with the 
      */
     public void setVertex(VertexAttribute vertex) {
-	_vertex = vertex;
+        _vertex = vertex;
     }
 
     /** Set the port that this link is connected to.  If the given 
@@ -131,6 +112,56 @@ public class LinkAttribute extends Attribute {
 
         return "Link[" + getName() + ", port=" + portString + 
 	    ", vertex=" + vertexString + "]";
+    }
+
+    /** Return a description of the object.  The level of detail depends
+     *  on the argument, which is an or-ing of the static final constants
+     *  defined in the NamedObj class.  Lines are indented according to
+     *  to the level argument using the protected method _getIndentPrefix().
+     *  Zero, one or two brackets can be specified to surround the returned
+     *  description.  If one is specified it is the the leading bracket.
+     *  This is used by derived classes that will append to the description.
+     *  Those derived classes are responsible for the closing bracket.
+     *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
+     *  This method is read-synchronized on the workspace.
+     *  @param detail The level of detail.
+     *  @param indent The amount of indenting.
+     *  @param bracket The number of surrounding brackets (0, 1, or 2).
+     *  @return A description of the object.
+     */
+    protected String _description(int detail, int indent, int bracket) {
+        try {
+            workspace().getReadAccess();
+            String result;
+            if (bracket == 1 || bracket == 2) {
+                result = super._description(detail, indent, 1);
+            } else {
+                result = super._description(detail, indent, 0);
+            }
+            if (result.trim().length() > 0) {
+                result += " ";
+            }
+            result += "vertex {\n";
+            if(_vertex == null) {
+                result += _getIndentPrefix(indent+1) + "null";
+            } else {
+                result += _getIndentPrefix(indent+1) + _vertex.getFullName();
+            }
+            result += "\n" + _getIndentPrefix(indent) + "} ";
+
+            result += "port {\n";
+            if(_port == null) {
+                result += _getIndentPrefix(indent+1) + "null";
+            } else {
+                result += _getIndentPrefix(indent+1) + _port.getFullName();
+            }
+            result += "\n" + _getIndentPrefix(indent) + "} ";
+
+            if (bracket == 2) result += "}";
+            return result;
+        } finally {
+            workspace().doneReading();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
