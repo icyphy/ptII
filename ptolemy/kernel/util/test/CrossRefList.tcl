@@ -279,3 +279,30 @@ unlink 4->3 = $result4\n\
  unlink 1 = {} {{Owner Four}} {{Owner Four}} {{Owner Two} {Owner Three}}
  unlink 4->3 = {} {{Owner Four}} {} {{Owner Two}}
  }}
+
+######################################################################
+####
+# 
+test CrossRefList-5.2 {link CrossRefLists, then check ordering} {
+    set a1 [java::new pt.kernel.NamedObj A1]
+    set c1 [java::new pt.kernel.CrossRefList $a1]
+    set a2 [java::new pt.kernel.NamedObj A2]
+    set c2 [java::new pt.kernel.CrossRefList $a2]
+    set a3 [java::new pt.kernel.NamedObj A3]
+    set c3 [java::new pt.kernel.CrossRefList $a3]
+
+    $c1 link $c2
+    $c1 link $c3
+    enumToNames [$c1 getLinks]
+} {A2 A3}
+
+######################################################################
+####
+# 
+test CrossRefList-5.3 {link CrossRefList to itself} {
+    set a1 [java::new pt.kernel.NamedObj A1]
+    set c1 [java::new pt.kernel.CrossRefList $a1]
+
+    catch {$c1 link $c1} errmsg
+    list $errmsg
+} {{pt.kernel.IllegalActionException: illegal link-back}}
