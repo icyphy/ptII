@@ -1,14 +1,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <html>
-
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="GENERATOR" content="Quadralay WebWorks Publisher Standard Edition 6.0.6">
 <meta name="TEMPLATEBASE" content="Portable HTML Standard Edition">
-<meta name="LASTUPDATED" content="07/16/03 21:32:56">
+<meta name="LASTUPDATED" content="06/15/04 18:06:29">
 <title>3 Expressions  </title>
 </head>
-
 
 <!--
 This file was generated from ptII/doc/design/expressions.fm
@@ -32,12 +30,14 @@ Things to watch out for:
 
 <body link="#3366CC" vlink="#9999CC" text="#000000" alink="#0000CC" bgcolor="#FFFFFF">
 
-<b>4.0-beta NOTE: This document has not yet been updated for the 4.0 release</b>
-<br>However, the <a href="design/visualsense.pdf">VisualSense tutorial</a>
-<b>has</b> been updated, so you may want to refer to that
 
-<center><h1>3  Expressions</h1></center>
+<h1>
+  <a name="158262"> </a>3  Expressions
+</h1>
 
+<p>This version is in HTML, a PDF version can be found in Chapter 3 of 
+<a href="design/ptIIdesign1-intro.pdf">Volume 1: Introduction to Ptolemy II</a>.
+<p>
 <a name="162678"> </a>Authors:		Edward A. Lee<br>
 
 
@@ -71,8 +71,8 @@ Things to watch out for:
 </h4>
 
 
-<a name="183566"> </a>Vergil provides an interactive <i>expression evaluator</i>, which is accessed through the File:New menu. This operates like an interactive command shell, and is shown in figure <img src="img/expressions41.gif" height="510" width="937" align="center" border="0" hspace="0" vspace="0"><br>
-<a href="#183566">3.1</a>. It supports a command history. To access the previously entered expression, type the up arrow or Control-P. To go back, type the down arrow or Control-N. The expression evaluator is useful for experimenting with expressions.<br></font>
+<a name="183566"> </a>Vergil provides an interactive <i>expression evaluator</i>, which is accessed through the File:New menu. This operates like an interactive command shell, and is shown in figure <img src="img/expressions42.gif" height="327" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="#183566">3.1</a>. It supports a command history. To access the previously entered expression, type the up arrow or Control-P. To go back, type the down arrow or Control-N. The expression evaluator is useful for experimenting with expressions.<br>
 
 
 <h3>
@@ -95,11 +95,11 @@ PI/2.0<a name="175541"> </a>
 <a name="175542"> </a>
 </pre>
 
-<a name="175543"> </a>is a valid expression that refers to the symbolic name "PI" and the literal "2.0." The constants i and j are the imaginary number with value equal to the square root of <font  face="Symbol">-</font>1. The constant NaN is "not a number," which for example is the result of dividing 0.0/0.0. The constant Infinity is the result of dividing 1.0/0.0. The constants that start with "Max" and "Min" are the maximum and minimum values for their corresponding types.<br>
+<a name="175543"> </a>is a valid expression that refers to the symbolic name "PI" and the literal "2.0." The constants i and j are the imaginary number with value equal to the square root of -1. The constant NaN is "not a number," which for example is the result of dividing 0.0/0.0. The constant Infinity is the result of dividing 1.0/0.0. The constants that start with "Max" and "Min" are the maximum and minimum values for their corresponding types.<br>
 
 
 <p>
-  <a name="175682"> </a>Numerical values without decimal points, such as "10" or "<font  face="Symbol">-</font>3" are integers (type <i>int</i>). Numerical values with decimal points, such as "10.0" or "3.14159" are of type <i>double</i>. Numerical values without decimal points followed by the character "l" (el) or "L" are of type <i>long</i>. Unsigned integers followed by "ub" or "UB" are of type <i>unsignedByte</i>, as in "5ub". An <i>unsignedByte</i> has a value between 0 and 255; note that it not quite the same as the Java byte, which has a value between -128 and 127.
+  <a name="175682"> </a>Numerical values without decimal points, such as "10" or "-3" are integers (type <i>int</i>). Numerical values with decimal points, such as "10.0" or "3.14159" are of type <i>double</i>. Numerical values without decimal points followed by the character "l" (el) or "L" are of type <i>long</i>. Unsigned integers followed by "ub" or "UB" are of type <i>unsignedByte</i>, as in "5ub". An <i>unsignedByte</i> has a value between 0 and 255; note that it not quite the same as the Java byte, which has a value between -128 and 127.
 </p>
 
 
@@ -109,7 +109,7 @@ PI/2.0<a name="175541"> </a>
 
 
 <p>
-  <a name="176526"> </a>A <i>complex</i> is defined by appending an "i" or a "j" to a double for the imaginary part. This gives a purely imaginary complex number which can then leverage the polymorphic operations in the Token classes to create a general complex number. Thus "2 + 3i</font>" will result in the expected complex number. You can optionally write this "2 + 3*i</font>".
+  <a name="176526"> </a>A <i>complex</i> is defined by appending an "i" or a "j" to a double for the imaginary part. This gives a purely imaginary complex number which can then leverage the polymorphic operations in the Token classes to create a general complex number. Thus "2 + 3i</font>" will result in the expected complex number. You can optionally write this "2 + 3*i".
 </p>
 
 
@@ -142,11 +142,17 @@ PI/2.0<a name="175541"> </a>
     <td><a name="176554"> </a>user.dir</td>
     <td><a name="176576"> </a>c:\ptII</td>
   </tr>
+  <tr>
+    <td><a name="198289"> </a>TMPDIR</td>
+    <td><a name="198291"> </a>The temporary directory</td>
+    <td><a name="198293"> </a>java.io.tmpdir</td>
+    <td><a name="198295"> </a>c:\Documents and Settings\you\Local Settings\Temp</td>
+  </tr>
 </table>
 
 
 
-</font>
+
 </p>
 
 
@@ -172,7 +178,17 @@ java -Dptolemy.ptII.dir=${PTII} <i>classname</i><a name="176699"> </a>
 
 <pre>
 <a name="183584"> </a>
-{CWD="C:\ptII\ptolemy\data\expr", E=2.718281828459, HOME="C:\Documents and Settings\eal", Infinity=Infinity, MaxDouble=1.7976931348623E308, MaxInt=2147483647, MaxLong=9223372036854775807L, MaxUnsignedByte=255ub, MinDouble=4.9E-324, MinInt=-2147483648, MinLong=-9223372036854775808L, MinUnsignedByte=0ub, NaN=NaN, NegativeInfinity=-Infinity, PI=3.1415926535898, PTII="c:\ptII", PositiveInfinity=Infinity, boolean=false, complex=0.0 + 0.0i, double=0.0, e=2.718281828459, false=false, fixedpoint=fix(0.0,2,1), general=present, i=0.0 + 1.0i, int=0, j=0.0 + 1.0i, long=0L, matrix=[], object=object(null),pi=3.1415926535898, scalar=present, string="", true=true, unknown=present, unsignedByte=0ub}<a name="183585"> </a>
+{CWD="C:\ptII\ptolemy\data\expr", E=2.718281828459,
+ HOME="C:\Documents and Settings\eal", Infinity=Infinity,
+ MaxDouble=1.7976931348623E308, MaxInt=2147483647,
+ MaxLong=9223372036854775807L, MaxUnsignedByte=255ub,
+ MinDouble=4.9E-324, MinInt=-2147483648, MinLong=-9223372036854775808L,
+ MinUnsignedByte=0ub, NaN=NaN, NegativeInfinity=-Infinity, PI=3.1415926535898,
+ PTII="c:\ptII", PositiveInfinity=Infinity, boolean=false, complex=0.0 + 0.0i,
+ double=0.0, e=2.718281828459, false=false, fixedpoint=fix(0.0,2,1),
+ general=present, i=0.0 + 1.0i, int=0, j=0.0 + 1.0i, long=0L, matrix=[],
+ object=object(null),pi=3.1415926535898, scalar=present, string="",
+ true=true, unknown=present, unsignedByte=0ub}<a name="183585"> </a>
 </pre>
 
 <h4>
@@ -221,12 +237,12 @@ PI*x/2.0<a name="175697"> </a>
 
 
 <p>
-  <a name="175556"> </a>The arithmetic operators are +, <font  face="Symbol">-,</font> *, /, ^, and %. Most of these operators operate on most data types, including arrays, records, and matrices. The ^ operator computes "to the power of" or exponentiation where the exponent can only be an <i>int</i> or an <i>unsignedByte</i>. 
+  <a name="175556"> </a>The arithmetic operators are +, -, *, /, ^, and %. Most of these operators operate on most data types, including arrays, records, and matrices. The ^ operator computes "to the power of" or exponentiation where the exponent can only be an <i>int</i> or an <i>unsignedByte</i>. 
 </p>
 
 
 <p>
-  <a name="183454"> </a>The <i>unsignedByte</i>, <i>int</i> and <i>long</i> types can only represent integer numbers. Operations on these types are integer operations, which can sometimes lead to unexpected results. For instance, 1/2 yields 0 if 1 and 2 are integers, whereas 1.0/2.0 yields 0.5. The exponentiation operator '^' when used with negative exponents can similarly yield unexpected results. For example, 2^<font  face="Symbol">-</font>1 is 0 because the result is computed as 1/(2^1).
+  <a name="183454"> </a>The <i>unsignedByte</i>, <i>int</i> and <i>long</i> types can only represent integer numbers. Operations on these types are integer operations, which can sometimes lead to unexpected results. For instance, 1/2 yields 0 if 1 and 2 are integers, whereas 1.0/2.0 yields 0.5. The exponentiation operator '^' when used with negative exponents can similarly yield unexpected results. For example, 2^-1 is 0 because the result is computed as 1/(2^1).
 </p>
 
 
@@ -247,7 +263,7 @@ PI*x/2.0<a name="175697"> </a>
 <a name="187587"> </a>
 </pre>
 
-<a name="187588"> </a>The magnitude of the result is always less than the magnitude of the divisor (the right argument). Note that when this operator is used on doubles, the result is not the same as that produced by the remainder() function (see <a href="#194754">Table 5 on page 96</a>). For instance,<br>
+<a name="187588"> </a>The magnitude of the result is always less than the magnitude of the divisor (the right argument). Note that when this operator is used on doubles, the result is not the same as that produced by the remainder() function (see <a href="#194754">Table 5</a>). For instance,<br>
 
 <pre>
 <a name="187601"> </a>
@@ -256,7 +272,7 @@ PI*x/2.0<a name="175697"> </a>
 <a name="187611"> </a>
 </pre>
 
-<a name="186986"> </a>The remainder() function calculates the IEEE 754 standard remainder operation. It uses a rounding division rather than a truncating division, and hence the sign can be positive or negative, depending on complicated rules (see <a href="#186842">page 90</a>). For example, counter intuitively,<br>
+<a name="186986"> </a>The remainder() function calculates the IEEE 754 standard remainder operation. It uses a rounding division rather than a truncating division, and hence the sign can be positive or negative, depending on complicated rules (see <a href="#186842">remainder()</a>). For example, counter intuitively,<br>
 
 <pre>
 <a name="187628"> </a>
@@ -266,7 +282,7 @@ PI*x/2.0<a name="175697"> </a>
 </pre>
 
 <p>
-  <a name="183724"> </a>When an operator involves two distinct types, the expression language has to make a decision about which type to use to implement the operation. If one of the two types can be converted without loss into the other, then it will be. For instance, <i>int</i> can be converted losslessly to <i>double</i>, so 1.0/2 will result in 2 being first converted to 2.0, so the result will be 0.5. Among the scalar types, <i>unsignedByte</i> can be converted to anything else, <i>int</i> can be converted to <i>double</i>, and <i>double</i> can be converted to <i>complex</i>. Note that <i>long</i> cannot be converted to <i>double</i> without loss, nor vice versa, so an expression like 2.0/2L</font> yields the following error message:
+  <a name="183724"> </a>When an operator involves two distinct types, the expression language has to make a decision about which type to use to implement the operation. If one of the two types can be converted without loss into the other, then it will be. For instance, <i>int</i> can be converted losslessly to <i>double</i>, so 1.0/2 will result in 2 being first converted to 2.0, so the result will be 0.5. Among the scalar types, <i>unsignedByte</i> can be converted to anything else, <i>int</i> can be converted to <i>double</i>, and <i>double</i> can be converted to <i>complex</i>. Note that <i>long</i> cannot be converted to <i>double</i> without loss, nor vice versa, so an expression like 2.0/2L yields the following error message:
 </p>
 
 <pre>
@@ -282,18 +298,16 @@ divide method not supported between ptolemy.data.DoubleToken '2.0' and ptolemy.d
   <a name="183459"> </a>All scalar types have limited precision and magnitude. As a result of this, arithmetic operations are subject to underflow and overflow. 
 </p>
 
+<ul>
+  <li><a name="183477"> </a>For <i>double</i> numbers, overflow results in the corresponding positive or negative infinity. Underflow (i.e. the precision does not suffice to represent the result) will yield zero.
+  <li><a name="183478"> </a>For integer types and <i>fixedpoint</i>, overflow results in wraparound. For instance, while the value of MaxInt is 2147483647, the expression MaxInt + 1 yields -2147483648. Similarly, while MaxUnsignedByte has value 255ub, MaxUnsignedByte + 1ub has value 0ub. Note, however, that MaxUnsignedByte + 1 yields 256, which is an <i>int</i>, not an <i>unsignedByte</i>. This is because MaxUnsignedByte can be losslessly converted to an <i>int</i>, so the addition is <i>int</i> addition, not <i>unsignedByte</i> addition.
+</ul>
 
-<a name="183477"> </a>	 For <i>double</i> numbers, overflow results in the corresponding positive or negative infinity. Underflow (i.e. the precision does not suffice to represent the result) will yield zero.<br>
-
-
-<a name="183478"> </a>	 For integer types and <i>fixedpoint</i>, overflow results in wraparound. For instance, while the value of MaxInt</font> is 2147483647, the expression MaxInt + 1</font> yields <font  face="Symbol">-</font>2147483648. Similarly, while MaxUnsignedByte</font> has value 255ub, MaxUnsignedByte + 1ub</font> has value 0ub. Note, however, that MaxUnsignedByte + 1</font> yields 256, which is an <i>int</i>, not an <i>unsignedByte</i>. This is because MaxUnsignedByte</font> can be losslessly converted to an <i>int</i>, so the addition is <i>int</i> addition, not <i>unsignedByte</i> addition.<br>
-
-
-<a name="183480"> </a>The bitwise operators are &amp;</font>, |</font>, #</font>, and ~</font>. They operate on <i>boolean</i>, <i>unsignedByte</i>, <i>int</i> and <i>long</i> (but not <i>fixedpoint</i>, <i>double</i> or <i>complex</i>). The operator &amp;</font> is bitwise AND, ~</font> is bitwise NOT, and |</font> is bitwise OR, and #</font> is bitwise XOR (exclusive or, after MATLAB). <br>
+<a name="183480"> </a>The bitwise operators are &amp;, |, #, and ~. They operate on <i>boolean</i>, <i>unsignedByte</i>, <i>int</i> and <i>long</i> (but not <i>fixedpoint</i>, <i>double</i> or <i>complex</i>). The operator &amp; is bitwise AND, ~ is bitwise NOT, and | is bitwise OR, and # is bitwise XOR (exclusive or, after MATLAB). <br>
 
 
 <p>
-  <a name="175559"> </a>The relational operators are &lt;</font>, &lt;=</font>, &gt;</font>, &gt;=</font>, ==</font> and !=</font>. They return type <i>boolean</i>. Note that these relational operators check the values when possible, irrespective of type. So, for example,
+  <a name="175559"> </a>The relational operators are &lt;, &lt;=, &gt;, &gt;=, == and !=. They return type <i>boolean</i>. Note that these relational operators check the values when possible, irrespective of type. So, for example,
 </p>
 
 <pre>
@@ -321,16 +335,16 @@ boolean ? value1 : value2<a name="195993"> </a>
 <a name="195994"> </a>
 </pre>
 
-<a name="175562"> </a>If the boolean is true, the value of the expression is value1</font>; otherwise, it is value2</font>.<br>
+<a name="175562"> </a>If the boolean is true, the value of the expression is value1; otherwise, it is value2.<br>
 
 
 <p>
-  <a name="175732"> </a>The logical boolean operators are &amp;&amp;</font>, ||</font>, !</font>, &amp;</font> and |</font>. They operate on type <i>boolean</i> and return type <i>boolean</i>. The difference between logical &amp;&amp;</font> and logical &amp;</font> is that &amp;</font> evaluates all the operands regardless of whether their value is now irrelevant. Similarly for logical ||</font> and |</font>. This approach is borrowed from Java. Thus, for example, the expression "false &amp;&amp; x</font>" will evaluate to <i>false</i> irrespective of whether x</font> is defined. On the other hand, "false &amp; x</font>" will throw an exception.
+  <a name="175732"> </a>The logical boolean operators are &amp;&amp;, ||, !, &amp; and |. They operate on type <i>boolean</i> and return type <i>boolean</i>. The difference between logical &amp;&amp; and logical &amp; is that &amp; evaluates all the operands regardless of whether their value is now irrelevant. Similarly for logical || and |. This approach is borrowed from Java. Thus, for example, the expression "false &amp;&amp; x" will evaluate to <i>false</i> irrespective of whether x is defined. On the other hand, "false &amp; x" will throw an exception.
 </p>
 
 
 <p>
-  <a name="175563"> </a>The &lt;&lt;</font> and &gt;&gt;</font> operators performs arithmetic left and right shifts respectively. The &gt;&gt;&gt;</font> operator performs a logical right shift, which does not preserve the sign. They operate on <i>unsignedByte</i>, <i>int</i>, and <i>long</i>.
+  <a name="175563"> </a>The &lt;&lt; and &gt;&gt; operators performs arithmetic left and right shifts respectively. The &gt;&gt;&gt; operator performs a logical right shift, which does not preserve the sign. They operate on <i>unsignedByte</i>, <i>int</i>, and <i>long</i>.
 </p>
 
 
@@ -339,7 +353,7 @@ boolean ? value1 : value2<a name="195993"> </a>
 </h4>
 
 
-<a name="175611"> </a>In expressions, anything inside<b> </b></font>/*...*/</font> is ignored, so you can insert comments.<br>
+<a name="175611"> </a>In expressions, anything inside<b> </b>/*...*/ is ignored, so you can insert comments.<br>
 
 
 <h3>
@@ -365,7 +379,7 @@ boolean ? value1 : value2<a name="195993"> </a>
 
 <p>
   <a name="176834"> </a>A PortParameter might be contained by an atomic actor or a composite actor. To put one in a composite actor, drag it into a model from the <i>utilities</i> library, as shown in figure <img src="img/expressions17.gif" height="546" width="937" align="left" border="0" hspace="0" vspace="0">
-<a href="#176834">3.2</a>. The resulting icon is actually a combination of two icons, one representing the port, and the other representing the parameter. These can be moved separately, but doing so might create confusion, so we recommend selecting both by clicking and dragging over the pair and moving both together.</font>
+<a href="#176834">3.2</a>. The resulting icon is actually a combination of two icons, one representing the port, and the other representing the parameter. These can be moved separately, but doing so might create confusion, so we recommend selecting both by clicking and dragging over the pair and moving both together.
 </p>
 
 
@@ -381,16 +395,25 @@ boolean ? value1 : value2<a name="195993"> </a>
 
 
 <h4>
-  <a name="171261"> </a>3.3.3   Expression Actor
+  <a name="171261"> </a>3.3.3   String Parameters
 </h4>
 
 
-<a name="171267"> </a>The <i>Expression</i> actor is a particularly useful actor found in the <i>math</i> library. By default, it has one output and no inputs, as shown in Figure <img src="img/expressions55.gif" height="441" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="#171267">3.4</a>(a). The first step in using it is to add ports, as shown in (b) and (c), resulting in a new icon as shown in (d). Note: In (c) when you click on Add, you will be prompted for a Name (pick one) and a Class. Leave the Class entry blank and click OK. You then specify an expression using the port names, as shown in (e), resulting in the icon shown in (f).<br></font>
+<a name="198315"> </a>Some parameters have values that are always strings of characters. Such parameters support a simple string substitution mechanism where the value of the string can reference other parameters in scope by name using the syntax $<i>name</i>, where <i>name</i> is the name of the parameter in scope. For example, the StringCompare actor in figure <img src="img/expressions32.gif" height="269" width="600" align="left" border="0" hspace="0" vspace="0">
+<a href="#198315">3.4</a> has as the value of <i>firstString</i> "The answer is $PI". This references the built-in constant PI. The value of <i>secondString</i> is "The answer is 3.1415926535898". As shown in the figure, these two strings are deemed to be equal because $PI is replaced with the value of PI.<br>
 
 
 <h4>
-  <a name="183128"> </a>3.3.4   State Machines
+  <a name="198314"> </a>3.3.4   Expression Actor
+</h4>
+
+
+<a name="171267"> </a>The <i>Expression</i> actor is a particularly useful actor found in the <i>math</i> library. By default, it has one output and no inputs, as shown in Figure <img src="img/expressions56.gif" height="441" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="#171267">3.5</a>(a). The first step in using it is to add ports, as shown in (b) and (c), resulting in a new icon as shown in (d). Note: In (c) when you click on Add, you will be prompted for a Name (pick one) and a Class. Leave the Class entry blank and click OK. You then specify an expression using the port names, as shown in (e), resulting in the icon shown in (f).<br>
+
+
+<h4>
+  <a name="183128"> </a>3.3.5   State Machines
 </h4>
 
 
@@ -408,7 +431,7 @@ boolean ? value1 : value2<a name="195993"> </a>
 
 
 <p>
-  <a name="167020"> </a>Arrays are specified with curly brackets, e.g., "{1, 2, 3}</font>" is an array of <i>int</i>, while "{"x", "y", "z"}</font>" is an array of <i>string</i>. The types are denoted "{int}</font>" and "{string}</font>" respectively. An array is an ordered list of tokens of any type, with the only constraint being that the elements all have the same type. If an array is given with mixed types, the expression evaluator will attempt to losslessly convert the elements to a common type. Thus, for example, 
+  <a name="167020"> </a>Arrays are specified with curly brackets, e.g., "{1, 2, 3}" is an array of <i>int</i>, while "{"x", "y", "z"}" is an array of <i>string</i>. The types are denoted "{int}" and "{string}" respectively. An array is an ordered list of tokens of any type, with the only constraint being that the elements all have the same type. If an array is given with mixed types, the expression evaluator will attempt to losslessly convert the elements to a common type. Thus, for example, 
 </p>
 
 <pre>
@@ -425,7 +448,7 @@ boolean ? value1 : value2<a name="195993"> </a>
 <a name="183829"> </a>
 </pre>
 
-<a name="183821"> </a>Its type is {double}</font>. The elements of the array can be given by expressions, as in the example "{2*pi, 3*pi}</font>." Arrays can be nested; for example, "{{1, 2}, {3, 4, 5}}</font>" is an array of arrays of integers. The elements of an array can be accessed as follows:<br>
+<a name="183821"> </a>Its type is {double}. The elements of the array can be given by expressions, as in the example "{2*pi, 3*pi}." Arrays can be nested; for example, "{{1, 2}, {3, 4, 5}}" is an array of arrays of integers. The elements of an array can be accessed as follows:<br>
 
 <pre>
 <a name="184963"> </a>
@@ -475,7 +498,7 @@ true<a name="186579"> </a>
 <a name="186425"> </a>
 </pre>
 
-<a name="186430"> </a>For other comparisons of arrays, use the compare() function (see <a href="#194754">Table 5 on page 96</a>). As with scalars, testing for equality using the ==</font> or !=</font> operators tests the values, independent of type. For example,<br>
+<a name="186430"> </a>For other comparisons of arrays, use the compare() function (see <a href="#194754">Table 5</a>). As with scalars, testing for equality using the == or != operators tests the values, independent of type. For example,<br>
 
 <pre>
 <a name="188887"> </a>
@@ -524,7 +547,7 @@ true<a name="188891"> </a>
 <a name="183175"> </a>
 </pre>
 
-<a name="190332"> </a>Of course, if the dimensions of the matrix don't match, then you will get an error message. To do element wise multiplication, use the multipyElements() function (see <a href="#195091">Table 6 on page 98</a>). Matrix addition and subtraction are element wise, as expected, but the division operator is not supported. Element wise division can be accomplished with the divideElements() function, and multiplication by a matrix inverse can be accomplished using the inverse() function (see <a href="#195091">Table 6 on page 98</a>). A matrix can be raised to an <i>int</i> or <i>unsignedByte</i> power, which is equivalent to multiplying it by itself some number of times. For instance,<br>
+<a name="190332"> </a>Of course, if the dimensions of the matrix don't match, then you will get an error message. To do element wise multiplication, use the multipyElements() function (see <a href="#195091">Table 6</a>). Matrix addition and subtraction are element wise, as expected, but the division operator is not supported. Element wise division can be accomplished with the divideElements() function, and multiplication by a matrix inverse can be accomplished using the inverse() function (see <a href="#195091">Table 6</a>). A matrix can be raised to an <i>int</i> or <i>unsignedByte</i> power, which is equivalent to multiplying it by itself some number of times. For instance,<br>
 
 <pre>
 <a name="183193"> </a>
@@ -562,7 +585,7 @@ true<a name="183271"> </a>
 <a name="183279"> </a>
 </pre>
 
-<a name="188905"> </a>For other comparisons of matrices, use the compare() function (see <a href="#194754">Table 5 on page 96</a>). As with scalars, testing for equality using the ==</font> or !=</font> operators tests the values, independent of type. For example,<br>
+<a name="188905"> </a>For other comparisons of matrices, use the compare() function (see <a href="#194754">Table 5</a>). As with scalars, testing for equality using the == or != operators tests the values, independent of type. For example,<br>
 
 <pre>
 <a name="188906"> </a>
@@ -587,7 +610,7 @@ true<a name="190361"> </a>
 </h4>
 
 
-<a name="191373"> </a>A record token is a composite type containing named fields, where each field has a value. The value of each field can have a distinct type. Records are delimited by curly braces, with each field given a name. For example, "{a=1, b="foo"}</font>" is a record with two fields, named "a" and "b", with values 1 (an integer) and "foo" (a string), respectively. The value of a field can be an arbitrary expression, and records can be nested (a field of a record token may be a record token).<br>
+<a name="191373"> </a>A record token is a composite type containing named fields, where each field has a value. The value of each field can have a distinct type. Records are delimited by curly braces, with each field given a name. For example, "{a=1, b="foo"}" is a record with two fields, named "a" and "b", with values 1 (an integer) and "foo" (a string), respectively. The value of a field can be an arbitrary expression, and records can be nested (a field of a record token may be a record token).<br>
 
 
 <p>
@@ -608,7 +631,7 @@ true<a name="190361"> </a>
 <a name="184042"> </a>
 </pre>
 
-<a name="191386"> </a>The arithmetic operators +, <font  face="Symbol">-</font>, *, /, and %</font> can be applied to records. If the records do not have identical fields, then the operator is applied only to the fields that match, and the result contains only the fields that match. Thus, for example,<br>
+<a name="191386"> </a>The arithmetic operators +, -, *, /, and % can be applied to records. If the records do not have identical fields, then the operator is applied only to the fields that match, and the result contains only the fields that match. Thus, for example,<br>
 
 <pre>
 <a name="184836"> </a>
@@ -643,7 +666,7 @@ merge({a=1, b=2}, {a=3, c=3})<a name="184929"> </a>
 <a name="191458"> </a>
 </pre>
 
-<a name="191459"> </a>yields the result {a=1, b=2, c=3}</font>. <br>
+<a name="191459"> </a>yields the result {a=1, b=2, c=3}. <br>
 
 
 <p>
@@ -810,7 +833,7 @@ function(x:double) x*5.0<a name="184140"> </a>
 </pre>
 
 <p>
-  <a name="191864"> </a>Functions can be passed as arguments to certain "higher-order functions" that have been defined (see table <a href="#195813">Table 9 on page 102</a>). For example, the iterate() function takes three arguments, a function, an integer, and an initial value to which to apply the function. It applies the function first to the initial value, then to the result of the application, then to that result, collecting the results into an array whose length is given by the second argument. For example, to get an array whose values are multiples of 3, try
+  <a name="191864"> </a>Functions can be passed as arguments to certain "higher-order functions" that have been defined (see table <a href="#195813">Table 9</a>). For example, the iterate() function takes three arguments, a function, an integer, and an initial value to which to apply the function. It applies the function first to the initial value, then to the result of the application, then to that result, collecting the results into an array whose length is given by the second argument. For example, to get an array whose values are multiples of 3, try
 </p>
 
 <pre>
@@ -835,19 +858,19 @@ function(x:double) x*5.0<a name="184140"> </a>
 </pre>
 
 <p>
-  <a name="193773"> </a>A typical use of functions in a Ptolemy II model is to define a parameter in a model whose value is a function. Suppose that the parameter named "f</font>" has value "function(x:double) x*5.0</font>". Then within the scope of that parameter, the expression "f(10.0)</font>" will yield result 50.0.
+  <a name="193773"> </a>A typical use of functions in a Ptolemy II model is to define a parameter in a model whose value is a function. Suppose that the parameter named "f" has value "function(x:double) x*5.0". Then within the scope of that parameter, the expression "f(10.0)" will yield result 50.0.
 </p>
 
 
 <p>
-  <a name="184256"> </a>Functions can also be passed along connections in a Ptolemy II model. Consider the model shown in figure <img src="img/expressions40.gif" height="346" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="#184256">3.5</a>. In that example, the Const actor defines a function that simply squares the argument. Its output, therefore, is a token with type <i>function</i>. That token is fed to the "f" input of the Expression actor. The expression uses this function by applying it to the token provided on the "y" input. That token, in turn, is supplied by the Ramp actor, so the result is the curve shown in the plot on the right.
+  <a name="184256"> </a>Functions can also be passed along connections in a Ptolemy II model. Consider the model shown in figure <img src="img/expressions41.gif" height="346" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="#184256">3.6</a>. In that example, the Const actor defines a function that simply squares the argument. Its output, therefore, is a token with type <i>function</i>. That token is fed to the "f" input of the Expression actor. The expression uses this function by applying it to the token provided on the "y" input. That token, in turn, is supplied by the Ramp actor, so the result is the curve shown in the plot on the right.
 </p>
 
 
 <p>
-  <a name="184278"> </a>A more elaborate use is shown in figure <img src="img/expressions54.gif" height="483" width="937" align="center" border="0" hspace="0" vspace="0">
-<a href="#184278">3.6</a>. In that example, the Const actor produces a function, which is then used by the Expression actor to create new function, which is then used by Expression2 to perform a calculation. The calculation performed here adds the output of the Ramp to the square of the output of the Ramp.</font>
+  <a name="184278"> </a>A more elaborate use is shown in figure <img src="img/expressions55.gif" height="483" width="937" align="center" border="0" hspace="0" vspace="0">
+<a href="#184278">3.7</a>. In that example, the Const actor produces a function, which is then used by the Expression actor to create new function, which is then used by Expression2 to perform a calculation. The calculation performed here adds the output of the Ramp to the square of the output of the Ramp.
 </p>
 
 
@@ -860,7 +883,10 @@ function(x:double) x*5.0<a name="184140"> </a>
 &gt;&gt; fact = function(x:int,f:(function(x,f) int)) (x&lt;1?1:x*f(x-1,f))<a name="193854"> </a>
 (function(x:int, f:function(a0:general, a1:general) int) (x&lt;1)?1:(x*f((x-1), f)))<a name="193855"> </a>
 &gt;&gt; factorial = function(x:int) fact(x,fact)<a name="193856"> </a>
-(function(x:int) (function(x:int, f:function(a0:general, a1:general) int) (x&lt;1)?1:(x*f((x-1), f)))(x, (function(x:int, f:function(a0:gen-eral, a1:general) int) (x&lt;1)?1:(x*f((x-1), f)))))<a name="193857"> </a>
+(function(x:int) (function(x:int, f:function(a0:general, a1:general) int) 
+   (x&lt;1)?1:(x*f((x-1), f)))
+     (x, (function(x:int, f:function(a0:general, a1:general) int)
+         (x&lt;1)?1:(x*f((x-1), f)))))<a name="193857"> </a>
 &gt;&gt; map(factorial, [1:1:5].toArray())<a name="193858"> </a>
 {1, 2, 6, 24, 120}<a name="193859"> </a>
 &gt;&gt; <a name="193838"> </a>
@@ -877,7 +903,7 @@ function(x:double) x*5.0<a name="184140"> </a>
 
 <p>
   <a name="190441"> </a>The expression language includes a set of functions, such as sin(), cos(), etc. The functions that are built in include all static methods of the classes shown <img src="img/expressions20.gif" height="256" width="600" align="left" border="0" hspace="0" vspace="0">
-in <a href="#190441">Table 2 on page 88</a>, which together provide a rich set<a href="#190502"><sup>2</sup></a>. The functions currently available are shown in the tables in the appendix, which also show the argument types and return types.</font>
+in <a href="#190441">Table 2</a>, which together provide a rich set<a href="#190502"><sup>2</sup></a>. The functions currently available are shown in the tables in the appendix, which also show the argument types and return types.
 </p>
 
 
@@ -903,7 +929,7 @@ sin({0.0, 0.1, 0.2, 0.3})<a name="182379"> </a>
 
 
 <p>
-  <a name="194173"> </a>Tables of available functions are shown in the appendix. For example, <a href="#194565">Table 4 on page 95</a> shows trigonometric functions. Note that these operate on <i>double</i> or <i>complex</i>, and hence on <i>int</i> and <i>unsignedByte</i>, which can be losslessly converted to <i>double</i>. The result will always be double. For example,
+  <a name="194173"> </a>Tables of available functions are shown in the appendix. For example, <a href="#194565">Table 4</a> shows trigonometric functions. Note that these operate on <i>double</i> or <i>complex</i>, and hence on <i>int</i> and <i>unsignedByte</i>, which can be losslessly converted to <i>double</i>. The result will always be double. For example,
 </p>
 
 <pre>
@@ -917,7 +943,7 @@ sin({0.0, 0.1, 0.2, 0.3})<a name="182379"> </a>
 
 
 <p>
-  <a name="187455"> </a><a href="#194754">Table 5 on page 96</a> shows other arithmetic functions beyond the trigonometric functions. As with the trigonometric functions, those that indicate that they operate on <i>double</i> will also work on <i>int</i> and <i>unsignedByte</i>, and unless they indicate otherwise, they will return whatever they return when the argument is <i>double</i>. Those functions in the table that take scalar arguments will also operate on matrices and arrays. For example, since the table indicates that the max() function can take <i>int, int</i> as arguments, then by implication, it can also take {<i>int</i>}, {<i>int</i>}. For example,
+  <a name="187455"> </a><a href="#194754">Table 5</a> shows other arithmetic functions beyond the trigonometric functions. As with the trigonometric functions, those that indicate that they operate on <i>double</i> will also work on <i>int</i> and <i>unsignedByte</i>, and unless they indicate otherwise, they will return whatever they return when the argument is <i>double</i>. Those functions in the table that take scalar arguments will also operate on matrices and arrays. For example, since the table indicates that the max() function can take <i>int, int</i> as arguments, then by implication, it can also take {<i>int</i>}, {<i>int</i>}. For example,
 </p>
 
 <pre>
@@ -940,7 +966,8 @@ sin({0.0, 0.1, 0.2, 0.3})<a name="182379"> </a>
 
 
 <p>
-  <a name="193300"> </a><a href="#195091">Table 6</a> shows functions that only work with matrices, arrays, or records (that is, there is no corresponding scalar operation). Recall that most functions that operate on scalars will also operate on arrays and matrices<a href="#195405">Table 7</a> shows utility functions for evaluating expressions given as strings or representing numbers as strings. Of these, the eval() function is the most flexible (see <a href="#185006">page 89</a>). 
+  <a name="193300"> </a><a href="#195091">Table 6</a> shows functions that only work with matrices, arrays, or records (that is, there is no corresponding scalar operation). Recall that most functions that operate on scalars will also operate on arrays and matrices<a href="#195405">Table 7</a> shows utility functions for evaluating expressions given as strings or representing numbers as strings. Of these, <a href="#185006">the eval()</a>)
+function is the most flexible.
 </p>
 
 
@@ -989,12 +1016,12 @@ eval(readFile("filename"))<a name="177806"> </a>
 
 
 <p>
-  <a name="192140"> </a>The functions random() and gaussian() shown in <a href="#194754">Table 5 on page 96</a> return one or more random numbers. With the minimum number of arguments (zero or two, respectively), they return a single number. With one additional argument, they return an array of the specified length. With a second additional argument, they return a matrix with the specified number of rows and columns.
+  <a name="192140"> </a>The functions random() and gaussian() shown in <a href="#194754">Table 5</a> return one or more random numbers. With the minimum number of arguments (zero or two, respectively), they return a single number. With one additional argument, they return an array of the specified length. With a second additional argument, they return a matrix with the specified number of rows and columns.
 </p>
 
 
 <p>
-  <a name="187138"> </a>There is a key subtlety when using these functions in Ptolemy II. In particular, they are evaluated only when the expression within which they appear is evaluated. The result of the expression may be used repeatedly without re-evaluating the expression. Thus, for example, if the <i>value</i> parameter of the <i>Const</i> actor is set to "random()</font>", then its output will be a random constant, i.e., it will not change on each firing. The output will change, however, on successive runs of the model. In contrast, if this is used in an Expression actor, then each firing triggers an evaluation of the expression, and consequently will result in a new random number.
+  <a name="187138"> </a>There is a key subtlety when using these functions in Ptolemy II. In particular, they are evaluated only when the expression within which they appear is evaluated. The result of the expression may be used repeatedly without re-evaluating the expression. Thus, for example, if the <i>value</i> parameter of the <i>Const</i> actor is set to "random()", then its output will be a random constant, i.e., it will not change on each firing. The output will change, however, on successive runs of the model. In contrast, if this is used in an Expression actor, then each firing triggers an evaluation of the expression, and consequently will result in a new random number.
 </p>
 
 
@@ -1005,24 +1032,20 @@ eval(readFile("filename"))<a name="177806"> </a>
   <a name="176396"> </a>The property() function accesses system properties by name. Some possibly useful system properties are:
 </p>
 
-
-<a name="176401"> </a>	 ptolemy.ptII.dir: The directory in which Ptolemy II is installed.<br>
-
-
-<a name="176410"> </a>	 ptolemy.ptII.dirAsURL: The directory in which Ptolemy II is installed, but represented as a URL.<br>
-
-
-<a name="176423"> </a>	 user.dir: The current working directory, which is usually the directory in which the current executable was started.<br>
-
+<ul>
+  <li><a name="176401"> </a>ptolemy.ptII.dir: The directory in which Ptolemy II is installed.
+  <li><a name="176410"> </a>ptolemy.ptII.dirAsURL: The directory in which Ptolemy II is installed, but represented as a URL.
+  <li><a name="176423"> </a>user.dir: The current working directory, which is usually the directory in which the current executable was started.
+</ul>
 
 <a name="186842"> </a>remainder()<br>
 
 
-<a name="186848"> </a>This function computes the remainder operation on two arguments as prescribed by the IEEE 754 standard, which is not the same as the modulo operation computed by the % operator. The result of remainder(x, y) is <img src="img/expressions62.gif" height="18" width="39" border="0" hspace="0" vspace="0">
-, where <img src="img/expressions63.gif" height="18" width="11" border="0" hspace="0" vspace="0">
- is the integer closest to the exact value of <img src="img/expressions64.gif" height="18" width="22" border="0" hspace="0" vspace="0">
-. If two integers are equally close, then <img src="img/expressions65.gif" height="18" width="11" border="0" hspace="0" vspace="0">
- is the integer that is even. This yields results that may be surprising, as indicated by the following examples:<br></font>
+<a name="186848"> </a>This function computes the remainder operation on two arguments as prescribed by the IEEE 754 standard, which is not the same as the modulo operation computed by the % operator. The result of remainder(x, y) is <img src="img/expressions63.gif" height="18" width="39" border="0" hspace="0" vspace="0">
+, where <img src="img/expressions64.gif" height="18" width="11" border="0" hspace="0" vspace="0">
+ is the integer closest to the exact value of <img src="img/expressions65.gif" height="18" width="22" border="0" hspace="0" vspace="0">
+. If two integers are equally close, then <img src="img/expressions66.gif" height="18" width="11" border="0" hspace="0" vspace="0">
+ is the integer that is even. This yields results that may be surprising, as indicated by the following examples:<br>
 
 <pre>
 <a name="186899"> </a>
@@ -1041,40 +1064,38 @@ eval(readFile("filename"))<a name="177806"> </a>
 1<a name="186903"> </a>
 </pre>
 
-<a name="186898"> </a>which is different in two ways. The result numerically different and is of type <i>int</i>, whereas remainder()</font> always yields a result of type <i>double</i>. The remainder()</font> function is implemented by the java.lang.Math class, which calls it IEEEremainder()</font>. The documentation for that class gives the following special cases:<br>
+<a name="186898"> </a>which is different in two ways. The result numerically different and is of type <i>int</i>, whereas remainder() always yields a result of type <i>double</i>. The remainder() function is implemented by the java.lang.Math class, which calls it IEEEremainder(). The documentation for that class gives the following special cases:<br>
 
-
-<a name="186856"> </a>	 If either argument is NaN, or the first argument is infinite, or the second argument is positive zero or negative zero, then the result is NaN. <br>
-
-
-<a name="186967"> </a>	 If the first argument is finite and the second argument is infinite, then the result is the same as the first argument.<br>
-
+<ul>
+  <li><a name="186856"> </a>If either argument is NaN, or the first argument is infinite, or the second argument is positive zero or negative zero, then the result is NaN. 
+  <li><a name="186967"> </a>If the first argument is finite and the second argument is infinite, then the result is the same as the first argument.
+</ul>
 
 <a name="192146"> </a>DCT() and IDCT()<br>
 
 
 <p>
-  <a name="192147"> </a>The DCT function can take one, two, or three arguments. In all three cases, the first argument is an array of length <img src="img/expressions43.gif" height="18" width="36" border="0" hspace="0" vspace="0">
- and the DCT returns an </font>
+  <a name="192147"> </a>The DCT function can take one, two, or three arguments. In all three cases, the first argument is an array of length <img src="img/expressions44.gif" height="18" width="36" border="0" hspace="0" vspace="0">
+ and the DCT returns an 
 </p>
 
 <div align="center">
-<a name="192154"> </a>(4) <img src="img/expressions44.gif" height="52" width="204" border="0" hspace="0" vspace="0">
-<br></font>
+<a name="192154"> </a>(4) <img src="img/expressions45.gif" height="52" width="204" border="0" hspace="0" vspace="0">
+<br>
 </div>
 
-<a name="192167"> </a>for <img src="img/expressions53.gif" height="18" width="10" border="0" hspace="0" vspace="0">
- from 0 to <img src="img/expressions66.gif" height="18" width="36" border="0" hspace="0" vspace="0">
-, where <img src="img/expressions67.gif" height="18" width="13" border="0" hspace="0" vspace="0">
- is the size of the specified array and <img src="img/expressions68.gif" height="18" width="14" border="0" hspace="0" vspace="0">
- is the size of the DCT. If only one argument is given, then <img src="img/expressions69.gif" height="18" width="14" border="0" hspace="0" vspace="0">
- is set to equal the next power of two larger than <img src="img/expressions70.gif" height="18" width="13" border="0" hspace="0" vspace="0">
-. If a second argument is given, then its value is the <i>order</i> of the DCT, and the size of the DCT is <img src="img/expressions71.gif" height="23" width="38" border="0" hspace="0" vspace="0">
+<a name="192167"> </a>for <img src="img/expressions54.gif" height="18" width="10" border="0" hspace="0" vspace="0">
+ from 0 to <img src="img/expressions67.gif" height="18" width="36" border="0" hspace="0" vspace="0">
+, where <img src="img/expressions68.gif" height="18" width="13" border="0" hspace="0" vspace="0">
+ is the size of the specified array and <img src="img/expressions69.gif" height="18" width="14" border="0" hspace="0" vspace="0">
+ is the size of the DCT. If only one argument is given, then <img src="img/expressions70.gif" height="18" width="14" border="0" hspace="0" vspace="0">
+ is set to equal the next power of two larger than <img src="img/expressions71.gif" height="18" width="13" border="0" hspace="0" vspace="0">
+. If a second argument is given, then its value is the <i>order</i> of the DCT, and the size of the DCT is <img src="img/expressions72.gif" height="23" width="38" border="0" hspace="0" vspace="0">
 . If a third argument is given, then it specifies the scaling factors <img src="img/expressionsa.gif" height="21" width="14" border="0" hspace="0" vspace="0">
  according to the following table:
 
 <table border="1" cellpadding="5" cellspacing="0">
-  <caption><b><i><a name="192182"> </a><font face="Times New Roman">TABLE 3:  Normalization options for the DCT function</font></i></b></caption>
+  <caption><b><i><a name="192182"> </a><font face="Times New Roman">TABLE 3:  Normalization options for the DCT function</i></b></caption>
   <tr align="center" bgcolor="#CCCCCC">
     <th><a name="192188"> </a>Name</th>
     <th><a name="192190"> </a>Third argument</th>
@@ -1084,25 +1105,25 @@ eval(readFile("filename"))<a name="177806"> </a>
     <td><div align="center"><a name="192194"> </a>Normalized</div></td>
     <td><div align="center"><a name="192196"> </a>0</div></td>
     <td><a name="192201"> </a><img src="img/expressions3.gif" height="54" width="139" border="0" hspace="0" vspace="0">
-</font></font></td>
+</td>
   </tr>
   <tr>
     <td><div align="center"><a name="192203"> </a>Unnormalized</div></td>
     <td><div align="center"><a name="192205"> </a>1</div></td>
     <td><a name="192210"> </a><img src="img/expressions4.gif" height="21" width="45" border="0" hspace="0" vspace="0">
-</font></font></td>
+</td>
   </tr>
   <tr>
     <td><div align="center"><a name="192212"> </a>Orthonormal</div></td>
     <td><div align="center"><a name="192214"> </a>2</div></td>
     <td><a name="192219"> </a><img src="img/expressions6.gif" height="78" width="159" border="0" hspace="0" vspace="0">
-</font></font></td>
+</td>
   </tr>
 </table>
 
 
 
-<br></font>
+<br>
 
 
 <a name="192220"> </a>The default, if a third argument is not given, is "Normalized."<br>
@@ -1114,7 +1135,7 @@ eval(readFile("filename"))<a name="177806"> </a>
 
 <div align="center">
 <a name="192233"> </a>(5) <img src="img/expressions10.gif" height="52" width="203" border="0" hspace="0" vspace="0">
-.<br></font>
+.<br>
 </div>
 
 <h3>
@@ -1158,36 +1179,36 @@ fix(5.375, 8, 3)<a name="171779"> </a>
   <a name="171805"> </a>To make the FixToken accessible within the expression language, the following functions are available: 
 </p>
 
-
-<a name="171806"> </a>	 To create a single FixPoint Token using the expression language:<br>
-
+<ul>
+  <li><a name="171806"> </a>To create a single FixPoint Token using the expression language:
+</ul>
 <pre>
 fix(5.34, 10, 4)<a name="171807"> </a>
 </pre>
 <dl>
   <dt> <a name="175175"> </a>This will create a FixToken. In this case, we try to fit the number 5.34 into a 10 bit representation with 4 bits used in the integer part. This may lead to quantization errors. By default the round quantizer is used. 
 </dl>
-
-<a name="175176"> </a>	 To create a Matrix with FixPoint values using the expression language:<br>
-
+<ul>
+  <li><a name="175176"> </a>To create a Matrix with FixPoint values using the expression language:
+</ul>
 <pre>
 fix([ -.040609, -.001628, .17853 ], 10, 2) <a name="175177"> </a>
 </pre>
 <dl>
   <dt> <a name="175181"> </a>This will create a FixMatrixToken with 1 row and 3 columns, in which each element is a FixPoint value with precision(10/2). The resulting FixMatrixToken will try to fit each element of the given double matrix into a 10 bit representation with 2 bits used for the integer part. By default the round quantizer is used.
 </dl>
-
-<a name="175178"> </a>	 To create a single DoubleToken, which is the quantized version of the double value given, using the expression language:<br>
-
+<ul>
+  <li><a name="175178"> </a>To create a single DoubleToken, which is the quantized version of the double value given, using the expression language:
+</ul>
 <pre>
 quantize(5.34, 10, 4)<a name="171813"> </a>
 </pre>
 <dl>
   <dt> <a name="171814"> </a>This will create a DoubleToken. The resulting DoubleToken contains the double value obtained by fitting the number 5.34 into a 10 bit representation with 4 bits used in the integer part. This may lead to quantization errors. By default the round quantizer is used. 
 </dl>
-
-<a name="171815"> </a>	 To create a Matrix with doubles quantized to a particular precision using the expression language:<br>
-
+<ul>
+  <li><a name="171815"> </a>To create a Matrix with doubles quantized to a particular precision using the expression language:
+</ul>
 <pre>
 quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
 </pre>
@@ -1205,29 +1226,29 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
 
 <p>
   <a name="176062"> </a>A model using one of the simple provided units systems is shown in figure <img src="img/expressions2.gif" height="330" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="#176062">3.7</a>. This unit system is called BasicUnits; the units it defines can be examined by double clicking on its icon, or by invoking Configure, as shown in figure <img src="img/expressions5.gif" height="382" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="#176062">3.8</a>. In that figure, we see that "meters", "meter", and "m" are defined, and are all synonymous. Moreover, "cm" is defined, and given value "0.01*meters", and "in", "inch" and "inches" are defined, all with value "2.54*cm".</font>
+<a href="#176062">3.8</a>. This unit system is called BasicUnits; the units it defines can be examined by double clicking on its icon, or by invoking Configure, as shown in figure <img src="img/expressions5.gif" height="382" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="#176062">3.9</a>. In that figure, we see that "meters", "meter", and "m" are defined, and are all synonymous. Moreover, "cm" is defined, and given value "0.01*meters", and "in", "inch" and "inches" are defined, all with value "2.54*cm".
 </p>
 
 
 <p>
-  <a name="176135"> </a>In the example in figure <a href="#176062">3.7</a>, a constant with value "1.0 * meter" is fed into a Scale actor with scale factor equal to "2.0/ms". This produces a result with dimensions of length over time. If we feed this result directly into a Display actor, then it is displayed as "2000.0 meters/seconds", as shown in figure <img src="img/expressions11.gif" usemap="#expressions11_gif" height="264" width="600" align="center" border="0" hspace="0" vspace="0">
+  <a name="176135"> </a>In the example in figure <a href="#176062">3.8</a>, a constant with value "1.0 * meter" is fed into a Scale actor with scale factor equal to "2.0/ms". This produces a result with dimensions of length over time. If we feed this result directly into a Display actor, then it is displayed as "2000.0 meters/seconds", as shown in figure <img src="img/expressions11.gif" usemap="#expressions11_gif" height="301" width="600" align="center" border="0" hspace="0" vspace="0">
 <map name="expressions11_gif">
 
-<area href="#176062" shape=rect coords="1,238,598,263">
+<area href="#176062" shape=rect coords="1,275,598,300">
 </map>
-<a href="#176135">3.9</a>, top display. The canonical units for length are meters, and for time are seconds.</font>
+<a href="#176135">3.10</a>, top display. The canonical units for length are meters, and for time are seconds.
 </p>
 
 
 <p>
-  <a name="176145"> </a>In figure <a href="#176062">3.7</a>, we also take the result and feed it to the <i>InUnitsOf</i> actor, which performs divides its input by its argument, and checks to make sure that the result is unitless. This tells us that 2 meters/ms is equal to about 78,740 inches/second.
+  <a name="176145"> </a>In figure <a href="#176062">3.8</a>, we also take the result and feed it to the <i>InUnitsOf</i> actor, which performs divides its input by its argument, and checks to make sure that the result is unitless. This tells us that 2 meters/ms is equal to about 78,740 inches/second.
 </p>
 
 
 <p>
-  <a name="176157"> </a>The <i>InUnitsOf</i> actor can be used to ensure that numbers are interpreted correctly in a model, which can be effective in catching certain kinds of critical errors. For example, if in figure <a href="#176062">3.7</a> we had entered "seconds/inch" instead of "inches/second" in the InUnitsOf actor, we would have gotten the exception in figure <img src="img/expressions8.gif" height="134" width="600" align="center" border="0" hspace="0" vspace="0">
-<a href="#176157">3.10</a> instead of the execution in figure <a href="#176135">3.9</a>.</font>
+  <a name="176157"> </a>The <i>InUnitsOf</i> actor can be used to ensure that numbers are interpreted correctly in a model, which can be effective in catching certain kinds of critical errors. For example, if in figure <a href="#176062">3.8</a> we had entered "seconds/inch" instead of "inches/second" in the InUnitsOf actor, we would have gotten the exception in figure <img src="img/expressions8.gif" height="149" width="600" align="center" border="0" hspace="0" vspace="0">
+<a href="#176157">3.11</a> instead of the execution in figure <a href="#176135">3.10</a>.
 </p>
 
 
@@ -1248,7 +1269,7 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
 <a name="195083"> </a>
 
 <table border="1" cellpadding="5" cellspacing="0">
-  <caption><b><i><a name="194565"> </a><font face="Times New Roman">TABLE 4:  Trigonometric functions.</font></i></b></caption>
+  <caption><b><i><a name="194565"> </a><font face="Times New Roman">TABLE 4:  Trigonometric functions.</i></b></caption>
   <tr align="center" bgcolor="#CCCCCC">
     <th><a name="194573"> </a>function</th>
     <th><a name="194575"> </a>argument type(s)</th>
@@ -1257,24 +1278,24 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="194582"> </a>acos</td>
-    <td><a name="194584"> </a><i>double</i> in the range[-1.0, 1.0] or</font><a name="194585"> </a>complex</td>
-    <td><a name="194587"> </a><i>double</i> in the range[0.0, pi] or NaN if out of range or</font><a name="194588"> </a><i>complex</i></td>
+    <td><a name="194584"> </a><i>double</i> in the range[-1.0, 1.0] or<a name="194585"> </a>complex</td>
+    <td><a name="194587"> </a><i>double</i> in the range[0.0, pi] or NaN if out of range or<a name="194588"> </a><i>complex</i></td>
     <td><a name="194590"> </a>arc cosine<a name="194594"> </a><i>complex</i> case: <img src="img/expressions23.gif" height="17" width="173" border="0" hspace="0" vspace="0">
-</font></font></td>
+</td>
   </tr>
   <tr>
     <td><a name="194597"> </a>asin</td>
-    <td><a name="194599"> </a><i>double</i> in the range[-1.0, 1.0] or</font><a name="194600"> </a><i>complex</i></td>
-    <td><a name="194602"> </a><i>double</i> in the range[-pi/2, pi/2] or NaN if out of range</font><a name="194603"> </a>or <i>complex</i></td>
+    <td><a name="194599"> </a><i>double</i> in the range[-1.0, 1.0] or<a name="194600"> </a><i>complex</i></td>
+    <td><a name="194602"> </a><i>double</i> in the range[-pi/2, pi/2] or NaN if out of range<a name="194603"> </a>or <i>complex</i></td>
     <td><a name="194605"> </a>arc sine<a name="194609"> </a><i>complex</i> case: <img src="img/expressions25.gif" height="17" width="172" border="0" hspace="0" vspace="0">
-</font></font></td>
+</td>
   </tr>
   <tr>
     <td><a name="194612"> </a>atan</td>
-    <td><a name="194614"> </a>double or</font></font><a name="194615"> </a>complex</td>
-    <td><a name="194617"> </a><i>double</i> in the range [-pi/2, pi/2]</font><a name="194618"> </a>or <i>complex</i></td>
+    <td><a name="194614"> </a>double or<a name="194615"> </a>complex</td>
+    <td><a name="194617"> </a><i>double</i> in the range [-pi/2, pi/2]<a name="194618"> </a>or <i>complex</i></td>
     <td><a name="194620"> </a>arc tangent<a name="194624"> </a><i>complex</i> case: <img src="img/expressions27.gif" height="34" width="121" border="0" hspace="0" vspace="0">
-</font></font></td>
+</td>
   </tr>
   <tr>
     <td><a name="194627"> </a>atan2</td>
@@ -1284,72 +1305,72 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="194636"> </a>acosh</td>
-    <td><a name="194638"> </a>double greater than 1 or </font>complex</td>
-    <td><a name="194640"> </a>double or</font></font><a name="194641"> </a><i>complex</i></td>
+    <td><a name="194638"> </a>double greater than 1 or complex</td>
+    <td><a name="194640"> </a>double or<a name="194641"> </a><i>complex</i></td>
     <td><a name="194643"> </a>hyperbolic arc cosine, defined for both <i>double</i> and <i>complex</i> case by: <img src="img/expressions29.gif" height="17" width="166" border="0" hspace="0" vspace="0">
-</font></font></td>
+</td>
   </tr>
   <tr>
     <td><a name="194649"> </a>asinh</td>
-    <td><a name="194651"> </a>double or</font></font><a name="194652"> </a><i>complex</i></td>
-    <td><a name="194654"> </a>double or</font></font><a name="194655"> </a><i>complex</i></td>
+    <td><a name="194651"> </a>double or<a name="194652"> </a><i>complex</i></td>
+    <td><a name="194654"> </a>double or<a name="194655"> </a><i>complex</i></td>
     <td><a name="194657"> </a>hyperbolic arc sine<a name="194661"> </a><i>complex</i> case: <img src="img/expressions31.gif" height="22" width="164" border="0" hspace="0" vspace="0">
-</font></font></td>
+</td>
   </tr>
   <tr>
     <td><a name="194664"> </a>cos</td>
-    <td><a name="194666"> </a>double or</font></font><a name="194667"> </a><i>complex</i></td>
-    <td><a name="194672"> </a>double in the range <img src="img/expressions32.gif" height="16" width="38" border="0" hspace="0" vspace="0">
-, or</font></font><a name="194673"> </a><i>complex</i></font></td>
-    <td><a name="194675"> </a>cosine<a name="194679"> </a><i>complex</i> case: <img src="img/expressions33.gif" height="30" width="159" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="194666"> </a>double or<a name="194667"> </a><i>complex</i></td>
+    <td><a name="194672"> </a>double in the range <img src="img/expressions33.gif" height="16" width="38" border="0" hspace="0" vspace="0">
+, or<a name="194673"> </a><i>complex</i></td>
+    <td><a name="194675"> </a>cosine<a name="194679"> </a><i>complex</i> case: <img src="img/expressions34.gif" height="30" width="159" border="0" hspace="0" vspace="0">
+</td>
   </tr>
   <tr>
     <td><a name="194682"> </a>cosh</td>
-    <td><a name="194684"> </a>double or</font></font><a name="194685"> </a><i>complex</i></td>
-    <td><a name="194687"> </a>double or</font></font><a name="194688"> </a><i>complex</i></td>
-    <td><a name="194690"> </a>hyperbolic cosine, defined for <i>double</i> or <i>complex</i> by: <img src="img/expressions34.gif" height="30" width="157" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="194684"> </a>double or<a name="194685"> </a><i>complex</i></td>
+    <td><a name="194687"> </a>double or<a name="194688"> </a><i>complex</i></td>
+    <td><a name="194690"> </a>hyperbolic cosine, defined for <i>double</i> or <i>complex</i> by: <img src="img/expressions35.gif" height="30" width="157" border="0" hspace="0" vspace="0">
+</td>
   </tr>
   <tr>
     <td><a name="194696"> </a>sin</td>
-    <td><a name="194698"> </a>double or</font></font><a name="194699"> </a><i>complex</i></td>
-    <td><a name="194701"> </a>double or</font></font><a name="194702"> </a><i>complex</i></td>
-    <td><a name="194704"> </a>sine function<a name="194708"> </a><i>complex</i> case: <img src="img/expressions35.gif" height="30" width="156" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="194698"> </a>double or<a name="194699"> </a><i>complex</i></td>
+    <td><a name="194701"> </a>double or<a name="194702"> </a><i>complex</i></td>
+    <td><a name="194704"> </a>sine function<a name="194708"> </a><i>complex</i> case: <img src="img/expressions36.gif" height="30" width="156" border="0" hspace="0" vspace="0">
+</td>
   </tr>
   <tr>
     <td><a name="194711"> </a>sinh</td>
-    <td><a name="194713"> </a>double or</font></font><a name="194714"> </a><i>complex</i></td>
-    <td><a name="194716"> </a>double or</font></font><a name="194717"> </a><i>complex</i></td>
-    <td><a name="194719"> </a>hyperbolic sine, defined for <i>double</i> or <i>complex</i> by: <img src="img/expressions36.gif" height="30" width="157" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="194713"> </a>double or<a name="194714"> </a><i>complex</i></td>
+    <td><a name="194716"> </a>double or<a name="194717"> </a><i>complex</i></td>
+    <td><a name="194719"> </a>hyperbolic sine, defined for <i>double</i> or <i>complex</i> by: <img src="img/expressions37.gif" height="30" width="157" border="0" hspace="0" vspace="0">
+</td>
   </tr>
   <tr>
     <td><a name="194725"> </a>tan</td>
-    <td><a name="194727"> </a>double or</font></font><a name="194728"> </a><i>complex</i></td>
-    <td><a name="194730"> </a>double or</font></font><a name="194731"> </a><i>complex</i></td>
-    <td><a name="194733"> </a>tangent function, defined for <i>double</i> or <i>complex</i> by: <img src="img/expressions37.gif" height="30" width="86" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="194727"> </a>double or<a name="194728"> </a><i>complex</i></td>
+    <td><a name="194730"> </a>double or<a name="194731"> </a><i>complex</i></td>
+    <td><a name="194733"> </a>tangent function, defined for <i>double</i> or <i>complex</i> by: <img src="img/expressions38.gif" height="30" width="86" border="0" hspace="0" vspace="0">
+</td>
   </tr>
   <tr>
     <td><a name="194739"> </a>tanh</td>
-    <td><a name="194741"> </a>double or</font></font><a name="194742"> </a><i>complex</i></td>
-    <td><a name="194744"> </a>double or</font></font><a name="194745"> </a><i>complex</i></td>
-    <td><a name="194747"> </a>hyperbolic tangent, defined for <i>double</i> or <i>complex</i> by: <img src="img/expressions38.gif" height="30" width="98" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="194741"> </a>double or<a name="194742"> </a><i>complex</i></td>
+    <td><a name="194744"> </a>double or<a name="194745"> </a><i>complex</i></td>
+    <td><a name="194747"> </a>hyperbolic tangent, defined for <i>double</i> or <i>complex</i> by: <img src="img/expressions39.gif" height="30" width="98" border="0" hspace="0" vspace="0">
+</td>
   </tr>
 </table>
 
 
 
-<br></font>
+<br>
 
 
 <a name="195076"> </a>A.2   Basic Mathematical Functions
 
 <table border="1" cellpadding="5" cellspacing="0">
-  <caption><b><i><a name="194754"> </a><font face="Times New Roman">TABLE 5:  Basic mathematical functions</font></i></b></caption>
+  <caption><b><i><a name="194754"> </a><font face="Times New Roman">TABLE 5:  Basic mathematical functions</i></b></caption>
   <tr align="center" bgcolor="#CCCCCC">
     <th><a name="194762"> </a>function</th>
     <th><a name="194764"> </a>argument type(s)</th>
@@ -1359,16 +1380,16 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   <tr>
     <td><a name="194771"> </a>abs</td>
     <td><a name="194773"> </a><i>double</i> or <i>int</i> or <i>long</i> or <i>complex</i></td>
-    <td><a name="194775"> </a><i>double</i> or <i>int</i> or <i>long</i></font><a name="194776"> </a>(<i>complex</i> returns double)</td>
-    <td><a name="194778"> </a>absolute value<a name="194782"> </a>complex case: <img src="img/expressions39.gif" height="23" width="150" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="194775"> </a><i>double</i> or <i>int</i> or <i>long</i><a name="194776"> </a>(<i>complex</i> returns double)</td>
+    <td><a name="194778"> </a>absolute value<a name="194782"> </a>complex case: <img src="img/expressions40.gif" height="23" width="150" border="0" hspace="0" vspace="0">
+</td>
   </tr>
   <tr>
     <td><a name="194785"> </a>angle</td>
     <td><a name="194787"> </a>complex</td>
     <td><a name="194789"> </a><i>double</i> in the range [-pi, pi]</td>
-    <td><a name="194794"> </a>angle or argument of the complex number: <img src="img/expressions42.gif" height="16" width="17" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="194794"> </a>angle or argument of the complex number: <img src="img/expressions43.gif" height="16" width="17" border="0" hspace="0" vspace="0">
+</td>
   </tr>
   <tr>
     <td><a name="194797"> </a>ceil</td>
@@ -1390,10 +1411,10 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="194824"> </a>exp</td>
-    <td><a name="194826"> </a><i>double</i> or</font><a name="194827"> </a>complex</td>
+    <td><a name="194826"> </a><i>double</i> or<a name="194827"> </a>complex</td>
     <td><a name="194829"> </a><i>double</i> in the range[0.0, infinity] or complex</td>
-    <td><a name="194831"> </a>exponential function (e^argument)<a name="194835"> </a>complex case: <img src="img/expressions45.gif" height="20" width="153" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="194831"> </a>exponential function (e^argument)<a name="194835"> </a>complex case: <img src="img/expressions46.gif" height="20" width="153" border="0" hspace="0" vspace="0">
+</td>
   </tr>
   <tr>
     <td><a name="194838"> </a>floor</td>
@@ -1403,9 +1424,9 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="194847"> </a>gaussian</td>
-    <td><a name="194849"> </a><i>double</i>, <i>double</i> or</font><a name="194850"> </a><i>double</i>, <i>double</i>, <i>int</i>, or</font><a name="194851"> </a><i>double</i>, <i>double</i>, <i>int</i>, <i>int</i></td>
-    <td><a name="194853"> </a><i>double</i> or</font><a name="194854"> </a>{<i>double</i>} or</font><a name="194855"> </a>[<i>double</i>]</td>
-    <td><a name="194857"> </a>one or more Gaussian random variables with the specified mean and standard deviation (see <a href="#192134">page 89</a>).</td>
+    <td><a name="194849"> </a><i>double</i>, <i>double</i> or<a name="194850"> </a><i>double</i>, <i>double</i>, <i>int</i>, or<a name="194851"> </a><i>double</i>, <i>double</i>, <i>int</i>, <i>int</i></td>
+    <td><a name="194853"> </a><i>double</i> or<a name="194854"> </a>{<i>double</i>} or<a name="194855"> </a>[<i>double</i>]</td>
+    <td><a name="194857"> </a>one or more Gaussian random variables with the specified mean and standard deviation.</td>
   </tr>
   <tr>
     <td><a name="194863"> </a>imag</td>
@@ -1427,10 +1448,10 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="194890"> </a>log</td>
-    <td><a name="194892"> </a><i>double</i> or</font><a name="194893"> </a>complex</td>
-    <td><a name="194895"> </a><i>double</i> or</font><a name="194896"> </a>complex</td>
-    <td><a name="194898"> </a>natural logarithm<a name="194902"> </a>complex case: <img src="img/expressions51.gif" height="16" width="168" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="194892"> </a><i>double</i> or<a name="194893"> </a>complex</td>
+    <td><a name="194895"> </a><i>double</i> or<a name="194896"> </a>complex</td>
+    <td><a name="194898"> </a>natural logarithm<a name="194902"> </a>complex case: <img src="img/expressions52.gif" height="16" width="168" border="0" hspace="0" vspace="0">
+</td>
   </tr>
   <tr>
     <td><a name="194905"> </a>log10</td>
@@ -1446,14 +1467,14 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="194923"> </a>max</td>
-    <td><a name="194925"> </a><i>double</i>, <i>double</i> or</font><a name="194926"> </a><i>int</i>, <i>int</i> or</font><a name="194927"> </a><i>long</i>, <i>long </i>or</font><a name="194928"> </a><i>unsignedByte, unsignedByte</i> or</font><a name="194929"> </a>{<i>double</i>} or</font><a name="194930"> </a>{<i>int</i>} or</font><a name="194931"> </a>{<i>long</i>} or</font><a name="194932"> </a>{<i>unsignedByte</i>}</td>
-    <td><a name="194934"> </a><i>double</i> or</font><a name="194935"> </a><i>int</i> or</font><a name="194936"> </a>long or</font></font><a name="194937"> </a>unsignedByte</td>
+    <td><a name="194925"> </a><i>double</i>, <i>double</i> or<a name="194926"> </a><i>int</i>, <i>int</i> or<a name="194927"> </a><i>long</i>, <i>long </i>or<a name="194928"> </a><i>unsignedByte, unsignedByte</i> or<a name="194929"> </a>{<i>double</i>} or<a name="194930"> </a>{<i>int</i>} or<a name="194931"> </a>{<i>long</i>} or<a name="194932"> </a>{<i>unsignedByte</i>}</td>
+    <td><a name="194934"> </a><i>double</i> or<a name="194935"> </a><i>int</i> or<a name="194936"> </a>long or<a name="194937"> </a>unsignedByte</td>
     <td><a name="194939"> </a>maximum</td>
   </tr>
   <tr>
     <td><a name="194942"> </a>min</td>
-    <td><a name="194944"> </a><i>double</i>, <i>double</i> or</font><a name="194945"> </a><i>int</i>, <i>int</i> or</font><a name="194946"> </a><i>long</i>, <i>long </i>or</font><a name="194947"> </a><i>unsignedByte, unsignedByte</i> or</font><a name="194948"> </a>{<i>double</i>} or</font><a name="194949"> </a>{<i>int</i>} or</font><a name="194950"> </a>{<i>long</i>} or</font><a name="194951"> </a>{<i>unsignedByte</i>}</td>
-    <td><a name="194953"> </a><i>double</i> or</font><a name="194954"> </a><i>int</i> or</font><a name="194955"> </a>long or</font></font><a name="194956"> </a>unsignedByte</td>
+    <td><a name="194944"> </a><i>double</i>, <i>double</i> or<a name="194945"> </a><i>int</i>, <i>int</i> or<a name="194946"> </a><i>long</i>, <i>long </i>or<a name="194947"> </a><i>unsignedByte, unsignedByte</i> or<a name="194948"> </a>{<i>double</i>} or<a name="194949"> </a>{<i>int</i>} or<a name="194950"> </a>{<i>long</i>} or<a name="194951"> </a>{<i>unsignedByte</i>}</td>
+    <td><a name="194953"> </a><i>double</i> or<a name="194954"> </a><i>int</i> or<a name="194955"> </a>long or<a name="194956"> </a>unsignedByte</td>
     <td><a name="194958"> </a>minimum</td>
   </tr>
   <tr>
@@ -1464,15 +1485,15 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="194970"> </a>pow</td>
-    <td><a name="194972"> </a><i>double</i>, <i>double</i> or</font><a name="194973"> </a><i>complex</i>, <i>complex</i></td>
-    <td><a name="194975"> </a>double or</font><a name="194976"> </a>complex</td>
+    <td><a name="194972"> </a><i>double</i>, <i>double</i> or<a name="194973"> </a><i>complex</i>, <i>complex</i></td>
+    <td><a name="194975"> </a>double or<a name="194976"> </a>complex</td>
     <td><a name="194978"> </a>first argument to the power of the second</td>
   </tr>
   <tr>
     <td><a name="194981"> </a>random</td>
-    <td><a name="194983"> </a>no arguments or</font><a name="194984"> </a><i>int</i> or</font><a name="194985"> </a><i>int, int</i></td>
-    <td><a name="194987"> </a>double or</font></font><a name="194988"> </a>{<i>double</i>} or</font><a name="194989"> </a>[<i>double</i>]</td>
-    <td><a name="194991"> </a>one or more random numbers between 0.0 and 1.0 (see <a href="#192134">page 89</a>)</td>
+    <td><a name="194983"> </a>no arguments or<a name="194984"> </a><i>int</i> or<a name="194985"> </a><i>int, int</i></td>
+    <td><a name="194987"> </a>double or<a name="194988"> </a>{<i>double</i>} or<a name="194989"> </a>[<i>double</i>]</td>
+    <td><a name="194991"> </a>one or more random numbers between 0.0 and 1.0</td>
   </tr>
   <tr>
     <td><a name="194997"> </a>real</td>
@@ -1484,7 +1505,7 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
     <td><a name="195006"> </a>remainder</td>
     <td><a name="195008"> </a><i>double</i>, <i>double</i></td>
     <td><a name="195010"> </a>double</td>
-    <td><a name="195012"> </a>remainder after division, according to the IEEE 754 floating-point standard (see <a href="#186842">page 90</a>).</td>
+    <td><a name="195012"> </a>remainder after division, according to the IEEE 754 floating-point standard (see <a href="#186842">remainder()</a>).</td>
   </tr>
   <tr>
     <td><a name="195018"> </a>round</td>
@@ -1506,10 +1527,10 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="195045"> </a>sqrt</td>
-    <td><a name="195047"> </a><i>double</i> or</font><a name="195048"> </a>complex</td>
-    <td><a name="195050"> </a><i>double</i> or</font><a name="195051"> </a>complex</td>
-    <td><a name="195053"> </a>square root. If the argument is <i>double</i> with value less than zero, then the result is NaN.<a name="195057"> </a>complex case: <img src="img/expressions61.gif" height="34" width="187" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="195047"> </a><i>double</i> or<a name="195048"> </a>complex</td>
+    <td><a name="195050"> </a><i>double</i> or<a name="195051"> </a>complex</td>
+    <td><a name="195053"> </a>square root. If the argument is <i>double</i> with value less than zero, then the result is NaN.<a name="195057"> </a>complex case: <img src="img/expressions62.gif" height="34" width="187" border="0" hspace="0" vspace="0">
+</td>
   </tr>
   <tr>
     <td><a name="195060"> </a>toDegrees</td>
@@ -1527,7 +1548,7 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
 
 
 
-<br></font>
+<br>
 
 
 <a name="194197"> </a>A.3   Matrix, Array, and Record Functions.
@@ -1555,19 +1576,19 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   <tr>
     <td><a name="195126"> </a>createSequence</td>
     <td><a name="195128"> </a><i>type, type, </i>int</td>
-    <td><a name="195130"> </a>{</font>type}</font></td>
+    <td><a name="195130"> </a>{type}</td>
     <td><a name="195132"> </a>Create an array with values starting with the first argument, incremented by the second argument, of length given by the third argument.</td>
   </tr>
   <tr>
     <td><a name="195135"> </a>crop</td>
-    <td><a name="195137"> </a>[<i>int</i>], <i>int</i>, <i>int</i>, <i>int</i>, <i>int</i> or</font><a name="195138"> </a>[<i>double</i>], <i>int</i>, <i>int</i>, <i>int</i>, <i>int</i> or</font><a name="195139"> </a>[<i>complex</i>], <i>int</i>, <i>int</i>, <i>int</i>, <i>int</i> or</font><a name="195140"> </a>[<i>long</i>], <i>int</i>, <i>int</i>, <i>int</i>, <i>int</i> or</td>
-    <td><a name="195142"> </a>[</font>int] or</font></font><a name="195143"> </a>[</font>double] or</font></font><a name="195144"> </a>[</font>complex] or</font></font><a name="195145"> </a>[</font>long] or</font></td>
+    <td><a name="195137"> </a>[<i>int</i>], <i>int</i>, <i>int</i>, <i>int</i>, <i>int</i> or<a name="195138"> </a>[<i>double</i>], <i>int</i>, <i>int</i>, <i>int</i>, <i>int</i> or<a name="195139"> </a>[<i>complex</i>], <i>int</i>, <i>int</i>, <i>int</i>, <i>int</i> or<a name="195140"> </a>[<i>long</i>], <i>int</i>, <i>int</i>, <i>int</i>, <i>int</i> or</td>
+    <td><a name="195142"> </a>[int] or<a name="195143"> </a>[double] or <a name="195144"> </a>[complex] or <a name="195145"> </a>[long] or </td>
     <td><a name="195147"> </a>Given a matrix of any <i>type</i>, return a submatrix starting at the specified row and column with the specified number of rows and columns.</td>
   </tr>
   <tr>
     <td><a name="195150"> </a>determinant</td>
-    <td><a name="195152"> </a>[<i>double</i>] or </font><a name="195153"> </a>[<i>complex</i>]</td>
-    <td><a name="195155"> </a><i>double</i> or</font><a name="195156"> </a>complex</td>
+    <td><a name="195152"> </a>[<i>double</i>] or <a name="195153"> </a>[<i>complex</i>]</td>
+    <td><a name="195155"> </a><i>double</i> or <a name="195156"> </a>complex</td>
     <td><a name="195158"> </a>Return the determinant of the specified matrix.</td>
   </tr>
   <tr>
@@ -1587,7 +1608,7 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
     <td><a name="195181"> </a>int</td>
     <td><a name="195183"> </a>[<i>double</i>]</td>
     <td><a name="195185"> </a>Return a square Hilbert matrix, where <img src="img/expressions30.gif" height="19" width="94" border="0" hspace="0" vspace="0">
-.</font><a name="195186"> </a>A Hilbert matrix is nearly, but not quite singular.</font></td>
+.<a name="195186"> </a>A Hilbert matrix is nearly, but not quite singular.</td>
   </tr>
   <tr>
     <td><a name="195189"> </a>identityMatrixComplex</td>
@@ -1621,8 +1642,8 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="195234"> </a>inverse</td>
-    <td><a name="195236"> </a>[<i>double</i>] or </font><a name="195237"> </a>[<i>complex</i>]</td>
-    <td><a name="195239"> </a>[<i>double</i>] or</font><a name="195240"> </a>[<i>complex</i>]</td>
+    <td><a name="195236"> </a>[<i>double</i>] or <a name="195237"> </a>[<i>complex</i>]</td>
+    <td><a name="195239"> </a>[<i>double</i>] or <a name="195240"> </a>[<i>complex</i>]</td>
     <td><a name="195242"> </a>Return the inverse of the specified matrix, or throw an exception if it is singular.</td>
   </tr>
   <tr>
@@ -1645,26 +1666,26 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="195272"> </a>orthogonalizeColumns</td>
-    <td><a name="195274"> </a>[<i>double</i>] or </font><a name="195275"> </a>[<i>complex</i>]</td>
-    <td><a name="195277"> </a>[<i>double</i>] or </font><a name="195278"> </a>[<i>complex</i>]</td>
+    <td><a name="195274"> </a>[<i>double</i>] or <a name="195275"> </a>[<i>complex</i>]</td>
+    <td><a name="195277"> </a>[<i>double</i>] or <a name="195278"> </a>[<i>complex</i>]</td>
     <td><a name="195280"> </a>Return a similar matrix with orthogonal columns.</td>
   </tr>
   <tr>
     <td><a name="195283"> </a>orthogonalizeRows</td>
-    <td><a name="195285"> </a>[<i>double</i>] or</font><a name="195286"> </a>[<i>complex</i>]</td>
-    <td><a name="195288"> </a>[<i>double</i>] or</font><a name="195289"> </a>[<i>complex</i>]</td>
+    <td><a name="195285"> </a>[<i>double</i>] or <a name="195286"> </a>[<i>complex</i>]</td>
+    <td><a name="195288"> </a>[<i>double</i>] or <a name="195289"> </a>[<i>complex</i>]</td>
     <td><a name="195291"> </a>Return a similar matrix with orthogonal rows.</td>
   </tr>
   <tr>
     <td><a name="195294"> </a>orthonormalizeColumns</td>
-    <td><a name="195296"> </a>[<i>double</i>] or</font><a name="195297"> </a>[<i>complex</i>]</td>
-    <td><a name="195299"> </a>[<i>double</i>] or</font><a name="195300"> </a>[<i>complex</i>]</td>
+    <td><a name="195296"> </a>[<i>double</i>] or <a name="195297"> </a>[<i>complex</i>]</td>
+    <td><a name="195299"> </a>[<i>double</i>] or <a name="195300"> </a>[<i>complex</i>]</td>
     <td><a name="195302"> </a>Return a similar matrix with orthonormal columns.</td>
   </tr>
   <tr>
     <td><a name="195305"> </a>orthonormalizeRows</td>
-    <td><a name="195307"> </a>[<i>double</i>] or</font><a name="195308"> </a>[<i>complex</i>]</td>
-    <td><a name="195310"> </a>[<i>double</i>] or</font><a name="195311"> </a>[<i>complex</i>]</td>
+    <td><a name="195307"> </a>[<i>double</i>] or <a name="195308"> </a>[<i>complex</i>]</td>
+    <td><a name="195310"> </a>[<i>double</i>] or <a name="195311"> </a>[<i>complex</i>]</td>
     <td><a name="195313"> </a>Return a similar matrix with orthonormal rows.</td>
   </tr>
   <tr>
@@ -1674,8 +1695,26 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
     <td><a name="195322"> </a>Create an array by repeating the specified token the specified number of times.</td>
   </tr>
   <tr>
+    <td><a name="198274"> </a>sort</td>
+    <td><a name="198276"> </a>{<i>string</i>}or <a name="198277"> </a>{<i>realScalar</i>}</td>
+    <td><a name="198279"> </a>{<i>string</i>} or <a name="198280"> </a>{<i>realScalar</i>}</td>
+    <td><a name="198282"> </a>Return the specified array, but sorted in ascending order. <i>realScalar</i> is any scalar token except <i>complex</i>.</td>
+  </tr>
+  <tr>
+    <td><a name="198263"> </a>sortAscending</td>
+    <td><a name="198265"> </a>{<i>string</i>}or <a name="198266"> </a>{<i>realScalar</i>}</td>
+    <td><a name="198268"> </a>{<i>string</i>} or <a name="198269"> </a>{<i>realScalar</i>}</td>
+    <td><a name="198271"> </a>Return the specified array, but sorted in ascending order. <i>realScalar</i> is any scalar token except <i>complex</i>.</td>
+  </tr>
+  <tr>
+    <td><a name="198252"> </a>sortDescending</td>
+    <td><a name="198254"> </a>{<i>string</i>}or <a name="198255"> </a>{<i>realScalar</i>}</td>
+    <td><a name="198257"> </a>{<i>string</i>} or <a name="198258"> </a>{<i>realScalar</i>}</td>
+    <td><a name="198260"> </a>Return the specified array, but sorted in descending order. <i>realScalar</i> is any scalar token except <i>complex</i>.</td>
+  </tr>
+  <tr>
     <td><a name="195325"> </a>sum</td>
-    <td><a name="195327"> </a>{<i>type</i>} or</font><a name="195328"> </a>[<i>type</i>]</td>
+    <td><a name="195327"> </a>{<i>type</i>} or <a name="195328"> </a>[<i>type</i>]</td>
     <td><a name="195330"> </a>type</td>
     <td><a name="195332"> </a>Sum the elements of the specified array or matrix. This throws an exception if the elements do not support addition or if the array is empty (an empty matrix will return zero).</td>
   </tr>
@@ -1693,25 +1732,25 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="195353"> </a>zeroMatrixComplex</td>
-    <td><a name="195355"> </a>int, </font>int</td>
+    <td><a name="195355"> </a>int, int</td>
     <td><a name="195357"> </a>[<i>complex</i>]</td>
     <td><a name="195359"> </a>Return a zero matrix with the specified number of rows and columns.</td>
   </tr>
   <tr>
     <td><a name="195362"> </a>zeroMatrixDouble</td>
-    <td><a name="195364"> </a>int, </font>int</td>
+    <td><a name="195364"> </a>int, int</td>
     <td><a name="195366"> </a>[<i>double</i>]</td>
     <td><a name="195368"> </a>Return a zero matrix with the specified number of rows and columns.</td>
   </tr>
   <tr>
     <td><a name="195371"> </a>zeroMatrixInt</td>
-    <td><a name="195373"> </a>int, </font>int</td>
+    <td><a name="195373"> </a>int, int</td>
     <td><a name="195375"> </a>[<i>int</i>]</td>
     <td><a name="195377"> </a>Return a zero matrix with the specified number of rows and columns.</td>
   </tr>
   <tr>
     <td><a name="195380"> </a>zeroMatrixLong</td>
-    <td><a name="195382"> </a>int, </font>int</td>
+    <td><a name="195382"> </a>int, int</td>
     <td><a name="195384"> </a>[<i>long</i>]</td>
     <td><a name="195386"> </a>Return a zero matrix with the specified number of rows and columns.</td>
   </tr>
@@ -1719,7 +1758,7 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
 
 
 
-<br></font>
+<br>
 
 
 <p>
@@ -1750,23 +1789,23 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
     <td><a name="195422"> </a>eval</td>
     <td><a name="195424"> </a>string</td>
     <td><a name="195426"> </a>any type</td>
-    <td><a name="195431"> </a>evaluate the specified expression (see <a href="#185006">page 89</a>).</td>
+    <td><a name="195431"> </a>evaluate the specified expression (see <a href="#185006">eval()</a>).</td>
   </tr>
   <tr>
     <td><a name="195434"> </a>parseInt</td>
-    <td><a name="195436"> </a>string or</font></font><a name="195437"> </a>string, </font>int</td>
+    <td><a name="195436"> </a>string or <a name="195437"> </a>string, int</td>
     <td><a name="195439"> </a>int</td>
     <td><a name="195441"> </a>return an <i>int</i> read from a <i>string</i>, using the given radix if a second argument is provided.</td>
   </tr>
   <tr>
     <td><a name="195444"> </a>parseLong</td>
-    <td><a name="195446"> </a>string or</font></font><a name="195447"> </a>string, </font>int</td>
+    <td><a name="195446"> </a>string or <a name="195447"> </a>string, int</td>
     <td><a name="195449"> </a>int</td>
     <td><a name="195451"> </a>return a <i>long</i> read from a <i>string</i>, using the given radix if a second argument is provided.</td>
   </tr>
   <tr>
     <td><a name="195454"> </a>toBinaryString</td>
-    <td><a name="195456"> </a>int or </font>long</td>
+    <td><a name="195456"> </a>int or long</td>
     <td><a name="195458"> </a>string</td>
     <td><a name="195460"> </a>return a binary representation of the argument</td>
   </tr>
@@ -1778,7 +1817,7 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="195472"> </a>toString</td>
-    <td><a name="195474"> </a><i>double</i> or</font><a name="195475"> </a><i>int</i> or</font><a name="195476"> </a><i>int</i>, <i>int</i> or</font><a name="195477"> </a><i>long</i> or</font><a name="195478"> </a><i>long</i>, <i>int</i></td>
+    <td><a name="195474"> </a><i>double</i> or <a name="195475"> </a><i>int</i> or <a name="195476"> </a><i>int</i>, <i>int</i> or <a name="195477"> </a><i>long</i> or <a name="195478"> </a><i>long</i>, <i>int</i></td>
     <td><a name="195480"> </a>string</td>
     <td><a name="195482"> </a>return a string representation of the argument, using the given radix if a second argument is provided.</td>
   </tr>
@@ -1786,13 +1825,13 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
     <td><a name="195485"> </a>traceEvaluation</td>
     <td><a name="195487"> </a>string</td>
     <td><a name="195489"> </a>string</td>
-    <td><a name="195491"> </a>evaluate the specified expression and report details on how it was evaluated (see <a href="#185006">page 89</a>).</td>
+    <td><a name="195491"> </a>evaluate the specified expression and report details on how it was evaluated (see <a href="#185006">eval()</a>).</td>
   </tr>
 </table>
 
 
 
-</font>
+
 </p>
 
 
@@ -1808,73 +1847,73 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="195519"> </a>convolve</td>
-    <td><a name="195521"> </a>{</font>double}</font>, {</font>double} or</font></font><a name="195522"> </a>{</font>complex}, {</font>complex}</font></td>
-    <td><a name="195524"> </a>{<i>double</i>} or </font><a name="195525"> </a>{<i>complex</i>}</td>
+    <td><a name="195521"> </a>{double}, {double} or <a name="195522"> </a>{complex}, {complex}</td>
+    <td><a name="195524"> </a>{<i>double</i>} or <a name="195525"> </a>{<i>complex</i>}</td>
     <td><a name="195527"> </a>Convolve two arrays and return an array whose length is sum of the lengths of the two arguments minus one. Convolution of two arrays is the same as polynomial multiplication.</td>
   </tr>
   <tr>
     <td><a name="195531"> </a>DCT</td>
-    <td><a name="195533"> </a>{</font>double} or</font></font><a name="195534"> </a>{</font>double}, </font>int or</font></font><a name="195535"> </a>{</font>double}, </font>int, int</td>
-    <td><a name="195537"> </a>{</font>double}</font></td>
-    <td><a name="195539"> </a>Return the discrete cosine transform of the specified array, using the specified (optional) length and normalization strategy (see <a href="#192146">page 90</a>).</td>
+    <td><a name="195533"> </a>{double} or <a name="195534"> </a>{double}, int or <a name="195535"> </a>{double}, int, int</td>
+    <td><a name="195537"> </a>{double}</td>
+    <td><a name="195539"> </a>Return the discrete cosine transform of the specified array, using the specified (optional) length and normalization strategy (see <a href="#192146">DCT() and IDCT()</a>).</td>
   </tr>
   <tr>
     <td><a name="195545"> </a>downsample</td>
-    <td><a name="195547"> </a>{</font>double}, </font>int or</font></font><a name="195548"> </a>{</font>double}, </font>int, int</td>
-    <td><a name="195550"> </a>{</font>double}</font></td>
-    <td><a name="195555"> </a>Return a new array with every <img src="img/expressions46.gif" height="16" width="9" border="0" hspace="0" vspace="0">
--th element of the argument array, where <img src="img/expressions47.gif" height="16" width="9" border="0" hspace="0" vspace="0">
- is the second argument. If a third argument is given, then it must be between 0 and <img src="img/expressions48.gif" height="16" width="27" border="0" hspace="0" vspace="0">
-, and it specifies an offset into the array (by giving the index of the first output).</font></font></td>
+    <td><a name="195547"> </a>{double}, int or <a name="195548"> </a>{double}, int, int</td>
+    <td><a name="195550"> </a>{double}</td>
+    <td><a name="195555"> </a>Return a new array with every <img src="img/expressions47.gif" height="16" width="9" border="0" hspace="0" vspace="0">
+-th element of the argument array, where <img src="img/expressions48.gif" height="16" width="9" border="0" hspace="0" vspace="0">
+ is the second argument. If a third argument is given, then it must be between 0 and <img src="img/expressions49.gif" height="16" width="27" border="0" hspace="0" vspace="0">
+, and it specifies an offset into the array (by giving the index of the first output).</td>
   </tr>
   <tr>
     <td><a name="195564"> </a>FFT</td>
-    <td><a name="195566"> </a>{</font>double} or</font></font><a name="195567"> </a>{</font>complex} or</font></font><a name="195568"> </a>{</font>double}, </font>int</font><a name="195569"> </a>{</font>complex}, </font>int</td>
-    <td><a name="195571"> </a>{</font>complex}</font></td>
-    <td><a name="195574"> </a>Return the fast Fourier transform of the specified array. If the second argument is given with value <img src="img/expressions49.gif" height="16" width="9" border="0" hspace="0" vspace="0">
-, then the length of the transform is <img src="img/expressions50.gif" height="20" width="15" border="0" hspace="0" vspace="0">
-. Otherwise, the length is the next power of two greater than or equal to the length of the input array. If the input length does not match this length, then input is padded with zeros.</font></font></td>
+    <td><a name="195566"> </a>{double} or <a name="195567"> </a>{complex} or <a name="195568"> </a>{double}, int<a name="195569"> </a>{complex}, int</td>
+    <td><a name="195571"> </a>{complex}</td>
+    <td><a name="195574"> </a>Return the fast Fourier transform of the specified array. If the second argument is given with value <img src="img/expressions50.gif" height="16" width="9" border="0" hspace="0" vspace="0">
+, then the length of the transform is <img src="img/expressions51.gif" height="20" width="15" border="0" hspace="0" vspace="0">
+. Otherwise, the length is the next power of two greater than or equal to the length of the input array. If the input length does not match this length, then input is padded with zeros.</td>
   </tr>
   <tr>
     <td><a name="195583"> </a>generateBartlettWindow</td>
     <td><a name="195585"> </a>int</td>
     <td><a name="195587"> </a>{<i>double</i>}</td>
-    <td><a name="195591"> </a>Return a Bartlett (rectangular) window with the specified length. The end points have value 0.0, and if the length is odd, the center point has value 1.0. For length <i>M + </i>1, the formula is: <img src="img/expressions52.gif" height="85" width="179" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="195591"> </a>Return a Bartlett (rectangular) window with the specified length. The end points have value 0.0, and if the length is odd, the center point has value 1.0. For length <i>M + </i>1, the formula is: <img src="img/expressions53.gif" height="85" width="179" border="0" hspace="0" vspace="0">
+</td>
   </tr>
   <tr>
     <td><a name="195597"> </a>generateBlackmanWindow</td>
     <td><a name="195599"> </a>int</td>
     <td><a name="195601"> </a>{<i>double</i>}</td>
-    <td><a name="195604"> </a>Return a Blackman window with the specified length. For length <i>M + </i>1, the formula is: <img src="img/expressions56.gif" height="16" width="255" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="195604"> </a>Return a Blackman window with the specified length. For length <i>M + </i>1, the formula is: <img src="img/expressions57.gif" height="16" width="255" border="0" hspace="0" vspace="0">
+</td>
   </tr>
   <tr>
     <td><a name="195610"> </a>generateBlackmanHarrisWindow</td>
     <td><a name="195612"> </a>int</td>
     <td><a name="195614"> </a>{<i>double</i>}</td>
-    <td><a name="195616"> </a>Return a Blackman-Harris window with the specified length. For length <i>M + </i>1, the formula is: <img src="img/expressions57.gif" height="26" width="231" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="195616"> </a>Return a Blackman-Harris window with the specified length. For length <i>M + </i>1, the formula is: <img src="img/expressions58.gif" height="26" width="231" border="0" hspace="0" vspace="0">
+</td>
   </tr>
   <tr>
     <td><a name="195622"> </a>generateGaussianCurve</td>
     <td><a name="195624"> </a>double, double, int</td>
-    <td><a name="195626"> </a>{</font>double}</font></td>
+    <td><a name="195626"> </a>{double}</td>
     <td><a name="195628"> </a>Return a Gaussian curve with the specified standard deviation, extent, and length. The extent is a multiple of the standard deviation. For instance, to get 100 samples of a Gaussian curve with standard deviation 1.0 out to four standard deviations, use generateGaussianCurve(1.0, 4.0, 100).</td>
   </tr>
   <tr>
     <td><a name="195631"> </a>generateHammingWindow</td>
     <td><a name="195633"> </a>int</td>
     <td><a name="195635"> </a>{<i>double</i>}</td>
-    <td><a name="195638"> </a>Return a Hamming window with the specified length. For length <i>M + </i>1, the formula is: <img src="img/expressions58.gif" height="16" width="164" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="195638"> </a>Return a Hamming window with the specified length. For length <i>M + </i>1, the formula is: <img src="img/expressions59.gif" height="16" width="164" border="0" hspace="0" vspace="0">
+</td>
   </tr>
   <tr>
     <td><a name="195644"> </a>generateHanningWindow</td>
     <td><a name="195646"> </a>int</td>
     <td><a name="195648"> </a>{<i>double</i>}</td>
-    <td><a name="195651"> </a>Return a Hanning window with the specified length. For length <i>M + </i>1, the formula is: <img src="img/expressions59.gif" height="16" width="152" border="0" hspace="0" vspace="0">
-</font></font></td>
+    <td><a name="195651"> </a>Return a Hanning window with the specified length. For length <i>M + </i>1, the formula is: <img src="img/expressions60.gif" height="16" width="152" border="0" hspace="0" vspace="0">
+</td>
   </tr>
   <tr>
     <td><a name="195657"> </a>generatePolynomialCurve</td>
@@ -1886,8 +1925,8 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
     <td><a name="195666"> </a>generateRaisedCosinePulse</td>
     <td><a name="195668"> </a><i>double</i>, <i>double</i>, <i>int</i></td>
     <td><a name="195670"> </a>{<i>double</i>}</td>
-    <td><a name="195672"> </a>Return an array containing a symmetric raised-cosine pulse. This pulse is widely used in communication systems, and is called a "raised cosine pulse" because the magnitude its Fourier transform has a shape that ranges from rectangular (if the excess bandwidth is zero) to a cosine curved that has been raised to be non-negative (for excess bandwidth of 1.0). The elements of the returned array are samples of the function: <div align="center"><a name="195676"> </a><img src="img/expressions60.gif" height="35" width="163" border="0" hspace="0" vspace="0">
-,</font></div><a name="195677"> </a>where <i>x</i> is the excess bandwidth (the first argument) and <i>T</i> is the number of samples from the center of the pulse to the first zero crossing (the second argument). The samples are taken with a sampling interval of 1.0, and the returned array is symmetric and has a length equal to the third argument. With an excessBandwidth of 0.0, this pulse is a sinc pulse.</font></td>
+    <td><a name="195672"> </a>Return an array containing a symmetric raised-cosine pulse. This pulse is widely used in communication systems, and is called a "raised cosine pulse" because the magnitude its Fourier transform has a shape that ranges from rectangular (if the excess bandwidth is zero) to a cosine curved that has been raised to be non-negative (for excess bandwidth of 1.0). The elements of the returned array are samples of the function: <div align="center"><a name="195676"> </a><img src="img/expressions61.gif" height="35" width="163" border="0" hspace="0" vspace="0">
+,</div><a name="195677"> </a>where <i>x</i> is the excess bandwidth (the first argument) and <i>T</i> is the number of samples from the center of the pulse to the first zero crossing (the second argument). The samples are taken with a sampling interval of 1.0, and the returned array is symmetric and has a length equal to the third argument. With an excessBandwidth of 0.0, this pulse is a sinc pulse.</td>
   </tr>
   <tr>
     <td><a name="195680"> </a>generateRectangularWindow</td>
@@ -1897,17 +1936,17 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="195690"> </a>IDCT</td>
-    <td><a name="195692"> </a>{</font>double} or</font></font><a name="195693"> </a>{</font>double}, </font>int or</font></font><a name="195694"> </a>{</font>double}, </font>int, int</td>
-    <td><a name="195696"> </a>{</font>double}</font></td>
-    <td><a name="195698"> </a>Return the inverse discrete cosine transform of the specified array, using the specified (optional) length and normalization strategy (see <a href="#192146">page 90</a>).</td>
+    <td><a name="195692"> </a>{double} or <a name="195693"> </a>{double}, int or <a name="195694"> </a>{double}, int, int</td>
+    <td><a name="195696"> </a>{double}</td>
+    <td><a name="195698"> </a>Return the inverse discrete cosine transform of the specified array, using the specified (optional) length and normalization strategy (see <a href="#192146">DCT() and IDCT()</a>).</td>
   </tr>
   <tr>
     <td><a name="195704"> </a>IFFT</td>
-    <td><a name="195706"> </a>{</font>double} or</font></font><a name="195707"> </a>{</font>complex} or</font></font><a name="195708"> </a>{</font>double}, </font>int</font><a name="195709"> </a>{</font>complex}, </font>int</td>
-    <td><a name="195711"> </a>{</font>complex}</font></td>
+    <td><a name="195706"> </a>{double} or <a name="195707"> </a>{complex} or <a name="195708"> </a>{double}, int<a name="195709"> </a>{complex}, int</td>
+    <td><a name="195711"> </a>{complex}</td>
     <td><a name="195715"> </a>Return the inverse fast Fourier transform of the specified array. If the second argument is given with value <img src="img/expressions7.gif" height="16" width="9" border="0" hspace="0" vspace="0">
 , then the length of the transform is <img src="img/expressions9.gif" height="20" width="15" border="0" hspace="0" vspace="0">
-. Otherwise, the length is the next power of two greater than or equal to the length of the input array. If the input length does not match this length, then input is padded with zeros.</font></font></td>
+. Otherwise, the length is the next power of two greater than or equal to the length of the input array. If the input length does not match this length, then input is padded with zeros.</td>
   </tr>
   <tr>
     <td><a name="195724"> </a>nextPowerOfTwo</td>
@@ -1917,8 +1956,8 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="195733"> </a>poleZeroToFrequency</td>
-    <td><a name="195735"> </a>{</font>complex}, {</font>complex}, </font>complex, </font>int</td>
-    <td><a name="195737"> </a>{</font>complex}</font></td>
+    <td><a name="195735"> </a>{complex}, {complex}, complex, int</td>
+    <td><a name="195737"> </a>{complex}</td>
     <td><a name="195739"> </a>Given an array of pole locations, an array of zero locations, a gain term, and a size, return an array of the specified size representing the frequency response specified by these poles, zeros, and gain. This is calculated by walking around the unit circle and forming the product of the distances to the zeros, dividing by the product of the distances to the poles, and multiplying by the gain.</td>
   </tr>
   <tr>
@@ -1926,7 +1965,7 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
     <td><a name="195744"> </a>double</td>
     <td><a name="195746"> </a>double</td>
     <td><a name="195751"> </a>Return the sinc function, <img src="img/expressions12.gif" height="16" width="44" border="0" hspace="0" vspace="0">
-, where special care is taken to ensure that 1.0 is returned if the argument is 0.0.</font></font></td>
+, where special care is taken to ensure that 1.0 is returned if the argument is 0.0.</td>
   </tr>
   <tr>
     <td><a name="195754"> </a>toDecibels</td>
@@ -1934,7 +1973,7 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
     <td><a name="195758"> </a>double</td>
     <td><a name="195766"> </a>Return <img src="img/expressions13.gif" height="19" width="68" border="0" hspace="0" vspace="0">
 , where <img src="img/expressions15.gif" height="16" width="8" border="0" hspace="0" vspace="0">
- is the argument.</font></font></td>
+ is the argument.</td>
   </tr>
   <tr>
     <td><a name="195769"> </a>unwrap</td>
@@ -1944,7 +1983,7 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
  in magnitude, then the second value is modified by multiples of <img src="img/expressions18.gif" height="16" width="17" border="0" hspace="0" vspace="0">
  until the difference is less than or equal to <img src="img/expressions19.gif" height="16" width="10" border="0" hspace="0" vspace="0">
 . In addition, the first element is modified so that its difference from zero is less than or equal to <img src="img/expressions21.gif" height="16" width="10" border="0" hspace="0" vspace="0">
- in magnitude. </font></font></td>
+ in magnitude. </td>
   </tr>
   <tr>
     <td><a name="195790"> </a>upsample</td>
@@ -1954,13 +1993,13 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
  zeroes between each successive sample in the input array, where <img src="img/expressions24.gif" height="16" width="9" border="0" hspace="0" vspace="0">
  is the second argument. The returned array has length <img src="img/expressions26.gif" height="16" width="17" border="0" hspace="0" vspace="0">
 , where <i>L</i> is the length of the argument array. It is required that <img src="img/expressions28.gif" height="16" width="28" border="0" hspace="0" vspace="0">
-.</font></font></td>
+.</td>
   </tr>
 </table>
 
 
 
-<br></font>
+<br>
 
 
 <p>
@@ -1979,8 +2018,14 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
     <th><a name="195827"> </a>description</th>
   </tr>
   <tr>
+    <td><a name="198306"> </a>asURL</td>
+    <td><a name="198308"> </a>string</td>
+    <td><a name="198310"> </a>string</td>
+    <td><a name="198312"> </a>Return a URL representation of the argument.</td>
+  </tr>
+  <tr>
     <td><a name="195830"> </a>cast</td>
-    <td><a name="195832"> </a>type1, </font>type2</td>
+    <td><a name="195832"> </a>type1, type2</td>
     <td><a name="195834"> </a>type1</td>
     <td><a name="195836"> </a>Return the second argument converted to the type of the first, or throw an exception if the conversion is invalid.</td>
   </tr>
@@ -2004,13 +2049,13 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
   </tr>
   <tr>
     <td><a name="195866"> </a>iterate</td>
-    <td><a name="195868"> </a>function, </font>int, </font>type</td>
+    <td><a name="195868"> </a>function, int, type</td>
     <td><a name="195870"> </a>{<i>type</i>}</td>
     <td><a name="195872"> </a>Return an array that results from first applying the specified function to the third argument, then applying it to the result of that application, and repeating to get an array whose length is given by the second argument.</td>
   </tr>
   <tr>
     <td><a name="195875"> </a>map</td>
-    <td><a name="195877"> </a>function, {</font>type}</font></td>
+    <td><a name="195877"> </a>function, {type}</td>
     <td><a name="195879"> </a>{<i>type</i>}</td>
     <td><a name="195881"> </a>Return an array that results from applying the specified function to the elements of the specified array.</td>
   </tr>
@@ -2042,20 +2087,19 @@ quantize([ -.040609, -.001628, .17853 ], 10, 2) <a name="171816"> </a>
 
 
 
-<br></font>
+<br>
 
 
   
 <a name="175811"> </a><a href="#175578"><sup>1</sup></a>
 <a name="175811"> </a>The exceptions are parameters that are strictly string parameters, in which case the value of the parameter is the literal string, not the string interpreted as an expression, as for example the <i>function</i> parameter of the <i>TrigFunction</i> actor, which can take on only "sin," "cos," "tan", "asin", "acos", and "atan" as values.<br>
 
-<br></font>
+<br>
 
 
 <a name="190502"> </a><a href="#190441"><sup>2</sup></a>
 <a name="190502"> </a>Moreover, the set of available can easily be extended if you are writing Java code by registering another class that includes static methods (see the PtParser class in the ptolemy.data.expr package).<br>
 
-<br></font>
 
 </body>
 </html>
