@@ -108,7 +108,8 @@ do
 	}' $file
 
 	# Check that all commas have spaces
-	results=`egrep ',[^ ]' $file`
+	# A line that contains ", is ok
+	results=`egrep '[^"],[^ ]' $file`
 	if [ "x$results" != "x" ]; then
 	    echo "$file: comma without out trailing space:"
 	    echo "$results"
