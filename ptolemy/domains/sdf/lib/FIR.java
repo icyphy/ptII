@@ -259,7 +259,9 @@ public class FIR extends SDFTransformer {
         // Transfer _decimationValue inputs to _data[]
         for (int inC = 1; inC <= _decimationValue; inC++) {
             if (--_mostRecent < 0) _mostRecent = _data.length - 1;
-            _data[_mostRecent] = input.get(0);
+            // Note explicit type conversion, which is required to generate
+            // code.
+            _data[_mostRecent] = output.getType().convert(input.get(0));
         }
 
         // Interpolate once for each input consumed
