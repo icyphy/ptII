@@ -63,6 +63,7 @@ JSIMPLE_TESTS = \
 
 # Graphical Java demos that use Tcl.
 JGRAPHICAL_TESTS = \
+	BasicDemo.tcl
 	
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS) 
@@ -80,7 +81,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
 all: jclass
-	#@echo "To run all the demos, run 'make demo'"
+	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
