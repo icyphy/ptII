@@ -121,8 +121,8 @@ public class DoubleToFix extends Transformer {
                 throw new IllegalActionException(this,
                 "Invalid precision (not a 1 by 2 matrix).");
             }
-            _precision = new Precision(token.getElementAt(0,0),
-                    token.getElementAt(0,1));
+            _precision = new Precision(token.getElementAt(0, 0),
+                    token.getElementAt(0, 1));
         } else if (attribute == quantization) {
             String spec = quantization.getExpression();
             if (spec.equals("truncate")) {
