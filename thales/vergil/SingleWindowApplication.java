@@ -45,69 +45,69 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 public class SingleWindowApplication extends VergilApplication {
 
-        //Main Frame
-        public static SingleWindowHTMLViewer _mainFrame;
+    //Main Frame
+    public static SingleWindowHTMLViewer _mainFrame;
 
-        /**
-         * @param args
-         * @throws Exception
-         */
-        public SingleWindowApplication(String[] args) throws Exception {
-                super(args);
+    /**
+     * @param args
+     * @throws Exception
+     */
+    public SingleWindowApplication(String[] args) throws Exception {
+        super(args);
+    }
+
+    public static void main(String[] args) {
+
+        try {
+            new SingleWindowApplication(args);
+        } catch (Exception ex) {
+            MessageHandler.error("Command failed", ex);
+            System.exit(0);
         }
 
-        public static void main(String[] args) {
+        // If the -test arg was set, then exit after 2 seconds.
+        if (_test) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+            }
+            System.exit(0);
+        }
+    }
 
-                try {
-                        new SingleWindowApplication(args);
-                } catch (Exception ex) {
-                        MessageHandler.error("Command failed", ex);
-                        System.exit(0);
-                }
+    /* (non-Javadoc)
+     * @see ptolemy.actor.gui.MoMLApplication#_createDefaultConfiguration()
+     */
+    protected Configuration _createDefaultConfiguration() throws Exception {
+        return _readConfiguration(specToURL("thales/configs/singleWindow/SingleWindowConfiguration.xml"));
+    }
 
-                // If the -test arg was set, then exit after 2 seconds.
-                if (_test) {
-                        try {
-                                Thread.sleep(2000);
-                        } catch (InterruptedException e) {
-                        }
-                        System.exit(0);
-                }
+    /* (non-Javadoc)
+     * @see ptolemy.actor.gui.MoMLApplication#_createEmptyConfiguration()
+     */
+    protected Configuration _createEmptyConfiguration() throws Exception {
+        Configuration configuration = _createDefaultConfiguration();
+
+        try {
+            UIManager.setLookAndFeel(System.getProperty("swing.defaultlaf"));
+        } catch (Exception e) {
+            // Ignore exceptions, which only result in the wrong look and feel.
         }
 
-        /* (non-Javadoc)
-         * @see ptolemy.actor.gui.MoMLApplication#_createDefaultConfiguration()
-         */
-        protected Configuration _createDefaultConfiguration() throws Exception {
-                return _readConfiguration(specToURL("thales/configs/singleWindow/SingleWindowConfiguration.xml"));
+        // FIXME: This code is Dog slow for some reason.
+        URL inurl = specToURL("thales/configs/singleWindow/SingleWindowWelcomeWindow.xml");
+        _parser.reset();
+        _parser.setContext(configuration);
+        _parser.parse(inurl, inurl.openStream());
+        Effigy doc = (Effigy) configuration.getEntity("directory.doc");
+        URL idurl = specToURL("ptolemy/configs/full/intro.htm");
+        doc.identifier.setExpression(idurl.toExternalForm());
+
+        if (_mainFrame != null) {
+            _mainFrame.setConfiguration(configuration);
         }
 
-        /* (non-Javadoc)
-         * @see ptolemy.actor.gui.MoMLApplication#_createEmptyConfiguration()
-         */
-        protected Configuration _createEmptyConfiguration() throws Exception {
-                Configuration configuration = _createDefaultConfiguration();
-
-                try {
-                        UIManager.setLookAndFeel(System.getProperty("swing.defaultlaf"));
-                } catch (Exception e) {
-                        // Ignore exceptions, which only result in the wrong look and feel.
-                }
-
-                // FIXME: This code is Dog slow for some reason.
-                URL inurl = specToURL("thales/configs/singleWindow/SingleWindowWelcomeWindow.xml");
-                _parser.reset();
-                _parser.setContext(configuration);
-                _parser.parse(inurl, inurl.openStream());
-                Effigy doc = (Effigy) configuration.getEntity("directory.doc");
-                URL idurl = specToURL("ptolemy/configs/full/intro.htm");
-                doc.identifier.setExpression(idurl.toExternalForm());
-
-                if (_mainFrame != null) {
-                        _mainFrame.setConfiguration(configuration);
-                }
-
-                return configuration;
-        }
+        return configuration;
+    }
 
 }

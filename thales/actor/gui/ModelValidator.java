@@ -56,98 +56,98 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 public class ModelValidator {
 
-        private DOMParser _parser;
-        private URL _fileURL;
+    private DOMParser _parser;
+    private URL _fileURL;
 
-        public void filter(URL fileURL) {
-                if (fileURL != null) {
-                        String externalForm = fileURL.toExternalForm();
-                        if (externalForm.endsWith(".moml")
-                                || externalForm.endsWith(".xml")) {
-                                _fileURL = fileURL;
+    public void filter(URL fileURL) {
+        if (fileURL != null) {
+            String externalForm = fileURL.toExternalForm();
+            if (externalForm.endsWith(".moml")
+                    || externalForm.endsWith(".xml")) {
+                _fileURL = fileURL;
 
-                                if (_parser == null) {
-                                        _parser = new DOMParser();
-                                } else {
-                                        _parser.reset();
-                                }
-
-                                try {
-                                        _parser.setEntityResolver(new MyEntityResolver());
-                                        _parser.parse(new InputSource(_fileURL.openStream()));
-                                } catch (SAXException e) {
-                                        e.printStackTrace();
-                                } catch (IOException e) {
-                                        e.printStackTrace();
-                                }
-
-                                if (_parser.getDocument() != null) {
-                                        filter();
-                                }
-                        }
+                if (_parser == null) {
+                    _parser = new DOMParser();
+                } else {
+                    _parser.reset();
                 }
 
+                try {
+                    _parser.setEntityResolver(new MyEntityResolver());
+                    _parser.parse(new InputSource(_fileURL.openStream()));
+                } catch (SAXException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if (_parser.getDocument() != null) {
+                    filter();
+                }
+            }
         }
-        /**
-         *
-         */
-        private void filter() {
-                boolean modified = false;
-                Document doc = _parser.getDocument();
-                NodeList properties = doc.getElementsByTagName("property");
-                for (int i = 0; i < properties.getLength(); ++i) {
-                        Node aNode = properties.item(i);
-                        NamedNodeMap attributes = aNode.getAttributes();
-                        if (attributes.getNamedItem("value") == null) {
+
+    }
+    /**
+     *
+     */
+    private void filter() {
+        boolean modified = false;
+        Document doc = _parser.getDocument();
+        NodeList properties = doc.getElementsByTagName("property");
+        for (int i = 0; i < properties.getLength(); ++i) {
+            Node aNode = properties.item(i);
+            NamedNodeMap attributes = aNode.getAttributes();
+            if (attributes.getNamedItem("value") == null) {
                                 //le noeud est eligible
-                                String name = attributes.getNamedItem("name").getNodeValue();
-                                if (isEligible(name, aNode)) {
-                                        //il faut supprimer le noeud
-                                        Node parent = aNode.getParentNode();
-                                        parent.removeChild(aNode);
-                                        modified = true;
-                                }
-                        }
+                String name = attributes.getNamedItem("name").getNodeValue();
+                if (isEligible(name, aNode)) {
+                    //il faut supprimer le noeud
+                    Node parent = aNode.getParentNode();
+                    parent.removeChild(aNode);
+                    modified = true;
                 }
-
-                if (modified) {
-                        DOMWriter writer = new DOMWriterImpl();
-                        try {
-                                writer.writeNode(new FileOutputStream(_fileURL.getFile()), doc);
-                                System.out.println(_fileURL.getFile() + " file filtered ...");
-                        } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                        }
-                }
+            }
         }
 
-        /**
-         * @param name
-         * @return
+        if (modified) {
+            DOMWriter writer = new DOMWriterImpl();
+            try {
+                writer.writeNode(new FileOutputStream(_fileURL.getFile()), doc);
+                System.out.println(_fileURL.getFile() + " file filtered ...");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * @param name
+     * @return
+     */
+    private boolean isEligible(String name, Node node) {
+        boolean answer = false;
+
+        if (name.equals("_vergilSize")
+                || name.equals("_vergilLocation")
+                || name.equals("_location")) {
+            answer = true;
+        }
+
+        return answer;
+    }
+
+    private class MyEntityResolver implements EntityResolver {
+        /* (non-Javadoc)
+         * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String, java.lang.String)
          */
-        private boolean isEligible(String name, Node node) {
-                boolean answer = false;
+        public InputSource resolveEntity(String publicId, String systemId)
+                throws SAXException, IOException {
 
-                if (name.equals("_vergilSize")
-                        || name.equals("_vergilLocation")
-                        || name.equals("_location")) {
-                        answer = true;
-                }
+            URL url = MoMLApplication.specToURL("ptolemy/moml/moml.dtd");
 
-                return answer;
+            return new InputSource(url.openStream());
         }
-
-        private class MyEntityResolver implements EntityResolver {
-                /* (non-Javadoc)
-                 * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String, java.lang.String)
-                 */
-                public InputSource resolveEntity(String publicId, String systemId)
-                        throws SAXException, IOException {
-
-                        URL url = MoMLApplication.specToURL("ptolemy/moml/moml.dtd");
-
-                        return new InputSource(url.openStream());
-                }
-        }
+    }
 
 }
