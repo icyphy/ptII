@@ -33,7 +33,7 @@ import diva.util.aelfred.XmlParser;
 /**
  * An XMLDocument is an in-memory representation of an XML document.
  * It contains an XML element as its root, and other information
- * relevent to the document as a whole, such as its URL, its DTD, and
+ * relevant to the document as a whole, such as its URL, its DTD, and
  * so on. The document can be parsed from or written out to its URL or
  * File, or to some other arbitrary Writer. Documents do not parse
  * themselves, but are passed to an XmlReader.

@@ -248,7 +248,7 @@ public class ExtensionFileFilter extends FileFilter {
      * Determines whether the extension list (.jpg, .gif, etc) should
      * show up in the human readable description.
      *
-     * Only relevent if a description was provided in the constructor
+     * Only relevant if a description was provided in the constructor
      * or using setDescription();
      *
      * @see #getDescription()
@@ -263,7 +263,7 @@ public class ExtensionFileFilter extends FileFilter {
      * Returns whether the extension list (.jpg, .gif, etc) should
      * show up in the human readable description.
      *
-     * Only relevent if a description was provided in the constructor
+     * Only relevant if a description was provided in the constructor
      * or using setDescription();
      *
      * @see #getDescription()
