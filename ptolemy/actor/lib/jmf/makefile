@@ -63,6 +63,7 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	jmf.xml \
 	jmf-copyright.htm \
+	movieIn.mov \
 	package.html
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
@@ -75,7 +76,10 @@ MISC_FILES =	$(DIRS)
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'MovieWriter$$ImageDataSource.class' \
+	'MovieWriter$$ImageSourceStream.class' \
+	'VideoCamera$$PreAccessCodec.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
