@@ -27,8 +27,9 @@
 
 package pt.kernel;
 
-import collections.CollectionEnumeration;
 import collections.LinkedList;
+import java.util.Enumeration;
+import pt.kernel.CrossRefList;
 import pt.kernel.NullReferenceException;
 import pt.kernel.NameDuplicationException;
 
@@ -40,7 +41,7 @@ A Port is the interface between Entities and Relations.
 @version $Id$
 */
 public class Port extends NamedObj {
-    /** Constructor
+    /** 
      */	
     public Port() {
 	super();
@@ -65,7 +66,13 @@ public class Port extends NamedObj {
      * @param port The Port to which this Port will be connected.
      * @exception pt.kernel.NullReferenceException Signals an attempt
      *  to pass null object references as arguments.
-     */	
+     *
+     * JFIXME: I think we should get rid of this method. We want to
+     *         to have explicit control of the kind of Relation we
+     * 	       use for a given connection and this method precludes
+     *         such control (children of Relation can not be used).
+     *	       At higher levels we can provide this kind of functionality
+     * 	       but we don't want to constrain ourselves at this level.
     public void connect(Port port) 
             throws NullReferenceException {
 
@@ -93,6 +100,7 @@ public class Port extends NamedObj {
         } 
 
     }
+     */	
 
 
     /** Connect this Port to a Relation.
@@ -101,6 +109,8 @@ public class Port extends NamedObj {
      *  to pass null object references as arguments.
      * @exception pt.kernel.GraphException Attempt to connect this 
      *  port to a relation to which it's already connected.
+     *
+     * JFIXME: Perhaps connectToRelation() would be a better name.
      */	
     public void connect(Relation relation) 
         throws NullReferenceException {
@@ -122,12 +132,11 @@ public class Port extends NamedObj {
 
 	// FIXME: This assumes that the portList in relations is public 
 	// and is called "portList"
-	// if (relation.portList == null) 
-	//         relation.portList = new CrossRefList(relation);
-        _relationsList.associate( relation.portList );
+	// if (relation._portList == null) 
+	//         relation._portList = new CrossRefList(relation);
+        _relationsList.associate( relation._portList );
 
 	return;
-
     }
 
 
@@ -137,7 +146,7 @@ public class Port extends NamedObj {
 
 	if( _relationsList == null ) return;
 
-	_relationsList.disociate();
+	_relationsList.dissociate();
 	_relationsList = null;
 
 	return;
@@ -157,7 +166,8 @@ public class Port extends NamedObj {
 
     /** Returns an enumeration of the CrossRefList and thus of all the 
      *  relations the Port is associated with
-     * @return an enumeration of relations. Return null if list not initialized
+     * @return Return an enumeration of relations. Return null if the i
+     * list is not initialized.
      */
     public Enumeration enumRelations() {
 

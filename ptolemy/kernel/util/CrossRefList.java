@@ -26,6 +26,7 @@
 */
 
 package pt.kernel;
+
 import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
@@ -39,7 +40,7 @@ public final class CrossRefList {
 
     // FIXME: add "final" modifiers noted below when JDK 1.2 is released.
 
-    /** Constructor
+    /** 
      * CrossRefList requires owner to prevent null pointer accesses below.
      */	
     public CrossRefList(Object owner) {

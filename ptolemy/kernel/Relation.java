@@ -93,17 +93,24 @@ public abstract class Relation extends NamedObj {
     public Enumeration enumEntities() throws NameDuplicationException,
 	NullReferenceException {
 
-        Enumeration Xrefs = _portList.elements();
+        // JFIXME: Enumeration XRefs = _portList.elements();
+        // Should this be: 
+	Enumeration XRefs = _portList.enumerate();
         Hashtable storeEntities = new Hashtable();
 
-        while (XRefs.hasMoreElements()) {
+        while( XRefs.hasMoreElements() ) {
             Port tmpPort = (Port)XRefs.nextElement();
-            if ((Entity tmp = tmpPort.getEntity()) != null) {
+	    // JFIXME: Port currently has no getEntity() method.
+	    /*
+            if( (Entity tmp = tmpPort.getEntity()) != null) {
                  storeEntities.put(tmp, tmp);
-             }
+		 // JFIXME: Shouldn't the above be 
+		 // storeEntities.put( tmp.getName(), tmp );
+            }
+	    */
         }
         return storeEntities.elements();
-        }
+    }
 
     /** Determine if the Relation is dangling? By dangling, we mean that the
      *  Relation has exactly one Port connection.
@@ -125,12 +132,14 @@ public abstract class Relation extends NamedObj {
      * false otherwise.
      */	
     public boolean isPortConnected(String portName) {
-	Enumeration XRefs = _portList.elements();
+        // JFIXME: Enumeration XRefs = _portList.elements();
+        // Should this be: 
+	Enumeration XRefs = _portList.enumerate();
         while (XRefs.hasMoreElements()) {
             Port nextPort = (Port)XRefs.nextElement();
             if (nextPort.getName() == portName) return true;
 	}
-	return false
+	return false;
     }
 
     /** Return the number of Ports connected to the relation.
@@ -164,7 +173,7 @@ public abstract class Relation extends NamedObj {
     ////                         inner classes                            ////
 
     // Class PortEnumeration
-    /** Wrapper class for returning an emumeration of Ports. It uses the 
+   /** Wrapper class for returning an emumeration of Ports. It uses the 
     *  enumerate() method provided by CrossRefList
     *  @see CrossRefList
     */
@@ -175,7 +184,7 @@ public abstract class Relation extends NamedObj {
             _XRefEnum = _portList.enumerate();
         }
 
-        * @param exceptPort Do not return this port in the enumeration. 
+        /** @param exceptPort Do not return this port in the enumeration. */
         public PortEnumeration(Port exceptPort) {
             _XRefEnum = _portList.enumerate();
             _exceptPort = exceptPort;
