@@ -58,6 +58,7 @@ then filling up row 1 with columns 0 .. n-1, until row m-1.
 
 @author Jeff Tsay
 @version $Id$
+@since Ptolemy II 1.0
 */
 //Note: It would be really nice if this were domain polymorphic.
 public class SequenceToDoubleMatrix extends SDFTransformer {

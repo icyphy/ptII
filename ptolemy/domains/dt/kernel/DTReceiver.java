@@ -70,6 +70,7 @@ has its own value of delta time.  We calculate delta time as "period /
 </UL>
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class DTReceiver extends SDFReceiver {
 

@@ -48,6 +48,7 @@ Test for ChangeRequest in the DE domain.
 
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.kernel.util.ChangeRequest
 */
 public class TestDE {

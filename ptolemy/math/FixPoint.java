@@ -106,6 +106,7 @@ used to represent a value.
 @author Bart Kienhuis
 @contributor Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 @see Precision
 @see Quantizer
 */

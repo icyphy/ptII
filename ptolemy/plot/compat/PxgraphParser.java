@@ -385,6 +385,7 @@ For further information about this tool, see the
 
 @author Edward A. Lee and Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.4
 @see PxgraphApplication
 @see PxgraphApplet
 */

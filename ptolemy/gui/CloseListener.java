@@ -48,6 +48,7 @@ class.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public interface CloseListener {
 

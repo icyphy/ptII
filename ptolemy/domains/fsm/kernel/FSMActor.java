@@ -118,6 +118,7 @@ only be chosen after the refinement of its source state is fired.
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 0.4
 @see State
 @see Transition
 @see Action

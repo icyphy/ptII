@@ -56,6 +56,7 @@ an instance of SketchedSource and an instance of SequencePlotter.
 @see SketchedSource
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class SketchApplet extends MoMLApplet implements EditListener {
 

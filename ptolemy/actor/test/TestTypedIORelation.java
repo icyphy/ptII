@@ -42,6 +42,7 @@ import ptolemy.actor.*;
 Class for testing TypedIORelation
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class TestTypedIORelation extends TypedIORelation {
 

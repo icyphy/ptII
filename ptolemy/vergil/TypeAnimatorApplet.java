@@ -60,6 +60,7 @@ to illustrate the port of the specified entity.
 
 @author Edward A. Lee and Yuhong Xiong
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class TypeAnimatorApplet extends MoMLViewerApplet {

@@ -7362,6 +7362,7 @@ class CLexGen
  * needed.
  *
  * @version 	1.12, 01 Dec 1995
+ * @since Ptolemy II 1.0
  * @author Arthur van Hoff, revised by Elliot Joel Berk
  */
 final class JavaLexBitSet implements Cloneable {

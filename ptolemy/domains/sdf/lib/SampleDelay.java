@@ -59,6 +59,7 @@ initialize().
 
 @author Steve Neuendorffer, Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class SampleDelay extends SDFTransformer {

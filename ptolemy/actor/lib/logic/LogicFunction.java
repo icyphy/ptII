@@ -76,6 +76,7 @@ on each input channel.
 
 @author Paul Whitaker
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class LogicFunction extends Transformer {
 

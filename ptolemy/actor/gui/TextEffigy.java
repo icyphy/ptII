@@ -48,6 +48,7 @@ An effigy for a text file.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class TextEffigy extends Effigy {
 

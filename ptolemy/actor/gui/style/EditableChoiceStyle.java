@@ -61,6 +61,7 @@ duplication.
 @see ptolemy.kernel.util.StringAttribute
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class EditableChoiceStyle extends ChoiceStyle {

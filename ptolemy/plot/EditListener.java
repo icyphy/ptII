@@ -39,6 +39,7 @@ interactive facilities of an editable subclass of Plot.
 
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 @see EditablePlot
 
 */

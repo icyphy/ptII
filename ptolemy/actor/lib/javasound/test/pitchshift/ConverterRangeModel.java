@@ -41,6 +41,7 @@ an int.  The minimum value and extent are always 0.
 
 @author Brian Vogel
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class ConverterRangeModel implements BoundedRangeModel {
     protected ChangeEvent changeEvent = null;

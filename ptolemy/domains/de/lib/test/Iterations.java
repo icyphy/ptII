@@ -47,6 +47,7 @@ import java.util.Iterator;
 /* A test for iterations and microsteps.
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public class Iterations {

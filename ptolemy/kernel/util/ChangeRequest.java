@@ -58,6 +58,7 @@ derived class, where the mutation is specified as MoML code.
 
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 @see ChangeListener
 */
 public abstract class ChangeRequest {

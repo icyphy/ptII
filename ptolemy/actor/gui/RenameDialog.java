@@ -43,6 +43,7 @@ not return until the user dismisses the dialog.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class RenameDialog extends ComponentDialog {
 

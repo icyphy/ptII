@@ -44,6 +44,7 @@ This Class provides a parser for read matrices in matlab format.
 
 @author  Bart Kienhuis
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class MatrixParser/*@bgen(jjtree)*/implements MatrixParserTreeConstants, MatrixParserConstants {/*@bgen(jjtree)*/

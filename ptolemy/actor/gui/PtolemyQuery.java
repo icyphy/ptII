@@ -82,6 +82,7 @@ To use this class, add an entry to the query using addStyledEntry().
 
 @author Brian K. Vogel and Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class PtolemyQuery extends Query
     implements QueryListener, ValueListener, ChangeListener, CloseListener {

@@ -49,6 +49,7 @@ passed to the constructor.
 @see PlotBox
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class PlotFormatter extends JPanel {
 

@@ -60,6 +60,7 @@ the ticker parameter.
 
 @author Yuhong Xiong, Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class StockQuote extends Source {
 

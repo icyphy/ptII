@@ -48,6 +48,7 @@ the icon of an object, if it has one.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Revision$
+@since Ptolemy II 1.0
 */
 public class PtolemyTreeCellRenderer extends DefaultTreeCellRenderer {
 

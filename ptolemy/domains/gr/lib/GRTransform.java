@@ -55,6 +55,7 @@ accumulated or reset during firing.
 
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 abstract public class GRTransform extends GRActor {
 

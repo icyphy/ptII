@@ -51,6 +51,7 @@ This class is an editor widget to rename an object.
 @see Configurer
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class RenameConfigurer extends Query

@@ -49,6 +49,7 @@ corresponds to the n<sup>th</sup> output channel connected.
 
 @author Paul Whitaker
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class Synchronizer extends Transformer {

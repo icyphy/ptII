@@ -47,6 +47,7 @@ to an unconnected relation in a bus.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class Discard extends Sink {

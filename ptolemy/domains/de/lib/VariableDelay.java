@@ -53,6 +53,7 @@ token through the delay port, instead of a by a parameter.
 @see ptolemy.domains.sdf.lib.SampleDelay
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class VariableDelay extends DETransformer {
 

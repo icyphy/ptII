@@ -84,6 +84,7 @@ not use the same dataset numbers.
 
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class SketchedSource extends Source
     implements Placeable, SequenceActor {

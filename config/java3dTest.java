@@ -36,6 +36,7 @@ import javax.media.j3d.*;
     http://java.sun.com/products/java-media/3D/download.html
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 1.0
  */
 public class java3dTest {
     public static void main(String args[]) {

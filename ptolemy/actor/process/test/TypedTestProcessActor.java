@@ -44,6 +44,7 @@ invocation of fire method.
 
 @author Edward A. Lee, Mudit Goel, John S. Davis II
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class TypedTestProcessActor extends TypedTestActor {
 

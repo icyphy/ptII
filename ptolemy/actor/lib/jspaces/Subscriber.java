@@ -72,6 +72,7 @@ port is also determined by the type of the default token.
 
 @author Jie Liu, Yuhong Xiong
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class Subscriber extends Source implements RemoteEventListener {

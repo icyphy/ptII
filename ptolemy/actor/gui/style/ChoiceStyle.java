@@ -59,6 +59,7 @@ such as StringAttribute, contained by this style.
 @see ptolemy.kernel.util.StringAttribute
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class ChoiceStyle extends ParameterEditorStyle {

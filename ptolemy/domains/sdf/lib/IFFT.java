@@ -58,6 +58,7 @@ The result of the IFFT is a new array of Complex tokens.
 
 @author Bart Kienhuis, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.math.SignalProcessing#IFFTComplexOut
 */
 

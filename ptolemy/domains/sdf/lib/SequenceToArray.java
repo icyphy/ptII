@@ -61,6 +61,7 @@ of the corresponding type.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public class SequenceToArray extends SDFTransformer {

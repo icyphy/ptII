@@ -48,6 +48,7 @@ easily created on the configuration that contains this effigy.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class ConfigurationEffigy extends PtolemyEffigy {
 

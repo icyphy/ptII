@@ -187,6 +187,7 @@ import java.util.List;
 
    @author Brian K. Vogel
    @version $Id$
+   @since Ptolemy II 1.0
    @see ptolemy.media.javasound.SoundReader
    @see ptolemy.media.javasound.SoundWriter
 */

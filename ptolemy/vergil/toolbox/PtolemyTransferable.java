@@ -54,6 +54,7 @@ DataFlavor.plainTextFlavor.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class PtolemyTransferable implements Transferable {
 

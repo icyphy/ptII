@@ -50,6 +50,7 @@ Subclasses should override clone() to do a deep cloning.
 
 @author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public abstract class StructuredType implements Type {

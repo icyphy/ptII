@@ -56,6 +56,7 @@ the blue component.
 
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class BasicJApplet extends JApplet {
 

@@ -63,6 +63,7 @@ axis.  Non-uniform scaling is done through modification of the
 
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class Scale3D extends GRTransform {
 

@@ -47,6 +47,7 @@ ViewScreen display actor.
 
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 abstract public class GRActor extends TypedAtomicActor {
 

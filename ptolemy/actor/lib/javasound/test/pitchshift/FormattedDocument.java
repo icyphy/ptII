@@ -41,6 +41,7 @@ import java.util.Locale;
 /**
 @author Brian Vogel
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class FormattedDocument extends PlainDocument {
     private Format format;

@@ -49,6 +49,7 @@ All of these methods may introduce quantization errors and/or overflow.
 @author Bart Kienhuis
 @contributor Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 @see FixPoint
 @see Precision
 */

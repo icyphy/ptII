@@ -54,6 +54,7 @@ the breakpoint
 
 @author B. Desoutter, P. Domecq & G. Vibert and Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class BreakpointEditor extends JFrame implements ActionListener {
 

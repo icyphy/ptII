@@ -48,6 +48,7 @@ at the output.  The output is always a DoubleToken.
 
 @author Jie Liu and Edward A Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class TimeGap extends DETransformer {
 

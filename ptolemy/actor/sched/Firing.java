@@ -56,6 +56,7 @@ memory requirements of most large schedules.
 
 @author Brian K. Vogel, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.actor.sched.Schedule
 @see ptolemy.actor.sched.ScheduleElement
 */

@@ -49,6 +49,7 @@ This style can be used with any Settable attribute.
 @see ParameterEditorStyle
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class LineStyle extends ParameterEditorStyle {

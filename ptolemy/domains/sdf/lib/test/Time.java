@@ -42,6 +42,7 @@ import ptolemy.actor.gui.*;
 /* A simple test case for timing purposes
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public class Time {

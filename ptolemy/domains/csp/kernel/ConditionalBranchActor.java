@@ -41,6 +41,7 @@ CSP domain.
 
 @author Bilung Lee
 @version $Id$
+@since Ptolemy II 0.4
 @see ConditionalBranch
 @see ConditionalBranchController
 */

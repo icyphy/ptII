@@ -65,6 +65,7 @@ the receivers are producer or consumer receivers.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class BranchController implements Runnable {

@@ -95,6 +95,7 @@ the transition.
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 0.4
 @see FSMActor
 */
 public class FSMDirector extends Director {

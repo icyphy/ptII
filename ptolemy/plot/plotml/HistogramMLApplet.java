@@ -44,6 +44,7 @@ import com.microstar.xml.XmlException;
  * @see Histogram
  * @author Edward A. Lee
  * @version $Id$
+ * @since Ptolemy II 0.4
  */
 public class HistogramMLApplet extends PlotMLApplet {
 

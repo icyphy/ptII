@@ -59,6 +59,7 @@ Scheduling is done by performing a topological sort on all the actors.
 
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class GRScheduler extends Scheduler {
 

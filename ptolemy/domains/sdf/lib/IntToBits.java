@@ -48,6 +48,7 @@ token send out.  The least significant bit is the last boolean token send out.
 
 @author Michael Leung
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public class IntToBits extends SDFConverter {

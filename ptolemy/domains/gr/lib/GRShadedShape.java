@@ -57,6 +57,7 @@ the shininess of the object.
 
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 abstract public class GRShadedShape extends GRActor {
 

@@ -50,6 +50,7 @@ i.e. a line, box, textbox, etc.
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class GraphicElement {
     /**

@@ -94,6 +94,7 @@ when all windows have been closed.
 @see ModelFrame
 @author Edward A. Lee, Brian K. Vogel, and Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class CompositeActorApplication {
 

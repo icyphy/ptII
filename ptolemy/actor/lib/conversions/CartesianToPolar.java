@@ -54,6 +54,7 @@ The implementation uses java.lang.Math.atan2(double, double).
 
 @author Michael Leung, Edward A. Lee, Paul Whitaker
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class CartesianToPolar extends TypedAtomicActor {

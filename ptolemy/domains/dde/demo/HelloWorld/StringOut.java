@@ -47,6 +47,7 @@ output for each token that is consumed on the input.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 1.0
 */
 public abstract class StringOut extends TypedAtomicActor {
 

@@ -61,6 +61,7 @@ Note: this class is still under development.
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class HSDirector extends FSMDirector implements CTTransparentDirector {
 

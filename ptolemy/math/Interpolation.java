@@ -59,6 +59,7 @@ The default period is 2 and the order is 0.
 
 @author Sarah Packman, Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public class Interpolation {

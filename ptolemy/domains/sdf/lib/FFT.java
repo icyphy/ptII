@@ -58,6 +58,7 @@ The result of the FFT is a new array of Complex tokens.
 
 @author Bart Kienhuis, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.4
 @see ptolemy.math.SignalProcessing#FFTComplexOut
 */
 

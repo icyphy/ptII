@@ -89,6 +89,7 @@ The tree representing the schedule for this CompositeActor looks as follows:
 
 @author Haiyang Zheng
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class GiottoScheduler extends Scheduler {
 

@@ -56,6 +56,7 @@ input token, then no output token is produced.
 
 @author Jie Liu and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class Timer extends DETransformer {
 

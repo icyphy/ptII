@@ -51,6 +51,7 @@ Convert a stream of Double Tokens into a Matrix. The Matrix is
 considered to be an Upper triangular Matrix.
 @author Bart Kienhuis
 @version $Id: StreamToMatrix.java,v 1.2 1999/11/30 03:55:57 kienhuis
+@since Ptolemy II 0.4
 Exp $
 */
 

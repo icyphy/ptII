@@ -54,6 +54,7 @@ CommitAction marker interface.
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 0.4
 @see ChoiceAction
 @see CommitAction
 @see Transition

@@ -69,6 +69,7 @@ The plot is always updated in the wrapup() method.
 
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class BarGraph extends Plotter implements SequenceActor {
 

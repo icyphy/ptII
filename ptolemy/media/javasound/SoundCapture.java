@@ -107,6 +107,7 @@ import javax.sound.sampled.*;
 
    @author Brian K. Vogel
    @version $Id$
+   @since Ptolemy II 1.0
    @see ptolemy.media.javasound.SoundPlayback
 */
 

@@ -55,6 +55,7 @@ a field <i>foo</i> containing a StringToken of value "abc", and a field
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.data.expr.ASTPtRootNode
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token

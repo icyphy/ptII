@@ -51,6 +51,7 @@ arbitrary precision, and thus can exceed the capabilities of a double.
 
 @author Bart Kienhuis and Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 @see ptolemy.data.FixToken
 */
 

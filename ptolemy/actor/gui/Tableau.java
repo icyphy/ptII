@@ -61,6 +61,7 @@ make the associated frame visible.  To do that, call show().
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 @see Effigy
 */
 public class Tableau extends CompositeEntity {

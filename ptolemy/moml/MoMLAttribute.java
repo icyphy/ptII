@@ -54,6 +54,7 @@ MoML description, call setMoMLDescription().
 
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class MoMLAttribute extends Attribute {
 

@@ -51,6 +51,7 @@ this actor writes to the standard output.
 
 @author  Yuhong Xiong, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
  */
 public class Writer extends Sink {
 

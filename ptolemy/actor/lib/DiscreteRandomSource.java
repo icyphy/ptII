@@ -64,6 +64,7 @@ integers.
 
 @author Jeff Tsay, Yuhong Xiong
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class DiscreteRandomSource extends RandomSource {

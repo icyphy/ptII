@@ -54,6 +54,7 @@ a boolean token.
 @see ParameterEditorStyle
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class CheckBoxStyle extends ParameterEditorStyle {

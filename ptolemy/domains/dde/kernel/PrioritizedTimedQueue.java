@@ -105,6 +105,7 @@ and where appropriate employs workspace.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 0.4
 @see ptolemy.domains.dde.kernel.DDEReceiver
 @see ptolemy.domains.dde.kernel.TimeKeeper
 */

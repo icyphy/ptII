@@ -48,6 +48,7 @@ alarm events. The actor has zero delay.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class BangBangController extends TypedAtomicActor
     implements TimedActor {

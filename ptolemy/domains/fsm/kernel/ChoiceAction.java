@@ -40,6 +40,7 @@ during an iteration in domains with fixed-point semantics.
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 0.4
 @see Action
 @see Transition
 @see FSMActor

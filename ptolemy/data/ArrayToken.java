@@ -43,6 +43,7 @@ A token that contains an array of tokens.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public class ArrayToken extends Token {

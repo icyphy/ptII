@@ -44,6 +44,7 @@ import ptolemy.domains.sdf.kernel.*;
  * A deterministic merge of two token streams.
  * @author Stephen Neuendorffer
  * @version $Id$
+ * @since Ptolemy II 0.4
 */
 
 public class SDFTestJoin extends TypedAtomicActor {

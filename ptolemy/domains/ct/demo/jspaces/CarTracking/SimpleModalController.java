@@ -62,6 +62,7 @@ In the "decelaration" mode, it outputs 0.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class SimpleModalController extends CTCompositeActor {

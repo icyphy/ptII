@@ -67,6 +67,7 @@ type and send out tokens corresponding to that type.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public class ArrayToSequence extends SDFTransformer {

@@ -103,6 +103,7 @@ Software Syntheses from Dataflow Graphs, Kluwer Academic Publishers, 1996.
 
 @author Brian K. Vogel, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.actor.sched.Firing
 @see ptolemy.actor.sched.ScheduleElement
 */

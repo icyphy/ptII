@@ -52,6 +52,7 @@ event until the next discrete event arrives.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public class ZeroOrderHold extends Transformer

@@ -73,6 +73,7 @@ better result.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class DerivativeResolver extends ODESolver
     implements BreakpointODESolver {

@@ -43,6 +43,7 @@ This actor is aware of the rate that is set on its port and
 will create the proper number of tokens with every firing.
 
 @version $Id$
+@since Ptolemy II 0.4
 @author Steve Neuendorffer
 */
 public class SDFTestRamp extends TypedAtomicActor {

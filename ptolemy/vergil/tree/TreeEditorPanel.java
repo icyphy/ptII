@@ -55,6 +55,7 @@ A panel that displays a Ptolemy II model in a JTree.
 
 @author Edward Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class TreeEditorPanel extends JScrollPane {
 

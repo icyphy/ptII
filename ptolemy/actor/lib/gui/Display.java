@@ -69,6 +69,7 @@ converge to a fixed point.
 
 @author  Yuhong Xiong, Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class Display extends Sink implements Placeable {
 

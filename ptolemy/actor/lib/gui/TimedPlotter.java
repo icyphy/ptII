@@ -53,6 +53,7 @@ The horizontal axis represents time.
 
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class TimedPlotter extends Plotter implements TimedActor {
 

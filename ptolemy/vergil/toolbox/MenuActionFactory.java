@@ -43,6 +43,7 @@ A factory that adds a given action a given context menu.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class MenuActionFactory implements MenuItemFactory {
     public MenuActionFactory(Action action) {

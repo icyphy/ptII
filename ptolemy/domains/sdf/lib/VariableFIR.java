@@ -65,6 +65,7 @@ actor is the same as that of the base class.
 
 @author Edward A. Lee, Yuhong Xiong
 @version $Id$
+@since Ptolemy II 1.0
 
 @see ptolemy.data.Token
 */

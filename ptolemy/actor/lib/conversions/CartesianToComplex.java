@@ -54,6 +54,7 @@ imaginary output. If either input port is empty, nothing is produced.
 
 @author Michael Leung, Jie Liu, Edward A. Lee, Paul Whitaker
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class CartesianToComplex extends TypedAtomicActor {

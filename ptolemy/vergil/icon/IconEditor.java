@@ -91,6 +91,7 @@ creates java2d shapes.
 @author Nick Zamora (nzamor@uclink4.berkeley.edu)
 @author Steve Neuendorffer  (neuendor@eecs.berkeley.edu)
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class IconEditor {
     /** Setup the window for the icon editor application.  This

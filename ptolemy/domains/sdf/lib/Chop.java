@@ -119,6 +119,7 @@ a zero-valued token with the same type as the input.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class Chop extends SDFTransformer {

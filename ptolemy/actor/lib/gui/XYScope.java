@@ -67,6 +67,7 @@ erased and forgotten.
 
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class XYScope extends XYPlotter {
 

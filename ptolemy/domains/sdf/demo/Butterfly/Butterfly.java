@@ -56,6 +56,7 @@ MoML, this class illustrates how to define a model in Java.
 
 @author Christopher Hylands and Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class Butterfly extends TypedCompositeActor {
 

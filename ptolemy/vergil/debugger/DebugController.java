@@ -44,6 +44,7 @@ This class is created by a debugger frame to handle the logic of breakpoints.
 
 @author B. Desoutter, P. Domecq & G. Vibert and Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class DebugController implements DebugListener {
 

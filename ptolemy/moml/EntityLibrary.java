@@ -141,6 +141,7 @@ The following, by contrast, is OK:
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 // FIXME: Have to do ports and relations.  Only done attributes and entities.

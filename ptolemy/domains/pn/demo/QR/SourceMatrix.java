@@ -45,6 +45,7 @@ parameterized.
 
 @author Bart Kienhuis
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 

@@ -55,6 +55,7 @@ import java.util.Enumeration;
 
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class MouseInput3D extends GRActor {
 

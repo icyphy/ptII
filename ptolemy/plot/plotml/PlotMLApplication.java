@@ -59,6 +59,7 @@ To compile and run this application, do the following:
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 @see PlotBox
 @see Plot
 */

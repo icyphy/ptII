@@ -45,6 +45,7 @@ A token that contains a 2-D FixToken matrix.
 
 @author Bart Kienhuis
 @version $Id$
+@since Ptolemy II 0.4
 @see ptolemy.math.FixPoint
 */
 

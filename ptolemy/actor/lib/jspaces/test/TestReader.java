@@ -47,6 +47,7 @@ on the screen.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class TestReader {

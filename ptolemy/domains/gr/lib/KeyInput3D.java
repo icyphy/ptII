@@ -55,6 +55,7 @@ import java.util.Enumeration;
 An actor that listens for keys pressed on the viewscreen.
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class KeyInput3D extends GRActor {
 

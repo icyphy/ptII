@@ -59,6 +59,7 @@ Its default value is 0.0. The input is of type DoubleToken.
 
 @author  Edward A. Lee, Bart Kienhuis
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class SequencePlotter extends Plotter implements SequenceActor {
 

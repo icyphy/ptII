@@ -61,6 +61,7 @@ a CT director, which includes a sophisticated ODE numerical solver.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class Lorenz extends TypedCompositeActor {
 

@@ -67,6 +67,7 @@ then that component is notified when this dialog closes.
 @see CloseListener
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class ComponentDialog extends JDialog {
 

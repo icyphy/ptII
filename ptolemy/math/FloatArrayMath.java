@@ -42,6 +42,7 @@ will be thrown in the method or called methods.
 
 @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class FloatArrayMath {
 

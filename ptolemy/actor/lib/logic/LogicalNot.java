@@ -47,6 +47,7 @@ If no input token is available, then no output is produced.
 
 @author John Li
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public class LogicalNot extends Transformer {

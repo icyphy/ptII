@@ -41,6 +41,7 @@ This implementation prints information about each event to a stream.
 
 @author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class StreamExecutionListener implements ExecutionListener {
 

@@ -57,6 +57,7 @@ each input channel are sampled and produced to corresponding output
 channel.
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class CTTriggeredSampler extends Transformer
     implements CTEventGenerator, TimedActor {

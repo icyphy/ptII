@@ -59,6 +59,7 @@ another car.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class CarInformationSubscriber extends TypedAtomicActor

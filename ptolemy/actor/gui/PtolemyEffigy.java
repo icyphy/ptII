@@ -59,6 +59,7 @@ open instances of Tableau associated with the model.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class PtolemyEffigy extends Effigy implements ChangeListener {
 

@@ -103,6 +103,7 @@ welcome window, or a blank editor.
 
 @author Edward A. Lee and Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.4
 @see Configuration
 */
 public class MoMLApplication {

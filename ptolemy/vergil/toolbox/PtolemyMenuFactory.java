@@ -57,6 +57,7 @@ subclasses of this factory to get the correct ptolemy object.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class PtolemyMenuFactory implements MenuFactory {
 

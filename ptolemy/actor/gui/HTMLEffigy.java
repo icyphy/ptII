@@ -45,6 +45,7 @@ An effigy for an HTML file.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class HTMLEffigy extends Effigy {
 

@@ -63,6 +63,7 @@ using this time.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class DERealTimeSubscriber extends DEActor

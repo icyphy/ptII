@@ -114,6 +114,7 @@ complex inputs.
 
 @author Edward A. Lee and Yuhong Xiong
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class Autocorrelation extends SDFTransformer {

@@ -48,6 +48,7 @@ token received.  The least significant bit is the last boolean token received.
 
 @author Michael Leung
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public class BitsToInt extends SDFConverter {

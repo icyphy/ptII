@@ -53,6 +53,7 @@ TextEditor is a top-level window containing a simple text editor or viewer.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class TextEditor extends TableauFrame {
 

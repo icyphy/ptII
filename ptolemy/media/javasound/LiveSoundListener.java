@@ -43,6 +43,7 @@ liveSoundChanged() method.
 
 @author Brian K. Vogel
 @version $Id$
+@since Ptolemy II 1.0
 @see LiveSoundEvent
 @see ptolemy.media.javasound.LiveSound
 */

@@ -41,6 +41,7 @@ DFT (an FFT algorithm is used) for efficiency.
 
 @author Brian K. Vogel
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class PitchDetector {
 

@@ -57,6 +57,7 @@ selected are discarded.
 
 @author Jeff Tsay
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.actor.lib.Select
 */
 

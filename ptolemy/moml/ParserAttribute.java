@@ -49,6 +49,7 @@ then it will replace the previous attribute.
 @see MoMLChangeRequest
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class ParserAttribute extends SingletonAttribute
     implements NotPersistent {

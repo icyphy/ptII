@@ -71,6 +71,7 @@ converted to doubles, such as integers.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class Comparator extends TypedAtomicActor {
 

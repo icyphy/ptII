@@ -68,6 +68,7 @@ the styles to those before the dialog was opened.
 @see ParameterEditorStyle
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class StyleConfigurer extends Query implements QueryListener {

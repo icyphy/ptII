@@ -42,6 +42,7 @@ invocation in a list.
 
 @author Edward A. Lee, John S. Davis II
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class TypedTestActor extends TypedAtomicActor {
 

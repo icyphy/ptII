@@ -33,6 +33,7 @@ import javax.sound.sampled.*;
     is present
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 1.0
  */
 public class javasoundTest {
     public static void main(String args[]) {

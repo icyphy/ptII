@@ -47,6 +47,7 @@ and an output port.
 
 @author Edward A. Lee, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class SDFTransformer extends TypedAtomicActor implements SequenceActor {

@@ -46,6 +46,7 @@ import ptolemy.domains.sdf.kernel.*;
  * This actor is type Polymorphic.
  *
  * @version $Id$
+ * @since Ptolemy II 0.4
  * @author Steve Neuendorffer
  */
 public class SDFTestConsumer extends TypedAtomicActor {

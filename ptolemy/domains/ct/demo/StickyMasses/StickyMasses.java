@@ -54,6 +54,7 @@ import ptolemy.plot.Plot;
 /*
 @author Jie Liu, Xiaojun Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class StickyMasses extends TypedCompositeActor {
 

@@ -47,6 +47,7 @@ represented as inequalities between Typeable objects.
 
 @author Yuhong Xiong, Xiaojun Liu, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 @see ptolemy.graph.InequalityTerm
 */
 

@@ -62,6 +62,7 @@ this actor is the same as that of the base class.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class VariableLattice extends Lattice {
 

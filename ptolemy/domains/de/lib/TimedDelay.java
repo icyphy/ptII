@@ -74,6 +74,7 @@ delay as an infinitesimal delay.
 
 @author Edward A. Lee, Lukito Muliadi
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class TimedDelay extends DETransformer {
 

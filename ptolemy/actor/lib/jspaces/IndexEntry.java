@@ -46,6 +46,7 @@ The position number is a positive long.
 
 @author Jie Liu, Yuhong Xiong
 @version $Id$
+@since Ptolemy II 1.0
 
 */
 public class IndexEntry implements Entry {

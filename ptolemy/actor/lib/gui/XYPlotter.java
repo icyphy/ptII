@@ -60,6 +60,7 @@ input from <i>inputX</i> and vertical axis is given by <i>inputY</i>.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class XYPlotter extends Plotter {
 

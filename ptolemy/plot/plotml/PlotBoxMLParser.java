@@ -61,6 +61,7 @@ a PlotBox object and then call its parse() method.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class PlotBoxMLParser extends HandlerBase {
 

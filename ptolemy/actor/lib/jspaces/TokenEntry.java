@@ -41,6 +41,7 @@ each TokenEntry has a name and a serial number.
 
 @author Yuhong Xiong, Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 
 */
 public class TokenEntry implements Entry {

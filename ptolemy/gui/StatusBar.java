@@ -45,6 +45,7 @@ import javax.swing.border.EmptyBorder;
  *
  *  @author John Reekie and Edward A. Lee
  *  @version $Id$
+ *  @since Ptolemy II 0.4
  */
 public class StatusBar extends JPanel {
 

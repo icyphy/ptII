@@ -55,6 +55,7 @@ then the output is NaN or infinity.
 
 @author Michael Leung, Edward A. Lee, Paul Whitaker
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class PolarToComplex extends TypedAtomicActor {

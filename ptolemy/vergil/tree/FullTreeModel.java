@@ -51,6 +51,7 @@ FIXME: More information.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class FullTreeModel extends EntityTreeModel {
 

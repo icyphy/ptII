@@ -41,6 +41,7 @@ this interface cannot be breakpoint ODE solver.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 public interface BreakpointODESolver {
 }

@@ -40,6 +40,7 @@ Interface for error handlers for the MoMLParser class.
 @see MoMLParser
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public interface ErrorHandler {
 

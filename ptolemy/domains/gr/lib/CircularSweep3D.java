@@ -62,6 +62,7 @@ the number of polygonal slices used in the sweep.
 
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class CircularSweep3D extends GRShadedShape {
     /** Construct an actor with the given container and name.

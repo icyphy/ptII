@@ -60,6 +60,7 @@ torus.
 
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class Torus3D extends GRShadedShape {
     /** Construct an actor with the given container and name.

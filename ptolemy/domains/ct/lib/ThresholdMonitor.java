@@ -67,6 +67,7 @@ old step size.
 
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public class ThresholdMonitor extends TypedAtomicActor

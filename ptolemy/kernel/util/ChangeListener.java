@@ -41,6 +41,7 @@ executed, or when an attempt to execute it results in an exception.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 @see ChangeRequest
 */
 public interface ChangeListener {

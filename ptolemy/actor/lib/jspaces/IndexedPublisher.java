@@ -55,6 +55,7 @@ An actor that sends indexed entries to a Java Space.
 
 @author Jie Liu, Yuhong Xiong
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class IndexedPublisher extends Sink {

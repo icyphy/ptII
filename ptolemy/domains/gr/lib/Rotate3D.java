@@ -64,6 +64,7 @@ the pivot point for axis of the rotation. The parameter <i>initialAngle</i>
 determines the initial angle of rotation.
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class Rotate3D extends GRTransform {
 

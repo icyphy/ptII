@@ -45,6 +45,7 @@ A selection window for editing breakpoints.
 
 @author B. Desoutter, P. Domecq & G. Vibert and Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class DisplayList extends JFrame implements ActionListener {
 

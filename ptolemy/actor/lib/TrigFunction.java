@@ -94,6 +94,7 @@ The following functions in java.lang.Math are implemented elsewhere:
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.actor.lib.conversions.CartesianToPolar
 @see AbsoluteValue
 @see MathFunction

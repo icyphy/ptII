@@ -42,6 +42,7 @@ import ptolemy.data.type.BaseType;
 Dummy actor that implements CTWaveformGenerator interface.
 @author   Jie Liu
 @version $Id$
+@since Ptolemy II 0.4
 
 */
 public class CTDummyWaveformGenerator extends TypedAtomicActor

@@ -49,6 +49,7 @@ Vx = -a0(Px-CPx)-a1*DPx-a2*DDPx-a3*D3Px-a4*D4Px
 Vz = -a0(Pz-CPz)-a1*DPz-a2*DDPz-a3*D3Pz-a4*D4Pz
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class ClimbLinearizer extends TypedAtomicActor
     implements TimedActor{

@@ -79,6 +79,7 @@ If you want to use the IEEE remainder standard, use the Remainder actor.
 
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 @see AbsoluteValue
 @see Remainder
 @see Scale

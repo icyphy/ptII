@@ -37,6 +37,7 @@ A collection of utilities for manipulating strings.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class StringUtilities {
 

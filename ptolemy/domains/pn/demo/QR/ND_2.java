@@ -53,6 +53,7 @@ matrices is involved; they may change in future releases.
 
 @author Bart Kienhuis
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class ND_2 extends TypedAtomicActor {

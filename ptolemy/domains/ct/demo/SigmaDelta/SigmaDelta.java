@@ -70,6 +70,7 @@ Berkeley, Fall 1997
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class SigmaDelta extends TypedCompositeActor {
 

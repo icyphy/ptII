@@ -40,6 +40,7 @@ import ptolemy.media.javasound.*;
    is the some of a few harmonically related sinusoids.
    @author Brian K. Vogel (vogel@eecs.berkeley.edu)
    @version $Id$
+   @since Ptolemy II 1.0
  */
 public class Sines {
     public static void main(String[] args) {

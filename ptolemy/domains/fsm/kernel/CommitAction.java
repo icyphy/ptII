@@ -40,6 +40,7 @@ transition.
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 0.4
 @see Action
 @see Transition
 @see FSMActor

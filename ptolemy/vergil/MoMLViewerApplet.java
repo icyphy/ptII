@@ -91,6 +91,7 @@ then no visual elements are placed.
 
 @author  Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class MoMLViewerApplet extends MoMLApplet {
 

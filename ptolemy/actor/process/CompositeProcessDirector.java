@@ -118,6 +118,7 @@ returning true indicating that successive iterations are allowed.
 <P>
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 1.0
 @see Director
 */
 public class CompositeProcessDirector extends ProcessDirector {

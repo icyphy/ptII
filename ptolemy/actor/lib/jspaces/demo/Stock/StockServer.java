@@ -65,6 +65,7 @@ are queried at the same rate, and all the actors run in the same thread.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.actor.lib.jspaces.demo.Stock.StockQuote
 @see ptolemy.actor.lib.jspaces.demo.Stock.StockServer
 */

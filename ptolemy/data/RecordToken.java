@@ -50,6 +50,7 @@ A token that contains a set of label/token pairs.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class RecordToken extends Token {

@@ -64,6 +64,7 @@ browser.
 @see Configurer
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public class EditorPaneFactory extends Attribute {

@@ -51,6 +51,7 @@ one will be output.
 @deprecated Use Maximum instead.
 @author Jeff Tsay and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class MaxIndex extends Transformer {

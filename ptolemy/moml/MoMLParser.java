@@ -163,6 +163,7 @@ master exports MoML.
 @see MoMLAttribute
 @author Edward A. Lee, Steve Neuendorffer, John Reekie
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class MoMLParser extends HandlerBase {
 

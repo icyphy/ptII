@@ -54,6 +54,7 @@ same type.  The type of the output port is boolean.
 @see Token#isEqualTo(Token)
 @author John Li and Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public class Equals extends Transformer {

@@ -62,6 +62,7 @@ in this way.
 @see Configurer
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class PortConfigurer extends Query implements QueryListener {

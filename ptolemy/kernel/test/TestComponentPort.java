@@ -42,6 +42,7 @@ This class is used to test protected method(s) in ComponentPort
 
 @author Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class TestComponentPort extends ComponentPort {
     /** Construct a TestComponentPort

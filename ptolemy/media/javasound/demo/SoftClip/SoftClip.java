@@ -43,6 +43,7 @@ import ptolemy.media.javasound.*;
    soft-clipped audio data is then played out the speaker.
    @author Brian K. Vogel (vogel@eecs.berkeley.edu)
    @version $Id$
+   @since Ptolemy II 1.0
  */
 public class SoftClip {
     public static void main(String[] args) {

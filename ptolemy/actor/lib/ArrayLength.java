@@ -47,6 +47,7 @@ Output the length of an array.  This actor reads an ArrayToken from the
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class ArrayLength extends Transformer {

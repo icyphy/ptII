@@ -73,6 +73,7 @@ keep the entry as long as the JavaSpace exists.
 @see TokenEntry
 @author Jie Liu, Yuhong Xiong
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class Publisher extends Sink {

@@ -45,6 +45,7 @@ the plots in a 2x2 grid.
 
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class HelicopterApplet extends PtolemyApplet {
 

@@ -54,6 +54,7 @@ A default value of 1 is used for the iteration count.
 
 @author Brian K. Vogel
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.actor.sched.Firing
 @see ptolemy.actor.sched.Schedule
 */

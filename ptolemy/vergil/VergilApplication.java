@@ -54,6 +54,7 @@ file is augmented by the MoML file ptolemy/configs/vergilWelcomeWindow.xml.
 
 @author Edward A. Lee and Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.actor.gui.ModelFrame
 @see ptolemy.actor.gui.RunTableau
 */

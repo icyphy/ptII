@@ -95,6 +95,7 @@ import ptolemy.vergil.toolbox.*;
    also implemented;
 @author SUPELEC team
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class DebuggerFrame extends PtolemyFrame
     implements ActionListener, ItemListener {

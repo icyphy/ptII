@@ -41,6 +41,7 @@ Type hierarchy for token classes.
 
 @author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.4
 @see ptolemy.graph.CPO
 */
 

@@ -51,6 +51,7 @@ the job.
 
 @author Joe Buck and Edward A. Lee and Elaine Cheong
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class PhaseUnwrap extends Transformer {

@@ -50,6 +50,7 @@ Some algorithms are from:
 
 @author Jeff Tsay
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class DoubleMatrixMath {

@@ -54,6 +54,7 @@ import java.net.URL;
  *
  *  @author Edward A. Lee
  *  @version $Id$
+ *  @since Ptolemy II 0.4
  *  @see PxgraphParser
  *  @see ptolemy.plot.PlotBox
  *  @see ptolemy.plot.Plot

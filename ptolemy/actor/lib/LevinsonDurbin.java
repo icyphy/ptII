@@ -121,6 +121,7 @@ Prentice-Hall, Englewood Cliffs, NJ, 1988.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class LevinsonDurbin extends TypedAtomicActor {

@@ -39,6 +39,7 @@ a single variable.
 
 @author Jeff Tsay
 @version $Id$
+@since Ptolemy II 1.0
 */
 public interface LongUnaryOperation {
 

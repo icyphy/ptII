@@ -55,6 +55,7 @@ reducing the load on the garbage collector.
 
 @author  Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.kernel.util.DebugListener
 */
 public class FiringEvent implements DebugEvent {

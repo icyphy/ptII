@@ -50,6 +50,7 @@ helicopter applet in a grid way.
 @see ModelPane
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class HelicopterModelPane extends ModelPane {
 

@@ -49,6 +49,7 @@ utilize a common meaning for the integer states.
 
 @author Mudit Goel, John S. Davis II
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class ExecEvent implements DebugEvent {

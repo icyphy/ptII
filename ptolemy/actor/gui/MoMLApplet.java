@@ -111,6 +111,7 @@ is an instance of ModelPane.
 
 @author  Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class MoMLApplet extends PtolemyApplet {
 

@@ -44,6 +44,7 @@ import ptolemy.data.DoubleToken;
 /* A simple test case for timing purposes
 @author Edward A. Lee, Lukito Muliadi
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public class Time {

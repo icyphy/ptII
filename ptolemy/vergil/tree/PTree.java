@@ -58,6 +58,7 @@ entities of the model.  The class supports drag-and-drop.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class PTree extends JTree {
 

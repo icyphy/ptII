@@ -78,6 +78,7 @@ same syntax as in expressions. For example:
 
 @author Edward A. Lee, Xiaojun Liu
 @version $Id$
+@since Ptolemy II 1.0
 @see TypedIOPort
 @see ptolemy.data.expr.Constants
 */

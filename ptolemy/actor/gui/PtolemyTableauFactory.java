@@ -54,6 +54,7 @@ be inner classes of a Tableau, and will create the Tableau.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 @see Configuration
 @see Effigy
 @see Tableau

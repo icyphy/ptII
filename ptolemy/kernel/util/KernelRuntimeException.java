@@ -64,6 +64,7 @@ the JDK1.4 implementation.
 
 @author Edward A. Lee, Christopher Hylands
 @version $Id$ */
+@since Ptolemy II 1.0
 public class KernelRuntimeException extends RuntimeException {
 
     /** Construct an exception with a no specific detail message. */

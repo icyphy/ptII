@@ -45,6 +45,7 @@ This class allows to track some parameters values of an actor
 
 @author B. Desoutter, P. Domecq & G. Vibert and Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class ActorWatcher implements Nameable {
 

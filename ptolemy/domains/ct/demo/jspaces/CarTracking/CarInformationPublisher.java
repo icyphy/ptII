@@ -66,6 +66,7 @@ the old ones.
 
 @author Jie Liu, Yuhong Xiong
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class CarInformationPublisher extends TypedAtomicActor

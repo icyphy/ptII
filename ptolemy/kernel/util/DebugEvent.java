@@ -42,6 +42,7 @@ provided by the toString() method.
 
 @author  Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 @see DebugListener
 @see Debuggable
 @see ptolemy.actor.FiringEvent

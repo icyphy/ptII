@@ -58,6 +58,7 @@ accessed by either mechanism.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class FigureAction extends AbstractAction {
 

@@ -72,6 +72,7 @@ Pentium II 400 MHz class processor (for 22050 Hz sample rate).
 Also requires ptolemy.math (used by the pitch detector).
 @author Brian K. Vogel
 @version 1.0
+@since Ptolemy II 1.0
  */
 public class PitchSlider extends JFrame {
 

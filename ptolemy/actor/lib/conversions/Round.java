@@ -61,6 +61,7 @@ If the argument is NaN, then the result is NaN.  The default is "round".
 
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class Round extends Transformer {

@@ -62,6 +62,7 @@ Otherwise, it will produce no output.
 
 @author Jie Liu, Yuhong Xiong
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class IndexedSubscriber extends Source implements RemoteEventListener {

@@ -130,6 +130,7 @@ note that this feature is still under development.
 
 @author Xiaojun Liu and Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 @see State
 @see Action
 @see ChoiceAction

@@ -73,6 +73,7 @@ same firing time, in the order in which they arrived.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class Select extends Transformer {

@@ -96,6 +96,7 @@ real time.
 
 @author  Christoph Meyer Kirsch and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 @see GiottoScheduler
 @see GiottoReceiver
 */

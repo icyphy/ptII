@@ -52,6 +52,7 @@ A token that contains an instance of FixPoint.
 @see ptolemy.math.Precision
 @see ptolemy.math.Quantizer
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public class FixToken extends ScalarToken {

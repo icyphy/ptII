@@ -57,6 +57,7 @@ This is designed for use with JTree, which renders the hierarchy.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class VisibleTreeModel extends EntityTreeModel {
 

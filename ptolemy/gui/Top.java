@@ -111,6 +111,7 @@ is first packed.
 
 @author Edward A. Lee and Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 public abstract class Top extends JFrame {
 

@@ -184,6 +184,7 @@ Known bugs:
 
  @author C. Fong
  @version $Id$
+ @since Ptolemy II 1.0
 */
 public class DTDirector extends SDFDirector {
 

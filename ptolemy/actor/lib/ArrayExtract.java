@@ -56,6 +56,7 @@ of the input array is copied to the output array, which has length one.
 
 @author Edward A. Lee, Elaine Cheong
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class ArrayExtract extends Transformer {

@@ -41,6 +41,7 @@ existing SingletonAttribute in the container that has the same name.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class SingletonAttribute extends Attribute {

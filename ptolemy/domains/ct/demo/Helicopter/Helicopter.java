@@ -55,6 +55,7 @@ An applet that models a 2-D helicopter control system.
 
 @author Jie Liu, Xiaojun Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class Helicopter extends TypedCompositeActor {
     

@@ -43,6 +43,7 @@ import ptolemy.domains.sdf.kernel.SDFDirector;
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class TestModel extends TypedCompositeActor {
 

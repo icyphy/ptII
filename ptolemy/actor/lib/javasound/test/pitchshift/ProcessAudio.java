@@ -64,6 +64,7 @@ Pentium II 400 MHz class processor (for 22050 Hz sample rate).
 
 @author Brian K. Vogel
 @version $Id$
+@since Ptolemy II 1.0
  */
 public class ProcessAudio implements Runnable {
 

@@ -37,6 +37,7 @@ This is an interface for objects that debug listeners can be attached to.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.4
 @see DebugListener
 @see DebugEvent
 */

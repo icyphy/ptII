@@ -51,6 +51,7 @@ ptolemy/configs/runBlankConfiguration.xml is read instead.
 
 @author Edward A. Lee and Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.4
 @see ModelFrame
 @see RunTableau
 */

@@ -62,6 +62,7 @@ will be fed into integrators to get Px, Pz, and th.
 
 @author  Jie Liu, John Koo
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class HelicopterActor extends TypedAtomicActor
     implements TimedActor {

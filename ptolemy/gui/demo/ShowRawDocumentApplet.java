@@ -49,6 +49,7 @@ processing, see the documentation for appletContext.showDocument(sourceURL).
 
 @author  Christopher Hylands
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class ShowRawDocumentApplet extends BasicJApplet {
     /** Constructor.

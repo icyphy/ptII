@@ -52,6 +52,7 @@ import java.awt.Font;
 
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class TextString3D extends GRShadedShape {
 

@@ -55,6 +55,7 @@ an exception will be thrown by the fire() method.
 @see RecordDisassembler
 @author Edward A. Lee, Elaine Cheong
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class ArrayElement extends Transformer {

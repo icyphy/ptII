@@ -89,6 +89,7 @@ is not enforced.
 
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class HistogramPlotter extends Sink implements Configurable, Placeable {
 

@@ -93,6 +93,7 @@ and saturation is used when overflow occurs.
 @author Bart Kienhuis
 @contributor Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 @see PtParser
 @see ptolemy.math.FixPoint
 @see ptolemy.math.Quantizer

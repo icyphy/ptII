@@ -55,6 +55,7 @@ effectively canceled.  No event will be produced.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class SingleEvent extends TypedAtomicActor {
 

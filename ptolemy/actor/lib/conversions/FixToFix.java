@@ -73,6 +73,7 @@ occurs.
 
 @author Bart Kienhuis and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.math.Quantizer
 @see ptolemy.data.FixToken
 @see ptolemy.math.Precision

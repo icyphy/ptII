@@ -49,6 +49,7 @@ All calls expect matrix arguments to be non-null. In addition, all
 rows of the matrix are expected to have the same number of columns.
 @author Jeff Tsay
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class ComplexMatrixMath {
 

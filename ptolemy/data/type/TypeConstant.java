@@ -44,6 +44,7 @@ type resolution.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 0.4
 @see ptolemy.graph.InequalityTerm
 */
 

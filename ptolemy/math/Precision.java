@@ -76,6 +76,7 @@ that its value is set in the constructor and cannot then be modified.
 
 @author Bart Kienhuis
 @version $Id$
+@since Ptolemy II 0.4
 @see FixPoint
 */
 

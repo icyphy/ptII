@@ -58,6 +58,7 @@ for LevelCrossDetector with level to be 0.0.
 @see LevelCrossingDetector
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class ZeroCrossingDetector extends LevelCrossingDetector {
 

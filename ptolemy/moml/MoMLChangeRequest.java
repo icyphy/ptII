@@ -77,6 +77,7 @@ Perhaps MoML should not permit inner classes.
 
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class MoMLChangeRequest extends ChangeRequest {
 

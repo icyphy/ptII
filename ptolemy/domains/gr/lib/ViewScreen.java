@@ -83,6 +83,7 @@ import java.util.Enumeration;
 /** A sink actor that renders the GR geometry into a display screen
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class ViewScreen extends GRActor implements Placeable {
 

@@ -39,6 +39,7 @@ variables.
 
 @author Jeff Tsay
 @version $Id$
+@since Ptolemy II 1.0
 */
 public interface LongBinaryOperation {
 

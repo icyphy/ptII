@@ -53,6 +53,7 @@ the tokens in the extra channels are lost.
 
 @author Jie Liu, Christopher Hylands
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class Sleep extends Transformer {
 

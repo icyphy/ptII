@@ -41,6 +41,7 @@ zero-order holds and impulses.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 0.4
 */
 public interface CTWaveformGenerator extends Actor{
 

@@ -46,6 +46,7 @@ Generate messages according to Poisson process.
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class DEMessageSource extends TypedAtomicActor {
 

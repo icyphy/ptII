@@ -60,6 +60,7 @@ type on the input.
 @see UpSample
 @author Steve Neuendorffer, Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class DownSample extends SDFTransformer {

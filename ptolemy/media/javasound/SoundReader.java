@@ -95,6 +95,7 @@ Note: Requires Java 2 v1.3.0 or later.
 
 @author Brian K. Vogel
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.media.javasound.SoundWriter
 */
 public class SoundReader {

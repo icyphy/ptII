@@ -58,6 +58,7 @@ the formats.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 @see PxgraphParser
 @see Plot
 */

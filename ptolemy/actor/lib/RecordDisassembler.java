@@ -66,6 +66,7 @@ record field.
 
 @author Yuhong Xiong
 @version $Id$
+@since Ptolemy II 1.0
 @see RecordAssembler
 @see ArrayElement
 */

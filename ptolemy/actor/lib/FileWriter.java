@@ -47,6 +47,7 @@ is given, then the values are written to the standard output.
 
 @author  Yuhong Xiong, Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
  */
 public class FileWriter extends ptolemy.actor.lib.Writer {
 

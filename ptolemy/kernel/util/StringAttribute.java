@@ -63,6 +63,7 @@ and you do not want to type a leading a trailing double quote.
 @see Settable#FULL
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class StringAttribute extends Attribute implements Settable {
 

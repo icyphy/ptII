@@ -58,6 +58,7 @@ DDDDotPz = -((DDotTM*Cos[th))/m) + (Dotth^2*TM*Cos[th))/m +
 
 @author  liuj
 @version $Id$
+@since Ptolemy II 0.4
 
 */
 public class XZHigherDerivatives extends TypedAtomicActor

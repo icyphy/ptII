@@ -86,6 +86,7 @@ resolve to anything.
 @see NonStrictTest
 @author Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class Test extends Sink {

@@ -54,6 +54,7 @@ currently that is not enforced by this class.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class Vertex extends Location {
 

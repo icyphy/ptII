@@ -39,6 +39,7 @@ import java.text.*;
 /**
 @author Brian Vogel
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class DecimalField extends JTextField {
     private NumberFormat format;

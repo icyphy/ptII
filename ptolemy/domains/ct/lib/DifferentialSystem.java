@@ -99,6 +99,7 @@ takes over the control of the actors contained by this actor.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.domains.ct.kernel.CTBaseIntegrator
 */
 public class DifferentialSystem extends TypedCompositeActor {

@@ -79,6 +79,7 @@ import ptolemy.kernel.util.Nameable;
    <p>
 @author Neil Smyth, Bilung Lee
 @version $Id$
+@since Ptolemy II 0.4
 @see ConditionalBranch
 @see ConditionalBranchActor
 @see ConditionalReceive

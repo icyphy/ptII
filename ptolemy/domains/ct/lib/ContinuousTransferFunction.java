@@ -87,6 +87,7 @@ use the LinearStateSpace actor.
 
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.domains.ct.kernel.CTBaseIntegrator
 */
 public class ContinuousTransferFunction extends TypedCompositeActor {

@@ -53,6 +53,7 @@ the caller.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.actor.Receiver
 */
 public abstract class AbstractReceiver implements Receiver {

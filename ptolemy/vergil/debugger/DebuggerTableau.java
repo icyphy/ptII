@@ -91,6 +91,7 @@ A debugging tableau for ptolemy models.
 
 @author  Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class DebuggerTableau extends Tableau {
 

@@ -63,6 +63,7 @@ class.
 
 @author Bart Kienhuis
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class MatrixViewer extends Sink implements Placeable {

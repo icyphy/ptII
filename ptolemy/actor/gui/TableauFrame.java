@@ -71,6 +71,7 @@ and this class specializes the base class for Ptolemy II.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public abstract class TableauFrame extends Top {
 

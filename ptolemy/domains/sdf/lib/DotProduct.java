@@ -58,6 +58,7 @@ firing, it produces exactly one token, which is of type ScalarToken.
 
 @author Jeff Tsay, Paul Whitaker
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class DotProduct extends TypedAtomicActor {

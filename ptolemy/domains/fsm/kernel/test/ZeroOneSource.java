@@ -46,6 +46,7 @@ This actor produces the sequence 011101011011000... as source of the AMI
 (Alternating Mark 1) test.
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class ZeroOneSource extends SequenceSource {
 

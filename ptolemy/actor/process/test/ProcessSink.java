@@ -46,6 +46,7 @@ and are correctly handled in cloned actors.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class ProcessSink extends Sink {

@@ -88,6 +88,7 @@ Prentice-Hall, Englewood Cliffs, NJ, 1988.
 @see ptolemy.domains.sdf.lib.VariableLattice
 @author Edward A. Lee, Christopher Hylands
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class Lattice extends Transformer {

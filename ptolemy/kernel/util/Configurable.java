@@ -65,6 +65,7 @@ first as closely as possible.
 
 @author Edward A. Lee, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.actor.CompositeActor
 @see ptolemy.actor.AtomicActor
 */

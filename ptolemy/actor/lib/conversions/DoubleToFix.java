@@ -67,6 +67,7 @@ integer part.
 @author Bart Kienhuis
 @contributor Edward A. Lee
 @version $Id$
+@since Ptolemy II 0.4
 @see ptolemy.math.Quantizer
 @see ptolemy.data.FixToken
 @see ptolemy.math.Precision

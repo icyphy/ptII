@@ -61,6 +61,7 @@ Use the SampleDelay actor to achieve a simple sample delay.
 @see SampleDelay
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class DelayLine extends SDFTransformer {

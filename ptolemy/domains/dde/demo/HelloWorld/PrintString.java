@@ -44,6 +44,7 @@ that it consumes.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class PrintString extends DDEActor {
 

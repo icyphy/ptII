@@ -47,6 +47,7 @@ graph. This actor will only have meaning in the GR domain.
 
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class Cylinder3D extends GRShadedShape {
 

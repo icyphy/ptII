@@ -49,6 +49,7 @@ This extends the base class by associating with it a Ptolemy II model.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public abstract class PtolemyFrame extends TableauFrame {
 

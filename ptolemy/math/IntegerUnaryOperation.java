@@ -38,6 +38,7 @@ type int. This interface attempts to mimic a first-class function of
 a single variable.
 @author Jeff Tsay
 @version $Id$
+@since Ptolemy II 1.0
 */
 public interface IntegerUnaryOperation {
 

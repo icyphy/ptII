@@ -67,6 +67,7 @@ and it sends output tokens of that type.
 @see DownSample
 @author Steve Neuendorffer, Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class UpSample extends SDFTransformer {

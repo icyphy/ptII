@@ -60,6 +60,7 @@ choosing a non-preemptive transition.
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 0.4
 @see Transition
 @see FSMActor
 @see FSMDirector

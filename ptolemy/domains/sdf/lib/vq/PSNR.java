@@ -49,6 +49,7 @@ output port as a DoubleToken.
 
 @author Michael Leung, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class PSNR extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified

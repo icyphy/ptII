@@ -54,6 +54,7 @@ class.
 
 @author  Edward A. Lee, Steve Neuendorffer, and John Reekie
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class GraphicalMessageHandler extends MessageHandler {
 

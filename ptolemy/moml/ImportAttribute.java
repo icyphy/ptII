@@ -43,6 +43,7 @@ This attribute represents an external file reference.
 
 @author  Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class ImportAttribute extends Attribute {
 

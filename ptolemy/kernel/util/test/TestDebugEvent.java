@@ -40,6 +40,7 @@ Class used to test DebugEvent
 
 @author  Christopher Hylands
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class TestDebugEvent implements DebugEvent {
 

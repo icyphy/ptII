@@ -85,6 +85,7 @@ to variables and parameters contained by the FSM actor.
 
 @author Xiaojun Liu and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 @see CommitActionsAttribute
 @see Transition
 @see FSMActor

@@ -51,6 +51,7 @@ rows of the matrix are expected to have the same number of columns.
 
 @author Jeff Tsay
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class FloatMatrixMath {
 

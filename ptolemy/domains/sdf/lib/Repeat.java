@@ -53,6 +53,7 @@ and hence affects the number of invocations of downstream actors.
 
 @author Shankar Rao, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class Repeat extends SDFTransformer {

@@ -69,6 +69,7 @@ controller.
 
 @author John S. Davis II
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.actor.process.Branch
 @see ptolemy.actor.process.BranchController
 

@@ -41,6 +41,7 @@ An interface representing the type of a Token.
 
 @author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public interface Type {

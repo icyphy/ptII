@@ -48,6 +48,7 @@ enumeration of base types.
 
 @author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 0.4
 */
 
 public abstract class BaseType implements Type, Serializable {

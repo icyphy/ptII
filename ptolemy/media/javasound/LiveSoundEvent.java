@@ -42,6 +42,7 @@ notify them about the change.
 
 @author Brian K. Vogel
 @version $Id$
+@since Ptolemy II 1.0
 @see LiveSoundListener
 */
 

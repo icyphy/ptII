@@ -72,6 +72,7 @@ name/type: value/double and id/int, then the output record will have type
 
 @author Michael Shilman
 @version $Id$
+@since Ptolemy II 1.0
 @see RecordAssembler
 */
 

@@ -41,6 +41,7 @@ import java.util.Enumeration;import ptolemy.domains.sdf.kernel.*;
  * streams.
  * @author Steve Neuendorffer
  * @version $Id$
+ * @since Ptolemy II 0.4
  */
 public class SDFTestSplit extends TypedAtomicActor {
     public SDFTestSplit(CompositeEntity container, String name)

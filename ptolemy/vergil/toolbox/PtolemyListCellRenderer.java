@@ -41,6 +41,7 @@ A list cell renderer for Ptolemy objects.
 
 @author Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class PtolemyListCellRenderer extends DefaultListCellRenderer {
 

@@ -44,6 +44,7 @@ import javax.swing.JMenuItem;
  *
  *  @author Steve Neuendorffer and Edward A. Lee
  *  @version $Id$
+ *  @since Ptolemy II 1.0
  */
 public interface MenuItemFactory {
 

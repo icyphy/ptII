@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 /**
 @author C. Fong
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class GRDebug {
 

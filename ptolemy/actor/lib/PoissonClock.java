@@ -84,6 +84,7 @@ the element type of the <i>values</i> parameter.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class PoissonClock extends TimedSource {

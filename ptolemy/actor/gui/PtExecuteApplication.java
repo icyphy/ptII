@@ -58,6 +58,7 @@ does nothing.
 
 @author Edward A. Lee and Steve Neuendorffer
 @version $Id$
+@since Ptolemy II 1.0
 @see ModelFrame
 @see RunTableau
 */

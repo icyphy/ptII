@@ -60,6 +60,7 @@ saved, if their sequence numbers are next.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class Sequencer extends Transformer implements SequenceActor {

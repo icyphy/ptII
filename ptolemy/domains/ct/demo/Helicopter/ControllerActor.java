@@ -93,6 +93,7 @@ The input of the actors are Tm, DTm, DDTm, A, Th, DTh, Vx, and Vz
 The outputs are DDDTm, and DA
 @author  Jie Liu
 @version $Id$
+@since Ptolemy II 0.4
 
 */
 public class ControllerActor extends TypedAtomicActor

@@ -61,6 +61,7 @@ The input and output both have type double.
 
 @author Bart Kienhuis and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class DB extends Transformer {

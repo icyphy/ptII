@@ -54,6 +54,7 @@ of EditParametersDialog is created.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.actor.gui.EditParametersDialog
 */
 public class EditParametersFactory implements MenuItemFactory {

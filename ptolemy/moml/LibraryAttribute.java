@@ -60,6 +60,7 @@ avoided if the library is not used.
 
 @author Edward A. Lee
 @version $Id$
+@since Ptolemy II 1.0
 */
 
 public class LibraryAttribute extends ConfigurableAttribute {

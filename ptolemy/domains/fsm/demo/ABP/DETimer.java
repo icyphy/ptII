@@ -43,6 +43,7 @@ The input sets the time interval before the next expire.
 
 @author Xiaojun Liu
 @version $Id$
+@since Ptolemy II 0.4
 */
 public class DETimer extends TypedAtomicActor {
 

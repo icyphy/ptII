@@ -57,6 +57,7 @@ import javax.swing.SwingUtilities; // for isEventDispatchThread()
 
  @author Christopher Hylands, based on code from Fusion Systems Group
  @version $Id$
+ @since Ptolemy II 1.0
  */
 public class PrintThreads {
 

@@ -86,6 +86,7 @@ Prentice Hall, 1989.
 @author Brian K. Vogel
 @author Aleksandar Necakov, Research in Motion Limited
 @version $Id$
+@since Ptolemy II 1.0
 */
 public class IIR extends Transformer {
 

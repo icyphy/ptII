@@ -41,6 +41,7 @@ type Complex. This interface attempts to mimic a first-class function of two
 variables.
 @author Jeff Tsay
 @version $Id$
+@since Ptolemy II 1.0
 */
 public interface ComplexBinaryOperation {
 

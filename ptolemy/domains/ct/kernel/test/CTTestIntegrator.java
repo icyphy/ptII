@@ -40,6 +40,7 @@ A wrapper of CTBaseIntegrator. The only purpose of this actor is
 that it is in the ct.lib package.
 @author Jie Liu
 @version $Id$
+@since Ptolemy II 1.0
 @see ptolemy.domains.ct.kernel.CTBaseIntegrator
 */
 public class CTTestIntegrator extends CTBaseIntegrator {
