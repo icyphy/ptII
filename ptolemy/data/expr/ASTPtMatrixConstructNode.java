@@ -92,7 +92,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                     double[][] val = new double[_nRows][_nColumns];
                     for (i = 0; i < nChildren; ++i) {
                         tok = DoubleToken.convert(childTokens[i]);
-                        val[i%_nColumns][i/_nColumns] = 
+                        val[i/_nColumns][i%_nColumns] = 
                                 ((DoubleToken)tok).doubleValue();
                     }
                     _ptToken = new DoubleMatrixToken(val);
