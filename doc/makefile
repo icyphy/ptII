@@ -120,7 +120,7 @@ ALLJSRCS =		ptolemy.plot \
 			ptolemy.lang.java \
 			ptolemy.lang.java.extended \
 			ptolemy.lang.java.nodetypes \
-			ptolemy.lang.tree \
+			ptolemy.lang.java.tree \
 			ptolemy.math \
 			ptolemy.media \
 			ptolemy.moml
