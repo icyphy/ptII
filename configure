@@ -20,7 +20,7 @@ ac_help="$ac_help
   --with-javacc=DIR       use JavaCC.zip from DIR,
                            defaults to \$PTII/vendors/sun/JavaCC"
 ac_help="$ac_help
-  --with-jtclsh=SCRIPT    tclsh is atY. jtclsh is
+  --with-jtclsh=SCRIPT    tclsh is at. jtclsh is
                            used for running the test scripts"
 
 # Initialize some variables set by options.
@@ -621,7 +621,7 @@ fi
 	else
 			    { echo "configure: error: 
 Java directory $DEFAULT_JDK doesn't exist.
-Try --with-java=DIR, or set the JAVA_HOME environment variable." 1>&2; exit 1; }
+Try --with-java=DIR, or set the PTJAVA_DIR environment variable." 1>&2; exit 1; }
 	fi	
     fi	
 fi
@@ -676,7 +676,7 @@ Be sure that you don't have a mismatch in JDK versions." 1>&2
 else
     { echo "configure: error: 
   Cannot find $PTJAVA_DIR/bin/java.
-  Try --with-java=DIR, or set the JAVA_HOME environment variable." 1>&2; exit 1; } 
+  Try --with-java=DIR, or set the PTJAVA_DIR environment variable." 1>&2; exit 1; } 
 fi
 
 
@@ -730,7 +730,7 @@ Be sure that you don't have a mismatch in JDK versions." 1>&2
 else
     { echo "configure: error: 
   Cannot find $PTJAVA_DIR/bin/javac.
-  Try --with-java=DIR, or set the JAVA_HOME environment variable." 1>&2; exit 1; }
+  Try --with-java=DIR, or set the PTJAVA_DIR environment variable." 1>&2; exit 1; }
 fi
 
 
@@ -803,9 +803,17 @@ echo "$ac_t""'$CLASSPATHSEPARATOR'" 1>&6
 #       if it is does not, look for javacc on the path.
 #--------------------------------------------------------------------
 
-echo $ac_n "checking for JavaCC""... $ac_c" 1>&6
-echo "configure:808: checking for JavaCC" >&5
-# Check whether --with-javacc or --without-javacc was given.
+# We only need to look for JavaCC if $PTII/ptolemy/data/expr exists
+if test ! -d "$PTII/ptolemy/data/expr"; then
+    echo "$ac_t""$PTII/ptolemy/data/expr is not present, so we need not
+find JavaCC" 1>&6
+    JAVACC_DIR=$PTII/vendors/sun/JavaCC
+    JAVACC=javacc
+    JJTREE=jjtree
+else
+    echo $ac_n "checking for JavaCC""... $ac_c" 1>&6
+echo "configure:816: checking for JavaCC" >&5
+    # Check whether --with-javacc or --without-javacc was given.
 if test "${with_javacc+set}" = set; then
   withval="$with_javacc"
   JAVACC_DIR=$withval
@@ -814,18 +822,18 @@ else
 fi
 
 
-if test "`uname -s`" = "CYGWIN_NT-4.0"; then
-    JJTREE='\$(JAVA) COM.sun.labs.jjtree.Main'
-    JAVACC='\$(JAVA) COM.sun.labs.javacc.Main'
-    echo "configure: warning: Be sure that your CLASSPATH includes JavaCC.zip" 1>&2;
-else
-    if test ! -d "$JAVACC_DIR"; then
-	echo "configure: warning: '${JAVACC_DIR}' is not a directory, 
+    if test "`uname -s`" = "CYGWIN_NT-4.0"; then
+	JJTREE='\$(JAVA) COM.sun.labs.jjtree.Main'
+	JAVACC='\$(JAVA) COM.sun.labs.javacc.Main'
+	echo "configure: warning: Be sure that your CLASSPATH includes JavaCC.zip" 1>&2;
+    else
+	if test ! -d "$JAVACC_DIR"; then
+	    echo "configure: warning: '${JAVACC_DIR}' is not a directory, 
 so we search for the jjtree command." 1>&2
-	# Extract the first word of "jjtree", so it can be a program name with args.
+	    # Extract the first word of "jjtree", so it can be a program name with args.
 set dummy jjtree; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:829: checking for $ac_word" >&5
+echo "configure:837: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JJTREE'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -853,49 +861,58 @@ else
   echo "$ac_t""no" 1>&6
 fi
 
-	if test -x "$JJTREE"; then	
-	    echo "$ac_t""$JJTREE" 1>&6;
-	    JAVACCBIN=`dirname $JJTREE`
-	    JAVACC_DIR=`dirname $JAVACCBIN`
-	else  	
-	    echo "configure: warning: Failed to find jjtree" 1>&2;
+	    if test -x "$JJTREE"; then	
+		echo "$ac_t""$JJTREE" 1>&6;
+		JAVACCBIN=`dirname $JJTREE`
+		JAVACC_DIR=`dirname $JAVACCBIN`
+	    else  	
+		echo "configure: warning: Failed to find jjtree" 1>&2;
+	    fi
+	fi	
+	if test -d "$JAVACC_DIR"; then
+	    echo "$ac_t""$JAVACC_DIR" 1>&6
+	    echo $ac_n "checking for jjtree""... $ac_c" 1>&6
+echo "configure:876: checking for jjtree" >&5
+	    if test -x "$JAVACC_DIR/bin/jjtree"; then
+		# Note that we don't substitute in the $(JAVACC_DIR) here
+		JJTREE='$(JAVACC_DIR)/bin/jjtree'
+		echo "$ac_t""$JJTREE" 1>&6
+	    else    
+		echo "configure: warning: Failed to find jjtree in '$JAVACC_DIR/bin'" 1>&2;
+	    fi    
+	    echo $ac_n "checking for javacc""... $ac_c" 1>&6
+echo "configure:885: checking for javacc" >&5
+	    if test -x "$JAVACC_DIR/bin/javacc"; then
+		# Note that we don't substitute in the $(JAVACC_DIR) here
+		JAVACC='$(JAVACC_DIR)/bin/javacc'
+		echo "$ac_t""$JAVACC" 1>&6
+	    else    
+		echo "configure: warning: Failed to find javacc in '$JAVACC_DIR/bin'" 1>&2;
+	    fi    
 	fi
-    fi	
-    if test -d "$JAVACC_DIR"; then
-	echo "$ac_t""$JAVACC_DIR" 1>&6
-	echo $ac_n "checking for jjtree""... $ac_c" 1>&6
-echo "configure:868: checking for jjtree" >&5
- 	if test -x "$JAVACC_DIR/bin/jjtree"; then
-	    # Note that we don't substitute in the $(JAVACC_DIR) here
-	    JJTREE='$(JAVACC_DIR)/bin/jjtree'
-	    echo "$ac_t""$JJTREE" 1>&6
-	else    
-	    echo "configure: warning: Failed to find jjtree in '$JAVACC_DIR/bin'" 1>&2;
-	fi    
-	echo $ac_n "checking for javacc""... $ac_c" 1>&6
-echo "configure:877: checking for javacc" >&5
- 	if test -x "$JAVACC_DIR/bin/javacc"; then
-	    # Note that we don't substitute in the $(JAVACC_DIR) here
-	    JAVACC='$(JAVACC_DIR)/bin/javacc'
-	    echo "$ac_t""$JAVACC" 1>&6
-	else    
-	    echo "configure: warning: Failed to find javacc in '$JAVACC_DIR/bin'" 1>&2;
-	fi    
     fi
-fi
 
-if test ! -d "$JAVACC_DIR"; then
+    if test ! -d "$JAVACC_DIR"; then
         echo "configure: warning: Failed to find javacc, perhaps JavaCC is not installed?
 You need not download JavaCC unless you plan on modifying certain files 
 in ptolemy/data/expr. 
 JavaCC can be downloaded from http://www.sun.com/suntest'" 1>&2
+    fi
 fi
 
 #--------------------------------------------------------------------
 #	See if there was a command-line option for where Tcl Blend is
 #--------------------------------------------------------------------
 
-# Check whether --with-jtclsh or --without-jtclsh was given.
+# We only need to find Tcl Blend if $PTII/util/testsuite
+# exists.  If we are shipping ptplot, then this directory might not
+# exist
+if test ! -d "$PTII/util/testsuite"; then
+    echo "$ac_t""$PTII/testsuite is not a directory, so we need not
+find Tcl Blend or Jacl" 1>&6
+    JTCLSH=jtclsh
+else
+    # Check whether --with-jtclsh or --without-jtclsh was given.
 if test "${with_jtclsh+set}" = set; then
   withval="$with_jtclsh"
   JTCLSH=$withval
@@ -903,15 +920,15 @@ else
   JTCLSH=jtclsh
 fi
 
-if test "$JTCLSH" != "jtclsh"; then
-    echo $ac_n "checking for jtclsh""... $ac_c" 1>&6
-echo "configure:909: checking for jtclsh" >&5
-    echo "$ac_t""$JTCLSH" 1>&6;
-else
-    # Extract the first word of "jtclsh", so it can be a program name with args.
+    if test "$JTCLSH" != "jtclsh"; then
+	echo $ac_n "checking for jtclsh""... $ac_c" 1>&6
+echo "configure:926: checking for jtclsh" >&5
+	echo "$ac_t""$JTCLSH" 1>&6;
+    else
+	# Extract the first word of "jtclsh", so it can be a program name with args.
 set dummy jtclsh; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:915: checking for $ac_word" >&5
+echo "configure:932: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JTCLSH'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -939,26 +956,26 @@ else
   echo "$ac_t""no" 1>&6
 fi
 
-    if test ! -x "$JTCLSH"; then	
-	echo "configure: warning: jtclsh not found, so we'll look for tclsh.
+	if test ! -x "$JTCLSH"; then	
+	    echo "configure: warning: jtclsh not found, so we'll look for tclsh.
 jtclsh is a startup script for Tcl Blend, which is used to run the test suite.
 You only need to have jtclsh or tclsh if you are planning on running
 the test suite.
 See http://www.scriptics.com/java for Tcl Blend sources and binaries." 1>&2
 
-	case "`uname -s`" in
-		CYGWIN_NT-4.0) DEFAULT_TCLSH=tclsh80;;
-		*) DEFAULT_TCLSH=tclsh;;
-	esac
-echo "DEFAULT_TCLSH=$DEFAULT_TCLSH"
-	# Apparently AC_PATH_PROGS fails if the path contains directories
-	# with spaces in their names.
-	for ac_prog in "tclsh80 tclsh8.0 tclsh tclsh80.exe"
+	    case "`uname -s`" in
+		    CYGWIN_NT-4.0) DEFAULT_TCLSH=tclsh80;;
+		    *) DEFAULT_TCLSH=tclsh;;
+	    esac
+	echo "DEFAULT_TCLSH=$DEFAULT_TCLSH"
+	    # Apparently AC_PATH_PROGS fails if the path contains directories
+	    # with spaces in their names.
+	    for ac_prog in "tclsh80 tclsh8.0 tclsh tclsh80.exe"
 do
 # Extract the first word of "$ac_prog", so it can be a program name with args.
 set dummy $ac_prog; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:962: checking for $ac_word" >&5
+echo "configure:979: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_TCLSH'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -990,15 +1007,15 @@ test -n "$TCLSH" && break
 done
 test -n "$TCLSH" || TCLSH="$DEFAULT_TCLSH"
 
-        if test ! -x "$TCLSH"; then	
-		echo "configure: warning: tclsh80 not found either,
-so we default to '$TCLSH'.
-tclsh is only necessary for the test suite." 1>&2;
-	fi
-	JTCLSH=$TCLSH
-   fi     
-fi 
-
+	    if test ! -x "$TCLSH"; then	
+		    echo "configure: warning: tclsh80 not found either,
+	so we default to '$TCLSH'.
+	tclsh is only necessary for the test suite." 1>&2;
+	    fi
+	    JTCLSH=$TCLSH
+	fi     
+    fi 
+fi
 
 # Keep these substitutions alphabetical, with a description
 
