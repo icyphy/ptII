@@ -106,13 +106,14 @@ include $(ROOT)/mk/ptcommon.mk
 
 $(PTMATLAB_LIB): ptmatlab.cc Engine.class
 	CLASSPATH="$(CLASSPATH)" javah -jni -o ptmatlab.h ptolemy.matlab.Engine
-	$(PTCC) -I$(MATLAB_DIR)/extern/include \
+	$(PTCC) -shared $(PTJNI_NO_CYGWIN) \
+		"-I$(MATLAB_DIR)/extern/include" \
 		"-I$(PTJAVA_DIR)/include" \
 		"-I$(PTJAVA_DIR)/include/$(PTJNI_ARCHITECTURE)" \
-		-fno-exceptions $(PTJNI_SHAREDLIBRARY_CFLAG) \
-		-c '$<'
-	$(PTCC) -shared -o $@ ptmatlab.o -L$(MATLAB_LIBDIR) $(PTJNI_SHAREDLIBRARY_LDFLAG) -lc -leng -lmx
-
+		$< \
+		-fno-exceptions \
+		-o HelloWorldImp.dll \
+		-L$(MATLAB_LIBDIR) $(PTJNI_SHAREDLIBRARY_LDFLAG) -lc -leng -lmx
 
 # Jar file for Web Start that contains the dll
 $(PTPACKAGE_NATIVE_JAR): $(PTMATLAB_LIB)
