@@ -86,7 +86,7 @@ public class TypeConstant implements InequalityTerm {
     }
 
     /** Throw an Exception since type constant cannot be initialized.
-     *  @exception IllegalActionException Alway thrown.
+     *  @exception IllegalActionException Always thrown.
      */
     public void initialize(Object e)
 	    throws IllegalActionException {
