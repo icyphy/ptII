@@ -35,8 +35,10 @@ import ptolemy.kernel.util.*;
 
 import java.util.Iterator;
 
+import java.util.List;
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.LinkedList;
+import java.util.Collections;
 
 //////////////////////////////////////////////////////////////////////////
 //// AtomicActor
@@ -181,21 +183,21 @@ public class AtomicActor extends ComponentEntity implements Actor {
         getDirector().initialize(this);
     }
 
-    /** Return an enumeration of the input ports.
+    /** List all the input ports.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of input IOPort objects.
+     *  @return A list of input IOPort objects.
      */
-    public Enumeration inputPorts() {
+    public List inputPortList() {
         if(_inputPortsVersion != _workspace.getVersion()) {
             try {
                 _workspace.getReadAccess();
                 // Update the cache.
-                LinkedList inports = new LinkedList();
+                List inports = new LinkedList();
                 Iterator ports = portList().iterator();
                 while(ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
                     if( p.isInput()) {
-                        inports.insertLast(p);
+                        inports.add(p);
                     }
                 }
                 _cachedInputPorts = inports;
@@ -204,7 +206,16 @@ public class AtomicActor extends ComponentEntity implements Actor {
                 _workspace.doneReading();
             }
         }
-        return _cachedInputPorts.elements();
+        return _cachedInputPorts;
+    }
+
+    /** Return an enumeration of the input ports.
+     *  This method is read-synchronized on the workspace.
+     *  @deprecated Use inputPortList() instead.
+     *  @return An enumeration of input IOPort objects.
+     */
+    public Enumeration inputPorts() {
+        return Collections.enumeration(inputPortList());
     }
 
     /** Create a new IOPort with the specified name.
@@ -250,11 +261,11 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return dir.newReceiver();
     }
 
-    /** Return an enumeration of the output ports.
+    /** List the output ports.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of output IOPort objects.
+     *  @return A list of output IOPort objects.
      */
-    public Enumeration outputPorts() {
+    public List outputPortList() {
         if(_outputPortsVersion != _workspace.getVersion()) {
             try {
                 _workspace.getReadAccess();
@@ -263,7 +274,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
                 while(ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
                     if( p.isOutput()) {
-                        _cachedOutputPorts.insertLast(p);
+                        _cachedOutputPorts.add(p);
                     }
                 }
                 _outputPortsVersion = _workspace.getVersion();
@@ -271,7 +282,16 @@ public class AtomicActor extends ComponentEntity implements Actor {
                 _workspace.doneReading();
             }
         }
-        return _cachedOutputPorts.elements();
+        return _cachedOutputPorts;
+    }
+
+    /** Return an enumeration of the output ports.
+     *  This method is read-synchronized on the workspace
+     *  @deprecated Use outputPortList() instead.
+     *  @return An enumeration of output IOPort objects.
+     */
+    public Enumeration outputPorts() {
+        return Collections.enumeration(outputPortList());
     }
 
     /** Return true.  Derived classes override this method to define
@@ -412,9 +432,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @exception IllegalActionException If any port throws it.
      */
     private void _createReceivers() throws IllegalActionException {
-        Enumeration inputPorts = inputPorts();
-        while (inputPorts.hasMoreElements()) {
-            IOPort inport = (IOPort)inputPorts.nextElement();
+        Iterator inputPorts = inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort inport = (IOPort)inputPorts.next();
             inport.createReceivers();
         }
     }
@@ -424,7 +444,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;
-    private transient LinkedList _cachedInputPorts;
+    private transient List _cachedInputPorts;
     private transient long _outputPortsVersion = -1;
-    private transient LinkedList _cachedOutputPorts;
+    private transient List _cachedOutputPorts;
 }

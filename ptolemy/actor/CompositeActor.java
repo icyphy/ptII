@@ -34,12 +34,15 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
 import java.util.Iterator;
-
 import java.util.Enumeration;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Collections;
+
 import java.io.IOException;
 import java.io.Writer;
 
-import collections.LinkedList;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CompositeActor
@@ -202,9 +205,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
                         "Cannot fire a non-opaque actor.");
             }
             // Use the local director to transfer inputs.
-            Enumeration inports = inputPorts();
-            while(inports.hasMoreElements()) {
-                IOPort p = (IOPort)inports.nextElement();
+            Iterator inports = inputPortList().iterator();
+            while(inports.hasNext()) {
+                IOPort p = (IOPort)inports.next();
                 _director.transferInputs(p);
             }
             // Note that this is assured of firing the local director,
@@ -213,9 +216,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
             // Use the executive director to transfer outputs.
             Director edir = getExecutiveDirector();
             if (edir != null) {
-                Enumeration outports = outputPorts();
-                while(outports.hasMoreElements()) {
-                    IOPort p = (IOPort)outports.nextElement();
+                Iterator outports = outputPortList().iterator();
+                while(outports.hasNext()) {
+                    IOPort p = (IOPort)outports.next();
                     edir.transferOutputs(p);
                 }
             }
@@ -344,32 +347,45 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** Return an enumeration of the input ports of this actor.
+    /** List the input ports of this actor.
      *  Note that this method returns the ports directly
      *  contained by this actor, whether they are transparent or not.
      *  This method is read-synchronized on the workspace.
-     *  @return An enumeration of IOPort objects.
+     *  @return A list of IOPort objects.
      */
-    public Enumeration inputPorts() {
+    public List inputPortList() {
         try {
             _workspace.getReadAccess();
             if(_inputPortsVersion != _workspace.getVersion()) {
                 // Update the cache.
-                LinkedList inports = new LinkedList();
+                List inports = new LinkedList();
                 Iterator ports = portList().iterator();
                 while(ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
                     if( p.isInput()) {
-                        inports.insertLast(p);
+                        inports.add(p);
                     }
                 }
                 _cachedInputPorts = inports;
                 _inputPortsVersion = _workspace.getVersion();
             }
-            return _cachedInputPorts.elements();
+
+            return _cachedInputPorts;
+
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Return an enumeration of the input ports of this actor.
+     *  Note that this method returns the ports directly
+     *  contained by this actor, whether they are transparent or not.
+     *  This method is read-synchronized on the workspace.
+     *  @deprecated Use inputPortList() instead.
+     *  @return An enumeration of IOPort objects.
+     */
+    public Enumeration inputPorts() {
+        return Collections.enumeration(inputPortList());
     }
 
     /** Return true if this actor contains a local director.
@@ -465,7 +481,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  This method is read-synchronized on the workspace.
      *  @return An enumeration of IOPort objects.
      */
-    public Enumeration outputPorts() {
+    public List outputPortList() {
         try {
             _workspace.getReadAccess();
             if(_outputPortsVersion != _workspace.getVersion()) {
@@ -474,15 +490,26 @@ public class CompositeActor extends CompositeEntity implements Actor {
                 while(ports.hasNext()) {
                     IOPort p = (IOPort)ports.next();
                     if( p.isOutput()) {
-                        _cachedOutputPorts.insertLast(p);
+                        _cachedOutputPorts.add(p);
                     }
                 }
                 _outputPortsVersion = _workspace.getVersion();
             }
-            return _cachedOutputPorts.elements();
+            return _cachedOutputPorts;
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Return an enumeration of the output ports.
+     *  Note that this method returns the ports directly
+     *  contained by this actor, whether they are transparent or not.
+     *  This method is read-synchronized on the workspace.
+     *  @deprecated Use outputPortList() instead.
+     *  @return An enumeration of IOPort objects.
+     */
+    public Enumeration outputPorts() {
+        return Collections.enumeration(outputPortList());
     }
 
     /** If this actor is opaque, invoke the postfire() method of its
@@ -884,7 +911,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
 
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;
-    private transient LinkedList _cachedInputPorts;
+    private transient List _cachedInputPorts;
     private transient long _outputPortsVersion = -1;
-    private transient LinkedList _cachedOutputPorts;
+    private transient List _cachedOutputPorts;
 }
