@@ -117,7 +117,8 @@ public class PlotApplication extends PlotFrame {
     }
 
     /** Construct a plot with the specified command-line arguments
-     *  and instance of plot.
+     *  and instance of plot.  If there are no command-line arguments,
+     *  then display a sample plot.
      *  @param plot The instance of Plot to use.
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
@@ -154,15 +155,15 @@ public class PlotApplication extends PlotFrame {
         }
         setVisible(true);
     }
-
     
-    /** Construct an application to view the given plot
+    /** Display the given plot.  Unlike the two argument constructor,
+     *  this does not take command-line arguments, and does not fill
+     *  the plot with a sample plot.
      *  @param plot The instance of Plot to display.
-     *  @exception Exception If command line arguments have problems.
      */
     public PlotApplication(PlotBox plot) {
 
-        // invoke the base class constructor and pass in the argument a Plot
+        // Invoke the base class constructor and pass in the argument a Plot
         // object. This makes sure that the plot field is an instance of
         // Plot class.
         super("PlotApplication", plot);

@@ -38,27 +38,24 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Rectangle;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.awt.print.Paper;
+import java.awt.RenderingHints;
 import java.io.*;
 import java.net.*;
 import java.text.*;
 import java.util.*;
 import javax.swing.*;
-
-import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-
-
 
 // TO DO:
 //   - Augment getColorByName to support a full complement of colors
@@ -333,95 +330,6 @@ public class PlotBox extends JPanel implements Printable {
         _legendDatasets = new Vector();
     }
 
-
-
-	// I wanted the ability to use the Plot object in a servlet and to write out the resultant images.
-	// the following routines, particularly exportImage, permit this.  
-	// I also had to make some minor changes elsewhere.
-	// Rob Kroeger, May 2001
-
-
-	/**
-		Setups up a default set of rendering hints for image export.
-	*/
-	private RenderingHints setupImageRenderingHints() {
-		RenderingHints rh = new RenderingHints(null);
-		rh.put(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		return rh;
-	}
-
-
-	/**
-		Creates a BufferedImage and draws the plot to it.
-		@return a BufferedImage object of the plot.
-	*/
-	public synchronized BufferedImage exportImage() {
-		Rectangle rect = new Rectangle(_preferredWidth, _preferredHeight);
-		return exportImage(
-			new BufferedImage(rect.width, rect.height, BufferedImage.TYPE_INT_ARGB),
-			rect,
-			setupImageRenderingHints(), 
-			false);
-	}
-
-	/**
-		Creates a BufferedImage from the given rectangle and draws the plot to it.
-		@param rect specifies the size of the plot as a Rectangle object
-		@return a BufferedImage object of the plot.
-	*/
-	public synchronized BufferedImage exportImage(Rectangle rect) {
-		return exportImage(
-			new BufferedImage(rect.width, rect.height, BufferedImage.TYPE_INT_ARGB),
-			rect,
-			setupImageRenderingHints(), 
-			false);
-	}
-	
-	/**
-		Permits the user to specify the image to draw
-		This is the most general purpose routine.  It can be coerced (by adjusting the rectangle) to
-		paint a number of different plots onto a single buffered image.
-		@param bim is a BufferedImage that the plot is drawn onto
-		@param rect specifies the size (and position) of the plot in the BufferedImage
-		@param rh are a set of rendering hints for this plot.
-		@param transparent if true indicates that the background of the plot should not be painted.
-		@return an image (which is the same as the parameter.)
-	*/
-	public synchronized BufferedImage exportImage(
-			BufferedImage bim, 
-			Rectangle rect, 
-			RenderingHints rh, 
-			boolean transparent) 
-	{
-		Graphics2D g2d = bim.createGraphics();
-		// Rectangle rect = new Rectangle(bim.getWidth(), bim.getHeight());
-		g2d.addRenderingHints(setupImageRenderingHints());
-		if( !transparent ) {
-			g2d.setColor(Color.white);	// set the background color
-			g2d.fill(rect);
-		}
-		_drawPlot(g2d, false , rect);
-		return bim;
-	}
-
-
-	/**
-		Draw the plot onto the provided image.
-		I assume that if an image is provided that the code should <em>not</em> paint
-		the background.  The rectangle is computed from the BufferedImage and the 
-		plot is always generated antialiased.
-		@param bim is a BufferedImage.
-		@return the same BufferedImage.
-	*/
-	public synchronized BufferedImage exportImage(BufferedImage bim) {
-		return exportImage(
-			bim, 
-			new Rectangle(bim.getWidth(), bim.getHeight()), 
-			setupImageRenderingHints(), 
-			true);
-	}
-	
-
     /** Export a description of the plot.
      *  Currently, only EPS is supported.  But in the future, this
      *  may cause a dialog box to open to allow the user to select
@@ -445,6 +353,103 @@ public class PlotBox extends JPanel implements Printable {
             // and so the stack trace is displayed on standard out.
             throw (RuntimeException)ex.fillInStackTrace();
         }
+    }
+
+    // CONTRIBUTED CODE.
+    // I wanted the ability to use the Plot object in a servlet and to
+    // write out the resultant images. The following routines,
+    // particularly exportImage(), permit this. I also had to make some
+    // minor changes elsewhere. Rob Kroeger, May 2001.
+
+    // NOTE: This code has been modified by EAL to conform with Ptolemy II
+    // coding style.
+
+    /** Create a BufferedImage and draw this plot to it.
+     *  The size of the returned image matches the current size of the plot.
+     *  This method can be used, for
+     *  example, by a servelet to produce an image, rather than
+     *  requiring an applet to instantiate a PlotBox.
+     *  @return An image filled by the plot.
+     */
+    public synchronized BufferedImage exportImage() {
+        Rectangle rectangle = new Rectangle(_preferredWidth, _preferredHeight);
+        return exportImage(
+                new BufferedImage(
+                    rectangle.width,
+                    rectangle.height,
+                    BufferedImage.TYPE_INT_ARGB),
+                rectangle,
+                _defaultImageRenderingHints(), 
+                false);
+    }
+
+    /** Create a BufferedImage the size of the given rectangle and draw
+     *  this plot to it at the position specified by the rectangle.
+     *  The plot is rendered using anti-aliasing.
+     *  @param rectangle The size of the plot. This method can be used, for
+     *  example, by a servelet to produce an image, rather than
+     *  requiring an applet to instantiate a PlotBox.
+     *  @return An image containing the plot.
+     */
+    public synchronized BufferedImage exportImage(Rectangle rectangle) {
+        return exportImage(
+                new BufferedImage(
+                    rectangle.width,
+                    rectangle.height,
+                    BufferedImage.TYPE_INT_ARGB),
+                rectangle,
+                _defaultImageRenderingHints(), 
+                false);
+    }
+	
+    /** Draw this plot onto the specified image at the position of the
+     *  specified rectangle with the size of the specified rectangle.
+     *  The plot is rendered using anti-aliasing.
+     *  This can be used to paint a number of different
+     *  plots onto a single buffered image.  This method can be used, for
+     *  example, by a servelet to produce an image, rather than
+     *  requiring an applet to instantiate a PlotBox.
+     *  @param bufferedImage Image onto which the plot is drawn.
+     *  @param rectangle The size and position of the plot in the image.
+     *  @param hints Rendering hints for this plot.
+     *  @param transparent Indicator that the background of the plot
+     *   should not be painted.
+     *  @return The modified bufferedImage.
+     */
+    public synchronized BufferedImage exportImage(
+            BufferedImage bufferedImage, 
+            Rectangle rectangle, 
+            RenderingHints hints, 
+            boolean transparent) {
+        Graphics2D graphics = bufferedImage.createGraphics();
+        graphics.addRenderingHints(_defaultImageRenderingHints());
+        if( !transparent ) {
+            graphics.setColor(Color.white);	// set the background color
+            graphics.fill(rectangle);
+        }
+        _drawPlot(graphics, false , rectangle);
+        return bufferedImage;
+    }
+
+    /**	Draw this plot onto the provided image.
+     *  This method does not paint the background, so the plot is
+     *  transparent.  The plot fills the image, and is rendered
+     *  using anti-aliasing.  This method can be used to overlay
+     *  multiple plots on the same image, although you must use care
+     *  to ensure that the axes and other labels are identical.
+     *  Hence, it is usually better to simply combine data sets into
+     *  a single plot.
+     *  @param bufferedImage The image onto which to render the plot.
+     *  @return The modified bufferedImage.
+     */
+    public synchronized BufferedImage exportImage(BufferedImage bufferedImage) {
+        return exportImage(
+                bufferedImage, 
+                new Rectangle(
+                    bufferedImage.getWidth(),
+                    bufferedImage.getHeight()), 
+                _defaultImageRenderingHints(), 
+                true);
     }
 
     /** Rescale so that the data that is currently plotted just fits.
@@ -1435,16 +1440,6 @@ public class PlotBox extends JPanel implements Printable {
         }
     }
 
-
-	/**
-		Abstracts out the handling of the size of the plot.
-	*/
-	protected synchronized void _drawPlot(Graphics graphics, boolean clearfirst) {
-		Rectangle mybounds = getBounds();
-		_drawPlot(graphics,clearfirst,mybounds);
-	}
-	
-
     /** Draw the axes using the current range, label, and title information.
      *  If the second argument is true, clear the display before redrawing.
      *  This method is called by paintComponent().  To cause it to be called
@@ -1458,13 +1453,31 @@ public class PlotBox extends JPanel implements Printable {
      *  @param graphics The graphics context.
      *  @param clearfirst If true, clear the plot before proceeding.
      */
-    protected synchronized void _drawPlot(Graphics graphics, boolean clearfirst, Rectangle drawRect) {
+    protected synchronized void _drawPlot(
+            Graphics graphics, boolean clearfirst) {
+        Rectangle bounds = getBounds();
+        _drawPlot(graphics, clearfirst, bounds);
+    }
+
+    /** Draw the axes using the current range, label, and title information,
+     *  at the size of the specified rectangle.
+     *  If the second argument is true, clear the display before redrawing.
+     *  This method is called by paintComponent().  To cause it to be called
+     *  you would normally call repaint(), which eventually causes
+     *  paintComponent() to be called.
+     *  <p>
+     *  Note that this is synchronized so that points are not added
+     *  by other threads while the drawing is occurring.  This method
+     *  should be called only from the event dispatch thread, consistent
+     *  with swing policy.
+     *  @param graphics The graphics context.
+     *  @param clearfirst If true, clear the plot before proceeding.
+     *  @param drawRect A specification of the size.
+     */
+    protected synchronized void _drawPlot(
+            Graphics graphics, boolean clearfirst, Rectangle drawRect) {
         // Ignore if there is no graphics object to draw on.
         if (graphics == null) return;
-        
-//		if(drawRect == null ) {
-//			drawRect = new Rectangle(_width, _height);
-//		}
 
         graphics.setPaintMode();
 
@@ -2799,6 +2812,16 @@ public class PlotBox extends JPanel implements Printable {
             start = comma + 1;
             comma = line.indexOf(",",start);
         }
+    }
+
+    /** Return a default set of rendering hints for image export, which
+     *  specifies the use of anti-aliasing.
+     */
+    private RenderingHints _defaultImageRenderingHints() {
+        RenderingHints hints = new RenderingHints(null);
+        hints.put(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        return hints;
     }
 
     /*

@@ -1049,14 +1049,14 @@ public class Plot extends PlotBox {
      *  with swing policy.
      *  @param graphics The graphics context.
      *  @param clearfirst If true, clear the plot before proceeding.
-     *  @param drawRect The Rectangle to draw in.
+     *  @param drawRectangle The Rectangle to draw in.
      */
     protected synchronized void _drawPlot(Graphics graphics,
-            boolean clearfirst, Rectangle drawRect) {
+            boolean clearfirst, Rectangle drawRectangle) {
 
         // We must call PlotBox._drawPlot() before calling _drawPlotPoint
         // so that _xscale and _yscale are set.
-        super._drawPlot(graphics, clearfirst, drawRect);
+        super._drawPlot(graphics, clearfirst, drawRectangle);
 
         // Plot the points in reverse order so that the first colors
         // appear on top.
