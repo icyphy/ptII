@@ -72,6 +72,7 @@ public class PNRedirect extends PNStar{
             for(i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
                 data = readFrom(_input);
                 writeTo(_output, data);
+                System.out.println(this.getName()+" writes "+data+" to "+_output.getName()+"\n");
             }
         } catch (TerminationException e) {
             return;
