@@ -24,11 +24,13 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
+
+import java.util.LinkedList;
 
 import ptolemy.domains.de.kernel.*;
 import ptolemy.kernel.CompositeEntity;
@@ -36,27 +38,29 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import ptolemy.actor.lib.Transformer;
-import ptolemy.actor.lib.SequenceActor;
-import ptolemy.actor.lib.TimedActor;
-import ptolemy.actor.*;
-import ptolemy.actor.util.FIFOQueue;
+import ptolemy.actor.TypedIOPort;
 
 //////////////////////////////////////////////////////////////////////////
 //// PreemptableTask
 /**
 This actor implements a preemptable task.  The <i>executionTime</i>
 parameter specifies the time it takes to execute the task.  When a
-token is received on the <i>input</i> port, the value is stored in the
+token is received on the <i>input</i> port, the token is stored in the
 actor and the actor is scheduled to fire at <i>executionTime</i> time
 units later.  When the <i>interrupt</i> port receives a token, and the
 value is true, this task is "preempted."  Later, when the value of the
 token on the <i>interrupt</i> port becomes false, the elapsed time is
 calculated and added to the execution time of the task.  The actor is
-scheduled to fire at this new execution time.  The saved input value
-is emitted when the new execution time has passed.
+scheduled to fire at this new execution time.  The saved token is
+emitted when the new execution time has passed.  Subsequent input
+tokens are queued until the actor is done processing the current input
+token.
 
-<p>
+<p>This method of queueing tokens inside of the actor results in a
+cleaner design that queuing tokens in the receiver.  Queueing tokens
+in the receiver requires keeping track of the many states that result
+from the interaction between tokens on the input ports and whether the
+actor is currently executing a task or is currently interrupted.
 
 @author Elaine Cheong and Yang Zhao and Xiaojun Liu
 @version $Id$
@@ -75,12 +79,9 @@ public class PreemptableTask extends DETransformer {
     public PreemptableTask(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        output.setTypeAtLeast(input);
         interrupt = new TypedIOPort(this, "interrupt", true, false);
         interrupt.setTypeEquals(BaseType.BOOLEAN);
-
         executionTime = new Parameter(this, "executionTime", new DoubleToken(1.0));
-
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,7 +112,7 @@ public class PreemptableTask extends DETransformer {
             throws IllegalActionException {
         if (attribute == executionTime) {
             double time =
-                    ((DoubleToken)(executionTime.getToken())).doubleValue();
+                ((DoubleToken)(executionTime.getToken())).doubleValue();
             if (time < 0.0) {
                 throw new IllegalActionException(this,
                         "Cannot have negative execution time: " + time);
@@ -128,18 +129,17 @@ public class PreemptableTask extends DETransformer {
      *  @exception CloneNotSupportedException If a derived class has
      *   has an attribute that cannot be cloned.
      */
-    /*
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        //PreemptableTask newObject = (PreemptableTask)super.clone(workspace);
-        //newObject._queue = new FIFOQueue();
-        //newObject.output.setTypeAtLeast(newObject.input);
-        //return newObject;
+        // FIXME: Is this clone method necessary?
+        PreemptableTask newObject = (PreemptableTask)super.clone(workspace);
+        newObject.output.setTypeAtLeast(newObject.input);
+        return newObject;
     }
-     */
     
-    /**  When a token is received on the <i>input</i> port, the value
-     *   is stored in the actor and the actor is scheduled to fire at
+    /**  When the actor is in a non-executing and non-interrupted
+     *   state, and there is an available input token, begin execution
+     *   of the task by scheduling the actor to fire at
      *   <i>executionTime</i> time units later.  When the
      *   <i>interrupt</i> port receives a token, and the value is
      *   true, this task is "preempted."  Later, when the value of the
@@ -153,40 +153,83 @@ public class PreemptableTask extends DETransformer {
     public void fire() throws IllegalActionException {
         double curr_time = ((DEDirector)getDirector()).getCurrentTime();
         DEDirector director = (DEDirector)getDirector();
-        
-        if(input.hasToken(0)) {
-            _savedInputValue = ((DoubleToken)input.get(0)).doubleValue();
-            _outputTime =  curr_time + ((DoubleToken)(executionTime.getToken())).doubleValue();
+
+        // If there is an input and actor is in a non-executing and non-interrupted state.
+        if (_tokenList.size() > 0 && !_executing && !_interrupted) {
+            _executing = true;
+            _outputTime = curr_time + ((DoubleToken)(executionTime.getToken())).doubleValue();
             director.fireAt(this, _outputTime);
-            _hasOutput = true;
-        } if (interrupt.hasToken(0)) {
+        }
+
+        // If there is an interrupt.
+        if (interrupt.hasToken(0)) {
             boolean intr = ((BooleanToken)interrupt.get(0)).booleanValue();
             if (intr) {
                 _interruptTime = curr_time;
                 _interrupted = true;
             } else {
-                if (_interrupted && _hasOutput) {
-                    _interrupted = false;
+                _interrupted = false;
+                if (_executing) {
                     double delay_time = curr_time - _interruptTime;
                     _outputTime += delay_time;
                     director.fireAt(this, _outputTime);
                 }
             }
         }
-            
+    }
+                    
+    /** Indicate that the task in non-interrupted, non-executing
+     *  state.  Also create a new linked list to store input tokens.
+     *  @exception IllegalActionException If the base class throws it.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+
+        _executing = false;
+        _interruptTime = 0.0;
+        _interrupted = false;
+        _outputTime = 0.0;
+
+        _tokenList = new LinkedList();
+    }
+
+    /** If the task receives a token on the <i>input</i> port, queue
+     *  it inside of the actor.  Return true.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        DEDirector director = (DEDirector)getDirector();
+        double curr_time = director.getCurrentTime();
+
+        if (input.hasToken(0)) {
+            _tokenList.add(input.get(0));
+        }
+        return true;
     }
 
    /**  If the execution time of the task has passed, emit the saved
-     *  input value.
+     *  input value.  If the actor is in a non-executing and
+     *  non-interrupted state, and there are more input tokens to
+     *  process, schedule the actor to fire again.
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        if (_hasOutput) {
-            double curr_time = ((DEDirector)getDirector()).getCurrentTime();
+        DEDirector director = (DEDirector)getDirector();
+        double curr_time = director.getCurrentTime();
+
+        if (_executing && !_interrupted) {
             if (curr_time >= _outputTime) {
-                DoubleToken newToken = new DoubleToken(_savedInputValue);
-                output.send(0, newToken);
-                _hasOutput = false;
+                output.send(0, (Token)_tokenList.removeFirst());
+                _executing = false;
+            }
+        }
+
+        // We put this in a separate "if" statement to account for the
+        // case where we receive an input token while in an
+        // interrupted state.
+        if (!_executing && !_interrupted) {
+            if (_tokenList.size() > 0) {
+                director.fireAt(this, curr_time);
             }
         }
         return super.postfire();
@@ -197,19 +240,19 @@ public class PreemptableTask extends DETransformer {
 
     // If true, the actor received a token on the input port and has not yet
     // emitted the corresponding output.
-    boolean _hasOutput = false;
-
+    private boolean _executing = false;
+    
     // Records the time at which a token arrives on the interrupt port
     // (the time at which the task is interrupted).
-    double _interruptTime = 0;
+    private double _interruptTime = 0.0;
 
-    // If true, the task has been interrupted .
-    boolean _interrupted = false;
+    // If true, the task has been interrupted.
+    private boolean _interrupted = false;
 
     // Records the time at which the output should be
     // emitted (execution time + any elapsed interrupt time).
-    double _outputTime = 0;
+    private double _outputTime = 0.0;
 
-    // Saves the value of the input token.
-    double _savedInputValue;
+    // Queue of saved input tokens.
+    private LinkedList _tokenList;
 }
