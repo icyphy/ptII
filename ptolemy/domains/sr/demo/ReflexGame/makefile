@@ -1,7 +1,8 @@
-# Makefile for PtolemyII SR Domain
+# Makefile for Ptolemy II SR ReflexGame demo
+#
+# @Authors: Christopher Hylands (makefile only)
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
 #
 # @Copyright (c) 2000-2001 The Regents of the University of California.
 # All rights reserved.
@@ -28,52 +29,55 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sr
+ME =		ptolemy/domains/sr/demo/ReflexGame
 
-DIRS =		kernel lib demo
+# Root of the Java directory
+ROOT =		../../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-
 # Used to build jar files
-PTPACKAGE = 	sr
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTPACKAGE =
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		kernel/kernel.jar \
-		lib/lib.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+EXTRA_SRCS = \
+	ReflexGame.xml \
+	$(JSRCS)
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel lib
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo
-#	doc
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
-all: jclass
-install: jclass
+JCLASS = $(JSRCS:%.java=%.class)
 
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass #$(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
+
+
+install: all
+
+demo: demo_ptolemy demo_vergil
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" ReflexGame.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" ReflexGame.xml
+
+depend:
+	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
-
-
-
-
-
