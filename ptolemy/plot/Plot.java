@@ -139,11 +139,14 @@ import java.util.*;
  * <i>x</i>,<i>y</i>
  * draw: <i>x</i>,<i>y</i>
  * move: <i>x</i>,<i>y</i>
+ * <i>x</i>,<i>y</i>,<i>ylow</i>,<i>yhigh</i>
  * </pre>
  * The "draw" command is optional, so the first two forms are equivalent.
  * The "move" command causes a break in connected points, if lines are
  * being drawn between points. The numbers <i>x</i> and <i>y</i> are
  * arbitrary numbers as supported by the Double parser in Java.
+ * If there are four numbers, then the last two numbers are assumed to
+ * be the lower and upper values for error bars.
  * The numbers can be separated by commas, spaces or tabs. 
  *
  * This plotter has some limitations:
@@ -179,6 +182,25 @@ public class Plot extends PlotBox {
     public synchronized void addPoint(int dataset, double x, double y,
             boolean connected) {
         _addPoint(_graphics, dataset, x, y, connected);
+    }
+    
+    /**
+     * In the specified data set, add the specified x,y point to the
+     * plot with error bars.  Data set indices begin with zero.  If
+     * the dataset argument is out of range, ignore.  The number of
+     * data sets is given by calling *setNumSets()*.  yLow and yHigh
+     * are the lower and upper error bars.  The sixth argument
+     * indicates whether the point should be connected by a line to
+     * the previous point.
+     * This method is based on a suggestion by
+     * Michael Altmann <michael@email.labmed.umn.edu>.
+     */
+    public synchronized void addPointWithErrorBars(int dataset,
+            double x, double y, double yLow, double yHigh, boolean connected) {
+        addPoint(dataset, x, y, connected);
+        addPoint(dataset, x, yLow, false);
+        addPoint(dataset, x, yHigh,true);
+        addPoint(dataset, x, y, false);
     }
     
     /**
@@ -1256,29 +1278,48 @@ public class Plot extends PlotBox {
                 // a connected point, if connect is enabled.
                 line = line.substring(4, line.length()).trim();
             }
-            // See if an x,y or x<Space>y x<Taby> point is given
             line = line.trim();
-            int fieldsplit = line.indexOf(",");
-            if (fieldsplit == -1) {
-                fieldsplit = line.indexOf(" ");
-            }
-            if (fieldsplit == -1) {
-                fieldsplit = line.indexOf(" ");  // a tab
-            }
-
-            if (fieldsplit > 0) {
-                String x = (line.substring(0, fieldsplit)).trim();
-                String y = (line.substring(fieldsplit+1)).trim();
-                try {
-                    Double xpt = new Double(x);
-                    Double ypt = new Double(y);
-                    connected = _addLegendIfNecessary(connected);
-                    addPoint(_currentdataset, xpt.doubleValue(),
-                            ypt.doubleValue(), connected);
-                    return true;
-                } catch (NumberFormatException e) {
-                    // ignore if format is bogus.
+            StringBufferInputStream inp =
+                new StringBufferInputStream(line);
+            // StringBufferInput is deprecated, but StringReader is not in1.0.2
+            //StringReader inp = new StringReader(pxgraphargs);
+            try {
+                StreamTokenizer stoken = new StreamTokenizer(inp);// Deprecated
+                stoken.whitespaceChars(0, ','); // comma is whitespace
+                int c = stoken.nextToken();
+                // If we get an error, we silently ignore it.
+                if (stoken.ttype == StreamTokenizer.TT_NUMBER) {
+                    double xpt = stoken.nval;
+                    c = stoken.nextToken();
+                    if (stoken.ttype == StreamTokenizer.TT_NUMBER) {
+                        double ypt = stoken.nval;
+                        c = stoken.nextToken();
+                        if (stoken.ttype != StreamTokenizer.TT_NUMBER) {
+                            // We have x and y, now add the point.
+                            connected = _addLegendIfNecessary(connected);
+                            addPoint(_currentdataset, xpt, ypt, connected);
+                            return true;
+                        } else {
+                            // If there are two more numbers, assume that
+                            // they are y values for the error bars.
+                            if (stoken.ttype == StreamTokenizer.TT_NUMBER) {
+                                double yLow = stoken.nval;
+                                c = stoken.nextToken();
+                                if (stoken.ttype ==
+                                    StreamTokenizer.TT_NUMBER) {
+                                    double yHigh = stoken.nval;
+                                    connected =
+                                        _addLegendIfNecessary(connected);
+                                    addPointWithErrorBars(_currentdataset,
+                                            xpt, ypt, yLow, yHigh, connected);
+                                    return true;
+                                }
+                            }
+                        }
+                    }
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         return false;
