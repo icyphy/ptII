@@ -40,6 +40,7 @@ import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
+import ptolemy.domains.sdf.kernel.SDFUtilities;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -207,14 +208,14 @@ public class HDFDirector extends SDFDirector {
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort)inputPorts.next();
                 int rate =
-                    SDFScheduler.getTokenConsumptionRate(inputPort);
+                    SDFUtilities.getTokenConsumptionRate(inputPort);
                 rates = rates + String.valueOf(rate);
             }
             Iterator outputPorts = _outputPortList.iterator();
             while (outputPorts.hasNext()) {
                 IOPort outputPort = (IOPort)outputPorts.next();
                 int rate =
-                    SDFScheduler.getTokenProductionRate(outputPort);
+                    SDFUtilities.getTokenProductionRate(outputPort);
                 rates = rates + String.valueOf(rate);
             }
             String rateKey = rates;
@@ -472,8 +473,10 @@ public class HDFDirector extends SDFDirector {
         _scheduleKeyList = new ArrayList(cacheSize);
         _externalRatesCache = new TreeMap();
         _externalRatesKeyList = new ArrayList(cacheSize);
+
         allowRateChanges.setToken(BooleanToken.TRUE);
         allowRateChanges.setVisibility(Settable.EXPERT);
+        allowRateChanges.setPersistent(false);
     }
 
     // Hash maps for the schedule cache.
