@@ -56,6 +56,7 @@ JSRCS = \
 	FastForwardFlowAnalysis.java \
 	ImprovedDeadAssignmentEliminator.java \
 	InstanceEqualityEliminator.java \
+	GenerateCode.java \
 	JimpleWriter.java \
 	KernelMain.java \
 	MaybeAliasAnalysis.java \
