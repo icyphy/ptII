@@ -40,13 +40,6 @@ if {[string compare test [info procs test]] == 1} then {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
-# If a file contains non-graphical tests, then it should be named .tcl
-# If a file contains graphical tests, then it should be called .itcl
-#
-# It would be nice if the tests would work in a vanilla itkwish binary.
-# Check for necessary classes and adjust the auto_path accordingly.
-#
-
 # NOTE:  All of the following tests use this director,
 # pretty much as a dummy.
 set director [java::new ptolemy.actor.Director]
@@ -216,6 +209,7 @@ test CompositeActor-7.1 {Test clone and description} {
 } relations {
 }}
 
+
 ######################################################################
 ####
 #
@@ -313,6 +307,7 @@ test CompositeActor-10.1 {Test wormhole data transfers} {
   in .E0.E2.IDEN.output} {ptolemy.kernel.util.IllegalActionException: Port is not an input port!
   in .E0.E2.P3} 1 {"foo"}}
 
+
 ######################################################################
 #### 
 #
@@ -325,3 +320,4 @@ test CompositeActor-10.1 {Test all actor list} {
     list [listToFullNames [$e0 allAtomicEntityList]]
 } {{.E0.E1 .E0.E3 .E0.E2.IDEN .E0.E2.E5}}
 #FIXME: test _removeEntity (using setContainer null).
+
