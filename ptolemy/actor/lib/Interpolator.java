@@ -71,7 +71,7 @@ Interpolation class.
 This actor counts iterations.  Whenever the iteration count matches an entry
 in the <i>indexes</i> array, the corresponding entry (at the same position)
 in the <i>values</i> array is produced at the output.  Whenever the iteration
-dount does not match a value in the <i>indexes</i> array, an interpolation
+count does not match a value in the <i>indexes</i> array, an interpolation
 of the values is produced at the output.
 <p>
 Output type is DoubleToken.
