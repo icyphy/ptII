@@ -42,6 +42,7 @@ Bilung
 Blackdown
 CELLPADDING
 CELLSPACING
+CLASSNAME
 CLASSPATH
 COPYRIGHTENDKEY
 CORBA
@@ -58,8 +59,10 @@ Conexant
 Cory
 Cygwin
 DATABITS
+DOCTYPE
 Dataflow
 Davey
+Debuggable
 Dequeue
 Desampling
 Desktop
@@ -75,6 +78,7 @@ FFCT
 FFT
 FIXME
 FSM
+FULLNAME
 Feedforward
 Fishwick
 Fong
@@ -161,6 +165,7 @@ Messerschmitt
 Miniconference
 Misra
 Misra's
+MoML
 Mogensen
 Mozilla
 Mudit
@@ -435,6 +440,8 @@ mkpasswd
 moml
 msdn
 mudit
+name1
+name2
 namespace
 nbsp
 nbsp;&nbsp
