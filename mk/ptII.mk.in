@@ -353,6 +353,10 @@ PTTINI_DIR =	@PTINI_DIR@
 # Set to waba and used in $PTII/ptolemy/makefile if the PalmOS WABA was found
 PTWABA_DIR =	@PTWABA_DIR@
 
+# Set to x10 and used in
+# $PTII/ptolemy/apps/superb/makefile if the X10 jar files were found
+PTX10_DIR =	@PTX10_DIR@
+
 # Location of the diva.jar file.  Diva is (among other things) a graph
 # visualization tool used by some of the demos.  For more information, see
 # http://www-cad.eecs.berkeley.edu/diva/
