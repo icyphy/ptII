@@ -165,8 +165,8 @@ printPortType $addOut;;
 printPortType $plotIn;;
 
 
-puts stdout {-----------------------------------------}
-
 # Run it
+puts stdout {-----------------------------------------}
+puts stdout {Running...}
 $exec startRun
 
