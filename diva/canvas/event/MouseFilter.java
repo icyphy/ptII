@@ -129,7 +129,7 @@ public class MouseFilter {
      * and modifier keys. The three arguments must be constructed using
      * the button and modifier masks defined by
      * java.awt.event.MouseEvent. More than one button can be specified,
-     * in which case the filter will accept events triggerd by any of
+     * in which case the filter will accept events triggered by any of
      * them. The mask argument filters out modifiers that will be
      * ignored; the filter will accept modifier sets that, after
      * masking, exactly match modifiers.
@@ -145,7 +145,7 @@ public class MouseFilter {
      * and modifier keys. The three arguments must be constructed using
      * the button and modifier masks defined by
      * java.awt.event.MouseEvent. More than one button can be specified,
-     * in which case the filter will accept events triggerd by any of
+     * in which case the filter will accept events triggered by any of
      * them. The mask argument filters out modifiers that will be
      * ignored; the filter will accept modifier sets that, after
      * masking, exactly match modifiers.  The MouseFilter will only react to
