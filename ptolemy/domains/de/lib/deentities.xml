@@ -18,7 +18,7 @@
 
 <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.integral</configure>
+<configure>generic.transformer</configure>
 </rendition>
 </entity>
 
