@@ -57,7 +57,7 @@ public class Server extends CSPActor {
     public Server() throws IllegalActionException, NameDuplicationException {
         super();
         _rate = new Parameter(this, "serviceRate", (new DoubleToken(1)) );
-        input = new IOPort(this, "input", true, false);
+        _input = new IOPort(this, "input", true, false);
     }
 
     public Server(CompositeActor cont, String name)
@@ -69,7 +69,7 @@ public class Server extends CSPActor {
         throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         _rate = new Parameter(this, "serviceRate", (new DoubleToken(rate)) );
-         input = new IOPort(this, "input", true, false);
+        _input = new IOPort(this, "input", true, false);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ public class Server extends CSPActor {
         double interval = 0;
         try {
             while (count < 10 ) {
-                Token t = input.get(0);
+                Token t = _input.get(0);
                 double rate = ((DoubleToken)_rate.getToken()).doubleValue();
                 // exponential distribution parameterised by rate.
                 interval = Math.exp(-(rand.nextDouble())*rate);
@@ -107,12 +107,9 @@ public class Server extends CSPActor {
     }
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
-
-   public IOPort input;
-
-    ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
+    private IOPort _input;
+    
     private Parameter _rate;
 }
