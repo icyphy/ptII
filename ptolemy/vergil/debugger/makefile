@@ -18,7 +18,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = Breakpoint.java \
 	BreakpointEditor.java \
-	Watchers.java \
 	ActorWatcher.java \
 	DebugController.java \
 	DebuggerFrame.java \
@@ -35,6 +34,30 @@ MISC_FILES =
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	$(PTCLASSJAR) \
+	'BreakpointEditor$$1.class' \
+	'BreakpointEditor$$2.class' \
+	'BreakpointEditor$$3.class' \
+	'BreakpointEditor$$4.class' \
+	'BreakpointEditor$$5.class' \
+	'DebuggerFrame$$1.class' \
+	'DebuggerFrame$$2.class' \
+	'DebuggerFrame$$3.class' \
+	'DebuggerFrame$$4.class' \
+	'DebuggerFrame$$5.class' \
+	'DebuggerFrame$$6.class' \
+	'DebuggerFrame$$7.class' \
+	'DebuggerFrame$$8.class' \
+	'DebuggerFrame$$9.class' \
+	'DebuggerFrame$$10.class' \
+	'DebuggerFrame$$11.class' \
+	'DebuggerFrame$$12.class' \
+	'DebuggerFrame$$13.class' \
+	'DebuggerFrame$$14.class' \
+	'DebuggerFrame$$15.class' \
+	'DebuggerTableau$$Factory.class' \
+	'DisplayList$$1.class' \
+	'DisplayList$$2.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
