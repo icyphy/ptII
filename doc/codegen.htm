@@ -7,6 +7,33 @@
 </head>
 <body>
 <h1>Code Generation</h1>
+<h2>Contents</h2>
+
+<menu>
+<li><a href="#overview">Overview</a>
+<li><a href="#deep">Deep Code Generation</a>
+ <menu>
+ <li><a href="#deepDemo">Deep Code Generation Demonstration</a>
+ <li><a href="#treeShaking">Tree Shaking</a>
+ <li><a href="#gcj">GCJ</a>
+ </menu>
+<li><a href="#shallow">Shallow Code Generation</a>
+ <menu>
+ <li><a href="#shallowDemo">Shallow Code Generation Demonstration</a>
+ </menu>
+<li><a href="#applet">Applet Code Generation</a>
+ <menu>
+ <li><a href="#appletDemo">Applet Code Generation Demonstration</a>
+ </menu>
+<li><a href="#interpreted">Interpreted Code Generation</a>
+<li><a href="#ui">The Code Generator User Interface</a>
+<li><a href="#history">Code Generation History</a>
+<li><a href="#soot">Soot</a>
+<li><a href="#future">Future Plans</a>
+<li><a href="#resources">Resources</a>
+</menu>
+
+<h2><a name="overview">Overview</a></h2>
 <p>
 Ptolemy II includes the very beginnings a code generation framework.
 Currently, there are four types of code generators:
@@ -61,7 +88,7 @@ discussed below:
   </menu>
 </menu>
 
-<h2><a name="deep">Deep Code Generation Demonstration</a></h2>
+<h2><a name="deep">Deep Code Generation</a></h2>
 Deep code generation is by the most interesting of the code generators
 so we cover it first.  Stephen Neuendorffer is the primary author of
 the deep code generator.
@@ -88,7 +115,7 @@ working on C code generation for Ptolemy II Models using Soot, but
 his work is still under development and not being released at this time.
 For details about the status of the C code generation effort, see
 the reports on the Ptolemy II website at
-<a href="http://ptolemy.eecs.berkeley.edu/projects"><code>http://ptolemy.eecs.berkeley.edu/projects</code></a>
+<a href="http://ptolemy.eecs.berkeley.edu/projects" target="_top"><code>http://ptolemy.eecs.berkeley.edu/projects</code></a>
 
 <p><a name="deepLimitations">Deep code generation has the following
 limitations:</a>
@@ -112,7 +139,7 @@ for an individual actor using a codeblock.
 </menu>
 
 
-<p>Below is a simple demonstration:
+<p><a name="deepDemo">Below is a simple demonstration:</a>
 <ol>
 <li> Open up the
 <a href="../ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml">SDF Orthogonal Communication Model</a>
@@ -268,7 +295,88 @@ information about disassemblers.
 
 </menu>
 
-<h2><a name="shallow">Shallow code generation</a></h2>
+<h3><a name="treeShaking">Tree Shaking</a></h3>
+Tree shaking is a form of optimization where a system is run
+and unused code is removed.  Tree shaking is one way of
+reducing the code foot print, which is especially important
+in embedded applications with small amounts of memory.
+
+<p>The deep code generator includes a prototype tree shaker that
+is implemented using a shell script at
+<code>$PTII/util/testsuite/treeshake</code>.
+(This script requires shell utilities, so it will probably
+only work when Ptolemy II was built from scratch, it is not likely
+to work under Web Start.)
+<p>The treeshaker runs the model using
+<code>java -v</code> to generate a list of classes, creates a jar
+file using those classes, and then runs the model using the new jar file.
+
+<p>The <code>treeShakeAll</code> rule in 
+<code>$PTII/ptolemy/copernicus/java/makefile</code> runs 
+<code>treeshake</code>:
+<ul>
+<li> on the standard .xml file, which is similar to using the
+<code>interpreted</code> code generator
+<li> The various intermediate stages of the deep compiler
+<li> The final output of the deep compiler
+</ul>
+At the end, the <code>treeShakeAll</code> rule prints out the sizes
+of the jar files.  For the OrthogonalCom demo, the standard
+interepreted run treeshakes down to a 570k jar file, and the final
+output is a 283k jar file.
+
+<p>The 283k jar file uncompresses in to about 657k of files, distributed
+as follows:
+<pre>
+1	ptolemy/actor/lib
+1	ptolemy/actor
+37	ptolemy/copernicus/java/cg/OrthogonalCom
+37	ptolemy/copernicus/java/cg
+37	ptolemy/copernicus/java
+37	ptolemy/copernicus
+153	ptolemy/data/expr
+90	ptolemy/data/type
+399	ptolemy/data
+59	ptolemy/graph
+19	ptolemy/kernel/util
+19	ptolemy/kernel
+142	ptolemy/math
+657	ptolemy
+</pre>
+
+Once we have token unboxing, we should be able to eliminate the ptolemy/data 
+packages, which account for 399k of the 657k.
+
+<p>The treeshaking script performs tree shaking on a per class basis,
+where if one method from a class is reported in the <code>java -v</code>
+output, then the entire class is included.
+
+Another optimization would be to do tree shaking on a per
+method basis, which would result in further reductions, especially
+in the ptolemy/math package.
+
+<h3><a name="gcj">GCJ</a></h3>
+
+GCJ is the GNU compiler for Java.  GCJ reads in .java or .class files
+and generates native code.  Building GCJ is a fairly complex task,
+and as of 1/02, GCJ would not build under Cygwin because the Windows file
+system is badly designed and case insensitive but case preserving.
+
+<p>Under Solaris 8 with GCJ installed in <code>/users/ptII/vendors/gcj</code>,
+we were able to build a native OrthogonalCom
+executable that ran about 20% faster
+than the regular deep code generation output:
+
+<pre>
+set path = ( /users/ptII/vendors/gcj/bin $path)
+setenv LD_LIBRARY_PATH /users/ptII/vendors/gcj/lib:/usr/local/lib
+cd $PTII/ptolemy/copernicus
+make gcj
+</pre>
+GCJ support in Ptolemy II is extremely experimental and not likely to work.
+
+
+<h2><a name="shallow">Shallow Code Generation</a></h2>
 
 Shallow code generation converts a model that has been specified in
 MoML (typically using Vergil) into a Java class definition.  This class
@@ -280,7 +388,7 @@ the Ptolemy II tree.
 <p>We primarily use shallow code generation as a test bed
 for the code generation facility itself.  
 
-<p>Below is a simple demonstration
+<p><a name="shallowDemo">Below is a simple demonstration:</a>
 <ol>
 <li> Open up the
 <a
@@ -320,7 +428,8 @@ Which is almost half the 661 ms. that the interpreted version ran for
 The shallow code generator does not have any shallow specific limitations.
 
 
-<h2><a name="applet">Applet code generation</a></h2>
+<h2><a name="applet">Applet Code Generation</a></h2>
+
 <p>The Applet code generator takes a model and creates HTML files for 
 use as a web based applet.  
 
@@ -358,7 +467,7 @@ display <CODE>MyModel.xml</CODE> graphically, using ptolemy.vergil.VergilApplet 
 
 </dl>
 
-Below is a simple demonstration:
+<p><a name="appletDemo">Below is a simple demonstration:</a>
 <ol>
 <li> Open up the
 <a
@@ -382,10 +491,17 @@ generates code in
 <li>It would be nice if the applet code generator would bundle
 up the necessary class files in a single jar file so that
 it was easier to install an applet
+<li>The applet code generator should read the value of the
+<code>_vergilSize</code> attribute and use it when generating
+the <code><i>xxx</i>Model.htm</code> file.
+<li>The applet code generator should grab the top level text
+annotations from the MoML file and use them as comments.
+<li>If the model is a FSM modal Model, then diva.jar
+is not included automatically.
 </menu>
 
-<h2><a name="interpreted">Interpreted code generation</a></h2>
-The interpreted code generator is really not a code generator at all!
+<h2><a name="interpreted">Interpreted Code Generation</a></h2>
+The interpreted code generator is really not a code generator.
 It reads in a MoML file and writes out a MoML file, with very little
 processing.  The interpreted code generator is used as to compare 
 the performance of the other code generators.
@@ -394,7 +510,7 @@ the performance of the other code generators.
 The interpreted code generator does not have any interpreted specific limitations.
 <p><p><p>
 
-<h2>The code generator user interface</h2>
+<h2><a name="ui">The Code Generator User Interface</a></h2>
 Christopher Hylands and Professor Edward A. Lee developed an initial
 draft of a graphical user interface to control code generation.  
 
@@ -476,7 +592,7 @@ parameter evaluated to.
 
 </menu>
  
-<h2>Code Generation History</h2>
+<h2><a name="history">Code Generation History</a></h2>
 
 <h3>Ptolemy Classic code generation</h3>
 
@@ -598,33 +714,41 @@ an AST and generating .class files, we can generate code for any
 processor by either writing a new back end, or using a native Java
 compiler like gcj.
 
-<h2>Future Plans</h2>
+<h2><a name="future">Future Plans</a></h2>
 <menu>
 <li> Deep code generation needs to have the tokens unboxed so
 that it no longer depends on ptolemy.data
 <li> Generating C code from a Ptolemy Model is in progress.
 <li> We have demonstrated that the Ptolemy code generation framework can
 be used to generate FGPA code using
-JHDL from Brigham Young University (<a href="http://www.jhdl.org"><code>http://www.jhdl.org</code></a>
-<menu>
+JHDL from Brigham Young University (<a href="http://www.jhdl.org" target="_top"><code>http://www.jhdl.org</code></a>)
+</menu>
 
-<h2>Resources</h2>
+<h2><a name="resources">Resources</a></h2>
 Below are links to various resources:
+
+Soot uses jasmin
+<menu>
+<li> <a href="http://found.cs.nyu.edu/meyer/jasmin/" target="_top">Jasmin</a> 
+a Java Assembler Interface (1997)
+<li> <a
+href="http://www.geocrawler.com/archives/3/338/1996/8/0/1876595/" target="_top">Jasmin
+emacs mode</a>
+</menu>
 
 <h3><a name="disassemblers">Disassemblers</a></h3>
 Soot works with byte codes.  A Java decompiler or disassembler 
 can help with debugging
 <dl>
 <dt> <CODE>jode</CODE>
-<dd> <a href="http://jode.sourceforge.net/download.php"
-target="_top">http://jode.sourceforge.net/download.php</a> - Written
+<dd> <a href="http://jode.sourceforge.net/download.php" target="_top">http://jode.sourceforge.net/download.php</a> - Written
 in Java, but full GPL, so we can't distribute it.
 <CODE>$PTII/bin/configure</CODE> looks for jode in 
 <CODE>$PTII/vendors/jode/1.1.1</CODE>, and if it finds it, then
 <CODE>$PTII/bin/jode</CODE> can be used to invoke jode.
 
 <ol>
-<li> Download <a href="http://prdownloads.sourceforge.net/jode/jode-1.1.1.jar"></a>
+<li> Download <a href="http://prdownloads.sourceforge.net/jode/jode-1.1.1.jar"><code>http://prdownloads.sourceforge.net/jode/jode-1.1.1.jar</code></a>
 and save it as <CODE>$PTII/ptolemy/vendors/jode/1.1.1/jode.jar</CODE>
 
 <li> Rerun configure:
@@ -678,12 +802,10 @@ Other possibilities:
 </menu>
 
 
-<h2>Java To C converters</h2>
-<dl>
+<h3>Java To C converters</h3>
 <dl>
 <dt> Java Coffee Break Decompiler links
 <dd> <a href="http://www.javacoffeebreak.com/directory/index(32).html" target="_top"><CODE>http://www.javacoffeebreak.com/directory/index(32).html</CODE></a>
-</dl>
 
 <dt> GCJ - The GNU Compiler for Java
 <dd> <a href="http://gcc.gnu.org/java/" target="_top"><CODE>http://gcc.gnu.org/java/</CODE></a>: JDK1.2 compliant
@@ -701,26 +823,14 @@ Other possibilities:
 
 
 <dt> Harissa
-<dd> <a href="http://www.irisa.fr/compose/harissa/harissa.html" target="_top"><CODE>http://www.irisa.fr/compose/harissa/harissa.html</CODE></a>: 1999: JDK1.0.2?
+<dd> <a href="http://compose.labri.fr/prototypes/harissa" target="_top"><code>http://compose.labri.fr/prototypes/harissa</code></a>: 1999: JDK1.0.2?
 
 
 <dt> Toba: A Java-to-C Translater
 <dd> <a href="http://www.cs.arizona.edu/sumatra/toba/" target="_top"><CODE>http://www.cs.arizona.edu/sumatra/toba/</CODE></a>: Does not support JDK1.2
 
-<dt> JCC
-<dd> <a href="http://www.geocities.com/CapeCanaveral/Hangar/4040/jcc.html" target="_top"><CODE>http://www.geocities.com/CapeCanaveral/Hangar/4040/jcc.html</CODE></a>: 1997, probably does not support JDK1.2
-
-
 </dl>
 
-<h2>Misc</h2>
-<menu>
-<li> <a href="http://found.cs.nyu.edu/meyer/jasmin/">Jasmin</a> 
-a Java Assembler Interface (1997)
-<li> <a
-href="http://www.geocrawler.com/archives/3/338/1996/8/0/1876595/">Jasmin
-emacs mode</a>
-</menu>
 </body>
 </html>
 
