@@ -181,18 +181,18 @@ public class ButtonTime extends WallClockTime implements Placeable {
      */
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                if (_button != null) {
-                    if (_container != null) {
-                        _container.remove(_button);
-                        _container.invalidate();
-                        _container.repaint();
-                    } else if (_frame != null) {
-                        _frame.dispose();
+                public void run() {
+                    if (_button != null) {
+                        if (_container != null) {
+                            _container.remove(_button);
+                            _container.invalidate();
+                            _container.repaint();
+                        } else if (_frame != null) {
+                            _frame.dispose();
+                        }
                     }
                 }
-            }
-        });
+            });
     }
 
     ///////////////////////////////////////////////////////////////////
