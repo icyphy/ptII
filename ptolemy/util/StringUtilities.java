@@ -506,12 +506,28 @@ public class StringUtilities {
             // The +1 is to skip over the delimitter after $CLASSPATH.
             String trimmedName = name.substring(_CLASSPATH_VALUE.length() + 1);
             if (classLoader == null) {
-                classLoader = ClassLoader.getSystemClassLoader();
+                try {
+                    // WebStart: We might be in the Swing Event thread, so
+                    // Thread.currentThread().getContextClassLoader()
+                    // .getResource(entry) probably will not work so we
+                    // use a marker class.
+                    Class refClass =
+                        Class.forName("ptolemy.kernel.util.NamedObj");
+                    classLoader = refClass.getClassLoader();
+                } catch (Exception ex) {
+                    // IOException constructor does not take a cause  
+                    IOException ioException =
+                        new IOException("Cannot find file '" + trimmedName 
+                                + "' in classpath");
+                    ioException.initCause(ex);
+                    throw ioException;
+                }
             }
+            // Use Thread.currentThread()... for Web Start.
             URL result = classLoader.getResource(trimmedName);
             if (result == null) {
-                throw new IOException(
-                        "Cannot find file in classpath: " + name);
+                new IOException("Cannot find file '" + trimmedName 
+                        + "' in classpath");
             }
             return result;
         }
