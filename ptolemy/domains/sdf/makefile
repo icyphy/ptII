@@ -40,7 +40,6 @@ VPATH =		$(ROOT)/$(ME)
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 
-JFLAGS =
 
 include $(CONFIG)
 
