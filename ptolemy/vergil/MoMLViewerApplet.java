@@ -125,6 +125,20 @@ public class MoMLViewerApplet extends MoMLApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Read the model from the <i>modelURL</i> applet parameter
+     *  and do not filter out any graphical classes.
+     *  @param workspace The workspace in which to create the model.
+     *  @param filterGraphicalClasses  If true, then filter out graphical
+     *  classes that might require diva.jar to be in the classpath
+     *  @return A model.
+     *  @exception Exception If something goes wrong.
+     */
+    protected NamedObj _createModel(Workspace workspace)
+            throws Exception {
+	// Do not filter out graphical classes.
+	return _createModel(workspace, false);
+    }
+
     /** Override the base class to create a schematic view instead of
      *  a ModelPane.  If the toplevel model created by _createModel()
      *  is not an instance of CompositeEntity, then do nothing.
