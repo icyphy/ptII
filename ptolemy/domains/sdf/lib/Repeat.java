@@ -161,7 +161,7 @@ public class Repeat extends SDFTransformer {
      *  @see ptolemy.actor.IOPort#hasToken(int, int)
      */
     public boolean prefire() throws IllegalActionException {
-        int length = ((IntToken)numberOfTimes.getToken()).intValue();
+        int length = ((IntToken)blockSize.getToken()).intValue();
 	return input.hasToken(0, length);
     }
 }
