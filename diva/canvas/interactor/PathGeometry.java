@@ -83,7 +83,7 @@ public class PathGeometry implements Geometry {
      */
     private int _coordCount;
 
-    /** The array of coordinates of vertices and contol points, in
+    /** The array of coordinates of vertices and control points, in
      * the same format as for GeneralPath
      */
     private float[] _coordinate = new float[4];
