@@ -137,8 +137,13 @@ public class PortConfigurerDialog extends ComponentDialog
                 }
             }
         } else if (buttonPressed().equals("Help")) {
+            // Documentation used by classes should be in a subpackage
+            // of the class so that it is easier to ship the class.
+            // Having the documentation in a different package hierarchy
+            // adds package dependencies, which makes it harder to ship
+            // packages.
             URL toRead = getClass().getClassLoader().getResource(
-                    "ptolemy/configs/doc/portDialog.htm");
+                    "ptolemy/actor/gui/doc/portDialog.htm");
             if (toRead != null && configuration != null) {
                 try {
                     configuration.openModel(
