@@ -8,7 +8,7 @@ software and its documentation for any purpose, provided that the above
 copyright notice and the following two paragraphs appear in all copies
 of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE L IABLE TO ANY PARTY
 FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
@@ -242,7 +242,7 @@ public class DEDirector extends Director {
     ////                         parameters                        ////
 
     /** The start time of model. This parameter must contain a
-     *  DoubleToken.  The value defaults to 0.0.
+     *  DoubleToken.  The value defaults to -1*MaxDouble.
      */
     public Parameter startTime;
 
@@ -693,41 +693,10 @@ public class DEDirector extends Director {
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-        if (!_isEmbedded() && getStartTime() > getStopTime()) {
-            throw new IllegalActionException(this,
-                    " startTime (" + getStartTime()
-                    + ") must be less than the stopTime ("
-                    + getStopTime() + ").");
-        }
+        super.initialize();
         _exceedStopTime = false;
-        // Note: If it is embedded, it should get the current time from its
-        // executive director. Modified by yang.
-        if (_isEmbedded()) {
-            Nameable container = getContainer();
-            if (container instanceof Actor) {
-                setCurrentTime(((Actor)container).
-                    getExecutiveDirector().getCurrentTime());
-            }
-        } else {
-            setCurrentTime(getStartTime());
-        }
         _realStartTime = System.currentTimeMillis();
-        // We cannot call super.initialize() since it will set current time
-        // back to 0.0
-        Iterator actors = ((CompositeActor)getContainer())
-            .deepEntityList().iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
-            if (_debugging) _debug("Invoking initialize(): ",
-                    ((NamedObj)actor).getFullName());
-            actor.initialize();
-        }
-        // Request a firing to the outer director if the queue is not empty.
-        if (_isEmbedded() && !_eventQueue.isEmpty()) {
-            if (_debugging) _debug("DE director requests refiring" +
-                    " because of nonempty event queue.");
-            _requestFiring();
-        }
+        fireAt((Actor)getContainer(), getStopTime());
     }
 
     /** Indicate that the topological depth of the ports in the model may
@@ -761,11 +730,24 @@ public class DEDirector extends Director {
         if (_debugging) {
             _debug("DE director postfiring!");
         }
+        // stop when event queue is empty
         boolean stop = ((BooleanToken)stopWhenQueueIsEmpty.getToken())
             .booleanValue();
-        if (_noMoreActorsToFire && (stop || _exceedStopTime)) {
+        // if no more actors will be fired (i.e. event queue is empty) 
+        // and either of the following conditions satisfy:
+        // 1. stop when event queue is empty
+        // 2. current time equals the stop time
+        if (_noMoreActorsToFire && (stop || 
+            getCurrentTime() == getStopTime())) {
+            _exceedStopTime = true;
+            return false;
+        } else if (getCurrentTime() > getStopTime()) {
+            // If the current time is bigger than the stop time, 
+            // stop the model execution.
             return false;
         } else if (_isEmbedded() && !_eventQueue.isEmpty()) {
+            // if the event queue is not empty and the container is an
+            // embedded model, ask the upper director to refire the container.
             _requestFiring();
         }
 //        System.out.println(getContainer().getName() +
@@ -1006,26 +988,63 @@ public class DEDirector extends Director {
 
         // Keep taking events out until there are no more event with the same
         // tag or until the queue is empty, or until a stop is requested.
+        // LOOPLABEL::GetNextEvent
         while (!_stopRequested) {
-            // Get the next event off the event queue.
+            // Get the next event from the event queue.
             if (_stopWhenQueueIsEmpty) {
                 if (_eventQueue.isEmpty()) {
-                    // Nothing more to read from queue.
+                    // If the event queue is empty, 
+                    // jump out of the loop: LOOPLABEL::GetNextEvent
+                    break;
+                }
+            }
+            
+            if (!_isTopLevel()) {
+                // If the directory is in an embedded model
+                if (_eventQueue.isEmpty()) {
+                    // FIXME: under which condition, will this hapen?
                     break;
                 } else {
                     nextEvent = (DEEvent)_eventQueue.get();
+                    // An embedded director should process an event 
+                    // that only happens at the current time.
+                    // If the event is in the past, that is an error.
+                    if (nextEvent.timeStamp() < getCurrentTime()) {
+                        //missed an event
+                        throw new InternalErrorException("Missed an" +
+                            " event " + nextEvent.timeStamp() 
+                            + " at time " + getCurrentTime() + "!");
+                    }
+                    // If the event is in the future, it is ignored
+                    // and will be processed later.
+                    if (nextEvent.timeStamp() > getCurrentTime()) {
+                        //reset the next event
+                        nextEvent = null;
+                        break;
+                    }
                 }
-            } else if (!_isTopLevel() && _eventQueue.isEmpty()) {
-                // FIXME: changed by liuxj, to be reviewed
-                // Should the behavior depend on whether the container
-                // is a "source"?
-                // This essentially disables the stopWhenQueueIsEmpty
-                // parameter for DE directors not at the top level.
-                break;
             } else {
-                // In this case we want to do a blocking read of the queue,
-                // unless we have already found an actor to fire.
-                if (actorToFire != null && _eventQueue.isEmpty()) break;
+                // If the director is at the top level
+
+                // If the event queue is empty, 
+                // a blocking read is performed on the queue.
+                
+                // However, there are two conditions that the blocking 
+                // read is not performed, which are checked below.
+                if (_eventQueue.isEmpty()) {
+                    // The two conditions are:
+                    // 1. An actor to be fired has been found.
+                    // 2. There are no more events in the event queue,
+                    // and the current time is the stop time. 
+                    if (actorToFire != null || 
+                        (getCurrentTime() == getStopTime())) {
+                        // jump out of the loop: LOOPLABEL::GetNextEvent
+                        break;
+                    }
+                }
+                
+                // Otherwise, if the event queue is empty, 
+                // a blocking read is performed on the queue.
                 while (_eventQueue.isEmpty() && !_stopRequested) {
                     if (_debugging) {
                         _debug("Queue is empty. Waiting for input events.");
@@ -1054,31 +1073,40 @@ public class DEDirector extends Director {
                         }
                     } // Close synchronized block
                 }
+                
+                // To reach this point, either the event queue is not empty,
+                // or the _stopRequested is true. 
                 if (_eventQueue.isEmpty()) {
-                    // Nothing more to read from queue.
+                    // Stop is requested!
+                    // jump out of the loop: LOOPLABEL::GetNextEvent
                     break;
                 } else {
+                    // At least one event is found in the event queue.
                     nextEvent = (DEEvent)_eventQueue.get();
                 }
             }
 
-            // An embedded director should not process events in the future.
-            if (!_isTopLevel() &&
-                    _eventQueue.get().timeStamp() > getCurrentTime()) {
-                break;
+            // When this point is reached, the nextEvent can not be null.
+            if (nextEvent == null) {
+                throw new InternalErrorException("The event to be handled " +
+                    "can not be null!");
             }
-
+            
+            // If the actorToFire is null, find the actor associated with
+            // the next event. Otherwise, check whether the next event 
+            // goes to the same actor to be fired. 
             if (actorToFire == null) {
-                // No previously seen event at this tag, so
-                // always accept the event.
+                // If the actorToFire is not set yet, 
+                // find the actor associated with the next event,
+                // and update the current time with the event time.
 
-                // If necessary, let elapsed real time catch up with
-                // the event time.
                 double currentTime;
+                // If not synchronized to the real time.
                 if (!_synchronizeToRealTime) {
                     currentEvent = (DEEvent)_eventQueue.get();
                     currentTime = currentEvent.timeStamp();
                 } else {
+                    // If synchronized to the real time.
                     synchronized(_eventQueue) {
                         while (true) {
                             currentEvent = (DEEvent)_eventQueue.get();
@@ -1130,12 +1158,19 @@ public class DEDirector extends Director {
                         currentTime = getCurrentTime();
                     }
 
+                    // FIXME: The _enqueEvent method might be trained to
+                    // be smart about which events to be discarded.
+                    // Two things can be possibly done:
+                    // 1. No duplicate events.
+                    // 2. No events to disabled actors.
                     if (_disabledActors != null &&
                             _disabledActors.contains(actorToFire)) {
-                        // This actor has requested that it not be fired again.
+                        // This actor has requested not to be fired again.
                         if (_debugging) _debug("Skipping actor: ",
                                 ((Nameable)actorToFire).getFullName());
                         actorToFire = null;
+                        // start a new iteration of the loop: 
+                        // LOOPLABEL::GetNextEvent
                         continue;
                     }
 
@@ -1176,6 +1211,7 @@ public class DEDirector extends Director {
                 // Check whether the next event has equal tag.
                 // If so, the destination actor should
                 // be the same, but check anyway.
+                // FIXME: this will never be true for non-strict actors...
                 if ((nextEvent.timeStamp() == Double.NEGATIVE_INFINITY ||
                             nextEvent.isSimultaneousWith(currentEvent)) &&
                         nextEvent.actor() == currentEvent.actor()) {
@@ -1196,7 +1232,9 @@ public class DEDirector extends Director {
                     break;
                 }
             }
-        } // Close while () loop
+        }// close the loop: LOOPLABEL::GetNextEvent
+        
+        // Note that the actor to be fired can be null.
         return actorToFire;
     }
 
@@ -1579,8 +1617,8 @@ public class DEDirector extends Director {
     // values.
     private void _initParameters() {
         try {
-            startTime = new Parameter(this, "startTime",
-                    new DoubleToken(0.0));
+            startTime = new Parameter(this, "startTime");
+            startTime.setExpression("-1*MaxDouble");
             startTime.setTypeEquals(BaseType.DOUBLE);
 
             stopTime = new Parameter(this, "stopTime");
