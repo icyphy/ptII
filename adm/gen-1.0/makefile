@@ -53,7 +53,7 @@ SPLITTAR =	/users/ptolemy/adm/bin/splittar
 
 # FTP Directory
 # Use this for release
-FTP_DEST =	/vol/ptolemy/pt0/ptweb/ptolemyII/ptII1.0
+PTII_FTP = /vol/ptolemy/pt0/ptweb/ptolemyII/ptII1.0
 
 # Name and directory of distribution.  For testing, use ptdesign
 # For release, use ptolemy
@@ -117,7 +117,7 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar.$(SUFFIX)
 all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 
 # Rebuild the distributions
-rebuild: clean all installshield_app build_unixPtII untar
+rebuild: clean all installshield_app build_unixPtII update_ftp
 
 clean:
 	@echo "#"
@@ -137,6 +137,10 @@ $(PTIIDIST):
 	@echo "#"
 	@echo `date`
 	mkdir $@
+	@echo "Be sure that ptolemy/media/javasound/javasound.jar exists"
+	(cd $(PTIIHOME)/ptolemy/media/javasound; make jars)
+	@echo "Be sure that ptolemy/actor/lib/javasound/javasound.jar exists"
+	(cd $(PTIIHOME)/ptolemy/actor/lib/javasound; make jars)
 	(cd $(PTIIHOME); \
 		$(TAR) -c -X $(GENDIR)/src.ex  -X $(GENDIR)/src1.ex \
 		$ -f - $(PTII_TOPDIR) )| \
@@ -191,15 +195,18 @@ $(PTII_FULL_ZIP): $(PTIIDIST)
 
 
 ptii_src: $(PTII_SRC)
-$(PTII_SRC): $(PTII_SRC)
+$(PTII_SRC): bar #$(PTII_FULL)
 	@echo "Creating $@"
 	-mkdir src
 	(cd src; \
 		$(TAR) -zxf $(PTII_FULL); cd ptII$(VERSION); \
-		./configure; make clean; \
-		rm -rf doc/codeDoc; \
-		autoconf; \
+		PTII=`pwd` ./configure; make -k clean; \
+		find . -name "*.class" -ls -exec rm {} \; ;\
+		cd ptolemy; find . -name "*.jar" -ls -exec rm {} \; ;\
 		cd ..; \
+		rm -rf doc/codeDoc; \
+		cd ..; \
+		@echo "#  Starting tar of $@"; \
 		$(TAR) -zcf $(PTII_SRC) ptII$(VERSION));
 
 update_ftp: update_ptii_ftp untar
@@ -871,6 +878,7 @@ indent_all:
 INSTALLSHIELD_SRC=installshield
 INSTALLSHIELD_APP=$(INSTALLSHIELD_SRC)/app
 INSTALLSHIELD_PTINY=$(INSTALLSHIELD_SRC)/ptiny
+INSTALLSHIELD_PTINY_ONLY=$(INSTALLSHIELD_SRC)/ptiny_only
 INSTALLSHIELD_DESIGNDOC=$(INSTALLSHIELD_SRC)/codeDoc
 INSTALLSHIELD_DESIGNDOC=$(INSTALLSHIELD_SRC)/designdoc
 INSTALLSHIELD_DOC=$(INSTALLSHIELD_SRC)/doc
@@ -898,16 +906,15 @@ clean_installshield:
 	$(INSTALLSHIELD_DESIGNDOC) \
 	$(INSTALLSHIELD_DOC) \
 	$(INSTALLSHIELD_EXPERIMENTAL) \
-	$(INSTALLSHIELD_PTINY)
+	$(INSTALLSHIELD_PTINY) \
+	$(INSTALLSHIELD_PTINY_ONLY)
 
-
-tst: $(INSTALLSHIELD_APP)
 $(INSTALLSHIELD_APP): $(PTII_FULL)
 	@echo "#"
 	@echo "# Building $@"
 	@echo "#"
 	(cd $(INSTALLSHIELD_SRC); \
-	$(TAR) -xf ../ptII$(VERSION).src.tar; \
+	$(TAR) -xf ../ptII$(VERSION).tar; \
 	 mv ptII$(VERSION) `basename $@`)
 
 INSTALLSHIELD_PTINY_DOMAINS=ct de fsm pn sdf
@@ -917,6 +924,8 @@ $(INSTALLSHIELD_PTINY):
 	@echo "# Building $@"
 	 mkdir -p $@ $@/lib $@/ptolemy/vergil
 	 mkdir -p $@/doc/img $@/doc/design
+	 ls -l $@/ptolemy/actor/lib/javasound/javasound.jar \
+		$@/ptolemy/media/javasound/javasound.jar
 	 -mv $(INSTALLSHIELD_APP)/copyright.txt $@
 	 -mv $(INSTALLSHIELD_APP)/doc/*Vergil.htm \
 		$(INSTALLSHIELD_APP)/doc/acks.htm \
@@ -935,20 +944,6 @@ $(INSTALLSHIELD_PTINY):
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/ptolemy.jar \
 		$(INSTALLSHIELD_APP)/ptolemy/configs/ \
 		$@/ptolemy
-	 # Big hack here.  We need to include intro.htm in app, so
-	 # we move it back
-	 -mkdir	$(INSTALLSHIELD_APP)/ptolemy/configs/
-	 -mv $@/ptolemy/configs/intro.htm $(INSTALLSHIELD_APP)/ptolemy/configs/
-	 # Move vergilConfiguration.xml into app
-	 -mv $@/ptolemy/configs/vergilConfiguration.xml \
-		$(INSTALLSHIELD_APP)/ptolemy/configs/
-	 # We then rename introPtiny.htm so as to get doc/demoPtiny.htm
-	 # instead of doc/demo.htm
-	 -mv $@/ptolemy/configs/introPtiny.htm $@/ptolemy/configs/intro.htm 
-	 # Rename vergilConfigurationPtiny.xml so that we get the right 
-	 # directors
-	 -mv $@/ptolemy/configs/vergilConfigurationPtiny.xml \
-		$@/ptolemy/configs/vergilConfiguration.xml
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/vergil/vergil.jar $@/ptolemy/vergil
 	 -for domain in $(INSTALLSHIELD_PTINY_DOMAINS); do \
 	   mkdir -p $@/ptolemy/domains/$$domain \
@@ -963,11 +958,6 @@ $(INSTALLSHIELD_PTINY):
 	# FIXME: we should find this in the jar file?
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/sdf/lib/*Spectrum*.xml \
 		$@/ptolemy/domains/sdf/lib 
-	 -mkdir -p $@/doc/codeDoc
-	 #-cp -r $(PTIIHOME)/doc/codeDoc/* \
-	 #	 $@/doc/codeDoc
-	 #-cp -r $(PTIIHOME)/doc/codeDocPtiny/* \
-	 #	 $@/doc/codeDoc
 	 # Set up for a few javasound
 	 -mkdir -p $@/ptolemy/actor/lib/javasound/demo
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/actor/lib/javasound/javasound.xml \
@@ -999,6 +989,31 @@ $(INSTALLSHIELD_PTINY):
 	 -mv $(INSTALLSHIELD_APP)/ptolemy/plot/plotapplication.jar \
 		$@/ptolemy/plot
 
+
+installshield_ptiny_only: $(INSTALLSHIELD_PTINY_ONLY)
+$(INSTALLSHIELD_PTINY_ONLY):
+	@echo "#"
+	@echo "# Building $@"
+	mkdir -p $@ $@/doc/codeDoc $@/ptolemy/configs
+	 #-cp -r $(PTIIHOME)/doc/codeDoc/* \
+	 #	 $@/doc/codeDoc
+	 -cp -r $(PTIIHOME)/doc/codeDocPtiny/* \
+	 	 $@/doc/codeDoc
+	 # Big hack here.  We need to include intro.htm in app, so
+	 # we move it back
+	 #-mkdir	$(INSTALLSHIELD_APP)/ptolemy/configs/
+	 #-mv $@/ptolemy/configs/intro.htm \
+	 #	$(INSTALLSHIELD_APP)/ptolemy/configs/
+	 # Move vergilConfiguration.xml into app
+	 #-mv $@/ptolemy/configs/vergilConfiguration.xml \
+	 #	$(INSTALLSHIELD_APP)/ptolemy/configs/
+	 # We then rename introPtiny.htm so as to get doc/demoPtiny.htm
+	 # instead of doc/demo.htm
+	 -mv $@/ptolemy/configs/introPtiny.htm $@/ptolemy/configs/intro.htm 
+	 # Rename vergilConfigurationPtiny.xml so that we get the right 
+	 # directors
+	 -mv $@/ptolemy/configs/vergilConfigurationPtiny.xml \
+		$@/ptolemy/configs/vergilConfiguration.xml
 
 #configsPtiny.jar: $(INSTALLSHIELD_PTINY)/ptolemy/configs/configsPtiny.jar
 #$(INSTALLSHIELD_PTINY)/ptolemy/configs/configsPtiny.jar: \
