@@ -657,7 +657,12 @@ public class SoundCapture {
             int bytesPerSample,
             int channels) {
 	int lengthInSamples = byteArray.length / (bytesPerSample*channels);
-	double[][] doubleArray = new double[channels][lengthInSamples];
+	// Check if we need to reallocate.
+	if ((channels != _doubleArray.length) ||
+                        (lengthInSamples != _doubleArray[0].length)) {
+	    // Reallocate
+	    _doubleArray = new double[channels][lengthInSamples];
+	}
 	//double maxSampleReciprocal = 1/(Math.pow(2, 8 * bytesPerSample - 1));
 	// Could use above line, but hopefully, code below will
 	// be faster.
@@ -665,8 +670,7 @@ public class SoundCapture {
 	if (bytesPerSample == 2) {
 	    // 1 / 32768
 	    maxSampleReciprocal = 3.0517578125e-5;
-	} else if (bytesPerSample == 1) {
-	    // 1 / 128
+	} else if (bytesPerSample == 1) {	    // 1 / 128
 	    maxSampleReciprocal = 7.8125e-3;
 	} else if (bytesPerSample == 3) {
 	    // 1 / 8388608
@@ -679,7 +683,12 @@ public class SoundCapture {
 	    maxSampleReciprocal = 0;
 	}
 
-	byte[] b = new byte[bytesPerSample];
+	// Check if we need to reallocate.
+	// FIXME: This test is really not needed since bytesPerSample
+	// is set in the constructor. It should never change.
+	if (bytesPerSample != _b.length) {
+	    _b = new byte[bytesPerSample];
+	}
 
 	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
 
@@ -687,17 +696,17 @@ public class SoundCapture {
 	    for (int currChannel = 0; currChannel < channels; currChannel++) {
 		for (int i = 0; i < bytesPerSample; i += 1) {
 		    // Assume we are dealing with big endian.
-		    b[i] = byteArray[currSamp*bytesPerSample*channels +
+		    _b[i] = byteArray[currSamp*bytesPerSample*channels +
                             bytesPerSample*currChannel + i];
 		}
-		int result = (b[0] >> 7) ;
+		int result = (_b[0] >> 7) ;
 		for (int i = 0; i < bytesPerSample; i += 1)
-		    result = (result << 8) + (b[i] & 0xff);
-		doubleArray[currChannel][currSamp] =
+		    result = (result << 8) + (_b[i] & 0xff);
+		_doubleArray[currChannel][currSamp] =
 		    ((double) result*maxSampleReciprocal);
 	    }
         }
-	return doubleArray;
+	return _doubleArray;
     }
 
     /* Convert a byte array of audio samples in linear signed pcm big endian
@@ -718,26 +727,34 @@ public class SoundCapture {
             int bytesPerSample,
             int channels) {
 	int lengthInSamples = byteArray.length / (bytesPerSample*channels);
-	int[][] intArray = new int[channels][lengthInSamples];
-
-	byte[] b = new byte[bytesPerSample];
-
+	// Check if we need to reallocate.
+	if ((channels != _doubleArray.length) ||
+                        (lengthInSamples != _doubleArray[0].length)) {
+	    // Reallocate
+	    _intArray = new int[channels][lengthInSamples];
+	}
+	// Check if we need to reallocate.
+	// FIXME: This test is really not needed since bytesPerSample
+	// is set in the constructor. It should never change.
+	if (bytesPerSample != _b.length) {
+	    _b = new byte[bytesPerSample];
+	}
 	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
 
 	    // For each channel,
 	    for (int currChannel = 0; currChannel < channels; currChannel++) {
 		for (int i = 0; i < bytesPerSample; i += 1) {
 		    // Assume we are dealing with big endian.
-		    b[i] = byteArray[currSamp*bytesPerSample*channels +
+		    _b[i] = byteArray[currSamp*bytesPerSample*channels +
                             bytesPerSample*currChannel + i];
 		}
-		int result = (b[0] >> 7) ;
+		int result = (_b[0] >> 7) ;
 		for (int i = 0; i < bytesPerSample; i += 1)
-		    result = (result << 8) + (b[i] & 0xff);
-		intArray[currChannel][currSamp] = result;
+		    result = (result << 8) + (_b[i] & 0xff);
+		_intArray[currChannel][currSamp] = result;
 	    }
         }
-	return intArray;
+	return _intArray;
     }
 
 
@@ -764,4 +781,8 @@ public class SoundCapture {
     private TargetDataLine _targetLine;
     private int _bytesPerSample;
     private boolean _isAudioCaptureActive;
+
+    private byte[] _b = new byte[1];
+    private double[][] _doubleArray = new double[1][1];
+    private int[][] _intArray = new int[1][1];
 }
