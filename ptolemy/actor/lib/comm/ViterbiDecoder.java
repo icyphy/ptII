@@ -60,7 +60,7 @@ between the codewords they produce and the received ones. The one
 that makes the minimum distance is the most likely input sequence.
 <p>
 There are 2 choices offered in this actor to compute such "distance".
-If it the parameter <i>softDecoding<i> is set to be false, the input
+If it the parameter <i>softDecoding</i> is set to be false, the input
 port will accept boolean tokens and compute the Hamming distance. 
 If the parameter <i>softDecoding</i> is set to be true, the input port
 will accept double tokens and compute the Euclidean distance. 
