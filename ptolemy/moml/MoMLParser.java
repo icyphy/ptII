@@ -1554,16 +1554,35 @@ public class MoMLParser extends HandlerBase {
                 String source = (String)_attributes.get("source");
                 _checkForNull(source, "No source for element \"input\"");
 
-                // NOTE: The base attribute has been deprecated.  Ignore.
+		boolean skip = false;
+		if ( inputFileNamesToSkip != null) {
+		    // If inputFileNamesToSkip contains a string
+		    // that matches the end of source, then skip
+		    // parsing the source file.  We use this for testing
+		    // configurations that have optional parts like
+		    // Matlab or javacomm.
+		    Iterator inputFileNames = inputFileNamesToSkip.iterator();
+		    while(inputFileNames.hasNext()) {
+			String inputFileName = (String)inputFileNames.next();
+			if (source.endsWith(inputFileName)) {
+			    skip = true;
+			    break;
+			} 
+		    }
+		}
 
-                // Read external file in the current context, but with
-                // a new parser.
-                MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
+		if (!skip) {
+		    // NOTE: The base attribute has been deprecated.  Ignore.
 
-                newParser.setContext(_current);
-                newParser._propagating = _propagating;
-                _parse(newParser, _base, source);
+		    // Read external file in the current context, but with
+		    // a new parser.
+		    MoMLParser newParser =
+			new MoMLParser(_workspace, _classLoader);
 
+		    newParser.setContext(_current);
+		    newParser._propagating = _propagating;
+		    _parse(newParser, _base, source);
+		}
             } else if (elementName.equals("link")) {
                 String portName = (String)_attributes.get("port");
                 _checkForNull(portName, "No port for element \"link\"");
@@ -2480,6 +2499,14 @@ public class MoMLParser extends HandlerBase {
 
     /** The public ID for version 1 MoML. */
     public static String MoML_PUBLIC_ID_1 = "-//UC Berkeley//DTD MoML 1//EN";
+
+    /** List of Strings that name files to be skipped.
+     *  This variable is used primarily for testing configurations.
+     *  The value of this variable is a List of Strings, where each
+     *  element names a file name that should _not_ be loaded if
+     *  it is encounted in an input statement.  
+     */
+    public static List inputFileNamesToSkip = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
