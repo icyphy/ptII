@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HTVQ" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
@@ -20,7 +20,7 @@
     </property>
     <property name="blockHeight" class="ptolemy.data.expr.Parameter" value="2">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 325]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 667]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 154]">
     </property>
@@ -77,7 +77,7 @@ integer matrices</text>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={77, 187, 819, 434}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 776}}">
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -112,6 +112,10 @@ integer matrices</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 95.0">
         </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -122,6 +126,10 @@ integer matrices</text>
     </entity>
     <entity name="PSNR" class="ptolemy.domains.sdf.lib.vq.PSNR">
         <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 130.0">
+        </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -144,6 +152,10 @@ integer matrices</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 200.0">
         </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
@@ -155,7 +167,7 @@ integer matrices</text>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3168">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="imageColumns * imageRows / partitionColumns / partitionRows">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -166,7 +178,7 @@ integer matrices</text>
     <entity name="Encoder" class="ptolemy.domains.sdf.lib.vq.HTVQEncode">
         <property name="codeBook" class="ptolemy.data.expr.Parameter" value="&quot;/ptolemy/domains/sdf/lib/vq/data/usc_hvq_s5.dat&quot;">
         </property>
-        <property name="blockCount" class="ptolemy.data.expr.Parameter" value="176*144/blockWidth/blockHeight">
+        <property name="blockCount" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <property name="blockWidth" class="ptolemy.data.expr.Parameter" value="blockWidth">
         </property>
@@ -174,9 +186,13 @@ integer matrices</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 200.0">
         </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="396">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3168">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="blockCount">
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -185,7 +201,7 @@ integer matrices</text>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3168">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="blockCount">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -196,7 +212,7 @@ integer matrices</text>
     <entity name="Decoder" class="ptolemy.domains.sdf.lib.vq.VQDecode">
         <property name="codeBook" class="ptolemy.data.expr.Parameter" value="&quot;/ptolemy/domains/sdf/lib/vq/data/usc_hvq_s5.dat&quot;">
         </property>
-        <property name="blockCount" class="ptolemy.data.expr.Parameter" value="176*144/blockWidth/blockHeight">
+        <property name="blockCount" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <property name="blockWidth" class="ptolemy.data.expr.Parameter" value="blockWidth">
         </property>
@@ -204,9 +220,13 @@ integer matrices</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 200.0">
         </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="396">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3168">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="blockCount">
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -215,7 +235,7 @@ integer matrices</text>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3168">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="blockCount">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -234,9 +254,13 @@ integer matrices</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 200.0">
         </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="3168">
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="imageColumns * imageRows / partitionColumns / partitionRows">
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -256,6 +280,10 @@ integer matrices</text>
     <entity name="Compressed" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
         <property name="_location" class="ptolemy.kernel.util.Location" value="555.1666564941406, 200.0">
         </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -263,6 +291,10 @@ integer matrices</text>
     </entity>
     <entity name="Original" class="ptolemy.domains.sdf.lib.vq.ImageDisplay">
         <property name="_location" class="ptolemy.kernel.util.Location" value="551.5, 63.5">
+        </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -280,6 +312,10 @@ integer matrices</text>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="560.0, 130.0">
         </property>
+        <property name="firingCount" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
@@ -288,18 +324,42 @@ integer matrices</text>
     <relation name="R1" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex0" value="95.0, 95.0">
         </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="R2" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3168">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="R3" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3168">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="R4" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3168">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="R5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex0" value="440.0, 200.0">
         </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="R6" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <link port="Source.output" relation="R1"/>
     <link port="PSNR.output" relation="R6"/>
