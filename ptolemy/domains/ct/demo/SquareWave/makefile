@@ -44,8 +44,7 @@ include $(CONFIG)
 PTPACKAGE = 	SquareWave
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
-	SquareWaveResponse.java
+JSRCS = 
 
 EXTRA_SRCS =	$(JSRCS) \
 	SquareWave.htm \
