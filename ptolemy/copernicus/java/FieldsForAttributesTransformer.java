@@ -91,17 +91,13 @@ public class FieldsForAttributesTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " deep"; 
+        return super.getDeclaredOptions();
     }
 
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("FieldsForAttributesTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
-
-        if(!Options.getBoolean(options, "deep")) {
-            return;
-        }
 
         Map attributeToFieldMap = new HashMap();
         Map classToObjectMap = new HashMap();

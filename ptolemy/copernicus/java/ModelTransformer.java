@@ -107,13 +107,14 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " deep targetPackage";
+        return super.getDeclaredOptions() + " targetPackage";
     }
 
     /** Return the name of the field that is created for the
      *  given entity.
      */
-    public static String getFieldNameForEntity(Entity entity, NamedObj context) {
+    public static String getFieldNameForEntity(Entity entity, 
+            NamedObj context) {
         return "E" + SootUtilities.sanitizeName(entity.getName(context));
     }
 
@@ -243,9 +244,7 @@ public class ModelTransformer extends SceneTransformer {
         _ports(body, containerLocal, container, thisLocal, composite, modelClass);
         _entities(body, containerLocal, container, thisLocal, composite, modelClass, options);
       
-        // handle the communication
-        if(Options.getBoolean(options, "deep")) {
-            SootMethod clinitMethod;
+             SootMethod clinitMethod;
             Body clinitBody;
             if(modelClass.declaresMethodByName("<clinit>")) {
                 clinitMethod = modelClass.getMethodByName("<clinit>");
@@ -322,11 +321,7 @@ public class ModelTransformer extends SceneTransformer {
                     }
                 }
             }
-        } else {
-            _relations(body, thisLocal, composite);
-            _links(body, composite);
-            _linksOnPortsContainedByContainedEntities(body, composite);
-        }
+       
     }
 
     // Create and set attributes.
@@ -421,8 +416,7 @@ public class ModelTransformer extends SceneTransformer {
 	    Entity entity = (Entity)entities.next();
 	    System.out.println("ModelTransformer: entity: " + entity);
             Local local;
-            if(Options.getBoolean(options, "deep")) {
-		// If we are doing deep codegen, then use the actor
+            // If we are doing deep codegen, then use the actor
 		// classes we created earlier.
 		String className = ActorTransformer.getInstanceClassName(entity, options);
                 // Create a new local variable.
@@ -431,36 +425,7 @@ public class ModelTransformer extends SceneTransformer {
                 // this might not be a valid Java identifier.)
                 local = PtolemyUtilities.createNamedObjAndLocal(body, className,
                         thisLocal, entity.getName());
-	    } else {
-                if(classObject.getEntity(entity.getName()) != null) {
-                    // Get a reference to the previously created entity.
-                    local = entityLocal;
-                    body.getUnits().add(Jimple.v().newAssignStmt(entityLocal,
-                            Jimple.v().newVirtualInvokeExpr(containerLocal,
-                                    PtolemyUtilities.getEntityMethod,
-                                    StringConstant.v(entity.getName(container)))));
-                } else {
-                    // If we are doing shallow, then use the base actor
-                    // classes.  Note that the entity might actually be 
-                    // a MoML class (like Sinewave). 
-                    String className = entity.getClass().getName();
-                    // Create a new local variable.
-                    // The name of the local is determined automatically.
-                    // The name of the NamedObj is the same as in the model.  (Note that
-                    // this might not be a valid Java identifier.)
-                    local = PtolemyUtilities.createNamedObjAndLocal(body, className,
-                            thisLocal, entity.getName());
-                    if(!className.equals(entity.getMoMLInfo().className)) {
-                        // If the entity is a moml class.... then we need to create
-                        // the stuff inside the moml class before we keep going...
-                        // FIXME: what about not composite classes?
-                        CompositeEntity classEntity = (CompositeEntity)
-                            _findDeferredInstance(entity);
-                        _composite(body, containerLocal, container, local, classEntity, modelClass, options);
-                        
-                    }
-                }
-            }
+	 
             
 	    _entityLocalMap.put(entity, local);
 
@@ -469,8 +434,7 @@ public class ModelTransformer extends SceneTransformer {
                         modelClass, options);
             } else {
                 _ports(body, thisLocal, composite, local, entity, modelClass);
-                // And the attributes
-                if(Options.getBoolean(options, "deep")) {
+             
                     // If we are doing deep codegen, then we
                     // include a field for each actor.
                     // The name of the field is the sanitized version
@@ -479,14 +443,7 @@ public class ModelTransformer extends SceneTransformer {
                     SootUtilities.createAndSetFieldFromLocal(
                             body, local, modelClass,
                             PtolemyUtilities.actorType, entityFieldName);
-                } else {
-                    // If we are doing shallow code generation, then
-                    // include code to initialize the parameters of this
-                    // entity.
-                    // FIXME: flag to not create fields?
-                    createFieldsForAttributes(body, composite, thisLocal, 
-                            entity, local, modelClass);
-                }
+               
             }
 	}
     }
@@ -588,101 +545,7 @@ public class ModelTransformer extends SceneTransformer {
                     fieldName);
 	}
     }
-
-    // Create and set links.
-    private void _links(JimpleBody body, CompositeEntity composite) {
-	// To get the ordering right,
-	// we read the links from the ports, not from the relations.
-	// First, produce the inside links on contained ports.
-        for(Iterator ports = composite.portList().iterator();
-	    ports.hasNext();) {
-	    ComponentPort port = (ComponentPort)ports.next();
-	    Iterator relations = port.insideRelationList().iterator();
-	    int index = -1;
-	    while (relations.hasNext()) {
-		index++;
-		ComponentRelation relation
-		    = (ComponentRelation)relations.next();
-		if (relation == null) {
-		    // Gap in the links.  The next link has to use an
-		    // explicit index.
-		    continue;
-		}
-		Local portLocal = (Local)_portLocalMap.get(port);
-		Local relationLocal = (Local)_relationLocalMap.get(relation);
-		// call the _insertLink method with the current index.
-		body.getUnits().add(Jimple.v().newInvokeStmt(
-                        Jimple.v().newVirtualInvokeExpr(portLocal,
-                                PtolemyUtilities.insertLinkMethod,
-                                IntConstant.v(index),
-                                relationLocal)));
-
-	    }
-	}
-    }
-
-    // Produce the links on ports contained by contained entities.
-    private void _linksOnPortsContainedByContainedEntities(
-            JimpleBody body, CompositeEntity composite) {
-   
-        for(Iterator entities = composite.entityList().iterator();
-            entities.hasNext();) {
-            ComponentEntity entity = (ComponentEntity)entities.next();
-            Iterator ports = entity.portList().iterator();
-            while (ports.hasNext()) {
-                ComponentPort port = (ComponentPort)ports.next();
-                
-                Local portLocal;
-                // If we already have a local reference to the port
-                if(_portLocalMap.keySet().contains(port)) {
-                    // then just get the reference.
-                    portLocal = (Local)_portLocalMap.get(port);
-                } else {
-                    throw new RuntimeException("Found a port: " + port + 
-                            " that does not have a local variable!");
-                }
-              
-                Iterator relations = port.linkedRelationList().iterator();
-                int index = -1;
-                while (relations.hasNext()) {
-                    index++;
-                    ComponentRelation relation
-                        = (ComponentRelation)relations.next();
-                    if (relation == null) {
-                        // Gap in the links.  The next link has to use an
-                        // explicit index.
-                        continue;
-                    }
-                    Local relationLocal = (Local)
-                        _relationLocalMap.get(relation);
-
-                    // Call the _insertLink method with the current index.
-                    body.getUnits().add(Jimple.v().newInvokeStmt(
-                            Jimple.v().newVirtualInvokeExpr(portLocal,
-                                    PtolemyUtilities.insertLinkMethod, 
-                                    IntConstant.v(index),
-                                    relationLocal)));
-                }
-            }
-        }
-    }
-
-    // Create and set relations.
-    private void _relations(JimpleBody body, Local thisLocal,
-            CompositeEntity composite) {
-	_relationLocalMap = new HashMap();
-	for(Iterator relations = composite.relationList().iterator();
-	    relations.hasNext();) {
-	    Relation relation = (Relation)relations.next();
-	    String className = relation.getClass().getName();
-	    // Create a new local variable.
-	    Local local = 
-                PtolemyUtilities.createNamedObjAndLocal(body, className,
-                        thisLocal, relation.getName());
-	    _relationLocalMap.put(relation, local);
-	}
-    }
-
+  
     // FIXME: duplicate with Actor transformer.
     private static void _removeSuperExecutableMethods(SootClass theClass) {
         // Loop through all the methods 

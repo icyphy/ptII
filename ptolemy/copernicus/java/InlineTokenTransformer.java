@@ -84,7 +84,7 @@ public class InlineTokenTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " debug deep targetPackage"; 
+        return super.getDeclaredOptions() + " debug targetPackage"; 
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -92,10 +92,6 @@ public class InlineTokenTransformer extends SceneTransformer {
         int localCount = 0;
         System.out.println("InlineTokenTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
-
-        if(!Options.getBoolean(options, "deep")) {
-            return;
-        }
 
         // Loop over all the actor instance classes.
         for(Iterator i = _model.entityList().iterator();

@@ -105,16 +105,12 @@ public class CommandLineTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " deep targetPackage";
+        return super.getDeclaredOptions() + " targetPackage";
     }
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("CommandLineTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
-
-        if(!Options.getBoolean(options, "deep")) {
-            return;
-        }
 
         /* SootClass actorClass =  Scene.v().loadClassAndSupport(
                 "ptolemy.actor.TypedAtomicActor");

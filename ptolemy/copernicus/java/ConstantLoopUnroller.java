@@ -81,7 +81,7 @@ public class ConstantLoopUnroller extends BodyTransformer {
     }
     
     public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " deep"; 
+        return super.getDeclaredOptions();
     }
 
     protected void internalTransform(String phaseName, Map options) {

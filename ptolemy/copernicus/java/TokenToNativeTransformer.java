@@ -91,17 +91,13 @@ public class TokenToNativeTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " deep"; 
+        return super.getDeclaredOptions();
     }
 
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("TokenToNativeTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
-
-        if(!Options.getBoolean(options, "deep")) {
-            return;
-        }
 
      // We need all classes as library:
     //      for(Iterator classes = Scene.v().getClasses().iterator();

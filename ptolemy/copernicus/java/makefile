@@ -110,7 +110,7 @@ DEEPSOURCECLASS = $(DEEPSOURCEPACKAGE).$(DEEPMODEL)
 DEEPTARGETCLASS = $(SHALLOWTARGETPACKAGE).CGToplevelModel
 #make DEEPSOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDeepDemo
 
-DEEPTARGETPACKAGE = ptolemy.copernicus.java.cg.deep
+DEEPTARGETPACKAGE = ptolemy.copernicus.java.cg
 DEEPTARGETCLASS = $(DEEPTARGETPACKAGE).$(MODEL)
 
 JVM_SIZE = -Xmx256m
@@ -127,22 +127,20 @@ compileDeepDemo: $(JCLASS)
 	 -classpath "$(CLASSPATH)" \
 	ptolemy.copernicus.java.Main $(DEEPSOURCECLASS) -d "$(ROOT)"  \
 		-p wjtp.watchDog time:$(WATCH_DOG_TIMEOUT) \
-		-p wjtp.at deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.mt deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.clt deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.fot deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.ffat deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.ffpt deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.idt deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.iat deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.ipt deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.itt deep,targetPackage:$(DEEPTARGETPACKAGE) \
-		-p wjtp.ttn deep,disabled,targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.at targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.mt targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.clt targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.fot targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.ffat targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.ffpt targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.idt targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.iat targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.ipt targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.itt targetPackage:$(DEEPTARGETPACKAGE) \
+		-p wjtp.ttn disabled,targetPackage:$(DEEPTARGETPACKAGE) \
 		-p wjtp.writeJimple1 outDir:jimple1 \
 		-p wjtp.writeJimple2 outDir:jimple2 \
-		-p wjtp.ts deep \
 		-p wjtp.iee debug \
-		-p wjtp.umr deep \
 		$(SOOT_USER_ARGS)
 #	@echo "Here is that javap output"
 #	javap -verbose -l -s -classpath $(ROOT) $(DEEPTARGETCLASS)

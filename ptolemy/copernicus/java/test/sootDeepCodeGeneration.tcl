@@ -62,26 +62,23 @@ proc sootDeepCodeGeneration {model} {
 
     # time out after so many ms.
     set watchDogTimeOut 600000
-    set args [java::new {String[]} 47 \
+    set args [java::new {String[]} 45 \
 	    [list \
 	    $model "-d" $relativePathToPTII \
 	    "-p" "wjtp.watchDog" "time:$watchDogTimeOut" \
-	    "-p" "wjtp.at" "deep,targetPackage:$targetPackage" \
-	    "-p" "wjtp.mt" "deep,targetPackage:$targetPackage" \
-	    "-p" "wjtp.clt" "deep,targetPackage:$targetPackage" \
-	    "-p" "wjtp.fot" "deep,targetPackage:$targetPackage" \
-	    "-p" "wjtp.ffat" "deep,targetPackage:$targetPackage" \
-	    "-p" "wjtp.ffpt" "deep,targetPackage:$targetPackage" \
-	    "-p" "wjtp.idt" "deep,targetPackage:$targetPackage" \
-	    "-p" "wjtp.iat" "deep,targetPackage:$targetPackage" \
-	    "-p" "wjtp.ipt" "deep,targetPackage:$targetPackage" \
-	    "-p" "wjtp.itt" "deep,debug,targetPackage:$targetPackage" \
-	    "-p" "wjtp.ttn" "deep,targetPackage:$targetPackage" \
-	    "-p" "wjtp.ts" "deep,debug" \
+	    "-p" "wjtp.at" "targetPackage:$targetPackage" \
+	    "-p" "wjtp.mt" "targetPackage:$targetPackage" \
+	    "-p" "wjtp.clt" "targetPackage:$targetPackage" \
+	    "-p" "wjtp.fot" "targetPackage:$targetPackage" \
+	    "-p" "wjtp.ffat" "targetPackage:$targetPackage" \
+	    "-p" "wjtp.ffpt" "targetPackage:$targetPackage" \
+	    "-p" "wjtp.idt" "targetPackage:$targetPackage" \
+	    "-p" "wjtp.iat" "targetPackage:$targetPackage" \
+	    "-p" "wjtp.ipt" "targetPackage:$targetPackage" \
+	    "-p" "wjtp.itt" "debug,targetPackage:$targetPackage" \
+	    "-p" "wjtp.ttn" "targetPackage:$targetPackage" \
+	    "-p" "wjtp.ts" "debug" \
 	    "-p" "jtp.iee" "enabled" \
-	    "-p" "jtp.cie" "deep" \
-	    "-p" "wjtp.umr" "deep" \
-	    "-O" \
 	    ]]
 
     set main [java::new ptolemy.copernicus.java.Main $args]

@@ -111,10 +111,11 @@ public class ActorTransformer extends SceneTransformer {
 
     /** Return the list of declared options for this transformer.
      *  This is a list of space separated option names.
-     *  @return The value of the superclass options, plus the option "deep".
+     *  @return The value of the superclass options,
+     *  plus the option "targetPackage"..
      */
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " deep targetPackage";
+        return super.getDeclaredOptions() + " targetPackage";
     }
 
     /** Transform the Scene according to the information specified
@@ -125,10 +126,6 @@ public class ActorTransformer extends SceneTransformer {
     protected void internalTransform(String phaseName, Map options) {
 	System.out.println("ActorTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
-
-        if(!Options.getBoolean(options, "deep")) {
-            return;
-        }
      
         // Create an instance class for every actor.
         for(Iterator i = _model.entityList().iterator();

@@ -89,16 +89,12 @@ public class InlineParameterTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " deep debug"; 
+        return super.getDeclaredOptions() + " debug"; 
     }
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("InlineParameterTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
-
-        if(!Options.getBoolean(options, "deep")) {
-            return;
-        }
 
         Map attributeToValueFieldMap = new HashMap();
 

@@ -103,16 +103,12 @@ public class InlineDirectorTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " deep targetPackage";
+        return super.getDeclaredOptions() + " targetPackage";
     }
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("InlineDirectorTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
-
-        if(!Options.getBoolean(options, "deep")) {
-            return;
-        }
         
         Type actorType = RefType.v(PtolemyUtilities.actorClass);
       

@@ -96,16 +96,12 @@ public class InlinePortTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " deep"; 
+        return super.getDeclaredOptions();
     }
 
     protected void internalTransform(String phaseName, Map options) {
         System.out.println("InlinePortTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
-
-        if(!Options.getBoolean(options, "deep")) {
-            return;
-        }
       
         // Some maps we use for storing the assocation between a port and
         // the fields that we are replacing it with.

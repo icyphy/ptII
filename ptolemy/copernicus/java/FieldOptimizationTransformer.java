@@ -82,17 +82,13 @@ public class FieldOptimizationTransformer extends SceneTransformer {
     }
 
     public String getDeclaredOptions() { 
-        return super.getDeclaredOptions() + " deep"; 
+        return super.getDeclaredOptions();
     }
 
     protected void internalTransform(String phaseName, Map options) {
         int localCount = 0;
         System.out.println("FieldOptimizationTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
-
-        if(!Options.getBoolean(options, "deep")) {
-            return;
-        }
 
         SootClass stringClass =
             Scene.v().loadClassAndSupport("java.lang.String");
