@@ -288,7 +288,7 @@ htest-netscape: $(JTESTHTML) $(JCLASS)
 # We remove the file in case it is a symbolic link
 tyzip: $(TYZIP)
 $(TYZIP): $(JSRCS) $(JCLASS)
-	(cd $(CLASSPATH); rm -f $@; $(JAR) -c0Mf $@ $(TYPACKAGE_DIR)/*.class)
+	(cd $(CLASSPATH); rm -f $@; $(JAR) -c0Mf $@ $(PTPACKAGE_DIR)/*.class)
 
 jars: $(JARFILE) 
 $(JARFILE): $(JSRCS) $(JCLASS)
@@ -301,91 +301,17 @@ $(JARFILE): $(JSRCS) $(JCLASS)
 			echo "Name: $$x" >> manifest.tmp; \
 			echo "Java-Bean: True" >> manifest.tmp; \
 		done; \
-		(cd $(CLASSPATH); rm -f $(TYPACKAGE_DIR)/$@; \
-			$(JAR) cfm $(TYPACKAGE_DIR)/$@ \
-				$(TYPACKAGE_DIR)/manifest.tmp \
-				$(TYPACKAGE_DIR)/*.class); \
+		(cd $(CLASSPATH); rm -f $(PTPACKAGE_DIR)/$@; \
+			$(JAR) cfm $(PTPACKAGE_DIR)/$@ \
+				$(PTPACKAGE_DIR)/manifest.tmp \
+				$(PTPACKAGE_DIR)/*.class); \
 	else \
 		echo "Creating $@"; \
-		(cd $(CLASSPATH); rm -f $(TYPACKAGE_DIR)/$@; \
-			$(JAR) cf $(TYPACKAGE_DIR)/$@ \
-				$(TYPACKAGE_DIR)/*.class); \
+		(cd $(CLASSPATH); rm -f $(PTPACKAGE_DIR)/$@; \
+			$(JAR) cf $(PTPACKAGE_DIR)/$@ \
+				$(PTPACKAGE_DIR)/*.class); \
 	fi
 
-##############
-# Rules to build Java and Itcl package distributions
-
-
-# The distributions to build
-TYDISTS =	$(TYDIST).tar.gz $(TYDIST).zip 
-
-# The dists rule builds both a tar file and zip file of the sources
-dists: sources install $(TYDISTS)
-	@if [ "x$(SRCDIRS)" != "x" ]; then \
-		set $(SRCDIRS); \
-		for x do \
-		    if [ -w $$x ] ; then \
-			( cd $$x ; \
-			echo making $@ in $$x ; \
-			$(MAKE) $(MFLAGS) $(MAKEVARS) $@ ;\
-			) \
-		    fi ; \
-		done ; \
-	fi
-
-# List of files to exclude
-TYDIST_EX =	/tmp/$(TYDIST).ex
-$(TYDIST_EX): $(ROOT)/mk/tycommon.mk
-	@if [ "$(TYPACKAGE_DIR)x" = "x" ]; then \
-		echo "TYPACKAGE_DIR is not set in the makefile, so we won't create a tar exclude file"; \
-	else \
-		/bin/echo "adm\nSCCS\n*.tar.gz\n*[0-9].zip\n" > $@ ; \
-	fi
-
-# Tar file distribution
-$(TYDIST).tar.gz:  $(TYDIST_EX)
-	if [ "$(TYPACKAGE_DIR)x" = "x" ]; then \
-		echo "TYPACKAGE_DIR is not set in the makefile, so we won't create a tar file"; \
-	else \
-		echo "Building $@"; \
-		(cd $(TYPACKAGE_ROOTDIR); \
-		 gtar -zchf $(TYPACKAGE_DIR)/$@ -X $(TYDIST_EX) $(TYPACKAGE_DIR)); \
-		rm -f $(TYDIST_EX); \
-	fi
-
-# Tar file distribution
-$(TYDIST).zip:
-	@if [ "$(TYPACKAGE_DIR)x" = "x" ]; then \
-		echo "TYPACKAGE_DIR is not set in the makefile, so we won't create a zip file"; \
-	else \
-		echo "Building $@"; \
-		(cd $(TYPACKAGE_ROOTDIR); zip -r $(TYPACKAGE_DIR)/$@ $(TYPACKAGE_DIR) -x \*/adm/\* -x \*/SCCS/\* -x \*/$(TYDIST).tar.gz -x \*/$(TYDIST).zip); \
-	fi
-
-# Build sources in a form suitable for releasing
-buildjdist:
-	$(MAKE) sources
-	$(MAKE) distclean
-	@echo "Compile any classes that require JDK1.1"
-	$(MAKE) JFLAGS=-O jclass1_1 
-	$(MAKE) jhtml
-	$(MAKE) install
-	$(MAKE) dists
-
-# Create a distribution and install it.
-# This rule is particular to our local installation
-JDESTDIR = /vol/ptolemy/pt0/ftp/pub/ptolemy/www/java
-installjdist:
-	$(MAKE) buildjdist
-	$(MAKE) updatewebsite
-
-updatewebsite: $(TYDISTS)
-	@echo "Updating website"
-	(cd $(JDESTDIR); rm -rf $(TYPACKAGE); mkdir $(TYPACKAGE))
-	cp $(TYDISTS) $(JDESTDIR)/$(TYPACKAGE)
-	(cd $(JDESTDIR); gtar -zxf $(TYPACKAGE)/$(TYDIST).tar.gz;\
-	 chmod g+ws $(TYPACKAGE))
-	(cd $(JDESTDIR)/$(TYPACKAGE); chmod g+w $(TYDISTS))
 
 ##############
 # Rules for testing 
@@ -585,7 +511,7 @@ checkjunk:
 
 CRUD=*.o *.so core *~ *.bak ,* LOG* *.class \
 	config.cache config.log config.status manifest.tmp \
-	$(JCLASS) $(TYPACKAGE).zip $(TYPACKAGE).jar \
+	$(JCLASS) $(PTPACKAGE).zip $(PTPACKAGE).jar \
 	$(TYDISTS) $(JARFILE) $(KRUFT)  
 
 clean:
