@@ -74,10 +74,8 @@ public class CTPeriodicSampler extends Transformer
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setMultiport(true);
-        input.setTypeEquals(BaseType.DOUBLE);
-
         output.setMultiport(true);
-        output.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeAtLeast(input);
 
         _samplePeriod = (double)0.1;
         samplePeriod = new Parameter(this,
@@ -92,7 +90,6 @@ public class CTPeriodicSampler extends Transformer
      *  default value is 1.0.
      */
     public Parameter samplePeriod;
-
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
@@ -123,9 +120,8 @@ public class CTPeriodicSampler extends Transformer
 	    throws CloneNotSupportedException {
         CTPeriodicSampler newobj = (CTPeriodicSampler)super.clone(ws);
         newobj.input.setMultiport(true);
-        newobj.input.setTypeEquals(BaseType.DOUBLE);
         newobj.output.setMultiport(true);
-        newobj.output.setTypeEquals(BaseType.DOUBLE);
+        newobj.output.setTypeAtLeast(newobj.input);
         newobj.samplePeriod = (Parameter)newobj.getAttribute("samplePeriod");
         return newobj;
     }
