@@ -57,10 +57,18 @@ test StringToken-1.1 {Get information about the class} {
 } {{
   class:         pt.kernel.StringToken
   fields:        
-  methods:       getClass hashCode {equals java.lang.Object} clone toString notify notifyAll {wait long} {wait long int} wait {fromString java.lang.String} getValue {setValue java.lang.Object}
-  constructors:  pt.kernel.StringToken {pt.kernel.StringToken java.lang.String}
+  methods:       clone {equals java.lang.Object} {fromString java.lang.S
+    tring} getClass getValue hashCode notify notifyAll {set
+    Value java.lang.Object} toString wait {wait long} {wait
+     long int}
+    
+  constructors:  pt.kernel.StringToken {pt.kernel.StringToken java.lang.
+    String}
+    
   properties:    class value
+    
   superclass:    pt.kernel.ObjectToken
+    
 }}
 
 ######################################################################
