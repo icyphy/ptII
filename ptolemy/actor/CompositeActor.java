@@ -509,7 +509,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof CompositeActor) || (container != null)) {
+        if (!(container instanceof CompositeActor) && (container != null)) {
             throw new IllegalActionException(container, this,
                     "CompositeActor can only be contained by instances of " +
                     "CompositeActor.");
