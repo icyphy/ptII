@@ -57,6 +57,7 @@ EXTRA_SRCS =	$(JSRCS) \
 	PNExampleApplet.java \
 	PNExample.html \
 	PNPrimeExample.tcl \
+	PNPrimeTycho.html \
 	PNPrimeTycho.tcl
 
 # Files or directories that are present, but that 'make checkjunk' 
