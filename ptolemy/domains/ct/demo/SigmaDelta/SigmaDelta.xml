@@ -328,7 +328,7 @@ are feeded back. The accumulation of the quantized values is the digital output.
         <link port="PeriodicSampler.input" relation="CR4"/>
         <link port="PeriodicSampler.output" relation="CR5"/>
     </entity>
-    <entity name="delay" class="ptolemy.domains.de.lib.Delay">
+    <entity name="delay" class="ptolemy.domains.de.lib.SampleDelay">
         <property name="delay" class="ptolemy.data.expr.Parameter" value="0.02">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="171.0, 225.0">
