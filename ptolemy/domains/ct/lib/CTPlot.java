@@ -80,7 +80,7 @@ public class  CTPlot extends CTActor {
         _plot = plot;
         _plot.setButtons(true);
 	_plot.setPointsPersistence(0);
-        _plot.setMarksStyle("points");
+        //_plot.setMarksStyle("points");
         _plot.setImpulses(false);
         _plot.setConnected(true);
         _plot.setTitle(name);
@@ -105,13 +105,14 @@ public class  CTPlot extends CTActor {
 	for (int i = 0; i < input.getWidth(); i++) {
 	  _plot.addLegend(i, "Data " + i);
 	}
-
+        
         // Initialization of the frame X-range is deferred until the fire()
         // phase, because the director doesn't know the start time until
         // some stars enqueue an event.
         _rangeInitialized = false;
         _yMin = -1;
         _yMax = 1;
+        _firstPoint = true;
     }
 
     /** Add new input data to the plot.
@@ -162,7 +163,12 @@ public class  CTPlot extends CTActor {
                                 ", CurrentTime = " + curTime + 
                                 ", CurrentValue = " + curValue + ".");
                     }
-                    _plot.addPoint(i, curTime, curValue, false);
+                    if(_firstPoint) {
+                        _plot.addPoint(i, curTime, curValue, false);
+                        _firstPoint = false;
+                    } else {
+                        _plot.addPoint(i, curTime, curValue, true);
+                    }
                 }
             } else {
                 // Empty channel. Ignore
@@ -215,8 +221,8 @@ public class  CTPlot extends CTActor {
     private double _yMin;
     private double _yMax;
 
-    private boolean[] _firstPoint;
-
     private boolean _rangeInitialized = false;
+
+    private boolean _firstPoint = true;
 
 }
