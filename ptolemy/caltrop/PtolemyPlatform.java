@@ -65,34 +65,41 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The PtolemyPlatform class contains code that configures the CAL interpreter infrastructure for use
- * inside the Ptolemy II software. In particular, it contains a context and a method that creates the
- * global environment to be used with Ptolemy.
- *
- * @author Jörn W. Janneck <janneck@eecs.berkeley.edu>, Christopher Chang <cbc@eecs.berkeley.edu>
- */
+The PtolemyPlatform class contains code that configures the CAL
+interpreter infrastructure for use inside the Ptolemy II software. In
+particular, it contains a context and a method that creates the global
+environment to be used with Ptolemy.
 
+ @author Jörn W. Janneck <janneck@eecs.berkeley.edu>, Christopher Chang <cbc@eecs.berkeley.edu>
+*/
 public class PtolemyPlatform {
+
     /**
-     * This Context represents the Ptolemy II system of data objects in a way that can be used by the
-     * {@link ptolemy.caltrop.ddi.util.DataflowActorInterpreter DataflowActorInterpreter}.
-     * The interpreter infrastructure relies on a client-provided context for any manipulation of data values.
+     * This Context represents the Ptolemy II system of data objects
+     * in a way that can be used by the {@link
+     * ptolemy.caltrop.ddi.util.DataflowActorInterpreter
+     * DataflowActorInterpreter}.  The interpreter infrastructure
+     * relies on a client-provided context for any manipulation of
+     * data values.
      *
      * @see ptolemy.caltrop.ddi.util.DataflowActorInterpreter
      * @see caltrop.interpreter.ExprEvaluator
      * @see caltrop.interpreter.StmtEvaluator
      */
     public static final Context _theContext = new Context() {
-            public Object applyFunction(Object function, Object[] args) { // TODO: perhaps need to optimize array creation
+            public Object applyFunction(Object function, Object[] args) {
+                // TODO: perhaps need to optimize array creation
                 try {
                     if (function instanceof ObjectToken) {
-                        return ((Function) ((ObjectToken) function).getValue()).apply(args);
+                        return ((Function) ((ObjectToken) function)
+                                .getValue()).apply(args);
                     } else {
-                        return ((FunctionToken) function).apply(Arrays.asList(args));
+                        return ((FunctionToken) function)
+                            .apply(Arrays.asList(args));
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new InterpreterException("Cannot apply function.", e);
+                } catch (Exception ex) {
+                    throw new InterpreterException("Cannot apply function.",
+                            ex);
                 }
             }
 
@@ -100,39 +107,44 @@ public class PtolemyPlatform {
                 return true;
             }
 
-            public void callProcedure(Object procedure, Object[] args) // TODO: perhaps need to optimize array creation
-            {
+            public void callProcedure(Object procedure, Object[] args) {
+                // TODO: perhaps need to optimize array creation
                 try {
                     ObjectToken pToken = (ObjectToken) procedure;
                     Procedure p = (Procedure) pToken.getValue();
                     p.call(args);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new InterpreterException("Error in procedure call.", e);
+                } catch (Exception ex) {
+                    throw new InterpreterException("Error in procedure call.",
+                            ex);
                 }
             }
 
             public boolean booleanValue(Object b) {
                 try {
                     return ((BooleanToken) b).booleanValue();
-                } catch (Exception e) {
-                    throw new InterpreterException("Cannot test token, expected boolean.", e);
+                } catch (Exception ex) {
+                    throw new InterpreterException(
+                            "Cannot test token, expected boolean.", ex);
                 }
             }
 
             public Object createClass(Class c) {
                 try {
                     return new ObjectToken(new ClassObject(c, this));
-                } catch (IllegalActionException e) {
-                    throw new InterpreterException("Cannot create class token.");
+                } catch (IllegalActionException ex) {
+                    throw new InterpreterException(
+                            "Cannot create class token.", ex);
                 }
             }
 
-            public Object getLocation(Object structure, Object[] location) { // FIXME
+            public Object getLocation(Object structure, Object[] location) {
+                // FIXME
                 return null;
             }
 
-            public void setLocation(Object structure, Object[] location, Object value) { // FIXME
+            public void setLocation(Object structure,
+                    Object[] location, Object value) {
+                // FIXME
             }
 
             public Object createBoolean(boolean b) {
@@ -148,24 +160,27 @@ public class PtolemyPlatform {
                 Type[] argTypes = new Type[f.arity()];
                 for (int i = 0; i < argTypes.length; i++)
                     argTypes[i] = BaseType.UNKNOWN;
-                return new FunctionToken(new PtCalFunction(f), new FunctionType(argTypes, BaseType.UNKNOWN));
+                return new FunctionToken(new PtCalFunction(f),
+                        new FunctionType(argTypes, BaseType.UNKNOWN));
             }
 
             public Object createProcedure(Procedure p) {
                 try {
                     return new ObjectToken(p);
-                } catch (IllegalActionException e) {
-                    throw new InterpreterException("Could not create procedure token.", e);
+                } catch (IllegalActionException ex) {
+                    throw new InterpreterException(
+                            "Could not create procedure token.", ex);
                 }
             }
 
             public Object createInteger(String s) {
                 try {
                     return new IntToken(s);
-                } catch (IllegalActionException e) {
-                    throw new InterpreterException("Cannot create integer token from string: '" + s + "'.");
+                } catch (IllegalActionException ex) {
+                    throw new InterpreterException(
+                            "Cannot create integer token from string: '"
+                            + s + "'.", ex);
                 }
-
             }
 
             public Object createInteger(int n) {
@@ -175,13 +190,18 @@ public class PtolemyPlatform {
             public int intValue(Object o) {
                 try {
                     return ((IntToken) o).intValue();
-                } catch (Exception e) {
-                    throw new InterpreterException("Cannot cast token, expected int.", e);
+                } catch (Exception ex) {
+                    throw new InterpreterException(
+                            "Cannot cast token, expected int.", ex);
                 }
             }
 
-            // FIXME very preliminary. what about FunctionToken? also, how will reflection work on methods that need bytes, etc.
             public Class toJavaClass(Object o) {
+
+                // FIXME very preliminary. what about FunctionToken?
+                // also, how will reflection work on methods that
+                // need bytes, etc.
+
                 if (o == null) {
                     return null;
                 } else if (o instanceof BooleanToken) {
@@ -196,7 +216,9 @@ public class PtolemyPlatform {
                     return ((ObjectToken) o).getValue().getClass();
                 } else if (o instanceof Token) {
                     return o.getClass();
-                } else throw new InterpreterException("Unrecognized Token type in toClass:" + o.getClass().toString());
+                } else throw new InterpreterException(
+                        "Unrecognized Token type in toClass:"
+                        + o.getClass().toString());
             }
 
             public Object toJavaObject(Object o) {
@@ -212,7 +234,9 @@ public class PtolemyPlatform {
                     return ((ObjectToken) o).getValue();
                 } else if (o instanceof Token) {
                     return o;
-                } else throw new InterpreterException("Unrecognized Token type in toClass:" + o.getClass().toString());
+                } else throw new InterpreterException(
+                        "Unrecognized Token type in toClass:"
+                        + o.getClass().toString());
             }
 
             public Object fromJavaObject(Object o) {
@@ -230,32 +254,38 @@ public class PtolemyPlatform {
                     } else {
                         return new ObjectToken(o);
                     }
-                } catch (IllegalActionException e) {
-                    throw new InterpreterException("Couldn't create ObjectToken from Java Object " + o.toString());
+                } catch (IllegalActionException ex) {
+                    throw new InterpreterException(
+                            "Couldn't create ObjectToken from Java Object "
+                            + o.toString(), ex);
                 }
             }
 
             public Object createNull() {
                 try {
                     return new ObjectToken(null);
-                } catch (IllegalActionException e) {
-                    throw new InterpreterException("Cannot create null token.");
+                } catch (IllegalActionException ex) {
+                    throw new InterpreterException(
+                            "Cannot create null token.", ex);
                 }
             }
 
             public Object createReal(String s) {
                 try {
                     return new DoubleToken(s);
-                } catch (IllegalActionException e) {
-                    throw new InterpreterException("Cannot create double token from string: '" + s + "'.");
+                } catch (IllegalActionException ex) {
+                    throw new InterpreterException(
+                            "Cannot create double token from string: '"
+                            + s + "'.", ex);
                 }
             }
 
             public double realValue(Object o) {
                 try {
                     return ((DoubleToken) o).doubleValue();
-                } catch (Exception e) {
-                    throw new InterpreterException("Cannot cast token, expected double.", e);
+                } catch (Exception ex) {
+                    throw new InterpreterException(
+                            "Cannot cast token, expected double.", ex);
                 }
             }
 
@@ -267,8 +297,9 @@ public class PtolemyPlatform {
             public String stringValue(Object o) {
                 try {
                     return ((StringToken) o).stringValue();
-                } catch (Exception e) {
-                    throw new InterpreterException("Cannot cast token, expected string.", e);
+                } catch (Exception ex) {
+                    throw new InterpreterException(
+                            "Cannot cast token, expected string.", ex);
                 }
             }
 
@@ -276,8 +307,9 @@ public class PtolemyPlatform {
             public Object createList(List a) {
                 try {
                     return new ObjectToken(a);
-                } catch (IllegalActionException e) {
-                    throw new InterpreterException("Cannot create list token.");
+                } catch (IllegalActionException ex) {
+                    throw new InterpreterException(
+                            "Cannot create list token.", ex);
                 }
             }
 
@@ -287,8 +319,9 @@ public class PtolemyPlatform {
                 } else {
                     try {
                         return (List) ((ObjectToken) o).getValue();
-                    } catch (Exception e) {
-                        throw new InterpreterException("Cannot cast token, expected a List.");
+                    } catch (Exception ex) {
+                        throw new InterpreterException(
+                                "Cannot cast token, expected a List.", ex);
                     }
                 }
             }
@@ -296,8 +329,9 @@ public class PtolemyPlatform {
             public Object createMap(Map m) {
                 try {
                     return new ObjectToken(m);
-                } catch (IllegalActionException e) {
-                    throw new InterpreterException("Cannot create map token.");
+                } catch (IllegalActionException ex) {
+                    throw new InterpreterException(
+                            "Cannot create map token.", ex);
                 }
             }
 
@@ -305,8 +339,10 @@ public class PtolemyPlatform {
                 try {
                     return (Collection)((ObjectToken)a).getValue();
                 }
-                catch (Exception exc) {
-                    throw new InterpreterException("Could not extract collection from token: " + a.toString(), exc);
+                catch (Exception ex) {
+                    throw new InterpreterException(
+                            "Could not extract collection from token: "
+                            + a.toString(), ex);
                 }
             }
 
@@ -314,8 +350,10 @@ public class PtolemyPlatform {
                 try {
                     return (Map)((ObjectToken)a).getValue();
                 }
-                catch (Exception exc) {
-                    throw new InterpreterException("Could not extract map from token: " + a.toString(), exc);
+                catch (Exception ex) {
+                    throw new InterpreterException(
+                            "Could not extract map from token: "
+                            + a.toString(), ex);
                 }
             }
 
@@ -327,8 +365,9 @@ public class PtolemyPlatform {
             public Object createSet(Set s) {
                 try {
                     return new ObjectToken(s);
-                } catch (IllegalActionException e) {
-                    throw new InterpreterException("Cannot create set token.");
+                } catch (IllegalActionException ex) {
+                    throw new InterpreterException(
+                            "Cannot create set token.", ex);
                 }
             }
         };
@@ -351,8 +390,8 @@ public class PtolemyPlatform {
                     try {
                         System.out.println(args[0]);
                         return args[0];
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$not': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$not': Cannot apply.", ex);
                     }
                 }
 
@@ -368,8 +407,8 @@ public class PtolemyPlatform {
                         int b = _theContext.intValue(args[1]);
                         List res = (b < a) ? Collections.EMPTY_LIST : new IntegerList(_theContext, a, b);
                         return _theContext.createList(res);
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function 'Integers': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function 'Integers': Cannot apply.", ex);
                     }
                 }
 
@@ -384,8 +423,8 @@ public class PtolemyPlatform {
                         BooleanToken b = (BooleanToken) args[0];
                         ;
                         return b.not();
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$not': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$not': Cannot apply.", ex);
                     }
                 }
 
@@ -400,8 +439,8 @@ public class PtolemyPlatform {
                         BooleanToken a = (BooleanToken) args[0];
                         BooleanToken b = (BooleanToken) args[1];
                         return a.and(b);
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$and': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$and': Cannot apply.", ex);
                     }
                 }
 
@@ -416,8 +455,8 @@ public class PtolemyPlatform {
                         BooleanToken a = (BooleanToken) args[0];
                         BooleanToken b = (BooleanToken) args[1];
                         return a.or(b);
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$or': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$or': Cannot apply.", ex);
                     }
                 }
 
@@ -432,8 +471,8 @@ public class PtolemyPlatform {
                         Token a = (Token) args[0];
                         Token b = (Token) args[1];
                         return a.isEqualTo(b);
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$add': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$add': Cannot apply.", ex);
                     }
                 }
 
@@ -448,8 +487,8 @@ public class PtolemyPlatform {
                         ScalarToken a = (ScalarToken) args[0];
                         ScalarToken b = (ScalarToken) args[1];
                         return a.isLessThan(b);
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$lt': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$lt': Cannot apply.", ex);
                     }
                 }
 
@@ -467,8 +506,8 @@ public class PtolemyPlatform {
                             return BooleanToken.TRUE;
                         else
                             return BooleanToken.FALSE;
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$lt': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$lt': Cannot apply.", ex);
                     }
                 }
 
@@ -483,8 +522,8 @@ public class PtolemyPlatform {
                         ScalarToken a = (ScalarToken) args[0];
                         ScalarToken b = (ScalarToken) args[1];
                         return a.isGreaterThan(b);
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$lt': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$lt': Cannot apply.", ex);
                     }
                 }
 
@@ -502,8 +541,8 @@ public class PtolemyPlatform {
                             return BooleanToken.TRUE;
                         else
                             return BooleanToken.FALSE;
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$lt': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$lt': Cannot apply.", ex);
                     }
                 }
 
@@ -518,8 +557,8 @@ public class PtolemyPlatform {
                         ScalarToken a = (ScalarToken) args[0];
 
                         return a.zero().subtract(a);
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$negate': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$negate': Cannot apply.", ex);
                     }
                 }
 
@@ -553,8 +592,8 @@ public class PtolemyPlatform {
                         } else {
                             return a.add(b);
                         }
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$add': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$add': Cannot apply.", ex);
                     }
                 }
 
@@ -581,8 +620,8 @@ public class PtolemyPlatform {
                         } else {
                             return a.multiply(b);
                         }
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$mul': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$mul': Cannot apply.", ex);
                     }
                 }
 
@@ -616,8 +655,8 @@ public class PtolemyPlatform {
                         } else {
                             return a.subtract(b);
                         }
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$sub': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$sub': Cannot apply.", ex);
                     }
 
                 }
@@ -633,8 +672,8 @@ public class PtolemyPlatform {
                         Token a = (Token) args[0];
                         Token b = (Token) args[1];
                         return a.divide(b);
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$div': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$div': Cannot apply.", ex);
                     }
                 }
 
@@ -649,8 +688,8 @@ public class PtolemyPlatform {
                         Token a = (Token) args[0];
                         Token b = (Token) args[1];
                         return a.modulo(b);
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$mod': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$mod': Cannot apply.", ex);
                     }
                 }
 
@@ -675,8 +714,8 @@ public class PtolemyPlatform {
                         } else {
                             throw new InterpreterException("$size needs an ObjectToken or ArrayToken.");
                         }
-                    } catch (Exception exc) {
-                        throw new InterpreterException("Function '$size': Cannot apply.", exc);
+                    } catch (Exception ex) {
+                        throw new InterpreterException("Function '$size': Cannot apply.", ex);
                     }
                 }
 
@@ -699,8 +738,8 @@ public class PtolemyPlatform {
                         }
                         return _theContext.createList(res);
                     }
-                    catch (Exception exc) {
-                        throw new InterpreterException("Cannot create list.", exc);
+                    catch (Exception ex) {
+                        throw new InterpreterException("Cannot create list.", ex);
                     }
                 }
 
@@ -723,8 +762,8 @@ public class PtolemyPlatform {
                         }
                         return _theContext.createSet(res);
                     }
-                    catch (Exception exc) {
-                        throw new InterpreterException("Cannot create set.", exc);
+                    catch (Exception ex) {
+                        throw new InterpreterException("Cannot create set.", ex);
                     }
                 }
 
@@ -747,8 +786,8 @@ public class PtolemyPlatform {
                         }
                         return _theContext.createMap(res);
                     }
-                    catch (Exception exc) {
-                        throw new InterpreterException("Cannot create map.", exc);
+                    catch (Exception ex) {
+                        throw new InterpreterException("Cannot create map.", ex);
                     }
                 }
 
@@ -768,8 +807,8 @@ public class PtolemyPlatform {
                             _theContext.callProcedure(proc, argument);
                         }
                     }
-                    catch (Exception exc) {
-                        throw new InterpreterException("Cannot iterate.", exc);
+                    catch (Exception ex) {
+                        throw new InterpreterException("Cannot iterate.", ex);
                     }
                 }
 
