@@ -132,26 +132,6 @@ public class CTSchedule extends Schedule {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class and add the element to the Schedule.
-     *  The reason of overriding this method is to use a more
-     *  efficient data structure to store the schedule.
-     *  @param element The scheduling element.
-     */
-    public void add(ScheduleElement element) {
-        element.setParent(this);
-        _incrementVersion();
-        _schedule.add(element);
-    }
-
-    /** Return the element at the specified position in the list.
-     *
-     * @param index The index of the element to return.
-     * @return The element at the specified position in the list.
-     */
-    public ScheduleElement get(int index) {
-        return((ScheduleElement)_schedule.get(index));
-    }
-
     /** Return all the scheduling information in a Sting.
      *  @return All the schedules.
      */
@@ -227,11 +207,4 @@ public class CTSchedule extends Schedule {
         result += "}\n";
         return result;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    // We choose an ArrayList implementation for _schedule,
-    // so that most access time is constant.
-    protected List _schedule = new ArrayList(10);
 }
