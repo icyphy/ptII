@@ -52,11 +52,14 @@ JARFILE = 	$(TYPACKAGE).jar
 CLASSPATH = ../../../..
 
 JSRCS = \
+	CSPBuffer.java \
 	CSPMultiSink.java \
 	CSPMultiSource.java \
+	CSPPausingSource.java \
 	CSPSink.java \
 	CSPSource.java \
-	CSPTransfer.java
+	Customer.java \
+	Server.java
 
 
 EXTRA_SRCS =	$(JSRCS)
