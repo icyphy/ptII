@@ -328,7 +328,7 @@ public class CTBaseIntegrator extends CTActor
                     " has no ODE solver avalable");
         }
 
-        int n = solver.integratorAuxVariableNumber();
+        int n = solver.getIntegratorAuxVariableCount();
         if((_auxVariables == null) || (_auxVariables.length < n)) {
             _auxVariables = new double[n];
         }

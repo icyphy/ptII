@@ -192,7 +192,7 @@ public class ExplicitRK23Solver extends VariableStepSolver{
      *  @return The number of auxilary variables for the solver in each
      *       integrator.
      */
-    public final int integratorAuxVariableNumber() {
+    public final int getIntegratorAuxVariableCount() {
         return 4;
     }
 

@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -50,7 +50,14 @@ The behavior of the integrators also changes
 when changing ODE solver, so this class provides the some methods
 for the integrators too, including the fire() method, and the error
 control related methods. Even for one integration method, the integrator's
-fire() method may depends on the round of fires.  Round counter is a counter
+fire() method may depends on the round of fires. 
+<P>
+An integer called "round" is used to indicate the number of firing rounds
+within one iteration. For some integration method, (the so called explicit
+methods) the round of firings are fixed. For some others (called implicit
+methods), the round could be arbitrary integer.
+<P>
+ Round counter is a counter
 for the number of fire() rounds in one iteration to help the actors that
 may behaves differently under different round. The round can be get by
 the getRound() method. The incrRound() method will increase the counter by one,
@@ -98,15 +105,6 @@ public abstract class ODESolver extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Abstract method, which should return true if the local error
-     *  in the last step is tolerable.
-     *  This is the AND of all the error control actor's response.
-     *  @return True if the local error in the last step is tolerable.
-     *  @deprecate No convergence control in Solvers.
-     *  FIXME: DEPRECATED!
-     */
-    public  boolean errorTolerable(){return true;}
-
     /** Return the director contains this solver.
      *  @return the director contains this solver.
      */
@@ -134,9 +132,9 @@ public abstract class ODESolver extends NamedObj {
      *  integrators when solving the ODE.
      *  @return The number of auxiliary variables 
      */
-    public abstract int integratorAuxVariableNumber();
+    public abstract int getIntegratorAuxVariableCount();
 
-    /** Abstract fire() method for integrators.
+    /** The fire method of the integrator is delogated to this method.
      *
      *  @param integrator The integrator of that calls this method.
      *  @exception IllegalActionException Not thrown in this base
@@ -145,57 +143,27 @@ public abstract class ODESolver extends NamedObj {
     public abstract void integratorFire(CTBaseIntegrator integrator)
             throws  IllegalActionException;
 
-    /** Abstract isSuccessful() method for integrators.
+    /** The isSuccessful() method of the integrator is delegated to 
+     *  this method.
      *  @param integrator The integrator of that calls this method.
      *  @return True if the intergrator report a success on the last step.
      */
     public abstract boolean integratorIsSuccessful(CTBaseIntegrator
             integrator);
 
-    /** Abstract suggestedNextStepSize() method for integrators.
+    /** The predictStepSize() method of the integrator is delegated
+     *  to this method.
      *  @param integrator The integrator of that calls this method.
      *  @return The suggested next step by the given integrator.
      */
     public abstract double integratorPredictedStepSize(
         CTBaseIntegrator integrator);
 
-    /** Solver the ODE for one successful step. In this default 
-     *  implementation, the method will try to resolve the states
-     *  of the system for the given step size. If it is not succeeded,
-     *  the integration step will be restarted after calling 
-     *  startOverLastStep() method.
-     *  Different solver may interpret "success" and implement
-     *  startOverLastStep() differently. 
-     *
-     *  @exception IllegalActionException Not thrown in this base
-     *  class. May be needed by the derived class.
-     *  @deprecate Use resolveStates() only. No step size control in solvers.
-     * FIXME: deprecated!
-     */
-    public void proceedOneStep() throws IllegalActionException {
-        while(true) {
-            resolveStates();
-            if(errorTolerable()){
-                resolveNextStepSize();
-                break;
-            }
-            startOverLastStep();
-        }
-    }
-
     /** Reset the round counter to 0.
      */
     public void resetRound() {
         _round = 0;
     }
-
-    /** Abstract method for resolving the next step size if the current
-     *  step is a success.
-     *  Different solver may implement it differently.
-     *  @deprecate No step size control in solvers.
-     *  FIXME: deprecated.
-     */
-    public void resolveNextStepSize(){}
 
     /** Return true if the state of the system is resolved successfully.
      *  Different solver may implement it differently.
@@ -204,16 +172,6 @@ public abstract class ODESolver extends NamedObj {
      *  class. May be needed by the derived class.
      */
     public abstract boolean resolveStates() throws IllegalActionException;
-
-    /** Abstract method for restarting the last integration step with a
-     *  smaller step size.
-     *  The typical operations involved in this method are resetting
-     *  the currentTime and halving the currentStepSize of the director.
-     *  @deprecate No step size control in SOlvers!
-     *  FIXME: deprecated!
-     */
-    public void startOverLastStep() {}
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

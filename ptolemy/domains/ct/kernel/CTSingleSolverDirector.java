@@ -58,12 +58,14 @@ this director is not applicable. Please use CTMultiSolverDirector with
 ImpulseBESolver as the breakpoint solver for better result.
 <P>
 Each iteration of the director simulates the system for one step.
+It recruit ODE solver to solve the tentative new state, and then
+control the step size according to error control and/or unpredicatable
+breakpoint.
 The size of the step is determined by the ODE solver as well as 
 the breakpoints. After each iteration, the execution control will be
 returned to the manager, where possible mutations are taken care of.
 At the end of the simulation, the postfire() method will return false,
 telling the manager that the simulation finished.
- 
 
 @author Jie Liu
 @version $Id$
@@ -183,8 +185,8 @@ public class CTSingleSolverDirector extends CTDirector {
      *  system. Parameters are updated, so that the parameters 
      *  set after the creation of the actors are evaluated and ready
      *  for use. The stop time is registered as a breakpoint.
-     *  This method checks if there is a composite actor for this 
-     *  director to direct, and if there is a proper scheduler for this
+     *  This method checks whether there is a composite actor for this 
+     *  director to direct, and whether there is a proper scheduler for this
      *  director. If not, an exception is throw. 
      *  The ODE solver is instantiated.
      *  
@@ -217,14 +219,14 @@ public class CTSingleSolverDirector extends CTDirector {
      *  the stop time. If so, return false ( for stop further simulation).
      *  Otherwise, returns true.
      *  @return false If the simulation is finished.
-     *  @exception IllegalActionException Never thrown
+     *  @exception IllegalActionException If thrown by registering 
+     *  breakpoint 
      */
     public boolean postfire() throws IllegalActionException {
         if((getCurrentTime()+getSuggestedNextStepSize())>getStopTime()) {
             fireAt(null, getStopTime());
         }
         if(Math.abs(getCurrentTime() - getStopTime()) < getTimeResolution()) {
-            //updateStates(); // call postfire on all actors
             return false;
         }
         if(getStopTime() < getCurrentTime()) {
@@ -312,10 +314,10 @@ public class CTSingleSolverDirector extends CTDirector {
      */
     public void wrapup() throws IllegalActionException{
         if(STAT) {
-            System.out.println("################STATISTICS################");
-            System.out.println("Total # of STEPS "+NSTEP);
-            System.out.println("Total # of Function Evaluation "+NFUNC);
-            System.out.println("Total # of Failed Steps "+NFAIL);
+            _debug("################STATISTICS################");
+            _debug(getName() + ": Total # of STEPS "+NSTEP);
+            _debug(getName() + ": Total # of Function Evaluation "+NFUNC);
+            _debug(getName() + ": Total # of Failed Steps "+NFAIL);
         }
         super.wrapup();
     }

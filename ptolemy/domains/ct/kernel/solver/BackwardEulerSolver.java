@@ -169,7 +169,7 @@ public class BackwardEulerSolver extends FixedStepSolver
      *  @return The number of auxilary variables for the solver in each
      *       integrator.
      */
-    public final int integratorAuxVariableNumber() {
+    public final int getIntegratorAuxVariableCount() {
         return 1;
     }
 

@@ -38,8 +38,8 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// TrapezoidalRuleSolver
 /** 
-Description of the class
-@author  youname
+This class is under significant rework. Please don't use it!!!
+@author Jie Liu 
 @version $Id$
 */
 public class TrapezoidalRuleSolver extends VariableStepSolver{
@@ -137,7 +137,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
             }
             if(iterations++ > dir.getMaxIterations()) {
                 //reduce step size and start over.
-                startOverLastStep();
+                //startOverLastStep();
                 resetRound();
                 // prediction
                 actors = sch.dynamicActorSchedule();
@@ -244,7 +244,7 @@ public class TrapezoidalRuleSolver extends VariableStepSolver{
      *  @return The number of auxilary variables for the solver in each
      *       integrator.
      */
-    public final int integratorAuxVariableNumber() {
+    public final int getIntegratorAuxVariableCount() {
         return 2;
     }
 
