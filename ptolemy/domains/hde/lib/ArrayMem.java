@@ -54,16 +54,16 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// ArrayMem
 /**
-Alter or Extract the ith element from in internal an array. 
+Alter or Extract the ith element from an internal array. 
 Read:  read the ith element from the internal array and send it to the output
 port.  
 Write: write the data input to the ith element of an internal array.
-Initialize: write the initializing data input to thte internal array.
+Initialize: write the initializing data input to the internal array.
 It is required that the value of the input index be less than or equal to the 
 length parameter.
 @see LookupTable
 @see RecordDisassembler
-@author Edward A. Lee, Elaine Cheong,Jim Armstrong
+@authors Edward A. Lee, Elaine Cheong,Jim Armstrong
 @version $Id$
 */
 
@@ -112,7 +112,8 @@ public class ArrayMem extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         Inputs                      ////
 
-    /** The index into the input array.  This is an integer that is required to be less than or equal to the
+    /** The index into the input array.  This is an integer that is required to
+     * be less than or equal to the
      *  length of the input array.
      */
     public TypedIOPort index;
@@ -140,25 +141,24 @@ public class ArrayMem extends TypedAtomicActor {
     ////                         variable                       //////
     public int alength;
 
-    
-    
+     
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-     
-
-    /** If read has a token, copy the ith elment of the memory to dataOut.
+    /** Get the value of the lenght parameter
+     *  Initialize the memory array
+     */
+        
+    public void initialize() throws IllegalActionException{
+	 alength =((IntToken)length.getToken()).intValue();
+         _mem = new Token[alength];
+    }  
+  /** If read has a token, copy the ith elment of the memory to dataOut.
      *  If write has a token, copy the dataIn input to the ith element of memory.
      *  If init has a token, copy the initData input to the internal array*
      *  @exception IllegalActionException If the index input
      *   is out of range.
      */
-    public void initialize() throws IllegalActionException{
-	 alength =((IntToken)length.getToken()).intValue();
-         _mem = new Token[alength];
-    }  
- 
     public void fire() throws IllegalActionException {
 	BooleanToken yes=BooleanToken.TRUE;
       
@@ -168,7 +168,7 @@ public class ArrayMem extends TypedAtomicActor {
           if (_init.isEqualTo(yes).booleanValue()){
 	    if(initData.hasToken(0)){
               ArrayToken token = (ArrayToken)initData.get(0);
-               for(int i = 0; i < alength-1; i++) {
+               for(int i = 0; i < alength; i++) {
                _mem[i]=(token.getElement(i));
                }
              }
