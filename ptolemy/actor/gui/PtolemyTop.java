@@ -30,6 +30,9 @@
 package ptolemy.actor.gui;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.StringToken;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Top;
@@ -64,6 +67,27 @@ public abstract class PtolemyTop extends Top {
         super();
     }
 
+    /** Get the view that created this frame.
+     *  @return The view.
+     */
+    public View getView() {
+        return _view;
+    }
+
+    /** Set the key used to identify this window, and display a string
+     *  representation of this key in the titlebar.
+     *  @param key The key identifying the model.
+     */
+    public void setView(View view) {
+	_view = view;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The view that created this frame.
+    private View _view = null;
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -77,7 +101,7 @@ public abstract class PtolemyTop extends Top {
         // NOTE: Used to use for the first argument the following, but
         // it seems to not work for relative file references:
         // new URL("file", null, _directory.getAbsolutePath()
-        ModelDirectory.read(url, url, url.toExternalForm());
+        ModelDirectory.openModel(url, url, url.toExternalForm());
     }
 
     /** Query the user for a filename and save the model to that file.
@@ -103,17 +127,29 @@ public abstract class PtolemyTop extends Top {
         int returnVal = fileDialog.showSaveDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileDialog.getSelectedFile();
+
+	    // update the name of the model proxy.
             try {
-                String key = file.toURL().toExternalForm();
-                ModelDirectory.changeKey(getKey(), key);
-            } catch (MalformedURLException ex) {
+		String newKey = file.toURL().toExternalForm();
+		ModelProxy proxy = (ModelProxy)getView().getContainer();
+	        Parameter id = (Parameter)proxy.getAttribute("ID");
+		id.setToken(new StringToken(newKey));
+	    } catch (MalformedURLException ex) {
+                try {
+                    MessageHandler.warning(
+                            "Unable to associate file with a URL: " + ex);
+                } catch (CancelException exception) {}
+            } catch (KernelException ex) {
                 try {
                     MessageHandler.warning(
                             "Unable to associate file with a URL: " + ex);
                 } catch (CancelException exception) {}
             }
+
             _file = file;
-            _directory = fileDialog.getCurrentDirectory();
+	    // FIXME: better title.
+	    setTitle(_file.getName());
+	    _directory = fileDialog.getCurrentDirectory();
             _save();
         }
     }

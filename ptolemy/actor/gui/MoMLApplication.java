@@ -55,7 +55,7 @@ import com.microstar.xml.XmlException;
 /**
 This application creates a Ptolemy II model given a MoML file name on the
 command line, and then executes that model.  The specified file should
-define a model derived from CompositeActor.
+define a model derived from CompositeActor.  
 <p>
 NOTE: This application does not exit when the specified models finish
 executing.  This is because if it did, then the any displays created
@@ -63,7 +63,7 @@ by the models would disappear immediately.  However, it would be better
 if the application were to exit when all displays have been closed.
 This currently does not happen.
 
-@author Edward A. Lee
+@author Edward A. Lee and Steve Neuendorffer
 @version $Id$
 */
 public class MoMLApplication extends CompositeActorApplication
@@ -111,15 +111,15 @@ public class MoMLApplication extends CompositeActorApplication
      *  @param key The key to use to uniquely identify the model.
      *  @exception IOException If the stream cannot be read.
      */
-    public void read(URL base, URL in, Object key)
+    public void read(URL base, URL in, String key)
             throws IOException {
         MoMLParser parser = new MoMLParser();
         try {
             NamedObj toplevel = parser.parse(base, in.openStream());
             if (toplevel instanceof CompositeActor) {
                 CompositeActor castTopLevel = (CompositeActor)toplevel;
-                add(key, castTopLevel);
-            }
+                ModelProxy proxy = add(key, castTopLevel);
+           }
         } catch (Exception ex) {
             if (ex instanceof XmlException) {
                 XmlException xmlEx = (XmlException)ex;
@@ -163,11 +163,15 @@ public class MoMLApplication extends CompositeActorApplication
                 // Strangely, the XmlParser does not want as base the
                 // directory containing the file, but rather the file itself.
                 base = inurl;
-            } catch (MalformedURLException ex) {
+	    } catch (MalformedURLException ex) {
                 try {
                     File file = new File(arg);
+		    if(!file.exists()) {
+			// I hate communicating by exceptions
+			throw new MalformedURLException();
+		    }
                     inurl = file.toURL();
-
+		    
                     // Strangely, the XmlParser does not want as base the
                     // directory containing the file, but rather the
                     // file itself.
@@ -179,8 +183,9 @@ public class MoMLApplication extends CompositeActorApplication
                     // URL as the key.
                     key = base.toExternalForm();
 
-                } catch (MalformedURLException ex2) {
+		} catch (MalformedURLException ex2) {
                     // Try one last thing, using the classpath.
+		    // FIXME: why not getClass().getClassLoader()....?
                     inurl = Class.forName("ptolemy.kernel.util.NamedObj").
                             getClassLoader().getResource(arg);
                     if (inurl == null) {
@@ -191,15 +196,14 @@ public class MoMLApplication extends CompositeActorApplication
                     key = inurl.toExternalForm();
 
                     base = inurl;
-                }
+		}
             }
-            // If there already is an instance of this file,
-            // then augment the key until it is unique.
-            int copy = 2;
-            while (ModelDirectory.get(key) != null) {
-                key = key + " copy " + copy++;
-            }
-            read(base, inurl, key);
+	    String name = ModelDirectory.getInstance().uniqueName(key);	    
+	 
+	    // Now defer to the model reader.
+	    // Note that this circumvents the ModelDirectory by forcing 
+	    // creation of an identical model.
+	    read(base, inurl, name);
         } else {
             // Argument not recognized.
             return false;

@@ -42,6 +42,7 @@ import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.KernelException;
 
 // Java imports
@@ -59,7 +60,6 @@ import javax.swing.JMenuItem;
 //////////////////////////////////////////////////////////////////////////
 //// ModelFrame
 /**
-
 ModelFrame is a top-level window containing a Ptolemy II model.
 If contains a ModelPane, but adds a menu bar and a status bar for
 message reporting.
@@ -87,22 +87,6 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
 
         // Make the go button the default.
         _pane.setDefaultButton();
-
-        // Debug menu
-        JMenuItem[] debugMenuItems = {
-            new JMenuItem("Listen to Manager", KeyEvent.VK_M),
-            new JMenuItem("Listen to Director", KeyEvent.VK_D),
-        };
-        _debugMenu.setMnemonic(KeyEvent.VK_D);
-        DebugMenuListener sml = new DebugMenuListener();
-        // Set the action command and listener for each menu item.
-        for(int i = 0; i < debugMenuItems.length; i++) {
-            debugMenuItems[i].setActionCommand(
-                    debugMenuItems[i].getText());
-            debugMenuItems[i].addActionListener(sml);
-            _debugMenu.add(debugMenuItems[i]);
-        }
-        _menubar.add(_debugMenu);
 
         // FIXME: Need to do something with the progress bar in the status bar.
     }
@@ -241,12 +225,6 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** @serial Debug menu for this frame. */
-    protected JMenu _debugMenu = new JMenu("Debug");
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The model that this window controls, if any.
@@ -258,51 +236,4 @@ public class ModelFrame extends PtolemyTop implements ExecutionListener {
     // The previous state of the manager, to avoid reporting it if it hasn't
     // changed.
     private Manager.State _previousState;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
-
-    /** Listener for debug menu commands. */
-    class DebugMenuListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            JMenuItem target = (JMenuItem)e.getSource();
-            String actionCommand = target.getActionCommand();
-            try {
-                DebugWindowAttribute attr = new DebugWindowAttribute(
-                        _model, _model.uniqueName("_debug"));
-                final TopDebugListener listener =
-                        (TopDebugListener)attr.getFrame();
-                // Give the new window the same key as this one.
-                listener.setKey(getKey());
-                if (actionCommand.equals("Listen to Manager")) {
-                    final Manager manager = _model.getManager();
-                    if (manager != null) {
-                        manager.addDebugListener(listener);
-                        // Listen for window closing events to unregister.
-                        listener.addWindowListener(new WindowAdapter() {
-                            public void windowClosing(WindowEvent e) {
-                                manager.removeDebugListener(listener);
-                            }
-                        });
-                    }
-                } else if (actionCommand.equals("Listen to Director")) {
-                    final Director director = _model.getDirector();
-                    if (director != null) {
-                        director.addDebugListener(listener);
-                        // Listen for window closing events to unregister.
-                        listener.addWindowListener(new WindowAdapter() {
-                            public void windowClosing(WindowEvent e) {
-                                director.removeDebugListener(listener);
-                            }
-                        });
-                    }
-                }
-            } catch (KernelException ex) {
-                try {
-                    MessageHandler.warning("Failed to create debug listener: "
-                    + ex);
-                } catch (CancelException exception) {}
-            }
-        }
-    }
 }

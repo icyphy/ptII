@@ -1,6 +1,6 @@
 /* A directory of open models.
 
- Copyright (c) 1999 The Regents of the University of California.
+ Copyright (c) 1999-2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -29,6 +29,10 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.ComponentEntity;
 import ptolemy.actor.CompositeActor;
 
 import java.io.InputStream;
@@ -50,132 +54,112 @@ instance of String.  Typical choices (which depend on the application)
 are the fully qualified class name, or the canonical URL or file name
 for a MoML file that describes the model.
 
-@author Edward A. Lee
+@author Edward A. Lee and Steve Neuendorffer
 @version $Id$
 */
-public class ModelDirectory {
+public class ModelDirectory extends CompositeEntity {
 
-    /** Private constructor prevents instances from being created.
+    /** Construct a model directory
+     *  in the default workspace with an empty string
+     *  as its name. Add the entity to the workspace directory.
+     *  Increment the version number of the workspace.
      */
-    private ModelDirectory() {
+    public ModelDirectory() {
+        super();
+    }
+
+    /** Construct a model directory in the specified workspace with an empty
+     *  string as a name. You can then change the name with setName().
+     *  If the workspace argument is null, then use the default workspace.
+     *  Add the entity to the workspace directory.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the entity.
+     */
+    public ModelDirectory(Workspace workspace) {
+	super(workspace);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Change a key from the one specified to the new one.
-     *  Find all the instances of WindowAttribute in the model
-     *  corresponding to the old key and change the titles on
-     *  the associated windows to the string returned by the
-     *  toString() method of the new key.  If the old key
-     *  does not exist, then do nothing.  If the old key and the
-     *  new key are the same (as tested by their equals() method),
-     *  then also do nothing.
-     *  @param oldKey The old key.
-     *  @param newKey The new key.
+    /** Return the singleton instance of this class.
      */
-    public static void changeKey(Object oldKey, Object newKey) {
-        CompositeActor model = get(oldKey);
-        if (model != null && !newKey.equals(oldKey)) {
-            put(newKey, model);
-            remove(oldKey);
-        }
-        Iterator attributes =
-               model.attributeList(WindowAttribute.class).iterator();
-        while (attributes.hasNext()) {
-            WindowAttribute attribute = (WindowAttribute)attributes.next();
-            attribute.getFrame().setKey(newKey);
-        }            
+    // FIXME this probably shouldn't be a singleton, but how else do we 
+    // get it?
+    public static ModelDirectory getInstance() {
+	return _instance;
     }
 
-    /** Return the collection of models in the directory.
-     *  @returns The collection of models in the directory.
-     */
-    public static Collection models() {
-        return _directory.values();
-    }
-
-    /** Return the model with the specified key, or null if there is no
-     *  no such model.
-     *  @param key A key identifying the model.
-     *  @returns The model with the specified key.
-     */
-    public static CompositeActor get(Object key) {
-        return (CompositeActor)_directory.get(key);
-    }
-
-    /** Return the set of keys in the directory.
-     *  @returns The set of keys in the directory.
-     */
-    public static Set keySet() {
-        return _directory.keySet();
-    }
-
-    /** Add a model to the directory with the specified key.
-     *  @param key A key identifying the model.
-     *  @param model The model.
-     */
-    public static void put(Object key, CompositeActor model) {
-        _directory.put(key, model);
-    }
-
-    /** If the specified key is present in the directory, then find
-     *  all instances of WindowAttribute that it contains, and make
-     *  sure they are visible; otherwise, read the specified stream
-     *  by delegating to the registered model reader.
+    /** If a view on a model with the specified name is present in this 
+     *  object, then find all the views of that model and make them 
+     *  visible; otherwise, read a model from the specified stream
+     *  and create a default view for the model and add the view 
+     *  to this directory.
      *  If no model reader has been registered, then do nothing.
-     *  It is up to the model reader to register the model with this
-     *  class by calling put().
      *  @param base The base for relative file references, or null if
      *   there are no relative file references.
      *  @param in The input stream.
-     *  @param key The key to use to uniquely identify the model.
+     *  @param name The name to use to uniquely identify the new model.
      *  @exception IOException If the stream cannot be read.
      */
-    public static void read(URL base, URL in, Object key)
+    // FIXME: consider adding policy for what the names are.
+    public static void openModel(URL base, URL in, String name)
             throws IOException {
-        CompositeActor model = get(key);
+        ModelProxy model = (ModelProxy)getInstance().getEntity(name);
         if (model == null) {
             if (_modelReader != null) {
-                _modelReader.read(base, in, key);
+                _modelReader.read(base, in, name);
             }
         } else {
+	    // FIXME this logic should be abstracted.
             // Model already exists.
-            Iterator attributes =
-                   model.attributeList(WindowAttribute.class).iterator();
-            while (attributes.hasNext()) {
-                WindowAttribute attribute = (WindowAttribute)attributes.next();
-                // FIXME: Is this the right thing to do?
-                attribute.getFrame().toFront();
+            Iterator entities =
+                   model.entityList().iterator();
+            while(entities.hasNext()) {
+		ModelProxy proxy = (ModelProxy)entities.next();
+		Iterator views = 
+		    model.entityList().iterator();
+		while(views.hasNext()) {
+		    View view = (View)views.next();
+		    // FIXME: Is this the right thing to do?
+		    view.getFrame().toFront();
+		}
             }
-        }
-    }
-
-    /** Remove the model with the specified key.  If there are no more
-     *  models in the directory, then exit the application.
-     *  If there is no such model, do nothing.
-     *  @param key A key identifying the model.
-     */
-    public static void remove(Object key) {
-        _directory.remove(key);
-        if (_directory.size() == 0) {
-            System.exit(0);
         }
     }
 
     /** Specify the object to which reading of a model will be delegated.
      *  @param reader The object that will handle reading a model.
      */
-    public static void setModelReader(ModelReader reader) {
+     public static void setModelReader(ModelReader reader) {
         _modelReader = reader;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Remove the specified entity. This method should not be used
+     *  directly.  Call the setContainer() method of the entity instead with
+     *  a null argument.
+     *  The entity is assumed to be contained by this composite (otherwise,
+     *  nothing happens). This does not alter the entity in any way.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *  This class overrides the superclass to check if this composite is
+     *  empty, and if so, calls system.exit
+     *  @param entity The entity to remove.
+     */
+    protected void _removeEntity(ComponentEntity entity) {
+	super._removeEntity(entity);
+	System.exit(0);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The directory.
-    private static HashMap _directory = new HashMap();
-
     // The model reader, if one has been registered.
     private static ModelReader _modelReader = null;
+
+    // The singleton model directory
+    private static ModelDirectory _instance = new ModelDirectory();
 }

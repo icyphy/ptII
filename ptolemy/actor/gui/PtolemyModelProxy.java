@@ -1,6 +1,6 @@
-/* Interface for objects that can read models from an input stream.
+/* A view that creates a new run control panel for a ptolemy model.
 
- Copyright (c) 1997-2000 The Regents of the University of California.
+ Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -23,48 +23,49 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
-
+@ProposedRating Red (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
 
-import java.io.InputStream;
-import java.io.IOException;
-import java.net.URL;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.actor.CompositeActor;
+import java.awt.Dimension;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
-//// ModelReader
+//// PtolemyModelProxy
 /**
-Interface for objects that can read models from an input stream.
-An application will typically have one object that implements this
-interface, and will register that object with the ModelDirectory.
-Then whenever the occasion arises to create a model by reading a file
-or a URL, the actual reading is delegated to the ModelDirectory, which
-will delegate to the registered object that implements this interface.
-Typically, the application class itself will implement this interface.
-For example, MoMLApplication and PtolemyApplication implement this
-interface.
+A proxy for a Ptolemy model in a ptolemy model of an application.
 
-@author Edward A. Lee
+@author Steve Neuendorffer
 @version $Id$
-@see ModelDirectory
-@see MoMLApplicatoin
-@see PtolemyApplication
 */
-public interface ModelReader {
+public class PtolemyModelProxy extends ModelProxy {
+
+    /** Create a new proxy for the given model with the given 
+     *  name.
+     */
+    public PtolemyModelProxy(ModelDirectory container,
+		   String name,
+		   CompositeActor model) 
+            throws IllegalActionException, NameDuplicationException {
+	super(container, name);
+	_model = model;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Read the specified input URL.
-     *  @param base The base for relative file references, or null if
-     *   there are no relative file references.
-     *  @param in The input.
-     *  @param key The key to use to uniquely identify the model.
-     *  @exception IOException If the stream cannot be read.
+    
+    /** Return the ptolemy model proxied by this object.
      */
-    public void read(URL base, URL in, String key) throws IOException;
+    public CompositeActor getModel() {
+	return _model;
+    }
+
+    private CompositeActor _model;
 }
+

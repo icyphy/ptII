@@ -33,6 +33,9 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Debuggable;
+import ptolemy.kernel.util.DebugEvent;
+import ptolemy.kernel.util.DebugListener;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
@@ -40,25 +43,27 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JPanel;
 
 //////////////////////////////////////////////////////////////////////////
-//// DebugWindowAttribute
+//// DebugListenerView
 /**
 An attribute representing a debug listener window for the container model.
 There can be any number of such windows associated with the model.
-The listener window is an instance of TopDebugListener, and can be
+The listener window is an instance of TextEditor, and can be
 accessed using the getFrame() method.
 
-@author  Edward A. Lee
+@author  Edward A. Lee and Steve Neuendorffer
 @version $Id$
-@see TopDebugListener
 */
-public class DebugWindowAttribute extends WindowAttribute {
+public class DebugListenerView extends View {
 
-    /** Construct an attribute with the given name and given container,
-     *  and open a debug listener window.  The getFrame() method will return
-     *  an instance of TopDebugListener.
+    /** Construct a new view of the given debuggable object.  All 
+     *  debug events published from the given debuggable will be displayed
+     *  in the frame.  The log of these messages can be saved to a 
+     *  text file separate from the model.
      *  The container argument must not be null, otherwise
      *  a NullPointerException will be thrown. This attribute will use the
      *  workspace of the container for synchronization and version counts.
@@ -71,12 +76,58 @@ public class DebugWindowAttribute extends WindowAttribute {
      *  @exception NameDuplicationException If the name coincides with an 
      *   attribute already in the container.
      */
-    public DebugWindowAttribute(NamedObj container, String name)
+    public DebugListenerView(ModelProxy container, 
+			     String name, 
+			     final Debuggable debug)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        TopDebugListener frame = new TopDebugListener();
-        setFrame(frame);
-        centerOnScreen();
-        frame.setVisible(true);
+        final DebugListenerFrame frame = new DebugListenerFrame();
+	setFrame(frame);
+	frame.setView(this);
+	debug.addDebugListener(frame);
+	// Listen for window closing events to unregister.
+	frame.addWindowListener(new WindowAdapter() {
+	    public void windowClosing(WindowEvent e) {
+		debug.removeDebugListener(frame);
+	    }
+	});
+	// FIXME.. Create a text model to save.
+	frame.setVisible(true);
+	frame.pack();
+    }
+
+    public class DebugListenerFrame extends TextEditor
+	implements DebugListener {
+	
+	///////////////////////////////////////////////////////////////////
+	////                         constructors                      ////
+	
+	/** Create a debug listener that displays messages in a top-level
+	 *  window.
+	 */
+	public DebugListenerFrame() {
+	    super();
+	    text.setEditable(false);
+	    text.setColumns(80);
+	    text.setRows(20);
+	    pack();
+	}
+	
+	///////////////////////////////////////////////////////////////////
+	////                         public methods                    ////
+	
+	/** Display a string representation of the specified event.
+	 */
+	public void event(DebugEvent event) {
+	    text.append(event.toString() + "\n");
+	    scrollToEnd();
+	}
+	
+	/** Display the specified message.
+	 */
+	public void message(String message) {
+	    text.append(message + "\n");
+	    scrollToEnd();
+	}
     }
 }

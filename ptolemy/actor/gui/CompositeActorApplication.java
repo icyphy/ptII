@@ -37,15 +37,20 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 // Ptolemy imports
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 //////////////////////////////////////////////////////////////////////////
@@ -54,7 +59,11 @@ import ptolemy.kernel.util.Workspace;
 This application creates one or more Ptolemy II models given a classname
 on the command line, and then executes those models, each in its own
 thread.  Each specified class should be derived from CompositeActor.
-Each will be created in its own workspace.
+Each will be created in its own workspace.  No way of controlling the model
+after its creation (such as run control panel) is provided by this class, 
+other than automatically executing the model after it is instantiated.  
+Derived classes (such as PtolemyApplication) are instead responsible for
+providing such an interface.
 <p>
 The command-line arguments can also set parameter values for any
 parameter in the models, with the name given relative to the top-level
@@ -68,8 +77,22 @@ named "director" with a parameter named "iterations".
 If more than one model is given on the command line, then the
 parameter values will be set for all models that have such
 a parameter.
+<p> 
+This class implements the ExecutionListener interface so that it can count
+the number of actively executing models.  The waitForFinish method can
+then be used to determine when all of the models created by this application
+have finished.  It also contains a separate instance of ExecutionListener
+as an inner class that is  used to report the state of execution.  Subclasses
+may choose not to use this inner class for execution reporting if they 
+report the state of executing models in a different way.
+<p>
+NOTE: This application does not exit when the specified models finish
+executing.  This is because if it did, then the any displays created
+by the models would disappear immediately.  However, it would be better
+if the application were to exit when all displays have been closed.
+This currently does not happen.
 
-@author Edward A. Lee and Brian K. Vogel
+@author Edward A. Lee, Brian K. Vogel, and Steve Neuendorffer
 @version $Id$
 */
 public class CompositeActorApplication implements ExecutionListener {
@@ -93,12 +116,13 @@ public class CompositeActorApplication implements ExecutionListener {
         if (args != null) {
             _parseArgs(args);
             
+	    // start the models.
             if (start) {
-               Iterator models = ModelDirectory.models().iterator();
-               while(models.hasNext()) {
-                    CompositeActor model = (CompositeActor)models.next();
-                    startRun(model);
-               }
+		Iterator models = ModelDirectory.getInstance().
+		    entityList().iterator();
+		while(models.hasNext()) {
+                    startRun((CompositeActor)models.next());
+		}
             }
         }
     }
@@ -106,54 +130,68 @@ public class CompositeActorApplication implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a model to the global model directory.
-     *  If the model has no manager,
-     *  then create one.  Then register this object as an execution listener.
-     *  The key is used to uniquely identify the model.  In this base class,
-     *  the fully qualified classname is used.  In derived classes, a
-     *  canonical URL or file name might be used.
-     *  @param key The key to uniquely identify the model.
+    /** Create a new PtolemyModelProxy for the given model and add it
+     *  model directory with the given name.  If the model has no manager,
+     *  then create one.  Then register this object and a state reporter
+     *  as execution listeners.
+     *  A parameter with the name "ID" will get created in the proxy containing
+     *  a string token with the value given by id.
+     *  @param id The ID for the model.
      *  @param model The model to add.
+     *  @return The proxy for the model
      */
-    public void add(Object key, CompositeActor model) {
-        // List in the directory by classname, since we don't have
-        // a file name or URL.
-        ModelDirectory.put(key, model);
+    public PtolemyModelProxy add(String id, CompositeActor model) 
+	throws IllegalActionException, NameDuplicationException {
+	// Create a proxy for the model.
+	// FIXME what to do with the damn name, which has a period in it?
+	PtolemyModelProxy proxy = 
+	    new PtolemyModelProxy(ModelDirectory.getInstance(), 
+	       ModelDirectory.getInstance().uniqueName("model"), model);
+
+	Parameter parameter = new Parameter(proxy, "ID");
+	parameter.setToken(new StringToken(id));
+	        
+	// Create a manager.
         Manager manager = model.getManager();
         if (manager == null) {
             try {
                 model.setManager(new Manager(model.workspace(), "manager"));
             } catch (IllegalActionException ex) {
+		// FIXME: rethrow a runtime exception?  This would seem to
+		// be an invariant failure.
                 // Ignore... can't attach a manager.
             }
             manager = model.getManager();
         }
         if (manager != null) {
             manager.addExecutionListener(this);
+	    if(_stateReporter == null) {
+		_stateReporter = new StateReporter();
+	    }
+	    manager.addExecutionListener(_stateReporter);
         }
+	return proxy;
     }
 
-    /** Report that an execution error has occurred.  This method
-     *  is called by the specified manager.
+    /** Reduce the count of executing models by one.  If the number of 
+     *  executing models drops ot zero, then notify threads that might 
+     *  be waiting for this event.
      *  @param manager The manager calling this method.
      *  @param ex The exception being reported.
      */
     public void executionError(Manager manager, Exception ex) {
-        report(ex);
         _runningCount--;
         if (_runningCount == 0) {
             notifyAll();
         }
     }
 
-    /** Report that execution of the model has finished by printing a
-     *  message to stdout. If the number of executing models drops to
-     *  zero, then notify threads that might be waiting for this event.
-     *  This is method is called by the specified manager.
+    /**  Reduce the count of executing models by one.  If the number of 
+     *  executing models drops ot zero, then notify threads that might 
+     *  be waiting for this event.
      *  @param manager The manager calling this method.
      */
     public synchronized void executionFinished(Manager manager) {
-        report("Execution finished.");
         _runningCount--;
         if (_runningCount == 0) {
             notifyAll();
@@ -182,16 +220,10 @@ public class CompositeActorApplication implements ExecutionListener {
         }
     }
 
-    /** Report that a manager state has changed.
-     *  This is method is called by the specified manager.
+    /** Do nothing.
      *  @param manager The manager calling this method.
      */
     public void managerStateChanged(Manager manager) {
-        Manager.State newstate = manager.getState();
-        if (newstate != _previousState) {
-            report(manager.getState().getDescription());
-            _previousState = newstate;
-        }
     }
 
     /** Remove a model from this application.  If the model has a manager,
@@ -199,7 +231,7 @@ public class CompositeActorApplication implements ExecutionListener {
      *  models, then exit the application.  If the model is not associated
      *  with this application, then do nothing.
      *  @param model The model to remove.
-     */
+     
     public void remove(CompositeActor model) {
         ModelDirectory.remove(model.getClass().getName());
         Manager manager = model.getManager();
@@ -284,10 +316,59 @@ public class CompositeActorApplication implements ExecutionListener {
         }
     }
 
+    public class StateReporter implements ExecutionListener {
+	/** Report that an execution error has occurred.  This method
+	 *  is called by the specified manager.
+	 *  @param manager The manager calling this method.
+	 *  @param ex The exception being reported.
+	 */
+	public void executionError(Manager manager, Exception ex) {
+	    report(ex);
+	}
+	
+	/** Report that execution of the model has finished by printing a
+	 *  message to stdout.
+	 *  This is method is called by the specified manager.
+	 *  @param manager The manager calling this method.
+	 */
+	public synchronized void executionFinished(Manager manager) {
+	    report("Execution finished.");
+	}
+	
+	/** Report that a manager state has changed.
+	 *  This is method is called by the specified manager.
+	 *  @param manager The manager calling this method.
+	 */
+	public void managerStateChanged(Manager manager) {
+	    Manager.State newstate = manager.getState();
+	    if (newstate != _previousState) {
+		report(manager.getState().getDescription());
+		_previousState = newstate;
+	    }
+	}
+    }
+
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Parse a command-line argument.
+    /** Parse a command-line argument.  The recognized arguments, which 
+     *  result in this method returning true are summarized below:
+     *  <ul>
+     *  <li>If the argument is "-class", then attempt to interpret 
+     *  the next argument as the fully qualified classname of a class 
+     *  to instantiate as a ptolemy model.  The model will be created, 
+     *  added to the directory of models, and then executed.
+     *  In this base class, the fully qualified classname is used as a 
+     *  name for the model.  In derived classes, a canonical URL or file 
+     *  name might be used.
+     *  <li>If the argument is "-help", then print a help message.
+     *  <li>If the argument is "-test", then set a flag that will 
+     *  abort execution of any created models after two seconds.
+     *  <li>If the argument is "-version", then print a short version message.
+     *  <li>If the argument is "", then ignore it.
+     *  </ul>
+     *  Otherwise, the argument is ignored and false is returned.
+     *  
      *  @return True if the argument is understood, false otherwise.
      *  @exception Exception If something goes wrong.
      */
@@ -323,17 +404,12 @@ public class CompositeActorApplication implements ExecutionListener {
                 args[0] = workspace;
                 CompositeActor newModel
                     = (CompositeActor)constructor.newInstance(args);
-
+		
                 // Use the fully qualified classname as a key.
                 String key = newModel.getClass().getName();
-                // If there already is an instance of this class,
-                // then augment the key until it is unique.
-                int copy = 2;
-                while (ModelDirectory.get(key) != null) {
-                    key = key + " copy " + copy++;
-                }
-                add(key, newModel);
-            } else {
+		
+		ModelProxy proxy = add(key, newModel);
+	    } else {
                 // Argument not recognized.
                 return false;
             }
@@ -349,6 +425,8 @@ public class CompositeActorApplication implements ExecutionListener {
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
             if (_parseArg(arg) == false) {
+		// FIXME: parameters are handled differently from classes
+		// for no apparent reason.
                 if (arg.startsWith("-") && i < args.length - 1) {
                     // Save in case this is a parameter name and value.
                     _parameterNames.add(arg.substring(1));
@@ -372,26 +450,31 @@ public class CompositeActorApplication implements ExecutionListener {
             String value = (String)values.next();
 
             boolean match = false;
-            Iterator models = ModelDirectory.models().iterator();
-            while(models.hasNext()) {
-                CompositeActor model = (CompositeActor)models.next();
-                Attribute attribute = model.getAttribute(name);
-                if (attribute instanceof Variable) {
-                    match = true;
-                    ((Variable)attribute).setExpression(value);
-                    // Force evaluation so that listeners are notified.
-                    ((Variable)attribute).getToken();
-                }
-                Director director = model.getDirector();
-                if (director != null) {
-                    attribute = director.getAttribute(name);
-                    if (attribute instanceof Variable) {
-                        match = true;
-                        ((Variable)attribute).setExpression(value);
-                        // Force evaluation so that listeners are notified.
-                        ((Variable)attribute).getToken();
-                    }
-                }
+            Iterator proxies = 
+		ModelDirectory.getInstance().entityList().iterator();
+            while(proxies.hasNext()) {
+		ModelProxy proxy = (ModelProxy)proxies.next();
+		if(proxy instanceof PtolemyModelProxy) {
+		    CompositeActor model = 
+			((PtolemyModelProxy)proxy).getModel();
+		    Attribute attribute = model.getAttribute(name);
+		    if (attribute instanceof Variable) {
+			match = true;
+			((Variable)attribute).setExpression(value);
+			// Force evaluation so that listeners are notified.
+			((Variable)attribute).getToken();
+		    }
+		    Director director = model.getDirector();
+		    if (director != null) {
+			attribute = director.getAttribute(name);
+			if (attribute instanceof Variable) {
+			    match = true;
+			    ((Variable)attribute).setExpression(value);
+			    // Force evaluation so that listeners are notified.
+			    ((Variable)attribute).getToken();
+			}
+		    }
+		}
             }
             if (!match) {
                 // Unrecognized option.
@@ -460,4 +543,7 @@ public class CompositeActorApplication implements ExecutionListener {
     // The previous state of the manager, to avoid reporting it if it hasn't
     // changed.
     private Manager.State _previousState;
+
+    // The listener that reports state changes.
+    private ExecutionListener _stateReporter;
 }

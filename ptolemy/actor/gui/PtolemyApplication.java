@@ -49,9 +49,13 @@ import javax.swing.UIManager;
 import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.Parameter;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLParser;
@@ -62,17 +66,19 @@ import com.microstar.xml.XmlException;
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyApplication
 /**
-An application that contains models and frames for interacting
-with them. Any number of models can be simultaneously running under
-the same application.  Each one is assigned an instance of ModelFrame,
-a class with which this class works very closely.  The instance of
-ModelFrame is constructed using the openWindow() method of the
-RunWindowAttribute class.
+An application that opens a run control panel for each model that is 
+created, instead of automatically executing it. 
+Any number of models can be simultaneously running under
+the same application.  An instance of RunView is created for each model and
+added to the Model Directory.  When the frames displayed by this application
+are all closed, then the application will automatically exit.
+If no models are specified on the command line, then a default model is
+opened.
 
-@author Edward A. Lee
+@author Edward A. Lee and Steve Neuendorffer
 @version $Id$
 @see ModelFrame
-@see RunWindowAttribute
+@see RunView
 */
 public class PtolemyApplication extends MoMLApplication {
 
@@ -91,7 +97,7 @@ public class PtolemyApplication extends MoMLApplication {
             // perhaps something with a console that we can type
             // commands into?
             String temporaryArgs[] = {"ptolemy/moml/demo/modulation.xml"};
-	   _parseArgs(temporaryArgs);
+	    _parseArgs(temporaryArgs);
 	} else { 
             _parseArgs(args);
         }
@@ -110,35 +116,43 @@ public class PtolemyApplication extends MoMLApplication {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Note that the model associated with the specified manager has
-     *  finished running, for the benefit of the waitForFinish() method.
-     *  This overrides the base class to not report the error,
-     *  since the instance of ModelFrame associated with the
-     *  model will report the finishing.
-     *  This method is called by the specified manager.
-     *  @param manager The manager calling this method.
-     *  @param ex The exception being reported.
+    /** Create a new PtolemyModelProxy for the given model and add it
+     *  model directory with the given name.  If the model has no manager,
+     *  then create one.  Then register this object as an execution listener.
+     *  Note that unlike the base classes a stateReporter is NOT used, since 
+     *  the RunView will directly report the progress of execution.
+     *  A parameter with the name "ID" will get created in the proxy containing
+     *  a string token with the value given by id.
+     *  @param id The ID for the model.
+     *  @param model The model to add.
+     *  @return The proxy for the model
      */
-    public void executionError(Manager manager, Exception ex) {
-        _runningCount--;
-        if (_runningCount == 0) {
-            notifyAll();
-        }
-    }
+    public PtolemyModelProxy add(String id, CompositeActor model) 
+       throws IllegalActionException, NameDuplicationException {
+	// Create a proxy for the model.
+	// FIXME what to do with the damn name, which has a period in it?
+	PtolemyModelProxy proxy = 
+	    new PtolemyModelProxy(ModelDirectory.getInstance(), 
+		   ModelDirectory.getInstance().uniqueName("model"), model);
+	Parameter parameter = new Parameter(proxy, "ID");
+	parameter.setToken(new StringToken(id));         
 
-    /** Note that the model associated with the specified manager has
-     *  finished running, for the benefit of the waitForFinish() method.
-     *  This overrides the base class to not report the finishing,
-     *  since the instance of ModelFrame associated with the
-     *  model will report the finishing.
-     *  This is method is called by the specified manager.
-     *  @param manager The manager calling this method.
-     */
-    public synchronized void executionFinished(Manager manager) {
-        _runningCount--;
-        if (_runningCount == 0) {
-            notifyAll();
+	// Create a manager.
+        Manager manager = model.getManager();
+        if (manager == null) {
+            try {
+                model.setManager(new Manager(model.workspace(), "manager"));
+            } catch (IllegalActionException ex) {
+		// FIXME: rethrow a runtime exception?  This would seem to
+		// be an invariant failure.
+                // Ignore... can't attach a manager.
+            }
+            manager = model.getManager();
         }
+        if (manager != null) {
+            manager.addExecutionListener(this);
+        }
+	return proxy;
     }
 
     /** Create a new application with the specified command-line arguments.
@@ -150,6 +164,8 @@ public class PtolemyApplication extends MoMLApplication {
         try {
             PtolemyApplication plot = new PtolemyApplication(args);
         } catch (Exception ex) {
+	    // FIXME this is different from CompositeActorApplication and 
+	    // MoMLApplication: WHY?
             MessageHandler.error("Command failed", ex);
             System.exit(0);
         }
@@ -164,14 +180,6 @@ public class PtolemyApplication extends MoMLApplication {
         }
     }
 
-    /** Do nothing, since it is assumed that the ModelFrame associated
-     *  with the specified manager will report state changes.
-     *  This is method is called by the specified manager.
-     *  @param manager The manager calling this method.
-     */
-    public void managerStateChanged(Manager manager) {
-    }
-
     /** Read the specified stream, which is expected to be a MoML file.
      *  This overrides the base class to provide a container into which
      *  to put placeable objects, and to create a top-level frame
@@ -183,7 +191,7 @@ public class PtolemyApplication extends MoMLApplication {
      *  @param key The key to use to uniquely identify the model.
      *  @exception IOException If the stream cannot be read.
      */
-    public void read(URL base, URL in, Object key)
+    public void read(URL base, URL in, String key)
             throws IOException {
 
         // FIXME: Need to examine the extension and open
@@ -215,15 +223,17 @@ public class PtolemyApplication extends MoMLApplication {
         // Create a run control window for it if it is of the right type.
         if (model instanceof TypedCompositeActor) {
             CompositeActor castTopLevel = (CompositeActor)model;
-            add(key, castTopLevel);
-            RunWindowAttribute attr = RunWindowAttribute.openWindow(
-                    castTopLevel, displayPanel);
-            if (attr != null) {
-                attr.getFrame().setKey(key);
-                // Make this a master, meaning that when it is closed, all
-                // other windows owned by the model will also close.
-                attr.setMaster(true);
-            }
+	    try {
+		PtolemyModelProxy proxy = add(key, castTopLevel);
+		
+		// Create a default view.
+		// FIXME Define the default elsewhere.
+		View v = new RunView(proxy, proxy.uniqueName("view"), 
+				     displayPanel);
+		v.setMaster(true);
+	    } catch (Exception ex ) {
+		ex.printStackTrace();
+	    }
         }
     }
 
