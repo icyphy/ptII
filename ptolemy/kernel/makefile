@@ -44,7 +44,7 @@ include $(CONFIG)
 JDOCFLAGS = 	-author -version -public
 
 # Order matters here, go into util first, since mutation depends on it
-DIRS = 		util mutation test doc demo
+DIRS = 		util mutation event test doc demo
 
 CLASSPATH = ../..
 
