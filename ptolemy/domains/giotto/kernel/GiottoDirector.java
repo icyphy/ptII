@@ -30,6 +30,7 @@
 package ptolemy.domains.giotto.kernel;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
@@ -161,6 +162,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
             FileOutputStream fout = new FileOutputStream(file);
             PrintStream pout = new PrintStream(fout);
 
+	    // Generate sensor list.
             pout.println("sensor");
             TypedCompositeActor container = (TypedCompositeActor)getContainer();
             Iterator inPorts = container.inputPortList().iterator();
@@ -180,6 +182,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 			     + driverName
 			     + ";");
             }
+
+	    // Generate actuator list.
             pout.println("actuator");
             Iterator outPorts = container.outputPortList().iterator();
             while (outPorts.hasNext()) {
@@ -198,6 +202,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 			     + driverName
 			     + ";");
             }
+
+	    // Generate output list.
             pout.println("output");
             Iterator actors = container.deepEntityList().iterator();
             while(actors.hasNext()) {
@@ -216,6 +222,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
 				 + ";");
                 }
             }
+
+	    // Generate "task functions."
             actors = container.deepEntityList().iterator();
             while(actors.hasNext()) {
                 TypedActor actor = (TypedActor)actors.next();
@@ -260,27 +268,46 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
             }
 
+	    //generate "Driver functions" for actors.
             actors = container.deepEntityList().iterator();
             String driverParas, outParas, typedOutParas;
             String actorName;
-            System.out.println("    There are total " + container.deepEntityList().size() + " actors.");
-            while (actors.hasNext()) {
+            Director director = ((Actor)container).getDirector();
 
+            while (actors.hasNext()) {
                 driverParas = "";
                 outParas = "";
                 typedOutParas = "";
                 actorName = "";
-
                 TypedActor actor = (TypedActor)actors.next();
                 actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName(container));
                 pout.print("driver "
 			   + actorName
 			   + "_driver (");
 
-                System.out.println("we are handling " + StringUtilities.sanitizeName(((NamedObj) actor).getName(container)));
-                inPorts = actor.inputPortList().iterator();
-                System.out.println("    the actor has " +actor.inputPortList().size() + " ports.");
 
+		//get the "source" ports(the driver's inputs) for each input port of this actor.
+                inPorts = actor.inputPortList().iterator();
+                while (inPorts.hasNext()) {
+                    IOPort thisPort = (IOPort) inPorts.next();
+
+                    int directorDepth = ((IOPort) thisPort).depthOfDirector(director);
+                    String sanitizedPortName = StringUtilities.sanitizeName(thisPort.getName(container));
+                    //FIXME, replace "1" by "directorDepth"
+		    Iterator sourcePorts = thisPort.sourcePortList(directorDepth).iterator();
+		    while(sourcePorts.hasNext()) {
+			IOPort port = (IOPort)sourcePorts.next();
+			sanitizedPortName = StringUtilities.sanitizeName(port.getName(container));
+                        if (driverParas.length()==0) {
+                            driverParas += sanitizedPortName;
+                        } else {
+                            driverParas += ", " + sanitizedPortName;
+                      	}
+		    }
+		}
+
+                //reset inPorts and get the driver's outputs
+                inPorts = actor.inputPortList().iterator();
                 while (inPorts.hasNext()) {
                     TypedIOPort port = (TypedIOPort) inPorts.next();
                     if (outParas == "") {
@@ -296,66 +323,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
                         outParas += ", " + port.getName();
                     }
                 }
-                inPorts = actor.inputPortList().iterator();
 
-                while (inPorts.hasNext()) {
-                    TypedIOPort port = (TypedIOPort) inPorts.next();
-
-                    String sanitizedPortName = StringUtilities.sanitizeName(port.getName(container));
-                    System.out.println("    We are handling " + sanitizedPortName);
-
-                    Iterator inPortsConnected = port.deepConnectedInPortList().iterator();
-                    System.out.println("        inPortsConnected number: " + port.deepConnectedInPortList().size());
-                    Iterator outPortsConnected = port.deepConnectedOutPortList().iterator();
-                    System.out.println("        outPortsConnected number: " + port.deepConnectedOutPortList().size());
-
-		    // FIXME: there should be some situations that the inputPort has no connected ports.
-                    if (port.deepConnectedInPortList().size() != 0) {
-
-			while (inPortsConnected.hasNext()) {
-			    TypedIOPort inPort = (TypedIOPort) inPortsConnected.next();
-			    sanitizedPortName = StringUtilities.sanitizeName(inPort.getName(container));
-
-			    //FIXME: we want to get the top level inputs, which we assume the container is "noModes"
-
-
-
-			    if (((NamedObj)inPort.getContainer()).getName().equals(container.getName())) {
-				System.out.println("            We are handling " + sanitizedPortName);
-				//pout.print(", " + sanitizedPortName);
-				if (driverParas.length()==0) {
-				    driverParas += sanitizedPortName;
-				} else {
-				    driverParas += ", " + sanitizedPortName;
-				}
-
-				System.out.println("            We got one input: " + sanitizedPortName + " from inPortsList");
-				System.out.println("                its container is " + ((NamedObj)inPort.getContainer()).getName());
-
-			    }
-			}
-		    }
-
-		    if (port.deepConnectedOutPortList().size() == 0)
-                        continue;
-
-		    while (outPortsConnected.hasNext()) {
-                        TypedIOPort outPort = (TypedIOPort) outPortsConnected.next();
-                        sanitizedPortName = StringUtilities.sanitizeName(outPort.getName(container));
-
-
-                        if (outPort.isOutput()) {
-			    System.out.println("            We got one input: " + sanitizedPortName  + " from outPortsList");
-			    System.out.println("                its container is " + ((NamedObj)outPort.getContainer()).getName());
-			    //pout.print(", " + sanitizedPortName);
-			    if (driverParas.length()==0) {
-				driverParas += sanitizedPortName;
-			    } else {
-				driverParas += ", " + sanitizedPortName;
-			    }
-                        }
-                    }
-                }
+                //generate the code.
                 pout.println(driverParas
 			     + ") output ("
 			     + typedOutParas
@@ -373,71 +342,45 @@ public class GiottoDirector extends StaticSchedulingDirector {
                              + outParas
                              + ")");
                 pout.println("}");
+
 	    }
 
-	    // Here we deals with the toplevel output ports.
+            // generate driver functions for toplevel output ports.
 	    // which is 'motor' in test model.
-	    // FIXME: if several outputs of actors connect to the same compositeActor output?
-	    Iterator ioports = container.portList().iterator();
+	    // FIXME: the giotto director should do some checking to avoid several outputs of actors connect to the same output port?
+	    Iterator topOutPorts = container.outputPortList().iterator();
 
 	    //String driverParas, outParas, typedOutParas;
 	    String outputName ="";
 	    String sanitizedPortName= "";
-	    System.out.println("    There are total " + container.deepEntityList().size() + " in/out ports.");
-	    while (ioports.hasNext()) {
-
+      	    while (topOutPorts.hasNext()) {
 		driverParas = "";
 		outParas = "";
 		typedOutParas = "";
 		outputName = "";
-
-		TypedIOPort port = (TypedIOPort)ioports.next();
-
-		if (!port.isOutput())
-		    continue;
-
+		TypedIOPort port = (TypedIOPort)topOutPorts.next();
 		outputName = StringUtilities.sanitizeName(port.getName(container));
 		pout.print("driver "
 			   + outputName
 			   + "_driver (");
-
-		System.out.println("we are handling " + outputName);
-
+		//System.out.println("we are handling " + outputName);
 		outParas += port.getName();
 		typedOutParas += port.getType() + " " + port.getName();
 
-		/*		while (inPorts.hasNext()) {
-		    TypedIOPort port = (TypedIOPort) inPorts.next();
-		    if (outParas == "") {
-			typedOutParas += port.getType()
-			    + " "
-			    + port.getName();
-			outParas += port.getName();
-		    } else {
-			typedOutParas += ", "
-			    + port.getType()
-			    + " "
-			    + port.getName();
-			outParas += ", " + port.getName();
-		    }
-		}
-		inPorts = actor.inputPortList().iterator();
-		*/
-
-		Iterator portsConnected = port.deepInsidePortList().iterator();
+		Iterator portConnected = port.deepInsidePortList().iterator();
 		//System.out.println("-----------" + port.deepInsidePortList().size());
 
 		// FIXME: there should be some situations that the inputPort has no connected ports.
 		if (port.deepInsidePortList().size() != 0) {
 
-		    while (portsConnected.hasNext()) {
-			TypedIOPort outPort = (TypedIOPort) portsConnected.next();
+		    while (portConnected.hasNext()) {
+			TypedIOPort outPort = (TypedIOPort) portConnected.next();
 			sanitizedPortName = StringUtilities.sanitizeName(outPort.getName(container));
 
-			System.out.println("            We are handling " + sanitizedPortName);
+			//System.out.println("            We are handling " + sanitizedPortName);
 			if (outPort.isOutput()) {
-			    System.out.println("            We got one input: " + sanitizedPortName  + " from outPortsList");
-			    System.out.println("                its container is " + ((NamedObj)outPort.getContainer()).getName());
+			    //System.out.println("            We got one input: " + sanitizedPortName  + " from outPortsList");
+			    //System.out.println("                its container is " + ((NamedObj)outPort.getContainer()).getName());
 			    //pout.print(", " + sanitizedPortName);
 			    if (driverParas.length()==0) {
 				driverParas += sanitizedPortName;
@@ -467,39 +410,54 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	      pout.println("}");
 	   }
 
-	    String containerName = container.getName();
+            //generate mode code
+            String containerName = container.getName();
 	    double periodValue = ((DoubleToken)period.getToken()).doubleValue();
 	    // FIXME: this should be achieved from the GiottoScheduler.getFrequency(ACTOR)
 	    int actorFreq = 0;
 	    int actFreq = 0;
-
 	    pout.println("start "
 			 + containerName
 			 + "_name {");
-
 	    pout.println("  mode "
 			 + containerName
 			 + "_name () period "
 			 + periodValue
 			 + " {");
 
+            //generate mode code for toplevel outputs drivers
 	    //FIXME: if there are several OUTPUTs ... , we have multiple ACTFREQ?
 	    // find the lowest frequency
 	    // trace the output port updating frequency
-	    // This part should be moved to the output driver part to avoid repeating work.
-	    pout.println("    actfreq "
-			 + 1  // the frequency should be from B which connects to the motor output
-			 + " do "
-			 + outputName
-			 + " ("
-			 + outputName
-			 + "_driver);"
-			 );
+            topOutPorts = container.outputPortList().iterator();
+      	    while (topOutPorts.hasNext()) {
+                outputName = "";
+		TypedIOPort port = (TypedIOPort)topOutPorts.next();
+		outputName = StringUtilities.sanitizeName(port.getName(container));
+		Iterator portConnected = port.deepInsidePortList().iterator();
+		// FIXME: there should be some situations that the inputPort has no connected ports.
+		if (port.deepInsidePortList().size() != 0) {
+		    while (portConnected.hasNext()) {
+			TypedIOPort outPort = (TypedIOPort) portConnected.next();
+                        //FIXME: how to get a port's container?
+                        //TypedActor actor = (TypedActor) (TypedIOPort) outPort.getContainer();
+                        //System.out.println("its container is: " + actor);
+                        //Parameter actorFreqPara = (Parameter) ((NamedObj) actor).getAttribute("frequency");
+	                actorFreq = 1; //((IntToken) actorFreqPara.getToken()).intValue();
+                        pout.println("    actfreq "
+			      + actorFreq
+			      + " do "
+			      + outputName
+                              + " ("
+			      + outputName
+			      + "_driver);");
+                    }
+                }
+            }
 
+            //generate mode code for each actor driver
 	    actors = container.deepEntityList().iterator();
-
 	    while (actors.hasNext()) {
-	      //  taskfreq 1 do A(A_driver);
 	      TypedActor actor = (TypedActor) actors.next();
               actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName(container));
 	      Parameter actorFreqPara = (Parameter) ((NamedObj) actor).getAttribute("frequency");
