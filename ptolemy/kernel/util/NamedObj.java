@@ -239,12 +239,6 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                             getFullName() + ": " + ex.getMessage());
                 }
             }
-            // Repeat this loop to call the evaluate() method.
-            params = getAttributes();
-            while (params.hasMoreElements()) {
-                Attribute p = (Attribute)params.nextElement();
-                p.evaluate();
-            }
             if (ws == null) {
                 _debug("Cloned " + getFullName() + " into default workspace.");
             } else {
