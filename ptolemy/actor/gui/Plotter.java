@@ -37,7 +37,6 @@ import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.plot.*;
 import java.awt.Panel;
-import java.awt.Dimension;
 
 /** Base class for plotters.  This class contains an instance of the
  *  Plot class from the Ptolemy plot package as a public member.
@@ -135,8 +134,6 @@ public class Plotter extends TypedAtomicActor implements Placeable {
                 plot = new Plot();
                 _panel.add(plot);
                 plot.setButtons(true);
-                Dimension size = _panel.getSize();
-                plot.setSize(size.width, size.height);
             }
         }
     }
