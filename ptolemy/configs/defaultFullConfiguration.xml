@@ -74,8 +74,9 @@
       <configure>
         <?moml
           <group>
-	    <input source="ptolemy/apps/apps.xml"/>
+	        <input source="ptolemy/apps/apps.xml"/>
             <input source="ptolemy/configs/automataActorLibrary.xml"/>
+            <input source="ptolemy/chic/chic.xml"/>
 	    <!-- Javacomm serial actors depend on javacomm being present  -->
             <input source="ptolemy/actor/lib/io/comm/comm.xml"/>
             <!-- input source="ptolemy/copernicus/copernicus.xml"/ -->
