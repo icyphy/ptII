@@ -142,13 +142,12 @@ public class WallClockTime extends Source {
 
     protected double _getCurrentTime() {
         long elapsedTime = System.currentTimeMillis() - _startTime;
-        double elapsedTimeDouble = elapsedTime/1000.0;
         // Note that we need use the actor.util.Time class
         // here because if we do, it breaks deep codegen because
         // deep codegen removes the Actor classes, and actor.util.Time
         // needs to keep track of the Director.
-        return Utilities.round(elapsedTimeDouble, 
-            getDirector().getTimeResolution());
+
+        return (((double)elapsedTime)/1000.0);
     }
 
     ///////////////////////////////////////////////////////////////////
