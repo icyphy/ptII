@@ -39,6 +39,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ShapeIcon;
 
 import java.awt.Color;
@@ -136,6 +137,23 @@ public abstract class ShapeAttribute extends Attribute {
         } else {
             super.attributeChanged(attribute);
         }
+    }
+    
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ShapeAttribute newObject = (ShapeAttribute)super.clone(workspace);
+        // The base class clones the icon, but since this is a protected
+        // member, it doesn't automatically get updated by NamedObj!
+        newObject._icon = (ShapeIcon)newObject.getAttribute("_icon");
+        return newObject;
     }
 
     ///////////////////////////////////////////////////////////////////
