@@ -169,6 +169,13 @@ JDOCMEMORY =	-J-Xmx132m
 # Allow @rating tag for use within Diva and other files. 
 JDOCTAG = 	-tag rating
 
+# Doccheck is a doclet that checks for bugs
+# Location of the doccheck jar file, available from
+# http://java.sun.com/developer/earlyAccess/doccheck/
+DOCCHECKJAR =	$(PTII)/vendors/sun/doccheck1.2b2/doccheck.jar
+JDOCCHECKFLAG = -doclet com.sun.tools.doclets.doccheck.DocCheck  \
+	-docletpath $(DOCCHECKJAR)
+
 # Flags to pass to javadoc.
 JDOCFLAGS = 	-author -version $(JDOCBREAKITERATOR) $(JDOCMEMORY) $(JDOCTAG)
 
