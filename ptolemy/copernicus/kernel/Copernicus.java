@@ -285,6 +285,8 @@ public class Copernicus {
 	    outputGobbler.start();
 	    try {
 		processReturnCode = process.waitFor();
+                errorGobbler.join();
+                outputGobbler.join();
 		synchronized (_lock) {
 		    process = null;
 		}
