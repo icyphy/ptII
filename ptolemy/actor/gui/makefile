@@ -55,6 +55,7 @@ JSRCS = \
 	Configurer.java \
 	Documentation.java \
 	EditorPaneFactory.java \
+	EditParametersDialog.java \
 	ModelFrame.java \
 	ModelPane.java \
 	MoMLApplet.java \

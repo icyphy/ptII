@@ -31,13 +31,17 @@
 package ptolemy.actor.gui;
 
 // Ptolemy imports.
+import ptolemy.gui.CloseListener;
 import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Parameter;
 
 // Java imports.
 import java.awt.Component;
+import java.awt.Window;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -64,15 +68,12 @@ the parameter values to those before the dialog was opened.
 @version $Id$
 */
 
-public class Configurer extends JPanel {
+public class Configurer extends JPanel implements CloseListener {
 
     /** Construct a configurer for the specified object.
      *  @param object The object to configure.
-     *  @exception IllegalActionException If the specified object has
-     *   no editor factories, and refuses to accept as an attribute
-     *   an instance of EditorPaneFactory.
      */
-    public Configurer(NamedObj object) throws IllegalActionException {
+    public Configurer(NamedObj object) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         _object = object;
@@ -89,7 +90,11 @@ public class Configurer extends JPanel {
         while (editors.hasNext()) {
             foundOne = true;
             EditorPaneFactory editor = (EditorPaneFactory)editors.next();
-            add(editor.createEditorPane());
+            Component pane = editor.createEditorPane();
+            add(pane);
+            if (pane instanceof CloseListener) {
+                _closeListeners.add(pane);
+            }
         }
         if (!foundOne) {
             // FIXME: I believe this is where we get an error if we
@@ -98,8 +103,17 @@ public class Configurer extends JPanel {
             try {
                 EditorPaneFactory editor = new EditorPaneFactory(object,
                         object.uniqueName("editorFactory"));
-                add(editor.createEditorPane());
+                Component pane = editor.createEditorPane();
+                add(pane);
+                if (pane instanceof CloseListener) {
+                    _closeListeners.add(pane);
+                }
             } catch (NameDuplicationException ex) {
+                throw new InternalErrorException(ex.toString());
+            } catch (IllegalActionException ex) {
+                // This is thrown only if the object refuses to
+                // accept the attribute.  But there is no reason for
+                // an object to refuse this attribute.
                 throw new InternalErrorException(ex.toString());
             }
         }
@@ -137,8 +151,27 @@ public class Configurer extends JPanel {
         });
     }
 
+    /** Notify any panels in this configurer that implement the
+     *  CloseListener interface that the specified window has closed.
+     *  The second argument, if non-null, gives the name of the button
+     *  that was used to close the window.
+     *  @param window The window that closed.
+     *  @param button The name of the button that was used to close the window.
+     */
+    public void windowClosed(Window window, String button) {
+        Iterator listeners = _closeListeners.iterator();
+        while(listeners.hasNext()) {
+            CloseListener listener = (CloseListener)listeners.next();
+            listener.windowClosed(window, button);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    // A list of panels in this configurer that implement CloseListener,
+    // if there are any.
+    private List _closeListeners = new LinkedList();
 
     // The object that this configurer configures.
     private NamedObj _object;

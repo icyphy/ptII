@@ -57,10 +57,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JTextArea;
 
-// FIXME: This still doesn't work right.
-// If you enter an incorrect value, then hit OK in the ensuing
-// dialog, the incorrect value is accepted.
-
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyQuery
 /**
@@ -79,18 +75,13 @@ is up to the change handler to decide when change requests are processed.
 The change handler will typically delegate change requests to the 
 Manager, although this is not necessarily the case.
 <p>
-To use this class, first add an entry to the query using addStyledEntry(),
-and then use the attachParameter() method to associate a parameter with
-that entry.
+To use this class, add an entry to the query using addStyledEntry().
 
 @author Brian K. Vogel and Edward A. Lee
 @version $Id$
 */
 public class PtolemyQuery extends Query
-    implements QueryListener, ValueListener, ChangeListener {
-
-    // FIXME: Have to unlisten to ValueListener.
-    // No need to unlisten to QueryListener, since that is this.
+    implements QueryListener, ValueListener, ChangeListener, CloseListener {
 
     /** Construct a panel with no queries in it and with the specified
      *  change handler. When an entry changes, a change request is
@@ -110,85 +101,15 @@ public class PtolemyQuery extends Query
             _handler.addChangeListener(this);
         }
         _varToListOfEntries = new HashMap();
-
-// FIXME: What's below doesn't work.
-// I'm going to have to derive from ComponentDialog a special
-// Dialog for PtolemyQuery, and then use that...
-// Actually, that won't work without rearchitecting the whole
-// Configurer architecture...
-// Java's UI infrastructure really totally sucks...
-/*
-
-        // Well, this totally sucks, but
-        // regrettably, Java provides no easy way to attach an event
-        // to the closing of the window within which this component is
-        // displayed.  For some reason, attaching a ComponentListener
-        // and implementing componentHidden() does not work.  Apparently,
-        // componentHidden() is not called when this window is closed.
-        // This seems like a bug in Java, but we have to live with it.
-        // So instead, we have to identify the top-level container,
-        // and attach a WindowListener to that.  Unfortunately, we can't
-        // identify the toplevel window until the component is made
-        // visible, because at construction time it has not yet been
-        // added to a parent.  Moreover, implementing addNotify() will
-        // not work because it could be added to a parent before the parent
-        // has been added to a window.  So we have to do an incredible song
-        // and dance just so we can remove listeners when the component
-        // is closed.  The lesson: Java's AWT is the full employment act
-        // of the third millenium.  Nothing is easy...
-        //
-        // So, we start by adding a listener for when the component is
-        // made visible.  That listener will then find the top-level window
-        // and attach a listener to that to detect window closing events.
-        // That listener will then remove listeners that this query
-        // has scattered about.
-        //
-        // Wow... I really miss C++ destructors...
-        //
-        addComponentListener(new ComponentAdapter() {
-            public void componentShown(ComponentEvent event) {
-                Container parent = getParent();
-                // FIXME
-                System.out.println("here with original parent: " + parent);
-                while (parent != null && !(parent instanceof Window)) {
-                    parent = parent.getParent();
-                    // FIXME
-                    System.out.println("here with new parent: " + parent);
-                }
-                // If the parent is now null, then somehow this component is
-                // not inside an instance of Window.  This should not occur,
-                // but if it does, then we just suffer the inefficiency of never
-                // removing the listeners.
-                // FIXME
-                System.out.println("here with parent: " + parent);
-                if (parent != null) {
-                    Window toplevel = (Window)parent;
-                    // FIXME
-                    System.out.println("Adding window listener to: ");
-                    toplevel.list();
-                    toplevel.addWindowListener(new WindowAdapter() {
-                        public void windowClosed(WindowEvent event) {
-                            // FIXME: This never gets invoked.
-                            System.out.println("Window closed");
-                            _handler.removeChangeListener(PtolemyQuery.this);
-                        }
-                        public void windowClosing(WindowEvent event) {
-                            // FIXME: This never gets invoked.
-                            System.out.println("Window closing");
-                            _handler.removeChangeListener(PtolemyQuery.this);
-                        }
-                    });
-                }
-            }
-        });
-*/
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Add a new entry to this query that represents the given parameter.
-     *  The name of the entry will be set to the name of the parameter.
+     *  The name of the entry will be set to the name of the parameter,
+     *  and the parameter will be attached to the entry, so that if the
+     *  parameter is updated, then the entry is updated.
      *  If the parameter contains a parameter style, then use the style to 
      *  create the entry, otherwise just create a new line entry.
      *  Attach the variable to the new entry.
@@ -213,8 +134,8 @@ public class PtolemyQuery extends Query
 	    addLine(param.getName(),
 		    param.getName(),
 		    param.stringRepresentation());
-	    attachParameter(param, param.getName());
 	}
+        attachParameter(param, param.getName());
     }
 
     /** Attach a parameter to an entry with name <i>entryName</i>,
@@ -230,11 +151,10 @@ public class PtolemyQuery extends Query
     public void attachParameter(Variable parameter, String entryName) {
 	// Put the parameter in a Map from entryName -> parameter
 	_parameters.put(entryName, parameter);
+
         // Make a record of the parameter value prior to the change,
         // in case a change fails and the user chooses to revert.
         _revertValue.put(entryName, parameter.stringRepresentation());
-
-        // FIXME: How do we remove the listener when this closes?
         parameter.addValueListener(this);
         Attribute tooltipAttribute = parameter.getAttribute("tooltip");
         if (tooltipAttribute != null
@@ -256,12 +176,12 @@ public class PtolemyQuery extends Query
 	    _varToListOfEntries.put(parameter, entryNameList);
 	} else {
 	    // parameter is mapped to a list of entry names, but need to check
-	    // if entryName is in the list. If not, add it.
+	    // whether entryName is in the list. If not, add it.
 	    List entryNameList = (List)_varToListOfEntries.get(parameter);
 	    Iterator entryNames = entryNameList.iterator();
 	    boolean found = false;
 	    while (entryNames.hasNext()) {
-		// Check if entryName is in the list. If not, add it.
+		// Check whether entryName is in the list. If not, add it.
 		String name = (String)entryNames.next();
 		if (name == entryName) {
 		    found = true;
@@ -282,6 +202,7 @@ public class PtolemyQuery extends Query
      *  @param name The name of the entry that has changed.
      */
     public void changed(final String name) {
+
 	// Check if the entry that changed is in the mapping.
 	if (_parameters.containsKey(name)) {
 	    final Variable parameter = (Variable)(_parameters.get(name));
@@ -302,7 +223,6 @@ public class PtolemyQuery extends Query
                 }
             };
             if(_handler != null) {
-                // FIXME be sure to remove the listener when the query closes.
                 _handler.requestChange(request);
             } else {
                 request.execute();
@@ -315,7 +235,6 @@ public class PtolemyQuery extends Query
      *  @param change The change that has been executed.
      */
     public void changeExecuted(ChangeRequest change) {
-
         // Ignore if this was not the originator.
         if (change.getOriginator() != this) return;
 
@@ -338,80 +257,57 @@ public class PtolemyQuery extends Query
      *  @param exception The exception that resulted.
      */
     public void changeFailed(ChangeRequest change, Exception exception) {
-
         // Ignore if this was not the originator.
         if (change.getOriginator() != this) {
             return;
         }
-
         // If this is already a dialog reporting an error, and is
         // still visible, then just update the message.  Otherwise,
         // create a new dialog to prompt the user for a corrected input.
-        if (_message != null && _message.isVisible()) {
-            _message.setText(exception.getMessage()
-            + "\n\nPlease enter a new value (click Cancel to revert):");
+        if (_isOpenErrorWindow) {
+            setMessage(exception.getMessage()
+                    + "\n\nPlease enter a new value (or cancel to revert):");
         } else {
-            // Avoid creating a second modal dialog if there is one already.
-            if (_query == null || !_query.isVisible()) {
-                _query = new PtolemyQuery(_handler);
-                Box secondTry = new Box(BoxLayout.Y_AXIS);
-                _query._message = new JTextArea(exception.getMessage()
-                        + "\n\nPlease enter a new value:");
-                JTextArea message = _query._message;
-                message.setFont(new Font("SansSerif", Font.PLAIN, 12));
-                message.setEditable(false);
-                message.setLineWrap(true);
-                message.setWrapStyleWord(true);
-                message.setBackground(secondTry.getBackground());
-                // Left Justify.
-                message.setAlignmentX(0.0f);
-                secondTry.add(message);
-                secondTry.add(secondTry.createVerticalStrut(10));
-                // Left Justify.
-                _query.setAlignmentX(0.0f);
-                _query.setTextWidth(getTextWidth());
-                secondTry.add(_query);
+            _query = new PtolemyQuery(_handler);
+            _query.setTextWidth(getTextWidth());
+            _query._isOpenErrorWindow = true;
+            _query.setMessage(exception.getMessage()
+                    + "\n\nPlease enter a new value:");
 
-                // The name of the entry is the description of the change.
-                String entryName = change.getDescription();
-                Variable variable = (Variable)_parameters.get(entryName);
-                if (variable != null) {
-                    _query.addStyledEntry(variable);
-                    _query.attachParameter(variable, entryName);
-                } else {
-                    throw new InternalErrorException(
-                        "Expected parameter attached to entry name: "
+            // The name of the entry is the description of the change.
+            String entryName = change.getDescription();
+            Variable variable = (Variable)_parameters.get(entryName);
+            if (variable != null) {
+                _query.addStyledEntry(variable);
+            } else {
+                throw new InternalErrorException(
+                       "Expected parameter attached to entry name: "
                         + entryName);
-                }
-                ComponentDialog dialog
-                       = new ComponentDialog(null, "Error", secondTry);
-                if (dialog.buttonPressed().equals("Cancel")) {
-                    if (_revertValue.containsKey(entryName)) {
-                        String revertValue
-                                = (String)_revertValue.get(entryName);
-                        // FIXME: In the two calls to changedFailed below,
-                        // the change object has the wrong originator...
-                        // The originator is the original dialog, not the
-                        // new one, so the call to changeFailed
-                        // is ignored.  Or something...
+            }
+            _dialog = new ComponentDialog(null, "Error", _query, null);
 
-                        // NOTE: This is happening during a mutation, so we
-                        // go ahead and set the value.
-                        variable.setExpression(revertValue);
-                        // Retrieve the token to force evaluation,
-                        // so that listeners are notified.
-                        try {
-                            variable.getToken();
-                        } catch (IllegalActionException ex) {
-                            changeFailed(change, ex);
-                        }
-                    }
-                } else if (dialog.buttonPressed().equals("OK")) {
-                    try {
-                        variable.getToken();
-                    } catch (IllegalActionException ex) {
-                        changeFailed(change, ex);
-                    }
+            // The above returns only when the modal dialog is closing.
+            // The following will force a new dialog to
+            // be created if the value is not valid.
+            _query._isOpenErrorWindow = false;
+
+            if (_dialog.buttonPressed().equals("Cancel")) {
+                if (_revertValue.containsKey(entryName)) {
+                    String revertValue = (String)_revertValue.get(entryName);
+                    setAndNotify(variable.getName(), revertValue);
+                }
+            } else {
+                // Force evaluation to check validity of the entry.
+                // NOTE: Normally, we would not need to force evaluation
+                // because if the value has changed, then listeners are
+                // automatically notified.  However, if the value has not
+                // changed, then they are not notified.  Since the original
+                // value was invalid, it is not acceptable to skip
+                // notification in this case.  So we force it.
+                try {
+                    variable.getToken();
+                } catch (IllegalActionException ex) {
+                    changeFailed(change, ex);
                 }
             }
         }
@@ -425,8 +321,6 @@ public class PtolemyQuery extends Query
      */
     public void valueChanged(Variable parameter) {
 
-        // FIXME: Do we remove the listener when the query closes?
-
         // Check that the parameter is attached to at least one entry.
         if (_parameters.containsValue(parameter)) {
                         
@@ -439,19 +333,42 @@ public class PtolemyQuery extends Query
             
             while (entryNames.hasNext()) {
                 String name = (String)entryNames.next();
-                set(name, parameter.stringRepresentation());
+                String newValue = parameter.stringRepresentation();
+
+                // Compare value against what is in already to avoid
+                // changing it again.
+                if (!stringValue(name).equals(newValue)) {
+                    set(name, parameter.stringRepresentation());
+                }
             }
+        }
+    }
+
+    /** Unsubscribe as a listener to all objects that we have subscribed to.
+     *  @param window The window that closed.
+     *  @param button The name of the button that was used to close the window.
+     */
+    public void windowClosed(Window window, String button) {
+        _handler.removeChangeListener(PtolemyQuery.this);
+
+        Iterator parameters = _parameters.values().iterator();
+        while(parameters.hasNext()) {
+            Variable parameter = (Variable)parameters.next();
+            parameter.removeValueListener(this);
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // Another dialog used to prompt for corrections to errors.
+    private ComponentDialog _dialog;
+
     // The handler that was specified in the constructors.
     private CompositeEntity _handler;
 
-    // Message box in error handling dialog.
-    private JTextArea _message;
+    // Indicator that this is an open dialog reporting an erroneous entry.
+    private boolean _isOpenErrorWindow = false;
 
     // Maps an entry name to the variable that is attached to it.
     private Map _parameters = new HashMap();

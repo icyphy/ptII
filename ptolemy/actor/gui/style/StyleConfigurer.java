@@ -49,12 +49,12 @@ import javax.swing.SwingUtilities;
 This class is an editor for the styles of the parameters of an object. 
 It is very similar to Configurer, except that class edits the actual values
 of the parameters.
-
+<p>
 The restore() method restores the values of the parameters of the
 object to their values when this object was created.  This can be used
 in a modal dialog to implement a cancel button, which restores
 the parameter values to those before the dialog was opened.
-
+<p>
 @see Configurer
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$

@@ -23,7 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (eal@eecs.berkeley.edu)
 
 */
@@ -60,17 +60,24 @@ public class Query extends JPanel {
     /** Construct a panel with no entries in it.
      */
     public Query() {
-        // FIXME: The layout isn't quite right... When setTextWidth() is
-        // called with a larger number, more space also gets allocated
-        // to the labels, which is not correct...
         _grid = new GridBagLayout();
         _constraints = new GridBagConstraints();
         _constraints.fill = GridBagConstraints.HORIZONTAL;
         _constraints.weightx = 1.0;
         _constraints.anchor = GridBagConstraints.NORTHWEST;
-        setLayout(_grid);
+        _entryPanel.setLayout(_grid);
         // It's not clear whether the following has any real significance...
-        setOpaque(true);
+        _entryPanel.setOpaque(true);
+
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        // Left Justify.
+        _entryPanel.setAlignmentX(0.0f);
+        _messagePanel.setAlignmentX(0.0f);
+
+        // Add a message panel into which a message can be placed using
+        // setMessage().
+        add(_messagePanel);
+        add(_entryPanel);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -448,6 +455,23 @@ public class Query extends JPanel {
         }
     }
 
+    /** Set the value in the entry with the given name and notify listeners.
+     *  The second argument must be a string that can be parsed to the
+     *  proper type for the given entry, or an exception is thrown.
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param value The value to set the entry to.
+     *  @exception NoSuchElementException If there is no item with the
+     *   specified name.  Note that this is a runtime exception, so it
+     *   need not be declared explicitly.
+     *  @exception IllegalArgumentException If the value does not parse
+     *   to the appropriate type.
+     */
+    public void setAndNotify(String name, String value)
+            throws NoSuchElementException, IllegalArgumentException {
+       set(name, value);
+       _notifyListeners(name);
+   }
+
     /** Set the background color for all the widgets.
      *  @param color The background color.
      */
@@ -465,6 +489,7 @@ public class Query extends JPanel {
 
     /** Set the current value in the entry with the given name.
      *  If the entry is not a checkbox, then throw an exception.
+     *  Notify listeners that the value has changed.
      *  @exception NoSuchElementException If there is no item with the
      *   specified name.  Note that this is a runtime exception, so it
      *   need not be declared explicitly.
@@ -486,10 +511,12 @@ public class Query extends JPanel {
             name + "\" is not a radio button, and hence does not have "
             + "a boolean value.");
         }
+        _notifyListeners(name);
     }
 
     /** Set the displayed text of an entry that has been added using
      *  addDisplay.
+     *  Notify listeners that the value has changed.
      *  @param name The name of the entry.
      *  @param value The string to display.
      *  @exception NoSuchElementException If there is no entry with the
@@ -514,6 +541,7 @@ public class Query extends JPanel {
             name + "\" is not a display, and hence cannot be set using "
             + "setDisplay().");
         }
+        _notifyListeners(name);
     }
 
     /** For line, display, check box, slider, radio button, or choice
@@ -539,7 +567,7 @@ public class Query extends JPanel {
     }
 
     /** Set the displayed text of an item that has been added using
-     *  addLine.
+     *  addLine. Notify listeners that the value has changed.
      *  @param name The name of the entry.
      *  @param value The string to display.
      *  @exception NoSuchElementException If there is no item with the
@@ -563,10 +591,38 @@ public class Query extends JPanel {
             name + "\" is not a line, and hence cannot be set using "
             + "setLine().");
         }
+        _notifyListeners(name);
+    }
+
+    /** Specify a message to be displayed above the query.
+     *  @param message The message to display.
+     */
+    public void setMessage(String message) {
+        if (_messageArea == null) {
+            _messageArea = new JTextArea(message);
+            _messageArea.setFont(new Font("SansSerif", Font.PLAIN, 12));
+            _messageArea.setEditable(false);
+            _messageArea.setLineWrap(true);
+            _messageArea.setWrapStyleWord(true);
+            _messageArea.setBackground(getBackground());
+            // Left Justify.
+            _messageArea.setAlignmentX(0.0f);
+
+            _messagePanel.setLayout(
+                    new BoxLayout(_messagePanel, BoxLayout.Y_AXIS));
+            _messagePanel.add(_messageArea);
+            // Add a spacer.
+            Component strut = Box.createVerticalStrut(10);
+            _messagePanel.add(strut);
+        } else {
+            _messageArea.setText(message);
+        }
+        // In case size has changed.
+        validate();
     }
 
     /** Set the position of an item that has been added using
-     *  addSlider.
+     *  addSlider.  Notify listeners that the value has changed.
      *  @param name The name of the entry.
      *  @param value The value to set the slider position.
      *  @exception NoSuchElementException If there is no item with the
@@ -591,6 +647,7 @@ public class Query extends JPanel {
             name + "\" is not a slider, and hence cannot be set using "
             + "setSlider().");
         }
+        _notifyListeners(name);
     }
 
     /** Specify the preferred width to be used for entry boxes created
@@ -688,12 +745,13 @@ public class Query extends JPanel {
         // support gridded layout.
         _constraints.gridwidth = 1;
         _grid.setConstraints(label, _constraints);
-        add(label);
+        _entryPanel.add(label);
         _constraints.gridwidth = GridBagConstraints.REMAINDER;
         _grid.setConstraints(widget, _constraints);
-        add(widget);
+        _entryPanel.add(widget);
         _entries.put(name, widget);
         _labels.put(name, label);
+        _previous.put(name, stringValue(name));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -717,11 +775,25 @@ public class Query extends JPanel {
     ////                         friendly methods                  ////
 
     /** Notify all registered listeners that something changed for the 
-     *  specified entry.
+     *  specified entry, if it indeed has changed.  The stringValue()
+     *  method is used to check the current value against the previously
+     *  notified value, or the original value if there have been no
+     *  notifications.
      *  @param name The entry that may have changed.
      */
     void _notifyListeners(String name) {
         if(_listeners != null) {
+            String previous = (String)_previous.get(name);
+            String newValue = stringValue(name);
+            if (newValue.equals(previous)) return;
+
+            // Store the new value to prevent repeated notification.
+            // This must be done before listeners are notified, because
+            // the notified listeners might do something that again triggers
+            // notification, and we do not want that notification to occur
+            // if the value has not changed.
+            _previous.put(name, newValue);
+
             Enumeration listeners = _listeners.elements();
             while(listeners.hasMoreElements()) {
                 QueryListener queueListener =
@@ -737,8 +809,20 @@ public class Query extends JPanel {
     // The hashtable of items in the query.
     private Map _entries = new HashMap();
 
+    // A panel within which the entries are placed.
+    private JPanel _entryPanel = new JPanel();
+
     // The hashtable of labels in the query.
     private Map _labels = new HashMap();
+
+    // Area for messages.
+    private JTextArea _messageArea = null;
+
+    // Panel into which messages are placed.
+    private JPanel _messagePanel = new JPanel();
+
+    // The hashtable of previous values, indexed by entry name.
+    private Map _previous = new HashMap();
 
     // The width of the text boxes.
     private int _width = DEFAULT_ENTRY_WIDTH;
@@ -760,8 +844,6 @@ public class Query extends JPanel {
     }
 
     /** Listener for line entries, for when they lose the focus.
-     *  Listeners are notified only if the value has changed since the
-     *  last notification.
      */
     class QueryFocusListener implements FocusListener {
         public QueryFocusListener(String name) {
@@ -771,18 +853,13 @@ public class Query extends JPanel {
             // Nothing to do.
         }
         public void focusLost(FocusEvent e) {
-            // NOTE: I tried doing this notification only if the value
-            // had changed since the last notification, but this doesn't
-            // work.  In particular, Java's lame AWT has no reliable way
+            // NOTE: Java's lame AWT has no reliable way
             // to take action on window closing, so this focus lost
             // notification is the only reliable way we have of reacting
-            // to a closing window.  It is important the notification occur
-            // unconditionally in this circumstance, because the previous
-            // notification might have been an erroneous one, in which case
-            // this one will still be erroneous, and we can't just ignore
-            // it.  The right solution here is to fix the AWT so that
-            // the ComponentListener methods are invoked.  But that seems
-            // like alot to ask...
+            // to a closing window.  If the previous
+            // notification was an erroneous one and the value has not
+            // changed, then no further notification occurs.
+            // This could be a problem for some users of this class.
             _notifyListeners(_name);
         }
         private String _name;
