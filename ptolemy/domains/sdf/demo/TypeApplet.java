@@ -361,14 +361,14 @@ public class TypeApplet extends SDFApplet {
 	    final int EXPR_X = 360;
 	    final int EXPR_Y = 110;
 	    final int EXPR_IN_TYPE_X = EXPR_X-60;
-	    final int EXPR_IN_TYPE_Y1 = EXPR_Y;
-	    final int EXPR_IN_TYPE_Y2 = EXPR_Y+ACTOR_HEIGHT+10;
+	    final int EXPR_IN_TYPE_Y1 = EXPR_Y-2;
+	    final int EXPR_IN_TYPE_Y2 = EXPR_Y+ACTOR_HEIGHT+12;
 	    final int EXPR_OUT_TYPE_X = EXPR_X+ACTOR_WIDTH+8;
 	    final int EXPR_OUT_TYPE_Y = EXPR_Y+ACTOR_HEIGHT/2-8;
 
 	    final int PLOT_X = 650;
 	    final int PLOT_Y = 110;
-	    final int PLOT_TYPE_X = PLOT_X-65;
+	    final int PLOT_TYPE_X = PLOT_X-70;
 	    final int PLOT_TYPE_Y = PLOT_Y+ACTOR_HEIGHT/2-8;
 
 	    final int ARC_WIDTH = 12;
@@ -452,7 +452,7 @@ public class TypeApplet extends SDFApplet {
 		int x2 = x1+ACTOR_WIDTH/4; int y2 = PLOT_Y+ACTOR_HEIGHT/2;
 		int x3 = x2+10; int y3 = y2+10;
 		int x4 = PLOT_X+ACTOR_WIDTH-20; int y4 = PLOT_Y+20;
-		graph.setColor(Color.green);
+		graph.setColor(new Color(0.1F, 0.2F, 0.9F));
 		graph.drawLine(x1, y1, x2, y2);
 		graph.drawLine(x2, y2, x3, y3);
 		graph.drawLine(x3, y3, x4, y4);
@@ -481,11 +481,11 @@ public class TypeApplet extends SDFApplet {
 				rad*2, rad*2);
 
 	    // draw connections
-	    graph.setColor(Color.orange);
+	    graph.setColor(new Color(1.0F, 0.4F, 0.0F));
 	    graph.drawLine(RAMP1_X+ACTOR_WIDTH+rad-1, RAMP1_Y+ACTOR_HEIGHT/2+1,
-			   EXPR_X-rad+1, EXPR_Y+ACTOR_HEIGHT/3-rad-2);
+			   EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT/3-rad-2);
 	    graph.drawLine(RAMP2_X+ACTOR_WIDTH+rad-1, RAMP2_Y+ACTOR_HEIGHT/2-1,
-			   EXPR_X-rad+1, EXPR_Y+ACTOR_HEIGHT*2/3-rad+6);
+			   EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT*2/3-rad+8);
 	    graph.drawLine(EXPR_X+ACTOR_WIDTH+rad-1, EXPR_Y+ACTOR_HEIGHT/2,
 			   PLOT_X-rad, PLOT_Y+ACTOR_HEIGHT/2);
 
