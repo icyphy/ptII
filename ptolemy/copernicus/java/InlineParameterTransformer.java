@@ -44,6 +44,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
@@ -419,6 +420,10 @@ public class InlineParameterTransformer extends SceneTransformer
 
                         // Get some references to the container of the
                         // attribute.
+                        if (attribute == null) {
+                            throw new InternalErrorException("Attribute == null?, "
+                                    + "this should not be happening: " + r);   
+                        }
                         Entity container = FieldsForEntitiesTransformer
                             .getEntityContainerOfObject(attribute);
                         Local thisLocal = body.getThisLocal();
