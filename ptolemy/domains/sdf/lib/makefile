@@ -31,6 +31,9 @@
 
 ME =		ptolemy/domains/sdf/lib
 
+# Rule for index.xml uses this
+TITLE = 	"Synchronous dataflow actors"
+
 DIRS = 		vq test
 
 # Root of the Java directory
@@ -79,12 +82,12 @@ MISC_FILES = 	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	index.xml
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
-all: jclass
+all: jclass index.xml
 install: jclass jars
 
 
