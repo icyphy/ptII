@@ -240,7 +240,8 @@ public class GiottoCodeGeneratorUtilities {
     }
 
     /** Generate code for the driver.
-     *  @param model The model
+     *  @param model The given model.
+     *  @param actor The given actor.
      *  @return The driver code.
      *  @exception IllegalActionException If there is a problem accessing
      *  the ports.   
