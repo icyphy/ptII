@@ -34,7 +34,7 @@ package ptolemy.apps.cacheAwareScheduler.kernel;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
-import ptolemy.actor.IODependency;
+import ptolemy.actor.FunctionDependency;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.NotSchedulableException;
@@ -691,21 +691,21 @@ public class CacheAwareScheduler extends SDFScheduler {
 
         CompositeActor castContainer = container;
 
-        // Get the IODependence attribute of the container of this 
+        // Get the function dependency object of the container of this 
         // director. If there is no such attribute, construct one.
-        IODependency ioDependency = castContainer.getIODependencies();
+        FunctionDependency functionDependency = castContainer.getFunctionDependencies();
          
         // The IODependence attribute is used to construct
         // the schedule. If the schedule needs recalculation,
         // the IODependence also needs recalculation.
-        ioDependency.invalidate();
+        functionDependency.invalidate();
       
         // FIXME: The following may be a very costly test. 
         // -- from the comments of former implementation. 
         // If the port based data flow graph contains directed
         // loops, the model is invalid. An IllegalActionException
         // is thrown with the names of the actors in the loop.
-        Object[] cycleNodes = ioDependency.getCycleNodes();
+        Object[] cycleNodes = functionDependency.getCycleNodes();
         if (cycleNodes.length != 0) {
             StringBuffer names = new StringBuffer();
             for (int i = 0; i < cycleNodes.length; i++) {
@@ -731,11 +731,11 @@ public class CacheAwareScheduler extends SDFScheduler {
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             // Get the IODependence attribute of current actor.
-            ioDependency = actor.getIODependencies();
+            functionDependency = actor.getFunctionDependencies();
             // The following check may not be necessary since the IODependence
             // attribute is constructed before. However, we check
             // it anyway. 
-            if (ioDependency == null) {
+            if (functionDependency == null) {
                 throw new IllegalActionException(this, "doesn't " +
                         "contain a valid IODependence attribute.");
             }
@@ -746,7 +746,7 @@ public class CacheAwareScheduler extends SDFScheduler {
                 IOPort inputPort = (IOPort)inputPorts.next();
 
                 Set notDirectlyDependentPorts = 
-                    ioDependency.getIndependentOutputPorts(inputPort);
+                    functionDependency.getIndependentOutputPorts(inputPort);
 
                 // get all the output ports of the current actor.
                 Iterator outputPorts = actor.outputPortList().iterator();
