@@ -51,4 +51,87 @@ proc javaPrintArray {javaArrayObj} {
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
+set a2 [java::new {double[]} 5 [list 236.1 -36.21 4826.2 5 65.4]]
+set l [list 1 2 -3 4.1 0.0 -0.0 +0.0 \
+	    [java::field java.lang.Double POSITIVE_INFINITY] \
+	    [java::field java.lang.Double NEGATIVE_INFINITY] \
+	    [java::field java.lang.Double NaN] \
+	    [java::field java.lang.Double MIN_VALUE] \
+	    [java::field java.lang.Double MAX_VALUE] \
+	    ]
+set a3 [java::new {double[]} [llength $l] $l]
+set p1 [java::new {double[]} 4 [list 0.3 0.2 0.0 0.5]]
+set p2 [java::new {double[]} 4 [list 0.7 0.1 0.0 0.2]]
+set p3 [java::new {double[]} 4 [list 0.4 0.4 0.1 0.1]]
+set badp3 [java::new {double[]} 4 [list 0.4 0.4 -0.1 0.2]]
+
+####################################################################
+test DoubleArrayStat-1.1 {entropy} {
+    set r [java::call ptolemy.math.DoubleArrayStat entropy $p1]
+    set br [java::call ptolemy.math.SignalProcessing close $r \
+            1.485475297]
+    list $br
+} {1}
+
+####################################################################
+test DoubleArrayStat-1.1 {min} {
+    set r [java::call ptolemy.math.DoubleArrayStat min $a2]
+    list $r
+} -36.21
+
+####################################################################
+test DoubleArrayStat-1.2 {min with weird array} {
+    set r [java::call ptolemy.math.DoubleArrayStat min $a3]
+    list $r
+} -Infinity
+
+
+####################################################################
+test DoubleArrayStat-2.1 {max} {
+    set r [java::call ptolemy.math.DoubleArrayStat max $a2]
+    list $r
+}  4826.2
+
+####################################################################
+test DoubleArrayStat-3.1 {mean} {
+    set r [java::call ptolemy.math.DoubleArrayStat mean $a2]
+    list $r
+}  1019.298
+
+####################################################################
+test DoubleArrayStat-1.1 {relativeEntropy} {
+    set r [java::call ptolemy.math.DoubleArrayStat relativeEntropy $p1 \
+           $p2]
+    set br [java::call ptolemy.math.SignalProcessing close $r \
+            0.49424632141]
+    list $br
+} {1}
+
+####################################################################
+test DoubleArrayStat-3.1 {stdDev} {
+    set r [java::call ptolemy.math.DoubleArrayStat stdDev $a2]
+    set br [java::call ptolemy.math.SignalProcessing close $r \
+            2130.652535614383]
+    list $br
+} {1}
+
+####################################################################
+test DoubleArrayStat-3.1 {sumOfElements} {
+    set r [java::call ptolemy.math.DoubleArrayStat sumOfElements $a2]
+    list $r
+} 5096.49
+
+####################################################################
+test DoubleArrayStat-3.1 {sumOfSquares} {
+    set r [java::call ptolemy.math.DoubleArrayStat sumOfSquares $a2]
+    list $r
+} 23353562.9741
+
+####################################################################
+test DoubleArrayStat-3.1 {variance} {
+    set r [java::call ptolemy.math.DoubleArrayStat variance $a2]
+    set br [java::call ptolemy.math.SignalProcessing close $r \
+            4539680.22750001]
+    list $br
+} {1}
 
