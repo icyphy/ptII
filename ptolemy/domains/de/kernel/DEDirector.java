@@ -403,20 +403,25 @@ public class DEDirector extends Director {
             } while (refire);
 
             // Check whether the next time stamp is equal to current time.
-            if(!_eventQueue.isEmpty()) {
-                DEEvent next = _eventQueue.get();
-                // If the next event is in the future, proceed to postfire().
-                if (next.timeStamp() > getCurrentTime()) {
+            // This is synchronized to prevent equeueing or dequeueing events
+            // or manipulating current time while we are checking the queue.
+            synchronized(this) {
+                if(!_eventQueue.isEmpty()) {
+                    DEEvent next = _eventQueue.get();
+                    // If the next event is in the future,
+                    // proceed to postfire().
+                    if (next.timeStamp() > getCurrentTime()) {
+                        break;
+                    } else if (next.timeStamp() < getCurrentTime()) {
+                        throw new InternalErrorException(
+                                "fire(): the time stamp of the next event " 
+                                + next.timeStamp() + " is smaller than the "
+                                + "current time " + getCurrentTime() + " !");
+                    }
+                } else {
+                    // The queue is empty, proceed to postfire().
                     break;
-                } else if (next.timeStamp() < getCurrentTime()) {
-                    throw new InternalErrorException(
-                            "fire(): the time stamp of the next event " 
-                            + next.timeStamp() + " is smaller than the "
-                            + "current time " + getCurrentTime() + " !");
                 }
-            } else {
-                // The queue is empty, proceed to postfire().
-                break;
             }
         }
     }
