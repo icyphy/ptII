@@ -54,6 +54,7 @@ JSRCS = \
 	LineAttribute.java \
 	PolygonAttribute.java \
 	RectangleAttribute.java \
+	TextAttribute.java \
 	ShapeAttribute.java
 
 OTHER_FILES_TO_BE_JARED = \
