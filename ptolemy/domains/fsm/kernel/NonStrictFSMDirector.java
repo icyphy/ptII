@@ -304,7 +304,7 @@ public class NonStrictFSMDirector extends FSMDirector {
     /** Given a set of ports, get those are input ports and put them
      *  in the indicated referred set.
      *  @param portSet The given set of ports
-     *  @param referredInputPorts The referred list.
+     *  @param referredInputPorts The referred set.
      */
     public void getReferredInputPorts(Set portSet, Set referredInputPorts) {
         CompositeActor container = (CompositeActor) getContainer();
@@ -387,9 +387,11 @@ public class NonStrictFSMDirector extends FSMDirector {
         }
     }
 
-    /** Given a list of transitions, get a list of referred input ports
+    /** Given a list of transitions, get a set of referred input ports
      *  in the guard expressions of all the transitions leaving this state.
      *  @param transitionList The list of Transitions.
+     *  @return A set of input ports referred by the guard expressions
+     *   of the given transition list.
      *  @exception IllegalActionException If there is no controller or if
      *   the guard expression is illegal.
      */
