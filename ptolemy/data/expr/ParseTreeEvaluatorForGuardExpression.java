@@ -64,9 +64,41 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Visit the leaf node. If the leaf node contains "true", the return token
+     *  is evaluated to 0.0 in this parseTreeEvaluator. Otherwise, it is evaluated
+     *  as normal parseTreeEvaluator.
+     *  @param node The leaf node to be evaluated.
+     */
+
+    public void visitLeafNode(ASTPtLeafNode node)
+            throws IllegalActionException {
+        if(node.isConstant() && node.isEvaluated()) {
+            ptolemy.data.Token result = node.getToken();
+            if(result instanceof BooleanToken) {
+                if ( ( (BooleanToken) result).booleanValue()) {
+                    node.setToken(new DoubleToken(0.0));
+                    return;
+                }
+            }
+        }
+        super.visitLeafNode(node);
+    }
+
+    /** Visit the logical node. The short-circuit evaluation is used here
+     *  if one of the children has token as "true" or the only child has
+     *  token as "true", known as constant, we return the evaluation result
+     *  as 0.0. Otherwise, we return the minimum double value of all children.
+     *  @param node The logical node to be evaluated.
+     */
     public void visitLogicalNode(ASTPtLogicalNode node)
             throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {
+            ptolemy.data.Token result = node.getToken();
+            if(result instanceof BooleanToken) {
+                if ( ( (BooleanToken) result).booleanValue()) {
+                    node.setToken(new DoubleToken(0.0));
+                }
+            }
             return;
         }
 
@@ -118,6 +150,11 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         return;
     }
 
+    /** Visit the relation node. The evaluation of the relation node in this evaluator
+     *  is different. Given a relation expression, we get the absolute value of the
+     *  subtract of the two operands beside the relation operator.
+     *  @param node The relation node to be evaluated.
+     */
     public void visitRelationalNode(ASTPtRelationalNode node)
         throws IllegalActionException {
         if(node.isConstant() && node.isEvaluated()) {

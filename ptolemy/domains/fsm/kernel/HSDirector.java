@@ -265,14 +265,19 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                     ParseTreeEvaluatorForGuardExpression());
                 _distanceToBoundary = ( (DoubleToken) guard.getToken()).
                     doubleValue();
-                System.out.println("The distance is: " + _distanceToBoundary);
+                if (_debugging) _debug("The distance to the boundary is: " + _distanceToBoundary);
+                System.out.println("The distance to the boundary is: " + _distanceToBoundary);
+
                 _transitionAccurate = (_distanceToBoundary < 1e-5);
-                if (_transitionAccurate) System.out.println("good choice");
+
+                if (_transitionAccurate && _debugging) _debug("good choice.");
+                if (_transitionAccurate) System.out.println("good choice.");
+
                 return result && _transitionAccurate;
             }
         } catch (Exception e) {
             //FIXME: handle the exception
-            System.out.println(e.getMessage());
+            System.out.println("FIXME:: " + e.getMessage());
             return result;
         }
 
@@ -401,7 +406,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                             maximumDerivative = input;
                         }
                     } catch (IllegalActionException e) {
-                        System.out.println(e.getMessage());
+                        //FIXME: how to handle the exception.
+                        System.out.println("FIXME" + e.getMessage());
                         maximumDerivative = 1.0;
                     }
                 }
