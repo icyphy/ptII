@@ -33,6 +33,8 @@ package ptolemy.data;
 import ptolemy.kernel.util.*;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// DoubleMatrixToken
@@ -245,6 +247,13 @@ public class DoubleMatrixToken extends MatrixToken {
 	    }
 	}
 	return array;
+    }
+
+    /** Return the type of this token.
+     *  @return BaseType.DOUBLE_MATRIX
+     */
+    public Type getType() {
+	return BaseType.DOUBLE_MATRIX;
     }
 
     /** Test if the content of this token is equal to that of the specified

@@ -30,6 +30,8 @@
 package ptolemy.data;
 import ptolemy.kernel.util.*;
 import ptolemy.graph.CPO;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// LongMatrixToken

@@ -31,7 +31,7 @@
 
 ME =		ptolemy/data
 
-DIRS = 		expr test
+DIRS = 		expr test type
 
 # Root of the Ptolemy II directory
 ROOT =		../..
@@ -53,6 +53,7 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	ArrayToken.java \
 	BooleanMatrixToken.java \
 	BooleanToken.java \
 	ComplexMatrixToken.java \

@@ -32,6 +32,8 @@
 package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.FixPoint;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// FixToken

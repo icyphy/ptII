@@ -33,6 +33,8 @@ package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// StringToken
@@ -152,6 +154,13 @@ public class StringToken extends Token {
         throw new IllegalActionException("cannot convert from token " +
                 "type: " + token.getClass().getName() + " to a " +
 		"StringToken.");
+    }
+
+    /** Return the type of this token.
+     *  @return BaseType.STRING
+     */
+    public Type getType() {
+	return BaseType.STRING;
     }
 
     /** Lexicographically test the values of this Token and the

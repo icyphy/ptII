@@ -31,6 +31,8 @@ package ptolemy.data;
 import ptolemy.kernel.util.*;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// ComplexMatrixToken
@@ -232,6 +234,13 @@ public class ComplexMatrixToken extends MatrixToken {
         throw new IllegalActionException("cannot convert from token " +
                 "type: " + token.getClass().getName() + " to a " +
 		"ComplexMatrixToken.");
+    }
+
+    /** Return the type of this token.
+     *  @return BaseType.COMPLEX_MATRIX
+     */
+    public Type getType() {
+	return BaseType.COMPLEX_MATRIX;
     }
 
     /** Test if the content of this token is equal to that of the specified

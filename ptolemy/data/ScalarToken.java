@@ -33,6 +33,8 @@ package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// ScalarToken
@@ -71,6 +73,13 @@ public abstract class ScalarToken extends Token {
 	    throws IllegalActionException {
 	throw new IllegalActionException("Cannot convert the value in " +
     		getClass().getName() + " to a double losslessly.");
+    }
+
+    /** Return the type of this token.
+     *  @return BaseType.SCALAR
+     */
+    public Type getType() {
+	return BaseType.SCALAR;
     }
 
     // Return the value of this token as a Fix.

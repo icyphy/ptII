@@ -31,6 +31,8 @@ package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// BooleanToken
@@ -206,6 +208,13 @@ public class BooleanToken extends Token {
             throw new IllegalArgumentException("BooleanToken: division "
             + "by false-valued token (analogous to division by zero).");
         }
+    }
+
+    /** Return the type of this token.
+     *  @return BaseType.BOOLEAN
+     */
+    public Type getType() {
+	return BaseType.BOOLEAN;
     }
 
     /** Return TRUE if the argument has the same boolean value as this token.

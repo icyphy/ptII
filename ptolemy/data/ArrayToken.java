@@ -33,6 +33,7 @@ package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.type.Type;
+import ptolemy.data.type.ArrayType;
 
 //////////////////////////////////////////////////////////////////////////
 //// ArrayToken
@@ -114,6 +115,13 @@ public class ArrayToken extends Token {
 	throw new IllegalActionException("ArrayToken.convert: " +
 	    "This method cannot be used, use the convert method " +
 	    "in ArrayType.");
+    }
+
+    /** Return the type of this ArrayToken.
+     *  @return An ArrayType.
+     */
+    public Type getType() {
+	return new ArrayType(_elementType);
     }
 
     /** Test for equality of the values of this Token and the argument.

@@ -32,6 +32,8 @@ package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// ComplexToken
@@ -229,6 +231,13 @@ public class ComplexToken extends ScalarToken {
         ComplexToken tem = (ComplexToken)this.convert(dividend);
         Complex result = tem.complexValue().divide(_value);
         return new ComplexToken(result);
+    }
+
+    /** Return the type of this token.
+     *  @return BaseType.COMPLEX
+     */
+    public Type getType() {
+	return BaseType.COMPLEX;
     }
 
     /** Test the values of this Token and the argument Token for equality.

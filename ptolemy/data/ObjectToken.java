@@ -33,6 +33,8 @@ package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// ObjectToken
@@ -98,6 +100,13 @@ public class ObjectToken extends Token {
 	// to ObjectToken.
 	throw new IllegalActionException("cannot convert from token " +
 		"type: " + token.getClass().getName() + " to a ObjectToken");
+    }
+
+    /** Return the type of this token.
+     *  @return BaseType.OBJECT
+     */
+    public Type getType() {
+	return BaseType.OBJECT;
     }
 
     /** Return the value of the token, a reference to an object.

@@ -31,6 +31,7 @@
 package ptolemy.data;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.data.type.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Token
@@ -141,6 +142,13 @@ public class Token {
         throw new IllegalActionException("Division not supported for "
         + dividend.getClass().getName() + " divided by "
         + this.getClass().getName() + ".");
+    }
+
+    /** Return the type of this token.
+     *  @return BaseType.GENERAL
+     */
+    public Type getType() {
+	return BaseType.GENERAL;
     }
 
     /** Test for equality of the values of this Token and the argument Token.

@@ -30,6 +30,8 @@
 package ptolemy.data;
 import ptolemy.kernel.util.*;
 import ptolemy.graph.CPO;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.BaseType;
 
 //////////////////////////////////////////////////////////////////////////
 //// BooleanMatrixToken
@@ -163,6 +165,13 @@ public class BooleanMatrixToken extends MatrixToken {
         throw new IllegalActionException("cannot convert from token " +
                 "type: " + token.getClass().getName() + " to a " +
 		"BooleanMatrixToken.");
+    }
+
+    /** Return the type of this token.
+     *  @return BaseType.BOOLEAN_MATRIX
+     */
+    public Type getType() {
+	return BaseType.BOOLEAN_MATRIX;
     }
 
     /** Test if the content of this token is equal to that of the specified

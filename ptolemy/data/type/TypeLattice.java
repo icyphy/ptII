@@ -60,9 +60,9 @@ public class TypeLattice {
      *  @param t2 a Token.
      *  @return An integer.
      */
-//    public static int compare(Token t1, Token t2) {
-//	return compare(t1.getType(), t2.getType());
-//    }
+    public static int compare(Token t1, Token t2) {
+	return compare(t1.getType(), t2.getType());
+    }
 
     /** Compare two types in the type lattice.
      *  This method returns one of ptolemy.graph.CPO.LOWER,
@@ -304,11 +304,18 @@ public class TypeLattice {
 		(new ArrayType(BaseType.NAT))._getRepresentative();
 
 	    _basicLattice.add(BaseType.BOOLEAN);
+	    _basicLattice.add(BaseType.BOOLEAN_MATRIX);
 	    _basicLattice.add(BaseType.COMPLEX);
+	    _basicLattice.add(BaseType.COMPLEX_MATRIX);
 	    _basicLattice.add(BaseType.DOUBLE);
+	    _basicLattice.add(BaseType.DOUBLE_MATRIX);
+	    _basicLattice.add(BaseType.FIX);
 	    _basicLattice.add(BaseType.INT);
+	    _basicLattice.add(BaseType.INT_MATRIX);
 	    _basicLattice.add(BaseType.LONG);
+	    _basicLattice.add(BaseType.LONG_MATRIX);
 	    _basicLattice.add(BaseType.NAT);
+	    _basicLattice.add(BaseType.NUMERICAL);
 	    _basicLattice.add(BaseType.OBJECT);
 	    _basicLattice.add(BaseType.SCALAR);
 	    _basicLattice.add(BaseType.STRING);
@@ -319,16 +326,34 @@ public class TypeLattice {
 	    _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
 	    _basicLattice.addEdge(BaseType.NAT, BaseType.OBJECT);
 	    _basicLattice.addEdge(BaseType.STRING, BaseType.GENERAL);
-	    _basicLattice.addEdge(BaseType.BOOLEAN, BaseType.STRING);
+	    _basicLattice.addEdge(BaseType.BOOLEAN_MATRIX, BaseType.STRING);
+	    _basicLattice.addEdge(BaseType.BOOLEAN, BaseType.BOOLEAN_MATRIX);
 	    _basicLattice.addEdge(BaseType.NAT, BaseType.BOOLEAN);
-	    _basicLattice.addEdge(BaseType.SCALAR, BaseType.STRING);
+
+	    _basicLattice.addEdge(BaseType.NUMERICAL, BaseType.STRING);
+	    _basicLattice.addEdge(BaseType.SCALAR, BaseType.NUMERICAL);
+	    _basicLattice.addEdge(BaseType.LONG_MATRIX, BaseType.NUMERICAL);
+	    _basicLattice.addEdge(BaseType.COMPLEX_MATRIX, BaseType.NUMERICAL);
+
+	    _basicLattice.addEdge(BaseType.FIX, BaseType.SCALAR);
+	    _basicLattice.addEdge(BaseType.NAT, BaseType.FIX);
 	    _basicLattice.addEdge(BaseType.LONG, BaseType.SCALAR);
+	    _basicLattice.addEdge(BaseType.LONG, BaseType.LONG_MATRIX);
+	    _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.LONG_MATRIX);
 	    _basicLattice.addEdge(BaseType.INT, BaseType.LONG);
+	    _basicLattice.addEdge(BaseType.INT, BaseType.INT_MATRIX);
 	    _basicLattice.addEdge(BaseType.NAT, BaseType.INT);
+
+	    _basicLattice.addEdge(BaseType.INT_MATRIX, BaseType.DOUBLE_MATRIX);
+	    _basicLattice.addEdge(BaseType.DOUBLE_MATRIX,
+				  BaseType.COMPLEX_MATRIX);
+	    _basicLattice.addEdge(BaseType.DOUBLE, BaseType.DOUBLE_MATRIX);
+
 	    _basicLattice.addEdge(BaseType.COMPLEX, BaseType.SCALAR);
+	    _basicLattice.addEdge(BaseType.COMPLEX, BaseType.COMPLEX_MATRIX);
+
 	    _basicLattice.addEdge(BaseType.DOUBLE, BaseType.COMPLEX);
 	    _basicLattice.addEdge(BaseType.INT, BaseType.DOUBLE);
-	    _basicLattice.addEdge(BaseType.NAT, BaseType.INT);
 
 	    _basicLattice.addEdge(arrayRep, BaseType.GENERAL);
 	    _basicLattice.addEdge(BaseType.NAT, arrayRep);

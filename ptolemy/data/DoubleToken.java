@@ -34,6 +34,8 @@ package ptolemy.data;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
+import ptolemy.data.type.Type;
+import ptolemy.data.type.BaseType;
 import java.text.NumberFormat;
 
 //////////////////////////////////////////////////////////////////////////
@@ -230,6 +232,13 @@ public class DoubleToken extends ScalarToken {
      */
     public double doubleValue() {
 	return _value;
+    }
+
+    /** Return the type of this token.
+     *  @return BaseType.DOUBLE
+     */
+    public Type getType() {
+	return BaseType.DOUBLE;
     }
 
     /** Test the values of this Token and the argument Token for equality.
