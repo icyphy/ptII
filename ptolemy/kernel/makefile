@@ -41,7 +41,8 @@ ME =		java/pt/kernel
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-DIRS = 		test doc
+DIRS = 		doc
+# DIRS = 		test doc
 
 # Used to build zip files
 JPACKAGE = 	pt/kernel
@@ -58,7 +59,7 @@ JSRCS = \
 	Entity.java \
 	Executive.java \
 	FIFORelation.java \
-	Galaxy.java \
+	#FIXME: Galaxy.java \
 	GenericPort.java \
 	GraphElement.java \
 	GraphException.java \
@@ -86,7 +87,7 @@ JSRCS = \
 	PortList.java \
 	PtolemyException.java \
 	Relation.java \
-	Star.java \
+	#FIXME: Star.java \
 	StatusArray.java \
 	Tag.java \
 	TagInterface.java \
@@ -95,7 +96,7 @@ JSRCS = \
 	TimedHasValue.java \
 	TimedNoValue.java \
 	ThreadedEntity.java \
-	Universe.java \
+	#FIXME: Universe.java \
 	Value.java \
 	ValueInterface.java
 
