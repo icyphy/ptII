@@ -185,7 +185,8 @@ public class Plotter extends PlotterBase {
         }
         if (_frame != null) {
             // Do not use show() here as it overrides manual placement.
-           _frame.toFront();
+            _frame.setVisible(true);
+            _frame.toFront();
         }
     }
 }

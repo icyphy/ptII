@@ -217,6 +217,7 @@ public class MatrixViewer extends Sink implements Placeable {
                 _effigy.clear();
                 if (_frame != null) {
                     // Do not use show() as it overrides manual placement.
+                    _frame.setVisible(true);
                     _frame.toFront();
                 }
             }

@@ -260,6 +260,7 @@ public class InteractiveShell extends TypedAtomicActor
         }
         if (_frame != null) {
             // Do not use show() as it overrides manual placement.
+            _frame.setVisible(true);
             _frame.toFront();
         }
         _firstTime = true;
