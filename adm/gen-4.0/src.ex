@@ -115,6 +115,7 @@ ptolemy/domains/sdf/lib/huffman
 ptolemy/domains/sdf/lib/javasound
 ptolemy/domains/sdf/test/pitchshift
 ptolemy/domains/tm/runtime
+ptolemy/domains/wireless/lib/tinyOS
 ptolemy/kernel/test/TestSerializable.data
 ptolemy/kernel/util/LibraryMarkerAttribute.java
 ptolemy/kernel/util/UserSettable.java
