@@ -67,11 +67,11 @@ test CTRampSystem-4.1 {Ramp with ForwardEulerSolver} {
     set man [java::new ptolemy.actor.Manager]
     $sys setManager $man
     set dir [java::new ptolemy.domains.ct.kernel.CTSingleSolverDirector $sys DIR]
-    set const [java::new ptolemy.domains.ct.lib.CTConst $sys Const]
+    set const [java::new ptolemy.actor.lib.Const $sys Const]
     set integral [java::new ptolemy.domains.ct.lib.CTIntegrator $sys Integ]
     set print [java::new ptolemy.domains.ct.test.CTTestValueSink\
     	    $sys Sink]
-    #set sink [java::new ptolemy.domains.ct.lib.CTPrintln $sys pl]
+    #set sink [java::new ptolemy.actor.gui.TimedPlotter $sys pl]
     set constout [$const getPort output]
     set intglin [$integral getPort input]
     set intglout [$integral getPort output]
@@ -103,7 +103,7 @@ test CTRampSystem-4.1 {Ramp with ForwardEulerSolver} {
     #$initstep parameterChanged [java::null]
     
     set constval [java::cast ptolemy.data.expr.Parameter \
-	    [$const getAttribute Value]]
+	    [$const getAttribute value]]
     $constval setExpression 1.0
     #$constval parameterChanged [java::null]
     
@@ -141,7 +141,7 @@ test CTRampSystem-4.2 {Ramp with BackwardEulerSolver} {
     #$initstep parameterChanged [java::null]
     
     set constval [java::cast ptolemy.data.expr.Parameter \
-	    [$const getAttribute Value]]
+	    [$const getAttribute value]]
     $constval setExpression 1.0
     #$constval parameterChanged [java::null]
     
@@ -179,7 +179,7 @@ test CTRampSystem-4.3 {Ramp with ExplicitRK23Solver} {
     #$initstep parameterChanged [java::null]
     
     set constval [java::cast ptolemy.data.expr.Parameter \
-	    [$const getAttribute Value]]
+	    [$const getAttribute value]]
     $constval setExpression 1.0
     #$constval parameterChanged [java::null]
     

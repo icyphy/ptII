@@ -62,24 +62,63 @@ public class CTTestValueSink extends TypedAtomicActor {
         input.setOutput(false);
         input.setMultiport(true);
         input.setTypeEquals(DoubleToken.class);
-        _param = new Parameter(this, "Value", new DoubleToken(1.0));
+        testValue = new Parameter(this, "Value", new DoubleToken(1.0));
+        print = new Parameter(this, "Print", new BooleanToken(false));
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         public variables                  ////
 
     /** The single-input port.
      */
     public TypedIOPort input;
     
+    /** Parameter for the value to be tested.
+     */
+    public Parameter testValue;
+
+    /** Parameter for whether the tokens will be printed to System.out.
+     */
+    public Parameter print;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public method                     ////
+
+
+    /** Return true if the test is successful.
+     *  @return true if the test is successful.
+     */
+    public boolean isSuccessful() {
+        return _success;
+    }
+
+    /** If the parameter print is true, print the last consumed token
+     *  to the stdout.
+     *  @return true always.
+     *  @exception IllegalActionException If no token available.
+     */
+    public boolean postfire() throws IllegalActionException {
+        _debug(getName() + " postfire.");
+        _lastToken = input.get(0);
+        if(((BooleanToken)print.getToken()).booleanValue()) {
+            Director dir = getDirector();
+            if(dir != null) {
+                System.out.println(dir.getCurrentTime() + " " +
+                        ((DoubleToken)_lastToken).doubleValue());
+            }
+        }
+        return true;
+    }
+    
     /** Wrapup. Compare the last token with 1.0. For correct integration,
      *  the last token should be very close to it.
      *  We take 1e-10 as the value resolition.
+     *  
      */
-    public void wrapup() throws IllegalActionException{
-        DoubleToken t = (DoubleToken)input.get(0);
-        double v = t.doubleValue();
-        double p = ((DoubleToken)_param.getToken()).doubleValue();
+    public void wrapup() {
+        _debug(getName() + " wrapping up.");
+        double v = ((DoubleToken)_lastToken).doubleValue();
+        double p = ((DoubleToken)testValue.getToken()).doubleValue();
         if (Math.abs(v-p) < 1e-10) {
             _success = true;
         } else {
@@ -87,16 +126,13 @@ public class CTTestValueSink extends TypedAtomicActor {
         }
     }
 
-    /** Return true if the test is successful.
-     * @return true if the test is successful.
-     */
-    public boolean isSuccessful() {
-        return _success;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private boolean _success = false;
 
-    private Parameter _param;
+    private Token _lastToken;
 }
+
+
+
+
