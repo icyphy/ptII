@@ -35,6 +35,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.WatchDogTimer;
 import ptolemy.kernel.util.IllegalActionException;
 
+import soot.Pack;
+import soot.PackManager;
 import soot.Scene;
 import soot.Transform;
 
@@ -54,7 +56,7 @@ public class Main extends ptolemy.copernicus.java.Main {
      */
     public Main(String [] args) throws IllegalActionException {
         // args[0] contains the MoML class name.
-        super(args);
+        super(args[0]);
     }
 
 
@@ -62,12 +64,12 @@ public class Main extends ptolemy.copernicus.java.Main {
      */
     public void addTransforms() {
         super.addTransforms();
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.finalSnapshot", CWriter.v()));
+        Pack pack = PackManager.v().getPack("wjtp");
 
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.watchDogCancel",
-                        WatchDogTimer.v(), "cancel:true"));
+        addTransform(pack, "wjtp.finalSnapshot", CWriter.v());
+
+        addTransform(pack, "wjtp.watchDogCancel",
+                        WatchDogTimer.v(), "cancel:true");
     }
 
 
