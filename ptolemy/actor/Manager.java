@@ -265,12 +265,16 @@ public final class Manager extends NamedObj implements Runnable {
                 "Attempted to call finish on an executing manager with no" +
                 " associated model");
         container.stopFire();
-        if(_state == PAUSED) {
-            _pauseRequested = false;
-	    synchronized(this) {
-		this.notifyAll();
+
+	// Since Manager.resume() is synchronized, start a thread
+	// to call resume() in order to avoid deadlock
+	Thread resumeThread = new PtolemyThread( new Runnable() {
+	    public void run() {
+		resume();
 	    }
-        }
+	});
+	resumeThread.start();
+
     }
 
     /** Return the top-level composite actor for which this manager
@@ -543,9 +547,10 @@ public final class Manager extends NamedObj implements Runnable {
 	}
     }
 
-    /** If the model is paused, resume execution.  This method must be called
-     *  from a different thread than that controlling the execution, since
-     *  the thread controlling the execution is suspended.
+    /** If the model is paused, resume execution.  This method must
+     *  be called from a different thread than that controlling the 
+     *  execution, since the thread controlling the execution is 
+     *  suspended.
      */
     public synchronized void resume() {
         if(_state == PAUSED) {
