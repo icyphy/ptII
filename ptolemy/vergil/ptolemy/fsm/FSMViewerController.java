@@ -81,8 +81,8 @@ public class FSMViewerController extends GraphController {
      * terminal and edge interactors.
      */
     public FSMViewerController() {
-	_entityController = new FSMStateController(this);
-	_linkController = new FSMTransitionController(this);
+	_stateController = new FSMStateController(this);
+	_transitionController = new FSMTransitionController(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -91,15 +91,15 @@ public class FSMViewerController extends GraphController {
     /**
      * Return the controller for entities
      */
-    public FSMStateController getEntityController() {
-	return _entityController;
+    public FSMStateController getStateController() {
+	return _stateController;
     }
 
     /**
      * Return the controller for links
      */
-    public FSMTransitionController getLinkController() {
-        return _linkController;
+    public FSMTransitionController getTransitionController() {
+        return _transitionController;
     }
 
     /**
@@ -115,9 +115,9 @@ public class FSMViewerController extends GraphController {
         // Create and set up the selection dragger
 	SelectionDragger _selectionDragger = new SelectionDragger(pane);
 	_selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)_entityController.getNodeInteractor());
+                (SelectionInteractor)_stateController.getNodeInteractor());
 	_selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)_linkController.getEdgeInteractor());
+                (SelectionInteractor)_transitionController.getEdgeInteractor());
 
         MenuCreator _menuCreator = new MenuCreator(
 	    new SchematicContextMenuFactory(this));
@@ -130,28 +130,14 @@ public class FSMViewerController extends GraphController {
      * Return the node controller appropriate for the given node.
      */
     public NodeController getNodeController(Object node) {
-	return _entityController;
+	return _stateController;
     }
 
     /**
      * Return the edge controller appropriate for the given node.
      */
     public EdgeController getEdgeController(Object edge) {
-        return _linkController;
-    }
-
-    /**
-     * Set the controller for relations
-     */
-    public void setEntityController(FSMStateController controller) {
-	_entityController = controller;
-    }
-
-    /**
-     * Set the controller for links
-     */
-    public void setLinkController(FSMTransitionController controller) {
-        _linkController = controller;
+        return _transitionController;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -181,6 +167,6 @@ public class FSMViewerController extends GraphController {
     private MenuCreator _menuCreator;
 
     // The controllers
-    private FSMStateController _entityController;
-    private FSMTransitionController _linkController;
+    private FSMStateController _stateController;
+    private FSMTransitionController _transitionController;
 }

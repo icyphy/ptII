@@ -169,7 +169,7 @@ public class FSMGraphFrame extends GraphFrame {
 	//       	_executeMenu = new JMenu("Execute");
         //_executeMenu.setMnemonic(KeyEvent.VK_X);
 	//_menubar.add(_executeMenu);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _newStateAction);
+	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _newStateAction);
 	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newStateAction);
     }
 
@@ -236,114 +236,29 @@ public class FSMGraphFrame extends GraphFrame {
         });
         _toolbar.add(_directorComboBox);
 
-	/*	_editIconAction = new EditIconAction();
-	_lookInsideAction = new LookInsideAction();
+	_editIconAction = new EditIconAction();
 	_getDocumentationAction = new GetDocumentationAction();
-	_controller.getEntityController().setMenuFactory(new EntityContextMenuFactory(_controller));
- 	_controller.getEntityPortController().setMenuFactory(new PortContextMenuFactory(_controller));
-  	_controller.getPortController().setMenuFactory(new PortContextMenuFactory(_controller));
-  	_controller.getRelationController().setMenuFactory(new RelationContextMenuFactory(_controller));
-  	_controller.getLinkController().setMenuFactory(new RelationContextMenuFactory(_controller));
-	*/
+	_controller.getStateController().setMenuFactory(new StateContextMenuFactory(_controller));
+	_controller.getTransitionController().setMenuFactory(new TransitionContextMenuFactory(_controller));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
-    private class EditIconAction extends FigureAction {
-	public EditIconAction() {
-	    super("Edit Icon");
-	}
-
-	public void actionPerformed(ActionEvent e) {
-	    // Figure out what entity.
-	    super.actionPerformed(e);		
-	    NamedObj object = getTarget();
-	    if(!(object instanceof Entity)) return;
-	    Entity entity = (Entity) object;
-	    XMLIcon icon = null;
-	    List iconList = entity.attributeList(XMLIcon.class);
-	    if(iconList.size() == 0) {
-		try {
-		    icon = new XMLIcon(entity, entity.uniqueName("icon"));
-		} catch (Exception ex) {
-		    throw new InternalErrorException("duplicated name, but "
-						     + "there were no " +
-						     "other icons.");
-		}
-	    } else if(iconList.size() == 1) {
-		icon = (XMLIcon)iconList.get(0);
-	    } else {
-		throw new InternalErrorException("entity " + entity + 
-				 "contains more than one icon");
-	    }
-	    // FIXME make a tableau.
-	    ApplicationContext appContext = new ApplicationContext();
-	    appContext.setTitle("Icon editor");
-	    new IconEditor(appContext, icon);
-	}
-    }
-
     /**
      * The factory for creating context menus on entities.
      */
-    // FIXME this has to move into the visual notation.
     private class StateContextMenuFactory extends PtolemyMenuFactory {
 	public StateContextMenuFactory(GraphController controller) {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
 	    addMenuItemFactory(new EditParameterStylesFactory());
-	    //	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
+	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	    //addMenuItemFactory(new MenuActionFactory(_lookInsideAction));
-	    //addMenuItemFactory(new MenuActionFactory(_editIconAction));
+	    addMenuItemFactory(new MenuActionFactory(_editIconAction));
 	}
     }
-
-    private class ExecuteSystemAction extends AbstractAction {
-	public ExecuteSystemAction() {
-	    super("Go");
-	    putValue("tooltip", "Execute The Model");
-	    putValue(Action.ACCELERATOR_KEY, 
-		     KeyStroke.getKeyStroke(KeyEvent.VK_G, 
-					    java.awt.Event.CTRL_MASK));
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
-		     new Integer(KeyEvent.VK_G));
-	}
-
-	public void actionPerformed(ActionEvent e) {
-	    try {
-		PtolemyEffigy effigy = 
-		    (PtolemyEffigy)getTableau().getContainer();
-		new RunTableau(effigy, effigy.uniqueName("tableau"));
-	    } catch (Exception ex) {
-		MessageHandler.error("Execution Failed", ex);
-	    }	    
-	}
-    }
-    
-    private class GetDocumentationAction extends FigureAction {
-	public GetDocumentationAction() {
-	    super("Get Documentation");
-	}
-	public void actionPerformed(ActionEvent e) {	    
-	    // Create a dialog for configuring the object.
-	    // FIXME this should probably be one frame for each class.
-	    super.actionPerformed(e);		
-	    NamedObj target = getTarget();
-	    String className = target.getClass().getName();     
-	    try {
-		Effigy effigy = (Effigy)getTableau().getContainer();
-		DocumentationViewerTableau viewer = 
-		    new DocumentationViewerTableau(effigy, 
-					  effigy.uniqueName("tableau"));
-		viewer.dottedClass.setExpression(className);
-	    } catch (Exception ex) {
-		MessageHandler.error("Could not view Documentation for " + 
-				     className, ex);
-	    }
-	}
-    };
-        
+            
     // An action to look inside a composite.
     private class LookInsideAction extends FigureAction {
 	public LookInsideAction() {
@@ -374,7 +289,7 @@ public class FSMGraphFrame extends GraphFrame {
 	    super(controller);
 	    addMenuItemFactory(new EditParametersFactory());
 	    addMenuItemFactory(new EditParameterStylesFactory());
-	    //    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
+	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
 	}
     }
   

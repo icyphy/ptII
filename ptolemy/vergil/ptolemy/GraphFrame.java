@@ -123,6 +123,7 @@ import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.File;
+import java.io.FileReader;
 
 import java.net.URL;
 
@@ -139,6 +140,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.KeyStroke;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -291,6 +293,7 @@ public abstract class GraphFrame extends PtolemyFrame
 	_pasteAction = new PasteAction();
 	_layoutAction = new LayoutAction();
 	_saveInLibraryAction = new SaveInLibraryAction();
+	_importLibraryAction = new ImportLibraryAction();
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -478,10 +481,16 @@ public abstract class GraphFrame extends PtolemyFrame
 	diva.gui.GUIUtilities.addMenuItem(_editMenu, _copyAction);
 	diva.gui.GUIUtilities.addHotKey(_jgraph, _pasteAction);
 	diva.gui.GUIUtilities.addMenuItem(_editMenu, _pasteAction);
+
+       	_graphMenu = new JMenu("Graph");
+        _graphMenu.setMnemonic(KeyEvent.VK_G);
+	_menubar.add(_graphMenu);
 	diva.gui.GUIUtilities.addHotKey(_jgraph, _layoutAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _layoutAction);
+	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _layoutAction);
 	diva.gui.GUIUtilities.addHotKey(_jgraph, _saveInLibraryAction);
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _saveInLibraryAction);
+	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _saveInLibraryAction);
+	diva.gui.GUIUtilities.addHotKey(_jgraph, _importLibraryAction);
+	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _importLibraryAction);
     }
 
     /** Create a new graph pane.  Subclasses will override this to change
@@ -544,8 +553,10 @@ public abstract class GraphFrame extends PtolemyFrame
     protected Action _cutAction;
     protected Action _copyAction;
     protected Action _pasteAction;
+    protected JMenu _graphMenu;
     protected Action _layoutAction;
     protected Action _saveInLibraryAction;
+    protected Action _importLibraryAction;
 
     // Flag indicating that the current save action is "save as" rather than
     // "save".
@@ -611,6 +622,12 @@ public abstract class GraphFrame extends PtolemyFrame
     private class LayoutAction extends AbstractAction {
 	public LayoutAction() {
 	    super("Automatic Layout");
+	    putValue("tooltip", "Layout the Graph");
+	    putValue(Action.ACCELERATOR_KEY, 
+		     KeyStroke.getKeyStroke(KeyEvent.VK_L, 
+					    java.awt.Event.CTRL_MASK));
+	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+		     new Integer(KeyEvent.VK_L));
 	}
 	public void actionPerformed(ActionEvent e) {
 	    try {
@@ -624,6 +641,9 @@ public abstract class GraphFrame extends PtolemyFrame
     private class SaveInLibraryAction extends AbstractAction {
 	public SaveInLibraryAction() {
 	    super("Save In Library");
+	    putValue("tooltip", "Save as a Component in Library");
+	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+		     new Integer(KeyEvent.VK_S));
 	}
 	public void actionPerformed(ActionEvent e) {
 	    try {
@@ -700,7 +720,89 @@ public abstract class GraphFrame extends PtolemyFrame
 	    }	    
 	}
     }
+     
+    public class GetDocumentationAction extends FigureAction {
+	public GetDocumentationAction() {
+	    super("Get Documentation");
+	}
+	public void actionPerformed(ActionEvent e) {	    
+	    // Create a dialog for configuring the object.
+	    // FIXME this should probably be one frame for each class.
+	    super.actionPerformed(e);		
+	    NamedObj target = getTarget();
+	    String className = target.getClass().getName();     
+	    try {
+		System.out.println(className);
+		Effigy effigy = (Effigy)getTableau().getContainer();
+		DocumentationViewerTableau viewer = 
+		    new DocumentationViewerTableau(effigy, 
+					  effigy.uniqueName("tableau"));
+		viewer.dottedClass.setExpression(className);
+		viewer.show();
+	    } catch (Exception ex) {
+		MessageHandler.error("Could not view Documentation for " + 
+				     className, ex);
+	    }
+	}
+    };
         
+    private class ImportLibraryAction extends AbstractAction {
+	public ImportLibraryAction() {
+	    super("Import Library");
+	    putValue("tooltip", "Import a libarary into the Palette");
+	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+		     new Integer(KeyEvent.VK_I));
+	}
+
+	public void actionPerformed(ActionEvent e) {
+	    // FIXME this code is mostly copied from Top.
+	    JFileChooser chooser = new JFileChooser();
+	    chooser.setDialogTitle("Select a library");
+	    
+	    if (_directory != null) {
+		chooser.setCurrentDirectory(_directory);
+	    } else {
+		// The default on Windows is to open at user.home, which is
+		// typically an absurd directory inside the O/S installation.
+		// So we use the current directory instead.
+		// FIXME: This will throw a security exception in an applet?
+		String cwd = System.getProperty("user.dir");
+		if (cwd != null) {
+		    chooser.setCurrentDirectory(new File(cwd));
+		}
+	    }
+	    int result = chooser.showOpenDialog(GraphFrame.this);
+	    if (result == JFileChooser.APPROVE_OPTION) {
+		try {
+		    File file = chooser.getSelectedFile();
+		    // FIXME it would be nice if MoMLChangeRequest had the
+		    // ability to read from a URL
+		    StringBuffer buffer = new StringBuffer();
+		    FileReader reader = new FileReader(file);
+		    char[] chars = new char[50];
+		    while(reader.ready()) {
+			int count = reader.read(chars, 0, 50);
+			buffer.append(chars, 0, count);
+		    }
+		    PtolemyEffigy effigy = 
+			(PtolemyEffigy)getTableau().getContainer();
+		    Configuration configuration = 
+			(Configuration)effigy.toplevel();
+		    NamedObj library =
+			configuration.getEntity("actor library");
+		    if(library == null) return;
+		    ChangeRequest request =
+			new MoMLChangeRequest(this, library,
+					      buffer.toString(),
+					      file.toURL()); 
+		    library.requestChange(request);
+		} catch (Exception ex) {
+		    MessageHandler.error("Library import failed.", ex);
+		}
+	    }
+	}
+    };
+
     // A layout algorithm for laying out ptolemy graphs.  Since our edges
     // are undirected, this layout algorithm turns them into directed edges
     // aimed consistently. i.e. An edge should always be "out" of an

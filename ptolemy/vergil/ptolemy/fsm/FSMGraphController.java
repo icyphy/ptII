@@ -54,6 +54,7 @@ import java.awt.*;
 import diva.util.java2d.Polygon2D;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.Enumeration;
@@ -102,7 +103,7 @@ public class FSMGraphController extends FSMViewerController {
 	// Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
 	_linkCreator.setMouseFilter(_controlFilter);
-	((CompositeInteractor)getEntityController().getNodeInteractor()).addInteractor(_linkCreator);
+	((CompositeInteractor)getStateController().getNodeInteractor()).addInteractor(_linkCreator);
 
         // Create a listener that creates new states.
 	_stateCreator = new StateCreator();
@@ -185,6 +186,9 @@ public class FSMGraphController extends FSMViewerController {
 	    
 	    // FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
 	    //putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+	    putValue("tooltip", "Control-click to create a new state.");
+	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+		     new Integer(KeyEvent.VK_S));
 	}
 
 	public void actionPerformed(ActionEvent e) {

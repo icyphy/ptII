@@ -155,10 +155,10 @@ public class KernelGraphFrame extends GraphFrame {
      */
     protected void _addMenus() {
 	super._addMenus();
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _newPortAction);
+	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _newPortAction);
        	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newPortAction);
 
-	diva.gui.GUIUtilities.addMenuItem(_editMenu, _newRelationAction);
+	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _newRelationAction);
 	diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newRelationAction);
     }
 
@@ -177,50 +177,21 @@ public class KernelGraphFrame extends GraphFrame {
 	_editIconAction = new EditIconAction();
 	_lookInsideAction = new LookInsideAction();
 	_getDocumentationAction = new GetDocumentationAction();
-	_controller.getEntityController().setMenuFactory(new EntityContextMenuFactory(_controller));
- 	_controller.getEntityPortController().setMenuFactory(new PortContextMenuFactory(_controller));
-  	_controller.getPortController().setMenuFactory(new PortContextMenuFactory(_controller));
-  	_controller.getRelationController().setMenuFactory(new RelationContextMenuFactory(_controller));
-  	_controller.getLinkController().setMenuFactory(new RelationContextMenuFactory(_controller));
+	_controller.getEntityController().setMenuFactory(
+                 new EntityContextMenuFactory(_controller));
+ 	_controller.getEntityPortController().setMenuFactory(
+                 new PortContextMenuFactory(_controller));
+  	_controller.getPortController().setMenuFactory(
+                 new PortContextMenuFactory(_controller));
+  	_controller.getRelationController().setMenuFactory(
+                 new RelationContextMenuFactory(_controller));
+  	_controller.getLinkController().setMenuFactory(
+                 new RelationContextMenuFactory(_controller));
 	return pane;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
-
-    private class EditIconAction extends FigureAction {
-	public EditIconAction() {
-	    super("Edit Icon");
-	}
-
-	public void actionPerformed(ActionEvent e) {
-	    // Figure out what entity.
-	    super.actionPerformed(e);		
-	    NamedObj object = getTarget();
-	    if(!(object instanceof Entity)) return;
-	    Entity entity = (Entity) object;
-	    XMLIcon icon = null;
-	    List iconList = entity.attributeList(XMLIcon.class);
-	    if(iconList.size() == 0) {
-		try {
-		    icon = new XMLIcon(entity, entity.uniqueName("icon"));
-		} catch (Exception ex) {
-		    throw new InternalErrorException("duplicated name, but "
-						     + "there were no " +
-						     "other icons.");
-		}
-	    } else if(iconList.size() == 1) {
-		icon = (XMLIcon)iconList.get(0);
-	    } else {
-		throw new InternalErrorException("entity " + entity + 
-				 "contains more than one icon");
-	    }
-	    // FIXME make a tableau.
-	    ApplicationContext appContext = new ApplicationContext();
-	    appContext.setTitle("Icon editor");
-	    new IconEditor(appContext, icon);
-	}
-    }
 
     /**
      * The factory for creating context menus on entities.
@@ -295,29 +266,6 @@ public class KernelGraphFrame extends GraphFrame {
 	}
     }
     
-    private class GetDocumentationAction extends FigureAction {
-	public GetDocumentationAction() {
-	    super("Get Documentation");
-	}
-	public void actionPerformed(ActionEvent e) {	    
-	    // Create a dialog for configuring the object.
-	    // FIXME this should probably be one frame for each class.
-	    super.actionPerformed(e);		
-	    NamedObj target = getTarget();
-	    String className = target.getClass().getName();     
-	    try {
-		Effigy effigy = (Effigy)getTableau().getContainer();
-		DocumentationViewerTableau viewer = 
-		    new DocumentationViewerTableau(effigy, 
-					  effigy.uniqueName("tableau"));
-		viewer.dottedClass.setExpression(className);
-	    } catch (Exception ex) {
-		MessageHandler.error("Could not view Documentation for " + 
-				     className, ex);
-	    }
-	}
-    };
-        
     // An action to look inside a composite.
     private class LookInsideAction extends FigureAction {
 	public LookInsideAction() {

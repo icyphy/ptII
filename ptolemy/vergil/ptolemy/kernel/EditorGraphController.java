@@ -55,6 +55,7 @@ import diva.util.java2d.Polygon2D;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
@@ -147,7 +148,6 @@ public class EditorGraphController extends ViewerGraphController {
     public class NewPortAction extends FigureAction {
 	public NewPortAction() {
 	    super("New External Port");
-	    putValue("tooltip", "New External Port");
 	    String dflt = "";
 	    // Creating the renderers this way is rather nasty..
 	    // Standard toolbar icons are 25x25 pixels.
@@ -156,6 +156,12 @@ public class EditorGraphController extends ViewerGraphController {
 	    
 	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
 	    putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+	    putValue("tooltip", "Create a New External Port");
+	    putValue(Action.ACCELERATOR_KEY, 
+		     KeyStroke.getKeyStroke(KeyEvent.VK_E, 
+					    java.awt.Event.CTRL_MASK));
+	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+		     new Integer(KeyEvent.VK_E));
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -226,7 +232,6 @@ public class EditorGraphController extends ViewerGraphController {
     public class NewRelationAction extends FigureAction {
 	public NewRelationAction() {
 	    super("New Relation");
-	    putValue("tooltip", "New Relation");
 	    String dflt = "";
 	    // Creating the renderers this way is rather nasty..
 	    // Standard toolbar icons are 25x25 pixels.
@@ -235,6 +240,9 @@ public class EditorGraphController extends ViewerGraphController {
 	    
 	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
 	    putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+	    putValue("tooltip", "Control-click to create a new relation");
+	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+		     new Integer(KeyEvent.VK_R));
 	}
 
 	public void actionPerformed(ActionEvent e) {
