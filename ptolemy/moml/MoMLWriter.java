@@ -321,7 +321,6 @@ public class MoMLWriter extends Writer {
                     // System.out.println("reflecting " + theClass);
                     // OK..  try reflecting using a workspace constructor
                     _reflectionArguments[0] = _reflectionWorkspace;
-System.out.println(theClass);
                     Constructor[] constructors =
                         theClass.getConstructors();
                     for (int i = 0; i < constructors.length; i++) {
