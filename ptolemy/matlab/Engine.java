@@ -167,7 +167,7 @@ calls if needed.<p>
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class Engine implements MatlabEngineInterface {
+public class Engine {
     /** Load the "ptmatlab" native interface. Use a classpath-relative
      * pathname without the shared library suffix (which is selected
      * and appended by {@link UtilityFunctions#loadLibrary}) for
@@ -180,8 +180,20 @@ public class Engine implements MatlabEngineInterface {
     static int engOutputBufferSize = 2048;
 
     /** Used for Synchronization */
-    private static Integer semaphore = new Integer(0);
+    public static Integer semaphore = new Integer(0);
     // semaphore is public so that javadoc works.
+
+    /** Data conversion parameters used by {@link
+     * ptolemy.matlab.Engine#get(long[], String,
+     * Engine.ConversionParameters)}. */
+    public static class ConversionParameters {
+        /** If true (default), 1x1 matrices are returned as
+         * appropriate ScalarToken.*/
+        public boolean getScalarMatrices = true;
+        /** If true, double matrices where all elements represent
+         * integers are returned as IntMatrixTokens (default false).*/
+        public boolean getIntMatrices = false;
+    }
 
     /** Construct an instance of the matlab engine interface.
      * The matlab engine is not activated at this time.
@@ -285,8 +297,7 @@ public class Engine implements MatlabEngineInterface {
      * @param evalStr string to evaluate.
      * @exception IllegalActionException If the matlab engine is not opened.
      */
-    public int evalString(long[] eng, String evalStr)
-            throws IllegalActionException {
+    public int evalString(long[] eng, String evalStr) throws IllegalActionException {
         int retval;
         synchronized(semaphore) {
             if (eng == null || eng[0] == 0) {
@@ -361,13 +372,6 @@ public class Engine implements MatlabEngineInterface {
             }
         }
         return new StringToken(str);
-    }
-
-    /** Return the semaphore that can be used to reserve the matlab
-     * interface.
-     */
-    public Object getSemaphore() {
-        return semaphore;
     }
 
     /** Create a matlab variable using name and a Token.
