@@ -95,8 +95,12 @@ public class DependencyDeclaration extends Attribute {
 
     /** Set the set of dependents for this declaration.
      * @param dependents A list of variables.
+     * @exception RuntimeException If the list of dependents is null.
      */
     public void setDependents(List dependents) {
+        if(dependents == null) {
+            throw new RuntimeException("Attempt to set dependents to null!");
+        }
         _dependents = dependents;
     }
 
