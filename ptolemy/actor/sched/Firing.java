@@ -177,7 +177,7 @@ public class Firing extends ScheduleElement {
         public ActorIterator(int iterationCount) {
             _startingVersion = _getVersion();
             _currentElement = 0;
-            _iterationCount = 0;
+            _iterationCount = iterationCount;
         }
 
         /** Return true if the iteration has more elements.
