@@ -2,7 +2,7 @@
 #
 # @Authors: Edward A. Lee
 #
-# @Version: : ptmkmodel,v 1.6 1999/06/13 21:47:21 cxh Exp $
+# @Version: $Id$
 #
 # @Copyright (c) 1999-2001 The Regents of the University of California.
 # All rights reserved.

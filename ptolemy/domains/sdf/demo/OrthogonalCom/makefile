@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Hylands, Jeff Tsay
 #
-# @Version: : ptmkmodel,v 1.7 1999/07/16 01:17:49 cxh Exp $
+# @Version: $Id$
 #
 # @Copyright (c) 1999-2001 The Regents of the University of California.
 # All rights reserved.
