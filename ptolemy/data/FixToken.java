@@ -370,16 +370,18 @@ public class FixToken extends ScalarToken {
         return new FixToken(result);
     }
 
-	/** Test whether the value of this token is close to the first argument,
-	 *  where "close" means that the distance between their values is less than
-	 *  or equal to the second argument. It is assumed that the type of
-	 *  the first argument is FixToken.  NOTE: Both the value of this token
-	 *  and the token to compare are converted to double using convertToDouble()
-	 * 	before the comparison is made.
-	 *  @param token The token to compare to this token.
-	 *  @return A token containing true if the value of the first
-	 *   argument is close to the value of this token.
-	 */
+    /** Test whether the value of this token is close to the first argument,
+     *  where "close" means that the distance between their values is less than
+     *  or equal to the second argument. It is assumed that the type of
+     *  the first argument is FixToken.  NOTE: Both the value of this token
+     *  and the token to compare are converted to double using 
+     * 	convertToDouble() before the comparison is made.
+     *  @param rightArgument The token to compare to this token.
+     *  @param epsilon The value that we use to determine whether two
+     *   tokens are close.
+     *  @return A token containing true if the value of the first
+     *   argument is close to the value of this token.
+     */
     protected BooleanToken _isCloseTo(
             ScalarToken rightArgument, double epsilon) {
 		double right = ((FixToken)rightArgument).convertToDouble();
