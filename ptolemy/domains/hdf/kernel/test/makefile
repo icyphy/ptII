@@ -35,7 +35,8 @@ ME =		ptolemy/domains/hdf/kernel/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+# Tests like auto/nonHomogeneousSDF.xml use vergil.fsm.modal.ModalModel
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
