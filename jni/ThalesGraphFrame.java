@@ -166,6 +166,11 @@ public class ThalesGraphFrame extends BasicGraphFrame {
         _controller = new ActorEditorGraphController();
         _controller.setConfiguration(getConfiguration());
         _controller.setFrame(this);
+
+        // Add the ArgumentDialogFactory to the context menu for actors
+        _controller.getEntityController()
+            .addMenuItemFactory(new ArgumentDialogFactory());
+
         final ActorGraphModel graphModel = new ActorGraphModel(
                 getModel());
         return new GraphPane(_controller, graphModel);
