@@ -1,0 +1,72 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="sensor" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+  <doc>Wireless/Sensor network actors</doc>
+
+  <property name="SensorDirector" class="ptolemy.domains.sensor.kernel.SensorDirector">
+  </property>
+
+  <entity name="SimpleNode" class="ptolemy.apps.superb.sensor.lib.SimpleNode">
+  </entity>
+  <entity name="SoundSensor" class="ptolemy.apps.superb.sensor.demo.WirelessSoundDetection.SoundSensor">
+  </entity>
+  <entity name="CompositeSensor" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_location" class="ptolemy.actor.parameters.LocationParameter" value="[200.0, 200.0]">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Do not change the port name.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 135.0">
+        </property>
+    </property>
+    <property name="signalRadius" class="ptolemy.data.expr.Parameter" value="100">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 20.0">
+        </property>
+    </property>
+    <port name="wirelessIPort" class="ptolemy.apps.superb.sensor.kernel.SensorIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 190.0">
+        </property>
+    </port>
+    <port name="wirelessOPort" class="ptolemy.apps.superb.sensor.kernel.SensorIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 190.0">
+        </property>
+    </port>
+</entity>
+
+      </group>
+    ?>
+  </configure>
+</entity>
