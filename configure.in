@@ -601,16 +601,12 @@ fi
 #       See if there was a command-line option for where Cal is.
 #--------------------------------------------------------------------
 
-# PTCAL_DIR is set to cal and used in
-# $PTII/ptolemy/makefile if Cal was found.
-PTCAL_DIR=
-
 # PTCALTROP_DIR is set to caltrop and used in
 # $PTII/ptolemy/makefile if Cal was found.
 PTCALTROP_DIR=
 
 # Directory that contains the ptCal jar file
-CAL_DIR='${PTII}/lib'
+CALTROP_DIR='${PTII}/lib'
 
 # We only need to look for on if $PTII/ptolemy/cal exists
 CAL_USER_DIR="$PTII/ptolemy/cal"
@@ -619,40 +615,39 @@ if test ! -d "$CAL_USER_DIR"; then
 	so we need not find the Cal, the actor language.])
 else
     AC_MSG_CHECKING([for Cal, the actor language])
-    AC_ARG_WITH(CAL_DIR, [  --with-cal=DIR       use ptCal.jar from DIR,
+    AC_ARG_WITH(CALTROP_DIR, [  --with-cal=DIR       use ptCal.jar from DIR,
                           defaults to \$PTII/lib],
-	CAL_DIR=$withval,
-	CAL_DIR=$PTII/lib)
+	CALTROP_DIR=$withval,
+	CALTROP_DIR=$PTII/lib)
 
-    if test -f "$CAL_DIR/ptCal.jar"; then
-	AC_MSG_RESULT([$CAL_DIR])
+    if test -f "$CALTROP_DIR/ptCal.jar"; then
+	AC_MSG_RESULT([$CALTROP_DIR])
 	# We found cal
-	AC_MSG_CHECKING([for saxon7.jar (used by cal)])
-	if test -f "$CAL_DIR/saxon7.jar"; then
-	   AC_MSG_RESULT([$CAL_DIR/saxon7.jar])
-	   AC_MSG_CHECKING([for java_cup.jar (used by cal)])
-	   if test -f "$CAL_DIR/java_cup.jar"; then
-	       AC_MSG_RESULT([$CAL_DIR/java_cup.jar])
-	       PTCAL_DIR=cal
+	AC_MSG_CHECKING([for saxon7.jar (used by caltrop)])
+	if test -f "$CALTROP_DIR/saxon7.jar"; then
+	   AC_MSG_RESULT([$CALTROP_DIR/saxon7.jar])
+	   AC_MSG_CHECKING([for java_cup.jar (used by caltrop)])
+	   if test -f "$CALTROP_DIR/java_cup.jar"; then
+	       AC_MSG_RESULT([$CALTROP_DIR/java_cup.jar])
 	       PTCALTROP_DIR=caltrop
 	   else     
-               AC_MSG_WARN([Failed to find $CAL_DIR/java_cup.jar
+               AC_MSG_WARN([Failed to find $CALTROP_DIR/java_cup.jar
     which is required by Cal, the actor language.
     You can download java_cup from 
     http://www.cs.princeton.edu/~appel/modern/java/CUP/
     If it is not present, you will not be able to use the Cal actor
     or run the demonstrations  in ptolemy/cal])
 	       # Note that we don't substitute in the ${PTII} here
-	       CAL_DIR='${PTII}/lib/'
+	       CALTROP_DIR='${PTII}/lib/'
 	   fi    
 	else   
-           AC_MSG_WARN([Failed to find $CAL_DIR/saxon7.jar
+           AC_MSG_WARN([Failed to find $CALTROP_DIR/saxon7.jar
     which is required by Cal, the actor language.
     You can download saxon from http://saxon.sourceforge.net/
     If it is not present, you will not be able to use the Cal actor
     or run the demonstrations  in ptolemy/cal])
 	   # Note that we don't substitute in the ${PTII} here
-	   CAL_DIR='${PTII}/lib/'
+	   CALTROP_DIR='${PTII}/lib/'
         fi
     else  
         AC_MSG_WARN([Failed to find PTII/lib/ptCal.jar
@@ -660,16 +655,16 @@ else
     If it is not present, you will not be able to use the Cal actor
     or run the demonstrations  in ptolemy/cal])
 	# Note that we don't substitute in the ${PTII} here
-	CAL_DIR='${PTII}/lib/'
+	CALTROP_DIR='${PTII}/lib/'
     fi
 fi
 
-if test -z "$PTCAL_DIR"; then
+if test -z "$PTCALTROP_DIR"; then
    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/cal"
 else
    ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
-    <classpathentry kind=\"lib\" path=\"$CAL_DIR/ptCal.jar\"/> \
-    <classpathentry kind=\"lib\" path=\"$CAL_DIR/saxon7.jar\"/> "
+    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/ptCal.jar\"/> \
+    <classpathentry kind=\"lib\" path=\"$CALTROP_DIR/saxon7.jar\"/> "
 fi 
 
 #--------------------------------------------------------------------
@@ -2385,9 +2380,9 @@ fi
 
 # Keep these substitutions alphabetical, with a description
 
-# Directory that contains the Cal jar file ptCal.jar
+# Directory that contains the Caltrop jar file ptCal.jar
 # used by bin/ptinvoke.in
-AC_SUBST(CAL_DIR)
+AC_SUBST(CALTROP_DIR)
 
 # Directory that contains chic.jar.
 # Chic is a modular verifier for behavioral compatibility checking of
@@ -2502,9 +2497,6 @@ AC_SUBST(MATLAB_LIBDIR)
 # Set to -I$PTII/mescal/include or -I/usr/local/include
 # if we found boost/static_assert.hpp (mescal)
 AC_SUBST(PTBOOST_INCLUDE)
-
-# Set to cal and used in $PTII/ptolemy/makefile if Cal was found.
-AC_SUBST(PTCAL_DIR)
 
 # Set to caltrop and used in $PTII/ptolemy/makefile if Cal was found.
 AC_SUBST(PTCALTROP_DIR)

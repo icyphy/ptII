@@ -128,7 +128,7 @@ PTBOOST_INCLUDE =	"@PTBOOST_INCLUDE@"
 
 # Directory that contains the Cal jar file ptCal.jar
 # used by bin/ptinvoke.in
-CAL_DIR = @CAL_DIR@
+CALTROP_DIR = @CALTROP_DIR@
 
 # Directory that contains chic.jar.
 # Chic is a modular verifier for behavioral compatibility checking of
@@ -234,9 +234,6 @@ MATLAB_DIR = 	@MATLAB_DIR@
 
 # Location of Matlab's engine libraries (libeng.so, libmx.so)
 MATLAB_LIBDIR =	@MATLAB_LIBDIR@
-
-# Set to cal and used in $PTII/ptolemy/makefile if Cal was found.
-PTCAL_DIR = @PTCAL_DIR@
 
 # Set to caltrop and used in $PTII/ptolemy/makefile if Cal was found.
 PTCALTROP_DIR = @PTCALTROP_DIR@
