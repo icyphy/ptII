@@ -98,7 +98,9 @@ public class DatagramWriter extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
+
         // Ports
+
         remoteAddress = new TypedIOPort(this, "remoteAddress");
         remoteAddress.setInput(true);
         remoteAddress.setMultiport(true);
@@ -113,17 +115,26 @@ public class DatagramWriter extends TypedAtomicActor {
         data.setInput(true);
         data.setTypeEquals(BaseType.GENERAL);
 
+
         // Parameters that are default values for ports
-        defaultRemoteAddress =
-                new StringAttribute(this, "defaultRemoteAddress");
-        defaultRemoteAddress.setExpression("localhost");
+
+        //defaultRemoteAddress =
+        //        new StringAttribute(this, "defaultRemoteAddress");
+        //defaultRemoteAddress.setExpression("localhost");
+	// Above way was set w/o quotes vs constant which is set with them.
+	// This has been confusing, so I've switched to the approach below.
+        defaultRemoteAddress = new Parameter(this, "defaultRemoteAddress");
+        defaultRemoteAddress.setTypeEquals(BaseType.STRING);
+        defaultRemoteAddress.setToken(new StringToken("localhost"));
 
         defaultRemoteSocketNumber =
                 new Parameter(this, "defaultRemoteSocketNumber");
         defaultRemoteSocketNumber.setTypeEquals(BaseType.INT);
         defaultRemoteSocketNumber.setExpression("4004"); //setExpression works
 
+
         // Pure parameters
+
         localSocketNumber = new Parameter(this, "localSocketNumber");
         localSocketNumber.setTypeEquals(BaseType.INT);
         localSocketNumber.setToken(new IntToken(4003)); //setToken works too
@@ -182,10 +193,8 @@ public class DatagramWriter extends TypedAtomicActor {
     /** The default remote address to which to send datagrams.
      *  This is a string.  It will get looked up to find the IP address.
      *  (Legal forms of this string include "128.32.239.10" and "localhost".)
-     *  NOTE: This is a parameter, but it is of type String and is a
-     *  special kind of parameter called a <i>StringAttribute</i>.
      */
-    public StringAttribute defaultRemoteAddress;
+    public Parameter defaultRemoteAddress;
 
     /** The remote address towards which to launch the packet.
      */
@@ -243,7 +252,9 @@ public class DatagramWriter extends TypedAtomicActor {
 
 	} else if (attribute == defaultRemoteAddress) {
 	    String address =
-                    defaultRemoteAddress.getExpression();
+                    ((StringToken)defaultRemoteAddress.getToken())
+                    .stringValue();
+	    //System.out.println("address = " + address + address + " phew!");
 	    try {
 		_address = InetAddress.getByName(address);
 	    } catch (UnknownHostException ex) {
@@ -407,8 +418,8 @@ public class DatagramWriter extends TypedAtomicActor {
                     + "the specified local socket number: " + ex.getMessage());
         }
 
-        String address =
-                defaultRemoteAddress.getExpression();
+	String address =
+                ((StringToken)defaultRemoteAddress.getToken()).stringValue();
         try {
             _address = InetAddress.getByName(address);
         }
