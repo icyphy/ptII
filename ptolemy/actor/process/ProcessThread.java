@@ -28,16 +28,15 @@ COPYRIGHTENDKEY
 
 package ptolemy.actor.process;
 
+import java.io.InterruptedIOException;
+
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.PtolemyThread;
 import ptolemy.kernel.util.Workspace;
-
-import java.io.InterruptedIOException;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessThread
@@ -87,8 +86,7 @@ public class ProcessThread extends PtolemyThread {
         super();
         _actor = actor;
         _director = director;
-        _manager = ((CompositeActor)
-                ((NamedObj) actor).getContainer()).getManager();
+        _manager = actor.getManager();
 
         // This method is called here and not in the run() method as the
         // count should be incremented before any thread is started
