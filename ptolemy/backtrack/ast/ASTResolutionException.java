@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -41,8 +41,9 @@ package ptolemy.backtrack.ast;
 
    @author Thomas Feng
    @version $Id$
-   @since Ptolemy II 4.1
+   @since Ptolemy II 5.1
    @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
 */
 public class ASTResolutionException extends ASTRuntimeException {
 
@@ -54,7 +55,9 @@ public class ASTResolutionException extends ASTRuntimeException {
      *   be resolved as a type.
      */
     public ASTResolutionException(String className, String fieldOrMethodName) {
-        super("Cannot resolve field or method \"" + fieldOrMethodName + "\" in class \"" + className + "\".");
+        super("Cannot resolve field or method \"" +
+                fieldOrMethodName + "\" in class \"" +
+                className + "\".");
     }
 
 }

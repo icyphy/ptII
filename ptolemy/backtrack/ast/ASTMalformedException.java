@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -31,16 +31,17 @@ package ptolemy.backtrack.ast;
 //////////////////////////////////////////////////////////////////////////
 //// ASTMalformedException
 /**
- *  Thrown by the {@link ASTBuilder} when the AST created from a Java
- *  source file is malformed, either because the source file do not conform
- *  to the Java grammar, or because some unknown error occurs in the
- *  Eclipse parser.
- *
- *  @author Thomas Feng
- *  @version $Id$
- *  @since Ptolemy II 4.1
- *  @Pt.ProposedRating Red (tfeng)
- */
+   Thrown by the {@link ASTBuilder} when the AST created from a Java
+   source file is malformed, either because the source file do not conform
+   to the Java grammar, or because some unknown error occurs in the
+   Eclipse parser.
+   
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class ASTMalformedException extends ASTException {
 
     /** Create an exception without identifying the name of the source file
@@ -57,8 +58,9 @@ public class ASTMalformedException extends ASTException {
      */
     public ASTMalformedException(String sourceFileName) {
         super("The AST" +
-                (sourceFileName == null ? "" : " of Java file \"" + sourceFileName + "\"") +
-                " is malformed.");
+                (sourceFileName == null ? "" :
+                    " of Java file \"" + sourceFileName + "\"") +
+                    " is malformed.");
     }
 
 }
