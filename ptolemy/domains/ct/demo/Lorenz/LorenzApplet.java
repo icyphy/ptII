@@ -63,12 +63,12 @@ plane.
 */
 public class LorenzApplet extends CTApplet {
 
-    ////////////////////////////////////////////////////////////////////////
-////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-/** Initialize the applet.
- */
-public void init() {
+    /** Initialize the applet.
+     */
+    public void init() {
 
     super.init();
     Panel controlpanel = new Panel();
@@ -212,11 +212,11 @@ public void init() {
         }
     }
     
-    ////////////////////////////////////////////////////////////////////////
-////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-// The thread that runs the simulation.
-private boolean _isSimulationRunning;
+    // The thread that runs the simulation.
+    private boolean _isSimulationRunning;
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
     private CTSingleSolverDirector _dir;
@@ -226,11 +226,6 @@ private boolean _isSimulationRunning;
     private Const _LAMDA;
     private Scale _SIGMA;
     private Scale _B;
-
-
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
-
 
     //////////////////////////////////////////////////////////////////////////
     ////                       inner classes                              ////
@@ -253,8 +248,4 @@ private boolean _isSimulationRunning;
             }
         }
     }
-
 }
-
-
-
