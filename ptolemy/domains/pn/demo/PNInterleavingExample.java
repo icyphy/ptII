@@ -98,7 +98,7 @@ class PNInterleavingExample {
         //portin.getQueue().setCapacity(1);
  
 	System.out.println("Connections made");
- 	exec.go(-1);
+ 	exec.go();
         System.out.println("Bye World\n");
 	return;
     }
